@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -16,6 +17,8 @@ namespace aweXpect.Equivalency;
 
 public static partial class EquivalencyComparison
 {
+	private static readonly ConcurrentDictionary<Type, TypeShape> TypeShapes = new();
+
 	/// <remarks>
 	///     When only <paramref name="expected" /> is compared by value, its <see cref="object.Equals(object)" />
 	///     decides, because the type of <paramref name="actual" /> is compared by members, which ignores its
@@ -371,7 +374,7 @@ public static partial class EquivalencyComparison
 			return CompareNulls(actual, expected, failureBuilder, memberPath, memberType, context);
 		}
 
-		EquivalencyTypeOptions inheritedOptions = equivalencyOptions.GetInheritedOptions(parentTypeOptions);
+		EquivalencyTypeOptions inheritedOptions = context.GetInheritedOptions(equivalencyOptions, parentTypeOptions);
 		EquivalencyTypeOptions? actualOptions =
 			GetRegisteredOptions(actual.GetType(), equivalencyOptions, context);
 		EquivalencyTypeOptions? expectedOptions =
@@ -562,8 +565,7 @@ public static partial class EquivalencyComparison
 		}
 
 		dictionary = null;
-		if (!ImplementsGenericInterface(value,
-			    definition => definition == typeof(IReadOnlyDictionary<,>) || definition == typeof(IDictionary<,>)))
+		if (GetTypeShape(value.GetType()).DictionaryInterface is null)
 		{
 			return false;
 		}
@@ -605,24 +607,10 @@ public static partial class EquivalencyComparison
 	///     <see cref="DictionaryKeyComparer" /> for the generic dictionary interface it implements, the same way as for
 	///     expectations that know them, through <see cref="KeyComparers" />.
 	/// </remarks>
-#if NET8_0_OR_GREATER
-	[UnconditionalSuppressMessage("Trimming", "IL2075",
-		Justification = "The matched interfaces are referenced, so they are not trimmed away.")]
-#endif
 	private static object? GetKeyComparer(object dictionary)
-	{
-		foreach (Type interfaceType in dictionary.GetType().GetInterfaces())
-		{
-			if (interfaceType.IsGenericType &&
-			    (interfaceType.GetGenericTypeDefinition() == typeof(IDictionary<,>) ||
-			     interfaceType.GetGenericTypeDefinition() == typeof(IReadOnlyDictionary<,>)))
-			{
-				return DictionaryKeyComparer.For(interfaceType)?.Read(dictionary);
-			}
-		}
-
-		return null;
-	}
+		=> GetTypeShape(dictionary.GetType()).DictionaryInterface is { } dictionaryInterface
+			? DictionaryKeyComparer.For(dictionaryInterface)?.Read(dictionary)
+			: null;
 
 	/// <summary>
 	///     Creates an empty set of keys that treats keys as the same exactly when the <paramref name="keyComparer" />
@@ -641,7 +629,7 @@ public static partial class EquivalencyComparison
 	///     their content. One side being a set is enough: the other side has nothing left to be compared against in
 	///     order.
 	/// </remarks>
-	private static bool IsSet(object value) => ImplementsGenericInterface(value, IsSetInterface);
+	private static bool IsSet(object value) => GetTypeShape(value.GetType()).IsSet;
 
 	/// <remarks>
 	///     netstandard2.0 has no <c>IReadOnlySet&lt;T&gt;</c>, but is served to runtimes that have it, so it is
@@ -655,8 +643,26 @@ public static partial class EquivalencyComparison
 		   definition.FullName == "System.Collections.Generic.IReadOnlySet`1";
 #endif
 
-	private static bool ImplementsGenericInterface(object value, Func<Type, bool> matchesDefinition)
-		=> value.GetType().FindGenericInterface(matchesDefinition) is not null;
+	private static bool IsDictionaryDefinition(Type definition)
+		=> definition == typeof(IReadOnlyDictionary<,>) || definition == typeof(IDictionary<,>);
+
+	private static TypeShape GetTypeShape(Type type)
+		=> TypeShapes.GetOrAdd(type, static key => new TypeShape(
+			key.FindGenericInterface(IsDictionaryDefinition),
+			key.FindGenericInterface(IsSetInterface) is not null));
+
+	/// <summary>
+	///     The generic dictionary interface that a type implements first, and whether it is a set.
+	/// </summary>
+	/// <remarks>
+	///     Cached, because the interfaces of a type never change, while every object that is compared by its members is
+	///     checked for a dictionary, and every sequence for a set.
+	/// </remarks>
+	private sealed class TypeShape(Type? dictionaryInterface, bool isSet)
+	{
+		public Type? DictionaryInterface { get; } = dictionaryInterface;
+		public bool IsSet { get; } = isSet;
+	}
 
 	/// <remarks>
 	///     Every expected key is looked up through the actual dictionary, so that its key comparer decides which keys
@@ -880,14 +886,14 @@ public static partial class EquivalencyComparison
 		for (int i = 0; i < Math.Min(actualObjects.Length, expectedObjects.Length); i++)
 		{
 			string elementMemberPath = $"{memberPath}[{i}]";
-			object? actualObject = actualObjects.ElementAtOrDefault(i);
+			object? actualObject = actualObjects[i];
 			if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
 				    actualObject?.GetType() ?? typeof(object)))
 			{
 				continue;
 			}
 
-			object? expectedObject = expectedObjects.ElementAtOrDefault(i);
+			object? expectedObject = expectedObjects[i];
 
 			if (!await Compare(actualObject, expectedObject,
 				    options, typeOptions,
@@ -902,7 +908,7 @@ public static partial class EquivalencyComparison
 			for (int i = actualObjects.Length; i < expectedObjects.Length; i++)
 			{
 				string elementMemberPath = $"{memberPath}[{i}]";
-				object? expectedObject = expectedObjects.ElementAtOrDefault(i);
+				object? expectedObject = expectedObjects[i];
 				if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
 					    expectedObject?.GetType() ?? typeof(object)))
 				{
@@ -919,7 +925,7 @@ public static partial class EquivalencyComparison
 			for (int i = expectedObjects.Length; i < actualObjects.Length; i++)
 			{
 				string elementMemberPath = $"{memberPath}[{i}]";
-				object? actualObject = actualObjects.ElementAtOrDefault(i);
+				object? actualObject = actualObjects[i];
 				if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
 					    actualObject?.GetType() ?? typeof(object)))
 				{

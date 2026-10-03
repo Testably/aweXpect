@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Globalization;
 using System.Net;
 using System.Numerics;
@@ -15,11 +16,19 @@ namespace aweXpect.Equivalency;
 /// </summary>
 public static class EquivalencyDefaults
 {
+	/// <remarks>
+	///     The comparison type only depends on the type, and every compared pair asks for both of its types.
+	/// </remarks>
+	private static readonly ConcurrentDictionary<Type, EquivalencyComparisonType> ComparisonTypes = new();
+
 	/// <summary>
 	///     The default selection of the <see cref="EquivalencyComparisonType" /> for
 	///     the given <paramref name="type" />.
 	/// </summary>
 	public static EquivalencyComparisonType DefaultComparisonType(Type type)
+		=> ComparisonTypes.GetOrAdd(type, static key => SelectComparisonType(key));
+
+	private static EquivalencyComparisonType SelectComparisonType(Type type)
 	{
 		if (type.IsPrimitive
 		    || type.IsEnum

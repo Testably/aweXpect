@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using aweXpect.Core;
@@ -41,11 +42,24 @@ internal abstract class DictionaryKeyComparer
 			return null;
 		}
 
-		return (DictionaryKeyComparer?)typeof(DictionaryKeyComparer)
+		if (CreatedReaders.TryGetValue(dictionaryInterface, out DictionaryKeyComparer? created))
+		{
+			return created;
+		}
+
+		created = (DictionaryKeyComparer)typeof(DictionaryKeyComparer)
 			.GetMethod(nameof(Create), BindingFlags.Static | BindingFlags.Public)!
 			.MakeGenericMethod(dictionaryInterface.GetGenericArguments())
-			.Invoke(null, null);
+			.Invoke(null, null)!;
+		CreatedReaders.TryAdd(dictionaryInterface, created);
+		return created;
 	}
+
+	/// <remarks>
+	///     A reader holds no state, so the one created by reflection is kept per dictionary interface, as every compared
+	///     dictionary of an unregistered type would otherwise create it again.
+	/// </remarks>
+	private static readonly ConcurrentDictionary<Type, DictionaryKeyComparer> CreatedReaders = new();
 
 	/// <summary>
 	///     Creates the reader for dictionaries with the given type arguments.
