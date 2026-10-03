@@ -1049,7 +1049,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		context.Cancellation = cancellation;
 		CancellationToken token = cancellation.Token;
 
-		if (_subjectSource is AsyncValueSource<TValue> { IsNullTask: true, })
+		if (_subjectSource.IsNullTaskSubject)
 		{
 			ConstraintResult expectation = await rootNode.IsMetBy(default(TValue),
 				EvaluationContext.ExpectationTextEvaluationContext.For(context), token);
@@ -1066,7 +1066,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		}
 		catch (Exception exception)
 		{
-			AddOtherExceptions((_subjectSource as AsyncValueSource<TValue>)?.GetOtherExceptions(exception));
+			AddOtherExceptions(_subjectSource.GetOtherExceptions(exception));
 			ConstraintResult result = await FromException(rootNode, context, cancellation, exception);
 			Customize.aweXpect.TraceWriter?.WriteMessage(
 				$"Checking expectation for {Subject} threw an exception");

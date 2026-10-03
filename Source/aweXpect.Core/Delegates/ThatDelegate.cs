@@ -39,17 +39,17 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 	/// </summary>
 	internal static void AppendNullResult(StringBuilder stringBuilder, string it, DelegateValue? actual)
 	{
-		if (actual?.IsNullTask == true)
+		switch (actual?.NullKind)
 		{
-			stringBuilder.Append(it).Append(" returned <null> instead of a task");
-		}
-		else if (actual?.IsNullTaskSubject == true)
-		{
-			stringBuilder.Append(it).Append(" was a <null> task");
-		}
-		else
-		{
-			stringBuilder.ItWasNull(it);
+			case NullSubjectKind.NullTaskReturned:
+				stringBuilder.Append(it).Append(" returned <null> instead of a task");
+				break;
+			case NullSubjectKind.NullTaskSubject:
+				stringBuilder.Append(it).Append(" was a <null> task");
+				break;
+			default:
+				stringBuilder.ItWasNull(it);
+				break;
 		}
 	}
 

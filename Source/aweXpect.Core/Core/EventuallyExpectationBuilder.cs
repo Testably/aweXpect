@@ -7,6 +7,7 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Nodes;
+using aweXpect.Core.Sources;
 using aweXpect.Core.TimeSystem;
 using aweXpect.Customization;
 
@@ -128,11 +129,11 @@ internal class EventuallyExpectationBuilder<TValue>(
 		bool isLastAttempt = false;
 		while (true)
 		{
-			(TValue? data, Exception? failure, bool hasTimedOut, bool isNullTask) = await EvaluateSubject(subject,
-				retryTimeout, polling.Remaining, interval, cancellationToken);
+			(TValue? data, Exception? failure, bool hasTimedOut, NullSubjectKind nullKind) =
+				await EvaluateSubject(subject, retryTimeout, polling.Remaining, interval, cancellationToken);
 
 			(ConstraintResult? result, failure) =
-				await CheckAttempt(rootNode, data, failure, isNullTask, currentContext, cancellationToken);
+				await CheckAttempt(rootNode, data, failure, nullKind, currentContext, cancellationToken);
 			if (result?.Outcome == Outcome.Success)
 			{
 				return result;
@@ -166,7 +167,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 	///     Evaluates the <paramref name="subject" /> for one attempt, which
 	///     <see cref="CreateAttemptCancellation" /> bounds.
 	/// </summary>
-	private async Task<(TValue? Data, Exception? Failure, bool HasTimedOut, bool IsNullTask)> EvaluateSubject(
+	private async Task<(TValue? Data, Exception? Failure, bool HasTimedOut, NullSubjectKind NullKind)> EvaluateSubject(
 		Func<CancellationToken, Task<TValue>> subject,
 		TimeSpan retryTimeout,
 		TimeSpan remaining,
@@ -182,12 +183,12 @@ internal class EventuallyExpectationBuilder<TValue>(
 			task = subject(attemptToken);
 			if (task is null)
 			{
-				return (default, null, false, true);
+				return (default, null, false, NullSubjectKind.NullTaskReturned);
 			}
 
 			TValue data = await task.AbandonOnCancellation(attemptToken);
 			Customize.aweXpect.TraceWriter?.WriteMessage($"Checking expectation for {Subject} {data}");
-			return (data, null, false, false);
+			return (data, null, false, NullSubjectKind.None);
 		}
 		catch (Exception exception)
 		{
@@ -199,7 +200,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 			AddOtherExceptions(task?.GetOtherExceptions(exception));
 			return (default, hasTimedOut
 				? ExpectationBuilder<TValue>.CreateTimeoutException(retryTimeout, exception)
-				: exception, hasTimedOut, false);
+				: exception, hasTimedOut, NullSubjectKind.None);
 		}
 	}
 
@@ -213,7 +214,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 	private static async Task<(ConstraintResult? Result, Exception? Failure)> CheckAttempt(Node rootNode,
 		TValue? data,
 		Exception? failure,
-		bool isNullTask,
+		NullSubjectKind nullKind,
 		EvaluationContext.EvaluationContext context,
 		CancellationToken cancellationToken)
 	{
@@ -222,7 +223,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 			return (null, failure);
 		}
 
-		if (isNullTask)
+		if (nullKind == NullSubjectKind.NullTaskReturned)
 		{
 			ConstraintResult expectation = await rootNode.IsMetBy(data,
 				EvaluationContext.ExpectationTextEvaluationContext.For(context), System.Threading.CancellationToken.None);

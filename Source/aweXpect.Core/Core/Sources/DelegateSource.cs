@@ -31,6 +31,8 @@ internal class DelegateSource : IValueSource<DelegateValue>
 
 	#region IValueSource<DelegateValue> Members
 
+	public bool IsNullTaskSubject => false;
+
 	public ValueTask<DelegateValue> GetValue(ITimeSystem timeSystem,
 		CancellationToken cancellationToken)
 	{
@@ -52,6 +54,8 @@ internal class DelegateSource : IValueSource<DelegateValue>
 			return new ValueTask<DelegateValue>(new DelegateValue(ex, sw.Elapsed));
 		}
 	}
+
+	public Exception[]? GetOtherExceptions(Exception exception) => null;
 
 	#endregion
 

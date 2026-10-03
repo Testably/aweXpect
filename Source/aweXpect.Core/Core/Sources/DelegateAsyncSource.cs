@@ -15,14 +15,16 @@ internal class DelegateAsyncSource(Func<CancellationToken, Task>? action, bool i
 {
 	#region IValueSource<DelegateValue> Members
 
+	public bool IsNullTaskSubject => false;
+
 	public async ValueTask<DelegateValue> GetValue(ITimeSystem timeSystem,
 		CancellationToken cancellationToken)
 	{
 		if (action is null)
 		{
-			return new DelegateValue(null, TimeSpan.Zero, true)
+			return new DelegateValue(null, TimeSpan.Zero)
 			{
-				IsNullTaskSubject = isTaskSubject,
+				NullKind = isTaskSubject ? NullSubjectKind.NullTaskSubject : NullSubjectKind.NullDelegate,
 			};
 		}
 
@@ -34,9 +36,9 @@ internal class DelegateAsyncSource(Func<CancellationToken, Task>? action, bool i
 			task = action(cancellationToken);
 			if (task is null)
 			{
-				return new DelegateValue(null, sw.Elapsed, true)
+				return new DelegateValue(null, sw.Elapsed)
 				{
-					IsNullTask = true,
+					NullKind = NullSubjectKind.NullTaskReturned,
 				};
 			}
 
@@ -52,6 +54,8 @@ internal class DelegateAsyncSource(Func<CancellationToken, Task>? action, bool i
 			};
 		}
 	}
+
+	public Exception[]? GetOtherExceptions(Exception exception) => null;
 
 	#endregion
 }

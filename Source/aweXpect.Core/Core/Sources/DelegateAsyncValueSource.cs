@@ -11,6 +11,8 @@ internal class DelegateAsyncValueSource<TValue>(Func<CancellationToken, Task<TVa
 {
 	#region IValueSource<DelegateValue<TValue>> Members
 
+	public bool IsNullTaskSubject => false;
+
 	public async ValueTask<DelegateValue<TValue>> GetValue(ITimeSystem timeSystem,
 		CancellationToken cancellationToken)
 	{
@@ -27,9 +29,9 @@ internal class DelegateAsyncValueSource<TValue>(Func<CancellationToken, Task<TVa
 			task = action(cancellationToken);
 			if (task is null)
 			{
-				return new DelegateValue<TValue>(default, null, sw.Elapsed, true)
+				return new DelegateValue<TValue>(default, null, sw.Elapsed)
 				{
-					IsNullTask = true,
+					NullKind = NullSubjectKind.NullTaskReturned,
 				};
 			}
 
@@ -45,6 +47,8 @@ internal class DelegateAsyncValueSource<TValue>(Func<CancellationToken, Task<TVa
 			};
 		}
 	}
+
+	public Exception[]? GetOtherExceptions(Exception exception) => null;
 
 	#endregion
 }
