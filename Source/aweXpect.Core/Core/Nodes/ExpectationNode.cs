@@ -64,9 +64,49 @@ internal class ExpectationNode : Node
 	protected void SetInnerNode(Node node) => _inner = node;
 
 	/// <inheritdoc />
-	public override async ValueTask<ConstraintResult> IsMetBy<TValue>(TValue? value,
+	/// <remarks>
+	///     A node with a single synchronous constraint returns its result without starting a state machine, because most
+	///     expectations are of this kind.
+	/// </remarks>
+	public override ValueTask<ConstraintResult> IsMetBy<TValue>(TValue? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken) where TValue : default
+	{
+		if (_inner is null && _reasons is null && context is not ExpectationTextEvaluationContext)
+		{
+			try
+			{
+				if (_constraint is IValueConstraint<TValue?> valueConstraint)
+				{
+					return new ValueTask<ConstraintResult>(valueConstraint.IsMetBy(value));
+				}
+
+				if (_constraint is IContextConstraint<TValue?> contextConstraint)
+				{
+					return new ValueTask<ConstraintResult>(contextConstraint.IsMetBy(value, context));
+				}
+			}
+			catch (UserCodeException e) when (!MemberExceptionResult.IsCancellationOf(e.Exception, cancellationToken))
+			{
+				return new ValueTask<ConstraintResult>(FromUserCodeException(e, value, context, cancellationToken));
+			}
+			catch (UserCodeException e)
+			{
+				ExceptionDispatchInfo.Capture(e.Exception).Throw();
+			}
+			catch (UnansweredItemException e)
+			{
+				return new ValueTask<ConstraintResult>(
+					FromUnansweredItemException(e, value, context, cancellationToken));
+			}
+		}
+
+		return IsMetByAsync(value, context, cancellationToken);
+	}
+
+	private async ValueTask<ConstraintResult> IsMetByAsync<TValue>(TValue? value,
+		IEvaluationContext context,
+		CancellationToken cancellationToken)
 	{
 		ConstraintResult? result = null;
 		try
@@ -114,9 +154,7 @@ internal class ExpectationNode : Node
 		}
 		catch (UnansweredItemException e)
 		{
-			result = UnansweredItemResult.Create(
-				await GetExpectationResult(_constraint!, context, cancellationToken), e.ItemResult, e.Item, e.Index,
-				value);
+			result = await FromUnansweredItemException(e, value, context, cancellationToken);
 		}
 
 		if (_inner != null)
@@ -149,16 +187,16 @@ internal class ExpectationNode : Node
 	///     When only the expectation text is evaluated, the reasons that must be awaited are resolved, so that
 	///     <see cref="AppendExpectation" /> includes them.
 	///     <para />
-	///     A <see cref="ValueTask{TResult}" />, because most nodes have no reasons, and then nothing is allocated.
+	///     A <see cref="ValueTask{TResult}" />, because most nodes have no reasons, and then neither a state machine is
+	///     started nor anything is allocated.
 	/// </remarks>
-	private async ValueTask<ConstraintResult> ApplyReasons(ConstraintResult result, IEvaluationContext context)
-	{
-		if (_reasons is null)
-		{
-			return result;
-		}
+	private ValueTask<ConstraintResult> ApplyReasons(ConstraintResult result, IEvaluationContext context)
+		=> _reasons is null ? new ValueTask<ConstraintResult>(result) : ApplyReasonsAsync(_reasons, result, context);
 
-		foreach (IBecauseReason reason in _reasons)
+	private static async ValueTask<ConstraintResult> ApplyReasonsAsync(List<IBecauseReason> reasons,
+		ConstraintResult result, IEvaluationContext context)
+	{
+		foreach (IBecauseReason reason in reasons)
 		{
 			if (reason is AsyncBecauseReason asyncReason && context is ExpectationTextEvaluationContext)
 			{
@@ -186,6 +224,15 @@ internal class ExpectationNode : Node
 			? result
 			: UnansweredItemResult.Create(expectation, result, null, exception.ItemIndex, value);
 	}
+
+	/// <summary>
+	///     The result of a constraint that could not answer an item of a collection.
+	/// </summary>
+	private async Task<ConstraintResult> FromUnansweredItemException<TValue>(UnansweredItemException exception,
+		TValue? value, IEvaluationContext context, CancellationToken cancellationToken)
+		=> UnansweredItemResult.Create(
+			await GetExpectationResult(_constraint!, context, cancellationToken), exception.ItemResult, exception.Item,
+			exception.Index, value);
 
 	/// <summary>
 	///     The expectation of the <paramref name="constraint" />, for when it could not be evaluated, because code of the

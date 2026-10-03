@@ -98,6 +98,11 @@ public abstract class ExpectationBuilder
 	internal string Subject { get; }
 
 	/// <summary>
+	///     Verifies that the subject is <see langword="true" />, when no expectation was added.
+	/// </summary>
+	internal bool IsTrueWithoutExpectations { private get; set; }
+
+	/// <summary>
 	///     Adds the <see cref="IValueConstraint{TValue}" /> from the <paramref name="constraintBuilder" /> which verifies the
 	///     underlying value.
 	/// </summary>
@@ -600,25 +605,85 @@ public abstract class ExpectationBuilder
 	/// <remarks>
 	///     A failure keeps the collections materialized during the evaluation until <see cref="EndEvaluation" />, as the
 	///     failure message still reads them.
+	///     <para />
+	///     A met expectation that was evaluated synchronously and has nothing to release returns without starting a state
+	///     machine, because most expectations are of this kind.
 	/// </remarks>
-	internal async ValueTask<ConstraintResult> IsMet()
+	internal ValueTask<ConstraintResult> IsMet()
 	{
-		await EndEvaluation();
+		Task previousEvaluation = EndEvaluation();
+		if (previousEvaluation.Status != TaskStatus.RanToCompletion)
+		{
+			return IsMetAfter(previousEvaluation);
+		}
+
 		ResetOtherExceptions();
 		EvaluationContext.EvaluationContext context = new();
 		_evaluationContext = context;
+		ValueTask<ConstraintResult> isMet;
+		try
+		{
+			isMet = StartEvaluation(context);
+		}
+		catch (Exception exception)
+		{
+			isMet = new ValueTask<ConstraintResult>(Task.FromException<ConstraintResult>(exception));
+		}
+
+		if (_reasons is null && isMet.IsCompletedSuccessfully)
+		{
+			ConstraintResult result = isMet.Result;
+			if (result.Outcome == Outcome.Success)
+			{
+				Task endEvaluation = EndEvaluation();
+				return endEvaluation.Status == TaskStatus.RanToCompletion
+					? new ValueTask<ConstraintResult>(result)
+					: ReturnAfter(endEvaluation, result);
+			}
+
+			isMet = new ValueTask<ConstraintResult>(result);
+		}
+
+		return CompleteEvaluation(isMet);
+	}
+
+	private async ValueTask<ConstraintResult> IsMetAfter(Task previousEvaluation)
+	{
+		await previousEvaluation;
+		return await IsMet();
+	}
+
+	private static async ValueTask<ConstraintResult> ReturnAfter(Task endEvaluation, ConstraintResult result)
+	{
+		await endEvaluation;
+		return result;
+	}
+
+	private ValueTask<ConstraintResult> StartEvaluation(EvaluationContext.EvaluationContext context)
+	{
+		ITimeSystem timeSystem = _timeSystem ?? RealTimeSystem.Instance;
+		TestCancellation? testCancellation = Customize.aweXpect.Settings().TestCancellation.Get();
+		CancellationToken cancellationToken = CancellationToken ??
+		                                      testCancellation?.CancellationTokenFactory?.Invoke() ??
+		                                      System.Threading.CancellationToken.None;
+		TimeSpan? timeout = TimerHelpers.Tighter(Timeout, testCancellation?.Timeout);
+		Node rootNode = GetRootNode();
+		if (IsTrueWithoutExpectations && rootNode is ExpectationNode expectationNode && expectationNode.IsEmpty())
+		{
+			rootNode.AddConstraint(new ThatBoolSubject.IsTrueConstraint(ExpectationGrammars));
+		}
+
+		return IsMet(rootNode, context, timeSystem,
+			timeout == System.Threading.Timeout.InfiniteTimeSpan ? null : timeout,
+			cancellationToken);
+	}
+
+	private async ValueTask<ConstraintResult> CompleteEvaluation(ValueTask<ConstraintResult> isMet)
+	{
 		ConstraintResult result;
 		try
 		{
-			ITimeSystem timeSystem = _timeSystem ?? RealTimeSystem.Instance;
-			TestCancellation? testCancellation = Customize.aweXpect.Settings().TestCancellation.Get();
-			CancellationToken cancellationToken = CancellationToken ??
-			                                      testCancellation?.CancellationTokenFactory?.Invoke() ??
-			                                      System.Threading.CancellationToken.None;
-			TimeSpan? timeout = TimerHelpers.Tighter(Timeout, testCancellation?.Timeout);
-			result = await IsMet(GetRootNode(), context, timeSystem,
-				timeout == System.Threading.Timeout.InfiniteTimeSpan ? null : timeout,
-				cancellationToken);
+			result = await isMet;
 			if (_reasons is not null)
 			{
 				result = await ApplyReasons(result);
@@ -805,7 +870,29 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 	}
 
 	/// <inheritdoc />
-	internal override async ValueTask<ConstraintResult> IsMet(Node rootNode,
+	/// <remarks>
+	///     A value subject without timeout and cancellation is passed to the <paramref name="rootNode" /> without starting
+	///     a state machine: the shared <see cref="EvaluationCancellation.None" /> neither times out nor is canceled, so
+	///     everything after the evaluation would leave its result unchanged.
+	/// </remarks>
+	internal override ValueTask<ConstraintResult> IsMet(Node rootNode,
+		EvaluationContext.EvaluationContext context,
+		ITimeSystem timeSystem,
+		TimeSpan? timeout,
+		CancellationToken cancellationToken)
+	{
+		if (timeout is null && !cancellationToken.CanBeCanceled &&
+		    _subjectSource is ValueSource<TValue> { Value: not DelegateValue, } valueSource &&
+		    Customize.aweXpect.TraceWriter is null)
+		{
+			context.Cancellation = EvaluationCancellation.None;
+			return rootNode.IsMetBy(valueSource.Value, context, cancellationToken);
+		}
+
+		return IsMetAsync(rootNode, context, timeSystem, timeout, cancellationToken);
+	}
+
+	private async ValueTask<ConstraintResult> IsMetAsync(Node rootNode,
 		EvaluationContext.EvaluationContext context,
 		ITimeSystem timeSystem,
 		TimeSpan? timeout,
