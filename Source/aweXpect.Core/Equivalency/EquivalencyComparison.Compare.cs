@@ -629,7 +629,7 @@ public static partial class EquivalencyComparison
 	///     their content. One side being a set is enough: the other side has nothing left to be compared against in
 	///     order.
 	/// </remarks>
-	private static bool IsSet(object value) => GetTypeShape(value.GetType()).IsSet;
+	private static bool IsSet(object value) => GetTypeShape(value.GetType()).ImplementsSet;
 
 	/// <remarks>
 	///     netstandard2.0 has no <c>IReadOnlySet&lt;T&gt;</c>, but is served to runtimes that have it, so it is
@@ -658,10 +658,10 @@ public static partial class EquivalencyComparison
 	///     Cached, because the interfaces of a type never change, while every object that is compared by its members is
 	///     checked for a dictionary, and every sequence for a set.
 	/// </remarks>
-	private sealed class TypeShape(Type? dictionaryInterface, bool isSet)
+	private sealed class TypeShape(Type? dictionaryInterface, bool implementsSet)
 	{
 		public Type? DictionaryInterface { get; } = dictionaryInterface;
-		public bool IsSet { get; } = isSet;
+		public bool ImplementsSet { get; } = implementsSet;
 	}
 
 	/// <remarks>
