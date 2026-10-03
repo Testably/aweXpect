@@ -28,7 +28,7 @@ public partial class CollectionMatchOptions
 		private const int Discarded = -2;
 		private readonly TExpected[] _expected;
 		private readonly List<int> _expectedOfItem = new();
-		private readonly List<int> _freeExpected;
+		private readonly FreeIndices _freeExpected;
 		private readonly Func<int, TItem, TExpected, ValueTask<bool>> _isMatch;
 		private readonly int[] _itemOfExpected;
 		private readonly List<(int Index, TItem Value)> _items = new();
@@ -43,7 +43,7 @@ public partial class CollectionMatchOptions
 		{
 			_expected = expected.ToArray();
 			_itemOfExpected = Enumerable.Repeat(Unmatched, _expected.Length).ToArray();
-			_freeExpected = Enumerable.Range(0, _expected.Length).ToList();
+			_freeExpected = new FreeIndices(_expected.Length);
 			_isMatch = isMatch;
 			_unmatchedItems = unmatchedItems;
 		}
@@ -57,7 +57,7 @@ public partial class CollectionMatchOptions
 		///     The expected items that no item is assigned to, in their original order.
 		/// </summary>
 		public List<TExpected> UnmatchedExpectedItems()
-			=> _freeExpected.Select(expectedIndex => _expected[expectedIndex]).ToList();
+			=> _freeExpected.ToList().ConvertAll(expectedIndex => _expected[expectedIndex]);
 
 		/// <summary>
 		///     The pairs of the index of a matched item and the index of its expected item.
@@ -93,14 +93,15 @@ public partial class CollectionMatchOptions
 			}
 
 			Exception? unanswered = null;
-			for (int i = 0; i < _freeExpected.Count; i++)
+			for (int expectedIndex = _freeExpected.First;
+			     expectedIndex >= 0;
+			     expectedIndex = _freeExpected.Next(expectedIndex))
 			{
-				int expectedIndex = _freeExpected[i];
 				(bool isMatch, Exception? exception) = await Compare(index, value, _expected[expectedIndex]);
 				unanswered ??= exception;
 				if (isMatch)
 				{
-					Assign(index, value, i);
+					Assign(index, value, expectedIndex);
 					return expectedIndex;
 				}
 			}
@@ -125,7 +126,7 @@ public partial class CollectionMatchOptions
 				    _itemOfExpected[expectedIndex] == Unmatched &&
 				    (await Compare(index, value, _expected[expectedIndex])).IsMatch)
 				{
-					Assign(index, value, _freeExpected.IndexOf(expectedIndex));
+					Assign(index, value, expectedIndex);
 					return expectedIndex;
 				}
 			}
@@ -133,13 +134,12 @@ public partial class CollectionMatchOptions
 			return Unmatched;
 		}
 
-		private void Assign(int index, TItem value, int freeIndex)
+		private void Assign(int index, TItem value, int expectedIndex)
 		{
-			int expectedIndex = _freeExpected[freeIndex];
 			_items.Add((index, value));
 			_expectedOfItem.Add(expectedIndex);
 			_itemOfExpected[expectedIndex] = _items.Count - 1;
-			_freeExpected.RemoveAt(freeIndex);
+			_freeExpected.Remove(expectedIndex);
 			DiscardPendingItemsWhenNothingIsFree();
 		}
 
@@ -286,6 +286,87 @@ public partial class CollectionMatchOptions
 			}
 
 			return false;
+		}
+
+		/// <summary>
+		///     The indices from <c>0</c> to a count, in ascending order, from which any index can be removed in constant
+		///     time.
+		/// </summary>
+		/// <remarks>
+		///     An item that is in or near the expected order is assigned to the first free expected item, so removing
+		///     from the front of a list would shift all others for every item.
+		/// </remarks>
+		private sealed class FreeIndices
+		{
+			private readonly bool[] _isFree;
+			private readonly int[] _next;
+			private readonly int[] _previous;
+
+			public FreeIndices(int count)
+			{
+				_isFree = new bool[count];
+				_next = new int[count];
+				_previous = new int[count];
+				for (int i = 0; i < count; i++)
+				{
+					_isFree[i] = true;
+					_next[i] = i + 1 < count ? i + 1 : -1;
+					_previous[i] = i - 1;
+				}
+
+				First = count > 0 ? 0 : -1;
+				Count = count;
+			}
+
+			public int Count { get; private set; }
+
+			/// <summary>
+			///     The lowest free index, or <c>-1</c> when none is left.
+			/// </summary>
+			public int First { get; private set; }
+
+			/// <summary>
+			///     The next free index after the free <paramref name="index" />, or <c>-1</c> when none is left.
+			/// </summary>
+			public int Next(int index) => _next[index];
+
+			public void Remove(int index)
+			{
+				if (!_isFree[index])
+				{
+					return;
+				}
+
+				_isFree[index] = false;
+				int previous = _previous[index];
+				int next = _next[index];
+				if (previous >= 0)
+				{
+					_next[previous] = next;
+				}
+				else
+				{
+					First = next;
+				}
+
+				if (next >= 0)
+				{
+					_previous[next] = previous;
+				}
+
+				Count--;
+			}
+
+			public List<int> ToList()
+			{
+				List<int> indices = new(Count);
+				for (int index = First; index >= 0; index = _next[index])
+				{
+					indices.Add(index);
+				}
+
+				return indices;
+			}
 		}
 
 		/// <summary>

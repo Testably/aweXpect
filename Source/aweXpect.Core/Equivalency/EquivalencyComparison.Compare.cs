@@ -99,10 +99,27 @@ public static partial class EquivalencyComparison
 		failureBuilder.Append(GetMemberPath(memberType, memberPath));
 	}
 
+	/// <summary>
+	///     Whether the entry that would be appended next is left out of the failure text.
+	/// </summary>
+	/// <remarks>
+	///     While only counting, the entry is still counted as <see cref="AppendEntry" /> would.
+	/// </remarks>
+	private static bool SkipsText(EquivalencyContext context)
+	{
+		if (context.IsCountingOnly)
+		{
+			context.DifferenceCount++;
+			return true;
+		}
+
+		return context.IsDecidingOnly;
+	}
+
 	private static void AppendDifference<TActual, TExpected>(StringBuilder failureBuilder,
 		MemberType memberType, string memberPath, TActual actual, TExpected expected, EquivalencyContext context)
 	{
-		if (context.IsDecidingOnly)
+		if (SkipsText(context))
 		{
 			return;
 		}
@@ -128,7 +145,7 @@ public static partial class EquivalencyComparison
 	private static void AppendLackedDistinctKey(StringBuilder failureBuilder, string memberPath,
 		EquivalencyContext context)
 	{
-		if (context.IsDecidingOnly)
+		if (SkipsText(context))
 		{
 			return;
 		}
@@ -140,7 +157,7 @@ public static partial class EquivalencyComparison
 	private static void AppendMaxRecursionDepthExceeded(StringBuilder failureBuilder, MemberType memberType,
 		string memberPath, int maxRecursionDepth, EquivalencyContext context)
 	{
-		if (context.IsDecidingOnly)
+		if (SkipsText(context))
 		{
 			return;
 		}
@@ -153,7 +170,7 @@ public static partial class EquivalencyComparison
 	private static void AppendMissingElement(StringBuilder failureBuilder, string memberPath, object? expected,
 		EquivalencyContext context)
 	{
-		if (context.IsDecidingOnly)
+		if (SkipsText(context))
 		{
 			return;
 		}
@@ -166,7 +183,7 @@ public static partial class EquivalencyComparison
 	private static void AppendMissingMember(StringBuilder failureBuilder, MemberType memberType, string memberPath,
 		bool isAmbiguous, EquivalencyContext context)
 	{
-		if (context.IsDecidingOnly)
+		if (SkipsText(context))
 		{
 			return;
 		}
@@ -180,7 +197,7 @@ public static partial class EquivalencyComparison
 	private static void AppendSuperfluousElement(StringBuilder failureBuilder, string memberPath, object? actual,
 		EquivalencyContext context)
 	{
-		if (context.IsDecidingOnly)
+		if (SkipsText(context))
 		{
 			return;
 		}
@@ -193,7 +210,7 @@ public static partial class EquivalencyComparison
 	private static void AppendUnmatchedElement(StringBuilder failureBuilder, string memberPath,
 		EquivalencyContext context)
 	{
-		if (context.IsDecidingOnly)
+		if (SkipsText(context))
 		{
 			return;
 		}
@@ -329,7 +346,7 @@ public static partial class EquivalencyComparison
 
 			if (result.Outcome == Outcome.Failure)
 			{
-				if (context.IsDecidingOnly)
+				if (SkipsText(context))
 				{
 					return false;
 				}
@@ -723,7 +740,7 @@ public static partial class EquivalencyComparison
 			}
 			else
 			{
-				if (!context.IsDecidingOnly)
+				if (!SkipsText(context))
 				{
 					AppendEntry(failureBuilder, memberType, memberPath, context);
 					failureBuilder.Append(" contained ").Append(actual.Count)
@@ -985,6 +1002,17 @@ public static partial class EquivalencyComparison
 	private static int[] GetIndicesToCompare(object?[] objects, string memberPath,
 		EquivalencyTypeOptions typeOptions)
 	{
+		if (typeOptions.MembersToIgnore.Length == 0)
+		{
+			int[] all = new int[objects.Length];
+			for (int i = 0; i < all.Length; i++)
+			{
+				all[i] = i;
+			}
+
+			return all;
+		}
+
 		List<int> indices = new(objects.Length);
 		for (int i = 0; i < objects.Length; i++)
 		{
@@ -1033,7 +1061,7 @@ public static partial class EquivalencyComparison
 		///     Caches every pairwise comparison, because the search for augmenting paths revisits pairs and a single
 		///     comparison walks a whole object graph.
 		/// </summary>
-		private readonly bool?[,] _results;
+		private readonly PairResults _results;
 
 		private readonly EquivalencyTypeOptions _typeOptions;
 
@@ -1047,6 +1075,13 @@ public static partial class EquivalencyComparison
 		/// </summary>
 		private readonly StringBuilder _unusedFailureBuilder = new();
 
+		/// <summary>
+		///     The search in which each actual element was last visited, so that a search does not need its own array.
+		/// </summary>
+		private readonly int[] _visitedInSearch;
+
+		private int _search;
+
 		public ElementMatcher(object?[] actualObjects, int[] actualIndices, object?[] expectedObjects,
 			int[] expectedIndices, string memberPath, EquivalencyOptions options,
 			EquivalencyTypeOptions typeOptions, EquivalencyContext context)
@@ -1059,7 +1094,8 @@ public static partial class EquivalencyComparison
 			_options = options;
 			_typeOptions = typeOptions;
 			_context = context;
-			_results = new bool?[actualIndices.Length, expectedIndices.Length];
+			_results = new PairResults(actualIndices.Length, expectedIndices.Length);
+			_visitedInSearch = new int[actualIndices.Length];
 			_matchedTo = new int[actualIndices.Length];
 			for (int i = 0; i < _matchedTo.Length; i++)
 			{
@@ -1079,7 +1115,8 @@ public static partial class EquivalencyComparison
 				previous = await TryMatchNextTo(previous, i);
 				if (previous < 0)
 				{
-					previous = await TryMatch(i, new bool[_actualIndices.Length]);
+					_search++;
+					previous = await TryMatch(i);
 				}
 
 				if (previous < 0)
@@ -1186,19 +1223,19 @@ public static partial class EquivalencyComparison
 
 		/// <returns>The index of the actual element the expected element is matched to, or <c>-1</c>.</returns>
 		private async ValueTask<int>
-			TryMatch(int expectedIndex, bool[] visited)
+			TryMatch(int expectedIndex)
 		{
 			for (int offset = 0; offset < _actualIndices.Length; offset++)
 			{
 				// Starting at the same position pairs collections that are already in order without any search.
 				int actualIndex = (expectedIndex + offset) % _actualIndices.Length;
-				if (visited[actualIndex] || !await IsEquivalent(actualIndex, expectedIndex))
+				if (_visitedInSearch[actualIndex] == _search || !await IsEquivalent(actualIndex, expectedIndex))
 				{
 					continue;
 				}
 
-				visited[actualIndex] = true;
-				if (_matchedTo[actualIndex] < 0 || await TryMatch(_matchedTo[actualIndex], visited) >= 0)
+				_visitedInSearch[actualIndex] = _search;
+				if (_matchedTo[actualIndex] < 0 || await TryMatch(_matchedTo[actualIndex]) >= 0)
 				{
 					_matchedTo[actualIndex] = expectedIndex;
 					return actualIndex;
@@ -1215,13 +1252,15 @@ public static partial class EquivalencyComparison
 		private async ValueTask<bool>
 			IsEquivalent(int actualIndex, int expectedIndex)
 		{
-			if (_results[actualIndex, expectedIndex] is { } cachedResult)
+			if (_results.TryGet(actualIndex, expectedIndex, out bool cachedResult))
 			{
 				return cachedResult;
 			}
 
 			bool wasDecidingOnly = _context.IsDecidingOnly;
+			bool wasCountingOnly = _context.IsCountingOnly;
 			_context.IsDecidingOnly = true;
+			_context.IsCountingOnly = false;
 			bool isEquivalent;
 			try
 			{
@@ -1232,16 +1271,17 @@ public static partial class EquivalencyComparison
 			finally
 			{
 				_context.IsDecidingOnly = wasDecidingOnly;
+				_context.IsCountingOnly = wasCountingOnly;
 			}
 
-			_results[actualIndex, expectedIndex] = isEquivalent;
+			_results.Set(actualIndex, expectedIndex, isEquivalent);
 			return isEquivalent;
 		}
 
 		/// <remarks>
-		///     The comparison writes into a throwaway builder, because only the pairs that are reported belong in the
-		///     failure message. Its differences are counted nonetheless, so the count is taken from the context and
-		///     restored afterwards, which keeps them out of the count of the message that is kept.
+		///     The differences are only counted, because only the pairs that are reported belong in the failure
+		///     message. The count is taken from the context and restored afterwards, which keeps them out of the count
+		///     of the message that is kept.
 		/// </remarks>
 		private async ValueTask<int>
 			GetDifferenceCount(int actualIndex, int expectedIndex)
@@ -1253,9 +1293,19 @@ public static partial class EquivalencyComparison
 			}
 
 			int differenceCount = _context.DifferenceCount;
-			await Compare(_actualObjects[_actualIndices[actualIndex]],
-				_expectedObjects[_expectedIndices[expectedIndex]], _options, _typeOptions,
-				new StringBuilder(), GetElementPath(actualIndex), MemberType.Element, _context);
+			bool wasCountingOnly = _context.IsCountingOnly;
+			_context.IsCountingOnly = true;
+			try
+			{
+				await Compare(_actualObjects[_actualIndices[actualIndex]],
+					_expectedObjects[_expectedIndices[expectedIndex]], _options, _typeOptions,
+					_unusedFailureBuilder, GetElementPath(actualIndex), MemberType.Element, _context);
+			}
+			finally
+			{
+				_context.IsCountingOnly = wasCountingOnly;
+			}
+
 			int count = _context.DifferenceCount - differenceCount;
 			_context.DifferenceCount = differenceCount;
 			_differenceCounts[actualIndex, expectedIndex] = count;
@@ -1264,6 +1314,57 @@ public static partial class EquivalencyComparison
 
 		private string GetElementPath(int actualIndex)
 			=> $"{_memberPath}[{_actualIndices[actualIndex]}]";
+
+		/// <summary>
+		///     The results of the compared pairs, kept sparse while few pairs are compared.
+		/// </summary>
+		/// <remarks>
+		///     A collection in or near the expected order only compares about one pair per element, so a table of all
+		///     pairs, which takes megabytes for a thousand elements, is only allocated once the sparse entries would
+		///     take more memory than it.
+		/// </remarks>
+		private sealed class PairResults(int actualCount, int expectedCount)
+		{
+			private readonly long _denseThreshold = (long)actualCount * expectedCount / 16;
+			private bool?[,]? _dense;
+			private Dictionary<long, bool>? _sparse = new();
+
+			public bool TryGet(int actualIndex, int expectedIndex, out bool result)
+			{
+				if (_dense is not null)
+				{
+					bool? value = _dense[actualIndex, expectedIndex];
+					result = value.GetValueOrDefault();
+					return value.HasValue;
+				}
+
+				return _sparse!.TryGetValue(GetKey(actualIndex, expectedIndex), out result);
+			}
+
+			public void Set(int actualIndex, int expectedIndex, bool result)
+			{
+				if (_dense is not null)
+				{
+					_dense[actualIndex, expectedIndex] = result;
+					return;
+				}
+
+				_sparse![GetKey(actualIndex, expectedIndex)] = result;
+				if (_sparse.Count > _denseThreshold)
+				{
+					_dense = new bool?[actualCount, expectedCount];
+					foreach (KeyValuePair<long, bool> entry in _sparse)
+					{
+						_dense[entry.Key / expectedCount, entry.Key % expectedCount] = entry.Value;
+					}
+
+					_sparse = null;
+				}
+			}
+
+			private long GetKey(int actualIndex, int expectedIndex)
+				=> (long)actualIndex * expectedCount + expectedIndex;
+		}
 	}
 #pragma warning restore S107
 #pragma warning restore S3776

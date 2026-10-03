@@ -590,10 +590,17 @@ public abstract class ExpectationBuilder
 	{
 		if (otherExceptions is not null)
 		{
-			AddContext(new ResultContext.SyncCallback("Other exceptions",
-				() => Formatter.Format(otherExceptions, FormattingOptions.MultipleLines)));
+			AddContext(CreateOtherExceptionsContext(otherExceptions));
 		}
 	}
+
+	/// <remarks>
+	///     A separate method, so that the closure over the <paramref name="otherExceptions" /> is only allocated when
+	///     there are any, and not for every delegate subject.
+	/// </remarks>
+	private static ResultContext.SyncCallback CreateOtherExceptionsContext(Exception[] otherExceptions)
+		=> new ResultContext.SyncCallback("Other exceptions",
+			() => Formatter.Format(otherExceptions, FormattingOptions.MultipleLines));
 
 	/// <summary>
 	///     Gets the list of <see cref="ResultContext" />.
@@ -843,7 +850,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 	{
-		EvaluationCancellation cancellation = new(timeout, cancellationToken);
+		EvaluationCancellation cancellation = EvaluationCancellation.Create(timeout, cancellationToken);
 		using EvaluationCancellation.ReleaseScope _ = cancellation.ReleaseAtTheEnd();
 		context.Cancellation = cancellation;
 		CancellationToken token = cancellation.Token;

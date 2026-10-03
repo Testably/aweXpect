@@ -41,6 +41,16 @@ public sealed class EvaluationCancellation
 	public static EvaluationCancellation None { get; } = new(null, CancellationToken.None);
 
 	/// <summary>
+	///     Creates the cancellation of an evaluation with the <paramref name="timeout" /> and the
+	///     <paramref name="callerToken" />.
+	/// </summary>
+	/// <remarks>
+	///     Most evaluations have neither, so they share <see cref="None" />, which holds no timer to release.
+	/// </remarks>
+	internal static EvaluationCancellation Create(TimeSpan? timeout, CancellationToken callerToken)
+		=> timeout is null && !callerToken.CanBeCanceled ? None : new EvaluationCancellation(timeout, callerToken);
+
+	/// <summary>
 	///     The token for the evaluation, which is also canceled when the <see cref="Timeout" /> elapses.
 	/// </summary>
 	public CancellationToken Token { get; }

@@ -49,7 +49,7 @@ public static class EvaluationContextExtensions
 		}
 
 		return evaluationContext.GetOrMaterialize(MaterializedEnumerableKey, collection,
-			() => MaterializingEnumerable<TItem>.Wrap(collection));
+			static source => MaterializingEnumerable<TItem>.Wrap(source));
 	}
 
 	/// <summary>
@@ -72,7 +72,7 @@ public static class EvaluationContextExtensions
 		}
 
 		return evaluationContext.GetOrMaterialize(MaterializedEnumerableKey, collection,
-			() => MaterializingEnumerable.Wrap(collection));
+			static source => MaterializingEnumerable.Wrap(source));
 	}
 
 #if NET8_0_OR_GREATER
@@ -100,7 +100,8 @@ public static class EvaluationContextExtensions
 	{
 		collection.ThrowIfNull();
 		return evaluationContext.GetOrMaterialize(MaterializedAsyncEnumerableKey, collection,
-			() => MaterializingAsyncEnumerable<TItem>.Wrap(collection, cancellationToken));
+			(Collection: collection, CancellationToken: cancellationToken),
+			static state => MaterializingAsyncEnumerable<TItem>.Wrap(state.Collection, state.CancellationToken));
 	}
 #endif
 
@@ -136,8 +137,19 @@ public static class EvaluationContextExtensions
 	///     Keeps one materialization per source collection, because nested expectations (e.g. <c>ComplyWith</c> on
 	///     collection items) evaluate different collections in the same <paramref name="evaluationContext" />.
 	/// </summary>
-	private static TMaterialized GetOrMaterialize<TMaterialized>(this IEvaluationContext evaluationContext,
-		string key, object source, Func<TMaterialized> materialize)
+	private static TMaterialized GetOrMaterialize<TSource, TMaterialized>(this IEvaluationContext evaluationContext,
+		string key, TSource source, Func<TSource, TMaterialized> materialize)
+		where TSource : class
+		where TMaterialized : class
+		=> evaluationContext.GetOrMaterialize(key, source, source, materialize);
+
+	/// <inheritdoc cref="GetOrMaterialize{TSource, TMaterialized}(IEvaluationContext, string, TSource, Func{TSource, TMaterialized})" />
+	/// <remarks>
+	///     The <paramref name="materialize" /> callback receives its values through the <paramref name="state" />, so
+	///     that a static callback allocates nothing when the source was already materialized.
+	/// </remarks>
+	private static TMaterialized GetOrMaterialize<TState, TMaterialized>(this IEvaluationContext evaluationContext,
+		string key, object source, TState state, Func<TState, TMaterialized> materialize)
 		where TMaterialized : class
 	{
 		if (!evaluationContext.TryReceive(key, out List<(object Source, object Materialized)>? cache))
@@ -154,7 +166,7 @@ public static class EvaluationContextExtensions
 			}
 		}
 
-		TMaterialized materializedEnumerable = materialize();
+		TMaterialized materializedEnumerable = materialize(state);
 		cache.Add((source, materializedEnumerable));
 		return materializedEnumerable;
 	}

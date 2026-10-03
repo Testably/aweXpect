@@ -993,6 +993,24 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndManyPairsAreCompared_ShouldMatchAllElements()
+	{
+		int[] actual = Enumerable.Range(1, 40).Select(i => i * 17 % 41).ToArray();
+		int[] expected = Enumerable.Range(1, 40).ToArray();
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a shuffled collection compares enough pairs that their results are moved into a table of all pairs, which must keep them");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
 	public async Task WhenCollectionOrderIsIgnored_AndMultiplicityDiffers_ShouldReportTheDifference()
 	{
 		int[] actual = [1, 1, 2,];

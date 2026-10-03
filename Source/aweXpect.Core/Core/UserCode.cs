@@ -123,6 +123,29 @@ public static class UserCode
 	}
 
 	/// <summary>
+	///     Calls the asynchronous <paramref name="callback" /> of the caller with the <paramref name="argument" />.
+	/// </summary>
+	/// <remarks>
+	///     Behaves like <see cref="InvokeAsync{TResult}(Func{ValueTask{TResult}}, string, CancellationToken)" /> for the
+	///     subject, but a static <paramref name="callback" /> that receives its values through the
+	///     <paramref name="argument" /> allocates nothing, which matters when it is called for every item.
+	/// </remarks>
+	internal static async ValueTask<TResult> InvokeAsync<TArgument, TResult>(
+		Func<TArgument, ValueTask<TResult>> callback, TArgument argument, CancellationToken cancellationToken)
+	{
+		try
+		{
+			return await callback(argument);
+		}
+		catch (Exception exception) when (exception is not UserCodeException &&
+		                                  !(exception is OperationCanceledException &&
+		                                    cancellationToken.IsCancellationRequested))
+		{
+			throw new UserCodeException(exception);
+		}
+	}
+
+	/// <summary>
 	///     Returns the name of the <see cref="object.Equals(object)" /> method of the <paramref name="value" /> for the
 	///     failure message.
 	/// </summary>
