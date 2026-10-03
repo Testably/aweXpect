@@ -140,7 +140,7 @@ public static partial class ThatAsyncEnumerable
 		return new CollectionOrderResult<TMember, IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 			{
-				IsInOrderConstraint<TItem, TMember> constraint = new(
+				AsyncIsInOrderConstraint<TItem, TMember> constraint = new(
 					it, grammars,
 					memberAccessor, sortOrder, options, memberExpression,
 					createIncompatibilityCheck?.Invoke(options));
