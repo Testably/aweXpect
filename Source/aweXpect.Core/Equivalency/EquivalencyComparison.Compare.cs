@@ -1016,7 +1016,7 @@ public static partial class EquivalencyComparison
 		///     Only the leftovers need the count, and counting the differences means writing them, so the search for
 		///     augmenting paths only decides the pairs it considers.
 		/// </remarks>
-		private readonly int?[,] _differenceCounts;
+		private int?[,]? _differenceCounts;
 
 		private readonly int[] _expectedIndices;
 		private readonly object?[] _expectedObjects;
@@ -1060,7 +1060,6 @@ public static partial class EquivalencyComparison
 			_typeOptions = typeOptions;
 			_context = context;
 			_results = new bool?[actualIndices.Length, expectedIndices.Length];
-			_differenceCounts = new int?[actualIndices.Length, expectedIndices.Length];
 			_matchedTo = new int[actualIndices.Length];
 			for (int i = 0; i < _matchedTo.Length; i++)
 			{
@@ -1247,6 +1246,7 @@ public static partial class EquivalencyComparison
 		private async ValueTask<int>
 			GetDifferenceCount(int actualIndex, int expectedIndex)
 		{
+			_differenceCounts ??= new int?[_actualIndices.Length, _expectedIndices.Length];
 			if (_differenceCounts[actualIndex, expectedIndex] is { } cachedCount)
 			{
 				return cachedCount;
