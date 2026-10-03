@@ -768,31 +768,22 @@ public abstract class ExpectationBuilder
 		ResetOtherExceptions();
 		EvaluationContext.EvaluationContext context = new();
 		_evaluationContext = context;
-		ValueTask<ConstraintResult> isMet;
-		try
+		ValueTask<ConstraintResult> isMet = StartEvaluation(context);
+		if (_reasons is not null || !isMet.IsCompletedSuccessfully)
 		{
-			isMet = StartEvaluation(context);
-		}
-		catch (Exception exception)
-		{
-			isMet = new ValueTask<ConstraintResult>(Task.FromException<ConstraintResult>(exception));
+			return CompleteEvaluation(isMet);
 		}
 
-		if (_reasons is null && isMet.IsCompletedSuccessfully)
+		ConstraintResult result = isMet.Result;
+		if (result.Outcome != Outcome.Success)
 		{
-			ConstraintResult result = isMet.Result;
-			if (result.Outcome == Outcome.Success)
-			{
-				Task endEvaluation = EndEvaluation();
-				return endEvaluation.Status == TaskStatus.RanToCompletion
-					? new ValueTask<ConstraintResult>(result)
-					: ReturnAfter(endEvaluation, result);
-			}
-
-			isMet = new ValueTask<ConstraintResult>(result);
+			return CompleteEvaluation(new ValueTask<ConstraintResult>(result));
 		}
 
-		return CompleteEvaluation(isMet);
+		Task endEvaluation = EndEvaluation();
+		return endEvaluation.Status == TaskStatus.RanToCompletion
+			? new ValueTask<ConstraintResult>(result)
+			: ReturnAfter(endEvaluation, result);
 	}
 
 	private async ValueTask<ConstraintResult> IsMetAfter(Task previousEvaluation)
@@ -809,21 +800,28 @@ public abstract class ExpectationBuilder
 
 	private ValueTask<ConstraintResult> StartEvaluation(EvaluationContext.EvaluationContext context)
 	{
-		ITimeSystem timeSystem = _timeSystem ?? RealTimeSystem.Instance;
-		TestCancellation? testCancellation = Customize.aweXpect.Settings().TestCancellation.Get();
-		CancellationToken cancellationToken = CancellationToken ??
-		                                      testCancellation?.CancellationTokenFactory?.Invoke() ??
-		                                      System.Threading.CancellationToken.None;
-		TimeSpan? timeout = TimerHelpers.Tighter(Timeout, testCancellation?.Timeout);
-		Node rootNode = GetRootNode();
-		if (IsTrueWithoutExpectations && rootNode is ExpectationNode expectationNode && expectationNode.IsEmpty())
+		try
 		{
-			rootNode.AddConstraint(new ThatBoolSubject.IsTrueConstraint(ExpectationGrammars));
-		}
+			ITimeSystem timeSystem = _timeSystem ?? RealTimeSystem.Instance;
+			TestCancellation? testCancellation = Customize.aweXpect.Settings().TestCancellation.Get();
+			CancellationToken cancellationToken = CancellationToken ??
+			                                      testCancellation?.CancellationTokenFactory?.Invoke() ??
+			                                      System.Threading.CancellationToken.None;
+			TimeSpan? timeout = TimerHelpers.Tighter(Timeout, testCancellation?.Timeout);
+			Node rootNode = GetRootNode();
+			if (IsTrueWithoutExpectations && rootNode is ExpectationNode expectationNode && expectationNode.IsEmpty())
+			{
+				rootNode.AddConstraint(new ThatBoolSubject.IsTrueConstraint(ExpectationGrammars));
+			}
 
-		return IsMet(rootNode, context, timeSystem,
-			timeout == System.Threading.Timeout.InfiniteTimeSpan ? null : timeout,
-			cancellationToken);
+			return IsMet(rootNode, context, timeSystem,
+				timeout == System.Threading.Timeout.InfiniteTimeSpan ? null : timeout,
+				cancellationToken);
+		}
+		catch (Exception exception)
+		{
+			return new ValueTask<ConstraintResult>(Task.FromException<ConstraintResult>(exception));
+		}
 	}
 
 	private async ValueTask<ConstraintResult> CompleteEvaluation(ValueTask<ConstraintResult> isMet)

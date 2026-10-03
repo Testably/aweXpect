@@ -393,16 +393,7 @@ internal sealed record CollectionExpectationFamily(
 		string item = expected == null
 			? instantiation.Item ?? "TItem"
 			: Substitute(ElementOf(expected.Type), substitutions, format);
-		if (instantiation.Subject != null)
-		{
-			string subjectItem = SubjectElementOf(helper) is { } subjectElement
-				? Substitute(subjectElement, substitutions, format)
-				: item;
-			// A kind such as Dictionary<TKey, TValue> names the type parameters a factory fills, too.
-			substitutions["TCollection"] = Bind(helper, "TCollection",
-				Substitute(instantiation.Subject.Template.Replace(ItemPlaceholder, subjectItem), substitutions),
-				instantiation.Subject.IsValueType, oblivious);
-		}
+		BindSubject(helper, instantiation.Subject, item, substitutions, format, oblivious);
 
 		string subjectName = helper.Parameters[0].Name;
 		List<string> parameters = [$"this {Substitute(helper.Parameters[0].Type, substitutions, format)} {subjectName}",];
@@ -461,6 +452,23 @@ internal sealed record CollectionExpectationFamily(
 		return oblivious
 			? $"#nullable disable annotations\n{method}\n#nullable restore annotations"
 			: method;
+	}
+
+	private static void BindSubject(IMethodSymbol helper, SubjectKind? subject, string item,
+		Dictionary<string, Bound> substitutions, SymbolDisplayFormat format, bool oblivious)
+	{
+		if (subject == null)
+		{
+			return;
+		}
+
+		string subjectItem = SubjectElementOf(helper) is { } subjectElement
+			? Substitute(subjectElement, substitutions, format)
+			: item;
+		// A kind such as Dictionary<TKey, TValue> names the type parameters a factory fills, too.
+		substitutions["TCollection"] = Bind(helper, "TCollection",
+			Substitute(subject.Template.Replace(ItemPlaceholder, subjectItem), substitutions),
+			subject.IsValueType, oblivious);
 	}
 
 	/// <remarks>

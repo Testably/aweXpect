@@ -299,11 +299,11 @@ internal sealed class ContainConstraint<TEnumerable, TItem>
 
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		return IsSynchronous
-			? Task.FromResult(Count(materialized, cancellationToken))
+			? Task.FromResult<ConstraintResult>(Count(materialized, cancellationToken))
 			: CountAsync(materialized, cancellationToken);
 	}
 
-	private ConstraintResult Count(CollectionItems<TItem> materialized, CancellationToken cancellationToken)
+	private ContainConstraint<TEnumerable, TItem> Count(CollectionItems<TItem> materialized, CancellationToken cancellationToken)
 	{
 		foreach (TItem item in materialized.Items)
 		{

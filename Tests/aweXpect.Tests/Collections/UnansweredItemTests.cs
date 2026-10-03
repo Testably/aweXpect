@@ -683,7 +683,7 @@ public sealed class UnansweredItem
 			string?[] subject = [null, "b",];
 
 			async Task Act()
-				=> await That(subject).IsEqualTo([x => x!.StartsWith("b"), x => x == null,]).InAnyOrder();
+				=> await That(subject).IsEqualTo([x => x!.Equals("b"), x => x == null,]).InAnyOrder();
 
 			await That(Act).DoesNotThrow()
 				.Because("the predicate that threw for null is only one of the candidates");

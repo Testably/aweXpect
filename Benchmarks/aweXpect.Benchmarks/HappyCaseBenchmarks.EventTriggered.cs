@@ -10,13 +10,15 @@ namespace aweXpect.Benchmarks;
 /// </summary>
 public partial class HappyCaseBenchmarks
 {
+	private readonly string _eventName = nameof(Player.Started);
+
 	[Benchmark]
 	public async Task EventTriggered_aweXpect()
 	{
 		Player player = new();
 		Recording.IEventRecording<Player> recording = player.Record().Events();
 		player.Play();
-		await Expect.That(recording).Triggered(nameof(Player.Started));
+		await Expect.That(recording).Triggered(_eventName);
 	}
 
 	[Benchmark]
@@ -25,7 +27,7 @@ public partial class HappyCaseBenchmarks
 		Player player = new();
 		using IMonitor<Player> monitor = player.Monitor();
 		player.Play();
-		return monitor.Should().Raise(nameof(Player.Started));
+		return monitor.Should().Raise(_eventName);
 	}
 
 	public sealed class Player
