@@ -962,12 +962,12 @@ public sealed partial class ThatEnumerable
 		public async Task WhenTimeoutElapsedBeforeAnInMemoryCollectionIsEvaluated_ShouldJudgeItLikeAScalar()
 		{
 			async Task Collection()
-				=> await That(WaitForTheTimeout(new[] { 1, 2, }))
-					.DoesNotThrow().WhoseResult.IsEqualTo([1, 2,]).WithTimeout(50.Milliseconds());
+				=> await That(new[] { 1, 2, })
+					.Satisfies(_ => OutlastTheTimeout()).And.IsEqualTo([1, 2,]).WithTimeout(50.Milliseconds());
 
 			async Task Scalar()
-				=> await That(WaitForTheTimeout(5))
-					.DoesNotThrow().WhoseResult.IsEqualTo(5).WithTimeout(50.Milliseconds());
+				=> await That(5)
+					.Satisfies(_ => OutlastTheTimeout()).And.IsEqualTo(5).WithTimeout(50.Milliseconds());
 
 			await That(Scalar).DoesNotThrow();
 			await That(Collection).DoesNotThrow()
@@ -978,13 +978,13 @@ public sealed partial class ThatEnumerable
 		public async Task WhenTimeoutElapsedBeforeAnInMemoryCollectionIsEvaluated_ShouldReportItsMismatch()
 		{
 			async Task Act()
-				=> await That(WaitForTheTimeout(new[] { 1, 2, }))
-					.DoesNotThrow().WhoseResult.IsEqualTo([1, 3,]).WithTimeout(50.Milliseconds());
+				=> await That(new[] { 1, 2, })
+					.Satisfies(_ => OutlastTheTimeout()).And.IsEqualTo([1, 3,]).WithTimeout(50.Milliseconds());
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
-				             Expected that WaitForTheTimeout(new[] { 1, 2, })
-				             does not throw any exception and its result is equal to collection [1, 3,] in order,
+				             Expected that new[] { 1, 2, }
+				             satisfies _ => OutlastTheTimeout() and is equal to collection [1, 3,] in order,
 				             but it contained item 2 at index 1 instead of 3
 
 				             Collection:
@@ -1149,6 +1149,17 @@ public sealed partial class ThatEnumerable
 		}
 
 		/// <remarks>
+		///     Blocks the evaluation ten times as long as the timeout of 50 ms, so that the following expectations are
+		///     evaluated after it elapsed. A delegate subject cannot be used, as a delegate that returns after the timeout
+		///     did not finish within it.
+		/// </remarks>
+		private static bool OutlastTheTimeout()
+		{
+			Thread.Sleep(500.Milliseconds());
+			return true;
+		}
+
+		/// <remarks>
 		///     Each number takes a millisecond, so that a short timeout elapses during the enumeration. The numbers end
 		///     after half a minute, so that a regression which ignores the timeout fails the test instead of hanging the
 		///     test run.
@@ -1163,16 +1174,5 @@ public sealed partial class ThatEnumerable
 				yield return number++;
 			}
 		}
-
-		/// <remarks>
-		///     The <paramref name="result" /> is only returned once the timeout elapsed, bounded by half a minute, so that
-		///     a regression fails the test instead of hanging the test run.
-		/// </remarks>
-		private static Func<CancellationToken, T> WaitForTheTimeout<T>(T result)
-			=> cancellationToken =>
-			{
-				cancellationToken.WaitHandle.WaitOne(30.Seconds());
-				return result;
-			};
 	}
 }

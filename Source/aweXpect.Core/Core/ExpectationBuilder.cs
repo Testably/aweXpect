@@ -1114,16 +1114,24 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		return result;
 	}
 
+	/// <remarks>
+	///     A synchronous delegate cannot be interrupted, so it also exceeded the timeout when it returns after the timeout
+	///     elapsed without a cancellation.
+	/// </remarks>
 	private static TValue WithExceededTimeout(TValue data, DelegateValue delegateValue,
 		EvaluationCancellation cancellation)
 	{
-		if (cancellation.Timeout is { } timeout && cancellation.HasTimedOut(delegateValue.Exception))
+		if (cancellation.Timeout is not { } timeout || delegateValue.IsNull ||
+		    cancellation.Reason != CancellationReason.Timeout)
 		{
-			return (TValue)(object)delegateValue.WithExceededTimeout(timeout,
-				CreateTimeoutException(timeout, delegateValue.Exception!));
+			return data;
 		}
 
-		return data;
+		bool isCanceled = cancellation.HasTimedOut(delegateValue.Exception);
+		return (TValue)(object)delegateValue.WithExceededTimeout(timeout,
+			CreateTimeoutException(timeout,
+				delegateValue.Exception ?? new OperationCanceledException(cancellation.Token)),
+			!isCanceled);
 	}
 
 	private static async Task<ConstraintResult> FromException(Node rootNode,

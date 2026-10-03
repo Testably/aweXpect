@@ -13,11 +13,12 @@ public class DelegateValue<TValue>(in TValue? value, Exception? exception, TimeS
 	/// </summary>
 	public TValue? Value { get; } = value;
 
-	internal override DelegateValue WithExceededTimeout(TimeSpan timeout, Exception exception)
+	internal override DelegateValue WithExceededTimeout(TimeSpan timeout, Exception exception, bool hasReturned)
 		=> new DelegateValue<TValue>(default, exception, Duration)
 		{
 			NullKind = NullKind,
 			ExceededTimeout = timeout,
+			LateResult = hasReturned ? this : null,
 		};
 
 	internal override bool TryGetValue<TResult>(out TResult? value) where TResult : default
@@ -81,8 +82,9 @@ public class DelegateValue(Exception? exception, TimeSpan duration, bool isNull 
 	internal Exception[]? OtherExceptions { get; init; }
 
 	/// <summary>
-	///     The timeout within which the delegate did not finish, so that the evaluation stopped waiting for it, or
-	///     <see langword="null" /> if it finished in time or no timeout applied.
+	///     The timeout within which the delegate did not finish, so that the evaluation stopped waiting for it or a
+	///     synchronous delegate returned too late, or <see langword="null" /> if it finished in time or no timeout
+	///     applied.
 	/// </summary>
 	/// <remarks>
 	///     The <see cref="Exception" /> is then a <see cref="TimeoutException" />, whichever way the delegate reacted to
@@ -90,11 +92,21 @@ public class DelegateValue(Exception? exception, TimeSpan duration, bool isNull 
 	/// </remarks>
 	public TimeSpan? ExceededTimeout { get; private protected set; }
 
-	internal virtual DelegateValue WithExceededTimeout(TimeSpan timeout, Exception exception)
+	/// <summary>
+	///     What the delegate returned after the <see cref="ExceededTimeout" /> elapsed, as a synchronous delegate cannot
+	///     be abandoned, or <see langword="null" /> when it was canceled or abandoned.
+	/// </summary>
+	/// <remarks>
+	///     An expectation on the duration judges the delegate by it, as it measures the overrun on its own.
+	/// </remarks>
+	internal DelegateValue? LateResult { get; init; }
+
+	internal virtual DelegateValue WithExceededTimeout(TimeSpan timeout, Exception exception, bool hasReturned)
 		=> new(exception, Duration)
 		{
 			NullKind = NullKind,
 			ExceededTimeout = timeout,
+			LateResult = hasReturned ? this : null,
 		};
 
 	/// <summary>

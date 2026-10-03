@@ -30,6 +30,7 @@ public abstract partial class ThatDelegate
 		/// <inheritdoc />
 		public ConstraintResult IsMetBy(DelegateValue value)
 		{
+			value = value.LateResult ?? value;
 			_actual = value;
 			if (value.IsNull || value.ExceededTimeout is not null)
 			{
