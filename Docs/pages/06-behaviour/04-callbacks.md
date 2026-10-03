@@ -72,7 +72,8 @@ await Expect.That(signaler).Signaled().Twice();
 await Expect.That(signaler).Signaled().Never();
 ```
 
-`Signaled(3.Times())` is the shorthand for `Signaled().AtLeast(3.Times())`, and `DidNotSignal(3.Times())` expects the
+`Signaled(3.Times())` is the shorthand for `Signaled().AtLeast(3.Times())` and allows no further quantifier, and
+`DidNotSignal(3.Times())` expects the
 callback to be signaled fewer than three times. An expectation without an upper bound (e.g. `AtLeast`) succeeds as
 soon as enough callbacks were signaled. One with an upper bound fails as soon as one signal too many is received, and
 otherwise waits for the whole timeout. `DidNotSignal(times)` requires at least one time, because no callback can be

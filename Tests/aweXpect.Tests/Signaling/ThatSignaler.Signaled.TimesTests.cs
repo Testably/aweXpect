@@ -10,6 +10,21 @@ public sealed partial class ThatSignaler
 		public sealed class TimesTests
 		{
 			[Fact]
+			public async Task WhenFilteredWith_ShouldOnlyCountAndContainTheMatchingParameters()
+			{
+				Signaler<int> signaler = new();
+				signaler.Signal(-1);
+				signaler.Signal(1);
+				signaler.Signal(2);
+
+				async Task Act() =>
+					await That(signaler).Signaled(2.Times()).With(x => x > 0)
+						.WhoseParameters.IsEqualTo([1, 2,]);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenNotTriggeredOftenEnough_ShouldFail()
 			{
 				Signaler signaler = new();
@@ -68,6 +83,18 @@ public sealed partial class ThatSignaler
 					await That(signaler).Signaled(2.Times());
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenWithinIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			{
+				Signaler signaler = new();
+
+				async Task Act() =>
+					await That(signaler).Signaled(2.Times()).Within(1.Seconds()).Within(50.Milliseconds());
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Within cannot be specified more than once.");
 			}
 		}
 	}

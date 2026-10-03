@@ -5349,3 +5349,15 @@ static aweXpect.ThatEnumerable.StartsWith(this aweXpect.Core.IThat<System.Collec
 ~static aweXpect.ThatEnumerable.LessThan(this aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<string>> subject, int maximum) -> aweXpect.ThatEnumerable.ElementsForStructEnumerable<System.Collections.Immutable.ImmutableArray<string>>
 ~static aweXpect.ThatEnumerable.MoreThan(this aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<string>> subject, int minimum) -> aweXpect.ThatEnumerable.ElementsForStructEnumerable<System.Collections.Immutable.ImmutableArray<string>>
 ~static aweXpect.ThatEnumerable.None(this aweXpect.Core.IThat<System.Collections.Immutable.ImmutableArray<string>> subject) -> aweXpect.ThatEnumerable.ElementsForStructEnumerable<System.Collections.Immutable.ImmutableArray<string>>
+*REMOVED*static aweXpect.ThatSignaler.Signaled(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler!>! subject, aweXpect.Core.Times times) -> aweXpect.Results.SignalCountResult!
+*REMOVED*static aweXpect.ThatSignaler.Signaled<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! subject, aweXpect.Core.Times times) -> aweXpect.Results.SignalCountWhoseResult<TParameter>!
+aweXpect.Results.SignaledResult
+aweXpect.Results.SignaledResult.SignaledResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler!>! returnValue, aweXpect.Options.SignalerOptions! options) -> void
+aweXpect.Results.SignaledResult.Within(System.TimeSpan timeout) -> aweXpect.Results.SignaledResult!
+aweXpect.Results.SignaledWhoseResult<TParameter>
+aweXpect.Results.SignaledWhoseResult<TParameter>.SignaledWhoseResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! returnValue, aweXpect.Options.SignalerOptions<TParameter>! options) -> void
+aweXpect.Results.SignaledWhoseResult<TParameter>.WhoseParameters.get -> aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TParameter>!>!
+aweXpect.Results.SignaledWhoseResult<TParameter>.With(System.Func<TParameter, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.SignaledWhoseResult<TParameter>!
+aweXpect.Results.SignaledWhoseResult<TParameter>.Within(System.TimeSpan timeout) -> aweXpect.Results.SignaledWhoseResult<TParameter>!
+static aweXpect.ThatSignaler.Signaled(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler!>! subject, aweXpect.Core.Times times) -> aweXpect.Results.SignaledResult!
+static aweXpect.ThatSignaler.Signaled<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! subject, aweXpect.Core.Times times) -> aweXpect.Results.SignaledWhoseResult<TParameter>!
