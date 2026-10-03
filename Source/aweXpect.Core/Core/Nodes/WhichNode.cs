@@ -240,13 +240,20 @@ internal class WhichNode<TSource, TMember> : Node
 		{
 			return separator.Length == 0
 				? rightResult
-				: rightResult.PrependExpectationText(sb => sb.Append(separator.TrimStart()));
+				: PrependSeparator(rightResult, separator);
 		}
 
 		return new WhichConstraintResult(leftResult, rightResult, separator,
 			furtherProcessingStrategy ?? FurtherProcessingStrategy.Continue,
 			value, _negateMemberOnly, false);
 	}
+
+	/// <remarks>
+	///     A separate method, so that the closure over the <paramref name="separator" /> is only allocated when it is
+	///     prepended, and not on every combination.
+	/// </remarks>
+	private static ConstraintResult PrependSeparator(ConstraintResult result, string separator)
+		=> result.PrependExpectationText(sb => sb.Append(separator.TrimStart()));
 
 	/// <inheritdoc />
 	/// <remarks>

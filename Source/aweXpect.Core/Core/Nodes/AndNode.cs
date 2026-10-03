@@ -81,8 +81,9 @@ internal class AndNode : Node
 	{
 		ConstraintResult? combinedResult = null;
 		bool isSkipped = false;
-		foreach ((string separator, Node node) in GetNodes())
+		for (int index = 0; index <= _nodes.Count; index++)
 		{
+			(string separator, Node node) = GetNode(index);
 			if (node is ExpectationNode expectationNode && expectationNode.IsEmpty())
 			{
 				continue;
@@ -131,6 +132,15 @@ internal class AndNode : Node
 
 		yield return (_currentSeparator ?? DefaultSeparator, Current);
 	}
+
+	/// <summary>
+	///     The node at the <paramref name="index" /> of <see cref="GetNodes" />.
+	/// </summary>
+	/// <remarks>
+	///     Every evaluation walks the nodes, so it reads them by index instead of allocating an iterator.
+	/// </remarks>
+	private (string, Node) GetNode(int index)
+		=> index < _nodes.Count ? _nodes[index] : (_currentSeparator ?? DefaultSeparator, Current);
 
 	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
