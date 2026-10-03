@@ -245,7 +245,7 @@ public static partial class ThatSignaler
 			return;
 		}
 
-		if (quantifier.Check(count, false) is null && (quantifier.Check(0, true) ?? quantifier.IsNegated) == false)
+		if (quantifier.Check(count, false) is null && !(quantifier.Check(0, true) ?? quantifier.IsNegated))
 		{
 			stringBuilder.Append("only ");
 		}
