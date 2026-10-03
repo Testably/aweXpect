@@ -30,8 +30,10 @@ public static partial class ThatString
 		Quantifier quantifier = new();
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeCountResult<string, IThat<string?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new ContainsConstraint(it, grammars, expected, quantifier, options)),
+			subject.Get().ExpectationBuilder.AddConstraint(
+				(Expected: expected, Quantifier: quantifier, Options: options),
+				static (state, it, grammars) =>
+					new ContainsConstraint(it, grammars, state.Expected, state.Quantifier, state.Options)),
 			subject,
 			quantifier,
 			options);
@@ -55,8 +57,10 @@ public static partial class ThatString
 		Quantifier quantifier = new();
 		StringEqualityOptions options = new(nameof(unexpected));
 		return new StringEqualityTypeCountResult<string, IThat<string?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new ContainsConstraint(it, grammars, unexpected, quantifier, options).Invert()),
+			subject.Get().ExpectationBuilder.AddConstraint(
+				(Unexpected: unexpected, Quantifier: quantifier, Options: options),
+				static (state, it, grammars) =>
+					new ContainsConstraint(it, grammars, state.Unexpected, state.Quantifier, state.Options).Invert()),
 			subject,
 			quantifier,
 			options);

@@ -25,7 +25,8 @@ public static partial class ThatString
 	{
 		CasingOptions options = new();
 		return new CasingResult<string, IThat<string?>>(subject.Get().ExpectationBuilder.AddConstraint(
-				(it, grammars) => new IsUpperCasedConstraint(it, grammars, options)),
+				options,
+				static (casingOptions, it, grammars) => new IsUpperCasedConstraint(it, grammars, casingOptions)),
 			subject,
 			options);
 	}
@@ -45,7 +46,9 @@ public static partial class ThatString
 	{
 		CasingOptions options = new();
 		return new CasingResult<string, IThat<string?>>(subject.Get().ExpectationBuilder.AddConstraint(
-				(it, grammars) => new IsUpperCasedConstraint(it, grammars, options).Invert()),
+				options,
+				static (casingOptions, it, grammars) =>
+					new IsUpperCasedConstraint(it, grammars, casingOptions).Invert()),
 			subject,
 			options);
 	}

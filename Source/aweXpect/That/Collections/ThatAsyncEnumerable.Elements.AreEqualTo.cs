@@ -24,13 +24,14 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
 			TTolerance>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new AsyncCollectionConstraint<TItem>(
-					it, grammars,
-					iElements.Quantifier,
-					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
-					a => options.AreConsideredEqual(a, expected),
-					"were")),
+			expectationBuilder.AddConstraint((Quantifier: iElements.Quantifier, Expected: expected, Options: options),
+				static (state, it, grammars)
+					=> new AsyncCollectionConstraint<TItem>(
+						it, grammars,
+						state.Quantifier,
+						g => ElementExpectations.IsEqualTo(g, Formatter.Format(state.Expected), state.Options),
+						a => state.Options.AreConsideredEqual(a, state.Expected),
+						"were")),
 			iElements.Subject,
 			options);
 	}
@@ -45,14 +46,15 @@ public static partial class ThatAsyncEnumerable
 		ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new AsyncCollectionConstraint<TItem>(
-					it, grammars,
-					iElements.Quantifier,
-					g => ElementExpectations.IsEqualTo(g, Formatter.Format(expected), options),
-					a => options.AreConsideredEqual(a, expected),
-					"were",
-					appendOptionsContexts: options.AppendContexts)),
+			expectationBuilder.AddConstraint((Quantifier: iElements.Quantifier, Expected: expected, Options: options),
+				static (state, it, grammars)
+					=> new AsyncCollectionConstraint<TItem>(
+						it, grammars,
+						state.Quantifier,
+						g => ElementExpectations.IsEqualTo(g, Formatter.Format(state.Expected), state.Options),
+						a => state.Options.AreConsideredEqual(a, state.Expected),
+						"were",
+						appendOptionsContexts: state.Options.AppendContexts)),
 			iElements.Subject,
 			options);
 	}
@@ -67,13 +69,14 @@ public static partial class ThatAsyncEnumerable
 		StringEqualityOptions options = new(nameof(expected));
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new AsyncCollectionConstraint<string?>(
-					it, grammars,
-					iElements.Quantifier,
-					g => ElementExpectations.IsEqualToString(g, expected, options),
-					a => options.AreConsideredEqual(a, expected),
-					"were")),
+			expectationBuilder.AddConstraint((Quantifier: iElements.Quantifier, Expected: expected, Options: options),
+				static (state, it, grammars)
+					=> new AsyncCollectionConstraint<string?>(
+						it, grammars,
+						state.Quantifier,
+						g => ElementExpectations.IsEqualToString(g, state.Expected, state.Options),
+						a => state.Options.AreConsideredEqual(a, state.Expected),
+						"were")),
 			iElements.Subject,
 			options);
 	}

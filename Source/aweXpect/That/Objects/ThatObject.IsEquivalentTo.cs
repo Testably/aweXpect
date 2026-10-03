@@ -32,10 +32,12 @@ public static partial class ThatObject
 		ObjectEqualityOptions<TSubject> equalityOptions = new();
 		equalityOptions.Equivalent(equivalencyOptions);
 		return new AndOrResult<TSubject, IThat<TSubject>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<TSubject, TExpected>(it, grammars, expected,
-					expected is null ? null : doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					equalityOptions)),
+			expectationBuilder.AddConstraint((Expected: expected, DoNotPopulateThisValue: doNotPopulateThisValue,
+					EqualityOptions: equalityOptions),
+				static (state, it, grammars)
+					=> new IsEqualToConstraint<TSubject, TExpected>(it, grammars, state.Expected,
+						state.Expected is null ? null : state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
+						state.EqualityOptions)),
 			subject);
 	}
 
@@ -71,10 +73,12 @@ public static partial class ThatObject
 		ObjectEqualityOptions<TSubject> equalityOptions = new();
 		equalityOptions.Equivalent(equivalencyOptions);
 		return new AndOrResult<TSubject, IThat<TSubject>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<TSubject, TExpected>(it, grammars, unexpected,
-					unexpected is null ? null : doNotPopulateThisValue.TrimCommonWhiteSpace(),
-					equalityOptions).Invert()),
+			expectationBuilder.AddConstraint((Unexpected: unexpected, DoNotPopulateThisValue: doNotPopulateThisValue,
+					EqualityOptions: equalityOptions),
+				static (state, it, grammars)
+					=> new IsEqualToConstraint<TSubject, TExpected>(it, grammars, state.Unexpected,
+						state.Unexpected is null ? null : state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
+						state.EqualityOptions).Invert()),
 			subject);
 	}
 

@@ -30,9 +30,13 @@ public static partial class ThatString
 		IEnumerable<string?> expectedValues = expected.ToNonEmptyValues(negated);
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		return new StringEqualityTypeResult<string?, IThat<string?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, options)
-					.InvertIf(negated)),
+			subject.Get().ExpectationBuilder.AddConstraint(
+				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Options: options,
+					Negated: negated),
+				static (state, it, grammars)
+					=> new IsOneOfConstraint(it, grammars, state.ExpectedValues, state.ExpectedExpression,
+							state.Options)
+						.InvertIf(state.Negated)),
 			subject,
 			options);
 	}

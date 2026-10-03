@@ -14,6 +14,162 @@ namespace aweXpect.Core.Tests.Core;
 public class ExpectationBuilderTests
 {
 	[Fact]
+	public async Task AddConstraint_WithState_AsyncConstraint_ShouldPassStateSubjectNameAndGrammars()
+	{
+		ManualExpectationBuilder<int> sut = new(ExpectationGrammars.Plural);
+		(int, string, ExpectationGrammars)? received = null;
+
+		sut.AddConstraint(3, (state, it, grammars) =>
+		{
+			received = (state, it, grammars);
+			return new DummyAsyncConstraint<int>(v => Task.FromResult(new DummyConstraint<int>(x => x == state).IsMetBy(v)));
+		});
+		ConstraintResult result = await sut.IsMetBy(3, null!, CancellationToken.None);
+
+		await That(received).IsEqualTo((3, "it", ExpectationGrammars.Plural));
+		await That(result.Outcome).IsEqualTo(Outcome.Success)
+			.Because("the constraint compares with the state");
+	}
+
+	[Fact]
+	public async Task AddConstraint_WithState_AsyncConstraintWithBuilder_ShouldAlsoPassTheBuilder()
+	{
+		ManualExpectationBuilder<int> sut = new(ExpectationGrammars.Plural);
+		(int, string, ExpectationGrammars)? received = null;
+		ExpectationBuilder? receivedBuilder = null;
+
+		sut.AddConstraint(3, (state, builder, it, grammars) =>
+		{
+			received = (state, it, grammars);
+			receivedBuilder = builder;
+			return new DummyAsyncConstraint<int>(v => Task.FromResult(new DummyConstraint<int>(x => x == state).IsMetBy(v)));
+		});
+		ConstraintResult result = await sut.IsMetBy(3, null!, CancellationToken.None);
+
+		await That(received).IsEqualTo((3, "it", ExpectationGrammars.Plural));
+		await That(receivedBuilder).IsSameAs(sut);
+		await That(result.Outcome).IsEqualTo(Outcome.Success)
+			.Because("the constraint compares with the state");
+	}
+
+	[Fact]
+	public async Task AddConstraint_WithState_AsyncContextConstraint_ShouldPassStateSubjectNameAndGrammars()
+	{
+		ManualExpectationBuilder<int> sut = new(ExpectationGrammars.Plural);
+		(int, string, ExpectationGrammars)? received = null;
+
+		sut.AddConstraint(3, (state, it, grammars) =>
+		{
+			received = (state, it, grammars);
+			return new DummyAsyncContextConstraint<int>(v => Task.FromResult(new DummyConstraint<int>(x => x == state).IsMetBy(v)));
+		});
+		ConstraintResult result = await sut.IsMetBy(3, null!, CancellationToken.None);
+
+		await That(received).IsEqualTo((3, "it", ExpectationGrammars.Plural));
+		await That(result.Outcome).IsEqualTo(Outcome.Success)
+			.Because("the constraint compares with the state");
+	}
+
+	[Fact]
+	public async Task AddConstraint_WithState_AsyncContextConstraintWithBuilder_ShouldAlsoPassTheBuilder()
+	{
+		ManualExpectationBuilder<int> sut = new(ExpectationGrammars.Plural);
+		(int, string, ExpectationGrammars)? received = null;
+		ExpectationBuilder? receivedBuilder = null;
+
+		sut.AddConstraint(3, (state, builder, it, grammars) =>
+		{
+			received = (state, it, grammars);
+			receivedBuilder = builder;
+			return new DummyAsyncContextConstraint<int>(v => Task.FromResult(new DummyConstraint<int>(x => x == state).IsMetBy(v)));
+		});
+		ConstraintResult result = await sut.IsMetBy(3, null!, CancellationToken.None);
+
+		await That(received).IsEqualTo((3, "it", ExpectationGrammars.Plural));
+		await That(receivedBuilder).IsSameAs(sut);
+		await That(result.Outcome).IsEqualTo(Outcome.Success)
+			.Because("the constraint compares with the state");
+	}
+
+	[Fact]
+	public async Task AddConstraint_WithState_ContextConstraint_ShouldPassStateSubjectNameAndGrammars()
+	{
+		ManualExpectationBuilder<int> sut = new(ExpectationGrammars.Plural);
+		(int, string, ExpectationGrammars)? received = null;
+
+		sut.AddConstraint(3, (state, it, grammars) =>
+		{
+			received = (state, it, grammars);
+			return new DummyContextConstraint<int>(v => new DummyConstraint<int>(x => x == state).IsMetBy(v));
+		});
+		ConstraintResult result = await sut.IsMetBy(3, null!, CancellationToken.None);
+
+		await That(received).IsEqualTo((3, "it", ExpectationGrammars.Plural));
+		await That(result.Outcome).IsEqualTo(Outcome.Success)
+			.Because("the constraint compares with the state");
+	}
+
+	[Fact]
+	public async Task AddConstraint_WithState_ContextConstraintWithBuilder_ShouldAlsoPassTheBuilder()
+	{
+		ManualExpectationBuilder<int> sut = new(ExpectationGrammars.Plural);
+		(int, string, ExpectationGrammars)? received = null;
+		ExpectationBuilder? receivedBuilder = null;
+
+		sut.AddConstraint(3, (state, builder, it, grammars) =>
+		{
+			received = (state, it, grammars);
+			receivedBuilder = builder;
+			return new DummyContextConstraint<int>(v => new DummyConstraint<int>(x => x == state).IsMetBy(v));
+		});
+		ConstraintResult result = await sut.IsMetBy(3, null!, CancellationToken.None);
+
+		await That(received).IsEqualTo((3, "it", ExpectationGrammars.Plural));
+		await That(receivedBuilder).IsSameAs(sut);
+		await That(result.Outcome).IsEqualTo(Outcome.Success)
+			.Because("the constraint compares with the state");
+	}
+
+	[Fact]
+	public async Task AddConstraint_WithState_ValueConstraint_ShouldPassStateSubjectNameAndGrammars()
+	{
+		ManualExpectationBuilder<int> sut = new(ExpectationGrammars.Plural);
+		(int, string, ExpectationGrammars)? received = null;
+
+		sut.AddConstraint(3, (state, it, grammars) =>
+		{
+			received = (state, it, grammars);
+			return new DummyConstraint<int>(v => v == state);
+		});
+		ConstraintResult result = await sut.IsMetBy(3, null!, CancellationToken.None);
+
+		await That(received).IsEqualTo((3, "it", ExpectationGrammars.Plural));
+		await That(result.Outcome).IsEqualTo(Outcome.Success)
+			.Because("the constraint compares with the state");
+	}
+
+	[Fact]
+	public async Task AddConstraint_WithState_ValueConstraintWithBuilder_ShouldAlsoPassTheBuilder()
+	{
+		ManualExpectationBuilder<int> sut = new(ExpectationGrammars.Plural);
+		(int, string, ExpectationGrammars)? received = null;
+		ExpectationBuilder? receivedBuilder = null;
+
+		sut.AddConstraint(3, (state, builder, it, grammars) =>
+		{
+			received = (state, it, grammars);
+			receivedBuilder = builder;
+			return new DummyConstraint<int>(v => v == state);
+		});
+		ConstraintResult result = await sut.IsMetBy(3, null!, CancellationToken.None);
+
+		await That(received).IsEqualTo((3, "it", ExpectationGrammars.Plural));
+		await That(receivedBuilder).IsSameAs(sut);
+		await That(result.Outcome).IsEqualTo(Outcome.Success)
+			.Because("the constraint compares with the state");
+	}
+
+	[Fact]
 	public async Task ForAsyncMember_ShouldUseAndResetExpectationGrammars()
 	{
 		ManualExpectationBuilder<string> sut = new();

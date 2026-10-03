@@ -19,13 +19,14 @@ public static partial class ThatAsyncEnumerable
 		{
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new AsyncCollectionConstraint<TItem>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
-						a => typeof(TType).IsAssignableFrom(a?.GetType()),
-						"were")),
+				expectationBuilder.AddConstraint(_quantifier,
+					static (quantifier, it, grammars)
+						=> new AsyncCollectionConstraint<TItem>(
+							it, grammars,
+							quantifier,
+							g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
+							a => typeof(TType).IsAssignableFrom(a?.GetType()),
+							"were")),
 				_subject);
 		}
 
@@ -38,13 +39,14 @@ public static partial class ThatAsyncEnumerable
 			type.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new AsyncCollectionConstraint<TItem>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsOfType(g, Formatter.Format(type)),
-						a => type.IsAssignableFrom(a?.GetType()),
-						"were")),
+				expectationBuilder.AddConstraint((Quantifier: _quantifier, Type: type),
+					static (state, it, grammars)
+						=> new AsyncCollectionConstraint<TItem>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.IsOfType(g, Formatter.Format(state.Type)),
+							a => state.Type.IsAssignableFrom(a?.GetType()),
+							"were")),
 				_subject);
 		}
 	}

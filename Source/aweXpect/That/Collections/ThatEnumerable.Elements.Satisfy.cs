@@ -23,13 +23,16 @@ public static partial class ThatEnumerable
 			predicate.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<IEnumerable<string?>?, string?>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
-						predicate,
-						"did")),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, DoNotPopulateThisValue: doNotPopulateThisValue, Predicate: predicate),
+					static (state, it, grammars)
+						=> new CollectionConstraint<IEnumerable<string?>?, string?>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.Satisfies(g,
+								state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
+							state.Predicate,
+							"did")),
 				_subject);
 		}
 	}
@@ -48,13 +51,16 @@ public static partial class ThatEnumerable
 			predicate.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
-						predicate,
-						"did")),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, DoNotPopulateThisValue: doNotPopulateThisValue, Predicate: predicate),
+					static (state, it, grammars)
+						=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.Satisfies(g,
+								state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
+							state.Predicate,
+							"did")),
 				_subject);
 		}
 	}
@@ -73,13 +79,16 @@ public static partial class ThatEnumerable
 			predicate.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<TEnumerable, object?>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
-						predicate,
-						"did")),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, DoNotPopulateThisValue: doNotPopulateThisValue, Predicate: predicate),
+					static (state, it, grammars)
+						=> new CollectionConstraint<TEnumerable, object?>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.Satisfies(g,
+								state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
+							state.Predicate,
+							"did")),
 				_subject);
 		}
 	}
@@ -98,13 +107,16 @@ public static partial class ThatEnumerable
 			predicate.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<TEnumerable, object?>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
-						v => predicate((TItem)v!),
-						"did")),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, DoNotPopulateThisValue: doNotPopulateThisValue, Predicate: predicate),
+					static (state, it, grammars)
+						=> new CollectionConstraint<TEnumerable, object?>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.Satisfies(g,
+								state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
+							v => state.Predicate((TItem)v!),
+							"did")),
 				_subject);
 		}
 	}
@@ -123,13 +135,16 @@ public static partial class ThatEnumerable
 			predicate.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<TEnumerable, object?>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
-						v => predicate((string?)v),
-						"did")),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, DoNotPopulateThisValue: doNotPopulateThisValue, Predicate: predicate),
+					static (state, it, grammars)
+						=> new CollectionConstraint<TEnumerable, object?>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.Satisfies(g,
+								state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
+							v => state.Predicate((string?)v),
+							"did")),
 				_subject);
 		}
 	}

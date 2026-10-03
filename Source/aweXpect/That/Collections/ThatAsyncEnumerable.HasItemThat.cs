@@ -24,8 +24,9 @@ public static partial class ThatAsyncEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IAsyncEnumerable<TItem>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new AsyncHasItemThatConstraint<TItem>(it, grammars, expectations, indexOptions)),
+			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
+				static (state, it, grammars)
+					=> new AsyncHasItemThatConstraint<TItem>(it, grammars, state.Expectations, state.IndexOptions)),
 			subject,
 			indexOptions);
 	}
@@ -41,9 +42,10 @@ public static partial class ThatAsyncEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IAsyncEnumerable<TItem>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new AsyncHasItemThatConstraint<TItem>(it, grammars, expectations, indexOptions)
-					.Invert()),
+			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
+				static (state, it, grammars)
+					=> new AsyncHasItemThatConstraint<TItem>(it, grammars, state.Expectations, state.IndexOptions)
+						.Invert()),
 			subject,
 			indexOptions);
 	}

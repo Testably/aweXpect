@@ -44,8 +44,9 @@ public abstract partial class ThatDelegate
 	{
 		ThrowsOption throwOptions = new();
 		return new ThatDelegateThrows<TException>(ExpectationBuilder
-				.AddConstraint((it, grammars)
-					=> new DelegateThrowsWithinTimeoutConstraint(it, grammars, exceptionType, exactly, throwOptions))
+				.AddConstraint((ExceptionType: exceptionType, Exactly: exactly, ThrowOptions: throwOptions),
+					static (state, it, grammars) => new DelegateThrowsWithinTimeoutConstraint(it, grammars,
+						state.ExceptionType, state.Exactly, state.ThrowOptions))
 				.ForWhich<DelegateValue, TException?>(d
 					=> IsExpectedException(d.Exception, exceptionType, exactly) ? d.Exception as TException : null)
 				.AddConstraint((_, _) => new DoNothingConstraint<TException>())

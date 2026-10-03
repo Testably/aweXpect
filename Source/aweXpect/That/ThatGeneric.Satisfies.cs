@@ -29,13 +29,14 @@ public static partial class ThatGeneric
 		predicate.ThrowIfNull();
 		RepeatedCheckOptions options = new();
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars) =>
-					new SatisfiesConstraint<T>(
-						it,
-						grammars,
-						predicate,
-						doNotPopulateThisValue.TrimCommonWhiteSpace(),
-						options)),
+				.AddConstraint((Predicate: predicate, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
+					static (state, it, grammars) =>
+						new SatisfiesConstraint<T>(
+							it,
+							grammars,
+							state.Predicate,
+							state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
+							state.Options)),
 			subject,
 			options);
 	}
@@ -56,13 +57,14 @@ public static partial class ThatGeneric
 		predicate.ThrowIfNull();
 		RepeatedCheckOptions options = new();
 		return new RepeatedCheckResult<T, IThat<T>>(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars) =>
-					new SatisfiesConstraint<T>(
-						it,
-						grammars,
-						predicate,
-						doNotPopulateThisValue.TrimCommonWhiteSpace(),
-						options).Invert()),
+				.AddConstraint((Predicate: predicate, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
+					static (state, it, grammars) =>
+						new SatisfiesConstraint<T>(
+							it,
+							grammars,
+							state.Predicate,
+							state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
+							state.Options).Invert()),
 			subject,
 			options);
 	}

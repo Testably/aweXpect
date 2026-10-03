@@ -28,8 +28,10 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable<TItem>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemThatConstraint<IEnumerable<TItem>?, TItem>(it, grammars, expectations, indexOptions)),
+			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
+				static (state, it, grammars)
+					=> new HasItemThatConstraint<IEnumerable<TItem>?, TItem>(it, grammars, state.Expectations,
+						state.IndexOptions)),
 			subject,
 			indexOptions);
 	}
@@ -46,9 +48,10 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemThatConstraint<IEnumerable, object?>(
-					it, grammars, expectations, indexOptions)),
+			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
+				static (state, it, grammars)
+					=> new HasItemThatConstraint<IEnumerable, object?>(
+						it, grammars, state.Expectations, state.IndexOptions)),
 			subject,
 			indexOptions);
 	}
@@ -64,9 +67,10 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<ImmutableArray<TItem>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemThatConstraint<ImmutableArray<TItem>, TItem>(
-					it, grammars, expectations, indexOptions)),
+			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
+				static (state, it, grammars)
+					=> new HasItemThatConstraint<ImmutableArray<TItem>, TItem>(
+						it, grammars, state.Expectations, state.IndexOptions)),
 			subject,
 			indexOptions);
 	}
@@ -83,9 +87,11 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable<TItem>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemThatConstraint<IEnumerable<TItem>?, TItem>(it, grammars, expectations, indexOptions)
-					.Invert()),
+			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
+				static (state, it, grammars)
+					=> new HasItemThatConstraint<IEnumerable<TItem>?, TItem>(it, grammars, state.Expectations,
+							state.IndexOptions)
+						.Invert()),
 			subject,
 			indexOptions);
 	}
@@ -102,9 +108,10 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemThatConstraint<IEnumerable, object?>(
-					it, grammars, expectations, indexOptions).Invert()),
+			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
+				static (state, it, grammars)
+					=> new HasItemThatConstraint<IEnumerable, object?>(
+						it, grammars, state.Expectations, state.IndexOptions).Invert()),
 			subject,
 			indexOptions);
 	}
@@ -120,9 +127,10 @@ public static partial class ThatEnumerable
 		CollectionIndexOptions indexOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<ImmutableArray<TItem>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemThatConstraint<ImmutableArray<TItem>, TItem>(
-					it, grammars, expectations, indexOptions).Invert()),
+			expectationBuilder.AddConstraint((Expectations: expectations, IndexOptions: indexOptions),
+				static (state, it, grammars)
+					=> new HasItemThatConstraint<ImmutableArray<TItem>, TItem>(
+						it, grammars, state.Expectations, state.IndexOptions).Invert()),
 			subject,
 			indexOptions);
 	}

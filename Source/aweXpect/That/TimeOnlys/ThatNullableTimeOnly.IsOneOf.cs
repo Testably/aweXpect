@@ -31,9 +31,12 @@ public static partial class ThatNullableTimeOnly
 		IEnumerable<TimeOnly?> expectedValues = expected.ToNonEmptyValues(negated);
 		TimeTolerance tolerance = new();
 		return new TimeToleranceResult<TimeOnly?, IThat<TimeOnly?>>(
-			subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsOneOfConstraint(it, grammars, expectedValues, expectedExpression, tolerance)
-					.InvertIf(negated)),
+			subject.Get().ExpectationBuilder.AddConstraint(
+				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Tolerance: tolerance,
+					Negated: negated),
+				static (state, it, grammars) =>
+					new IsOneOfConstraint(it, grammars, state.ExpectedValues, state.ExpectedExpression, state.Tolerance)
+						.InvertIf(state.Negated)),
 			subject,
 			tolerance);
 	}

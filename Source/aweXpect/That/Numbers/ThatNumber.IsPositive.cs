@@ -151,8 +151,9 @@ public static partial class ThatNumber
 		NumberSign<TNumber> sign,
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsPositiveConstraint<TNumber>(it, grammars, sign.IsPositive).InvertIf(negated)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((Sign: sign, Negated: negated),
+				static (state, it, grammars) =>
+					new IsPositiveConstraint<TNumber>(it, grammars, state.Sign.IsPositive).InvertIf(state.Negated)),
 			subject);
 
 	[CreateExpectationFamily("Is{Not}Positive", Factory = typeof(SignedNumberFactory), GuaranteesNotNull = true,
@@ -162,8 +163,10 @@ public static partial class ThatNumber
 		NumberSign<TNumber> sign,
 		bool negated)
 		where TNumber : struct, IComparable<TNumber>
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsPositiveConstraint<TNumber>(it, grammars, sign.IsPositive).InvertIf(negated)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((Sign: sign, Negated: negated),
+				static (state, it, grammars) =>
+					new NullableIsPositiveConstraint<TNumber>(it, grammars, state.Sign.IsPositive)
+						.InvertIf(state.Negated)),
 			subject);
 
 	private sealed class IsPositiveConstraint<TNumber>(

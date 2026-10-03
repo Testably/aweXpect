@@ -21,8 +21,8 @@ public static partial class ThatSpan
 		this IThat<SpanWrapper<char>> subject,
 		IFormatProvider? formatProvider = null)
 		where TType : ISpanParsable<TType>
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsParsableIntoConstraint<TType>(it, grammars, formatProvider)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(formatProvider, static (formatProviderValue, it, grammars)
+				=> new IsParsableIntoConstraint<TType>(it, grammars, formatProviderValue)),
 			subject,
 			formatProvider);
 
@@ -38,8 +38,8 @@ public static partial class ThatSpan
 		this IThat<SpanWrapper<byte>> subject,
 		IFormatProvider? formatProvider = null)
 		where TType : IUtf8SpanParsable<TType>
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsUtf8ParsableIntoConstraint<TType>(it, grammars, formatProvider)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(formatProvider, static (formatProviderValue, it, grammars)
+				=> new IsUtf8ParsableIntoConstraint<TType>(it, grammars, formatProviderValue)),
 			subject,
 			formatProvider);
 
@@ -55,8 +55,8 @@ public static partial class ThatSpan
 		this IThat<SpanWrapper<char>> subject,
 		IFormatProvider? formatProvider = null)
 		where TType : ISpanParsable<TType>
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsParsableIntoConstraint<TType>(it, grammars, formatProvider).Invert()),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(formatProvider, static (formatProviderValue, it, grammars)
+				=> new IsParsableIntoConstraint<TType>(it, grammars, formatProviderValue).Invert()),
 			subject);
 
 	/// <summary>
@@ -71,8 +71,8 @@ public static partial class ThatSpan
 		this IThat<SpanWrapper<byte>> subject,
 		IFormatProvider? formatProvider = null)
 		where TType : IUtf8SpanParsable<TType>
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsUtf8ParsableIntoConstraint<TType>(it, grammars, formatProvider).Invert()),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(formatProvider, static (formatProviderValue, it, grammars)
+				=> new IsUtf8ParsableIntoConstraint<TType>(it, grammars, formatProviderValue).Invert()),
 			subject);
 
 	private sealed class IsParsableIntoConstraint<TType> : ConstraintResult.WithNotNullValue<SpanWrapper<char>>,

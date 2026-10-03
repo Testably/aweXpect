@@ -18,13 +18,14 @@ public static partial class ThatEnumerable
 		{
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
-						a => a?.GetType() == typeof(TType),
-						"were")),
+				expectationBuilder.AddConstraint(_quantifier,
+					static (quantifier, it, grammars)
+						=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
+							it, grammars,
+							quantifier,
+							g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
+							a => a?.GetType() == typeof(TType),
+							"were")),
 				_subject);
 		}
 
@@ -37,13 +38,14 @@ public static partial class ThatEnumerable
 			type.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(type)),
-						a => a?.GetType() == type,
-						"were")),
+				expectationBuilder.AddConstraint((Quantifier: _quantifier, Type: type),
+					static (state, it, grammars)
+						=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(state.Type)),
+							a => a?.GetType() == state.Type,
+							"were")),
 				_subject);
 		}
 	}
@@ -58,13 +60,14 @@ public static partial class ThatEnumerable
 		{
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<TEnumerable, object?>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
-						a => a?.GetType() == typeof(TType),
-						"were")),
+				expectationBuilder.AddConstraint(_quantifier,
+					static (quantifier, it, grammars)
+						=> new CollectionConstraint<TEnumerable, object?>(
+							it, grammars,
+							quantifier,
+							g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
+							a => a?.GetType() == typeof(TType),
+							"were")),
 				_subject);
 		}
 
@@ -77,13 +80,14 @@ public static partial class ThatEnumerable
 			type.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<TEnumerable, object?>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(type)),
-						a => a?.GetType() == type,
-						"were")),
+				expectationBuilder.AddConstraint((Quantifier: _quantifier, Type: type),
+					static (state, it, grammars)
+						=> new CollectionConstraint<TEnumerable, object?>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(state.Type)),
+							a => a?.GetType() == state.Type,
+							"were")),
 				_subject);
 		}
 	}
@@ -98,13 +102,14 @@ public static partial class ThatEnumerable
 		{
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<TEnumerable, object?>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
-						a => a?.GetType() == typeof(TType),
-						"were")),
+				expectationBuilder.AddConstraint(_quantifier,
+					static (quantifier, it, grammars)
+						=> new CollectionConstraint<TEnumerable, object?>(
+							it, grammars,
+							quantifier,
+							g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
+							a => a?.GetType() == typeof(TType),
+							"were")),
 				_subject);
 		}
 
@@ -117,13 +122,14 @@ public static partial class ThatEnumerable
 			type.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<TEnumerable, object?>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(type)),
-						a => a?.GetType() == type,
-						"were")),
+				expectationBuilder.AddConstraint((Quantifier: _quantifier, Type: type),
+					static (state, it, grammars)
+						=> new CollectionConstraint<TEnumerable, object?>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(state.Type)),
+							a => a?.GetType() == state.Type,
+							"were")),
 				_subject);
 		}
 	}

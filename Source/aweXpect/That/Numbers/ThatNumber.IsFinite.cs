@@ -138,8 +138,9 @@ public static partial class ThatNumber
 		FloatingPointTraits<TNumber> traits,
 		bool negated)
 		where TNumber : struct
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsFiniteConstraint<TNumber>(it, grammars, traits.IsFinite).InvertIf(negated)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((Traits: traits, Negated: negated),
+				static (state, it, grammars) =>
+					new IsFiniteConstraint<TNumber>(it, grammars, state.Traits.IsFinite).InvertIf(state.Negated)),
 			subject);
 
 	[CreateExpectationFamily("Is{Not}Finite", Factory = typeof(FloatingPointNumberFactory), GuaranteesNotNull = true,
@@ -151,8 +152,10 @@ public static partial class ThatNumber
 		FloatingPointTraits<TNumber> traits,
 		bool negated)
 		where TNumber : struct
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new NullableIsFiniteConstraint<TNumber>(it, grammars, traits.IsFinite).InvertIf(negated)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((Traits: traits, Negated: negated),
+				static (state, it, grammars) =>
+					new NullableIsFiniteConstraint<TNumber>(it, grammars, state.Traits.IsFinite)
+						.InvertIf(state.Negated)),
 			subject);
 
 	private sealed class IsFiniteConstraint<TNumber>(

@@ -13,8 +13,8 @@ public static partial class ThatNullableGuid
 	/// </summary>
 	public static AndOrResult<Guid?, IThat<Guid?>> IsEqualTo(this IThat<Guid?> subject,
 		Guid? expected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint(it, grammars, expected)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(expected, static (expectedValue, it, grammars) =>
+				new IsEqualToConstraint(it, grammars, expectedValue)),
 			subject);
 
 	/// <summary>
@@ -22,8 +22,8 @@ public static partial class ThatNullableGuid
 	/// </summary>
 	public static AndOrResult<Guid?, IThat<Guid?>> IsNotEqualTo(this IThat<Guid?> subject,
 		Guid? unexpected)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint(it, grammars, unexpected).Invert()),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(unexpected, static (unexpectedValue, it, grammars) =>
+				new IsEqualToConstraint(it, grammars, unexpectedValue).Invert()),
 			subject);
 
 	private sealed class IsEqualToConstraint(string it, ExpectationGrammars grammars, Guid? expected)

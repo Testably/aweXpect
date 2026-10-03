@@ -16,8 +16,8 @@ public static partial class ThatBool
 	/// </remarks>
 	public static AndOrResult<bool, IThat<bool>> Implies(this IThat<bool> subject,
 		bool consequent)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new ImpliesConstraint(it, grammars, consequent)),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(consequent, static (consequentValue, it, grammars)
+				=> new ImpliesConstraint(it, grammars, consequentValue)),
 			subject);
 
 	/// <summary>
@@ -29,8 +29,8 @@ public static partial class ThatBool
 	/// </remarks>
 	public static AndOrResult<bool, IThat<bool>> DoesNotImply(this IThat<bool> subject,
 		bool consequent)
-		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new ImpliesConstraint(it, grammars, consequent).Invert()),
+		=> new(subject.Get().ExpectationBuilder.AddConstraint(consequent, static (consequentValue, it, grammars)
+				=> new ImpliesConstraint(it, grammars, consequentValue).Invert()),
 			subject);
 
 	private sealed class ImpliesConstraint(string it, ExpectationGrammars grammars, bool consequent)

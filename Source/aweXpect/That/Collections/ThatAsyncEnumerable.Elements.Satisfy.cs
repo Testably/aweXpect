@@ -24,13 +24,16 @@ public static partial class ThatAsyncEnumerable
 			predicate.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new AsyncCollectionConstraint<string?>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
-						predicate,
-						"did")),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, DoNotPopulateThisValue: doNotPopulateThisValue, Predicate: predicate),
+					static (state, it, grammars)
+						=> new AsyncCollectionConstraint<string?>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.Satisfies(g,
+								state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
+							state.Predicate,
+							"did")),
 				_subject);
 		}
 	}
@@ -49,13 +52,16 @@ public static partial class ThatAsyncEnumerable
 			predicate.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new AsyncCollectionConstraint<TItem>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
-						predicate,
-						"did")),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, DoNotPopulateThisValue: doNotPopulateThisValue, Predicate: predicate),
+					static (state, it, grammars)
+						=> new AsyncCollectionConstraint<TItem>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.Satisfies(g,
+								state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
+							state.Predicate,
+							"did")),
 				_subject);
 		}
 	}

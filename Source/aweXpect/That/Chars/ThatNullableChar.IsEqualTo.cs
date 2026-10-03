@@ -16,7 +16,8 @@ public static partial class ThatNullableChar
 	{
 		CharEqualityOptions options = new();
 		return new CharEqualityResult<char?, IThat<char?>>(subject.Get().ExpectationBuilder.AddConstraint(
-				(it, grammars) => new IsEqualToConstraint(it, grammars, expected, options)),
+				(Expected: expected, Options: options),
+				static (state, it, grammars) => new IsEqualToConstraint(it, grammars, state.Expected, state.Options)),
 			subject,
 			options);
 	}
@@ -30,7 +31,9 @@ public static partial class ThatNullableChar
 	{
 		CharEqualityOptions options = new();
 		return new CharEqualityResult<char?, IThat<char?>>(subject.Get().ExpectationBuilder.AddConstraint(
-				(it, grammars) => new IsEqualToConstraint(it, grammars, unexpected, options).Invert()),
+				(Unexpected: unexpected, Options: options),
+				static (state, it, grammars)
+					=> new IsEqualToConstraint(it, grammars, state.Unexpected, state.Options).Invert()),
 			subject,
 			options);
 	}

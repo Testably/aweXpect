@@ -34,15 +34,20 @@ public static partial class ThatAsyncEnumerable
 			ObjectEqualityOptions<TItem> equalityOptions = new();
 			equalityOptions.Equivalent(equivalencyOptions);
 			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-				expectationBuilder.AddConstraint((it, grammars)
-					=> new AsyncCollectionConstraint<TItem>(
-						it, grammars,
-						_quantifier,
-						g => ElementExpectations.IsEquivalentTo(g,
-							expected is null ? Formatter.Format(expected) : doNotPopulateThisValue.TrimCommonWhiteSpace()),
-						a => equalityOptions.AreConsideredEqual(a, expected),
-						"were",
-						appendOptionsContexts: equalityOptions.AppendContexts)),
+				expectationBuilder.AddConstraint(
+					(Quantifier: _quantifier, Expected: expected, DoNotPopulateThisValue: doNotPopulateThisValue,
+						EqualityOptions: equalityOptions),
+					static (state, it, grammars)
+						=> new AsyncCollectionConstraint<TItem>(
+							it, grammars,
+							state.Quantifier,
+							g => ElementExpectations.IsEquivalentTo(g,
+								state.Expected is null
+									? Formatter.Format(state.Expected)
+									: state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
+							a => state.EqualityOptions.AreConsideredEqual(a, state.Expected),
+							"were",
+							appendOptionsContexts: state.EqualityOptions.AppendContexts)),
 				_subject,
 				equalityOptions);
 		}

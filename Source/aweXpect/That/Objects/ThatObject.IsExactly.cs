@@ -19,8 +19,8 @@ public static partial class ThatObject
 	{
 		type.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<T, IThat<T?>>(expectationBuilder.AddConstraint((it, grammars)
-				=> new IsExactlyOfTypeConstraint(it, grammars, type)),
+		return new AndOrResult<T, IThat<T?>>(expectationBuilder.AddConstraint(type, static (expectedType, it, grammars)
+				=> new IsExactlyOfTypeConstraint(it, grammars, expectedType)),
 			subject);
 	}
 
@@ -35,8 +35,9 @@ public static partial class ThatObject
 	{
 		type.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new AndOrResult<T, IThat<T?>>(expectationBuilder.AddConstraint((it, grammars)
-				=> new IsExactlyOfTypeConstraint(it, grammars, type).Invert()),
+		return new AndOrResult<T, IThat<T?>>(expectationBuilder.AddConstraint(type,
+				static (unexpectedType, it, grammars)
+					=> new IsExactlyOfTypeConstraint(it, grammars, unexpectedType).Invert()),
 			subject);
 	}
 

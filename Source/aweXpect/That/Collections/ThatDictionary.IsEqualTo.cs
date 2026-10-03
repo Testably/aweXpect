@@ -43,11 +43,14 @@ public static partial class ThatDictionary
 		ObjectEqualityOptions<TValue> options = ObjectEqualityWithToleranceOptionsFactory.ForValuesOf<TValue>();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TCollection?, IThat<TCollection?>, TValue>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<TCollection, TKey, TValue>(it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(),
-					expectedEntries,
-					options).InvertIf(negated)),
+			expectationBuilder.AddConstraint(
+				(ExpectedExpression: expectedExpression, ExpectedEntries: expectedEntries, Options: options,
+					Negated: negated),
+				static (state, it, grammars)
+					=> new IsEqualToConstraint<TCollection, TKey, TValue>(it, grammars,
+						state.ExpectedExpression.TrimCommonWhiteSpace(),
+						state.ExpectedEntries,
+						state.Options).InvertIf(state.Negated)),
 			subject,
 			options);
 	}
@@ -68,11 +71,14 @@ public static partial class ThatDictionary
 			ThrowHelper.EnsureDistinctKeys(expected, negated);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TCollection?, IThat<TCollection?>, TValue, TTolerance>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<TCollection, TKey, TValue>(it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(),
-					expectedEntries,
-					options).InvertIf(negated)),
+			expectationBuilder.AddConstraint(
+				(ExpectedExpression: expectedExpression, ExpectedEntries: expectedEntries, Options: options,
+					Negated: negated),
+				static (state, it, grammars)
+					=> new IsEqualToConstraint<TCollection, TKey, TValue>(it, grammars,
+						state.ExpectedExpression.TrimCommonWhiteSpace(),
+						state.ExpectedEntries,
+						state.Options).InvertIf(state.Negated)),
 			subject,
 			options);
 	}
@@ -92,11 +98,14 @@ public static partial class ThatDictionary
 		StringEqualityOptions options = new(negated ? "unexpected" : "expected");
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityResult<TCollection?, IThat<TCollection?>>(
-			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToConstraint<TCollection, TKey, string?>(it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(),
-					expectedEntries,
-					options).InvertIf(negated)),
+			expectationBuilder.AddConstraint(
+				(ExpectedExpression: expectedExpression, ExpectedEntries: expectedEntries, Options: options,
+					Negated: negated),
+				static (state, it, grammars)
+					=> new IsEqualToConstraint<TCollection, TKey, string?>(it, grammars,
+						state.ExpectedExpression.TrimCommonWhiteSpace(),
+						state.ExpectedEntries,
+						state.Options).InvertIf(state.Negated)),
 			subject,
 			options);
 	}
