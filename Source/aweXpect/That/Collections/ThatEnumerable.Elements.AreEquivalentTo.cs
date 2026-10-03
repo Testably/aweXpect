@@ -34,7 +34,7 @@ public static partial class ThatEnumerable
 			equalityOptions.Equivalent(equivalencyOptions);
 			return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AsyncCollectionConstraint<TItem>(
+					=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsEquivalentTo(g,
@@ -80,7 +80,7 @@ public static partial class ThatEnumerable
 			equalityOptions.Equivalent(equivalencyOptions);
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, object?>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
+					=> new CollectionConstraint<TEnumerable, object?>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsEquivalentTo(g,
@@ -126,7 +126,7 @@ public static partial class ThatEnumerable
 			equalityOptions.Equivalent(equivalencyOptions);
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AsyncCollectionForEnumerableConstraint<TEnumerable>(
+					=> new CollectionConstraint<TEnumerable, object?>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsEquivalentTo(g,

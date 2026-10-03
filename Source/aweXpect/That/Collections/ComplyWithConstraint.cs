@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,19 +19,17 @@ namespace aweXpect;
 ///     number (<c>none start with …</c>, <c>at least one starts with …</c>). The negation can change this number, so
 ///     the negated text then comes from a second set of item expectations, which is only used for the text.
 /// </remarks>
-internal abstract class ComplyWithConstraint<TValue, TItem>
+internal abstract class ComplyWithConstraintBase<TValue, TItem>
 	: QuantifiedCollectionConstraintBase<TValue, TItem>,
 		IExpectationTextConstraint
 {
 	private readonly ManualExpectationBuilder<TItem> _builder;
-#if NET8_0_OR_GREATER
-	private CollectionContext _asyncCollectionContext;
-#endif
+	private CollectionContext _collectionContext;
 	private readonly ManualExpectationBuilder<TItem> _negatedBuilder;
 	private ConstraintResult? _unansweredItem;
 	private int _unansweredItemIndex;
 
-	protected ComplyWithConstraint(string it, ExpectationGrammars grammars, EnumerableQuantifier quantifier,
+	protected ComplyWithConstraintBase(string it, ExpectationGrammars grammars, EnumerableQuantifier quantifier,
 		Action<IThatSubject<TItem>> expectations)
 		: base(it, grammars, quantifier)
 	{
@@ -74,6 +73,15 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 	}
 
 	/// <summary>
+	///     Starts a new evaluation and prepares the item expectations for it.
+	/// </summary>
+	private protected Task Start(IEvaluationContext context, CancellationToken cancellationToken)
+	{
+		_collectionContext = default;
+		return PrepareExpectation(context, cancellationToken);
+	}
+
+	/// <summary>
 	///     Prepares the item expectations for a new evaluation.
 	/// </summary>
 	private protected async Task PrepareExpectation(IEvaluationContext context, CancellationToken cancellationToken)
@@ -87,27 +95,31 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 	}
 
 	/// <summary>
-	///     Classifies the <paramref name="items" /> by the item expectations.
+	///     Classifies the <paramref name="items" /> of the <paramref name="materialized" /> collection by the item
+	///     expectations.
 	/// </summary>
+	/// <param name="materialized">The materialized collection.</param>
 	/// <param name="items">The items of the collection.</param>
 	/// <param name="cancelEarly">Stops reading the items as soon as they determine the outcome.</param>
-	/// <param name="isCanceledBeforeTheEnd">Tells if the evaluation was canceled before the last item.</param>
-	/// <param name="addCollectionContext">
-	///     Adds the "Collection" context, which is incomplete when it receives <see langword="true" />.
-	/// </param>
 	/// <param name="context">The evaluation context.</param>
 	/// <param name="cancellationToken">The cancellation token of the evaluation.</param>
-	private protected async Task<ConstraintResult> IsMetByItems(IEnumerable<TItem> items, bool cancelEarly,
-		Func<bool> isCanceledBeforeTheEnd, Action<bool> addCollectionContext, IEvaluationContext context,
-		CancellationToken cancellationToken)
+	private protected async Task<ConstraintResult> IsMetByItems(CollectionItems<TItem> materialized,
+		IEnumerable<TItem> items, bool cancelEarly, IEvaluationContext context, CancellationToken cancellationToken)
 	{
 		int index = 0;
 		foreach (TItem item in items)
 		{
+			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
+			{
+				Outcome = Outcome.Undecided;
+				materialized.SetContext(ref _collectionContext, true);
+				return this;
+			}
+
 			ConstraintResult isMatch = await _builder.IsMetBy(item, context, cancellationToken);
 			if (StopsAt(isMatch, index, cancellationToken))
 			{
-				addCollectionContext(_unansweredItem is null);
+				materialized.SetContext(ref _collectionContext, _unansweredItem is null);
 				return this;
 			}
 
@@ -117,20 +129,13 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 			if (cancelEarly && IsDetermined)
 			{
 				CompleteEarly();
-				addCollectionContext(false);
-				return this;
-			}
-
-			if (isCanceledBeforeTheEnd())
-			{
-				Outcome = Outcome.Undecided;
-				addCollectionContext(true);
+				materialized.SetContext(ref _collectionContext);
 				return this;
 			}
 		}
 
 		Complete();
-		addCollectionContext(false);
+		materialized.SetContext(ref _collectionContext);
 		return this;
 	}
 
@@ -141,7 +146,6 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 	private protected async Task<ConstraintResult> IsMetByItems(IAsyncEnumerable<TItem> materialized,
 		IEvaluationContext context, CancellationToken cancellationToken)
 	{
-		_asyncCollectionContext = default;
 		LimitedCollection<TItem> items = new();
 		int count = 0;
 		await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
@@ -152,11 +156,11 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 			{
 				if (_unansweredItem is null)
 				{
-					_asyncCollectionContext.Set(items, true);
+					_collectionContext.Set(items, true);
 				}
 				else
 				{
-					_asyncCollectionContext.Set(materialized as IMaterializedAsyncEnumerable<TItem>);
+					_collectionContext.Set(materialized as IMaterializedAsyncEnumerable<TItem>);
 				}
 
 				return this;
@@ -168,7 +172,7 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 			if (IsDetermined)
 			{
 				CompleteEarly();
-				_asyncCollectionContext.Set(items, true);
+				_collectionContext.Set(items, true);
 				return this;
 			}
 		}
@@ -176,25 +180,23 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 		if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
 		{
 			Outcome = Outcome.Undecided;
-			_asyncCollectionContext.Set(items, true);
+			_collectionContext.Set(items, true);
 			return this;
 		}
 
 		Complete();
-		_asyncCollectionContext.Set(items, totalCount: count);
+		_collectionContext.Set(items, totalCount: count);
 		return this;
 	}
 #endif
 
-#if NET8_0_OR_GREATER
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
 	{
-		_asyncCollectionContext.AppendTo(contexts);
+		_collectionContext.AppendTo(contexts);
 		base.AppendContexts(contexts);
 	}
 
-#endif
 	/// <inheritdoc />
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
@@ -270,3 +272,84 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 		return builder;
 	}
 }
+
+/// <remarks>
+///     The items of a non-generic collection are formatted as the type of its first item that is not
+///     <see langword="null" />.
+/// </remarks>
+internal sealed class ComplyWithConstraint<TEnumerable, TItem>(
+	string it,
+	ExpectationGrammars grammars,
+	EnumerableQuantifier quantifier,
+	Action<IThatSubject<TItem>> expectations)
+	: ComplyWithConstraintBase<TEnumerable, TItem>(it, grammars, quantifier, expectations),
+		IAsyncContextConstraint<TEnumerable>
+	where TEnumerable : IEnumerable?
+{
+	private Type? _itemType;
+
+	/// <inheritdoc />
+	protected override Type ItemType => _itemType ?? typeof(TItem);
+
+	public async Task<ConstraintResult> IsMetBy(
+		TEnumerable actual,
+		IEvaluationContext context,
+		CancellationToken cancellationToken)
+	{
+		_itemType = null;
+		Actual = actual;
+		await Start(context, cancellationToken);
+		if (actual.IsDefaultImmutableArray())
+		{
+			return this.AsNullSubject(It);
+		}
+
+		if (actual is null)
+		{
+			return this;
+		}
+
+		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
+		IEnumerable<TItem> items = CollectionItems<TItem>.IsTyped<TEnumerable>()
+			? materialized.Items
+			: WithItemType(materialized.Items);
+		return await IsMetByItems(materialized, items, CollectionItems<TItem>.CountOf(actual) is null, context,
+			cancellationToken);
+	}
+
+	private IEnumerable<TItem> WithItemType(IEnumerable<TItem> items)
+	{
+		foreach (TItem item in items)
+		{
+			_itemType ??= item?.GetType();
+			yield return item;
+		}
+	}
+}
+
+#if NET8_0_OR_GREATER
+internal sealed class AsyncComplyWithConstraint<TItem>(
+	string it,
+	ExpectationGrammars grammars,
+	EnumerableQuantifier quantifier,
+	Action<IThatSubject<TItem>> expectations)
+	: ComplyWithConstraintBase<IAsyncEnumerable<TItem>?, TItem>(it, grammars, quantifier, expectations),
+		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
+{
+	public async Task<ConstraintResult> IsMetBy(
+		IAsyncEnumerable<TItem>? actual,
+		IEvaluationContext context,
+		CancellationToken cancellationToken)
+	{
+		Actual = actual;
+		await Start(context, cancellationToken);
+		if (actual is null)
+		{
+			return this;
+		}
+
+		return await IsMetByItems(context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken),
+			context, cancellationToken);
+	}
+}
+#endif

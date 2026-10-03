@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -33,7 +29,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemThatConstraint<TItem>(it, grammars, expectations, indexOptions)),
+				=> new HasItemThatConstraint<IEnumerable<TItem>?, TItem>(it, grammars, expectations, indexOptions)),
 			subject,
 			indexOptions);
 	}
@@ -51,7 +47,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemThatForEnumerableConstraint<IEnumerable, object?>(
+				=> new HasItemThatConstraint<IEnumerable, object?>(
 					it, grammars, expectations, indexOptions)),
 			subject,
 			indexOptions);
@@ -69,7 +65,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<ImmutableArray<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemThatForEnumerableConstraint<ImmutableArray<TItem>, TItem>(
+				=> new HasItemThatConstraint<ImmutableArray<TItem>, TItem>(
 					it, grammars, expectations, indexOptions)),
 			subject,
 			indexOptions);
@@ -88,7 +84,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemThatConstraint<TItem>(it, grammars, expectations, indexOptions)
+				=> new HasItemThatConstraint<IEnumerable<TItem>?, TItem>(it, grammars, expectations, indexOptions)
 					.Invert()),
 			subject,
 			indexOptions);
@@ -107,7 +103,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<IEnumerable>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemThatForEnumerableConstraint<IEnumerable, object?>(
+				=> new HasItemThatConstraint<IEnumerable, object?>(
 					it, grammars, expectations, indexOptions).Invert()),
 			subject,
 			indexOptions);
@@ -125,391 +121,10 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new HasItemResult<ImmutableArray<TItem>>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new HasItemThatForEnumerableConstraint<ImmutableArray<TItem>, TItem>(
+				=> new HasItemThatConstraint<ImmutableArray<TItem>, TItem>(
 					it, grammars, expectations, indexOptions).Invert()),
 			subject,
 			indexOptions);
 	}
 #endif
-
-	private sealed class HasItemThatConstraint<TItem> : ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>,
-		IAsyncContextConstraint<IEnumerable<TItem>?>,
-		IExpectationTextConstraint
-	{
-		private CollectionContext _collectionContext;
-		private readonly string _it;
-		private readonly ManualExpectationBuilder<TItem> _itemExpectationBuilder;
-		private readonly CollectionIndexOptions _options;
-		private TItem? _actual;
-		private bool _hasIndex;
-		private ConstraintResult? _unansweredItem;
-		private int _unansweredItemIndex;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> _collectionContext.AppendTo(contexts);
-
-		public HasItemThatConstraint(string it,
-			ExpectationGrammars grammars,
-			Action<IThatSubject<TItem>> expectations,
-			CollectionIndexOptions options) : base(it, grammars)
-		{
-			_it = it;
-			_options = options;
-
-			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>((Grammars & ~ExpectationGrammars.Plural) | ExpectationGrammars.Introduced);
-			expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
-		}
-
-		/// <inheritdoc cref="ConstraintResult.Outcome" />
-		/// <remarks>
-		///     An item that the expectations did not answer fails the expectation and its negation alike.
-		/// </remarks>
-		public override Outcome Outcome
-		{
-			get => _unansweredItem is null ? base.Outcome : Outcome.Failure;
-			protected set => base.Outcome = value;
-		}
-
-		/// <inheritdoc cref="ConstraintResult.FailureCause" />
-		public override Exception? FailureCause => _unansweredItem?.FailureCause;
-
-		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			Actual = actual;
-			_unansweredItem = null;
-			await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			IEnumerable<TItem> materialized = context.UseMaterializedEnumerable<TItem>(actual);
-			_collectionContext.Set(materialized);
-			_hasIndex = false;
-			Outcome = Outcome.Failure;
-
-			if (!TryCountForIndex(_options, actual, materialized, cancellationToken, out int? count))
-			{
-				Outcome = Outcome.Undecided;
-				return this;
-			}
-
-			int index = -1;
-			foreach (TItem item in materialized)
-			{
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
-				{
-					Outcome = Outcome.Undecided;
-					return this;
-				}
-
-				index++;
-				bool? isIndexInRange = IsIndexInRange(_options, index, count);
-				if (isIndexInRange == false)
-				{
-					break;
-				}
-
-				if (isIndexInRange is null)
-				{
-					continue;
-				}
-
-				if (await IsDecidedBy(item, index, context, cancellationToken))
-				{
-					break;
-				}
-			}
-
-			return this;
-		}
-
-		/// <summary>
-		///     Checks the <paramref name="item" /> at the <paramref name="index" /> and returns whether it decides the
-		///     outcome, so that no further item is checked.
-		/// </summary>
-		private async Task<bool> IsDecidedBy(TItem item, int index, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_hasIndex = true;
-			_actual = item;
-			ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
-			if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
-			{
-				Outcome = Outcome.Undecided;
-				return true;
-			}
-
-			if (isMatch.FailsBothWays())
-			{
-				_unansweredItem = isMatch;
-				_unansweredItemIndex = index;
-				return true;
-			}
-
-			Outcome = isMatch.Outcome;
-			return isMatch.Outcome == Outcome.Success;
-		}
-
-		public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(Grammars.Verb("has an item that ", "have an item that "));
-			_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-			stringBuilder.Append(_options.Match.GetDescription());
-			_itemExpectationBuilder.AppendReasons(stringBuilder);
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_unansweredItem is not null)
-			{
-				stringBuilder.AppendUnansweredItem(_unansweredItem, _unansweredItemIndex, indentation);
-				return;
-			}
-
-			if (_hasIndex)
-			{
-				if (_options.Match.OnlySingleIndex())
-				{
-					stringBuilder.Append(_it).Append(" had item ");
-					Formatter.Format(stringBuilder, _actual);
-					stringBuilder.Append(_options.Match.GetDescription());
-				}
-				else
-				{
-					stringBuilder.Append(_it).Append(" had no matching item").Append(_options.Match.GetDescription());
-				}
-			}
-			else
-			{
-				stringBuilder.Append(_it).Append(" had no item").Append(_options.Match.GetDescription());
-			}
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(Grammars.Verb("does not have an item that ", "do not have an item that "));
-			_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-			stringBuilder.Append(_options.Match.GetDescription());
-			_itemExpectationBuilder.AppendReasons(stringBuilder);
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_unansweredItem is not null)
-			{
-				stringBuilder.AppendUnansweredItem(_unansweredItem, _unansweredItemIndex, indentation);
-				return;
-			}
-
-			stringBuilder.Append(_it).Append(" had item ");
-			Formatter.Format(stringBuilder, _actual);
-			stringBuilder.Append(_options.Match.GetDescription());
-		}
-	}
-
-	private sealed class HasItemThatForEnumerableConstraint<TEnumerable, TItem> :
-		ConstraintResult.WithNotNullValue<TEnumerable>,
-		IAsyncContextConstraint<TEnumerable>,
-		IExpectationTextConstraint
-		where TEnumerable : IEnumerable?
-	{
-		private CollectionContext _collectionContext;
-		private readonly string _it;
-		private readonly ManualExpectationBuilder<TItem> _itemExpectationBuilder;
-		private readonly CollectionIndexOptions _options;
-		private object? _actual;
-		private bool _hasIndex;
-		private ConstraintResult? _unansweredItem;
-		private int _unansweredItemIndex;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> _collectionContext.AppendTo(contexts);
-
-		public HasItemThatForEnumerableConstraint(string it,
-			ExpectationGrammars grammars,
-			Action<IThatSubject<TItem>> expectations,
-			CollectionIndexOptions options) : base(it, grammars)
-		{
-			_it = it;
-			_options = options;
-
-			_itemExpectationBuilder = new ManualExpectationBuilder<TItem>((Grammars & ~ExpectationGrammars.Plural) | ExpectationGrammars.Introduced);
-			expectations.Invoke(new ThatSubject<TItem>(_itemExpectationBuilder));
-		}
-
-		/// <inheritdoc cref="ConstraintResult.Outcome" />
-		/// <remarks>
-		///     An item that the expectations did not answer fails the expectation and its negation alike.
-		/// </remarks>
-		public override Outcome Outcome
-		{
-			get => _unansweredItem is null ? base.Outcome : Outcome.Failure;
-			protected set => base.Outcome = value;
-		}
-
-		/// <inheritdoc cref="ConstraintResult.FailureCause" />
-		public override Exception? FailureCause => _unansweredItem?.FailureCause;
-
-		public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			Actual = actual;
-			_unansweredItem = null;
-			if (actual.IsDefaultImmutableArray())
-			{
-				return this.AsNullSubject(It);
-			}
-
-			await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
-			_collectionContext.Set(materialized);
-			_hasIndex = false;
-			Outcome = Outcome.Failure;
-
-			if (!TryCountForIndex(_options, actual, materialized.Cast<TItem>(), cancellationToken, out int? count))
-			{
-				Outcome = Outcome.Undecided;
-				return this;
-			}
-
-			int index = -1;
-			foreach (TItem item in materialized.Cast<TItem>())
-			{
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
-				{
-					Outcome = Outcome.Undecided;
-					return this;
-				}
-
-				index++;
-				bool? isIndexInRange = IsIndexInRange(_options, index, count);
-				if (isIndexInRange == false)
-				{
-					break;
-				}
-
-				if (isIndexInRange is null)
-				{
-					continue;
-				}
-
-				if (await IsDecidedBy(item, index, context, cancellationToken))
-				{
-					break;
-				}
-			}
-
-			return this;
-		}
-
-		/// <summary>
-		///     Checks the <paramref name="item" /> at the <paramref name="index" /> and returns whether it decides the
-		///     outcome, so that no further item is checked.
-		/// </summary>
-		private async Task<bool> IsDecidedBy(TItem item, int index, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_hasIndex = true;
-			_actual = item;
-			ConstraintResult isMatch = await _itemExpectationBuilder.IsMetBy(item, context, cancellationToken);
-			if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
-			{
-				Outcome = Outcome.Undecided;
-				return true;
-			}
-
-			if (isMatch.FailsBothWays())
-			{
-				_unansweredItem = isMatch;
-				_unansweredItemIndex = index;
-				return true;
-			}
-
-			Outcome = isMatch.Outcome;
-			return isMatch.Outcome == Outcome.Success;
-		}
-
-		public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(Grammars.Verb("has an item that ", "have an item that "));
-			_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-			stringBuilder.Append(_options.Match.GetDescription());
-			_itemExpectationBuilder.AppendReasons(stringBuilder);
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_unansweredItem is not null)
-			{
-				stringBuilder.AppendUnansweredItem(_unansweredItem, _unansweredItemIndex, indentation);
-				return;
-			}
-
-			if (_hasIndex)
-			{
-				if (_options.Match.OnlySingleIndex())
-				{
-					stringBuilder.Append(_it).Append(" had item ");
-					Formatter.Format(stringBuilder, _actual);
-					stringBuilder.Append(_options.Match.GetDescription());
-				}
-				else
-				{
-					stringBuilder.Append(_it).Append(" had no matching item").Append(_options.Match.GetDescription());
-				}
-			}
-			else
-			{
-				stringBuilder.Append(_it).Append(" had no item").Append(_options.Match.GetDescription());
-			}
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(Grammars.Verb("does not have an item that ", "do not have an item that "));
-			_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-			stringBuilder.Append(_options.Match.GetDescription());
-			_itemExpectationBuilder.AppendReasons(stringBuilder);
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_unansweredItem is not null)
-			{
-				stringBuilder.AppendUnansweredItem(_unansweredItem, _unansweredItemIndex, indentation);
-				return;
-			}
-
-			stringBuilder.Append(_it).Append(" had item ");
-			Formatter.Format(stringBuilder, _actual);
-			stringBuilder.Append(_options.Match.GetDescription());
-		}
-	}
 }

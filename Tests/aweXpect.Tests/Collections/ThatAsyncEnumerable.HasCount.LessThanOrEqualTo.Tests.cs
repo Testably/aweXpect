@@ -79,6 +79,36 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
+				public async Task WhenEvaluatedForSeveralItems_ShouldJudgeEachItemOnItsOwn()
+				{
+					IAsyncEnumerable<int>[] subject = [ToAsyncEnumerable(1), ToAsyncEnumerable(1, 2, 3, 4),];
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(x => x.HasCount().LessThanOrEqualTo(2));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             has at most 2 items for all items,
+						             but only 1 of 2 did
+
+						             Not matching items:
+						             [
+						               IAsyncEnumerable<int>
+						             ]
+
+						             Collection:
+						             [
+						               IAsyncEnumerable<int>,
+						               IAsyncEnumerable<int>
+						             ]
+
+						             Collection (item [1]):
+						             [1, 2, 3, (… and maybe more)]
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);

@@ -159,6 +159,19 @@ public sealed partial class ThatAsyncEnumerable
 		}
 
 		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldLetAnAlternativeToHasItemDecide()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
+
+			async Task Act()
+				=> await That(subject).HasItem(3).Or.Contains(1).WithCancellation(cts.Token);
+
+			await That(Act).DoesNotThrow()
+				.Because("the received items already contain 1, so the undecided item search does not matter");
+		}
+
+		[Fact]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldLetAnAlternativeToHasItemThatDecide()
 		{
 			using CancellationTokenSource cts = new();
@@ -257,6 +270,46 @@ public sealed partial class ThatAsyncEnumerable
 				.WithMessage("""
 				             Expected that subject
 				             ends with [2],
+				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [1, 2, (… and maybe more)]
+				             """);
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportHasItemAsNotVerified()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
+
+			async Task Act()
+				=> await That(subject).HasItem(3).WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item equal to 3,
+				             but it could not be verified, because the evaluation was already canceled
+
+				             Collection:
+				             [1, 2, (… and maybe more)]
+				             """);
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportHasItemFromTheEndAsNotVerified()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
+
+			async Task Act()
+				=> await That(subject).HasItem(2).AtIndex(0).FromEnd().WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item equal to 2 at index 0 from end,
 				             but it could not be verified, because the evaluation was already canceled
 
 				             Collection:
@@ -875,6 +928,26 @@ public sealed partial class ThatAsyncEnumerable
 				             """).And
 				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:01."))
 				.Because("a timeout lists the items received so far, whichever expectation was pending");
+		}
+
+		[Fact]
+		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldKeepTheFailureOfASiblingOfIsEqualTo()
+		{
+			IAsyncEnumerable<int> subject = HangAfter(1, 2);
+
+			async Task Act()
+				=> await That(subject).HasCount().EqualTo(0).And.IsEqualTo([1, 2, 3,]).WithTimeout(1.Seconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has exactly 0 items and is equal to collection [1, 2, 3,] in order,
+				             but it had at least 1 item
+
+				             Collection:
+				             [1, 2, (… and maybe more)]
+				             """)
+				.Because("the undecided comparison must not hide the decided failure of the count");
 		}
 
 		/// <remarks>

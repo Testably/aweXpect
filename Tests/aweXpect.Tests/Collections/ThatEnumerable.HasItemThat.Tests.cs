@@ -55,6 +55,27 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task WhenAnEarlierAttemptHadAnItemAtTheIndex_ShouldDescribeTheLastAttempt()
+			{
+				int calls = 0;
+				Func<int[]> subject = () => calls++ == 0 ? [2,] : [];
+
+				async Task Act()
+					=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+						.HasItemThat(x => x.IsEqualTo(1)).AtIndex(0);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             eventually has an item that is equal to 1 at index 0 within 0:00.200,
+					             but it had no item at index 0
+
+					             Collection:
+					             []
+					             """);
+			}
+
 #if NET8_0_OR_GREATER
 			[Fact]
 			public async Task WhenCancellationLeavesAnItemOfAnImmutableArrayUndecided_ShouldReportTheEvaluationAsCanceled()

@@ -24,7 +24,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<string?>(
+					=> new CollectionConstraint<IEnumerable<string?>?, string?>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
@@ -49,7 +49,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<TItem>(
+					=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
@@ -74,7 +74,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionForEnumerableConstraint<TEnumerable>(
+					=> new CollectionConstraint<TEnumerable, object?>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
@@ -99,7 +99,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionForEnumerableConstraint<TEnumerable>(
+					=> new CollectionConstraint<TEnumerable, object?>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
@@ -124,7 +124,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionForEnumerableConstraint<TEnumerable>(
+					=> new CollectionConstraint<TEnumerable, object?>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),

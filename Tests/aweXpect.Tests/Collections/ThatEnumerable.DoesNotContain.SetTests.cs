@@ -145,6 +145,28 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenUntypedStringSetContainsItemAccordingToItsComparer_ShouldFail()
+			{
+				System.Collections.IEnumerable subject = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "a", };
+
+				async Task Act()
+					=> await That(subject).DoesNotContain("A");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain an item equal to "A" using the subject's StringComparer.OrdinalIgnoreCase,
+					             but it contained "A" once
+
+					             Collection:
+					             [
+					               "a"
+					             ]
+					             """)
+					.Because("the set is asked for the expected item, as for a typed set");
+			}
+
+			[Fact]
 			public async Task WithDefaultComparer_ShouldNotMatchDateTimesOfIncompatibleKind()
 			{
 				DateTime utc = new(2026, 9, 24, 12, 0, 0, DateTimeKind.Utc);

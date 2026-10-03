@@ -2,11 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -74,7 +70,7 @@ public static partial class ThatAsyncEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueConstraint<string?, string?>(
+					=> new AsyncAreUniqueConstraint<string?, string?>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
@@ -95,7 +91,7 @@ public static partial class ThatAsyncEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueConstraint<string?, TMember>(
+					=> new AsyncAreUniqueConstraint<string?, TMember>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
@@ -117,7 +113,7 @@ public static partial class ThatAsyncEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueConstraint<string?, string>(
+					=> new AsyncAreUniqueConstraint<string?, string>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
@@ -190,7 +186,7 @@ public static partial class ThatAsyncEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueConstraint<TItem, TItem>(
+					=> new AsyncAreUniqueConstraint<TItem, TItem>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
@@ -212,7 +208,7 @@ public static partial class ThatAsyncEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueConstraint<TItem, TMember>(
+					=> new AsyncAreUniqueConstraint<TItem, TMember>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
@@ -234,7 +230,7 @@ public static partial class ThatAsyncEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new StringEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new AreUniqueConstraint<TItem, string>(
+					=> new AsyncAreUniqueConstraint<TItem, string>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsUniqueFor(expectUnique ? g : g.Negate(),
@@ -245,82 +241,6 @@ public static partial class ThatAsyncEnumerable
 						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
-		}
-	}
-
-	private sealed class AreUniqueConstraint<TItem, TMember>(
-		string it,
-		ExpectationGrammars grammars,
-		EnumerableQuantifier quantifier,
-		Func<ExpectationGrammars, string> expectationText,
-		Func<TItem, TMember> memberAccessor,
-		Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
-		bool expectUnique,
-		Action<ResultContextCollector>? appendOptionsContexts = null,
-		Func<Func<TMember, int>?>? createGetHashCode = null)
-		: QuantifiedCollectionConstraint<IAsyncEnumerable<TItem>?, TItem>(it, grammars,
-				quantifier, expectationText, "were"),
-			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
-	{
-		private CollectionContext _collectionContext;
-
-		public async Task<ConstraintResult> IsMetBy(
-			IAsyncEnumerable<TItem>? actual,
-			IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			Actual = actual;
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			IAsyncEnumerable<TItem> materialized =
-				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
-			OccurrenceCounter<TMember> occurrences = new(areConsideredEqual, createGetHashCode?.Invoke());
-			List<(TItem Item, int MemberIndex)> items = [];
-			await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
-			{
-				items.Add((item, await occurrences.Add(UserCode.Invoke(memberAccessor, item, "the member selector"))));
-				if (occurrences.Determines(Quantifier, expectUnique))
-				{
-					RecordAll(items, occurrences);
-					CompleteEarly();
-					_collectionContext.Set(items.ConvertAll(x => x.Item), true);
-					return this;
-				}
-			}
-
-			List<TItem> collection = items.ConvertAll(x => x.Item);
-			if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
-			{
-				Outcome = Outcome.Undecided;
-				_collectionContext.Set(collection, true);
-				return this;
-			}
-
-			RecordAll(items, occurrences);
-			Complete();
-			_collectionContext.Set(collection);
-			return this;
-		}
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			_collectionContext.AppendTo(contexts);
-			base.AppendContexts(contexts);
-			appendOptionsContexts?.Invoke(contexts);
-		}
-
-		private void RecordAll(List<(TItem Item, int MemberIndex)> items, OccurrenceCounter<TMember> occurrences)
-		{
-			foreach ((TItem item, int memberIndex) in items)
-			{
-				Record(item, occurrences.IsUnique(memberIndex) == expectUnique);
-			}
 		}
 	}
 }

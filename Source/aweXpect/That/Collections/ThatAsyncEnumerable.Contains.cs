@@ -2,12 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
-using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -135,7 +132,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainConstraint<TItem>(it, grammars,
+				new AsyncContainConstraint<TItem>(it, grammars,
 					(q, g) => q.ToContainsExpectation(g,
 						$"an item matching {predicateExpression.TrimCommonWhiteSpace()}"),
 					predicate,
@@ -160,7 +157,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<TItem, TItem>(it, grammars,
+				new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
@@ -188,7 +185,7 @@ public static partial class ThatAsyncEnumerable
 		return new ObjectProperCollectionMatchWithToleranceResult<IAsyncEnumerable<TItem>,
 			IThat<IAsyncEnumerable<TItem>?>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<TItem, TItem>(it, grammars,
+				new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
@@ -213,7 +210,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<string?, string?>(it, grammars,
+				new AsyncIsEqualToConstraint<string?, string?>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
@@ -247,7 +244,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToFromPredicateConstraint<TItem, TItem>(it, grammars,
+				=> new AsyncIsEqualToFromPredicateConstraint<TItem, TItem>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
@@ -280,7 +277,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars)
-				=> new IsEqualToFromExpectationsConstraint<TItem, TItem>(it, grammars,
+				=> new AsyncIsEqualToFromExpectationsConstraint<TItem, TItem>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
@@ -310,338 +307,5 @@ public static partial class ThatAsyncEnumerable
 		=> options.InspectsSubject
 			? "an item " + options.GetExpectation(expected, ExpectationGrammars.None)
 			: Formatter.Format(expected) + options;
-
-	private sealed class ContainConstraint<TItem>(
-		string it,
-		ExpectationGrammars grammars,
-		Func<Quantifier, ExpectationGrammars, string> expectationText,
-		Func<TItem, bool> predicate,
-		Quantifier quantifier)
-		: ConstraintResult(grammars),
-			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
-	{
-		private CollectionContext _collectionContext;
-		private IAsyncEnumerable<TItem>? _actual;
-		private int _count;
-		private bool _isFinished;
-		private bool _isNegated;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> _collectionContext.AppendTo(contexts);
-
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			_actual = actual;
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			IAsyncEnumerable<TItem> materializedEnumerable =
-				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
-			int maximumNumberOfCollectionItems =
-				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
-			LimitedCollection<TItem> items = new();
-			_count = 0;
-			_isFinished = false;
-			int totalCount = 0;
-			await foreach (TItem item in materializedEnumerable.UntilCancelled(cancellationToken))
-			{
-				totalCount++;
-				if (items.Count <= maximumNumberOfCollectionItems)
-				{
-					items.Add(item);
-				}
-
-				if (UserCode.Invoke(predicate, item, "the predicate"))
-				{
-					_count++;
-					bool? check = quantifier.Check(_count, false);
-					switch (check)
-					{
-						case false:
-							// The verdict is final, so no further items are received only for the context.
-							Outcome = Outcome.Failure;
-							_collectionContext.Set(items, true);
-							return this;
-						case true:
-							Outcome = Outcome.Success;
-							_collectionContext.Set(items, true);
-							return this;
-					}
-				}
-			}
-
-			if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
-			{
-				Outcome = Outcome.Undecided;
-				_collectionContext.Set(items, true);
-				return this;
-			}
-
-			_collectionContext.Set(items, totalCount: totalCount);
-			_isFinished = true;
-			if (quantifier.Check(_count, true) ?? _isNegated)
-			{
-				Outcome = Outcome.Success;
-				return this;
-			}
-
-			Outcome = Outcome.Failure;
-			return this;
-		}
-
-		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(expectationText.Invoke(quantifier, Grammars));
-
-		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_actual == null)
-			{
-				stringBuilder.ItWasNull(it, Grammars);
-			}
-			else if (Outcome == Outcome.Undecided)
-			{
-				AppendCanceledResult(stringBuilder, it);
-			}
-			else if (_isFinished)
-			{
-				if (_count == 0)
-				{
-					stringBuilder.Append(it).Append(" did not contain it");
-				}
-				else if (_count == 1)
-				{
-					stringBuilder.Append(it).Append(" contained it once");
-				}
-				else if (_count == 2)
-				{
-					stringBuilder.Append(it).Append(" contained it twice");
-				}
-				else
-				{
-					stringBuilder.Append(it).Append(" contained it ").Append(_count).Append(" times");
-				}
-			}
-			else
-			{
-				stringBuilder.Append(it).Append(" contained it at least ");
-				if (_count == 1)
-				{
-					stringBuilder.Append("once");
-				}
-				else if (_count == 2)
-				{
-					stringBuilder.Append("twice");
-				}
-				else
-				{
-					stringBuilder.Append(_count).Append(" times");
-				}
-			}
-		}
-
-		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
-		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
-		{
-			if (_actual is TValue typedValue)
-			{
-				value = typedValue;
-				return true;
-			}
-
-			value = default;
-			return typeof(TValue).IsAssignableFrom(typeof(IAsyncEnumerable<TItem>));
-		}
-
-		/// <inheritdoc cref="ConstraintResult.Outcome" />
-		public override Outcome Outcome
-		{
-			get => _actual is null ? Outcome.Failure : base.Outcome;
-			protected set => base.Outcome = value;
-		}
-
-		public override ConstraintResult Negate()
-		{
-			_isNegated = !_isNegated;
-			quantifier.Negate();
-			Outcome = Outcome switch
-			{
-				Outcome.Failure => Outcome.Success,
-				Outcome.Success => Outcome.Failure,
-				_ => Outcome,
-			};
-			return this;
-		}
-	}
-
-	private sealed class AsyncContainConstraint<TItem>(
-		string it,
-		ExpectationGrammars grammars,
-		Func<Quantifier, ExpectationGrammars, string> expectationText,
-		TItem expected,
-		Func<TItem, ValueTask<bool>> predicate,
-		Quantifier quantifier,
-		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: ConstraintResult(grammars),
-			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
-	{
-		private CollectionContext _collectionContext;
-		private IAsyncEnumerable<TItem>? _actual;
-		private int _count;
-		private TItem? _firstFoundItem;
-		private bool _isFinished;
-		private bool _isNegated;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			_collectionContext.AppendTo(contexts);
-			appendOptionsContexts?.Invoke(contexts);
-		}
-
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			_actual = actual;
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			IAsyncEnumerable<TItem> materializedEnumerable =
-				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
-			int maximumNumberOfCollectionItems =
-				Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
-			LimitedCollection<TItem> items = new();
-			_count = 0;
-			_isFinished = false;
-			int totalCount = 0;
-			await foreach (TItem item in materializedEnumerable.UntilCancelled(cancellationToken))
-			{
-				totalCount++;
-				if (items.Count <= maximumNumberOfCollectionItems)
-				{
-					items.Add(item);
-				}
-
-				if (await predicate(item))
-				{
-					bool? check = CountMatch(item);
-					switch (check)
-					{
-						case false:
-							// The verdict is final, so no further items are received only for the context.
-							Outcome = Outcome.Failure;
-							_collectionContext.Set(items, true);
-							return this;
-						case true:
-							Outcome = Outcome.Success;
-							_collectionContext.Set(items, true);
-							return this;
-					}
-				}
-			}
-
-			if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
-			{
-				Outcome = Outcome.Undecided;
-				_collectionContext.Set(items, true);
-				return this;
-			}
-
-			_collectionContext.Set(items, totalCount: totalCount);
-			_isFinished = true;
-			Outcome = (quantifier.Check(_count, true) ?? _isNegated) ? Outcome.Success : Outcome.Failure;
-			return this;
-		}
-
-		private bool? CountMatch(TItem item)
-		{
-			_count++;
-			if (_count == 1)
-			{
-				_firstFoundItem = item;
-			}
-
-			return quantifier.Check(_count, false);
-		}
-
-		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(expectationText.Invoke(quantifier, Grammars));
-
-		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_actual == null)
-			{
-				stringBuilder.ItWasNull(it, Grammars);
-			}
-			else if (Outcome == Outcome.Undecided)
-			{
-				AppendCanceledResult(stringBuilder, it);
-			}
-			else if (_isFinished && _count == 0)
-			{
-				stringBuilder.Append(it).Append(" did not contain it");
-			}
-			else
-			{
-				stringBuilder.Append(it).Append(" contained ");
-				Formatter.Format(stringBuilder, _count == 1 ? _firstFoundItem : expected);
-				stringBuilder.Append(_isFinished ? " " : " at least ");
-				if (_count == 1)
-				{
-					stringBuilder.Append("once");
-				}
-				else if (_count == 2)
-				{
-					stringBuilder.Append("twice");
-				}
-				else
-				{
-					stringBuilder.Append(_count).Append(" times");
-				}
-			}
-		}
-
-		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
-		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
-		{
-			if (_actual is TValue typedValue)
-			{
-				value = typedValue;
-				return true;
-			}
-
-			value = default;
-			return typeof(TValue).IsAssignableFrom(typeof(IAsyncEnumerable<TItem>));
-		}
-
-		/// <inheritdoc cref="ConstraintResult.Outcome" />
-		public override Outcome Outcome
-		{
-			get => _actual is null ? Outcome.Failure : base.Outcome;
-			protected set => base.Outcome = value;
-		}
-
-		public override ConstraintResult Negate()
-		{
-			_isNegated = !_isNegated;
-			quantifier.Negate();
-			Outcome = Outcome switch
-			{
-				Outcome.Failure => Outcome.Success,
-				Outcome.Success => Outcome.Failure,
-				_ => Outcome,
-			};
-			return this;
-		}
-	}
 }
 #endif

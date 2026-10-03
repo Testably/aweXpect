@@ -333,6 +333,25 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
+			[Fact]
+			public async Task WhenAnEarlierAttemptWasASetWithAComparer_ShouldNotNameItsComparerForANullSubject()
+			{
+				int calls = 0;
+				Func<HashSet<string>?> subject = ()
+					=> calls++ == 0 ? new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "a", } : null;
+
+				async Task Act()
+					=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+						.IsEqualTo(["b",]).InAnyOrder();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             eventually is equal to collection ["b",] in any order within 0:00.200,
+					             but it was <null>
+					             """);
+			}
+
 			[Theory]
 			[InlineData(false)]
 			[InlineData(true)]

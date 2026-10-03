@@ -123,13 +123,13 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions =
 					new(options, () => expected is not null && options.HasDefaultMatchType);
-				return new AsyncContainConstraint<TItem>(it, grammars,
+				return new ContainConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
 					(q, g) => q.ToContainsExpectation(g,
 						ContainedItemExpectation(options, expected) + itemOptions.Comparer),
 					expected,
 					a => itemOptions.AreConsideredEqual(a, expected),
-					a => itemOptions.UseComparerOf(a) ? ContainsBySetLookup(a, expected) : null,
 					quantifier,
+					a => itemOptions.UseComparerOf(a) ? ContainsBySetLookup(a, expected) : null,
 					appendOptionsContexts: options.AppendContexts).InvertIf(negated);
 			}),
 			subject,
@@ -154,13 +154,13 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<string?, string?> itemOptions =
 					new(options, () => expected is not null && options.ComparesByOrdinalEquality);
-				return new AsyncContainConstraint<string?>(it, grammars,
+				return new ContainConstraint<IEnumerable<string?>?, string?>(it, grammars,
 					(q, g) => q.ToContainsExpectation(g,
 						ContainedStringExpectation(options, expected) + itemOptions.Comparer),
 					expected,
 					a => itemOptions.AreConsideredEqual(a, expected),
-					a => itemOptions.UseComparerOf(a) ? ContainsBySetLookup(a, expected) : null,
-					quantifier).InvertIf(negated);
+					quantifier,
+					a => itemOptions.UseComparerOf(a) ? ContainsBySetLookup(a, expected) : null).InvertIf(negated);
 			}),
 			subject,
 			quantifier,
@@ -184,13 +184,13 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<TItem, TItem> itemOptions = new(options,
 					() => expected is not null && ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options));
-				return new AsyncContainConstraint<TItem>(it, grammars,
+				return new ContainConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
 					(q, g) => q.ToContainsExpectation(g,
 						ContainedItemExpectation(options, expected) + itemOptions.Comparer),
 					expected,
 					a => itemOptions.AreConsideredEqual(a, expected),
-					a => itemOptions.UseComparerOf(a) ? ContainsBySetLookup(a, expected) : null,
 					quantifier,
+					a => itemOptions.UseComparerOf(a) ? ContainsBySetLookup(a, expected) : null,
 					appendOptionsContexts: options.AppendContexts).InvertIf(negated);
 			}),
 			subject,
@@ -212,7 +212,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainConstraint<TItem>(it, grammars,
+				new ContainConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
 					(q, g) => q.ToContainsExpectation(g,
 						$"an item matching {predicateExpression.TrimCommonWhiteSpace()}"),
 					predicate,
@@ -258,13 +258,15 @@ public static partial class ThatEnumerable
 			{
 				SubjectEqualityOptions<TSetItem, object?> itemOptions =
 					new(options, () => expected is not null && options.HasDefaultMatchType);
-				return new AsyncContainForEnumerableConstraint<IEnumerable, object?>(it, grammars,
+				return new ContainConstraint<IEnumerable?, object?>(it, grammars,
 					(q, g) => q.ToContainsExpectation(g,
 						ContainedItemExpectation(options, expected) + itemOptions.Comparer),
 					expected,
 					a => itemOptions.AreConsideredEqual(a, expected),
 					quantifier,
-					itemOptions.UseComparerOf,
+					a => itemOptions.UseComparerOf(a) && expected is TSetItem typedExpected
+						? ContainsBySetLookup(a, typedExpected)
+						: null,
 					appendOptionsContexts: options.AppendContexts).InvertIf(negated);
 			}),
 			subject,
@@ -287,7 +289,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CountResult<IEnumerable, IThat<IEnumerable?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainForEnumerableConstraint<IEnumerable, object?>(it, grammars,
+				new ContainConstraint<IEnumerable?, object?>(it, grammars,
 					(q, g) => q.ToContainsExpectation(g,
 						$"an item matching {predicateExpression.TrimCommonWhiteSpace()}"),
 					predicate,
@@ -310,7 +312,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncContainForEnumerableConstraint<TCollection, TItem>(it, grammars,
+				new ContainConstraint<TCollection?, TItem>(it, grammars,
 					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected)),
 					expected,
 					a => options.AreConsideredEqual(a, expected),
@@ -335,7 +337,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeCountResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncContainForEnumerableConstraint<TCollection, string?>(it, grammars,
+				new ContainConstraint<TCollection?, string?>(it, grammars,
 					(q, g) => q.ToContainsExpectation(g, ContainedStringExpectation(options, expected)),
 					expected,
 					a => options.AreConsideredEqual(a, expected),
@@ -360,7 +362,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCountWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new AsyncContainForEnumerableConstraint<TCollection, TItem>(it, grammars,
+				new ContainConstraint<TCollection?, TItem>(it, grammars,
 					(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(options, expected)),
 					expected,
 					a => options.AreConsideredEqual(a, expected),
@@ -386,7 +388,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CountResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new ContainForEnumerableConstraint<TCollection, TItem>(it, grammars,
+				new ContainConstraint<TCollection?, TItem>(it, grammars,
 					(q, g) => q.ToContainsExpectation(g,
 						$"an item matching {predicateExpression.TrimCommonWhiteSpace()}"),
 					predicate,
@@ -412,7 +414,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<TItem, TItem>(it, grammars,
+				new IsEqualToConstraint<IEnumerable<TItem>, TItem, TItem>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true,
 					usesDefaultEquality: () => options.HasDefaultMatchType).InvertIf(negated)),
@@ -439,7 +441,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<string?, string?>(it, grammars,
+				new IsEqualToConstraint<IEnumerable<string?>, string?, string?>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true,
 					usesDefaultEquality: () => options.ComparesByOrdinalEquality).InvertIf(negated)),
@@ -465,7 +467,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<string?[], IThat<string?[]?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<string?, string?>(it, grammars,
+				new IsEqualToConstraint<IEnumerable<string?>, string?, string?>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
@@ -494,7 +496,7 @@ public static partial class ThatEnumerable
 		return new ObjectProperCollectionMatchWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>,
 			TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToConstraint<TItem, TItem>(it, grammars,
+				new IsEqualToConstraint<IEnumerable<TItem>, TItem, TItem>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true,
 					usesDefaultEquality: () => ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(options))
@@ -522,7 +524,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<IEnumerable, IThat<IEnumerable?>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToForEnumerableConstraint<IEnumerable, TItem, TItem>(it, grammars,
+				new IsEqualToConstraint<IEnumerable, TItem, TItem>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true,
 					usesDefaultEquality: () => options.HasDefaultMatchType).InvertIf(negated)),
@@ -562,7 +564,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToForEnumerableConstraint<TCollection, TItem, TItem>(it, grammars,
+				new IsEqualToConstraint<TCollection, TItem, TItem>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
@@ -588,7 +590,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringProperCollectionMatchResult<TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToForEnumerableConstraint<TCollection, string?, string?>(it, grammars,
+				new IsEqualToConstraint<TCollection, string?, string?>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
@@ -615,7 +617,7 @@ public static partial class ThatEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectProperCollectionMatchWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars) =>
-				new IsEqualToForEnumerableConstraint<TCollection, TItem, TItem>(it, grammars,
+				new IsEqualToConstraint<TCollection, TItem, TItem>(it, grammars,
 					expectedExpression.TrimCommonWhiteSpace(), expectedValues, options, matchOptions,
 					failsForNullSubject: true).InvertIf(negated)),
 			subject,
@@ -745,25 +747,6 @@ public static partial class ThatEnumerable
 			: Formatter.Format(expected) + options;
 
 	/// <summary>
-	///     Casts the <paramref name="item" /> of an untyped enumerable to <typeparamref name="TItem" />.
-	/// </summary>
-	/// <remarks>
-	///     A <see langword="null" /> item is not matched by a type pattern, but is a valid value whenever
-	///     <typeparamref name="TItem" /> admits it.
-	/// </remarks>
-	private static bool TryCastItem<TItem>(object? item, out TItem typedItem)
-	{
-		if (item is TItem typed)
-		{
-			typedItem = typed;
-			return true;
-		}
-
-		typedItem = default!;
-		return item is null && default(TItem) is null;
-	}
-
-	/// <summary>
 	///     Asks a set <paramref name="collection" /> whose comparer decides itself whether it contains the
 	///     <paramref name="expected" /> item, or returns <see langword="null" /> when the items have to be enumerated
 	///     instead.
@@ -772,669 +755,9 @@ public static partial class ThatEnumerable
 	///     A <see langword="null" /> item is enumerated, because a set whose comparer rejects <see langword="null" />
 	///     throws when asked for it.
 	/// </remarks>
-	private static bool? ContainsBySetLookup<TItem>(IEnumerable<TItem> collection, TItem expected)
+	private static bool? ContainsBySetLookup<TItem>(object collection, TItem expected)
 		=> expected is not null
 			? UserCode.Invoke(static values => values.Collection.Contains(values.Expected),
 				(Collection: (ICollection<TItem>)collection, Expected: expected), "the comparer")
 			: null;
-
-	private sealed class ContainConstraint<TItem>(
-		string it,
-		ExpectationGrammars grammars,
-		Func<Quantifier, ExpectationGrammars, string> expectationText,
-		Func<TItem, bool> predicate,
-		Quantifier quantifier)
-		: ConstraintResult(grammars),
-			IAsyncContextConstraint<IEnumerable<TItem>?>
-	{
-		private CollectionContext _collectionContext;
-		private IEnumerable<TItem>? _actual;
-		private int _count;
-		private bool _isFinished;
-		private bool _isNegated;
-		private IEnumerable<TItem>? _materializedEnumerable;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> _collectionContext.AppendTo(contexts);
-
-		public Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			_actual = actual;
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return Task.FromResult<ConstraintResult>(this);
-			}
-
-			_materializedEnumerable =
-				context.UseMaterializedEnumerable<TItem>(actual);
-			_count = 0;
-			_isFinished = false;
-			foreach (TItem item in _materializedEnumerable)
-			{
-				if (cancellationToken.IsCanceledBeforeTheEndOf(_materializedEnumerable))
-				{
-					Outcome = Outcome.Undecided;
-					_collectionContext.Set(_materializedEnumerable, true);
-					return Task.FromResult<ConstraintResult>(this);
-				}
-
-				if (!UserCode.Invoke(predicate, item, "the predicate"))
-				{
-					continue;
-				}
-
-				_count++;
-				bool? check = quantifier.Check(_count, false);
-				switch (check)
-				{
-					case false:
-						Outcome = Outcome.Failure;
-						_collectionContext.Set(_materializedEnumerable);
-						return Task.FromResult<ConstraintResult>(this);
-					case true:
-						Outcome = Outcome.Success;
-						_collectionContext.Set(_materializedEnumerable);
-						return Task.FromResult<ConstraintResult>(this);
-				}
-			}
-
-			_collectionContext.Set(_materializedEnumerable);
-			_isFinished = true;
-			if (quantifier.Check(_count, true) ?? _isNegated)
-			{
-				Outcome = Outcome.Success;
-				return Task.FromResult<ConstraintResult>(this);
-			}
-
-			Outcome = Outcome.Failure;
-			return Task.FromResult<ConstraintResult>(this);
-		}
-
-		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(expectationText.Invoke(quantifier, Grammars));
-
-		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_actual == null)
-			{
-				stringBuilder.ItWasNull(it, Grammars);
-			}
-			else if (Outcome == Outcome.Undecided)
-			{
-				AppendCanceledResult(stringBuilder, it);
-			}
-			else if (_isFinished)
-			{
-				if (_count == 0)
-				{
-					stringBuilder.Append(it).Append(" did not contain it");
-				}
-				else if (_count == 1)
-				{
-					stringBuilder.Append(it).Append(" contained it once");
-				}
-				else if (_count == 2)
-				{
-					stringBuilder.Append(it).Append(" contained it twice");
-				}
-				else
-				{
-					stringBuilder.Append(it).Append(" contained it ").Append(_count).Append(" times");
-				}
-			}
-			else
-			{
-				stringBuilder.Append(it).Append(" contained it at least ");
-				if (_count == 1)
-				{
-					stringBuilder.Append("once");
-				}
-				else if (_count == 2)
-				{
-					stringBuilder.Append("twice");
-				}
-				else
-				{
-					stringBuilder.Append(_count).Append(" times");
-				}
-			}
-		}
-
-		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
-		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
-		{
-			if (_actual is TValue typedValue)
-			{
-				value = typedValue;
-				return true;
-			}
-
-			value = default;
-			return typeof(TValue).IsAssignableFrom(typeof(IEnumerable<TItem>));
-		}
-
-		/// <inheritdoc cref="ConstraintResult.Outcome" />
-		public override Outcome Outcome
-		{
-			get => _actual is null ? Outcome.Failure : base.Outcome;
-			protected set => base.Outcome = value;
-		}
-
-		public override ConstraintResult Negate()
-		{
-			_isNegated = !_isNegated;
-			quantifier.Negate();
-			Outcome = Outcome switch
-			{
-				Outcome.Failure => Outcome.Success,
-				Outcome.Success => Outcome.Failure,
-				_ => Outcome,
-			};
-			return this;
-		}
-	}
-
-	private sealed class AsyncContainConstraint<TItem>(
-		string it,
-		ExpectationGrammars grammars,
-		Func<Quantifier, ExpectationGrammars, string> expectationText,
-		TItem expected,
-		Func<TItem, ValueTask<bool>> predicate,
-		Func<IEnumerable<TItem>, bool?> lookup,
-		Quantifier quantifier,
-		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: ConstraintResult(grammars),
-			IAsyncContextConstraint<IEnumerable<TItem>?>
-	{
-		private CollectionContext _collectionContext;
-		private IEnumerable<TItem>? _actual;
-		private int _count;
-		private TItem? _firstFoundItem;
-		private bool _isFinished;
-		private bool _isNegated;
-		private IEnumerable<TItem>? _materializedEnumerable;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			_collectionContext.AppendTo(contexts);
-			appendOptionsContexts?.Invoke(contexts);
-		}
-
-		public async Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			_actual = actual;
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			_isFinished = false;
-			if (lookup(actual) is { } isContained)
-			{
-				_count = isContained ? 1 : 0;
-				_firstFoundItem = expected;
-				return Finish(actual);
-			}
-
-			_materializedEnumerable =
-				context.UseMaterializedEnumerable<TItem>(actual);
-			_count = 0;
-			foreach (TItem item in _materializedEnumerable)
-			{
-				if (cancellationToken.IsCanceledBeforeTheEndOf(_materializedEnumerable))
-				{
-					Outcome = Outcome.Undecided;
-					_collectionContext.Set(_materializedEnumerable, true);
-					return this;
-				}
-
-				if (!await predicate(item))
-				{
-					continue;
-				}
-
-				_count++;
-				if (_count == 1)
-				{
-					_firstFoundItem = item;
-				}
-
-				bool? check = quantifier.Check(_count, false);
-				switch (check)
-				{
-					case false:
-						Outcome = Outcome.Failure;
-						_collectionContext.Set(_materializedEnumerable);
-						return this;
-					case true:
-						Outcome = Outcome.Success;
-						_collectionContext.Set(_materializedEnumerable);
-						return this;
-				}
-			}
-
-			return Finish(_materializedEnumerable);
-		}
-
-		private AsyncContainConstraint<TItem> Finish(IEnumerable<TItem> collection)
-		{
-			_collectionContext.Set(collection);
-			_isFinished = true;
-			if (quantifier.Check(_count, true) ?? _isNegated)
-			{
-				Outcome = Outcome.Success;
-				return this;
-			}
-
-			Outcome = Outcome.Failure;
-			return this;
-		}
-
-		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(expectationText.Invoke(quantifier, Grammars));
-
-		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_actual == null)
-			{
-				stringBuilder.ItWasNull(it, Grammars);
-			}
-			else if (Outcome == Outcome.Undecided)
-			{
-				AppendCanceledResult(stringBuilder, it);
-			}
-			else if (_isFinished && _count == 0)
-			{
-				stringBuilder.Append(it).Append(" did not contain it");
-			}
-			else
-			{
-				stringBuilder.Append(it).Append(" contained ");
-				Formatter.Format(stringBuilder, _count == 1 ? _firstFoundItem : expected);
-				stringBuilder.Append(_isFinished ? " " : " at least ");
-				if (_count == 1)
-				{
-					stringBuilder.Append("once");
-				}
-				else if (_count == 2)
-				{
-					stringBuilder.Append("twice");
-				}
-				else
-				{
-					stringBuilder.Append(_count).Append(" times");
-				}
-			}
-		}
-
-		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
-		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
-		{
-			if (_actual is TValue typedValue)
-			{
-				value = typedValue;
-				return true;
-			}
-
-			value = default;
-			return typeof(TValue).IsAssignableFrom(typeof(IEnumerable<TItem>));
-		}
-
-		/// <inheritdoc cref="ConstraintResult.Outcome" />
-		public override Outcome Outcome
-		{
-			get => _actual is null ? Outcome.Failure : base.Outcome;
-			protected set => base.Outcome = value;
-		}
-
-		public override ConstraintResult Negate()
-		{
-			_isNegated = !_isNegated;
-			quantifier.Negate();
-			Outcome = Outcome switch
-			{
-				Outcome.Failure => Outcome.Success,
-				Outcome.Success => Outcome.Failure,
-				_ => Outcome,
-			};
-			return this;
-		}
-	}
-
-	private sealed class ContainForEnumerableConstraint<TEnumerable, TItem>(
-		string it,
-		ExpectationGrammars grammars,
-		Func<Quantifier, ExpectationGrammars, string> expectationText,
-		Func<TItem, bool> predicate,
-		Quantifier quantifier)
-		: ConstraintResult(grammars),
-			IAsyncContextConstraint<TEnumerable?>
-		where TEnumerable : IEnumerable
-	{
-		private CollectionContext _collectionContext;
-		private IEnumerable? _actual;
-		private int _count;
-		private bool _isFinished;
-		private bool _isNegated;
-		private IEnumerable? _materializedEnumerable;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> _collectionContext.AppendTo(contexts);
-
-		public Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			_actual = actual;
-			if (actual.IsDefaultImmutableArray())
-			{
-				return Task.FromResult(this.AsNullSubject(it));
-			}
-
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return Task.FromResult<ConstraintResult>(this);
-			}
-
-			_materializedEnumerable = context.UseMaterializedEnumerable(actual);
-			_count = 0;
-			_isFinished = false;
-			foreach (object? item in _materializedEnumerable)
-			{
-				if (cancellationToken.IsCanceledBeforeTheEndOf(_materializedEnumerable))
-				{
-					Outcome = Outcome.Undecided;
-					_collectionContext.Set(_materializedEnumerable, true);
-					return Task.FromResult<ConstraintResult>(this);
-				}
-
-				if (TryCastItem(item, out TItem typedItem) && UserCode.Invoke(predicate, typedItem, "the predicate"))
-				{
-					_count++;
-					bool? check = quantifier.Check(_count, false);
-					switch (check)
-					{
-						case false:
-							Outcome = Outcome.Failure;
-							_collectionContext.Set(_materializedEnumerable);
-							return Task.FromResult<ConstraintResult>(this);
-						case true:
-							Outcome = Outcome.Success;
-							_collectionContext.Set(_materializedEnumerable);
-							return Task.FromResult<ConstraintResult>(this);
-					}
-				}
-			}
-
-			_collectionContext.Set(_materializedEnumerable);
-			_isFinished = true;
-			if (quantifier.Check(_count, true) ?? _isNegated)
-			{
-				Outcome = Outcome.Success;
-				return Task.FromResult<ConstraintResult>(this);
-			}
-
-			Outcome = Outcome.Failure;
-			return Task.FromResult<ConstraintResult>(this);
-		}
-
-		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(expectationText.Invoke(quantifier, Grammars));
-
-		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_actual == null)
-			{
-				stringBuilder.ItWasNull(it, Grammars);
-			}
-			else if (Outcome == Outcome.Undecided)
-			{
-				AppendCanceledResult(stringBuilder, it);
-			}
-			else if (_isFinished)
-			{
-				if (_count == 0)
-				{
-					stringBuilder.Append(it).Append(" did not contain it");
-				}
-				else if (_count == 1)
-				{
-					stringBuilder.Append(it).Append(" contained it once");
-				}
-				else if (_count == 2)
-				{
-					stringBuilder.Append(it).Append(" contained it twice");
-				}
-				else
-				{
-					stringBuilder.Append(it).Append(" contained it ").Append(_count).Append(" times");
-				}
-			}
-			else
-			{
-				stringBuilder.Append(it).Append(" contained it at least ");
-				if (_count == 1)
-				{
-					stringBuilder.Append("once");
-				}
-				else if (_count == 2)
-				{
-					stringBuilder.Append("twice");
-				}
-				else
-				{
-					stringBuilder.Append(_count).Append(" times");
-				}
-			}
-		}
-
-		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
-		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
-		{
-			if (_actual is TValue typedValue)
-			{
-				value = typedValue;
-				return true;
-			}
-
-			value = default;
-			return typeof(TValue).IsAssignableFrom(typeof(IEnumerable<TItem>));
-		}
-
-		/// <inheritdoc cref="ConstraintResult.Outcome" />
-		public override Outcome Outcome
-		{
-			get => _actual is null ? Outcome.Failure : base.Outcome;
-			protected set => base.Outcome = value;
-		}
-
-		public override ConstraintResult Negate()
-		{
-			_isNegated = !_isNegated;
-			quantifier.Negate();
-			Outcome = Outcome switch
-			{
-				Outcome.Failure => Outcome.Success,
-				Outcome.Success => Outcome.Failure,
-				_ => Outcome,
-			};
-			return this;
-		}
-	}
-
-	/// <remarks>
-	///     The <paramref name="useComparerOf" /> callback receives the subject before its items are compared.
-	/// </remarks>
-	private sealed class AsyncContainForEnumerableConstraint<TEnumerable, TItem>(
-		string it,
-		ExpectationGrammars grammars,
-		Func<Quantifier, ExpectationGrammars, string> expectationText,
-		TItem expected,
-		Func<TItem, ValueTask<bool>> predicate,
-		Quantifier quantifier,
-		Func<object?, bool>? useComparerOf = null,
-		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: ConstraintResult(grammars),
-			IAsyncContextConstraint<TEnumerable?>
-		where TEnumerable : IEnumerable
-	{
-		private CollectionContext _collectionContext;
-		private IEnumerable? _actual;
-		private int _count;
-		private TItem? _firstFoundItem;
-		private bool _isFinished;
-		private bool _isNegated;
-		private IEnumerable? _materializedEnumerable;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			_collectionContext.AppendTo(contexts);
-			appendOptionsContexts?.Invoke(contexts);
-		}
-
-		public async Task<ConstraintResult> IsMetBy(TEnumerable? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			_actual = actual;
-			if (actual.IsDefaultImmutableArray())
-			{
-				return this.AsNullSubject(it);
-			}
-
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			useComparerOf?.Invoke(actual);
-			_materializedEnumerable = context.UseMaterializedEnumerable(actual);
-			_count = 0;
-			_isFinished = false;
-			foreach (object? item in _materializedEnumerable)
-			{
-				if (cancellationToken.IsCanceledBeforeTheEndOf(_materializedEnumerable))
-				{
-					Outcome = Outcome.Undecided;
-					_collectionContext.Set(_materializedEnumerable, true);
-					return this;
-				}
-
-				if (TryCastItem(item, out TItem typedItem) && await predicate(typedItem))
-				{
-					_count++;
-					if (_count == 1)
-					{
-						_firstFoundItem = typedItem;
-					}
-
-					bool? check = quantifier.Check(_count, false);
-					switch (check)
-					{
-						case false:
-							Outcome = Outcome.Failure;
-							_collectionContext.Set(_materializedEnumerable);
-							return this;
-						case true:
-							Outcome = Outcome.Success;
-							_collectionContext.Set(_materializedEnumerable);
-							return this;
-					}
-				}
-			}
-
-			_collectionContext.Set(_materializedEnumerable);
-			_isFinished = true;
-			if (quantifier.Check(_count, true) ?? _isNegated)
-			{
-				Outcome = Outcome.Success;
-				return this;
-			}
-
-			Outcome = Outcome.Failure;
-			return this;
-		}
-
-		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(expectationText.Invoke(quantifier, Grammars));
-
-		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_actual == null)
-			{
-				stringBuilder.ItWasNull(it, Grammars);
-			}
-			else if (Outcome == Outcome.Undecided)
-			{
-				AppendCanceledResult(stringBuilder, it);
-			}
-			else if (_isFinished && _count == 0)
-			{
-				stringBuilder.Append(it).Append(" did not contain it");
-			}
-			else
-			{
-				stringBuilder.Append(it).Append(" contained ");
-				Formatter.Format(stringBuilder, _count == 1 ? _firstFoundItem : expected);
-				stringBuilder.Append(_isFinished ? " " : " at least ");
-				if (_count == 1)
-				{
-					stringBuilder.Append("once");
-				}
-				else if (_count == 2)
-				{
-					stringBuilder.Append("twice");
-				}
-				else
-				{
-					stringBuilder.Append(_count).Append(" times");
-				}
-			}
-		}
-
-		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
-		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
-		{
-			if (_actual is TValue typedValue)
-			{
-				value = typedValue;
-				return true;
-			}
-
-			value = default;
-			return typeof(TValue).IsAssignableFrom(typeof(IEnumerable<TItem>));
-		}
-
-		/// <inheritdoc cref="ConstraintResult.Outcome" />
-		public override Outcome Outcome
-		{
-			get => _actual is null ? Outcome.Failure : base.Outcome;
-			protected set => base.Outcome = value;
-		}
-
-		public override ConstraintResult Negate()
-		{
-			_isNegated = !_isNegated;
-			quantifier.Negate();
-			Outcome = Outcome switch
-			{
-				Outcome.Failure => Outcome.Success,
-				Outcome.Success => Outcome.Failure,
-				_ => Outcome,
-			};
-			return this;
-		}
-	}
 }

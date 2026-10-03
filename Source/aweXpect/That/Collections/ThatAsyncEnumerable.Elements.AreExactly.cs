@@ -20,7 +20,7 @@ public static partial class ThatAsyncEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<TItem>(
+					=> new AsyncCollectionConstraint<TItem>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
@@ -39,7 +39,7 @@ public static partial class ThatAsyncEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<TItem>(
+					=> new AsyncCollectionConstraint<TItem>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(type)),

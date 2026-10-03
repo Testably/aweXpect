@@ -25,7 +25,7 @@ public static partial class ThatAsyncEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<string?>(
+					=> new AsyncCollectionConstraint<string?>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),
@@ -50,7 +50,7 @@ public static partial class ThatAsyncEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<TItem>(
+					=> new AsyncCollectionConstraint<TItem>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.Satisfies(g, doNotPopulateThisValue.TrimCommonWhiteSpace()),

@@ -19,7 +19,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<TItem>(
+					=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
@@ -38,7 +38,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionConstraint<TItem>(
+					=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(type)),
@@ -59,7 +59,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionForEnumerableConstraint<TEnumerable>(
+					=> new CollectionConstraint<TEnumerable, object?>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
@@ -78,7 +78,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionForEnumerableConstraint<TEnumerable>(
+					=> new CollectionConstraint<TEnumerable, object?>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(type)),
@@ -99,7 +99,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionForEnumerableConstraint<TEnumerable>(
+					=> new CollectionConstraint<TEnumerable, object?>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
@@ -118,7 +118,7 @@ public static partial class ThatEnumerable
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
 				expectationBuilder.AddConstraint((it, grammars)
-					=> new CollectionForEnumerableConstraint<TEnumerable>(
+					=> new CollectionConstraint<TEnumerable, object?>(
 						it, grammars,
 						_quantifier,
 						g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(type)),

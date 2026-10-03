@@ -1,13 +1,8 @@
 ﻿#if NET8_0_OR_GREATER
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
-using aweXpect.Options;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -25,7 +20,7 @@ public static partial class ThatAsyncEnumerable
 			expectations.ThrowIfNull();
 			return new(
 				_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-					=> new ComplyWithConstraint<TItem>(it, grammars, _quantifier, expectations)),
+					=> new AsyncComplyWithConstraint<TItem>(it, grammars, _quantifier, expectations)),
 				_subject);
 		}
 	}
@@ -41,34 +36,8 @@ public static partial class ThatAsyncEnumerable
 			expectations.ThrowIfNull();
 			return new(
 				_subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-					=> new ComplyWithConstraint<string?>(it, grammars, _quantifier, expectations)),
+					=> new AsyncComplyWithConstraint<string?>(it, grammars, _quantifier, expectations)),
 				_subject);
-		}
-	}
-
-	private sealed class ComplyWithConstraint<TItem>(
-		string it,
-		ExpectationGrammars grammars,
-		EnumerableQuantifier quantifier,
-		Action<IThatSubject<TItem>> expectations)
-		: ComplyWithConstraint<IAsyncEnumerable<TItem>?, TItem>(it, grammars, quantifier,
-				expectations),
-			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
-	{
-		public async Task<ConstraintResult> IsMetBy(
-			IAsyncEnumerable<TItem>? actual,
-			IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			Actual = actual;
-			await PrepareExpectation(context, cancellationToken);
-			if (actual is null)
-			{
-				return this;
-			}
-
-			return await IsMetByItems(context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken),
-				context, cancellationToken);
 		}
 	}
 }
