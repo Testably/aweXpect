@@ -574,8 +574,7 @@ public abstract class ExpectationBuilder
 	public virtual ExpectationBuilder AddContext(ResultContext resultContext)
 	{
 		_contexts ??= new ResultContexts();
-		if (!_contexts.Any(existing
-			    => string.Equals(existing.Title, resultContext.Title, StringComparison.Ordinal)))
+		if (!_contexts.ContainsTitle(resultContext.Title))
 		{
 			_contexts.Add(resultContext);
 		}

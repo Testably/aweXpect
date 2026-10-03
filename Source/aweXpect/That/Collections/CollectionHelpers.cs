@@ -134,19 +134,8 @@ internal static class CollectionHelpers
 			return expectationBuilder;
 		}
 
-		return expectationBuilder.UpdateContexts(contexts
-			=>
-		{
-			if (contexts.All(c => c.Title != "Collection"))
-			{
-				contexts
-					.Add(new ResultContext.SyncCallback("Collection",
-						() => IsHidden(onlyOnFailureOf)
-							? null
-							: FormatCollection(value, totalCount)?.AppendIsIncomplete(isIncomplete),
-						-1));
-			}
-		});
+		return expectationBuilder.AddContext(
+			new CollectionContext<TItem>(value, isIncomplete, totalCount, onlyOnFailureOf));
 	}
 
 	internal static ExpectationBuilder AddCollectionContext(this ExpectationBuilder expectationBuilder,
@@ -157,19 +146,7 @@ internal static class CollectionHelpers
 			return expectationBuilder;
 		}
 
-		return expectationBuilder.UpdateContexts(contexts
-			=>
-		{
-			if (contexts.All(c => c.Title != "Collection"))
-			{
-				contexts
-					.Add(new ResultContext.SyncCallback("Collection",
-						() => IsHidden(onlyOnFailureOf)
-							? null
-							: FormatCollection(value)?.AppendIsIncomplete(isIncomplete),
-						-1));
-			}
-		});
+		return expectationBuilder.AddContext(new CollectionContext(value, isIncomplete, onlyOnFailureOf));
 	}
 
 #if NET8_0_OR_GREATER
@@ -261,6 +238,34 @@ internal static class CollectionHelpers
 	/// </remarks>
 	private static bool IsHidden(ConstraintResult? onlyOnFailureOf)
 		=> onlyOnFailureOf is not null && onlyOnFailureOf.Outcome != Outcome.Failure;
+
+	/// <remarks>
+	///     A dedicated context instead of a callback, because a succeeding collection expectation adds it as well, and
+	///     the closures with their delegates would be allocated for a message that is rarely built.
+	/// </remarks>
+	private sealed class CollectionContext<TItem>(
+		IEnumerable<TItem> value,
+		bool isIncomplete,
+		int? totalCount,
+		ConstraintResult? onlyOnFailureOf) : ResultContext("Collection", -1)
+	{
+		public override Task<string?> GetContent(CancellationToken cancellationToken = default)
+			=> Task.FromResult(IsHidden(onlyOnFailureOf)
+				? null
+				: FormatCollection(value, totalCount)?.AppendIsIncomplete(isIncomplete));
+	}
+
+	/// <inheritdoc cref="CollectionContext{TItem}" />
+	private sealed class CollectionContext(
+		IEnumerable value,
+		bool isIncomplete,
+		ConstraintResult? onlyOnFailureOf) : ResultContext("Collection", -1)
+	{
+		public override Task<string?> GetContent(CancellationToken cancellationToken = default)
+			=> Task.FromResult(IsHidden(onlyOnFailureOf)
+				? null
+				: FormatCollection(value)?.AppendIsIncomplete(isIncomplete));
+	}
 
 	/// <summary>
 	///     Adds the "Expected" context, listing the <paramref name="expectedItems" /> materialized from the

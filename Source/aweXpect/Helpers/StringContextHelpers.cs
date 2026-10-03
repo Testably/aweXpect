@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Customization;
@@ -19,10 +21,7 @@ internal static class StringContextHelpers
 	/// </remarks>
 	public static void AddStringContext(this ExpectationBuilder expectationBuilder, string title, string value,
 		ConstraintResult result, bool onlyOnFailure = false)
-		=> expectationBuilder.AddContext(new ResultContext.SyncCallback(title,
-			() => (onlyOnFailure && result.Outcome != Outcome.Failure) || IsShownCompletely(value, result)
-				? null
-				: value));
+		=> expectationBuilder.AddContext(new StringContext(title, value, result, onlyOnFailure));
 
 	private static bool IsShownCompletely(string value, ConstraintResult result)
 	{
@@ -42,4 +41,17 @@ internal static class StringContextHelpers
 
 	private static int GetEscapedLength(string value)
 		=> value.Length + value.Count(c => c is '\n' or '\r' or '\t');
+
+	/// <remarks>
+	///     A dedicated context instead of a callback, because a succeeding string expectation adds it as well, and a
+	///     closure with its delegate would be allocated for a message that is rarely built.
+	/// </remarks>
+	private sealed class StringContext(string title, string value, ConstraintResult result, bool onlyOnFailure)
+		: ResultContext(title)
+	{
+		public override Task<string?> GetContent(CancellationToken cancellationToken = default)
+			=> Task.FromResult((onlyOnFailure && result.Outcome != Outcome.Failure) || IsShownCompletely(value, result)
+				? null
+				: value);
+	}
 }

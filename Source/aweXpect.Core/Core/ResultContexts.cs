@@ -51,6 +51,22 @@ public class ResultContexts : IEnumerable<ResultContext>
 	}
 
 	/// <summary>
+	///     Indicates whether a context with the <paramref name="title" /> was added.
+	/// </summary>
+	internal bool ContainsTitle(string title)
+	{
+		foreach (ResultContext context in _results)
+		{
+			if (string.Equals(context.Title, title, StringComparison.Ordinal))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/// <summary>
 	///     Removes all contexts from the context list.
 	/// </summary>
 	public ResultContexts Clear()
