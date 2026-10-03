@@ -312,6 +312,7 @@ public static partial class EquivalencyComparison
 #endif
 	}
 
+#pragma warning disable S107 // https://rules.sonarsource.com/csharp/RSPEC-107
 	/// <summary>
 	///     Reads the <paramref name="member" /> at the <paramref name="memberPath" /> of the <paramref name="actual" />
 	///     and the <paramref name="expected" /> object, unless it is ignored or the <paramref name="actual" /> object
@@ -346,6 +347,7 @@ public static partial class EquivalencyComparison
 		expectedValue = ReadMember(member.Expected.GetValue, expected, memberPath);
 		return true;
 	}
+#pragma warning restore S107
 
 	private static EquivalencyTypeOptions? GetRegisteredOptions(Type type, EquivalencyOptions equivalencyOptions,
 		EquivalencyContext context)
