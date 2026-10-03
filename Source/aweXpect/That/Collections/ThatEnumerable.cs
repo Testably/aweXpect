@@ -674,148 +674,11 @@ public static partial class ThatEnumerable
 		   (comparisonResult < 0 && sortOrder == aweXpect.SortOrder.Descending);
 
 	/// <remarks>
-	///     Without a member, i.e. with an empty <paramref name="memberExpression" />, a subject that is a sorted set with a
-	///     comparer other than the default order is ordered by that comparer, unless a comparer is specified in the
-	///     <paramref name="options" />, and the expectation names it.
-	/// </remarks>
-	private sealed class IsInOrderConstraint<TItem, TMember>(
-		string it,
-		ExpectationGrammars grammars,
-		Func<TItem, TMember> memberAccessor,
-		SortOrder sortOrder,
-		CollectionOrderOptions<TMember> options,
-		string memberExpression,
-		Func<Func<TMember, string?>?>? createIncompatibilityCheck = null)
-		: OrderingConstraint<IEnumerable<TItem>?>(it, grammars, false),
-			IAsyncContextConstraint<IEnumerable<TItem>?>
-	{
-		private CollectionContext _collectionContext;
-		private string? _failureText;
-		private IComparer<TMember>? _subjectOrder;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> _collectionContext.AppendTo(contexts);
-
-		public Task<ConstraintResult> IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			_collectionContext = default;
-			Actual = actual;
-			_failureText = null;
-			IsIncomparable = false;
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return Task.FromResult<ConstraintResult>(this);
-			}
-
-			IEnumerable<TItem> materialized = context
-				.UseMaterializedEnumerable<TItem>(actual);
-			_collectionContext.Set(materialized);
-
-			TMember previous = default!;
-			int index = 0;
-			_subjectOrder = GetSubjectOrder(actual, memberExpression, options);
-			IComparer<TMember> comparer = _subjectOrder ?? options.GetComparer();
-			Func<TMember, string?>? incompatibilityCheck =
-				_subjectOrder is null ? createIncompatibilityCheck?.Invoke() : null;
-			foreach (TItem item in materialized)
-			{
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
-				{
-					Outcome = Outcome.Undecided;
-					return Task.FromResult<ConstraintResult>(this);
-				}
-
-				TMember current = UserCode.Invoke(memberAccessor, item, "the member selector");
-				if (IsIncompatible(incompatibilityCheck, current))
-				{
-					return Task.FromResult<ConstraintResult>(this);
-				}
-
-				if (index++ == 0)
-				{
-					previous = current;
-					continue;
-				}
-
-				if (IsOutOfOrder(sortOrder, UserCode.Invoke(
-					    static values => values.Comparer.Compare(values.Previous, values.Current),
-					    (Comparer: comparer, Previous: previous, Current: current), "the comparer")))
-				{
-					_failureText =
-						$"{It} had {Formatter.Format(previous)} before {Formatter.Format(current)}, which is not in {sortOrder.ToString().ToLower()} order";
-					Outcome = Outcome.Failure;
-					return Task.FromResult<ConstraintResult>(this);
-				}
-
-				previous = current;
-			}
-
-			Outcome = Outcome.Success;
-			return Task.FromResult<ConstraintResult>(this);
-		}
-
-		private bool IsIncompatible(Func<TMember, string?>? incompatibilityCheck, TMember current)
-		{
-			if (incompatibilityCheck?.Invoke(current) is not { } incompatibility)
-			{
-				return false;
-			}
-
-			// The order of incompatible items cannot be verified, so the negated check fails as well.
-			_failureText = $"{It} {incompatibility}";
-			IsIncomparable = true;
-			return true;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(Grammars.Verb("is in ", "are in ")).Append(sortOrder.ToString().ToLower())
-				.Append(SortOrder);
-			stringBuilder.Append(memberExpression).Append(options);
-			AppendSubjectOrder(stringBuilder);
-		}
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_failureText);
-
-		private void AppendSubjectOrder(StringBuilder stringBuilder)
-		{
-			if (_subjectOrder is not null)
-			{
-				stringBuilder.Append(CollectionComparerHelpers.DescribeSubjectComparer(_subjectOrder));
-			}
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(Grammars.Verb("is not in ", "are not in ")).Append(sortOrder.ToString().ToLower())
-				.Append(SortOrder);
-			stringBuilder.Append(memberExpression).Append(options);
-			AppendSubjectOrder(stringBuilder);
-		}
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (IsIncomparable)
-			{
-				stringBuilder.Append(_failureText);
-			}
-			else
-			{
-				stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was", " were"));
-			}
-		}
-	}
-
-	/// <remarks>
 	///     Without a member, i.e. with an empty <paramref name="memberExpression" />, a subject that is a sorted set of
 	///     <typeparamref name="TMember" /> with a comparer other than the default order is ordered by that comparer, unless
 	///     a comparer is specified in the <paramref name="options" />, and the expectation names it.
 	/// </remarks>
-	private sealed class IsInOrderForEnumerableConstraint<TEnumerable, TItem, TMember>(
+	private sealed class IsInOrderConstraint<TEnumerable, TItem, TMember>(
 		string it,
 		ExpectationGrammars grammars,
 		Func<TItem, TMember> memberAccessor,
@@ -841,6 +704,7 @@ public static partial class ThatEnumerable
 			_collectionContext = default;
 			Actual = actual;
 			_failureText = null;
+			_subjectOrder = null;
 			IsIncomparable = false;
 			if (actual.IsDefaultImmutableArray())
 			{
@@ -853,8 +717,8 @@ public static partial class ThatEnumerable
 				return Task.FromResult<ConstraintResult>(this);
 			}
 
-			IEnumerable materialized = context.UseMaterializedEnumerable(actual);
-			_collectionContext.Set(materialized);
+			CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
+			materialized.SetContext(ref _collectionContext);
 
 			TMember previous = default!;
 			int index = 0;
@@ -862,20 +726,15 @@ public static partial class ThatEnumerable
 			IComparer<TMember> comparer = _subjectOrder ?? options.GetComparer();
 			Func<TMember, string?>? incompatibilityCheck =
 				_subjectOrder is null ? createIncompatibilityCheck?.Invoke() : null;
-			foreach (object? item in materialized)
+			foreach (TItem item in materialized.Items)
 			{
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materialized))
+				if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 				{
 					Outcome = Outcome.Undecided;
 					return Task.FromResult<ConstraintResult>(this);
 				}
 
-				if (!TryCastItem(item, out TItem typedItem))
-				{
-					continue;
-				}
-
-				TMember current = UserCode.Invoke(memberAccessor, typedItem, "the member selector");
+				TMember current = UserCode.Invoke(memberAccessor, item, "the member selector");
 				if (IsIncompatible(incompatibilityCheck, current))
 				{
 					return Task.FromResult<ConstraintResult>(this);

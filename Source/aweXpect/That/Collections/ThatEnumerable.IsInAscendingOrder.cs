@@ -254,7 +254,7 @@ public static partial class ThatEnumerable
 		return new CollectionOrderResult<TMember, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 			{
-				IsInOrderConstraint<TItem, TMember> constraint = new(
+				IsInOrderConstraint<IEnumerable<TItem>?, TItem, TMember> constraint = new(
 					it, grammars,
 					memberAccessor,
 					sortOrder,
@@ -297,7 +297,7 @@ public static partial class ThatEnumerable
 		return new CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable?>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 			{
-				IsInOrderForEnumerableConstraint<IEnumerable, object?, TMember> constraint = new(
+				IsInOrderConstraint<IEnumerable, object?, TMember> constraint = new(
 					it, grammars,
 					memberAccessor,
 					sortOrder,
@@ -325,7 +325,7 @@ public static partial class ThatEnumerable
 		return new CollectionOrderResult<TMember, TCollection, IThat<TCollection>>(
 			expectationBuilder.AddConstraint((it, grammars) =>
 			{
-				IsInOrderForEnumerableConstraint<TCollection, TItem, TMember> constraint = new(
+				IsInOrderConstraint<TCollection, TItem, TMember> constraint = new(
 					it, grammars,
 					memberAccessor,
 					sortOrder,
