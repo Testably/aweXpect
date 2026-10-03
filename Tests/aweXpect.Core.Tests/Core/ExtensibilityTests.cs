@@ -1,7 +1,5 @@
 using System.Reflection;
 using aweXpect.Equivalency;
-using aweXpect.Options;
-using aweXpect.Results;
 
 namespace aweXpect.Core.Tests.Core;
 
@@ -21,15 +19,17 @@ public sealed class ExtensibilityTests
 	}
 
 	[Theory]
-	[InlineData(typeof(EnumerableQuantifier))]
-	[InlineData(typeof(QuantifiedCollectionConstraint<,>))]
-	[InlineData(typeof(RepeatedCheckOptions))]
-	[InlineData(typeof(RepeatedCheckResult<,>))]
-	[InlineData(typeof(ObjectCountResult<,,>))]
-	[InlineData(typeof(ObjectCountResult<,,,>))]
-	public async Task TypesForExtensions_ShouldBeDeclaredInCore(Type type)
+	[InlineData("aweXpect.Options.EnumerableQuantifier")]
+	[InlineData("aweXpect.QuantifiedCollectionConstraint`2")]
+	[InlineData("aweXpect.Options.RepeatedCheckOptions")]
+	[InlineData("aweXpect.Results.RepeatedCheckResult`2")]
+	[InlineData("aweXpect.Results.ObjectCountResult`3")]
+	[InlineData("aweXpect.Results.ObjectCountResult`4")]
+	public async Task TypesForExtensions_ShouldBeDeclaredInCore(string typeName)
 	{
-		await That(type.Assembly).IsSameAs(typeof(ExpectationBuilder).Assembly)
-			.Because("an extension references only aweXpect.Core");
+		Type? type = typeof(ExpectationBuilder).Assembly.GetType(typeName);
+
+		await That(type).IsNotNull()
+			.Because("an extension references only aweXpect.Core, and the name avoids a clash with a released aweXpect that still declares the type");
 	}
 }
