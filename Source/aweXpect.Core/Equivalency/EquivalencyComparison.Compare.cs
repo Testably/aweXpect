@@ -1072,9 +1072,16 @@ public static partial class EquivalencyComparison
 		public async ValueTask
 			MatchAll()
 		{
+			int previous = -1;
 			for (int i = 0; i < _expectedIndices.Length; i++)
 			{
-				if (await TryMatch(i, new bool[_actualIndices.Length]) < 0)
+				previous = await TryMatchNextTo(previous, i);
+				if (previous < 0)
+				{
+					previous = await TryMatch(i, new bool[_actualIndices.Length]);
+				}
+
+				if (previous < 0)
 				{
 					_unmatchedExpected.Add(i);
 				}
@@ -1145,6 +1152,35 @@ public static partial class EquivalencyComparison
 				.Select(i => (-1, _expectedIndices[i])));
 			leftovers.AddRange(unmatchedActual.Where(i => !isActualPaired[i]).Select(i => (_actualIndices[i], -1)));
 			return leftovers.ToArray();
+		}
+
+		/// <summary>
+		///     Matches the expected element to a free neighbour of the <paramref name="previous" /> actual element, and
+		///     returns its index, or <c>-1</c> when neither neighbour is equivalent.
+		/// </summary>
+		/// <remarks>
+		///     A collection in or against the expected order finds each match next to the previous one, so the element
+		///     is not compared with every free actual element first.
+		/// </remarks>
+		private async ValueTask<int>
+			TryMatchNextTo(int previous, int expectedIndex)
+		{
+			if (previous < 0)
+			{
+				return -1;
+			}
+
+			for (int actualIndex = previous + 1; actualIndex >= previous - 1; actualIndex -= 2)
+			{
+				if (actualIndex >= 0 && actualIndex < _actualIndices.Length && _matchedTo[actualIndex] < 0 &&
+				    await IsEquivalent(actualIndex, expectedIndex))
+				{
+					_matchedTo[actualIndex] = expectedIndex;
+					return actualIndex;
+				}
+			}
+
+			return -1;
 		}
 
 		/// <returns>The index of the actual element the expected element is matched to, or <c>-1</c>.</returns>

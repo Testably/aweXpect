@@ -54,6 +54,16 @@ public partial class CollectionMatchOptions
 		private readonly EquivalenceRelations _equivalenceRelations;
 		private readonly List<T3> _expected;
 		private int _index;
+
+		/// <summary>
+		///     The expected item that the previous item was assigned to, or <c>-1</c> when it was not assigned.
+		/// </summary>
+		/// <remarks>
+		///     Its neighbours are tried first, so that a subject in or against the expected order finds each match without
+		///     comparing it with all free expected items.
+		/// </remarks>
+		private int _lastAssigned = -1;
+
 		private ItemMatching<T, T3>? _matching;
 		private List<T3> _missingItems = new();
 
@@ -78,7 +88,7 @@ public partial class CollectionMatchOptions
 		{
 			int index = _index++;
 			ItemMatching<T, T3> matching = GetMatching(options);
-			await matching.Add(index, value);
+			_lastAssigned = await matching.Add(index, value, _lastAssigned);
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
 			{
 				// Additional items are no deviations, so the reassignment is deferred until it decides the result.

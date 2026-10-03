@@ -919,11 +919,11 @@ public sealed partial class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo("""
 
-		                                                  Field [2].Other differed:
+		                                                  Field [1].Other differed:
 		                                                      Actual: 20
 		                                                    Expected: 21
 		                                                """).IgnoringNewlineStyle()
-			.Because("of the two equal actual elements, the one that is left over is reported");
+			.Because("the neighbour of the previous match is tried first, so the later of the two equal actual elements is matched and the earlier one is left over");
 	}
 
 	[Fact]

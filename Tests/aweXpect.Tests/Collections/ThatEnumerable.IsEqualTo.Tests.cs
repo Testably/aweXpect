@@ -2090,8 +2090,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order,
 					             but it lacked 2 of 4 expected items:
-					               "b",
-					               "a"
+					               "a",
+					               "b"
 
 					             Collection:
 					             [
@@ -2107,7 +2107,7 @@ public sealed partial class ThatEnumerable
 					               "c"
 					             ]
 					             """)
-					.Because("the missing items are listed in the order of the expected items that are left over");
+					.Because("the neighbour of the previous match is tried first, so the later \"a\" is matched and the earlier one is left over");
 			}
 
 			[Fact]
