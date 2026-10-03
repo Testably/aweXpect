@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
@@ -22,7 +21,7 @@ public static partial class ThatEnumerable
 	public static AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>> IsEmpty<TItem>(
 		this IThat<IEnumerable<TItem>?> subject)
 		=> new(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars) => new IsEmptyConstraint<TItem>(it, grammars)),
+				.AddConstraint((it, grammars) => new IsEmptyConstraint<IEnumerable<TItem>?, TItem>(it, grammars)),
 			subject);
 
 	/// <summary>
@@ -33,7 +32,7 @@ public static partial class ThatEnumerable
 		this IThat<TEnumerable?> subject)
 		where TEnumerable : IEnumerable
 		=> new(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars) => new IsEmptyForEnumerableConstraint<TEnumerable>(it, grammars)),
+				.AddConstraint((it, grammars) => new IsEmptyConstraint<TEnumerable, object?>(it, grammars)),
 			subject);
 
 	/// <summary>
@@ -43,7 +42,7 @@ public static partial class ThatEnumerable
 	public static AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>> IsNotEmpty<TItem>(
 		this IThat<IEnumerable<TItem>?> subject)
 		=> new(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars) => new IsEmptyConstraint<TItem>(it, grammars).Invert()),
+				.AddConstraint((it, grammars) => new IsEmptyConstraint<IEnumerable<TItem>?, TItem>(it, grammars).Invert()),
 			subject);
 
 	/// <summary>
@@ -54,76 +53,20 @@ public static partial class ThatEnumerable
 		this IThat<TEnumerable?> subject)
 		where TEnumerable : IEnumerable
 		=> new(subject.Get().ExpectationBuilder
-				.AddConstraint((it, grammars) => new IsEmptyForEnumerableConstraint<TEnumerable>(it, grammars).Invert()),
+				.AddConstraint((it, grammars) => new IsEmptyConstraint<TEnumerable, object?>(it, grammars).Invert()),
 			subject);
 
-	private sealed class IsEmptyConstraint<TItem>(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithNotNullValue<IEnumerable<TItem>?>(it, grammars),
-			IContextConstraint<IEnumerable<TItem>?>
-	{
-		private IEnumerable<TItem>? _materializedEnumerable;
-
-		public ConstraintResult IsMetBy(IEnumerable<TItem>? actual, IEvaluationContext context)
-		{
-			Actual = actual;
-			if (actual is null)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			if (actual is ICollection<TItem> collectionOfT)
-			{
-				_materializedEnumerable = actual;
-				if (collectionOfT.Count > 0)
-				{
-					Outcome = Outcome.Failure;
-					return this;
-				}
-
-				Outcome = Outcome.Success;
-				return this;
-			}
-
-			_materializedEnumerable =
-				context.UseMaterializedEnumerable<TItem>(actual);
-			using IEnumerator<TItem> enumerator = _materializedEnumerable.GetEnumerator();
-			if (enumerator.MoveNext())
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			Outcome = Outcome.Success;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("is empty", "are empty"));
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
-			Formatter.Format(stringBuilder, _materializedEnumerable, FormattingOptions.MultipleLines);
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(Grammars.Verb("is not empty", "are not empty"));
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was empty", " were empty"));
-	}
-
-	private sealed class IsEmptyForEnumerableConstraint<TEnumerable>(string it, ExpectationGrammars grammars)
+	private sealed class IsEmptyConstraint<TEnumerable, TItem>(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<TEnumerable>(it, grammars),
 			IContextConstraint<TEnumerable>
 		where TEnumerable : IEnumerable?
 	{
-		private IEnumerable? _materializedEnumerable;
+		private object? _materializedEnumerable;
 
 		public ConstraintResult IsMetBy(TEnumerable actual, IEvaluationContext context)
 		{
 			Actual = actual;
+			_materializedEnumerable = null;
 			if (actual.IsDefaultImmutableArray())
 			{
 				return this.AsNullSubject(It);
@@ -135,27 +78,17 @@ public static partial class ThatEnumerable
 				return this;
 			}
 
-			if (actual is ICollection collectionOfT)
+			if (CollectionItems<TItem>.CountOf(actual) is { } count)
 			{
 				_materializedEnumerable = actual;
-				if (collectionOfT.Count > 0)
-				{
-					Outcome = Outcome.Failure;
-					return this;
-				}
-
-				Outcome = Outcome.Success;
+				Outcome = count > 0 ? Outcome.Failure : Outcome.Success;
 				return this;
 			}
 
-			_materializedEnumerable = context.UseMaterializedEnumerable(actual);
-			if (_materializedEnumerable.Cast<object?>().Any())
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			Outcome = Outcome.Success;
+			CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
+			_materializedEnumerable = materialized.Value;
+			using IEnumerator<TItem> enumerator = materialized.Items.GetEnumerator();
+			Outcome = enumerator.MoveNext() ? Outcome.Failure : Outcome.Success;
 			return this;
 		}
 
