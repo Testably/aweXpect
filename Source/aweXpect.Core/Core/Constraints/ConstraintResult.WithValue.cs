@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Text;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Core.Constraints;
 
@@ -31,7 +32,11 @@ public abstract partial class ConstraintResult
 		/// <summary>
 		///     Flag indicating if the constraint is negated.
 		/// </summary>
-		protected bool IsNegated { get; private set; }
+		/// <remarks>
+		///     It follows the <see cref="ExpectationGrammars.Negated" /> flag of the <see cref="ConstraintResult.Grammars" />,
+		///     so that the outcome and the text cannot disagree about the negation.
+		/// </remarks>
+		protected bool IsNegated => (Grammars & ExpectationGrammars.Negated) != 0;
 
 		/// <summary>
 		///     The `it` parameter.
@@ -52,14 +57,34 @@ public abstract partial class ConstraintResult
 		/// <inheritdoc />
 		public override Outcome Outcome
 		{
-			get => (_outcome, _isNegated: IsNegated) switch
+			get
 			{
-				(Outcome.Failure, true) => Outcome.Success,
-				(Outcome.Success, true) => Outcome.Failure,
-				(_, _) => _outcome,
-			};
+				if (Actual is null && GetNullSubjectOutcome() is { } nullSubjectOutcome)
+				{
+					return nullSubjectOutcome;
+				}
+
+				return (_outcome, _isNegated: IsNegated) switch
+				{
+					(Outcome.Failure, true) => Outcome.Success,
+					(Outcome.Success, true) => Outcome.Failure,
+					(_, _) => _outcome,
+				};
+			}
 			protected set => _outcome = value;
 		}
+
+		/// <summary>
+		///     The outcome for a <see langword="null" /> <see cref="Actual" /> in the current negation, or
+		///     <see langword="null" /> when the set outcome applies.
+		/// </summary>
+		private protected virtual Outcome? GetNullSubjectOutcome() => null;
+
+		/// <summary>
+		///     Whether a <see langword="null" /> <see cref="Actual" /> is rendered as the result instead of the result text
+		///     of the expectation.
+		/// </summary>
+		private protected virtual bool RendersNullSubject => false;
 
 		/// <summary>
 		///     Appends the expectation to the <paramref name="stringBuilder" /> when the <see cref="ExpectationGrammars" /> are
@@ -114,7 +139,11 @@ public abstract partial class ConstraintResult
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public sealed override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Outcome == Outcome.Undecided)
+			if (RendersNullSubject && Actual is null)
+			{
+				stringBuilder.ItWasNull(It, Grammars);
+			}
+			else if (Outcome == Outcome.Undecided)
 			{
 				AppendUndecidedResult(stringBuilder, indentation);
 			}
@@ -145,7 +174,6 @@ public abstract partial class ConstraintResult
 		public override ConstraintResult Negate()
 		{
 			Grammars = Grammars.Negate();
-			IsNegated = !IsNegated;
 			return this;
 		}
 	}

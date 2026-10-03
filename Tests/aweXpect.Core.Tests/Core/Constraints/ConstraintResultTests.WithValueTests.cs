@@ -96,6 +96,16 @@ public partial class ConstraintResultTests
 		}
 
 		[Fact]
+		public async Task IsNegated_ShouldFollowTheNegatedGrammars()
+		{
+			MyWithValueDummy<int> sut = new(0, outcome: Outcome.Success, grammars: ExpectationGrammars.Negated);
+
+			await That(sut.IsNegatedSet).IsTrue();
+			await That(sut.Outcome).IsEqualTo(Outcome.Failure)
+				.Because("the outcome and the expectation text agree about the negation");
+		}
+
+		[Fact]
 		public async Task NormalCase_ShouldNotHaveNegatedGrammarsFlagAndSuccessOutcome()
 		{
 			ConstraintResult sut = new MyWithValueDummy<int>(0, grammars: ExpectationGrammars.Plural);

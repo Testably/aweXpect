@@ -18,11 +18,11 @@ namespace aweXpect;
 ///     verb in the result are only known while the failure message is created, e.g. because they come from nested
 ///     expectations.
 ///     <para />
-///     Set <see cref="ConstraintResult.WithNotNullValue{T}.Actual" /> in <c>IsMetBy</c>, call
+///     Set <see cref="ConstraintResult.WithValue{T}.Actual" /> in <c>IsMetBy</c>, call
 ///     <see cref="Record(TItem, bool)" /> for every item, or <see cref="Record(TItem, ConstraintResult)" /> when the items
 ///     are verified by nested expectations, and <see cref="Complete" /> afterwards, or <see cref="CompleteEarly" /> as
 ///     soon as <see cref="IsDetermined" />. For a <see langword="null" /> subject, only set the
-///     <see cref="ConstraintResult.WithNotNullValue{T}.Actual" /> and return, as the expectation fails for it.
+///     <see cref="ConstraintResult.WithValue{T}.Actual" /> and return, as the expectation fails for it.
 ///     <para />
 ///     The base class renders the expectation and the result for the normal, the negated and the nested case (e.g.
 ///     "has values of which at least 2 are …") like the built-in expectations and adds the matching or not matching

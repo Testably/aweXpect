@@ -211,9 +211,35 @@ static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterBatch(System.Action! 
 abstract aweXpect.Core.Constraints.ConstraintResult.TryGetStoredValue<TValue>(out TValue? value) -> bool
 aweXpect.Core.Constraints.ConstraintResult.TryGetValue<TValue>(out TValue? value) -> bool
 override aweXpect.Core.Constraints.ConstraintResult.ExpectationOnly<T>.TryGetStoredValue<TValue>(out TValue? value) -> bool
-override aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.TryGetStoredValue<TValue>(out TValue? value) -> bool
-override aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.TryGetStoredValue<TValue>(out TValue? value) -> bool
 override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.TryGetStoredValue<TValue>(out TValue? value) -> bool
+*REMOVED*abstract aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendNegatedExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+*REMOVED*abstract aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendNegatedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+*REMOVED*abstract aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendNormalExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+*REMOVED*abstract aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendNormalResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+*REMOVED*abstract aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.AppendNegatedExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+*REMOVED*abstract aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.AppendNegatedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+*REMOVED*abstract aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.AppendNormalExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+*REMOVED*abstract aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.AppendNormalResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+*REMOVED*aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.Actual.get -> T?
+*REMOVED*aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.Actual.set -> void
+*REMOVED*aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.IsNegated.get -> bool
+*REMOVED*aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.It.get -> string!
+*REMOVED*aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.Actual.get -> T?
+*REMOVED*aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.Actual.set -> void
+*REMOVED*aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.IsNegated.get -> bool
+*REMOVED*aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.It.get -> string!
+*REMOVED*override aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.Negate() -> aweXpect.Core.Constraints.ConstraintResult!
+*REMOVED*override aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.Outcome.get -> aweXpect.Core.Constraints.Outcome
+*REMOVED*override aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.Outcome.set -> void
+*REMOVED*override aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.Negate() -> aweXpect.Core.Constraints.ConstraintResult!
+*REMOVED*override aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.Outcome.get -> aweXpect.Core.Constraints.Outcome
+*REMOVED*override aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.Outcome.set -> void
+*REMOVED*override sealed aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+*REMOVED*override sealed aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+*REMOVED*override sealed aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.AppendExpectation(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+*REMOVED*override sealed aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.AppendResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+*REMOVED*virtual aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.AppendUndecidedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
+*REMOVED*virtual aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.AppendUndecidedResult(System.Text.StringBuilder! stringBuilder, string? indentation = null) -> void
 aweXpect.Core.IStringMatchType.InspectsSubject.get -> bool
 aweXpect.Core.ICollectionMatcher<T, T2>.IsDetermined.get -> bool
 aweXpect.Core.ManualExpectationBuilder<TValue>.AppendReasons(System.Text.StringBuilder! stringBuilder) -> void
@@ -311,10 +337,6 @@ aweXpect.Results.RepeatedCheckResult<TType, TThat>.WithRepetition
 aweXpect.Results.RepeatedCheckResult<TType, TThat>.WithRepetition.CheckEvery(System.TimeSpan interval) -> aweXpect.Results.AndOrResult<TType, TThat>!
 aweXpect.Results.RepeatedCheckResult<TType, TThat>.WithRepetition.WithRepetition(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.RepeatedCheckOptions! options) -> void
 aweXpect.Results.RepeatedCheckResult<TType, TThat>.Within(System.TimeSpan timeout) -> aweXpect.Results.RepeatedCheckResult<TType, TThat>.WithRepetition!
-override aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.LeadingSubject.get -> string?
-override aweXpect.Core.Constraints.ConstraintResult.WithEqualToValue<T>.TrailingSubject.get -> string?
-override aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.LeadingSubject.get -> string?
-override aweXpect.Core.Constraints.ConstraintResult.WithNotNullValue<T>.TrailingSubject.get -> string?
 override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.LeadingSubject.get -> string?
 override aweXpect.Core.Constraints.ConstraintResult.WithValue<T>.TrailingSubject.get -> string?
 override aweXpect.Options.RepeatedCheckOptions.ToString() -> string!
