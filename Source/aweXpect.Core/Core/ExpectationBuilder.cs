@@ -98,6 +98,11 @@ public abstract class ExpectationBuilder
 	internal string Subject { get; }
 
 	/// <summary>
+	///     Verifies that the subject is <see langword="true" />, when no expectation was added.
+	/// </summary>
+	internal bool IsTrueWithoutExpectations { private get; set; }
+
+	/// <summary>
 	///     Adds the <see cref="IValueConstraint{TValue}" /> from the <paramref name="constraintBuilder" /> which verifies the
 	///     underlying value.
 	/// </summary>
@@ -616,7 +621,13 @@ public abstract class ExpectationBuilder
 			                                      testCancellation?.CancellationTokenFactory?.Invoke() ??
 			                                      System.Threading.CancellationToken.None;
 			TimeSpan? timeout = TimerHelpers.Tighter(Timeout, testCancellation?.Timeout);
-			result = await IsMet(GetRootNode(), context, timeSystem,
+			Node rootNode = GetRootNode();
+			if (IsTrueWithoutExpectations && rootNode is ExpectationNode expectationNode && expectationNode.IsEmpty())
+			{
+				rootNode.AddConstraint(new ThatBoolSubject.IsTrueConstraint(ExpectationGrammars));
+			}
+
+			result = await IsMet(rootNode, context, timeSystem,
 				timeout == System.Threading.Timeout.InfiniteTimeSpan ? null : timeout,
 				cancellationToken);
 			if (_reasons is not null)
