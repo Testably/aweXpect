@@ -101,9 +101,13 @@ partial class Build
 			}
 		});
 
+	/// <remarks>
+	///     The report is the history of <c>main</c> that the benchmark page shows, so a run that was started manually on
+	///     another branch must not append to it.
+	/// </remarks>
 	Target BenchmarkReport => _ => _
 		.After(BenchmarkDotNet)
-		.OnlyWhenDynamic(() => BuildScope == BuildScope.Default && GitHubActions?.IsPullRequest == false)
+		.OnlyWhenDynamic(() => BuildScope == BuildScope.Default && GitHubActions?.Ref == "refs/heads/main")
 		.Executes(async () =>
 		{
 			BenchmarkFile currentFile = await DownloadBenchmarkFile("data.js");
