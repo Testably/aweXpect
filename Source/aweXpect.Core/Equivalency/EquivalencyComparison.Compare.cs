@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -285,6 +286,67 @@ public static partial class EquivalencyComparison
 			(Accessor: accessor, Subject: subject, Path: memberPath),
 			static values => values.Path.ToString());
 
+	/// <summary>
+	///     Checks if the stack has room for a further nested level.
+	/// </summary>
+	/// <remarks>
+	///     The nested levels of a comparison usually complete synchronously, so each of them stays on the stack, and so
+	///     do the continuations of levels that completed asynchronously on .NET Framework. When it runs low, the
+	///     comparison continues on a fresh stack, as a raised <see cref="EquivalencyOptions.MaxRecursionDepth" /> or a
+	///     small stack, e.g. of a thread on macOS, would otherwise overflow it.
+	/// </remarks>
+	private static bool HasSufficientStack()
+	{
+#if NET8_0_OR_GREATER
+		return RuntimeHelpers.TryEnsureSufficientExecutionStack();
+#else
+		try
+		{
+			RuntimeHelpers.EnsureSufficientExecutionStack();
+			return true;
+		}
+		catch (InsufficientExecutionStackException)
+		{
+			return false;
+		}
+#endif
+	}
+
+	/// <summary>
+	///     Reads the <paramref name="member" /> at the <paramref name="memberPath" /> of the <paramref name="actual" />
+	///     and the <paramref name="expected" /> object, unless it is ignored or the <paramref name="actual" /> object
+	///     misses it, which is added to the <paramref name="failureBuilder" /> and sets <paramref name="isMissing" />.
+	/// </summary>
+	/// <remarks>
+	///     It does not compare the values, so that its state is no longer on the stack while the values are compared,
+	///     which happens once for every nested level.
+	/// </remarks>
+	private static bool TryReadMember(EquivalencyMemberPlan.PlannedMember member, MemberType memberType,
+		MemberPath memberPath, object actual, object expected, EquivalencyTypeOptions typeOptions,
+		StringBuilder failureBuilder, EquivalencyContext context, out bool isMissing, out object? actualValue,
+		out object? expectedValue)
+	{
+		actualValue = null;
+		expectedValue = null;
+		isMissing = false;
+		if (IsIgnored(typeOptions.MembersToIgnore, memberType, memberPath, member.Expected.DeclaredType))
+		{
+			return false;
+		}
+
+		Func<object, object?>? actualAccessor = member.GetActualAccessor(out bool isAmbiguous);
+		if (actualAccessor is null)
+		{
+			AppendMissingMember(failureBuilder, memberType, memberPath.ToString(), isAmbiguous, context);
+			isMissing = true;
+			return false;
+		}
+
+		actualValue = ReadMember(actualAccessor, actual, memberPath);
+		expectedValue = ReadMember(member.Expected.GetValue, expected, memberPath);
+		return true;
+	}
+
 	private static EquivalencyTypeOptions? GetRegisteredOptions(Type type, EquivalencyOptions equivalencyOptions,
 		EquivalencyContext context)
 	{
@@ -310,6 +372,59 @@ public static partial class EquivalencyComparison
 		=> (typeOptions.ComparisonType ?? equivalencyOptions.DefaultComparisonTypeSelector.Invoke(type))
 		   == EquivalencyComparisonType.ByValue;
 
+	/// <summary>
+	///     Compares the <paramref name="actual" /> value with the expectation of an <c>It.Is…</c> in the expected
+	///     object, or returns <see langword="null" /> when the expectation could not decide.
+	/// </summary>
+	/// <remarks>
+	///     A separate method, because the comparison of a nested object is on the stack once for every nested level,
+	///     and its state would otherwise also hold the evaluation of the expectation.
+	/// </remarks>
+	private static async ValueTask<bool?> CompareWithExpectation<TActual>(TActual actual,
+		EquivalencyExpectationBuilder equivalencyExpectationBuilder, StringBuilder failureBuilder,
+		MemberPath memberPath, MemberType memberType, EquivalencyContext context)
+	{
+		EvaluationContext evaluationContext = new();
+		ConstraintResult? result;
+		try
+		{
+			result = await equivalencyExpectationBuilder.IsMetBy(actual, evaluationContext,
+				CancellationToken.None);
+		}
+		finally
+		{
+			await evaluationContext.ReleaseMaterializations();
+		}
+
+		if (result.Outcome == Outcome.Success)
+		{
+			return true;
+		}
+
+		if (result.Outcome != Outcome.Failure)
+		{
+			return null;
+		}
+
+		if (SkipsText(context))
+		{
+			return false;
+		}
+
+		AppendDifferenceHeader(failureBuilder, memberType, memberPath.ToString(), context);
+		Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
+		if (actual is not null && !equivalencyExpectationBuilder.IsOfExpectedType(actual))
+		{
+			failureBuilder.Append(" (");
+			Formatter.Format(failureBuilder, actual.GetType());
+			failureBuilder.Append(')');
+		}
+
+		failureBuilder.AppendLine().Append("    Expected: ");
+		failureBuilder.Append(equivalencyExpectationBuilder.ToString().Indent("    ", false));
+		return false;
+	}
+
 #pragma warning disable S3776 // https://rules.sonarsource.com/csharp/RSPEC-3776
 #pragma warning disable S107 // https://rules.sonarsource.com/csharp/RSPEC-107
 	/// <remarks>
@@ -333,45 +448,11 @@ public static partial class EquivalencyComparison
 		    expected is IOptionsProvider<ExpectationBuilder>
 		    {
 			    Options: EquivalencyExpectationBuilder equivalencyExpectationBuilder,
-		    })
+		    } &&
+		    await CompareWithExpectation(actual, equivalencyExpectationBuilder, failureBuilder, memberPath,
+			    memberType, context) is { } isMetByExpectation)
 		{
-			EvaluationContext evaluationContext = new();
-			ConstraintResult? result;
-			try
-			{
-				result = await equivalencyExpectationBuilder.IsMetBy(actual, evaluationContext,
-					CancellationToken.None);
-			}
-			finally
-			{
-				await evaluationContext.ReleaseMaterializations();
-			}
-
-			if (result.Outcome == Outcome.Success)
-			{
-				return true;
-			}
-
-			if (result.Outcome == Outcome.Failure)
-			{
-				if (SkipsText(context))
-				{
-					return false;
-				}
-
-				AppendDifferenceHeader(failureBuilder, memberType, memberPath.ToString(), context);
-				Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
-				if (actual is not null && !equivalencyExpectationBuilder.IsOfExpectedType(actual))
-				{
-					failureBuilder.Append(" (");
-					Formatter.Format(failureBuilder, actual.GetType());
-					failureBuilder.Append(')');
-				}
-
-				failureBuilder.AppendLine().Append("    Expected: ");
-				failureBuilder.Append(equivalencyExpectationBuilder.ToString().Indent("    ", false));
-				return false;
-			}
+			return isMetByExpectation;
 		}
 
 		if (actual is null || expected is null)
@@ -413,23 +494,37 @@ public static partial class EquivalencyComparison
 				return false;
 			}
 
+			if (!HasSufficientStack())
+			{
+				await Task.Yield();
+			}
+
+			bool isEquivalent;
 			if (TryGetDictionary(actual, path, out IDictionary? actualDictionary,
 				    out object? actualKeyComparer) &&
 			    TryGetDictionary(expected, path, out IDictionary? expectedDictionary, out _))
 			{
-				return await CompareDictionaries(actualDictionary, actualKeyComparer, expectedDictionary,
+				isEquivalent = await CompareDictionaries(actualDictionary, actualKeyComparer, expectedDictionary,
 					failureBuilder, memberType, path, equivalencyOptions, typeOptions, context);
 			}
-
-			if (TryGetEnumerable(actual, out IEnumerable? actualEnumerable) &&
-			    TryGetEnumerable(expected, out IEnumerable? expectedEnumerable))
+			else if (TryGetEnumerable(actual, out IEnumerable? actualEnumerable) &&
+			         TryGetEnumerable(expected, out IEnumerable? expectedEnumerable))
 			{
-				return await CompareEnumerables(actualEnumerable, expectedEnumerable, failureBuilder, path,
+				isEquivalent = await CompareEnumerables(actualEnumerable, expectedEnumerable, failureBuilder, path,
+					equivalencyOptions, typeOptions, context);
+			}
+			else
+			{
+				isEquivalent = await CompareObjects(actual, expected, failureBuilder, memberType, path,
 					equivalencyOptions, typeOptions, context);
 			}
 
-			return await CompareObjects(actual, expected, failureBuilder, memberType, path,
-				equivalencyOptions, typeOptions, context);
+			if (!HasSufficientStack())
+			{
+				await Task.Yield();
+			}
+
+			return isEquivalent;
 		}
 		finally
 		{
@@ -462,22 +557,13 @@ public static partial class EquivalencyComparison
 		{
 			memberCount++;
 			MemberPath fieldMemberPath = MemberPath.Member(memberPath, field.Expected.Name);
-			if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Field, fieldMemberPath, field.Expected.DeclaredType))
+			if (!TryReadMember(field, MemberType.Field, fieldMemberPath, actual, expected, typeOptions,
+				    failureBuilder, context, out bool isMissing, out object? actualFieldValue,
+				    out object? expectedFieldValue))
 			{
+				result &= !isMissing;
 				continue;
 			}
-
-			Func<object, object?>? actualFieldAccessor = field.GetActualAccessor(out bool isAmbiguous);
-			if (actualFieldAccessor is null)
-			{
-				AppendMissingMember(failureBuilder, MemberType.Field, fieldMemberPath.ToString(), isAmbiguous,
-					context);
-				result = false;
-				continue;
-			}
-
-			object? actualFieldValue = ReadMember(actualFieldAccessor, actual, fieldMemberPath);
-			object? expectedFieldValue = ReadMember(field.Expected.GetValue, expected, fieldMemberPath);
 
 			if (!await Compare(actualFieldValue, expectedFieldValue,
 				    options, typeOptions,
@@ -491,23 +577,13 @@ public static partial class EquivalencyComparison
 		{
 			memberCount++;
 			MemberPath propertyMemberPath = MemberPath.Member(memberPath, property.Expected.Name);
-			if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Property, propertyMemberPath,
-				    property.Expected.DeclaredType))
+			if (!TryReadMember(property, MemberType.Property, propertyMemberPath, actual, expected, typeOptions,
+				    failureBuilder, context, out bool isMissing, out object? actualPropertyValue,
+				    out object? expectedPropertyValue))
 			{
+				result &= !isMissing;
 				continue;
 			}
-
-			Func<object, object?>? actualPropertyAccessor = property.GetActualAccessor(out bool isAmbiguous);
-			if (actualPropertyAccessor is null)
-			{
-				AppendMissingMember(failureBuilder, MemberType.Property, propertyMemberPath.ToString(), isAmbiguous,
-					context);
-				result = false;
-				continue;
-			}
-
-			object? actualPropertyValue = ReadMember(actualPropertyAccessor, actual, propertyMemberPath);
-			object? expectedPropertyValue = ReadMember(property.Expected.GetValue, expected, propertyMemberPath);
 
 			if (!await Compare(actualPropertyValue, expectedPropertyValue,
 				    options, typeOptions,

@@ -3380,6 +3380,22 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenNestingExceedsTheStack_ShouldContinueOnAFreshStack()
+	{
+		NestedNode actual = new(5000);
+		NestedNode expected = new(5000);
+		EquivalencyOptions options = new()
+		{
+			MaxRecursionDepth = 5000,
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
+
+		await That(result).IsTrue()
+			.Because("5000 levels need more stack than a thread has, so the comparison continues on a fresh one");
+	}
+
+	[Fact]
 	public async Task WhenNoMembersCanBeCompared_ShouldThrowInvalidOperationException()
 	{
 		ClassWithOnlyPrivateState actual = new(1);
