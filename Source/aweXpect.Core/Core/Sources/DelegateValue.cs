@@ -19,6 +19,18 @@ public class DelegateValue<TValue>(in TValue? value, Exception? exception, TimeS
 			ExceededTimeout = timeout,
 		};
 
+	internal override bool TryGetValue<TResult>(out TResult? value) where TResult : default
+	{
+		if (Value is TResult typedValue)
+		{
+			value = typedValue;
+			return true;
+		}
+
+		value = default;
+		return typeof(TResult).IsAssignableFrom(typeof(TValue));
+	}
+
 	/// <inheritdoc />
 	public override string ToString()
 	{
@@ -87,6 +99,19 @@ public class DelegateValue(Exception? exception, TimeSpan duration, bool isNull 
 		{
 			ExceededTimeout = timeout,
 		};
+
+	/// <summary>
+	///     Gets the value of the delegate as <typeparamref name="TResult" />.
+	/// </summary>
+	/// <returns>
+	///     <see langword="true" />, if the value is a <typeparamref name="TResult" /> or the delegate returns a type
+	///     assignable to <typeparamref name="TResult" />.
+	/// </returns>
+	internal virtual bool TryGetValue<TResult>(out TResult? value)
+	{
+		value = default;
+		return false;
+	}
 
 	/// <inheritdoc />
 	public override string ToString()

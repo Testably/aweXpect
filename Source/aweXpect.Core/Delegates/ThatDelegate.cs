@@ -53,6 +53,21 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 		}
 	}
 
+	/// <remarks>
+	///     The <paramref name="valueType" /> of the delegate, <see langword="null" /> for a delegate without value,
+	///     answers while there is no <paramref name="actual" /> value yet.
+	/// </remarks>
+	private static bool TryGetDelegateValue<TValue>(DelegateValue? actual, Type? valueType, out TValue? value)
+	{
+		if (actual is not null)
+		{
+			return actual.TryGetValue(out value);
+		}
+
+		value = default;
+		return valueType is not null && typeof(TValue).IsAssignableFrom(valueType);
+	}
+
 	private static void AppendThrowsExpectation(StringBuilder stringBuilder, ThrowsOption options,
 		Type exceptionType, bool exactly)
 	{
