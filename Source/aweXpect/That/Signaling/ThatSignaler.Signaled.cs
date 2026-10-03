@@ -364,7 +364,7 @@ public static partial class ThatSignaler
 			// With nothing to wait for, the timeout is zero, and the Times overload rejects an amount of zero.
 			Actual = await UserCode.InvokeAsync(async () => determinableAmount > 0
 				? await actual.WaitAsync(determinableAmount.Times(), o.Matches, timeout, cancellationToken)
-				: await actual.WaitAsync(o.Matches, timeout, cancellationToken), "the predicate");
+				: await actual.WaitAsync(o.Matches, timeout, cancellationToken), "the predicate", CancellationToken.None);
 			TimeSpan waited = stopwatch.Elapsed;
 			_waitedTime = o.Timeout is null && _defaultTimeout is null ? null : waited;
 			if (IsCanceledBeforeTheTimeout(Actual.IsSuccess, timeout, waited, context))
