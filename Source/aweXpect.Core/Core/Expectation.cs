@@ -78,10 +78,19 @@ public abstract class Expectation
 	/// </summary>
 	internal abstract Task EndEvaluation();
 
-	internal struct Result(int index, string subjectLine, ConstraintResult result)
+	/// <param name="index">The number of the last expectation in the result.</param>
+	/// <param name="subject">The subject line, or with <paramref name="isNumbered" /> the subject it names.</param>
+	/// <param name="result">The result of the expectation.</param>
+	/// <param name="isNumbered">Whether the subject line names the <paramref name="subject" /> with the number.</param>
+	internal struct Result(int index, string subject, ConstraintResult result, bool isNumbered = false)
 	{
 		public int Index { get; } = index;
-		public string SubjectLine { get; } = subjectLine;
+
+		/// <remarks>
+		///     A numbered subject line is only formatted when a failure message reads it.
+		/// </remarks>
+		public string SubjectLine => isNumbered ? $" [{Index:00}] Expected that {subject}" : subject;
+
 		public ConstraintResult ConstraintResult { get; } = result;
 	}
 
@@ -139,17 +148,35 @@ public abstract class Expectation
 		/// <inheritdoc />
 		internal override async Task<Result> GetResult(int index, Dictionary<int, Outcome> outcomes)
 		{
-			StringBuilder expectationTexts = new();
-			StringBuilder failureTexts = new();
+			(Expectation Expectation, Result Result)[] results = new (Expectation, Result)[_expectations.Length];
 			Exception? failureCause = null;
 			Outcome? outcome = null;
-			foreach (Expectation? expectation in _expectations)
+			for (int i = 0; i < _expectations.Length; i++)
 			{
+				Expectation expectation = _expectations[i];
 				int firstIndex = index + 1;
 				Result result = await expectation.GetResult(index, outcomes);
 				outcome = CheckOutcome(outcome, result.ConstraintResult.Outcome);
 				index = result.Index;
 				RecordOutcome(expectation, firstIndex, result, outcomes);
+				if (result.ConstraintResult.Outcome == Outcome.Failure)
+				{
+					failureCause ??= result.ConstraintResult.FailureCause;
+				}
+
+				results[i] = (expectation, result);
+			}
+
+			return new Result(index, GetSubjectLine(), outcome is Outcome.Failure or Outcome.Undecided
+				? new CombinationResult(outcome.Value, results, failureCause)
+				: new CombinationResult(Outcome.Success, results));
+		}
+
+		private static string GetExpectationTexts((Expectation Expectation, Result Result)[] results)
+		{
+			StringBuilder expectationTexts = new();
+			foreach ((Expectation expectation, Result result) in results)
+			{
 				if (expectationTexts.Length > 0)
 				{
 					expectationTexts.AppendLine();
@@ -165,27 +192,23 @@ public abstract class Expectation
 					expectationTexts.Append(result.SubjectLine).Append(' ');
 					result.ConstraintResult.AppendExpectation(expectationTexts, "      ");
 				}
+			}
 
+			return expectationTexts.ToString();
+		}
+
+		private static string GetFailureTexts((Expectation Expectation, Result Result)[] results)
+		{
+			StringBuilder failureTexts = new();
+			foreach ((Expectation expectation, Result result) in results)
+			{
 				if (result.ConstraintResult.Outcome != Outcome.Success)
 				{
-					if (result.ConstraintResult.Outcome == Outcome.Failure)
-					{
-						failureCause ??= result.ConstraintResult.FailureCause;
-					}
-
 					AppendFailureText(failureTexts, expectation, result);
 				}
 			}
 
-			if (outcome is Outcome.Failure or Outcome.Undecided)
-			{
-				return new Result(index, GetSubjectLine(),
-					new CombinationResult(outcome.Value, expectationTexts.ToString(), failureTexts.ToString(),
-						failureCause));
-			}
-
-			return new Result(index, GetSubjectLine(),
-				new CombinationResult(Outcome.Success, expectationTexts.ToString()));
+			return failureTexts.ToString();
 		}
 
 		internal override IEnumerable<ResultContext> GetContexts(int index, Dictionary<int, Outcome> outcomes)
@@ -321,17 +344,19 @@ public abstract class Expectation
 			Fail.Test(sb.ToString(), result.ConstraintResult.FailureCause);
 		}
 
+		/// <remarks>
+		///     The texts of the members are only rendered when they are read, as a combination that succeeds never shows
+		///     them.
+		/// </remarks>
 		private sealed class CombinationResult : ConstraintResult
 		{
-			private readonly string _expectationTexts;
-			private readonly string? _failureTexts;
+			private readonly (Expectation Expectation, Result Result)[] _results;
 
-			public CombinationResult(Outcome outcome, string expectationTexts, string? failureTexts = null,
+			public CombinationResult(Outcome outcome, (Expectation Expectation, Result Result)[] results,
 				Exception? failureCause = null)
 				: base(ExpectationGrammars.None)
 			{
-				_expectationTexts = expectationTexts;
-				_failureTexts = failureTexts;
+				_results = results;
 				FailureCause = failureCause;
 				Outcome = outcome;
 			}
@@ -340,13 +365,13 @@ public abstract class Expectation
 			public override Exception? FailureCause { get; }
 
 			public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-				=> stringBuilder.Append(_expectationTexts.Indent(indentation, false));
+				=> stringBuilder.Append(GetExpectationTexts(_results).Indent(indentation, false));
 
 			public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 			{
-				if (_failureTexts != null)
+				if (Outcome != Outcome.Success)
 				{
-					stringBuilder.Append(_failureTexts.Indent(indentation, false));
+					stringBuilder.Append(GetFailureTexts(_results).Indent(indentation, false));
 				}
 			}
 
