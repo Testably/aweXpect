@@ -890,7 +890,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 	private static ConstraintResult DecideByTimeout(ConstraintResult result, EvaluationCancellation cancellation)
 	{
 		if (result.Outcome == Outcome.Undecided && cancellation.Timeout is { } timeout &&
-		    cancellation.IsTimeoutElapsed)
+		    cancellation.Reason == CancellationReason.Timeout)
 		{
 			return new ConstraintResult.FromException(result,
 				CreateTimeoutException(timeout, new OperationCanceledException(cancellation.Token)),

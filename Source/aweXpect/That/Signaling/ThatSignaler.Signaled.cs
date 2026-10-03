@@ -261,7 +261,7 @@ public static partial class ThatSignaler
 	private static bool IsCanceledBeforeTheTimeout(bool isSuccess, TimeSpan? timeout, TimeSpan waited,
 		IEvaluationContext context)
 		=> !isSuccess && timeout != TimeSpan.Zero && context.Cancellation.Token.IsCancellationRequested &&
-		   !(timeout is { } t && context.Cancellation.CountsAsElapsed(t, waited));
+		   !(timeout is { } t && context.Cancellation.HasWaitElapsed(t, waited));
 
 	private static void AppendWaitedTime(StringBuilder stringBuilder, TimeSpan? waitedTime, bool? isSuccess)
 	{

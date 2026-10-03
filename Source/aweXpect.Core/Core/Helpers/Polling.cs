@@ -38,7 +38,7 @@ internal enum PollStep
 /// <remarks>
 ///     A wait is shortened to the remaining budget, so the last check is made when the budget is used up and none after
 ///     it. Whether a cancellation during a wait still lets the last check decide is decided by
-///     <see cref="EvaluationCancellation.CountsAsElapsed(TimeSpan, TimeSpan)" />.
+///     <see cref="EvaluationCancellation.HasWaitElapsed(TimeSpan, TimeSpan)" />.
 /// </remarks>
 internal sealed class Polling : IDisposable
 {
@@ -116,7 +116,7 @@ internal sealed class Polling : IDisposable
 		_isLastCheck = remaining - wait < EvaluationCancellation.Tolerance;
 		if (await IsCanceledDuring(wait))
 		{
-			if (!_cancellation.CountsAsElapsed(_budget, Elapsed))
+			if (!_cancellation.HasWaitElapsed(_budget, Elapsed))
 			{
 				return PollStep.Canceled;
 			}

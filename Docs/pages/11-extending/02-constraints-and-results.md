@@ -26,8 +26,7 @@ available for the `IThat<T>`. They differ in the input and output parameters for
 The `IEvaluationContext` allows storing and receiving data between expectations. This mechanism is used for example to
 avoid enumerating an `IEnumerable` multiple times across multiple constraints. Its `Cancellation` describes the
 cancellation of the evaluation: the `Token` (the same token that an asynchronous constraint receives), the effective
-`Timeout`, and whether a cancellation came from that timeout (`IsTimeoutElapsed`) or from the caller
-(`IsCallerCanceled`).
+`Timeout`, and the `Reason` of a cancellation: `None`, the `Timeout`, or the `Caller`.
 
 `IsMetBy` returns a `ConstraintResult`, which decides the outcome and writes the expectation and the result texts of
 the failure message:

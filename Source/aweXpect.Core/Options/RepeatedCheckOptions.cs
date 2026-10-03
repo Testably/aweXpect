@@ -105,7 +105,7 @@ public class RepeatedCheckOptions
 	///         <item>
 	///             A cancellation during a wait lets one last check decide, when it counts as the
 	///             <see cref="Timeout" /> having elapsed (see
-	///             <see cref="EvaluationCancellation.CountsAsElapsed(TimeSpan, TimeSpan)" />): when it came at the
+	///             <see cref="EvaluationCancellation.HasWaitElapsed(TimeSpan, TimeSpan)" />): when it came at the
 	///             <see cref="Timeout" />, or when the effective timeout of the evaluation is not shorter than the
 	///             <see cref="Timeout" />. Any other cancellation, e.g. by the caller or by a shorter timeout, ends the
 	///             checks with <see cref="Outcome.Undecided" />.

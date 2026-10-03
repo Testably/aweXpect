@@ -344,13 +344,16 @@ aweXpect.Core.ExpectationBuilder.ForWhich<TSource, TTarget>(System.Func<TSource,
 *REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.Within(System.TimeSpan duration) -> aweXpect.Delegates.ThatDelegateThrows<TException>!
 aweXpect.Delegates.ThatDelegateThrows<TException>.Within(System.TimeSpan timeout) -> aweXpect.Delegates.ThatDelegateThrows<TException>!
 aweXpect.Core.EvaluationContext.EvaluationCancellation
-aweXpect.Core.EvaluationContext.EvaluationCancellation.IsCallerCanceled.get -> bool
-aweXpect.Core.EvaluationContext.EvaluationCancellation.IsTimeoutElapsed.get -> bool
+aweXpect.Core.EvaluationContext.CancellationReason
+aweXpect.Core.EvaluationContext.CancellationReason.Caller = 2 -> aweXpect.Core.EvaluationContext.CancellationReason
+aweXpect.Core.EvaluationContext.CancellationReason.None = 0 -> aweXpect.Core.EvaluationContext.CancellationReason
+aweXpect.Core.EvaluationContext.CancellationReason.Timeout = 1 -> aweXpect.Core.EvaluationContext.CancellationReason
+aweXpect.Core.EvaluationContext.EvaluationCancellation.Reason.get -> aweXpect.Core.EvaluationContext.CancellationReason
 aweXpect.Core.EvaluationContext.EvaluationCancellation.Timeout.get -> System.TimeSpan?
 aweXpect.Core.EvaluationContext.EvaluationCancellation.Token.get -> System.Threading.CancellationToken
 aweXpect.Core.EvaluationContext.IEvaluationContext.Cancellation.get -> aweXpect.Core.EvaluationContext.EvaluationCancellation!
 static aweXpect.Core.EvaluationContext.EvaluationCancellation.None.get -> aweXpect.Core.EvaluationContext.EvaluationCancellation!
-aweXpect.Core.EvaluationContext.EvaluationCancellation.CountsAsElapsed(System.TimeSpan waitTimeout, System.TimeSpan waited) -> bool
+aweXpect.Core.EvaluationContext.EvaluationCancellation.HasWaitElapsed(System.TimeSpan waitTimeout, System.TimeSpan waited) -> bool
 aweXpect.Signaling.Signaler.WaitAsync(System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult!>!
 aweXpect.Signaling.Signaler.WaitAsync(aweXpect.Core.Times amount, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult!>!
 aweXpect.Signaling.Signaler<TParameter>.WaitAsync(System.Func<TParameter, bool>? predicate = null, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult<TParameter>!>!

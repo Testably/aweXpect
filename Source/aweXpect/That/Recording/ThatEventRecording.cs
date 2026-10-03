@@ -53,7 +53,7 @@ public static partial class ThatEventRecording
 				_waitedTime = stopwatch.Elapsed;
 				_stoppedEarly = quantifier.Check(eventCount, false) != null;
 				if (!_stoppedEarly && cancellationToken.IsCancellationRequested &&
-				    !context.Cancellation.CountsAsElapsed(options.Timeout, _waitedTime.Value))
+				    !context.Cancellation.HasWaitElapsed(options.Timeout, _waitedTime.Value))
 				{
 					// A cancellation can end the wait before the timeout, so the events recorded until then decide nothing.
 					Outcome = Outcome.Undecided;

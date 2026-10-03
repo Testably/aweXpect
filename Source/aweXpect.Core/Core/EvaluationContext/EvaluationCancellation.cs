@@ -52,21 +52,25 @@ public sealed class EvaluationCancellation
 	public TimeSpan? Timeout { get; }
 
 	/// <summary>
-	///     Whether the <see cref="Timeout" /> elapsed, while the caller did not cancel the evaluation.
+	///     Why the evaluation was canceled.
 	/// </summary>
-	public bool IsTimeoutElapsed
-		=> _timeoutCts?.IsCancellationRequested == true && !_callerToken.IsCancellationRequested;
+	public CancellationReason Reason
+	{
+		get
+		{
+			if (_callerToken.IsCancellationRequested)
+			{
+				return CancellationReason.Caller;
+			}
+
+			return _timeoutCts?.IsCancellationRequested == true ? CancellationReason.Timeout : CancellationReason.None;
+		}
+	}
 
 	/// <summary>
-	///     Whether the caller canceled the evaluation, with <c>WithCancellation(…)</c> or with the token of
-	///     <c>Customize.aweXpect.Settings().TestCancellation</c>.
-	/// </summary>
-	public bool IsCallerCanceled => _callerToken.IsCancellationRequested;
-
-	/// <summary>
-	///     Whether a cancellation that ended a wait of at most <paramref name="waitTimeout" /> after
-	///     <paramref name="waited" /> counts as the <paramref name="waitTimeout" /> having elapsed, so that the result at
-	///     that time decides instead of the cancellation.
+	///     Whether a wait of at most <paramref name="waitTimeout" /> that a cancellation ended after
+	///     <paramref name="waited" /> counts as elapsed, so that the result at that time decides instead of the
+	///     cancellation.
 	/// </summary>
 	/// <remarks>
 	///     This is the case, when the cancellation came at the end of the wait, or when the <see cref="Timeout" /> elapsed
@@ -74,21 +78,21 @@ public sealed class EvaluationCancellation
 	///     slightly before the wait does. A cancellation by the caller, a shorter <see cref="Timeout" /> and every
 	///     cancellation of an infinite <paramref name="waitTimeout" /> end the wait without a decision.
 	/// </remarks>
-	public bool CountsAsElapsed(TimeSpan waitTimeout, TimeSpan waited)
+	public bool HasWaitElapsed(TimeSpan waitTimeout, TimeSpan waited)
 	{
 		if (waitTimeout == System.Threading.Timeout.InfiniteTimeSpan || waitTimeout == TimeSpan.MaxValue)
 		{
 			return false;
 		}
 
-		return waitTimeout - waited < Tolerance || (IsTimeoutElapsed && Timeout >= waitTimeout);
+		return waitTimeout - waited < Tolerance || (Reason == CancellationReason.Timeout && Timeout >= waitTimeout);
 	}
 
 	internal bool HasTimedOut(Exception? exception)
-		=> exception is OperationCanceledException && IsTimeoutElapsed;
+		=> exception is OperationCanceledException && Reason == CancellationReason.Timeout;
 
 	internal bool IsCanceledBy(Exception? exception)
-		=> exception is OperationCanceledException && IsCallerCanceled;
+		=> exception is OperationCanceledException && Reason == CancellationReason.Caller;
 
 	/// <summary>
 	///     Releases the timer of the <see cref="Timeout" />.

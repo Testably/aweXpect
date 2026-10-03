@@ -87,7 +87,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 			ConstraintResult result =
 				await IsMetRepeatedly(subject, rootNode, context, retryTimeout, cancellation);
 			if (result.Outcome == Outcome.Undecided && cancellation.Timeout is { } cancellationTimeout &&
-			    cancellation.IsTimeoutElapsed)
+			    cancellation.Reason == CancellationReason.Timeout)
 			{
 				return new ConstraintResult.FromException(result,
 					ExpectationBuilder<TValue>.CreateTimeoutException(cancellationTimeout,
