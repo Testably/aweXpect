@@ -40,6 +40,13 @@ await Expect.That("Help!".AsSpan()).Contains('!');
 
 A span can't be kept across an `await`, so create it in the statement of the expectation.
 
+## Immutable arrays
+
+:::note[.NET 8 or later]
+Before .NET 8, only `IsEmpty` and `IsNotEmpty` are available for an `ImmutableArray<T>`. Call `.AsEnumerable()` on the
+array to use the other collection expectations.
+:::
+
 ## Sets
 
 :::warning[A set or a dictionary has no defined order]
@@ -78,10 +85,11 @@ only a set of the expected item type is recognised, e.g. a `HashSet<string>` for
 
 ## Tolerance
 
-The expectations that compare items with an expected value accept a tolerance for `double`, `float`, `decimal`,
-`DateTime`, `DateTimeOffset` and `TimeSpan` items, and [on .NET 8 or later](../02-getting-started.md#target-frameworks)
-also for `DateOnly`, whose tolerance must be a whole number of
-days, and `TimeOnly`, whose items are compared on the clock face, so that `23:59` and `00:01` are two minutes apart:
+The expectations that compare items with an expected value accept a tolerance for numbers such as `int`, `long`,
+`double` or `decimal`, for `DateTime`, `DateTimeOffset` and `TimeSpan` items, and
+[on .NET 8 or later](../02-getting-started.md#target-frameworks) also for `DateOnly`, whose tolerance must be a whole
+number of days, and `TimeOnly`, whose items are compared on the clock face, so that `23:59` and `00:01` are two minutes
+apart:
 
 ```csharp
 IEnumerable<double> durations = [1.01, 2.02, 3.04];
@@ -94,9 +102,11 @@ await Expect.That(durations).StartsWith(1.0, 2.0).Within(0.1);
 await Expect.That(durations).EndsWith(2.0, 3.0).Within(0.1);
 await Expect.That(durations).HasItem(2.0).Within(0.1).AtIndex(1);
 await Expect.That([2.04, 2.02, 2.01]).All().AreEqualTo(2.0).Within(0.1);
+await Expect.That([9, 20, 31]).Contains(10).Within(1);
 ```
 
-A tolerance takes precedence over the comparer of a set.
+A tolerance takes precedence over the comparer of a set. The values of a [dictionary](./04-dictionaries.md#values)
+accept the same tolerance.
 
 Without `Within`, the items of the time types use the
 [default tolerance](../04-values/10-datetime-offset.md#default-tolerance), if one is set.

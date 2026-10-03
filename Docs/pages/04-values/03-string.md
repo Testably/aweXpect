@@ -344,6 +344,26 @@ is always ignored, and a single trailing line terminator does not start a new li
 lines as `"a\nb"` (as for [lines](#lines)). `AsBlock` can be combined with `IgnoringCase`, `Using` and the count
 quantifiers.
 
+`AsBlock` also works with `IsEqualTo`, where the whole text has to be the block, e.g. for an XML element that keeps
+the indentation of the document it was taken from, and with the expectations on a collection of strings, such as
+`HasItem`:
+
+```csharp
+string album = """
+                   <album>
+                     <title>Abbey Road</title>
+                     <length>47:03</length>
+                   </album>
+               """;
+
+await Expect.That(album).IsEqualTo("""
+                                   <album>
+                                     <title>Abbey Road</title>
+                                     <length>47:03</length>
+                                   </album>
+                                   """).AsBlock();
+```
+
 ## Character casing
 
 You can verify that the characters in a `string` are all upper or lower cased:

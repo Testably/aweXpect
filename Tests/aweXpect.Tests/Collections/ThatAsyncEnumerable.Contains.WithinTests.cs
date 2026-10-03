@@ -1270,6 +1270,32 @@ public sealed partial class ThatAsyncEnumerable
 				}
 			}
 
+			public sealed class IntTests
+			{
+				[Fact]
+				public async Task Collection_WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
+				{
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(9, 20, 31);
+					IEnumerable<int> expected = [21, 30,];
+
+					async Task Act()
+						=> await That(subject).Contains(expected).Within(1);
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task Item_WhenItLiesAtTheEdgeOfTheTolerance_ShouldSucceed()
+				{
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(9, 20, 31);
+
+					async Task Act()
+						=> await That(subject).Contains(10).Within(1);
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
 			public sealed class TimeOnlyTests
 			{
 				[Fact]

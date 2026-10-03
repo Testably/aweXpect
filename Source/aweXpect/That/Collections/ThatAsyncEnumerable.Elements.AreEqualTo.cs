@@ -14,7 +14,7 @@ public static partial class ThatAsyncEnumerable
 
 	[CreateExpectationFamily("AreEqualTo", Factory = typeof(ObjectEqualityWithToleranceOptionsFactory),
 		Summary = ElementsAreEqualTo)]
-	internal static ToleranceEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem, TTolerance>
+	internal static ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem, TTolerance>
 		AreEqualToWithToleranceCore<TItem, TTolerance>(
 			Elements<TItem> elements,
 			TItem expected,
@@ -22,7 +22,7 @@ public static partial class ThatAsyncEnumerable
 	{
 		IAsyncEnumerableElements<TItem> iElements = elements;
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
-		return new ToleranceEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
+		return new ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
 			TTolerance>(
 			expectationBuilder.AddConstraint((it, grammars)
 				=> new CollectionConstraint<TItem>(

@@ -266,6 +266,41 @@ public sealed partial class ThatDictionary
 			}
 		}
 
+		public sealed class WithinTests
+		{
+			[Fact]
+			public async Task WhenNoValueLiesWithinTheTolerance_ShouldSucceed()
+			{
+				Dictionary<string, double> subject = new() { ["a"] = 1.2, ["b"] = 2.2, };
+
+				async Task Act()
+					=> await That(subject).DoesNotContainValues(1.0, 2.0).Within(0.1);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenOneValueLiesWithinTheTolerance_ShouldFail()
+			{
+				Dictionary<string, double> subject = new() { ["a"] = 1.2, ["b"] = 2.05, };
+
+				async Task Act()
+					=> await That(subject).DoesNotContainValues(1.0, 2.0).Within(0.1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain values [1.0, 2.0] ± 0.1,
+					             but it contained [
+					               2.0
+					             ]
+
+					             Dictionary:
+					             {["a"] = 1.2, ["b"] = 2.05}
+					             """);
+			}
+		}
+
 		public sealed class OverloadTests
 		{
 			[Fact]

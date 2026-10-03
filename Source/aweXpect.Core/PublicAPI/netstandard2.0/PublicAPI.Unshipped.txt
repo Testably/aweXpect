@@ -367,3 +367,13 @@ aweXpect.Signaling.Signaler.WaitAsync(System.TimeSpan? timeout = null, System.Th
 aweXpect.Signaling.Signaler.WaitAsync(aweXpect.Core.Times amount, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult!>!
 aweXpect.Signaling.Signaler<TParameter>.WaitAsync(System.Func<TParameter, bool>? predicate = null, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult<TParameter>!>!
 aweXpect.Signaling.Signaler<TParameter>.WaitAsync(aweXpect.Core.Times amount, System.Func<TParameter, bool>? predicate = null, System.TimeSpan? timeout = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult<TParameter>!>!
+aweXpect.Results.StringBlockHasItemResult<TCollection>
+aweXpect.Results.StringBlockHasItemResult<TCollection>.IgnoringCase(bool ignoreCase = true) -> aweXpect.Results.StringBlockHasItemResult<TCollection>!
+aweXpect.Results.StringBlockHasItemResult<TCollection>.StringBlockHasItemResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection?>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions, aweXpect.Options.StringEqualityOptions! options) -> void
+aweXpect.Results.StringBlockHasItemResult<TCollection>.Using(System.Collections.Generic.IEqualityComparer<string!>! comparer) -> aweXpect.Results.StringBlockHasItemResult<TCollection>!
+aweXpect.Results.StringBlockResult<TType, TThat>
+aweXpect.Results.StringBlockResult<TType, TThat>.IgnoringCase(bool ignoreCase = true) -> aweXpect.Results.StringBlockResult<TType, TThat>!
+aweXpect.Results.StringBlockResult<TType, TThat>.StringBlockResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options) -> void
+aweXpect.Results.StringBlockResult<TType, TThat>.Using(System.Collections.Generic.IEqualityComparer<string!>! comparer) -> aweXpect.Results.StringBlockResult<TType, TThat>!
+aweXpect.Results.StringEqualityTypeResult<TType, TThat>.AsBlock() -> aweXpect.Results.StringBlockResult<TType, TThat>!
+aweXpect.Results.StringHasItemResult<TCollection>.AsBlock() -> aweXpect.Results.StringBlockHasItemResult<TCollection>!

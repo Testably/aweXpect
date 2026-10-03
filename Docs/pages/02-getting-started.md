@@ -76,6 +76,7 @@ only available on .NET 8 or later:
 - expectations for [`IAsyncEnumerable<T>`](./05-collections/index.md);
 - [`DateOnly` and `TimeOnly`](./04-values/11-date-time-only.md);
 - [`Span<T>` and `ReadOnlySpan<T>`](./05-collections/index.md#spans) subjects;
+- collection expectations for [`ImmutableArray<T>`](./05-collections/index.md#immutable-arrays) subjects;
 - [`IsParsableInto`](./04-values/03-string.md#parsing) for strings;
 - [`HasBufferSize`](./04-values/08-stream.md#buffer-size) for buffered streams;
 - [number expectations](./04-values/02-number.md) for `INumber<T>` types other than `byte`, `sbyte`, `short`,

@@ -260,6 +260,55 @@ public sealed partial class ThatDictionary
 			}
 		}
 
+		public sealed class WithinTests
+		{
+			[Fact]
+			public async Task WhenACollectionOfNonNullableValuesLiesWithinTheTolerance_ShouldSucceed()
+			{
+				Dictionary<string, double?> subject = new() { ["a"] = 1.05, ["b"] = null, ["c"] = 2.05, };
+				IEnumerable<double> expected = [1.0, 2.0,];
+
+				async Task Act()
+					=> await That(subject).ContainsValues(expected).Within(0.1);
+
+				await That(Act).DoesNotThrow()
+					.Because("non-nullable expected values are compared with the nullable values of the dictionary");
+			}
+
+			[Fact]
+			public async Task WhenOneValueLiesOutsideTheTolerance_ShouldFail()
+			{
+				Dictionary<string, double> subject = new() { ["a"] = 1.05, ["b"] = 2.2, };
+
+				async Task Act()
+					=> await That(subject).ContainsValues(1.0, 2.0).Within(0.1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains values [1.0, 2.0] ± 0.1,
+					             but it did not contain [
+					               2.0
+					             ]
+
+					             Dictionary:
+					             {["a"] = 1.05, ["b"] = 2.2}
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTheValuesLieWithinTheTolerance_ShouldSucceed()
+			{
+				Dictionary<string, double> subject = new() { ["a"] = 1.05, ["b"] = 2.05, };
+
+				async Task Act()
+					=> await That(subject).ContainsValues(1.0, 2.0).Within(0.1);
+
+				await That(Act).DoesNotThrow()
+					.Because("the values have the same tolerance as the items of a collection");
+			}
+		}
+
 		public sealed class OverloadTests
 		{
 			[Fact]

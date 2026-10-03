@@ -208,6 +208,120 @@ public sealed partial class ThatDictionary
 			}
 		}
 
+		public sealed class StringTests
+		{
+			[Fact]
+			public async Task WhenThePairDiffersOnlyInCase_WithIgnoringCase_ShouldSucceed()
+			{
+				Dictionary<int, string> subject = new() { [1] = "Let It Be", };
+
+				async Task Act()
+					=> await That(subject).Contains(new KeyValuePair<int, string?>(1, "LET IT BE")).IgnoringCase();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTheValueDiffersInMoreThanCase_WithIgnoringCase_ShouldFail()
+			{
+				Dictionary<int, string> subject = new() { [1] = "Let It Be", };
+
+				async Task Act()
+					=> await That(subject).Contains(1, "Yesterday").IgnoringCase();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains [1] = "Yesterday" ignoring case,
+					             but it contained key 1 with value "Let It Be"
+
+					             Dictionary:
+					             {
+					               [1] = "Let It Be"
+					             }
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTheValueDiffersOnlyInCase_WithIgnoringCase_ShouldSucceed()
+			{
+				Dictionary<int, string> subject = new() { [1] = "Let It Be", };
+
+				async Task Act()
+					=> await That(subject).Contains(1, "let it be").IgnoringCase();
+
+				await That(Act).DoesNotThrow()
+					.Because("the value of an entry has the same string options as ContainsValue");
+			}
+		}
+
+		public sealed class WithinTests
+		{
+			[Fact]
+			public async Task WhenTheTimeLiesWithinTheTolerance_ShouldSucceed()
+			{
+				Dictionary<string, DateTime> subject = new() { ["a"] = new DateTime(2024, 1, 1, 0, 0, 1), };
+
+				async Task Act()
+					=> await That(subject).Contains("a", new DateTime(2024, 1, 1)).Within(1.Seconds());
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTheValueIsNullable_ShouldApplyTheTolerance()
+			{
+				Dictionary<string, double?> subject = new() { ["a"] = 1.05, ["b"] = null, };
+
+				async Task Act()
+					=> await That(subject).Contains("a", 1.0).Within(0.1);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenTheValueLiesOutsideTheTolerance_ShouldFail()
+			{
+				Dictionary<string, double> subject = new() { ["a"] = 1.2, };
+
+				async Task Act()
+					=> await That(subject).Contains("a", 1.0).Within(0.1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains ["a"] = 1.0 ± 0.1,
+					             but it contained key "a" with value 1.2
+
+					             Dictionary:
+					             {["a"] = 1.2}
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenTheValueLiesWithinTheTolerance_ShouldSucceed()
+			{
+				Dictionary<string, double> subject = new() { ["a"] = 1.05, };
+
+				async Task Act()
+					=> await That(subject).Contains("a", 1.0).Within(0.1);
+
+				await That(Act).DoesNotThrow()
+					.Because("the value of an entry has the same tolerance as the item of a collection");
+			}
+
+			[Fact]
+			public async Task WhenTheValueOfAPairLiesWithinTheTolerance_ShouldSucceed()
+			{
+				IReadOnlyDictionary<string, decimal> subject = new Dictionary<string, decimal> { ["a"] = 1.05m, };
+
+				async Task Act()
+					=> await That(subject).Contains(new KeyValuePair<string, decimal>("a", 1.0m)).Within(0.1m);
+
+				await That(Act).DoesNotThrow();
+			}
+		}
+
 		public sealed class OverloadTests
 		{
 			[Fact]
@@ -266,6 +380,20 @@ public sealed partial class ThatDictionary
 
 				await That(Act).DoesNotThrow()
 					.Because("the key and value overloads need the same priority to stay unambiguous");
+			}
+
+			[Fact]
+			public async Task ForASortedDictionaryOfDoubles_WithKeyAndValue_ShouldBindToTheToleranceOverload()
+			{
+				SortedDictionary<string, double> subject = new() { { "a", 1.05 }, };
+
+				async Task Act()
+					=> await (ObjectEqualityWithToleranceResult<IDictionary<string, double>,
+							IThat<IDictionary<string, double>?>, double, double>)
+						That(subject).Contains("a", 1.0).Within(0.1);
+
+				await That(Act).DoesNotThrow()
+					.Because("the tolerance overloads of both dictionary interfaces must not become ambiguous");
 			}
 		}
 	}

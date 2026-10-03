@@ -198,6 +198,42 @@ public sealed class CollectionExpectationGeneratorTests
 	}
 
 	[Fact]
+	public async Task PerSubject_WithFactory_ShouldBindTheTypeArgumentsOfTheKind()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public static class Factory
+			{
+				public static ObjectEqualityWithToleranceOptions<double, double> CreateDouble() => new();
+			}
+
+			[CollectionSubjects("System.Collections.Generic.Dictionary<TKey, TValue>")]
+			public static partial class ThatDictionary
+			{
+				[CreateExpectationFamily("ContainsValue", PerSubject = true, Factory = typeof(Factory),
+					Summary = "Contains the value.")]
+				internal static IThat<TCollection?> ContainsValueCore<TCollection, TKey, TValue, TTolerance>(
+					IThat<TCollection?> subject,
+					TValue expected,
+					ObjectEqualityWithToleranceOptions<TValue, TTolerance> options)
+					where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty();
+		await That(result.Generated).Contains("ContainsValue<TKey>(").Once();
+		await That(result.Generated)
+			.Contains("this global::aweXpect.Core.IThat<global::System.Collections.Generic.Dictionary<TKey, double>?> subject")
+			.Once()
+			.Because("the factory fills the value type that the kind names");
+		await That(result.Generated).Contains("where TKey : notnull").Once();
+	}
+
+	[Fact]
 	public async Task PerSubject_WithoutCollectionSubjects_ShouldReport()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -599,6 +635,37 @@ public sealed class CollectionExpectationGeneratorTests
 	}
 
 	[Fact]
+	public async Task WithFactory_WhenTheExpectedElementIsNotTheFilledItem_ShouldNotCastUp()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			public static class Factory
+			{
+				public static ObjectEqualityWithToleranceOptions<double?, double> CreateNullableDouble() => new();
+			}
+
+			public static partial class ThatDictionary
+			{
+				[CreateExpectationFamily("IsEqualTo", Factory = typeof(Factory), Summary = "Matches.")]
+				internal static IThat<TValue> IsEqualToCore<TKey, TValue, TTolerance>(
+					IThat<IEnumerable<KeyValuePair<TKey, TValue>>?> subject,
+					IEnumerable<KeyValuePair<TKey, TValue>> expected,
+					ObjectEqualityWithToleranceOptions<TValue, TTolerance> options,
+					string expectedExpression)
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics).IsEmpty();
+		await That(result.Generated).Contains("IsEqualTo<TKey>(").Once()
+			.Because("an entry with a non-nullable value cannot be cast up to one with a nullable value");
+		await That(result.Generated).DoesNotContain("CastingEnumerable");
+	}
+
+	[Fact]
 	public async Task WithFactory_WhenTheHelperTakesNoExpectedValue_ShouldNotTakeTheFilledParameterForOne()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -668,6 +735,38 @@ public sealed class CollectionExpectationGeneratorTests
 
 		await That(result.Errors).IsEmpty();
 		await That(result.Generated).Contains("IThat<double?>").Once();
+	}
+
+	[Fact]
+	public async Task WithKeyAndValue_ShouldTakeTheKeyAndTheValueAndPassThePair()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			namespace Lib;
+
+			[CollectionSubjects("System.Collections.Generic.Dictionary<TKey, TValue>")]
+			public static partial class ThatDictionary
+			{
+				[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true, KeyAndValue = true,
+					Summary = "Contains the entry.", NegatedSummary = "Does not contain the entry.")]
+				internal static IThat<TCollection?> ContainsCore<TCollection, TKey, TValue>(
+					IThat<TCollection?> subject,
+					KeyValuePair<TKey, TValue> expected,
+					bool negated)
+					where TCollection : IEnumerable<KeyValuePair<TKey, TValue>>
+					=> null!;
+			}
+			""");
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty();
+		await That(result.Generated).Contains("TKey expectedKey,\n\t\t\tTValue expectedValue)").Once();
+		await That(result.Generated).Contains("TKey unexpectedKey,\n\t\t\tTValue unexpectedValue)").Once();
+		await That(result.Generated)
+			.Contains("new global::System.Collections.Generic.KeyValuePair<TKey, TValue>(unexpectedKey, unexpectedValue)")
+			.Once()
+			.Because("the helper still receives the entry as one pair");
+		await That(result.Generated).DoesNotContain("KeyValuePair<TKey, TValue> expected");
 	}
 
 	[Fact]

@@ -31,6 +31,70 @@ internal static class ObjectEqualityWithToleranceOptionsFactory
 		new ItemEqualityWithToleranceOptions<decimal?, decimal>((a, e, t) => a.IsConsideredEqualTo(e, t),
 			t => $" ± {Formatter.Format(t)}");
 
+	public static ObjectEqualityWithToleranceOptions<byte, byte> CreateByte() =>
+		new ItemEqualityWithToleranceOptions<byte, byte>((a, e, t) => ((ulong)a).IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<byte?, byte> CreateNullableByte() =>
+		new ItemEqualityWithToleranceOptions<byte?, byte>((a, e, t) => ((ulong?)a).IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<sbyte, sbyte> CreateSByte() =>
+		new ItemEqualityWithToleranceOptions<sbyte, sbyte>((a, e, t) => ((long)a).IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<sbyte?, sbyte> CreateNullableSByte() =>
+		new ItemEqualityWithToleranceOptions<sbyte?, sbyte>((a, e, t) => ((long?)a).IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<short, short> CreateShort() =>
+		new ItemEqualityWithToleranceOptions<short, short>((a, e, t) => ((long)a).IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<short?, short> CreateNullableShort() =>
+		new ItemEqualityWithToleranceOptions<short?, short>((a, e, t) => ((long?)a).IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<ushort, ushort> CreateUShort() =>
+		new ItemEqualityWithToleranceOptions<ushort, ushort>((a, e, t) => ((ulong)a).IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<ushort?, ushort> CreateNullableUShort() =>
+		new ItemEqualityWithToleranceOptions<ushort?, ushort>((a, e, t) => ((ulong?)a).IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<int, int> CreateInt() =>
+		new ItemEqualityWithToleranceOptions<int, int>((a, e, t) => ((long)a).IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<int?, int> CreateNullableInt() =>
+		new ItemEqualityWithToleranceOptions<int?, int>((a, e, t) => ((long?)a).IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<uint, uint> CreateUInt() =>
+		new ItemEqualityWithToleranceOptions<uint, uint>((a, e, t) => ((ulong)a).IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<uint?, uint> CreateNullableUInt() =>
+		new ItemEqualityWithToleranceOptions<uint?, uint>((a, e, t) => ((ulong?)a).IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<long, long> CreateLong() =>
+		new ItemEqualityWithToleranceOptions<long, long>((a, e, t) => a.IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<long?, long> CreateNullableLong() =>
+		new ItemEqualityWithToleranceOptions<long?, long>((a, e, t) => a.IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<ulong, ulong> CreateULong() =>
+		new ItemEqualityWithToleranceOptions<ulong, ulong>((a, e, t) => a.IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
+	public static ObjectEqualityWithToleranceOptions<ulong?, ulong> CreateNullableULong() =>
+		new ItemEqualityWithToleranceOptions<ulong?, ulong>((a, e, t) => a.IsConsideredEqualTo(e, t),
+			t => $" ± {Formatter.Format(t)}");
+
 	public static ObjectEqualityWithToleranceOptions<DateTime, TimeSpan> CreateDateTime() =>
 		new ItemEqualityWithToleranceOptions<DateTime, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
 			t => $" ± {Formatter.Format(t)}", DefaultTimeTolerance);
