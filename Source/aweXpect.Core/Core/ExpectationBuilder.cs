@@ -598,7 +598,7 @@ public abstract class ExpectationBuilder
 	///     A separate method, so that the closure over the <paramref name="otherExceptions" /> is only allocated when
 	///     there are any, and not for every delegate subject.
 	/// </remarks>
-	private static ResultContext CreateOtherExceptionsContext(Exception[] otherExceptions)
+	private static ResultContext.SyncCallback CreateOtherExceptionsContext(Exception[] otherExceptions)
 		=> new ResultContext.SyncCallback("Other exceptions",
 			() => Formatter.Format(otherExceptions, FormattingOptions.MultipleLines));
 
