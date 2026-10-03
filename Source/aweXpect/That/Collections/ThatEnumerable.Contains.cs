@@ -778,21 +778,6 @@ public static partial class ThatEnumerable
 				(Collection: (ICollection<TItem>)collection, Expected: expected), "the comparer")
 			: null;
 
-	/// <summary>
-	///     Equality options for the items of a collection that tell whether their match type is still the default one.
-	/// </summary>
-	private sealed class ItemEqualityOptions<TItem> : ObjectEqualityOptions<TItem>
-	{
-		private readonly IObjectMatchType _defaultMatchType;
-
-		public ItemEqualityOptions()
-		{
-			_defaultMatchType = MatchType;
-		}
-
-		public bool HasDefaultMatchType => ReferenceEquals(MatchType, _defaultMatchType);
-	}
-
 	private sealed class ContainConstraint<TItem>(
 		string it,
 		ExpectationGrammars grammars,

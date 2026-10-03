@@ -282,7 +282,7 @@ public static partial class ThatEnumerable
 		private TItem? _firstMismatchItem;
 		private bool _foundMismatch;
 		private int _index;
-		private List<TItem>? _items;
+		private IList<TItem>? _items;
 		private int _itemsCount;
 		private int _offset;
 
@@ -328,18 +328,28 @@ public static partial class ThatEnumerable
 
 			IEnumerable<TItem> materializedEnumerable =
 				context.UseMaterializedEnumerable<TItem>(actual);
-			_items = [];
 			_foundMismatch = false;
-			foreach (TItem item in materializedEnumerable)
+			if (materializedEnumerable is TItem[] or List<TItem>)
 			{
-				if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
+				// The items are already in memory, and reading them by index calls no code of the caller.
+				_items = (IList<TItem>)materializedEnumerable;
+			}
+			else
+			{
+				List<TItem> items = [];
+				foreach (TItem item in materializedEnumerable)
 				{
-					Outcome = Outcome.Undecided;
-					_collectionContext.Set(materializedEnumerable, true);
-					return this;
+					if (cancellationToken.IsCanceledBeforeTheEndOf(materializedEnumerable))
+					{
+						Outcome = Outcome.Undecided;
+						_collectionContext.Set(materializedEnumerable, true);
+						return this;
+					}
+
+					items.Add(item);
 				}
 
-				_items.Add(item);
+				_items = items;
 			}
 
 			_itemsCount = _items.Count;

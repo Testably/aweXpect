@@ -72,6 +72,13 @@ public partial class CollectionMatchOptions
 		private readonly Dictionary<int, (T Item, T3 Expected)> _incorrectItems = new();
 		private readonly List<T> _values = new();
 		private List<int> _candidateOffsets = new();
+
+		/// <summary>
+		///     The list that the next item fills for <see cref="_candidateOffsets" /> or <see cref="_runLengths" />, so
+		///     that the two are swapped instead of allocating a new list for every item.
+		/// </summary>
+		private List<int> _nextOffsetsOrRunLengths = new();
+
 		private BoundedEditDistance<T3>? _editDistance;
 		private bool _isBroken;
 		private bool _isFound;
@@ -190,7 +197,8 @@ public partial class CollectionMatchOptions
 		/// <returns><see langword="true" />, when a run is complete.</returns>
 		private async ValueTask<bool> CompletesARun(int index, IOptionsEquality<T2> options)
 		{
-			List<int> runLengths = new();
+			List<int> runLengths = _nextOffsetsOrRunLengths;
+			runLengths.Clear();
 			foreach (int runLength in _runLengths)
 			{
 				if (await IsMatch(index, _expectedItems[runLength], options))
@@ -204,6 +212,7 @@ public partial class CollectionMatchOptions
 				runLengths.Add(1);
 			}
 
+			_nextOffsetsOrRunLengths = _runLengths;
 			_runLengths = runLengths;
 			return runLengths.Count > 0 && runLengths[0] == _expectedItems.Length;
 		}
@@ -261,10 +270,12 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		private async ValueTask<bool> ContinuesTheRunInTheExpectedItems(int index, IOptionsEquality<T2> options)
 		{
-			List<int> candidateOffsets = new();
-			IEnumerable<int> offsets = index == 0 ? Enumerable.Range(0, _expectedItems.Length) : _candidateOffsets;
-			foreach (int offset in offsets)
+			List<int> candidateOffsets = _nextOffsetsOrRunLengths;
+			candidateOffsets.Clear();
+			int count = index == 0 ? _expectedItems.Length : _candidateOffsets.Count;
+			for (int i = 0; i < count; i++)
 			{
+				int offset = index == 0 ? i : _candidateOffsets[i];
 				if (offset + index < _expectedItems.Length &&
 				    await IsMatch(index, _expectedItems[offset + index], options))
 				{
@@ -272,6 +283,7 @@ public partial class CollectionMatchOptions
 				}
 			}
 
+			_nextOffsetsOrRunLengths = _candidateOffsets;
 			_candidateOffsets = candidateOffsets;
 			return candidateOffsets.Count > 0;
 		}

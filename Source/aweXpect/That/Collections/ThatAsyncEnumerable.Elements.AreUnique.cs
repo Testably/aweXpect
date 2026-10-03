@@ -80,7 +80,8 @@ public static partial class ThatAsyncEnumerable
 						g => ElementExpectations.IsUnique(expectUnique ? g : g.Negate(), options),
 						a => a,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -90,7 +91,7 @@ public static partial class ThatAsyncEnumerable
 				Func<string?, TMember> memberAccessor, string memberAccessorExpression, bool expectUnique)
 		{
 			memberAccessor.ThrowIfNull();
-			ObjectEqualityOptions<TMember> options = new();
+			ItemEqualityOptions<TMember> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -102,7 +103,8 @@ public static partial class ThatAsyncEnumerable
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
 						expectUnique,
-						appendOptionsContexts: options.AppendContexts)),
+						appendOptionsContexts: options.AppendContexts,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -122,7 +124,8 @@ public static partial class ThatAsyncEnumerable
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -183,7 +186,7 @@ public static partial class ThatAsyncEnumerable
 		private ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem> AreUniqueCore(
 			bool expectUnique)
 		{
-			ObjectEqualityOptions<TItem> options = new();
+			ItemEqualityOptions<TItem> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -194,7 +197,8 @@ public static partial class ThatAsyncEnumerable
 						a => a,
 						(a, b) => options.AreConsideredEqual(a, b),
 						expectUnique,
-						appendOptionsContexts: options.AppendContexts)),
+						appendOptionsContexts: options.AppendContexts,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -204,7 +208,7 @@ public static partial class ThatAsyncEnumerable
 				Func<TItem, TMember> memberAccessor, string memberAccessorExpression, bool expectUnique)
 		{
 			memberAccessor.ThrowIfNull();
-			ObjectEqualityOptions<TMember> options = new();
+			ItemEqualityOptions<TMember> options = new();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
 			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TMember>(
 				expectationBuilder.AddConstraint((it, grammars)
@@ -216,7 +220,8 @@ public static partial class ThatAsyncEnumerable
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
 						expectUnique,
-						appendOptionsContexts: options.AppendContexts)),
+						appendOptionsContexts: options.AppendContexts,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -236,7 +241,8 @@ public static partial class ThatAsyncEnumerable
 							memberAccessorExpression.TrimCommonWhiteSpace(), options),
 						memberAccessor,
 						(a, b) => options.AreConsideredEqual(a, b),
-						expectUnique)),
+						expectUnique,
+						createGetHashCode: () => MemberHashing.For(options))),
 				_subject,
 				options);
 		}
@@ -250,7 +256,8 @@ public static partial class ThatAsyncEnumerable
 		Func<TItem, TMember> memberAccessor,
 		Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
 		bool expectUnique,
-		Action<ResultContextCollector>? appendOptionsContexts = null)
+		Action<ResultContextCollector>? appendOptionsContexts = null,
+		Func<Func<TMember, int>?>? createGetHashCode = null)
 		: QuantifiedCollectionConstraint<IAsyncEnumerable<TItem>?, TItem>(it, grammars,
 				quantifier, expectationText, "were"),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
@@ -272,7 +279,7 @@ public static partial class ThatAsyncEnumerable
 
 			IAsyncEnumerable<TItem> materialized =
 				context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
-			OccurrenceCounter<TMember> occurrences = new(areConsideredEqual);
+			OccurrenceCounter<TMember> occurrences = new(areConsideredEqual, createGetHashCode?.Invoke());
 			List<(TItem Item, int MemberIndex)> items = [];
 			await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
 			{
