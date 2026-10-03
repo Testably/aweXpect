@@ -816,7 +816,29 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 	}
 
 	/// <inheritdoc />
-	internal override async ValueTask<ConstraintResult> IsMet(Node rootNode,
+	/// <remarks>
+	///     A value subject without timeout and cancellation is passed to the <paramref name="rootNode" /> without starting
+	///     a state machine: the shared <see cref="EvaluationCancellation.None" /> neither times out nor is canceled, so
+	///     everything after the evaluation would leave its result unchanged.
+	/// </remarks>
+	internal override ValueTask<ConstraintResult> IsMet(Node rootNode,
+		EvaluationContext.EvaluationContext context,
+		ITimeSystem timeSystem,
+		TimeSpan? timeout,
+		CancellationToken cancellationToken)
+	{
+		if (timeout is null && !cancellationToken.CanBeCanceled &&
+		    _subjectSource is ValueSource<TValue> { Value: not DelegateValue, } valueSource &&
+		    Customize.aweXpect.TraceWriter is null)
+		{
+			context.Cancellation = EvaluationCancellation.None;
+			return rootNode.IsMetBy(valueSource.Value, context, cancellationToken);
+		}
+
+		return IsMetAsync(rootNode, context, timeSystem, timeout, cancellationToken);
+	}
+
+	private async ValueTask<ConstraintResult> IsMetAsync(Node rootNode,
 		EvaluationContext.EvaluationContext context,
 		ITimeSystem timeSystem,
 		TimeSpan? timeout,
