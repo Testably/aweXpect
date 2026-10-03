@@ -237,7 +237,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             contains key 2,
-					             but it did not contain 2
+					             but it did not contain key 2
 
 					             Dictionary:
 					             {[1] = 1}
@@ -257,7 +257,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             does not have recursive inner exceptions that are not empty,
-					             but it had
+					             but it had 1 recursive inner exception
 
 					             Collection:
 					             [

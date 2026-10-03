@@ -169,7 +169,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
-					             but it was never recorded in [] within 0:*
+					             but it was never recorded within 0:*
 					             """).AsWildcard();
 				cts.Cancel();
 			}
@@ -213,7 +213,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
-					             but it was never recorded in [] within 0:*
+					             but it was never recorded within 0:*
 					             """).AsWildcard();
 				cts.Cancel();
 			}
@@ -257,7 +257,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
-					             but it was never recorded in [] within 0:*
+					             but it was never recorded within 0:*
 					             """).AsWildcard();
 				cts.Cancel();
 			}
@@ -301,7 +301,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
-					             but it was never recorded in [] within 0:*
+					             but it was never recorded within 0:*
 					             """).AsWildcard();
 				cts.Cancel();
 			}
@@ -345,7 +345,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
-					             but it was never recorded in [] within 0:*
+					             but it was never recorded within 0:*
 					             """).AsWildcard();
 				cts.Cancel();
 			}
@@ -401,7 +401,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.200,
-					             but it was never recorded in [] within 0:*
+					             but it was never recorded within 0:*
 					             """).AsWildcard()
 					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
 			}

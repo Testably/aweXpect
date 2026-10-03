@@ -303,7 +303,7 @@ public sealed class EventRecordingTests
 			.WithMessage("""
 			             Expected that recording
 			             has recorded the CustomEvent event on sut exactly twice and has recorded the CustomEvent event on sut with int parameter raisesTheSecondEvent at least once within 0:30,
-			             but it was recorded once in [
+			             but it was only recorded once in [
 			               CustomEvent(1)
 			             ]
 			             """).WithTimeout(TimeSpan.FromSeconds(10))

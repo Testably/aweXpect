@@ -155,8 +155,7 @@ internal class ExpectationNode : Node
 		}
 		catch (UserCodeException e) when (!MemberExceptionResult.IsCancellationOf(e.Exception, cancellationToken))
 		{
-			result = MemberExceptionResult.Create(await GetExpectationResult(_constraint!, context, cancellationToken),
-				e.Exception, e.Thrower ?? "it", value);
+			result = await FromUserCodeException(e, value, context, cancellationToken);
 		}
 		catch (UserCodeException e)
 		{
@@ -165,7 +164,8 @@ internal class ExpectationNode : Node
 		catch (UnansweredItemException e)
 		{
 			result = UnansweredItemResult.Create(
-				await GetExpectationResult(_constraint!, context, cancellationToken), e.ItemResult, e.Item, value);
+				await GetExpectationResult(_constraint!, context, cancellationToken), e.ItemResult, e.Item, e.Index,
+				value);
 		}
 
 		if (_inner != null)
@@ -216,6 +216,21 @@ internal class ExpectationNode : Node
 		}
 
 		return result;
+	}
+
+	/// <summary>
+	///     The result of a constraint whose evaluation code of the caller ended, naming the item when the code was
+	///     evaluated for one item of a collection.
+	/// </summary>
+	private async Task<ConstraintResult> FromUserCodeException<TValue>(UserCodeException exception, TValue? value,
+		IEvaluationContext context, CancellationToken cancellationToken)
+	{
+		ConstraintResult expectation = await GetExpectationResult(_constraint!, context, cancellationToken);
+		ConstraintResult result =
+			MemberExceptionResult.Create(expectation, exception.Exception, exception.Thrower ?? "it", value);
+		return exception.ItemIndex is null
+			? result
+			: UnansweredItemResult.Create(expectation, result, null, exception.ItemIndex, value);
 	}
 
 	/// <summary>

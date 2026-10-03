@@ -48,6 +48,7 @@ public static partial class ThatException
 		: ConstraintResult.WithNotNullValue<Exception>(it, grammars),
 			IValueConstraint<Exception?>
 	{
+		private int _innerExceptionCount;
 		private List<Exception>? _innerExceptionsForNegation;
 
 		/// <inheritdoc />
@@ -56,6 +57,7 @@ public static partial class ThatException
 			Actual = actual;
 			_innerExceptionsForNegation = null;
 			List<Exception> innerExceptions = actual.GetInnerExceptions().ToList();
+			_innerExceptionCount = innerExceptions.Count;
 			if (innerExceptions.Count > 0)
 			{
 				_innerExceptionsForNegation = innerExceptions;
@@ -105,7 +107,8 @@ public static partial class ThatException
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" had");
+			=> stringBuilder.Append(It).Append(" had ").Append(_innerExceptionCount)
+				.Append(_innerExceptionCount == 1 ? " recursive inner exception" : " recursive inner exceptions");
 
 		/// <remarks>
 		///     The negated result relies on the inner exceptions as context, which the expectations on them do not

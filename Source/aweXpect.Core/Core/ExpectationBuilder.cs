@@ -240,6 +240,11 @@ public abstract class ExpectationBuilder
 			Node mappingNode = addMappingCallback is null
 				? _node.AddMapping(memberAccessor, expectationTextGenerator)
 				: addMappingCallback.Invoke(_node, memberAccessor, expectationTextGenerator);
+			if (mappingNode is MappingNode<TSource, TTarget> mapping)
+			{
+				mapping.Source = (_it, ExpectationGrammars);
+			}
+
 			_node = new ExpectationNode();
 			if (replaceIt)
 			{
@@ -296,6 +301,11 @@ public abstract class ExpectationBuilder
 			Node mappingNode = addAsyncMappingCallback is null
 				? _node.AddAsyncMapping(memberAccessor, expectationTextGenerator)
 				: addAsyncMappingCallback.Invoke(_node, memberAccessor, expectationTextGenerator);
+			if (mappingNode is AsyncMappingNode<TSource, TTarget> mapping)
+			{
+				mapping.Source = (_it, ExpectationGrammars);
+			}
+
 			_node = new ExpectationNode();
 			if (replaceIt)
 			{

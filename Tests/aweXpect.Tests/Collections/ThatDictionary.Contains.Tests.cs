@@ -23,7 +23,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains ["a"] = 2,
-					             but it contained the key "a" with value 1
+					             but it contained key "a" with value 1
 
 					             Dictionary:
 					             {["a"] = 1}
@@ -42,7 +42,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains ["b"] = 1,
-					             but it did not contain the key "b"
+					             but it did not contain key "b"
 
 					             Dictionary:
 					             {["a"] = 1}
@@ -112,7 +112,7 @@ public sealed partial class ThatDictionary
 					.WithMessage($"""
 					              Expected that subject
 					              contains [1] = {Formatter.Format(expected)} ± 0:01,
-					              but it contained the key 1 with value {Formatter.Format(value)}
+					              but it contained key 1 with value {Formatter.Format(value)}
 
 					              Dictionary:
 					              {Formatter.Format(subject, FormattingOptions.MultipleLines)}
@@ -149,7 +149,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains ["A"] = 2,
-					             but it contained the key "A" with value 1
+					             but it contained key "A" with value 1
 
 					             Dictionary:
 					             {["a"] = 1}
@@ -183,7 +183,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains ["a"] = 2,
-					             but it contained the key "a" with value 1
+					             but it contained key "a" with value 1
 
 					             Dictionary:
 					             {["a"] = 1}

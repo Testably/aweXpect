@@ -23,7 +23,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains value <null>,
-					             but it did not contain <null>
+					             but it did not contain value <null>
 
 					             Dictionary:
 					             {[1] = 41, [2] = 42, [3] = 43}
@@ -53,7 +53,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains value "BAZ" ignoring case,
-					             but it did not contain "BAZ"
+					             but it did not contain value "BAZ"
 
 					             Dictionary:
 					             {
@@ -125,7 +125,7 @@ public sealed partial class ThatDictionary
 					.WithMessage($"""
 					              Expected that subject
 					              contains value {Formatter.Format(expected)} ± 0:01,
-					              but it did not contain {Formatter.Format(expected)}
+					              but it did not contain value {Formatter.Format(expected)}
 
 					              Dictionary:
 					              {Formatter.Format(subject, FormattingOptions.MultipleLines)}
@@ -179,7 +179,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains value 2,
-					             but it did not contain 2
+					             but it did not contain value 2
 
 					             Dictionary:
 					             {[1] = 41, [2] = 42, [3] = 43}
@@ -198,7 +198,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains value 2 using ThatDictionary.ContainsValue.Tests.NeverEqualComparer,
-					             but it did not contain 2
+					             but it did not contain value 2
 
 					             Dictionary:
 					             {[1] = 41, [2] = 42, [3] = 43}

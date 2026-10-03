@@ -195,12 +195,12 @@ public static partial class ThatDictionary
 		{
 			if (!_hasKey)
 			{
-				stringBuilder.Append(It).Append(" did not contain the key ");
+				stringBuilder.Append(It).Append(" did not contain key ");
 				Formatter.Format(stringBuilder, expected.Key);
 				return;
 			}
 
-			stringBuilder.Append(It).Append(" contained the key ");
+			stringBuilder.Append(It).Append(" contained key ");
 			Formatter.Format(stringBuilder, expected.Key);
 			stringBuilder.Append(" with value ");
 			Formatter.Format(stringBuilder, _actualValue);

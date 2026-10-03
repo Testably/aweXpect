@@ -27,7 +27,8 @@ public partial class CollectionMatchOptions
 
 		protected override bool IsEqualToAnExpectedItem(T value) => _expectedValues.Contains(value);
 
-		protected override ValueTask<bool> AreConsideredEqual(T value, T expected, IOptionsEquality<T2> options)
+		protected override ValueTask<bool> AreConsideredEqual(int index, T value, T expected,
+			IOptionsEquality<T2> options)
 			=> options.AreConsideredEqual(value, expected);
 	}
 
@@ -42,9 +43,9 @@ public partial class CollectionMatchOptions
 			ignoreInterspersedItems)
 		where T : T2
 	{
-		protected override ValueTask<bool>
-			AreConsideredEqual(T value, ExpectationItem<T> expected, IOptionsEquality<T2> options)
-			=> expected.IsMetBy(value);
+		protected override ValueTask<bool> AreConsideredEqual(int index, T value, ExpectationItem<T> expected,
+			IOptionsEquality<T2> options)
+			=> expected.IsMetBy(value, index);
 	}
 
 	private sealed class SameOrderIgnoreDuplicatesFromPredicateCollectionMatcher<T, T2>(
@@ -60,9 +61,9 @@ public partial class CollectionMatchOptions
 	{
 		private readonly CompiledPredicates<T> _predicates = new();
 
-		protected override ValueTask<bool> AreConsideredEqual(T value, Expression<Func<T, bool>> expected,
+		protected override ValueTask<bool> AreConsideredEqual(int index, T value, Expression<Func<T, bool>> expected,
 			IOptionsEquality<T2> options)
-			=> _predicates.Invoke(expected, value);
+			=> _predicates.Invoke(expected, value, index);
 	}
 
 	/// <summary>
@@ -262,10 +263,18 @@ public partial class CollectionMatchOptions
 		}
 
 		private ValueTask<bool> IsMatch(int subjectId, int expectedId, IOptionsEquality<T2> options)
-			=> AreConsideredEqual(_subjectIds.Items[subjectId], _expectedDistinctItems[expectedId], options);
+			=> AreConsideredEqual(_firstIndexOfSubjectItem[subjectId], _subjectIds.Items[subjectId],
+				_expectedDistinctItems[expectedId], options);
 
+		/// <summary>
+		///     Compares the <paramref name="value" /> at the <paramref name="index" /> with the
+		///     <paramref name="expected" /> item.
+		/// </summary>
+		/// <remarks>
+		///     A duplicate is only compared once, so the <paramref name="index" /> is the one of its first occurrence.
+		/// </remarks>
 		protected abstract ValueTask<bool>
-			AreConsideredEqual(T value, T3 expected, IOptionsEquality<T2> options);
+			AreConsideredEqual(int index, T value, T3 expected, IOptionsEquality<T2> options);
 	}
 
 	/// <summary>

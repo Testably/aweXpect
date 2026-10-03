@@ -21,7 +21,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains ["b"] = 1,
-					             but it did not contain the key "b"
+					             but it did not contain key "b"
 
 					             Dictionary:
 					             {["a"] = 1}
@@ -83,7 +83,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains ["a"] = 2,
-					             but it contained the key "a" with value 1
+					             but it contained key "a" with value 1
 
 					             Dictionary:
 					             {["a"] = 1}
@@ -105,7 +105,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("""
 					             Expected that subject
 					             contains ["a"] = 2,
-					             but it contained the key "a" with value 1
+					             but it contained key "a" with value 1
 
 					             Dictionary:
 					             {["a"] = 1}

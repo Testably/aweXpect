@@ -57,7 +57,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 					MemberAccessor<TType, TMember?>.FromFuncAsMemberAccessor(memberAccessor, doNotPopulateThisValue),
 					(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
 				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
-					grammars => grammars | ExpectationGrammars.Introduced),
+					grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
 			_returnValue);
 	}
 
@@ -88,7 +88,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 						doNotPopulateThisValue),
 					(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
 				.AddExpectations(e => expectations(new ThatSubject<TMember?>(e)),
-					grammars => grammars | ExpectationGrammars.Introduced),
+					grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
 			_returnValue);
 	}
 
@@ -154,7 +154,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 						(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
 					.AddExpectations(
 						e => expectations(new ThatSubject<TMember?>(e)),
-						grammars => grammars | ExpectationGrammars.Introduced),
+						grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
 				_returnValue);
 		}
 
@@ -187,7 +187,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 						(member, stringBuilder) => stringBuilder.Append(" whose ").Append(member))
 					.AddExpectations(
 						e => expectations(new ThatSubject<TMember?>(e)),
-						grammars => grammars | ExpectationGrammars.Introduced),
+						grammars => grammars.ForMember<TMember>() | ExpectationGrammars.Introduced),
 				_returnValue);
 		}
 

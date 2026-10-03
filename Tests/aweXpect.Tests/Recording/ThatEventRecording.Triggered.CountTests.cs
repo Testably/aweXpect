@@ -31,7 +31,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage($"""
 					              Expected that recording
 					              has recorded the CustomEvent event on sut at least {minimum.ToTimesString()},
-					              but it was recorded {count.ToTimesString()} in *
+					              but it was only recorded {count.ToTimesString()} in *
 					              """).AsWildcard();
 			}
 
@@ -85,7 +85,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage($"""
 					              Expected that recording
 					              has recorded the CustomEvent event on sut between {minimum} and {maximum} times,
-					              but it was recorded {(count == 1 ? "once" : $"{count} times")} in *
+					              but it was {(count < minimum ? "only " : "")}recorded {(count == 1 ? "once" : $"{count} times")} in *
 					              """).AsWildcard();
 			}
 
@@ -111,7 +111,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage($"""
 					              Expected that recording
 					              has recorded the CustomEvent event on sut exactly {expected.ToTimesString()},
-					              but it was recorded {count.ToTimesString()} in *
+					              but it was {(count < expected ? "only " : "")}recorded {count.ToTimesString()} in *
 					              """).AsWildcard();
 			}
 
@@ -156,7 +156,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage($"""
 					              Expected that recording
 					              has recorded the CustomEvent event on sut exactly once,
-					              but it was {(count == 0 ? "never recorded" : $"recorded {count.ToTimesString()}")} in *
+					              but it was {(count == 0 ? "never recorded" : $"recorded {count.ToTimesString()} in *")}
 					              """).AsWildcard();
 			}
 		}

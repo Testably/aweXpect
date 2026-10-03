@@ -58,7 +58,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least 3 times,
-					             but it was recorded once in [
+					             but it was only recorded once in [
 					               CustomEvent()
 					             ]
 					             """);
@@ -81,7 +81,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least 3 times,
-					             but it was recorded twice in [
+					             but it was only recorded twice in [
 					               CustomEvent("foo"),
 					               CustomEvent("bar")
 					             ]
@@ -202,7 +202,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut more than 3 times,
-					             but it was recorded 3 times in [
+					             but it was only recorded 3 times in [
 					               CustomEvent(),
 					               CustomEvent(),
 					               CustomEvent()
@@ -233,7 +233,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut more than once,
-					             but it was recorded once in [
+					             but it was only recorded once in [
 					               CustomEvent()
 					             ]
 					             """);
@@ -380,7 +380,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least 4 times,
-					             but it was recorded 3 times in [
+					             but it was only recorded 3 times in [
 					               CustomEvent(),
 					               CustomEvent(),
 					               CustomEvent()
@@ -441,7 +441,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once,
-					             but it was never recorded in []
+					             but it was never recorded
 					             """);
 			}
 		}

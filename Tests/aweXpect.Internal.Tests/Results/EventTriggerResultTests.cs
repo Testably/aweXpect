@@ -49,7 +49,7 @@ public sealed class EventTriggerResultTests
 			.WithMessage("""
 			             Expected that recording
 			             has recorded the CustomEvent event on sut with my parameter at least twice,
-			             but it was recorded once in [
+			             but it was only recorded once in [
 			               CustomEvent("foo"),
 			               CustomEvent("bar")
 			             ]
