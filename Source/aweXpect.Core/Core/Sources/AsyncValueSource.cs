@@ -16,8 +16,8 @@ internal class AsyncValueSource<TValue>(Task<TValue> value) : IValueSource<TValu
 
 	#region IValueSource<TValue> Members
 
-	public Task<TValue> GetValue(ITimeSystem timeSystem, CancellationToken cancellationToken)
-		=> value.AbandonOnCancellation(cancellationToken);
+	public ValueTask<TValue> GetValue(ITimeSystem timeSystem, CancellationToken cancellationToken)
+		=> new(value.AbandonOnCancellation(cancellationToken));
 
 	#endregion
 

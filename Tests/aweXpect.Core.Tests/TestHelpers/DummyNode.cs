@@ -23,12 +23,12 @@ internal class DummyNode(string name, Func<ConstraintResult>? result = null) : N
 	public override void AddNode(Node node, string? separator = null)
 		=> throw new NotSupportedException();
 
-	public override Task<ConstraintResult> IsMetBy<TValue>(
+	public override ValueTask<ConstraintResult> IsMetBy<TValue>(
 		TValue? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 		where TValue : default
-		=> result == null ? throw new NotSupportedException() : Task.FromResult(result());
+		=> result == null ? throw new NotSupportedException() : new ValueTask<ConstraintResult>(result());
 
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(_name);

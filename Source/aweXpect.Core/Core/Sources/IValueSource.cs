@@ -6,5 +6,5 @@ namespace aweXpect.Core.Sources;
 
 internal interface IValueSource<TValue>
 {
-	Task<TValue> GetValue(ITimeSystem timeSystem, CancellationToken cancellationToken);
+	ValueTask<TValue> GetValue(ITimeSystem timeSystem, CancellationToken cancellationToken);
 }

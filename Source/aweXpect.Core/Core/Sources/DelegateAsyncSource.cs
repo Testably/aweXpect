@@ -15,7 +15,7 @@ internal class DelegateAsyncSource(Func<CancellationToken, Task>? action, bool i
 {
 	#region IValueSource<DelegateValue> Members
 
-	public async Task<DelegateValue> GetValue(ITimeSystem timeSystem,
+	public async ValueTask<DelegateValue> GetValue(ITimeSystem timeSystem,
 		CancellationToken cancellationToken)
 	{
 		if (action is null)

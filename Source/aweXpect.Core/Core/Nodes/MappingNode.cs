@@ -90,7 +90,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	}
 
 	/// <inheritdoc />
-	public override async Task<ConstraintResult> IsMetBy<TValue>(
+	public override async ValueTask<ConstraintResult> IsMetBy<TValue>(
 		TValue? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken) where TValue : default

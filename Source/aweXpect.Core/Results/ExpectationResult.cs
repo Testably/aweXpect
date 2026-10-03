@@ -114,10 +114,25 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	///     <para />
 	///     Will throw an exception, when the expectations are not met.
 	/// </summary>
+	/// <remarks>
+	///     An expectation that is met without waiting for anything completes right away, as starting the asynchronous
+	///     evaluation would take longer than the expectation itself.
+	/// </remarks>
 	public TaskAwaiter GetAwaiter()
 	{
-		Task result = GetResultOrThrow();
-		return result.GetAwaiter();
+		ValueTask<ConstraintResult> isMet = ExpectationBuilder.IsMet();
+		if (!isMet.IsCompletedSuccessfully)
+		{
+			return GetResultOrThrow(isMet).GetAwaiter();
+		}
+
+		ConstraintResult result = isMet.Result;
+		if (result.Outcome == Outcome.Success && Customize.aweXpect.TraceWriter is null)
+		{
+			return Task.CompletedTask.GetAwaiter();
+		}
+
+		return GetResultOrThrow(new ValueTask<ConstraintResult>(result)).GetAwaiter();
 	}
 
 	/// <inheritdoc />
@@ -137,9 +152,9 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 		return this;
 	}
 
-	private async Task GetResultOrThrow()
+	private async Task GetResultOrThrow(ValueTask<ConstraintResult> isMet)
 	{
-		ConstraintResult result = await ExpectationBuilder.IsMet();
+		ConstraintResult result = await isMet;
 
 		if (result.Outcome == Outcome.Success)
 		{
@@ -246,11 +261,27 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	///     Will throw an exception, when the expectations are not met.<br />
 	///     Otherwise, it will return the <typeparamref name="TType" />.
 	/// </summary>
+	/// <remarks>
+	///     An expectation that is met without waiting for anything returns its value right away, as starting the
+	///     asynchronous evaluation would take longer than the expectation itself.
+	/// </remarks>
 	[StackTraceHidden]
 	public TaskAwaiter<TType> GetAwaiter()
 	{
-		Task<TType> result = GetResultOrThrow();
-		return result.GetAwaiter();
+		ValueTask<ConstraintResult> isMet = ExpectationBuilder.IsMet();
+		if (!isMet.IsCompletedSuccessfully)
+		{
+			return GetResultOrThrow(isMet).GetAwaiter();
+		}
+
+		ConstraintResult result = isMet.Result;
+		if (result.Outcome == Outcome.Success && Customize.aweXpect.TraceWriter is null &&
+		    result.TryGetStoredValue(out TType? value))
+		{
+			return Task.FromResult(value!).GetAwaiter();
+		}
+
+		return GetResultOrThrow(new ValueTask<ConstraintResult>(result)).GetAwaiter();
 	}
 
 	/// <summary>
@@ -332,9 +363,9 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	}
 
 	[StackTraceHidden]
-	private async Task<TType> GetResultOrThrow()
+	private async Task<TType> GetResultOrThrow(ValueTask<ConstraintResult> isMet)
 	{
-		ConstraintResult result = await ExpectationBuilder.IsMet();
+		ConstraintResult result = await isMet;
 
 		switch (result.Outcome)
 		{

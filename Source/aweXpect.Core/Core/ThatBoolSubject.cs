@@ -36,7 +36,7 @@ public class ThatBoolSubject : ExpectationResult<bool>, IExpectThat<bool>
 	private sealed class WithDefaultExpectationBuilderProxy(ExpectationBuilder inner)
 		: ExpectationBuilder(inner.Subject, inner.ExpectationGrammars)
 	{
-		internal override Task<ConstraintResult> IsMet(Node rootNode, EvaluationContext.EvaluationContext context,
+		internal override ValueTask<ConstraintResult> IsMet(Node rootNode, EvaluationContext.EvaluationContext context,
 			ITimeSystem timeSystem, TimeSpan? timeout,
 			CancellationToken cancellationToken)
 		{

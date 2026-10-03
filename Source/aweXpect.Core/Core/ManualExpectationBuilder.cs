@@ -106,7 +106,7 @@ public sealed class ManualExpectationBuilder<TValue>(
 	}
 
 	/// <inheritdoc />
-	internal override Task<ConstraintResult> IsMet(Node rootNode,
+	internal override ValueTask<ConstraintResult> IsMet(Node rootNode,
 		EvaluationContext.EvaluationContext context,
 		ITimeSystem timeSystem,
 		TimeSpan? timeout,

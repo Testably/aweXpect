@@ -314,7 +314,7 @@ public sealed class WhichNodeTests
 		DummyNode node1 = new("", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
 		WhichNode<string, int> whichNode = new(node1, s => s.Length);
 		whichNode.AddNode(new ExpectationNode());
-		Task<ConstraintResult> Act() => whichNode.IsMetBy("foo", null!, CancellationToken.None);
+		Task<ConstraintResult> Act() => whichNode.IsMetBy("foo", null!, CancellationToken.None).AsTask();
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("The expectation node does not support int with value 1.");
@@ -612,7 +612,7 @@ public sealed class WhichNodeTests
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
 		WhichNode<string, int> whichNode = new(node1, s => s.Length);
-		Task<ConstraintResult> Act() => whichNode.IsMetBy("", null!, CancellationToken.None);
+		Task<ConstraintResult> Act() => whichNode.IsMetBy("", null!, CancellationToken.None).AsTask();
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("No inner node specified for the which node.");

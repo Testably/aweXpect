@@ -133,7 +133,7 @@ public abstract class EquivalencyExpectationBuilder : ExpectationBuilder
 	internal abstract bool IsOfExpectedType(object value);
 
 	/// <inheritdoc cref="ExpectationBuilder.IsMet(Node, EvaluationContext, ITimeSystem, TimeSpan?, CancellationToken)" />
-	internal override Task<ConstraintResult> IsMet(Node rootNode,
+	internal override ValueTask<ConstraintResult> IsMet(Node rootNode,
 		EvaluationContext context,
 		ITimeSystem timeSystem,
 		TimeSpan? timeout,

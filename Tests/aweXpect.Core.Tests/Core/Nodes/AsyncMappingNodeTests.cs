@@ -177,7 +177,7 @@ public class AsyncMappingNodeTests
 		node.AddConstraint(new NotEvaluatedConstraint<int>("yeah!", "not yeah!"));
 		using CancellationTokenSource cts = new(TimeSpan.FromMilliseconds(100));
 
-		Task<ConstraintResult> evaluation = node.IsMetBy("foo", null!, cts.Token);
+		Task<ConstraintResult> evaluation = node.IsMetBy("foo", null!, cts.Token).AsTask();
 
 		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
 		await That(evaluation.IsCompleted).IsTrue();
