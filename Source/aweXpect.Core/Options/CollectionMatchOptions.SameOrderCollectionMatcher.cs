@@ -16,9 +16,13 @@ public partial class CollectionMatchOptions
 		: SameOrderCollectionMatcherBase<T, T2, T>(equivalenceRelation, expected, ignoreInterspersedItems)
 		where T : T2
 	{
-		private readonly HashSet<T> _expectedValues = new(expected);
+		private HashSet<T>? _expectedValues;
 
-		protected override bool IsEqualToAnExpectedItem(T value) => _expectedValues.Contains(value);
+		/// <remarks>
+		///     The set is only built once a containment relation asks for it, as equality never does.
+		/// </remarks>
+		protected override bool IsEqualToAnExpectedItem(T value)
+			=> (_expectedValues ??= new HashSet<T>(ExpectedItems)).Contains(value);
 
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, T expected,
 			IOptionsEquality<T2> options)
@@ -57,7 +61,8 @@ public partial class CollectionMatchOptions
 	///     Equality compares each item with the expected item at its position; the containment relations search a run
 	///     or a subsequence, and their failures are described by <see cref="InOrderMismatch" />.
 	/// </summary>
-	private abstract class SameOrderCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
+	private abstract class SameOrderCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>,
+		IRecordingCollectionMatcher<T>
 		where T : T2
 	{
 		private readonly Dictionary<int, T> _additionalItems = new();
@@ -82,9 +87,14 @@ public partial class CollectionMatchOptions
 		{
 			_equivalenceRelations = equivalenceRelation;
 			_ignoreInterspersedItems = ignoreInterspersedItems;
-			_expectedItems = expected.ToArray();
+			_expectedItems = expected as T3[] ?? expected.ToArray();
 			_isFound = _expectedItems.Length == 0;
 		}
+
+		/// <inheritdoc />
+		public IReadOnlyList<T> Values => _values;
+
+		protected T3[] ExpectedItems => _expectedItems;
 
 		/// <inheritdoc />
 		/// <remarks>

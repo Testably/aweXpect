@@ -20,9 +20,13 @@ public partial class CollectionMatchOptions
 			ignoreInterspersedItems)
 		where T : T2
 	{
-		private readonly HashSet<T> _expectedValues = new(expected);
+		private HashSet<T>? _expectedValues;
 
-		protected override bool IsEqualToAnExpectedItem(T value) => _expectedValues.Contains(value);
+		/// <remarks>
+		///     The set is only built once a containment relation asks for it, as equality never does.
+		/// </remarks>
+		protected override bool IsEqualToAnExpectedItem(T value)
+			=> (_expectedValues ??= new HashSet<T>(ExpectedItems)).Contains(value);
 
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, T expected,
 			IOptionsEquality<T2> options)
@@ -94,7 +98,7 @@ public partial class CollectionMatchOptions
 		{
 			_equivalenceRelations = equivalenceRelation;
 			_ignoreInterspersedItems = ignoreInterspersedItems;
-			_expectedItems = expected.ToArray();
+			_expectedItems = expected as T3[] ?? expected.ToArray();
 			_areExpectedItemsUnique = comparer is not null;
 			if (comparer is null)
 			{
@@ -107,6 +111,8 @@ public partial class CollectionMatchOptions
 			_expectedIds = _expectedItems.Select(item => expectedIds.GetOrAdd(item, out _)).ToArray();
 			_expectedDistinctItems = expectedIds.Items.ToArray();
 		}
+
+		protected T3[] ExpectedItems => _expectedItems;
 
 		/// <inheritdoc />
 		/// <remarks>
