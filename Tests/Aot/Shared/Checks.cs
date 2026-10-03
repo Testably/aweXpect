@@ -157,9 +157,9 @@ internal static class Checks
 				await That(boxed).IsEqualTo(CreateOrder().Tags);
 			}, "[\"k\"] = 1", "[\"vip\"] = 1")),
 		// The interfaces that name an async iterator and mark a dictionary are found through reflection, so a
-		// rendering that silently degrades is only visible from the message. The AOT compiler drops an interface
-		// implementation whose every use it resolves statically, which includes enumerating the iterator and casting it,
-		// so it is kept by the runtime type check a consumer it is handed to would do.
+		// rendering that silently degrades is only visible from the message. This is the only async iterator of the
+		// program, so the AOT compiler resolves every use of it statically, even enumerating and casting it, and drops
+		// its interfaces, unless they are kept by a runtime type check like the one a consumer would do.
 		new("a failure message names an async iterator by its async enumerable type",
 			() => ShouldFail(async () =>
 			{
