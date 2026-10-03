@@ -13,11 +13,25 @@ public class DelegateValue<TValue>(in TValue? value, Exception? exception, TimeS
 	/// </summary>
 	public TValue? Value { get; } = value;
 
-	internal override DelegateValue WithExceededTimeout(TimeSpan timeout, Exception exception)
-		=> new DelegateValue<TValue>(default, exception, Duration, IsNull)
+	internal override DelegateValue WithExceededTimeout(TimeSpan timeout, Exception exception, bool hasReturned)
+		=> new DelegateValue<TValue>(default, exception, Duration)
 		{
+			NullKind = NullKind,
 			ExceededTimeout = timeout,
+			LateResult = hasReturned ? this : null,
 		};
+
+	internal override bool TryGetValue<TResult>(out TResult? value) where TResult : default
+	{
+		if (Value is TResult typedValue)
+		{
+			value = typedValue;
+			return true;
+		}
+
+		value = default;
+		return typeof(TResult).IsAssignableFrom(typeof(TValue));
+	}
 
 	/// <inheritdoc />
 	public override string ToString()
@@ -52,19 +66,14 @@ public class DelegateValue(Exception? exception, TimeSpan duration, bool isNull 
 	/// <summary>
 	///     Flag, indicating if the delegate callback was <see langword="null" />.
 	/// </summary>
-	public bool IsNull { get; } = isNull;
+	public bool IsNull => NullKind != NullSubjectKind.None;
 
 	/// <summary>
-	///     Flag, indicating if the delegate returned a <see langword="null" /> task, which is reported like a
-	///     <see langword="null" /> delegate (<see cref="IsNull" />), because there is nothing to await.
+	///     What was <see langword="null" />, where a <see langword="null" /> task is reported like a
+	///     <see langword="null" /> delegate (<see cref="IsNull" />), because there is nothing to await, but named as a
+	///     task.
 	/// </summary>
-	internal bool IsNullTask { get; init; }
-
-	/// <summary>
-	///     Flag, indicating if the subject was a <see langword="null" /> task instead of a delegate, which is reported
-	///     like a <see langword="null" /> delegate (<see cref="IsNull" />), but named as a task.
-	/// </summary>
-	internal bool IsNullTaskSubject { get; init; }
+	internal NullSubjectKind NullKind { get; init; } = isNull ? NullSubjectKind.NullDelegate : NullSubjectKind.None;
 
 	/// <summary>
 	///     The exceptions of the faulted task besides the <see cref="Exception" />, which awaiting it threw, or
@@ -73,8 +82,9 @@ public class DelegateValue(Exception? exception, TimeSpan duration, bool isNull 
 	internal Exception[]? OtherExceptions { get; init; }
 
 	/// <summary>
-	///     The timeout within which the delegate did not finish, so that the evaluation stopped waiting for it, or
-	///     <see langword="null" /> if it finished in time or no timeout applied.
+	///     The timeout within which the delegate did not finish, so that the evaluation stopped waiting for it or a
+	///     synchronous delegate returned too late, or <see langword="null" /> if it finished in time or no timeout
+	///     applied.
 	/// </summary>
 	/// <remarks>
 	///     The <see cref="Exception" /> is then a <see cref="TimeoutException" />, whichever way the delegate reacted to
@@ -82,11 +92,35 @@ public class DelegateValue(Exception? exception, TimeSpan duration, bool isNull 
 	/// </remarks>
 	public TimeSpan? ExceededTimeout { get; private protected set; }
 
-	internal virtual DelegateValue WithExceededTimeout(TimeSpan timeout, Exception exception)
-		=> new(exception, Duration, IsNull)
+	/// <summary>
+	///     What the delegate returned after the <see cref="ExceededTimeout" /> elapsed, as a synchronous delegate cannot
+	///     be abandoned, or <see langword="null" /> when it was canceled or abandoned.
+	/// </summary>
+	/// <remarks>
+	///     An expectation on the duration judges the delegate by it, as it measures the overrun on its own.
+	/// </remarks>
+	internal DelegateValue? LateResult { get; init; }
+
+	internal virtual DelegateValue WithExceededTimeout(TimeSpan timeout, Exception exception, bool hasReturned)
+		=> new(exception, Duration)
 		{
+			NullKind = NullKind,
 			ExceededTimeout = timeout,
+			LateResult = hasReturned ? this : null,
 		};
+
+	/// <summary>
+	///     Gets the value of the delegate as <typeparamref name="TResult" />.
+	/// </summary>
+	/// <returns>
+	///     <see langword="true" />, if the value is a <typeparamref name="TResult" /> or the delegate returns a type
+	///     assignable to <typeparamref name="TResult" />.
+	/// </returns>
+	internal virtual bool TryGetValue<TResult>(out TResult? value)
+	{
+		value = default;
+		return false;
+	}
 
 	/// <inheritdoc />
 	public override string ToString()

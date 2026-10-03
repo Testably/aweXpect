@@ -39,18 +39,33 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 	/// </summary>
 	internal static void AppendNullResult(StringBuilder stringBuilder, string it, DelegateValue? actual)
 	{
-		if (actual?.IsNullTask == true)
+		switch (actual?.NullKind)
 		{
-			stringBuilder.Append(it).Append(" returned <null> instead of a task");
+			case NullSubjectKind.NullTaskReturned:
+				stringBuilder.Append(it).Append(" returned <null> instead of a task");
+				break;
+			case NullSubjectKind.NullTaskSubject:
+				stringBuilder.Append(it).Append(" was a <null> task");
+				break;
+			default:
+				stringBuilder.ItWasNull(it);
+				break;
 		}
-		else if (actual?.IsNullTaskSubject == true)
+	}
+
+	/// <remarks>
+	///     The <paramref name="valueType" /> of the delegate, <see langword="null" /> for a delegate without value,
+	///     answers while there is no <paramref name="actual" /> value yet.
+	/// </remarks>
+	private static bool TryGetDelegateValue<TValue>(DelegateValue? actual, Type? valueType, out TValue? value)
+	{
+		if (actual is not null)
 		{
-			stringBuilder.Append(it).Append(" was a <null> task");
+			return actual.TryGetValue(out value);
 		}
-		else
-		{
-			stringBuilder.ItWasNull(it);
-		}
+
+		value = default;
+		return valueType is not null && typeof(TValue).IsAssignableFrom(valueType);
 	}
 
 	private static void AppendThrowsExpectation(StringBuilder stringBuilder, ThrowsOption options,

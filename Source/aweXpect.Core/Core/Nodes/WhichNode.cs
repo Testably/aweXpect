@@ -123,7 +123,7 @@ internal class WhichNode<TSource, TMember> : Node
 		}
 
 		TSource? source = ResolveSource(parentResult, value);
-		(TMember? Value, bool IsNullTask) matching;
+		(TMember? Value, NullSubjectKind NullKind) matching;
 		try
 		{
 			matching = await ComputeMatchingValueAsync(source);
@@ -144,7 +144,7 @@ internal class WhichNode<TSource, TMember> : Node
 				FurtherProcessingStrategy.IgnoreResult, default);
 		}
 
-		if (matching.IsNullTask)
+		if (matching.NullKind == NullSubjectKind.NullTaskReturned)
 		{
 			ConstraintResult nullTaskResult = NullSubjectResult.CreateForNullTask(
 				await _inner.IsMetBy<TMember>(default, ExpectationTextEvaluationContext.For(context),
@@ -175,22 +175,22 @@ internal class WhichNode<TSource, TMember> : Node
 				$"The member type for the actual value in the which node did not match.{Environment.NewLine}Expected: {Formatter.Format(typeof(TSource))}{Environment.NewLine}   Found: {Formatter.Format(value.GetType())}"));
 	}
 
-	private async ValueTask<(TMember? Value, bool IsNullTask)> ComputeMatchingValueAsync(TSource? source)
+	private async ValueTask<(TMember? Value, NullSubjectKind NullKind)> ComputeMatchingValueAsync(TSource? source)
 	{
 #pragma warning disable S2583
 		if (source is null)
 		{
-			return (default, false);
+			return (default, NullSubjectKind.None);
 		}
 #pragma warning restore S2583
 
 		if (_memberAccessor != null)
 		{
-			return (_memberAccessor(source), false);
+			return (_memberAccessor(source), NullSubjectKind.None);
 		}
 
 		Task<TMember?>? task = _asyncMemberAccessor!.Invoke(source);
-		return task is null ? (default, true) : (await task, false);
+		return task is null ? (default, NullSubjectKind.NullTaskReturned) : (await task, NullSubjectKind.None);
 	}
 
 	/// <inheritdoc cref="object.Equals(object?)" />

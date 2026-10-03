@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.TimeSystem;
 
@@ -13,8 +14,12 @@ internal class ValueSource<TValue>(TValue value) : IValueSource<TValue>
 
 	#region IValueSource<TValue> Members
 
+	public bool IsNullTaskSubject => false;
+
 	public ValueTask<TValue> GetValue(ITimeSystem timeSystem, CancellationToken cancellationToken)
 		=> new(value);
+
+	public Exception[]? GetOtherExceptions(Exception exception) => null;
 
 	#endregion
 }

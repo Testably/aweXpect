@@ -1049,7 +1049,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		context.Cancellation = cancellation;
 		CancellationToken token = cancellation.Token;
 
-		if (_subjectSource is AsyncValueSource<TValue> { IsNullTask: true, })
+		if (_subjectSource.IsNullTaskSubject)
 		{
 			ConstraintResult expectation = await rootNode.IsMetBy(default(TValue),
 				EvaluationContext.ExpectationTextEvaluationContext.For(context), token);
@@ -1066,7 +1066,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		}
 		catch (Exception exception)
 		{
-			AddOtherExceptions((_subjectSource as AsyncValueSource<TValue>)?.GetOtherExceptions(exception));
+			AddOtherExceptions(_subjectSource.GetOtherExceptions(exception));
 			ConstraintResult result = await FromException(rootNode, context, cancellation, exception);
 			Customize.aweXpect.TraceWriter?.WriteMessage(
 				$"Checking expectation for {Subject} threw an exception");
@@ -1114,16 +1114,29 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		return result;
 	}
 
+	/// <remarks>
+	///     A synchronous delegate cannot be interrupted, so it also exceeded the timeout when it returns after the timeout
+	///     elapsed without a cancellation. Its measured duration decides, as the timer of the timeout can fire late when
+	///     the thread pool is busy.
+	/// </remarks>
 	private static TValue WithExceededTimeout(TValue data, DelegateValue delegateValue,
 		EvaluationCancellation cancellation)
 	{
-		if (cancellation.Timeout is { } timeout && cancellation.HasTimedOut(delegateValue.Exception))
+		if (cancellation.Timeout is not { } timeout || delegateValue.IsNull)
 		{
-			return (TValue)(object)delegateValue.WithExceededTimeout(timeout,
-				CreateTimeoutException(timeout, delegateValue.Exception!));
+			return data;
 		}
 
-		return data;
+		bool isCanceled = cancellation.HasTimedOut(delegateValue.Exception);
+		if (!isCanceled && delegateValue.Duration < timeout)
+		{
+			return data;
+		}
+
+		return (TValue)(object)delegateValue.WithExceededTimeout(timeout,
+			CreateTimeoutException(timeout,
+				delegateValue.Exception ?? new OperationCanceledException(cancellation.Token)),
+			!isCanceled);
 	}
 
 	private static async Task<ConstraintResult> FromException(Node rootNode,

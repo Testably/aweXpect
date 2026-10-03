@@ -1,0 +1,68 @@
+﻿using System.Threading;
+using aweXpect.Chronology;
+
+namespace aweXpect.Core.Tests.Delegates;
+
+public sealed partial class ThatDelegateTests
+{
+	public sealed class WithTimeoutTests
+	{
+		[Fact]
+		public async Task WhenAsyncDelegateReturnsAfterTheTimeout_ShouldFail()
+		{
+			Func<Task> @delegate = () => Task.Delay(300.Milliseconds());
+
+			async Task Act()
+				=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that @delegate
+				             does not throw any exception,
+				             but it did not finish within 0:00.050
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.Because("the task is abandoned once the timeout elapsed");
+		}
+
+		[Fact]
+		public async Task WhenSyncDelegateReturnsAfterTheTimeout_ShouldFail()
+		{
+			Action @delegate = () => Thread.Sleep(300.Milliseconds());
+
+			async Task Act()
+				=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that @delegate
+				             does not throw any exception,
+				             but it did not finish within 0:00.050
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.Because("a synchronous delegate that overran the timeout must fail like an asynchronous one");
+		}
+
+		[Fact]
+		public async Task WhenSyncDelegateWithValueReturnsAfterTheTimeout_ShouldFail()
+		{
+			Func<int> @delegate = () =>
+			{
+				Thread.Sleep(300.Milliseconds());
+				return 1;
+			};
+
+			async Task Act()
+				=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that @delegate
+				             does not throw any exception,
+				             but it did not finish within 0:00.050
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.Because("a synchronous delegate that overran the timeout must fail like an asynchronous one");
+		}
+	}
+}

@@ -137,6 +137,17 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
+			public async Task WhenAwaited_WithValueOfDerivedType_ShouldReturnIt()
+			{
+				SubCustomException value = new();
+				Func<CustomException> @delegate = () => value;
+
+				CustomException result = await That(@delegate).DoesNotThrowExactly<OtherException>();
+
+				await That(result).IsSameAs(value);
+			}
+
+			[Fact]
 			public async Task WhenDelegateDoesNotThrow_ShouldSucceed()
 			{
 				Func<int> @delegate = () => 1;
