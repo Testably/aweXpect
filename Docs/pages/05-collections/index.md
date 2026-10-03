@@ -43,9 +43,8 @@ A span can't be kept across an `await`, so create it in the statement of the exp
 ## Immutable arrays
 
 :::note[.NET 8 or later]
-An `ImmutableArray<T>` is a struct, so it only reaches the collection expectations through their own overloads, which
-exist on .NET 8 or later. On older targets, only `IsEmpty` and `IsNotEmpty` are available for it, so call
-`.AsEnumerable()` on the array or cast it to `IEnumerable<T>` to use the others.
+Before .NET 8, only `IsEmpty` and `IsNotEmpty` are available for an `ImmutableArray<T>`. Call `.AsEnumerable()` on the
+array to use the other collection expectations.
 :::
 
 ## Sets
@@ -86,11 +85,11 @@ only a set of the expected item type is recognised, e.g. a `HashSet<string>` for
 
 ## Tolerance
 
-The expectations that compare items with an expected value accept a tolerance for `double`, `float`, `decimal`,
-`byte`, `sbyte`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`, `DateTime`, `DateTimeOffset` and `TimeSpan` items,
-and [on .NET 8 or later](../02-getting-started.md#target-frameworks) also for `DateOnly`, whose tolerance must be a
-whole number of days, and `TimeOnly`, whose items are compared on the clock face, so that `23:59` and `00:01` are two
-minutes apart:
+The expectations that compare items with an expected value accept a tolerance for numbers such as `int`, `long`,
+`double` or `decimal`, for `DateTime`, `DateTimeOffset` and `TimeSpan` items, and
+[on .NET 8 or later](../02-getting-started.md#target-frameworks) also for `DateOnly`, whose tolerance must be a whole
+number of days, and `TimeOnly`, whose items are compared on the clock face, so that `23:59` and `00:01` are two minutes
+apart:
 
 ```csharp
 IEnumerable<double> durations = [1.01, 2.02, 3.04];

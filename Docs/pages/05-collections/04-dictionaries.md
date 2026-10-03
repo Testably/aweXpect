@@ -93,10 +93,8 @@ await Expect.That(playCounts).DoesNotContainValue(0);
 await Expect.That(playCounts).DoesNotContainValues(0, 1);
 ```
 
-The values are compared with the same equality options as the items of a collection, e.g. a
-[tolerance](./index.md#tolerance) with `Within` or `IgnoringCase()` for strings, in `Contains`, `ContainsValue`,
-`ContainsValues` and `IsEqualTo` and in their negations. The expected keys or values can also be given as a
-collection:
+The values are compared with the same options as the items of a collection, e.g. `IgnoringCase()` for strings or a
+[tolerance](./index.md#tolerance) with `Within`. The expected keys or values can also be given as a collection:
 
 ```csharp
 Dictionary<int, string> titles = new() { { 1, "Let It Be" }, { 2, "Yesterday" } };

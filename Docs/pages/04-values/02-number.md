@@ -100,9 +100,7 @@ Below .NET 8 these expectations are only available for signed numbers. On .NET 8
 
 ## NaN and infinity
 
-For floating point numbers you can verify that the number is `NaN`, finite or infinite, or that it is not. These
-expectations take a `float` or a `double`, and on .NET 8 or later any IEEE 754 type such as `Half`, but no `decimal`,
-which can never be `NaN` or infinite:
+For floating point numbers you can verify that the number is `NaN`, finite or infinite, or that it is not:
 
 ```csharp
 await Expect.That(float.NaN).IsNaN();
