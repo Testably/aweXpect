@@ -35,26 +35,43 @@ internal readonly struct EquivalencyMember(string name, Type declaredType, Func<
 /// </remarks>
 internal static class EquivalencyMembers
 {
-	public static IEnumerable<EquivalencyMember> GetFields(Type type, IncludeMembers includeMembers)
+	/// <remarks>
+	///     The members of a type are read for every compared object, so the members of a type that is not registered
+	///     and their accessors are created once per type and visibility.
+	/// </remarks>
+	private static readonly ConcurrentDictionary<(Type, IncludeMembers), EquivalencyMember[]> ReflectedFields = new();
+
+	private static readonly ConcurrentDictionary<(Type, IncludeMembers), EquivalencyMember[]> ReflectedProperties =
+		new();
+
+	private static readonly ConcurrentDictionary<(Type, string, IncludeMembers), Func<object, object?>?>
+		ReflectedFieldAccessors = new();
+
+	private static readonly ConcurrentDictionary<(Type, string, IncludeMembers), Func<object, object?>?>
+		ReflectedPropertyAccessors = new();
+
+	public static EquivalencyMember[] GetFields(Type type, IncludeMembers includeMembers)
 	{
 		if (TryGetRegistered(type, includeMembers, out TypeMetadataRegistry.TypeMetadata? metadata))
 		{
-			return Registered(metadata.Fields);
+			return metadata.OrderedMembers.Fields;
 		}
 
-		return type.GetFields(includeMembers)
-			.Select(field => new EquivalencyMember(field.Name, field.FieldType, Accessor(field)));
+		return ReflectedFields.GetOrAdd((type, includeMembers), static key => key.Item1.GetFields(key.Item2)
+			.Select(field => new EquivalencyMember(field.Name, field.FieldType, Accessor(field)))
+			.ToArray());
 	}
 
-	public static IEnumerable<EquivalencyMember> GetProperties(Type type, IncludeMembers includeMembers)
+	public static EquivalencyMember[] GetProperties(Type type, IncludeMembers includeMembers)
 	{
 		if (TryGetRegistered(type, includeMembers, out TypeMetadataRegistry.TypeMetadata? metadata))
 		{
-			return Registered(metadata.Properties);
+			return metadata.OrderedMembers.Properties;
 		}
 
-		return type.GetProperties(includeMembers)
-			.Select(property => new EquivalencyMember(property.Name, DeclaredType(property), Accessor(property)));
+		return ReflectedProperties.GetOrAdd((type, includeMembers), static key => key.Item1.GetProperties(key.Item2)
+			.Select(property => new EquivalencyMember(property.Name, DeclaredType(property), Accessor(property)))
+			.ToArray());
 	}
 
 	/// <summary>
@@ -70,8 +87,8 @@ internal static class EquivalencyMembers
 				: null;
 		}
 
-		FieldInfo? field = type.FindField(name, includeMembers);
-		return field is null ? null : Accessor(field);
+		return ReflectedFieldAccessors.GetOrAdd((type, name, includeMembers), static key
+			=> key.Item1.FindField(key.Item2, key.Item3) is { } field ? Accessor(field) : null);
 	}
 
 	/// <summary>
@@ -87,8 +104,8 @@ internal static class EquivalencyMembers
 				: null;
 		}
 
-		PropertyInfo? property = type.FindProperty(name, includeMembers);
-		return property is null ? null : Accessor(property);
+		return ReflectedPropertyAccessors.GetOrAdd((type, name, includeMembers), static key
+			=> key.Item1.FindProperty(key.Item2, key.Item3) is { } property ? Accessor(property) : null);
 	}
 
 	/// <summary>
@@ -143,15 +160,8 @@ internal static class EquivalencyMembers
 			return false;
 		}
 
-		return TypeMetadataRegistry.Instance.TryGet(type, out metadata) &&
-		       !(metadata.Fields.IsEmpty && metadata.Properties.IsEmpty && metadata.ExplicitProperties.IsEmpty);
+		return TypeMetadataRegistry.Instance.TryGet(type, out metadata) && metadata.OrderedMembers.HasMembers;
 	}
-
-	private static IEnumerable<EquivalencyMember> Registered(
-		ConcurrentDictionary<string, TypeMetadataRegistry.RegisteredMember> members)
-		=> members.Values
-			.OrderBy(member => member.Order)
-			.Select(member => new EquivalencyMember(member.Name, member.MemberType, member.GetValue));
 
 	/// <remarks>
 	///     Reflection declares a <see langword="ref" />-returning property with the by-ref type, while its value and a
@@ -161,20 +171,20 @@ internal static class EquivalencyMembers
 		=> property.PropertyType.IsByRef ? property.PropertyType.GetElementType()! : property.PropertyType;
 
 	private static Func<object, object?> Accessor(FieldInfo field)
-		=> subject => Read(() => field.GetValue(subject));
+		=> subject => Read(static (field, subject) => field.GetValue(subject), field, subject);
 
 	private static Func<object, object?> Accessor(PropertyInfo property)
-		=> subject => Read(() => property.GetValue(subject));
+		=> subject => Read(static (property, subject) => property.GetValue(subject), property, subject);
 
 	/// <remarks>
 	///     Reflection wraps an exception thrown by a getter, while a registered accessor lets it through. Unwrapping
 	///     keeps the two paths indistinguishable to the caller.
 	/// </remarks>
-	private static object? Read(Func<object?> read)
+	private static object? Read<TMember>(Func<TMember, object, object?> read, TMember member, object subject)
 	{
 		try
 		{
-			return read();
+			return read(member, subject);
 		}
 		catch (TargetInvocationException exception) when (exception.InnerException is not null)
 		{

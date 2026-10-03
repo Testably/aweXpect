@@ -2496,6 +2496,25 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenGetterThrows_WhenReflected_ShouldThrowTheGetterException()
+	{
+		WithThrowingGetter actual = new("getter failed");
+		WithThrowingGetter expected = new("getter failed");
+		EquivalencyOptions options = new()
+		{
+			Properties = IncludeMembers.Public | IncludeMembers.Internal,
+		};
+
+		async Task Act()
+			=> await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
+
+		await That(Act).Throws<Exception>()
+			.WithMessage("The code of the caller threw an exception while the expectation was evaluated.").And
+			.WithInner<InvalidOperationException>(inner => inner.HasMessage("getter failed"))
+			.Because("non-public members are read by reflection, which wraps the exception that the cached accessor has to unwrap");
+	}
+
+	[Fact]
 	public async Task WhenGraphReferencesItself_ShouldNotExceedTheRecursionLimit()
 	{
 		NestedNode actual = new(1);

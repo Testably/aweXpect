@@ -47,6 +47,11 @@ public static partial class EquivalencyComparison
 	/// </remarks>
 	private static void JoinSingleLineEntries(StringBuilder failureBuilder, int start)
 	{
+		if (failureBuilder.Length == start)
+		{
+			return;
+		}
+
 		string separator = $"{Environment.NewLine}and{Environment.NewLine}";
 		string failures = failureBuilder.ToString(start, failureBuilder.Length - start);
 		if (failures.Split([separator], StringSplitOptions.None).Any(entry => entry.TrimStart().Contains('\n', StringComparison.Ordinal)))
