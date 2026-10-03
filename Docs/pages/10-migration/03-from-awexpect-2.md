@@ -414,6 +414,14 @@ adds their contexts with `contexts.Visit(…)`. As the builder is no longer need
 `ExpectationBuilder`, and `ManualExpectationBuilder<TValue>` is sealed and no longer takes an inner builder to forward
 contexts to. `ExpectationBuilder.ForWhich(…)` takes a `contextMember` that labels the contexts of the member.
 
+`Outcome` has the new value `FailureBothWays` for a result that fails the expectation and its negation alike, e.g.
+for a `null` subject or when code of the caller threw. Code that checks for a failed expectation checks for
+`Outcome.Failure` and `Outcome.FailureBothWays`. A result sets `Outcome.FailureBothWays` instead of overriding the
+`Outcome`, which `ConstraintResult.WithValue<T>` seals, see
+[failing both ways](../11-extending/02-constraints-and-results.md#failing-both-ways).
+`WithNotNullValue<T>` and `WithEqualToValue<T>` now derive from `WithValue<T>`, so an extension compiled against an
+earlier version has to be rebuilt.
+
 The unused enum `aweXpect.Core.Helpers.MemberVisibilities` is gone. `aweXpect.Equivalency.IncludeMembers` selects the
 members that an equivalency comparison includes.
 

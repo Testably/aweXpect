@@ -167,8 +167,8 @@ Use `ConstraintResult.WithValue<T>` only when the subject cannot be `null` at al
 `IsNull()`, or when it decides every `null` case itself, such as `IsOneOf(...)`, whose expected values may or may not
 include `null`, which the single flag of `WithEqualToValue<T>` cannot express. It applies no `null` policy of its own,
 so deciding the outcome with `Actual is null ? Outcome.Failure : ...` inside `IsMetBy` is **not** enough: that failure
-is inverted into a success when the expectation is negated. Only `WithNotNullValue<T>` decides before the inversion is
-applied.
+is inverted into a success when the expectation is negated. A failure that the negation keeps is a
+[failure both ways](#failing-both-ways), which `WithNotNullValue<T>` reports for a `null` subject.
 
 ### Nullability warnings
 
@@ -198,6 +198,27 @@ string title = track.Title;   // no CS8602
   the subject for the suppressor only when it returns an aweXpect result for the same `IThat<TSubject>`, such as
   `AndOrResult<Track, IThat<Track?>>`. An expectation that returns an `IThat<…>` itself could continue with a
   different subject, so the suppressor ignores the expectations after it.
+
+## Failing both ways
+
+Some expectations cannot be answered at all, e.g. because the subject is `null`, the values are not comparable or code
+of the caller threw. Negating such an expectation does not make it true, so it fails the expectation and its negation
+alike. Set `Outcome.FailureBothWays` in `IsMetBy` to say so:
+
+```csharp no-compile
+catch (Exception exception)
+{
+    _exception = exception;
+    Outcome = Outcome.FailureBothWays;
+}
+```
+
+- `Outcome.FailureBothWays` fails the expectation like `Outcome.Failure`, but a negation keeps it.
+  `WithNotNullValue<T>` reports it for a `null` subject.
+- A result that derives from `ConstraintResult` directly only swaps `Success` and `Failure` in `Negate()`.
+- Code that reads an outcome treats `Outcome.Failure` and `Outcome.FailureBothWays` alike as a failed expectation. An
+  expectation that evaluates nested expectations, e.g. on the items of a collection, checks for
+  `Outcome.FailureBothWays` to find out whether an item was answered.
 
 ## Negated expectations
 
@@ -453,6 +474,8 @@ it does not add the "Collection" context.
 - When the item expectation or the verb are only known while the failure message is created, e.g. because they come
   from nested expectations, derive from `QuantifiedCollectionConstraintBase<TValue, TItem>` and implement
   `AppendItemExpectation` and `Verb` instead.
+- An item result with `Outcome.FailureBothWays` is neither matching nor not matching, e.g. because the nested
+  expectations threw. The built-in `ComplyWith` stops at such an item and fails with its result, also when negated.
 
 ## Asynchronous constraints
 
