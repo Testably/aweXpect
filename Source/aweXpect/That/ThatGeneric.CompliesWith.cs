@@ -80,11 +80,25 @@ public static partial class ThatGeneric
 			Outcome outcome = await _options.CheckRepeatedly(async () =>
 			{
 				isMatch = await _itemExpectationBuilder.IsMetBy(actual, context, cancellationToken);
-				return isMatch.Outcome == Outcome.Success != _isNegated;
+				return IsMet(isMatch);
 			}, context);
 			ConstraintResult result = KeepSubjectAsValue(NegateIfNegated(isMatch!), actual)
 				.AppendExpectationText(AppendSuffix);
 			return outcome == Outcome.Undecided ? new CanceledResult(result) : result;
+		}
+
+		/// <remarks>
+		///     The <paramref name="isMatch" /> is not negated yet, so a negated expectation is met when it is not met, unless
+		///     it could not be answered, which fails the negation as well.
+		/// </remarks>
+		private bool IsMet(ConstraintResult isMatch)
+		{
+			if (_isNegated)
+			{
+				return isMatch.Outcome is Outcome.Failure or Outcome.Undecided;
+			}
+
+			return isMatch.Outcome == Outcome.Success;
 		}
 
 		private void AppendSuffix(StringBuilder stringBuilder)

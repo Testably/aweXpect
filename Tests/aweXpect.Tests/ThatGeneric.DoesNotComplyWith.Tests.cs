@@ -913,6 +913,25 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenPredicateKeepsThrowing_ShouldFailWithTheException()
+			{
+				MyNullUntilChangedClass subject = new(int.MaxValue);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(x => x.Satisfies(s => s.Value!.Length > 5))
+						.Within(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not satisfy s => s.Value!.Length > 5 within 0:00.050,
+					             but the predicate did throw a NullReferenceException:
+					               *
+					             """).AsWildcard().And
+					.WithInner<NullReferenceException>();
+			}
+
+			[Fact]
 			public async Task WhenPredicateResultTurnsTrueLaterOn_ShouldSucceed()
 			{
 				MyChangingClass subject = new(2);
@@ -924,6 +943,19 @@ public sealed partial class ThatGeneric
 					})).Within(5.Seconds());
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenPredicateStopsThrowing_ShouldKeepRetrying()
+			{
+				MyNullUntilChangedClass subject = new(2);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(x => x.Satisfies(s => s.Value!.Length > 5))
+						.Within(5.Seconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("the value becomes \"b\" on the third check, which does not satisfy the predicate");
 			}
 
 			[Fact]
@@ -1023,6 +1055,12 @@ public sealed partial class ThatGeneric
 			{
 				private int _iterations;
 				public bool HasWaitedEnough => _iterations++ >= numberOfChanges;
+			}
+
+			private sealed class MyNullUntilChangedClass(int numberOfChanges)
+			{
+				private int _iterations;
+				public string? Value => _iterations++ >= numberOfChanges ? "b" : null;
 			}
 		}
 	}
