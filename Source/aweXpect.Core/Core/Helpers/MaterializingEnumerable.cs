@@ -8,7 +8,11 @@ using aweXpect.Core.EvaluationContext;
 
 namespace aweXpect.Core.Helpers;
 
-internal sealed class MaterializingEnumerable<T> : IMaterializedEnumerable<T>, IMaterialization
+/// <remarks>
+///     It also implements the non-generic <see cref="IMaterializedEnumerable" />, because the non-generic
+///     <see cref="EvaluationContextExtensions.UseMaterializedEnumerable(IEvaluationContext, IEnumerable?)" /> reuses it.
+/// </remarks>
+internal sealed class MaterializingEnumerable<T> : IMaterializedEnumerable<T>, IMaterializedEnumerable, IMaterialization
 {
 	private readonly IEnumerator<T> _enumerator;
 	private readonly List<T> _materializedItems = new();

@@ -19,8 +19,8 @@ public interface IMaterializedEnumerable : IEnumerable, ICountable
 }
 
 /// <inheritdoc cref="IMaterializedEnumerable" />
-public interface IMaterializedEnumerable<T> : IEnumerable<T>, IMaterializedEnumerable
+public interface IMaterializedEnumerable<out T> : IEnumerable<T>, ICountable
 {
 	/// <inheritdoc cref="IMaterializedEnumerable.MaterializedItems" />
-	new IReadOnlyList<T> MaterializedItems { get; }
+	IReadOnlyList<T> MaterializedItems { get; }
 }
