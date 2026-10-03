@@ -640,6 +640,220 @@ public sealed partial class ThatGeneric
 				    """;
 		}
 
+		public sealed class UnansweredTests
+		{
+			[Fact]
+			public async Task CollectionIsEqualTo_WhenSubjectIsNull_ShouldFailOnlyWhenNullIsNotTheAnswer()
+			{
+				int[]? subject = null;
+				int[] expected = [1,];
+
+				async Task IsEqualToValue() => await That(subject).DoesNotComplyWith(x => x.IsEqualTo(expected));
+				async Task IsEqualToNull()
+					=> await That(subject).DoesNotComplyWith(x => x.IsEqualTo((IEnumerable<int>?)null));
+
+				async Task IsNotEqualToValue() => await That(subject).DoesNotComplyWith(x => x.IsNotEqualTo(expected));
+
+				async Task IsNotEqualToNull()
+					=> await That(subject).DoesNotComplyWith(x => x.IsNotEqualTo((IEnumerable<int>?)null));
+
+				await That(IsEqualToValue).DoesNotThrow()
+					.Because("a null subject is not equal to [1]");
+				await That(IsEqualToNull).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to collection (IEnumerable<int>?)null in order,
+					             but it was <null>
+					             """);
+				await That(IsNotEqualToValue).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it was <null>
+					             """);
+				await That(IsNotEqualToNull).DoesNotThrow()
+					.Because("a null subject is equal to null");
+			}
+
+			[Fact]
+			public async Task ItemExpectationThatThrows_InAndCombination_ShouldFailWithTheException()
+			{
+				int[] subject = [1,];
+
+				async Task Act()
+					=> await That(subject).All().ComplyWith(x => x
+						.Satisfies(_ => throw new InvalidOperationException("x")).And.IsGreaterThan(0));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             satisfies _ => throw new InvalidOperationException("x") and is greater than 0 for all items,
+					             but for the item at index 0, the predicate did throw an InvalidOperationException:
+					               x
+
+					             Collection:
+					             [1]
+					             """).And
+					.WithInner<InvalidOperationException>(inner => inner.HasMessage("x"));
+			}
+
+			[Fact]
+			public async Task ItemExpectationThatThrows_InNegatedAndCombination_ShouldSucceedThroughTheOtherPart()
+			{
+				int[] subject = [1,];
+
+				async Task Act()
+					=> await That(subject).All().ComplyWith(x => x.DoesNotComplyWith(y => y
+						.Satisfies(_ => throw new InvalidOperationException("x")).And.IsGreaterThan(5)));
+
+				await That(Act).DoesNotThrow()
+					.Because("the negation is met by the item that is not greater than 5, so the item is answered");
+			}
+
+			[Fact]
+			public async Task ItemExpectationThatThrows_InNegatedOrCombination_ShouldFailWithTheException()
+			{
+				int[] subject = [1,];
+
+				async Task Act()
+					=> await That(subject).All().ComplyWith(x => x.DoesNotComplyWith(y => y
+						.Satisfies(_ => throw new InvalidOperationException("x")).Or.IsGreaterThan(5)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not satisfy _ => throw new InvalidOperationException("x") and is not greater than 5 for all items,
+					             but for the item at index 0, the predicate did throw an InvalidOperationException:
+					               x
+
+					             Collection:
+					             [1]
+					             """).And
+					.WithInner<InvalidOperationException>(inner => inner.HasMessage("x"));
+			}
+
+			[Fact]
+			public async Task ItemExpectationThatThrows_InOrCombination_ShouldFailWithTheException()
+			{
+				int[] subject = [1,];
+
+				async Task Act()
+					=> await That(subject).All().ComplyWith(x => x
+						.Satisfies(_ => throw new InvalidOperationException("x")).Or.IsGreaterThan(5));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             satisfies _ => throw new InvalidOperationException("x") or is greater than 5 for all items,
+					             but for the item at index 0, the predicate did throw an InvalidOperationException:
+					               x
+					             and it was 1, which differs by -4
+
+					             Collection:
+					             [1]
+					             """).And
+					.WithInner<InvalidOperationException>(inner => inner.HasMessage("x"));
+			}
+
+			[Fact]
+			public async Task MemberThatIsNull_InWhich_ShouldFailUnderNegation()
+			{
+				Holder[] subject = [new(null),];
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(c => c.HasSingle().Which
+						.Whose(h => h.Items, i => i.HasSingle()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a single item whose Items have a single item,
+					             but Items were <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task MemberThatIsNull_InWhose_ShouldFailUnderNegation()
+			{
+				Holder subject = new(null);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(h => h.Whose(x => x.Items, i => i.HasSingle()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Items do not have a single item,
+					             but Items were <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task NullSubject_UnderDoubleNegation_ShouldFail()
+			{
+				int[]? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(x => x.DoesNotComplyWith(y => y.HasSingle()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task NullSubject_UnderNegation_ShouldFail()
+			{
+				int[]? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(x => x.HasSingle());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a single item,
+					             but it was <null>
+					             """);
+			}
+
+			[Fact]
+			public async Task StringIsEqualTo_WhenSubjectIsNull_ShouldFailOnlyWhenNullIsNotTheAnswer()
+			{
+				string? subject = null;
+
+				async Task IsEqualToValue() => await That(subject).DoesNotComplyWith(x => x.IsEqualTo("foo"));
+				async Task IsEqualToNull() => await That(subject).DoesNotComplyWith(x => x.IsEqualTo(null));
+				async Task IsNotEqualToValue() => await That(subject).DoesNotComplyWith(x => x.IsNotEqualTo("foo"));
+				async Task IsNotEqualToNull() => await That(subject).DoesNotComplyWith(x => x.IsNotEqualTo(null));
+
+				await That(IsEqualToValue).DoesNotThrow()
+					.Because("a null subject is not equal to \"foo\"");
+				await That(IsEqualToNull).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to <null>,
+					             but it was <null>
+					             """);
+				await That(IsNotEqualToValue).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to "foo",
+					             but it was <null>
+					             """);
+				await That(IsNotEqualToNull).DoesNotThrow()
+					.Because("a null subject is equal to null");
+			}
+
+			private sealed class Holder(int[]? items)
+			{
+				public int[]? Items { get; } = items;
+			}
+		}
+
 		public sealed class WithinTests
 		{
 			[Fact]
