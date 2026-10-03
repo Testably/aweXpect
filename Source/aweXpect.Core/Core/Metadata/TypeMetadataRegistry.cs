@@ -124,6 +124,7 @@ public static class TypeMetadataRegistry
 		private readonly ConcurrentDictionary<Type, TypeMetadata> _metadata = new();
 		private readonly ThreadLocal<Dictionary<Type, TypeMetadata>?> _pending = new();
 		private int _order;
+		private int _version;
 
 		public void AddField(Type type, string name, Type memberType, Func<object, object?> getValue)
 			=> Add(type, metadata
@@ -205,7 +206,16 @@ public static class TypeMetadataRegistry
 		///     keeps a consistent view.
 		/// </remarks>
 		private void Publish(Type type, TypeMetadata metadata)
-			=> _metadata.AddOrUpdate(type, metadata, (_, published) => published.MergedWith(metadata));
+		{
+			_metadata.AddOrUpdate(type, metadata, (_, published) => published.MergedWith(metadata));
+			Interlocked.Increment(ref _version);
+		}
+
+		/// <summary>
+		///     Changes whenever a registration is published, so that what was derived from the registrations can tell
+		///     that it is outdated.
+		/// </summary>
+		public int Version => Volatile.Read(ref _version);
 
 		/// <remarks>
 		///     Registrations keep the order the generator emitted them in, so that a failure message lists the members of

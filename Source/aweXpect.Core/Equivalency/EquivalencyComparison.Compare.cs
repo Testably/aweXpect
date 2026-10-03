@@ -31,14 +31,14 @@ public static partial class EquivalencyComparison
 		[DisallowNull] TExpected expected,
 		bool isDecidedByExpected,
 		StringBuilder failureBuilder,
-		string memberPath,
+		MemberPath memberPath,
 		MemberType memberType,
 		EquivalencyContext context)
 	{
 		if (EquivalencyContent.IsComparedByContent(actual.GetType()) ||
 		    EquivalencyContent.IsComparedByContent(expected.GetType()))
 		{
-			string? thrower = GetThrower(memberPath);
+			string? thrower = GetThrower(memberPath.ToString());
 			return CompareByValue(EquivalencyContent.GetContent(actual, thrower),
 				EquivalencyContent.GetContent(expected, thrower), isDecidedByExpected,
 				failureBuilder, memberPath, memberType, context);
@@ -46,7 +46,7 @@ public static partial class EquivalencyComparison
 
 		if (DateTimeKindComparison.AreKindsIncompatible(actual, expected))
 		{
-			AppendDifference(failureBuilder, memberType, memberPath, actual, expected, context);
+			AppendDifference(failureBuilder, memberType, memberPath.ToString(), actual, expected, context);
 			return false;
 		}
 
@@ -58,7 +58,7 @@ public static partial class EquivalencyComparison
 			static values => UserCode.EqualsOf(values.IsDecidedByExpected ? values.Expected! : values.Actual!));
 		if (!isEqual)
 		{
-			AppendDifference(failureBuilder, memberType, memberPath, actual, expected, context);
+			AppendDifference(failureBuilder, memberType, memberPath.ToString(), actual, expected, context);
 			return false;
 		}
 
@@ -73,14 +73,14 @@ public static partial class EquivalencyComparison
 		=> string.IsNullOrEmpty(memberPath) ? null : memberPath;
 
 	private static bool CompareNulls<TActual, TExpected>(TActual actual, TExpected expected,
-		StringBuilder failureBuilder, string memberPath, MemberType memberType, EquivalencyContext context)
+		StringBuilder failureBuilder, MemberPath memberPath, MemberType memberType, EquivalencyContext context)
 	{
 		if (actual is null && expected is null)
 		{
 			return true;
 		}
 
-		AppendDifference(failureBuilder, memberType, memberPath, actual, expected, context);
+		AppendDifference(failureBuilder, memberType, memberPath.ToString(), actual, expected, context);
 		return false;
 	}
 
@@ -222,16 +222,6 @@ public static partial class EquivalencyComparison
 		failureBuilder.Append(" matched no expected key");
 	}
 
-	private static string ConcatMemberPath(string memberPath, string memberName)
-	{
-		if (string.IsNullOrEmpty(memberPath))
-		{
-			return memberName;
-		}
-
-		return $"{memberPath}.{memberName}";
-	}
-
 	private static string GetMemberPath(MemberType type, string memberPath)
 	{
 		if (string.IsNullOrEmpty(memberPath))
@@ -264,13 +254,19 @@ public static partial class EquivalencyComparison
 			     not MemberToIgnore.ByPropertyPredicate,
 		};
 
-	private static bool IsIgnored(MemberToIgnore[] membersToIgnore, MemberType memberType, string memberPath,
+	/// <remarks>
+	///     The <paramref name="memberPath" /> is only joined when a rule applies to the member, as most comparisons have no
+	///     rule at all.
+	/// </remarks>
+	private static bool IsIgnored(MemberToIgnore[] membersToIgnore, MemberType memberType, MemberPath memberPath,
 		Type type)
 	{
+		string? path = null;
 #pragma warning disable S3267 // Every compared member is checked, so Any with a closure is avoided here
 		foreach (MemberToIgnore memberToIgnore in membersToIgnore)
 		{
-			if (AppliesTo(memberToIgnore, memberType) && memberToIgnore.IgnoreMember(memberPath, type))
+			if (AppliesTo(memberToIgnore, memberType) &&
+			    memberToIgnore.IgnoreMember(path ??= memberPath.ToString(), type))
 			{
 				return true;
 			}
@@ -279,6 +275,15 @@ public static partial class EquivalencyComparison
 
 		return false;
 	}
+
+	/// <summary>
+	///     Reads a member of the <paramref name="subject" /> with the <paramref name="accessor" />, naming the member at
+	///     the <paramref name="memberPath" /> as the thrower when it throws.
+	/// </summary>
+	private static object? ReadMember(Func<object, object?> accessor, object subject, MemberPath memberPath)
+		=> UserCode.Invoke(static values => values.Accessor(values.Subject),
+			(Accessor: accessor, Subject: subject, Path: memberPath),
+			static values => values.Path.ToString());
 
 	private static EquivalencyTypeOptions? GetRegisteredOptions(Type type, EquivalencyOptions equivalencyOptions,
 		EquivalencyContext context)
@@ -320,7 +325,7 @@ public static partial class EquivalencyComparison
 			EquivalencyOptions equivalencyOptions,
 			EquivalencyTypeOptions parentTypeOptions,
 			StringBuilder failureBuilder,
-			string memberPath,
+			MemberPath memberPath,
 			MemberType memberType,
 			EquivalencyContext context)
 	{
@@ -354,7 +359,7 @@ public static partial class EquivalencyComparison
 					return false;
 				}
 
-				AppendDifferenceHeader(failureBuilder, memberType, memberPath, context);
+				AppendDifferenceHeader(failureBuilder, memberType, memberPath.ToString(), context);
 				Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
 				if (actual is not null && !equivalencyExpectationBuilder.IsOfExpectedType(actual))
 				{
@@ -400,29 +405,30 @@ public static partial class EquivalencyComparison
 		context.Depth++;
 		try
 		{
+			string path = memberPath.ToString();
 			if (context.Depth > equivalencyOptions.MaxRecursionDepth)
 			{
-				AppendMaxRecursionDepthExceeded(failureBuilder, memberType, memberPath,
+				AppendMaxRecursionDepthExceeded(failureBuilder, memberType, path,
 					equivalencyOptions.MaxRecursionDepth, context);
 				return false;
 			}
 
-			if (TryGetDictionary(actual, memberPath, out IDictionary? actualDictionary,
+			if (TryGetDictionary(actual, path, out IDictionary? actualDictionary,
 				    out object? actualKeyComparer) &&
-			    TryGetDictionary(expected, memberPath, out IDictionary? expectedDictionary, out _))
+			    TryGetDictionary(expected, path, out IDictionary? expectedDictionary, out _))
 			{
 				return await CompareDictionaries(actualDictionary, actualKeyComparer, expectedDictionary,
-					failureBuilder, memberType, memberPath, equivalencyOptions, typeOptions, context);
+					failureBuilder, memberType, path, equivalencyOptions, typeOptions, context);
 			}
 
 			if (TryGetEnumerable(actual, out IEnumerable? actualEnumerable) &&
 			    TryGetEnumerable(expected, out IEnumerable? expectedEnumerable))
 			{
-				return await CompareEnumerables(actualEnumerable, expectedEnumerable, failureBuilder, memberPath,
+				return await CompareEnumerables(actualEnumerable, expectedEnumerable, failureBuilder, path,
 					equivalencyOptions, typeOptions, context);
 			}
 
-			return await CompareObjects(actual, expected, failureBuilder, memberType, memberPath,
+			return await CompareObjects(actual, expected, failureBuilder, memberType, path,
 				equivalencyOptions, typeOptions, context);
 		}
 		finally
@@ -450,77 +456,64 @@ public static partial class EquivalencyComparison
 	{
 		bool result = true;
 		int memberCount = 0;
-		if (typeOptions.Fields != IncludeMembers.None)
+		EquivalencyMemberPlan plan = EquivalencyMemberPlan.For(expected.GetType(), actual.GetType(),
+			typeOptions.Fields, typeOptions.Properties);
+		foreach (EquivalencyMemberPlan.PlannedMember field in plan.Fields)
 		{
-			foreach (EquivalencyMember field in EquivalencyMembers.GetFields(expected.GetType(), typeOptions.Fields))
+			memberCount++;
+			MemberPath fieldMemberPath = MemberPath.Member(memberPath, field.Expected.Name);
+			if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Field, fieldMemberPath, field.Expected.DeclaredType))
 			{
-				memberCount++;
-				string fieldMemberPath = ConcatMemberPath(memberPath, field.Name);
-				if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Field, fieldMemberPath, field.DeclaredType))
-				{
-					continue;
-				}
+				continue;
+			}
 
-				bool isAmbiguous = false;
-				Func<object, object?>? actualFieldAccessor =
-					EquivalencyMembers.FindField(actual.GetType(), field.Name, typeOptions.Fields) ??
-					EquivalencyMembers.FindProperty(actual.GetType(), field.Name, typeOptions.Properties) ??
-					EquivalencyMembers.FindExplicitProperty(actual.GetType(), field.Name, typeOptions.Properties,
-						out isAmbiguous);
-				if (actualFieldAccessor is null)
-				{
-					AppendMissingMember(failureBuilder, MemberType.Field, fieldMemberPath, isAmbiguous, context);
-					result = false;
-					continue;
-				}
+			Func<object, object?>? actualFieldAccessor = field.GetActualAccessor(out bool isAmbiguous);
+			if (actualFieldAccessor is null)
+			{
+				AppendMissingMember(failureBuilder, MemberType.Field, fieldMemberPath.ToString(), isAmbiguous,
+					context);
+				result = false;
+				continue;
+			}
 
-				object? actualFieldValue = UserCode.Invoke(actualFieldAccessor, actual, fieldMemberPath);
-				object? expectedFieldValue = UserCode.Invoke(field.GetValue, expected, fieldMemberPath);
+			object? actualFieldValue = ReadMember(actualFieldAccessor, actual, fieldMemberPath);
+			object? expectedFieldValue = ReadMember(field.Expected.GetValue, expected, fieldMemberPath);
 
-				if (!await Compare(actualFieldValue, expectedFieldValue,
-					    options, typeOptions,
-					    failureBuilder, fieldMemberPath, MemberType.Field, context))
-				{
-					result = false;
-				}
+			if (!await Compare(actualFieldValue, expectedFieldValue,
+				    options, typeOptions,
+				    failureBuilder, fieldMemberPath, MemberType.Field, context))
+			{
+				result = false;
 			}
 		}
 
-		if (typeOptions.Properties != IncludeMembers.None)
+		foreach (EquivalencyMemberPlan.PlannedMember property in plan.Properties)
 		{
-			foreach (EquivalencyMember property in EquivalencyMembers.GetProperties(expected.GetType(),
-				         typeOptions.Properties))
+			memberCount++;
+			MemberPath propertyMemberPath = MemberPath.Member(memberPath, property.Expected.Name);
+			if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Property, propertyMemberPath,
+				    property.Expected.DeclaredType))
 			{
-				memberCount++;
-				string propertyMemberPath = ConcatMemberPath(memberPath, property.Name);
-				if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Property, propertyMemberPath,
-					    property.DeclaredType))
-				{
-					continue;
-				}
+				continue;
+			}
 
-				bool isAmbiguous = false;
-				Func<object, object?>? actualPropertyAccessor =
-					EquivalencyMembers.FindProperty(actual.GetType(), property.Name, typeOptions.Properties) ??
-					EquivalencyMembers.FindField(actual.GetType(), property.Name, typeOptions.Fields) ??
-					EquivalencyMembers.FindExplicitProperty(actual.GetType(), property.Name, typeOptions.Properties,
-						out isAmbiguous);
-				if (actualPropertyAccessor is null)
-				{
-					AppendMissingMember(failureBuilder, MemberType.Property, propertyMemberPath, isAmbiguous, context);
-					result = false;
-					continue;
-				}
+			Func<object, object?>? actualPropertyAccessor = property.GetActualAccessor(out bool isAmbiguous);
+			if (actualPropertyAccessor is null)
+			{
+				AppendMissingMember(failureBuilder, MemberType.Property, propertyMemberPath.ToString(), isAmbiguous,
+					context);
+				result = false;
+				continue;
+			}
 
-				object? actualPropertyValue = UserCode.Invoke(actualPropertyAccessor, actual, propertyMemberPath);
-				object? expectedPropertyValue = UserCode.Invoke(property.GetValue, expected, propertyMemberPath);
+			object? actualPropertyValue = ReadMember(actualPropertyAccessor, actual, propertyMemberPath);
+			object? expectedPropertyValue = ReadMember(property.Expected.GetValue, expected, propertyMemberPath);
 
-				if (!await Compare(actualPropertyValue, expectedPropertyValue,
-					    options, typeOptions,
-					    failureBuilder, propertyMemberPath, MemberType.Property, context))
-				{
-					result = false;
-				}
+			if (!await Compare(actualPropertyValue, expectedPropertyValue,
+				    options, typeOptions,
+				    failureBuilder, propertyMemberPath, MemberType.Property, context))
+			{
+				result = false;
 			}
 		}
 
@@ -885,7 +878,7 @@ public static partial class EquivalencyComparison
 
 		for (int i = 0; i < Math.Min(actualObjects.Length, expectedObjects.Length); i++)
 		{
-			string elementMemberPath = $"{memberPath}[{i}]";
+			MemberPath elementMemberPath = MemberPath.Element(memberPath, i);
 			object? actualObject = actualObjects[i];
 			if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
 				    actualObject?.GetType() ?? typeof(object)))
@@ -1318,8 +1311,8 @@ public static partial class EquivalencyComparison
 			return count;
 		}
 
-		private string GetElementPath(int actualIndex)
-			=> $"{_memberPath}[{_actualIndices[actualIndex]}]";
+		private MemberPath GetElementPath(int actualIndex)
+			=> MemberPath.Element(_memberPath, _actualIndices[actualIndex]);
 
 		/// <summary>
 		///     The results of the compared pairs, kept sparse while few pairs are compared.
