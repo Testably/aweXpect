@@ -15,7 +15,7 @@ public partial class HappyCaseBenchmarks
 
 	[Benchmark]
 	public async Task StringArray_aweXpect()
-		=> (await Expect.That(_stringArraySubject).IsEqualTo(_stringArrayExpectation)).Consume(_consumer);
+		=> (await Expect.That(_stringArraySubject).IsEqualTo(_stringArrayExpectation))!.Consume(_consumer);
 
 	[Benchmark]
 	public AndConstraint<StringCollectionAssertions<IEnumerable<string>>> StringArray_FluentAssertions()

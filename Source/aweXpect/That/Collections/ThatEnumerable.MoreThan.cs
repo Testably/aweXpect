@@ -50,12 +50,14 @@ public static partial class ThatEnumerable
 #endif
 
 #if NET8_0_OR_GREATER
+#nullable disable annotations
 	/// <summary>
 	///     Verifies that in the collection more than <paramref name="minimum" /> items…
 	/// </summary>
-	public static ElementsForStructEnumerable<ImmutableArray<string?>> MoreThan(
-		this IThat<ImmutableArray<string?>> subject,
+	public static ElementsForStructEnumerable<ImmutableArray<string>> MoreThan(
+		this IThat<ImmutableArray<string>> subject,
 		int minimum)
 		=> new(subject, EnumerableQuantifier.MoreThan(minimum));
+#nullable restore annotations
 #endif
 }

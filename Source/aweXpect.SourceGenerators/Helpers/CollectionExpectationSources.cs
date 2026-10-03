@@ -128,8 +128,8 @@ internal static class CollectionExpectationSources
 		builder.AppendLine("#nullable enable");
 		// The generated header keeps the other analyzers out, but the public API analyzer looks at generated code on
 		// purpose and the .editorconfig severities do not reach it there, so the repo-wide decision on the
-		// optional-parameter back-compat rule has to be restated here.
-		builder.AppendLine("#pragma warning disable RS0026");
+		// optional-parameter back-compat and the oblivious-type rules have to be restated here.
+		builder.AppendLine("#pragma warning disable RS0026, RS0041");
 		builder.Append("public static partial class ").AppendLine(first.ClassName);
 		builder.AppendLine("{");
 		builder.AppendLine(string.Join("\n\n", families.SelectMany(x => x.Methods)));

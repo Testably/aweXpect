@@ -212,7 +212,6 @@ public static partial class ThatEnumerable
 	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true,
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
 	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", PerSubject = true, Params = true,
-		ExpectedType = "string?",
 		Summary = EndsWithSummary, NegatedSummary = DoesNotEndWithSummary)]
 	internal static StringEqualityTypeResult<TCollection, IThat<TCollection>>
 		EndsWithForCollectionStringsCore<TCollection>(

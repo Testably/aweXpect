@@ -55,13 +55,15 @@ public static partial class ThatEnumerable
 #endif
 
 #if NET8_0_OR_GREATER
+#nullable disable annotations
 	/// <summary>
 	///     Verifies that in the collection between <paramref name="minimum" />…
 	/// </summary>
-	public static BetweenResult<ElementsForStructEnumerable<ImmutableArray<string?>>> Between(
-		this IThat<ImmutableArray<string?>> subject,
+	public static BetweenResult<ElementsForStructEnumerable<ImmutableArray<string>>> Between(
+		this IThat<ImmutableArray<string>> subject,
 		int minimum)
-		=> new(maximum => new ElementsForStructEnumerable<ImmutableArray<string?>>(subject,
+		=> new(maximum => new ElementsForStructEnumerable<ImmutableArray<string>>(subject,
 			EnumerableQuantifier.Between(minimum, maximum)));
+#nullable restore annotations
 #endif
 }

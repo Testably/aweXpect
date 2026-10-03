@@ -52,12 +52,14 @@ public static partial class ThatEnumerable
 #endif
 
 #if NET8_0_OR_GREATER
+#nullable disable annotations
 	/// <summary>
 	///     Verifies that in the collection exactly <paramref name="expected" /> items…
 	/// </summary>
-	public static ElementsForStructEnumerable<ImmutableArray<string?>> Exactly(
-		this IThat<ImmutableArray<string?>> subject,
+	public static ElementsForStructEnumerable<ImmutableArray<string>> Exactly(
+		this IThat<ImmutableArray<string>> subject,
 		int expected)
 		=> new(subject, EnumerableQuantifier.Exactly(expected));
+#nullable restore annotations
 #endif
 }
