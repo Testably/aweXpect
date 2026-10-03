@@ -9,6 +9,12 @@ namespace aweXpect.Core.Sources;
 
 internal class DelegateSource : IValueSource<DelegateValue>
 {
+	/// <remarks>
+	///     Reading the custom attributes is costly compared to a delegate that does nothing, and the same lambda is
+	///     passed on every call of a test. The table does not keep a collectible assembly alive.
+	/// </remarks>
+	private static readonly ConditionalWeakTable<MethodInfo, object> IsAsyncVoidMethod = new();
+
 	private readonly Action<CancellationToken>? _action;
 
 	public DelegateSource(Action<CancellationToken>? action)
@@ -51,8 +57,8 @@ internal class DelegateSource : IValueSource<DelegateValue>
 
 	private static void ThrowIfAsyncVoid(MethodInfo? method, string replaceType)
 	{
-		if (method is not null &&
-		    Attribute.IsDefined(method, typeof(AsyncStateMachineAttribute), true))
+		if (method is not null && (bool)IsAsyncVoidMethod.GetValue(method,
+			    static method => Attribute.IsDefined(method, typeof(AsyncStateMachineAttribute), true)))
 		{
 			throw Tracing.WriteException(
 				new InvalidOperationException(
