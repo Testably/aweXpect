@@ -63,7 +63,7 @@ public static partial class ThatTimeOnly
 			Actual = actual;
 			if (expected is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 

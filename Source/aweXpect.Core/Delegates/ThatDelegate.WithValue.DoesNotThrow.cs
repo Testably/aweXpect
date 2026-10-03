@@ -62,7 +62,7 @@ public abstract partial class ThatDelegate
 
 			/// <inheritdoc cref="ConstraintResult.FailureCause" />
 			public override Exception? FailureCause
-				=> Outcome == Outcome.Failure ? _actual?.Exception : null;
+				=> Outcome is Outcome.Failure or Outcome.FailureBothWays ? _actual?.Exception : null;
 
 			/// <inheritdoc />
 			public ConstraintResult IsMetBy(DelegateValue<T> value)
@@ -149,11 +149,18 @@ public abstract partial class ThatDelegate
 			}
 
 			private void UpdateOutcome(DelegateValue<T> value)
-				=> Outcome = value.IsNull || value.ExceededTimeout is not null ||
-				             _isNegated == (value.Exception is null ||
-				                            !value.Exception.IsOfType(exceptionType))
+			{
+				if (value.IsNull || value.ExceededTimeout is not null)
+				{
+					Outcome = Outcome.FailureBothWays;
+					return;
+				}
+
+				Outcome = _isNegated == (value.Exception is null ||
+				                         !value.Exception.IsOfType(exceptionType))
 					? Outcome.Failure
 					: Outcome.Success;
+			}
 		}
 	}
 }

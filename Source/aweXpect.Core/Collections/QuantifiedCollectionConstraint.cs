@@ -13,10 +13,10 @@ namespace aweXpect;
 /// <remarks>
 ///     Use it for an expectation on the elements of a collection, e.g. an extension method on
 ///     <see cref="IEnumerableElements{TItem}" />, which exposes the <see cref="EnumerableQuantifier" /> and the subject.
-///     Pass the quantifier to the constructor, set <see cref="ConstraintResult.WithNotNullValue{T}.Actual" /> in
+///     Pass the quantifier to the constructor, set <see cref="ConstraintResult.WithValue{T}.Actual" /> in
 ///     <c>IsMetBy</c>, call <see cref="QuantifiedCollectionConstraintBase{TValue,TItem}.Record(TItem, bool)" /> for every item and
 ///     <see cref="QuantifiedCollectionConstraintBase{TValue,TItem}.Complete" /> afterwards. For a
-///     <see langword="null" /> subject, only set the <see cref="ConstraintResult.WithNotNullValue{T}.Actual" /> and
+///     <see langword="null" /> subject, only set the <see cref="ConstraintResult.WithValue{T}.Actual" /> and
 ///     return, as the expectation fails for it.
 ///     <para />
 ///     When the expectation text or the verb are only known while the failure message is created, derive from

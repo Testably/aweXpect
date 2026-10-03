@@ -46,7 +46,7 @@ public class ExpectationBuilderTests
 
 		ConstraintResult constraintResult = await sut.IsMetBy("bar", null!, CancellationToken.None);
 
-		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure);
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		await That(constraintResult.GetResultText()).IsEqualTo("inner was <null>")
 			.Because("the subject itself was not null, only the member the nested member is read from");
 	}
@@ -166,7 +166,7 @@ public class ExpectationBuilderTests
 
 		ConstraintResult constraintResult = await sut.IsMetBy("bar", null!, CancellationToken.None);
 
-		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure);
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		await That(constraintResult.GetResultText()).IsEqualTo("inner was <null>")
 			.Because("the subject itself was not null, only the member the nested member is read from");
 	}

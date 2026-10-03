@@ -57,16 +57,14 @@ public abstract partial class EnumerableQuantifier
 	/// <summary>
 	///     Returns the outcome.
 	/// </summary>
+	/// <remarks>
+	///     A quantifier that cannot be answered, e.g. <c>more than &lt;null&gt;</c>, returns
+	///     <see cref="Outcome.FailureBothWays" />.
+	/// </remarks>
 	public abstract Outcome GetOutcome(
 		int matchingCount,
 		int notMatchingCount,
 		int? totalCount);
-
-	/// <summary>
-	///     Indicates that the quantifier fails the expectation and its negation alike, e.g. <c>more than &lt;null&gt;</c>,
-	///     because nothing can be ordered against <see langword="null" />.
-	/// </summary>
-	public virtual bool FailsBothWays => false;
 
 	/// <summary>
 	///     Returns the <see cref="QuantifierContexts" /> which specifies which context values are helpful.

@@ -18,13 +18,17 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 	/// <summary>
 	///     Returns the result returned from the delegate.
 	/// </summary>
+	/// <remarks>
+	///     The result only exists when the delegate did not throw, so a negation only applies to the expectations on the
+	///     result: "throws an exception or its result is not …".
+	/// </remarks>
 	public IThat<T> WhoseResult
 	{
 		get
 		{
-			ExpectationBuilder.And("")
+			ExpectationBuilder.And(" and its result ")
 				.AddConstraint((it, grammars) => new DoesNotThrowAnyExceptionConstraint(it, grammars))
-				.ForWhich<DelegateValue<T>, T?>(d => d.Value, " and its result ", "it");
+				.ForWhich<DelegateValue<T>, T?>(d => d.Value, "", "it", negateMemberOnly: true);
 			return new ThatSubject<T?>(ExpectationBuilder);
 		}
 	}
@@ -38,21 +42,18 @@ public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 		private DelegateValue<T>? _actual;
 
 		public override Exception? FailureCause
-			=> Outcome == Outcome.Failure ? _actual?.Exception : null;
+			=> Outcome == Outcome.FailureBothWays ? _actual?.Exception : null;
 
 		/// <inheritdoc />
+		/// <remarks>
+		///     The negation does not apply to this guard, so a delegate without a result fails it both ways.
+		/// </remarks>
 		public ConstraintResult IsMetBy(DelegateValue<T> value)
 		{
 			_actual = value;
-			if (value.IsNull)
-			{
-				Outcome = Outcome.Failure;
-				return this;
-			}
-
-			Outcome = value.Exception is null
-				? Outcome.Success
-				: Outcome.Failure;
+			Outcome = value.IsNull || value.Exception is not null
+				? Outcome.FailureBothWays
+				: Outcome.Success;
 			return this;
 		}
 

@@ -81,7 +81,7 @@ public static partial class ThatString
 			_actual = actual;
 			if (actual is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
@@ -151,13 +151,6 @@ public static partial class ThatString
 
 				Formatter.Format(stringBuilder, _actual);
 			}
-		}
-
-		/// <inheritdoc cref="ConstraintResult.Outcome" />
-		public override Outcome Outcome
-		{
-			get => _actual is null ? Outcome.Failure : base.Outcome;
-			protected set => base.Outcome = value;
 		}
 
 		public override ConstraintResult Negate()

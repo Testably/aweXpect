@@ -48,16 +48,6 @@ internal abstract class ComplyWithConstraintBase<TValue, TItem>
 		_negatedBuilder = negatedItemGrammars == itemGrammars ? _builder : Create(negatedItemGrammars, expectations);
 	}
 
-	/// <inheritdoc cref="ConstraintResult.Outcome" />
-	/// <remarks>
-	///     An item that the expectations did not answer fails the expectation and its negation alike.
-	/// </remarks>
-	public override Outcome Outcome
-	{
-		get => _unansweredItem is null ? base.Outcome : Outcome.Failure;
-		protected set => base.Outcome = value;
-	}
-
 	/// <inheritdoc cref="ConstraintResult.FailureCause" />
 	public override Exception? FailureCause => _unansweredItem?.FailureCause;
 
@@ -254,8 +244,9 @@ internal abstract class ComplyWithConstraintBase<TValue, TItem>
 			return true;
 		}
 
-		if (isMatch.FailsBothWays())
+		if (isMatch.Outcome == Outcome.FailureBothWays)
 		{
+			Outcome = Outcome.FailureBothWays;
 			_unansweredItem = isMatch;
 			_unansweredItemIndex = index;
 			return true;

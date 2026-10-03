@@ -96,12 +96,45 @@ public partial class ConstraintResultTests
 		}
 
 		[Fact]
+		public async Task IsNegated_ShouldFollowTheNegatedGrammars()
+		{
+			MyWithValueDummy<int> sut = new(0, outcome: Outcome.Success, grammars: ExpectationGrammars.Negated);
+
+			await That(sut.IsNegatedSet).IsTrue();
+			await That(sut.Outcome).IsEqualTo(Outcome.Failure)
+				.Because("the outcome and the expectation text agree about the negation");
+		}
+
+		[Fact]
 		public async Task NormalCase_ShouldNotHaveNegatedGrammarsFlagAndSuccessOutcome()
 		{
 			ConstraintResult sut = new MyWithValueDummy<int>(0, grammars: ExpectationGrammars.Plural);
 
 			await That(sut.Grammars).HasFlag(ExpectationGrammars.Plural);
 			await That(sut.Grammars).DoesNotHaveFlag(ExpectationGrammars.Negated);
+		}
+
+		[Fact]
+		public async Task Outcome_WhenActualIsNull_ShouldKeepTheSetOutcome()
+		{
+			ConstraintResult sut = new MyWithValueDummy<int?>(null, outcome: Outcome.Success);
+
+			await That(sut.Outcome).IsEqualTo(Outcome.Success)
+				.Because("WithValue applies no null policy of its own");
+		}
+
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public async Task Outcome_WhenFailureBothWays_ShouldBeKeptUnderNegation(bool invert)
+		{
+			ConstraintResult sut = new MyWithValueDummy<int>(0, outcome: Outcome.FailureBothWays);
+			if (invert)
+			{
+				sut.Invert();
+			}
+
+			await That(sut.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		}
 
 		[Fact]

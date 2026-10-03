@@ -48,23 +48,19 @@ public static partial class ThatString
 		: ConstraintResult.WithEqualToValue<string?>(it, grammars, expected is null),
 			IAsyncConstraint<string?>
 	{
-		/// <inheritdoc cref="ConstraintResult.Outcome" />
 		/// <remarks>
-		///     A match type that inspects the content of the subject, e.g. a prefix or a pattern, fails for a
-		///     <see langword="null" /> subject in both polarities, because it has no content.
+		///     A match type that inspects the content of the subject, e.g. a prefix or a pattern, cannot answer for a
+		///     <see langword="null" /> subject, because it has no content.
 		/// </remarks>
-		public override Outcome Outcome
-		{
-			get => Actual is null && options.InspectsSubject
-				? Outcome.Failure
-				: base.Outcome;
-			protected set => base.Outcome = value;
-		}
-
 		public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			Outcome = await options.AreConsideredEqual(actual, expected) ? Outcome.Success : Outcome.Failure;
+			if (actual is null && options.InspectsSubject)
+			{
+				Outcome = Outcome.FailureBothWays;
+			}
+
 			return this;
 		}
 

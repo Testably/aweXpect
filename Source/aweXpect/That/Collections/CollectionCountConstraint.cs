@@ -29,15 +29,6 @@ internal abstract class CollectionCountConstraintBase<TValue>(
 	/// </summary>
 	protected EnumerableQuantifier Quantifier => quantifier;
 
-	/// <inheritdoc />
-	public override Outcome Outcome
-	{
-		get => quantifier.FailsBothWays
-			? Outcome.Failure
-			: base.Outcome;
-		protected set => base.Outcome = value;
-	}
-
 	/// <summary>
 	///     Determines the outcome from the <paramref name="count" /> of items that were read, which is the
 	///     <paramref name="totalCount" />, unless the reading stopped early.
@@ -100,7 +91,7 @@ internal sealed class CollectionCountConstraint<TEnumerable, TItem>(
 
 		if (actual is null)
 		{
-			Outcome = Outcome.Failure;
+			Outcome = Outcome.FailureBothWays;
 			return Task.FromResult<ConstraintResult>(this);
 		}
 
@@ -160,7 +151,7 @@ internal sealed class AsyncCollectionCountConstraint<TItem>(
 		Actual = actual;
 		if (actual is null)
 		{
-			Outcome = Outcome.Failure;
+			Outcome = Outcome.FailureBothWays;
 			return this;
 		}
 

@@ -64,13 +64,14 @@ public static partial class ThatDateTime
 			Actual = actual;
 			if (expected is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else if (!EqualityHelpers.AreKindCompatible(actual.Kind, expected.Value.Kind))
 			{
 				// Comparing ticks across incompatible kinds proves nothing, so the negated check fails as well.
 				_incompatibleKind = expected.Value.Kind;
 				IsIncomparable = true;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else
 			{

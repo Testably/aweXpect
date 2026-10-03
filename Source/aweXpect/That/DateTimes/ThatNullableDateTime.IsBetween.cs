@@ -79,18 +79,20 @@ public static partial class ThatNullableDateTime
 			Actual = actual;
 			if (actual is null || minimum is null || maximum is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else if (!EqualityHelpers.AreKindCompatible(actual.Value.Kind, minimum.Value.Kind))
 			{
 				// Comparing ticks across incompatible kinds proves nothing, so the negated check fails as well.
 				_incompatibleKind = minimum.Value.Kind;
 				IsIncomparable = true;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else if (!EqualityHelpers.AreKindCompatible(actual.Value.Kind, maximum.Value.Kind))
 			{
 				_incompatibleKind = maximum.Value.Kind;
 				IsIncomparable = true;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else
 			{

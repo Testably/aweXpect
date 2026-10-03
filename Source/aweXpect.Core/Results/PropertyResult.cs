@@ -872,13 +872,6 @@ public static class PropertyResult
 		private TProperty? _value;
 
 		/// <inheritdoc />
-		public override Outcome Outcome
-		{
-			get => _exception is null && !comparison.IsOrderedAgainstNull ? base.Outcome : Outcome.Failure;
-			protected set => base.Outcome = value;
-		}
-
-		/// <inheritdoc />
 		public override Exception? FailureCause => _exception;
 
 		public ConstraintResult IsMetBy(TItem actual)
@@ -891,10 +884,16 @@ public static class PropertyResult
 			catch (Exception exception)
 			{
 				_exception = exception;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
 			Outcome = comparison.Condition(_value, comparison.Expected) ? Outcome.Success : Outcome.Failure;
+			if (comparison.IsOrderedAgainstNull)
+			{
+				Outcome = Outcome.FailureBothWays;
+			}
+
 			return this;
 		}
 
@@ -965,20 +964,13 @@ public static class PropertyResult
 		private Exception? _exception;
 		private string? _value;
 
-		/// <inheritdoc cref="ConstraintResult.Outcome" />
-		/// <remarks>
-		///     A match type that inspects the content of the value, e.g. a prefix or a pattern, fails for a
-		///     <see langword="null" /> value in both polarities, because it has no content.
-		/// </remarks>
-		public override Outcome Outcome
-		{
-			get => _exception is null && !(_value is null && options.InspectsSubject) ? base.Outcome : Outcome.Failure;
-			protected set => base.Outcome = value;
-		}
-
 		/// <inheritdoc />
 		public override Exception? FailureCause => _exception;
 
+		/// <remarks>
+		///     A match type that inspects the content of the value, e.g. a prefix or a pattern, cannot answer for a
+		///     <see langword="null" /> value, because it has no content.
+		/// </remarks>
 		public async Task<ConstraintResult> IsMetBy(TItem actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
@@ -989,10 +981,16 @@ public static class PropertyResult
 			catch (Exception exception)
 			{
 				_exception = exception;
+				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
 			Outcome = await options.AreConsideredEqual(_value, expected) ? Outcome.Success : Outcome.Failure;
+			if (_value is null && options.InspectsSubject)
+			{
+				Outcome = Outcome.FailureBothWays;
+			}
+
 			return this;
 		}
 

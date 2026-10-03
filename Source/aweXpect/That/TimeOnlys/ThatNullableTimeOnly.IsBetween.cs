@@ -68,7 +68,7 @@ public static partial class ThatNullableTimeOnly
 			Actual = actual;
 			if (actual is null || minimum is null || maximum is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else
 			{

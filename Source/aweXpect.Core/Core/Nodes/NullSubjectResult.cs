@@ -28,8 +28,9 @@ internal sealed class NullSubjectResult : ConstraintResult
 		_value = value;
 		_valueType = valueType;
 		_result = result;
-		Outcome = Outcome.Failure;
+		Outcome = Outcome.FailureBothWays;
 	}
+
 
 	/// <inheritdoc />
 	public override Exception? FailureCause => _inner.FailureCause;

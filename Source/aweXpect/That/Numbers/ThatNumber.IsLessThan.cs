@@ -109,6 +109,12 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
+			if (IsIncomparable)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			Outcome = options.IsLessThan(actual, expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -150,6 +156,12 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
+			if (IsIncomparable)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			Outcome = options.IsLessThan(actual, expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -242,6 +254,12 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
+			if (IsIncomparable)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			Outcome = options.IsLessThan(actual, expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -283,6 +301,12 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
+			if (IsIncomparable)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			Outcome = options.IsLessThan(actual, expected) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}

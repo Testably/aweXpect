@@ -43,7 +43,7 @@ internal abstract class CombinedResult : ConstraintResult
 
 	/// <inheritdoc />
 	public override Exception? FailureCause
-		=> Outcome == Outcome.Failure ? Left.FailureCause ?? Right.FailureCause : null;
+		=> Outcome is Outcome.Failure or Outcome.FailureBothWays ? Left.FailureCause ?? Right.FailureCause : null;
 
 	/// <summary>
 	///     Which parts explain the outcome of the combination.
@@ -119,21 +119,35 @@ internal abstract class CombinedResult : ConstraintResult
 		return false;
 	}
 
+	/// <remarks>
+	///     A part that fails both ways makes the combination fail both ways, unless the other part decides it under
+	///     both negations: a failed part is met by the negation (<c>or</c>), and an undecided part leaves the negation
+	///     undecided, so the combination only fails.
+	/// </remarks>
 	private static Outcome And(Outcome left, Outcome right)
 		=> (left, right) switch
 		{
 			(Outcome.Success, Outcome.Success) => Outcome.Success,
 			(_, Outcome.Failure) => Outcome.Failure,
 			(Outcome.Failure, _) => Outcome.Failure,
+			(Outcome.FailureBothWays, Outcome.Undecided) or (Outcome.Undecided, Outcome.FailureBothWays)
+				=> Outcome.Failure,
+			(Outcome.FailureBothWays, _) or (_, Outcome.FailureBothWays) => Outcome.FailureBothWays,
 			(_, _) => Outcome.Undecided,
 		};
 
+	/// <remarks>
+	///     A part that fails both ways makes a failed combination fail both ways, as the negation (<c>and</c>) fails
+	///     with it.
+	/// </remarks>
 	private static Outcome Or(Outcome left, Outcome right)
 		=> (left, right) switch
 		{
-			(Outcome.Failure, Outcome.Failure) => Outcome.Failure,
 			(_, Outcome.Success) => Outcome.Success,
 			(Outcome.Success, _) => Outcome.Success,
+			(Outcome.Failure, Outcome.Failure) => Outcome.Failure,
+			(Outcome.Failure or Outcome.FailureBothWays, Outcome.Failure or Outcome.FailureBothWays)
+				=> Outcome.FailureBothWays,
 			(_, _) => Outcome.Undecided,
 		};
 }

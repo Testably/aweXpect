@@ -77,18 +77,20 @@ public static partial class ThatDateTime
 			Actual = actual;
 			if (minimum is null || maximum is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else if (!EqualityHelpers.AreKindCompatible(actual.Kind, minimum.Value.Kind))
 			{
 				// Comparing ticks across incompatible kinds proves nothing, so the negated check fails as well.
 				_incompatibleKind = minimum.Value.Kind;
 				IsIncomparable = true;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else if (!EqualityHelpers.AreKindCompatible(actual.Kind, maximum.Value.Kind))
 			{
 				_incompatibleKind = maximum.Value.Kind;
 				IsIncomparable = true;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else
 			{

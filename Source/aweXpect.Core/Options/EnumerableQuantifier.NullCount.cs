@@ -19,9 +19,6 @@ public abstract partial class EnumerableQuantifier
 
 	private sealed class NullCountQuantifier(string text, bool isOrderedAgainstNull) : EnumerableQuantifier
 	{
-		/// <inheritdoc />
-		public override bool FailsBothWays => isOrderedAgainstNull;
-
 		public override string ToString() => text;
 
 		/// <inheritdoc />
@@ -32,7 +29,7 @@ public abstract partial class EnumerableQuantifier
 
 		/// <inheritdoc />
 		public override Outcome GetOutcome(int matchingCount, int notMatchingCount, int? totalCount)
-			=> Outcome.Failure;
+			=> isOrderedAgainstNull ? Outcome.FailureBothWays : Outcome.Failure;
 
 		/// <inheritdoc />
 		public override void AppendResult(StringBuilder stringBuilder,

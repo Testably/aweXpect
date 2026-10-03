@@ -304,9 +304,10 @@ public sealed class OrNodeTests
 	}
 
 	[Theory]
-	[InlineData(Outcome.Success)]
-	[InlineData(Outcome.Failure)]
-	public async Task NegatedOutcome_WhenOperandStaysFailedUnderNegation_ShouldFail(Outcome other)
+	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Failure, Outcome.FailureBothWays)]
+	public async Task NegatedOutcome_WhenOperandStaysFailedUnderNegation_ShouldFail(Outcome other,
+		Outcome expectedOutcome)
 	{
 		OrNode node = new(new DummyNode("", () => new ConstraintResult.FromException(
 			new DummyConstraintResult(Outcome.Failure), new Exception("foo"), "it")));
@@ -315,7 +316,8 @@ public sealed class OrNodeTests
 		ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
 		result.Negate();
 
-		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.Outcome).IsEqualTo(expectedOutcome)
+			.Because("the negated other operand decides whether the negation could be answered");
 	}
 
 	[Fact]

@@ -11,27 +11,8 @@ internal static class ConstraintResultHelpers
 		=> isNegated ? constraintResult.Invert() : constraintResult;
 
 	/// <summary>
-	///     Checks if the <paramref name="constraintResult" /> fails its expectation and the negation alike, e.g. because
-	///     code of the caller threw, so that the expectation was not answered.
-	/// </summary>
-	/// <remarks>
-	///     The negation is undone afterwards, because the results of an item expectation are reused for every item.
-	/// </remarks>
-	public static bool FailsBothWays(this ConstraintResult constraintResult)
-	{
-		if (constraintResult.Outcome != Outcome.Failure)
-		{
-			return false;
-		}
-
-		bool isNegationFailed = constraintResult.Negate().Outcome == Outcome.Failure;
-		constraintResult.Negate();
-		return isNegationFailed;
-	}
-
-	/// <summary>
 	///     Appends the result of the item at the <paramref name="index" /> that decided a collection expectation,
-	///     because its <paramref name="itemResult" /> <see cref="FailsBothWays">fails both ways</see>.
+	///     because its <paramref name="itemResult" /> is <see cref="Outcome.FailureBothWays" />.
 	/// </summary>
 	/// <remarks>
 	///     The item result refers to the item as "it", so the item is named first.

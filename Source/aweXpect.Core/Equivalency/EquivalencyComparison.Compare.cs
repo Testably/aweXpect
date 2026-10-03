@@ -403,7 +403,7 @@ public static partial class EquivalencyComparison
 			return true;
 		}
 
-		if (result.Outcome != Outcome.Failure)
+		if (result.Outcome is not (Outcome.Failure or Outcome.FailureBothWays))
 		{
 			return null;
 		}

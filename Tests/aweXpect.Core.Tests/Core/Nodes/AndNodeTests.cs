@@ -255,7 +255,7 @@ public sealed class AndNodeTests
 	}
 
 	[Theory]
-	[InlineData(Outcome.Success, Outcome.Failure)]
+	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
 	[InlineData(Outcome.Failure, Outcome.Success)]
 	public async Task NegatedOutcome_WhenOperandStaysFailedUnderNegation_ShouldOnlySucceedIfOtherOperandSucceeds(
 		Outcome other, Outcome expectedOutcome)

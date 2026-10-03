@@ -205,21 +205,22 @@ public partial class ConstraintResultTests
 		}
 
 		[Fact]
-		public async Task WhenActualIsNull_ShouldHaveFailureOutcome()
+		public async Task WhenActualIsNull_ShouldHaveFailureBothWaysOutcome()
 		{
-			ConstraintResult sut = new MyWithNotNullValueDummy<int?>(null);
+			ConstraintResult sut = new MyWithNotNullValueDummy<int?>(null, outcome: Outcome.Success);
 
-			await That(sut.Outcome).IsEqualTo(Outcome.Failure);
+			await That(sut.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		}
 
 		[Fact]
-		public async Task WhenActualIsNull_WhenInverted_ShouldHaveFailureOutcome()
+		public async Task WhenActualIsNull_WhenInverted_ShouldHaveFailureBothWaysOutcome()
 		{
-			ConstraintResult sut = new MyWithNotNullValueDummy<int?>(null);
+			ConstraintResult sut = new MyWithNotNullValueDummy<int?>(null, outcome: Outcome.Success);
 
 			sut.Invert();
 
-			await That(sut.Outcome).IsEqualTo(Outcome.Failure);
+			await That(sut.Outcome).IsEqualTo(Outcome.FailureBothWays)
+				.Because("negating an expectation that cannot be answered does not make it true");
 		}
 
 		[Fact]

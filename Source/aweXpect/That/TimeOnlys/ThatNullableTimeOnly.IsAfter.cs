@@ -65,7 +65,7 @@ public static partial class ThatNullableTimeOnly
 			Actual = actual;
 			if (actual is null || expected is null)
 			{
-				Outcome = Outcome.Failure;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else
 			{

@@ -521,7 +521,7 @@ public partial class CollectionMatchOptions(
 		{
 			ConstraintResult result = await ItemExpectationBuilder.IsMetBy(value, _context, _cancellationToken);
 			IsUndecided |= result.Outcome == Outcome.Undecided;
-			if (result.FailsBothWays())
+			if (result.Outcome == Outcome.FailureBothWays)
 			{
 				throw new UnansweredItemException(result, value, index);
 			}

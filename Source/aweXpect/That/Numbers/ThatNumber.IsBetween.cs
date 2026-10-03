@@ -131,6 +131,12 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
+			if (IsIncomparable)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			Outcome = _options.IsInRange(actual, _minimum, _maximum) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -199,6 +205,12 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
+			if (IsIncomparable)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			Outcome = _options.IsInRange(actual, _minimum, _maximum) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -308,6 +320,12 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
+			if (IsIncomparable)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			Outcome = _options.IsInRange(actual, _minimum, _maximum) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -377,6 +395,12 @@ public static partial class ThatNumber
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
+			if (IsIncomparable)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			Outcome = _options.IsInRange(actual, _minimum, _maximum) ? Outcome.Success : Outcome.Failure;
 			return this;
 		}

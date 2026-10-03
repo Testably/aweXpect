@@ -259,8 +259,6 @@ internal class WhichNode<TSource, TMember> : Node
 		/// </summary>
 		private string? _negatedRightExpectation;
 
-		private bool _rightFailsAlsoWhenNegated;
-
 		public WhichConstraintResult(ConstraintResult left,
 			ConstraintResult right,
 			string separator,
@@ -293,11 +291,11 @@ internal class WhichNode<TSource, TMember> : Node
 		/// <inheritdoc />
 		/// <remarks>
 		///     Only one part explains the outcome. Under negation both parts were met, so the left part explains the
-		///     failure, unless the member failed in both cases.
+		///     failure, unless the member could not be answered.
 		/// </remarks>
 		protected override (bool Left, bool Right) GetExplainingParts()
 		{
-			if (IsNegated && _rightFailsAlsoWhenNegated)
+			if (IsNegated && Right.Outcome == Outcome.FailureBothWays)
 			{
 				return (false, true);
 			}
@@ -371,9 +369,7 @@ internal class WhichNode<TSource, TMember> : Node
 			IsNegated = !IsNegated;
 			Left = Left.Negate();
 			_negatedRightExpectation = IsNegated ? GetRightExpectation() : null;
-			Outcome rightOutcome = Right.Outcome;
 			Right = Right.Negate();
-			_rightFailsAlsoWhenNegated = rightOutcome == Outcome.Failure && Right.Outcome == Outcome.Failure;
 			Outcome = CombineOutcomes();
 			return this;
 		}

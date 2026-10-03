@@ -41,10 +41,24 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 	/// </summary>
 	protected CollectionMatchOptions MatchOptions => matchOptions;
 
-	public override Outcome Outcome
+	/// <summary>
+	///     The outcome for a <see langword="null" /> subject.
+	/// </summary>
+	/// <remarks>
+	///     An expectation that inspects the items, e.g. <c>Contains</c> or <c>IsContainedIn</c>, fails both ways without
+	///     items. Otherwise <see langword="null" /> is only equal to an expected <see langword="null" />.
+	/// </remarks>
+	protected Outcome NullSubjectOutcome
 	{
-		get => failsForNullSubject && Actual is null ? Outcome.Failure : base.Outcome;
-		protected set => base.Outcome = value;
+		get
+		{
+			if (failsForNullSubject)
+			{
+				return Outcome.FailureBothWays;
+			}
+
+			return IsExpectedNull ? Outcome.Success : Outcome.Failure;
+		}
 	}
 
 	/// <inheritdoc />
@@ -349,7 +363,7 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 
 		if (actual is null)
 		{
-			Outcome = IsExpectedNull ? Outcome.Success : Outcome.Failure;
+			Outcome = NullSubjectOutcome;
 			return Task.FromResult<ConstraintResult>(this);
 		}
 
@@ -478,7 +492,7 @@ internal sealed class IsEqualToFromExpectationsConstraint<TEnumerable, TItem, TM
 
 		if (actual is null)
 		{
-			Outcome = IsExpectedNull ? Outcome.Success : Outcome.Failure;
+			Outcome = NullSubjectOutcome;
 			return this;
 		}
 
@@ -569,7 +583,7 @@ internal sealed class IsEqualToFromPredicateConstraint<TEnumerable, TItem, TMatc
 
 		if (actual is null)
 		{
-			Outcome = IsExpectedNull ? Outcome.Success : Outcome.Failure;
+			Outcome = NullSubjectOutcome;
 			return Task.FromResult<ConstraintResult>(this);
 		}
 
@@ -605,7 +619,7 @@ internal sealed class AsyncIsEqualToConstraint<TItem, TMatch>(
 		Actual = actual;
 		if (actual is null)
 		{
-			Outcome = IsExpectedNull ? Outcome.Success : Outcome.Failure;
+			Outcome = NullSubjectOutcome;
 			return Task.FromResult<ConstraintResult>(this);
 		}
 
@@ -640,7 +654,7 @@ internal sealed class AsyncIsEqualToFromExpectationsConstraint<TItem, TMatch>(
 		Actual = actual;
 		if (actual is null)
 		{
-			Outcome = IsExpectedNull ? Outcome.Success : Outcome.Failure;
+			Outcome = NullSubjectOutcome;
 			return this;
 		}
 
@@ -675,7 +689,7 @@ internal sealed class AsyncIsEqualToFromPredicateConstraint<TItem, TMatch>(
 		Actual = actual;
 		if (actual is null)
 		{
-			Outcome = IsExpectedNull ? Outcome.Success : Outcome.Failure;
+			Outcome = NullSubjectOutcome;
 			return Task.FromResult<ConstraintResult>(this);
 		}
 
