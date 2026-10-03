@@ -18,7 +18,7 @@ namespace aweXpect;
 ///     number (<c>none start with …</c>, <c>at least one starts with …</c>). The negation can change this number, so
 ///     the negated text then comes from a second set of item expectations, which is only used for the text.
 /// </remarks>
-internal abstract class ComplyWithConstraint<TValue, TItem>
+internal abstract class ComplyWithConstraintBase<TValue, TItem>
 	: QuantifiedCollectionConstraintBase<TValue, TItem>,
 		IExpectationTextConstraint
 {
@@ -30,7 +30,7 @@ internal abstract class ComplyWithConstraint<TValue, TItem>
 	private ConstraintResult? _unansweredItem;
 	private int _unansweredItemIndex;
 
-	protected ComplyWithConstraint(string it, ExpectationGrammars grammars, EnumerableQuantifier quantifier,
+	protected ComplyWithConstraintBase(string it, ExpectationGrammars grammars, EnumerableQuantifier quantifier,
 		Action<IThatSubject<TItem>> expectations)
 		: base(it, grammars, quantifier)
 	{

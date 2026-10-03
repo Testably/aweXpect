@@ -51,7 +51,7 @@ public static partial class ThatAsyncEnumerable
 		ExpectationGrammars grammars,
 		EnumerableQuantifier quantifier,
 		Action<IThatSubject<TItem>> expectations)
-		: ComplyWithConstraint<IAsyncEnumerable<TItem>?, TItem>(it, grammars, quantifier,
+		: ComplyWithConstraintBase<IAsyncEnumerable<TItem>?, TItem>(it, grammars, quantifier,
 				expectations),
 			IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	{
