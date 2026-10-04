@@ -48,6 +48,7 @@ public class Quantifier
 	/// <summary>
 	///     Verifies that it occurs at least <paramref name="minimum" /> times.
 	/// </summary>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="minimum" /> is negative.</exception>
 	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
 	public void AtLeast(int minimum)
 		=> Set(CountBounds.AtLeast(minimum), nameof(AtLeast));
@@ -55,6 +56,7 @@ public class Quantifier
 	/// <summary>
 	///     Verifies that it occurs at most <paramref name="maximum" /> times.
 	/// </summary>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="maximum" /> is negative.</exception>
 	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
 	public void AtMost(int maximum)
 		=> Set(CountBounds.AtMost(maximum), nameof(AtMost));
@@ -62,6 +64,10 @@ public class Quantifier
 	/// <summary>
 	///     Verifies that it occurs between <paramref name="minimum" /> and <paramref name="maximum" /> times.
 	/// </summary>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///     The <paramref name="minimum" /> or the <paramref name="maximum" /> is negative, or the
+	///     <paramref name="maximum" /> is less than the <paramref name="minimum" />.
+	/// </exception>
 	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
 	public void Between(int minimum, int maximum)
 		=> Set(CountBounds.Between(minimum, maximum), nameof(Between));
@@ -69,6 +75,7 @@ public class Quantifier
 	/// <summary>
 	///     Verifies that it occurs fewer than <paramref name="maximum" /> times.
 	/// </summary>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="maximum" /> is not positive.</exception>
 	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
 	public void LessThan(int maximum)
 		=> Set(CountBounds.LessThan(maximum), nameof(LessThan));
@@ -76,6 +83,9 @@ public class Quantifier
 	/// <summary>
 	///     Verifies that it occurs more than <paramref name="minimum" /> times.
 	/// </summary>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///     The <paramref name="minimum" /> is negative or <see cref="int.MaxValue" />.
+	/// </exception>
 	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
 	public void MoreThan(int minimum)
 		=> Set(CountBounds.MoreThan(minimum), nameof(MoreThan));
@@ -95,6 +105,7 @@ public class Quantifier
 	/// <summary>
 	///     Verifies that it occurs exactly <paramref name="expected" /> times.
 	/// </summary>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="expected" /> is negative.</exception>
 	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
 	public void Exactly(int expected)
 		=> Exactly(expected, nameof(Exactly));

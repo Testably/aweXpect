@@ -93,7 +93,7 @@ public static partial class ThatGeneric
 		{
 			Actual = actual;
 			Outcome outcome =
-				await options.CheckRepeatedly(_ => Task.FromResult(IsMet(actual, cancellationToken)), context);
+				await options.CheckRepeatedly(_ => new ValueTask<bool>(IsMet(actual, cancellationToken)), context);
 			if (outcome == Outcome.Undecided)
 			{
 				Outcome = Outcome.Undecided;

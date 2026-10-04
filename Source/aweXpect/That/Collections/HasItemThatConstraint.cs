@@ -46,7 +46,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> :
 	public override Exception? FailureCause => _unansweredItem?.FailureCause;
 
 	/// <inheritdoc cref="IExpectationTextConstraint.GetExpectationResult(IEvaluationContext, CancellationToken)" />
-	public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+	public async ValueTask<ConstraintResult> GetExpectationResult(IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);

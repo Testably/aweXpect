@@ -708,7 +708,7 @@ private sealed class AreTracksThatConstraint
         return this;
     }
 
-    public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+    public async ValueTask<ConstraintResult> GetExpectationResult(IEvaluationContext context,
         CancellationToken cancellationToken)
     {
         await _itemExpectations.PrepareExpectation(context, cancellationToken);
@@ -822,7 +822,7 @@ private sealed class IsPlayingConstraint(
             {
                 bool isPlaying = actual.IsPlaying;
                 Outcome = isPlaying ? Outcome.Success : Outcome.Failure;
-                return Task.FromResult(isPlaying != IsNegated);
+                return new ValueTask<bool>(isPlaying != IsNegated);
             }, context);
             if (outcome == Outcome.Undecided)
             {

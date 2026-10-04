@@ -425,7 +425,7 @@ was added when the expectation was built belongs to the constraint it describes.
 adds their contexts with `contexts.Visit(…)`. As the builder is no longer needed for contexts,
 `QuantifiedCollectionConstraint<TValue, TItem>` and `QuantifiedCollectionConstraintBase<TValue, TItem>` no longer take an
 `ExpectationBuilder`, and `ManualExpectationBuilder<TValue>` is sealed and no longer takes an inner builder to forward
-contexts to. `ExpectationBuilder.ForWhich(…)` takes a `contextMember` that labels the contexts of the member.
+contexts to. The synchronous `ExpectationBuilder.ForWhich(…)` takes a `contextMember` that labels the contexts of the member.
 
 `Outcome` has the new value `FailureBothWays` for a result that fails the expectation and its negation alike, e.g.
 for a `null` subject or when code of the caller threw. Code that checks for a failed expectation checks for
@@ -440,6 +440,9 @@ of a `Task<ConstraintResult>`, so that a constraint that completes synchronously
 type of an own implementation, and return `new ValueTask<ConstraintResult>(result)` instead of `Task.FromResult(result)`.
 `ManualExpectationBuilder<TValue>.IsMetBy` and `EquivalencyExpectationBuilder.IsMetBy` also return a
 `ValueTask<ConstraintResult>`: await it only once, or call `AsTask()` to keep it.
+`IExpectationTextConstraint.GetExpectationResult` returns a `ValueTask<ConstraintResult>` as well, and
+`RepeatedCheckOptions.CheckRepeatedly` takes a check that returns a `ValueTask<bool>` and returns a `ValueTask<Outcome>`.
+Members of the subject, as in `ExpectationBuilder.ForAsyncMember(…)` and the asynchronous `ForWhich(…)`, stay a `Task`.
 Awaiting an expectation result uses a `ValueTaskAwaiter<T>`, which needs no change to `await`, but code compiled
 against an earlier version has to be rebuilt.
 

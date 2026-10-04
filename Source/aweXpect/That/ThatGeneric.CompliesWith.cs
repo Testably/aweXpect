@@ -114,7 +114,7 @@ public static partial class ThatGeneric
 		private static ConstraintResult KeepSubjectAsValue(ConstraintResult result, T actual)
 			=> result.TryGetStoredValue(out T? _) ? result : result.UseValue(actual);
 
-		public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+		public async ValueTask<ConstraintResult> GetExpectationResult(IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			RevertPreviousNegation();

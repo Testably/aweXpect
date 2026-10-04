@@ -14,9 +14,9 @@ internal sealed class ExpectationTextConstraint<T>(string expectation, string ne
 	public ConstraintResult IsMetBy(T actual)
 		=> throw new InvalidOperationException("The constraint must not be evaluated.");
 
-	public Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+	public ValueTask<ConstraintResult> GetExpectationResult(IEvaluationContext context,
 		CancellationToken cancellationToken)
-		=> Task.FromResult<ConstraintResult>(
+		=> new(
 			new ConstraintResult.ExpectationOnly<T>(ExpectationGrammars.None, expectation, negatedExpectation));
 
 	public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)

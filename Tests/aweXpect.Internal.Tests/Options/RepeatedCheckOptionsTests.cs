@@ -42,13 +42,14 @@ public class RepeatedCheckOptionsTests
 		RepeatedCheckOptions sut = new();
 		sut.Within(Timeout.InfiniteTimeSpan);
 		bool isMet = false;
-		Task<Outcome> result;
+		ValueTask<Outcome> result;
 		using (((IAwexpectCustomization)Customize.aweXpect).Set("aweXpect.Settings.DefaultCheckInterval",
 			       TimeSpan.Zero))
 		{
 			await That(sut.Interval).IsEqualTo(TimeSpan.Zero)
 				.Because("the interval must be stored under the key that the setting reads");
-			result = sut.CheckRepeatedly(_ => Task.FromResult(Volatile.Read(ref isMet)), new NoEvaluationContext());
+			result = sut.CheckRepeatedly(_ => new ValueTask<bool>(Volatile.Read(ref isMet)),
+				new NoEvaluationContext());
 		}
 
 		bool isCompletedSynchronously = result.IsCompleted;
