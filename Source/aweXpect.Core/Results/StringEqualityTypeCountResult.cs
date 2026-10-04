@@ -1,23 +1,30 @@
-﻿using System.Text.RegularExpressions;
-using aweXpect.Core;
+﻿using aweXpect.Core;
 using aweXpect.Options;
 
 namespace aweXpect.Results;
 
-#pragma warning disable S110 // The result hierarchy is intentionally deep, so that each continuation inherits the complete vocabulary of its base
 /// <summary>
-///     Allows specifying the equality type for the string equality check.
+///     The result for verifying how often a <see langword="string" /> occurs, which in addition to the options of a
+///     <see cref="StringCountResult{TType,TThat}" /> allows specifying the match type, e.g. via
+///     <see cref="StringEqualityOptionsExtensions.AsWildcard{TResult}(TResult)" />.
 /// </summary>
 public class StringEqualityTypeCountResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
 	Quantifier quantifier,
 	StringEqualityOptions options)
-	: StringCountResult<TType, TThat>(expectationBuilder, returnValue, quantifier, options)
+	: AndOrResult<TType, TThat, StringEqualityTypeCountResult<TType, TThat>>(expectationBuilder, returnValue),
+		IOptionsProvider<Quantifier>,
+		IOptionsProvider<StringEqualityOptions>,
+		IStringMatchTypeOptions
 {
-	private readonly StringEqualityOptions _options = options;
-	private readonly Quantifier _quantifier = quantifier;
 	private readonly TThat _returnValue = returnValue;
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
 
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as a block of lines, which may be indented as a whole.
@@ -29,56 +36,12 @@ public class StringEqualityTypeCountResult<TType, TThat>(
 	///     The newline style is always ignored, and a single trailing line terminator does not start a new line,
 	///     so <c>"a\nb\n"</c> has the same two lines as <c>"a\nb"</c>.
 	/// </remarks>
+	/// <exception cref="System.InvalidOperationException">
+	///     A match type or an option that changes the lines, e.g. the indentation, is already specified.
+	/// </exception>
 	public StringBlockCountResult<TType, TThat> AsBlock()
 	{
-		_options.AsBlock();
-		return new StringBlockCountResult<TType, TThat>(ExpectationBuilder, _returnValue, _quantifier, _options);
-	}
-
-	/// <summary>
-	///     Interprets the expected <see langword="string" /> as a prefix, so that the actual value starts with it.
-	/// </summary>
-	public StringCountResult<TType, TThat> AsPrefix()
-	{
-		_options.AsPrefix();
-		return this;
-	}
-
-	/// <summary>
-	///     Interprets the expected <see langword="string" /> as <see cref="Regex" /> pattern.
-	/// </summary>
-	public StringCountResult<TType, TThat> AsRegex()
-	{
-		_options.AsRegex();
-		return this;
-	}
-
-	/// <summary>
-	///     Interprets the expected <see langword="string" /> as <see cref="Regex" /> pattern,
-	///     applying the given <paramref name="regexOptions" />.
-	/// </summary>
-	public StringCountResult<TType, TThat> AsRegex(RegexOptions regexOptions)
-	{
-		_options.AsRegex(regexOptions);
-		return this;
-	}
-
-	/// <summary>
-	///     Interprets the expected <see langword="string" /> as a suffix, so that the actual value ends with it.
-	/// </summary>
-	public StringCountResult<TType, TThat> AsSuffix()
-	{
-		_options.AsSuffix();
-		return this;
-	}
-
-	/// <summary>
-	///     Interprets the expected <see langword="string" /> as wildcard pattern.<br />
-	///     Supports * to match zero or more characters and ? to match exactly one character.
-	/// </summary>
-	public StringCountResult<TType, TThat> AsWildcard()
-	{
-		_options.AsWildcard();
-		return this;
+		options.AsBlock();
+		return new StringBlockCountResult<TType, TThat>(ExpectationBuilder, _returnValue, quantifier, options);
 	}
 }

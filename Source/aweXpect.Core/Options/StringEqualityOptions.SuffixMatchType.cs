@@ -14,9 +14,10 @@ public partial class StringEqualityOptions
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> to be a suffix for the actual string.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A match type is already specified.</exception>
 	public StringEqualityOptions AsSuffix()
 	{
-		_matchType = SuffixMatch;
+		SetMatchType(SuffixMatch, nameof(AsSuffix));
 		return this;
 	}
 

@@ -3,34 +3,29 @@ using aweXpect.Options;
 
 namespace aweXpect.Results;
 
-#pragma warning disable S110 // The result hierarchy is intentionally deep, so that each continuation inherits the complete vocabulary of its base
 /// <summary>
-///     The result for verifying that a string collection contains or is contained in another collection.
+///     The result for verifying that a string collection contains or is contained in another collection, optionally
+///     properly.
 /// </summary>
 /// <remarks>
-///     <seealso cref="StringCollectionContainmentResult{TType,TThat}" />
+///     The options are specified via <see cref="CollectionMatchOptionsExtensions" /> and
+///     <see cref="StringEqualityOptionsExtensions" />.
 /// </remarks>
 public class StringProperCollectionMatchResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
 	StringEqualityOptions options,
-	CollectionMatchOptions collectionMatchOptions,
-	CollectionMatchOptions.EquivalenceRelations properEquivalenceRelation)
-	: StringCollectionContainmentResult<TType, TThat>(expectationBuilder, returnValue, options,
-		collectionMatchOptions)
+	CollectionMatchOptions collectionMatchOptions)
+	: AndOrResult<TType, TThat, StringProperCollectionMatchResult<TType, TThat>>(expectationBuilder, returnValue),
+		IOptionsProvider<CollectionMatchOptions>,
+		IOptionsProvider<StringEqualityOptions>,
+		IStringMatchTypeOptions,
+		ICollectionContainmentOptions,
+		IProperContainmentOptions
 {
-	private readonly CollectionMatchOptions _collectionMatchOptions = collectionMatchOptions;
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	CollectionMatchOptions IOptionsProvider<CollectionMatchOptions>.Options => collectionMatchOptions;
 
-	/// <summary>
-	///     Verifies that the two collections differ by at least one additional item.
-	/// </summary>
-	/// <remarks>
-	///     This means that the expected collection is a proper subset of the subject for <c>Contains</c> and a proper
-	///     superset for <c>IsContainedIn</c>.
-	/// </remarks>
-	public StringCollectionContainmentResult<TType, TThat> Properly()
-	{
-		_collectionMatchOptions.SetEquivalenceRelation(properEquivalenceRelation);
-		return this;
-	}
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
 }

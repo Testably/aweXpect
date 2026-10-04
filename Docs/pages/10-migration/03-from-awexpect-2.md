@@ -98,6 +98,18 @@ message. Such a combination now throws an `InvalidOperationException` at the cal
 Pass a case-insensitive comparer instead of combining it with `IgnoringCase()`, and express the casing of a pattern
 with `IgnoringCase()` alone.
 
+## Options in any order, each option once
+
+Options can be chained in any order, e.g. `IsEqualTo("A*").IgnoringCase().AsWildcard()`. Every option can be specified
+only once, and options that would replace each other, e.g. `AtLeast(2).AtMost(5)` or two match types, throw an
+`InvalidOperationException` at the call instead of silently keeping the later one; write a range as
+`Between(2).And(5)`. `HasItem(…).AtIndex(1).FromEnd()` becomes `HasItem(…).AtIndexFromEnd(1)`.
+
+The option methods are extension methods in the `aweXpect` namespace, and the result classes with a `TSelf` type
+parameter, e.g. `CountResult<TType, TThat, TSelf>`, are gone. A result of your own derives from
+`AndOrResult<TType, TThat, TSelf>` and implements `IOptionsProvider<TOptions>` for the options it offers, see
+[Options](../11-extending/02-constraints-and-results.md#options).
+
 ## String patterns
 
 A wildcard pattern has to match the complete subject. v2 anchored it to a single line, so

@@ -98,7 +98,7 @@ public static partial class ThatSignaler
 	///     Verifies that the expected callback was not signaled.
 	/// </summary>
 	/// <remarks>
-	///     The expectation waits for the full timeout from <see cref="DidNotSignalResult.Within(TimeSpan)" /> before
+	///     The expectation waits for the full timeout from <see cref="SignalerOptionsExtensions.Within{TResult}(TResult, TimeSpan)" /> before
 	///     it can succeed, and fails as soon as the callback is signaled. Without a timeout, it waits for the
 	///     <see cref="Customization.AwexpectCustomization.SettingsCustomization.DefaultSignalerTimeout" />, which
 	///     is 30 seconds unless customized. Canceling the evaluation ends the wait early and leaves the expectation
@@ -123,7 +123,7 @@ public static partial class ThatSignaler
 	/// </summary>
 	/// <remarks>
 	///     The expectation waits for the full timeout from
-	///     <see cref="DidNotSignalResult{TParameter}.Within(TimeSpan)" /> before it can succeed, and fails as soon as a
+	///     <see cref="SignalerOptionsExtensions.Within{TResult}(TResult, TimeSpan)" /> before it can succeed, and fails as soon as a
 	///     matching signal is received. Without a timeout, it waits for the
 	///     <see cref="Customization.AwexpectCustomization.SettingsCustomization.DefaultSignalerTimeout" />, which
 	///     is 30 seconds unless customized. Canceling the evaluation ends the wait early and leaves the expectation
@@ -147,7 +147,7 @@ public static partial class ThatSignaler
 	///     Verifies that the expected callback was signaled fewer than <paramref name="times" /> times.
 	/// </summary>
 	/// <remarks>
-	///     The expectation waits for the full timeout from <see cref="DidNotSignalResult.Within(TimeSpan)" /> before
+	///     The expectation waits for the full timeout from <see cref="SignalerOptionsExtensions.Within{TResult}(TResult, TimeSpan)" /> before
 	///     it can succeed, and fails as soon as the callback was signaled the given number of
 	///     <paramref name="times" />. Without a timeout, it waits for the
 	///     <see cref="Customization.AwexpectCustomization.SettingsCustomization.DefaultSignalerTimeout" />, which
@@ -177,7 +177,7 @@ public static partial class ThatSignaler
 	/// </summary>
 	/// <remarks>
 	///     The expectation waits for the full timeout from
-	///     <see cref="DidNotSignalResult{TParameter}.Within(TimeSpan)" /> before it can succeed, and fails as soon as
+	///     <see cref="SignalerOptionsExtensions.Within{TResult}(TResult, TimeSpan)" /> before it can succeed, and fails as soon as
 	///     the callback was signaled with a matching parameter the given number of <paramref name="times" />. Without a
 	///     timeout, it waits for the
 	///     <see cref="Customization.AwexpectCustomization.SettingsCustomization.DefaultSignalerTimeout" />, which

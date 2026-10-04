@@ -1,14 +1,12 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using aweXpect.Core;
-using aweXpect.Helpers;
+﻿using aweXpect.Core;
 using aweXpect.Options;
 using aweXpect.Signaling;
 
 namespace aweXpect.Results;
 
 /// <summary>
-///     The result for the absence of a signal, which allows specifying the timeout.
+///     The result for the absence of a signal, which allows specifying the timeout via
+///     <see cref="SignalerOptionsExtensions" />.
 /// </summary>
 /// <remarks>
 ///     Absence is not an occurrence, so this result intentionally carries no quantifiers: use
@@ -18,32 +16,16 @@ public class DidNotSignalResult(
 	ExpectationBuilder expectationBuilder,
 	IThat<Signaler> returnValue,
 	SignalerOptions options)
-	: AndOrResult<SignalerResult, IThat<Signaler>>(expectationBuilder, returnValue),
+	: AndOrResult<SignalerResult, IThat<Signaler>, DidNotSignalResult>(expectationBuilder, returnValue),
 		IOptionsProvider<SignalerOptions>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	SignalerOptions IOptionsProvider<SignalerOptions>.Options => options;
-
-	/// <summary>
-	///     Specifies a timeout for waiting on the callback.
-	/// </summary>
-	/// <remarks>
-	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
-	/// </remarks>
-	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
-	public DidNotSignalResult Within(TimeSpan timeout)
-	{
-		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(options.Timeout is not null, nameof(Within));
-		options.Timeout = timeout;
-		return this;
-	}
 }
 
 /// <summary>
 ///     The result for the absence of a signal with <typeparamref name="TParameter" />, which allows specifying the
-///     timeout.
+///     timeout and filtering the signals by their parameter via <see cref="SignalerOptionsExtensions" />.
 /// </summary>
 /// <remarks>
 ///     Absence is not an occurrence, so this result intentionally carries no quantifiers: use
@@ -53,38 +35,10 @@ public class DidNotSignalResult<TParameter>(
 	ExpectationBuilder expectationBuilder,
 	IThat<Signaler<TParameter>> returnValue,
 	SignalerOptions<TParameter> options)
-	: AndOrResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>>>(expectationBuilder, returnValue),
-		IOptionsProvider<SignalerOptions>
+	: AndOrResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>>, DidNotSignalResult<TParameter>>(
+			expectationBuilder, returnValue),
+		ISignalerResult<DidNotSignalResult<TParameter>, TParameter>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	SignalerOptions IOptionsProvider<SignalerOptions>.Options => options;
-
-	/// <summary>
-	///     Specifies a timeout for waiting on the callback.
-	/// </summary>
-	/// <remarks>
-	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
-	/// </remarks>
-	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
-	public DidNotSignalResult<TParameter> Within(TimeSpan timeout)
-	{
-		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(options.Timeout is not null, nameof(Within));
-		options.Timeout = timeout;
-		return this;
-	}
-
-	/// <summary>
-	///     Specifies a predicate to filter for signals with a matching parameter.
-	/// </summary>
-	public DidNotSignalResult<TParameter> With(
-		Func<TParameter, bool> predicate,
-		[CallerArgumentExpression("predicate")]
-		string doNotPopulateThisValue = "")
-	{
-		predicate.ThrowIfNull();
-		options.WithPredicate(predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
-		return this;
-	}
+	SignalerOptions<TParameter> IOptionsProvider<SignalerOptions<TParameter>>.Options => options;
 }

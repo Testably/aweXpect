@@ -207,7 +207,7 @@ You can verify that the collection contains an item that satisfies the expectati
 IEnumerable<string> songs = ["Two of Us", "Dig a Pony", "Across the Universe", "I Me Mine"];
 
 await Expect.That(songs).HasItem("Dig a Pony").AtIndex(1); // at the zero-based index 1
-await Expect.That(songs).HasItem("Across the Universe").AtIndex(1).FromEnd(); // at the zero-based index 1 from end
+await Expect.That(songs).HasItem("Across the Universe").AtIndexFromEnd(1); // at the zero-based index 1 from end
 await Expect.That(songs).HasItem(it => it.StartsWith("I Me")); // at any index
 ```
 

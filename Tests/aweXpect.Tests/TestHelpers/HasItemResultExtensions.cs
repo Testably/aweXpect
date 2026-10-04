@@ -1,15 +1,14 @@
 ﻿using aweXpect.Core;
 using aweXpect.Options;
-using aweXpect.Results;
 
 namespace aweXpect.Tests;
 
 public static class HasItemResultExtensions
 {
-	public static AndOrResult<TCollection, IThat<TCollection?>> WithInvalidMatch<TCollection>(
-		this HasItemResult<TCollection> hasItemResult)
+	public static TResult WithInvalidMatch<TResult>(this TResult hasItemResult)
+		where TResult : IOptionsProvider<CollectionIndexOptions>
 	{
-		(hasItemResult as IOptionsProvider<CollectionIndexOptions>).Options.SetMatch(new InvalidMatch());
+		hasItemResult.Options.SetMatch(new InvalidMatch());
 		return hasItemResult;
 	}
 

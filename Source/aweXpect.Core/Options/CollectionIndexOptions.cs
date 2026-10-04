@@ -1,5 +1,6 @@
 using System;
 using aweXpect.Core;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
@@ -9,6 +10,7 @@ namespace aweXpect.Options;
 public class CollectionIndexOptions
 {
 	private static readonly IMatch DefaultMatch = new AlwaysMatch();
+	private string? _indexOption;
 
 	/// <summary>
 	///     The object used to check if an index is a match.
@@ -20,6 +22,95 @@ public class CollectionIndexOptions
 	/// </summary>
 	public void SetMatch(IMatch match)
 		=> Match = match;
+
+	/// <summary>
+	///     Only matches the item at the given zero-based <paramref name="index" />.
+	/// </summary>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
+	/// <exception cref="InvalidOperationException">An index is already specified.</exception>
+	public void AtIndex(int index)
+		=> SetIndex(new AtIndexMatch(index), nameof(AtIndex));
+
+	/// <summary>
+	///     Only matches the item at the given zero-based <paramref name="index" />, counted from the end of the
+	///     collection.
+	/// </summary>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="index" /> is negative.</exception>
+	/// <exception cref="InvalidOperationException">An index is already specified.</exception>
+	public void AtIndexFromEnd(int index)
+		=> SetIndex(new AtIndexMatch(index).FromEnd(), nameof(AtIndexFromEnd));
+
+	private void SetIndex(IMatch match, string option)
+	{
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_indexOption, option);
+		_indexOption = option;
+		Match = match;
+	}
+
+	private sealed class AtIndexMatch : IMatchFromBeginning
+	{
+		private readonly int _index;
+
+		public AtIndexMatch(int index)
+		{
+			if (index < 0)
+			{
+				// ReSharper disable once LocalizableElement
+				throw Tracing.WriteException(
+					new ArgumentOutOfRangeException(nameof(index), "The index must not be negative."));
+			}
+
+			_index = index;
+		}
+
+		/// <inheritdoc cref="CollectionIndexOptions.IMatch.GetDescription()" />
+		public string GetDescription() => $" at index {_index}";
+
+		/// <inheritdoc cref="CollectionIndexOptions.IMatch.OnlySingleIndex()" />
+		public bool OnlySingleIndex() => true;
+
+		/// <inheritdoc cref="CollectionIndexOptions.IMatchFromBeginning.MatchesIndex(int)" />
+		public bool? MatchesIndex(int index)
+		{
+			if (index < _index)
+			{
+				return null;
+			}
+
+			return index == _index;
+		}
+
+		/// <inheritdoc cref="CollectionIndexOptions.IMatchFromBeginning.FromEnd()" />
+		public IMatchFromEnd FromEnd() => new AtIndexMatchFromEnd(this);
+
+		private sealed class AtIndexMatchFromEnd(AtIndexMatch inner) : IMatchFromEnd
+		{
+			/// <inheritdoc cref="CollectionIndexOptions.IMatch.GetDescription()" />
+			public string GetDescription()
+				=> inner.GetDescription() + " from end";
+
+			/// <inheritdoc cref="CollectionIndexOptions.IMatch.OnlySingleIndex()" />
+			public bool OnlySingleIndex()
+				=> inner.OnlySingleIndex();
+
+			/// <inheritdoc cref="CollectionIndexOptions.IMatchFromEnd.MatchesIndex(int, int?)" />
+			public bool? MatchesIndex(int index, int? count)
+			{
+				if (count is null)
+				{
+					return null;
+				}
+
+				int expected = count.Value - inner._index - 1;
+				if (index < expected)
+				{
+					return null;
+				}
+
+				return index == expected;
+			}
+		}
+	}
 
 	private sealed class AlwaysMatch : IMatchFromBeginning
 	{

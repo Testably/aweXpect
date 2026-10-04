@@ -24,7 +24,8 @@ public sealed class ExtensibilityTests
 	[InlineData("aweXpect.Options.RepeatedCheckOptions")]
 	[InlineData("aweXpect.Results.RepeatedCheckResult`2")]
 	[InlineData("aweXpect.Results.ObjectCountResult`3")]
-	[InlineData("aweXpect.Results.ObjectCountResult`4")]
+	[InlineData("aweXpect.QuantifierExtensions")]
+	[InlineData("aweXpect.ObjectEqualityOptionsExtensions")]
 	public async Task TypesForExtensions_ShouldBeDeclaredInCore(string typeName)
 	{
 		Type? type = typeof(ExpectationBuilder).Assembly.GetType(typeName);

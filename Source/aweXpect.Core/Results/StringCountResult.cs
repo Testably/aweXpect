@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using aweXpect.Core;
+﻿using aweXpect.Core;
 using aweXpect.Options;
 
 namespace aweXpect.Results;
@@ -9,104 +8,21 @@ namespace aweXpect.Results;
 ///     of a string collection, with options for the string comparison.
 /// </summary>
 /// <remarks>
-///     <seealso cref="CountResult{TType,TThat,TSelf}" />
+///     The options are specified via <see cref="QuantifierExtensions" /> and
+///     <see cref="StringEqualityOptionsExtensions" />.
 /// </remarks>
 public class StringCountResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
 	Quantifier quantifier,
 	StringEqualityOptions options)
-	: StringCountResult<TType, TThat,
-		StringCountResult<TType, TThat>>(
-		expectationBuilder,
-		returnValue,
-		quantifier,
-		options);
-
-/// <summary>
-///     The result for verifying how often a <see langword="string" /> occurs, as a substring of a string or as an item
-///     of a string collection, with options for the string comparison.
-/// </summary>
-/// <remarks>
-///     <seealso cref="CountResult{TType,TThat,TSelf}" />
-/// </remarks>
-public class StringCountResult<TType, TThat, TSelf>(
-	ExpectationBuilder expectationBuilder,
-	TThat returnValue,
-	Quantifier quantifier,
-	StringEqualityOptions options)
-	: CountResult<TType, TThat, TSelf>(expectationBuilder, returnValue, quantifier),
+	: AndOrResult<TType, TThat, StringCountResult<TType, TThat>>(expectationBuilder, returnValue),
+		IOptionsProvider<Quantifier>,
 		IOptionsProvider<StringEqualityOptions>
-	where TSelf : StringCountResult<TType, TThat, TSelf>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
-
-	/// <summary>
-	///     Ignores casing when comparing the <see langword="string" />s.
-	/// </summary>
-	public TSelf IgnoringCase(bool ignoreCase = true)
-	{
-		options.IgnoringCase(ignoreCase);
-		return (TSelf)this;
-	}
-
-	/// <summary>
-	///     Ignores the indentation when comparing <see langword="string" />s,
-	///     according to the <paramref name="ignoreIndentation" /> parameter.
-	/// </summary>
-	/// <remarks>
-	///     Enabling this option will remove the leading whitespace from every line and replace all occurrences of
-	///     <c>\r\n</c> and <c>\r</c> with <c>\n</c> in the strings before comparing them, which makes
-	///     <see cref="IgnoringNewlineStyle(bool)" /> redundant.<br />
-	///     Any Unicode whitespace counts as indentation, e.g. also a non-breaking space.
-	/// </remarks>
-	public TSelf IgnoringIndentation(bool ignoreIndentation = true)
-	{
-		options.IgnoringIndentation(ignoreIndentation);
-		return (TSelf)this;
-	}
-
-	/// <summary>
-	///     Ignores the newline style when comparing <see langword="string" />s.
-	/// </summary>
-	/// <remarks>
-	///     Enabling this option will replace all occurrences of <c>\r\n</c> and <c>\r</c> with <c>\n</c> in the strings before
-	///     comparing them.
-	/// </remarks>
-	public TSelf IgnoringNewlineStyle(bool ignoreNewlineStyle = true)
-	{
-		options.IgnoringNewlineStyle(ignoreNewlineStyle);
-		return (TSelf)this;
-	}
-
-	/// <summary>
-	///     Ignores leading whitespace when comparing <see langword="string" />s,
-	///     according to the <paramref name="ignoreLeadingWhiteSpace" /> parameter.
-	/// </summary>
-	public TSelf IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true)
-	{
-		options.IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace);
-		return (TSelf)this;
-	}
-
-	/// <summary>
-	///     Ignores trailing whitespace when comparing <see langword="string" />s,
-	///     according to the <paramref name="ignoreTrailingWhiteSpace" /> parameter.
-	/// </summary>
-	public TSelf IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true)
-	{
-		options.IgnoringTrailingWhiteSpace(ignoreTrailingWhiteSpace);
-		return (TSelf)this;
-	}
-
-	/// <summary>
-	///     Uses the provided <paramref name="comparer" /> for comparing <see langword="string" />s.
-	/// </summary>
-	public TSelf Using(
-		IEqualityComparer<string> comparer)
-	{
-		options.Using(comparer);
-		return (TSelf)this;
-	}
 }

@@ -8,18 +8,20 @@ namespace aweXpect.Results;
 ///     The result for verifying that a collection has an item that matches a block of lines, optionally at a given index.
 /// </summary>
 /// <remarks>
-///     <seealso cref="StringBlockCountResult{TType,TThat}" />
+///     A block compares the lines on its own, so of the string options only the casing and a comparer can be
+///     specified; the index is specified via <see cref="CollectionIndexOptionsExtensions" />.
 /// </remarks>
 public class StringBlockHasItemResult<TCollection>(
 	ExpectationBuilder expectationBuilder,
 	IThat<TCollection?> collection,
 	CollectionIndexOptions collectionIndexOptions,
 	StringEqualityOptions options)
-	: HasItemResult<TCollection>(expectationBuilder, collection, collectionIndexOptions),
-		IOptionsProvider<StringEqualityOptions>
+	: AndOrResult<TCollection, IThat<TCollection?>, StringBlockHasItemResult<TCollection>>(expectationBuilder,
+			collection),
+		IOptionsProvider<CollectionIndexOptions>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
+	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
 
 	/// <summary>
 	///     Ignores casing when comparing the <see langword="string" />s.

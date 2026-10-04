@@ -119,6 +119,35 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("the casing is part of the parsed pattern");
 		}
 
+		[Theory]
+		[InlineData(nameof(StringEqualityOptions.IgnoringIndentation))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
+		public async Task AsBlock_WhenALineOptionIsSpecified_ShouldThrowInvalidOperationException(string option)
+		{
+			StringEqualityOptions sut = new("expected");
+			Change(sut, option, false);
+
+			void Act() => sut.AsBlock();
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage($"AsBlock cannot be combined with {option}.")
+				.Because("a block compares the lines on its own, and any explicit call counts as specified");
+		}
+
+		[Fact]
+		public async Task AsBlock_WhenAnotherMatchTypeIsSpecified_ShouldThrowInvalidOperationException()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsPrefix();
+
+			void Act() => sut.AsBlock();
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("AsBlock cannot be combined with AsPrefix.");
+		}
+
 		[Fact]
 		public async Task AsRegex_WhenAComparerIsUsed_ShouldThrowInvalidOperationException()
 		{
@@ -191,10 +220,9 @@ public sealed partial class StringEqualityOptionsTests
 		[InlineData(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
 		[InlineData(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
 		[InlineData(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
-		public async Task ComparesByOrdinalEquality_WhenTheOptionIsReset_ShouldBeTrue(string option)
+		public async Task ComparesByOrdinalEquality_WhenTheOptionIsDisabled_ShouldBeTrue(string option)
 		{
 			StringEqualityOptions sut = new("expected");
-			Change(sut, option, true);
 			Change(sut, option, false);
 
 			await That(sut.ComparesByOrdinalEquality).IsTrue();
@@ -485,6 +513,58 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("resetting the flag keeps the comparer as the only relevant option");
 		}
 
+		[Theory]
+		[InlineData(nameof(StringEqualityOptions.IgnoringIndentation))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
+		public async Task IgnoringOption_WhenMatchingAsBlock_ShouldThrowInvalidOperationException(string option)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsBlock();
+
+			void Act() => Change(sut, option, true);
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage($"{option} cannot be combined with AsBlock.")
+				.Because("a block compares the lines on its own");
+		}
+
+		[Theory]
+		[InlineData(nameof(StringEqualityOptions.IgnoringCase))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringIndentation))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringNewlineStyle))]
+		[InlineData(nameof(StringEqualityOptions.IgnoringTrailingWhiteSpace))]
+		public async Task IgnoringOption_WhenSpecifiedTwice_ShouldThrowInvalidOperationException(string option)
+		{
+			StringEqualityOptions sut = new("expected");
+			Change(sut, option, false);
+
+			void Act() => Change(sut, option, true);
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage($"{option} cannot be specified more than once.")
+				.Because("any explicit call counts as specified, also with false");
+		}
+
+		[Theory]
+		[InlineData(nameof(StringEqualityOptions.AsPrefix))]
+		[InlineData(nameof(StringEqualityOptions.AsRegex))]
+		[InlineData(nameof(StringEqualityOptions.AsSuffix))]
+		[InlineData(nameof(StringEqualityOptions.AsWildcard))]
+		[InlineData(nameof(StringEqualityOptions.Containing))]
+		public async Task SetMatchType_WhenAMatchTypeIsSpecified_ShouldThrowInvalidOperationException(string option)
+		{
+			StringEqualityOptions sut = new("expected");
+			Change(sut, option, true);
+
+			void Act() => sut.SetMatchType(new CustomMatchType(), "AsCustom");
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage($"AsCustom cannot be combined with {option}.");
+		}
+
 		[Fact]
 		public async Task ToString_WhenCaseAndIndentationIsIgnored_ShouldIncludeOptions()
 		{
@@ -715,6 +795,27 @@ public sealed partial class StringEqualityOptionsTests
 				default:
 					throw new ArgumentOutOfRangeException(nameof(option), option, null);
 			}
+		}
+
+		private sealed class CustomMatchType : IStringMatchType
+		{
+			public bool InspectsSubject => false;
+
+			public ValueTask<bool> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
+				IEqualityComparer<string>? comparer)
+				=> throw new NotSupportedException();
+
+			public string GetExpectation(string? expected, ExpectationGrammars grammars)
+				=> throw new NotSupportedException();
+
+			public string GetExtendedFailure(string it, string? actual, string? expected, bool ignoreCase,
+				IEqualityComparer<string> comparer, StringDifferenceSettings? settings)
+				=> throw new NotSupportedException();
+
+			public string GetTypeString() => throw new NotSupportedException();
+
+			public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
+				=> throw new NotSupportedException();
 		}
 
 		/// <remarks>

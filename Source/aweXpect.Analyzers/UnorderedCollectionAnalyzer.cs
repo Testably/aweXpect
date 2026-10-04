@@ -69,7 +69,7 @@ public class UnorderedCollectionAnalyzer : DiagnosticAnalyzer
 		IMethodSymbol method = invocation.TargetMethod;
 		if (method.Name == IgnoringInterspersedItems)
 		{
-			if (IsInNamespace(method.ContainingType, "aweXpect", "Results") &&
+			if (method.IsExtensionMethod && IsInNamespace(method.ContainingType, "aweXpect") &&
 			    GetExpectation(invocation) is { } expectation &&
 			    GetUnorderedSubjectType(expectation) is { } type)
 			{
@@ -85,7 +85,7 @@ public class UnorderedCollectionAnalyzer : DiagnosticAnalyzer
 			return;
 		}
 
-		if (PositionalExpectations.Contains(method.Name) && HasParameterlessMethod(method.ReturnType, InAnyOrder))
+		if (PositionalExpectations.Contains(method.Name) && ProvidesCollectionMatchOptions(method.ReturnType))
 		{
 			if (!HasInAnyOrder(invocation) &&
 			    (GetUnorderedSubjectType(invocation) ?? GetUnorderedExpectedType(invocation)) is { } type)
@@ -119,18 +119,14 @@ public class UnorderedCollectionAnalyzer : DiagnosticAnalyzer
 		return current?.IsGlobalNamespace == true;
 	}
 
-	private static bool HasParameterlessMethod(ITypeSymbol? type, string name)
-	{
-		for (ITypeSymbol? current = type; current != null; current = current.BaseType)
-		{
-			if (current.GetMembers(name).OfType<IMethodSymbol>().Any(m => m.Parameters.Length == 0))
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
+	/// <summary>
+	///     Whether the result <paramref name="type" /> offers <c>InAnyOrder()</c>, which is an extension method on every
+	///     result that provides the <c>CollectionMatchOptions</c>.
+	/// </summary>
+	private static bool ProvidesCollectionMatchOptions(ITypeSymbol? type)
+		=> type?.AllInterfaces.Any(i
+			=> i.OriginalDefinition.ToDisplayString() == "aweXpect.Core.IOptionsProvider<TOptions>" &&
+			   i.TypeArguments[0].ToDisplayString() == "aweXpect.Options.CollectionMatchOptions") == true;
 
 	/// <summary>
 	///     Whether <c>InAnyOrder()</c> follows among the options that are chained on the result of the

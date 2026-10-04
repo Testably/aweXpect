@@ -68,8 +68,7 @@ public static partial class ThatEnumerable
 			}),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true,
@@ -98,8 +97,7 @@ public static partial class ThatEnumerable
 			}),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true,
@@ -131,8 +129,7 @@ public static partial class ThatEnumerable
 			}),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true, Priority = -1,
@@ -162,8 +159,7 @@ public static partial class ThatEnumerable
 			}),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true, Priority = -1,
@@ -217,8 +213,7 @@ public static partial class ThatEnumerable
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true,
@@ -243,8 +238,7 @@ public static partial class ThatEnumerable
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Is{Not}ContainedIn", PerSubject = true,
@@ -272,8 +266,7 @@ public static partial class ThatEnumerable
 			}),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Is{Not}ContainedIn", PerSubject = true,
@@ -301,8 +294,7 @@ public static partial class ThatEnumerable
 			}),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Is{Not}ContainedIn", PerSubject = true,
@@ -331,8 +323,7 @@ public static partial class ThatEnumerable
 			}),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Is{Not}ContainedIn", PerSubject = true, Priority = -1,
@@ -359,8 +350,7 @@ public static partial class ThatEnumerable
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Is{Not}ContainedIn", PerSubject = true, Priority = -1,
@@ -387,7 +377,6 @@ public static partial class ThatEnumerable
 				return negated ? constraint.Invert() : constraint;
 			}),
 			subject,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 }

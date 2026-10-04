@@ -13,9 +13,10 @@ public partial class StringEqualityOptions
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> as a substring that must be contained in the actual string.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A match type is already specified.</exception>
 	public StringEqualityOptions Containing()
 	{
-		_matchType = ContainingMatch;
+		SetMatchType(ContainingMatch, nameof(Containing));
 		return this;
 	}
 

@@ -27,6 +27,30 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenAMinimumAndAMaximumAreSpecified_ShouldThrowInvalidOperationException()
+			{
+				string subject = "abc";
+
+				async Task Act()
+					=> await That(subject).Contains("x").AtLeast(2).AtMost(5);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AtMost cannot be combined with AtLeast.")
+					.Because("the maximum would silently replace the minimum; use Between(2).And(5) instead");
+			}
+
+			[Fact]
+			public async Task WhenARangeIsSpecifiedWithBetween_ShouldSucceed()
+			{
+				string subject = "abcbb";
+
+				async Task Act()
+					=> await That(subject).Contains("b").Between(2).And(5);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsEmptyAfterTheWhiteSpaceIsIgnored_ShouldThrowArgumentException()
 			{
 				string subject = "a b";
@@ -96,6 +120,42 @@ public sealed partial class ThatString
 					             but it did not contain "not" in "some text"
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenOnceAndTwiceAreSpecified_ShouldThrowInvalidOperationException()
+			{
+				string subject = "abc";
+
+				async Task Act()
+					=> await That(subject).Contains("b").Once().Twice();
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Twice cannot be combined with Once.");
+			}
+
+			[Fact]
+			public async Task WhenTheSameQuantifierIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			{
+				string subject = "abc";
+
+				async Task Act()
+					=> await That(subject).Contains("b").AtLeast(1).AtLeast(2);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AtLeast cannot be specified more than once.");
+			}
+
+			[Fact]
+			public async Task WhenTwoMatchTypesAreSpecified_ShouldThrowInvalidOperationException()
+			{
+				string subject = "abc";
+
+				async Task Act()
+					=> await That(subject).Contains("a").AsWildcard().AsSuffix();
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AsSuffix cannot be combined with AsWildcard.");
+			}
 		}
 
 		public sealed class AsBlockTests
@@ -164,6 +224,19 @@ public sealed partial class ThatString
 					=> await That(subject).Contains(expected).AsBlock().IgnoringCase();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenCombinedWithIgnoringIndentation_ShouldThrowInvalidOperationException()
+			{
+				string subject = "  foo\n  bar";
+
+				async Task Act()
+					=> await That(subject).Contains("foo\nbar").IgnoringIndentation().AsBlock();
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AsBlock cannot be combined with IgnoringIndentation.")
+					.Because("a block compares the lines on its own");
 			}
 
 			[Fact]

@@ -17,8 +17,8 @@ public sealed class StringBlockCountResultTests
 		StringBlockCountResult<int[], IThat<int[]>> result = sut.AsBlock();
 
 		await That(options.ToString()).IsEqualTo(" as block");
-		await That(result).Is<IOptionsProvider<StringEqualityOptions>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
+		await That(result).IsNot<IOptionsProvider<StringEqualityOptions>>()
+			.Because("a block compares the lines on its own, so it offers only the casing and a comparer");
 		await That(result).Is<IOptionsProvider<Quantifier>>()
 			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
 	}

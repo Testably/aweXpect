@@ -410,6 +410,19 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
+			[Fact]
+			public async Task WhenIndexIsAlreadySpecified_ShouldThrowInvalidOperationException()
+			{
+				int[] subject = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).HasItem(1).AtIndex(0).AtIndexFromEnd(1);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AtIndexFromEnd cannot be combined with AtIndex.")
+					.Because("the second index would silently replace the first one");
+			}
+
 			[Theory]
 			[InlineData(-1)]
 			[InlineData(-10)]
@@ -646,6 +659,19 @@ public sealed partial class ThatEnumerable
 					.AsPrefix().And
 					.WithParamName("expected")
 					.Because("the timeout has to be reported the same way for every consumer");
+			}
+
+			[Fact]
+			public async Task AsRegex_WithAnotherMatchType_ShouldThrowInvalidOperationException()
+			{
+				string[] subject = ["a",];
+
+				async Task Act()
+					=> await That(subject).HasItem("a").AsRegex().AsPrefix();
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AsPrefix cannot be combined with AsRegex.")
+					.Because("the prefix would silently replace the regex");
 			}
 
 			[Fact]
@@ -1191,7 +1217,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable<int> subject = values;
 
 				async Task Act()
-					=> await That(subject).HasItem(expected - 1).AtIndex(2).FromEnd();
+					=> await That(subject).HasItem(expected - 1).AtIndexFromEnd(2);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -1217,7 +1243,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable<int> subject = values;
 
 				async Task Act()
-					=> await That(subject).HasItem(expected).AtIndex(2).FromEnd();
+					=> await That(subject).HasItem(expected).AtIndexFromEnd(2);
 
 				await That(Act).DoesNotThrow();
 			}
@@ -1232,7 +1258,7 @@ public sealed partial class ThatEnumerable
 				};
 
 				async Task Act()
-					=> await That(subject).HasItem(expected).AtIndex(3).FromEnd();
+					=> await That(subject).HasItem(expected).AtIndexFromEnd(3);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -1252,7 +1278,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable<int> subject = Array.Empty<int>();
 
 				async Task Act()
-					=> await That(subject).HasItem(expected).AtIndex(0).FromEnd();
+					=> await That(subject).HasItem(expected).AtIndexFromEnd(0);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -1273,7 +1299,7 @@ public sealed partial class ThatEnumerable
 				int[] subject = [];
 
 				async Task Act()
-					=> await That(subject).HasItem(0).AtIndex(index).FromEnd();
+					=> await That(subject).HasItem(0).AtIndexFromEnd(index);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithParamName("index").And
@@ -1287,7 +1313,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable<int>? subject = null;
 
 				async Task Act()
-					=> await That(subject!).HasItem(expected).AtIndex(0).FromEnd();
+					=> await That(subject!).HasItem(expected).AtIndexFromEnd(0);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

@@ -304,7 +304,7 @@ public sealed partial class ThatAsyncEnumerable
 			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
 
 			async Task Act()
-				=> await That(subject).HasItem(2).AtIndex(0).FromEnd().WithCancellation(cts.Token);
+				=> await That(subject).HasItem(2).AtIndexFromEnd(0).WithCancellation(cts.Token);
 
 			await That(Act).Throws<InconclusiveException>()
 				.WithMessage("""

@@ -307,7 +307,7 @@ public sealed partial class ThatAsyncEnumerable
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
 
 				async Task Act()
-					=> await That(subject).DoesNotHaveItem(1).AtIndex(1).FromEnd();
+					=> await That(subject).DoesNotHaveItem(1).AtIndexFromEnd(1);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -326,7 +326,7 @@ public sealed partial class ThatAsyncEnumerable
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
 
 				async Task Act()
-					=> await That(subject).DoesNotHaveItem(1).AtIndex(3).FromEnd();
+					=> await That(subject).DoesNotHaveItem(1).AtIndexFromEnd(3);
 
 				await That(Act).DoesNotThrow();
 			}

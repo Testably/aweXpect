@@ -9,7 +9,7 @@ namespace aweXpect.Options;
 /// </summary>
 /// <remarks>
 ///     Pass it to a <see cref="Results.TimeToleranceResult{TType,TThat}" /> of an expectation on such values, so that
-///     <see cref="Results.TimeToleranceResult{TType,TThat,TSelf}.Within(TimeSpan)" /> does not silently drop the part
+///     <see cref="ToleranceExtensions.Within{TResult}(TResult, TimeSpan)" /> does not silently drop the part
 ///     of the tolerance below one day.
 /// </remarks>
 public sealed class DayTolerance : TimeTolerance

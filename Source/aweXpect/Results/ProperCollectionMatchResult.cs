@@ -3,32 +3,22 @@ using aweXpect.Options;
 
 namespace aweXpect.Results;
 
-#pragma warning disable S110 // The result hierarchy is intentionally deep, so that each continuation inherits the complete vocabulary of its base
 /// <summary>
-///     The result for verifying that a collection contains or is contained in another collection.
+///     The result for verifying that a collection contains or is contained in another collection, optionally
+///     properly.
 /// </summary>
 /// <remarks>
-///     <seealso cref="CollectionContainmentResult{TType,TThat,TElement}" />
+///     The options are specified via <see cref="CollectionMatchOptionsExtensions" />.
 /// </remarks>
 public class ProperCollectionMatchResult<TType, TThat, TItem>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
-	CollectionMatchOptions collectionMatchOptions,
-	CollectionMatchOptions.EquivalenceRelations properEquivalenceRelation)
-	: CollectionContainmentResult<TType, TThat, TItem>(expectationBuilder, returnValue, collectionMatchOptions)
+	CollectionMatchOptions collectionMatchOptions)
+	: AndOrResult<TType, TThat, ProperCollectionMatchResult<TType, TThat, TItem>>(expectationBuilder, returnValue),
+		IOptionsProvider<CollectionMatchOptions>,
+		ICollectionContainmentOptions,
+		IProperContainmentOptions
 {
-	private readonly CollectionMatchOptions _collectionMatchOptions = collectionMatchOptions;
-
-	/// <summary>
-	///     Verifies that the two collections differ by at least one additional item.
-	/// </summary>
-	/// <remarks>
-	///     This means that the expected collection is a proper subset of the subject for <c>Contains</c> and a proper
-	///     superset for <c>IsContainedIn</c>.
-	/// </remarks>
-	public CollectionContainmentResult<TType, TThat, TItem> Properly()
-	{
-		_collectionMatchOptions.SetEquivalenceRelation(properEquivalenceRelation);
-		return this;
-	}
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	CollectionMatchOptions IOptionsProvider<CollectionMatchOptions>.Options => collectionMatchOptions;
 }
