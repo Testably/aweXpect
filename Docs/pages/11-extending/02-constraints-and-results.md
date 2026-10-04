@@ -695,7 +695,7 @@ private sealed class IsPlayingConstraint(
         Actual = actual;
         if (actual is not null)
         {
-            Outcome outcome = await options.CheckRepeatedly(() =>
+            Outcome outcome = await options.CheckRepeatedly(_ =>
             {
                 bool isPlaying = actual.IsPlaying;
                 Outcome = isPlaying ? Outcome.Success : Outcome.Failure;
@@ -736,6 +736,11 @@ await Expect.That(player).IsPlaying().Within(TimeSpan.FromSeconds(5)).CheckEvery
   timeout.
 - The check returns whether the expectation is met, so for a negated variant created with `.Invert()` it returns
   `true` when the player is *not* playing. The helper class inverts the stored `Outcome` itself.
+- The check receives the `IEvaluationContext` to use. The first check gets the context of the evaluation, every
+  further check a new one, so that a collection taken with `UseMaterializedEnumerable` is read again instead of
+  replaying the items that a previous check read.
+- An exception of code of the caller called through `UserCode.Invoke` counts as not met while the check is repeated.
+  When the last check still throws, the expectation fails with that exception.
 - Appending the options writes " within …" to the expectation text when `Within` was specified.
 - `CheckRepeatedly` returns the `Outcome`: `Success` when a check succeeded, `Failure` when the last check failed, and
   `Undecided` when the evaluation was canceled before the timeout. The cancellation is only observed while waiting

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Nodes;
 using aweXpect.Customization;
 using aweXpect.Core.Helpers;
 using aweXpect.Results;
@@ -111,13 +113,23 @@ public class RepeatedCheckOptions
 	///             checks with <see cref="Outcome.Undecided" />.
 	///         </item>
 	///         <item>
-	///             An exception thrown by the <paramref name="check" /> is not caught.
+	///             The first check receives the <paramref name="context" />, so that it shares the materialized collections
+	///             with the other expectations of the evaluation. During an evaluation, every further check receives a new
+	///             context of its own, so that it reads the collections (e.g. with
+	///             <see cref="EvaluationContextExtensions.UseMaterializedEnumerable{TItem}(IEvaluationContext, System.Collections.Generic.IEnumerable{TItem})" />)
+	///             again instead of replaying the items that a previous check read.
+	///         </item>
+	///         <item>
+	///             An exception of code of the caller that the <paramref name="check" /> called through
+	///             <see cref="UserCode" /> counts as not met when the check is repeated, so the check is made again. When
+	///             the last check threw it, it is thrown again, which fails the expectation with the exception. Any other
+	///             exception thrown by the <paramref name="check" /> is not caught.
 	///         </item>
 	///     </list>
 	/// </remarks>
 	/// <param name="check">
-	///     The check, which returns whether the expectation is met. For a negated constraint, it returns
-	///     <see langword="true" /> when the condition is not met.
+	///     The check, which receives the evaluation context for the check and returns whether the expectation is met. For a
+	///     negated constraint, it returns <see langword="true" /> when the condition is not met.
 	/// </param>
 	/// <param name="context">The evaluation context that the constraint received.</param>
 	/// <returns>
@@ -125,34 +137,64 @@ public class RepeatedCheckOptions
 	///     the last check returned <see langword="false" />, and <see cref="Outcome.Undecided" /> when the evaluation was
 	///     canceled before the <see cref="Timeout" />, by the caller or by a shorter timeout.
 	/// </returns>
-	public async Task<Outcome> CheckRepeatedly(Func<Task<bool>> check, IEvaluationContext context)
+	public async Task<Outcome> CheckRepeatedly(Func<IEvaluationContext, Task<bool>> check, IEvaluationContext context)
 	{
 		long startTimestamp = Stopwatch.GetTimestamp();
-		if (await check())
+		if (!IsRepeated)
+		{
+			return await check(context) ? Outcome.Success : Outcome.Failure;
+		}
+
+		(bool isMet, UserCodeException? exception) = await Check(check, context);
+		if (isMet)
 		{
 			return Outcome.Success;
 		}
 
-		if (!IsRepeated)
-		{
-			return Outcome.Failure;
-		}
-
 		using Polling polling = Polling.Start(startTimestamp, Timeout, Interval, context.Cancellation);
+		Core.EvaluationContext.EvaluationContext? checkContext = null;
 		while (true)
 		{
 			switch (await polling.WaitForNextCheck())
 			{
 				case PollStep.Elapsed:
+					if (exception is not null)
+					{
+						ExceptionDispatchInfo.Capture(exception).Throw();
+					}
+
 					return Outcome.Failure;
 				case PollStep.Canceled:
 					return Outcome.Undecided;
 			}
 
-			if (await check())
+			if (context is Core.EvaluationContext.EvaluationContext evaluationContext)
+			{
+				checkContext = await evaluationContext.StartCheck(checkContext);
+			}
+
+			(isMet, exception) = await Check(check, checkContext ?? context);
+			if (isMet)
 			{
 				return Outcome.Success;
 			}
+		}
+	}
+
+	/// <remarks>
+	///     A cancellation of the evaluation still aborts it, like everywhere else.
+	/// </remarks>
+	private static async ValueTask<(bool IsMet, UserCodeException? Exception)> Check(
+		Func<IEvaluationContext, Task<bool>> check, IEvaluationContext context)
+	{
+		try
+		{
+			return (await check(context), null);
+		}
+		catch (UserCodeException exception) when (!MemberExceptionResult.IsCancellationOf(exception.Exception,
+			                                          context.Cancellation.Token))
+		{
+			return (false, exception);
 		}
 	}
 

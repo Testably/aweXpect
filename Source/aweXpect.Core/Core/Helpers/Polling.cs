@@ -172,7 +172,7 @@ internal sealed class Polling : IDisposable
 		return true;
 	}
 
-	private static TimeSpan GetElapsedTime(long startTimestamp)
+	internal static TimeSpan GetElapsedTime(long startTimestamp)
 		=> TimeSpan.FromTicks((long)((Stopwatch.GetTimestamp() - startTimestamp) *
 		                             ((double)TimeSpan.TicksPerSecond / Stopwatch.Frequency)));
 }

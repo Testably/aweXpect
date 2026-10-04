@@ -440,6 +440,50 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task WhenAsyncSubjectBlocksBeyondTheTimeout_ShouldFail()
+		{
+			Func<Task<int>> subject = () =>
+			{
+				Block(100.Milliseconds());
+				return Task.FromResult(1);
+			};
+
+			async Task Act()
+				=> await That(subject).Eventually().Within(VeryLowTimeout).IsEqualTo(1);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually is equal to 1 within 0:00.050,
+				             but it did not finish within 0:00.050
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.Because("an attempt that returns after the timeout must fail like one that is abandoned");
+		}
+
+		[Fact]
+		public async Task WhenAsyncSubjectBlocksBeyondWithTimeout_ShouldFail()
+		{
+			Func<Task<int>> subject = () =>
+			{
+				Block(100.Milliseconds());
+				return Task.FromResult(1);
+			};
+
+			async Task Act()
+				=> await That(subject).Eventually().IsEqualTo(1).WithTimeout(VeryLowTimeout);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually is equal to 1 within 0:30,
+				             but it did not finish within 0:00.050
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.Because("an attempt that returns after the timeout must fail like one that is abandoned");
+		}
+
+		[Fact]
 		public async Task WhenCancellationTokenIsCancelled_ShouldBeInconclusiveWithoutWaitingForTheTimeout()
 		{
 			using CancellationTokenSource cts = new();
@@ -775,6 +819,73 @@ public sealed partial class ThatDelegateTests
 					.IsGreaterThan(3);
 
 			await That(Act).DoesNotThrow();
+		}
+
+		[Fact]
+		public async Task WhenSyncSubjectReturnsAfterTheTimeout_ShouldFail()
+		{
+			Func<int> subject = () =>
+			{
+				Block(100.Milliseconds());
+				return 1;
+			};
+
+			async Task Act()
+				=> await That(subject).Eventually().Within(VeryLowTimeout).IsEqualTo(1);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually is equal to 1 within 0:00.050,
+				             but it did not finish within 0:00.050
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.Because("a synchronous delegate that returns after the timeout must fail like an asynchronous one");
+		}
+
+		[Fact]
+		public async Task WhenSyncSubjectReturnsAfterWithTimeout_ShouldFail()
+		{
+			Func<int> subject = () =>
+			{
+				Block(100.Milliseconds());
+				return 1;
+			};
+
+			async Task Act()
+				=> await That(subject).Eventually().IsEqualTo(1).WithTimeout(VeryLowTimeout);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually is equal to 1 within 0:30,
+				             but it did not finish within 0:00.050
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.Because("a synchronous delegate that returns after the timeout must fail like an asynchronous one");
+		}
+
+		[Fact]
+		public async Task WhenSyncSubjectThrowsAfterTheTimeout_ShouldFail()
+		{
+			Func<int> subject = () =>
+			{
+				Block(100.Milliseconds());
+				throw new MyException("too late");
+			};
+
+			async Task Act()
+				=> await That(subject).Eventually().Within(VeryLowTimeout).IsEqualTo(1);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually is equal to 1 within 0:00.050,
+				             but it did not finish within 0:00.050
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050.")
+					.And.HasInner<MyException>(e => e.HasMessage("too late")))
+				.Because("an exception thrown after the timeout must not decide, like the exception of an abandoned attempt");
 		}
 
 		[Fact]

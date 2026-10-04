@@ -48,9 +48,9 @@ public static class MyRepeatedCheckExtensions
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome outcome = await options.CheckRepeatedly(() =>
+			Outcome outcome = await options.CheckRepeatedly(_ =>
 			{
-				_returned = actual.Read();
+				_returned = UserCode.Invoke(actual.Read, "the probe");
 				Outcome = _returned > 0 ? Outcome.Success : Outcome.Failure;
 				return Task.FromResult(_returned > 0 != IsNegated);
 			}, context);
