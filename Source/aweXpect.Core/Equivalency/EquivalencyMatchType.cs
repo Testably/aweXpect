@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
@@ -18,15 +19,26 @@ namespace aweXpect.Equivalency;
 ///     Mark the parameters of the expectation that receive the compared values with the
 ///     <see cref="RequiresMemberMetadataAttribute" />, so that the members of their types are registered for trimming.
 /// </remarks>
-public sealed class EquivalencyMatchType(EquivalencyOptions equivalencyOptions) : IObjectMatchType
+public sealed class EquivalencyMatchType : IObjectMatchType
 {
+	private readonly EquivalencyOptions _equivalencyOptions;
 	private readonly StringBuilder _failureBuilder = new();
+
+	/// <summary>
+	///     Compares with the <paramref name="equivalencyOptions" />.
+	/// </summary>
+	/// <exception cref="ArgumentNullException">The <paramref name="equivalencyOptions" /> are <see langword="null" />.</exception>
+	public EquivalencyMatchType(EquivalencyOptions equivalencyOptions)
+	{
+		equivalencyOptions.ThrowIfNull();
+		_equivalencyOptions = equivalencyOptions;
+	}
 
 	/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TActual, TExpected}(TActual, TExpected)" />
 	public async ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
 	{
 		_failureBuilder.Clear();
-		return await EquivalencyComparison.Compare(actual, expected, equivalencyOptions, _failureBuilder);
+		return await EquivalencyComparison.Compare(actual, expected, _equivalencyOptions, _failureBuilder);
 	}
 
 	/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
@@ -61,7 +73,7 @@ public sealed class EquivalencyMatchType(EquivalencyOptions equivalencyOptions) 
 
 	/// <inheritdoc cref="IObjectMatchType.AppendContexts(ResultContextCollector)" />
 	public void AppendContexts(ResultContextCollector contexts)
-		=> contexts.AddEquivalencyContext(equivalencyOptions);
+		=> contexts.AddEquivalencyContext(_equivalencyOptions);
 
 	/// <inheritdoc />
 	public override string ToString() => " using equivalency";

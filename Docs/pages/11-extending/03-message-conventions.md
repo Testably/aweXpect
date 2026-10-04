@@ -255,7 +255,7 @@ private sealed class HasPlaylistConstraint(string it, ExpectationGrammars gramma
   its outcome, or `contexts.VisitMember("name", result)` to label them with a member.
 - The contexts of the built-in expectations are available as extensions on the `ResultContextCollector`, so that a
   custom expectation shows them alike: `AddCollectionContext`, `AddDictionaryContext`, `AddExpectedValuesContext`,
-  `AddFullStringContext`, `AddEqualityOptionsContexts` and `AddEquivalencyContext`. An `ObjectEqualityOptions<T>`
+  `AddStringContext`, `AddEqualityOptionsContexts` and `AddEquivalencyContext`. An `ObjectEqualityOptions<T>`
   compares like `IsEquivalentTo` with `SetMatchType(new EquivalencyMatchType(options), "Equivalent")`.
 
 ## Exceptions

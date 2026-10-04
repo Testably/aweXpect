@@ -14,6 +14,17 @@ namespace aweXpect.Core.Tests.Equivalency;
 public sealed class EquivalencyMatchTypeTests
 {
 	[Fact]
+	public async Task Constructor_WhenOptionsAreNull_ShouldThrowArgumentNullException()
+	{
+		void Act()
+			=> _ = new EquivalencyMatchType(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("equivalencyOptions").And
+			.WithMessage("The 'equivalencyOptions' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
 	public async Task PrependItemAndComparison_ShouldPrependTheItemNoun()
 	{
 		EquivalencyMatchType sut = new(new EquivalencyOptions());

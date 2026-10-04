@@ -182,7 +182,7 @@ public static class ResultContextCollectorExtensions
 	///     The check reads the text of the <paramref name="result" />, so it runs when the context is added, before the
 	///     result can be evaluated again for another item of a collection.
 	/// </remarks>
-	public static void AddFullStringContext(this ResultContextCollector contexts, string title, string? value,
+	public static void AddStringContext(this ResultContextCollector contexts, string title, string? value,
 		ConstraintResult result)
 	{
 		if (!string.IsNullOrEmpty(value) && !IsShownCompletely(value!, result))

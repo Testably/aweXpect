@@ -451,4 +451,4 @@ static aweXpect.Core.ResultContextCollectorExtensions.AddDictionaryContext<TKey,
 static aweXpect.Core.ResultContextCollectorExtensions.AddEqualityOptionsContexts<T>(this aweXpect.Core.ResultContextCollector! contexts, aweXpect.Core.IOptionsEquality<T>! options) -> void
 static aweXpect.Core.ResultContextCollectorExtensions.AddEquivalencyContext(this aweXpect.Core.ResultContextCollector! contexts, aweXpect.Equivalency.EquivalencyOptions! equivalencyOptions) -> void
 static aweXpect.Core.ResultContextCollectorExtensions.AddExpectedValuesContext<TItem>(this aweXpect.Core.ResultContextCollector! contexts, string? expectedExpression, System.Collections.Generic.IEnumerable<TItem>! values, aweXpect.Core.ExpectationGrammars grammars) -> void
-static aweXpect.Core.ResultContextCollectorExtensions.AddFullStringContext(this aweXpect.Core.ResultContextCollector! contexts, string! title, string? value, aweXpect.Core.Constraints.ConstraintResult! result) -> void
+static aweXpect.Core.ResultContextCollectorExtensions.AddStringContext(this aweXpect.Core.ResultContextCollector! contexts, string! title, string? value, aweXpect.Core.Constraints.ConstraintResult! result) -> void

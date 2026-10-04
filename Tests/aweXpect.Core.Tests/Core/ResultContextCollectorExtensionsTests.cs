@@ -341,7 +341,7 @@ public sealed class ResultContextCollectorExtensionsTests
 	}
 
 	[Fact]
-	public async Task AddFullStringContext_ShouldShowTheFullValuesLikeTheBuiltInExpectations()
+	public async Task AddStringContext_ShouldShowTheFullValuesLikeTheBuiltInExpectations()
 	{
 		string subject = new('a', 101);
 		string expected = new('b', 101);
@@ -349,8 +349,8 @@ public sealed class ResultContextCollectorExtensionsTests
 		async Task Act()
 			=> await That(subject).ShowsContexts((contexts, actual, result) =>
 			{
-				contexts.AddFullStringContext("Actual", actual, result);
-				contexts.AddFullStringContext("Expected", expected, result);
+				contexts.AddStringContext("Actual", actual, result);
+				contexts.AddStringContext("Expected", expected, result);
 			});
 
 		await That(Act).Throws<XunitException>()
@@ -372,11 +372,11 @@ public sealed class ResultContextCollectorExtensionsTests
 	[Theory]
 	[InlineData("")]
 	[InlineData(null)]
-	public async Task AddFullStringContext_WhenEmpty_ShouldNotAddAContext(string? value)
+	public async Task AddStringContext_WhenEmpty_ShouldNotAddAContext(string? value)
 	{
 		async Task Act()
 			=> await That(1).ShowsContexts((contexts, _, result)
-				=> contexts.AddFullStringContext("Value", value, result));
+				=> contexts.AddStringContext("Value", value, result));
 
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
@@ -387,11 +387,11 @@ public sealed class ResultContextCollectorExtensionsTests
 	}
 
 	[Fact]
-	public async Task AddFullStringContext_WhenTheMessageShowsTheValueCompletely_ShouldNotAddAContext()
+	public async Task AddStringContext_WhenTheMessageShowsTheValueCompletely_ShouldNotAddAContext()
 	{
 		async Task Act()
 			=> await That("foo").ShowsContexts((contexts, _, result)
-				=> contexts.AddFullStringContext("Expected", "bar", result), expectation: "is \"bar\"");
+				=> contexts.AddStringContext("Expected", "bar", result), expectation: "is \"bar\"");
 
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
