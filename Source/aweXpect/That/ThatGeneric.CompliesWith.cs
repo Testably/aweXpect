@@ -77,9 +77,9 @@ public static partial class ThatGeneric
 		{
 			RevertPreviousNegation();
 			ConstraintResult? isMatch = null;
-			Outcome outcome = await _options.CheckRepeatedly(async () =>
+			Outcome outcome = await _options.CheckRepeatedly(async checkContext =>
 			{
-				isMatch = await _itemExpectationBuilder.IsMetBy(actual, context, cancellationToken);
+				isMatch = await _itemExpectationBuilder.IsMetBy(actual, checkContext, cancellationToken);
 				return IsMet(isMatch);
 			}, context);
 			ConstraintResult result = KeepSubjectAsValue(NegateIfNegated(isMatch!), actual)

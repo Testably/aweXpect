@@ -130,8 +130,8 @@ internal class EventuallyExpectationBuilder<TValue>(
 		bool wasChecked = false;
 		while (true)
 		{
-			(TValue? data, Exception? failure, bool hasTimedOut, NullSubjectKind nullKind) =
-				await EvaluateSubject(subject, retryTimeout, polling.Remaining, interval, cancellationToken);
+			(TValue? data, Exception? failure, TimeSpan? exceededTimeout, NullSubjectKind nullKind) =
+				await EvaluateSubject(subject, retryTimeout, polling, interval, cancellation);
 			bool hasContexts = HasContexts(failure, nullKind, ref wasChecked);
 
 			(ConstraintResult? result, failure) =
@@ -142,12 +142,11 @@ internal class EventuallyExpectationBuilder<TValue>(
 			}
 
 			bool isCanceled = failure is OperationCanceledException && cancellationToken.IsCancellationRequested;
-			if (!isCanceled && (isLastAttempt || hasTimedOut || polling.Remaining <= TimeSpan.Zero))
+			if (!isCanceled && (isLastAttempt || exceededTimeout is not null || polling.Remaining <= TimeSpan.Zero))
 			{
 				result ??= await rootNode.IsMetBy(data, EvaluationContext.ExpectationTextEvaluationContext.For(currentContext),
 					System.Threading.CancellationToken.None);
-				return AppendTimeout(WithFailureCause(result, failure, hasContexts, hasTimedOut ? retryTimeout : null),
-					retryTimeout);
+				return AppendTimeout(WithFailureCause(result, failure, hasContexts, exceededTimeout), retryTimeout);
 			}
 
 			if (cancellationToken.IsCancellationRequested)
@@ -180,44 +179,91 @@ internal class EventuallyExpectationBuilder<TValue>(
 	}
 
 	/// <summary>
-	///     Evaluates the <paramref name="subject" /> for one attempt, which
-	///     <see cref="CreateAttemptCancellation" /> bounds.
+	///     Evaluates the <paramref name="subject" /> for one attempt, which <see cref="GetAttemptLimit" /> bounds.
 	/// </summary>
-	private async Task<(TValue? Data, Exception? Failure, bool HasTimedOut, NullSubjectKind NullKind)> EvaluateSubject(
-		Func<CancellationToken, Task<TValue>> subject,
-		TimeSpan retryTimeout,
-		TimeSpan remaining,
-		TimeSpan interval,
-		CancellationToken cancellationToken)
+	private async Task<(TValue? Data, Exception? Failure, TimeSpan? ExceededTimeout, NullSubjectKind NullKind)>
+		EvaluateSubject(
+			Func<CancellationToken, Task<TValue>> subject,
+			TimeSpan retryTimeout,
+			Polling polling,
+			TimeSpan interval,
+			EvaluationCancellation cancellation)
 	{
-		using CancellationTokenSource? attemptCts =
-			CreateAttemptCancellation(retryTimeout, remaining, interval, cancellationToken);
+		CancellationToken cancellationToken = cancellation.Token;
+		TimeSpan? limit = GetAttemptLimit(retryTimeout, polling.Remaining, interval);
+		using CancellationTokenSource? attemptCts = CreateAttemptCancellation(limit, cancellationToken);
 		CancellationToken attemptToken = attemptCts?.Token ?? cancellationToken;
+		long startTimestamp = Stopwatch.GetTimestamp();
 		Task<TValue>? task = null;
 		try
 		{
 			task = subject(attemptToken);
 			if (task is null)
 			{
-				return (default, null, false, NullSubjectKind.NullTaskReturned);
+				return (default, null, null, NullSubjectKind.NullTaskReturned);
 			}
 
 			TValue data = await task.AbandonOnCancellation(attemptToken);
 			Customize.aweXpect.TraceWriter?.WriteMessage($"Checking expectation for {Subject} {data}");
-			return (data, null, false, NullSubjectKind.None);
+			if (GetExceededTimeout(retryTimeout, limit, startTimestamp, polling, cancellation) is { } exceededTimeout)
+			{
+				return (default, ExpectationBuilder<TValue>.CreateTimeoutException(exceededTimeout,
+					new OperationCanceledException(attemptToken)), exceededTimeout, NullSubjectKind.None);
+			}
+
+			return (data, null, null, NullSubjectKind.None);
 		}
 		catch (Exception exception)
 		{
-			bool hasTimedOut = exception is OperationCanceledException &&
-			                   attemptCts?.IsCancellationRequested == true &&
-			                   !cancellationToken.IsCancellationRequested;
 			Customize.aweXpect.TraceWriter?.WriteMessage(
 				$"Checking expectation for {Subject} threw an exception");
 			AddOtherExceptions(task?.GetOtherExceptions(exception));
-			return (default, hasTimedOut
-				? ExpectationBuilder<TValue>.CreateTimeoutException(retryTimeout, exception)
-				: exception, hasTimedOut, NullSubjectKind.None);
+			TimeSpan? exceededTimeout;
+			if (exception is OperationCanceledException && attemptToken.IsCancellationRequested)
+			{
+				exceededTimeout = cancellationToken.IsCancellationRequested ? null : retryTimeout;
+			}
+			else
+			{
+				exceededTimeout = GetExceededTimeout(retryTimeout, limit, startTimestamp, polling, cancellation);
+			}
+
+			return (default, exceededTimeout is null
+				? exception
+				: ExpectationBuilder<TValue>.CreateTimeoutException(exceededTimeout.Value, exception),
+				exceededTimeout, NullSubjectKind.None);
 		}
+	}
+
+	/// <summary>
+	///     Returns the timeout that an attempt, which finished without being abandoned, exceeded: the effective timeout of
+	///     the evaluation, when it is tighter than the <paramref name="retryTimeout" /> and elapsed, or the
+	///     <paramref name="retryTimeout" />, when the attempt took longer than its <paramref name="limit" />.
+	/// </summary>
+	/// <remarks>
+	///     A synchronous subject cannot be interrupted, so it also exceeded the timeout when it finished after the timeout
+	///     elapsed. The measured durations decide, as the timers can fire late when the thread pool is busy. A
+	///     <paramref name="limit" /> of zero, i.e. <c>Within(TimeSpan.Zero)</c>, makes a single evaluation that a
+	///     synchronous subject could never finish within, so it does not bound it.
+	/// </remarks>
+	private static TimeSpan? GetExceededTimeout(TimeSpan retryTimeout,
+		TimeSpan? limit,
+		long startTimestamp,
+		Polling polling,
+		EvaluationCancellation cancellation)
+	{
+		if (cancellation.Timeout is { } timeout &&
+		    (cancellation.Reason == CancellationReason.Timeout || polling.Elapsed >= timeout))
+		{
+			return timeout;
+		}
+
+		if (limit > TimeSpan.Zero && Polling.GetElapsedTime(startTimestamp) >= limit)
+		{
+			return retryTimeout;
+		}
+
+		return null;
 	}
 
 	/// <summary>
@@ -273,16 +319,13 @@ internal class EventuallyExpectationBuilder<TValue>(
 	/// <summary>
 	///     Bounds an attempt by the <paramref name="remaining" /> retry budget, but gives it at least one
 	///     <paramref name="interval" /> (or the whole <paramref name="retryTimeout" />, if shorter) to finish, or returns
-	///     <see langword="null" /> for an unlimited budget, which only the <paramref name="cancellationToken" /> bounds.
+	///     <see langword="null" /> for an unlimited budget, which only the cancellation of the evaluation bounds.
 	/// </summary>
 	/// <remarks>
 	///     The last attempt is made when the budget is used up, so without the minimum it would be abandoned before an
 	///     asynchronous subject had a chance to finish.
 	/// </remarks>
-	private static CancellationTokenSource? CreateAttemptCancellation(TimeSpan retryTimeout,
-		TimeSpan remaining,
-		TimeSpan interval,
-		CancellationToken cancellationToken)
+	private static TimeSpan? GetAttemptLimit(TimeSpan retryTimeout, TimeSpan remaining, TimeSpan interval)
 	{
 		if (retryTimeout == TimeSpan.MaxValue)
 		{
@@ -291,8 +334,19 @@ internal class EventuallyExpectationBuilder<TValue>(
 
 		TimeSpan minimum = interval < retryTimeout ? interval : retryTimeout;
 		TimeSpan limit = remaining > minimum ? remaining : minimum;
+		return limit > TimeSpan.Zero ? limit : TimeSpan.Zero;
+	}
+
+	private static CancellationTokenSource? CreateAttemptCancellation(TimeSpan? limit,
+		CancellationToken cancellationToken)
+	{
+		if (limit is null)
+		{
+			return null;
+		}
+
 		CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-		cts.CancelAfter((limit > TimeSpan.Zero ? limit : TimeSpan.Zero).ToTimerTimeout());
+		cts.CancelAfter(limit.Value.ToTimerTimeout());
 		return cts;
 	}
 

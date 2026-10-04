@@ -9,6 +9,7 @@ namespace aweXpect.Core.EvaluationContext;
 internal class EvaluationContext : IEvaluationContext
 {
 	private EvaluationContext? _attempt;
+	private List<EvaluationContext>? _checks;
 	private List<AsyncBecauseReason>? _pendingReasons;
 	private List<Action>? _releases;
 	private Dictionary<string, object?>? _store;
@@ -80,11 +81,11 @@ internal class EvaluationContext : IEvaluationContext
 	}
 
 	/// <summary>
-	///     Releases the sources of all collections that were materialized in this context and in its current attempt,
-	///     and the resources registered with <see cref="ReleaseWithEvaluation" />.
+	///     Releases the sources of all collections that were materialized in this context, in its current attempt and in
+	///     the last check of its repeated checks, and the resources registered with <see cref="ReleaseWithEvaluation" />.
 	/// </summary>
 	public Task ReleaseMaterializations()
-		=> _store is null && _releases is null && _attempt is null
+		=> _store is null && _releases is null && _attempt is null && _checks is null
 			? Task.CompletedTask
 			: ReleaseAll();
 
@@ -109,6 +110,44 @@ internal class EvaluationContext : IEvaluationContext
 		{
 			await _attempt.ReleaseMaterializations();
 		}
+
+		if (_checks is not null)
+		{
+			List<EvaluationContext> checks = _checks;
+			_checks = null;
+			foreach (EvaluationContext check in checks)
+			{
+				await check.ReleaseMaterializations();
+			}
+		}
+	}
+
+	/// <summary>
+	///     Returns a new context for another check of a repeated check, so that it reads the collections again, and
+	///     releases the sources of the <paramref name="previous" /> check of the same repeated check.
+	/// </summary>
+	/// <remarks>
+	///     Unlike <see cref="StartAttempt" />, the sources of this context are kept, because the other expectations of
+	///     the evaluation still use them. The sources of the last check are released together with this context.
+	/// </remarks>
+	public async Task<EvaluationContext> StartCheck(EvaluationContext? previous)
+	{
+		EvaluationContext check = new()
+		{
+			Cancellation = Cancellation,
+		};
+		_checks ??= [];
+		if (previous is null)
+		{
+			_checks.Add(check);
+		}
+		else
+		{
+			_checks[_checks.IndexOf(previous)] = check;
+			await previous.ReleaseMaterializations();
+		}
+
+		return check;
 	}
 
 	/// <summary>

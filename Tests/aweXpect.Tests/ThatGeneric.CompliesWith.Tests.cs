@@ -1,5 +1,6 @@
 ﻿// ReSharper disable UnusedMember.Local
 
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using aweXpect.Customization;
@@ -389,6 +390,56 @@ public sealed partial class ThatGeneric
 					            """).And
 					.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.300."))
 					.Because("a TestCancellation timeout that is shorter than Within ends the checks");
+			}
+
+			[Fact]
+			public async Task WhenTheSourceThrowsAtFirst_ShouldReadItAgain()
+			{
+				int enumerations = 0;
+
+				IEnumerable<int> Items()
+				{
+					if (++enumerations == 1)
+					{
+						throw new MyException("not yet");
+					}
+
+					yield return 1;
+				}
+
+				IEnumerable<int> subject = Items();
+
+				async Task Act()
+					=> await That(subject).CompliesWith(x => x.IsNotEmpty())
+						.Within(30.Seconds()).CheckEvery(1.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("an exception of the source must be retried instead of being replayed in every check");
+				await That(enumerations).IsEqualTo(2);
+			}
+
+			[Fact]
+			public async Task WhenTheSubjectGrows_ShouldSeeTheNewItems()
+			{
+				int enumerations = 0;
+
+				IEnumerable<int> Items()
+				{
+					if (++enumerations >= 3)
+					{
+						yield return 1;
+					}
+				}
+
+				IEnumerable<int> subject = Items();
+
+				async Task Act()
+					=> await That(subject).CompliesWith(x => x.IsNotEmpty())
+						.Within(30.Seconds()).CheckEvery(1.Milliseconds());
+
+				await That(Act).DoesNotThrow()
+					.Because("each check must read the lazy subject again instead of replaying the first snapshot");
+				await That(enumerations).IsEqualTo(3);
 			}
 
 			[Fact]

@@ -48,7 +48,7 @@ public class RepeatedCheckOptionsTests
 		{
 			await That(sut.Interval).IsEqualTo(TimeSpan.Zero)
 				.Because("the interval must be stored under the key that the setting reads");
-			result = sut.CheckRepeatedly(() => Task.FromResult(Volatile.Read(ref isMet)), new NoEvaluationContext());
+			result = sut.CheckRepeatedly(_ => Task.FromResult(Volatile.Read(ref isMet)), new NoEvaluationContext());
 		}
 
 		bool isCompletedSynchronously = result.IsCompleted;

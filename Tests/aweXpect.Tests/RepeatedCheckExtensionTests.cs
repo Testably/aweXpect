@@ -77,6 +77,44 @@ public sealed class RepeatedCheckExtensionTests
 	}
 
 	[Fact]
+	public async Task CheckRepeatedly_WhenProbeThrowsAtFirst_ShouldKeepChecking()
+	{
+		int count = 0;
+		MyRepeatedCheckExtensions.Probe probe = new(() => ++count > 2 ? 1 : throw new MyException("not yet"));
+
+		async Task Act()
+			=> await That(probe).ReturnsPositive().Within(30.Seconds()).CheckEvery(1.Milliseconds());
+
+		await That(Act).DoesNotThrow()
+			.Because("an exception of the code of the caller counts as not met and is checked again, like in Satisfies");
+		await That(count).IsEqualTo(3);
+	}
+
+	[Fact]
+	public async Task CheckRepeatedly_WhenProbeThrowsUntilTheTimeout_ShouldFailWithTheException()
+	{
+		int count = 0;
+		MyRepeatedCheckExtensions.Probe probe = new(() =>
+		{
+			count++;
+			throw new MyException("not yet");
+		});
+
+		async Task Act()
+			=> await That(probe).ReturnsPositive().Within(500.Milliseconds()).CheckEvery(10.Milliseconds());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that probe
+			             returns a positive value within 0:00.500,
+			             but the probe did throw a MyException:
+			               not yet
+			             """);
+		await That(count).IsGreaterThan(1)
+			.Because("an exception of the code of the caller must not end the repeated check early");
+	}
+
+	[Fact]
 	public async Task
 		CheckRepeatedly_WhenTestCancellationTimeoutIsShorterAndWithTimeoutIsLonger_ShouldFailWithTheTestCancellationTimeout()
 	{
