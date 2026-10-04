@@ -43,6 +43,45 @@ internal static class TaskHelpers
 			? exceptions.Skip(1).ToArray()
 			: null;
 
+#if NET8_0_OR_GREATER
+	/// <inheritdoc cref="AwaitOrAbandon(Task, CancellationToken)" />
+	private static async Task<TResult> AwaitOrAbandon<TResult>(Task<TResult> task,
+		CancellationToken cancellationToken)
+	{
+		try
+		{
+			return await task.WaitAsync(cancellationToken);
+		}
+		catch (OperationCanceledException) when (!task.IsCompleted)
+		{
+			throw Abandon(task);
+		}
+		catch (OperationCanceledException)
+		{
+			return await task;
+		}
+	}
+
+	/// <remarks>
+	///     The outcome of the <paramref name="task" /> wins when it completed by the time the cancellation is noticed,
+	///     so that a task which reacts to the cancellation itself keeps reporting its own exception.
+	/// </remarks>
+	private static async Task AwaitOrAbandon(Task task, CancellationToken cancellationToken)
+	{
+		try
+		{
+			await task.WaitAsync(cancellationToken);
+		}
+		catch (OperationCanceledException) when (!task.IsCompleted)
+		{
+			throw Abandon(task);
+		}
+		catch (OperationCanceledException)
+		{
+			await task;
+		}
+	}
+#else
 	private static async Task<TResult> AwaitOrAbandon<TResult>(Task<TResult> task,
 		CancellationToken cancellationToken)
 	{
@@ -52,9 +91,7 @@ internal static class TaskHelpers
 
 	/// <remarks>
 	///     The outcome of the <paramref name="task" /> wins when it completed by the time the cancellation is noticed,
-	///     so that a task which reacts to the cancellation itself keeps reporting its own exception.<br />
-	///     An abandoned task keeps running, so its exception is observed, as nobody else awaits it and it would
-	///     otherwise surface as <see cref="TaskScheduler.UnobservedTaskException" />.
+	///     so that a task which reacts to the cancellation itself keeps reporting its own exception.
 	/// </remarks>
 	private static async Task AwaitOrAbandon(Task task, CancellationToken cancellationToken)
 	{
@@ -67,12 +104,25 @@ internal static class TaskHelpers
 
 		if (!task.IsCompleted)
 		{
-			_ = task.ContinueWith(static t => _ = t.Exception, CancellationToken.None,
-				TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously,
-				TaskScheduler.Default);
-			throw new TaskCanceledException();
+			throw Abandon(task);
 		}
 
 		await task;
+	}
+#endif
+
+	/// <summary>
+	///     Abandons the running <paramref name="task" /> and returns the exception to throw instead of its outcome.
+	/// </summary>
+	/// <remarks>
+	///     An abandoned task keeps running, so its exception is observed, as nobody else awaits it and it would
+	///     otherwise surface as <see cref="TaskScheduler.UnobservedTaskException" />.
+	/// </remarks>
+	private static TaskCanceledException Abandon(Task task)
+	{
+		_ = task.ContinueWith(static t => _ = t.Exception, CancellationToken.None,
+			TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously,
+			TaskScheduler.Default);
+		return new TaskCanceledException();
 	}
 }

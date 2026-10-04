@@ -438,6 +438,8 @@ earlier version has to be rebuilt.
 `IAsyncConstraint<T>.IsMetBy` and `IAsyncContextConstraint<T>.IsMetBy` return a `ValueTask<ConstraintResult>` instead
 of a `Task<ConstraintResult>`, so that a constraint that completes synchronously allocates no task: change the return
 type of an own implementation, and return `new ValueTask<ConstraintResult>(result)` instead of `Task.FromResult(result)`.
+`ManualExpectationBuilder<TValue>.IsMetBy` and `EquivalencyExpectationBuilder.IsMetBy` also return a
+`ValueTask<ConstraintResult>`: await it only once, or call `AsTask()` to keep it.
 Awaiting an expectation result uses a `ValueTaskAwaiter<T>`, which needs no change to `await`, but code compiled
 against an earlier version has to be rebuilt.
 

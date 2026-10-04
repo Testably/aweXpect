@@ -425,7 +425,7 @@ aweXpect.Core.ExpectationBuilder.AddConstraint<TState, TValue>(TState state, Sys
 *REMOVED*aweXpect.Results.ExpectationResult<TType, TSelf>.GetAwaiter() -> System.Runtime.CompilerServices.TaskAwaiter<TType>
 aweXpect.Results.ExpectationResult<TType, TSelf>.GetAwaiter() -> System.Runtime.CompilerServices.ValueTaskAwaiter<TType>
 aweXpect.Core.Extending.StringExtensions
-aweXpect.Core.ManualExpectationBuilder<TValue>.IsMetBy(TValue value, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<aweXpect.Core.Constraints.ConstraintResult!>!
+aweXpect.Core.ManualExpectationBuilder<TValue>.IsMetBy(TValue value, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult!>
 aweXpect.Customization.CustomizationValue<TValue>
 aweXpect.Customization.CustomizationValue<TValue>.CustomizationValue(aweXpect.Customization.IAwexpectCustomization! customization, string! key, TValue defaultValue, System.Action<TValue>? validate = null) -> void
 aweXpect.Customization.CustomizationValue<TValue>.Get() -> TValue
@@ -458,6 +458,10 @@ static aweXpect.Core.ResultContextCollectorExtensions.AddStringContext(this aweX
 *REMOVED*aweXpect.Core.Constraints.IAsyncContextConstraint<TValue>.IsMetBy(TValue actual, aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<aweXpect.Core.Constraints.ConstraintResult!>!
 aweXpect.Core.Constraints.IAsyncConstraint<TValue>.IsMetBy(TValue actual, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult!>
 aweXpect.Core.Constraints.IAsyncContextConstraint<TValue>.IsMetBy(TValue actual, aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult!>
+*REMOVED*abstract aweXpect.Equivalency.EquivalencyExpectationBuilder.IsMetBy<TValue>(TValue value, aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<aweXpect.Core.Constraints.ConstraintResult!>!
+*REMOVED*aweXpect.Core.ManualExpectationBuilder<TValue>.IsMetBy(TValue value, aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<aweXpect.Core.Constraints.ConstraintResult!>!
+abstract aweXpect.Equivalency.EquivalencyExpectationBuilder.IsMetBy<TValue>(TValue value, aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult!>
+aweXpect.Core.ManualExpectationBuilder<TValue>.IsMetBy(TValue value, aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult!>
 *REMOVED*aweXpect.Options.StringEqualityOptions.SetMatchType(aweXpect.Core.IStringMatchType! matchType) -> void
 *REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>
 *REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>.AtLeast() -> aweXpect.Results.CountTimesResult<TSelf!>!
