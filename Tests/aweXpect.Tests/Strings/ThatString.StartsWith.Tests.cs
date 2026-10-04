@@ -95,6 +95,41 @@ public sealed partial class ThatString
 
 			[Fact]
 			public async Task
+				IgnoringTrailingWhiteSpace_WhenPrefixEndsWithWhiteSpaceInsideTheSubject_ShouldFail()
+			{
+				string subject = "AbbeyRoad";
+
+				async Task Act()
+					=> await That(subject).StartsWith("Abbey ").IgnoringTrailingWhiteSpace();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with "Abbey " ignoring trailing whitespace,
+					             but it was "AbbeyRoad", which differs at index 5:
+					                     ↓ (actual)
+					               "AbbeyRoad"
+					               "Abbey "
+					                     ↑ (expected prefix)
+					             """)
+					.Because("only whitespace at the end of the subject is ignored, not the space the prefix requires inside it");
+			}
+
+			[Fact]
+			public async Task
+				IgnoringTrailingWhiteSpace_WhenPrefixReachesTheEndOfTheSubject_ShouldIgnoreItsTrailingWhiteSpace()
+			{
+				string subject = "Abbey";
+
+				async Task Act()
+					=> await That(subject).StartsWith("Abbey \t").IgnoringTrailingWhiteSpace();
+
+				await That(Act).DoesNotThrow()
+					.Because("the whitespace of the prefix lies at the end of the subject, where it is ignored");
+			}
+
+			[Fact]
+			public async Task
 				Using_WhenSubjectStartsWithIncorrectMatchAccordingToComparer_ShouldIncludeComparerInMessage()
 			{
 				string subject = "some arbitrary text";

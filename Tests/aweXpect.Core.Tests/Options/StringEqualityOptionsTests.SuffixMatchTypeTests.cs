@@ -84,16 +84,11 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("an unusable suffix must throw at the call instead of inside the returned task");
 		}
 
-		[Theory]
-		[InlineData(true, false)]
-		[InlineData(false, true)]
-		public async Task AreConsideredEqual_WhenExpectedIsOnlyWhiteSpaceThatIsIgnored_ShouldThrowArgumentException(
-			bool ignoreLeadingWhiteSpace, bool ignoreTrailingWhiteSpace)
+		[Fact]
+		public async Task AreConsideredEqual_WhenExpectedIsOnlyWhiteSpaceThatIsIgnored_ShouldThrowArgumentException()
 		{
 			StringEqualityOptions sut = new("expected");
-			sut.AsSuffix()
-				.IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace)
-				.IgnoringTrailingWhiteSpace(ignoreTrailingWhiteSpace);
+			sut.AsSuffix().IgnoringTrailingWhiteSpace();
 
 			async Task Act() => await sut.AreConsideredEqual("foo ", " ");
 
@@ -138,6 +133,27 @@ public sealed partial class StringEqualityOptionsTests
 			bool result = await sut.AreConsideredEqual("bar", " bar");
 
 			await That(result).IsEqualTo(expectMatch);
+		}
+
+		[Theory]
+		[InlineData("RoadAbbey", " Abbey", false)]
+		[InlineData("Road Abbey", " Abbey", true)]
+		[InlineData("Abbey", "\t Abbey", true)]
+		[InlineData(" \t Abbey", "  Abbey", true)]
+		[InlineData("Road Abbey", "  Road Abbey", true)]
+		[InlineData("foo ", " ", true)]
+		[InlineData("foo", " ", false)]
+		public async Task
+			AreConsideredEqual_WhenLeadingWhiteSpaceIsIgnored_ShouldOnlyIgnoreTheWhiteSpaceOfTheSuffixAtTheStartOfTheSubject(
+				string actual, string expected, bool expectMatch)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsSuffix().IgnoringLeadingWhiteSpace();
+
+			bool result = await sut.AreConsideredEqual(actual, expected);
+
+			await That(result).IsEqualTo(expectMatch)
+				.Because("the whitespace at the start of the suffix is only optional where it reaches the start of the subject");
 		}
 
 		[Theory]

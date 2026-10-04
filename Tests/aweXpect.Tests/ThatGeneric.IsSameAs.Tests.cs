@@ -49,6 +49,42 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenComparingTwoIndividualStringsWithSameValue_ShouldEscapeThem()
+			{
+				string subject = "say \"hi\"\nbye";
+				string other = new(subject.ToCharArray());
+
+				async Task Act()
+					=> await That(subject).IsSameAs(other);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             refers to "say \"hi\"\nbye",
+					             but it was "say \"hi\"\nbye"
+					             """)
+					.Because("a raw quote or line break would break the layout of the message");
+			}
+
+			[Fact]
+			public async Task WhenComparingTwoIndividualStringsWithSameValue_ShouldTruncateLongOnes()
+			{
+				string subject = new('a', 150);
+				string other = new(subject.ToCharArray());
+
+				async Task Act()
+					=> await That(subject).IsSameAs(other);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              refers to "{new string('a', 100)}…",
+					              but it was "{new string('a', 100)}…"
+					              """)
+					.Because("the maximum string length also applies to the string of a generic subject");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Other subject = new()

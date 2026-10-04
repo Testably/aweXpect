@@ -82,6 +82,27 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenLeadingWhitespaceIsIgnored_ShouldStillRequireTheWhitespaceOfTheSuffixInsideTheString()
+			{
+				string subject = "RoadAbbey";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(" Abbey").AsSuffix().IgnoringLeadingWhiteSpace();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             ends with " Abbey" ignoring leading whitespace,
+					             but it was "RoadAbbey", which differs at index 3:
+					                   ↓ (actual)
+					               "RoadAbbey"
+					                  " Abbey"
+					                   ↑ (expected suffix)
+					             """)
+					.Because("only whitespace at the start of the subject is ignored, not the space the suffix requires inside it");
+			}
+
+			[Fact]
 			public async Task WhenStringEndsWithExpected_ShouldSucceed()
 			{
 				string subject = "some text without out";
@@ -199,7 +220,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "other text",
-					             but it was "actual text", which differs before index 5:
+					             but it was "actual text", which differs at index 5:
 					                     ↓ (actual)
 					               "actual text"
 					                "other text"

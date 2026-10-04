@@ -700,7 +700,7 @@ public class StringDifferenceTests
 			await That(sut.IndexOfFirstMismatch(StringDifference.MatchType.Suffix)).IsEqualTo(13);
 			await That(sut.ToString()).IsEqualTo(
 				"""
-				differs before index 13:
+				differs at index 13:
 				                ↓ (actual)
 				  "This is a long text"
 				       "This is a text"
@@ -719,7 +719,7 @@ public class StringDifferenceTests
 			await That(sut.IndexOfFirstMismatch(StringDifference.MatchType.Suffix)).IsEqualTo(23);
 			await That(sut.ToString()).IsEqualTo(
 				"""
-				differs before index 23:
+				differs at index 23:
 				                           ↓ (actual)
 				   "this is a long text that differs in between two…"
 				  "this is a long text which differs in between two…"
@@ -742,7 +742,7 @@ public class StringDifferenceTests
 
 			await That(result).IsEqualTo(
 				"""
-				differs before index 11:
+				differs at index 11:
 				              ↓ (actual)
 				  "…bcdefghijkX"
 				            "aY"
@@ -762,7 +762,7 @@ public class StringDifferenceTests
 
 			await That(result).IsEqualTo(
 				"""
-				differs before index 54:
+				differs at index 54:
 				                                                                ↓ (actual)
 				             "…text contains lot of words and is used for testing the WordBound…"
 				  "…text contains lot of words and is used for testing the end of the WordBound…"
@@ -783,7 +783,7 @@ public class StringDifferenceTests
 
 			await That(result).IsEqualTo(
 				"""
-				differs before index 69:
+				differs at index 69:
 				                                                               ↓ (actual)
 				  "…'_contains' a long word between 5 and 15 characters after tHe last mismatc…"
 				  "…'_contains' a long word between 5 and 15 characters after the last mismatc…"
@@ -802,7 +802,7 @@ public class StringDifferenceTests
 			await That(sut.IndexOfFirstMismatch(StringDifference.MatchType.Suffix)).IsEqualTo(7);
 			await That(sut.ToString()).IsEqualTo(
 				"""
-				differs before index 7:
+				differs at index 7:
 				                 ↓ (actual)
 				  "a\\b\"c\u00A0dXe"
 				  "a\\b\"c\u00A0dYe"
@@ -840,7 +840,7 @@ public class StringDifferenceTests
 			await That(sut.IndexOfFirstMismatch(StringDifference.MatchType.Equality)).IsEqualTo(5);
 			await That(sut.ToString()).IsEqualTo(
 				"""
-				differs before index 5:
+				differs at index 5:
 				        ↓ (actual)
 				  "this IS a text that only…"
 				  "this is a text that only…"
@@ -934,7 +934,7 @@ public class StringDifferenceTests
 
 			await That(sut.ToString()).IsEqualTo(
 				"""
-				differs before index 44:
+				differs at index 44:
 				                                                    ↓ (actual)
 				  "Prefix with an accented cafe\u0301 and MORE text X here"
 				        "prefix with an accented café and more text Y here"
@@ -965,7 +965,7 @@ public class StringDifferenceTests
 
 			await That(sut.ToString()).IsEqualTo(
 					"""
-					differs before index 2:
+					differs at index 2:
 					     ↓ (actual)
 					  "abXccccccccccccc😀…"
 					  "abYccccccccccccc😀…"
@@ -1009,7 +1009,7 @@ public class StringDifferenceTests
 
 			await That(result).IsEqualTo(
 					"""
-					differs before index 12:
+					differs at index 12:
 					               ↓ (actual)
 					  "…😀aaaaaaaaaXtail"
 					  "…😀aaaaaaaaaYtail"

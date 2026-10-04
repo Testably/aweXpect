@@ -122,6 +122,29 @@ public sealed partial class ThatString
 					.Because("the dotted and dotless Turkish 'I' must not change which characters are considered equal");
 			}
 
+			[Theory]
+			[InlineData("forget", false)]
+			[InlineData("get it", true)]
+			[InlineData("for get", true)]
+			public async Task WhenIgnoringLeadingWhiteSpace_ShouldOnlyIgnoreTheWhiteSpaceOfThePatternAtTheStartOfTheSubject(
+				string subject, bool expectMatch)
+			{
+				async Task Act()
+					=> await That(subject).IsEqualTo(" g.t").AsRegex().IgnoringLeadingWhiteSpace();
+
+				await That(Act).Throws<XunitException>().OnlyIf(!expectMatch)
+					.WithMessage($"""
+					              Expected that subject
+					              matches regex " g.t" ignoring leading whitespace,
+					              but it did not match:
+					                ↓ (actual)
+					                {Formatter.Format(subject)}
+					                " g.t"
+					                ↑ (regex pattern)
+					              """)
+					.Because("the regex may match any part of the subject, so its space is only optional at the start of the subject");
+			}
+
 			[Fact]
 			public async Task WhenNotIgnoringCase_ShouldMatchCaseSensitiveIndependentOfTheCurrentCulture()
 			{

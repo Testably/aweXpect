@@ -114,7 +114,7 @@ built-in messages and respects the [formatting settings](../03-how-it-works/07-c
 | collection    | `["Help!", "Revolver"]`, with `(… and 2 more)` after `MaximumNumberOfCollectionItems` items                   |
 | other objects | their `ToString()` if it is overridden, otherwise their public members, e.g. `Album { Title = "Abbey Road" }` |
 
-Chars and strings on a single line are escaped like C# literals, so that every character can be told apart: a
+Chars and strings are always written on a single line and escaped like C# literals, so that every character can be told apart: a
 backslash, the enclosing quote, line breaks, tabs, control characters, invisible characters (like a non-breaking or a
 zero-width space), combining marks in text that is not normalized (like the accent of a decomposed `é`) and unpaired
 surrogates are shown as `\\`, `\"` (or `\'` in a char), `\n`, `\r`, `\t`, `\0` or `\uXXXX`. Exception messages and the

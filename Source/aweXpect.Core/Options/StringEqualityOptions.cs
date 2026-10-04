@@ -86,9 +86,11 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			return _matchType.AreConsideredEqual(actual, null, _ignoreCase, _comparer);
 		}
 
-		expectedString = Normalize(expectedString);
+		(bool IsStartAnchored, bool IsEndAnchored) anchoredEdges = GetAnchoredEdges();
+		expectedString = NormalizeExpected(expectedString, anchoredEdges);
 		Regex? regex = ValidatePattern(expectedString);
-		return AreConsideredEqualToPattern(Normalize(actual), expectedString, regex);
+		return AreConsideredEqualToPattern(
+			PadWithInnerWhiteSpace(Normalize(actual), expectedString, anchoredEdges), expectedString, regex);
 	}
 
 	/// <summary>
@@ -163,6 +165,9 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// <remarks>
 	///     Both strings are normalized once before the comparison, so that the options which change the length of the
 	///     strings are applied to the complete strings and not to the individual substrings that are compared.<br />
+	///     The leading or trailing whitespace of the <paramref name="expected" /> <see langword="string" /> is only ignored
+	///     where an occurrence reaches the start or the end of the <paramref name="actual" /> <see langword="string" />, so
+	///     that whitespace inside it still has to match.<br />
 	///     An <paramref name="expected" /> <see langword="string" /> that is empty after the normalization is rejected
 	///     for every match type, because it never occurs, so that a negated expectation could never fail.<br />
 	///     The pattern is validated outside the asynchronous part, so that an unusable pattern throws at the call
@@ -173,13 +178,14 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// </exception>
 	public ValueTask<int> CountOccurrences(string actual, string expected)
 	{
-		actual = Normalize(actual);
-		expected = Normalize(expected);
+		expected = NormalizeExpected(expected, (false, false));
 		Regex? regex = ValidatePattern(expected);
 		if (expected.Length == 0)
 		{
 			throw CreateEmptyPatternException(GetPatternKind() ?? "string");
 		}
+
+		actual = PadWithInnerWhiteSpace(Normalize(actual), expected, (false, false));
 
 		int? count = CountOccurrencesWithoutWindow(actual, expected, regex);
 		if (count is not null)
@@ -338,7 +344,6 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 
 		int[]? ignoredColumnsPerLine = GetIgnoredColumnsPerLine(actual);
 		actual = NormalizeLines(actual);
-		expected = NormalizeLines(expected);
 
 		int ignoredLineCount = 0;
 		if (_ignoreLeadingWhiteSpace && actual is not null && ignoredColumnsPerLine is not null)
@@ -352,7 +357,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			: new StringDifferenceSettings(ignoredLineCount, 0, ignoredColumnsPerLine);
 
 		actual = TrimWhiteSpace(actual);
-		expected = TrimWhiteSpace(expected);
+		expected = NormalizeExpected(expected, GetAnchoredEdges());
 
 		return _matchType.GetExtendedFailure(it, actual, expected, _ignoreCase,
 			_comparer ?? UseDefaultComparer(_ignoreCase), settings);
@@ -568,6 +573,77 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	[return: NotNullIfNotNull(nameof(value))]
 	private string? Normalize(string? value)
 		=> TrimWhiteSpace(NormalizeLines(value));
+
+	/// <summary>
+	///     Applies all options that transform the <paramref name="expected" /> value as a whole, but removes its whitespace
+	///     only at the <paramref name="anchoredEdges" />, which line up with the corresponding edge of the subject.
+	/// </summary>
+	[return: NotNullIfNotNull(nameof(expected))]
+	private string? NormalizeExpected(string? expected, (bool IsStartAnchored, bool IsEndAnchored) anchoredEdges)
+	{
+		expected = NormalizeLines(expected);
+		if (_ignoreLeadingWhiteSpace && anchoredEdges.IsStartAnchored)
+		{
+			expected = expected?.TrimStart();
+		}
+
+		if (_ignoreTrailingWhiteSpace && anchoredEdges.IsEndAnchored)
+		{
+			expected = expected?.TrimEnd();
+		}
+
+		return expected;
+	}
+
+	/// <summary>
+	///     Returns which edges of the expected value line up with the corresponding edge of the subject for the current
+	///     match type.
+	/// </summary>
+	/// <remarks>
+	///     A regex may match any part of the subject, like a substring. A custom match type keeps the behaviour of an exact
+	///     match, whose expected value covers the whole subject.
+	/// </remarks>
+	private (bool IsStartAnchored, bool IsEndAnchored) GetAnchoredEdges()
+		=> _matchType switch
+		{
+			PrefixMatchType => (true, false),
+			SuffixMatchType => (false, true),
+			ContainingMatchType or RegexMatchType => (false, false),
+			_ => (true, true),
+		};
+
+	/// <summary>
+	///     Surrounds the already normalized <paramref name="actual" /> value with the whitespace that the
+	///     <paramref name="expected" /> value has at an edge that is not anchored, so that this whitespace is optional
+	///     where the expected value reaches the edge of the subject, but still has to match inside the subject.
+	/// </summary>
+	/// <remarks>
+	///     An <paramref name="expected" /> value that consists only of whitespace is empty at an edge of the subject, and
+	///     an empty value never occurs, so a substring that consists only of whitespace can only occur inside the subject.
+	/// </remarks>
+	[return: NotNullIfNotNull(nameof(actual))]
+	private string? PadWithInnerWhiteSpace(string? actual, string expected,
+		(bool IsStartAnchored, bool IsEndAnchored) anchoredEdges)
+	{
+		int leading = _ignoreLeadingWhiteSpace && !anchoredEdges.IsStartAnchored
+			? expected.Length - expected.TrimStart().Length
+			: 0;
+		int trailing = _ignoreTrailingWhiteSpace && !anchoredEdges.IsEndAnchored
+			? expected.Length - expected.TrimEnd().Length
+			: 0;
+		if (actual is null || leading + trailing == 0 ||
+		    (!anchoredEdges.IsStartAnchored && !anchoredEdges.IsEndAnchored &&
+		     Math.Max(leading, trailing) == expected.Length))
+		{
+			return actual;
+		}
+
+#if NET8_0_OR_GREATER
+		return string.Concat(expected.AsSpan(0, leading), actual, expected.AsSpan(expected.Length - trailing));
+#else
+		return expected.Substring(0, leading) + actual + expected.Substring(expected.Length - trailing);
+#endif
+	}
 
 	/// <summary>
 	///     Applies the options that transform the lines of the <paramref name="value" />.

@@ -103,20 +103,6 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
-			public async Task WhenUnexpectedIsEmptyAfterTheWhiteSpaceIsIgnored_ShouldThrowArgumentException()
-			{
-				string subject = "a b";
-
-				async Task Act()
-					=> await That(subject).DoesNotContain(" ").IgnoringTrailingWhiteSpace();
-
-				await That(Act).Throws<ArgumentException>()
-					.WithMessage("The 'unexpected' string cannot be empty.").AsPrefix().And
-					.WithParamName("unexpected")
-					.Because("an empty needle never occurs, so the negated expectation could never fail");
-			}
-
-			[Fact]
 			public async Task WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "some text";
@@ -142,6 +128,24 @@ public sealed partial class ThatString
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("unexpected").And
 					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
+			}
+
+			[Theory]
+			[InlineData("ab ", true)]
+			[InlineData("a b", false)]
+			public async Task WhenUnexpectedIsWhiteSpaceAndTrailingWhiteSpaceIsIgnored_ShouldOnlyFindItInsideTheSubject(
+				string subject, bool expectSuccess)
+			{
+				async Task Act()
+					=> await That(subject).DoesNotContain(" ").IgnoringTrailingWhiteSpace();
+
+				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+					.WithMessage($"""
+					              Expected that subject
+					              does not contain " " ignoring trailing whitespace,
+					              but it contained " " once in {Formatter.Format(subject)}
+					              """)
+					.Because("the whitespace at the end of the subject is ignored, but not the one inside it");
 			}
 
 			[Fact]
@@ -173,18 +177,23 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
-			public async Task WhenUnexpectedWildcardIsEmptyAfterTheWhiteSpaceIsIgnored_ShouldThrowArgumentException()
+			[Theory]
+			[InlineData("ab ", true)]
+			[InlineData("a b", false)]
+			public async Task
+				WhenUnexpectedWildcardIsWhiteSpaceAndTrailingWhiteSpaceIsIgnored_ShouldOnlyFindItInsideTheSubject(
+					string subject, bool expectSuccess)
 			{
-				string subject = "a b";
-
 				async Task Act()
 					=> await That(subject).DoesNotContain(" ").AsWildcard().IgnoringTrailingWhiteSpace();
 
-				await That(Act).Throws<ArgumentException>()
-					.WithMessage("The 'unexpected' wildcard pattern cannot be empty.").AsPrefix().And
-					.WithParamName("unexpected")
-					.Because("an empty pattern never occurs, so the negated expectation could never fail");
+				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+					.WithMessage($"""
+					              Expected that subject
+					              does not contain " " as wildcard ignoring trailing whitespace,
+					              but it contained " " once in {Formatter.Format(subject)}
+					              """)
+					.Because("the whitespace at the end of the subject is ignored, but not the one inside it");
 			}
 		}
 

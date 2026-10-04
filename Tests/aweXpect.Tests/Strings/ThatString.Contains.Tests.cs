@@ -11,6 +11,70 @@ public sealed partial class ThatString
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task IgnoringLeadingWhiteSpace_WhenRegexStartsWithWhiteSpaceInsideTheSubject_ShouldFail()
+			{
+				string subject = "forget";
+
+				async Task Act()
+					=> await That(subject).Contains(" g.t").AsRegex().IgnoringLeadingWhiteSpace();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains " g.t" as regex ignoring leading whitespace at least once,
+					             but it did not contain " g.t" in "forget"
+					             """)
+					.Because("only whitespace at the start of the subject is ignored, not the space the pattern requires inside it");
+			}
+
+			[Fact]
+			public async Task
+				IgnoringLeadingWhiteSpace_WhenSubstringReachesTheStartOfTheSubject_ShouldIgnoreItsLeadingWhiteSpace()
+			{
+				string subject = "get it";
+
+				async Task Act()
+					=> await That(subject).Contains("\t get").IgnoringLeadingWhiteSpace();
+
+				await That(Act).DoesNotThrow()
+					.Because("the whitespace of the substring lies at the start of the subject, where it is ignored");
+			}
+
+			[Fact]
+			public async Task IgnoringLeadingWhiteSpace_WhenSubstringStartsWithWhiteSpaceInsideTheSubject_ShouldFail()
+			{
+				string subject = "forget";
+
+				async Task Act()
+					=> await That(subject).Contains(" get").IgnoringLeadingWhiteSpace();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains " get" ignoring leading whitespace at least once,
+					             but it did not contain " get" in "forget"
+					             """)
+					.Because("only whitespace at the start of the subject is ignored, not the space the substring requires inside it");
+			}
+
+			[Fact]
+			public async Task IgnoringLeadingWhiteSpace_WhenWildcardStartsWithWhiteSpaceInsideTheSubject_ShouldFail()
+			{
+				string subject = "forget";
+
+				async Task Act()
+					=> await That(subject).Contains(" g?t").AsWildcard().IgnoringLeadingWhiteSpace();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains " g?t" as wildcard ignoring leading whitespace at least once,
+					             but it did not contain " g?t" in "forget"
+					             """)
+					.Because("only whitespace at the start of the subject is ignored, not the space the pattern requires inside it");
+			}
+
+			[Fact]
 			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -51,20 +115,6 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
-			public async Task WhenExpectedIsEmptyAfterTheWhiteSpaceIsIgnored_ShouldThrowArgumentException()
-			{
-				string subject = "a b";
-
-				async Task Act()
-					=> await That(subject).Contains(" ").IgnoringLeadingWhiteSpace();
-
-				await That(Act).Throws<ArgumentException>()
-					.WithMessage("The 'expected' string cannot be empty.").AsPrefix().And
-					.WithParamName("expected")
-					.Because("an empty needle never occurs, so the failure would contradict the subject");
-			}
-
-			[Fact]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "some text";
@@ -90,6 +140,24 @@ public sealed partial class ThatString
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("expected").And
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
+			}
+
+			[Theory]
+			[InlineData("a b", true)]
+			[InlineData(" ab", false)]
+			public async Task WhenExpectedIsWhiteSpaceAndLeadingWhiteSpaceIsIgnored_ShouldOnlyFindItInsideTheSubject(
+				string subject, bool expectSuccess)
+			{
+				async Task Act()
+					=> await That(subject).Contains(" ").IgnoringLeadingWhiteSpace();
+
+				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+					.WithMessage($"""
+					              Expected that subject
+					              contains " " ignoring leading whitespace at least once,
+					              but it did not contain " " in {Formatter.Format(subject)}
+					              """)
+					.Because("the whitespace at the start of the subject is ignored, but not the one inside it");
 			}
 
 			[Fact]
