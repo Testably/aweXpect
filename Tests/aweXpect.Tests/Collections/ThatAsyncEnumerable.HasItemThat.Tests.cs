@@ -127,10 +127,6 @@ public sealed partial class ThatAsyncEnumerable
 					                 1,
 					                 3
 					               ],
-					               [
-					                 1,
-					                 4
-					               ],
 					               (… and maybe more)
 					             ]
 
