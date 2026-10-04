@@ -43,7 +43,7 @@ public static partial class ThatEnumerable
 					SubjectEqualityOptions<TItem, TItem> itemOptions =
 						new(state.Options);
 					EndsWithConstraint<IEnumerable<TItem>?, TItem, TItem> constraint = new(it, grammars,
-						state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.ExpectedValues),
+						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), itemOptions, itemOptions);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
@@ -74,7 +74,7 @@ public static partial class ThatEnumerable
 					SubjectEqualityOptions<string?, string?> itemOptions =
 						new(state.Options);
 					EndsWithConstraint<IEnumerable<string?>?, string?, string?> constraint = new(it, grammars,
-						state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.ExpectedValues),
+						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), itemOptions, itemOptions);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
@@ -105,7 +105,7 @@ public static partial class ThatEnumerable
 				{
 					SubjectEqualityOptions<TItem, TItem> itemOptions = new(state.Options);
 					EndsWithConstraint<IEnumerable<TItem>?, TItem, TItem> constraint = new(it, grammars,
-						state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.ExpectedValues),
+						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), itemOptions, itemOptions);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
@@ -138,7 +138,7 @@ public static partial class ThatEnumerable
 						new(state.Options);
 					EndsWithConstraint<IEnumerable?, object?, TItem> constraint = new(
 						it, grammars,
-						state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.ExpectedValues),
+						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), itemOptions, itemOptions);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
@@ -180,7 +180,7 @@ public static partial class ThatEnumerable
 						new(state.Options);
 					EndsWithConstraint<IEnumerable?, object?, string?> constraint = new(
 						it, grammars,
-						Formatter.Format(state.ExpectedItems), state.ExpectedItems, itemOptions,
+						null, state.ExpectedItems, state.ExpectedItems, itemOptions,
 						itemOptions);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
@@ -210,7 +210,7 @@ public static partial class ThatEnumerable
 				{
 					EndsWithConstraint<TCollection?, object?, TItem> constraint = new(
 						it, grammars,
-						state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.ExpectedValues),
+						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), state.Options);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
@@ -240,7 +240,7 @@ public static partial class ThatEnumerable
 				{
 					EndsWithConstraint<TCollection?, object?, string?> constraint = new(
 						it, grammars,
-						state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.ExpectedValues),
+						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), state.Options);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
@@ -272,7 +272,7 @@ public static partial class ThatEnumerable
 				{
 					EndsWithConstraint<TCollection?, object?, TItem> constraint = new(
 						it, grammars,
-						state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.ExpectedValues),
+						state.ExpectedExpression?.TrimCommonWhiteSpace(), state.ExpectedValues,
 						state.ExpectedValues.ToArray(), state.Options);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
