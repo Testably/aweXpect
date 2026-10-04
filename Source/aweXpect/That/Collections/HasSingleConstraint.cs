@@ -169,7 +169,7 @@ internal sealed class HasSingleConstraint<TEnumerable, TItem>(
 
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		_materialized = materialized.Value;
-		foreach (TItem item in materialized.Items)
+		foreach (TItem item in materialized)
 		{
 			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 			{

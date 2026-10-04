@@ -104,7 +104,7 @@ internal sealed class CollectionCountConstraint<TEnumerable, TItem>(
 
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		int count = 0;
-		foreach (TItem _ in materialized.Items)
+		foreach (TItem _ in materialized)
 		{
 			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 			{

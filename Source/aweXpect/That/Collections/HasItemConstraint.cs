@@ -223,7 +223,7 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>
 		CancellationToken cancellationToken)
 	{
 		int index = 0;
-		foreach (TItem item in materialized.Items)
+		foreach (TItem item in materialized)
 		{
 			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 			{
@@ -245,7 +245,7 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>
 		CancellationToken cancellationToken)
 	{
 		int index = 0;
-		foreach (TItem item in materialized.Items)
+		foreach (TItem item in materialized)
 		{
 			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 			{

@@ -265,7 +265,7 @@ internal sealed class ContainConstraint<TEnumerable, TItem>(
 
 	private ContainConstraint<TEnumerable, TItem> Count(CollectionItems<TItem> materialized, CancellationToken cancellationToken)
 	{
-		foreach (TItem item in materialized.Items)
+		foreach (TItem item in materialized)
 		{
 			if (IsCanceled(materialized, cancellationToken) ||
 			    (MatchesSynchronously(item) && IsDecidedBy(materialized, item)))
@@ -280,7 +280,7 @@ internal sealed class ContainConstraint<TEnumerable, TItem>(
 	private async ValueTask<ConstraintResult> CountAsync(CollectionItems<TItem> materialized,
 		CancellationToken cancellationToken)
 	{
-		foreach (TItem item in materialized.Items)
+		foreach (TItem item in materialized)
 		{
 			if (IsCanceled(materialized, cancellationToken) ||
 			    (await Matches(item) && IsDecidedBy(materialized, item)))
