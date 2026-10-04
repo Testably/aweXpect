@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using aweXpect.Core;
 using aweXpect.Core.Constraints;
 #if NET8_0_OR_GREATER
 using System.Collections.Generic;

@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using aweXpect.Core.Extending;
-using aweXpect.Core.Helpers;
 using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Delegates;

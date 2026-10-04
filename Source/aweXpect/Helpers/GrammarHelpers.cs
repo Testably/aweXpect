@@ -1,11 +1,13 @@
-﻿using aweXpect.Core;
+﻿#if !DEBUG
+using aweXpect.Core;
 
 namespace aweXpect.Helpers;
 
 /// <remarks>
-///     This class is duplicated from the <c>aweXpect.Core</c> assembly, because outside of the <c>Debug</c>
+///     This class is a temporary copy from the <c>aweXpect.Core</c> assembly, because outside of the <c>Debug</c>
 ///     configuration this assembly is compiled against the released <c>aweXpect.Core</c> package, which does not
-///     know about new members yet.
+///     know about these members yet. In <c>Debug</c> the project reference provides them, and a copy would be
+///     ambiguous. Delete it once aweXpect compiles against a Core release that has them.
 /// </remarks>
 internal static class GrammarHelpers
 {
@@ -36,3 +38,4 @@ internal static class GrammarHelpers
 	public static string SubjectVerb(this ExpectationGrammars grammars, string it, string singular, string plural)
 		=> grammars.IsPlural() && it != SubjectPronoun ? plural : singular;
 }
+#endif

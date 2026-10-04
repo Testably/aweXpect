@@ -35,8 +35,8 @@ Besides the success and the failure of the expectation, cover what a caller can 
   results, the formatter and the customizations, and changes less often, so extensions that reference it conflict
   less with each other. Some parts only exist in aweXpect: the expectations themselves, the result types of many
   built-in expectations (e.g. `SingleItemResult`), the extension methods on the equivalency options (e.g.
-  `IgnoringMember`) and the internal helpers of the built-in expectations. Copy a small helper into your extension,
-  like the [`Get()` method](./index.md#expectationbuilder), instead of referencing aweXpect.
+  `IgnoringMember`) and the internal helpers of the built-in expectations. Copy a small helper into your extension
+  instead of referencing aweXpect.
 - Target `netstandard2.0`, so that the extension also works on .NET Framework, and add further target frameworks
   only if you need their APIs. The samples on these pages also compile against the `netstandard2.0` build.
 - The test project that uses your extension also references the `aweXpect` package. It brings the built-in

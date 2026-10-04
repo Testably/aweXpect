@@ -1,9 +1,9 @@
-﻿using aweXpect.Core.Helpers;
+﻿using aweXpect.Core.Extending;
 using aweXpect.Core.Sources;
 
-namespace aweXpect.Core.Tests.Core.Helpers;
+namespace aweXpect.Core.Tests.Core.Extending;
 
-public class ExpectHelpersTests
+public sealed class ThatExtensionsTests
 {
 	[Fact]
 	public async Task Get_WhenClassDoesNotHaveAnExpectationBuilder_ShouldThrowNotSupportedException()

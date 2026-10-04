@@ -3,7 +3,7 @@ using System.Text;
 using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Sources;
 using aweXpect.Core.Tests.TestHelpers;

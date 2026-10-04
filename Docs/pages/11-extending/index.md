@@ -59,26 +59,15 @@ using `.And` and `.Or`.
 ### ExpectationBuilder
 
 The next step is to extract the `ExpectationBuilder`. In order to keep the automatic code suggestions for developers
-clear, you have to cast the `IThat<TType>` interface to `IExpectThat<TType>`, which will then give access to the
-`ExpectationBuilder` property.
-To improve readability you can copy the following internal extension method into your project:
-
-```csharp
-[ExcludeFromCodeCoverage]
-internal static IExpectThat<T> Get<T>(this IThat<T> subject)
-{
-    if (subject is IExpectThat<T> thatIs)
-    {
-        return thatIs;
-    }
-
-    throw Tracing.WriteException(new NotSupportedException("IThat<T> must also implement IExpectThat<T>."));
-}
-```
+clear, `IThat<TType>` doesn't show it. The `Get()` extension method in the `aweXpect.Core.Extending` namespace gives
+access to it. This namespace holds the helpers for extension authors that extend types every user sees, so they only
+appear where you import it.
 
 You can then use the `ExpectationBuilder` to add an `IsRadioFriendlyConstraint`:
 
 ```csharp
+using aweXpect.Core.Extending;
+
 public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<Track?> subject)
     => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
             => new IsRadioFriendlyConstraint(it, grammars)),

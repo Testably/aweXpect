@@ -506,6 +506,12 @@ public sealed class GuaranteesNotNullTests
 			return false;
 		}
 
+		// `Get()` exposes the expectation builder to extension authors and verifies nothing itself.
+		if (method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(IExpectThat<>))
+		{
+			return false;
+		}
+
 		Type? receiver = method.IsStatic
 			? method.GetParameters().FirstOrDefault()?.ParameterType
 			: method.DeclaringType;
