@@ -19,8 +19,8 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             is not equatable to 1,
 					             but it was ThatGeneric.IsNotEquatableTo.Wrapper {
-					               Value = 1
-					             }
+					                 Value = 1
+					               }
 					             """);
 			}
 
@@ -37,11 +37,11 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             is not equatable to ThatGeneric.IsNotEquatableTo.Wrapper {
-					               Value = 1
-					             },
+					                 Value = 1
+					               },
 					             but it was ThatGeneric.IsNotEquatableTo.Wrapper {
-					               Value = 1
-					             }
+					                 Value = 1
+					               }
 					             """);
 			}
 
@@ -123,8 +123,8 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             is equatable to 2,
 					             but it was ThatGeneric.IsNotEquatableTo.Wrapper {
-					               Value = 1
-					             }
+					                 Value = 1
+					               }
 					             """);
 			}
 
@@ -141,11 +141,11 @@ public sealed partial class ThatGeneric
 					.WithMessage("""
 					             Expected that subject
 					             is equatable to ThatGeneric.IsNotEquatableTo.Wrapper {
-					               Value = 3
-					             },
+					                 Value = 3
+					               },
 					             but it was ThatGeneric.IsNotEquatableTo.Wrapper {
-					               Value = 1
-					             }
+					                 Value = 1
+					               }
 					             """);
 			}
 

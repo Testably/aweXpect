@@ -294,6 +294,64 @@ public class ExpectTests
 	}
 
 	[Fact]
+	public async Task ThatAll_WhenACombinationWithAMultiLineValueFails_ShouldIndentTheValueLikeTheEntry()
+	{
+		MyClass expected = new()
+		{
+			Value = 1,
+		};
+		MyClass subject = new()
+		{
+			Value = 1,
+		};
+
+		async Task Act()
+			=> await ThatAll(That(subject).IsSameAs(expected).And.IsNotNull());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that subject refers to ExpectTests.MyClass {
+			                     Value = 1
+			                   } and is not null
+			             but
+			              [01] it was ExpectTests.MyClass {
+			                     Value = 1
+			                   }
+			             """)
+			.Because("the operands of a combination are indented like a single expectation");
+	}
+
+	[Fact]
+	public async Task ThatAll_WhenAMemberExpectationWithAMultiLineValueFails_ShouldIndentTheValueLikeTheEntry()
+	{
+		MyClass expected = new()
+		{
+			Value = 1,
+		};
+		MyHolder subject = new(new MyClass
+		{
+			Value = 1,
+		});
+
+		async Task Act()
+			=> await ThatAll(That(subject).Is<MyHolder>().Whose(h => h.Inner, i => i.IsSameAs(expected)));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that subject is of type ExpectTests.MyHolder whose Inner refers to ExpectTests.MyClass {
+			                     Value = 1
+			                   }
+			             but
+			              [01] Inner was ExpectTests.MyClass {
+			                     Value = 1
+			                   }
+			             """)
+			.Because("the expectation on a member is indented like a single expectation");
+	}
+
+	[Fact]
 	public async Task ThatAll_WhenAMemberFails_ShouldReleaseItsMaterializedSourceAfterTheFailureMessage()
 	{
 		DisposeTrackingEnumerable source = new(null, Enumerable.Range(1, 20).ToArray());
@@ -428,6 +486,38 @@ public class ExpectTests
 			             content3
 			             """)
 			.Because("the failure of a member of a succeeded combination is not reported, so neither is its context");
+	}
+
+	[Fact]
+	public async Task ThatAll_WhenAWhichExpectationWithAMultiLineValueFails_ShouldIndentTheValueLikeTheEntry()
+	{
+		MyClass expected = new()
+		{
+			Value = 1,
+		};
+		MyClass[] subject =
+		[
+			new()
+			{
+				Value = 1,
+			},
+		];
+
+		async Task Act()
+			=> await ThatAll(That(subject).HasSingle().Which.IsSameAs(expected));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that subject has a single item that refers to ExpectTests.MyClass {
+			                     Value = 1
+			                   }
+			             but
+			              [01] it was ExpectTests.MyClass {
+			                     Value = 1
+			                   }
+			             """)
+			.Because("the expectation on the item is indented like a single expectation");
 	}
 
 	[Fact]
@@ -719,6 +809,16 @@ public class ExpectTests
 		}
 
 		#endregion
+	}
+
+	private sealed class MyClass
+	{
+		public int Value { get; set; }
+	}
+
+	private sealed class MyHolder(MyClass inner)
+	{
+		public MyClass Inner { get; } = inner;
 	}
 
 	private sealed class MyExpectation(Expectation.Result result, params ResultContext[] contexts) : Expectation

@@ -52,19 +52,19 @@ public static partial class ThatGeneric
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is equatable to ", "are equatable to "));
-			Formatter.Format(stringBuilder, expected);
+			Formatter.Format(stringBuilder, expected, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
-			Formatter.Format(stringBuilder, Actual);
+			Formatter.Format(stringBuilder, Actual, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("is not equatable to ", "are not equatable to "));
-			Formatter.Format(stringBuilder, expected);
+			Formatter.Format(stringBuilder, expected, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

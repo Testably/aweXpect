@@ -20,6 +20,19 @@ public partial class ConstraintResultTests
 		}
 
 
+		[Fact]
+		public async Task SetOutcome_AfterInvert_ShouldBeInverted()
+		{
+			MyExpectationOnlyConstraintResult<int> sut = new(
+				ExpectationGrammars.None, "(note)", "(not note)");
+			sut.Invert();
+
+			sut.SetOutcome(Outcome.Success);
+
+			await That(sut.Outcome).IsEqualTo(Outcome.Failure)
+				.Because("the outcome is set for the expectation that is not negated, like for ConstraintResult.WithValue<T>");
+		}
+
 		[Theory]
 		[InlineData(Outcome.Success)]
 		[InlineData(Outcome.Failure)]
@@ -32,6 +45,23 @@ public partial class ConstraintResultTests
 			sut.SetOutcome(outcome);
 
 			await That(sut.Outcome).IsEqualTo(outcome);
+		}
+
+		[Theory]
+		[InlineData(Outcome.Success, Outcome.Failure)]
+		[InlineData(Outcome.Failure, Outcome.Success)]
+		[InlineData(Outcome.FailureBothWays, Outcome.FailureBothWays)]
+		[InlineData(Outcome.Undecided, Outcome.Undecided)]
+		public async Task SetOutcome_WhenInverted_ShouldInvertSuccessAndFailure(Outcome outcome, Outcome expected)
+		{
+			MyExpectationOnlyConstraintResult<int> sut = new(
+				ExpectationGrammars.None, "(note)", "(not note)");
+			sut.SetOutcome(outcome);
+
+			sut.Invert();
+
+			await That(sut.Outcome).IsEqualTo(expected)
+				.Because("the negated text is rendered, so the verdict must be negated as well");
 		}
 
 		[Fact]
@@ -156,6 +186,45 @@ public partial class ConstraintResultTests
 			ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
 
 			await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		}
+
+		[Fact]
+		public async Task InAnd_WhenNegated_WithOutcomeSetByDerivedClass_ShouldTakePartInTheCombination()
+		{
+			MyExpectationOnlyConstraintResult<int> derived = new(ExpectationGrammars.None, "(note)", "(not note)");
+			derived.SetOutcome(Outcome.Failure);
+			AndNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success)));
+			node.AddNode(new DummyNode("", () => derived));
+
+			ConstraintResult result = await node.IsMetBy(0, null!, CancellationToken.None);
+			result.Negate();
+
+			await That(result.Outcome).IsEqualTo(Outcome.Success)
+				.Because("the negation of a failed operand is met");
+		}
+
+		[Fact]
+		public async Task InAnd_WhenNegated_WithSuccessSetByDerivedClass_ShouldFail()
+		{
+			async Task Act()
+				=> await That(1).DoesNotComplyWith(it =>
+				{
+					it.IsEqualTo(1);
+					((IExpectThat<int>)it).ExpectationBuilder.And(" ").AddConstraint((_, grammars) =>
+					{
+						MyExpectationOnlyConstraintResult<int> note = new(grammars, "(note)", "(not note)");
+						note.SetOutcome(Outcome.Success);
+						return note;
+					});
+				});
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that 1
+				             is not equal to 1 (not note),
+				             but it was 1*
+				             """).AsWildcard()
+				.Because("both operands are met, so their negation fails");
 		}
 
 		[Fact]

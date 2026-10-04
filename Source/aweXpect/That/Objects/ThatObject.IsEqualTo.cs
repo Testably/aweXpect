@@ -143,14 +143,14 @@ public static partial class ThatObject
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
-				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
+				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
-				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
+				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
@@ -181,14 +181,14 @@ public static partial class ThatObject
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
-				Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
+				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
-				Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
+				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
@@ -219,14 +219,14 @@ public static partial class ThatObject
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
-				Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
+				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
-				Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
+				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));

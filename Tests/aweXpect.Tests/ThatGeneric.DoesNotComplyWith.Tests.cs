@@ -26,6 +26,18 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenInnerExpectationHasValueOfTheSubjectType_ShouldReturnTheSubject()
+			{
+				object[] inner = [1,];
+				object[] subject = [inner,];
+
+				object[]? result = await That(subject).DoesNotComplyWith(it => it.HasSingle().Which.IsNull());
+
+				await That(result).IsSameAs(subject)
+					.Because("the single item has the subject's type, but the result of DoesNotComplyWith is the subject");
+			}
+
+			[Fact]
 			public async Task WhenValueIsDifferent_ShouldSucceed()
 			{
 				string subject = "foo";

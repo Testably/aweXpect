@@ -58,6 +58,35 @@ public class ExpectTests
 		}
 
 		[Fact]
+		public async Task ShouldIndentMultiLineObjectsOfCombinationsLikeTheEntry()
+		{
+			MyClass subject = new()
+			{
+				Value = 1,
+			};
+			MyClass expected = new()
+			{
+				Value = 1,
+			};
+
+			async Task Act()
+				=> await ThatAll(That(subject).IsEqualTo(expected).Equivalent().And.Satisfies(_ => false));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected all of the following to succeed:
+				              [01] Expected that subject is equivalent to ExpectTests.MyClass {
+				                     Value = 1
+				                   } and satisfies _ => false
+				             but
+				              [01] it was ExpectTests.MyClass {
+				                     Value = 1
+				                   }
+				             """)
+				.Because("the objects are indented like the entry they belong to");
+		}
+
+		[Fact]
 		public async Task WhenAllConditionIsMet_ShouldSucceed()
 		{
 			bool subjectA = true;
@@ -368,5 +397,10 @@ public class ExpectTests
 				.WithMessage("You must provide at least one expectation*").AsWildcard().And
 				.WithParamName("expectations");
 		}
+	}
+
+	private sealed class MyClass
+	{
+		public int Value { get; set; }
 	}
 }

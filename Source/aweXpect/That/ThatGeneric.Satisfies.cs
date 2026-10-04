@@ -137,7 +137,7 @@ public static partial class ThatGeneric
 			}
 
 			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
-			Formatter.Format(stringBuilder, Actual);
+			Formatter.Format(stringBuilder, Actual, FormattingOptions.Indented(indentation));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -24,8 +24,8 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             does not satisfy _ => predicateResult,
 					             but it was ThatGeneric.Other {
-					               Value = 0
-					             }
+					                 Value = 0
+					               }
 					             """);
 			}
 
@@ -271,8 +271,8 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             does not satisfy _ => ++count <= 42 within 0:00.050,
 					             but it was ThatGeneric.Other {
-					               Value = 0
-					             }
+					                 Value = 0
+					               }
 					             """);
 			}
 		}

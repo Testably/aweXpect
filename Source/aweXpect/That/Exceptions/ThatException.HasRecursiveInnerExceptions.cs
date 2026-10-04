@@ -60,6 +60,7 @@ public static partial class ThatException
 			if (innerExceptions.Count > 0)
 			{
 				_innerExceptions = innerExceptions;
+				FurtherProcessingStrategy = FurtherProcessingStrategy.Continue;
 				Outcome = Outcome.Success;
 				return this;
 			}

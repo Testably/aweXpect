@@ -55,7 +55,6 @@ public static partial class ThatString
 			IFormatProvider? formatProvider) : base(it, grammars)
 		{
 			_formatProvider = formatProvider;
-			FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
 		}
 
 		/// <inheritdoc />

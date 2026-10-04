@@ -10,6 +10,42 @@ public sealed partial class ThatSpan
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task InAndChain_WhenLaterOperandsFail_ShouldExplainEachOfThem()
+			{
+				async Task Act()
+					=> await That("5".AsSpan()).IsParsableInto<int>().And.IsParsableInto<Guid>().And.IsParsableInto<DateTime>();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that "5".AsSpan()
+					             is parsable into int and is parsable into Guid and is parsable into DateTime,
+					             but Parse of Guid did throw a FormatException:
+					               Unrecognized Guid format.
+					             and Parse of DateTime did throw a FormatException:
+					               String '5' was not recognized as a valid DateTime.
+					             """)
+					.Because("a successful parse must not hide the failing operands that follow it");
+			}
+
+			[Fact]
+			public async Task InOr_WhenBothOperandsFail_ShouldExplainBoth()
+			{
+				async Task Act()
+					=> await That("abc".AsSpan()).IsParsableInto<int>().Or.IsParsableInto<Guid>();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that "abc".AsSpan()
+					             is parsable into int or is parsable into Guid,
+					             but Parse of int did throw a FormatException:
+					               The input string 'abc' was not in a correct format.
+					             and Parse of Guid did throw a FormatException:
+					               Unrecognized Guid format.
+					             """)
+					.Because("each alternative failed on its own, so both explain the failure");
+			}
+
+			[Fact]
 			public async Task WhenSpanIsNotParsable_ShouldFail()
 			{
 				async Task Act()

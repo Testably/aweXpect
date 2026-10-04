@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
@@ -108,11 +109,19 @@ public static partial class ThatGeneric
 		}
 
 		/// <summary>
-		///     The expectations may have a value of another type (e.g. the single item of <c>HasSingle()</c>), but the
-		///     result of <c>CompliesWith</c> is the subject.
+		///     The expectations may have another value (e.g. the single item of <c>HasSingle()</c>), even one of the
+		///     subject's type, but the result of <c>CompliesWith</c> is the subject.
 		/// </summary>
+		/// <remarks>
+		///     A result that already stores the subject is kept, which avoids the wrapper on the common path.
+		/// </remarks>
 		private static ConstraintResult KeepSubjectAsValue(ConstraintResult result, T actual)
-			=> result.TryGetStoredValue(out T? _) ? result : result.UseValue(actual);
+			=> result.TryGetStoredValue(out T? value) && IsSubject(value, actual) ? result : result.UseValue(actual);
+
+		private static bool IsSubject(T? value, T actual)
+			=> typeof(T).IsValueType
+				? EqualityComparer<T>.Default.Equals(value!, actual)
+				: ReferenceEquals(value, actual);
 
 		public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
 			CancellationToken cancellationToken)

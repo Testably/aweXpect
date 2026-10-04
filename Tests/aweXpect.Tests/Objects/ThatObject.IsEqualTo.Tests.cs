@@ -117,9 +117,10 @@ public sealed partial class ThatObject
 					                 Value = 1
 					               } and satisfies _ => false,
 					             but it was ThatObject.MyClass {
-					               Value = 1
-					             }
-					             """);
+					                 Value = 1
+					               }
+					             """)
+					.Because("the subject is laid out like the expected object");
 			}
 
 			[Theory]
