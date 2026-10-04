@@ -275,6 +275,27 @@ public class ManualExpectationBuilderTests
 	}
 
 	[Fact]
+	public async Task IsMetBy_WhenConstraintSucceeds_ShouldResolveReasonOnlyWhenTheEvaluationFails()
+	{
+		ManualExpectationBuilder<int> sut = new();
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(_ => true, "is foo"));
+		sut.AddReason(Task.FromResult<string?>("of a"));
+		aweXpect.Core.EvaluationContext.EvaluationContext context = new();
+		StringBuilder reasonsWhenMet = new();
+		StringBuilder reasonsWhenFailed = new();
+
+		await sut.IsMetBy(1, context, CancellationToken.None);
+		sut.AppendReasons(reasonsWhenMet);
+		await context.ResolvePendingReasons();
+		sut.AppendReasons(reasonsWhenFailed);
+
+		await That(reasonsWhenMet.ToString()).IsEmpty()
+			.Because("a met expectation does not wait for the reason");
+		await That(reasonsWhenFailed.ToString()).IsEqualTo(", because of a")
+			.Because("an outer negation can still fail the evaluation, whose failure message then shows the reason");
+	}
+
+	[Fact]
 	public async Task IsMetBy_WhenReasonIsResolvedAndConstraintSucceeds_ShouldNotApplyReason()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -351,6 +372,26 @@ public class ManualExpectationBuilderTests
 		await That(Act).Throws<InvalidOperationException>().WithMessage("foo");
 		await That(source.DisposeCount).IsEqualTo(1)
 			.Because("the evaluation context of its own is also released when the evaluation throws");
+	}
+
+	[Fact]
+	public async Task IsMetBy_WithoutContext_WhenMetMemberHasAsyncReason_AndEvaluationFails_ShouldAppendTheReason()
+	{
+		ManualExpectationBuilder<string> sut = new();
+		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+			.AddExpectations(length =>
+			{
+				length.AddConstraint((_, _) => new DummyConstraint<int>(v => v == 3, "equal to 3"));
+				length.AddReason(Task.FromResult<string?>("of a"));
+			});
+		sut.And();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(_ => false, "is bar"));
+
+		ConstraintResult result = await sut.IsMetBy("foo", CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.GetExpectationText()).IsEqualTo("length equal to 3, because of a and is bar")
+			.Because("the reason of the met member is shown like a string reason in the failure message");
 	}
 
 	[Fact]

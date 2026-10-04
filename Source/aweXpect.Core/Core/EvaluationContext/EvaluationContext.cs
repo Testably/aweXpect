@@ -9,6 +9,7 @@ namespace aweXpect.Core.EvaluationContext;
 internal class EvaluationContext : IEvaluationContext
 {
 	private EvaluationContext? _attempt;
+	private List<AsyncBecauseReason>? _pendingReasons;
 	private List<Action>? _releases;
 	private Dictionary<string, object?>? _store;
 
@@ -47,6 +48,36 @@ internal class EvaluationContext : IEvaluationContext
 	/// </summary>
 	public void ReleaseWithEvaluation(Action release)
 		=> (_releases ??= []).Add(release);
+
+	/// <summary>
+	///     Registers the <paramref name="reason" /> of a met expectation, which the failure message still shows when an
+	///     outer negation or combination fails the evaluation, so that <see cref="ResolvePendingReasons" /> resolves it.
+	/// </summary>
+	public void ResolveOnFailure(AsyncBecauseReason reason)
+	{
+		_pendingReasons ??= [];
+		if (!_pendingReasons.Contains(reason))
+		{
+			_pendingReasons.Add(reason);
+		}
+	}
+
+	/// <summary>
+	///     Resolves the reasons registered with <see cref="ResolveOnFailure" /> in this context and in its current
+	///     attempt, before the failure message of the evaluation is created.
+	/// </summary>
+	public async Task ResolvePendingReasons()
+	{
+		foreach (AsyncBecauseReason reason in _pendingReasons ?? [])
+		{
+			await reason.Resolve();
+		}
+
+		if (_attempt is not null)
+		{
+			await _attempt.ResolvePendingReasons();
+		}
+	}
 
 	/// <summary>
 	///     Releases the sources of all collections that were materialized in this context and in its current attempt,

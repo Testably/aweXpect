@@ -2,6 +2,7 @@
 using System.Text;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
 using Context = aweXpect.Core.EvaluationContext.EvaluationContext;
@@ -35,6 +36,20 @@ public class EvaluationContextTests
 		await context.ReleaseMaterializations();
 
 		await That(source.DisposeCount).IsEqualTo(1);
+	}
+
+	[Fact]
+	public async Task ResolvePendingReasons_ShouldAlsoResolveTheReasonsOfTheCurrentAttempt()
+	{
+		Context context = new();
+		Context attempt = await context.StartAttempt();
+		AsyncBecauseReason reason = new(Task.FromResult<string?>("of a"));
+		attempt.ResolveOnFailure(reason);
+
+		await context.ResolvePendingReasons();
+
+		await That(reason.ToString()).IsEqualTo(", because of a")
+			.Because("the failure message of the evaluation is created from the result of its last attempt");
 	}
 
 	[Fact]

@@ -236,12 +236,9 @@ internal class ExpectationNode : Node
 	{
 		foreach (IBecauseReason reason in reasons)
 		{
-			if (reason is AsyncBecauseReason asyncReason && context is ExpectationTextEvaluationContext)
-			{
-				await asyncReason.Resolve();
-			}
-
-			result = await reason.ApplyTo(result);
+			result = reason is AsyncBecauseReason asyncReason
+				? await asyncReason.ApplyToMember(result, context)
+				: await reason.ApplyTo(result);
 		}
 
 		return result;

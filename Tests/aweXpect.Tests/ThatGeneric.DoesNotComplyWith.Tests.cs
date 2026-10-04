@@ -53,6 +53,88 @@ public sealed partial class ThatGeneric
 			}
 		}
 
+		public sealed class BecauseTests
+		{
+			[Fact]
+			public async Task WhenAsyncReasonIsGivenForAMember_InOrCombination_ShouldIncludeTheReason()
+			{
+				Pair subject = new()
+				{
+					A = true,
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it
+						.Whose(p => p.A, a => a.IsTrue().Because(Task.FromResult<string?>("of a"))).Or
+						.Whose(p => p.B, b => b.IsTrue()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose A is not True, because of a and whose B is not True,
+					             but A was True
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenAsyncReasonIsGivenForTheExpectations_ShouldIncludeTheReason()
+			{
+				int subject = 5;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.IsEqualTo(5)
+						.Because(Task.FromResult<string?>("of x")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to 5, because of x,
+					             but it was 5
+					             """)
+					.Because("a reason that must be awaited is shown like a string reason, although the negated expectation is met");
+			}
+
+			[Fact]
+			public async Task WhenAsyncReasonIsGivenInNestedCompliesWith_ShouldIncludeTheReason()
+			{
+				int subject = 5;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.CompliesWith(x => x.IsEqualTo(5)
+						.Because(Task.FromResult<string?>("of x"))));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to 5, because of x,
+					             but it was 5
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenAsyncReasonIsGivenUnderDoubleNegation_ShouldIncludeTheReason()
+			{
+				int subject = 5;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.DoesNotComplyWith(x => x.IsEqualTo(6))
+						.Because(Task.FromResult<string?>("of x")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 6, because of x,
+					             but it was 5, which differs by -1
+					             """);
+			}
+
+			private sealed class Pair
+			{
+				public bool A { get; set; }
+				public bool B { get; set; }
+			}
+		}
+
 		public sealed class CombinationTests
 		{
 			[Fact]

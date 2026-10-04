@@ -644,6 +644,71 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenMemberExpectationHasAsyncReason_AndAnotherMemberFails_ShouldFollowTheMember()
+			{
+				MyCombinationClass subject = new()
+				{
+					A = true,
+				};
+
+				async Task Act()
+					=> await That(subject)
+						.Whose(o => o.A, v => v.IsTrue().Because(Task.FromResult<string?>("of a"))).And
+						.Whose(o => o.B, v => v.IsTrue());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose A is True, because of a and whose B is True,
+					             but B was False
+					             """)
+					.Because("a reason that must be awaited is shown like a string reason, although its member is met");
+			}
+
+			[Fact]
+			public async Task WhenMemberExpectationHasAsyncReason_WhenMet_ShouldNotAwaitTheReason()
+			{
+				bool reasonWasResolved = false;
+				Task<string?> becauseTask = Task.Delay(TimeSpan.FromSeconds(30)).ContinueWith(_ =>
+				{
+					reasonWasResolved = true;
+					return (string?)"of a";
+				});
+				MyCombinationClass subject = new()
+				{
+					A = true,
+				};
+
+				await That(subject).Whose(o => o.A, v => v.IsTrue().Because(becauseTask));
+
+				await That(reasonWasResolved).IsFalse()
+					.Because("a met expectation never builds a failure message, so it must not wait for the reason");
+			}
+
+			[Fact]
+			public async Task WhenMemberExpectationHasAsyncReason_WhenNegated_ShouldFollowTheMember()
+			{
+				MyCombinationClass subject = new()
+				{
+					A = true,
+					B = true,
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it
+						.Whose(o => o.A, v => v.IsTrue().Because(Task.FromResult<string?>("of a"))).And
+						.Whose(o => o.B, v => v.IsTrue()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose A is not True, because of a or whose B is not True,
+					             but A was True and B was True
+					             """)
+					.Because("a reason that must be awaited is shown like a string reason, although its member is met");
+			}
+
+			[Fact]
 			public async Task WhenMemberExpectationHasReason_InsideCompliesWith_ShouldFollowTheMember()
 			{
 				MyCombinationClass subject = new();

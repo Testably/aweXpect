@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 
 namespace aweXpect.Core.Helpers;
 
@@ -59,6 +60,48 @@ internal sealed class AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 		}
 
 		return result.AppendExpectationText(_appendMessage ??= stringBuilder => stringBuilder.Append(_message));
+	}
+
+	/// <summary>
+	///     Applies the reason to the <paramref name="result" /> of the expectations on a member.
+	/// </summary>
+	/// <remarks>
+	///     An outer negation or combination can still fail a met member, so the message is appended to a met
+	///     <paramref name="result" /> as well, and the reason is resolved when the evaluation in the
+	///     <paramref name="context" /> fails.
+	/// </remarks>
+	public async ValueTask<ConstraintResult> ApplyToMember(ConstraintResult result, IEvaluationContext context)
+	{
+		if (result.Outcome != Outcome.Success || context is ExpectationTextEvaluationContext)
+		{
+			await Resolve();
+		}
+		else
+		{
+			ResolveOnFailureOf(context);
+		}
+
+		if (_isResolved && _message is null)
+		{
+			return result;
+		}
+
+		return result.AppendExpectationText(_appendMessage ??= stringBuilder => stringBuilder.Append(_message));
+	}
+
+	/// <summary>
+	///     Registers the reason, unless it is already resolved, to be resolved when the evaluation in the
+	///     <paramref name="context" /> fails.
+	/// </summary>
+	public void ResolveOnFailureOf(IEvaluationContext context)
+	{
+		if (_isResolved)
+		{
+			return;
+		}
+
+		ObserveExceptions(reason);
+		(context as EvaluationContext.EvaluationContext)?.ResolveOnFailure(this);
 	}
 
 	/// <summary>
