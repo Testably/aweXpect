@@ -32,7 +32,7 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 		return sb.ToString();
 	}
 
-	public override async Task<ConstraintResult> IsMetBy<TValue>(
+	public override async ValueTask<ConstraintResult> IsMetBy<TValue>(
 		TValue value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -125,7 +125,7 @@ public abstract class EquivalencyExpectationBuilder : ExpectationBuilder
 	/// <summary>
 	///     Evaluate if the expectations are met by the <paramref name="value" />.
 	/// </summary>
-	public abstract Task<ConstraintResult> IsMetBy<TValue>(
+	public abstract ValueTask<ConstraintResult> IsMetBy<TValue>(
 		TValue value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken);

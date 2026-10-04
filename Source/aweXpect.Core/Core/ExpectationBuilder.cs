@@ -561,7 +561,7 @@ public abstract class ExpectationBuilder
 	///     they follow every suffix, e.g. constraints combined with <c>And</c> or <c>Or</c> and the timeout of
 	///     <c>Eventually</c>.
 	/// </remarks>
-	internal async Task<ConstraintResult> ApplyReasons(ConstraintResult result)
+	internal async ValueTask<ConstraintResult> ApplyReasons(ConstraintResult result)
 	{
 		if (_reasons is not null)
 		{

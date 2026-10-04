@@ -94,7 +94,7 @@ internal abstract class ComplyWithConstraintBase<TValue, TItem>
 	/// <param name="cancelEarly">Stops reading the items as soon as they determine the outcome.</param>
 	/// <param name="context">The evaluation context.</param>
 	/// <param name="cancellationToken">The cancellation token of the evaluation.</param>
-	private protected async Task<ConstraintResult> IsMetByItems(CollectionItems<TItem> materialized,
+	private protected async ValueTask<ConstraintResult> IsMetByItems(CollectionItems<TItem> materialized,
 		IEnumerable<TItem> items, bool cancelEarly, IEvaluationContext context, CancellationToken cancellationToken)
 	{
 		int index = 0;
@@ -134,7 +134,7 @@ internal abstract class ComplyWithConstraintBase<TValue, TItem>
 	/// <summary>
 	///     Classifies the items of the <paramref name="materialized" /> asynchronous enumerable by the item expectations.
 	/// </summary>
-	private protected async Task<ConstraintResult> IsMetByItems(IAsyncEnumerable<TItem> materialized,
+	private protected async ValueTask<ConstraintResult> IsMetByItems(IAsyncEnumerable<TItem> materialized,
 		IEvaluationContext context, CancellationToken cancellationToken)
 	{
 		LimitedCollection<TItem> items = new();

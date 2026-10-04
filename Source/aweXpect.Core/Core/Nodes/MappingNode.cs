@@ -166,20 +166,30 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	/// <summary>
 	///     Verifies if the <paramref name="value" /> of the member satisfies the expectations of the node.
 	/// </summary>
-	private async Task<ConstraintResult> IsMetByMember(TTarget? value,
+	private ValueTask<ConstraintResult> IsMetByMember(TTarget? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		if (value is TNarrowed narrowedValue)
 		{
-			return await base.IsMetBy(narrowedValue, context, cancellationToken);
+			return base.IsMetBy(narrowedValue, context, cancellationToken);
 		}
 
 		if (value is null)
 		{
-			return await base.IsMetBy<TNarrowed>(default, context, cancellationToken);
+			return base.IsMetBy<TNarrowed>(default, context, cancellationToken);
 		}
 
+		return GetNotApplicableResult(context, cancellationToken);
+	}
+
+	/// <summary>
+	///     Returns the expectations on a member whose runtime type is not <typeparamref name="TNarrowed" />, without
+	///     evaluating them.
+	/// </summary>
+	private async ValueTask<ConstraintResult> GetNotApplicableResult(IEvaluationContext context,
+		CancellationToken cancellationToken)
+	{
 		ConstraintResult expectationResult = await base.IsMetBy<TNarrowed>(default,
 			ExpectationTextEvaluationContext.For(context), cancellationToken);
 		return new NotApplicableConstraintResult(expectationResult.AppendExpectation);
@@ -188,7 +198,7 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	/// <summary>
 	///     Returns the expectations on the member, without evaluating them, for when the member value is not available.
 	/// </summary>
-	private Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+	private ValueTask<ConstraintResult> GetExpectationResult(IEvaluationContext context,
 		CancellationToken cancellationToken)
 		=> IsMetByMember(default, ExpectationTextEvaluationContext.For(context), cancellationToken);
 

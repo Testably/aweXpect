@@ -91,7 +91,7 @@ public sealed class ManualExpectationBuilder<TValue>(
 	/// <remarks>
 	///     The reasons are not applied to the result, see <see cref="AppendReasons" />.
 	/// </remarks>
-	public async Task<ConstraintResult> IsMetBy(
+	public async ValueTask<ConstraintResult> IsMetBy(
 		TValue value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -124,7 +124,7 @@ public sealed class ManualExpectationBuilder<TValue>(
 	///     timeout applies.<br />
 	///     The reasons are not applied to the result, see <see cref="AppendReasons" />.
 	/// </remarks>
-	public async Task<ConstraintResult> IsMetBy(TValue value, CancellationToken cancellationToken)
+	public async ValueTask<ConstraintResult> IsMetBy(TValue value, CancellationToken cancellationToken)
 	{
 		EvaluationContext.EvaluationContext context = new()
 		{
