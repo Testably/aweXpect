@@ -44,10 +44,14 @@ public static class Synchronously
 	{
 		if (CallerSchedulesContinuations())
 		{
-			return StartDetached(result.GetAwaiter).GetResult();
+			(bool isDetachedMet, TType detachedValue, Task<TType>? detachedEvaluation) = StartDetached(()
+				=> (result.TryGetValueRightAway(out TType value, out Task<TType>? evaluation), value, evaluation));
+			return isDetachedMet ? detachedValue : detachedEvaluation!.GetAwaiter().GetResult();
 		}
 
-		return result.GetAwaiter().GetResult();
+		return result.TryGetValueRightAway(out TType metValue, out Task<TType>? pendingEvaluation)
+			? metValue
+			: pendingEvaluation!.GetAwaiter().GetResult();
 	}
 
 	private static bool CallerSchedulesContinuations()

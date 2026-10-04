@@ -986,7 +986,7 @@ public static class PropertyResult
 		///     A match type that inspects the content of the value, e.g. a prefix or a pattern, cannot answer for a
 		///     <see langword="null" /> value, because it has no content.
 		/// </remarks>
-		public async Task<ConstraintResult> IsMetBy(TItem actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TItem actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			try

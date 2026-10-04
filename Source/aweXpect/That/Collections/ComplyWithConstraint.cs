@@ -282,7 +282,7 @@ internal sealed class ComplyWithConstraint<TEnumerable, TItem>(
 	/// <inheritdoc />
 	protected override Type ItemType => _itemType ?? typeof(TItem);
 
-	public async Task<ConstraintResult> IsMetBy(
+	public async ValueTask<ConstraintResult> IsMetBy(
 		TEnumerable actual,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -327,7 +327,7 @@ internal sealed class AsyncComplyWithConstraint<TItem>(
 	: ComplyWithConstraintBase<IAsyncEnumerable<TItem>?, TItem>(it, grammars, quantifier, expectations),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
-	public async Task<ConstraintResult> IsMetBy(
+	public async ValueTask<ConstraintResult> IsMetBy(
 		IAsyncEnumerable<TItem>? actual,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)

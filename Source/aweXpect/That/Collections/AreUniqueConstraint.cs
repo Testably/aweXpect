@@ -11,6 +11,7 @@ using aweXpect.Options;
 
 namespace aweXpect;
 
+#pragma warning disable S110 // The depth comes from the public quantified collection constraints and the result values of aweXpect.Core
 /// <summary>
 ///     The comparison of the items of <c>AreUnique</c>, shared by the synchronous and the asynchronous collections.
 /// </summary>
@@ -100,7 +101,7 @@ internal sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
 		base.AppendContexts(contexts);
 	}
 
-	public async Task<ConstraintResult> IsMetBy(
+	public async ValueTask<ConstraintResult> IsMetBy(
 		TEnumerable actual,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -196,7 +197,7 @@ internal sealed class AsyncAreUniqueConstraint<TItem, TMember>(
 		base.AppendContexts(contexts);
 	}
 
-	public async Task<ConstraintResult> IsMetBy(
+	public async ValueTask<ConstraintResult> IsMetBy(
 		IAsyncEnumerable<TItem>? actual,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)

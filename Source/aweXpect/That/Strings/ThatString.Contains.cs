@@ -80,7 +80,7 @@ public static partial class ThatString
 		private bool _isNegated;
 
 		/// <inheritdoc />
-		public async Task<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
 		{
 			_actual = actual;
 			if (actual is null)

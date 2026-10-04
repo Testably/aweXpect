@@ -137,7 +137,7 @@ internal sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>(
 		base.AppendContexts(contexts);
 	}
 
-	public async Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
+	public async ValueTask<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;
@@ -219,7 +219,7 @@ internal sealed class AsyncStartsWithConstraint<TItem, TMatch>(
 		base.AppendContexts(contexts);
 	}
 
-	public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
+	public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;

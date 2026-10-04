@@ -70,7 +70,7 @@ public static partial class ThatGeneric
 			expectations.Invoke(new ThatSubject<T>(_itemExpectationBuilder));
 		}
 
-		public async Task<ConstraintResult> IsMetBy(
+		public async ValueTask<ConstraintResult> IsMetBy(
 			T actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)

@@ -157,7 +157,7 @@ internal sealed class IsInOrderConstraint<TEnumerable, TItem, TMember>(
 	public override void AppendContexts(ResultContextCollector contexts)
 		=> _collectionContext.AppendTo(contexts);
 
-	public Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
+	public ValueTask<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;
@@ -165,13 +165,13 @@ internal sealed class IsInOrderConstraint<TEnumerable, TItem, TMember>(
 		Start(null);
 		if (actual.IsDefaultImmutableArray())
 		{
-			return Task.FromResult(this.AsNullSubject(It));
+			return new ValueTask<ConstraintResult>(this.AsNullSubject(It));
 		}
 
 		if (actual is null)
 		{
 			Outcome = Outcome.FailureBothWays;
-			return Task.FromResult<ConstraintResult>(this);
+			return new ValueTask<ConstraintResult>(this);
 		}
 
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
@@ -182,17 +182,17 @@ internal sealed class IsInOrderConstraint<TEnumerable, TItem, TMember>(
 			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 			{
 				Outcome = Outcome.Undecided;
-				return Task.FromResult<ConstraintResult>(this);
+				return new ValueTask<ConstraintResult>(this);
 			}
 
 			if (IsOutOfOrder(item))
 			{
-				return Task.FromResult<ConstraintResult>(this);
+				return new ValueTask<ConstraintResult>(this);
 			}
 		}
 
 		Outcome = Outcome.Success;
-		return Task.FromResult<ConstraintResult>(this);
+		return new ValueTask<ConstraintResult>(this);
 	}
 }
 
@@ -215,7 +215,7 @@ internal sealed class AsyncIsInOrderConstraint<TItem, TMember>(
 	public override void AppendContexts(ResultContextCollector contexts)
 		=> _collectionContext.AppendTo(contexts);
 
-	public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
+	public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;

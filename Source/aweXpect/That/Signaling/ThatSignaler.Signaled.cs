@@ -304,7 +304,7 @@ public static partial class ThatSignaler
 		private TimeSpan? _defaultTimeout;
 		private TimeSpan? _waitedTime;
 
-		public async Task<ConstraintResult> IsMetBy(Signaler actual, IEvaluationContext context,
+		public async ValueTask<ConstraintResult> IsMetBy(Signaler actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
@@ -363,7 +363,7 @@ public static partial class ThatSignaler
 		private TimeSpan? _defaultTimeout;
 		private TimeSpan? _waitedTime;
 
-		public async Task<ConstraintResult> IsMetBy(
+		public async ValueTask<ConstraintResult> IsMetBy(
 			Signaler<TParameter> actual,
 			IEvaluationContext context,
 			CancellationToken cancellationToken)

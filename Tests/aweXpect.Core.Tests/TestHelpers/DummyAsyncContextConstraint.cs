@@ -7,8 +7,8 @@ namespace aweXpect.Core.Tests.TestHelpers;
 
 internal class DummyAsyncContextConstraint<T>(Func<T, Task<ConstraintResult>> callback) : IAsyncContextConstraint<T>
 {
-	public Task<ConstraintResult> IsMetBy(T actual, IEvaluationContext context, CancellationToken cancellationToken)
-		=> callback(actual);
+	public ValueTask<ConstraintResult> IsMetBy(T actual, IEvaluationContext context, CancellationToken cancellationToken)
+		=> new ValueTask<ConstraintResult>(callback(actual));
 
 	public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null) { }
 }

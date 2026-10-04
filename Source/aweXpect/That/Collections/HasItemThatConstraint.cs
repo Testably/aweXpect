@@ -175,7 +175,7 @@ internal sealed class HasItemThatConstraint<TEnumerable, TItem>(
 	public override void AppendContexts(ResultContextCollector contexts)
 		=> _collectionContext.AppendTo(contexts);
 
-	public async Task<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
+	public async ValueTask<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;
@@ -235,7 +235,7 @@ internal sealed class AsyncHasItemThatConstraint<TItem>(
 	public override void AppendContexts(ResultContextCollector contexts)
 		=> _collectionContext.AppendTo(contexts);
 
-	public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
+	public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;

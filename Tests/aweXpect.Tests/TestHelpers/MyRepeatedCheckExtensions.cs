@@ -44,7 +44,7 @@ public static class MyRepeatedCheckExtensions
 	{
 		private int _returned;
 
-		public async Task<ConstraintResult> IsMetBy(Probe actual, IEvaluationContext context,
+		public async ValueTask<ConstraintResult> IsMetBy(Probe actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;

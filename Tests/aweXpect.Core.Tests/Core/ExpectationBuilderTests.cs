@@ -970,7 +970,7 @@ public class ExpectationBuilderTests
 	/// </remarks>
 	private sealed class AwaitingConstraint : IAsyncConstraint<int>
 	{
-		public async Task<ConstraintResult> IsMetBy(int actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(int actual, CancellationToken cancellationToken)
 		{
 			await Task.Delay(30.Seconds(), cancellationToken);
 			return new DummyConstraint<int>(_ => false, "awaits").IsMetBy(actual);

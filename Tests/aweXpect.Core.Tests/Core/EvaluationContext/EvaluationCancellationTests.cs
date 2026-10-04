@@ -204,12 +204,12 @@ public class EvaluationCancellationTests
 		public bool HasSameToken { get; private set; }
 		public TimeSpan? Timeout { get; private set; }
 
-		public Task<ConstraintResult> IsMetBy(bool actual, IEvaluationContext context,
+		public ValueTask<ConstraintResult> IsMetBy(bool actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Timeout = context.Cancellation.Timeout;
 			HasSameToken = context.Cancellation.Token == cancellationToken;
-			return Task.FromResult<ConstraintResult>(new DummyConstraintResult<bool>(Outcome.Success, actual, ""));
+			return new ValueTask<ConstraintResult>(new DummyConstraintResult<bool>(Outcome.Success, actual, ""));
 		}
 
 		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null) { }

@@ -422,6 +422,12 @@ for a `null` subject or when code of the caller threw. Code that checks for a fa
 `WithNotNullValue<T>` and `WithEqualToValue<T>` now derive from `WithValue<T>`, so an extension compiled against an
 earlier version has to be rebuilt.
 
+`IAsyncConstraint<T>.IsMetBy` and `IAsyncContextConstraint<T>.IsMetBy` return a `ValueTask<ConstraintResult>` instead
+of a `Task<ConstraintResult>`, so that a constraint that completes synchronously allocates no task: change the return
+type of an own implementation, and return `new ValueTask<ConstraintResult>(result)` instead of `Task.FromResult(result)`.
+Awaiting an expectation result uses a `ValueTaskAwaiter<T>`, which needs no change to `await`, but code compiled
+against an earlier version has to be rebuilt.
+
 The unused enum `aweXpect.Core.Helpers.MemberVisibilities` is gone. `aweXpect.Equivalency.IncludeMembers` selects the
 members that an equivalency comparison includes.
 

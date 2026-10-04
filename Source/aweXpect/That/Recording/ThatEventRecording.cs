@@ -32,7 +32,7 @@ public static partial class ThatEventRecording
 		private bool _stoppedEarly;
 		private TimeSpan? _waitedTime;
 
-		public async Task<ConstraintResult> IsMetBy(IEventRecording<TSubject> actual, IEvaluationContext context,
+		public async ValueTask<ConstraintResult> IsMetBy(IEventRecording<TSubject> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			_actual = actual;

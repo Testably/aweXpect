@@ -13,6 +13,7 @@ using System.Collections.Generic;
 
 namespace aweXpect;
 
+#pragma warning disable S110 // The depth comes from the public quantified collection constraints and the result values of aweXpect.Core
 /// <summary>
 ///     A quantified expectation on the items of a collection that a synchronous or an asynchronous predicate verifies,
 ///     shared by the synchronous and the asynchronous collections.
@@ -126,7 +127,7 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>
 		base.AppendContexts(contexts);
 	}
 
-	public Task<ConstraintResult> IsMetBy(
+	public ValueTask<ConstraintResult> IsMetBy(
 		TEnumerable actual,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -136,19 +137,19 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>
 		Actual = actual;
 		if (actual.IsDefaultImmutableArray())
 		{
-			return Task.FromResult(this.AsNullSubject(It));
+			return new ValueTask<ConstraintResult>(this.AsNullSubject(It));
 		}
 
 		if (actual is null)
 		{
-			return Task.FromResult<ConstraintResult>(this);
+			return new ValueTask<ConstraintResult>(this);
 		}
 
 		_useComparerOf?.Invoke(actual);
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		bool cancelEarly = CollectionItems<TItem>.CountOf(actual) is null;
 		return IsSynchronous
-			? Task.FromResult<ConstraintResult>(Verify(materialized, cancelEarly, cancellationToken))
+			? new ValueTask<ConstraintResult>(Verify(materialized, cancelEarly, cancellationToken))
 			: VerifyAsync(materialized, cancelEarly, cancellationToken);
 	}
 
@@ -171,7 +172,7 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>
 		return Finish(materialized);
 	}
 
-	private async Task<ConstraintResult> VerifyAsync(CollectionItems<TItem> materialized, bool cancelEarly,
+	private async ValueTask<ConstraintResult> VerifyAsync(CollectionItems<TItem> materialized, bool cancelEarly,
 		CancellationToken cancellationToken)
 	{
 		foreach (TItem item in materialized.Items)
@@ -265,7 +266,7 @@ internal sealed class AsyncCollectionConstraint<TItem>
 		base.AppendContexts(contexts);
 	}
 
-	public async Task<ConstraintResult> IsMetBy(
+	public async ValueTask<ConstraintResult> IsMetBy(
 		IAsyncEnumerable<TItem>? actual,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)

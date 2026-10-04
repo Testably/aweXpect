@@ -85,7 +85,7 @@ internal sealed class AsyncIsEmptyConstraint<TItem>(string it, ExpectationGramma
 {
 	private IMaterializedAsyncEnumerable<TItem>? _materialized;
 
-	public async Task<ConstraintResult> IsMetBy(
+	public async ValueTask<ConstraintResult> IsMetBy(
 		IAsyncEnumerable<TItem>? actual,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)

@@ -271,21 +271,39 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	/// </remarks>
 	[StackTraceHidden]
 	public ValueTaskAwaiter<TType> GetAwaiter()
+		=> TryGetValueRightAway(out TType value, out Task<TType>? evaluation)
+			? new ValueTask<TType>(value).GetAwaiter()
+			: new ValueTask<TType>(evaluation!).GetAwaiter();
+
+	/// <summary>
+	///     Evaluates the expectations, see <see cref="GetAwaiter" />.
+	/// </summary>
+	/// <returns>
+	///     <see langword="true" />, when the expectation was met right away and the <paramref name="value" /> is set, and
+	///     <see langword="false" /> with the <paramref name="evaluation" /> otherwise.
+	/// </returns>
+	[StackTraceHidden]
+	internal bool TryGetValueRightAway(out TType value, out Task<TType>? evaluation)
 	{
+		value = default!;
 		ValueTask<ConstraintResult> isMet = ExpectationBuilder.IsMet();
 		if (!isMet.IsCompletedSuccessfully)
 		{
-			return new ValueTask<TType>(GetResultOrThrow(isMet)).GetAwaiter();
+			evaluation = GetResultOrThrow(isMet);
+			return false;
 		}
 
 		ConstraintResult result = isMet.Result;
 		if (result.Outcome == Outcome.Success && Customize.aweXpect.TraceWriter is null &&
-		    result.TryGetStoredValue(out TType? value))
+		    result.TryGetStoredValue(out TType? storedValue))
 		{
-			return new ValueTask<TType>(value!).GetAwaiter();
+			value = storedValue!;
+			evaluation = null;
+			return true;
 		}
 
-		return new ValueTask<TType>(GetResultOrThrow(new ValueTask<ConstraintResult>(result))).GetAwaiter();
+		evaluation = GetResultOrThrow(new ValueTask<ConstraintResult>(result));
+		return false;
 	}
 
 	/// <summary>

@@ -394,9 +394,9 @@ public class ManualExpectationBuilderTests
 	private sealed class ContextConstraint<T>(Func<T, IEvaluationContext, CancellationToken, Outcome> callback)
 		: IAsyncContextConstraint<T>
 	{
-		public Task<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
+		public ValueTask<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> Task.FromResult<ConstraintResult>(new DummyConstraintResult(callback(actual, context, cancellationToken)));
+			=> new(new DummyConstraintResult(callback(actual, context, cancellationToken)));
 
 		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null) { }
 	}

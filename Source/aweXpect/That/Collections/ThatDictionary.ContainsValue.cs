@@ -88,7 +88,7 @@ public static partial class ThatDictionary
 			IAsyncConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
-		public async Task<ConstraintResult> IsMetBy(TDictionary? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			Outcome = actual is not null && await ContainsValue(actual, expected, options)
