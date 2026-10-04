@@ -6,8 +6,6 @@
 
 	<ItemGroup Condition=" '$(Configuration)' != 'Debug' ">
 		<PackageReference Include="aweXpect"/>
-		<!-- Temporarily disabled until the aweXpect package is built against the current aweXpect.Core. -->
-		<Compile Remove="**/*.cs"/>
 	</ItemGroup>
 	<ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
 		<ProjectReference Include="..\..\Source\aweXpect.Generators\aweXpect.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
