@@ -27,7 +27,6 @@ aweXpect.Options.ObjectEqualityOptions<TSubject>.SetMatchType(aweXpect.Core.IObj
 aweXpect.Delegates.EventuallySubject<T>
 aweXpect.Delegates.EventuallySubject<T>.CheckEvery(System.TimeSpan interval) -> aweXpect.Delegates.EventuallySubject<T>
 aweXpect.Delegates.EventuallySubject<T>.EventuallySubject() -> void
-aweXpect.Delegates.EventuallySubject<T>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
 aweXpect.Delegates.EventuallySubject<T>.Is<TType>() -> aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>!>!
 aweXpect.Delegates.EventuallySubject<T>.IsExactly<TType>() -> aweXpect.Results.AndOrWhoseResult<TType, aweXpect.Core.IThatSubject<T>!>!
 aweXpect.Delegates.EventuallySubject<T>.IsNot<TType>() -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>!>!
@@ -598,5 +597,7 @@ static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberT
 static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, uint>! result, uint tolerance) -> TSelf
 static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, ulong>! result, ulong tolerance) -> TSelf
 static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, ushort>! result, ushort tolerance) -> TSelf
+*REMOVED*aweXpect.Delegates.ThatDelegate.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
+*REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.ThrowOptions.get -> aweXpect.Delegates.ThatDelegate.ThrowsOption!
 *REMOVED*aweXpect.Delegates.ThatDelegate.WithValue<T>.WithValue(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
 aweXpect.Delegates.ThatDelegate.WithValue<T>.WithValue(aweXpect.Core.ExpectationBuilder! expectationBuilder, System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<T>!>! subject) -> void

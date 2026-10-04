@@ -15,7 +15,7 @@ public abstract partial class ThatDelegate
 		/// </summary>
 		[GuaranteesNotNull]
 		public ExpectationResult DoesNotThrow()
-			=> new(ExpectationBuilder.AddConstraint((it, grammars)
+			=> new(_expectationBuilder.AddConstraint((it, grammars)
 				=> new DoesNotThrowConstraint(it, grammars, typeof(Exception), false, null)));
 
 		/// <summary>
@@ -29,7 +29,7 @@ public abstract partial class ThatDelegate
 		[GuaranteesNotNull]
 		public ExpectationResult DoesNotThrow<TException>()
 			where TException : Exception
-			=> new(ExpectationBuilder.AddConstraint((it, grammars) =>
+			=> new(_expectationBuilder.AddConstraint((it, grammars) =>
 				new DoesNotThrowConstraint(it, grammars, typeof(TException), false, null)));
 
 		/// <summary>
@@ -43,7 +43,7 @@ public abstract partial class ThatDelegate
 		public ExpectationResult DoesNotThrow(Type type)
 		{
 			type.ThrowIfNotAnExceptionType();
-			return new(ExpectationBuilder.AddConstraint(type, static (exceptionType, it, grammars) =>
+			return new(_expectationBuilder.AddConstraint(type, static (exceptionType, it, grammars) =>
 				new DoesNotThrowConstraint(it, grammars, exceptionType, false, null)));
 		}
 	}
