@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using aweXpect.Core;
 using aweXpect.Options;
 
 namespace aweXpect;
@@ -14,6 +15,18 @@ namespace aweXpect;
 /// </remarks>
 internal static class MemberHashing
 {
+	/// <summary>
+	///     The hash code for members that the <paramref name="options" /> compare in a way that a hash code agrees with,
+	///     or <see langword="null" /> otherwise.
+	/// </summary>
+	public static Func<TMember, int>? For<TMember>(IOptionsEquality<TMember> options)
+		=> options switch
+		{
+			ItemEqualityOptions<TMember> itemOptions => For(itemOptions),
+			StringEqualityOptions stringOptions => For(stringOptions) as Func<TMember, int>,
+			_ => null,
+		};
+
 	/// <summary>
 	///     The hash code for strings that the <paramref name="options" /> compare with plain ordinal equality, or
 	///     <see langword="null" /> when they were changed.

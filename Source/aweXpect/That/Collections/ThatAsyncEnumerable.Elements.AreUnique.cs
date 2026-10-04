@@ -75,11 +75,10 @@ public static partial class ThatAsyncEnumerable
 						=> new AsyncAreUniqueConstraint<string?, string?>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsUnique(state.ExpectUnique ? g : g.Negate(), state.Options),
 							a => a,
-							(a, b) => state.Options.AreConsideredEqual(a, b),
-							state.ExpectUnique,
-							createGetHashCode: () => MemberHashing.For(state.Options))),
+							memberAccessorExpression: null,
+							state.Options,
+							state.ExpectUnique)),
 				_subject,
 				options);
 		}
@@ -100,13 +99,10 @@ public static partial class ThatAsyncEnumerable
 						=> new AsyncAreUniqueConstraint<string?, TMember>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsUniqueFor(state.ExpectUnique ? g : g.Negate(),
-								state.MemberAccessorExpression.TrimCommonWhiteSpace(), state.Options),
 							state.MemberAccessor,
-							(a, b) => state.Options.AreConsideredEqual(a, b),
-							state.ExpectUnique,
-							appendOptionsContexts: state.Options.AppendContexts,
-							createGetHashCode: () => MemberHashing.For(state.Options))),
+							state.MemberAccessorExpression,
+							state.Options,
+							state.ExpectUnique)),
 				_subject,
 				options);
 		}
@@ -126,12 +122,10 @@ public static partial class ThatAsyncEnumerable
 						=> new AsyncAreUniqueConstraint<string?, string>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsUniqueFor(state.ExpectUnique ? g : g.Negate(),
-								state.MemberAccessorExpression.TrimCommonWhiteSpace(), state.Options),
 							state.MemberAccessor,
-							(a, b) => state.Options.AreConsideredEqual(a, b),
-							state.ExpectUnique,
-							createGetHashCode: () => MemberHashing.For(state.Options))),
+							state.MemberAccessorExpression,
+							state.Options,
+							state.ExpectUnique)),
 				_subject,
 				options);
 		}
@@ -201,12 +195,10 @@ public static partial class ThatAsyncEnumerable
 						=> new AsyncAreUniqueConstraint<TItem, TItem>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsUnique(state.ExpectUnique ? g : g.Negate(), state.Options),
 							a => a,
-							(a, b) => state.Options.AreConsideredEqual(a, b),
-							state.ExpectUnique,
-							appendOptionsContexts: state.Options.AppendContexts,
-							createGetHashCode: () => MemberHashing.For(state.Options))),
+							memberAccessorExpression: null,
+							state.Options,
+							state.ExpectUnique)),
 				_subject,
 				options);
 		}
@@ -227,13 +219,10 @@ public static partial class ThatAsyncEnumerable
 						=> new AsyncAreUniqueConstraint<TItem, TMember>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsUniqueFor(state.ExpectUnique ? g : g.Negate(),
-								state.MemberAccessorExpression.TrimCommonWhiteSpace(), state.Options),
 							state.MemberAccessor,
-							(a, b) => state.Options.AreConsideredEqual(a, b),
-							state.ExpectUnique,
-							appendOptionsContexts: state.Options.AppendContexts,
-							createGetHashCode: () => MemberHashing.For(state.Options))),
+							state.MemberAccessorExpression,
+							state.Options,
+							state.ExpectUnique)),
 				_subject,
 				options);
 		}
@@ -253,12 +242,10 @@ public static partial class ThatAsyncEnumerable
 						=> new AsyncAreUniqueConstraint<TItem, string>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsUniqueFor(state.ExpectUnique ? g : g.Negate(),
-								state.MemberAccessorExpression.TrimCommonWhiteSpace(), state.Options),
 							state.MemberAccessor,
-							(a, b) => state.Options.AreConsideredEqual(a, b),
-							state.ExpectUnique,
-							createGetHashCode: () => MemberHashing.For(state.Options))),
+							state.MemberAccessorExpression,
+							state.Options,
+							state.ExpectUnique)),
 				_subject,
 				options);
 		}

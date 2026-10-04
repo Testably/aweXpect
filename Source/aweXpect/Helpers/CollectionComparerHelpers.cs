@@ -98,13 +98,11 @@ internal static class CollectionComparerHelpers
 		=> collection switch
 		{
 			HashSet<T> set when IsCustom(set.Comparer) => new SubjectComparer<T>(set.Comparer.Equals, set.Comparer),
-			SortedSet<T> set when IsCustom(set.Comparer)
-				=> new SubjectComparer<T>((x, y) => set.Comparer.Compare(x, y) == 0, set.Comparer),
+			SortedSet<T> set when IsCustom(set.Comparer) => FromOrder(set.Comparer),
 #if NET8_0_OR_GREATER
 			ImmutableHashSet<T> set when IsCustom(set.KeyComparer)
 				=> new SubjectComparer<T>(set.KeyComparer.Equals, set.KeyComparer),
-			ImmutableSortedSet<T> set when IsCustom(set.KeyComparer)
-				=> new SubjectComparer<T>((x, y) => set.KeyComparer.Compare(x, y) == 0, set.KeyComparer),
+			ImmutableSortedSet<T> set when IsCustom(set.KeyComparer) => FromOrder(set.KeyComparer),
 			FrozenSet<T> set when IsCustom(set.Comparer) => new SubjectComparer<T>(set.Comparer.Equals, set.Comparer),
 #else
 			not null when ReadComparer<IEqualityComparer<T>>(collection, SetComparerProperties) is { } comparer &&
@@ -112,10 +110,20 @@ internal static class CollectionComparerHelpers
 				=> new SubjectComparer<T>(comparer.Equals, comparer),
 			not null when ReadComparer<IComparer<T>>(collection, SetComparerProperties) is { } comparer &&
 			              IsCustom(comparer)
-				=> new SubjectComparer<T>((x, y) => comparer.Compare(x, y) == 0, comparer),
+				=> FromOrder(comparer),
 #endif
 			_ => null,
 		};
+
+	/// <summary>
+	///     Considers two items equal when the <paramref name="comparer" /> orders neither before the other.
+	/// </summary>
+	/// <remarks>
+	///     A lambda in <see cref="GetSubjectComparer{T}" /> would capture its pattern variables in a closure that is
+	///     allocated for every call, even for a subject that is no set.
+	/// </remarks>
+	private static SubjectComparer<T> FromOrder<T>(IComparer<T> comparer)
+		=> new((x, y) => comparer.Compare(x, y) == 0, comparer);
 
 	/// <summary>
 	///     Returns the comparer that orders the items of the <paramref name="collection" />, when it is a sorted set or

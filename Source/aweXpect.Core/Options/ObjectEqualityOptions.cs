@@ -58,6 +58,12 @@ internal static class ObjectEqualityOptions
 				return new ValueTask<bool>(true);
 			}
 
+			// A primitive's Equals(object) agrees with its typed Equals, so comparing the boxed values cannot differ.
+			if (typeof(TActual).IsPrimitive && expected is TActual)
+			{
+				return new ValueTask<bool>(false);
+			}
+
 			if (typeof(TActual) == typeof(object) &&
 			    AreNumericsEqual(actual, expected))
 			{

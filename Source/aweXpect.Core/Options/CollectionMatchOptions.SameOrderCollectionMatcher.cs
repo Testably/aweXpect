@@ -160,18 +160,34 @@ public partial class CollectionMatchOptions
 			return VerifyTheCurrentValueContainsTheExpectedItems(value, options);
 		}
 
-		private async ValueTask<(bool, string?)>
+		/// <remarks>
+		///     Any later item can still complete the expected items, so no deviation is known before the end. An item
+		///     whose comparisons complete synchronously returns without a state machine.
+		/// </remarks>
+		private ValueTask<(bool, string?)>
 			VerifyTheCurrentValueContainsTheExpectedItems(T value, IOptionsEquality<T2> options)
 		{
 			_values.Add(value);
-			if (!_isFound)
+			if (_isFound)
 			{
-				_isFound = _ignoreInterspersedItems
-					? await ContinuesTheSubsequence(_values.Count - 1, options)
-					: await CompletesARun(_values.Count - 1, options);
+				return new ValueTask<(bool, string?)>((false, null));
 			}
 
-			// Any later item can still complete the expected items, so no deviation is known before the end.
+			ValueTask<bool> isFound = _ignoreInterspersedItems
+				? ContinuesTheSubsequence(_values.Count - 1, options)
+				: CompletesARun(_values.Count - 1, options);
+			if (!isFound.IsCompletedSuccessfully)
+			{
+				return KeepWhetherTheExpectedItemsAreFound(isFound);
+			}
+
+			_isFound = isFound.Result;
+			return new ValueTask<(bool, string?)>((false, null));
+		}
+
+		private async ValueTask<(bool, string?)> KeepWhetherTheExpectedItemsAreFound(ValueTask<bool> isFound)
+		{
+			_isFound = await isFound;
 			return (false, null);
 		}
 
@@ -269,26 +285,56 @@ public partial class CollectionMatchOptions
 		///     new one, because the expected items can overlap with themselves, e.g. <c>[1, 1, 2]</c> in <c>[1, 1, 1, 2]</c>.
 		/// </summary>
 		/// <returns><see langword="true" />, when a run is complete.</returns>
-		private async ValueTask<bool> CompletesARun(int index, IOptionsEquality<T2> options)
+		/// <remarks>
+		///     After the partial runs, the item starts a new one, i.e. continues a run of length <c>0</c>.
+		/// </remarks>
+		private ValueTask<bool> CompletesARun(int index, IOptionsEquality<T2> options)
 		{
 			List<int> runLengths = _nextOffsetsOrRunLengths ??= new List<int>();
 			runLengths.Clear();
-			if (_runLengths is not null)
+			int count = _runLengths?.Count ?? 0;
+			for (int i = 0; i <= count; i++)
 			{
-				foreach (int runLength in _runLengths)
+				int runLength = RunLengthAt(i, count);
+				ValueTask<bool> isMatch = IsMatch(index, _expectedItems[runLength], options);
+				if (!isMatch.IsCompletedSuccessfully)
 				{
-					if (await IsMatch(index, _expectedItems[runLength], options))
-					{
-						runLengths.Add(runLength + 1);
-					}
+					return CompletesARunAsync(isMatch, index, i, count, runLengths, options);
+				}
+
+				if (isMatch.Result)
+				{
+					runLengths.Add(runLength + 1);
 				}
 			}
 
-			if (await IsMatch(index, _expectedItems[0], options))
-			{
-				runLengths.Add(1);
-			}
+			return new ValueTask<bool>(KeepTheRunLengths(runLengths));
+		}
 
+		private async ValueTask<bool> CompletesARunAsync(ValueTask<bool> isMatch, int index, int i, int count,
+			List<int> runLengths, IOptionsEquality<T2> options)
+		{
+			while (true)
+			{
+				if (await isMatch)
+				{
+					runLengths.Add(RunLengthAt(i, count) + 1);
+				}
+
+				if (++i > count)
+				{
+					return KeepTheRunLengths(runLengths);
+				}
+
+				isMatch = IsMatch(index, _expectedItems[RunLengthAt(i, count)], options);
+			}
+		}
+
+		private int RunLengthAt(int i, int count)
+			=> i < count ? _runLengths![i] : 0;
+
+		private bool KeepTheRunLengths(List<int> runLengths)
+		{
 			_nextOffsetsOrRunLengths = _runLengths;
 			_runLengths = runLengths;
 			return runLengths.Count > 0 && runLengths[0] == _expectedItems.Length;
@@ -298,9 +344,23 @@ public partial class CollectionMatchOptions
 		///     Taking the first item that matches the next expected item never prevents finding a subsequence.
 		/// </summary>
 		/// <returns><see langword="true" />, when all expected items are found.</returns>
-		private async ValueTask<bool> ContinuesTheSubsequence(int index, IOptionsEquality<T2> options)
+		private ValueTask<bool> ContinuesTheSubsequence(int index, IOptionsEquality<T2> options)
 		{
-			if (await IsMatch(index, _expectedItems[_matchIndex], options))
+			ValueTask<bool> isMatch = IsMatch(index, _expectedItems[_matchIndex], options);
+			if (!isMatch.IsCompletedSuccessfully)
+			{
+				return ContinuesTheSubsequenceAsync(isMatch);
+			}
+
+			return new ValueTask<bool>(AdvancesTheSubsequence(isMatch.Result));
+		}
+
+		private async ValueTask<bool> ContinuesTheSubsequenceAsync(ValueTask<bool> isMatch)
+			=> AdvancesTheSubsequence(await isMatch);
+
+		private bool AdvancesTheSubsequence(bool isMatch)
+		{
+			if (isMatch)
 			{
 				_matchIndex++;
 			}
@@ -312,22 +372,57 @@ public partial class CollectionMatchOptions
 		///     Once the subject leaves the expected items, the failure is certain; it aborts early, when more items are
 		///     unexpected regardless of the order than can be listed.
 		/// </summary>
-		private async ValueTask<(bool, string?)>
+		/// <remarks>
+		///     An item that continues the expected items and whose comparisons complete synchronously returns without a
+		///     state machine.
+		/// </remarks>
+		private ValueTask<(bool, string?)>
 			VerifyTheCurrentValueIsContainedInTheExpectedItems(string it, T value, IOptionsEquality<T2> options,
 				int maximumNumber)
 		{
 			_values.Add(value);
-			if (!_isBroken)
+			if (_isBroken)
 			{
-				_isBroken = _ignoreInterspersedItems
-					? !await ContinuesTheSubsequenceInTheExpectedItems(_values.Count - 1, options)
-					: !await ContinuesTheRunInTheExpectedItems(_values.Count - 1, options);
-				if (!_isBroken)
-				{
-					return (false, null);
-				}
+				return CountTheUnexpectedItems(it, value, options, maximumNumber);
 			}
 
+			ValueTask<bool> continues = ContinuesInTheExpectedItems(_values.Count - 1, options);
+			if (!continues.IsCompletedSuccessfully)
+			{
+				return VerifyWhetherTheExpectedItemsAreLeft(continues, it, value, options, maximumNumber);
+			}
+
+			if (continues.Result)
+			{
+				return new ValueTask<(bool, string?)>((false, null));
+			}
+
+			_isBroken = true;
+			return CountTheUnexpectedItems(it, value, options, maximumNumber);
+		}
+
+		private ValueTask<bool> ContinuesInTheExpectedItems(int index, IOptionsEquality<T2> options)
+		{
+			if (_ignoreInterspersedItems)
+			{
+				return ContinuesTheSubsequenceInTheExpectedItems(index, options);
+			}
+
+			return ContinuesTheRunInTheExpectedItems(index, options);
+		}
+
+		private async ValueTask<(bool, string?)> VerifyWhetherTheExpectedItemsAreLeft(ValueTask<bool> continues,
+			string it, T value, IOptionsEquality<T2> options, int maximumNumber)
+		{
+			_isBroken = !await continues;
+			return _isBroken
+				? await CountTheUnexpectedItems(it, value, options, maximumNumber)
+				: (false, null);
+		}
+
+		private async ValueTask<(bool, string?)> CountTheUnexpectedItems(string it, T value,
+			IOptionsEquality<T2> options, int maximumNumber)
+		{
 			if (!IsEqualToAnExpectedItem(value) && !await MatchesAnExpectedItem(_values.Count - 1, options))
 			{
 				_subjectItemsMatchingNothing++;
@@ -345,14 +440,44 @@ public partial class CollectionMatchOptions
 		/// <summary>
 		///     The subject continues the run at every offset in the expected items at which all its items so far match.
 		/// </summary>
-		private async ValueTask<bool> ContinuesTheRunInTheExpectedItems(int index, IOptionsEquality<T2> options)
+		private ValueTask<bool> ContinuesTheRunInTheExpectedItems(int index, IOptionsEquality<T2> options)
 		{
 			List<int> candidateOffsets = _nextOffsetsOrRunLengths ??= new List<int>();
 			candidateOffsets.Clear();
 			int count = index == 0 ? _expectedItems.Length : _candidateOffsets!.Count;
 			for (int i = 0; i < count; i++)
 			{
-				int offset = index == 0 ? i : _candidateOffsets![i];
+				int offset = OffsetAt(index, i);
+				if (offset + index < _expectedItems.Length)
+				{
+					ValueTask<bool> isMatch = IsMatch(index, _expectedItems[offset + index], options);
+					if (!isMatch.IsCompletedSuccessfully)
+					{
+						return ContinuesTheRunInTheExpectedItemsAsync(isMatch, index, i, count, candidateOffsets,
+							options);
+					}
+
+					if (isMatch.Result)
+					{
+						candidateOffsets.Add(offset);
+					}
+				}
+			}
+
+			return new ValueTask<bool>(KeepTheCandidateOffsets(candidateOffsets));
+		}
+
+		private async ValueTask<bool> ContinuesTheRunInTheExpectedItemsAsync(ValueTask<bool> isMatch, int index,
+			int i, int count, List<int> candidateOffsets, IOptionsEquality<T2> options)
+		{
+			if (await isMatch)
+			{
+				candidateOffsets.Add(OffsetAt(index, i));
+			}
+
+			for (i++; i < count; i++)
+			{
+				int offset = OffsetAt(index, i);
 				if (offset + index < _expectedItems.Length &&
 				    await IsMatch(index, _expectedItems[offset + index], options))
 				{
@@ -360,6 +485,17 @@ public partial class CollectionMatchOptions
 				}
 			}
 
+			return KeepTheCandidateOffsets(candidateOffsets);
+		}
+
+		/// <summary>
+		///     The first item can start at every offset, the later ones only continue the remaining candidates.
+		/// </summary>
+		private int OffsetAt(int index, int i)
+			=> index == 0 ? i : _candidateOffsets![i];
+
+		private bool KeepTheCandidateOffsets(List<int> candidateOffsets)
+		{
 			_nextOffsetsOrRunLengths = _candidateOffsets;
 			_candidateOffsets = candidateOffsets;
 			return candidateOffsets.Count > 0;
@@ -368,18 +504,41 @@ public partial class CollectionMatchOptions
 		/// <summary>
 		///     Taking the first expected item that matches never prevents finding the subject as a subsequence.
 		/// </summary>
-		private async ValueTask<bool> ContinuesTheSubsequenceInTheExpectedItems(int index, IOptionsEquality<T2> options)
+		private ValueTask<bool> ContinuesTheSubsequenceInTheExpectedItems(int index, IOptionsEquality<T2> options)
 		{
 			for (int i = _matchIndex; i < _expectedItems.Length; i++)
 			{
-				if (await IsMatch(index, _expectedItems[i], options))
+				ValueTask<bool> isMatch = IsMatch(index, _expectedItems[i], options);
+				if (!isMatch.IsCompletedSuccessfully)
+				{
+					return ContinuesTheSubsequenceInTheExpectedItemsAsync(isMatch, index, i, options);
+				}
+
+				if (isMatch.Result)
 				{
 					_matchIndex = i + 1;
-					return true;
+					return new ValueTask<bool>(true);
 				}
 			}
 
-			return false;
+			return new ValueTask<bool>(false);
+		}
+
+		private async ValueTask<bool> ContinuesTheSubsequenceInTheExpectedItemsAsync(ValueTask<bool> isMatch,
+			int index, int i, IOptionsEquality<T2> options)
+		{
+			while (!await isMatch)
+			{
+				if (++i >= _expectedItems.Length)
+				{
+					return false;
+				}
+
+				isMatch = IsMatch(index, _expectedItems[i], options);
+			}
+
+			_matchIndex = i + 1;
+			return true;
 		}
 
 		/// <summary>

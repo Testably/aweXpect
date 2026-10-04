@@ -83,20 +83,59 @@ public partial class CollectionMatchOptions
 			   _matching?.HasMatchedAllExpectedItems == true &&
 			   (!_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) || _additionalItems.Count > 0);
 
-		public async ValueTask<(bool, string?)>
+		/// <remarks>
+		///     An item whose comparisons complete synchronously returns without a state machine.
+		/// </remarks>
+		public ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			int index = _index++;
 			ItemMatching<T, T3> matching = GetMatching(options);
-			_lastAssigned = await matching.Add(index, value, _lastAssigned);
+			ValueTask<int> assigned = matching.Add(index, value, _lastAssigned);
+			if (!assigned.IsCompletedSuccessfully)
+			{
+				return VerifyAsync(assigned, it, matching, maximumNumber);
+			}
+
+			_lastAssigned = assigned.Result;
 			if (_equivalenceRelations.Includes(EquivalenceRelations.Contains))
 			{
 				// Additional items are no deviations, so the reassignment is deferred until it decides the result.
-				return (false, null);
+				return new ValueTask<(bool, string?)>((false, null));
 			}
 
 			// Resolving each item right away keeps the earlier items matched, so the later ones are reported.
+			ValueTask resolved = matching.ResolvePendingItems();
+			return resolved.IsCompletedSuccessfully
+				? new ValueTask<(bool, string?)>(CountTheAdditionalItems(it, matching, maximumNumber))
+				: CountTheAdditionalItemsAsync(resolved, it, matching, maximumNumber);
+		}
+
+		private async ValueTask<(bool, string?)> VerifyAsync(ValueTask<int> assigned, string it,
+			ItemMatching<T, T3> matching, int maximumNumber)
+		{
+			_lastAssigned = await assigned;
+			if (_equivalenceRelations.Includes(EquivalenceRelations.Contains))
+			{
+				return (false, null);
+			}
+
 			await matching.ResolvePendingItems();
+			return CountTheAdditionalItems(it, matching, maximumNumber);
+		}
+
+		private async ValueTask<(bool, string?)> CountTheAdditionalItemsAsync(ValueTask resolved, string it,
+			ItemMatching<T, T3> matching, int maximumNumber)
+		{
+			await resolved;
+			return CountTheAdditionalItems(it, matching, maximumNumber);
+		}
+
+		/// <summary>
+		///     Aborts early, when more items are additional than can be listed.
+		/// </summary>
+		private (bool, string?) CountTheAdditionalItems(string it, ItemMatching<T, T3> matching, int maximumNumber)
+		{
 			if (_additionalItems.Count > 2L * maximumNumber)
 			{
 				_missingItems = matching.UnmatchedExpectedItems();

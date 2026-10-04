@@ -23,8 +23,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
 							it, grammars,
 							quantifier,
-							g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
-							a => a?.GetType() == typeof(TType),
+							ElementOfType<TItem, TType>.ExactlyInstance,
 							"were")),
 				_subject);
 		}
@@ -43,8 +42,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(state.Type)),
-							a => a?.GetType() == state.Type,
+							new ElementOfType<TItem>(state.Type, true),
 							"were")),
 				_subject);
 		}
@@ -65,8 +63,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<TEnumerable, object?>(
 							it, grammars,
 							quantifier,
-							g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
-							a => a?.GetType() == typeof(TType),
+							ElementOfType<object?, TType>.ExactlyInstance,
 							"were")),
 				_subject);
 		}
@@ -85,8 +82,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<TEnumerable, object?>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(state.Type)),
-							a => a?.GetType() == state.Type,
+							new ElementOfType<object?>(state.Type, true),
 							"were")),
 				_subject);
 		}
@@ -107,8 +103,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<TEnumerable, object?>(
 							it, grammars,
 							quantifier,
-							g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(typeof(TType))),
-							a => a?.GetType() == typeof(TType),
+							ElementOfType<object?, TType>.ExactlyInstance,
 							"were")),
 				_subject);
 		}
@@ -127,8 +122,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<TEnumerable, object?>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsExactlyOfType(g, Formatter.Format(state.Type)),
-							a => a?.GetType() == state.Type,
+							new ElementOfType<object?>(state.Type, true),
 							"were")),
 				_subject);
 		}

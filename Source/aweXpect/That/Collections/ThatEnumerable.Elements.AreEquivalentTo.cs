@@ -40,13 +40,9 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsEquivalentTo(g,
-								state.Expected is null
-									? Formatter.Format(state.Expected)
-									: state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
-							a => state.EqualityOptions.AreConsideredEqual(a, state.Expected),
-							"were",
-							appendOptionsContexts: state.EqualityOptions.AppendContexts)),
+							new ElementEquivalentTo<TItem, TItem, TExpected>(state.EqualityOptions, state.Expected,
+								state.DoNotPopulateThisValue),
+							"were")),
 				_subject,
 				equalityOptions);
 		}
@@ -91,13 +87,9 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<TEnumerable, object?>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsEquivalentTo(g,
-								state.Expected is null
-									? Formatter.Format(state.Expected)
-									: state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
-							a => state.EqualityOptions.AreConsideredEqual(a, state.Expected),
-							"were",
-							appendOptionsContexts: state.EqualityOptions.AppendContexts)),
+							new ElementEquivalentTo<object?, object?, TExpected>(state.EqualityOptions, state.Expected,
+								state.DoNotPopulateThisValue),
+							"were")),
 				_subject,
 				equalityOptions);
 		}
@@ -142,13 +134,9 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<TEnumerable, object?>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsEquivalentTo(g,
-								state.Expected is null
-									? Formatter.Format(state.Expected)
-									: state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
-							a => state.EqualityOptions.AreConsideredEqual((TItem)a!, state.Expected),
-							"were",
-							appendOptionsContexts: state.EqualityOptions.AppendContexts)),
+							new ElementEquivalentTo<object?, TItem, TExpected>(state.EqualityOptions, state.Expected,
+								state.DoNotPopulateThisValue),
+							"were")),
 				_subject,
 				equalityOptions);
 		}

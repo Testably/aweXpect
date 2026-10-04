@@ -41,13 +41,9 @@ public static partial class ThatAsyncEnumerable
 						=> new AsyncCollectionConstraint<TItem>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsEquivalentTo(g,
-								state.Expected is null
-									? Formatter.Format(state.Expected)
-									: state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
-							a => state.EqualityOptions.AreConsideredEqual(a, state.Expected),
-							"were",
-							appendOptionsContexts: state.EqualityOptions.AppendContexts)),
+							new ElementEquivalentTo<TItem, TItem, TExpected>(state.EqualityOptions, state.Expected,
+								state.DoNotPopulateThisValue),
+							"were")),
 				_subject,
 				equalityOptions);
 		}

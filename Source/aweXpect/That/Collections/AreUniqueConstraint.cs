@@ -15,17 +15,22 @@ namespace aweXpect;
 /// <summary>
 ///     The comparison of the items of <c>AreUnique</c>, shared by the synchronous and the asynchronous collections.
 /// </summary>
+/// <remarks>
+///     The members are compared by the <paramref name="options" />, which only add their contexts when they are
+///     <see cref="ObjectEqualityOptions{TSubject}" />. The expectation names the <paramref name="displayedOptions" />,
+///     e.g. to name the comparer of a set subject, and the <paramref name="memberAccessorExpression" />, unless the items
+///     themselves are compared.
+/// </remarks>
 internal abstract class AreUniqueConstraintBase<TValue, TItem, TMember>(
 	string it,
 	ExpectationGrammars grammars,
 	EnumerableQuantifier quantifier,
-	Func<ExpectationGrammars, string> expectationText,
 	Func<TItem, TMember> memberAccessor,
-	Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
-	bool expectUnique,
-	Action<ResultContextCollector>? appendOptionsContexts,
-	Func<Func<TMember, int>?>? createGetHashCode)
-	: QuantifiedCollectionConstraint<TValue, TItem>(it, grammars, quantifier, expectationText, "were")
+	string? memberAccessorExpression,
+	IOptionsEquality<TMember> options,
+	object displayedOptions,
+	bool expectUnique)
+	: QuantifiedCollectionConstraintBase<TValue, TItem>(it, grammars, quantifier)
 {
 	/// <summary>
 	///     Whether the items are expected to be unique.
@@ -33,17 +38,31 @@ internal abstract class AreUniqueConstraintBase<TValue, TItem, TMember>(
 	protected bool ExpectUnique => expectUnique;
 
 	/// <inheritdoc />
+	protected override string Verb => "were";
+
+	/// <inheritdoc />
+	protected override void AppendItemExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
+		string? indentation)
+	{
+		ExpectationGrammars itemGrammars = expectUnique ? grammars : grammars.Negate();
+		stringBuilder.Append(memberAccessorExpression is null
+			? ElementExpectations.IsUnique(itemGrammars, displayedOptions)
+			: ElementExpectations.IsUniqueFor(itemGrammars, memberAccessorExpression.TrimCommonWhiteSpace(),
+				displayedOptions));
+	}
+
+	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
 	{
 		base.AppendContexts(contexts);
-		appendOptionsContexts?.Invoke(contexts);
+		(options as ObjectEqualityOptions<TMember>)?.AppendContexts(contexts);
 	}
 
 	/// <summary>
 	///     Counts the occurrences of the members of the items.
 	/// </summary>
 	protected OccurrenceCounter<TMember> CreateCounter()
-		=> new(areConsideredEqual, createGetHashCode?.Invoke());
+		=> new(options, MemberHashing.For(options));
 
 	/// <summary>
 	///     Adds the member of the <paramref name="item" /> to the <paramref name="occurrences" />.
@@ -76,15 +95,13 @@ internal sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
 	string it,
 	ExpectationGrammars grammars,
 	EnumerableQuantifier quantifier,
-	Func<ExpectationGrammars, string> expectationText,
 	Func<TItem, TMember> memberAccessor,
-	Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
+	string? memberAccessorExpression,
+	IOptionsEquality<TMember> options,
 	bool expectUnique,
-	ISubjectComparing? subjectComparing = null,
-	Action<ResultContextCollector>? appendOptionsContexts = null,
-	Func<Func<TMember, int>?>? createGetHashCode = null)
-	: AreUniqueConstraintBase<TEnumerable, TItem, TMember>(it, grammars, quantifier, expectationText, memberAccessor,
-			areConsideredEqual, expectUnique, appendOptionsContexts, createGetHashCode),
+	ISubjectComparing? subjectComparing = null)
+	: AreUniqueConstraintBase<TEnumerable, TItem, TMember>(it, grammars, quantifier, memberAccessor,
+			memberAccessorExpression, options, (object?)subjectComparing ?? options, expectUnique),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
 {
@@ -179,14 +196,12 @@ internal sealed class AsyncAreUniqueConstraint<TItem, TMember>(
 	string it,
 	ExpectationGrammars grammars,
 	EnumerableQuantifier quantifier,
-	Func<ExpectationGrammars, string> expectationText,
 	Func<TItem, TMember> memberAccessor,
-	Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
-	bool expectUnique,
-	Action<ResultContextCollector>? appendOptionsContexts = null,
-	Func<Func<TMember, int>?>? createGetHashCode = null)
-	: AreUniqueConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMember>(it, grammars, quantifier, expectationText,
-			memberAccessor, areConsideredEqual, expectUnique, appendOptionsContexts, createGetHashCode),
+	string? memberAccessorExpression,
+	IOptionsEquality<TMember> options,
+	bool expectUnique)
+	: AreUniqueConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMember>(it, grammars, quantifier, memberAccessor,
+			memberAccessorExpression, options, options, expectUnique),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
 	private CollectionContext _collectionContext;

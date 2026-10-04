@@ -30,10 +30,8 @@ public static partial class ThatEnumerable
 					return new CollectionConstraint<IEnumerable<TItem>?, TItem>(
 						it, grammars,
 						state.Quantifier,
-						g => ElementExpectations.IsEqualTo(g, Formatter.Format(state.Expected), itemOptions),
-						a => itemOptions.AreConsideredEqual(a, state.Expected),
-						"were",
-						itemOptions);
+						new ElementEqualTo<TItem, TItem>(itemOptions, state.Expected),
+						"were");
 				}),
 			iElements.Subject,
 			options);
@@ -57,11 +55,8 @@ public static partial class ThatEnumerable
 					return new CollectionConstraint<IEnumerable<TItem>?, TItem>(
 						it, grammars,
 						state.Quantifier,
-						g => ElementExpectations.IsEqualTo(g, Formatter.Format(state.Expected), itemOptions),
-						a => itemOptions.AreConsideredEqual(a, state.Expected),
-						"were",
-						itemOptions,
-						appendOptionsContexts: state.Options.AppendContexts);
+						new ElementEqualTo<TItem, TItem>(itemOptions, state.Expected, state.Options),
+						"were");
 				}),
 			iElements.Subject,
 			options);
@@ -86,11 +81,8 @@ public static partial class ThatEnumerable
 					return new CollectionConstraint<IEnumerable, object?>(
 						it, grammars,
 						state.Quantifier,
-						g => ElementExpectations.IsEqualTo(g, Formatter.Format(state.Expected), itemOptions),
-						a => itemOptions.AreConsideredEqual(a, state.Expected),
-						"were",
-						itemOptions,
-						appendOptionsContexts: state.Options.AppendContexts);
+						new ElementEqualTo<object?, object?>(itemOptions, state.Expected, state.Options),
+						"were");
 				}),
 			iElements.Subject,
 			options);
@@ -112,10 +104,8 @@ public static partial class ThatEnumerable
 					=> new CollectionConstraint<TEnumerable, object?>(
 						it, grammars,
 						state.Quantifier,
-						g => ElementExpectations.IsEqualTo(g, Formatter.Format(state.Expected), state.Options),
-						a => state.Options.AreConsideredEqual(a, state.Expected),
-						"were",
-						appendOptionsContexts: state.Options.AppendContexts)),
+						new ElementEqualTo<object?, object?>(state.Options, state.Expected, state.Options),
+						"were")),
 			iElements.Subject,
 			options);
 	}
@@ -137,8 +127,7 @@ public static partial class ThatEnumerable
 					=> new CollectionConstraint<TEnumerable, object?>(
 						it, grammars,
 						state.Quantifier,
-						g => ElementExpectations.IsEqualTo(g, Formatter.Format(state.Expected), state.Options),
-						a => state.Options.AreConsideredEqual((TItem)a!, state.Expected),
+						new ElementEqualTo<object?, TItem>(state.Options, state.Expected),
 						"were")),
 			iElements.Subject,
 			options);
@@ -162,10 +151,8 @@ public static partial class ThatEnumerable
 					return new CollectionConstraint<IEnumerable<string?>?, string?>(
 						it, grammars,
 						state.Quantifier,
-						g => ElementExpectations.IsEqualToString(g, state.Expected, state.Options, itemOptions),
-						a => itemOptions.AreConsideredEqual(a, state.Expected),
-						"were",
-						itemOptions);
+						new ElementEqualToString<string?>(state.Options, state.Expected, itemOptions),
+						"were");
 				}),
 			iElements.Subject,
 			options);
@@ -187,8 +174,7 @@ public static partial class ThatEnumerable
 					=> new CollectionConstraint<TEnumerable, object?>(
 						it, grammars,
 						state.Quantifier,
-						g => ElementExpectations.IsEqualToString(g, state.Expected, state.Options),
-						a => state.Options.AreConsideredEqual((string?)a, state.Expected),
+						new ElementEqualToString<object?>(state.Options, state.Expected),
 						"were")),
 			iElements.Subject,
 			options);

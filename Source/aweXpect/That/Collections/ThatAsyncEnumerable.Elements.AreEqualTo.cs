@@ -29,8 +29,7 @@ public static partial class ThatAsyncEnumerable
 					=> new AsyncCollectionConstraint<TItem>(
 						it, grammars,
 						state.Quantifier,
-						g => ElementExpectations.IsEqualTo(g, Formatter.Format(state.Expected), state.Options),
-						a => state.Options.AreConsideredEqual(a, state.Expected),
+						new ElementEqualTo<TItem, TItem>(state.Options, state.Expected),
 						"were")),
 			iElements.Subject,
 			options);
@@ -51,10 +50,8 @@ public static partial class ThatAsyncEnumerable
 					=> new AsyncCollectionConstraint<TItem>(
 						it, grammars,
 						state.Quantifier,
-						g => ElementExpectations.IsEqualTo(g, Formatter.Format(state.Expected), state.Options),
-						a => state.Options.AreConsideredEqual(a, state.Expected),
-						"were",
-						appendOptionsContexts: state.Options.AppendContexts)),
+						new ElementEqualTo<TItem, TItem>(state.Options, state.Expected, state.Options),
+						"were")),
 			iElements.Subject,
 			options);
 	}
@@ -74,8 +71,7 @@ public static partial class ThatAsyncEnumerable
 					=> new AsyncCollectionConstraint<string?>(
 						it, grammars,
 						state.Quantifier,
-						g => ElementExpectations.IsEqualToString(g, state.Expected, state.Options),
-						a => state.Options.AreConsideredEqual(a, state.Expected),
+						new ElementEqualToString<string?>(state.Options, state.Expected),
 						"were")),
 			iElements.Subject,
 			options);

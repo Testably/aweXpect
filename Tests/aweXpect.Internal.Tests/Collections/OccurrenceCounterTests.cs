@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using aweXpect.Options;
 
 namespace aweXpect.Internal.Tests.Collections;
 
@@ -7,7 +8,7 @@ public sealed class OccurrenceCounterTests
 	[Fact]
 	public async Task Add_WhenAllHashCodesAreEqual_ShouldCountEqualMembersOnly()
 	{
-		OccurrenceCounter<int> sut = new((a, b) => new ValueTask<bool>(a == b), _ => 0);
+		OccurrenceCounter<int> sut = new(new ObjectEqualityOptions<int>(), _ => 0);
 
 		List<int> indices = await AddAll(sut, 1, 2, 1, 3, 2, 2);
 
@@ -21,7 +22,7 @@ public sealed class OccurrenceCounterTests
 	[Fact]
 	public async Task Add_WhenHashCodesDiffer_ShouldCountEqualMembers()
 	{
-		OccurrenceCounter<int> sut = new((a, b) => new ValueTask<bool>(a == b), x => x);
+		OccurrenceCounter<int> sut = new(new ObjectEqualityOptions<int>(), x => x);
 
 		List<int> indices = await AddAll(sut, 1, 2, 1, 3);
 
@@ -34,7 +35,7 @@ public sealed class OccurrenceCounterTests
 	[Fact]
 	public async Task Add_WhenSomeHashCodesCollide_ShouldCountEqualMembersOnly()
 	{
-		OccurrenceCounter<int> sut = new((a, b) => new ValueTask<bool>(a == b), x => x % 2);
+		OccurrenceCounter<int> sut = new(new ObjectEqualityOptions<int>(), x => x % 2);
 
 		List<int> indices = await AddAll(sut, 1, 3, 2, 5, 3, 4, 2);
 
@@ -49,7 +50,7 @@ public sealed class OccurrenceCounterTests
 	[Fact]
 	public async Task Add_WithoutHashCode_ShouldCountEqualMembers()
 	{
-		OccurrenceCounter<int> sut = new((a, b) => new ValueTask<bool>(a == b));
+		OccurrenceCounter<int> sut = new(new ObjectEqualityOptions<int>());
 
 		List<int> indices = await AddAll(sut, 1, 2, 1);
 
