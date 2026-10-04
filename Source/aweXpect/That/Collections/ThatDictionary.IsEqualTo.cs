@@ -146,38 +146,64 @@ public static partial class ThatDictionary
 			}
 
 			ValueLookup<TKey, TValue> tryGetValue = GetLookup(actual);
-			List<TKey> missingKeys = [];
-			List<TKey> collapsedKeys = [];
-			List<string> incorrectValues = [];
+			List<TKey>? missingKeys = null;
+			List<TKey>? collapsedKeys = null;
+			List<string>? incorrectValues = null;
 			ISet<TKey> matchedKeys = KeyComparers.CreateKeySet(actual);
 			foreach (KeyValuePair<TKey, TValue> pair in expected)
 			{
 				if (!tryGetValue(pair.Key, out TValue? value))
 				{
-					missingKeys.Add(pair.Key);
+					(missingKeys ??= []).Add(pair.Key);
 					continue;
 				}
 
 				if (!matchedKeys.Add(pair.Key))
 				{
-					collapsedKeys.Add(pair.Key);
+					(collapsedKeys ??= []).Add(pair.Key);
 				}
 
 				if (!await options.AreConsideredEqual(value!, pair.Value))
 				{
-					incorrectValues.Add(
+					(incorrectValues ??= []).Add(
 						$"contained key {Formatter.Format(pair.Key)} with value {Formatter.Format(value)} instead of {Formatter.Format(pair.Value)}");
 				}
 			}
 
+			if (missingKeys is null && collapsedKeys is null && incorrectValues is null &&
+			    !HasAdditionalKeys(actual, matchedKeys))
+			{
+				_failure = null;
+				Outcome = Outcome.Success;
+				return this;
+			}
+
 			List<string> errors = [];
-			errors.AddRange(MissingKeysError(missingKeys));
-			errors.AddRange(CollapsedKeysError(collapsedKeys));
-			errors.AddRange(incorrectValues);
+			errors.AddRange(MissingKeysError(missingKeys ?? []));
+			errors.AddRange(CollapsedKeysError(collapsedKeys ?? []));
+			errors.AddRange(incorrectValues ?? []);
 			errors.AddRange(AdditionalKeysError(actual, matchedKeys));
 			_failure = errors.Count == 0 ? null : $"{It} {string.Join(" and ", errors)}";
 			Outcome = _failure is null ? Outcome.Success : Outcome.Failure;
 			return this;
+		}
+
+		/// <summary>
+		///     Whether <see cref="AdditionalKeysError" /> reports anything, without collecting the keys.
+		/// </summary>
+		private static bool HasAdditionalKeys(TDictionary actual, ISet<TKey> matchedKeys)
+		{
+			int count = 0;
+			foreach (KeyValuePair<TKey, TValue> pair in actual)
+			{
+				count++;
+				if (!matchedKeys.Contains(pair.Key))
+				{
+					return true;
+				}
+			}
+
+			return count != matchedKeys.Count;
 		}
 
 		private static IEnumerable<string> MissingKeysError(List<TKey> missingKeys)
