@@ -59,6 +59,19 @@ public sealed class ResultContextCollector
 	}
 
 	/// <summary>
+	///     Visits the <paramref name="result" /> of the expectations on the item at the <paramref name="index" /> of a
+	///     collection, so that its contexts are labelled with the index, e.g. <c>Actual (item [2]):</c>, and follow the
+	///     contexts of the collection.
+	/// </summary>
+	public void VisitItem(int index, ConstraintResult result)
+	{
+		if (Capture(result) is { } captured)
+		{
+			AddCaptured($"[{index}]", captured);
+		}
+	}
+
+	/// <summary>
 	///     Visits the <paramref name="result" /> of the expectations on the <paramref name="member" />, or as part of the
 	///     current subject when the member has no name.
 	/// </summary>

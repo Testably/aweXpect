@@ -118,6 +118,8 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 		where TItem : TMatch
 	{
 		int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
+		// Set before the items are verified, as an item that the matcher cannot answer throws.
+		materialized.SetContext(ref _collectionContext);
 		foreach (TItem item in materialized)
 		{
 			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
@@ -130,7 +132,6 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 			var (result, failure) = await matcher.Verify(It, item, itemOptions, maximumNumber);
 			if (Fails(result, failure, cancellationToken))
 			{
-				materialized.SetContext(ref _collectionContext);
 				return this;
 			}
 
@@ -141,7 +142,6 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 		}
 
 		await Complete(matcher, itemOptions, maximumNumber, cancellationToken);
-		materialized.SetContext(ref _collectionContext);
 		return this;
 	}
 

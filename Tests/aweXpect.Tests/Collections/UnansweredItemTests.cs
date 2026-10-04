@@ -21,9 +21,26 @@ public sealed class UnansweredItem
 	private static bool IsB(string? value)
 		=> value is null ? throw new InvalidOperationException("null") : value == "b";
 
+	private static IEnumerable<int> Lazy(params int[] values)
+	{
+		foreach (int value in values)
+		{
+			yield return value;
+		}
+	}
+
 	public sealed class Item(string? name)
 	{
 		public string? Name { get; } = name;
+	}
+
+	private sealed class ThrowingComparer(Exception exception) : IEqualityComparer<string>
+	{
+		public bool Equals(string? x, string? y)
+			=> throw exception;
+
+		public int GetHashCode(string obj)
+			=> obj.GetHashCode();
 	}
 
 	public sealed class ComplyWithTests
@@ -46,6 +63,34 @@ public sealed class UnansweredItem
 
 				             Collection:
 				             [1, 2, 3]
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+		}
+
+		[Fact]
+		public async Task All_WhenItemExpectationWithContextsThrows_ShouldShowTheContextsOfTheItem()
+		{
+			InvalidOperationException exception = new("boom");
+			string[] subject = ["ABC", "DEF",];
+
+			async Task Act()
+				=> await That(subject).All().ComplyWith(x => x.IsEqualTo("abc").Using(new ThrowingComparer(exception)));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to "abc" using UnansweredItem.ThrowingComparer for all items,
+				             but for the item at index 0, the comparer did throw an InvalidOperationException:
+				               boom
+
+				             Collection:
+				             [
+				               "ABC",
+				               "DEF"
+				             ]
+
+				             Actual (item [0]):
+				             ABC
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
@@ -122,8 +167,69 @@ public sealed class UnansweredItem
 				                 3
 				               ]
 				             ]
+
+				             Collection (item [1]):
+				             [2, 3]
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+		}
+
+		[Theory]
+		[InlineData(true)]
+		[InlineData(false)]
+		public async Task AtLeast_WhenThrowingItemFollowsTheDecidingItem_ShouldSucceed(bool isCountKnown)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable<int> subject = isCountKnown ? new[] { 1, 2, } : Lazy(1, 2);
+
+			async Task Act()
+				=> await That(subject).AtLeast(1).ComplyWith(x => x.Satisfies(y => y == 1 ? true : throw exception));
+
+			await That(Act).DoesNotThrow()
+				.Because("the first item already decides the outcome, whether the number of items is known or not");
+		}
+
+		[Theory]
+		[InlineData(true)]
+		[InlineData(false)]
+		public async Task AtLeast_WhenThrowingItemOfEnumerableFollowsTheDecidingItem_ShouldSucceed(bool isCountKnown)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable subject = isCountKnown ? new[] { 1, 2, } : Lazy(1, 2);
+
+			async Task Act()
+				=> await That(subject).AtLeast(1).ComplyWith(x => x.Satisfies(y => y is 1 ? true : throw exception));
+
+			await That(Act).DoesNotThrow()
+				.Because("the first item already decides the outcome, whether the number of items is known or not");
+		}
+
+		[Theory]
+		[InlineData(true)]
+		[InlineData(false)]
+		public async Task AtMost_WhenThrowingItemFollowsTheDecidingItems_ShouldFailWithTheDecidingItems(
+			bool isCountKnown)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable<int> subject = isCountKnown ? new[] { 1, 1, 2, } : Lazy(1, 1, 2);
+
+			async Task Act()
+				=> await That(subject).AtMost(1).ComplyWith(x => x.Satisfies(y => y == 1 ? true : throw exception));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             satisfies y => y == 1 ? true : throw exception for at most one item,
+				             but at least 2 of at least 2 did
+
+				             Matching items:
+				             [1, 1, (… and maybe more)]
+
+				             Collection:
+				             *
+				             """).AsWildcard().And
+				.Whose(e => e.InnerException, i => i.IsNull())
+				.Because("the first two items already decide the outcome, whether the number of items is known or not");
 		}
 
 		[Fact]
@@ -441,6 +547,22 @@ public sealed class UnansweredItem
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
+
+		[Theory]
+		[InlineData(true)]
+		[InlineData(false)]
+		public async Task None_WhenThrowingItemFollowsTheDecidingItem_ShouldSucceed(bool isCountKnown)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable<int> subject = isCountKnown ? new[] { 1, 2, } : Lazy(1, 2);
+
+			async Task Act()
+				=> await That(subject)
+					.DoesNotComplyWith(it => it.None().ComplyWith(x => x.Satisfies(y => y == 1 ? true : throw exception)));
+
+			await That(Act).DoesNotThrow()
+				.Because("the first item already decides the outcome, whether the number of items is known or not");
+		}
 	}
 
 	public sealed class HasItemThatTests
@@ -581,6 +703,34 @@ public sealed class UnansweredItem
 		}
 
 		[Fact]
+		public async Task WhenItemExpectationWithContextsThrows_ShouldShowTheContextsOfTheItem()
+		{
+			InvalidOperationException exception = new("boom");
+			string[] subject = ["ABC", "DEF",];
+
+			async Task Act()
+				=> await That(subject).HasItemThat(x => x.IsEqualTo("abc").Using(new ThrowingComparer(exception)));
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item that is equal to "abc" using UnansweredItem.ThrowingComparer,
+				             but for the item at index 0, the comparer did throw an InvalidOperationException:
+				               boom
+
+				             Collection:
+				             [
+				               "ABC",
+				               "DEF"
+				             ]
+
+				             Actual (item [0]):
+				             ABC
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+		}
+
+		[Fact]
 		public async Task WhenItemIsNull_ShouldFail()
 		{
 			string?[] subject = [null, "a",];
@@ -635,6 +785,9 @@ public sealed class UnansweredItem
 				             but for the item at index 1, the predicate did throw an InvalidOperationException:
 				               boom
 
+				             Collection:
+				             [2, 1, 2]
+
 				             Expected:
 				             [an item that is equal to 2, an item that satisfies y => y == 2 ? false : throw exception]
 				             """).And
@@ -667,6 +820,12 @@ public sealed class UnansweredItem
 				             is equal to collection [x => IsB(x), x => x == "c",] in any order,
 				             but for the item at index 1, the predicate did throw an InvalidOperationException:
 				               null
+
+				             Collection:
+				             [
+				               "b",
+				               <null>
+				             ]
 
 				             Expected:
 				             [
@@ -706,8 +865,48 @@ public sealed class UnansweredItem
 				             but for the item at index 1, the predicate did throw an InvalidOperationException:
 				               boom
 
+				             Collection:
+				             [2, 1]
+
 				             Expected:
 				             [an item that is equal to 2, an item that satisfies y => Throw(y, exception)]
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+		}
+
+		[Fact]
+		public async Task WhenItemFailsBothWaysWithContexts_ShouldShowTheContextsOfTheItem()
+		{
+			InvalidOperationException exception = new("boom");
+			string[] subject = ["DEF", "abc", "GHI",];
+			Action<IThat<string?>>[] expected =
+				[x => x.IsEqualTo("abc"), x => x.IsEqualTo("def").Using(new ThrowingComparer(exception)),];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected).InAnyOrder();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection expected in any order,
+				             but for the item at index 0, the comparer did throw an InvalidOperationException:
+				               boom
+
+				             Collection:
+				             [
+				               "DEF",
+				               "abc",
+				               "GHI"
+				             ]
+
+				             Expected:
+				             [
+				               an item that is equal to "abc",
+				               an item that is equal to "def" using UnansweredItem.ThrowingComparer
+				             ]
+
+				             Actual (item [0]):
+				             DEF
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
@@ -778,6 +977,9 @@ public sealed class UnansweredItem
 				             but for the item at index 0, the predicate did throw an InvalidOperationException:
 				               boom
 
+				             Collection:
+				             [1, 2]
+
 				             Expected:
 				             [an item that satisfies y => Throw(y, exception)]
 				             """).And
@@ -800,6 +1002,9 @@ public sealed class UnansweredItem
 				             does not contain collection expected in order and contiguous,
 				             but for the item at index 0, the predicate did throw an InvalidOperationException:
 				               boom
+
+				             Collection:
+				             [1, 2]
 
 				             Expected:
 				             [an item that satisfies y => Throw(y, exception)]
@@ -824,6 +1029,9 @@ public sealed class UnansweredItem
 				             but for the item at index 0, the predicate did throw an InvalidOperationException:
 				               boom
 
+				             Collection:
+				             [1, 2]
+
 				             Expected:
 				             [an item that satisfies y => Throw(y, exception), an item that is equal to 2]
 				             """).And
@@ -847,8 +1055,47 @@ public sealed class UnansweredItem
 				             but for the item at index 1, the predicate did throw an InvalidOperationException:
 				               boom
 
+				             Collection:
+				             [1, 2]
+
 				             Expected:
 				             [an item that is equal to 1, an item that satisfies y => Throw(y, exception)]
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+		}
+
+		[Fact]
+		public async Task IsEqualTo_WhenItemExpectationWithContextsThrows_ShouldShowTheContextsOfTheItem()
+		{
+			InvalidOperationException exception = new("boom");
+			string[] subject = ["abc", "DEF",];
+			Action<IThat<string?>>[] expected =
+				[x => x.IsEqualTo("abc"), x => x.IsEqualTo("def").Using(new ThrowingComparer(exception)),];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection expected in order,
+				             but for the item at index 1, the comparer did throw an InvalidOperationException:
+				               boom
+
+				             Collection:
+				             [
+				               "abc",
+				               "DEF"
+				             ]
+
+				             Expected:
+				             [
+				               an item that is equal to "abc",
+				               an item that is equal to "def" using UnansweredItem.ThrowingComparer
+				             ]
+
+				             Actual (item [1]):
+				             DEF
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
@@ -867,6 +1114,12 @@ public sealed class UnansweredItem
 				             Expected that subject
 				             is equal to collection expected in order,
 				             but for the item at index 1, it was <null>
+
+				             Collection:
+				             [
+				               "a",
+				               <null>
+				             ]
 
 				             Expected:
 				             [
@@ -894,6 +1147,9 @@ public sealed class UnansweredItem
 				             but for the item at index 0, the predicate did throw an InvalidOperationException:
 				               boom
 
+				             Collection:
+				             [1, 2]
+
 				             Expected:
 				             [an item that satisfies y => Throw(y, exception), an item that is equal to 2]
 				             """).And
@@ -916,6 +1172,9 @@ public sealed class UnansweredItem
 				             is not equal to collection expected in order,
 				             but for the item at index 0, the predicate did throw an InvalidOperationException:
 				               boom
+
+				             Collection:
+				             [1, 2]
 
 				             Expected:
 				             [an item that satisfies y => Throw(y, exception), an item that is equal to 2]
@@ -949,6 +1208,19 @@ public sealed class UnansweredItem
 				             ]
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsNull());
+		}
+
+		[Fact]
+		public async Task AtLeastComplyWith_WhenThrowingItemFollowsTheDecidingItem_ShouldSucceed()
+		{
+			InvalidOperationException exception = new("boom");
+			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable(1, 2);
+
+			async Task Act()
+				=> await That(subject).AtLeast(1).ComplyWith(x => x.Satisfies(y => y == 1 ? true : throw exception));
+
+			await That(Act).DoesNotThrow()
+				.Because("the first item already decides the outcome, like for a synchronous collection");
 		}
 
 		[Fact]
@@ -1017,6 +1289,43 @@ public sealed class UnansweredItem
 
 				             Expected:
 				             [an item that is equal to 1, an item that satisfies y => Throw(y, exception)]
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+		}
+
+		[Fact]
+		public async Task IsEqualTo_WhenItemExpectationWithContextsThrows_ShouldShowTheContextsOfTheItem()
+		{
+			InvalidOperationException exception = new("boom");
+			IAsyncEnumerable<string> subject = ThatAsyncEnumerable.ToAsyncEnumerable("abc", "DEF");
+			Action<IThat<string?>>[] expected =
+				[x => x.IsEqualTo("abc"), x => x.IsEqualTo("def").Using(new ThrowingComparer(exception)),];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection expected in order,
+				             but for the item at index 1, the comparer did throw an InvalidOperationException:
+				               boom
+
+				             Collection:
+				             [
+				               "abc",
+				               "DEF",
+				               (… and maybe more)
+				             ]
+
+				             Expected:
+				             [
+				               an item that is equal to "abc",
+				               an item that is equal to "def" using UnansweredItem.ThrowingComparer
+				             ]
+
+				             Actual (item [1]):
+				             DEF
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}

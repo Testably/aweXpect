@@ -22,8 +22,9 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> :
 	private readonly ManualExpectationBuilder<TItem> _itemExpectationBuilder;
 	private TItem? _actual;
 	private bool _hasIndex;
+	private ConstraintResult? _itemResult;
+	private int _itemIndex;
 	private ConstraintResult? _unansweredItem;
-	private int _unansweredItemIndex;
 
 	protected HasItemThatConstraintBase(string it,
 		ExpectationGrammars grammars,
@@ -59,6 +60,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> :
 	{
 		_actual = default;
 		_hasIndex = false;
+		_itemResult = null;
 		_unansweredItem = null;
 		Outcome = Outcome.Failure;
 		await _itemExpectationBuilder.PrepareExpectation(context, cancellationToken);
@@ -91,16 +93,31 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> :
 			return true;
 		}
 
+		_itemResult = isMatch;
+		_itemIndex = index;
 		if (isMatch.Outcome == Outcome.FailureBothWays)
 		{
 			Outcome = Outcome.FailureBothWays;
 			_unansweredItem = isMatch;
-			_unansweredItemIndex = index;
 			return true;
 		}
 
 		Outcome = isMatch.Outcome;
 		return isMatch.Outcome == Outcome.Success || Options.Match.OnlySingleIndex();
+	}
+
+	/// <summary>
+	///     Adds the contexts of the item that decided the outcome, labelled with its index.
+	/// </summary>
+	/// <remarks>
+	///     Without an unanswered item, only a single index has exactly one item that decides the outcome.
+	/// </remarks>
+	protected void AppendItemContexts(ResultContextCollector contexts)
+	{
+		if (_itemResult is not null && (_unansweredItem is not null || Options.Match.OnlySingleIndex()))
+		{
+			contexts.VisitItem(_itemIndex, _itemResult);
+		}
 	}
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -115,7 +132,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> :
 	{
 		if (_unansweredItem is not null)
 		{
-			stringBuilder.AppendUnansweredItem(_unansweredItem, _unansweredItemIndex, indentation);
+			stringBuilder.AppendUnansweredItem(_unansweredItem, _itemIndex, indentation);
 			return;
 		}
 
@@ -150,7 +167,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> :
 	{
 		if (_unansweredItem is not null)
 		{
-			stringBuilder.AppendUnansweredItem(_unansweredItem, _unansweredItemIndex, indentation);
+			stringBuilder.AppendUnansweredItem(_unansweredItem, _itemIndex, indentation);
 			return;
 		}
 
@@ -173,7 +190,10 @@ internal sealed class HasItemThatConstraint<TEnumerable, TItem>(
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> _collectionContext.AppendTo(contexts);
+	{
+		_collectionContext.AppendTo(contexts);
+		AppendItemContexts(contexts);
+	}
 
 	public async ValueTask<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -233,7 +253,10 @@ internal sealed class AsyncHasItemThatConstraint<TItem>(
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> _collectionContext.AppendTo(contexts);
+	{
+		_collectionContext.AppendTo(contexts);
+		AppendItemContexts(contexts);
+	}
 
 	public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)

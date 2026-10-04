@@ -110,7 +110,7 @@ internal abstract class ComplyWithConstraintBase<TValue, TItem>
 			ConstraintResult isMatch = await _builder.IsMetBy(item, context, cancellationToken);
 			if (StopsAt(isMatch, index, cancellationToken))
 			{
-				materialized.SetContext(ref _collectionContext, _unansweredItem is null);
+				materialized.SetContext(ref _collectionContext, Outcome == Outcome.Undecided);
 				return this;
 			}
 
@@ -185,6 +185,11 @@ internal abstract class ComplyWithConstraintBase<TValue, TItem>
 	public override void AppendContexts(ResultContextCollector contexts)
 	{
 		_collectionContext.AppendTo(contexts);
+		if (_unansweredItem is not null)
+		{
+			contexts.VisitItem(_unansweredItemIndex, _unansweredItem);
+		}
+
 		base.AppendContexts(contexts);
 	}
 
@@ -237,23 +242,34 @@ internal abstract class ComplyWithConstraintBase<TValue, TItem>
 	///     Stops the evaluation at an item that a cancellation left undecided, as it must not count as not matching, or
 	///     that the item expectations did not answer.
 	/// </summary>
+	/// <remarks>
+	///     When the items before already determine the outcome, such an item does not change it, so that a collection
+	///     whose number of items is known has the same outcome as one that is read only until the outcome is determined.
+	/// </remarks>
 	private bool StopsAt(ConstraintResult isMatch, int index, CancellationToken cancellationToken)
 	{
-		if (isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested)
+		bool isCanceled = isMatch.Outcome == Outcome.Undecided && cancellationToken.IsCancellationRequested;
+		if (!isCanceled && isMatch.Outcome != Outcome.FailureBothWays)
 		{
-			Outcome = Outcome.Undecided;
-			return true;
+			return false;
 		}
 
-		if (isMatch.Outcome == Outcome.FailureBothWays)
+		if (IsDetermined)
+		{
+			CompleteEarly();
+		}
+		else if (isCanceled)
+		{
+			Outcome = Outcome.Undecided;
+		}
+		else
 		{
 			Outcome = Outcome.FailureBothWays;
 			_unansweredItem = isMatch;
 			_unansweredItemIndex = index;
-			return true;
 		}
 
-		return false;
+		return true;
 	}
 
 	private static ManualExpectationBuilder<TItem> Create(ExpectationGrammars itemGrammars,

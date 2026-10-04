@@ -263,11 +263,14 @@ internal class ExpectationNode : Node
 	/// <summary>
 	///     The result of a constraint that could not answer an item of a collection.
 	/// </summary>
+	/// <remarks>
+	///     The item result comes from the expectations on the item, so its contexts are shown as well.
+	/// </remarks>
 	private async Task<ConstraintResult> FromUnansweredItemException<TValue>(UnansweredItemException exception,
 		TValue? value, IEvaluationContext context, CancellationToken cancellationToken)
 		=> UnansweredItemResult.Create(
 			await GetExpectationResult(_constraint!, context, cancellationToken), exception.ItemResult, exception.Item,
-			exception.Index, value);
+			exception.Index, value, true);
 
 	/// <summary>
 	///     The expectation of the <paramref name="constraint" />, for when it could not be evaluated, because code of the
