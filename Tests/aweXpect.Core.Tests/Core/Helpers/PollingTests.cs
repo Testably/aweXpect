@@ -81,8 +81,8 @@ public sealed class PollingTests
 		PollStep step = await sut.WaitForNextCheck();
 
 		await That(step).IsEqualTo(PollStep.LastCheck);
-		await That(sut.Elapsed).IsGreaterThanOrEqualTo(48.Milliseconds())
-			.Because("the wait is shortened to the remaining budget");
+		await That(sut.Elapsed).IsGreaterThanOrEqualTo(40.Milliseconds())
+			.Because("the wait is shortened to the remaining budget, and a timer can complete a few milliseconds before the stopwatch agrees");
 	}
 
 	[Fact]
