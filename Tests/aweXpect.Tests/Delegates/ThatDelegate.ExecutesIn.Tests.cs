@@ -850,7 +850,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenSyncDelegateExceedsTheTimeoutAndTheMaximum_ShouldReportTheDuration()
 			{
-				Action @delegate = () => Thread.Sleep(200.Milliseconds());
+				Action @delegate = () => Block(200.Milliseconds());
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(100.Milliseconds()).WithTimeout(50.Milliseconds());
@@ -867,7 +867,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenSyncDelegateExceedsTheTimeoutButNotTheMaximum_ShouldFailWithTheTimeout()
 			{
-				Action @delegate = () => Thread.Sleep(200.Milliseconds());
+				Action @delegate = () => Block(200.Milliseconds());
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(5.Seconds()).WithTimeout(50.Milliseconds());
@@ -885,7 +885,7 @@ public sealed partial class ThatDelegate
 			[Fact]
 			public async Task WhenSyncDelegateExceedsTheTimeoutButReachesTheMinimum_ShouldFailWithTheTimeout()
 			{
-				Action @delegate = () => Thread.Sleep(200.Milliseconds());
+				Action @delegate = () => Block(200.Milliseconds());
 
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtLeast(100.Milliseconds()).WithTimeout(50.Milliseconds());
@@ -905,7 +905,7 @@ public sealed partial class ThatDelegate
 			{
 				Func<int> @delegate = () =>
 				{
-					Thread.Sleep(200.Milliseconds());
+					Block(200.Milliseconds());
 					return 1;
 				};
 
@@ -956,6 +956,15 @@ public sealed partial class ThatDelegate
 					             executes in at most 0:04,
 					             but it did not finish within 0:00.050
 					             """);
+			}
+
+			/// <remarks>
+			///     Blocks the calling thread like a synchronous delegate that cannot be interrupted.
+			/// </remarks>
+			private static void Block(TimeSpan duration)
+			{
+				using ManualResetEventSlim neverSet = new();
+				_ = neverSet.Wait(duration);
 			}
 		}
 

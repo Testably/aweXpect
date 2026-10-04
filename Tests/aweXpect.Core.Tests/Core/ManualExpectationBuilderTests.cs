@@ -341,9 +341,9 @@ public class ManualExpectationBuilderTests
 		DisposeTrackingEnumerable source = new(null, 1, 2, 3);
 		int? disposeCountDuringEvaluation = null;
 		ManualExpectationBuilder<IEnumerable<int>> sut = new();
-		sut.AddConstraint((_, _) => new ContextConstraint<IEnumerable<int>>((actual, context, _) =>
+		sut.AddConstraint((_, _) => new ContextConstraint<IEnumerable<int>>((actual, context, cancellationToken) =>
 		{
-			context.UseMaterializedEnumerable(actual).First();
+			_ = context.UseMaterializedEnumerable(actual).First();
 			disposeCountDuringEvaluation = source.DisposeCount;
 			return Outcome.Failure;
 		}));
@@ -361,9 +361,9 @@ public class ManualExpectationBuilderTests
 	{
 		DisposeTrackingEnumerable source = new(null, 1, 2, 3);
 		ManualExpectationBuilder<IEnumerable<int>> sut = new();
-		sut.AddConstraint((_, _) => new ContextConstraint<IEnumerable<int>>((actual, context, _) =>
+		sut.AddConstraint((_, _) => new ContextConstraint<IEnumerable<int>>((actual, context, cancellationToken) =>
 		{
-			context.UseMaterializedEnumerable(actual).First();
+			_ = context.UseMaterializedEnumerable(actual).First();
 			throw new InvalidOperationException("foo");
 		}));
 
