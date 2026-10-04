@@ -20,12 +20,8 @@ namespace aweXpect;
 /// </summary>
 internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 {
-	private readonly Action<ResultContextCollector>? _appendOptionsContexts;
-	private readonly Func<TItem, ValueTask<bool>>? _asyncPredicate;
-	private readonly TItem? _expected;
-	private readonly Func<Quantifier, ExpectationGrammars, string> _expectationText;
-	private readonly bool _hasExpected;
-	private readonly Func<TItem, bool>? _predicate;
+	private readonly ExpectedItem<TItem>? _expected;
+	private readonly ItemMatchingPredicate<TItem>? _predicate;
 	private object? _actual;
 	private int _count;
 	private TItem? _firstFoundItem;
@@ -35,33 +31,20 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	protected ContainConstraintBase(
 		string it,
 		ExpectationGrammars grammars,
-		Func<Quantifier, ExpectationGrammars, string> expectationText,
-		Func<TItem, bool> predicate,
+		ContainedItem<TItem> item,
 		Quantifier quantifier) : base(grammars)
 	{
 		It = it;
-		_expectationText = expectationText;
-		_predicate = predicate;
+		Item = item;
+		_expected = item as ExpectedItem<TItem>;
+		_predicate = item as ItemMatchingPredicate<TItem>;
 		Quantifier = quantifier;
 	}
 
-	protected ContainConstraintBase(
-		string it,
-		ExpectationGrammars grammars,
-		Func<Quantifier, ExpectationGrammars, string> expectationText,
-		TItem expected,
-		Func<TItem, ValueTask<bool>> predicate,
-		Quantifier quantifier,
-		Action<ResultContextCollector>? appendOptionsContexts) : base(grammars)
-	{
-		It = it;
-		_expectationText = expectationText;
-		_expected = expected;
-		_hasExpected = true;
-		_asyncPredicate = predicate;
-		Quantifier = quantifier;
-		_appendOptionsContexts = appendOptionsContexts;
-	}
+	/// <summary>
+	///     What the collection is searched for.
+	/// </summary>
+	protected ContainedItem<TItem> Item { get; }
 
 	/// <summary>
 	///     The name of the subject.
@@ -80,7 +63,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> _appendOptionsContexts?.Invoke(contexts);
+		=> Item.AppendContexts(contexts);
 
 	/// <summary>
 	///     Starts a new evaluation of the <paramref name="actual" /> subject.
@@ -100,21 +83,19 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	/// <summary>
 	///     Whether the predicate is synchronous, so that the items can be counted without awaiting it.
 	/// </summary>
-	protected bool IsSynchronous => _asyncPredicate is null;
+	protected bool IsSynchronous => _predicate is not null;
 
 	/// <summary>
 	///     Whether the <paramref name="item" /> matches the synchronous predicate.
 	/// </summary>
 	protected bool MatchesSynchronously(TItem item)
-		=> UserCode.Invoke(_predicate!, item, "the predicate");
+		=> _predicate!.IsMatch(item);
 
 	/// <summary>
 	///     Whether the <paramref name="item" /> matches.
 	/// </summary>
 	protected ValueTask<bool> Matches(TItem item)
-		=> _asyncPredicate is null
-			? new ValueTask<bool>(MatchesSynchronously(item))
-			: _asyncPredicate(item);
+		=> Item.Matches(item);
 
 	/// <summary>
 	///     Counts the matching <paramref name="item" /> and returns the outcome, when the remaining items cannot change
@@ -141,7 +122,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	protected void CountExpected(bool isContained)
 	{
 		_count = isContained ? 1 : 0;
-		_firstFoundItem = _expected;
+		_firstFoundItem = _expected is null ? default : _expected.Expected;
 	}
 
 	/// <summary>
@@ -154,7 +135,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	}
 
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> stringBuilder.Append(_expectationText.Invoke(Quantifier, Grammars));
+		=> stringBuilder.Append(Item.GetExpectation(Quantifier, Grammars));
 
 	public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 	{
@@ -179,9 +160,9 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	private void AppendContainedResult(StringBuilder stringBuilder)
 	{
 		stringBuilder.Append(It).Append(" contained ");
-		if (_hasExpected)
+		if (_expected is not null)
 		{
-			Formatter.Format(stringBuilder, _count == 1 ? _firstFoundItem : _expected);
+			Formatter.Format(stringBuilder, _count == 1 ? _firstFoundItem : _expected.Expected);
 		}
 		else
 		{
@@ -231,40 +212,19 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 }
 
 /// <remarks>
-///     The <c>lookup</c> asks a set subject directly whether it contains the expected item, or returns
-///     <see langword="null" /> when the items have to be enumerated instead.
+///     A set subject is asked directly whether it contains the item, when <see cref="ContainedItem{TItem}.LookUpIn" />
+///     answers.
 /// </remarks>
-internal sealed class ContainConstraint<TEnumerable, TItem>
-	: ContainConstraintBase<TItem>,
+internal sealed class ContainConstraint<TEnumerable, TItem>(
+	string it,
+	ExpectationGrammars grammars,
+	ContainedItem<TItem> item,
+	Quantifier quantifier)
+	: ContainConstraintBase<TItem>(it, grammars, item, quantifier),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
 {
-	private readonly Func<object, bool?>? _lookup;
 	private CollectionContext _collectionContext;
-
-	public ContainConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		Func<Quantifier, ExpectationGrammars, string> expectationText,
-		Func<TItem, bool> predicate,
-		Quantifier quantifier)
-		: base(it, grammars, expectationText, predicate, quantifier)
-	{
-	}
-
-	public ContainConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		Func<Quantifier, ExpectationGrammars, string> expectationText,
-		TItem expected,
-		Func<TItem, ValueTask<bool>> predicate,
-		Quantifier quantifier,
-		Func<object, bool?>? lookup = null,
-		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: base(it, grammars, expectationText, expected, predicate, quantifier, appendOptionsContexts)
-	{
-		_lookup = lookup;
-	}
 
 	/// <inheritdoc />
 	protected override Type CollectionType => typeof(IEnumerable<TItem>);
@@ -291,7 +251,7 @@ internal sealed class ContainConstraint<TEnumerable, TItem>
 			return new ValueTask<ConstraintResult>(this);
 		}
 
-		if (_lookup?.Invoke(actual) is { } isContained)
+		if (Item.LookUpIn(actual) is { } isContained)
 		{
 			CountExpected(isContained);
 			return new ValueTask<ConstraintResult>(Finish(CollectionItems<TItem>.Of(actual)));
@@ -365,33 +325,15 @@ internal sealed class ContainConstraint<TEnumerable, TItem>
 }
 
 #if NET8_0_OR_GREATER
-internal sealed class AsyncContainConstraint<TItem>
-	: ContainConstraintBase<TItem>,
+internal sealed class AsyncContainConstraint<TItem>(
+	string it,
+	ExpectationGrammars grammars,
+	ContainedItem<TItem> item,
+	Quantifier quantifier)
+	: ContainConstraintBase<TItem>(it, grammars, item, quantifier),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
 	private CollectionContext _collectionContext;
-
-	public AsyncContainConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		Func<Quantifier, ExpectationGrammars, string> expectationText,
-		Func<TItem, bool> predicate,
-		Quantifier quantifier)
-		: base(it, grammars, expectationText, predicate, quantifier)
-	{
-	}
-
-	public AsyncContainConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		Func<Quantifier, ExpectationGrammars, string> expectationText,
-		TItem expected,
-		Func<TItem, ValueTask<bool>> predicate,
-		Quantifier quantifier,
-		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: base(it, grammars, expectationText, expected, predicate, quantifier, appendOptionsContexts)
-	{
-	}
 
 	/// <inheritdoc />
 	protected override Type CollectionType => typeof(IAsyncEnumerable<TItem>);

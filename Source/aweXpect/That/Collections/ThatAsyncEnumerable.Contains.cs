@@ -60,11 +60,8 @@ public static partial class ThatAsyncEnumerable
 				(Options: options, Expected: expected, Quantifier: quantifier, Negated: negated),
 				static (state, it, grammars) =>
 					new AsyncContainConstraint<TItem>(it, grammars,
-						(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(state.Options, state.Expected)),
-						state.Expected,
-						a => state.Options.AreConsideredEqual(a, state.Expected),
-						state.Quantifier,
-						appendOptionsContexts: state.Options.AppendContexts).InvertIf(state.Negated)),
+						new EqualItem<TItem>(state.Options, state.Expected),
+						state.Quantifier).InvertIf(state.Negated)),
 			subject,
 			quantifier,
 			options);
@@ -89,11 +86,8 @@ public static partial class ThatAsyncEnumerable
 				(Options: options, Expected: expected, Quantifier: quantifier, Negated: negated),
 				static (state, it, grammars) =>
 					new AsyncContainConstraint<TItem>(it, grammars,
-						(q, g) => q.ToContainsExpectation(g, ContainedItemExpectation(state.Options, state.Expected)),
-						state.Expected,
-						a => state.Options.AreConsideredEqual(a, state.Expected),
-						state.Quantifier,
-						appendOptionsContexts: state.Options.AppendContexts).InvertIf(state.Negated)),
+						new EqualItem<TItem>(state.Options, state.Expected),
+						state.Quantifier).InvertIf(state.Negated)),
 			subject,
 			quantifier,
 			options);
@@ -115,9 +109,7 @@ public static partial class ThatAsyncEnumerable
 				(Options: options, Expected: expected, Quantifier: quantifier, Negated: negated),
 				static (state, it, grammars) =>
 					new AsyncContainConstraint<string?>(it, grammars,
-						(q, g) => q.ToContainsExpectation(g, ContainedStringExpectation(state.Options, state.Expected)),
-						state.Expected,
-						a => state.Options.AreConsideredEqual(a, state.Expected),
+						new EqualStringItem(state.Options, state.Expected),
 						state.Quantifier).InvertIf(state.Negated)),
 			subject,
 			quantifier,
@@ -142,9 +134,7 @@ public static partial class ThatAsyncEnumerable
 					Negated: negated),
 				static (state, it, grammars) =>
 					new AsyncContainConstraint<TItem>(it, grammars,
-						(q, g) => q.ToContainsExpectation(g,
-							$"an item matching {state.PredicateExpression.TrimCommonWhiteSpace()}"),
-						state.Predicate,
+						new ItemMatchingPredicate<TItem>(state.Predicate, state.PredicateExpression),
 						state.Quantifier).InvertIf(state.Negated)),
 			subject,
 			quantifier);
@@ -308,28 +298,5 @@ public static partial class ThatAsyncEnumerable
 			matchOptions,
 			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
 	}
-
-
-	/// <summary>
-	///     The text for the <paramref name="expected" /> item of a <c>contain</c> expectation.
-	/// </summary>
-	/// <remarks>
-	///     The verb keeps a direct object, so a match type that describes the item reads "contains an item
-	///     equivalent to …", and one that only formats it names the comparison itself instead of leaving the
-	///     reader to guess it from "contains 3".
-	/// </remarks>
-	private static string ContainedItemExpectation<TItem>(ObjectEqualityOptions<TItem> options, TItem expected)
-		=> options.GetItemExpectation(Formatter.Format(expected), "an item", "equal to");
-
-	/// <summary>
-	///     The text for the <paramref name="expected" /> string of a <c>contain</c> expectation.
-	/// </summary>
-	/// <remarks>
-	///     A match type other than equality describes the item, so it reads "contains an item matching regex …".
-	/// </remarks>
-	private static string ContainedStringExpectation(StringEqualityOptions options, string? expected)
-		=> options.InspectsSubject
-			? "an item " + options.GetExpectation(expected, ExpectationGrammars.None)
-			: Formatter.Format(expected) + options;
 }
 #endif

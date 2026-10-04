@@ -1,5 +1,6 @@
 ﻿using System;
 using aweXpect.Core;
+using aweXpect.Helpers;
 
 namespace aweXpect.Options;
 
@@ -12,7 +13,7 @@ namespace aweXpect.Options;
 ///     changes the comparison, as it does for the element types without a tolerance.
 /// </remarks>
 internal sealed class ItemEqualityWithToleranceOptions<TSubject, TTolerance>
-	: ObjectEqualityWithToleranceOptions<TSubject, TTolerance>
+	: ObjectEqualityWithToleranceOptions<TSubject, TTolerance>, IHasDefaultMatchType
 {
 	private readonly IObjectMatchType _defaultMatchType;
 

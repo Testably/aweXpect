@@ -1,0 +1,183 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using aweXpect.Core;
+using aweXpect.Helpers;
+using aweXpect.Options;
+
+namespace aweXpect;
+
+/// <summary>
+///     What a <c>Contains</c> expectation looks for: an expected item or an item that matches a predicate.
+/// </summary>
+/// <remarks>
+///     One object per expectation instead of separate delegates for the comparison, the set lookup, the expectation
+///     text and the contexts, because every <c>Contains</c> expectation creates one.
+/// </remarks>
+internal abstract class ContainedItem<TItem>
+{
+	/// <summary>
+	///     Whether the <paramref name="item" /> is the one looked for.
+	/// </summary>
+	public abstract ValueTask<bool> Matches(TItem item);
+
+	/// <summary>
+	///     Asks a set <paramref name="collection" /> directly whether it contains the item, or returns
+	///     <see langword="null" /> when the items have to be enumerated instead.
+	/// </summary>
+	public virtual bool? LookUpIn(object collection) => null;
+
+	/// <summary>
+	///     The expectation text for the <paramref name="quantifier" />.
+	/// </summary>
+	public abstract string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars);
+
+	/// <summary>
+	///     Adds the contexts of the options that decide the comparison.
+	/// </summary>
+	public virtual void AppendContexts(ResultContextCollector contexts)
+	{
+	}
+}
+
+/// <summary>
+///     An item that matches the <paramref name="predicate" />, which is evaluated synchronously.
+/// </summary>
+internal sealed class ItemMatchingPredicate<TItem>(Func<TItem, bool> predicate, string predicateExpression)
+	: ContainedItem<TItem>
+{
+	/// <summary>
+	///     Whether the <paramref name="item" /> matches the predicate, without awaiting anything.
+	/// </summary>
+	public bool IsMatch(TItem item)
+		=> UserCode.Invoke(predicate, item, "the predicate");
+
+	/// <inheritdoc />
+	public override ValueTask<bool> Matches(TItem item)
+		=> new(IsMatch(item));
+
+	/// <inheritdoc />
+	public override string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars)
+		=> quantifier.ToContainsExpectation(grammars,
+			$"an item matching {predicateExpression.TrimCommonWhiteSpace()}");
+}
+
+/// <summary>
+///     An expected item.
+/// </summary>
+internal abstract class ExpectedItem<TItem>(TItem expected) : ContainedItem<TItem>
+{
+	/// <summary>
+	///     The expected item.
+	/// </summary>
+	public TItem Expected => expected;
+
+	/// <summary>
+	///     Whether the comparison is still the default one, so that the comparer of a set subject may decide instead.
+	/// </summary>
+	public virtual bool UsesDefaultEquality => false;
+
+	/// <summary>
+	///     The text for the expected item, without the quantifier.
+	/// </summary>
+	public abstract string GetItemExpectation();
+
+	/// <inheritdoc />
+	public override string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars)
+		=> quantifier.ToContainsExpectation(grammars, GetItemExpectation());
+}
+
+/// <summary>
+///     An item that is equal to the <paramref name="expected" /> one according to the <paramref name="options" />.
+/// </summary>
+internal sealed class EqualItem<TItem>(ObjectEqualityOptions<TItem> options, TItem expected)
+	: ExpectedItem<TItem>(expected)
+{
+	/// <inheritdoc />
+	public override bool UsesDefaultEquality
+		=> Expected is not null && options is IHasDefaultMatchType { HasDefaultMatchType: true, };
+
+	/// <inheritdoc />
+	public override ValueTask<bool> Matches(TItem item)
+		=> options.AreConsideredEqual(item, Expected);
+
+	/// <inheritdoc />
+	/// <remarks>
+	///     The verb keeps a direct object, so a match type that describes the item reads "contains an item
+	///     equivalent to …", and one that only formats it names the comparison itself instead of leaving the
+	///     reader to guess it from "contains 3".
+	/// </remarks>
+	public override string GetItemExpectation()
+		=> options.GetItemExpectation(Formatter.Format(Expected), "an item", "equal to");
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+		=> options.AppendContexts(contexts);
+}
+
+/// <summary>
+///     A string that is equal to the <paramref name="expected" /> one according to the <paramref name="options" />.
+/// </summary>
+internal sealed class EqualStringItem(StringEqualityOptions options, string? expected)
+	: ExpectedItem<string?>(expected)
+{
+	/// <inheritdoc />
+	public override bool UsesDefaultEquality
+		=> Expected is not null && options.ComparesByOrdinalEquality;
+
+	/// <inheritdoc />
+	public override ValueTask<bool> Matches(string? item)
+		=> options.AreConsideredEqual(item, Expected);
+
+	/// <inheritdoc />
+	/// <remarks>
+	///     A match type other than equality describes the item, so it reads "contains an item matching regex …".
+	/// </remarks>
+	public override string GetItemExpectation()
+		=> options.InspectsSubject
+			? "an item " + options.GetExpectation(Expected, ExpectationGrammars.None)
+			: Formatter.Format(Expected) + options;
+}
+
+/// <summary>
+///     The <paramref name="item" />, compared by the comparer of a subject that is a set of
+///     <typeparamref name="TSetItem" /> with a custom comparer, as long as the comparison of the item is the default one.
+/// </summary>
+/// <remarks>
+///     The subject is only known during the evaluation, so <see cref="LookUpIn" /> has to be called before comparing,
+///     and the text names the comparer only afterwards.
+/// </remarks>
+internal sealed class SubjectComparedItem<TSetItem, TItem>(ExpectedItem<TItem> item) : ExpectedItem<TItem>(item.Expected)
+{
+	private SubjectComparer<TSetItem>? _comparer;
+
+	/// <inheritdoc />
+	public override ValueTask<bool> Matches(TItem actual)
+		=> _comparer is null
+			? item.Matches(actual)
+			: new ValueTask<bool>(_comparer.AreEqual(actual, Expected));
+
+	/// <inheritdoc />
+	/// <remarks>
+	///     A <see langword="null" /> item is enumerated, because a set whose comparer rejects <see langword="null" />
+	///     throws when asked for it.
+	/// </remarks>
+	public override bool? LookUpIn(object collection)
+	{
+		_comparer = item.UsesDefaultEquality
+			? CollectionComparerHelpers.GetSubjectComparer<TSetItem>(collection)
+			: null;
+		return _comparer is not null && Expected is TSetItem expected
+			? UserCode.Invoke(static values => values.Collection.Contains(values.Expected),
+				(Collection: (ICollection<TSetItem>)collection, Expected: expected), "the comparer")
+			: null;
+	}
+
+	/// <inheritdoc />
+	public override string GetItemExpectation()
+		=> item.GetItemExpectation() + _comparer;
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+		=> item.AppendContexts(contexts);
+}
