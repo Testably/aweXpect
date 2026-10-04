@@ -1126,6 +1126,30 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenCollectionOrderIsIgnored_AndRegisteredValueMembersDiffer_ShouldReportTheLeftoverPair()
+	{
+		RegisterValues();
+		RegisteredValuesProbe[] actual = [new(1, 1.5, DayOfWeek.Monday), new(2, 2.5, DayOfWeek.Friday),];
+		RegisteredValuesProbe[] expected = [new(2, 2.5, DayOfWeek.Friday), new(1, 1.5, DayOfWeek.Sunday),];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property [0].Day differed:
+		                                                      Actual: Monday
+		                                                    Expected: Sunday
+		                                                """).IgnoringNewlineStyle()
+			.Because("the registered value members decide the pairs without being read as objects, but are reported like any other member");
+	}
+
+	[Fact]
 	public async Task WhenCollectionOrderIsIgnored_AndTheCollectionContainsItself_ShouldSucceed()
 	{
 		List<object> actual = [1,];
@@ -4201,6 +4225,88 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenTypeIsRegistered_AndItsValueMemberGetterThrows_ShouldFailWithTheGetterException()
+	{
+		TypeMetadataRegistry.RegisterProperty<RegisteredThrowingProbe, int>("Phantom", x => x.PhantomValue());
+		RegisteredThrowingProbe actual = new("phantom failed");
+		RegisteredThrowingProbe expected = new("phantom failed");
+
+		async Task Act()
+			=> await That(actual).IsEquivalentTo(expected);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that actual
+			             is equivalent to expected,
+			             but Phantom did throw an InvalidOperationException:
+			               phantom failed
+
+			             Equivalency options:
+			              - include public fields and properties
+			             """)
+			.Because("a registered value member that is compared without being read as an object still names itself as the thrower");
+	}
+
+	[Fact]
+	public async Task WhenTypeIsRegistered_AndItsValueMemberIsComparedByMembers_ShouldThrowInvalidOperationException()
+	{
+		RegisterValues();
+		RegisteredValuesProbe actual = new(1, 1.5, DayOfWeek.Monday);
+		RegisteredValuesProbe expected = new(1, 1.5, DayOfWeek.Monday);
+		EquivalencyOptions options = new EquivalencyOptions().For<int>(o => o with
+		{
+			ComparisonType = EquivalencyComparisonType.ByMembers,
+		});
+
+		async Task Act()
+			=> await EquivalencyComparison.Compare(actual, expected, options, new StringBuilder());
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage(
+				"Property Count has no members that could be compared on int, which would make the equivalency comparison succeed without verifying anything. Adjust the equivalency options to include the relevant members or to compare this type by value, or, when publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its members are preserved.")
+			.Because("the comparison type registered for the member type also applies to a registered value member");
+	}
+
+	[Fact]
+	public async Task WhenTypeIsRegistered_AndItsValueMembersAreNaN_ShouldSucceed()
+	{
+		RegisterValues();
+		RegisteredValuesProbe actual = new(1, double.NaN, DayOfWeek.Monday);
+		RegisteredValuesProbe expected = new(1, double.NaN, DayOfWeek.Monday);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a registered value member is equal exactly when its Equals says so, which considers NaN equal to itself");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenTypeIsRegistered_AndItsValueMembersDiffer_ShouldReportTheDifferences()
+	{
+		RegisterValues();
+		RegisteredValuesProbe actual = new(1, 1.5, DayOfWeek.Monday);
+		RegisteredValuesProbe expected = new(2, 1.5, DayOfWeek.Tuesday);
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Count differed:
+		                                                      Actual: 1
+		                                                    Expected: 2
+		                                                and
+		                                                  Property Day differed:
+		                                                      Actual: Monday
+		                                                    Expected: Tuesday
+		                                                """).IgnoringNewlineStyle()
+			.Because("a registered value member is reported like a member that is read as an object");
+	}
+
+	[Fact]
 	public async Task WhenTypeIsRegistered_ShouldCompareTheRegisteredMembers()
 	{
 		RegisterPhantom();
@@ -4455,6 +4561,14 @@ public sealed partial class EquivalencyComparisonTests
 	private static void RegisterPhantomField()
 		=> TypeMetadataRegistry.RegisterField<RegisteredFieldProbe, int>("Phantom", x => x.PhantomValue());
 
+	private static void RegisterValues()
+		=> TypeMetadataRegistry.RegisterBatch(() =>
+		{
+			TypeMetadataRegistry.RegisterProperty<RegisteredValuesProbe, int>("Count", x => x.CountValue());
+			TypeMetadataRegistry.RegisterProperty<RegisteredValuesProbe, double>("Ratio", x => x.RatioValue());
+			TypeMetadataRegistry.RegisterProperty<RegisteredValuesProbe, DayOfWeek>("Day", x => x.DayValue());
+		});
+
 	/// <remarks>
 	///     Implements only the generic <see cref="IEqualityComparer{T}" />, unlike <see cref="StringComparer" />.
 	/// </remarks>
@@ -4667,6 +4781,18 @@ public sealed partial class EquivalencyComparisonTests
 		public int Visible { get; set; }
 
 		public int PhantomValue() => phantom;
+	}
+
+	private sealed class RegisteredThrowingProbe(string message)
+	{
+		public int PhantomValue() => throw new InvalidOperationException(message);
+	}
+
+	private sealed class RegisteredValuesProbe(int count, double ratio, DayOfWeek day)
+	{
+		public int CountValue() => count;
+		public DayOfWeek DayValue() => day;
+		public double RatioValue() => ratio;
 	}
 
 	private sealed class SetterOnlyOverride : VirtualValue

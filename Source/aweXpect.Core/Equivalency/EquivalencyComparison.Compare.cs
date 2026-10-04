@@ -13,6 +13,7 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.Metadata;
 
 namespace aweXpect.Equivalency;
 
@@ -47,7 +48,7 @@ public static partial class EquivalencyComparison
 
 		if (DateTimeKindComparison.AreKindsIncompatible(actual, expected))
 		{
-			AppendDifference(failureBuilder, memberType, memberPath.ToString(), actual, expected, context);
+			AppendDifference(failureBuilder, memberType, memberPath, actual, expected, context);
 			return false;
 		}
 
@@ -59,7 +60,7 @@ public static partial class EquivalencyComparison
 			static values => UserCode.EqualsOf(values.IsDecidedByExpected ? values.Expected! : values.Actual!));
 		if (!isEqual)
 		{
-			AppendDifference(failureBuilder, memberType, memberPath.ToString(), actual, expected, context);
+			AppendDifference(failureBuilder, memberType, memberPath, actual, expected, context);
 			return false;
 		}
 
@@ -81,7 +82,7 @@ public static partial class EquivalencyComparison
 			return true;
 		}
 
-		AppendDifference(failureBuilder, memberType, memberPath.ToString(), actual, expected, context);
+		AppendDifference(failureBuilder, memberType, memberPath, actual, expected, context);
 		return false;
 	}
 
@@ -121,14 +122,14 @@ public static partial class EquivalencyComparison
 	}
 
 	private static void AppendDifference<TActual, TExpected>(StringBuilder failureBuilder,
-		MemberType memberType, string memberPath, TActual actual, TExpected expected, EquivalencyContext context)
+		MemberType memberType, MemberPath memberPath, TActual actual, TExpected expected, EquivalencyContext context)
 	{
 		if (SkipsText(context))
 		{
 			return;
 		}
 
-		AppendDifferenceHeader(failureBuilder, memberType, memberPath, context);
+		AppendDifferenceHeader(failureBuilder, memberType, memberPath.ToString(), context);
 		(string actualText, string expectedText) =
 			ValuePairFormatter.Format(actual, expected, FormattingOptions.SingleLine);
 		failureBuilder.Append(actualText).AppendLine().Append("    Expected: ").Append(expectedText);
@@ -315,21 +316,22 @@ public static partial class EquivalencyComparison
 #pragma warning disable S107 // https://rules.sonarsource.com/csharp/RSPEC-107
 	/// <summary>
 	///     Reads the <paramref name="member" /> at the <paramref name="memberPath" /> of the <paramref name="actual" />
-	///     and the <paramref name="expected" /> object, unless it is ignored or the <paramref name="actual" /> object
-	///     misses it, which is added to the <paramref name="failureBuilder" /> and sets <paramref name="isMissing" />.
+	///     and the <paramref name="expected" /> object, unless it is ignored, the <paramref name="actual" /> object
+	///     misses it or its values are compared without being read as objects, which sets
+	///     <paramref name="isEquivalent" /> and adds a difference to the <paramref name="failureBuilder" />.
 	/// </summary>
 	/// <remarks>
-	///     It does not compare the values, so that its state is no longer on the stack while the values are compared,
-	///     which happens once for every nested level.
+	///     It does not compare the values otherwise, so that its state is no longer on the stack while the values are
+	///     compared, which happens once for every nested level.
 	/// </remarks>
 	private static bool TryReadMember(EquivalencyMemberPlan.PlannedMember member, MemberType memberType,
-		MemberPath memberPath, object actual, object expected, EquivalencyTypeOptions typeOptions,
-		StringBuilder failureBuilder, EquivalencyContext context, out bool isMissing, out object? actualValue,
-		out object? expectedValue)
+		MemberPath memberPath, object actual, object expected, EquivalencyOptions options,
+		EquivalencyTypeOptions typeOptions, StringBuilder failureBuilder, EquivalencyContext context,
+		out bool isEquivalent, out object? actualValue, out object? expectedValue)
 	{
 		actualValue = null;
 		expectedValue = null;
-		isMissing = false;
+		isEquivalent = true;
 		if (IsIgnored(typeOptions.MembersToIgnore, memberType, memberPath, member.Expected.DeclaredType))
 		{
 			return false;
@@ -339,7 +341,23 @@ public static partial class EquivalencyComparison
 		if (actualAccessor is null)
 		{
 			AppendMissingMember(failureBuilder, memberType, memberPath.ToString(), isAmbiguous, context);
-			isMissing = true;
+			isEquivalent = false;
+			return false;
+		}
+
+		if (UsesValueComparer(member.Expected, actualAccessor, options, typeOptions, context,
+			    out TypeMetadataRegistry.ValueComparer? valueComparer))
+		{
+			(isEquivalent, object? differentActualValue, object? differentExpectedValue) = UserCode.Invoke(
+				static values => values.Comparer.Compare(values.Actual, values.Expected),
+				(Comparer: valueComparer, Actual: actual, Expected: expected, Path: memberPath),
+				static values => values.Path.ToString());
+			if (!isEquivalent)
+			{
+				AppendDifference(failureBuilder, memberType, memberPath, differentActualValue,
+					differentExpectedValue, context);
+			}
+
 			return false;
 		}
 
@@ -348,6 +366,27 @@ public static partial class EquivalencyComparison
 		return true;
 	}
 #pragma warning restore S107
+
+	/// <summary>
+	///     Whether the values of the <paramref name="member" /> can be compared by the
+	///     <paramref name="valueComparer" /> of its registration instead of being read as objects.
+	/// </summary>
+	/// <remarks>
+	///     Only when both objects share the registration of the member, and its type is compared by value, as it would
+	///     be after reading the values. The comparer then decides like <see cref="CompareByValue" />, because a
+	///     primitive or enum type is neither compared by content nor a <see cref="DateTime" />.
+	/// </remarks>
+	private static bool UsesValueComparer(EquivalencyMember member, Func<object, object?> actualAccessor,
+		EquivalencyOptions options, EquivalencyTypeOptions typeOptions, EquivalencyContext context,
+		[NotNullWhen(true)] out TypeMetadataRegistry.ValueComparer? valueComparer)
+	{
+		valueComparer = member.ValueComparer;
+		return valueComparer is not null &&
+		       ReferenceEquals(actualAccessor, member.GetValue) &&
+		       IsComparedByValue(valueComparer.MemberType,
+			       GetRegisteredOptions(valueComparer.MemberType, options, context) ??
+			       context.GetInheritedOptions(options, typeOptions), options);
+	}
 
 	private static EquivalencyTypeOptions? GetRegisteredOptions(Type type, EquivalencyOptions equivalencyOptions,
 		EquivalencyContext context)
@@ -438,8 +477,11 @@ public static partial class EquivalencyComparison
 	///     options that apply to <paramref name="expected" /> have to be looked up from there as well. A registration
 	///     for the type of <paramref name="expected" /> wins over one for the type of <paramref name="actual" />,
 	///     because the members that are compared come from the expected object.
+	///     <para />
+	///     Not <see langword="async" />, because most compared values are <see langword="null" /> or compared by value,
+	///     which is decided synchronously, and only nested objects and expectations need a state machine.
 	/// </remarks>
-	private static async ValueTask<bool>
+	private static ValueTask<bool>
 		Compare<TActual, TExpected>(
 			TActual actual,
 			TExpected expected,
@@ -454,16 +496,75 @@ public static partial class EquivalencyComparison
 		    expected is IOptionsProvider<ExpectationBuilder>
 		    {
 			    Options: EquivalencyExpectationBuilder equivalencyExpectationBuilder,
-		    } &&
-		    await CompareWithExpectation(actual, equivalencyExpectationBuilder, failureBuilder, memberPath,
+		    })
+		{
+			return CompareWithExpectationOrValues(actual, expected, equivalencyExpectationBuilder,
+				equivalencyOptions, parentTypeOptions, failureBuilder, memberPath, memberType, context);
+		}
+
+		if (TryCompareValues(actual, expected, equivalencyOptions, parentTypeOptions, failureBuilder, memberPath,
+			    memberType, context, out bool isEquivalent, out EquivalencyTypeOptions? typeOptions))
+		{
+			return new ValueTask<bool>(isEquivalent);
+		}
+
+		return CompareNested(actual!, expected!, equivalencyOptions, typeOptions!, failureBuilder, memberPath,
+			memberType, context);
+	}
+
+	/// <summary>
+	///     Compares the values with the expectation of an <c>It.Is…</c> in the expected object, and when it cannot
+	///     decide, like any other values.
+	/// </summary>
+	private static async ValueTask<bool>
+		CompareWithExpectationOrValues<TActual, TExpected>(
+			TActual actual,
+			TExpected expected,
+			EquivalencyExpectationBuilder equivalencyExpectationBuilder,
+			EquivalencyOptions equivalencyOptions,
+			EquivalencyTypeOptions parentTypeOptions,
+			StringBuilder failureBuilder,
+			MemberPath memberPath,
+			MemberType memberType,
+			EquivalencyContext context)
+	{
+		if (await CompareWithExpectation(actual, equivalencyExpectationBuilder, failureBuilder, memberPath,
 			    memberType, context) is { } isMetByExpectation)
 		{
 			return isMetByExpectation;
 		}
 
+		if (TryCompareValues(actual, expected, equivalencyOptions, parentTypeOptions, failureBuilder, memberPath,
+			    memberType, context, out bool isEquivalent, out EquivalencyTypeOptions? typeOptions))
+		{
+			return isEquivalent;
+		}
+
+		return await CompareNested(actual!, expected!, equivalencyOptions, typeOptions!, failureBuilder,
+			memberPath, memberType, context);
+	}
+
+	/// <summary>
+	///     Compares the values when one of them is <see langword="null" /> or they are compared by value, or else
+	///     returns the <paramref name="typeOptions" /> to compare them as nested objects with.
+	/// </summary>
+	private static bool TryCompareValues<TActual, TExpected>(
+		TActual actual,
+		TExpected expected,
+		EquivalencyOptions equivalencyOptions,
+		EquivalencyTypeOptions parentTypeOptions,
+		StringBuilder failureBuilder,
+		MemberPath memberPath,
+		MemberType memberType,
+		EquivalencyContext context,
+		out bool isEquivalent,
+		out EquivalencyTypeOptions? typeOptions)
+	{
+		typeOptions = null;
 		if (actual is null || expected is null)
 		{
-			return CompareNulls(actual, expected, failureBuilder, memberPath, memberType, context);
+			isEquivalent = CompareNulls(actual, expected, failureBuilder, memberPath, memberType, context);
+			return true;
 		}
 
 		EquivalencyTypeOptions inheritedOptions = context.GetInheritedOptions(equivalencyOptions, parentTypeOptions);
@@ -473,16 +574,35 @@ public static partial class EquivalencyComparison
 			GetRegisteredOptions(expected.GetType(), equivalencyOptions, context);
 		if (IsComparedByValue(actual.GetType(), actualOptions ?? inheritedOptions, equivalencyOptions))
 		{
-			return CompareByValue(actual, expected, false, failureBuilder, memberPath, memberType, context);
+			isEquivalent = CompareByValue(actual, expected, false, failureBuilder, memberPath, memberType, context);
+			return true;
 		}
 
 		if (IsComparedByValue(expected.GetType(), expectedOptions ?? inheritedOptions, equivalencyOptions))
 		{
-			return CompareByValue(actual, expected, true, failureBuilder, memberPath, memberType, context);
+			isEquivalent = CompareByValue(actual, expected, true, failureBuilder, memberPath, memberType, context);
+			return true;
 		}
 
-		EquivalencyTypeOptions typeOptions = expectedOptions ?? actualOptions ?? inheritedOptions;
+		isEquivalent = false;
+		typeOptions = expectedOptions ?? actualOptions ?? inheritedOptions;
+		return false;
+	}
 
+	/// <summary>
+	///     Compares two objects that are compared by their members, as dictionaries or as sequences.
+	/// </summary>
+	private static async ValueTask<bool>
+		CompareNested<TActual, TExpected>(
+			[DisallowNull] TActual actual,
+			[DisallowNull] TExpected expected,
+			EquivalencyOptions equivalencyOptions,
+			EquivalencyTypeOptions typeOptions,
+			StringBuilder failureBuilder,
+			MemberPath memberPath,
+			MemberType memberType,
+			EquivalencyContext context)
+	{
 		ComparedPair comparedPair = new(actual, expected);
 		if (!context.ComparedPairs.Add(comparedPair))
 		{
@@ -563,11 +683,11 @@ public static partial class EquivalencyComparison
 		{
 			memberCount++;
 			MemberPath fieldMemberPath = MemberPath.Member(memberPath, field.Expected.Name);
-			if (!TryReadMember(field, MemberType.Field, fieldMemberPath, actual, expected, typeOptions,
-				    failureBuilder, context, out bool isMissing, out object? actualFieldValue,
+			if (!TryReadMember(field, MemberType.Field, fieldMemberPath, actual, expected, options, typeOptions,
+				    failureBuilder, context, out bool isEquivalent, out object? actualFieldValue,
 				    out object? expectedFieldValue))
 			{
-				result &= !isMissing;
+				result &= isEquivalent;
 				continue;
 			}
 
@@ -583,11 +703,11 @@ public static partial class EquivalencyComparison
 		{
 			memberCount++;
 			MemberPath propertyMemberPath = MemberPath.Member(memberPath, property.Expected.Name);
-			if (!TryReadMember(property, MemberType.Property, propertyMemberPath, actual, expected, typeOptions,
-				    failureBuilder, context, out bool isMissing, out object? actualPropertyValue,
+			if (!TryReadMember(property, MemberType.Property, propertyMemberPath, actual, expected, options,
+				    typeOptions, failureBuilder, context, out bool isEquivalent, out object? actualPropertyValue,
 				    out object? expectedPropertyValue))
 			{
-				result &= !isMissing;
+				result &= isEquivalent;
 				continue;
 			}
 
