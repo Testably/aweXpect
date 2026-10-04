@@ -543,6 +543,52 @@ public sealed class EventRecordingTests
 			.Because("the reason is kept until the event is asked for, so that the other events can still be recorded");
 	}
 
+#if NET8_0_OR_GREATER
+	[Fact]
+	public async Task WhenHandlerTakesARefStructParameter_ShouldThrowNotSupportedException()
+	{
+		RefStructHandlerClass sut = new();
+
+		void Act()
+			=> sut.Record().Events(nameof(RefStructHandlerClass.CustomEvent));
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage("The CustomEvent event cannot be recorded, because its handler takes a parameter that cannot be boxed: [ReadOnlySpan<byte>]")
+			.Because("a ref struct cannot be boxed into the recorded arguments");
+	}
+
+	[Fact]
+	public async Task WhenHandlerTakesARefStructParameter_WhenAnotherEventIsRequestedByName_ShouldRecordIt()
+	{
+		RefStructHandlerClass sut = new();
+
+		IEventRecording<RefStructHandlerClass> recording =
+			sut.Record().Events(nameof(RefStructHandlerClass.OtherEvent));
+		sut.NotifyOtherEvent();
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		await That(result.GetEventCount(nameof(RefStructHandlerClass.OtherEvent))).IsEqualTo(1)
+			.Because("an event that cannot be recorded must not cost the recording of the other events of its type");
+	}
+
+	[Fact]
+	public async Task WhenHandlerTakesARefStructParameter_WhenRecordingAllEvents_ShouldSkipTheEvent()
+	{
+		RefStructHandlerClass sut = new();
+		IEventRecording<RefStructHandlerClass> recording = sut.Record().Events();
+		sut.NotifyOtherEvent();
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		void Act()
+			=> result.GetEventCount(nameof(RefStructHandlerClass.CustomEvent));
+
+		await That(result.GetEventCount(nameof(RefStructHandlerClass.OtherEvent))).IsEqualTo(1);
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage("The CustomEvent event cannot be recorded, because its handler takes a parameter that cannot be boxed: [ReadOnlySpan<byte>]")
+			.Because("the reason is kept until the event is asked for, so that the other events can still be recorded");
+	}
+#endif
+
 	[Fact]
 	public async Task WhenNoEventCanBeAttached_WithUnrecordedEventName_ShouldNotClaimThatNoEventWasFound()
 	{
@@ -1008,6 +1054,21 @@ public sealed class EventRecordingTests
 		public event CustomEventDelegate? CustomEvent;
 #pragma warning restore CS0067 // Event is never used
 	}
+
+#if NET8_0_OR_GREATER
+	private sealed class RefStructHandlerClass
+	{
+		public delegate void CustomEventDelegate(ReadOnlySpan<byte> value);
+
+#pragma warning disable CS0067 // Event is never used
+		public event CustomEventDelegate? CustomEvent;
+#pragma warning restore CS0067 // Event is never used
+
+		public event EventHandler? OtherEvent;
+
+		public void NotifyOtherEvent() => OtherEvent?.Invoke(this, EventArgs.Empty);
+	}
+#endif
 
 	private sealed class ManyParametersClass
 	{

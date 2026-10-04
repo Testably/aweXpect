@@ -71,7 +71,17 @@ internal sealed class ReflectedEvent : IRecordableEvent
 
 		if (parameters.Length > 0)
 		{
-			recordMethod = recordMethod.MakeGenericMethod(parameters.Select(x => x.ParameterType).ToArray());
+			try
+			{
+				recordMethod = recordMethod.MakeGenericMethod(parameters.Select(x => x.ParameterType).ToArray());
+			}
+			catch (ArgumentException)
+			{
+				// Which types can be boxed is up to the runtime: a pointer never can, whereas .NET Framework boxes a
+				// ref struct like any other struct, so the runtime is asked.
+				return new ReflectedEvent(eventInfo, null,
+					$"The {eventInfo.Name} event cannot be recorded, because its handler takes a parameter that cannot be boxed: {Formatter.Format(parameters.Select(x => x.ParameterType))}");
+			}
 		}
 
 		return new ReflectedEvent(eventInfo, recordMethod, null);
