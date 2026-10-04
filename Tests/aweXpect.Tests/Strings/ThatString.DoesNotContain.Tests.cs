@@ -44,6 +44,34 @@ public sealed partial class ThatString
 			}
 
 			[Fact]
+			public async Task WhenEvaluatedForSeveralItems_ShouldNotShareTheNegation()
+			{
+				string[] subject = ["b", "a",];
+
+				async Task Act()
+					=> await That(subject).All().ComplyWith(it => it.DoesNotContain("a"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain "a" for all items,
+					             but only 1 of 2 did
+
+					             Not matching items:
+					             [
+					               "a"
+					             ]
+
+					             Collection:
+					             [
+					               "b",
+					               "a"
+					             ]
+					             """)
+					.Because("the items share one quantifier, so the negation of one item must not leak into the next");
+			}
+
+			[Fact]
 			public async Task WhenPatternIsEmptyAfterTheIndentationIsIgnored_ShouldThrowArgumentException()
 			{
 				string subject = "some text";
@@ -603,6 +631,24 @@ public sealed partial class ThatString
 				await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
 					.WithMessage("The minimum must not be negative.").AsPrefix().And
 					.WithParamName("minimum");
+			}
+
+			[Fact]
+			public async Task WhenMinimumIsZero_ShouldReadLikeWithoutQuantifier()
+			{
+				string subject = "some text";
+				string unexpected = "me";
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(unexpected).MoreThan(0);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain "me",
+					             but it contained "me" once in "some text"
+					             """)
+					.Because("more than zero occurrences are the same as any occurrence");
 			}
 		}
 

@@ -115,6 +115,25 @@ public sealed partial class ThatSignaler
 			}
 
 			[Fact]
+			public async Task WhenRecordedOnce_LessThanOnceShouldFailLikeNever()
+			{
+				Signaler signaler = new();
+
+				signaler.Signal();
+
+				async Task Act() =>
+					await That(signaler).Signaled().LessThan(1.Times()).Within(40.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has never recorded the callback within 0:00.040,
+					             but it was recorded once after 0:*
+					             """).AsWildcard()
+					.Because("fewer than once is the same as never");
+			}
+
+			[Fact]
 			public async Task WhenRecordedOnce_NeverShouldFail()
 			{
 				Signaler signaler = new();

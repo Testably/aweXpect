@@ -28,6 +28,7 @@ public static partial class ThatEventRecording
 		where TSubject : notnull
 	{
 		private IEventRecording<TSubject>? _actual;
+		private bool _isNegated;
 		private IEventRecordingResult? _result;
 		private bool _stoppedEarly;
 		private TimeSpan? _waitedTime;
@@ -61,13 +62,13 @@ public static partial class ThatEventRecording
 				}
 			}
 
-			Outcome = quantifier.Check(eventCount, true) ?? quantifier.IsNegated ? Outcome.Success : Outcome.Failure;
+			Outcome = quantifier.Check(eventCount, true, _isNegated) ?? _isNegated ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (quantifier.IsNever)
+			if (quantifier.IsNever(_isNegated))
 			{
 				stringBuilder.Append("has never recorded the ").Append(eventName).Append(" event");
 				if (_actual != null)
@@ -85,7 +86,7 @@ public static partial class ThatEventRecording
 					stringBuilder.Append(" on ").Append(_actual);
 				}
 
-				stringBuilder.Append(filter).Append(' ').Append(quantifier).Append(options);
+				stringBuilder.Append(filter).Append(' ').Append(quantifier.ToString(_isNegated)).Append(options);
 			}
 		}
 
@@ -104,7 +105,8 @@ public static partial class ThatEventRecording
 			}
 
 			stringBuilder.Append(it).Append(" was ");
-			ThatSignaler.AppendOccurrences(stringBuilder, quantifier, _result?.GetEventCount(eventName, filter.IsMatch) ?? 0);
+			ThatSignaler.AppendOccurrences(stringBuilder, quantifier, _isNegated,
+				_result?.GetEventCount(eventName, filter.IsMatch) ?? 0);
 			if (_result?.GetEventCount(eventName) > 0)
 			{
 				stringBuilder.Append(" in ").Append(_result.ToString(eventName));
@@ -132,7 +134,7 @@ public static partial class ThatEventRecording
 
 		public override ConstraintResult Negate()
 		{
-			quantifier.Negate();
+			_isNegated = !_isNegated;
 			Outcome = Outcome switch
 			{
 				Outcome.Failure => Outcome.Success,

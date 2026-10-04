@@ -601,3 +601,10 @@ static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberT
 *REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.ThrowOptions.get -> aweXpect.Delegates.ThatDelegate.ThrowsOption!
 *REMOVED*aweXpect.Delegates.ThatDelegate.WithValue<T>.WithValue(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
 aweXpect.Delegates.ThatDelegate.WithValue<T>.WithValue(aweXpect.Core.ExpectationBuilder! expectationBuilder, System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<T>!>! subject) -> void
+*REMOVED*aweXpect.Options.Quantifier.Check(int amount, bool isLast) -> bool?
+*REMOVED*aweXpect.Options.Quantifier.IsNegated.get -> bool
+*REMOVED*aweXpect.Options.Quantifier.IsNever.get -> bool
+*REMOVED*aweXpect.Options.Quantifier.Negate() -> void
+aweXpect.Options.Quantifier.Check(int amount, bool isLast, bool isNegated = false) -> bool?
+aweXpect.Options.Quantifier.IsNever(bool isNegated) -> bool
+aweXpect.Options.Quantifier.ToString(bool isNegated) -> string!

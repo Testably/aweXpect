@@ -38,7 +38,7 @@ internal abstract class ContainedItem<TItem>
 	/// <summary>
 	///     The expectation text of <c>Contains</c> for the <paramref name="quantifier" />.
 	/// </summary>
-	public abstract string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars);
+	public abstract string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars, bool isNegated);
 
 	/// <summary>
 	///     The text after "has an item" of <c>HasItem</c>.
@@ -79,9 +79,9 @@ internal sealed class ItemMatchingPredicate<TItem>(Func<TItem, bool> predicate, 
 		=> UserCode.Invoke(predicate, item, "the predicate");
 
 	/// <inheritdoc />
-	public override string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars)
+	public override string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars, bool isNegated)
 		=> quantifier.ToContainsExpectation(grammars,
-			$"an item matching {predicateExpression.TrimCommonWhiteSpace()}");
+			$"an item matching {predicateExpression.TrimCommonWhiteSpace()}", isNegated);
 
 	/// <inheritdoc />
 	public override string GetHasItemExpectation(ExpectationGrammars grammars)
@@ -102,7 +102,7 @@ internal sealed class ItemMatchingOptions<TItem>(PredicateOptions<TItem> options
 			"the predicate");
 
 	/// <inheritdoc />
-	public override string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars)
+	public override string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars, bool isNegated)
 		=> throw new NotSupportedException("Only HasItem specifies the predicate in its options.");
 
 	/// <inheritdoc />
@@ -131,8 +131,8 @@ internal abstract class ExpectedItem<TItem>(TItem expected) : ContainedItem<TIte
 	public abstract string GetItemExpectation();
 
 	/// <inheritdoc />
-	public override string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars)
-		=> quantifier.ToContainsExpectation(grammars, GetItemExpectation());
+	public override string GetExpectation(Quantifier quantifier, ExpectationGrammars grammars, bool isNegated)
+		=> quantifier.ToContainsExpectation(grammars, GetItemExpectation(), isNegated);
 }
 
 /// <summary>

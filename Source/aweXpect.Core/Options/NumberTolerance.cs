@@ -1,5 +1,4 @@
 ﻿using System;
-using aweXpect.Core;
 using aweXpect.Core.Helpers;
 #if NET8_0_OR_GREATER
 using System.Numerics;
@@ -30,20 +29,7 @@ public class NumberTolerance<TNumber>(
 	/// <exception cref="InvalidOperationException">A tolerance is already set.</exception>
 	public void SetTolerance(TNumber tolerance)
 	{
-		if (IsNaN(tolerance))
-		{
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(tolerance),
-					"The tolerance must not be NaN."));
-		}
-
-		if (tolerance.CompareTo(default) < 0)
-		{
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(tolerance),
-					"The tolerance must not be negative."));
-		}
-
+		ToleranceHelpers.ThrowIfInvalid(tolerance, IsNaN(tolerance));
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Tolerance is not null, "Within");
 		Tolerance = tolerance;
 	}
@@ -64,17 +50,7 @@ public class NumberTolerance<TNumber>(
 
 	/// <inheritdoc />
 	public override string ToString()
-	{
-		if (Tolerance == null)
-		{
-			return "";
-		}
-
-		const char plusMinus = '\u00b1';
-		object tolerance = Tolerance.Value;
-		// A char tolerance is a distance between code points and would be unreadable as a character.
-		return $" {plusMinus} {Formatter.Format(tolerance is char character ? (int)character : tolerance)}";
-	}
+		=> Tolerance is { } tolerance ? ToleranceHelpers.Format(tolerance) : "";
 
 	/// <summary>
 	///     Calculates the difference between the <paramref name="actual" /> number

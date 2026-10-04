@@ -90,7 +90,7 @@ public static partial class ThatString
 			}
 
 			_actualCount = await options.CountOccurrences(actual, expected);
-			Outcome = quantifier.Check(_actualCount, true) ?? _isNegated ? Outcome.Success : Outcome.Failure;
+			Outcome = quantifier.Check(_actualCount, true, _isNegated) ?? _isNegated ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -105,7 +105,8 @@ public static partial class ThatString
 		}
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(quantifier.ToContainsExpectation(Grammars, $"{Formatter.Format(expected)}{options}"));
+			=> stringBuilder.Append(quantifier.ToContainsExpectation(Grammars, $"{Formatter.Format(expected)}{options}",
+				_isNegated));
 
 		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
 		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
@@ -134,23 +135,11 @@ public static partial class ThatString
 					Formatter.Format(stringBuilder, expected);
 					stringBuilder.Append(" in ");
 				}
-				else if (_actualCount == 1)
-				{
-					stringBuilder.Append(it).Append(" contained ");
-					Formatter.Format(stringBuilder, expected);
-					stringBuilder.Append(" once in ");
-				}
-				else if (_actualCount == 2)
-				{
-					stringBuilder.Append(it).Append(" contained ");
-					Formatter.Format(stringBuilder, expected);
-					stringBuilder.Append(" twice in ");
-				}
 				else
 				{
 					stringBuilder.Append(it).Append(" contained ");
 					Formatter.Format(stringBuilder, expected);
-					stringBuilder.Append(' ').Append(_actualCount).Append(" times in ");
+					stringBuilder.Append(' ').AppendOccurrences(_actualCount).Append(" in ");
 				}
 
 				Formatter.Format(stringBuilder, _actual);
@@ -160,7 +149,6 @@ public static partial class ThatString
 		public override ConstraintResult Negate()
 		{
 			_isNegated = !_isNegated;
-			quantifier.Negate();
 			Outcome = Outcome switch
 			{
 				Outcome.Failure => Outcome.Success,
