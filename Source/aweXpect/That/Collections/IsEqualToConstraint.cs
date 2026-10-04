@@ -386,15 +386,23 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 				: FailForNullExpected(CollectionItems<object?>.Materialize(actual, context)));
 		}
 
-		SubjectEqualityOptions<TItem, TMatch> subjectOptions = new(GetItemOptions(),
-			canUseSubjectComparer && HasDefaultEquality() ? static () => true : static () => false);
-		SubjectComparer = subjectOptions.UseComparerOf(actual) ? subjectOptions.Comparer : null;
+		IOptionsEquality<TMatch> itemOptions = GetItemOptions();
+		SubjectComparer = canUseSubjectComparer && HasDefaultEquality()
+			? CollectionComparerHelpers.GetSubjectComparer<TItem>(actual)
+			: null;
+		if (SubjectComparer is not null)
+		{
+			SubjectEqualityOptions<TItem, TMatch> subjectOptions = new(itemOptions, static () => true);
+			subjectOptions.UseComparerOf(actual);
+			itemOptions = subjectOptions;
+		}
+
 		return isTyped
 			? VerifyItems(CollectionItems<TItem>.Materialize(actual, context),
-				MatchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems), subjectOptions, cancellationToken)
+				MatchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems), itemOptions, cancellationToken)
 			: VerifyItems(CollectionItems<object?>.Materialize(actual, context),
 				MatchOptions.GetCollectionMatcher<object?, object?>(expectedItems.Cast<object?>()),
-				new UntypedOptions(subjectOptions), cancellationToken);
+				new UntypedOptions(itemOptions), cancellationToken);
 	}
 
 	/// <summary>
