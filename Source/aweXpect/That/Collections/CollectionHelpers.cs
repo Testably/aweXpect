@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 #if NET8_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 #endif
 using System.Threading.Tasks;
@@ -42,6 +45,8 @@ internal static class CollectionHelpers
 		typeof(Half),
 #endif
 	];
+
+	private static readonly ConcurrentDictionary<Type, PropertyInfo?> GenericCountProperties = new();
 
 	/// <summary>
 	///     Continues the expectation on the collection that the <paramref name="memberAccessor" /> selects from the
@@ -270,10 +275,41 @@ internal static class CollectionHelpers
 		{
 			ICollection coll => coll.Count,
 			ICountable countable => countable.Count,
-			_ => null,
+			_ => value.GetUntypedCount(),
 		};
 		return Formatter.Format(value, GetItemTypeOfListedItems(value).GetFormattingOption(totalCount, totalCount));
 	}
+
+	/// <summary>
+	///     The number of items of the untyped <paramref name="value" />, when it is a collection that knows it without
+	///     being enumerated.
+	/// </summary>
+	/// <remarks>
+	///     A generic collection that is no <see cref="ICollection" />, e.g. a <see cref="HashSet{T}" />, converts to
+	///     <see cref="IReadOnlyCollection{T}" /> of <see langword="object" /> by variance only for reference type items, so
+	///     for value type items its count is read by reflection, which is only attempted while the
+	///     <see cref="ReflectionFallback" /> is supported.
+	/// </remarks>
+	internal static int? GetUntypedCount(this IEnumerable? value)
+		=> value switch
+		{
+			null => null,
+			ICollection collection => collection.Count,
+			IReadOnlyCollection<object?> collection => collection.Count,
+			_ => ReflectionFallback.IsSupported ? ReadGenericCount(value) : null,
+		};
+
+#if NET8_0_OR_GREATER
+	[RequiresUnreferencedCode("Reads the count of a generic collection interface, which the trimmer may remove.")]
+#endif
+	private static int? ReadGenericCount(IEnumerable value)
+		=> (int?)GenericCountProperties.GetOrAdd(value.GetType(), static type => type.GetInterfaces()
+				.FirstOrDefault(interfaceType => interfaceType.IsGenericType &&
+				                                 interfaceType.GetGenericTypeDefinition() is var definition &&
+				                                 (definition == typeof(ICollection<>) ||
+				                                  definition == typeof(IReadOnlyCollection<>)))
+				?.GetProperty(nameof(ICollection.Count)))
+			?.GetValue(value);
 
 	/// <summary>
 	///     Formats the items that were read from a source that did not reach its end, marked as incomplete.

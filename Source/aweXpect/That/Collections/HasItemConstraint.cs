@@ -98,7 +98,7 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 		_hasIndex = true;
 		_actual = item;
 		Outcome = isMatch ? Outcome.Success : Outcome.Failure;
-		return isMatch;
+		return isMatch || Options.Match.OnlySingleIndex();
 	}
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

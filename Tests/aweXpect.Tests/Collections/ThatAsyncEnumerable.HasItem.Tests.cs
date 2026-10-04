@@ -51,7 +51,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it had item 2 at index 2
 
 					             Collection:
-					             [0, 1, 2]
+					             [0, 1, 2, (… and maybe more)]
 					             """);
 			}
 
@@ -247,7 +247,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it had item 2 at index 2
 
 					             Collection:
-					             [0, 1, 2, 3, (… and maybe more)]
+					             [0, 1, 2, (… and maybe more)]
 					             """);
 			}
 
@@ -439,7 +439,6 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "foo",
 					               "bar",
-					               "baz",
 					               (… and maybe more)
 					             ]
 					             """);
@@ -474,7 +473,6 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "foo",
 					               "bar",
-					               "baz",
 					               (… and maybe more)
 					             ]
 					             """);
@@ -509,7 +507,6 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "foo",
 					               "bar",
-					               "baz",
 					               (… and maybe more)
 					             ]
 					             """);
@@ -544,7 +541,6 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "foo",
 					               "bar",
-					               "baz",
 					               (… and maybe more)
 					             ]
 					             """);
@@ -581,7 +577,6 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "foo",
 					               "bar",
-					               "baz",
 					               (… and maybe more)
 					             ]
 					             """);
@@ -607,7 +602,6 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "a\n  b",
 					               "c\n  d",
-					               "e\n  f",
 					               (… and maybe more)
 					             ]
 					             """);
@@ -633,7 +627,6 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               " foo",
 					               "\tbar",
-					               "baz",
 					               (… and maybe more)
 					             ]
 					             """);
@@ -659,7 +652,6 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "a\nb",
 					               "c\nd",
-					               "e\nf",
 					               (… and maybe more)
 					             ]
 					             """);
@@ -686,7 +678,6 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "foo ",
 					               "bar\t",
-					               "baz",
 					               (… and maybe more)
 					             ]
 					             """);
@@ -711,7 +702,6 @@ public sealed partial class ThatAsyncEnumerable
 					               "a",
 					               "b",
 					               "bar",
-					               "c",
 					               (… and maybe more)
 					             ]
 					             """);
@@ -820,7 +810,6 @@ public sealed partial class ThatAsyncEnumerable
 					             [
 					               "foo",
 					               "bar",
-					               "baz",
 					               (… and maybe more)
 					             ]
 					             """);

@@ -100,7 +100,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> :
 		}
 
 		Outcome = isMatch.Outcome;
-		return isMatch.Outcome == Outcome.Success;
+		return isMatch.Outcome == Outcome.Success || Options.Match.OnlySingleIndex();
 	}
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -185,6 +186,31 @@ public sealed partial class ThatEnumerable
 					             has exactly 2 items,
 					             but it was <null>
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenUntypedSetContainsTooManyItems_ShouldFail()
+			{
+				IEnumerable subject = new HashSet<int>
+				{
+					1,
+					2,
+					3,
+				};
+
+				async Task Act()
+					=> await That(subject).HasCount(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has exactly one item,
+					             but it had 3 items
+
+					             Collection:
+					             [1, 2, 3]
+					             """)
+					.Because("a set knows its count, also when it is read as a non-generic enumerable");
 			}
 		}
 	}

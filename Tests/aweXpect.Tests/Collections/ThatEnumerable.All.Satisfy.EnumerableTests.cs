@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -150,6 +151,34 @@ public sealed partial class ThatEnumerable
 					await That(Act).Throws<ArgumentNullException>()
 						.WithParamName("predicate").And
 						.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+				}
+
+				[Fact]
+				public async Task WhenSetContainsDifferentValues_ShouldFail()
+				{
+					IEnumerable subject = new HashSet<int>
+					{
+						1,
+						2,
+						3,
+					};
+
+					async Task Act()
+						=> await That(subject).All().Satisfy(x => (int?)x == 1);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             satisfies x => (int?)x == 1 for all items,
+						             but only 1 of 3 did
+
+						             Not matching items:
+						             [2, 3]
+
+						             Collection:
+						             [1, 2, 3]
+						             """)
+						.Because("a set is complete in memory, also when it is read as a non-generic enumerable");
 				}
 
 				[Fact]

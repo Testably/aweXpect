@@ -15,7 +15,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CollectionWithMoreThan20Deviations_ShouldFail()
 			{
-				IEnumerable subject = Enumerable.Range(1, 21);
+				IEnumerable subject = ToEnumerable(Enumerable.Range(1, 21).ToArray());
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(Array.Empty<int>());
@@ -241,7 +241,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
-				IEnumerable subject = Enumerable.Range(1, 11);
+				IEnumerable subject = ToEnumerable(Enumerable.Range(1, 11).ToArray());
 				IEnumerable<int>? expected = null;
 
 				async Task Act()
@@ -779,7 +779,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CollectionWithMoreThan20Deviations_ShouldFail()
 			{
-				IEnumerable subject = Enumerable.Range(1, 21);
+				IEnumerable subject = ToEnumerable(Enumerable.Range(1, 21).ToArray());
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(Array.Empty<int>()).IgnoringDuplicates();
@@ -1288,7 +1288,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CollectionWithMoreThan20Deviations_ShouldFail()
 			{
-				IEnumerable subject = Enumerable.Range(1, 21);
+				IEnumerable subject = ToEnumerable(Enumerable.Range(1, 21).ToArray());
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(Array.Empty<int>()).InAnyOrder();
@@ -1857,7 +1857,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task CollectionWithMoreThan20Deviations_ShouldFail()
 			{
-				IEnumerable subject = Enumerable.Range(1, 21);
+				IEnumerable subject = ToEnumerable(Enumerable.Range(1, 21).ToArray());
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(Array.Empty<int>()).InAnyOrder().IgnoringDuplicates();

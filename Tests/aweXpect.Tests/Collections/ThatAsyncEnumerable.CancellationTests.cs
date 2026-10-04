@@ -159,6 +159,61 @@ public sealed partial class ThatAsyncEnumerable
 		}
 
 		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldDecideDoesNotHaveItemAtAnEarlierIndex()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 2);
+
+			async Task Act()
+				=> await That(subject).DoesNotHaveItem(1).AtIndex(0).WithCancellation(cts.Token);
+
+			await That(Act).DoesNotThrow()
+				.Because("the item at index 0 decides the outcome, so the source must not be read any further");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldDecideHasItemAtAnEarlierIndex()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 2);
+
+			async Task Act()
+				=> await That(subject).HasItem(1).AtIndex(0).WithCancellation(cts.Token);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item equal to 1 at index 0,
+				             but it had item 2 at index 0
+
+				             Collection:
+				             [2, (… and maybe more)]
+				             """)
+				.Because("the item at index 0 decides the outcome, so the source must not be read any further");
+		}
+
+		[Fact]
+		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldDecideHasItemThatAtAnEarlierIndex()
+		{
+			using CancellationTokenSource cts = new();
+			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 2);
+
+			async Task Act()
+				=> await That(subject).HasItemThat(x => x.IsEqualTo(1)).AtIndex(0).WithCancellation(cts.Token);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item that is equal to 1 at index 0,
+				             but it had item 2 at index 0
+
+				             Collection:
+				             [2, (… and maybe more)]
+				             """)
+				.Because("the item at index 0 decides the outcome, so the source must not be read any further");
+		}
+
+		[Fact]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldLetAnAlternativeToHasItemDecide()
 		{
 			using CancellationTokenSource cts = new();

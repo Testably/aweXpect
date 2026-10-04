@@ -54,7 +54,8 @@ public sealed partial class ThatAsyncEnumerable
 						               MyClass {
 						                 StringValue = "",
 						                 Value = 2
-						               }
+						               },
+						               (… and maybe more)
 						             ]
 						             """);
 				}
@@ -306,7 +307,8 @@ public sealed partial class ThatAsyncEnumerable
 						               MyClass {
 						                 StringValue = "",
 						                 Value = 2
-						               }
+						               },
+						               (… and maybe more)
 						             ]
 						             """);
 				}
