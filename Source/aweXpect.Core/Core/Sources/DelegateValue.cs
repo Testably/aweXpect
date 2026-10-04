@@ -97,7 +97,9 @@ public class DelegateValue(Exception? exception, TimeSpan duration, bool isNull 
 	///     be abandoned, or <see langword="null" /> when it was canceled or abandoned.
 	/// </summary>
 	/// <remarks>
-	///     An expectation on the duration judges the delegate by it, as it measures the overrun on its own.
+	///     An expectation on the duration judges the delegate by it, as it measures the overrun on its own, when the
+	///     timeout was not tighter than its upper bound or the duration violates its limit; otherwise the tighter
+	///     timeout wins.
 	/// </remarks>
 	internal DelegateValue? LateResult { get; init; }
 

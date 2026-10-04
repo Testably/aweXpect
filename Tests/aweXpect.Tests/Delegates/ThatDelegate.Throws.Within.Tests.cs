@@ -187,6 +187,71 @@ public sealed partial class ThatDelegate
 				}
 
 				[Fact]
+				public async Task WhenSyncDelegateExceedsTheTimeoutAndTheDuration_ShouldReportTheDuration()
+				{
+					Action action = () =>
+					{
+						System.Threading.Thread.Sleep(200.Milliseconds());
+						throw new CustomException();
+					};
+
+					async Task<Exception> Act()
+						=> await That(action).Throws().Within(100.Milliseconds()).WithTimeout(50.Milliseconds());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception within 0:00.100,
+						             but it took *
+						             """).AsWildcard()
+						.Because("the delegate violates the duration on its own, which the measured duration shows best");
+				}
+
+				[Fact]
+				public async Task WhenSyncDelegateExceedsTheTimeoutButNotTheDuration_ShouldFailWithTheTimeout()
+				{
+					Action action = () =>
+					{
+						System.Threading.Thread.Sleep(200.Milliseconds());
+						throw new CustomException();
+					};
+
+					async Task<Exception> Act()
+						=> await That(action).Throws().Within(5.Seconds()).WithTimeout(50.Milliseconds());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception within 0:05,
+						             but it did not finish within 0:00.050
+						             """).And
+						.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+						.Because("the tighter timeout wins over the duration");
+				}
+
+				[Fact]
+				public async Task WhenSyncDelegateWithValueExceedsTheTimeoutButNotTheDuration_ShouldFailWithTheTimeout()
+				{
+					Func<int> action = () =>
+					{
+						System.Threading.Thread.Sleep(200.Milliseconds());
+						throw new CustomException();
+					};
+
+					async Task<Exception> Act()
+						=> await That(action).Throws().Within(5.Seconds()).WithTimeout(50.Milliseconds());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that action
+						             throws an exception within 0:05,
+						             but it did not finish within 0:00.050
+						             """).And
+						.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+						.Because("the tighter timeout wins over the duration");
+				}
+
+				[Fact]
 				public async Task WhenTimeoutIsLongerThanTheDuration_ShouldKeepTheDuration()
 				{
 					Func<System.Threading.CancellationToken, Task> @delegate = token => Task.Delay(60.Seconds(), token);

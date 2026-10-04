@@ -105,9 +105,11 @@ public abstract partial class ThatDelegate
 
 		public ConstraintResult IsMetBy(DelegateValue value)
 		{
-			if (options.ExecutionTimeOptions is not null)
+			if (options.ExecutionTimeOptions is { } executionTimeOptions &&
+			    value is { LateResult: { } lateResult, ExceededTimeout: { } timeout, } &&
+			    executionTimeOptions.JudgesLateResult(timeout, lateResult.Duration))
 			{
-				value = value.LateResult ?? value;
+				value = lateResult;
 			}
 
 			_actual = value;

@@ -848,6 +848,81 @@ public sealed partial class ThatDelegate
 			}
 
 			[Fact]
+			public async Task WhenSyncDelegateExceedsTheTimeoutAndTheMaximum_ShouldReportTheDuration()
+			{
+				Action @delegate = () => Thread.Sleep(200.Milliseconds());
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AtMost(100.Milliseconds()).WithTimeout(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in at most 0:00.100,
+					             but it took 0:*
+					             """).AsWildcard()
+					.Because("the delegate violates the maximum on its own, which the measured duration shows best");
+			}
+
+			[Fact]
+			public async Task WhenSyncDelegateExceedsTheTimeoutButNotTheMaximum_ShouldFailWithTheTimeout()
+			{
+				Action @delegate = () => Thread.Sleep(200.Milliseconds());
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AtMost(5.Seconds()).WithTimeout(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in at most 0:05,
+					             but it did not finish within 0:00.050
+					             """).And
+					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+					.Because("the tighter timeout wins over the maximum");
+			}
+
+			[Fact]
+			public async Task WhenSyncDelegateExceedsTheTimeoutButReachesTheMinimum_ShouldFailWithTheTimeout()
+			{
+				Action @delegate = () => Thread.Sleep(200.Milliseconds());
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AtLeast(100.Milliseconds()).WithTimeout(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in at least 0:00.100,
+					             but it did not finish within 0:00.050
+					             """).And
+					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+					.Because("a minimum has no upper bound, so any timeout is tighter");
+			}
+
+			[Fact]
+			public async Task WhenSyncDelegateWithValueExceedsTheTimeoutButNotTheMaximum_ShouldFailWithTheTimeout()
+			{
+				Func<int> @delegate = () =>
+				{
+					Thread.Sleep(200.Milliseconds());
+					return 1;
+				};
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AtMost(5.Seconds()).WithTimeout(50.Milliseconds());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that @delegate
+					             executes in at most 0:05,
+					             but it did not finish within 0:00.050
+					             """).And
+					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+					.Because("the tighter timeout wins over the maximum");
+			}
+
+			[Fact]
 			public async Task WithoutReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{
 				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
