@@ -29,7 +29,7 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 	///     events of the subject, so it is skipped with its reason, which the expectation that asks for it reports
 	///     instead of letting it look like an event that was never triggered.
 	/// </remarks>
-	private Dictionary<string, string>? _skipped;
+	private readonly Dictionary<string, string>? _skipped;
 
 	private readonly string _subjectExpression;
 
@@ -69,24 +69,13 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 			int count = recordAllEvents ? events.Length : eventNames.Length;
 			for (int i = 0; i < count; i++)
 			{
-				IRecordableEvent? @event = recordAllEvents ? events[i] : Find(events, eventNames[i]);
-				if (@event == null)
-				{
-					throw Tracing.WriteException(
-						new NotSupportedException(
-							$"Event {eventNames[i]} is not supported on {Formatter.Format(subject)}{(_isRegistered ? "." : TrimmingHint)}"));
-				}
-
-				EventRecorder recorder = new(@event.Name, notifyRecordedEvent);
-				// Stored before it is attached, so that the cleanup below also detaches it when anything later throws.
-				_recorders.Add(recorder);
-				string? unsupported = recorder.TryAttach(subject, @event);
+				IRecordableEvent @event = recordAllEvents ? events[i] : Find(events, eventNames[i], subject);
+				string? unsupported = TryAttach(subject, @event, notifyRecordedEvent);
 				if (unsupported is null)
 				{
 					continue;
 				}
 
-				_recorders.RemoveAt(_recorders.Count - 1);
 				if (recordAllEvents)
 				{
 					(_skipped ??= new Dictionary<string, string>()).Add(@event.Name, unsupported);
@@ -107,7 +96,7 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 		}
 	}
 
-	private static IRecordableEvent? Find(IRecordableEvent[] events, string eventName)
+	private IRecordableEvent Find(IRecordableEvent[] events, string eventName, TSubject subject)
 	{
 		foreach (IRecordableEvent @event in events)
 		{
@@ -117,7 +106,28 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 			}
 		}
 
-		return null;
+		throw Tracing.WriteException(
+			new NotSupportedException(
+				$"Event {eventName} is not supported on {Formatter.Format(subject)}{(_isRegistered ? "." : TrimmingHint)}"));
+	}
+
+	/// <summary>
+	///     Records the <paramref name="event" /> and returns the reason why it cannot be recorded, or
+	///     <see langword="null" /> when the handler was attached.
+	/// </summary>
+	private string? TryAttach(TSubject subject, IRecordableEvent @event, Action notifyRecordedEvent)
+	{
+		EventRecorder recorder = new(@event.Name, notifyRecordedEvent);
+		// Stored before it is attached, so that the cleanup in the constructor also detaches it when anything later
+		// throws.
+		_recorders.Add(recorder);
+		string? unsupported = recorder.TryAttach(subject, @event);
+		if (unsupported is not null)
+		{
+			_recorders.RemoveAt(_recorders.Count - 1);
+		}
+
+		return unsupported;
 	}
 
 	/// <remarks>

@@ -36,22 +36,7 @@ public class TriggerEventFilter
 	///     Checks if the provided <paramref name="parameters" /> match all registered predicates.
 	/// </summary>
 	public bool IsMatch(object?[] parameters)
-	{
-		if (_predicates is null)
-		{
-			return true;
-		}
-
-		foreach (Func<object?[], bool> predicate in _predicates)
-		{
-			if (!predicate(parameters))
-			{
-				return false;
-			}
-		}
-
-		return true;
-	}
+		=> _predicates is null || _predicates.TrueForAll(predicate => predicate(parameters));
 
 	/// <summary>
 	///     A string representation including all predicate expressions.
