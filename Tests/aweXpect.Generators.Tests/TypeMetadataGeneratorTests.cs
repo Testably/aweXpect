@@ -876,6 +876,22 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenMemberIsATask_ShouldNotRegisterItsMembers()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Call("""
+			     Expect.That(new { Task = System.Threading.Tasks.Task.FromResult(1), ValueTask = new System.Threading.Tasks.ValueTask<int>(1) })
+			     	.IsEquivalentTo(new { Task = System.Threading.Tasks.Task.FromResult(1), ValueTask = new System.Threading.Tasks.ValueTask<int>(1) });
+			     """),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("\"Result\"").And.DoesNotContain("\"IsCompletedSuccessfully\"")
+			.Because("tasks and value tasks are compared by value");
+	}
+
+	[Fact]
 	public async Task WhenMemberIsATuple_ShouldRegisterItsItems()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(

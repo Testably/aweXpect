@@ -1654,7 +1654,26 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			   type.ToDisplayString() is "System.DateTimeOffset" or "System.TimeSpan" or "System.Guid"
 				   or "System.Text.StringBuilder" or "System.Numerics.BigInteger" or "System.Numerics.Complex"
 				   or "System.Half" or "System.Runtime.InteropServices.NFloat" or "System.Int128" or "System.UInt128" ||
-			   IsHandle(type);
+			   IsHandle(type) ||
+			   IsTask(type);
+
+		/// <remarks>
+		///     A task is matched on its bases too, because a <c>Task&lt;TResult&gt;</c> derives from <c>Task</c>, and
+		///     by its name without the arity, which also covers <c>ValueTask&lt;TResult&gt;</c>.
+		/// </remarks>
+		private static bool IsTask(INamedTypeSymbol type)
+		{
+			for (INamedTypeSymbol? current = type; current is not null; current = current.BaseType)
+			{
+				if (current.Name is "Task" or "ValueTask" &&
+				    current.ContainingNamespace.ToDisplayString() == "System.Threading.Tasks")
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
 
 		/// <remarks>
 		///     A handle is matched on its bases too, because the type that reaches the comparison is a derived one:

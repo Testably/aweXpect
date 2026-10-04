@@ -4076,6 +4076,90 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
+	[Fact]
+	public async Task WhenTaskMemberIsTheSameInstance_ShouldSucceedWithoutWaiting()
+	{
+		TaskCompletionSource<int> tcs = new();
+		var actual = new
+		{
+			Value = tcs.Task,
+		};
+		var expected = new
+		{
+			Value = tcs.Task,
+		};
+		StringBuilder failureBuilder = new();
+
+		Task<bool> comparison = Task.Run(async ()
+			=> await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder));
+		bool isCompleted = await Task.WhenAny(comparison, Task.Delay(TimeSpan.FromSeconds(30))) == comparison;
+		// Releases a comparison that waits for the task, so that it does not hang the test run.
+		tcs.SetResult(1);
+
+		await That(isCompleted).IsTrue().Because("a pending task must not be waited for");
+		await That(await comparison).IsTrue();
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenTaskMembersAreDifferentInstances_ShouldReportTheDifferenceWithANote()
+	{
+		var actual = new
+		{
+			Value = Task.FromResult("foo"),
+		};
+		var expected = new
+		{
+			Value = Task.FromResult("foo"),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                      Actual: Task<string> (RanToCompletion, "foo")
+		                                                    Expected: Task<string> (RanToCompletion, "foo")
+		                                                    (tasks are compared by reference)
+		                                                """).IgnoringNewlineStyle()
+			.Because("the state of a task changes over time, so only the same instance is equivalent");
+	}
+
+	[Fact]
+	public async Task WhenTaskMembersArePendingAndDifferentInstances_ShouldReportTheDifferenceWithoutWaiting()
+	{
+		TaskCompletionSource<int> actualSource = new();
+		TaskCompletionSource<int> expectedSource = new();
+		var actual = new
+		{
+			Value = actualSource.Task,
+		};
+		var expected = new
+		{
+			Value = expectedSource.Task,
+		};
+		StringBuilder failureBuilder = new();
+
+		Task<bool> comparison = Task.Run(async ()
+			=> await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder));
+		bool isCompleted = await Task.WhenAny(comparison, Task.Delay(TimeSpan.FromSeconds(30))) == comparison;
+		// Releases a comparison that waits for the tasks, so that it does not hang the test run.
+		actualSource.SetResult(1);
+		expectedSource.SetResult(1);
+
+		await That(isCompleted).IsTrue().Because("a pending task must not be waited for");
+		await That(await comparison).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                      Actual: Task<int> (WaitingForActivation)
+		                                                    Expected: Task<int> (WaitingForActivation)
+		                                                    (tasks are compared by reference)
+		                                                """).IgnoringNewlineStyle();
+	}
+
 #if NET8_0_OR_GREATER
 	[Fact]
 	public async Task WhenTimeOnlyMemberDiffers_ShouldReportTheDifference()
@@ -4476,6 +4560,78 @@ public sealed partial class EquivalencyComparisonTests
 		                                                     Expected: {expectedUri}
 		                                                 """).IgnoringNewlineStyle()
 			.Because("every component of a relative URI throws, and the components of an absolute one repeat the same difference many times over");
+	}
+
+	[Fact]
+	public async Task WhenValueTaskMembersHaveDifferentResults_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			Value = new ValueTask<int>(1),
+		};
+		var expected = new
+		{
+			Value = new ValueTask<int>(2),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                      Actual: ValueTask<int> (RanToCompletion, 1)
+		                                                    Expected: ValueTask<int> (RanToCompletion, 2)
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenValueTaskMembersHaveTheSameResult_ShouldSucceed()
+	{
+		var actual = new
+		{
+			Value = new ValueTask<int>(1),
+			Untyped = new ValueTask(),
+		};
+		var expected = new
+		{
+			Value = new ValueTask<int>(1),
+			Untyped = new ValueTask(),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue();
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenValueTaskMembersWrapTheSamePendingTask_ShouldSucceedWithoutWaiting()
+	{
+		TaskCompletionSource<int> tcs = new();
+		var actual = new
+		{
+			Value = new ValueTask<int>(tcs.Task),
+			Untyped = new ValueTask(tcs.Task),
+		};
+		var expected = new
+		{
+			Value = new ValueTask<int>(tcs.Task),
+			Untyped = new ValueTask(tcs.Task),
+		};
+		StringBuilder failureBuilder = new();
+
+		Task<bool> comparison = Task.Run(async ()
+			=> await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder));
+		bool isCompleted = await Task.WhenAny(comparison, Task.Delay(TimeSpan.FromSeconds(30))) == comparison;
+		// Releases a comparison that waits for the task, so that it does not hang the test run.
+		tcs.SetResult(1);
+
+		await That(isCompleted).IsTrue().Because("a pending task must not be waited for");
+		await That(await comparison).IsTrue();
+		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
 	[Fact]
