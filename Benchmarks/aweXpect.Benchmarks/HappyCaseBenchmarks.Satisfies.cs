@@ -18,4 +18,8 @@ public partial class HappyCaseBenchmarks
 	[Benchmark]
 	public AndConstraint<NumericAssertions<int>> Satisfies_FluentAssertions()
 		=> _satisfiesSubject.Should().Match(x => x > 0);
+
+	[Benchmark]
+	public async Task<int> Satisfies_TUnit()
+		=> await Assert.That(_satisfiesSubject).Satisfies(x => x > 0);
 }

@@ -18,4 +18,8 @@ public partial class HappyCaseBenchmarks
 	[Benchmark]
 	public AndConstraint<BooleanAssertions> Bool_FluentAssertions()
 		=> _boolSubject.Should().BeTrue();
+
+	[Benchmark]
+	public async Task<bool> Bool_TUnit()
+		=> await Assert.That(_boolSubject).IsTrue();
 }

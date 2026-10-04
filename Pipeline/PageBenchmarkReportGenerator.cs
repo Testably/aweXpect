@@ -151,13 +151,14 @@ public class PageBenchmarkReportGenerator
 		}
 
 		bool IsIncluded(string type)
-			=> type is "aweXpect" or "FluentAssertions";
+			=> type is "aweXpect" or "FluentAssertions" or "TUnit";
 
 		string GetColor(string type)
 			=> type switch
 			{
 				"aweXpect" => "#63A2AC",
 				"FluentAssertions" => "#FF671B",
+				"TUnit" => "#1A6029",
 				_ => "#e84393",
 			};
 
