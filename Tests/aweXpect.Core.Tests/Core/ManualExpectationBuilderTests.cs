@@ -1,6 +1,9 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Tests.TestHelpers;
 
@@ -287,6 +290,70 @@ public class ManualExpectationBuilderTests
 	}
 
 	[Fact]
+	public async Task IsMetBy_WithoutContext_ShouldPassTheCancellationToken()
+	{
+		using CancellationTokenSource cts = new();
+		cts.Cancel();
+		CancellationToken receivedToken = CancellationToken.None;
+		EvaluationCancellation? receivedCancellation = null;
+		ManualExpectationBuilder<int> sut = new();
+		sut.AddConstraint((_, _) => new ContextConstraint<int>((_, context, cancellationToken) =>
+		{
+			receivedToken = cancellationToken;
+			receivedCancellation = context.Cancellation;
+			return Outcome.Success;
+		}));
+
+		await sut.IsMetBy(1, cts.Token);
+
+		await That(receivedToken).IsEqualTo(cts.Token);
+		await That(receivedCancellation?.Token).IsEqualTo(cts.Token);
+		await That(receivedCancellation?.Reason).IsEqualTo(CancellationReason.Caller)
+			.Because("the evaluation context must report the cancellation by the caller");
+		await That(receivedCancellation?.Timeout).IsNull()
+			.Because("no expectation timeout applies to a manual evaluation");
+	}
+
+	[Fact]
+	public async Task IsMetBy_WithoutContext_ShouldReleaseMaterializedSourcesAfterTheEvaluation()
+	{
+		DisposeTrackingEnumerable source = new(null, 1, 2, 3);
+		int? disposeCountDuringEvaluation = null;
+		ManualExpectationBuilder<IEnumerable<int>> sut = new();
+		sut.AddConstraint((_, _) => new ContextConstraint<IEnumerable<int>>((actual, context, _) =>
+		{
+			context.UseMaterializedEnumerable(actual).First();
+			disposeCountDuringEvaluation = source.DisposeCount;
+			return Outcome.Failure;
+		}));
+
+		ConstraintResult result = await sut.IsMetBy(source, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(disposeCountDuringEvaluation).IsEqualTo(0);
+		await That(source.DisposeCount).IsEqualTo(1)
+			.Because("the evaluation context of its own is released once the evaluation is completed");
+	}
+
+	[Fact]
+	public async Task IsMetBy_WithoutContext_WhenConstraintThrows_ShouldReleaseMaterializedSources()
+	{
+		DisposeTrackingEnumerable source = new(null, 1, 2, 3);
+		ManualExpectationBuilder<IEnumerable<int>> sut = new();
+		sut.AddConstraint((_, _) => new ContextConstraint<IEnumerable<int>>((actual, context, _) =>
+		{
+			context.UseMaterializedEnumerable(actual).First();
+			throw new InvalidOperationException("foo");
+		}));
+
+		async Task Act() => await sut.IsMetBy(source, CancellationToken.None);
+
+		await That(Act).Throws<InvalidOperationException>().WithMessage("foo");
+		await That(source.DisposeCount).IsEqualTo(1)
+			.Because("the evaluation context of its own is also released when the evaluation throws");
+	}
+
+	[Fact]
 	public async Task PrepareExpectation_ShouldNotEvaluateTheConstraints()
 	{
 		bool isEvaluated = false;
@@ -322,5 +389,15 @@ public class ManualExpectationBuilderTests
 		ManualExpectationBuilder<int> sut = new();
 
 		await That(sut.Subject).IsEmpty();
+	}
+
+	private sealed class ContextConstraint<T>(Func<T, IEvaluationContext, CancellationToken, Outcome> callback)
+		: IAsyncContextConstraint<T>
+	{
+		public Task<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> Task.FromResult<ConstraintResult>(new DummyConstraintResult(callback(actual, context, cancellationToken)));
+
+		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null) { }
 	}
 }

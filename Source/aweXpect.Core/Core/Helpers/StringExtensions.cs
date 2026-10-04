@@ -114,53 +114,6 @@ internal static class StringExtensions
 		}
 	}
 
-	[return: NotNullIfNotNull(nameof(value))]
-	public static string? Indent(this string? value, string? indentation = "  ",
-		bool indentFirstLine = true)
-	{
-		if (value == null || string.IsNullOrEmpty(indentation))
-		{
-			return value;
-		}
-
-		return (indentFirstLine ? indentation : "")
-		       + value.Replace("\n", $"\n{indentation}");
-	}
-
-	/// <summary>
-	///     Prepends the indefinite article that matches the sound of the first letter of the <paramref name="value" />.
-	/// </summary>
-	/// <remarks>
-	///     An initialism (an uppercase letter that stands alone or is followed by an uppercase letter or a digit, e.g.
-	///     "HResult", "IOException" or "UInt32") is read letter by letter, so it takes "an" when the name of its
-	///     first letter starts with a vowel sound (A, E, F, H, I, L, M, N, O, R, S, X).<br />
-	///     Any other value takes "an" when it starts with a vowel, except for a "U" followed by a single consonant other
-	///     than "n" and a vowel, which is read as "you" (e.g. "User", "Uri" or "Utility").
-	/// </remarks>
-	public static string PrependAOrAn(this string value)
-	{
-		bool startsWithVowelSound;
-		if (value.Length > 0 && char.IsUpper(value[0]) &&
-		    (value.Length == 1 || char.IsUpper(value[1]) || char.IsDigit(value[1])))
-		{
-			startsWithVowelSound =
-				value[0] is 'A' or 'E' or 'F' or 'H' or 'I' or 'L' or 'M' or 'N' or 'O' or 'R' or 'S' or 'X';
-		}
-		else if (value.Length > 2 && value[0] is 'U' or 'u' && value[1] != 'n' && !IsVowel(value[1]) &&
-		         IsVowel(value[2]))
-		{
-			startsWithVowelSound = false;
-		}
-		else
-		{
-			startsWithVowelSound = value.Length > 0 && IsVowel(value[0]);
-		}
-
-		return startsWithVowelSound ? $"an {value}" : $"a {value}";
-
-		static bool IsVowel(char c) => c is 'a' or 'e' or 'i' or 'o' or 'u' or 'A' or 'E' or 'I' or 'O' or 'U';
-	}
-
 	/// <summary>
 	///     Removes the leading whitespace from every line and normalizes the newline style to <c>\n</c>.
 	/// </summary>
@@ -243,54 +196,4 @@ internal static class StringExtensions
 		=> index > 0 && index < value.Length &&
 		   ((char.IsHighSurrogate(value[index - 1]) && char.IsLowSurrogate(value[index])) ||
 		    (value[index - 1] == '\r' && value[index] == '\n'));
-
-	/// <summary>
-	///     Removes the leading whitespace that all lines after the first one have in common.
-	/// </summary>
-	/// <remarks>
-	///     The lines are split on <c>\n</c>, so that the line endings (<c>\n</c> or <c>\r\n</c>) are kept.
-	///     Blank lines don't limit the common whitespace, as editors often trim them.
-	///     <para />
-	///     Keep in sync with the copy in aweXpect.
-	/// </remarks>
-	public static string TrimCommonWhiteSpace(this string value)
-	{
-		if (value.IndexOf('\n') < 0)
-		{
-			return value;
-		}
-
-		string[] lines = value.Split('\n');
-
-		string? commonWhiteSpace = null;
-		foreach (string line in lines.Skip(1).Where(line => !string.IsNullOrWhiteSpace(line)))
-		{
-			int length = 0;
-			while (length < line.Length && char.IsWhiteSpace(line[length]) &&
-			       (commonWhiteSpace is null ||
-			        (length < commonWhiteSpace.Length && line[length] == commonWhiteSpace[length])))
-			{
-				length++;
-			}
-
-			commonWhiteSpace = line.Substring(0, length);
-		}
-
-		commonWhiteSpace ??= "";
-		StringBuilder sb = new(lines[0]);
-		foreach (string line in lines.Skip(1))
-		{
-			sb.Append('\n');
-			if (line.StartsWith(commonWhiteSpace, StringComparison.Ordinal))
-			{
-				sb.Append(line, commonWhiteSpace.Length, line.Length - commonWhiteSpace.Length);
-			}
-			else if (line.EndsWith('\r'))
-			{
-				sb.Append('\r');
-			}
-		}
-
-		return sb.ToString();
-	}
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 

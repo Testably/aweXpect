@@ -105,6 +105,37 @@ public sealed class ManualExpectationBuilder<TValue>(
 		return result;
 	}
 
+	/// <summary>
+	///     Evaluate if the expectations are met by the <paramref name="value" /> in an evaluation context of their own.
+	/// </summary>
+	/// <remarks>
+	///     Use this overload when no <see cref="IEvaluationContext" /> of a surrounding evaluation is available;
+	///     otherwise prefer <see cref="IsMetBy(TValue, IEvaluationContext, CancellationToken)" />, so that the
+	///     expectations share the materialized collections of the surrounding evaluation.<br />
+	///     The evaluation context is released before the returned task completes, also when the evaluation throws: the
+	///     sources of the collections materialized during the evaluation (e.g. with
+	///     <see cref="EvaluationContextExtensions.UseMaterializedEnumerable{TItem}(IEvaluationContext, IEnumerable{TItem})" />)
+	///     are disposed, so a failure message created from the result afterwards only shows the items that the
+	///     evaluation read. Only the <paramref name="cancellationToken" /> cancels the evaluation; no expectation
+	///     timeout applies.<br />
+	///     The reasons are not applied to the result, see <see cref="AppendReasons" />.
+	/// </remarks>
+	public async Task<ConstraintResult> IsMetBy(TValue value, CancellationToken cancellationToken)
+	{
+		EvaluationContext.EvaluationContext context = new()
+		{
+			Cancellation = EvaluationCancellation.Create(null, cancellationToken),
+		};
+		try
+		{
+			return await IsMetBy(value, context, cancellationToken);
+		}
+		finally
+		{
+			await context.ReleaseMaterializations();
+		}
+	}
+
 	/// <inheritdoc />
 	internal override ValueTask<ConstraintResult> IsMet(Node rootNode,
 		EvaluationContext.EvaluationContext context,

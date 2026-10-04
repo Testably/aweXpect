@@ -72,7 +72,7 @@ internal static IExpectThat<T> Get<T>(this IThat<T> subject)
         return thatIs;
     }
 
-    throw new NotSupportedException("IThat<T> must also implement IExpectThat<T>");
+    throw Tracing.WriteException(new NotSupportedException("IThat<T> must also implement IExpectThat<T>."));
 }
 ```
 
