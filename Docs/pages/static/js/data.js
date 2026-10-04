@@ -4284,6 +4284,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
+      },
+      {
+        "sha": "1a2fd538657a53c6bf51f446c65aa873a1c6772a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
+        "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
       }
     ],
     "labels": [
@@ -5000,7 +5006,8 @@ window.BENCHMARK_DATA = {
       "62b5cca4",
       "a4298247",
       "bfeb4fc2",
-      "16c242c7"
+      "16c242c7",
+      "1a2fd538"
     ],
     "datasets": [
       {
@@ -5720,7 +5727,8 @@ window.BENCHMARK_DATA = {
           181.4545805624553,
           351.66029326121014,
           371.91328716278076,
-          163.3961702823639
+          163.3961702823639,
+          161.43245550791423
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6445,6 +6453,7 @@ window.BENCHMARK_DATA = {
           800,
           800,
           800,
+          392,
           392
         ],
         "borderColor": "#63A2AC",
@@ -7173,7 +7182,8 @@ window.BENCHMARK_DATA = {
           145.49324812207902,
           252.23526869501387,
           256.7717856725057,
-          251.36319078717912
+          251.36319078717912,
+          278.60765273754413
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7366,6 +7376,7 @@ window.BENCHMARK_DATA = {
           688,
           688,
           688,
+          952,
           952,
           952,
           952,
@@ -11734,6 +11745,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
+      },
+      {
+        "sha": "1a2fd538657a53c6bf51f446c65aa873a1c6772a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
+        "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
       }
     ],
     "labels": [
@@ -12373,7 +12390,8 @@ window.BENCHMARK_DATA = {
       "62b5cca4",
       "a4298247",
       "bfeb4fc2",
-      "16c242c7"
+      "16c242c7",
+      "1a2fd538"
     ],
     "datasets": [
       {
@@ -13016,7 +13034,8 @@ window.BENCHMARK_DATA = {
           148709.5198625837,
           290245.4733698918,
           287580.0322614397,
-          164669.80224609375
+          164669.80224609375,
+          163605.92210286457
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13664,6 +13683,7 @@ window.BENCHMARK_DATA = {
           86138,
           86138,
           86138,
+          29440,
           29440
         ],
         "borderColor": "#63A2AC",
@@ -14315,7 +14335,8 @@ window.BENCHMARK_DATA = {
           1295520.78984375,
           2303982.52421875,
           2703740.744270833,
-          2558308.1489583333
+          2558308.1489583333,
+          2700871.7098958334
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -14962,6 +14983,7 @@ window.BENCHMARK_DATA = {
           4841648,
           4841647,
           4841647,
+          4841651,
           4841651,
           4841651
         ],
@@ -19261,6 +19283,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
+      },
+      {
+        "sha": "1a2fd538657a53c6bf51f446c65aa873a1c6772a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
+        "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
       }
     ],
     "labels": [
@@ -19977,7 +20005,8 @@ window.BENCHMARK_DATA = {
       "62b5cca4",
       "a4298247",
       "bfeb4fc2",
-      "16c242c7"
+      "16c242c7",
+      "1a2fd538"
     ],
     "datasets": [
       {
@@ -20697,7 +20726,8 @@ window.BENCHMARK_DATA = {
           284.65417126814526,
           566.9924236297608,
           594.5345482145037,
-          353.0453771523067
+          353.0453771523067,
+          381.0867851893107
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21422,6 +21452,7 @@ window.BENCHMARK_DATA = {
           1104,
           1104,
           1104,
+          640,
           640
         ],
         "borderColor": "#63A2AC",
@@ -22150,7 +22181,8 @@ window.BENCHMARK_DATA = {
           268.01146796771457,
           491.15626989092146,
           488.9102769851685,
-          468.2079619680132
+          468.2079619680132,
+          520.7906526156834
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -22343,6 +22375,7 @@ window.BENCHMARK_DATA = {
           1744,
           1744,
           1744,
+          2008,
           2008,
           2008,
           2008,
@@ -27173,6 +27206,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
+      },
+      {
+        "sha": "1a2fd538657a53c6bf51f446c65aa873a1c6772a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
+        "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
       }
     ],
     "labels": [
@@ -27889,7 +27928,8 @@ window.BENCHMARK_DATA = {
       "62b5cca4",
       "a4298247",
       "bfeb4fc2",
-      "16c242c7"
+      "16c242c7",
+      "1a2fd538"
     ],
     "datasets": [
       {
@@ -28609,7 +28649,8 @@ window.BENCHMARK_DATA = {
           182.40172738295334,
           380.74375101498197,
           392.31012461980185,
-          174.2242868423462
+          174.2242868423462,
+          188.06854093869526
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29334,6 +29375,7 @@ window.BENCHMARK_DATA = {
           952,
           952,
           952,
+          496,
           496
         ],
         "borderColor": "#63A2AC",
@@ -30062,7 +30104,8 @@ window.BENCHMARK_DATA = {
           134.61963035265606,
           244.56347176233928,
           254.0459478378296,
-          241.38362261454265
+          241.38362261454265,
+          294.1105617841085
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -30255,6 +30298,7 @@ window.BENCHMARK_DATA = {
           960,
           960,
           960,
+          1224,
           1224,
           1224,
           1224,
@@ -35085,6 +35129,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
+      },
+      {
+        "sha": "1a2fd538657a53c6bf51f446c65aa873a1c6772a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
+        "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
       }
     ],
     "labels": [
@@ -35801,7 +35851,8 @@ window.BENCHMARK_DATA = {
       "62b5cca4",
       "a4298247",
       "bfeb4fc2",
-      "16c242c7"
+      "16c242c7",
+      "1a2fd538"
     ],
     "datasets": [
       {
@@ -36521,7 +36572,8 @@ window.BENCHMARK_DATA = {
           243.23858434813363,
           502.5803561528524,
           524.4031518055842,
-          332.72294425964355
+          332.72294425964355,
+          333.53665580068315
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37246,6 +37298,7 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
+          624,
           624
         ],
         "borderColor": "#63A2AC",
@@ -37974,7 +38027,8 @@ window.BENCHMARK_DATA = {
           597.8788195610047,
           1152.8177640279134,
           1190.6806184132895,
-          1280.5390829722087
+          1280.5390829722087,
+          1234.3039438883463
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -38403,6 +38457,7 @@ window.BENCHMARK_DATA = {
           3896,
           3896,
           3896,
+          3944,
           3944,
           3944,
           3944,
@@ -42997,6 +43052,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
+      },
+      {
+        "sha": "1a2fd538657a53c6bf51f446c65aa873a1c6772a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
+        "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
       }
     ],
     "labels": [
@@ -43713,7 +43774,8 @@ window.BENCHMARK_DATA = {
       "62b5cca4",
       "a4298247",
       "bfeb4fc2",
-      "16c242c7"
+      "16c242c7",
+      "1a2fd538"
     ],
     "datasets": [
       {
@@ -44433,7 +44495,8 @@ window.BENCHMARK_DATA = {
           1419.1521091461182,
           2781.446640777588,
           2727.2405586242676,
-          2500.675132751465
+          2500.675132751465,
+          2443.3629895528156
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45158,6 +45221,7 @@ window.BENCHMARK_DATA = {
           2896,
           2896,
           2896,
+          2576,
           2576
         ],
         "borderColor": "#63A2AC",
@@ -45886,7 +45950,8 @@ window.BENCHMARK_DATA = {
           646.5440812792096,
           1316.2379275004068,
           1341.730094273885,
-          1306.213110224406
+          1306.213110224406,
+          1360.5028294881186
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -46079,6 +46144,7 @@ window.BENCHMARK_DATA = {
           3888,
           3888,
           3888,
+          4152,
           4152,
           4152,
           4152,
@@ -50909,6 +50975,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
+      },
+      {
+        "sha": "1a2fd538657a53c6bf51f446c65aa873a1c6772a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
+        "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
       }
     ],
     "labels": [
@@ -51625,7 +51697,8 @@ window.BENCHMARK_DATA = {
       "62b5cca4",
       "a4298247",
       "bfeb4fc2",
-      "16c242c7"
+      "16c242c7",
+      "1a2fd538"
     ],
     "datasets": [
       {
@@ -52345,7 +52418,8 @@ window.BENCHMARK_DATA = {
           1690.9833320617677,
           3321.210398864746,
           3404.726574452718,
-          3094.7631594340005
+          3094.7631594340005,
+          3051.6027501424155
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -53070,6 +53144,7 @@ window.BENCHMARK_DATA = {
           3176,
           3176,
           3176,
+          2816,
           2816
         ],
         "borderColor": "#63A2AC",
@@ -53798,7 +53873,8 @@ window.BENCHMARK_DATA = {
           10010.612716674805,
           20295.053096516927,
           26673.899533081054,
-          26633.9291469029
+          26633.9291469029,
+          27563.66229248047
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54523,6 +54599,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -54591,6 +54668,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
+      },
+      {
+        "sha": "1a2fd538657a53c6bf51f446c65aa873a1c6772a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
+        "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
       }
     ],
     "labels": [
@@ -54602,7 +54685,8 @@ window.BENCHMARK_DATA = {
       "62b5cca4",
       "a4298247",
       "bfeb4fc2",
-      "16c242c7"
+      "16c242c7",
+      "1a2fd538"
     ],
     "datasets": [
       {
@@ -54617,7 +54701,8 @@ window.BENCHMARK_DATA = {
           2820.00571568807,
           5096.47492980957,
           5795.983270498423,
-          5119.240317281087
+          5119.240317281087,
+          5206.446104867117
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54637,6 +54722,7 @@ window.BENCHMARK_DATA = {
           7472,
           7472,
           7472,
+          7000,
           7000
         ],
         "borderColor": "#63A2AC",
@@ -54660,7 +54746,8 @@ window.BENCHMARK_DATA = {
           29120.87935093471,
           62192.45831298828,
           83824.33119710286,
-          84180.45454624722
+          84180.45454624722,
+          84336.25848388672
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54678,6 +54765,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252,
           5252,
           5252
@@ -54748,6 +54836,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
+      },
+      {
+        "sha": "1a2fd538657a53c6bf51f446c65aa873a1c6772a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
+        "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
       }
     ],
     "labels": [
@@ -54759,7 +54853,8 @@ window.BENCHMARK_DATA = {
       "62b5cca4",
       "a4298247",
       "bfeb4fc2",
-      "16c242c7"
+      "16c242c7",
+      "1a2fd538"
     ],
     "datasets": [
       {
@@ -54774,7 +54869,8 @@ window.BENCHMARK_DATA = {
           260.7688136100769,
           560.0543730417887,
           587.4366920471191,
-          340.21241470745633
+          340.21241470745633,
+          347.0789062182109
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54794,6 +54890,7 @@ window.BENCHMARK_DATA = {
           1176,
           1176,
           1176,
+          712,
           712
         ],
         "borderColor": "#63A2AC",
@@ -54817,7 +54914,8 @@ window.BENCHMARK_DATA = {
           9445.914090983073,
           18669.087475585937,
           31424.79204450335,
-          30653.864783653848
+          30653.864783653848,
+          32797.11310628255
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -54835,6 +54933,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
+          5614,
           5614,
           5614,
           5614
