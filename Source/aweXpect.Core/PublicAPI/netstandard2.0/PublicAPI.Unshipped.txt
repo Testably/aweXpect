@@ -310,6 +310,7 @@ aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.CompleteEarly() -> vo
 aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.IsDetermined.get -> bool
 aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.Quantifier.get -> aweXpect.Options.EnumerableQuantifier!
 aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.Record(TItem item, bool isMatch) -> void
+aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.StartEvaluation() -> void
 aweXpect.Results.CollectionCountResult<TReturn>
 aweXpect.Results.CollectionCountResult<TReturn>.Between(int? minimum) -> aweXpect.Results.BetweenResult<TReturn, int?>!
 aweXpect.Results.CollectionCountResult<TReturn>.CollectionCountResult(System.Func<aweXpect.Options.EnumerableQuantifier!, bool, TReturn>! factory) -> void

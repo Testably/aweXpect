@@ -67,6 +67,7 @@ internal abstract class ComplyWithConstraintBase<TValue, TItem>
 	/// </summary>
 	private protected Task Start(IEvaluationContext context, CancellationToken cancellationToken)
 	{
+		StartEvaluation();
 		_collectionContext = default;
 		return PrepareExpectation(context, cancellationToken);
 	}

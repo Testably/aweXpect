@@ -106,6 +106,7 @@ internal sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
+		StartEvaluation();
 		_collectionContext = default;
 		_itemType = null;
 		Actual = actual;
@@ -202,6 +203,7 @@ internal sealed class AsyncAreUniqueConstraint<TItem, TMember>(
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
+		StartEvaluation();
 		_collectionContext = default;
 		Actual = actual;
 		if (actual is null)

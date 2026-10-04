@@ -7,6 +7,21 @@ public sealed partial class ThatEnumerable
 		public sealed class ComplyWithTests
 		{
 			[Fact]
+			public async Task WhenAnEarlierAttemptStoppedAtAnItem_ShouldOnlyCountTheItemsOfTheLastAttempt()
+			{
+				int calls = 0;
+				Func<int?[]> subject = () => calls++ == 0 ? [1, 2, null,] : [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).Eventually().Within(5.Seconds()).CheckEvery(10.Milliseconds())
+						.Exactly(3).ComplyWith(it => it.Satisfies(x => x!.Value > 0));
+
+				await That(Act).DoesNotThrow();
+				await That(calls).IsEqualTo(2)
+					.Because("the items that the first attempt recorded before it stopped do not count for the second one");
+			}
+
+			[Fact]
 			public async Task WhenExactlyOneItemMatches_ShouldSucceed()
 			{
 				int[] subject = [1, 2, 3, 4, 5,];

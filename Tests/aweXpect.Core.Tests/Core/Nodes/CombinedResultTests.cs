@@ -1,4 +1,5 @@
-﻿using aweXpect.Core.Constraints;
+﻿using System.Text;
+using aweXpect.Core.Constraints;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Tests.TestHelpers;
 using static aweXpect.Core.Constraints.Outcome;
@@ -7,6 +8,16 @@ namespace aweXpect.Core.Tests.Core.Nodes;
 
 public sealed class CombinedResultTests
 {
+	[Fact]
+	public async Task FailureCause_ShouldIgnoreTheCauseOfAPartThatIsMet()
+	{
+		ConstraintResult sut = new JunctionResult(new FailureCauseResult(Success, new MyException()),
+			new DummyConstraintResult(Failure), true, " and ", FurtherProcessingStrategy.Continue);
+
+		await That(sut.FailureCause).IsNull()
+			.Because("only the failed right part explains why the combination failed");
+	}
+
 	[Theory]
 	[InlineData(true, FailureBothWays, Success, FailureBothWays, FailureBothWays)]
 	[InlineData(true, FailureBothWays, Failure, Failure, Success)]
@@ -42,5 +53,29 @@ public sealed class CombinedResultTests
 
 		await That(sut.Outcome).IsEqualTo(expectedWhenNegated)
 			.Because("a failed parent meets the negation of the mapping, even when the member could not be answered");
+	}
+
+	private sealed class FailureCauseResult(Outcome outcome, Exception failureCause)
+		: ConstraintResult(FurtherProcessingStrategy.Continue)
+	{
+		public override Outcome Outcome { get; protected set; } = outcome;
+
+		public override Exception? FailureCause => failureCause;
+
+		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+		}
+
+		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+		}
+
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
+		{
+			value = default;
+			return false;
+		}
+
+		public override ConstraintResult Negate() => this;
 	}
 }

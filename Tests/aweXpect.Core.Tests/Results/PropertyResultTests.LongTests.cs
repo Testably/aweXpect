@@ -1,4 +1,5 @@
-﻿using aweXpect.Results;
+﻿using aweXpect.Chronology;
+using aweXpect.Results;
 using aweXpect.Signaling;
 
 namespace aweXpect.Core.Tests.Results;
@@ -116,6 +117,29 @@ public sealed partial class PropertyResultTests
 			MyClass? result = await sut.EqualTo(42L);
 
 			await That(result?.LongValue).IsEqualTo(42L);
+		}
+
+		[Fact]
+		public async Task EqualTo_WhenAnEarlierEvaluationThrew_ShouldDescribeTheLastValue()
+		{
+			int calls = 0;
+			Func<int> subject = () => 1;
+			PropertyResult.Long<int> sut = new(
+				That(subject).Eventually().Within(50.Milliseconds()).CheckEvery(10.Milliseconds()),
+				_ => calls++ == 0 ? throw new InvalidOperationException("not ready") : 41L,
+				"long value");
+
+			async Task Act()
+				=> await sut.EqualTo(42L);
+
+			XunitException exception = await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually has long value equal to 42 within 0:00.050,
+				             but it had long value 41
+				             """);
+			await That(exception.InnerException).IsNull()
+				.Because("only the first evaluation could not read the property");
 		}
 
 		[Fact]

@@ -41,6 +41,29 @@ public sealed partial class ThatSignaler
 			}
 
 			[Fact]
+			public async Task WhenSubjectIsNull_AfterAnEarlierItem_ShouldFail()
+			{
+				Signaler[] subject = [new(), null!,];
+
+				async Task Act()
+					=> await That(subject).All().ComplyWith(s => s.DidNotSignal().Within(10.Milliseconds()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has never recorded the callback within 0:00.010 for all items,
+					             but for the item at index 1, it was <null>
+
+					             Collection:
+					             [
+					               Signaler { },
+					               <null>
+					             ]
+					             """)
+					.Because("the signaler of an earlier item must not decide the outcome for a null item");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Signaler? subject = null;

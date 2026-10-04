@@ -18,10 +18,11 @@ namespace aweXpect;
 ///     verb in the result are only known while the failure message is created, e.g. because they come from nested
 ///     expectations.
 ///     <para />
-///     Set <see cref="ConstraintResult.WithValue{T}.Actual" /> in <c>IsMetBy</c>, call
-///     <see cref="Record(TItem, bool)" /> for every item, or <see cref="Record(TItem, ConstraintResult)" /> when the items
-///     are verified by nested expectations, and <see cref="Complete" /> afterwards, or <see cref="CompleteEarly" /> as
-///     soon as <see cref="IsDetermined" />. For a <see langword="null" /> subject, only set the
+///     Call <see cref="StartEvaluation" /> at the start of <c>IsMetBy</c>, set
+///     <see cref="ConstraintResult.WithValue{T}.Actual" />, call <see cref="Record(TItem, bool)" /> for every item, or
+///     <see cref="Record(TItem, ConstraintResult)" /> when the items are verified by nested expectations, and
+///     <see cref="Complete" /> afterwards, or <see cref="CompleteEarly" /> as soon as <see cref="IsDetermined" />. For a
+///     <see langword="null" /> subject, only set the
 ///     <see cref="ConstraintResult.WithValue{T}.Actual" /> and return, as the expectation fails for it.
 ///     <para />
 ///     The base class renders the expectation and the result for the normal, the negated and the nested case (e.g.
@@ -87,6 +88,16 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	/// </remarks>
 	protected abstract void AppendItemExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
 		string? indentation);
+
+	/// <summary>
+	///     Starts a new evaluation, so that it neither counts nor shows the items of an earlier one.
+	/// </summary>
+	/// <remarks>
+	///     The constraint can be evaluated again, e.g. for each attempt of <c>Eventually()</c> or for each item of an
+	///     outer collection, and an evaluation can end before <see cref="Complete" />, e.g. for a
+	///     <see langword="null" /> subject or at an item that the item expectations could not answer.
+	/// </remarks>
+	protected void StartEvaluation() => Reset();
 
 	/// <summary>
 	///     Records whether the <paramref name="item" /> matches the expectation.

@@ -79,6 +79,7 @@ public static partial class ThatDateTime
 		public ConstraintResult IsMetBy(DateTime actual)
 		{
 			Actual = actual;
+			_incompatibleKind = null;
 			if (minimum is null || maximum is null)
 			{
 				Outcome = Outcome.FailureBothWays;

@@ -64,6 +64,7 @@ public static partial class ThatDateTime
 		public ConstraintResult IsMetBy(DateTime actual)
 		{
 			Actual = actual;
+			_incompatibleKind = null;
 			if (expected is null)
 			{
 				Outcome = Outcome.FailureBothWays;

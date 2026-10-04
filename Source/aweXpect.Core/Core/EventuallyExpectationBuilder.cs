@@ -127,10 +127,12 @@ internal class EventuallyExpectationBuilder<TValue>(
 		using Polling polling = Polling.Start(Stopwatch.GetTimestamp(), retryTimeout, interval, cancellation);
 
 		bool isLastAttempt = false;
+		bool wasChecked = false;
 		while (true)
 		{
 			(TValue? data, Exception? failure, bool hasTimedOut, NullSubjectKind nullKind) =
 				await EvaluateSubject(subject, retryTimeout, polling.Remaining, interval, cancellationToken);
+			bool hasContexts = HasContexts(failure, nullKind, ref wasChecked);
 
 			(ConstraintResult? result, failure) =
 				await CheckAttempt(rootNode, data, failure, nullKind, currentContext, cancellationToken);
@@ -144,7 +146,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 			{
 				result ??= await rootNode.IsMetBy(data, EvaluationContext.ExpectationTextEvaluationContext.For(currentContext),
 					System.Threading.CancellationToken.None);
-				return AppendTimeout(WithFailureCause(result, failure, hasTimedOut ? retryTimeout : null),
+				return AppendTimeout(WithFailureCause(result, failure, hasContexts, hasTimedOut ? retryTimeout : null),
 					retryTimeout);
 			}
 
@@ -152,7 +154,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 			{
 				result ??= await rootNode.IsMetBy(data, EvaluationContext.ExpectationTextEvaluationContext.For(currentContext),
 					System.Threading.CancellationToken.None);
-				return AppendTimeout(new ConstraintResult.FromCancellation(WithFailureCause(result, failure)),
+				return AppendTimeout(new ConstraintResult.FromCancellation(WithFailureCause(result, failure, hasContexts)),
 					retryTimeout);
 			}
 
@@ -163,6 +165,20 @@ internal class EventuallyExpectationBuilder<TValue>(
 			ResetOtherExceptions();
 		}
 	}
+
+	/// <summary>
+	///     Whether the contexts of the constraints describe this attempt.
+	/// </summary>
+	/// <remarks>
+	///     The constraints keep what an earlier checked attempt saw, which does not describe a subject that failed.
+	/// </remarks>
+	private static bool HasContexts(Exception? failure, NullSubjectKind nullKind, ref bool wasChecked)
+	{
+		bool hasContexts = failure is null || !wasChecked;
+		wasChecked |= failure is null && nullKind == NullSubjectKind.None;
+		return hasContexts;
+	}
+
 	/// <summary>
 	///     Evaluates the <paramref name="subject" /> for one attempt, which
 	///     <see cref="CreateAttemptCancellation" /> bounds.
@@ -281,8 +297,9 @@ internal class EventuallyExpectationBuilder<TValue>(
 	}
 
 	private static ConstraintResult WithFailureCause(ConstraintResult result, Exception? failure,
-		TimeSpan? exceededTimeout = null)
+		bool hasContexts, TimeSpan? exceededTimeout = null)
 		=> failure is null
 			? result
-			: new ConstraintResult.FromException(result, failure, DefaultCurrentSubject, exceededTimeout);
+			: new ConstraintResult.FromException(result, failure, DefaultCurrentSubject, exceededTimeout,
+				hasContexts);
 }

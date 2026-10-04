@@ -42,8 +42,23 @@ internal abstract class CombinedResult : ConstraintResult
 	protected bool IsNegated { get; set; }
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     Only a part that explains the failure contributes its cause, as a met part can hold an exception that is the
+	///     reason why it is met, e.g. the parse exception of <c>IsNotParsableInto</c>.
+	/// </remarks>
 	public override Exception? FailureCause
-		=> Outcome is Outcome.Failure or Outcome.FailureBothWays ? Left.FailureCause ?? Right.FailureCause : null;
+	{
+		get
+		{
+			if (Outcome is not (Outcome.Failure or Outcome.FailureBothWays))
+			{
+				return null;
+			}
+
+			(bool explainsLeft, bool explainsRight) = GetExplainingParts();
+			return (explainsLeft ? Left.FailureCause : null) ?? (explainsRight ? Right.FailureCause : null);
+		}
+	}
 
 	/// <summary>
 	///     Which parts explain the outcome of the combination.

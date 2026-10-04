@@ -950,6 +950,28 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task WhenTheLastAttemptThrows_ShouldNotShowTheContextsOfAnEarlierAttempt()
+		{
+			int calls = 0;
+
+			IEnumerable<int> Subject()
+				=> calls++ == 0 ? [1, 2,] : throw new MyException("broken");
+
+			async Task Act()
+				=> await That(Subject).Eventually().Within(VeryLowTimeout).CheckEvery(10.Milliseconds())
+					.IsEqualTo([3, 4,]);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that Subject
+				             eventually is equal to collection [3, 4,] in order within 0:00.050,
+				             but it did throw a ThatDelegateTests.EventuallyTests.MyException:
+				               broken
+				             """)
+				.Because("the constraints still hold what the first attempt saw, which the last attempt did not see");
+		}
+
+		[Fact]
 		public async Task WhenTheSubjectContentChanges_ShouldNotReuseTheCachedEnumerable()
 		{
 			List<int> subject = [];
