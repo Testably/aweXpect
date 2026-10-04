@@ -21,7 +21,7 @@ namespace aweXpect;
 internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 {
 	private readonly ExpectedItem<TItem>? _expected;
-	private readonly ItemMatchingPredicate<TItem>? _predicate;
+	private readonly SynchronouslyMatchedItem<TItem>? _predicate;
 	private object? _actual;
 	private int _count;
 	private TItem? _firstFoundItem;
@@ -37,7 +37,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 		It = it;
 		Item = item;
 		_expected = item as ExpectedItem<TItem>;
-		_predicate = item as ItemMatchingPredicate<TItem>;
+		_predicate = item as SynchronouslyMatchedItem<TItem>;
 		Quantifier = quantifier;
 	}
 
