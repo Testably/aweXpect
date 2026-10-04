@@ -393,7 +393,7 @@ public static partial class ThatEnumerable
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
 						state.MatchOptions,
 						failsForNullSubject: true,
-						usesDefaultEquality: () => state.Options.HasDefaultMatchType).InvertIf(state.Negated)),
+						canUseSubjectComparer: true).InvertIf(state.Negated)),
 			subject,
 			options,
 			matchOptions);
@@ -423,7 +423,7 @@ public static partial class ThatEnumerable
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
 						state.MatchOptions,
 						failsForNullSubject: true,
-						usesDefaultEquality: () => state.Options.ComparesByOrdinalEquality).InvertIf(state.Negated)),
+						canUseSubjectComparer: true).InvertIf(state.Negated)),
 			subject,
 			options,
 			matchOptions);
@@ -483,8 +483,7 @@ public static partial class ThatEnumerable
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
 						state.MatchOptions,
 						failsForNullSubject: true,
-						usesDefaultEquality: () =>
-							ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(state.Options))
+						canUseSubjectComparer: true)
 						.InvertIf(state.Negated)),
 			subject,
 			options,
@@ -515,7 +514,7 @@ public static partial class ThatEnumerable
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
 						state.MatchOptions,
 						failsForNullSubject: true,
-						usesDefaultEquality: () => state.Options.HasDefaultMatchType).InvertIf(state.Negated)),
+						canUseSubjectComparer: true).InvertIf(state.Negated)),
 			subject,
 			options,
 			matchOptions);

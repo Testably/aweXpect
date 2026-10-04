@@ -312,6 +312,17 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 	protected IOptionsEquality<TMatch> GetItemOptions()
 		=> options is ObjectEqualityOptions<TMatch> objectOptions ? objectOptions.ForEvaluation() : options;
 
+	/// <summary>
+	///     Whether the comparison of the options was not changed, so that the comparer of a set subject may decide.
+	/// </summary>
+	protected bool HasDefaultEquality()
+		=> options switch
+		{
+			IHasDefaultMatchType itemOptions => itemOptions.HasDefaultMatchType,
+			StringEqualityOptions stringOptions => stringOptions.ComparesByOrdinalEquality,
+			_ => false,
+		};
+
 	/// <inheritdoc />
 	protected override void AppendExpectedContexts(ResultContextCollector contexts)
 	{
@@ -332,9 +343,9 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 }
 
 /// <remarks>
-///     When <paramref name="usesDefaultEquality" /> tells that the comparison was not changed, a subject that is a set
-///     of <typeparamref name="TItem" /> with a custom comparer compares its items with that comparer, as it does for a
-///     single item in <c>Contains</c>, and the expectation names it.
+///     When <paramref name="canUseSubjectComparer" /> is set and the comparison of the <paramref name="options" /> was
+///     not changed, a subject that is a set of <typeparamref name="TItem" /> with a custom comparer compares its items
+///     with that comparer, as it does for a single item in <c>Contains</c>, and the expectation names it.
 /// </remarks>
 internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 	string it,
@@ -344,7 +355,7 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 	IOptionsEquality<TMatch> options,
 	CollectionMatchOptions matchOptions,
 	bool failsForNullSubject = false,
-	Func<bool>? usesDefaultEquality = null)
+	bool canUseSubjectComparer = false)
 	: IsEqualToConstraintBase<TEnumerable?, TItem, TMatch>(it, grammars, expectedExpression, expected, options,
 			matchOptions, failsForNullSubject),
 		IAsyncContextConstraint<TEnumerable?>
@@ -375,8 +386,8 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 				: FailForNullExpected(CollectionItems<object?>.Materialize(actual, context)));
 		}
 
-		SubjectEqualityOptions<TItem, TMatch> subjectOptions =
-			new(GetItemOptions(), usesDefaultEquality ?? (() => false));
+		SubjectEqualityOptions<TItem, TMatch> subjectOptions = new(GetItemOptions(),
+			canUseSubjectComparer && HasDefaultEquality() ? static () => true : static () => false);
 		SubjectComparer = subjectOptions.UseComparerOf(actual) ? subjectOptions.Comparer : null;
 		return isTyped
 			? VerifyItems(CollectionItems<TItem>.Materialize(actual, context),
