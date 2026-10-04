@@ -78,15 +78,7 @@ internal static class ThrowHelper
 #pragma warning restore CS8714
 
 		HashSet<TKey> keys = new();
-		foreach (KeyValuePair<TKey, TValue> entry in entries)
-		{
-			if (!keys.Add(entry.Key))
-			{
-				return false;
-			}
-		}
-
-		return true;
+		return entries.All(entry => keys.Add(entry.Key));
 	}
 
 	/// <summary>
