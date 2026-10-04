@@ -253,6 +253,10 @@ private sealed class HasPlaylistConstraint(string it, ExpectationGrammars gramma
   shown once when their content is the same, and are numbered otherwise, e.g. `Playlist #1:`.
 - A result that combines other results adds their contexts with `contexts.Visit(result)` for the parts that explain
   its outcome, or `contexts.VisitMember("name", result)` to label them with a member.
+- The contexts of the built-in expectations are available as extensions on the `ResultContextCollector`, so that a
+  custom expectation shows them alike: `AddCollectionContext`, `AddDictionaryContext`, `AddExpectedValuesContext`,
+  `AddFullStringContext`, `AddEqualityOptionsContexts` and `AddEquivalencyContext`. An `ObjectEqualityOptions<T>`
+  compares like `IsEquivalentTo` with `SetMatchType(new EquivalencyMatchType(options), "Equivalent")`.
 
 ## Exceptions
 
