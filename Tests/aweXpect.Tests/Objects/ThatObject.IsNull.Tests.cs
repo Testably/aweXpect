@@ -7,6 +7,41 @@ public sealed partial class ThatObject
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenMultiLineStringIsVerifiedInThatAll_ShouldEscapeIt()
+			{
+				object subject = "a\nb";
+
+				async Task Act()
+					=> await ThatAll(That(subject).IsNull());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected all of the following to succeed:
+					              [01] Expected that subject is null
+					             but
+					              [01] it was "a\nb"
+					             """)
+					.Because("a raw line break would continue the value at the start of the next line");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsAMultiLineString_ShouldEscapeItLikeAStringSubject()
+			{
+				object subject = "say \"hi\"\nbye";
+
+				async Task Act()
+					=> await That(subject).IsNull();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is null,
+					             but it was "say \"hi\"\nbye"
+					             """)
+					.Because("a string held by an object is formatted like the subject of a string expectation");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
 				object? subject = null;

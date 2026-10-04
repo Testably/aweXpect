@@ -132,6 +132,23 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("an unusable pattern must throw at the call instead of inside the returned task");
 		}
 
+		[Theory]
+		[InlineData("forget", false)]
+		[InlineData("get it", true)]
+		[InlineData("it got ", true)]
+		[InlineData("for get", true)]
+		public async Task AreConsideredEqual_WhenWhiteSpaceIsIgnored_ShouldOnlyIgnoreTheWhiteSpaceOfThePatternAtTheEdgesOfTheSubject(
+			string actual, bool expectMatch)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsRegex().IgnoringLeadingWhiteSpace().IgnoringTrailingWhiteSpace();
+
+			bool result = await sut.AreConsideredEqual(actual, " g.t ");
+
+			await That(result).IsEqualTo(expectMatch)
+				.Because("the regex may match any part of the subject, so its whitespace is only optional at the edges of the subject");
+		}
+
 		[Fact]
 		public async Task AreConsideredEqual_WithParameterName_WhenPatternDoesNotCompleteInTime_ShouldNameIt()
 		{

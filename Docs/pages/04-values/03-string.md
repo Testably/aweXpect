@@ -64,6 +64,14 @@ await Expect.That(title).StartsWith("ABBEY").Using(StringComparer.OrdinalIgnoreC
 The same options apply wherever strings are compared, e.g. to the items of a collection of strings or to the message of
 an exception.
 
+The whitespace options only ignore whitespace at the start or the end of the subject. A prefix, suffix or substring
+keeps the whitespace at its inner end, unless that end reaches the corresponding end of the subject:
+
+```csharp
+await Expect.That("Abbey").StartsWith("Abbey ").IgnoringTrailingWhiteSpace();
+await Expect.That("AbbeyRoad").DoesNotStartWith("Abbey ").IgnoringTrailingWhiteSpace();
+```
+
 `IgnoringCase()` and `Using(…)` can't be combined, because only one of them could decide how the casing is compared:
 the second one throws an `InvalidOperationException`, whichever order they are specified in. Use a case-insensitive
 comparer such as `StringComparer.OrdinalIgnoreCase` instead.
@@ -118,10 +126,10 @@ string title = "Let It Be";
 await Expect.That(title).IsEqualTo("Let*B?").AsWildcard();
 ```
 
-| Wildcard specifier | Matches                 |
-|--------------------|-------------------------|
-| * (asterisk)       | Zero or more characters |
-| ? (question mark)  | Exactly one character   |
+| Wildcard specifier | Matches                                        |
+|--------------------|------------------------------------------------|
+| * (asterisk)       | Zero or more characters                        |
+| ? (question mark)  | Exactly one character (an emoji counts as one) |
 
 The pattern has to cover the complete subject, including all its lines and a trailing newline. An empty pattern
 therefore matches only an empty subject. A `null` pattern is rejected with an `ArgumentNullException`, because it

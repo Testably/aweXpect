@@ -24,7 +24,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "Text",
-					             but it was "some arbitrary text", which differs before index 15:
+					             but it was "some arbitrary text", which differs at index 15:
 					                               ↓ (actual)
 					               "some arbitrary text"
 					                              "Text"
@@ -46,7 +46,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "SOME" ignoring case,
-					             but it was "some arbitrary text", which differs before index 18:
+					             but it was "some arbitrary text", which differs at index 18:
 					                                  ↓ (actual)
 					               "some arbitrary text"
 					                              "SOME"
@@ -69,6 +69,41 @@ public sealed partial class ThatString
 
 			[Fact]
 			public async Task
+				IgnoringLeadingWhiteSpace_WhenSuffixReachesTheStartOfTheSubject_ShouldIgnoreItsLeadingWhiteSpace()
+			{
+				string subject = "Abbey";
+
+				async Task Act()
+					=> await That(subject).EndsWith("\t Abbey").IgnoringLeadingWhiteSpace();
+
+				await That(Act).DoesNotThrow()
+					.Because("the whitespace of the suffix lies at the start of the subject, where it is ignored");
+			}
+
+			[Fact]
+			public async Task
+				IgnoringLeadingWhiteSpace_WhenSuffixStartsWithWhiteSpaceInsideTheSubject_ShouldFail()
+			{
+				string subject = "RoadAbbey";
+
+				async Task Act()
+					=> await That(subject).EndsWith(" Abbey").IgnoringLeadingWhiteSpace();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             ends with " Abbey" ignoring leading whitespace,
+					             but it was "RoadAbbey", which differs at index 3:
+					                   ↓ (actual)
+					               "RoadAbbey"
+					                  " Abbey"
+					                   ↑ (expected suffix)
+					             """)
+					.Because("only whitespace at the start of the subject is ignored, not the space the suffix requires inside it");
+			}
+
+			[Fact]
+			public async Task
 				Using_WhenSubjectEndsWithIncorrectMatchAccordingToComparer_ShouldIncludeComparerInMessage()
 			{
 				string subject = "some arbitrary text";
@@ -82,7 +117,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "Text" using IgnoreCaseForVocalsComparer,
-					             but it was "some arbitrary text", which differs before index 15:
+					             but it was "some arbitrary text", which differs at index 15:
 					                               ↓ (actual)
 					               "some arbitrary text"
 					                              "Text"
@@ -162,7 +197,7 @@ public sealed partial class ThatString
 					.WithMessage("""
 					             Expected that subject
 					             ends with "some",
-					             but it was "some arbitrary text", which differs before index 18:
+					             but it was "some arbitrary text", which differs at index 18:
 					                                  ↓ (actual)
 					               "some arbitrary text"
 					                              "some"

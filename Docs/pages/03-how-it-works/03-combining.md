@@ -22,7 +22,7 @@ await Expect.That(title).StartsWith("Let").And.EndsWith("Road");
 ```text title="Failure message"
 Expected that title
 starts with "Let" and ends with "Road",
-but it was "Let It Be", which differs before index 8:
+but it was "Let It Be", which differs at index 8:
            ↓ (actual)
   "Let It Be"
        "Road"

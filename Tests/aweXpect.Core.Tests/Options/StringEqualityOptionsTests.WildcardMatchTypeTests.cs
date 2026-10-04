@@ -90,6 +90,36 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
+		public async Task AreConsideredEqual_WhenSubjectContainsALoneSurrogate_ShouldMatchItWithOneQuestionMark()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsWildcard();
+
+			bool result = await sut.AreConsideredEqual("a\uD83Db", "a?b");
+
+			await That(result).IsTrue()
+				.Because("a surrogate without its pair is still one character");
+		}
+
+		[Theory]
+		[InlineData("\U0001F600", "?", true)]
+		[InlineData("\U0001F600", "??", false)]
+		[InlineData("a\U0001F600b", "a?b", true)]
+		[InlineData("\U0001F600\U0001F601", "??", true)]
+		[InlineData("\U0001F600\U0001F601", "?", false)]
+		public async Task AreConsideredEqual_WhenSubjectContainsASurrogatePair_ShouldMatchItWithOneQuestionMark(
+			string actual, string expected, bool expectMatch)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsWildcard();
+
+			bool result = await sut.AreConsideredEqual(actual, expected);
+
+			await That(result).IsEqualTo(expectMatch)
+				.Because("a character outside the Basic Multilingual Plane is one character, although it consists of two UTF-16 code units");
+		}
+
+		[Fact]
 		public async Task AreConsideredEqual_WithParameterName_WhenPatternIsNull_ShouldNameIt()
 		{
 			StringEqualityOptions sut = new("unexpected");
@@ -215,6 +245,21 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(result).IsEqualTo(expectedCount)
 				.Because("an empty match does not cover any occurrence, just as an empty expected value never occurs");
+		}
+
+		[Theory]
+		[InlineData("\U0001F600\U0001F601", "?", 2)]
+		[InlineData("x\U0001F600y x\U0001F600\U0001F601y", "x?y", 1)]
+		public async Task CountOccurrences_WhenSubjectContainsSurrogatePairs_ShouldMatchEachWithOneQuestionMark(
+			string actual, string expected, int expectedCount)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsWildcard();
+
+			int result = await sut.CountOccurrences(actual, expected);
+
+			await That(result).IsEqualTo(expectedCount)
+				.Because("a character outside the Basic Multilingual Plane is one character, although it consists of two UTF-16 code units");
 		}
 
 		[Theory]

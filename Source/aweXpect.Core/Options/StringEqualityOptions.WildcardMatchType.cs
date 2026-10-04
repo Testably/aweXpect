@@ -69,11 +69,13 @@ public partial class StringEqualityOptions
 
 		/// <remarks>
 		///     The resulting pattern requires <see cref="RegexOptions.Singleline" />, so that both wildcards treat a newline
-		///     like any other character.
+		///     like any other character.<br />
+		///     A <c>?</c> matches a surrogate pair as one character, and the atomic group keeps it from matching only its
+		///     first half when the rest of the pattern would not match otherwise.
 		/// </remarks>
 		private static string WildcardToUnanchoredRegularExpression(string value)
 			=> Regex.Escape(value)
-				.Replace("\\?", ".")
+				.Replace("\\?", @"(?>[\uD800-\uDBFF][\uDC00-\uDFFF]|.)")
 				.Replace("\\*", ".*");
 
 		#region IStringMatchType Members

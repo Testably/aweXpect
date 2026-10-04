@@ -37,6 +37,19 @@ public sealed partial class ThatString
 
 			[Fact]
 			public async Task
+				IgnoringTrailingWhiteSpace_WhenPrefixEndsWithWhiteSpaceInsideTheSubject_ShouldSucceed()
+			{
+				string subject = "AbbeyRoad";
+
+				async Task Act()
+					=> await That(subject).DoesNotStartWith("Abbey ").IgnoringTrailingWhiteSpace();
+
+				await That(Act).DoesNotThrow()
+					.Because("only whitespace at the end of the subject is ignored, not the space the prefix requires inside it");
+			}
+
+			[Fact]
+			public async Task
 				Using_WhenSubjectDoesNotStartWithWithExpected_ShouldSucceed()
 			{
 				string subject = "some arbitrary text";

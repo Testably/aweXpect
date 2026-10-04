@@ -167,7 +167,7 @@ public sealed class StringDifference(
 
 		int column = GetIgnoredColumns(settings, lineNumber);
 
-		if (settings?.IgnoredTrailingLines > 0 || actual.IndexOf('\n') >= 0)
+		if (settings?.IgnoredTrailingLines > 0 || actual.Contains('\n', StringComparison.Ordinal))
 		{
 			int indexOfLastNewlineBeforeMismatch = indexOfFirstMismatch > 0
 				? actual.LastIndexOf('\n', indexOfFirstMismatch - 1)
@@ -175,10 +175,6 @@ public sealed class StringDifference(
 			column += indexOfFirstMismatch - indexOfLastNewlineBeforeMismatch;
 			sb.Append(prefix).Append(" on line ").Append(lineNumber + 1).Append(" and column ")
 				.Append(column).AppendLine(":");
-		}
-		else if (settings?.MatchType == MatchType.Suffix)
-		{
-			sb.Append(prefix).Append(" before index ").Append(indexOfFirstMismatch + column).AppendLine(":");
 		}
 		else
 		{

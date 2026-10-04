@@ -56,6 +56,27 @@ public sealed partial class ThatString
 					.Because("only '*' and '?' are wildcards, every other regex metacharacter is a literal");
 			}
 
+			[Fact]
+			public async Task ShouldNotMatchASurrogatePairWithTwoQuestionMarks()
+			{
+				string subject = "\U0001F600";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("??").AsWildcard();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             matches "??",
+					             but it did not match:
+					               ↓ (actual)
+					               "😀"
+					               "??"
+					               ↑ (wildcard pattern)
+					             """)
+					.Because("the emoji is one character, so it cannot match two question marks");
+			}
+
 			[Theory]
 			[InlineData("abc", "abc", true)]
 			[InlineData("xyz\nabc", "abc", false)]
@@ -83,6 +104,19 @@ public sealed partial class ThatString
 					              """)
 					.Because("the pattern is anchored to the whole string, so it may not match a single line "
 					         + "and a trailing newline is part of the subject");
+			}
+
+			[Theory]
+			[InlineData("\U0001F600", "?")]
+			[InlineData("a\U0001F600b", "a?b")]
+			[InlineData("\U0001F600\U0001F601", "??")]
+			public async Task ShouldTreatASurrogatePairAsOneCharacter(string subject, string pattern)
+			{
+				async Task Act()
+					=> await That(subject).IsEqualTo(pattern).AsWildcard();
+
+				await That(Act).DoesNotThrow()
+					.Because("the emoji is one character, although it consists of two UTF-16 code units");
 			}
 
 			[Theory]

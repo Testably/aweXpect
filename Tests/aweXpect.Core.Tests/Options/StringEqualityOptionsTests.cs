@@ -259,14 +259,15 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Fact]
-		public async Task CountOccurrences_WhenExpectedIsPaddedWithWhiteSpace_ShouldFindAllOccurrences()
+		public async Task CountOccurrences_WhenExpectedIsPaddedWithWhiteSpace_ShouldOnlyIgnoreItAtTheEndOfTheSubject()
 		{
 			StringEqualityOptions sut = new("expected");
 			sut.IgnoringTrailingWhiteSpace();
 
 			int result = await sut.CountOccurrences("abab", "ab  ");
 
-			await That(result).IsEqualTo(2);
+			await That(result).IsEqualTo(1)
+				.Because("the first 'ab' is followed by another character instead of whitespace");
 		}
 
 		[Theory]
@@ -320,6 +321,22 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("the indentation is removed once from the whole string, not a second time from each occurrence");
 		}
 
+		[Theory]
+		[InlineData("forget", 0)]
+		[InlineData("get", 1)]
+		[InlineData("for get get", 2)]
+		public async Task CountOccurrences_WhenMatchingAsRegex_ShouldOnlyIgnoreTheWhiteSpaceOfThePatternAtTheStartOfTheSubject(
+			string actual, int expectedCount)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsRegex().IgnoringLeadingWhiteSpace();
+
+			int result = await sut.CountOccurrences(actual, " g.t");
+
+			await That(result).IsEqualTo(expectedCount)
+				.Because("the space of the pattern is only optional where the pattern reaches the start of the subject");
+		}
+
 		[Fact]
 		public async Task CountOccurrences_WhenMatchingAsWildcard_ShouldNotNormalizeTheIndividualWindows()
 		{
@@ -331,6 +348,22 @@ public sealed partial class StringEqualityOptionsTests
 			await That(result).IsEqualTo(1);
 		}
 
+		[Theory]
+		[InlineData("forget", 0)]
+		[InlineData("get", 1)]
+		[InlineData("get got", 2)]
+		public async Task CountOccurrences_WhenMatchingAsWildcard_ShouldOnlyIgnoreTheWhiteSpaceOfThePatternAtTheStartOfTheSubject(
+			string actual, int expectedCount)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsWildcard().IgnoringLeadingWhiteSpace();
+
+			int result = await sut.CountOccurrences(actual, " g?t");
+
+			await That(result).IsEqualTo(expectedCount)
+				.Because("the space of the pattern is only optional where the pattern reaches the start of the subject");
+		}
+
 		[Fact]
 		public async Task CountOccurrences_WhenOccurrencesAreIndentedDifferently_ShouldCountAll()
 		{
@@ -340,6 +373,26 @@ public sealed partial class StringEqualityOptionsTests
 			int result = await sut.CountOccurrences("  a\n  b\nx\na\nb", "a\nb");
 
 			await That(result).IsEqualTo(2);
+		}
+
+		[Theory]
+		[InlineData("forget", " get", 0)]
+		[InlineData("get get", " get", 2)]
+		[InlineData("  get", "\tget", 1)]
+		[InlineData("ab", " ab ", 1)]
+		[InlineData("a b", " ", 1)]
+		[InlineData(" ab ", " ", 0)]
+		public async Task CountOccurrences_WhenWhiteSpaceIsIgnored_ShouldOnlyIgnoreTheWhiteSpaceOfTheExpectedValueAtTheEdgesOfTheSubject(
+			string actual, string expected, int expectedCount)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.IgnoringLeadingWhiteSpace().IgnoringTrailingWhiteSpace();
+
+			int result = await sut.CountOccurrences(actual, expected);
+
+			await That(result).IsEqualTo(expectedCount)
+				.Because("the whitespace of the expected value is only optional where it reaches an edge of the subject, "
+				         + "and whitespace alone never occurs at an edge");
 		}
 
 		[Theory]
@@ -463,7 +516,7 @@ public sealed partial class StringEqualityOptionsTests
 
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  foobar", "baz");
 
-			await That(result).Contains("differs before index 7:");
+			await That(result).Contains("differs at index 7:");
 		}
 
 		[Fact]

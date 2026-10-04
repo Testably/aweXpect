@@ -216,20 +216,48 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
-		public async Task Strings_WhenUsingMultipleLines_ShouldUseNotEscapeNewlines()
+		public async Task Strings_WhenUsingMultipleLines_ShouldStillEscapeThemOnASingleLine()
 		{
-			string value = $"a{Environment.NewLine}b";
+			string value = "say \"hi\"\r\nbye";
 			string expectedResult = """
-			                        "a
-			                        b"
+			                        "say \"hi\"\r\nbye"
 			                        """;
 			StringBuilder sb = new();
+			StringBuilder typeSb = new();
 
-			string result =
-				Formatter.Format(value, FormattingOptions.MultipleLines);
+			string result = Formatter.Format(value, FormattingOptions.MultipleLines);
+			string objectResult = Formatter.Format((object?)value, FormattingOptions.MultipleLines);
+			string typeResult = Formatter.Format(value, FormattingOptions.MultipleLines with { IncludeType = true, });
 			Formatter.Format(sb, value, FormattingOptions.MultipleLines);
+			Formatter.Format(typeSb, value, FormattingOptions.MultipleLines with { IncludeType = true, });
 
-			await That(result).IsEqualTo(expectedResult);
+			await That(result).IsEqualTo(expectedResult)
+				.Because("a raw quote or line break would break the layout of the message, just as for a nested string");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(typeResult).IsEqualTo($"string {expectedResult}");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+			await That(typeSb.ToString()).IsEqualTo($"string {expectedResult}");
+		}
+
+		[Fact]
+		public async Task Strings_WhenUsingMultipleLines_ShouldTruncateThem()
+		{
+			string value = "abcdefgh";
+			string expectedResult = "\"abcde…\"";
+			StringBuilder sb = new();
+
+			string result;
+			string objectResult;
+			using (Customize.aweXpect.Formatting().MaximumStringLength.Set(5))
+			{
+				result = Formatter.Format(value, FormattingOptions.MultipleLines);
+				objectResult = Formatter.Format((object?)value, FormattingOptions.MultipleLines);
+				Formatter.Format(sb, value, FormattingOptions.MultipleLines);
+			}
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the maximum length applies to a string, however the caller wants it formatted");
+			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 

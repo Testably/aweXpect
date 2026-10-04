@@ -208,6 +208,27 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task WhenTrailingWhitespaceIsIgnored_ShouldStillRequireTheWhitespaceOfThePrefixInsideTheString()
+			{
+				string subject = "AbbeyRoad";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("Abbey ").AsPrefix().IgnoringTrailingWhiteSpace();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             starts with "Abbey " ignoring trailing whitespace,
+					             but it was "AbbeyRoad", which differs at index 5:
+					                     ↓ (actual)
+					               "AbbeyRoad"
+					               "Abbey "
+					                     ↑ (expected prefix)
+					             """)
+					.Because("only whitespace at the end of the subject is ignored, not the space the prefix requires inside it");
+			}
+
 			[Theory]
 			[InlineData(" a")]
 			[InlineData("  ")]

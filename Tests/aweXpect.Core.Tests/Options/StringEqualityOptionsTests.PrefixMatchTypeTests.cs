@@ -84,16 +84,11 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("an unusable prefix must throw at the call instead of inside the returned task");
 		}
 
-		[Theory]
-		[InlineData(true, false)]
-		[InlineData(false, true)]
-		public async Task AreConsideredEqual_WhenExpectedIsOnlyWhiteSpaceThatIsIgnored_ShouldThrowArgumentException(
-			bool ignoreLeadingWhiteSpace, bool ignoreTrailingWhiteSpace)
+		[Fact]
+		public async Task AreConsideredEqual_WhenExpectedIsOnlyWhiteSpaceThatIsIgnored_ShouldThrowArgumentException()
 		{
 			StringEqualityOptions sut = new("expected");
-			sut.AsPrefix()
-				.IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace)
-				.IgnoringTrailingWhiteSpace(ignoreTrailingWhiteSpace);
+			sut.AsPrefix().IgnoringLeadingWhiteSpace();
 
 			async Task Act() => await sut.AreConsideredEqual(" foo", " ");
 
@@ -177,6 +172,27 @@ public sealed partial class StringEqualityOptionsTests
 			bool result = await sut.AreConsideredEqual("foo", "foo ");
 
 			await That(result).IsEqualTo(expectMatch);
+		}
+
+		[Theory]
+		[InlineData("AbbeyRoad", "Abbey ", false)]
+		[InlineData("Abbey Road", "Abbey ", true)]
+		[InlineData("Abbey", "Abbey \t", true)]
+		[InlineData("Abbey \t ", "Abbey  ", true)]
+		[InlineData("Abbey Road", "Abbey Road  ", true)]
+		[InlineData(" foo", " ", true)]
+		[InlineData("foo", " ", false)]
+		public async Task
+			AreConsideredEqual_WhenTrailingWhiteSpaceIsIgnored_ShouldOnlyIgnoreTheWhiteSpaceOfThePrefixAtTheEndOfTheSubject(
+				string actual, string expected, bool expectMatch)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsPrefix().IgnoringTrailingWhiteSpace();
+
+			bool result = await sut.AreConsideredEqual(actual, expected);
+
+			await That(result).IsEqualTo(expectMatch)
+				.Because("the whitespace at the end of the prefix is only optional where it reaches the end of the subject");
 		}
 
 		[Fact]

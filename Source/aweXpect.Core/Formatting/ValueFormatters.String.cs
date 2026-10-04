@@ -9,6 +9,10 @@ public static partial class ValueFormatters
 	/// <summary>
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
+	/// <remarks>
+	///     The value is always escaped and truncated on a single line, also when the <paramref name="options" /> use line
+	///     breaks, so that a quote, a line break or a long value cannot break the layout of the message.
+	/// </remarks>
 	public static string Format(
 		this ValueFormatter formatter,
 		string? value,
@@ -24,20 +28,19 @@ public static partial class ValueFormatters
 			return customValue;
 		}
 
-		options ??= FormattingOptions.SingleLine;
-		return (options.UseLineBreaks, options.IncludeType) switch
-		{
-			(true, true) => $"string \"{value}\"",
-			(false, true) => $"string \"{value.TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get()).Escape()}\"",
-			(true, false) => $"\"{value}\"",
-			(false, false) => $"\"{value.TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get()).Escape()}\"",
-		};
+		string formattedValue =
+			$"\"{value.TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get()).Escape()}\"";
+		return options?.IncludeType == true ? $"string {formattedValue}" : formattedValue;
 	}
 
 	/// <summary>
 	///     Appends the formatted <paramref name="value" /> according to the <paramref name="options" />
 	///     to the <paramref name="stringBuilder" />.
 	/// </summary>
+	/// <remarks>
+	///     The value is always escaped and truncated on a single line, also when the <paramref name="options" /> use line
+	///     breaks, so that a quote, a line break or a long value cannot break the layout of the message.
+	/// </remarks>
 	public static void Format(
 		this ValueFormatter formatter,
 		StringBuilder stringBuilder,
@@ -55,22 +58,13 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		options ??= FormattingOptions.SingleLine;
-		if (options.IncludeType)
+		if (options?.IncludeType == true)
 		{
 			stringBuilder.Append("string ");
 		}
 
 		stringBuilder.Append('\"');
-		if (!options.UseLineBreaks)
-		{
-			stringBuilder.Append(value.TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get()).Escape());
-		}
-		else
-		{
-			stringBuilder.Append(value);
-		}
-
+		stringBuilder.Append(value.TruncateWithEllipsis(Customize.aweXpect.Formatting().MaximumStringLength.Get()).Escape());
 		stringBuilder.Append('\"');
 	}
 }

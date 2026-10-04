@@ -630,7 +630,7 @@ public sealed class OrNodeTests
 			               "foo"
 			               "b"
 			                ↑ (expected prefix)
-			             and it was "foo", which differs before index 2:
+			             and it was "foo", which differs at index 2:
 			                  ↓ (actual)
 			               "foo"
 			                 "x"
