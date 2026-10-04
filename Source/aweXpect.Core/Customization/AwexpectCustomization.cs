@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -97,24 +96,6 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 
 	internal ITraceWriter? TraceWriter
 		=> ((IAwexpectCustomization)this).Get<ITraceWriter?>(TraceWriterKey, null);
-
-	private sealed class CustomizationValue<TValue>(
-		IAwexpectCustomization customization,
-		string key,
-		TValue defaultValue,
-		Action<TValue>? validate = null)
-		: ICustomizationValueSetter<TValue>
-	{
-		/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Get()" />
-		public TValue Get() => customization.Get(key, defaultValue);
-
-		/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Set(TValue)" />
-		public CustomizationLifetime Set(TValue value)
-		{
-			validate?.Invoke(value);
-			return customization.Set(key, value);
-		}
-	}
 
 	/// <summary>
 	///     Replaces the immutable store as a whole, so that reading a value never needs a lock.

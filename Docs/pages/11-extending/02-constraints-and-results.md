@@ -251,6 +251,32 @@ InvalidOperationException"; without it, the subject is named ("it did throw …"
 
 An exception that your constraint throws itself, e.g. to reject an invalid argument, is still thrown as it is.
 
+## Argument validation
+
+Check the arguments in the extension method itself, so that a wrong argument fails right where the caller passes it.
+Use the wording of the built-in expectations: a missing argument reads "The 'title' cannot be null.", and any other
+invalid argument is described in a complete sentence, as the [message conventions](./03-message-conventions.md#exceptions)
+explain. Throw the exception via `Tracing.WriteException`, which also hands it to the trace writer that users enable
+with `Customize.aweXpect.EnableTracing(…)`. Core has no public helper for this, so add a small one to your extension:
+
+```csharp
+internal static void ThrowIfNull(object? value, string paramName)
+{
+    if (value is null)
+    {
+        throw Tracing.WriteException(new ArgumentNullException(paramName, $"The '{paramName}' cannot be null."));
+    }
+}
+```
+
+```csharp no-compile
+public static AndOrResult<Track, IThat<Track?>> HasTitle(this IThat<Track?> subject, string title)
+{
+    ThrowIfNull(title, nameof(title));
+    // ...
+}
+```
+
 ## Collection subjects
 
 A constraint that enumerates a collection subject gets it from the `IEvaluationContext` with
@@ -315,6 +341,32 @@ private sealed class HasRadioFriendlyTracksConstraint(string it, ExpectationGram
   its `CancellationToken`. The subject stays governed by the token of the first call. This method is only available
   on .NET 8 or later.
 
+### Expected collections
+
+A collection that the caller passes as the expected value, e.g. the titles a playlist must contain, can also be a
+query that may only be enumerated once. Enumerate it only once per evaluation: copy it at the start of `IsMetBy`
+unless it already is a collection, and use only the copy afterwards, also for the failure message:
+
+```csharp no-compile
+public ConstraintResult IsMetBy(IEnumerable<Track>? actual, IEvaluationContext context)
+{
+    Actual = actual;
+    ICollection<string> titles = expected as ICollection<string> ?? expected.ToArray();
+    if (actual is not null)
+    {
+        _missingTitles = titles
+            .Except(context.UseMaterializedEnumerable(actual).Select(track => track.Title))
+            .ToList();
+        Outcome = _missingTitles.Count == 0 ? Outcome.Success : Outcome.Failure;
+    }
+
+    return this;
+}
+```
+
+The subject itself still goes through `UseMaterializedEnumerable`, so that it is shared with the other expectations
+on it, while the expected collection belongs to your constraint alone.
+
 ## Continuing with the value
 
 The first type argument of the result, e.g. `Track` in `AndOrResult<Track, IThat<Track?>>`, is the type of the value
@@ -374,6 +426,56 @@ await Expect.That(releaseDate).IsOnSameDayAs(new DateOnly(1969, 9, 27)).Within(T
 In the constraint, compare with `tolerance.GetToleranceOrDefault()`. Without `.Within(…)`, it returns the
 `DefaultTimeComparisonTolerance` from `Customize.aweXpect.Settings()`, and for a `DayTolerance` only its whole days, like
 the built-in expectations do.
+
+## Custom match types
+
+`IsEqualTo` compares two values with `Equals`, unless the caller chooses another comparison, e.g. with `.Equivalent()`.
+You can offer a comparison of your own: implement `IObjectMatchType` and set it on the options of the result with
+`SetMatchType`. For example, two tracks with the same title can count as equal:
+
+```csharp
+using System.Threading.Tasks;
+using aweXpect.Options;
+
+public static TSelf ByTitle<TType, TThat, TElement, TSelf>(
+    this ObjectEqualityResult<TType, TThat, TElement, TSelf> result)
+    where TSelf : ObjectEqualityResult<TType, TThat, TElement, TSelf>
+{
+    ((IOptionsProvider<ObjectEqualityOptions<TElement>>)result).Options.SetMatchType(new ByTitleMatchType());
+    return (TSelf)result;
+}
+
+private sealed class ByTitleMatchType : IObjectMatchType
+{
+    public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
+        => new(actual is Track a && expected is Track e ? a.Title == e.Title : actual is null && expected is null);
+
+    public string GetExpectation(string expected, ExpectationGrammars grammars)
+        => $"{(grammars.IsPlural() ? "are" : "is")} {(grammars.IsNegated() ? "not " : "")}titled like {expected}";
+
+    public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
+        => $"{it}{(grammars.IsPlural() && it != "it" ? " were" : " was")} titled {Formatter.Format((actual as Track)?.Title)}";
+
+    public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
+        => $"{(itemNoun is null ? "" : itemNoun + " ")}titled like {expected}";
+
+    public void AppendContexts(ResultContextCollector contexts)
+    {
+    }
+}
+```
+
+```csharp
+Track track = new("Hey Jude", new TimeSpan(0, 7, 11));
+
+await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4))).ByTitle();
+```
+
+- `GetExpectation` replaces "is equal to …" in the expectation text, and `GetExtendedFailure` writes the result text.
+- `PrependItemAndComparison` describes a single expected item, e.g. in "has item titled like …".
+- `AppendContexts` can add [contexts](03-message-conventions.md#contexts) that explain a failure, e.g. the options of
+  the comparison.
+- For strings, implement `IStringMatchType` instead and set it with `SetMatchType` on the `StringEqualityOptions`.
 
 ## Nested expectations
 

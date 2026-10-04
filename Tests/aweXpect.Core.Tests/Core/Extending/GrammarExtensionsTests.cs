@@ -1,8 +1,8 @@
-﻿using aweXpect.Core.Helpers;
+﻿using aweXpect.Core.Extending;
 
-namespace aweXpect.Core.Tests.Core.Helpers;
+namespace aweXpect.Core.Tests.Core.Extending;
 
-public sealed class GrammarHelpersTests
+public sealed class GrammarExtensionsTests
 {
 	[Theory]
 	[InlineData(ExpectationGrammars.None, "it", "was")]
