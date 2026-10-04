@@ -398,7 +398,7 @@ public sealed class AndNodeTests
 	}
 
 	[Fact]
-	public async Task TryGetValue_WhenLeftHasValue_ShouldReturnLeftValue()
+	public async Task TryGetValue_WhenBothHaveValue_ShouldReturnRightValue()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult<int>(Outcome.Success, 1, ""));
 		DummyNode node2 = new("", () => new DummyConstraintResult<int>(Outcome.Success, 2, ""));
@@ -409,7 +409,7 @@ public sealed class AndNodeTests
 		bool result = constraintResult.TryGetValue(out int value);
 
 		await That(result).IsTrue();
-		await That(value).IsEqualTo(1);
+		await That(value).IsEqualTo(2);
 	}
 
 	[Fact]

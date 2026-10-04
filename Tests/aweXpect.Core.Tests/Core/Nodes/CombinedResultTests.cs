@@ -55,6 +55,50 @@ public sealed class CombinedResultTests
 			.Because("a failed parent meets the negation of the mapping, even when the member could not be answered");
 	}
 
+	[Fact]
+	public async Task TryGetStoredValue_WhenBothOperandsStoreAValue_ShouldReturnTheValueOfTheRightOperand()
+	{
+		object left = new();
+		object right = new();
+		ConstraintResult sut = new JunctionResult(new DummyConstraintResult(left, Success),
+			new DummyConstraintResult(right, Success), true, " and ", FurtherProcessingStrategy.Continue);
+
+		bool result = sut.TryGetStoredValue(out object? value);
+
+		await That(result).IsTrue();
+		await That(value).IsSameAs(right)
+			.Because("the right-most expectation determines the type of the result");
+	}
+
+	[Fact]
+	public async Task TryGetStoredValue_WhenOnlyTheLeftOperandStoresAValue_ShouldReturnIt()
+	{
+		object left = new();
+		ConstraintResult sut = new JunctionResult(new DummyConstraintResult(left, Success),
+			new DummyConstraintResult(Success), true, " and ", FurtherProcessingStrategy.Continue);
+
+		bool result = sut.TryGetStoredValue(out object? value);
+
+		await That(result).IsTrue();
+		await That(value).IsSameAs(left);
+	}
+
+	[Fact]
+	public async Task TryGetStoredValue_WhenTheRightOperandWasSkipped_ShouldReturnTheValueOfTheLeftOperand()
+	{
+		object left = new();
+		object right = new();
+		ConstraintResult sut = new JunctionResult(new DummyConstraintResult(left, Success),
+			new DummyConstraintResult(right, Success).AsExpectationOnly(), false, " or ",
+			FurtherProcessingStrategy.Continue);
+
+		bool result = sut.TryGetStoredValue(out object? value);
+
+		await That(result).IsTrue();
+		await That(value).IsSameAs(left)
+			.Because("a skipped operand was not evaluated");
+	}
+
 	private sealed class FailureCauseResult(Outcome outcome, Exception failureCause)
 		: ConstraintResult(FurtherProcessingStrategy.Continue)
 	{

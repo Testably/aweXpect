@@ -129,6 +129,16 @@ internal sealed class JunctionResult : CombinedResult
 	}
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     The right operand determines the type of the result, so its value takes precedence, as the subject of the
+	///     left operand can also match the requested type (e.g. a collection for the single <see langword="object" />
+	///     item of <c>HasSingle</c>). A right operand that was not evaluated has no value of its own.
+	/// </remarks>
+	public override bool TryGetStoredValue<TValue>(out TValue? value)
+		where TValue : default
+		=> (!Right.IsExpectationOnly && Right.TryGetStoredValue(out value)) || base.TryGetStoredValue(out value);
+
+	/// <inheritdoc />
 	public override ConstraintResult Negate()
 	{
 		IsNegated = !IsNegated;
