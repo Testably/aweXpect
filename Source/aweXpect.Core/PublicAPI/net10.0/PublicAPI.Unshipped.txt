@@ -447,3 +447,20 @@ static aweXpect.Core.Extending.GrammarExtensions.Verb(this aweXpect.Core.Expecta
 static aweXpect.Core.Extending.StringExtensions.Indent(this string? value, string? indentation = "  ", bool indentFirstLine = true) -> string?
 static aweXpect.Core.Extending.StringExtensions.PrependAOrAn(this string! value) -> string!
 static aweXpect.Core.Extending.StringExtensions.TrimCommonWhiteSpace(this string! value) -> string!
+aweXpect.Core.ResultContextCollectorExtensions
+aweXpect.Equivalency.EquivalencyMatchType
+aweXpect.Equivalency.EquivalencyMatchType.AppendContexts(aweXpect.Core.ResultContextCollector! contexts) -> void
+aweXpect.Equivalency.EquivalencyMatchType.AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected) -> System.Threading.Tasks.ValueTask<bool>
+aweXpect.Equivalency.EquivalencyMatchType.EquivalencyMatchType(aweXpect.Equivalency.EquivalencyOptions! equivalencyOptions) -> void
+aweXpect.Equivalency.EquivalencyMatchType.GetExpectation(string! expected, aweXpect.Core.ExpectationGrammars grammars) -> string!
+aweXpect.Equivalency.EquivalencyMatchType.GetExtendedFailure(string! it, aweXpect.Core.ExpectationGrammars grammars, object? actual, object? expected) -> string!
+aweXpect.Equivalency.EquivalencyMatchType.PrependItemAndComparison(string! expected, string? itemNoun = null, string? comparison = null) -> string!
+override aweXpect.Equivalency.EquivalencyMatchType.ToString() -> string!
+static aweXpect.Core.ResultContextCollectorExtensions.AddCollectionContext(this aweXpect.Core.ResultContextCollector! contexts, System.Collections.IEnumerable? collection, bool isIncomplete = false) -> void
+static aweXpect.Core.ResultContextCollectorExtensions.AddCollectionContext<TItem>(this aweXpect.Core.ResultContextCollector! contexts, aweXpect.Core.EvaluationContext.IMaterializedAsyncEnumerable<TItem>? collection, bool isIncomplete = false) -> void
+static aweXpect.Core.ResultContextCollectorExtensions.AddCollectionContext<TItem>(this aweXpect.Core.ResultContextCollector! contexts, System.Collections.Generic.IEnumerable<TItem>? collection, bool isIncomplete = false, int? totalCount = null) -> void
+static aweXpect.Core.ResultContextCollectorExtensions.AddDictionaryContext<TKey, TValue>(this aweXpect.Core.ResultContextCollector! contexts, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>>? dictionary) -> void
+static aweXpect.Core.ResultContextCollectorExtensions.AddEqualityOptionsContexts<T>(this aweXpect.Core.ResultContextCollector! contexts, aweXpect.Core.IOptionsEquality<T>! options) -> void
+static aweXpect.Core.ResultContextCollectorExtensions.AddEquivalencyContext(this aweXpect.Core.ResultContextCollector! contexts, aweXpect.Equivalency.EquivalencyOptions! equivalencyOptions) -> void
+static aweXpect.Core.ResultContextCollectorExtensions.AddExpectedValuesContext<TItem>(this aweXpect.Core.ResultContextCollector! contexts, string? expectedExpression, System.Collections.Generic.IEnumerable<TItem>! values, aweXpect.Core.ExpectationGrammars grammars) -> void
+static aweXpect.Core.ResultContextCollectorExtensions.AddStringContext(this aweXpect.Core.ResultContextCollector! contexts, string! title, string? value, aweXpect.Core.Constraints.ConstraintResult! result) -> void

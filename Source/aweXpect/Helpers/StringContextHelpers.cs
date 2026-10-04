@@ -14,8 +14,11 @@ internal static class StringContextHelpers
 	/// <remarks>
 	///     The check reads the result text, so it runs when the context is added, before the result can be evaluated
 	///     again for another item of a collection.
+	///     <para />
+	///     A temporary copy of <c>ResultContextCollectorExtensions.AddStringContext</c> in <c>aweXpect.Core</c>, named
+	///     differently so that both can be called, until <c>aweXpect</c> compiles against a Core release with it.
 	/// </remarks>
-	public static void AddStringContext(this ResultContextCollector contexts, string title, string? value,
+	public static void AddStringContextCopy(this ResultContextCollector contexts, string title, string? value,
 		ConstraintResult result)
 	{
 		if (!string.IsNullOrEmpty(value) && !IsShownCompletely(value!, result))
