@@ -41,9 +41,23 @@ public abstract class ExpectationBuilder
 	private ITimeSystem? _timeSystem;
 
 	/// <summary>
-	///     The which node that still waits for the expectations on its member, and the root node that contains it.
+	///     The which node that still waits for the expectations on its member, or <see langword="null" />.
 	/// </summary>
-	private (Node WhichNode, Node Root)? _pendingWhich;
+	/// <remarks>
+	///     Two fields instead of a nullable tuple, and the cancellation token and the timeout as values with a flag
+	///     instead of nullable values, keep every expectation 24 bytes smaller.
+	/// </remarks>
+	private Node? _pendingWhichNode;
+
+	/// <summary>
+	///     The root node that contains the <see cref="_pendingWhichNode" />.
+	/// </summary>
+	private Node? _pendingWhichRoot;
+
+	private CancellationToken _cancellationToken;
+	private bool _hasCancellationToken;
+	private bool _hasTimeout;
+	private TimeSpan _timeout;
 
 	/// <summary>
 	///     Initializes the <see cref="ExpectationBuilder" /> with the <paramref name="subjectExpression" />
@@ -78,7 +92,7 @@ public abstract class ExpectationBuilder
 	///     When not set, the expectation will still use the cancellation token from
 	///     <see cref="AwexpectCustomization.SettingsCustomization.TestCancellation" />.
 	/// </remarks>
-	public CancellationToken? CancellationToken { get; private set; }
+	public CancellationToken? CancellationToken => _hasCancellationToken ? _cancellationToken : null;
 
 	/// <summary>
 	///     The explicit timeout to be applied to the expectation.
@@ -88,7 +102,7 @@ public abstract class ExpectationBuilder
 	///     limited by the timeout from <see cref="AwexpectCustomization.SettingsCustomization.TestCancellation" />, if
 	///     it is tighter.
 	/// </remarks>
-	public TimeSpan? Timeout { get; private set; }
+	public TimeSpan? Timeout => _hasTimeout ? _timeout : null;
 
 	/// <summary>
 	///     The expected grammatical form of the expectation text.
@@ -446,8 +460,10 @@ public abstract class ExpectationBuilder
 			memberNode.ContextMember = _it;
 		}
 
-		(Node WhichNode, Node Root)? outerPendingWhich = _pendingWhich;
-		_pendingWhich = null;
+		Node? outerPendingWhichNode = _pendingWhichNode;
+		Node? outerPendingWhichRoot = _pendingWhichRoot;
+		_pendingWhichNode = null;
+		_pendingWhichRoot = null;
 
 		ExpectationGrammars previousGrammars = ExpectationGrammars;
 		ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
@@ -457,7 +473,8 @@ public abstract class ExpectationBuilder
 		ExpectationGrammars = previousGrammars;
 
 		CompleteWhichNode();
-		_pendingWhich = outerPendingWhich;
+		_pendingWhichNode = outerPendingWhichNode;
+		_pendingWhichRoot = outerPendingWhichRoot;
 		ThrowIfEmpty(_node, nameof(expectations));
 		mappingNode.AddNode(_node);
 		MoveReasonsTo(mappingNode, outerReasonCount);
@@ -504,7 +521,10 @@ public abstract class ExpectationBuilder
 	///     Adds a <paramref name="cancellationToken" /> to be used by the constraints.
 	/// </summary>
 	public void WithCancellation(CancellationToken cancellationToken)
-		=> CancellationToken = cancellationToken;
+	{
+		_cancellationToken = cancellationToken;
+		_hasCancellationToken = true;
+	}
 
 	/// <summary>
 	///     Adds a <paramref name="timeout" /> to be used by the constraints.
@@ -517,7 +537,8 @@ public abstract class ExpectationBuilder
 	public void WithTimeout(TimeSpan timeout)
 	{
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		Timeout = TimerHelpers.Tighter(Timeout, timeout);
+		_timeout = TimerHelpers.Tighter(Timeout, timeout) ?? timeout;
+		_hasTimeout = true;
 	}
 
 	/// <summary>
@@ -690,7 +711,8 @@ public abstract class ExpectationBuilder
 			whichNode = createWhichNode(operand is ExpectationNode e && e.IsEmpty() ? null : operand);
 			return whichNode;
 		});
-		_pendingWhich = (whichNode!, root);
+		_pendingWhichNode = whichNode!;
+		_pendingWhichRoot = root;
 		_node = new ExpectationNode();
 	}
 
@@ -751,11 +773,12 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	private void CompleteWhichNode()
 	{
-		if (_pendingWhich is (var whichNode, var root))
+		if (_pendingWhichNode is not null)
 		{
-			whichNode.AddNode(_node);
-			_node = root;
-			_pendingWhich = null;
+			_pendingWhichNode.AddNode(_node);
+			_node = _pendingWhichRoot!;
+			_pendingWhichNode = null;
+			_pendingWhichRoot = null;
 		}
 	}
 
