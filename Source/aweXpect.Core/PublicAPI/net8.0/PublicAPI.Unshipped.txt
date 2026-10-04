@@ -44,11 +44,11 @@ aweXpect.Results.StringHasItemResult<TCollection>.StringHasItemResult(aweXpect.C
 *REMOVED*aweXpect.Results.StringHasItemResult<TCollection, TSelf>.StringHasItemResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions, aweXpect.Options.StringEqualityOptions! options) -> void
 *REMOVED*aweXpect.Results.StringHasItemResult<TCollection>.StringHasItemResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions, aweXpect.Options.StringEqualityOptions! options) -> void
 *REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.Whose<TMember>(System.Func<TException, System.Threading.Tasks.Task<TMember>!>! memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
-aweXpect.Delegates.ThatDelegateThrows<TException>.Whose<TMember>(System.Func<TException, System.Threading.Tasks.Task<TMember>!>! memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.Whose<TMember>(System.Func<TException, System.Threading.Tasks.Task<TMember>!>! memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
 *REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.Whose<TMember>(System.Func<TException, System.Threading.Tasks.ValueTask<TMember>>! memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
-aweXpect.Delegates.ThatDelegateThrows<TException>.Whose<TMember>(System.Func<TException, System.Threading.Tasks.ValueTask<TMember>>! memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.Whose<TMember>(System.Func<TException, System.Threading.Tasks.ValueTask<TMember>>! memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
 *REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.Whose<TMember>(System.Func<TException, TMember?>! memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
-aweXpect.Delegates.ThatDelegateThrows<TException>.Whose<TMember>(System.Func<TException, TMember?>! memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.Whose<TMember>(System.Func<TException, TMember?>! memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
 *REMOVED*static aweXpect.Core.ExpectationBuilderExtensions.ForMember<TSource, TTarget>(this aweXpect.Core.ExpectationBuilder! expectationBuilder, System.Func<TSource, TTarget>! memberSelector, string! displayName, bool replaceIt = true) -> aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TTarget>!
 static aweXpect.Core.ExpectationBuilderExtensions.ForMember<TSource, TTarget>(this aweXpect.Core.ExpectationBuilder! expectationBuilder, System.Func<TSource, TTarget>! memberAccessor, string! displayName, bool replaceIt = true) -> aweXpect.Core.ExpectationBuilder.MemberExpectationBuilder<TSource, TTarget>!
 *REMOVED*~aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult.AndWhose<TMember>(System.Func<TType, System.Threading.Tasks.Task<TMember>!>! memberSelector, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult!
@@ -94,9 +94,9 @@ aweXpect.Options.CollectionMatchOptions.ExpectationItem<TItem>.PrepareExpectatio
 *REMOVED*aweXpect.Core.Helpers.MemberVisibilities.Internal = 1 -> aweXpect.Core.Helpers.MemberVisibilities
 *REMOVED*aweXpect.Core.Helpers.MemberVisibilities.None = 0 -> aweXpect.Core.Helpers.MemberVisibilities
 *REMOVED*aweXpect.Core.Helpers.MemberVisibilities.Public = 2 -> aweXpect.Core.Helpers.MemberVisibilities
-aweXpect.Delegates.ThatDelegateThrows<TException>.WithoutInner() -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
-aweXpect.Delegates.ThatDelegateThrows<TException>.WithoutInner(System.Type! type) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
-aweXpect.Delegates.ThatDelegateThrows<TException>.WithoutInner<TInnerException>() -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithoutInner() -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithoutInner(System.Type! type) -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithoutInner<TInnerException>() -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
 static aweXpect.Core.Constraints.ConstraintResult.AppendCanceledResult(System.Text.StringBuilder! stringBuilder, string! it) -> void
 aweXpect.Core.EvaluationContext.EvaluationContextExtensions
 aweXpect.Core.EvaluationContext.ICountable
@@ -621,3 +621,41 @@ aweXpect.Core.IObjectMatchResult.GetExtendedFailure(string! it, aweXpect.Core.Ex
 aweXpect.Core.IObjectMatchResult.IsMatch.get -> bool
 aweXpect.Core.IObjectMatchType.AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual, TExpected expected) -> System.Threading.Tasks.ValueTask<aweXpect.Core.IObjectMatchResult!>
 aweXpect.Options.ObjectEqualityOptions<TSubject>.AreConsideredEqualWithExplanation<TExpected>(TSubject actual, TExpected expected) -> System.Threading.Tasks.ValueTask<aweXpect.Core.IObjectMatchResult!>
+*REMOVED*aweXpect.Core.IThatDelegateThrows<T>
+*REMOVED*aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrow(System.Type! type) -> aweXpect.Results.DelegateWithValueResult<T>!
+*REMOVED*aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrow<TException>() -> aweXpect.Results.DelegateWithValueResult<T>!
+*REMOVED*aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrowExactly(System.Type! type) -> aweXpect.Results.DelegateWithValueResult<T>!
+*REMOVED*aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrowExactly<TException>() -> aweXpect.Results.DelegateWithValueResult<T>!
+*REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner() -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+*REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner(System.Action<aweXpect.Core.IThatSubject<System.Exception?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+*REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner(System.Type! type) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+*REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner(System.Type! type, System.Action<aweXpect.Core.IThatSubject<System.Exception?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+*REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner<TInnerException>() -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+*REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner<TInnerException>(System.Action<aweXpect.Core.IThatSubject<TInnerException?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Delegates.ThatDelegateThrows<TException>!>!
+aweXpect.Core.IThatDelegateThrows<TException>
+aweXpect.Core.IThatDelegateThrows<TException>.Which.get -> aweXpect.Core.IThat<TException>!
+aweXpect.Core.IThatDelegateThrows<TException>.Whose<TMember>(System.Func<TException, System.Threading.Tasks.Task<TMember>!>! memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Core.IThatDelegateThrows<TException>.Whose<TMember>(System.Func<TException, System.Threading.Tasks.ValueTask<TMember>>! memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Core.IThatDelegateThrows<TException>.Whose<TMember>(System.Func<TException, TMember?>! memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Core.IThatDelegateThrows<TException>.WithInner() -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Core.IThatDelegateThrows<TException>.WithInner(System.Action<aweXpect.Core.IThatSubject<System.Exception?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Core.IThatDelegateThrows<TException>.WithInner(System.Type! type) -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Core.IThatDelegateThrows<TException>.WithInner(System.Type! type, System.Action<aweXpect.Core.IThatSubject<System.Exception?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Core.IThatDelegateThrows<TException>.WithInner<TInnerException>() -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Core.IThatDelegateThrows<TException>.WithInner<TInnerException>(System.Action<aweXpect.Core.IThatSubject<TInnerException?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Core.IThatDelegateThrows<TException>.WithoutInner() -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Core.IThatDelegateThrows<TException>.WithoutInner(System.Type! type) -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Core.IThatDelegateThrows<TException>.WithoutInner<TInnerException>() -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrow(System.Type! type) -> aweXpect.Results.DelegateWithOptionalValueResult<T>!
+aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrow<TException>() -> aweXpect.Results.DelegateWithOptionalValueResult<T>!
+aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrowExactly(System.Type! type) -> aweXpect.Results.DelegateWithOptionalValueResult<T>!
+aweXpect.Delegates.ThatDelegate.WithValue<T>.DoesNotThrowExactly<TException>() -> aweXpect.Results.DelegateWithOptionalValueResult<T>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner() -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner(System.Action<aweXpect.Core.IThatSubject<System.Exception?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner(System.Type! type) -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner(System.Type! type, System.Action<aweXpect.Core.IThatSubject<System.Exception?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner<TInnerException>() -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner<TInnerException>(System.Action<aweXpect.Core.IThatSubject<TInnerException?>!>! expectations) -> aweXpect.Results.AndOrResult<TException, aweXpect.Core.IThatDelegateThrows<TException>!>!
+aweXpect.Results.DelegateWithOptionalValueResult<T>
+aweXpect.Results.DelegateWithOptionalValueResult<T>.DelegateWithOptionalValueResult(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
+aweXpect.Results.DelegateWithOptionalValueResult<T>.WhoseResult.get -> aweXpect.Core.IThat<T>!

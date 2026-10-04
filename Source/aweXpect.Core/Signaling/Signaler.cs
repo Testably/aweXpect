@@ -56,10 +56,14 @@ public class Signaler
 	///     the <see cref="AwexpectCustomization.SettingsCustomization.DefaultSignalerTimeout" /> is used
 	///     (30 seconds unless customized).
 	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public SignalerResult Wait(
 		TimeSpan? timeout = null,
 		CancellationToken cancellationToken = default)
-		=> WaitFor(1, timeout, cancellationToken);
+	{
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
+		return WaitFor(1, timeout, cancellationToken);
+	}
 
 	/// <summary>
 	///     Blocks the current thread until the callback was executed at least the required <paramref name="amount" /> of times
@@ -71,6 +75,7 @@ public class Signaler
 	///     the <see cref="AwexpectCustomization.SettingsCustomization.DefaultSignalerTimeout" /> is used
 	///     (30 seconds unless customized).
 	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public SignalerResult Wait(Times amount, TimeSpan? timeout = null,
 		CancellationToken cancellationToken = default)
 	{
@@ -80,6 +85,7 @@ public class Signaler
 				new ArgumentOutOfRangeException(nameof(amount), "The amount must be greater than zero."));
 		}
 
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
 		return WaitFor(amount.Value, timeout, cancellationToken);
 	}
 
@@ -93,10 +99,14 @@ public class Signaler
 	///     the <see cref="AwexpectCustomization.SettingsCustomization.DefaultSignalerTimeout" /> is used
 	///     (30 seconds unless customized).
 	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public Task<SignalerResult> WaitAsync(
 		TimeSpan? timeout = null,
 		CancellationToken cancellationToken = default)
-		=> WaitForAsync(1, timeout, cancellationToken);
+	{
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
+		return WaitForAsync(1, timeout, cancellationToken);
+	}
 
 	/// <summary>
 	///     Waits without blocking a thread until the callback was executed at least the required
@@ -109,6 +119,7 @@ public class Signaler
 	///     the <see cref="AwexpectCustomization.SettingsCustomization.DefaultSignalerTimeout" /> is used
 	///     (30 seconds unless customized).
 	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public Task<SignalerResult> WaitAsync(Times amount, TimeSpan? timeout = null,
 		CancellationToken cancellationToken = default)
 	{
@@ -118,6 +129,7 @@ public class Signaler
 				new ArgumentOutOfRangeException(nameof(amount), "The amount must be greater than zero."));
 		}
 
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
 		return WaitForAsync(amount.Value, timeout, cancellationToken);
 	}
 
@@ -284,11 +296,15 @@ public class Signaler<TParameter>
 	///     An exception of the <paramref name="predicate" /> ends the wait and is thrown, also when it was thrown while
 	///     another thread signaled.
 	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public SignalerResult<TParameter> Wait(
 		Func<TParameter, bool>? predicate = null,
 		TimeSpan? timeout = null,
 		CancellationToken cancellationToken = default)
-		=> WaitFor(1, predicate, timeout, cancellationToken);
+	{
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
+		return WaitFor(1, predicate, timeout, cancellationToken);
+	}
 
 	/// <summary>
 	///     Blocks the current thread until<br />
@@ -305,6 +321,7 @@ public class Signaler<TParameter>
 	///     An exception of the <paramref name="predicate" /> ends the wait and is thrown, also when it was thrown while
 	///     another thread signaled.
 	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public SignalerResult<TParameter> Wait(
 		Times amount,
 		Func<TParameter, bool>? predicate = null,
@@ -317,6 +334,7 @@ public class Signaler<TParameter>
 				new ArgumentOutOfRangeException(nameof(amount), "The amount must be greater than zero."));
 		}
 
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
 		return WaitFor(amount.Value, predicate, timeout, cancellationToken);
 	}
 
@@ -334,11 +352,15 @@ public class Signaler<TParameter>
 	///     An exception of the <paramref name="predicate" /> ends the wait and is thrown, also when it was thrown while
 	///     another thread signaled.
 	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public Task<SignalerResult<TParameter>> WaitAsync(
 		Func<TParameter, bool>? predicate = null,
 		TimeSpan? timeout = null,
 		CancellationToken cancellationToken = default)
-		=> WaitForAsync(1, predicate, timeout, cancellationToken);
+	{
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
+		return WaitForAsync(1, predicate, timeout, cancellationToken);
+	}
 
 	/// <summary>
 	///     Waits without blocking a thread until<br />
@@ -355,6 +377,7 @@ public class Signaler<TParameter>
 	///     An exception of the <paramref name="predicate" /> ends the wait and is thrown, also when it was thrown while
 	///     another thread signaled.
 	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public Task<SignalerResult<TParameter>> WaitAsync(
 		Times amount,
 		Func<TParameter, bool>? predicate = null,
@@ -367,6 +390,7 @@ public class Signaler<TParameter>
 				new ArgumentOutOfRangeException(nameof(amount), "The amount must be greater than zero."));
 		}
 
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
 		return WaitForAsync(amount.Value, predicate, timeout, cancellationToken);
 	}
 

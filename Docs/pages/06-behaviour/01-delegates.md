@@ -57,8 +57,8 @@ await Expect.That(Act).DoesNotThrow<InvalidOperationException>();
 await Expect.That(Act).DoesNotThrowExactly<ArgumentException>();
 ```
 
-For a delegate with a return value, `WhoseResult` continues with the returned value as subject, and awaiting the
-expectation returns it:
+For a delegate with a return value, `WhoseResult` continues with the returned value as subject, and awaiting
+`DoesNotThrow()` returns it:
 
 ```csharp
 int Act() => 3;
@@ -66,6 +66,10 @@ int Act() => 3;
 await Expect.That(Act).DoesNotThrow().WhoseResult.IsEqualTo(3);
 int result = await Expect.That(Act).DoesNotThrow();
 ```
+
+Awaiting `DoesNotThrow<TException>()`, `DoesNotThrowExactly<TException>()` or their `Type` overloads returns no value,
+because the delegate may have thrown an exception of another type instead. Their `WhoseResult` requires that no
+exception was thrown at all.
 
 :::warning[An expectation must not be applied to the delegate itself]
 `Expect.That(Act).IsEqualTo(3)` compiles, but checks the delegate instead of what it returns, so it silently passes
@@ -122,6 +126,9 @@ await Expect.That(Act).Throws<CustomException>().OnlyIf(expectThrownException);
 ```
 
 This is especially useful with parametrized tests where it depends on a parameter if an exception is thrown or not.
+
+`OnlyIf` and [`Within`](#time-limit) configure the whole `Throws…` expectation, so they are only available directly
+on `Throws…` and not after `.And` or `.Or`, where they would read like a further condition.
 
 ### Time limit
 

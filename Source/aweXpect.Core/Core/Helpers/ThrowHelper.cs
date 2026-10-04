@@ -93,6 +93,19 @@ internal static class ThrowHelper
 	}
 
 	/// <summary>
+	///     Rejects a negative timeout like <see cref="ThrowIfTimeoutIsNegative(TimeSpan, string?)" />, while
+	///     <see langword="null" /> stands for the default timeout.
+	/// </summary>
+	public static void ThrowIfTimeoutIsNegative(TimeSpan? timeout,
+		[CallerArgumentExpression(nameof(timeout))] string? paramName = null)
+	{
+		if (timeout is not null)
+		{
+			ThrowIfTimeoutIsNegative(timeout.Value, paramName);
+		}
+	}
+
+	/// <summary>
 	///     Rejects a tolerance with a sub-day remainder, because a date without a time of day cannot honour it and
 	///     would silently drop it.
 	/// </summary>

@@ -91,20 +91,18 @@ public class ThrownExceptionVocabularyAnalyzer : DiagnosticAnalyzer
 		return receiver;
 	}
 
+	/// <summary>
+	///     Whether the <paramref name="type" /> is or implements <c>aweXpect.Core.IThatDelegateThrows&lt;T&gt;</c>, which
+	///     covers <c>Throws…</c> and its continuations after <c>.And</c> and <c>.Or</c>.
+	/// </summary>
 	private static bool IsThatDelegateThrows(ITypeSymbol? type)
-	{
-		for (INamedTypeSymbol? current = type as INamedTypeSymbol; current != null; current = current.BaseType)
-		{
-			if (current is { Name: "ThatDelegateThrows", Arity: 1, ContainingNamespace.Name: "Delegates", } &&
-			    current.ContainingNamespace.ContainingNamespace?.Name == "aweXpect" &&
-			    current.ContainingNamespace.ContainingNamespace.ContainingNamespace?.IsGlobalNamespace == true)
-			{
-				return true;
-			}
-		}
+		=> type is not null &&
+		   (IsThatDelegateThrowsInterface(type) || type.AllInterfaces.Any(IsThatDelegateThrowsInterface));
 
-		return false;
-	}
+	private static bool IsThatDelegateThrowsInterface(ITypeSymbol type)
+		=> type is INamedTypeSymbol { Name: "IThatDelegateThrows", Arity: 1, ContainingNamespace.Name: "Core", } &&
+		   type.ContainingNamespace.ContainingNamespace?.Name == "aweXpect" &&
+		   type.ContainingNamespace.ContainingNamespace.ContainingNamespace?.IsGlobalNamespace == true;
 
 	/// <summary>
 	///     Reports on the method name when the expectation is chained on the receiver, so that the code fix can

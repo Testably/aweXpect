@@ -15,7 +15,7 @@ public abstract partial class ThatDelegate
 		///     (subtypes are allowed).
 		/// </summary>
 		[GuaranteesNotNull]
-		public DelegateWithValueResult<T> DoesNotThrowExactly<TException>()
+		public DelegateWithOptionalValueResult<T> DoesNotThrowExactly<TException>()
 			where TException : Exception
 			=> new(_expectationBuilder.AddConstraint((it, grammars) =>
 				new DoesNotThrowConstraint(it, grammars, typeof(TException), true, typeof(T))));
@@ -25,7 +25,7 @@ public abstract partial class ThatDelegate
 		///     (subtypes are allowed).
 		/// </summary>
 		[GuaranteesNotNull]
-		public DelegateWithValueResult<T> DoesNotThrowExactly(Type type)
+		public DelegateWithOptionalValueResult<T> DoesNotThrowExactly(Type type)
 		{
 			type.ThrowIfNotAnExceptionType();
 			return new(_expectationBuilder.AddConstraint(type, static (exceptionType, it, grammars) =>

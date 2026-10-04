@@ -70,6 +70,46 @@ public sealed class SignalerTests
 		}
 
 		[Fact]
+		public async Task WaitAsync_InfiniteTimeout_ShouldWaitForTheSignal()
+		{
+			Signaler signaler = new();
+
+			Task<SignalerResult> wait = signaler.WaitAsync(Timeout.InfiniteTimeSpan);
+			signaler.Signal();
+			SignalerResult result = await wait;
+
+			await That(result.IsSuccess).IsTrue();
+		}
+
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public async Task WaitAsync_NegativeTimeout_ShouldThrowArgumentOutOfRangeException(bool isAlreadySignaled)
+		{
+			Signaler signaler = new();
+			if (isAlreadySignaled)
+			{
+				signaler.Signal();
+				signaler.Signal();
+			}
+
+			void Act()
+				=> _ = signaler.WaitAsync(-2.Milliseconds());
+
+			void ActWithAmount()
+				=> _ = signaler.WaitAsync(2.Times(), -2.Milliseconds());
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("timeout").And
+				.WithMessage("The timeout must not be negative.").AsPrefix()
+				.Because("the timeout is validated before the wait starts, also when the signals were already received");
+			await That(ActWithAmount).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("timeout").And
+				.WithMessage("The timeout must not be negative.").AsPrefix()
+				.Because("the timeout is validated before the wait starts, also when the signals were already received");
+		}
+
+		[Fact]
 		public async Task WaitAsync_ShouldCompleteAsSoonAsEnoughSignalsWereRecorded()
 		{
 			Signaler signaler = new();
@@ -166,6 +206,49 @@ public sealed class SignalerTests
 			SignalerResult result = signaler.Wait(amount);
 
 			await That(result.IsSuccess).IsTrue();
+		}
+
+		[Fact]
+		public async Task Wait_InfiniteTimeout_ShouldWaitForTheSignal()
+		{
+			Signaler signaler = new();
+			_ = Task.Run(async () =>
+			{
+				await Task.Delay(50.Milliseconds());
+				signaler.Signal();
+			});
+
+			SignalerResult result = signaler.Wait(Timeout.InfiniteTimeSpan);
+
+			await That(result.IsSuccess).IsTrue();
+		}
+
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public async Task Wait_NegativeTimeout_ShouldThrowArgumentOutOfRangeException(bool isAlreadySignaled)
+		{
+			Signaler signaler = new();
+			if (isAlreadySignaled)
+			{
+				signaler.Signal();
+				signaler.Signal();
+			}
+
+			void Act()
+				=> signaler.Wait(-2.Milliseconds());
+
+			void ActWithAmount()
+				=> signaler.Wait(2.Times(), -2.Milliseconds());
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("timeout").And
+				.WithMessage("The timeout must not be negative.").AsPrefix()
+				.Because("the timeout is validated before the wait starts, also when the signals were already received");
+			await That(ActWithAmount).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("timeout").And
+				.WithMessage("The timeout must not be negative.").AsPrefix()
+				.Because("the timeout is validated before the wait starts, also when the signals were already received");
 		}
 
 		[Fact]
@@ -486,6 +569,46 @@ public sealed class SignalerTests
 		}
 
 		[Fact]
+		public async Task WaitAsync_InfiniteTimeout_ShouldWaitForTheSignal()
+		{
+			Signaler<int> signaler = new();
+
+			Task<SignalerResult<int>> wait = signaler.WaitAsync(timeout: Timeout.InfiniteTimeSpan);
+			signaler.Signal(1);
+			SignalerResult<int> result = await wait;
+
+			await That(result.IsSuccess).IsTrue();
+		}
+
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public async Task WaitAsync_NegativeTimeout_ShouldThrowArgumentOutOfRangeException(bool isAlreadySignaled)
+		{
+			Signaler<int> signaler = new();
+			if (isAlreadySignaled)
+			{
+				signaler.Signal(1);
+				signaler.Signal(2);
+			}
+
+			void Act()
+				=> _ = signaler.WaitAsync(timeout: -2.Milliseconds());
+
+			void ActWithAmount()
+				=> _ = signaler.WaitAsync(2.Times(), timeout: -2.Milliseconds());
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("timeout").And
+				.WithMessage("The timeout must not be negative.").AsPrefix()
+				.Because("the timeout is validated before the wait starts, also when the signals were already received");
+			await That(ActWithAmount).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("timeout").And
+				.WithMessage("The timeout must not be negative.").AsPrefix()
+				.Because("the timeout is validated before the wait starts, also when the signals were already received");
+		}
+
+		[Fact]
 		public async Task WaitAsync_ShouldCompleteAsSoonAsEnoughSignalsWereRecorded()
 		{
 			Signaler<int> signaler = new();
@@ -571,6 +694,49 @@ public sealed class SignalerTests
 
 			await That(result.IsSuccess).IsTrue();
 			await That(result.Parameters).IsEqualTo([4, 5, 6,]).InAnyOrder();
+		}
+
+		[Fact]
+		public async Task Wait_InfiniteTimeout_ShouldWaitForTheSignal()
+		{
+			Signaler<int> signaler = new();
+			_ = Task.Run(async () =>
+			{
+				await Task.Delay(50.Milliseconds());
+				signaler.Signal(1);
+			});
+
+			SignalerResult<int> result = signaler.Wait(timeout: Timeout.InfiniteTimeSpan);
+
+			await That(result.IsSuccess).IsTrue();
+		}
+
+		[Theory]
+		[InlineData(false)]
+		[InlineData(true)]
+		public async Task Wait_NegativeTimeout_ShouldThrowArgumentOutOfRangeException(bool isAlreadySignaled)
+		{
+			Signaler<int> signaler = new();
+			if (isAlreadySignaled)
+			{
+				signaler.Signal(1);
+				signaler.Signal(2);
+			}
+
+			void Act()
+				=> signaler.Wait(timeout: -2.Milliseconds());
+
+			void ActWithAmount()
+				=> signaler.Wait(2.Times(), timeout: -2.Milliseconds());
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("timeout").And
+				.WithMessage("The timeout must not be negative.").AsPrefix()
+				.Because("the timeout is validated before the wait starts, also when the signals were already received");
+			await That(ActWithAmount).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("timeout").And
+				.WithMessage("The timeout must not be negative.").AsPrefix()
+				.Because("the timeout is validated before the wait starts, also when the signals were already received");
 		}
 
 		[Fact]

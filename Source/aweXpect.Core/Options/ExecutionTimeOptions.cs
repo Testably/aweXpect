@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using aweXpect.Core;
 using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
@@ -116,12 +115,7 @@ public class ExecutionTimeOptions
 	/// </summary>
 	internal void Approximately(TimeSpan expected, TimeSpan tolerance)
 	{
-		if (tolerance < TimeSpan.Zero)
-		{
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(tolerance), tolerance, "The tolerance must not be negative."));
-		}
-
+		ToleranceHelpers.ThrowIfInvalid(tolerance);
 		_limit = new ApproximatelyLimit(expected, tolerance);
 		SetUpperBound(tolerance > TimeSpan.MaxValue - expected ? TimeSpan.MaxValue : expected + tolerance);
 	}

@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using System.Runtime.CompilerServices;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatDelegate
 {
@@ -125,26 +127,15 @@ public sealed partial class ThatDelegate
 		
 		public sealed class FuncValueGenericTests
 		{
-			[Theory]
-			[AutoData]
-			public async Task WhenAwaited_ShouldReturnResultFromDelegate(int value)
-			{
-				Func<int> @delegate = () => value;
-
-				int result = await That(@delegate).DoesNotThrowExactly<CustomException>();
-
-				await That(result).IsEqualTo(value);
-			}
-
 			[Fact]
-			public async Task WhenAwaited_WithValueOfDerivedType_ShouldReturnIt()
+			public async Task WhenAwaited_ShouldNotReturnAValue()
 			{
-				SubCustomException value = new();
-				Func<CustomException> @delegate = () => value;
+				Func<int> @delegate = () => throw new OtherException();
 
-				CustomException result = await That(@delegate).DoesNotThrowExactly<OtherException>();
+				Type awaiter = That(@delegate).DoesNotThrowExactly<CustomException>().GetAwaiter().GetType();
 
-				await That(result).IsSameAs(value);
+				await That(awaiter).IsEqualTo(typeof(TaskAwaiter))
+					.Because("the delegate may throw another exception instead of returning a value");
 			}
 
 			[Fact]
