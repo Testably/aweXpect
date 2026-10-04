@@ -11,6 +11,7 @@ using aweXpect.Options;
 
 namespace aweXpect;
 
+#pragma warning disable S110 // The depth comes from the public quantified collection constraints and the result values of aweXpect.Core
 /// <summary>
 ///     The comparison of the items of <c>AreUnique</c>, shared by the synchronous and the asynchronous collections.
 /// </summary>

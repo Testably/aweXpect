@@ -13,6 +13,7 @@ using System.Collections.Generic;
 
 namespace aweXpect;
 
+#pragma warning disable S110 // The depth comes from the public quantified collection constraints and the result values of aweXpect.Core
 /// <summary>
 ///     A quantified expectation on the items of a collection that a synchronous or an asynchronous predicate verifies,
 ///     shared by the synchronous and the asynchronous collections.

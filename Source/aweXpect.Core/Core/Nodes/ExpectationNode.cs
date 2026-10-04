@@ -76,30 +76,9 @@ internal class ExpectationNode : Node
 		{
 			try
 			{
-				if (_constraint is IValueConstraint<TValue?> valueConstraint)
+				if (IsMetByTheConstraint(value, context, cancellationToken) is { } isMet)
 				{
-					return new ValueTask<ConstraintResult>(valueConstraint.IsMetBy(value));
-				}
-
-				if (_constraint is IContextConstraint<TValue?> contextConstraint)
-				{
-					return new ValueTask<ConstraintResult>(contextConstraint.IsMetBy(value, context));
-				}
-
-				if (_constraint is IAsyncConstraint<TValue?> asyncConstraint)
-				{
-					ValueTask<ConstraintResult> isMet = asyncConstraint.IsMetBy(value, cancellationToken);
-					return isMet.IsCompletedSuccessfully
-						? isMet
-						: AwaitConstraint(isMet, value, context, cancellationToken);
-				}
-
-				if (_constraint is IAsyncContextConstraint<TValue?> asyncContextConstraint)
-				{
-					ValueTask<ConstraintResult> isMet = asyncContextConstraint.IsMetBy(value, context, cancellationToken);
-					return isMet.IsCompletedSuccessfully
-						? isMet
-						: AwaitConstraint(isMet, value, context, cancellationToken);
+					return isMet;
 				}
 			}
 			catch (UserCodeException e) when (!MemberExceptionResult.IsCancellationOf(e.Exception, cancellationToken))
@@ -119,6 +98,31 @@ internal class ExpectationNode : Node
 
 		return IsMetByAsync(value, context, cancellationToken);
 	}
+
+	/// <summary>
+	///     Evaluates the constraint of the fast path in <see cref="IsMetBy{TValue}" />, or returns <see langword="null" />
+	///     when it cannot evaluate the <paramref name="value" />.
+	/// </summary>
+	private ValueTask<ConstraintResult>? IsMetByTheConstraint<TValue>(TValue? value, IEvaluationContext context,
+		CancellationToken cancellationToken)
+		=> _constraint switch
+		{
+			IValueConstraint<TValue?> valueConstraint
+				=> new ValueTask<ConstraintResult>(valueConstraint.IsMetBy(value)),
+			IContextConstraint<TValue?> contextConstraint
+				=> new ValueTask<ConstraintResult>(contextConstraint.IsMetBy(value, context)),
+			IAsyncConstraint<TValue?> asyncConstraint
+				=> CompletedOrAwaited(asyncConstraint.IsMetBy(value, cancellationToken), value, context,
+					cancellationToken),
+			IAsyncContextConstraint<TValue?> asyncContextConstraint
+				=> CompletedOrAwaited(asyncContextConstraint.IsMetBy(value, context, cancellationToken), value, context,
+					cancellationToken),
+			_ => null,
+		};
+
+	private ValueTask<ConstraintResult> CompletedOrAwaited<TValue>(ValueTask<ConstraintResult> isMet, TValue? value,
+		IEvaluationContext context, CancellationToken cancellationToken)
+		=> isMet.IsCompletedSuccessfully ? isMet : AwaitConstraint(isMet, value, context, cancellationToken);
 
 	/// <summary>
 	///     Awaits the constraint of the fast path in <see cref="IsMetBy{TValue}" /> that did not complete synchronously,
