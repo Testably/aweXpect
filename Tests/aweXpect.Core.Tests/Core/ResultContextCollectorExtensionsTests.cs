@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
-using aweXpect.Core.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Equivalency;
 using aweXpect.Options;
 using aweXpect.Results;

@@ -1,4 +1,4 @@
-﻿using aweXpect.Core.Helpers;
+﻿using aweXpect.Core.Extending;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;

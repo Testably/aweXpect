@@ -1,6 +1,7 @@
 // The teaser of an extension leaves out what "Write your own extension" shows in full.
 global using aweXpect.Core;
 global using aweXpect.Core.Constraints;
+global using aweXpect.Core.Extending;
 global using aweXpect.Results;
 global using static Snippets.Prelude;
 using System.Text;
@@ -18,8 +19,6 @@ internal static class Prelude
 	public static Orders _orders = new();
 	public static Payments _payments = new();
 	public static Track track = new();
-
-	public static IExpectThat<T> Get<T>(this IThat<T> subject) => (IExpectThat<T>)subject;
 
 	public class User
 	{

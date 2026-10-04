@@ -427,18 +427,19 @@ aweXpect.Core.ExpectationBuilder.AddConstraint<TState, TValue>(TState state, Sys
 aweXpect.Core.ExpectationBuilder.AddConstraint<TState, TValue>(TState state, System.Func<TState, string!, aweXpect.Core.ExpectationGrammars, aweXpect.Core.Constraints.IValueConstraint<TValue>!>! constraintBuilder) -> aweXpect.Core.ExpectationBuilder!
 *REMOVED*aweXpect.Results.ExpectationResult<TType, TSelf>.GetAwaiter() -> System.Runtime.CompilerServices.TaskAwaiter<TType>
 aweXpect.Results.ExpectationResult<TType, TSelf>.GetAwaiter() -> System.Runtime.CompilerServices.ValueTaskAwaiter<TType>
-aweXpect.Core.Extending.GrammarExtensions
 aweXpect.Core.Extending.StringExtensions
 aweXpect.Core.ManualExpectationBuilder<TValue>.IsMetBy(TValue value, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<aweXpect.Core.Constraints.ConstraintResult!>!
 aweXpect.Customization.CustomizationValue<TValue>
 aweXpect.Customization.CustomizationValue<TValue>.CustomizationValue(aweXpect.Customization.IAwexpectCustomization! customization, string! key, TValue defaultValue, System.Action<TValue>? validate = null) -> void
 aweXpect.Customization.CustomizationValue<TValue>.Get() -> TValue
 aweXpect.Customization.CustomizationValue<TValue>.Set(TValue value) -> aweXpect.Customization.CustomizationLifetime!
-static aweXpect.Core.Extending.GrammarExtensions.SubjectVerb(this aweXpect.Core.ExpectationGrammars grammars, string! it, string! singular, string! plural) -> string!
-static aweXpect.Core.Extending.GrammarExtensions.Verb(this aweXpect.Core.ExpectationGrammars grammars, string! singular, string! plural) -> string!
+static aweXpect.Core.ExpectationGrammarsExtensions.SubjectVerb(this aweXpect.Core.ExpectationGrammars grammars, string! it, string! singular, string! plural) -> string!
+static aweXpect.Core.ExpectationGrammarsExtensions.Verb(this aweXpect.Core.ExpectationGrammars grammars, string! singular, string! plural) -> string!
 static aweXpect.Core.Extending.StringExtensions.Indent(this string? value, string? indentation = "  ", bool indentFirstLine = true) -> string?
 static aweXpect.Core.Extending.StringExtensions.PrependAOrAn(this string! value) -> string!
 static aweXpect.Core.Extending.StringExtensions.TrimCommonWhiteSpace(this string! value) -> string!
+aweXpect.Core.Extending.ThatExtensions
+static aweXpect.Core.Extending.ThatExtensions.Get<T>(this aweXpect.Core.IThat<T>! subject) -> aweXpect.Core.IExpectThat<T>!
 aweXpect.Core.ResultContextCollectorExtensions
 aweXpect.Equivalency.EquivalencyMatchType
 aweXpect.Equivalency.EquivalencyMatchType.AppendContexts(aweXpect.Core.ResultContextCollector! contexts) -> void
@@ -601,3 +602,5 @@ static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberT
 static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, ushort>! result, ushort tolerance) -> TSelf
 *REMOVED*aweXpect.Delegates.ThatDelegate.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
 *REMOVED*aweXpect.Delegates.ThatDelegateThrows<TException>.ThrowOptions.get -> aweXpect.Delegates.ThatDelegate.ThrowsOption!
+*REMOVED*aweXpect.Delegates.ThatDelegate.WithValue<T>.WithValue(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
+aweXpect.Delegates.ThatDelegate.WithValue<T>.WithValue(aweXpect.Core.ExpectationBuilder! expectationBuilder, System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<T>!>! subject) -> void

@@ -414,6 +414,7 @@ count matches no collection.
 that are not public.
 `ThatBoolSubject`, `ThatDelegateThrows<TException>` and `It.IsEquivalent<T>` no longer have a public
 `ExpectationBuilder` property; reach the builder through `IExpectThat<T>`, as for every other subject.
+The constructor of `ThatDelegate.WithValue<T>` also takes the delegate, which `Eventually()` invokes on every attempt.
 
 A constraint adds its contexts in the new `ConstraintResult.AppendContexts(ResultContextCollector)`, which is only
 called while the failure message is created and only for the parts of the result that explain the failure. It replaces

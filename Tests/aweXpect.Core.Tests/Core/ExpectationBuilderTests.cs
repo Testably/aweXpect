@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
 

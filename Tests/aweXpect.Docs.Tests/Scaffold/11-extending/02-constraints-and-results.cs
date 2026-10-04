@@ -1,3 +1,5 @@
+// The "Extending aweXpect" page shows this import.
+global using aweXpect.Core.Extending;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -21,12 +23,6 @@ namespace Snippets
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null) { }
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null) { }
-	}
-
-	// The "Your first expectation" page shows this helper.
-	internal static class ExpectThatExtensions
-	{
-		public static IExpectThat<T> Get<T>(this IThat<T> subject) => (IExpectThat<T>)subject;
 	}
 }
 
