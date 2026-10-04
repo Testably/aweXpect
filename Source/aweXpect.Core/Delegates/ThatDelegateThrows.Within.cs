@@ -17,10 +17,12 @@ public partial class ThatDelegateThrows<TException>
 	///     A delegate that is canceled or abandoned by the timeout fails with <c>did not finish within …</c>.
 	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> imposes no limit.
 	/// </remarks>
+	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
 	public ThatDelegateThrows<TException> Within(TimeSpan timeout)
 	{
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(ThrowOptions.IsWithinSpecified, nameof(Within));
+		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
 		ThrowOptions.IsWithinSpecified = true;
 		if (timeout == System.Threading.Timeout.InfiniteTimeSpan)
 		{

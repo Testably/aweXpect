@@ -141,15 +141,16 @@ public static partial class ThatEventRecording
 	private static string GetPropertyName<TSubject, TProperty>(
 		Expression<Func<TSubject, TProperty>> propertyExpression)
 	{
+		propertyExpression.ThrowIfNull();
 		MemberInfo? memberInfo =
 			(((propertyExpression.Body as UnaryExpression)?.Operand ?? propertyExpression.Body) as MemberExpression)
 			?.Member;
 		if (memberInfo is not PropertyInfo propertyInfo)
 		{
 			// ReSharper disable once LocalizableElement
-			throw new ArgumentException(
+			throw Tracing.WriteException(new ArgumentException(
 				$"The 'propertyExpression' must refer to a property, but it was {propertyExpression.Body}.",
-				nameof(propertyExpression));
+				nameof(propertyExpression)));
 		}
 
 		return propertyInfo.Name;

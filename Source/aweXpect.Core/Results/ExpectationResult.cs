@@ -72,7 +72,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	///     <para />
 	///     Use
 	///     <c>
-	///         Customize.aweXpect.Settings().TestCancellation
+	///         Customize.aweXpect.Global.Settings().TestCancellation
 	///         .Set(TestCancellation.FromCancellationToken(() => cancellationToken))
 	///     </c>
 	///     to apply the <paramref name="cancellationToken" /> globally.
@@ -97,7 +97,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	///     <para />
 	///     Use
 	///     <c>
-	///         Customize.aweXpect.Settings().TestCancellation
+	///         Customize.aweXpect.Global.Settings().TestCancellation
 	///         .Set(TestCancellation.FromTimeout(timeout))
 	///     </c>
 	///     to apply the <paramref name="timeout" /> globally.
@@ -317,7 +317,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	///     <para />
 	///     Use
 	///     <c>
-	///         Customize.aweXpect.Settings().TestCancellation
+	///         Customize.aweXpect.Global.Settings().TestCancellation
 	///         .Set(TestCancellation.FromCancellationToken(() => cancellationToken))
 	///     </c>
 	///     to apply the <paramref name="cancellationToken" /> globally.
@@ -342,7 +342,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	///     <para />
 	///     Use
 	///     <c>
-	///         Customize.aweXpect.Settings().TestCancellation
+	///         Customize.aweXpect.Global.Settings().TestCancellation
 	///         .Set(TestCancellation.FromTimeout(timeout))
 	///     </c>
 	///     to apply the <paramref name="timeout" /> globally.

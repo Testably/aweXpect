@@ -67,6 +67,38 @@ public sealed partial class ThatSignaler
 					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
+			[Theory]
+			[InlineData(0)]
+			[InlineData(-1)]
+			public async Task WhenTimesIsNotPositive_ShouldThrowArgumentOutOfRangeException(int times)
+			{
+				Signaler signaler = new();
+
+				async Task Act() =>
+					await That(signaler).Signaled(times.Times()).Within(10.Milliseconds());
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("times").And
+					.WithMessage("The times must be greater than zero.").AsPrefix()
+					.Because("being signaled at least zero or a negative number of times could never fail");
+			}
+
+			[Theory]
+			[InlineData(0)]
+			[InlineData(-1)]
+			public async Task WhenTimesWithParameterIsNotPositive_ShouldThrowArgumentOutOfRangeException(int times)
+			{
+				Signaler<int> signaler = new();
+
+				async Task Act() =>
+					await That(signaler).Signaled(times.Times()).Within(10.Milliseconds());
+
+				await That(Act).Throws<ArgumentOutOfRangeException>()
+					.WithParamName("times").And
+					.WithMessage("The times must be greater than zero.").AsPrefix()
+					.Because("being signaled at least zero or a negative number of times could never fail");
+			}
+
 			[Fact]
 			public async Task WhenTriggeredOftenEnough_ShouldSucceed()
 			{

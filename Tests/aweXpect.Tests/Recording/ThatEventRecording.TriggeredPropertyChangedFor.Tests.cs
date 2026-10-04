@@ -1,4 +1,5 @@
-﻿using aweXpect.Core;
+﻿using System.Linq.Expressions;
+using aweXpect.Core;
 using aweXpect.Recording;
 
 namespace aweXpect.Tests;
@@ -227,6 +228,22 @@ public sealed partial class ThatEventRecording
 
 				await That(Act).DoesNotThrow()
 					.Because("the last segment of a nested access still unambiguously names a property");
+			}
+
+			[Fact]
+			public async Task WhenExpressionIsNull_ShouldThrowArgumentNullException()
+			{
+				PropertyChangedWithMembersClass sut = new();
+				IEventRecording<PropertyChangedWithMembersClass> recording = sut.Record().Events();
+				Expression<Func<PropertyChangedWithMembersClass, int>> propertyExpression = null!;
+
+				async Task Act() =>
+					await That(recording).TriggeredPropertyChangedFor(propertyExpression);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("propertyExpression").And
+					.WithMessage("The 'propertyExpression' cannot be null.").AsPrefix()
+					.Because("a missing expression names no property and is rejected like any other null argument");
 			}
 
 			[Fact]
