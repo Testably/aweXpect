@@ -6,6 +6,7 @@
 /modules.xml
 /contentModel.xml
 /projectSettingsUpdater.xml
+/copilot.data.migration.*.xml
 # Editor-based HTTP Client requests
 /httpRequests/
 # Datasource local storage ignored files
