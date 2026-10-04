@@ -62,53 +62,56 @@ public class FrameworkGenerator : IIncrementalGenerator
 			attributes += "[global::System.Diagnostics.StackTraceHidden]\n\t\t";
 		}
 
-		List<string> registeredAdapters = [];
+		List<(string File, string Name, string Declaration)> adapters = [];
 
 		if (settings.HasMsTest)
 		{
-			context.AddSource("MsTest.g.cs", MsTestAdapter(attributes));
-			registeredAdapters.Add("MsTestAdapter");
+			adapters.Add(("MsTest", "MsTestAdapter", MsTestAdapter(attributes)));
 		}
 
 		if (settings.HasNunit)
 		{
-			context.AddSource("Nunit.g.cs", NunitAdapter(attributes));
-			registeredAdapters.Add("NunitAdapter");
+			adapters.Add(("Nunit", "NunitAdapter", NunitAdapter(attributes)));
 		}
 
 		if (settings.HasTUnit)
 		{
-			context.AddSource("TUnit.g.cs", TUnitAdapter(attributes, settings.HasTUnitAssertions));
-			registeredAdapters.Add("TUnitAdapter");
+			adapters.Add(("TUnit", "TUnitAdapter", TUnitAdapter(attributes, settings.HasTUnitAssertions)));
 		}
 
 		if (settings.HasXunit2)
 		{
-			context.AddSource("Xunit2.g.cs", Xunit2Adapter(attributes));
-			registeredAdapters.Add("Xunit2Adapter");
+			adapters.Add(("Xunit2", "Xunit2Adapter", Xunit2Adapter(attributes)));
 		}
 
 		if (settings.HasXunit3Assert)
 		{
-			context.AddSource("Xunit3.g.cs", Xunit3AssertAdapter(attributes));
-			registeredAdapters.Add("Xunit3Adapter");
+			adapters.Add(("Xunit3", "Xunit3Adapter", Xunit3AssertAdapter(attributes)));
 		}
 		else if (settings.HasXunit3Core)
 		{
-			context.AddSource("Xunit3.g.cs", Xunit3CoreAdapter(attributes));
-			registeredAdapters.Add("Xunit3Adapter");
+			adapters.Add(("Xunit3", "Xunit3Adapter", Xunit3CoreAdapter(attributes)));
 		}
 
-		EmitRegistrations(context, settings, registeredAdapters);
+		bool isRegistered = RegistersAdapters(context, settings, adapters.Select(x => x.Name));
+		foreach ((string file, string name, string declaration) in adapters)
+		{
+			context.AddSource($"{file}.g.cs",
+				isRegistered ? AdapterRegistration(name, declaration) : InFrameworksNamespace(declaration));
+		}
 	}
 
-	private static void EmitRegistrations(SourceProductionContext context, Settings settings, List<string> adapters)
+	/// <summary>
+	///     Whether the <paramref name="adapters" /> register themselves, reporting each one that would have to but cannot.
+	/// </summary>
+	private static bool RegistersAdapters(SourceProductionContext context, Settings settings,
+		IEnumerable<string> adapters)
 	{
 		// Without `ModuleInitializerAttribute` the target framework cannot be trimmed or AOT-published anyway,
 		// and emitting a polyfill would collide with generators like PolySharp, which are invisible here.
 		if (!settings.HasTestFrameworkRegistry || !settings.HasModuleInitializerAttribute)
 		{
-			return;
+			return false;
 		}
 
 		if (!settings.CanCompileModuleInitializer)
@@ -121,13 +124,10 @@ public class FrameworkGenerator : IIncrementalGenerator
 				}
 			}
 
-			return;
+			return false;
 		}
 
-		foreach (string adapter in adapters)
-		{
-			context.AddSource($"{adapter}.Registration.g.cs", AdapterRegistration(adapter));
-		}
+		return true;
 	}
 
 	private static bool References(Compilation compilation, string assemblyName)
@@ -186,7 +186,11 @@ public class FrameworkGenerator : IIncrementalGenerator
 		bool CanCompileModuleInitializer,
 		bool IsAdapterFoundByScan);
 
-	private static string AdapterRegistration(string adapterName) =>
+	/// <remarks>
+	///     The adapter is nested in its registration, because a project that sees the internals of another project
+	///     with its own generated adapter would otherwise resolve the name to both and warn with CS0436.
+	/// </remarks>
+	private static string AdapterRegistration(string adapterName, string adapterDeclaration) =>
 		$$"""
 		  namespace aweXpect.Frameworks
 		  {
@@ -203,14 +207,26 @@ public class FrameworkGenerator : IIncrementalGenerator
 		  		[global::System.Runtime.CompilerServices.ModuleInitializer]
 		  		internal static void Register()
 		  			=> global::aweXpect.Core.Adapters.TestFrameworkRegistry.Register(new {{adapterName}}(), overwrite: false);
+
+		  {{Indent(adapterDeclaration)}}
 		  	}
 		  }
 		  """;
 
-	private static string MsTestAdapter(string attributes) =>
+	private static string InFrameworksNamespace(string adapterDeclaration) =>
 		$$"""
 		  namespace aweXpect.Frameworks
 		  {
+		  {{adapterDeclaration}}
+		  }
+		  """;
+
+	private static string Indent(string declaration)
+		=> string.Join("\n", declaration.Split('\n')
+			.Select(line => line.TrimEnd('\r').Length == 0 ? line : "\t" + line));
+
+	private static string MsTestAdapter(string attributes) =>
+		$$"""
 		  	internal class MsTestAdapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
 		  	{
 		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.IsAvailable" />
@@ -232,13 +248,10 @@ public class FrameworkGenerator : IIncrementalGenerator
 		  		{{attributes}}public void Inconclusive(string message)
 		  			=> throw new global::Microsoft.VisualStudio.TestTools.UnitTesting.AssertInconclusiveException(message);
 		  	}
-		  }
 		  """;
 
 	private static string NunitAdapter(string attributes) =>
 		$$"""
-		  namespace aweXpect.Frameworks
-		  {
 		  	internal class NunitAdapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
 		  	{
 		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.IsAvailable" />
@@ -260,7 +273,6 @@ public class FrameworkGenerator : IIncrementalGenerator
 		  		{{attributes}}public void Inconclusive(string message)
 		  			=> throw new global::NUnit.Framework.InconclusiveException(message);
 		  	}
-		  }
 		  """;
 
 	/// <remarks>
@@ -273,8 +285,6 @@ public class FrameworkGenerator : IIncrementalGenerator
 			? "global::TUnit.Assertions.Exceptions.AssertionException"
 			: "global::aweXpect.FailException";
 		return $$"""
-		         namespace aweXpect.Frameworks
-		         {
 		         	internal class TUnitAdapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
 		         	{
 		         		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.IsAvailable" />
@@ -296,14 +306,11 @@ public class FrameworkGenerator : IIncrementalGenerator
 		         		{{attributes}}public void Inconclusive(string message)
 		         			=> throw new global::TUnit.Core.Exceptions.InconclusiveTestException(message, null);
 		         	}
-		         }
 		         """;
 	}
 
 	private static string Xunit2Adapter(string attributes) =>
 		$$"""
-		  namespace aweXpect.Frameworks
-		  {
 		  	internal class Xunit2Adapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
 		  	{
 		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.IsAvailable" />
@@ -325,13 +332,10 @@ public class FrameworkGenerator : IIncrementalGenerator
 		  		{{attributes}}public void Inconclusive(string message)
 		  			=> throw new global::aweXpect.InconclusiveException(message);
 		  	}
-		  }
 		  """;
 
 	private static string Xunit3CoreAdapter(string attributes) =>
 		$$"""
-		  namespace aweXpect.Frameworks
-		  {
 		  	internal class Xunit3Adapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
 		  	{
 		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.IsAvailable" />
@@ -376,13 +380,10 @@ public class FrameworkGenerator : IIncrementalGenerator
 
 		  		private interface ITestTimeoutException { }
 		  	}
-		  }
 		  """;
 
 	private static string Xunit3AssertAdapter(string attributes) =>
 		$$"""
-		  namespace aweXpect.Frameworks
-		  {
 		  	internal class Xunit3Adapter : global::aweXpect.Core.Adapters.ITestFrameworkAdapter
 		  	{
 		  		/// <inheritdoc cref="global::aweXpect.Core.Adapters.ITestFrameworkAdapter.IsAvailable" />
@@ -413,7 +414,6 @@ public class FrameworkGenerator : IIncrementalGenerator
 
 		  		private interface ITestTimeoutException { }
 		  	}
-		  }
 		  """;
 
 	private static bool HasAttribute(Compilation c, string attributeName)

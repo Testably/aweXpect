@@ -119,6 +119,29 @@ public sealed class FrameworkGeneratorTests
 	}
 
 	[Theory]
+	[MemberData(nameof(AdaptersAndFrameworks))]
+	public async Task WhenConsumerSeesTheAdapterOfAnotherAssembly_ShouldNotWarn(string adapter, string frameworks)
+	{
+		MetadataReference helpers = GeneratorRunner.CompileToReference("Company.Testing", $$"""
+			[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("GeneratorTests")]
+			namespace aweXpect.Frameworks
+			{
+				internal class {{adapter}} { }
+				internal static class {{adapter}}Registration { }
+			}
+			""");
+
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(new FrameworkGenerator(),
+			["public class Foo { }",], true, LanguageVersion.Latest,
+			frameworks.Split(',', StringSplitOptions.RemoveEmptyEntries).Select(x => Frameworks[x]).Append(helpers)
+				.ToArray());
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty()
+			.Because("a helper library that uses aweXpect with the same test framework and exposes its internals to the test project has its own generated adapter, which must not conflict with the one generated in the test project");
+	}
+
+	[Theory]
 	[MemberData(nameof(AdaptersAndFrameworksForEachLanguageVersion))]
 	public async Task WhenConsumerUsesCSharp7_3OrLater_ShouldCompile(string adapter, string frameworks,
 		LanguageVersion languageVersion)
@@ -152,6 +175,21 @@ public sealed class FrameworkGeneratorTests
 		await That(result.Generated).Contains("class NunitAdapter ");
 		await That(result.GeneratorDiagnostics).IsEmpty()
 			.Because("a consumer below .NET 8 resolves the .NET Standard build of aweXpect.Core, which still finds the adapter by scanning the loaded assemblies");
+	}
+
+	[Fact]
+	public async Task WhenConsumerUsesCSharp8_ShouldDeclareTheAdapterThatCanBeRegisteredManually()
+	{
+		GeneratorRunner.GeneratorResult result = Run("nunit.framework", LanguageVersion.CSharp8, """
+			public static class Setup
+			{
+				public static void Register()
+					=> aweXpect.Core.Adapters.TestFrameworkRegistry.Register(new aweXpect.Frameworks.NunitAdapter());
+			}
+			""");
+
+		await That(result.Errors).IsEmpty()
+			.Because("the warning aweXpect2002 tells a consumer that cannot compile a module initializer to register `aweXpect.Frameworks.NunitAdapter` manually");
 	}
 
 	[Fact]
