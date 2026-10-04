@@ -15,12 +15,11 @@ public static partial class ThatObject
 	public static AndOrResult<T, IThat<T?>> IsExactly<T>(
 		this IThat<T?> subject,
 		Type type)
-		where T : class
 	{
 		type.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AndOrResult<T, IThat<T?>>(expectationBuilder.AddConstraint(type, static (expectedType, it, grammars)
-				=> new IsExactlyOfTypeConstraint(it, grammars, expectedType)),
+				=> new IsExactlyOfTypeConstraint<T>(it, grammars, expectedType)),
 			subject);
 	}
 
@@ -31,27 +30,26 @@ public static partial class ThatObject
 	public static AndOrResult<T, IThat<T?>> IsNotExactly<T>(
 		this IThat<T?> subject,
 		Type type)
-		where T : class
 	{
 		type.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AndOrResult<T, IThat<T?>>(expectationBuilder.AddConstraint(type,
 				static (unexpectedType, it, grammars)
-					=> new IsExactlyOfTypeConstraint(it, grammars, unexpectedType).Invert()),
+					=> new IsExactlyOfTypeConstraint<T>(it, grammars, unexpectedType).Invert()),
 			subject);
 	}
 
-	private sealed class IsExactlyOfTypeConstraint(
+	private sealed class IsExactlyOfTypeConstraint<T>(
 		string it,
 		ExpectationGrammars grammars,
 		Type type)
-		: ConstraintResult.WithNotNullValue<object>(it, grammars),
-			IValueConstraint<object?>
+		: ConstraintResult.WithNotNullValue<T?>(it, grammars),
+			IValueConstraint<T?>
 	{
-		public ConstraintResult IsMetBy(object? actual)
+		public ConstraintResult IsMetBy(T? actual)
 		{
 			Actual = actual;
-			Outcome = actual?.GetType() == type ||
+			Outcome = actual?.GetType() == (Nullable.GetUnderlyingType(type) ?? type) ||
 			          (type.IsGenericTypeDefinition && actual?.GetType().IsGenericType == true &&
 			           actual.GetType().GetGenericTypeDefinition() == type)
 				? Outcome.Success

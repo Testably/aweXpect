@@ -1402,10 +1402,10 @@ public sealed partial class ThatNumber
 		public sealed class NegatedTests
 		{
 			[Theory]
-			[InlineData(null, 1)]
-			[InlineData(1, null)]
+			[InlineData(null, 1, ", which differs by 1 from the maximum")]
+			[InlineData(1, null, "")]
 			public async Task ForInt_WhenMinimumOrMaximumIsNull_ShouldFail(
-				int? minimum, int? maximum)
+				int? minimum, int? maximum, string differenceSuffix)
 			{
 				int subject = 2;
 
@@ -1417,7 +1417,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -1456,10 +1456,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(null, 1)]
-			[InlineData(1, null)]
+			[InlineData(null, 1, ", which differs by 1 from the maximum")]
+			[InlineData(1, null, "")]
 			public async Task ForNullableInt_WhenMinimumOrMaximumIsNull_ShouldFail(
-				int? minimum, int? maximum)
+				int? minimum, int? maximum, string differenceSuffix)
 			{
 				int? subject = 2;
 
@@ -1471,7 +1471,7 @@ public sealed partial class ThatNumber
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
-					              but it was {Formatter.Format(subject)}
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}

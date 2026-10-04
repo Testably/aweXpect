@@ -160,6 +160,25 @@ public sealed partial class ThatObject
 					             """);
 			}
 
+			[Fact]
+			public async Task WhenSubjectIsNullableValueType_ShouldFailForTheUnderlyingType()
+			{
+				int? subject = 5;
+
+				async Task Act()
+					=> await That(subject).IsNotExactly(typeof(int));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not exactly of type int,
+					             but it was int
+
+					             Actual:
+					             5
+					             """);
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task WhenSubjectIsTyped_ShouldAllowChainingOnTheSubjectType(int value)
@@ -214,6 +233,26 @@ public sealed partial class ThatObject
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("type").And
 					.WithMessage("The 'type' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNullableAndSubjectHasAValue_ShouldFail()
+			{
+				int? value = 5;
+				object? subject = value;
+
+				async Task Act()
+					=> await That(subject).IsNotExactly(typeof(int?));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not exactly of type int?,
+					             but it was int
+
+					             Actual:
+					             5
+					             """);
 			}
 
 			[Fact]

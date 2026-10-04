@@ -247,6 +247,17 @@ public sealed partial class ThatEnumerable
 					             but it was empty
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenItemHasAValueAndTypeIsNullable_ShouldReturnIt()
+			{
+				IEnumerable<int?> subject = ToEnumerable<int?>(null, 2);
+
+				int? result = await That(subject).HasSingle().MatchingExactly<int?>();
+
+				await That(result).IsEqualTo(2)
+					.Because("a boxed nullable value has the underlying type, so the nullable type is compared by it");
+			}
 		}
 
 		public sealed class MatchingExactlyTypePredicateTests
@@ -276,6 +287,17 @@ public sealed partial class ThatEnumerable
 					             has a single item exactly of type MyBaseClass matching x => x.Value > 1,
 					             but it had no matching item
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenItemHasAValueAndTypeIsNullable_ShouldReturnIt()
+			{
+				IEnumerable<int?> subject = ToEnumerable<int?>(1, 2);
+
+				int? result = await That(subject).HasSingle().MatchingExactly<int?>(x => x > 1);
+
+				await That(result).IsEqualTo(2)
+					.Because("a boxed nullable value has the underlying type, so the nullable type is compared by it");
 			}
 
 			[Fact]

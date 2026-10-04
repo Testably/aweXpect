@@ -192,6 +192,18 @@ public sealed partial class ThatObject
 					             """);
 			}
 
+			[Fact]
+			public async Task WhenSubjectIsNullableValueType_ShouldSucceedForTheUnderlyingType()
+			{
+				int? subject = 5;
+
+				async Task Act()
+					=> await That(subject).IsExactly(typeof(int));
+
+				await That(Act).DoesNotThrow()
+					.Because("a value-type subject can be checked against a runtime type without a cast to object");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task WhenSubjectIsTyped_ShouldAllowChainingOnTheSubjectType(int value)
@@ -261,6 +273,18 @@ public sealed partial class ThatObject
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("type").And
 					.WithMessage("The 'type' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenTypeIsNullableAndSubjectHasAValue_ShouldSucceed()
+			{
+				int? subject = 5;
+
+				async Task Act()
+					=> await That(subject).IsExactly(typeof(int?));
+
+				await That(Act).DoesNotThrow()
+					.Because("a boxed nullable value has the underlying type, so the nullable type is compared by it");
 			}
 
 			[Theory]

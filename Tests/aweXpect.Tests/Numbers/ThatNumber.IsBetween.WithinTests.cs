@@ -323,10 +323,10 @@ public sealed partial class ThatNumber
 			}
 
 			[Theory]
-			[InlineData(1, 2, 8)]
-			[InlineData(9, 2, 8)]
+			[InlineData(1, 2, 8, "-1 from the minimum")]
+			[InlineData(9, 2, 8, "1 from the maximum")]
 			public async Task IsNotBetween_ForInt_WhenInsideToleranceWidenedRange_ShouldFail(
-				int subject, int minimum, int maximum)
+				int subject, int minimum, int maximum, string difference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum).Within(1);
@@ -336,7 +336,7 @@ public sealed partial class ThatNumber
 						$"""
 						 Expected that subject
 						 is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 1,
-						 but it was {Formatter.Format(subject)}
+						 but it was {Formatter.Format(subject)}, which differs by {difference}
 						 """);
 			}
 

@@ -14,6 +14,18 @@ public sealed partial class ThatEnumerable
 			public sealed class GenericTests
 			{
 				[Fact]
+				public async Task WhenItemsHaveAValueAndTypeIsNullable_ShouldSucceed()
+				{
+					IEnumerable<int?> subject = [1, 2,];
+
+					async Task Act()
+						=> await That(subject).All().AreExactly<int?>();
+
+					await That(Act).DoesNotThrow()
+						.Because("a boxed nullable value has the underlying type, so the nullable type is compared by it");
+				}
+
+				[Fact]
 				public async Task WhenTypeDoesNotMatch_ShouldFail()
 				{
 					IEnumerable<MyBaseClass> subject = Enumerable.Range(1, 10).Select(_ => new MyBaseClass());
@@ -100,6 +112,18 @@ public sealed partial class ThatEnumerable
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 			public sealed class TypeTests
 			{
+				[Fact]
+				public async Task WhenItemsHaveAValueAndTypeIsNullable_ShouldSucceed()
+				{
+					IEnumerable<int?> subject = [1, 2,];
+
+					async Task Act()
+						=> await That(subject).All().AreExactly(typeof(int?));
+
+					await That(Act).DoesNotThrow()
+						.Because("a boxed nullable value has the underlying type, so the nullable type is compared by it");
+				}
+
 				[Fact]
 				public async Task WhenTypeDoesNotMatch_ShouldFail()
 				{
@@ -228,6 +252,25 @@ public sealed partial class ThatEnumerable
 						                 Foo = 2
 						               }
 						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenItemsHaveAValueAndTypeIsNullable_ShouldFail()
+				{
+					IEnumerable<int?> subject = [1, 2,];
+
+					async Task Act()
+						=> await That(subject).DoesNotComplyWith(it => it.All().AreExactly<int?>());
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is exactly of type int? not for all items,
+						             but all 2 were
+
+						             Collection:
+						             [1, 2]
 						             """);
 				}
 

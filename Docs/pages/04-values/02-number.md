@@ -22,8 +22,8 @@ A `null` subject, e.g. an `int?`, fails every expectation on this page except eq
 
 :::note[.NET 8 or later]
 Below .NET 8 these expectations only accept `byte`, `sbyte`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`,
-`float`, `double` and `decimal`. On .NET 8 or later they also accept other `INumber<T>` types, e.g. `nint`, `Half`,
-`Int128` or `BigInteger`.
+`float`, `double` and `decimal`, and [`IsPositive` and `IsNegative`](#positive--negative) only the signed ones of them.
+On .NET 8 or later they also accept other `INumber<T>` types, e.g. `char`, `nint`, `Half`, `Int128` or `BigInteger`.
 :::
 
 ## Equality

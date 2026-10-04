@@ -75,7 +75,8 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	/// </summary>
 	public HasItemResult<TCollection> MatchingExactly<T>()
 	{
-		_options.SetPredicate(item => item is T && item.GetType() == typeof(T),
+		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
+		_options.SetPredicate(item => item is T && item.GetType() == exactType,
 			$"exactly of type {Formatter.Format(typeof(T))}");
 
 		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
@@ -89,7 +90,8 @@ public class HasItemWithConditionResult<TCollection, TItem>
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		_options.SetPredicate(item => item is T typed && item.GetType() == typeof(T) && predicate(typed),
+		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
+		_options.SetPredicate(item => item is T typed && item.GetType() == exactType && predicate(typed),
 			$"exactly of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue}");
 		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}

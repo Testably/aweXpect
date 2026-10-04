@@ -227,10 +227,10 @@ static aweXpect.ThatNumber.IsNotNaN<TNumber>(this aweXpect.Core.IThat<TNumber?>!
 static aweXpect.ThatNumber.IsNotNegative<TNumber>(this aweXpect.Core.IThat<TNumber?>! subject) -> aweXpect.Results.AndOrResult<TNumber, aweXpect.Core.IThat<TNumber?>!>!
 static aweXpect.ThatNumber.IsNotPositive<TNumber>(this aweXpect.Core.IThat<TNumber?>! subject) -> aweXpect.Results.AndOrResult<TNumber, aweXpect.Core.IThat<TNumber?>!>!
 static aweXpect.ThatNumber.IsPositive<TNumber>(this aweXpect.Core.IThat<TNumber?>! subject) -> aweXpect.Results.AndOrResult<TNumber, aweXpect.Core.IThat<TNumber?>!>!
-static aweXpect.ThatObject.Is<T>(this aweXpect.Core.IThat<T?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<T!, aweXpect.Core.IThat<T?>!>!
-static aweXpect.ThatObject.IsExactly<T>(this aweXpect.Core.IThat<T?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<T!, aweXpect.Core.IThat<T?>!>!
-static aweXpect.ThatObject.IsNot<T>(this aweXpect.Core.IThat<T?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<T!, aweXpect.Core.IThat<T?>!>!
-static aweXpect.ThatObject.IsNotExactly<T>(this aweXpect.Core.IThat<T?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<T!, aweXpect.Core.IThat<T?>!>!
+static aweXpect.ThatObject.Is<T>(this aweXpect.Core.IThat<T?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T?>!>!
+static aweXpect.ThatObject.IsExactly<T>(this aweXpect.Core.IThat<T?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T?>!>!
+static aweXpect.ThatObject.IsNot<T>(this aweXpect.Core.IThat<T?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T?>!>!
+static aweXpect.ThatObject.IsNotExactly<T>(this aweXpect.Core.IThat<T?>! subject, System.Type! type) -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThat<T?>!>!
 static aweXpect.ThatStream.HasLength<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.PropertyResult.Long<System.IO.Stream?, TStream!, aweXpect.Core.IThat<TStream?>!>!
 static aweXpect.ThatStream.HasLength<TStream>(this aweXpect.Core.IThat<TStream?>! subject, long? expected) -> aweXpect.Results.AndOrResult<TStream!, aweXpect.Core.IThat<TStream?>!>!
 static aweXpect.ThatStream.HasPosition<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.PropertyResult.Long<System.IO.Stream?, TStream!, aweXpect.Core.IThat<TStream?>!>!

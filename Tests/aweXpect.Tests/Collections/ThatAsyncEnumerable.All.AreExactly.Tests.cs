@@ -15,6 +15,18 @@ public sealed partial class ThatAsyncEnumerable
 			public sealed class GenericTests
 			{
 				[Fact]
+				public async Task WhenItemsHaveAValueAndTypeIsNullable_ShouldSucceed()
+				{
+					IAsyncEnumerable<int?> subject = ToAsyncEnumerable<int?>(1, 2);
+
+					async Task Act()
+						=> await That(subject).All().AreExactly<int?>();
+
+					await That(Act).DoesNotThrow()
+						.Because("a boxed nullable value has the underlying type, so the nullable type is compared by it");
+				}
+
+				[Fact]
 				public async Task WhenTypeDoesNotMatch_ShouldFail()
 				{
 					IAsyncEnumerable<MyBaseClass> subject = ToAsyncEnumerable(

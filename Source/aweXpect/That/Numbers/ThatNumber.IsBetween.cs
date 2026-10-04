@@ -178,10 +178,7 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
-			Formatter.Format(stringBuilder, Actual);
-		}
+			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class NullableIsBetweenConstraint<TNumber> : OrderingConstraint<TNumber?>,
@@ -252,10 +249,7 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
-			Formatter.Format(stringBuilder, Actual);
-		}
+			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #else
 	private const string IsBetweenSummary =
@@ -373,10 +367,7 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
-			Formatter.Format(stringBuilder, Actual);
-		}
+			=> AppendNormalResult(stringBuilder, indentation);
 	}
 
 	private sealed class NullableIsBetweenConstraint<TNumber> : OrderingConstraint<TNumber?>,
@@ -448,10 +439,7 @@ public static partial class ThatNumber
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
-			Formatter.Format(stringBuilder, Actual);
-		}
+			=> AppendNormalResult(stringBuilder, indentation);
 	}
 #endif
 }

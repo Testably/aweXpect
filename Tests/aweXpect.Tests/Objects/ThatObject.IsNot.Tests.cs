@@ -178,6 +178,25 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WhenSubjectIsNullableValueType_ShouldFailForTheUnderlyingType()
+			{
+				int? subject = 5;
+
+				async Task Act()
+					=> await That(subject).IsNot(typeof(int));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not of type int,
+					             but it was int
+
+					             Actual:
+					             5
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenTypeDoesNotMatch_ShouldSucceed()
 			{
 				object subject = new MyClass();
