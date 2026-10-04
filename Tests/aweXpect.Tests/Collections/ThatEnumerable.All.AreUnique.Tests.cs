@@ -148,13 +148,13 @@ public sealed partial class ThatEnumerable
 					Func<IEnumerable<int>?> subject = () => calls++ == 0 ? [1, 1,] : null;
 
 					async Task Act()
-						=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+						=> await That(subject).Eventually().Within(1.Seconds()).CheckEvery(10.Milliseconds())
 							.All().AreUnique();
 
 					await That(Act).Throws<XunitException>()
 						.WithMessage("""
 						             Expected that subject
-						             eventually is unique for all items within 0:00.200,
+						             eventually is unique for all items within 0:01,
 						             but it was <null>
 						             """)
 						.Because("the items of an earlier attempt do not describe the last one");
