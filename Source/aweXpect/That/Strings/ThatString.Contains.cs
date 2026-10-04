@@ -99,8 +99,8 @@ public static partial class ThatString
 		{
 			if (!string.IsNullOrEmpty(_actual))
 			{
-				contexts.AddStringContextCopy("Actual", _actual, this);
-				contexts.AddStringContextCopy("Expected", expected, this);
+				contexts.AddStringContext("Actual", _actual, this);
+				contexts.AddStringContext("Expected", expected, this);
 			}
 		}
 
