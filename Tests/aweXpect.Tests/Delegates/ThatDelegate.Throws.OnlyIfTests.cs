@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using System.Linq;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatDelegate
 {
@@ -39,6 +41,23 @@ public sealed partial class ThatDelegate
 						await That(action).Throws().OnlyIf(true);
 
 					await That(result).IsSameAs(exception);
+				}
+
+				[Fact]
+				public async Task WhenContinuingWithAndOrOr_ShouldNotBeOffered()
+				{
+					Type[] continuations = typeof(ThatDelegateThrows).GetMethods()
+						.SelectMany(method => new[]
+						{
+							method.ReturnType.GetProperty("And"), method.ReturnType.GetProperty("Or"),
+						})
+						.Where(property => property is not null)
+						.Select(property => property!.PropertyType)
+						.ToArray();
+
+					await That(continuations).IsNotEmpty().And
+						.All().Satisfy(type => type.GetMember("OnlyIf").Length == 0)
+						.Because("OnlyIf switches the whole Throws expectation and must not read like a further condition");
 				}
 
 				[Fact]

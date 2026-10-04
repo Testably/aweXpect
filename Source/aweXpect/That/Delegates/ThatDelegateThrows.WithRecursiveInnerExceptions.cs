@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using aweXpect.Core;
-using aweXpect.Delegates;
 using aweXpect.Helpers;
 using aweXpect.Results;
 
@@ -19,8 +18,8 @@ public static partial class ThatDelegateThrows
 	///     <para />
 	///     The exception must have at least one inner exception.
 	/// </remarks>
-	public static AndOrResult<TException, ThatDelegateThrows<TException>> WithRecursiveInnerExceptions<TException>(
-		this ThatDelegateThrows<TException> subject,
+	public static AndOrResult<TException, IThatDelegateThrows<TException>> WithRecursiveInnerExceptions<TException>(
+		this IThatDelegateThrows<TException> subject,
 		Action<IThatSubject<IEnumerable<Exception>>> expectations)
 		where TException : Exception?
 	{

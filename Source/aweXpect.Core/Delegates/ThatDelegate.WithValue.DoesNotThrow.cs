@@ -27,7 +27,7 @@ public abstract partial class ThatDelegate
 		///     derived types as well.
 		/// </remarks>
 		[GuaranteesNotNull]
-		public DelegateWithValueResult<T> DoesNotThrow<TException>()
+		public DelegateWithOptionalValueResult<T> DoesNotThrow<TException>()
 			where TException : Exception
 			=> new(_expectationBuilder.AddConstraint((it, grammars) =>
 				new DoesNotThrowConstraint(it, grammars, typeof(TException), false, typeof(T))));
@@ -40,7 +40,7 @@ public abstract partial class ThatDelegate
 		///     other exception is ignored. Use <see cref="DoesNotThrowExactly(Type)" /> to ignore derived types as well.
 		/// </remarks>
 		[GuaranteesNotNull]
-		public DelegateWithValueResult<T> DoesNotThrow(Type type)
+		public DelegateWithOptionalValueResult<T> DoesNotThrow(Type type)
 		{
 			type.ThrowIfNotAnExceptionType();
 			return new(_expectationBuilder.AddConstraint(type, static (exceptionType, it, grammars) =>

@@ -9,11 +9,8 @@ namespace aweXpect.Delegates;
 
 public partial class ThatDelegateThrows<TException>
 {
-	/// <summary>
-	///     Verifies that the thrown exception has an inner exception which
-	///     satisfies the <paramref name="expectations" />.
-	/// </summary>
-	public AndOrResult<TException, ThatDelegateThrows<TException>> WithInner(
+	/// <inheritdoc />
+	public AndOrResult<TException, IThatDelegateThrows<TException>> WithInner(
 		Action<IThatSubject<Exception?>> expectations)
 	{
 		expectations.ThrowIfNull();
@@ -31,20 +28,15 @@ public partial class ThatDelegateThrows<TException>
 			this);
 	}
 
-	/// <summary>
-	///     Verifies that the thrown exception has an inner exception.
-	/// </summary>
-	public AndOrResult<TException, ThatDelegateThrows<TException>> WithInner()
+	/// <inheritdoc />
+	public AndOrResult<TException, IThatDelegateThrows<TException>> WithInner()
 		=> new(ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars)),
 			this);
 
-	/// <summary>
-	///     Verifies that the thrown exception has an inner exception of type <typeparamref name="TInnerException" /> which
-	///     satisfies the <paramref name="expectations" />.
-	/// </summary>
-	public AndOrResult<TException, ThatDelegateThrows<TException>>
+	/// <inheritdoc />
+	public AndOrResult<TException, IThatDelegateThrows<TException>>
 		WithInner<TInnerException>(
 			Action<IThatSubject<TInnerException?>> expectations)
 		where TInnerException : Exception
@@ -61,10 +53,8 @@ public partial class ThatDelegateThrows<TException>
 			this);
 	}
 
-	/// <summary>
-	///     Verifies that the thrown exception has an inner exception of type <typeparamref name="TInnerException" />.
-	/// </summary>
-	public AndOrResult<TException, ThatDelegateThrows<TException>> WithInner<
+	/// <inheritdoc />
+	public AndOrResult<TException, IThatDelegateThrows<TException>> WithInner<
 		TInnerException>()
 		where TInnerException : Exception?
 		=> new(ExpectationBuilder
@@ -72,11 +62,8 @@ public partial class ThatDelegateThrows<TException>
 					new HasInnerExceptionValueConstraint(typeof(TInnerException), it, grammars)),
 			this);
 
-	/// <summary>
-	///     Verifies that the thrown exception has an inner exception of type <paramref name="type" /> which
-	///     satisfies the <paramref name="expectations" />.
-	/// </summary>
-	public AndOrResult<TException, ThatDelegateThrows<TException>> WithInner(
+	/// <inheritdoc />
+	public AndOrResult<TException, IThatDelegateThrows<TException>> WithInner(
 		Type type,
 		Action<IThatSubject<Exception?>> expectations)
 	{
@@ -95,10 +82,8 @@ public partial class ThatDelegateThrows<TException>
 			this);
 	}
 
-	/// <summary>
-	///     Verifies that the thrown exception has an inner exception of type <paramref name="type" />.
-	/// </summary>
-	public AndOrResult<TException, ThatDelegateThrows<TException>> WithInner(
+	/// <inheritdoc />
+	public AndOrResult<TException, IThatDelegateThrows<TException>> WithInner(
 		Type type)
 	{
 		type.ThrowIfNotAnExceptionType();
@@ -108,29 +93,23 @@ public partial class ThatDelegateThrows<TException>
 			this);
 	}
 
-	/// <summary>
-	///     Verifies that the thrown exception has no inner exception.
-	/// </summary>
-	public AndOrResult<TException, ThatDelegateThrows<TException>> WithoutInner()
+	/// <inheritdoc />
+	public AndOrResult<TException, IThatDelegateThrows<TException>> WithoutInner()
 		=> new(ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new HasInnerExceptionValueConstraint(typeof(Exception), it, grammars).Invert()),
 			this);
 
-	/// <summary>
-	///     Verifies that the thrown exception has no inner exception of type <typeparamref name="TInnerException" />.
-	/// </summary>
-	public AndOrResult<TException, ThatDelegateThrows<TException>> WithoutInner<TInnerException>()
+	/// <inheritdoc />
+	public AndOrResult<TException, IThatDelegateThrows<TException>> WithoutInner<TInnerException>()
 		where TInnerException : Exception?
 		=> new(ExpectationBuilder
 				.AddConstraint((it, grammars) =>
 					new HasInnerExceptionValueConstraint(typeof(TInnerException), it, grammars).Invert()),
 			this);
 
-	/// <summary>
-	///     Verifies that the thrown exception has no inner exception of type <paramref name="type" />.
-	/// </summary>
-	public AndOrResult<TException, ThatDelegateThrows<TException>> WithoutInner(
+	/// <inheritdoc />
+	public AndOrResult<TException, IThatDelegateThrows<TException>> WithoutInner(
 		Type type)
 	{
 		type.ThrowIfNotAnExceptionType();

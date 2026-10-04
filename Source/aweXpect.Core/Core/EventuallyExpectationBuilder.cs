@@ -80,8 +80,10 @@ internal class EventuallyExpectationBuilder<TValue>(
 
 		TimeSpan retryTimeout = GetRetryTimeout();
 		// An outer timeout that is not shorter than the retry budget does not cancel the attempts, so that the last
-		// attempt at the end of the budget still decides.
-		EvaluationCancellation cancellation = new(timeout < retryTimeout ? timeout : null, cancellationToken);
+		// attempt at the end of the budget still decides. A budget of zero makes a single evaluation that only the
+		// outer timeout bounds.
+		EvaluationCancellation cancellation = new(
+			timeout < retryTimeout || retryTimeout == TimeSpan.Zero ? timeout : null, cancellationToken);
 		context.Cancellation = cancellation;
 		try
 		{
@@ -242,9 +244,8 @@ internal class EventuallyExpectationBuilder<TValue>(
 	/// </summary>
 	/// <remarks>
 	///     A synchronous subject cannot be interrupted, so it also exceeded the timeout when it finished after the timeout
-	///     elapsed. The measured durations decide, as the timers can fire late when the thread pool is busy. A
-	///     <paramref name="limit" /> of zero, i.e. <c>Within(TimeSpan.Zero)</c>, makes a single evaluation that a
-	///     synchronous subject could never finish within, so it does not bound it.
+	///     elapsed. The measured durations decide, as the timers can fire late when the thread pool is busy. Without a
+	///     <paramref name="limit" />, e.g. for <c>Within(TimeSpan.Zero)</c>, only the effective timeout bounds it.
 	/// </remarks>
 	private static TimeSpan? GetExceededTimeout(TimeSpan retryTimeout,
 		TimeSpan? limit,
@@ -323,18 +324,19 @@ internal class EventuallyExpectationBuilder<TValue>(
 	/// </summary>
 	/// <remarks>
 	///     The last attempt is made when the budget is used up, so without the minimum it would be abandoned before an
-	///     asynchronous subject had a chance to finish.
+	///     asynchronous subject had a chance to finish. A <paramref name="retryTimeout" /> of zero, i.e.
+	///     <c>Within(TimeSpan.Zero)</c>, makes a single evaluation that no subject could finish within, so it does not
+	///     bound it either.
 	/// </remarks>
 	private static TimeSpan? GetAttemptLimit(TimeSpan retryTimeout, TimeSpan remaining, TimeSpan interval)
 	{
-		if (retryTimeout == TimeSpan.MaxValue)
+		if (retryTimeout == TimeSpan.MaxValue || retryTimeout == TimeSpan.Zero)
 		{
 			return null;
 		}
 
 		TimeSpan minimum = interval < retryTimeout ? interval : retryTimeout;
-		TimeSpan limit = remaining > minimum ? remaining : minimum;
-		return limit > TimeSpan.Zero ? limit : TimeSpan.Zero;
+		return remaining > minimum ? remaining : minimum;
 	}
 
 	private static CancellationTokenSource? CreateAttemptCancellation(TimeSpan? limit,

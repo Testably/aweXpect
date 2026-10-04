@@ -172,7 +172,8 @@ even if the delegate ignores its `CancellationToken`, which is canceled at that 
 "did not finish within …" and a `TimeoutException` as inner exception. The last evaluation, which is made when the
 timeout is used up, still gets one check interval (at most the timeout) to finish. A synchronous delegate cannot be
 interrupted, so an evaluation that returns after that point fails the same way, whatever its result. Only
-`Within(TimeSpan.Zero)`, which makes a single evaluation, does not bound it.
+`Within(TimeSpan.Zero)`, which makes a single evaluation, does not bound it, for a synchronous and an asynchronous
+delegate alike; a `WithTimeout` or a global timeout still does.
 
 In addition to `Func<T>`, the asynchronous variant `Func<Task<T>>` is supported, and
 [on .NET 8 or later](../02-getting-started.md#target-frameworks) also `Func<ValueTask<T>>`; each of them also accepts a

@@ -145,6 +145,21 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task Within_WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
+		{
+			Action @delegate = () => { };
+
+			async Task Act()
+				=> await That(@delegate).ExecutesIn(50.Milliseconds()).Within(-1.Milliseconds());
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithParamName("tolerance").And
+				.WithMessage("The tolerance must not be negative.").AsPrefix().And
+				.Whose(e => e.ActualValue, v => v.IsNull())
+				.Because("the tolerance is rejected like every other tolerance");
+		}
+
+		[Fact]
 		public async Task Within_WithValue_WhenToleranceIsMaxValue_ShouldSucceed()
 		{
 			Func<int> @delegate = () => 1;

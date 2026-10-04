@@ -1200,6 +1200,81 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Fact]
+		public async Task WhenTimeoutIsZero_AndSubjectIsAsynchronous_ShouldNotBoundTheEvaluation()
+		{
+			Func<Task<int>> subject = async () =>
+			{
+				await Task.Delay(50.Milliseconds());
+				return 1;
+			};
+
+			async Task Act()
+				=> await That(subject).Eventually().Within(TimeSpan.Zero).IsEqualTo(1);
+
+			await That(Act).DoesNotThrow()
+				.Because("a zero timeout makes a single evaluation that it does not bound, like for a synchronous subject");
+		}
+
+		[Fact]
+		public async Task WhenTimeoutIsZero_AndSubjectObservesTheToken_ShouldNotCancelIt()
+		{
+			CancellationToken? attemptToken = null;
+
+			async Task<int> Subject(CancellationToken token)
+			{
+				attemptToken = token;
+				await Task.Delay(50.Milliseconds(), token);
+				return 1;
+			}
+
+			async Task Act()
+				=> await That(Subject).Eventually().Within(TimeSpan.Zero).IsEqualTo(1);
+
+			await That(Act).DoesNotThrow();
+			await That(attemptToken?.IsCancellationRequested).IsFalse()
+				.Because("a zero timeout must not cancel the single evaluation");
+		}
+
+		[Fact]
+		public async Task WhenTimeoutIsZero_AndSyncSubjectReturnsAfterWithTimeout_ShouldFail()
+		{
+			Func<int> subject = () =>
+			{
+				Block(100.Milliseconds());
+				return 1;
+			};
+
+			async Task Act()
+				=> await That(subject).Eventually().Within(TimeSpan.Zero).IsEqualTo(1).WithTimeout(VeryLowTimeout);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually is equal to 1 within 0:00,
+				             but it did not finish within 0:00.050
+				             """)
+				.Because("the single evaluation is still bounded by a tighter timeout");
+		}
+
+		[Fact]
+		public async Task WhenTimeoutIsZero_AndWithTimeoutIsShorterThanTheSubject_ShouldFail()
+		{
+			Func<Task<int>> subject = () => new TaskCompletionSource<int>().Task;
+
+			async Task Act()
+				=> await That(subject).Eventually().Within(TimeSpan.Zero).IsEqualTo(1).WithTimeout(VeryLowTimeout);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually is equal to 1 within 0:00,
+				             but it did not finish within 0:00.050
+				             """)
+				.WithTimeout(30.Seconds())
+				.Because("the evaluation is still bounded by a tighter timeout");
+		}
+
+		[Fact]
 		public async Task WhenTimeoutIsZero_ShouldOnlyEvaluateOnce()
 		{
 			Counter counter = new();

@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using System.Linq;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatDelegate
 {
@@ -38,6 +40,23 @@ public sealed partial class ThatDelegate
 						await That(action).Throws().Within(5.Seconds());
 
 					await That(result).IsSameAs(exception);
+				}
+
+				[Fact]
+				public async Task WhenContinuingWithAndOrOr_ShouldNotBeOffered()
+				{
+					Type[] continuations = typeof(ThatDelegateThrows).GetMethods()
+						.SelectMany(method => new[]
+						{
+							method.ReturnType.GetProperty("And"), method.ReturnType.GetProperty("Or"),
+						})
+						.Where(property => property is not null)
+						.Select(property => property!.PropertyType)
+						.ToArray();
+
+					await That(continuations).IsNotEmpty().And
+						.All().Satisfy(type => type.GetMember("Within").Length == 0)
+						.Because("Within limits the whole Throws expectation and must not read like a further condition");
 				}
 
 				[Fact]
