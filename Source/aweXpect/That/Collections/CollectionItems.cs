@@ -59,11 +59,20 @@ internal readonly struct CollectionItems<TItem>
 	/// <summary>
 	///     Materializes the items of the <paramref name="actual" /> subject in the <paramref name="context" />.
 	/// </summary>
+	/// <remarks>
+	///     An untyped collection that knows its number of items is kept as it is, like a typed one.
+	/// </remarks>
 	public static CollectionItems<TItem> Materialize<TEnumerable>(TEnumerable actual, IEvaluationContext context)
 		where TEnumerable : IEnumerable?
-		=> IsTypedSubject<TEnumerable>.Value
-			? new CollectionItems<TItem>(context.UseMaterializedEnumerable((IEnumerable<TItem>)actual!), null)
-			: new CollectionItems<TItem>(null, context.UseMaterializedEnumerable(actual));
+	{
+		if (IsTypedSubject<TEnumerable>.Value)
+		{
+			return new CollectionItems<TItem>(context.UseMaterializedEnumerable((IEnumerable<TItem>)actual!), null);
+		}
+
+		IEnumerable? untyped = actual.GetUntypedCount() is null ? context.UseMaterializedEnumerable(actual) : actual;
+		return new CollectionItems<TItem>(null, untyped);
+	}
 
 	/// <summary>
 	///     The number of items of the <paramref name="actual" /> subject, when it is a collection that knows it without
@@ -73,7 +82,7 @@ internal readonly struct CollectionItems<TItem>
 		where TEnumerable : IEnumerable?
 		=> IsTypedSubject<TEnumerable>.Value
 			? (actual as ICollection<TItem>)?.Count
-			: (actual as ICollection)?.Count;
+			: actual.GetUntypedCount();
 
 	/// <summary>
 	///     Casts the <paramref name="item" /> to <typeparamref name="TMatch" />, which can fail for an untyped item.
@@ -113,7 +122,7 @@ internal readonly struct CollectionItems<TItem>
 	private bool IsIncomplete()
 		=> _typed is not null
 			? _typed is not (ICollection<TItem> or ICountable { Count: not null, })
-			: _untyped is not (ICollection or ICountable { Count: not null, });
+			: _untyped is not ICountable { Count: not null, } && _untyped.GetUntypedCount() is null;
 
 	/// <summary>
 	///     Keeps the items for the "Collection" <paramref name="context" />.

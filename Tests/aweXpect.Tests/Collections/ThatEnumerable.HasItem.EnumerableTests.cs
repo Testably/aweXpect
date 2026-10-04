@@ -278,6 +278,32 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
+			[Fact]
+			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldNotReadFurther()
+			{
+				int readItems = 0;
+				IEnumerable subject = new[] { 2, 3, 4, }.Select(x =>
+				{
+					readItems++;
+					return x;
+				});
+
+				async Task Act()
+					=> await That(subject).HasItem(1).AtIndex(0);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item equal to 1 at index 0,
+					             but it had item 2 at index 0
+
+					             Collection:
+					             [2, (… and maybe more)]
+					             """);
+				await That(readItems).IsEqualTo(1)
+					.Because("the item at index 0 decides the outcome, so no further item must be read");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldSucceed(

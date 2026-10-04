@@ -353,8 +353,7 @@ public static partial class ThatEnumerable
 		count = actual switch
 		{
 			ICollection<TItem> collection => collection.Count,
-			ICollection collection => collection.Count,
-			_ => items.CountUnlessCanceled(cancellationToken),
+			_ => (actual as IEnumerable).GetUntypedCount() ?? items.CountUnlessCanceled(cancellationToken),
 		};
 		return count is not null;
 	}

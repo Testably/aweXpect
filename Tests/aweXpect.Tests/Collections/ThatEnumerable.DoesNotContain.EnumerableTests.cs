@@ -275,7 +275,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WhenEnumerableContainsUnexpectedValue_ShouldFail()
 			{
-				IEnumerable subject = Enumerable.Range(1, 3);
+				IEnumerable subject = ToEnumerable(Enumerable.Range(1, 3).ToArray());
 				int unexpected = 3;
 
 				async Task Act()
@@ -589,7 +589,7 @@ public sealed partial class ThatEnumerable
 			[Fact]
 			public async Task WhenEnumerableContainsUnexpectedValue_ShouldFail()
 			{
-				IEnumerable subject = Enumerable.Range(1, 3);
+				IEnumerable subject = ToEnumerable(Enumerable.Range(1, 3).ToArray());
 				int unexpected = 3;
 
 				async Task Act()

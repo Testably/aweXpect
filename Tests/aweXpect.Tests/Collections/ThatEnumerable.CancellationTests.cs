@@ -945,6 +945,52 @@ public sealed partial class ThatEnumerable
 		}
 
 		[Fact]
+		public async Task WhenInMemoryUntypedSetIsCanceled_ShouldBeJudgedCompletely()
+		{
+			using CancellationTokenSource cts = new();
+			cts.Cancel();
+			IEnumerable subject = new HashSet<int>
+			{
+				1,
+				2,
+				3,
+			};
+
+			async Task Act()
+				=> await That(subject).All().Satisfy(x => (int?)x > 0).WithCancellation(cts.Token);
+
+			await That(Act).DoesNotThrow()
+				.Because("a set is complete in memory, also when it is read as a non-generic enumerable");
+		}
+
+		[Fact]
+		public async Task WhenInMemoryUntypedSetIsCanceled_ShouldJudgeHasItemAtAnIndexFromEnd()
+		{
+			using CancellationTokenSource cts = new();
+			cts.Cancel();
+			IEnumerable subject = new HashSet<int>
+			{
+				1,
+				2,
+				3,
+			};
+
+			async Task Act()
+				=> await That(subject).HasItem(1).AtIndexFromEnd(0).WithCancellation(cts.Token);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has an item equal to 1 at index 0 from end,
+				             but it had item 3 at index 0 from end
+
+				             Collection:
+				             [1, 2, 3]
+				             """)
+				.Because("the count of a set is known without reading its items, so the cancellation does not matter");
+		}
+
+		[Fact]
 		public async Task WhenSourceEndedBeforeTheCancellation_ShouldJudgeTheCollection()
 		{
 			using CancellationTokenSource cts = new();

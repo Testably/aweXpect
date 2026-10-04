@@ -21,17 +21,31 @@ public sealed partial class ThatEnumerable
 						=> await That(subject).HasItem().MatchingExactly<MyBaseClass>(_ => false).AtIndex(2);
 
 					await That(Act).Throws<XunitException>()
-						.WithMessage($$"""
-						               Expected that subject
-						               has an item exactly of type MyBaseClass matching _ => false at index 2,
-						               but it had item MyClass {
+						.WithMessage("""
+						             Expected that subject
+						             has an item exactly of type MyBaseClass matching _ => false at index 2,
+						             but it had item MyClass {
+						               StringValue = "",
+						               Value = 2
+						             } at index 2
+
+						             Collection:
+						             [
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 0
+						               },
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 1
+						               },
+						               MyClass {
 						                 StringValue = "",
 						                 Value = 2
-						               } at index 2
-
-						               Collection:
-						               {{Formatter.Format(subject, FormattingOptions.MultipleLines)}}
-						               """);
+						               },
+						               (… and maybe more)
+						             ]
+						             """);
 				}
 
 				[Fact]
@@ -177,16 +191,27 @@ public sealed partial class ThatEnumerable
 						=> await That(subject).HasItem().MatchingExactly<MyClass>().AtIndex(2);
 
 					await That(Act).Throws<XunitException>()
-						.WithMessage($$"""
-						               Expected that subject
-						               has an item exactly of type MyClass at index 2,
-						               but it had item MyBaseClass {
-						                 Value = 2
-						               } at index 2
+						.WithMessage("""
+						             Expected that subject
+						             has an item exactly of type MyClass at index 2,
+						             but it had item MyBaseClass {
+						               Value = 2
+						             } at index 2
 
-						               Collection:
-						               {{Formatter.Format(subject, FormattingOptions.MultipleLines)}}
-						               """);
+						             Collection:
+						             [
+						               MyBaseClass {
+						                 Value = 0
+						               },
+						               MyBaseClass {
+						                 Value = 1
+						               },
+						               MyBaseClass {
+						                 Value = 2
+						               },
+						               (… and maybe more)
+						             ]
+						             """);
 				}
 
 				[Fact]
