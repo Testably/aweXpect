@@ -14,6 +14,7 @@ public abstract partial class ThatDelegate
 	public sealed partial class WithValue<T> : ThatDelegate, IExpectThat<WithValue<T>>
 	{
 		private readonly Func<CancellationToken, Task<T>>? _subject;
+		private readonly Func<T>? _synchronousSubject;
 
 		/// <summary>
 		///     A delegate with value of type <typeparamref name="T" />.
@@ -33,12 +34,25 @@ public abstract partial class ThatDelegate
 		{
 		}
 
+		private WithValue(ExpectationBuilder expectationBuilder, Func<T> synchronousSubject)
+			: base(expectationBuilder)
+		{
+			_synchronousSubject = synchronousSubject;
+		}
+
 		/// <summary>
 		///     Creates the subject also for a <see langword="null" /> <paramref name="subject" />, which the expectations
 		///     report as <c>&lt;null&gt;</c> instead of throwing.
 		/// </summary>
 		internal static WithValue<T> Create(ExpectationBuilder expectationBuilder,
 			Func<CancellationToken, Task<T>>? subject)
+			=> subject is null ? new WithValue<T>(expectationBuilder) : new WithValue<T>(expectationBuilder, subject);
+
+		/// <inheritdoc cref="Create(ExpectationBuilder, Func{CancellationToken, Task{T}})" />
+		/// <remarks>
+		///     The asynchronous delegate for <see cref="Eventually()" /> is only created when it is used.
+		/// </remarks>
+		internal static WithValue<T> Create(ExpectationBuilder expectationBuilder, Func<T>? subject)
 			=> subject is null ? new WithValue<T>(expectationBuilder) : new WithValue<T>(expectationBuilder, subject);
 
 		/// <inheritdoc cref="IExpectThat{T}.ExpectationBuilder" />
@@ -62,6 +76,10 @@ public abstract partial class ThatDelegate
 		///     When the expectation is canceled before the timeout expires, it is reported as inconclusive.
 		/// </remarks>
 		public EventuallySubject<T> Eventually()
-			=> new(new EventuallyExpectationBuilder<T>(_subject, _expectationBuilder.Subject));
+			=> new(new EventuallyExpectationBuilder<T>(_subject ?? ToAsync(_synchronousSubject),
+				_expectationBuilder.Subject));
+
+		private static Func<CancellationToken, Task<T>>? ToAsync(Func<T>? subject)
+			=> subject is null ? null : _ => Task.FromResult(subject());
 	}
 }

@@ -32,6 +32,15 @@ internal abstract class HasSingleConstraintBase<TValue, TItem>(
 	protected int Count => _count;
 
 	/// <summary>
+	///     The single matching item, when the expectation is met.
+	/// </summary>
+	/// <remarks>
+	///     Further expectations on the item read it here instead of searching the collection again, which would call the
+	///     predicate a second time.
+	/// </remarks>
+	internal TItem? SingleItem => Actual;
+
+	/// <summary>
 	///     The materialized collection, which is served instead of the subject.
 	/// </summary>
 	protected abstract object? Materialized { get; }

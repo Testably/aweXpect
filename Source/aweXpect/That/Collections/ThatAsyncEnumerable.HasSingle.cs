@@ -1,6 +1,7 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Helpers;
 using aweXpect.Options;
@@ -20,25 +21,13 @@ public static partial class ThatAsyncEnumerable
 		this IThat<IAsyncEnumerable<TItem>?> subject)
 	{
 		PredicateOptions<TItem> options = new();
+		AsyncHasSingleConstraint<TItem> constraint = null!;
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AsyncSingleItemResult<IAsyncEnumerable<TItem>, TItem>(
-			expectationBuilder.AddConstraint(options, static (predicateOptions, it, grammars) =>
-				new AsyncHasSingleConstraint<TItem>(it, grammars, predicateOptions)),
+			expectationBuilder.AddConstraint((it, grammars) =>
+				constraint = new AsyncHasSingleConstraint<TItem>(it, grammars, options)),
 			options,
-			async f =>
-			{
-#pragma warning disable S3267 // net8.0 has no LINQ over IAsyncEnumerable
-				await foreach (TItem item in f)
-				{
-					if (options.Matches(item))
-					{
-						return item;
-					}
-				}
-#pragma warning restore S3267
-
-				return default;
-			});
+			_ => Task.FromResult(constraint.SingleItem));
 	}
 }
 #endif

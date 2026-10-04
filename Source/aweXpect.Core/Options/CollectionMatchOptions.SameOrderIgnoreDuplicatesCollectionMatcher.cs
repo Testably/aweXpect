@@ -132,7 +132,7 @@ public partial class CollectionMatchOptions
 				_firstIndexOfSubjectItem.Add(index);
 			}
 
-			if (_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
+			if (_equivalenceRelations.Includes(EquivalenceRelations.Contains))
 			{
 				await CheckWhetherTheResultIsDetermined(subjectId, options);
 				return (false, null);
@@ -153,8 +153,8 @@ public partial class CollectionMatchOptions
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			DistinctItemsInOrder order = CreateOrder(options);
-			bool requiresAdditionalItem = _equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) ||
-			                              _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly);
+			bool requiresAdditionalItem = _equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) ||
+			                              _equivalenceRelations.Includes(EquivalenceRelations.IsContainedInProperly);
 			if (await order.IsInOrder() && (!requiresAdditionalItem || await order.HasAdditionalItem()))
 			{
 				return (false, null);
@@ -198,7 +198,7 @@ public partial class CollectionMatchOptions
 
 			DistinctItemsInOrder order = CreateOrder(options);
 			IsDetermined = await order.IsInOrder() &&
-			               (!_equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) ||
+			               (!_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) ||
 			                await order.HasAdditionalItem());
 		}
 
@@ -221,7 +221,7 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		private async ValueTask<InOrderDeviations<T, T3>> FindTheDeviations(IOptionsEquality<T2> options)
 		{
-			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
+			if (_equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn))
 			{
 				InOrderMismatch searchedInExpected = await InOrderMismatch.Explain(_expectedIds,
 					_expectedDistinctItems.Length, _subjectIds.Items.Count,
@@ -244,7 +244,7 @@ public partial class CollectionMatchOptions
 		///     in the subject.
 		/// </summary>
 		private DistinctItemsInOrder CreateOrder(IOptionsEquality<T2> options)
-			=> _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn)
+			=> _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn)
 				? new DistinctItemsInOrder(_expectedIds, _expectedDistinctItems.Length, _subjectIds.Items.Count,
 					(expectedId, subjectId) => IsMatch(subjectId, expectedId, options), GetOrderMatch())
 				: new DistinctItemsInOrder(_subjectIdAt.ToArray(), _subjectIds.Items.Count,

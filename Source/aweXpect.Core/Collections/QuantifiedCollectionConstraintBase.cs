@@ -264,7 +264,7 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	///     failure message is created.
 	/// </summary>
 	private bool CouldShow(EnumerableQuantifier.QuantifierContexts items)
-		=> (Quantifier.GetQuantifierContext() | Quantifier.GetNegatedQuantifierContext()).HasFlag(items);
+		=> ((Quantifier.GetQuantifierContext() | Quantifier.GetNegatedQuantifierContext()) & items) == items;
 
 	/// <summary>
 	///     Stops the evaluation at the <paramref name="item" /> whose <paramref name="itemResult" /> did not answer

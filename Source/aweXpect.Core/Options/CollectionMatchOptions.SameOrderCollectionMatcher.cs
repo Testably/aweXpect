@@ -140,19 +140,19 @@ public partial class CollectionMatchOptions
 		///     also another item.
 		/// </remarks>
 		public bool IsDetermined
-			=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains) && _isFound &&
-			   (!_equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) ||
+			=> _equivalenceRelations.Includes(EquivalenceRelations.Contains) && _isFound &&
+			   (!_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) ||
 			    _values.Count > _expectedItems.Length);
 
 		public ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
-			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
+			if (_equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn))
 			{
 				return VerifyTheCurrentValueIsContainedInTheExpectedItems(it, value, options, maximumNumber);
 			}
 
-			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
+			if (!_equivalenceRelations.Includes(EquivalenceRelations.Contains))
 			{
 				return VerifyTheCurrentValueMatchesTheItemAtItsPosition(it, value, options, maximumNumber);
 			}
@@ -215,8 +215,8 @@ public partial class CollectionMatchOptions
 		private async ValueTask<(bool, string?)>
 			VerifyCompleteInOrder(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
-			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
-			    !_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
+			if (!_equivalenceRelations.Includes(EquivalenceRelations.Contains) &&
+			    !_equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn))
 			{
 				return await VerifyCompleteForPositionalMatch(it, options, maximumNumber);
 			}
@@ -235,8 +235,8 @@ public partial class CollectionMatchOptions
 		///     The proper containment needs an expected item that the subject does not use.
 		/// </summary>
 		private bool IsContainedInTheExpectedItems()
-			=> _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn) && !_isBroken &&
-			   (!_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) ||
+			=> _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn) && !_isBroken &&
+			   (!_equivalenceRelations.Includes(EquivalenceRelations.IsContainedInProperly) ||
 			    _values.Count < _expectedItems.Length);
 
 		/// <summary>
@@ -246,7 +246,7 @@ public partial class CollectionMatchOptions
 		private async ValueTask<InOrderDeviations<T, T3>> FindTheDeviations(IOptionsEquality<T2> options)
 		{
 			OrderMatch orderMatch = _ignoreInterspersedItems ? OrderMatch.Subsequence : OrderMatch.Contiguous;
-			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
+			if (_equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn))
 			{
 				InOrderMismatch searchedInExpected = await InOrderMismatch.Explain(
 					Enumerable.Range(0, _expectedItems.Length).ToArray(), _expectedItems.Length, _values.Count,

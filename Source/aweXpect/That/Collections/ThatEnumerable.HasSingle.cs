@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Helpers;
@@ -25,12 +24,13 @@ public static partial class ThatEnumerable
 		this IThat<IEnumerable<TItem>?> subject)
 	{
 		PredicateOptions<TItem> options = new();
+		HasSingleConstraint<IEnumerable<TItem>?, TItem> constraint = null!;
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new SingleItemResult<IEnumerable<TItem>, TItem>(
-			expectationBuilder.AddConstraint(options, static (predicateOptions, it, grammars)
-				=> new HasSingleConstraint<IEnumerable<TItem>?, TItem>(it, grammars, predicateOptions)),
+			expectationBuilder.AddConstraint((it, grammars)
+				=> constraint = new HasSingleConstraint<IEnumerable<TItem>?, TItem>(it, grammars, options)),
 			options,
-			f => f.FirstOrDefault(item => options.Matches(item))
+			_ => constraint.SingleItem
 		);
 	}
 
@@ -43,16 +43,13 @@ public static partial class ThatEnumerable
 		this IThat<IEnumerable?> subject)
 	{
 		PredicateOptions<object?> options = new();
+		HasSingleConstraint<IEnumerable, object?> constraint = null!;
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new SingleItemResult<IEnumerable, object?>(
-			expectationBuilder.AddConstraint(options, static (predicateOptions, it, grammars)
-				=> new HasSingleConstraint<IEnumerable, object?>(it, grammars,
-					predicateOptions)),
+			expectationBuilder.AddConstraint((it, grammars)
+				=> constraint = new HasSingleConstraint<IEnumerable, object?>(it, grammars, options)),
 			options,
-			f =>
-			{
-				return f.Cast<object?>().FirstOrDefault(item => options.Matches(item));
-			});
+			_ => constraint.SingleItem);
 	}
 
 #if NET8_0_OR_GREATER
@@ -63,16 +60,13 @@ public static partial class ThatEnumerable
 		this IThat<ImmutableArray<TItem>> subject)
 	{
 		PredicateOptions<TItem> options = new();
+		HasSingleConstraint<ImmutableArray<TItem>, TItem> constraint = null!;
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new SingleItemResult<ImmutableArray<TItem>, TItem>(
-			expectationBuilder.AddConstraint(options, static (predicateOptions, it, grammars)
-				=> new HasSingleConstraint<ImmutableArray<TItem>, TItem>(it, grammars,
-					predicateOptions)),
+			expectationBuilder.AddConstraint((it, grammars)
+				=> constraint = new HasSingleConstraint<ImmutableArray<TItem>, TItem>(it, grammars, options)),
 			options,
-			f =>
-			{
-				return f.FirstOrDefault(item => options.Matches(item));
-			});
+			_ => constraint.SingleItem);
 	}
 #endif
 }
