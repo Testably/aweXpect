@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading;
 using aweXpect.Core;
@@ -12,164 +8,168 @@ namespace aweXpect.Recording;
 
 internal sealed class EventRecorder(string eventName, Action onRecorded) : IDisposable
 {
-	private readonly ConcurrentQueue<RecordedEvent> _eventQueue = new();
+	private readonly object _lock = new();
+
+	/// <remarks>
+	///     Only appended to, and replaced by a larger copy before the count grows beyond it, so that a reader that reads
+	///     the count before the array sees every event below the count without a lock, and a snapshot needs only the
+	///     count.
+	/// </remarks>
+	private RecordedEvent[] _events = [];
+
+	private int _count;
 
 	/// <remarks>
 	///     Removing the handler cannot stop an invocation that already started, so a stopped recorder answers from the
 	///     events it had when it stopped, and an event that arrives later is ignored.
 	/// </remarks>
-	private RecordedEvent[]? _frozenEvents;
+	private int _frozenCount = -1;
 
-	private Action? _onDispose;
+	private IRecordableEvent? _event;
+	private Delegate? _handler;
+	private object? _subject;
 
-	private IReadOnlyCollection<RecordedEvent> Events
-		=> Volatile.Read(ref _frozenEvents) ?? (IReadOnlyCollection<RecordedEvent>)_eventQueue;
+	public string Name => eventName;
+
+	/// <summary>
+	///     The number of recorded events, which only grows until the recorder is stopped.
+	/// </summary>
+	public int Count
+	{
+		get
+		{
+			int frozenCount = Volatile.Read(ref _frozenCount);
+			return frozenCount >= 0 ? frozenCount : Volatile.Read(ref _count);
+		}
+	}
 
 	public void Dispose()
 	{
-		_onDispose?.Invoke();
-		Interlocked.CompareExchange(ref _frozenEvents, _eventQueue.ToArray(), null);
-	}
-
-	/// <summary>
-	///     Returns a stopped copy with the events recorded so far, which later events do not change.
-	/// </summary>
-	public EventRecorder Snapshot()
-	{
-		EventRecorder snapshot = new(eventName, () => { });
-		snapshot._frozenEvents = Volatile.Read(ref _frozenEvents) ?? _eventQueue.ToArray();
-		return snapshot;
-	}
-
-	/// <summary>
-	///     Attaches to a registered event, whose handler is created by the registration instead of being bound
-	///     reflectively.
-	/// </summary>
-	public void Attach(object subject, TypeMetadataRegistry.RegisteredEvent @event)
-	{
-		Delegate handler = @event.CreateHandler(parameters =>
+		switch (_event)
 		{
-			_eventQueue.Enqueue(new RecordedEvent(eventName, parameters));
-			NotifyRecordedEvent();
-		});
-		@event.AddHandler(subject, handler);
+			case TypeMetadataRegistry.RegisteredEvent registeredEvent:
+				registeredEvent.RemoveHandler(_subject!, _handler!);
+				break;
+			case ReflectedEvent reflectedEvent:
+				reflectedEvent.Info.RemoveEventHandler(_subject, _handler);
+				break;
+		}
 
-		// The subject is held on purpose: its event already holds the handler and thereby this recorder, so nothing
-		// leaks, whereas a static event would otherwise keep the handler after the subject was collected.
-		_onDispose = () => @event.RemoveHandler(subject, handler);
+		Interlocked.CompareExchange(ref _frozenCount, Volatile.Read(ref _count), -1);
 	}
 
 	/// <summary>
-	///     Attaches to an event that is bound reflectively and returns the reason why it cannot be recorded, or
+	///     Attaches to the <paramref name="event" /> and returns the reason why it cannot be recorded, or
 	///     <see langword="null" /> when the handler was attached.
 	/// </summary>
-	public string? TryAttach(object subject, EventInfo eventInfo)
+	/// <remarks>
+	///     The subject is held on purpose: its event already holds the handler and thereby this recorder, so nothing
+	///     leaks, whereas a static event would otherwise keep the handler after the subject was collected.
+	/// </remarks>
+	public string? TryAttach(object subject, IRecordableEvent @event)
 	{
-		// Unreachable, because the events are only ever found by the guarded reflection, but the analyzer does not
-		// follow guards across methods.
-		if (!ReflectionFallback.IsSupported)
+		if (@event is ReflectedEvent reflectedEvent)
 		{
-			throw Tracing.WriteException(ReflectionFallback.NotSupported(eventInfo.ReflectedType!, "events"));
-		}
-
-		MethodInfo handlerType = eventInfo.EventHandlerType!.GetMethod("Invoke")!;
-		if (handlerType.ReturnType != typeof(void))
-		{
-			return
-				$"The {eventName} event cannot be recorded, because its handler returns {Formatter.Format(handlerType.ReturnType)}.";
-		}
-
-		ParameterInfo? byReference = handlerType.GetParameters().FirstOrDefault(x => x.ParameterType.IsByRef);
-		if (byReference is not null)
-		{
-			return
-				$"The {eventName} event cannot be recorded, because its handler takes the parameter {byReference.Name} by reference.";
-		}
-
-		Delegate? handler = null;
-		foreach (MethodInfo method in typeof(EventRecorder).GetMethods().Where(x => x.Name == nameof(RecordEvent)))
-		{
-			if (method.GetParameters().Length == handlerType.GetParameters().Length)
+			if (reflectedEvent.Unsupported is not null)
 			{
-				MethodInfo handlerMethod = method;
-				if (handlerType.GetParameters().Length > 0)
-				{
-					handlerMethod = method
-						.MakeGenericMethod(handlerType.GetParameters()
-							.Select(x => x.ParameterType)
-							.ToArray());
-				}
-
-				handler = Delegate.CreateDelegate(eventInfo.EventHandlerType, this, handlerMethod);
+				return reflectedEvent.Unsupported;
 			}
-		}
 
-		if (handler == null)
+			_handler = Delegate.CreateDelegate(reflectedEvent.Info.EventHandlerType!, this,
+				reflectedEvent.RecordMethod!);
+			reflectedEvent.Info.AddEventHandler(subject, _handler);
+		}
+		else
 		{
-			return
-				$"The {eventName} event contains too many parameters ({handlerType.GetParameters().Length}): {Formatter.Format(handlerType.GetParameters().Select(x => x.ParameterType))}";
+			TypeMetadataRegistry.RegisteredEvent registeredEvent = (TypeMetadataRegistry.RegisteredEvent)@event;
+			_handler = registeredEvent.CreateHandler(Record);
+			registeredEvent.AddHandler(subject, _handler);
 		}
 
-		eventInfo.AddEventHandler(subject, handler);
-
-		// The subject is held on purpose: its event already holds the handler and thereby this recorder, so nothing
-		// leaks, whereas a static event would otherwise keep the handler after the subject was collected.
-		_onDispose = () => eventInfo.RemoveEventHandler(subject, handler);
+		_subject = subject;
+		_event = @event;
 		return null;
 	}
 
 	public void RecordEvent()
-	{
-		_eventQueue.Enqueue(new RecordedEvent(eventName));
-		NotifyRecordedEvent();
-	}
+		=> Record([]);
 
 	public void RecordEvent<T1>(T1 parameter1)
-	{
-		_eventQueue.Enqueue(new RecordedEvent(eventName, parameter1));
-		NotifyRecordedEvent();
-	}
+		=> Record([parameter1,]);
 
 	public void RecordEvent<T1, T2>(T1 parameter1, T2 parameter2)
-	{
-		_eventQueue.Enqueue(new RecordedEvent(eventName, parameter1, parameter2));
-		NotifyRecordedEvent();
-	}
+		=> Record([parameter1, parameter2,]);
 
 	public void RecordEvent<T1, T2, T3>(T1 parameter1, T2 parameter2, T3 parameter3)
-	{
-		_eventQueue.Enqueue(new RecordedEvent(eventName, parameter1, parameter2, parameter3));
-		NotifyRecordedEvent();
-	}
+		=> Record([parameter1, parameter2, parameter3,]);
 
 	public void RecordEvent<T1, T2, T3, T4>(T1 parameter1, T2 parameter2, T3 parameter3, T4 parameter4)
+		=> Record([parameter1, parameter2, parameter3, parameter4,]);
+
+	private void Record(object?[] parameters)
 	{
-		_eventQueue.Enqueue(new RecordedEvent(eventName, parameter1, parameter2, parameter3, parameter4));
-		NotifyRecordedEvent();
+		lock (_lock)
+		{
+			RecordedEvent[] events = _events;
+			if (_count == events.Length)
+			{
+				RecordedEvent[] grown = new RecordedEvent[Math.Max(4, events.Length * 2)];
+				Array.Copy(events, grown, _count);
+				Volatile.Write(ref _events, grown);
+				events = grown;
+			}
+
+			events[_count] = new RecordedEvent(eventName, parameters);
+			Volatile.Write(ref _count, _count + 1);
+		}
+
+		onRecorded();
 	}
 
-	private void NotifyRecordedEvent() => onRecorded();
+	/// <summary>
+	///     Returns a formatted string for the first <paramref name="count" /> recorded events.
+	/// </summary>
+	public string ToString(int count)
+		=> Formatter.Format(new ArraySegment<RecordedEvent>(Volatile.Read(ref _events), 0, count),
+			FormattingOptions.MultipleLines);
 
 	/// <summary>
 	///     Returns a formatted string for all recorded events.
 	/// </summary>
 	public override string ToString()
-		=> Formatter.Format(Events, FormattingOptions.MultipleLines);
+		=> ToString(Count);
 
 	/// <summary>
 	///     Gets the number of recorded events that match the <paramref name="filter" />.
 	/// </summary>
 	public int GetEventCount(Func<object?[], bool>? filter)
+		=> GetEventCount(filter, Count);
+
+	/// <summary>
+	///     Gets the number of events among the first <paramref name="count" /> recorded events that match the
+	///     <paramref name="filter" />.
+	/// </summary>
+	public int GetEventCount(Func<object?[], bool>? filter, int count)
 	{
-		if (filter != null)
+		if (filter is null)
 		{
-			return Events.Count(x => filter(x.Parameters));
+			return count;
 		}
 
-		return Events.Count;
+		RecordedEvent[] events = Volatile.Read(ref _events);
+		int matchingCount = 0;
+		for (int i = 0; i < count; i++)
+		{
+			if (filter(events[i].Parameters))
+			{
+				matchingCount++;
+			}
+		}
+
+		return matchingCount;
 	}
 
-	private readonly struct RecordedEvent(string name, params object?[] parameters)
+	private readonly struct RecordedEvent(string name, object?[] parameters)
 	{
 		public string Name { get; } = name;
 		public object?[] Parameters { get; } = parameters;

@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using aweXpect.Equivalency;
+using aweXpect.Recording;
 
 namespace aweXpect.Core.Metadata;
 
@@ -227,6 +228,7 @@ public static class TypeMetadataRegistry
 
 	internal sealed class TypeMetadata
 	{
+		private RegisteredEvent[]? _orderedEvents;
 		private MemberSnapshot? _orderedMembers;
 
 		public ConcurrentDictionary<string, RegisteredMember> Fields { get; } = new(StringComparer.Ordinal);
@@ -241,6 +243,15 @@ public static class TypeMetadataRegistry
 		///     The reader of the key comparer, registered for a generic dictionary interface.
 		/// </summary>
 		public DictionaryKeyComparer? KeyComparer { get; set; }
+
+		/// <summary>
+		///     The registered events in the order of their registration.
+		/// </summary>
+		/// <remarks>
+		///     Computed once, because a published entry is never changed, and every recording reads them.
+		/// </remarks>
+		public RegisteredEvent[] OrderedEvents
+			=> _orderedEvents ??= Events.Values.OrderBy(@event => @event.Order).ToArray();
 
 		/// <summary>
 		///     The registered fields and properties in the order of their registration.
@@ -308,7 +319,7 @@ public static class TypeMetadataRegistry
 		Func<Action<object?[]>, Delegate> createHandler,
 		Action<object, Delegate> addHandler,
 		Action<object, Delegate> removeHandler,
-		int order)
+		int order) : IRecordableEvent
 	{
 		public string Name { get; } = name;
 		public Func<Action<object?[]>, Delegate> CreateHandler { get; } = createHandler;
