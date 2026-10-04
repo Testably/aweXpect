@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "f9b4540abbc178d56806b31b651ec7abd049f27e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
-        "message": "chore: silence the Sonar findings on recently touched code (#1202)"
-      },
-      {
         "sha": "00dff638f2875ed74793ae1d3a15444b8034904f",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
         "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
+      },
+      {
+        "sha": "d3acbd747ae9827d1168d690b87fce711632c351",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:31:26 2026 \u002B0200",
+        "message": "feat(core): make extension helpers, CustomizationValue and a context-free IsMetBy public (#1591)"
       }
     ],
     "labels": [
-      "f9b4540a",
       "00dff638",
       "592eda32",
       "969656cf",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
-      "1a2fd538"
+      "1a2fd538",
+      "d3acbd74"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          302.21210071018766,
           338.3181185086568,
           231.47678319613138,
           329.0090421267918,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           351.66029326121014,
           371.91328716278076,
           163.3961702823639,
-          161.43245550791423
+          161.43245550791423,
+          158.94876097043354
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -420,7 +420,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          840,
           840,
           840,
           840,
@@ -469,6 +468,7 @@ window.BENCHMARK_DATA = {
           800,
           800,
           392,
+          392,
           392
         ],
         "borderColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          250.2746205670493,
           251.7722088609423,
           198.7654082775116,
           254.24044408798218,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           252.23526869501387,
           256.7717856725057,
           251.36319078717912,
-          278.60765273754413
+          278.60765273754413,
+          242.0164313952128
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "f9b4540abbc178d56806b31b651ec7abd049f27e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
-        "message": "chore: silence the Sonar findings on recently touched code (#1202)"
-      },
-      {
         "sha": "00dff638f2875ed74793ae1d3a15444b8034904f",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
         "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
+      },
+      {
+        "sha": "d3acbd747ae9827d1168d690b87fce711632c351",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:31:26 2026 \u002B0200",
+        "message": "feat(core): make extension helpers, CustomizationValue and a context-free IsMetBy public (#1591)"
       }
     ],
     "labels": [
-      "f9b4540a",
       "00dff638",
       "592eda32",
       "969656cf",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
-      "1a2fd538"
+      "1a2fd538",
+      "d3acbd74"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          316975.791796875,
           322006.48678385414,
           252500.36003766741,
           316448.8670572917,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           290245.4733698918,
           287580.0322614397,
           164669.80224609375,
-          163605.92210286457
+          163605.92210286457,
+          167210.76261393228
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          618120,
           618120,
           618120,
           618120,
@@ -1077,6 +1076,7 @@ window.BENCHMARK_DATA = {
           86138,
           86138,
           29440,
+          29440,
           29440
         ],
         "borderColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2531028.349739583,
           2641841.021614583,
           1906932.693638393,
           2675879.283072917,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           2303982.52421875,
           2703740.744270833,
           2558308.1489583333,
-          2700871.7098958334
+          2700871.7098958334,
+          2574504.215104167
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841647,
           4841651,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841651,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "f9b4540abbc178d56806b31b651ec7abd049f27e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
-        "message": "chore: silence the Sonar findings on recently touched code (#1202)"
-      },
       {
         "sha": "00dff638f2875ed74793ae1d3a15444b8034904f",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
         "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
+      },
+      {
+        "sha": "d3acbd747ae9827d1168d690b87fce711632c351",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:31:26 2026 \u002B0200",
+        "message": "feat(core): make extension helpers, CustomizationValue and a context-free IsMetBy public (#1591)"
       }
     ],
     "labels": [
-      "f9b4540a",
       "00dff638",
       "592eda32",
       "969656cf",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
-      "1a2fd538"
+      "1a2fd538",
+      "d3acbd74"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          530.6930157343546,
           538.7581422170003,
           399.44025967915854,
           619.8084933417184,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           566.9924236297608,
           594.5345482145037,
           353.0453771523067,
-          381.0867851893107
+          381.0867851893107,
+          391.3371708869934
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1636,7 +1636,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1512,
           1512,
           1512,
           1512,
@@ -1685,6 +1684,7 @@ window.BENCHMARK_DATA = {
           1104,
           1104,
           640,
+          640,
           640
         ],
         "borderColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          479.2288476058415,
           507.55058492933,
           405.4112504209791,
           495.2215061187744,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           491.15626989092146,
           488.9102769851685,
           468.2079619680132,
-          520.7906526156834
+          520.7906526156834,
+          479.52972078323364
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "f9b4540abbc178d56806b31b651ec7abd049f27e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
-        "message": "chore: silence the Sonar findings on recently touched code (#1202)"
-      },
-      {
         "sha": "00dff638f2875ed74793ae1d3a15444b8034904f",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
         "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
+      },
+      {
+        "sha": "d3acbd747ae9827d1168d690b87fce711632c351",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:31:26 2026 \u002B0200",
+        "message": "feat(core): make extension helpers, CustomizationValue and a context-free IsMetBy public (#1591)"
       }
     ],
     "labels": [
-      "f9b4540a",
       "00dff638",
       "592eda32",
       "969656cf",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
-      "1a2fd538"
+      "1a2fd538",
+      "d3acbd74"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          307.96899785314287,
           308.0331859248025,
           251.0540198326111,
           315.9520732334682,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           380.74375101498197,
           392.31012461980185,
           174.2242868423462,
-          188.06854093869526
+          188.06854093869526,
+          171.81934074255136
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2244,7 +2244,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1008,
           1008,
           1008,
           1008,
@@ -2293,6 +2292,7 @@ window.BENCHMARK_DATA = {
           952,
           952,
           496,
+          496,
           496
         ],
         "borderColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          258.28920259475706,
           256.62382987340294,
           188.4669912815094,
           250.61726773579915,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           244.56347176233928,
           254.0459478378296,
           241.38362261454265,
-          294.1105617841085
+          294.1105617841085,
+          238.13856817881268
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "f9b4540abbc178d56806b31b651ec7abd049f27e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
-        "message": "chore: silence the Sonar findings on recently touched code (#1202)"
-      },
-      {
         "sha": "00dff638f2875ed74793ae1d3a15444b8034904f",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
         "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
+      },
+      {
+        "sha": "d3acbd747ae9827d1168d690b87fce711632c351",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:31:26 2026 \u002B0200",
+        "message": "feat(core): make extension helpers, CustomizationValue and a context-free IsMetBy public (#1591)"
       }
     ],
     "labels": [
-      "f9b4540a",
       "00dff638",
       "592eda32",
       "969656cf",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
-      "1a2fd538"
+      "1a2fd538",
+      "d3acbd74"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          546.6077763484075,
           553.947010676066,
           447.68320550918577,
           610.8395245869955,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           502.5803561528524,
           524.4031518055842,
           332.72294425964355,
-          333.53665580068315
+          333.53665580068315,
+          336.20333776474
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1400,
           1400,
           1400,
           1400,
@@ -2901,6 +2900,7 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           624,
+          624,
           624
         ],
         "borderColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1216.9129625467153,
           1258.8664143880208,
           944.0233445485433,
           1314.844744873047,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           1152.8177640279134,
           1190.6806184132895,
           1280.5390829722087,
-          1234.3039438883463
+          1234.3039438883463,
+          1250.9928287506104
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "f9b4540abbc178d56806b31b651ec7abd049f27e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
-        "message": "chore: silence the Sonar findings on recently touched code (#1202)"
-      },
-      {
         "sha": "00dff638f2875ed74793ae1d3a15444b8034904f",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
         "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
+      },
+      {
+        "sha": "d3acbd747ae9827d1168d690b87fce711632c351",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:31:26 2026 \u002B0200",
+        "message": "feat(core): make extension helpers, CustomizationValue and a context-free IsMetBy public (#1591)"
       }
     ],
     "labels": [
-      "f9b4540a",
       "00dff638",
       "592eda32",
       "969656cf",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
-      "1a2fd538"
+      "1a2fd538",
+      "d3acbd74"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2134.2143231709797,
           2227.4863881429037,
           1734.0955317361015,
           2129.4109537942068,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           2781.446640777588,
           2727.2405586242676,
           2500.675132751465,
-          2443.3629895528156
+          2443.3629895528156,
+          2622.659711964925
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3104,
           3104,
           3104,
           3104,
@@ -3509,6 +3508,7 @@ window.BENCHMARK_DATA = {
           2896,
           2896,
           2576,
+          2576,
           2576
         ],
         "borderColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1370.7772269930158,
           1325.5950056711833,
           1095.7212844576154,
           1342.2186517079672,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1316.2379275004068,
           1341.730094273885,
           1306.213110224406,
-          1360.5028294881186
+          1360.5028294881186,
+          1395.7958342234294
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "f9b4540abbc178d56806b31b651ec7abd049f27e",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 22:05:15 2026 \u002B0200",
-        "message": "chore: silence the Sonar findings on recently touched code (#1202)"
-      },
-      {
         "sha": "00dff638f2875ed74793ae1d3a15444b8034904f",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 22:10:56 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
         "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
+      },
+      {
+        "sha": "d3acbd747ae9827d1168d690b87fce711632c351",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:31:26 2026 \u002B0200",
+        "message": "feat(core): make extension helpers, CustomizationValue and a context-free IsMetBy public (#1591)"
       }
     ],
     "labels": [
-      "f9b4540a",
       "00dff638",
       "592eda32",
       "969656cf",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
-      "1a2fd538"
+      "1a2fd538",
+      "d3acbd74"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2713.9010078430174,
           2825.083543141683,
           2213.5933113098145,
           2740.8627700805664,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           3321.210398864746,
           3404.726574452718,
           3094.7631594340005,
-          3051.6027501424155
+          3051.6027501424155,
+          3107.715795516968
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4068,7 +4068,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3296,
           3296,
           3296,
           3296,
@@ -4117,6 +4116,7 @@ window.BENCHMARK_DATA = {
           3176,
           3176,
           2816,
+          2816,
           2816
         ],
         "borderColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27495.22459411621,
           27270.3803914388,
           16602.52258504232,
           26567.815239539512,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           20295.053096516927,
           26673.899533081054,
           26633.9291469029,
-          27563.66229248047
+          27563.66229248047,
+          25977.891691080727
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4202,7 +4202,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33468,
           33471,
           33471,
@@ -4234,6 +4233,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
@@ -4316,6 +4316,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
         "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
+      },
+      {
+        "sha": "d3acbd747ae9827d1168d690b87fce711632c351",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:31:26 2026 \u002B0200",
+        "message": "feat(core): make extension helpers, CustomizationValue and a context-free IsMetBy public (#1591)"
       }
     ],
     "labels": [
@@ -4328,7 +4334,8 @@ window.BENCHMARK_DATA = {
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
-      "1a2fd538"
+      "1a2fd538",
+      "d3acbd74"
     ],
     "datasets": [
       {
@@ -4344,7 +4351,8 @@ window.BENCHMARK_DATA = {
           5096.47492980957,
           5795.983270498423,
           5119.240317281087,
-          5206.446104867117
+          5206.446104867117,
+          5055.117004903158
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4364,6 +4372,7 @@ window.BENCHMARK_DATA = {
           7472,
           7472,
           7472,
+          7000,
           7000,
           7000
         ],
@@ -4389,7 +4398,8 @@ window.BENCHMARK_DATA = {
           62192.45831298828,
           83824.33119710286,
           84180.45454624722,
-          84336.25848388672
+          84336.25848388672,
+          83676.90366617839
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4407,6 +4417,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252,
           5252,
           5252,
@@ -4484,6 +4495,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 07:30:23 2026 \u002B0200",
         "message": "feat(core): offer the standard failure contexts and equivalency to Core-only extensions (#1590)"
+      },
+      {
+        "sha": "d3acbd747ae9827d1168d690b87fce711632c351",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 07:31:26 2026 \u002B0200",
+        "message": "feat(core): make extension helpers, CustomizationValue and a context-free IsMetBy public (#1591)"
       }
     ],
     "labels": [
@@ -4496,7 +4513,8 @@ window.BENCHMARK_DATA = {
       "a4298247",
       "bfeb4fc2",
       "16c242c7",
-      "1a2fd538"
+      "1a2fd538",
+      "d3acbd74"
     ],
     "datasets": [
       {
@@ -4512,7 +4530,8 @@ window.BENCHMARK_DATA = {
           560.0543730417887,
           587.4366920471191,
           340.21241470745633,
-          347.0789062182109
+          347.0789062182109,
+          347.85610405604046
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4532,6 +4551,7 @@ window.BENCHMARK_DATA = {
           1176,
           1176,
           1176,
+          712,
           712,
           712
         ],
@@ -4557,7 +4577,8 @@ window.BENCHMARK_DATA = {
           18669.087475585937,
           31424.79204450335,
           30653.864783653848,
-          32797.11310628255
+          32797.11310628255,
+          31392.769805908203
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4575,6 +4596,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
+          5614,
           5614,
           5614,
           5614,
