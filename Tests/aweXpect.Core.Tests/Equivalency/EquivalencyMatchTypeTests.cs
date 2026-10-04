@@ -2,7 +2,7 @@
 using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.Helpers;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Metadata;
 using aweXpect.Customization;
 using aweXpect.Equivalency;
