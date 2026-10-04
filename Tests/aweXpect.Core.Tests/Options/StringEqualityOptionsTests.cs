@@ -120,6 +120,50 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Theory]
+		[InlineData("foo", "foo", true)]
+		[InlineData("foo", "FOO", false)]
+		[InlineData("foo", " foo", false)]
+		[InlineData("foo", "", false)]
+		[InlineData("", "", true)]
+		[InlineData("foo", null, false)]
+		[InlineData(null, "foo", false)]
+		[InlineData(null, null, true)]
+		public async Task AreConsideredEqual_WithoutOptions_ShouldCompareOrdinally(
+			string? actual, string? expected, bool isEqual)
+		{
+			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions withComparer = new("expected");
+			withComparer.Using(StringComparer.Ordinal);
+
+			bool result = await sut.AreConsideredEqual(actual, expected);
+			bool resultAsObject = await sut.AreConsideredEqual<object?>(actual, expected);
+			bool resultWithComparer = await withComparer.AreConsideredEqual(actual, expected);
+
+			await That(result).IsEqualTo(isEqual);
+			await That(resultAsObject).IsEqualTo(isEqual);
+			await That(resultWithComparer).IsEqualTo(isEqual)
+				.Because("the ordinal comparer decides the same without the options comparing ordinally themselves");
+		}
+
+		[Theory]
+		[InlineData("1", false)]
+		[InlineData("", false)]
+		[InlineData(null, true)]
+		public async Task AreConsideredEqual_WithoutOptions_WhenExpectedIsNoString_ShouldCompareWithNull(
+			string? actual, bool isEqual)
+		{
+			StringEqualityOptions sut = new("expected");
+			StringEqualityOptions withComparer = new("expected");
+			withComparer.Using(StringComparer.Ordinal);
+
+			bool result = await sut.AreConsideredEqual(actual, 1);
+			bool resultWithComparer = await withComparer.AreConsideredEqual(actual, 1);
+
+			await That(result).IsEqualTo(isEqual);
+			await That(resultWithComparer).IsEqualTo(isEqual);
+		}
+
+		[Theory]
 		[InlineData(nameof(StringEqualityOptions.IgnoringIndentation))]
 		[InlineData(nameof(StringEqualityOptions.IgnoringLeadingWhiteSpace))]
 		[InlineData(nameof(StringEqualityOptions.IgnoringNewlineStyle))]

@@ -80,6 +80,13 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// </remarks>
 	public ValueTask<bool> AreConsideredEqual<TExpected>(string? actual, TExpected expected)
 	{
+		// Without a pattern or an option, nothing is validated or normalized, and every item of a string collection
+		// is compared this way.
+		if (ComparesByOrdinalEquality)
+		{
+			return new ValueTask<bool>(string.Equals(actual, expected as string));
+		}
+
 		if (expected is not string expectedString)
 		{
 			ValidatePattern(null);

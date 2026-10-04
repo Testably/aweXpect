@@ -192,13 +192,23 @@ public partial class CollectionMatchOptions
 		}
 
 		/// <remarks>
-		///     The matcher that checks the items in any order for the hint is only created for a failure.
+		///     The matcher that checks the items in any order for the hint is only created for a failure. Equality
+		///     without a deviation and with as many items as expected is met, which returns without a state machine.
 		/// </remarks>
 		public ValueTask<(bool, string?)>
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
-			=> _addsInAnyOrderHint
+		{
+			if (_positionalDeviations == 0 && _values.Count == _expectedItems.Length &&
+			    !_equivalenceRelations.Includes(EquivalenceRelations.Contains) &&
+			    !_equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn))
+			{
+				return new ValueTask<(bool, string?)>((false, null));
+			}
+
+			return _addsInAnyOrderHint
 				? VerifyCompleteWithInAnyOrderHint(it, options, maximumNumber)
 				: VerifyCompleteInOrder(it, options, maximumNumber);
+		}
 
 		private async ValueTask<(bool, string?)>
 			VerifyCompleteWithInAnyOrderHint(string it, IOptionsEquality<T2> options, int maximumNumber)

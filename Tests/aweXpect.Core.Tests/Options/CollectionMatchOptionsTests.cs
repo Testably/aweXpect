@@ -136,6 +136,156 @@ public class CollectionMatchOptionsTests
 		}
 	}
 
+	/// <summary>
+	///     Options that compare strings ordinally or primitives by their default equality agree with the same options
+	///     behind another type, which the matcher cannot recognize.
+	/// </summary>
+	public class DefaultEqualityInAnyOrderTests
+	{
+		[Fact]
+		public async Task FloatingPointNumbers_ShouldAgreeWithUnrecognizedOptions()
+		{
+			double[] values = [0.0, -0.0, double.NaN, 1.0,];
+
+			(int met, List<string> disagreements) = await Compare<double, double>(1811,
+				random => values[random.Next(values.Length)], new ObjectEqualityOptions<double>());
+
+			await That(disagreements).IsEmpty();
+			await That(met).IsGreaterThan(100);
+		}
+
+		[Fact]
+		public async Task Numbers_ShouldAgreeWithUnrecognizedOptions()
+		{
+			(int met, List<string> disagreements) = await Compare<int, int>(1705,
+				random => random.Next(4), new ObjectEqualityOptions<int>());
+
+			await That(disagreements).IsEmpty();
+			await That(met).IsGreaterThan(100);
+		}
+
+		[Fact]
+		public async Task NumbersComparedAsObjects_ShouldAgreeWithUnrecognizedOptions()
+		{
+			(int met, List<string> disagreements) = await Compare<int, object?>(1529,
+				random => random.Next(4), new ObjectEqualityOptions<object?>());
+
+			await That(disagreements).IsEmpty();
+			await That(met).IsGreaterThan(100);
+		}
+
+		[Fact]
+		public async Task Strings_ShouldAgreeWithUnrecognizedOptions()
+		{
+			string?[] values = ["a", "b", "c", null,];
+
+			(int met, List<string> disagreements) = await Compare<string?, string?>(1642,
+				random => values[random.Next(values.Length)], new StringEqualityOptions("expected"));
+
+			await That(disagreements).IsEmpty();
+			await That(met).IsGreaterThan(100);
+		}
+
+		[Fact]
+		public async Task Strings_WhenCaseIsIgnored_ShouldMatchItemsThatDifferInCase()
+		{
+			StringEqualityOptions options = new("expected");
+			options.IgnoringCase();
+
+			string result = await Describe<string?, string?>(["a", "B", null,], [null, "b", "A",], options);
+
+			await That(result).IsEqualTo("False: ");
+		}
+
+		[Fact]
+		public async Task Strings_WhenTheFirstItemIsNotExpected_ShouldReportTheIndexOfEachItem()
+		{
+			StringEqualityOptions options = new("expected");
+
+			string result = await Describe<string?, string?>(["a", "b",], ["x", "b", "y", "a",], options);
+
+			await That(result).IsEqualTo("""
+			                             True: it
+			                               contained item "x" at index 0 that was not expected and
+			                               contained item "y" at index 2 that was not expected
+			                             """);
+		}
+
+		[Fact]
+		public async Task Strings_WhenTheLastItemIsNotExpected_ShouldReportItsIndex()
+		{
+			StringEqualityOptions options = new("expected");
+
+			string result = await Describe<string?, string?>(["a", "b", "c",], ["c", "a", "x",], options);
+
+			await That(result).IsEqualTo("""
+			                             True: it
+			                               contained item "x" at index 2 that was not expected and
+			                               lacked 1 of 3 expected items: "b"
+			                             """);
+		}
+
+		/// <summary>
+		///     Describes random subjects for random expected items, of which every other one is the subject in a
+		///     different order, with the <paramref name="options" /> and with the same options behind another type.
+		/// </summary>
+		private static async Task<(int Met, List<string> Disagreements)> Compare<T, T2>(int seed,
+			Func<Random, T> createItem, IOptionsEquality<T2> options)
+			where T : T2
+		{
+			Random random = new(seed);
+			List<string> disagreements = new();
+			int met = 0;
+			for (int run = 0; run < 2000; run++)
+			{
+				T[] subject = Enumerable.Range(0, random.Next(0, 9)).Select(_ => createItem(random)).ToArray();
+				T[] expected = random.Next(2) == 0
+					? subject.OrderBy(_ => random.Next()).ToArray()
+					: Enumerable.Range(0, random.Next(0, 6)).Select(_ => createItem(random)).ToArray();
+
+				string recognized = await Describe<T, T2>(expected, subject, options);
+				string unrecognized = await Describe<T, T2>(expected, subject, new ForwardingEquality<T2>(options));
+				if (recognized == "False: ")
+				{
+					met++;
+				}
+
+				if (recognized != unrecognized)
+				{
+					disagreements.Add($"[{string.Join(",", subject)}] vs [{string.Join(",", expected)}]: " +
+					                  $"{recognized} <> {unrecognized}");
+				}
+			}
+
+			return (met, disagreements);
+		}
+
+		private static async Task<string> Describe<T, T2>(T[] expected, T[] subject, IOptionsEquality<T2> options)
+			where T : T2
+		{
+			CollectionMatchOptions sut = new();
+			sut.InAnyOrder();
+			ICollectionMatcher<T, T2> matcher = sut.GetCollectionMatcher<T, T2>(expected);
+			foreach (T item in subject)
+			{
+				(bool isFailure, string? error) = await matcher.Verify("it", item, options, 1);
+				if (isFailure)
+				{
+					return $"failed early: {error}";
+				}
+			}
+
+			(bool isCompleteFailure, string? completeError) = await matcher.VerifyComplete("it", options, 1);
+			return $"{isCompleteFailure}: {completeError}";
+		}
+
+		private sealed class ForwardingEquality<T>(IOptionsEquality<T> options) : IOptionsEquality<T>
+		{
+			public ValueTask<bool> AreConsideredEqual<TExpected>(T actual, TExpected expected)
+				=> options.AreConsideredEqual(actual, expected);
+		}
+	}
+
 	public class FailureMessageTests
 	{
 		[Fact]
