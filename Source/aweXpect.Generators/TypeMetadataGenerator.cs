@@ -28,6 +28,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	private const string GenerateAttribute = "aweXpect.Core.Metadata.GenerateMetadataAttribute";
 	private const string Registry = "global::aweXpect.Core.Metadata.TypeMetadataRegistry";
 	private const string CoreAssembly = "aweXpect.Core";
+	private const string ExperimentalAttribute = "System.Diagnostics.CodeAnalysis.ExperimentalAttribute";
 
 	private static readonly string[] MarkerNames =
 	[
@@ -97,7 +98,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		}
 
 		IMethodSymbol constructed = method.GetConstructedReducedFrom() ?? method;
-		MetadataWalker walker = new(context.SemanticModel.Compilation, cancellationToken);
+		SeedWalker walker = new(context.SemanticModel.Compilation, cancellationToken);
 		bool hasMarkedParameter = SeedArguments(context, invocation, walker, method, constructed, cancellationToken);
 		SeedTypeArguments(walker, constructed);
 
@@ -224,7 +225,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	///     Seeds the walk from every marked parameter and returns whether one carries the member marker.
 	/// </summary>
 	private static bool SeedArguments(GeneratorSyntaxContext context, InvocationExpressionSyntax invocation,
-		MetadataWalker walker, IMethodSymbol method, IMethodSymbol constructed, CancellationToken cancellationToken)
+		SeedWalker walker, IMethodSymbol method, IMethodSymbol constructed, CancellationToken cancellationToken)
 	{
 		IMethodSymbol definition = constructed.OriginalDefinition;
 		int reductionOffset = method.ReducedFrom is null ? 0 : 1;
@@ -259,7 +260,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		return hasMarkedParameter;
 	}
 
-	private static void SeedTypeArguments(MetadataWalker walker, IMethodSymbol constructed)
+	private static void SeedTypeArguments(SeedWalker walker, IMethodSymbol constructed)
 	{
 		IMethodSymbol definition = constructed.OriginalDefinition;
 		for (int i = 0; i < definition.TypeParameters.Length; i++)
@@ -575,10 +576,61 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	private readonly record struct Member(ISymbol Symbol, string Name, ITypeSymbol Type, bool IsField);
 
 	/// <remarks>
-	///     Every call site walks with its own <see cref="MetadataWalker" />, but a compilation that imports every member
+	///     Every seed walks with its own <see cref="MetadataWalker" />, but a compilation that imports every member
 	///     only needs to exist once per input compilation, so it is shared and dies with the compilation it was made for.
 	/// </remarks>
 	private static readonly ConditionalWeakTable<Compilation, AllImport> AllImports = new();
+
+	/// <remarks>
+	///     The registrations a seed yields do not depend on the call site that reaches it, so each seed is walked once
+	///     per input compilation, however many call sites share it.
+	/// </remarks>
+	private static readonly ConditionalWeakTable<Compilation, SeedWalks> Walks = new();
+
+	private sealed class SeedWalks
+	{
+		public ConcurrentDictionary<ITypeSymbol, ImmutableArray<TypeRegistration>> Members { get; } =
+			new(SymbolEqualityComparer.Default);
+
+		public ConcurrentDictionary<ITypeSymbol, ImmutableArray<TypeRegistration>> Events { get; } =
+			new(SymbolEqualityComparer.Default);
+	}
+
+	/// <summary>
+	///     Collects the registrations of the seeds of one call site from the walks shared across the compilation.
+	/// </summary>
+	private sealed class SeedWalker(Compilation compilation, CancellationToken cancellationToken)
+	{
+		private readonly ImmutableArray<TypeRegistration>.Builder _registrations =
+			ImmutableArray.CreateBuilder<TypeRegistration>();
+
+		private readonly SeedWalks _walks = Walks.GetValue(compilation, static _ => new SeedWalks());
+
+		public ImmutableArray<TypeRegistration> Registrations => _registrations.ToImmutable();
+
+		public void Seed(ITypeSymbol? type)
+			=> Add(_walks.Members, type, static (walker, seed) => walker.Seed(seed));
+
+		public void SeedEvents(ITypeSymbol? type)
+			=> Add(_walks.Events, type, static (walker, seed) => walker.SeedEvents(seed));
+
+		private void Add(ConcurrentDictionary<ITypeSymbol, ImmutableArray<TypeRegistration>> walks, ITypeSymbol? type,
+			Action<MetadataWalker, ITypeSymbol> walk)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+			if (type is null)
+			{
+				return;
+			}
+
+			_registrations.AddRange(walks.GetOrAdd(type, seed =>
+			{
+				MetadataWalker walker = new(compilation, cancellationToken);
+				walk(walker, seed);
+				return walker.Registrations;
+			}));
+		}
+	}
 
 	private sealed class AllImport(Compilation compilation)
 	{
@@ -605,6 +657,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		private readonly Dictionary<IAssemblySymbol, bool> _isGlobal = new(SymbolEqualityComparer.Default);
 
 		private readonly Dictionary<INamedTypeSymbol, bool> _isUnambiguous = new(SymbolEqualityComparer.Default);
+
+		private readonly Dictionary<IModuleSymbol, bool> _isExperimental = new(SymbolEqualityComparer.Default);
 
 		private bool? _supportsDictionaryRegistration;
 
@@ -1171,12 +1225,9 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 				foreach (IPropertySymbol property in explicitProperties)
 				{
-					IPropertySymbol implemented = property.ExplicitInterfaceImplementations[0];
 					sb.Append("\t\t").Append(Registry).Append(".RegisterExplicitProperty<").Append(typeName)
 						.Append(", ").Append(property.Type.ToDisplayString(TypeFormat)).Append(">(")
-						.Append(SymbolDisplay.FormatLiteral(property.Name, true)).Append(", o => ((")
-						.Append(implemented.ContainingType.ToDisplayString(TypeFormat)).Append(")o).")
-						.Append(Identifier(implemented.Name)).AppendLine(");");
+						.Append(ExplicitPropertyArguments(property)).AppendLine(");");
 				}
 
 				return sb.ToString();
@@ -1184,7 +1235,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 			List<string> helpers = [];
 			string? probe = ProbeExpression(type, helpers);
-			if (probe is null)
+			if (probe is null || explicitProperties.Any(property
+				    => !IsNameable(property.ExplicitInterfaceImplementations[0].ContainingType)))
 			{
 				return null;
 			}
@@ -1197,12 +1249,36 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 					.AppendLine(");");
 			}
 
+			foreach (IPropertySymbol property in explicitProperties)
+			{
+				sb.Append("\t\tRegisterExplicitProperty(probe, ").Append(ExplicitPropertyArguments(property))
+					.AppendLine(");");
+			}
+
+			if (explicitProperties.Count > 0)
+			{
+				// aweXpect.Core has no overload that infers the type from a probe, so a helper provides it.
+				helpers.Add("static void RegisterExplicitProperty<T, TMember>(T p, string name, " +
+				            "global::System.Func<T, TMember> getValue) => " + Registry +
+				            ".RegisterExplicitProperty(name, getValue);");
+			}
+
 			foreach (string helper in helpers)
 			{
 				sb.Append("\t\t").AppendLine(helper);
 			}
 
 			return sb.ToString();
+		}
+
+		/// <summary>
+		///     The name of the explicit implementation and an accessor that reads it through its interface.
+		/// </summary>
+		private static string ExplicitPropertyArguments(IPropertySymbol property)
+		{
+			IPropertySymbol implemented = property.ExplicitInterfaceImplementations[0];
+			return SymbolDisplay.FormatLiteral(property.Name, true) + ", o => ((" +
+			       implemented.ContainingType.ToDisplayString(TypeFormat) + ")o)." + Identifier(implemented.Name);
 		}
 
 		/// <remarks>
@@ -1398,6 +1474,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				INamedTypeSymbol { IsAnonymousType: true, } anonymous => anonymous.GetMembers()
 					.OfType<IPropertySymbol>().All(x => IsReferenceable(x.Type)),
 				INamedTypeSymbol named => !named.IsFileLocal && !IsUnreferenceable(named) &&
+				                          !IsFromExperimentalModule(named) &&
 				                          compilation.IsSymbolAccessibleWithin(named, compilation.Assembly) &&
 				                          IsGlobal(named) && IsUnambiguous(named) &&
 				                          named.TypeArguments.All(IsReferenceable) &&
@@ -1436,13 +1513,35 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			return isGlobal;
 		}
 
+		/// <remarks>
+		///     The compiler treats every type of an assembly or module marked as experimental as experimental, but only
+		///     where another assembly uses it.
+		/// </remarks>
+		private bool IsFromExperimentalModule(INamedTypeSymbol type)
+		{
+			IModuleSymbol module = type.ContainingModule;
+			if (SymbolEqualityComparer.Default.Equals(module.ContainingAssembly, compilation.Assembly))
+			{
+				return false;
+			}
+
+			if (!_isExperimental.TryGetValue(module, out bool isExperimental))
+			{
+				isExperimental = module.GetAttributes().Concat(module.ContainingAssembly.GetAttributes())
+					.Any(x => x.AttributeClass?.ToDisplayString() == ExperimentalAttribute);
+				_isExperimental[module] = isExperimental;
+			}
+
+			return isExperimental;
+		}
+
 		private static bool IsUnreferenceable(ISymbol symbol)
 			=> symbol.GetAttributes().Any(x
 				=> x.AttributeClass?.ToDisplayString() switch
 				{
 					"System.ObsoleteAttribute" => x.ConstructorArguments.Length == 2 &&
 					                              x.ConstructorArguments[1].Value is true,
-					"System.Diagnostics.CodeAnalysis.ExperimentalAttribute" => true,
+					ExperimentalAttribute => true,
 					"System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute" => true,
 					"System.Diagnostics.CodeAnalysis.RequiresDynamicCodeAttribute" => true,
 					"System.Diagnostics.CodeAnalysis.RequiresAssemblyFilesAttribute" => true,

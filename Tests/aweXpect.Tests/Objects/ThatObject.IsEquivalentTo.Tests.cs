@@ -707,6 +707,31 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WhenActualIsGenericOverAnAnonymousType_AndImplementsAPropertyExplicitly_ShouldCompareIt()
+			{
+				var subject = BoxOf(new
+				{
+					A = 1,
+				});
+				var expected = new
+				{
+					Value = new
+					{
+						A = 1,
+					},
+					Id = 42,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("reflection finds the explicit implementation, so the generated registration of a type that cannot be named must find it as well");
+
+				static Box<T> BoxOf<T>(T value) => new(value);
+			}
+
+			[Fact]
 			public async Task WhenExpectedImplementsIEqualityComparer_ShouldCompareByMembers()
 			{
 				var subject = new
@@ -2120,6 +2145,13 @@ public sealed partial class ThatObject
 			}
 		}
 
+		internal sealed class Box<T>(T value) : IHasId
+		{
+			public T Value { get; } = value;
+
+			int IHasId.Id => 42;
+		}
+
 		private sealed class Dto
 		{
 			public int Id { get; set; }
@@ -2141,6 +2173,11 @@ public sealed partial class ThatObject
 
 			int IEqualityComparer.GetHashCode(object obj)
 				=> 0;
+		}
+
+		internal interface IHasId
+		{
+			int Id { get; }
 		}
 	}
 }
