@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 
 namespace aweXpect.Core.Constraints;
@@ -11,7 +12,9 @@ internal sealed class IsExactlyOfTypeConstraint<TActual, TType>(
 	public ConstraintResult IsMetBy(TActual actual)
 	{
 		Actual = actual;
-		Outcome = actual?.GetType() == typeof(TType) ? Outcome.Success : Outcome.Failure;
+		Outcome = actual?.GetType() == (Nullable.GetUnderlyingType(typeof(TType)) ?? typeof(TType))
+			? Outcome.Success
+			: Outcome.Failure;
 		return this;
 	}
 

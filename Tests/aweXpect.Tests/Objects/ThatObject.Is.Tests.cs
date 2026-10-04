@@ -226,6 +226,18 @@ public sealed partial class ThatObject
 					             """);
 			}
 
+			[Fact]
+			public async Task WhenSubjectIsNullableValueType_ShouldSucceedForTheUnderlyingType()
+			{
+				int? subject = 5;
+
+				async Task Act()
+					=> await That(subject).Is(typeof(int));
+
+				await That(Act).DoesNotThrow()
+					.Because("a value-type subject can be checked against a runtime type without a cast to object");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task WhenTypeDoesNotMatch_ShouldFail(int value)

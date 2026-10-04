@@ -13,6 +13,25 @@ public sealed partial class ThatEnumerable
 			public sealed class GenericTests
 			{
 				[Fact]
+				public async Task WhenItemHasAValueAndTypeIsNullable_ShouldFail()
+				{
+					IEnumerable<int?> subject = [null, 2,];
+
+					async Task Act()
+						=> await That(subject).DoesNotHaveItem().MatchingExactly<int?>().AtIndex(1);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not have an item exactly of type int? at index 1,
+						             but it had item 2 at index 1
+
+						             Collection:
+						             [<null>, 2]
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable<MyClass>? subject = null;

@@ -67,6 +67,18 @@ public sealed class ThatSubjectTests
 	}
 
 	[Fact]
+	public async Task IsExactly_WhenNullableSubjectHasAValue_ShouldSucceed()
+	{
+		int? subject = 5;
+
+		async Task Act()
+			=> await That(subject).IsExactly<int?>();
+
+		await That(Act).DoesNotThrow()
+			.Because("a boxed nullable value has the underlying type, so the nullable type is compared by it");
+	}
+
+	[Fact]
 	public async Task IsExactly_WhenTypeIsSubtype_ShouldIncludeTheActualTypeAndValue()
 	{
 		object subject = new Outer<string>.Derived
@@ -102,6 +114,25 @@ public sealed class ThatSubjectTests
 			.WithMessage("""
 			             Expected that subject
 			             is not of type int,
+			             but it was int
+
+			             Actual:
+			             5
+			             """);
+	}
+
+	[Fact]
+	public async Task IsNotExactly_WhenNullableSubjectHasAValue_ShouldFail()
+	{
+		int? subject = 5;
+
+		async Task Act()
+			=> await That(subject).IsNotExactly<int?>();
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             is not exactly of type int?,
 			             but it was int
 
 			             Actual:

@@ -21,6 +21,12 @@ A `null` subject, i.e. a `char?`, fails every expectation on this page except eq
 [rule for `null` subjects](../03-how-it-works/04-null-subjects.md) says, so both `IsALetter()` and `IsNotALetter()` fail
 for it.
 
+:::note[.NET 8 or later]
+On .NET 8 or later `char` is an `INumber<char>`, so the ordering expectations, `IsBetween`, `IsPositive` and
+`IsNegative` of the [number expectations](./02-number.md) also accept a `char`. Below .NET 8 they are not available
+for `char`.
+:::
+
 ## Equality
 
 You can verify that the `char` is equal to another one or not:

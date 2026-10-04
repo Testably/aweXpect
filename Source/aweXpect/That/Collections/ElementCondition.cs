@@ -89,6 +89,7 @@ internal sealed class ElementSatisfying<TItem, TValue>(Func<TValue, bool> predic
 internal sealed class ElementOfType<TItem, TType> : SynchronousElementCondition<TItem>
 {
 	private readonly bool _exactly;
+	private readonly Type _exactType = Nullable.GetUnderlyingType(typeof(TType)) ?? typeof(TType);
 
 	private ElementOfType(bool exactly)
 	{
@@ -107,7 +108,7 @@ internal sealed class ElementOfType<TItem, TType> : SynchronousElementCondition<
 
 	/// <inheritdoc />
 	public override bool IsMet(TItem item)
-		=> _exactly ? item?.GetType() == typeof(TType) : item is TType;
+		=> _exactly ? item?.GetType() == _exactType : item is TType;
 
 	/// <inheritdoc />
 	public override string GetExpectation(ExpectationGrammars grammars)
@@ -121,9 +122,11 @@ internal sealed class ElementOfType<TItem, TType> : SynchronousElementCondition<
 /// </summary>
 internal sealed class ElementOfType<TItem>(Type type, bool exactly) : SynchronousElementCondition<TItem>
 {
+	private readonly Type _exactType = Nullable.GetUnderlyingType(type) ?? type;
+
 	/// <inheritdoc />
 	public override bool IsMet(TItem item)
-		=> exactly ? item?.GetType() == type : type.IsInstanceOfType(item);
+		=> exactly ? item?.GetType() == _exactType : type.IsInstanceOfType(item);
 
 	/// <inheritdoc />
 	public override string GetExpectation(ExpectationGrammars grammars)

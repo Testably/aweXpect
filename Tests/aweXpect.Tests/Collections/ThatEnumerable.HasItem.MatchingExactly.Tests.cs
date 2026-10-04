@@ -109,6 +109,18 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenItemHasAValueAndTypeIsNullable_ShouldSucceed()
+				{
+					IEnumerable<int?> subject = [null, 2,];
+
+					async Task Act()
+						=> await That(subject).HasItem().MatchingExactly<int?>(x => x == 2);
+
+					await That(Act).DoesNotThrow()
+						.Because("a boxed nullable value has the underlying type, so the nullable type is compared by it");
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNull_WithAnyIndex_ShouldFail()
 				{
 					IEnumerable<MyClass>? subject = null;
@@ -315,6 +327,18 @@ public sealed partial class ThatEnumerable
 						             Collection:
 						             []
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenItemHasAValueAndTypeIsNullable_ShouldSucceed()
+				{
+					IEnumerable<int?> subject = [null, 2,];
+
+					async Task Act()
+						=> await That(subject).HasItem().MatchingExactly<int?>().AtIndex(1);
+
+					await That(Act).DoesNotThrow()
+						.Because("a boxed nullable value has the underlying type, so the nullable type is compared by it");
 				}
 
 				[Fact]

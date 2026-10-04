@@ -15,12 +15,11 @@ public static partial class ThatObject
 	public static AndOrResult<T, IThat<T?>> Is<T>(
 		this IThat<T?> subject,
 		Type type)
-		where T : class
 	{
 		type.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AndOrResult<T, IThat<T?>>(expectationBuilder.AddConstraint(type, static (expectedType, it, grammars)
-				=> new IsOfTypeConstraint(it, grammars, expectedType)),
+				=> new IsOfTypeConstraint<T>(it, grammars, expectedType)),
 			subject);
 	}
 
@@ -31,24 +30,23 @@ public static partial class ThatObject
 	public static AndOrResult<T, IThat<T?>> IsNot<T>(
 		this IThat<T?> subject,
 		Type type)
-		where T : class
 	{
 		type.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new AndOrResult<T, IThat<T?>>(expectationBuilder.AddConstraint(type,
 				static (unexpectedType, it, grammars)
-					=> new IsOfTypeConstraint(it, grammars, unexpectedType).Invert()),
+					=> new IsOfTypeConstraint<T>(it, grammars, unexpectedType).Invert()),
 			subject);
 	}
 
-	private sealed class IsOfTypeConstraint(
+	private sealed class IsOfTypeConstraint<T>(
 		string it,
 		ExpectationGrammars grammars,
 		Type type)
-		: ConstraintResult.WithNotNullValue<object>(it, grammars),
-			IValueConstraint<object?>
+		: ConstraintResult.WithNotNullValue<T?>(it, grammars),
+			IValueConstraint<T?>
 	{
-		public ConstraintResult IsMetBy(object? actual)
+		public ConstraintResult IsMetBy(T? actual)
 		{
 			Actual = actual;
 			Outcome = type.IsOrImplements(actual) ? Outcome.Success : Outcome.Failure;

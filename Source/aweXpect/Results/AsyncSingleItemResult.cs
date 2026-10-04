@@ -79,7 +79,8 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	/// </summary>
 	public AsyncSingleItemResult<TCollection, T> MatchingExactly<T>()
 	{
-		_options.SetPredicate(item => item is T && item.GetType() == typeof(T),
+		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
+		_options.SetPredicate(item => item is T && item.GetType() == exactType,
 			$" exactly of type {Formatter.Format(typeof(T))}");
 		return Cast<T>(x => (T)(object)x!);
 	}
@@ -92,7 +93,8 @@ public class AsyncSingleItemResult<TCollection, TItem>
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
-		_options.SetPredicate(item => item is T typed && item.GetType() == typeof(T) && predicate(typed),
+		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
+		_options.SetPredicate(item => item is T typed && item.GetType() == exactType && predicate(typed),
 			$" exactly of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue}");
 		return Cast<T>(x => (T)(object)x!);
 	}
