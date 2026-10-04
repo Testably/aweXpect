@@ -456,6 +456,27 @@ public class ExpectTests
 	}
 
 	[Fact]
+	public async Task ThatAll_WhenAnExpectationDoesNotDecideItsOutcome_ShouldFail()
+	{
+		async Task Act()
+			=> await ThatAll(
+				new ExpectationResult(That(1).Get().ExpectationBuilder.AddConstraint((_, _)
+					=> new DummyConstraint("decides nothing",
+						() => new DummyConstraintResult(Outcome.Undecided, "decides nothing", "it was 1")))),
+				That(true).IsTrue());
+
+		await That(Act).ThrowsExactly<XunitException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that 1 decides nothing
+			              [02] Expected that true is True
+			             but
+			              [01] it could not be verified, because the expectation did not decide its outcome
+			             """)
+			.Because("an expectation that is left undecided without a cancellation fails the combination");
+	}
+
+	[Fact]
 	public async Task ThatAll_WhenAnExpectationIsNull_ShouldThrowArgumentException()
 	{
 		async Task Act()

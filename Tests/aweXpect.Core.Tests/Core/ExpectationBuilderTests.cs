@@ -779,6 +779,57 @@ public class ExpectationBuilderTests
 	}
 
 	[Fact]
+	public async Task WhenAConstraintDoesNotDecideItsOutcome_ShouldFail()
+	{
+		async Task Act()
+			=> await ThatUndecided(1);
+
+		await That(Act).ThrowsExactly<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             decides nothing,
+			             but it could not be verified, because the expectation did not decide its outcome
+			             """)
+			.Because("an outcome that is left undecided without a cancellation is a mistake of the constraint");
+	}
+
+	[Fact]
+	public async Task WhenAConstraintDoesNotDecideItsOutcome_WithACancellationThatIsNotRequested_ShouldFail()
+	{
+		using CancellationTokenSource cts = new();
+
+		async Task Act()
+			=> await ThatUndecided(1).WithCancellation(cts.Token);
+
+		await That(Act).ThrowsExactly<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             decides nothing,
+			             but it could not be verified, because the expectation did not decide its outcome
+			             """)
+			.Because("only a requested cancellation leaves the expectation inconclusive");
+	}
+
+	[Fact]
+	public async Task WhenAConstraintStopsAtTheCancellationWithoutDecidingItsOutcome_ShouldBeInconclusive()
+	{
+		using CancellationTokenSource cts = new();
+		cts.CancelAfter(50.Milliseconds());
+
+		async Task Act()
+			=> await new ExpectationResult(That(1).Get().ExpectationBuilder
+				.AddConstraint((_, _) => new StopsAtTheCancellationConstraint())).WithCancellation(cts.Token);
+
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
+			             Expected that 1
+			             stops at the cancellation,
+			             but it could not be verified, because the evaluation was already canceled
+			             """)
+			.Because("the undecided outcome is explained by the cancellation of the caller");
+	}
+
+	[Fact]
 	public async Task WhenCancellationIsRequestedWhileAConstraintAwaits_ShouldBeInconclusive()
 	{
 		using CancellationTokenSource cts = new();
@@ -964,6 +1015,11 @@ public class ExpectationBuilderTests
 		ReadsFirstItemConstraint constraint)
 		=> new(That(subject).Get().ExpectationBuilder.AddConstraint((_, _) => constraint));
 
+	private static ExpectationResult ThatUndecided(int subject)
+		=> new(That(subject).Get().ExpectationBuilder.AddConstraint((_, _)
+			=> new DummyConstraint("decides nothing",
+				() => new DummyConstraintResult(Outcome.Undecided, "decides nothing", "it was 1"))));
+
 	/// <remarks>
 	///     It awaits until the evaluation is cancelled, or fails after half a minute, so that a regression fails the
 	///     test instead of hanging the test run.
@@ -984,5 +1040,29 @@ public class ExpectationBuilderTests
 	{
 		public string GetDescription()
 			=> subject;
+	}
+
+	/// <remarks>
+	///     It awaits until the evaluation is cancelled, or fails after half a minute, so that a regression fails the
+	///     test instead of hanging the test run.
+	/// </remarks>
+	private sealed class StopsAtTheCancellationConstraint : IAsyncConstraint<int>
+	{
+		public async ValueTask<ConstraintResult> IsMetBy(int actual, CancellationToken cancellationToken)
+		{
+			try
+			{
+				await Task.Delay(30.Seconds(), cancellationToken);
+				return new DummyConstraintResult(Outcome.Failure, "stops at the cancellation", "it was not canceled");
+			}
+			catch (OperationCanceledException)
+			{
+				return new DummyConstraintResult(Outcome.Undecided, "stops at the cancellation",
+					"it could not be verified, because the evaluation was already canceled");
+			}
+		}
+
+		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("stops at the cancellation");
 	}
 }

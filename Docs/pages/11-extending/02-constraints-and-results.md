@@ -24,7 +24,9 @@ available for the `IThat<T>`. They differ in the input and output parameters for
 | `IContextConstraint<T>`, `IAsyncContextConstraint<T>` | additionally an `IEvaluationContext`       | to share data between constraints               |
 
 The `IEvaluationContext` allows storing and receiving data between expectations. This mechanism is used for example to
-avoid enumerating an `IEnumerable` multiple times across multiple constraints. Its `Cancellation` describes the
+avoid enumerating an `IEnumerable` multiple times across multiple constraints. A value stored while an item of a
+collection or a member after `Whose` or `Which` is evaluated is only received by the expectations on that item or
+member, so a value cached for one item is not handed to the next one. Its `Cancellation` describes the
 cancellation of the evaluation: the `Token` (the same token that an asynchronous constraint receives), the effective
 `Timeout`, and the `Reason` of a cancellation: `None`, the `Timeout`, or the `Caller`.
 
@@ -388,7 +390,9 @@ await Expect.That(track).IsRadioFriendly().Whose(t => t.Title, title => title.St
 ```
 
 Both ask the `TryGetStoredValue<TValue>` method of the `ConstraintResult` for the value, so a constraint that narrows
-or converts the subject returns the converted value there. The helper classes return their `Actual` value. A stored
+or converts the subject returns the converted value there. `Whose` and `AndWhose` access the member on that value when
+the expectation is met; when it is not met, a member of a converted value is not evaluated, only its expectations are
+shown. The helper classes return their `Actual` value. A stored
 `null` value of a matching type still returns `true`, so that awaiting the expectation returns `null`. When
 `TryGetStoredValue` returns `false` for the type, awaiting the successful expectation throws a `FailException`.
 `TryGetValue<TValue>` builds on it and only returns `true` for a value that is not `null`.
@@ -471,7 +475,9 @@ await Expect.That(releaseDate).IsOnSameDayAs(new DateOnly(1969, 9, 27)).Within(T
 
 In the constraint, compare with `tolerance.GetToleranceOrDefault()`. Without `.Within(…)`, it returns the
 `DefaultTimeComparisonTolerance` from `Customize.aweXpect.Settings()`, and for a `DayTolerance` only its whole days, like
-the built-in expectations do.
+the built-in expectations do. Append the tolerance to the expectation text like any other option, e.g. with
+`stringBuilder.Append(tolerance)`: a `DayTolerance` writes the whole days that apply, e.g. " ± 1 day", and nothing when
+there are none.
 
 ## Custom match types
 
@@ -648,6 +654,100 @@ it does not add the "Collection" context.
   canceled evaluation, leaves the outcome undecided. Neither changes an outcome that the items before already
   determine: `IsDetermined` is then `true`, and the remaining items are not counted.
 
+### Nested expectations on items
+
+When the caller passes expectations for the items, like the built-in `ComplyWith`, evaluate them with a
+`ManualExpectationBuilder<TItem>` and record the result of each item:
+
+```csharp
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using aweXpect.Core.EvaluationContext;
+using aweXpect.Options;
+
+public static AndOrResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> AreTracksThat(
+    this IEnumerableElements<Track> elements, Action<IThatSubject<Track>> expectations)
+    => new(elements.Subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+            => new AreTracksThatConstraint(it, grammars, elements.Quantifier, expectations)),
+        elements.Subject);
+
+private sealed class AreTracksThatConstraint
+    : QuantifiedCollectionConstraintBase<IEnumerable<Track>?, Track>,
+        IAsyncContextConstraint<IEnumerable<Track>?>,
+        IExpectationTextConstraint
+{
+    private readonly ManualExpectationBuilder<Track> _itemExpectations;
+
+    public AreTracksThatConstraint(string it, ExpectationGrammars grammars, EnumerableQuantifier quantifier,
+        Action<IThatSubject<Track>> expectations)
+        : base(it, grammars, quantifier)
+    {
+        _itemExpectations = new ManualExpectationBuilder<Track>(grammars);
+        expectations(new ThatSubject<Track>(_itemExpectations));
+    }
+
+    protected override string Verb => _itemExpectations.GetResultVerb();
+
+    public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Track>? actual, IEvaluationContext context,
+        CancellationToken cancellationToken)
+    {
+        StartEvaluation();
+        Actual = actual;
+        await _itemExpectations.PrepareExpectation(context, cancellationToken);
+        if (actual is not null)
+        {
+            foreach (Track track in context.UseMaterializedEnumerable(actual))
+            {
+                Record(track, await _itemExpectations.IsMetBy(track, context, cancellationToken));
+            }
+
+            Complete();
+        }
+
+        return this;
+    }
+
+    public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+        CancellationToken cancellationToken)
+    {
+        await _itemExpectations.PrepareExpectation(context, cancellationToken);
+        return this;
+    }
+
+    protected override void AppendItemExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
+        string? indentation)
+        => _itemExpectations.AppendExpectation(stringBuilder, indentation);
+
+    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+    {
+        base.AppendNormalExpectation(stringBuilder, indentation);
+        _itemExpectations.AppendReasons(stringBuilder);
+    }
+
+    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+    {
+        base.AppendNegatedExpectation(stringBuilder, indentation);
+        _itemExpectations.AppendReasons(stringBuilder);
+    }
+}
+```
+
+```csharp
+Track[] playlist = [new("Love Me Do", new TimeSpan(0, 2, 22)), new("She Loves You", new TimeSpan(0, 2, 21))];
+
+await Expect.That(playlist).All().AreTracksThat(track => track.IsRadioFriendly());
+```
+
+- `PrepareExpectation` writes the text of the nested expectations without evaluating them, so that it is complete
+  also when no item is evaluated, e.g. for an empty or a `null` collection: otherwise a nested `DoesNotComplyWith` is
+  shown without its negation, and the reasons that must be awaited are missing. Call it at the start of each
+  evaluation and in `GetExpectationResult` of `IExpectationTextConstraint`, which is called when only the expectation
+  text is needed.
+- `AppendReasons` adds the reasons of the nested expectations after the quantifier, e.g. "for all items, because …".
+- Each item is evaluated with its own values in the `IEvaluationContext`, while the materialized collections are
+  shared with the whole evaluation.
+
 ## Asynchronous constraints
 
 An `IAsyncConstraint<T>` receives the `CancellationToken` of the expectation, which is canceled when the timeout
@@ -672,6 +772,9 @@ public async ValueTask<ConstraintResult> IsMetBy(Track? actual, CancellationToke
   expectation in the same way. After a cancellation, the helper classes write the result text with
   `AppendUndecidedResult`, which you can override. By default it writes "it could not be verified, because the
   evaluation was already canceled".
+- Leave the `Outcome` undecided only for a cancellation. An expectation whose outcome stays undecided although nothing
+  was canceled, e.g. because one branch of `IsMetBy` does not set it or a collection constraint does not call
+  `Complete()`, fails with "it could not be verified, because the expectation did not decide its outcome".
 
 ### Repeated checks
 

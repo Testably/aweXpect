@@ -31,6 +31,51 @@ public class DayToleranceTests
 	}
 
 	[Fact]
+	public async Task ToString_WhenDefaultToleranceHasWholeDays_ShouldShowThem()
+	{
+		TimeTolerance sut = new DayTolerance();
+		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(50.Hours());
+
+		string result = sut.ToString();
+
+		await That(result).IsEqualTo(" ± 2 days");
+	}
+
+	[Fact]
+	public async Task ToString_WhenDefaultToleranceIsBelowOneDay_ShouldBeEmpty()
+	{
+		TimeTolerance sut = new DayTolerance();
+		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(15.Milliseconds());
+
+		string result = sut.ToString();
+
+		await That(result).IsEmpty()
+			.Because("only the whole days of the default tolerance apply to a date");
+	}
+
+	[Fact]
+	public async Task ToString_WhenToleranceIsOneDay_ShouldShowTheDay()
+	{
+		TimeTolerance sut = new DayTolerance();
+		sut.SetTolerance(1.Days());
+
+		string result = sut.ToString();
+
+		await That(result).IsEqualTo(" ± 1 day");
+	}
+
+	[Fact]
+	public async Task ToString_WhenToleranceIsNotSet_ShouldBeEmpty()
+	{
+		TimeTolerance sut = new DayTolerance();
+		using IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(TimeSpan.Zero);
+
+		string result = sut.ToString();
+
+		await That(result).IsEmpty();
+	}
+
+	[Fact]
 	public async Task WhenToleranceIsBelowZeroAndNotWholeDays_ShouldReportTheNegativeTolerance()
 	{
 		DayTolerance sut = new();

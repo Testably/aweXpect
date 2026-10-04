@@ -77,7 +77,8 @@ namespace MyTests
 }
 ```
 
-- The adapter is resolved once, when the first expectation is evaluated, so register it before that.
+- The adapter is resolved once, when the first expectation is created or a value is first formatted with
+  `Format.Formatter`, so register it before that.
 - An adapter whose `IsAvailable` is `false` is ignored, e.g. when the test framework it throws for is not loaded.
 - By default, `Register` replaces an adapter that was registered before. With `overwrite: false`, as the generated
   registrations use it, the adapter is only used when no other one was registered, so an explicit registration always

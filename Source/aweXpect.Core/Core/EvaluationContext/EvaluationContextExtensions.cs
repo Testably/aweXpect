@@ -114,6 +114,13 @@ public static class EvaluationContextExtensions
 	];
 
 	/// <summary>
+	///     Whether the <paramref name="key" /> stores materialized collections, which nested evaluations share with the
+	///     surrounding evaluation.
+	/// </summary>
+	internal static bool IsMaterializationKey(string key)
+		=> Array.IndexOf(MaterializationKeys, key) >= 0;
+
+	/// <summary>
 	///     The materializations of the source collections in the <paramref name="evaluationContext" />.
 	/// </summary>
 	internal static IEnumerable<IMaterialization> GetMaterializations(this IEvaluationContext evaluationContext)

@@ -1,10 +1,32 @@
-﻿using aweXpect.Core.Extending;
+﻿using System.Text;
+using aweXpect.Core.Constraints;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Results;
 
 namespace aweXpect.Core.Tests.Results;
 
 public class AndOrWhoseResultTests
 {
+	[Fact]
+	public async Task AndWhose_AfterAConvertingConstraint_ShouldVerifyTheConvertedValue()
+	{
+		string sut = "10";
+
+		async Task Act()
+			=> await IsNumeric(That(sut))
+				.Whose(x => x + 1, x => x.IsEqualTo(11))
+				.AndWhose(x => x * 2, x => x.IsEqualTo(40));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that sut
+			             is numeric whose x + 1 is equal to 11 and whose x * 2 is equal to 40,
+			             but x * 2 was 20, which differs by -20
+			             """)
+			.Because("every member continues from the value that the converting constraint stores");
+	}
+
 	[Fact]
 	public async Task AndWhose_WhenAsyncMemberAccessorIsNull_ShouldThrowArgumentNullException()
 	{
@@ -198,6 +220,84 @@ public class AndOrWhoseResultTests
 				.AndWhose(memberAccessor: f => f.Value2, expectations: f => f.IsFalse());
 
 		await That(Act).DoesNotThrow();
+	}
+
+	[Fact]
+	public async Task Whose_AfterAConvertingConstraint_ShouldVerifyTheConvertedValue()
+	{
+		string sut = "10";
+
+		async Task Act()
+			=> await IsNumeric(That(sut)).Whose(x => x * 2, x => x.IsEqualTo(40));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that sut
+			             is numeric whose x * 2 is equal to 40,
+			             but x * 2 was 20, which differs by -20
+			             """)
+			.Because("the member continues from the value that the converting constraint stores");
+	}
+
+	[Fact]
+	public async Task Whose_AfterAConvertingConstraint_WhenMet_ShouldReturnTheConvertedValue()
+	{
+		string sut = "20";
+
+		int result = await IsNumeric(That(sut)).Whose(x => x * 2, x => x.IsEqualTo(40));
+
+		await That(result).IsEqualTo(20);
+	}
+
+	[Fact]
+	public async Task Whose_AfterAConvertingConstraint_WhenNegated_ShouldVerifyTheConvertedValue()
+	{
+		string sut = "20";
+
+		async Task Act()
+			=> await That(sut).DoesNotComplyWith(it => IsNumeric(it).Whose(x => x * 2, x => x.IsEqualTo(40)));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that sut
+			             is not numeric whose x * 2 is equal to 40,
+			             but it was "20"
+			             """)
+			.Because("the negation is met only when the converted value does not meet the member expectation");
+	}
+
+	[Fact]
+	public async Task Whose_AfterAConvertingConstraint_WhenTheConversionFails_ShouldOnlyRenderTheMember()
+	{
+		string sut = "ten";
+
+		async Task Act()
+			=> await IsNumeric(That(sut)).Whose(x => x * 2, x => x.IsEqualTo(40));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that sut
+			             is numeric whose x * 2 is equal to 40,
+			             but it was "ten"
+			             """)
+			.Because("without a converted value there is no member to verify");
+	}
+
+	[Fact]
+	public async Task Whose_AfterAConvertingConstraint_WithAsyncMember_ShouldVerifyTheConvertedValue()
+	{
+		string sut = "10";
+
+		async Task Act()
+			=> await IsNumeric(That(sut)).Whose(x => Task.FromResult(x * 2), x => x.IsEqualTo(40));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that sut
+			             is numeric whose Task.FromResult(x * 2) is equal to 40,
+			             but Task.FromResult(x * 2) was 20, which differs by -20
+			             """)
+			.Because("the awaited member continues from the value that the converting constraint stores");
 	}
 
 	[Fact]
@@ -465,6 +565,47 @@ public class AndOrWhoseResultTests
 			             is of type AndOrWhoseResultTests.MyClass whose Value1 is True,
 			             but Value1 was False
 			             """);
+	}
+
+	private static AndOrWhoseResult<int, IThat<string?>> IsNumeric(IThat<string?> subject)
+		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+			=> new IsNumericConstraint(it, grammars)), subject);
+
+	private sealed class IsNumericConstraint(string it, ExpectationGrammars grammars)
+		: ConstraintResult.WithNotNullValue<string>(it, grammars), IValueConstraint<string?>
+	{
+		private int _number;
+
+		public ConstraintResult IsMetBy(string? actual)
+		{
+			Actual = actual;
+			Outcome = int.TryParse(actual, out _number) ? Outcome.Success : Outcome.Failure;
+			return this;
+		}
+
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
+		{
+			if (_number is TValue number)
+			{
+				value = number;
+				return true;
+			}
+
+			value = default;
+			return false;
+		}
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("is numeric");
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" was \"").Append(Actual).Append('"');
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("is not numeric");
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" was \"").Append(Actual).Append('"');
 	}
 
 	private sealed class ListClass

@@ -153,7 +153,12 @@ internal class WhichNode<TSource, TMember> : Node
 				FurtherProcessingStrategy.IgnoreResult, default);
 		}
 
-		ConstraintResult innerResult = await _inner.IsMetBy(matching.Value, context, cancellationToken);
+		ConstraintResult innerResult;
+		using (EvaluationContext.EvaluationContext.StartNestedEvaluation(context))
+		{
+			innerResult = await _inner.IsMetBy(matching.Value, context, cancellationToken);
+		}
+
 		return CombineResults(parentResult, innerResult, _separator ?? "", FurtherProcessingStrategy.IgnoreResult,
 			matching.Value);
 	}

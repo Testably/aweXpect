@@ -28,6 +28,11 @@ internal sealed class MappingResult : CombinedResult
 		Outcome = CombineOutcomes();
 	}
 
+	/// <summary>
+	///     The result of the expectation on the subject, which the members continue from.
+	/// </summary>
+	internal ConstraintResult Source => Left;
+
 	/// <inheritdoc />
 	/// <remarks>
 	///     Under negation both parts were met, so the left part explains the failure, unless the member could not be
