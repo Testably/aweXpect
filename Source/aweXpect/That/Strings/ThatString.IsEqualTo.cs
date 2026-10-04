@@ -71,8 +71,8 @@ public static partial class ThatString
 		{
 			if (!string.IsNullOrEmpty(Actual))
 			{
-				contexts.AddStringContextCopy("Actual", Actual, this);
-				contexts.AddStringContextCopy("Expected", expected, this);
+				contexts.AddStringContext("Actual", Actual, this);
+				contexts.AddStringContext("Expected", expected, this);
 			}
 		}
 
