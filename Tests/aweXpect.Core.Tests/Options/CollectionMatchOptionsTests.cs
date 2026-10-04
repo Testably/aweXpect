@@ -1443,12 +1443,15 @@ public class CollectionMatchOptionsTests
 		internal sealed class Equality(string kind) : IOptionsEquality<int>
 		{
 			public ValueTask<bool> AreConsideredEqual<TExpected>(int actual, TExpected expected)
-				=> new(expected is int value && kind switch
+				=> new(IsEqual(actual, expected));
+
+			public bool IsEqual<TExpected>(int actual, TExpected expected)
+				=> expected is int value && kind switch
 				{
 					"div2" => actual / 2 == value / 2,
 					"near" => Math.Abs(actual - value) <= 1,
 					_ => actual == value,
-				});
+				};
 		}
 
 		/// <summary>
@@ -1461,8 +1464,8 @@ public class CollectionMatchOptionsTests
 
 			public ValueTask<bool> AreConsideredEqual<TExpected>(int actual, TExpected expected)
 			{
-				ValueTask<bool> isEqual = _equality.AreConsideredEqual(actual, expected);
-				return _comparisons++ % 2 == 0 ? isEqual : Yield(isEqual.Result);
+				bool isEqual = _equality.IsEqual(actual, expected);
+				return _comparisons++ % 2 == 0 ? new ValueTask<bool>(isEqual) : Yield(isEqual);
 			}
 
 			private static async ValueTask<bool> Yield(bool isEqual)

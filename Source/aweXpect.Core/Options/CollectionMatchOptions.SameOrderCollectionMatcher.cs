@@ -347,9 +347,12 @@ public partial class CollectionMatchOptions
 		private ValueTask<bool> ContinuesTheSubsequence(int index, IOptionsEquality<T2> options)
 		{
 			ValueTask<bool> isMatch = IsMatch(index, _expectedItems[_matchIndex], options);
-			return isMatch.IsCompletedSuccessfully
-				? new ValueTask<bool>(AdvancesTheSubsequence(isMatch.Result))
-				: ContinuesTheSubsequenceAsync(isMatch);
+			if (!isMatch.IsCompletedSuccessfully)
+			{
+				return ContinuesTheSubsequenceAsync(isMatch);
+			}
+
+			return new ValueTask<bool>(AdvancesTheSubsequence(isMatch.Result));
 		}
 
 		private async ValueTask<bool> ContinuesTheSubsequenceAsync(ValueTask<bool> isMatch)
@@ -383,12 +386,29 @@ public partial class CollectionMatchOptions
 				return CountTheUnexpectedItems(it, value, options, maximumNumber);
 			}
 
-			ValueTask<bool> continues = _ignoreInterspersedItems
-				? ContinuesTheSubsequenceInTheExpectedItems(_values.Count - 1, options)
-				: ContinuesTheRunInTheExpectedItems(_values.Count - 1, options);
-			return continues.IsCompletedSuccessfully && continues.Result
-				? new ValueTask<(bool, string?)>((false, null))
-				: VerifyWhetherTheExpectedItemsAreLeft(continues, it, value, options, maximumNumber);
+			ValueTask<bool> continues = ContinuesInTheExpectedItems(_values.Count - 1, options);
+			if (!continues.IsCompletedSuccessfully)
+			{
+				return VerifyWhetherTheExpectedItemsAreLeft(continues, it, value, options, maximumNumber);
+			}
+
+			if (continues.Result)
+			{
+				return new ValueTask<(bool, string?)>((false, null));
+			}
+
+			_isBroken = true;
+			return CountTheUnexpectedItems(it, value, options, maximumNumber);
+		}
+
+		private ValueTask<bool> ContinuesInTheExpectedItems(int index, IOptionsEquality<T2> options)
+		{
+			if (_ignoreInterspersedItems)
+			{
+				return ContinuesTheSubsequenceInTheExpectedItems(index, options);
+			}
+
+			return ContinuesTheRunInTheExpectedItems(index, options);
 		}
 
 		private async ValueTask<(bool, string?)> VerifyWhetherTheExpectedItemsAreLeft(ValueTask<bool> continues,

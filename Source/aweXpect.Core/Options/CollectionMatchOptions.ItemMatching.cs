@@ -283,9 +283,12 @@ public partial class CollectionMatchOptions
 				return new ValueTask<(bool IsMatch, Exception? Unanswered)>((false, exception));
 			}
 
-			return isMatch.IsCompletedSuccessfully
-				? new ValueTask<(bool IsMatch, Exception? Unanswered)>((isMatch.Result, null))
-				: CompareAsync(isMatch);
+			if (!isMatch.IsCompletedSuccessfully)
+			{
+				return CompareAsync(isMatch);
+			}
+
+			return new ValueTask<(bool IsMatch, Exception? Unanswered)>((isMatch.Result, null));
 		}
 
 		private static async ValueTask<(bool IsMatch, Exception? Unanswered)> CompareAsync(ValueTask<bool> isMatch)
