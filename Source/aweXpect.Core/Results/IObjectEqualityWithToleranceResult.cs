@@ -13,4 +13,5 @@ namespace aweXpect.Results;
 /// </remarks>
 public interface IObjectEqualityWithToleranceResult<TSelf, TElement, TTolerance>
 	: IObjectEqualityResult<TSelf, TElement>,
-		IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>;
+		IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>
+	where TSelf : IObjectEqualityWithToleranceResult<TSelf, TElement, TTolerance>;

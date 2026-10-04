@@ -23,6 +23,7 @@ public static class EquivalencyExtensions
 	public static TSelf Equivalent<TSelf, [RequiresMemberMetadata] TElement>(
 		this IObjectEqualityResult<TSelf, TElement> result,
 		Func<EquivalencyOptions, EquivalencyOptions>? options = null)
+		where TSelf : IObjectEqualityResult<TSelf, TElement>
 	{
 		result.Options.Equivalent(EquivalencyOptionsExtensions.FromCallback(options));
 		return (TSelf)result;

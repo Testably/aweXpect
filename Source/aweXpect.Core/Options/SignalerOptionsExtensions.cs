@@ -39,6 +39,7 @@ public static class SignalerOptionsExtensions
 		Func<TParameter, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
+		where TSelf : ISignalerResult<TSelf, TParameter>
 	{
 		predicate.ThrowIfNull();
 		result.Options.WithPredicate(predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());

@@ -17,6 +17,7 @@ namespace aweXpect.Results;
 ///     e.g. <c>Within(1)</c> on a <see langword="double" /> converts the tolerance to a <see langword="double" />.
 /// </remarks>
 public interface INumberToleranceResult<TSelf, TNumber> : IOptionsProvider<NumberTolerance<TNumber>>
+	where TSelf : INumberToleranceResult<TSelf, TNumber>
 #if NET8_0_OR_GREATER
 	where TNumber : struct, INumber<TNumber>;
 #else

@@ -11,4 +11,5 @@ namespace aweXpect.Results;
 ///     The option methods are extension methods that infer <typeparamref name="TElement" /> from this interface, so a
 ///     result has to implement it only once, with itself as <typeparamref name="TSelf" />.
 /// </remarks>
-public interface IObjectEqualityResult<TSelf, TElement> : IOptionsProvider<ObjectEqualityOptions<TElement>>;
+public interface IObjectEqualityResult<TSelf, TElement> : IOptionsProvider<ObjectEqualityOptions<TElement>>
+	where TSelf : IObjectEqualityResult<TSelf, TElement>;

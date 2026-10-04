@@ -11,4 +11,5 @@ namespace aweXpect.Results;
 ///     The option methods are extension methods that infer <typeparamref name="TParameter" /> from this interface, so a
 ///     result has to implement it only once, with itself as <typeparamref name="TSelf" />.
 /// </remarks>
-public interface ISignalerResult<TSelf, TParameter> : IOptionsProvider<SignalerOptions<TParameter>>;
+public interface ISignalerResult<TSelf, TParameter> : IOptionsProvider<SignalerOptions<TParameter>>
+	where TSelf : ISignalerResult<TSelf, TParameter>;
