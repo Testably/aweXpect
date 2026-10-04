@@ -6,11 +6,13 @@ namespace aweXpect.Options;
 
 public abstract partial class EnumerableQuantifier
 {
+	private static readonly EnumerableQuantifier AllInstance = new AllQuantifier();
+
 	/// <summary>
 	///     Matches all items.
 	/// </summary>
 	public static EnumerableQuantifier All()
-		=> new AllQuantifier();
+		=> AllInstance;
 
 	private sealed class AllQuantifier : EnumerableQuantifier
 	{

@@ -5,9 +5,24 @@ using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Core.Sources;
 
-internal class DelegateValueSource<TValue>(Func<CancellationToken, TValue>? action)
-	: IValueSource<DelegateValue<TValue>>
+internal class DelegateValueSource<TValue> : IValueSource<DelegateValue<TValue>>
 {
+	private readonly Func<CancellationToken, TValue>? _action;
+	private readonly Func<TValue>? _actionWithoutCancellation;
+
+	public DelegateValueSource(Func<CancellationToken, TValue>? action)
+	{
+		_action = action;
+	}
+
+	/// <remarks>
+	///     Keeps the <paramref name="action" /> as it is, instead of wrapping it in a closure that ignores the token.
+	/// </remarks>
+	public DelegateValueSource(Func<TValue>? action)
+	{
+		_actionWithoutCancellation = action;
+	}
+
 	#region IValueSource<DelegateValue<TValue>> Members
 
 	public bool IsNullTaskSubject => false;
@@ -15,7 +30,7 @@ internal class DelegateValueSource<TValue>(Func<CancellationToken, TValue>? acti
 	public ValueTask<DelegateValue<TValue>> GetValue(ITimeSystem timeSystem,
 		CancellationToken cancellationToken)
 	{
-		if (action is null)
+		if (_action is null && _actionWithoutCancellation is null)
 		{
 			return new ValueTask<DelegateValue<TValue>>(new DelegateValue<TValue>(default, null, TimeSpan.Zero, true));
 		}
@@ -24,7 +39,7 @@ internal class DelegateValueSource<TValue>(Func<CancellationToken, TValue>? acti
 		try
 		{
 			sw.Start();
-			TValue value = action(cancellationToken);
+			TValue value = _action is null ? _actionWithoutCancellation!() : _action(cancellationToken);
 			sw.Stop();
 			return new ValueTask<DelegateValue<TValue>>(new DelegateValue<TValue>(value, null, sw.Elapsed));
 		}

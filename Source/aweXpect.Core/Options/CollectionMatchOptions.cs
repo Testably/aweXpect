@@ -235,7 +235,7 @@ public partial class CollectionMatchOptions(
 	///     read "is not" and are answered with "was".
 	/// </remarks>
 	public string GetNegatedResultVerb(string it, ExpectationGrammars grammars)
-		=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains)
+		=> _equivalenceRelations.Includes(EquivalenceRelations.Contains)
 			? " did"
 			: grammars.SubjectVerb(it, " was", " were");
 
@@ -244,8 +244,8 @@ public partial class CollectionMatchOptions(
 	///     contiguity anyway.
 	/// </summary>
 	private string ContiguousSuffix()
-		=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains) ||
-		   _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn)
+		=> _equivalenceRelations.Includes(EquivalenceRelations.Contains) ||
+		   _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn)
 			? " and contiguous"
 			: "";
 
@@ -427,7 +427,7 @@ public partial class CollectionMatchOptions(
 			yield break;
 		}
 
-		if (hasMissingItems && !equivalenceRelation.HasFlag(EquivalenceRelations.IsContainedIn))
+		if (hasMissingItems && !equivalenceRelation.Includes(EquivalenceRelations.IsContainedIn))
 		{
 			if (missingItems.Count == 1)
 			{

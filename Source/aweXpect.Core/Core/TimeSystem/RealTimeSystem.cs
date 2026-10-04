@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
+using DiagnosticsStopwatch = System.Diagnostics.Stopwatch;
 
 namespace aweXpect.Core.TimeSystem;
 
@@ -25,25 +25,57 @@ internal class RealTimeSystem : ITimeSystem
 		#endregion
 	}
 
+	/// <remarks>
+	///     Reads the timestamps itself instead of wrapping a <see cref="DiagnosticsStopwatch" />, so that every evaluation
+	///     of a delegate allocates one object instead of two.
+	/// </remarks>
 	private sealed class RealStopwatch : IStopwatch
 	{
-		private readonly Stopwatch _stopwatch = new();
+		private static readonly double TicksPerTimestamp =
+			(double)TimeSpan.TicksPerSecond / DiagnosticsStopwatch.Frequency;
+
+		private long _elapsedTimestamps;
+		private long _startTimestamp;
 
 		#region IStopwatch Members
 
 		/// <inheritdoc />
-		public TimeSpan Elapsed => _stopwatch.Elapsed;
+		public TimeSpan Elapsed
+		{
+			get
+			{
+				long elapsedTimestamps = _elapsedTimestamps;
+				if (IsRunning)
+				{
+					elapsedTimestamps += DiagnosticsStopwatch.GetTimestamp() - _startTimestamp;
+				}
+
+				return TimeSpan.FromTicks((long)(elapsedTimestamps * TicksPerTimestamp));
+			}
+		}
 
 		/// <inheritdoc />
-		public bool IsRunning => _stopwatch.IsRunning;
+		public bool IsRunning { get; private set; }
 
 		/// <inheritdoc />
 		public void Start()
-			=> _stopwatch.Start();
+		{
+			if (!IsRunning)
+			{
+				_startTimestamp = DiagnosticsStopwatch.GetTimestamp();
+				IsRunning = true;
+			}
+		}
 
 		/// <inheritdoc />
 		public void Stop()
-			=> _stopwatch.Stop();
+		{
+			if (IsRunning)
+			{
+				_elapsedTimestamps += DiagnosticsStopwatch.GetTimestamp() - _startTimestamp;
+				IsRunning = false;
+			}
+		}
 
 		#endregion
 	}

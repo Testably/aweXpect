@@ -845,6 +845,22 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenMatchingPredicate_ShouldCallThePredicateOncePerItem()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
+				int calls = 0;
+
+				await That(subject).HasSingle().Matching(x =>
+				{
+					calls++;
+					return x == 2;
+				}).Which.IsEqualTo(2);
+
+				await That(calls).IsEqualTo(3)
+					.Because("the single item is not searched again for the expectations on it");
+			}
+
+			[Fact]
 			public async Task WhenMemberOfWhose_AndNegated_ShouldDescribeTheCollection()
 			{
 				ItemsClass subject = new(1);

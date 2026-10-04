@@ -79,9 +79,9 @@ public partial class CollectionMatchOptions
 		///     as there is also an additional item.
 		/// </remarks>
 		public bool IsDetermined
-			=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
+			=> _equivalenceRelations.Includes(EquivalenceRelations.Contains) &&
 			   _matching?.HasMatchedAllExpectedItems == true &&
-			   (!_equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) || _additionalItems.Count > 0);
+			   (!_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) || _additionalItems.Count > 0);
 
 		public async ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
@@ -89,7 +89,7 @@ public partial class CollectionMatchOptions
 			int index = _index++;
 			ItemMatching<T, T3> matching = GetMatching(options);
 			_lastAssigned = await matching.Add(index, value, _lastAssigned);
-			if (_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
+			if (_equivalenceRelations.Includes(EquivalenceRelations.Contains))
 			{
 				// Additional items are no deviations, so the reassignment is deferred until it decides the result.
 				return (false, null);
@@ -118,7 +118,7 @@ public partial class CollectionMatchOptions
 			}
 
 			// For the containment relation, all deviations are missing items, which are known completely here.
-			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
+			if (!_equivalenceRelations.Includes(EquivalenceRelations.Contains) &&
 			    CountAdditionalDeviations() + CountMissingDeviations() > 2L * maximumNumber)
 			{
 				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
@@ -126,21 +126,21 @@ public partial class CollectionMatchOptions
 
 			Func<object?, string> formatItem = CreateItemFormatter();
 			List<string> errors = new();
-			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
+			if (!_equivalenceRelations.Includes(EquivalenceRelations.Contains))
 			{
 				errors.AddRange(AdditionalItemsError(_additionalItems, formatItem));
 			}
-			else if (_equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) && !_additionalItems.Any())
+			else if (_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) && !_additionalItems.Any())
 			{
 				errors.Add("did not contain any additional items");
 			}
 
-			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
+			if (!_equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn))
 			{
 				errors.AddRange(MissingItemsError(_expected.Count, _missingItems, _equivalenceRelations,
 					false, formatItem, options, maximumNumber));
 			}
-			else if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) && !_missingItems.Any())
+			else if (_equivalenceRelations.Includes(EquivalenceRelations.IsContainedInProperly) && !_missingItems.Any())
 			{
 				errors.Add("contained all expected items");
 			}
@@ -155,11 +155,11 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		private bool HasDeviations()
 		{
-			bool hasAdditionalItemError = _equivalenceRelations.HasFlag(EquivalenceRelations.Contains)
-				? _equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) && _additionalItems.Count == 0
+			bool hasAdditionalItemError = _equivalenceRelations.Includes(EquivalenceRelations.Contains)
+				? _equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) && _additionalItems.Count == 0
 				: _additionalItems.Count > 0;
-			bool hasMissingItemError = _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn)
-				? _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) && _missingItems.Count == 0
+			bool hasMissingItemError = _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn)
+				? _equivalenceRelations.Includes(EquivalenceRelations.IsContainedInProperly) && _missingItems.Count == 0
 				: _expected.Count > 0 && _missingItems.Count > 0;
 			return hasAdditionalItemError || hasMissingItemError;
 		}
@@ -175,13 +175,13 @@ public partial class CollectionMatchOptions
 		///     Additional items are no deviation for the containment relation, so they are not counted.
 		/// </summary>
 		private int CountAdditionalDeviations()
-			=> _equivalenceRelations.HasFlag(EquivalenceRelations.Contains) ? 0 : _additionalItems.Count;
+			=> _equivalenceRelations.Includes(EquivalenceRelations.Contains) ? 0 : _additionalItems.Count;
 
 		/// <summary>
 		///     Missing items are no deviation for the IsContainedIn relation, so they are not counted.
 		/// </summary>
 		private int CountMissingDeviations()
-			=> _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn) ? 0 : _missingItems.Count;
+			=> _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn) ? 0 : _missingItems.Count;
 
 		private IEnumerable<string> GetDeviations()
 			=> AdditionalItemsError(_additionalItems, CreateItemFormatter());

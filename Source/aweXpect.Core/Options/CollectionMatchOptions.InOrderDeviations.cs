@@ -114,7 +114,7 @@ public partial class CollectionMatchOptions
 		public List<string> ListDeviations(EquivalenceRelations equivalenceRelation, object options)
 			=> IncorrectItemsError(InterruptingItems, options)
 				.Concat(OutOfOrderItemsError(OutOfOrderItems))
-				.Concat(equivalenceRelation.HasFlag(EquivalenceRelations.Contains)
+				.Concat(equivalenceRelation.Includes(EquivalenceRelations.Contains)
 					? []
 					: AdditionalItemsError(UnexpectedItems, CreateItemFormatter()))
 				.ToList();
@@ -126,8 +126,8 @@ public partial class CollectionMatchOptions
 		public string? GetError(string it, EquivalenceRelations equivalenceRelation, bool ignoringDuplicates,
 			int totalExpectedItems, object options, int maximumNumber)
 		{
-			bool isContains = equivalenceRelation.HasFlag(EquivalenceRelations.Contains);
-			bool isContainedIn = equivalenceRelation.HasFlag(EquivalenceRelations.IsContainedIn);
+			bool isContains = equivalenceRelation.Includes(EquivalenceRelations.Contains);
+			bool isContainedIn = equivalenceRelation.Includes(EquivalenceRelations.IsContainedIn);
 			List<string> errors = ListDeviations(equivalenceRelation, options);
 			int missingDeviations = isContainedIn ? 0 : MissingItems.Count;
 			if (errors.Count + missingDeviations > 2L * maximumNumber && (!isContains || errors.Count > 0))
@@ -135,7 +135,7 @@ public partial class CollectionMatchOptions
 				return TooManyDeviationsError(it, maximumNumber, errors);
 			}
 
-			if (equivalenceRelation.HasFlag(EquivalenceRelations.ContainsProperly) && !HasAdditionalItem)
+			if (equivalenceRelation.Includes(EquivalenceRelations.ContainsProperly) && !HasAdditionalItem)
 			{
 				errors.Add("did not contain any additional items");
 			}
@@ -145,7 +145,7 @@ public partial class CollectionMatchOptions
 				errors.AddRange(MissingItemsError(totalExpectedItems, MissingItems, equivalenceRelation,
 					ignoringDuplicates, CreateItemFormatter(), options, maximumNumber));
 			}
-			else if (equivalenceRelation.HasFlag(EquivalenceRelations.IsContainedInProperly) &&
+			else if (equivalenceRelation.Includes(EquivalenceRelations.IsContainedInProperly) &&
 			         !HasRemainingExpectedItem)
 			{
 				errors.Add("contained all expected items");

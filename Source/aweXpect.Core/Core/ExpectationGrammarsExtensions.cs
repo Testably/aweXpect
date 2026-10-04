@@ -24,28 +24,28 @@ public static class ExpectationGrammarsExtensions
 	/// </summary>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool IsNegated(this ExpectationGrammars grammars)
-		=> grammars.HasFlag(ExpectationGrammars.Negated);
+		=> (grammars & ExpectationGrammars.Negated) != 0;
 
 	/// <summary>
 	///     Checks if the <paramref name="grammars" /> has the <see cref="ExpectationGrammars.Nested" /> flag.
 	/// </summary>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool IsNested(this ExpectationGrammars grammars)
-		=> grammars.HasFlag(ExpectationGrammars.Nested);
+		=> (grammars & ExpectationGrammars.Nested) != 0;
 
 	/// <summary>
 	///     Checks if the <paramref name="grammars" /> has the <see cref="ExpectationGrammars.Plural" /> flag.
 	/// </summary>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool IsPlural(this ExpectationGrammars grammars)
-		=> grammars.HasFlag(ExpectationGrammars.Plural);
+		=> (grammars & ExpectationGrammars.Plural) != 0;
 
 	/// <summary>
 	///     Checks if the <paramref name="grammars" /> has any of the given <paramref name="flags" />.
 	/// </summary>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static bool HasAnyFlag(this ExpectationGrammars grammars, params ExpectationGrammars[] flags)
-		=> flags.Any(flag => grammars.HasFlag(flag));
+		=> flags.Any(flag => (grammars & flag) == flag);
 
 	/// <summary>
 	///     Returns the <paramref name="plural" /> form if the <paramref name="grammars" /> have the
