@@ -159,9 +159,8 @@ public partial class CollectionMatchOptions(
 			(true, false) => new AnyOrderCollectionMatcher<T, T2>(_equivalenceRelations, expected),
 			(false, true) => new SameOrderIgnoreDuplicatesCollectionMatcher<T, T2>(_equivalenceRelations, expected,
 				_ignoringInterspersedItems),
-			(false, false) => WithInAnyOrderHint(
-				new SameOrderCollectionMatcher<T, T2>(_equivalenceRelations, expected, _ignoringInterspersedItems),
-				() => new AnyOrderCollectionMatcher<T, T2>(_equivalenceRelations, expected)),
+			(false, false) => new SameOrderCollectionMatcher<T, T2>(_equivalenceRelations, expected,
+				_ignoringInterspersedItems, AddsInAnyOrderHint),
 		};
 
 	/// <summary>
@@ -176,10 +175,8 @@ public partial class CollectionMatchOptions(
 			(true, false) => new AnyOrderFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations, expected),
 			(false, true) => new SameOrderIgnoreDuplicatesFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations,
 				expected, _ignoringInterspersedItems),
-			(false, false) => WithInAnyOrderHint(
-				new SameOrderFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations, expected,
-					_ignoringInterspersedItems),
-				() => new AnyOrderFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations, expected)),
+			(false, false) => new SameOrderFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations, expected,
+				_ignoringInterspersedItems, AddsInAnyOrderHint),
 		};
 
 	/// <summary>
@@ -194,10 +191,8 @@ public partial class CollectionMatchOptions(
 			(true, false) => new AnyOrderFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations, expected),
 			(false, true) => new SameOrderIgnoreDuplicatesFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations,
 				expected, _ignoringInterspersedItems),
-			(false, false) => WithInAnyOrderHint(
-				new SameOrderFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations, expected,
-					_ignoringInterspersedItems),
-				() => new AnyOrderFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations, expected)),
+			(false, false) => new SameOrderFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations, expected,
+				_ignoringInterspersedItems, AddsInAnyOrderHint),
 		};
 
 	/// <summary>
@@ -209,12 +204,7 @@ public partial class CollectionMatchOptions(
 	///     Ignoring duplicates, the in-order matcher knows whether the items match in any order, so it adds the hint
 	///     itself.
 	/// </remarks>
-	private ICollectionMatcher<T, T2> WithInAnyOrderHint<T, T2>(ICollectionMatcher<T, T2> matcher,
-		Func<ICollectionMatcher<T, T2>> anyOrderMatcher)
-		where T : T2
-		=> _equivalenceRelations != EquivalenceRelations.Equivalent
-			? matcher
-			: new InAnyOrderHintCollectionMatcher<T, T2>(matcher, anyOrderMatcher);
+	private bool AddsInAnyOrderHint => _equivalenceRelations == EquivalenceRelations.Equivalent;
 
 	/// <summary>
 	///     Specifies the expectation for the <paramref name="expectedExpression" /> using the provided

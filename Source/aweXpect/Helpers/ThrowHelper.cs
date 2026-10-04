@@ -42,6 +42,11 @@ internal static class ThrowHelper
 
 		ICollection<KeyValuePair<TKey, TValue>> materializedEntries =
 			entries as ICollection<KeyValuePair<TKey, TValue>> ?? entries.ToList();
+		if (HasDistinctKeys(materializedEntries))
+		{
+			return materializedEntries;
+		}
+
 		IGrouping<TKey, KeyValuePair<TKey, TValue>>? duplicate = materializedEntries
 			.GroupBy(entry => entry.Key)
 			.FirstOrDefault(group => group.Skip(1).Any());
@@ -53,6 +58,27 @@ internal static class ThrowHelper
 		}
 
 		return materializedEntries;
+	}
+
+	/// <summary>
+	///     Whether no key of the <paramref name="entries" /> occurs more than once by the default equality.
+	/// </summary>
+	/// <remarks>
+	///     A dictionary with the default comparer cannot hold a key twice, and grouping the keys is only needed to name
+	///     the duplicate key.
+	/// </remarks>
+	private static bool HasDistinctKeys<TKey, TValue>(ICollection<KeyValuePair<TKey, TValue>> entries)
+	{
+#pragma warning disable CS8714 // A dictionary never holds a null key, so the entries are only matched when it is one
+		if (entries is Dictionary<TKey, TValue> dictionary &&
+		    ReferenceEquals(dictionary.Comparer, EqualityComparer<TKey>.Default))
+		{
+			return true;
+		}
+#pragma warning restore CS8714
+
+		HashSet<TKey> keys = new();
+		return entries.All(entry => keys.Add(entry.Key));
 	}
 
 	/// <summary>
