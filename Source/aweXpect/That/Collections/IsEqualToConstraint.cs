@@ -170,6 +170,44 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 		return Complete(matcher, itemOptions, maximumNumber, cancellationToken);
 	}
 
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Verifies the <paramref name="materialized" /> items by the <paramref name="matcher" />.
+	/// </summary>
+	protected async ValueTask<ConstraintResult> VerifyItems<TItem, TMatch>(IAsyncEnumerable<TItem> materialized,
+		ICollectionMatcher<TItem, TMatch> matcher, IOptionsEquality<TMatch> itemOptions,
+		CancellationToken cancellationToken)
+		where TItem : TMatch
+	{
+		int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
+		_collectionContext.Set(materialized as IMaterializedAsyncEnumerable<TItem>);
+		bool isDetermined = false;
+		await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
+		{
+			var (result, failure) = await matcher.Verify(It, item, itemOptions, maximumNumber);
+			if (Fails(result, failure, cancellationToken))
+			{
+				return this;
+			}
+
+			if (matcher.IsDetermined)
+			{
+				isDetermined = true;
+				break;
+			}
+		}
+
+		if (!isDetermined && cancellationToken.IsCanceledBeforeTheEndOf(materialized))
+		{
+			Outcome = Outcome.Undecided;
+			return this;
+		}
+
+		await Complete(matcher, itemOptions, maximumNumber, cancellationToken);
+		return this;
+	}
+#endif
+
 	/// <summary>
 	///     Verifies the remaining items of the <paramref name="enumerator" />, once the current one is
 	///     <paramref name="verified" />, and disposes it.
@@ -212,44 +250,6 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 
 		return await Complete(matcher, itemOptions, maximumNumber, cancellationToken);
 	}
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Verifies the <paramref name="materialized" /> items by the <paramref name="matcher" />.
-	/// </summary>
-	protected async ValueTask<ConstraintResult> VerifyItems<TItem, TMatch>(IAsyncEnumerable<TItem> materialized,
-		ICollectionMatcher<TItem, TMatch> matcher, IOptionsEquality<TMatch> itemOptions,
-		CancellationToken cancellationToken)
-		where TItem : TMatch
-	{
-		int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
-		_collectionContext.Set(materialized as IMaterializedAsyncEnumerable<TItem>);
-		bool isDetermined = false;
-		await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
-		{
-			var (result, failure) = await matcher.Verify(It, item, itemOptions, maximumNumber);
-			if (Fails(result, failure, cancellationToken))
-			{
-				return this;
-			}
-
-			if (matcher.IsDetermined)
-			{
-				isDetermined = true;
-				break;
-			}
-		}
-
-		if (!isDetermined && cancellationToken.IsCanceledBeforeTheEndOf(materialized))
-		{
-			Outcome = Outcome.Undecided;
-			return this;
-		}
-
-		await Complete(matcher, itemOptions, maximumNumber, cancellationToken);
-		return this;
-	}
-#endif
 
 	private bool Fails(bool result, string? failure, CancellationToken cancellationToken)
 	{
