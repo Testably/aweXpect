@@ -1242,6 +1242,62 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Fact]
+		public async Task ComparisonsCompletingAsynchronously_ShouldAgreeWithSynchronousComparisons()
+		{
+			CollectionMatchOptions.EquivalenceRelations[] relations =
+			[
+				CollectionMatchOptions.EquivalenceRelations.Equivalent,
+				CollectionMatchOptions.EquivalenceRelations.Contains,
+				CollectionMatchOptions.EquivalenceRelations.ContainsProperly,
+				CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
+				CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly,
+			];
+			string[] equalities = ["eq", "div2", "near",];
+			Random random = new(1616);
+			List<string> disagreements = new();
+			for (int run = 0; run < 2000; run++)
+			{
+				CollectionMatchOptions.EquivalenceRelations relation = relations[random.Next(relations.Length)];
+				bool isInAnyOrder = random.Next(2) == 0;
+				bool isInterspersed = !isInAnyOrder &&
+				                      relation != CollectionMatchOptions.EquivalenceRelations.Equivalent &&
+				                      random.Next(2) == 0;
+				string equality = equalities[random.Next(equalities.Length)];
+				int[] subject = Enumerable.Range(0, random.Next(0, 7)).Select(_ => random.Next(4)).ToArray();
+				int[] expected = Enumerable.Range(0, random.Next(1, 6)).Select(_ => random.Next(4)).ToArray();
+
+				ICollectionMatcher<int, int> CreateMatcher()
+				{
+					CollectionMatchOptions sut = new(relation);
+					if (isInAnyOrder)
+					{
+						sut.InAnyOrder();
+					}
+
+					if (isInterspersed)
+					{
+						sut.IgnoringInterspersedItems();
+					}
+
+					return sut.GetCollectionMatcher<int, int>(expected);
+				}
+
+				string synchronously = await Describe(CreateMatcher(), subject, new Equality(equality));
+				string asynchronously = await Describe(CreateMatcher(), subject, new YieldingEquality(equality));
+				if (synchronously != asynchronously)
+				{
+					disagreements.Add($"{relation} {(isInAnyOrder ? "in any order " : "")}" +
+					                  $"{(isInterspersed ? "interspersed " : "")}{equality} " +
+					                  $"[{string.Join(",", subject)}] vs [{string.Join(",", expected)}]: " +
+					                  $"{synchronously} <> {asynchronously}");
+				}
+			}
+
+			await That(disagreements).IsEmpty()
+				.Because("the matchers continue where a comparison did not complete synchronously");
+		}
+
+		[Fact]
 		public async Task ContainmentInOrder_ShouldAgreeWithABruteForceSearch()
 		{
 			CollectionMatchOptions.EquivalenceRelations[] relations =
@@ -1282,6 +1338,22 @@ public class CollectionMatchOptionsTests
 			}
 
 			await That(disagreements).IsEmpty();
+		}
+
+		private static async Task<string> Describe(ICollectionMatcher<int, int> matcher, IEnumerable<int> subject,
+			IOptionsEquality<int> options)
+		{
+			foreach (int item in subject)
+			{
+				(bool isFailure, string? error) = await matcher.Verify("it", item, options, 2);
+				if (isFailure)
+				{
+					return $"failed early: {error}";
+				}
+			}
+
+			(bool isCompleteFailure, string? completeError) = await matcher.VerifyComplete("it", options, 2);
+			return $"{isCompleteFailure}: {completeError}";
 		}
 
 		private static bool IsMatch(string equality, int value, string expected)
@@ -1377,6 +1449,27 @@ public class CollectionMatchOptionsTests
 					"near" => Math.Abs(actual - value) <= 1,
 					_ => actual == value,
 				});
+		}
+
+		/// <summary>
+		///     Compares like <see cref="Equality" />, but every other comparison completes asynchronously.
+		/// </summary>
+		private sealed class YieldingEquality(string kind) : IOptionsEquality<int>
+		{
+			private readonly Equality _equality = new(kind);
+			private int _comparisons;
+
+			public ValueTask<bool> AreConsideredEqual<TExpected>(int actual, TExpected expected)
+			{
+				ValueTask<bool> isEqual = _equality.AreConsideredEqual(actual, expected);
+				return _comparisons++ % 2 == 0 ? isEqual : Yield(isEqual.Result);
+			}
+
+			private static async ValueTask<bool> Yield(bool isEqual)
+			{
+				await Task.Yield();
+				return isEqual;
+			}
 		}
 	}
 

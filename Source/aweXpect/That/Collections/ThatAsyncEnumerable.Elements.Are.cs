@@ -24,8 +24,7 @@ public static partial class ThatAsyncEnumerable
 						=> new AsyncCollectionConstraint<TItem>(
 							it, grammars,
 							quantifier,
-							g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
-							a => typeof(TType).IsAssignableFrom(a?.GetType()),
+							ElementOfType<TItem, TType>.Instance,
 							"were")),
 				_subject);
 		}
@@ -44,8 +43,7 @@ public static partial class ThatAsyncEnumerable
 						=> new AsyncCollectionConstraint<TItem>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsOfType(g, Formatter.Format(state.Type)),
-							a => state.Type.IsAssignableFrom(a?.GetType()),
+							new ElementOfType<TItem>(state.Type, false),
 							"were")),
 				_subject);
 		}

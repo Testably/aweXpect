@@ -18,104 +18,72 @@ namespace aweXpect;
 ///     A quantified expectation on the items of a collection that a synchronous or an asynchronous predicate verifies,
 ///     shared by the synchronous and the asynchronous collections.
 /// </summary>
-internal abstract class PredicateCollectionConstraint<TValue, TItem>
-	: QuantifiedCollectionConstraint<TValue, TItem>
+internal abstract class PredicateCollectionConstraint<TValue, TItem>(
+	string it,
+	ExpectationGrammars grammars,
+	EnumerableQuantifier quantifier,
+	ElementCondition<TItem> condition,
+	string verb)
+	: QuantifiedCollectionConstraintBase<TValue, TItem>(it, grammars, quantifier)
 {
-	private readonly Action<ResultContextCollector>? _appendOptionsContexts;
-	private readonly Func<TItem, ValueTask<bool>>? _asyncPredicate;
-	private readonly Func<TItem, bool>? _predicate;
+	private readonly SynchronousElementCondition<TItem>? _synchronousCondition =
+		condition as SynchronousElementCondition<TItem>;
 
-	protected PredicateCollectionConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		EnumerableQuantifier quantifier,
-		Func<ExpectationGrammars, string> expectationText,
-		Func<TItem, bool> predicate,
-		string verb)
-		: base(it, grammars, quantifier, expectationText, verb)
-	{
-		_predicate = predicate;
-	}
+	/// <summary>
+	///     What every item is verified for.
+	/// </summary>
+	protected ElementCondition<TItem> Condition => condition;
 
-	protected PredicateCollectionConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		EnumerableQuantifier quantifier,
-		Func<ExpectationGrammars, string> expectationText,
-		Func<TItem, ValueTask<bool>> predicate,
-		string verb,
-		Action<ResultContextCollector>? appendOptionsContexts)
-		: base(it, grammars, quantifier, expectationText, verb)
-	{
-		_asyncPredicate = predicate;
-		_appendOptionsContexts = appendOptionsContexts;
-	}
+	/// <inheritdoc />
+	protected override string Verb => verb;
+
+	/// <inheritdoc />
+	protected override void AppendItemExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
+		string? indentation)
+		=> stringBuilder.Append(condition.GetExpectation(grammars));
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
 	{
 		base.AppendContexts(contexts);
-		_appendOptionsContexts?.Invoke(contexts);
+		condition.AppendContexts(contexts);
 	}
 
 	/// <summary>
-	///     Whether the predicate is synchronous, so that the items can be verified without awaiting it.
+	///     Whether the condition is synchronous, so that the items can be verified without awaiting it.
 	/// </summary>
-	protected bool IsSynchronous => _asyncPredicate is null;
+	protected bool IsSynchronous => _synchronousCondition is not null;
 
 	/// <summary>
-	///     Whether the <paramref name="item" /> satisfies the synchronous predicate.
+	///     Whether the <paramref name="item" /> meets the synchronous condition.
 	/// </summary>
 	protected bool MatchesSynchronously(TItem item)
-		=> UserCode.Invoke(_predicate!, item, "the predicate");
+		=> _synchronousCondition!.IsMet(item);
 
 	/// <summary>
-	///     Whether the <paramref name="item" /> satisfies the predicate.
+	///     Whether the <paramref name="item" /> meets the condition.
 	/// </summary>
 	protected ValueTask<bool> Matches(TItem item)
-		=> _asyncPredicate is null
-			? new ValueTask<bool>(MatchesSynchronously(item))
-			: _asyncPredicate(item);
+		=> condition.IsMetBy(item);
 }
 
 /// <remarks>
 ///     The items of a non-generic collection are formatted as the type of its first item that is not
 ///     <see langword="null" />.
 /// </remarks>
-internal sealed class CollectionConstraint<TEnumerable, TItem>
-	: PredicateCollectionConstraint<TEnumerable, TItem>,
+internal sealed class CollectionConstraint<TEnumerable, TItem>(
+	string it,
+	ExpectationGrammars grammars,
+	EnumerableQuantifier quantifier,
+	ElementCondition<TItem> condition,
+	string verb)
+	: PredicateCollectionConstraint<TEnumerable, TItem>(it, grammars, quantifier, condition, verb),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
 {
 	private readonly bool _isUntyped = !CollectionItems<TItem>.IsTyped<TEnumerable>();
-	private readonly ISubjectComparing? _subjectComparing;
 	private CollectionContext _collectionContext;
 	private Type? _itemType;
-
-	public CollectionConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		EnumerableQuantifier quantifier,
-		Func<ExpectationGrammars, string> expectationText,
-		Func<TItem, bool> predicate,
-		string verb)
-		: base(it, grammars, quantifier, expectationText, predicate, verb)
-	{
-	}
-
-	public CollectionConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		EnumerableQuantifier quantifier,
-		Func<ExpectationGrammars, string> expectationText,
-		Func<TItem, ValueTask<bool>> predicate,
-		string verb,
-		ISubjectComparing? subjectComparing = null,
-		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: base(it, grammars, quantifier, expectationText, predicate, verb, appendOptionsContexts)
-	{
-		_subjectComparing = subjectComparing;
-	}
 
 	/// <inheritdoc />
 	protected override Type ItemType => _itemType ?? typeof(TItem);
@@ -146,7 +114,7 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>
 			return new ValueTask<ConstraintResult>(this);
 		}
 
-		_subjectComparing?.UseComparerOf(actual);
+		Condition.UseComparerOf(actual);
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		bool cancelEarly = CollectionItems<TItem>.CountOf(actual) is null;
 		return IsSynchronous
@@ -231,34 +199,16 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>
 }
 
 #if NET8_0_OR_GREATER
-internal sealed class AsyncCollectionConstraint<TItem>
-	: PredicateCollectionConstraint<IAsyncEnumerable<TItem>?, TItem>,
+internal sealed class AsyncCollectionConstraint<TItem>(
+	string it,
+	ExpectationGrammars grammars,
+	EnumerableQuantifier quantifier,
+	ElementCondition<TItem> condition,
+	string verb)
+	: PredicateCollectionConstraint<IAsyncEnumerable<TItem>?, TItem>(it, grammars, quantifier, condition, verb),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
 	private CollectionContext _collectionContext;
-
-	public AsyncCollectionConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		EnumerableQuantifier quantifier,
-		Func<ExpectationGrammars, string> expectationText,
-		Func<TItem, bool> predicate,
-		string verb)
-		: base(it, grammars, quantifier, expectationText, predicate, verb)
-	{
-	}
-
-	public AsyncCollectionConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		EnumerableQuantifier quantifier,
-		Func<ExpectationGrammars, string> expectationText,
-		Func<TItem, ValueTask<bool>> predicate,
-		string verb,
-		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: base(it, grammars, quantifier, expectationText, predicate, verb, appendOptionsContexts)
-	{
-	}
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)

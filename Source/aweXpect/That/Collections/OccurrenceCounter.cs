@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using aweXpect.Core;
 using aweXpect.Options;
 
 namespace aweXpect;
 
 /// <summary>
-///     Counts how often each distinct member occurs, using <paramref name="areConsideredEqual" /> to decide which
-///     members are the same.
+///     Counts how often each distinct member occurs, using the <paramref name="options" /> to decide which members
+///     are the same.
 /// </summary>
 /// <remarks>
 ///     With a <paramref name="getHashCode" /> that returns the same value for every two members that
-///     <paramref name="areConsideredEqual" /> considers the same, a member is only compared with the distinct members
+///     <paramref name="options" /> consider the same, a member is only compared with the distinct members
 ///     of the same hash code, in the order they were added, so that it is still counted for the first one it equals.
 /// </remarks>
 internal sealed class OccurrenceCounter<TMember>(
-	Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
+	IOptionsEquality<TMember> options,
 	Func<TMember, int>? getHashCode = null)
 {
 	/// <summary>
@@ -42,7 +43,7 @@ internal sealed class OccurrenceCounter<TMember>(
 		{
 			for (int i = 0; i < _distinctMembers.Count; i++)
 			{
-				if (await areConsideredEqual(member, _distinctMembers[i]))
+				if (await options.AreConsideredEqual(member, _distinctMembers[i]))
 				{
 					return Count(i);
 				}
@@ -59,7 +60,7 @@ internal sealed class OccurrenceCounter<TMember>(
 			return firstIndex;
 		}
 
-		if (await areConsideredEqual(member, _distinctMembers[firstCandidate]))
+		if (await options.AreConsideredEqual(member, _distinctMembers[firstCandidate]))
 		{
 			return Count(firstCandidate);
 		}
@@ -73,7 +74,7 @@ internal sealed class OccurrenceCounter<TMember>(
 
 		foreach (int i in candidates)
 		{
-			if (await areConsideredEqual(member, _distinctMembers[i]))
+			if (await options.AreConsideredEqual(member, _distinctMembers[i]))
 			{
 				return Count(i);
 			}

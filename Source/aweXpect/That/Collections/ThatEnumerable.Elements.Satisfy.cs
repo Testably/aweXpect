@@ -29,9 +29,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<IEnumerable<string?>?, string?>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.Satisfies(g,
-								state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
-							state.Predicate,
+							new ElementSatisfying<string?, string?>(state.Predicate, state.DoNotPopulateThisValue),
 							"did")),
 				_subject);
 		}
@@ -57,9 +55,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.Satisfies(g,
-								state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
-							state.Predicate,
+							new ElementSatisfying<TItem, TItem>(state.Predicate, state.DoNotPopulateThisValue),
 							"did")),
 				_subject);
 		}
@@ -85,9 +81,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<TEnumerable, object?>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.Satisfies(g,
-								state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
-							state.Predicate,
+							new ElementSatisfying<object?, object?>(state.Predicate, state.DoNotPopulateThisValue),
 							"did")),
 				_subject);
 		}
@@ -113,9 +107,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<TEnumerable, object?>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.Satisfies(g,
-								state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
-							v => state.Predicate((TItem)v!),
+							new ElementSatisfying<object?, TItem>(state.Predicate, state.DoNotPopulateThisValue),
 							"did")),
 				_subject);
 		}
@@ -141,9 +133,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<TEnumerable, object?>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.Satisfies(g,
-								state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
-							v => state.Predicate((string?)v),
+							new ElementSatisfying<object?, string?>(state.Predicate, state.DoNotPopulateThisValue),
 							"did")),
 				_subject);
 		}

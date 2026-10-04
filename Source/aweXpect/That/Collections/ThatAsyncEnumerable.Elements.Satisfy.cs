@@ -30,9 +30,7 @@ public static partial class ThatAsyncEnumerable
 						=> new AsyncCollectionConstraint<string?>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.Satisfies(g,
-								state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
-							state.Predicate,
+							new ElementSatisfying<string?, string?>(state.Predicate, state.DoNotPopulateThisValue),
 							"did")),
 				_subject);
 		}
@@ -58,9 +56,7 @@ public static partial class ThatAsyncEnumerable
 						=> new AsyncCollectionConstraint<TItem>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.Satisfies(g,
-								state.DoNotPopulateThisValue.TrimCommonWhiteSpace()),
-							state.Predicate,
+							new ElementSatisfying<TItem, TItem>(state.Predicate, state.DoNotPopulateThisValue),
 							"did")),
 				_subject);
 		}

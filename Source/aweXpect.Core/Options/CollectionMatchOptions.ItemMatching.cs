@@ -73,64 +73,123 @@ public partial class CollectionMatchOptions
 		///     Without a free expected item, the <paramref name="value" /> is an additional item and is not compared.
 		///     The free expected items next to the <paramref name="preferredExpectedIndex" /> are tried first, so that items
 		///     in or against the expected order find their match right away; any free match keeps the matching maximum.
+		///     The comparisons are only awaited from the first one that does not complete synchronously on.
 		/// </remarks>
 		/// <returns>The index of the assigned expected item, or <c>-1</c> when the item is not assigned yet.</returns>
-		public async ValueTask<int> Add(int index, TItem value, int preferredExpectedIndex = Unmatched)
+		public ValueTask<int> Add(int index, TItem value, int preferredExpectedIndex = Unmatched)
 		{
 			if (_freeExpected.Count == 0)
 			{
 				_unmatchedItems.Add(index, value);
-				return Unmatched;
-			}
-
-			if (preferredExpectedIndex != Unmatched)
-			{
-				int assigned = await AssignNextTo(preferredExpectedIndex, index, value);
-				if (assigned != Unmatched)
-				{
-					return assigned;
-				}
+				return new ValueTask<int>(Unmatched);
 			}
 
 			Exception? unanswered = null;
-			for (int expectedIndex = _freeExpected.First;
-			     expectedIndex >= 0;
-			     expectedIndex = _freeExpected.Next(expectedIndex))
+			for ((int ExpectedIndex, bool IsNeighbour) candidate = FirstCandidate(preferredExpectedIndex);
+			     candidate.ExpectedIndex >= 0;
+			     candidate = NextCandidate(candidate, preferredExpectedIndex))
 			{
-				(bool isMatch, Exception? exception) = await Compare(index, value, _expected[expectedIndex]);
-				unanswered ??= exception;
-				if (isMatch)
+				ValueTask<(bool IsMatch, Exception? Unanswered)> comparison =
+					Compare(index, value, _expected[candidate.ExpectedIndex]);
+				if (!comparison.IsCompletedSuccessfully)
 				{
-					Assign(index, value, expectedIndex);
-					return expectedIndex;
+					return AddAsync(comparison, candidate, index, value, preferredExpectedIndex, unanswered);
+				}
+
+				if (TryAssign(comparison.Result, candidate, index, value, ref unanswered))
+				{
+					return new ValueTask<int>(candidate.ExpectedIndex);
 				}
 			}
 
+			return AddPending(index, value, unanswered);
+		}
+
+		private async ValueTask<int> AddAsync(ValueTask<(bool IsMatch, Exception? Unanswered)> comparison,
+			(int ExpectedIndex, bool IsNeighbour) candidate, int index, TItem value, int preferredExpectedIndex,
+			Exception? unanswered)
+		{
+			while (!TryAssign(await comparison, candidate, index, value, ref unanswered))
+			{
+				candidate = NextCandidate(candidate, preferredExpectedIndex);
+				if (candidate.ExpectedIndex < 0)
+				{
+					return await AddPending(index, value, unanswered);
+				}
+
+				comparison = Compare(index, value, _expected[candidate.ExpectedIndex]);
+			}
+
+			return candidate.ExpectedIndex;
+		}
+
+		/// <summary>
+		///     Assigns the <paramref name="value" /> to the <paramref name="candidate" />, when the
+		///     <paramref name="comparison" /> matched.
+		/// </summary>
+		/// <remarks>
+		///     An unanswered comparison with a neighbour is repeated with the other free expected items, which decide
+		///     about it.
+		/// </remarks>
+		private bool TryAssign((bool IsMatch, Exception? Unanswered) comparison,
+			(int ExpectedIndex, bool IsNeighbour) candidate, int index, TItem value, ref Exception? unanswered)
+		{
+			if (!candidate.IsNeighbour)
+			{
+				unanswered ??= comparison.Unanswered;
+			}
+
+			if (!comparison.IsMatch)
+			{
+				return false;
+			}
+
+			Assign(index, value, candidate.ExpectedIndex);
+			return true;
+		}
+
+		/// <summary>
+		///     The free neighbours of the <paramref name="preferredExpectedIndex" /> come first, followed by all free
+		///     expected items.
+		/// </summary>
+		private (int ExpectedIndex, bool IsNeighbour) FirstCandidate(int preferredExpectedIndex)
+			=> preferredExpectedIndex == Unmatched
+				? (_freeExpected.First, false)
+				: FreeNeighbourFrom(preferredExpectedIndex + 1, preferredExpectedIndex);
+
+		/// <returns>The next candidate, or one with a negative index when none is left.</returns>
+		private (int ExpectedIndex, bool IsNeighbour) NextCandidate((int ExpectedIndex, bool IsNeighbour) candidate,
+			int preferredExpectedIndex)
+			=> candidate.IsNeighbour
+				? FreeNeighbourFrom(candidate.ExpectedIndex - 2, preferredExpectedIndex)
+				: (_freeExpected.Next(candidate.ExpectedIndex), false);
+
+		/// <summary>
+		///     The neighbour after the <paramref name="preferredExpectedIndex" /> is tried before the one before it.
+		/// </summary>
+		private (int ExpectedIndex, bool IsNeighbour) FreeNeighbourFrom(int expectedIndex, int preferredExpectedIndex)
+		{
+			for (; expectedIndex >= preferredExpectedIndex - 1; expectedIndex -= 2)
+			{
+				if (expectedIndex >= 0 && expectedIndex < _expected.Length &&
+				    _itemOfExpected[expectedIndex] == Unmatched)
+				{
+					return (expectedIndex, true);
+				}
+			}
+
+			return (_freeExpected.First, false);
+		}
+
+		/// <summary>
+		///     Keeps the <paramref name="value" />, which matches no free expected item, as pending.
+		/// </summary>
+		private async ValueTask<int> AddPending(int index, TItem value, Exception? unanswered)
+		{
 			await ThrowIfUnansweredAndNoAssignedExpectedItemMatches(index, value, unanswered);
 			_items.Add((index, value));
 			_expectedOfItem.Add(Unmatched);
 			_pendingItems.Add(_items.Count - 1);
-			return Unmatched;
-		}
-
-		/// <remarks>
-		///     An unanswered comparison is repeated with the other free expected items, which decide about it.
-		/// </remarks>
-		private async ValueTask<int> AssignNextTo(int preferredExpectedIndex, int index, TItem value)
-		{
-			for (int expectedIndex = preferredExpectedIndex + 1;
-			     expectedIndex >= preferredExpectedIndex - 1;
-			     expectedIndex -= 2)
-			{
-				if (expectedIndex >= 0 && expectedIndex < _expected.Length &&
-				    _itemOfExpected[expectedIndex] == Unmatched &&
-				    (await Compare(index, value, _expected[expectedIndex])).IsMatch)
-				{
-					Assign(index, value, expectedIndex);
-					return expectedIndex;
-				}
-			}
-
 			return Unmatched;
 		}
 
@@ -147,7 +206,14 @@ public partial class CollectionMatchOptions
 		///     Searches an augmenting path for each pending item, or for each free expected item if there are fewer of
 		///     them, as both find a maximum matching; the pending items that remain are unmatched for good.
 		/// </summary>
-		public async ValueTask ResolvePendingItems()
+		/// <remarks>
+		///     Without pending items there is nothing to resolve, which is the case after every item of a subject whose
+		///     items each match a free expected item.
+		/// </remarks>
+		public ValueTask ResolvePendingItems()
+			=> _pendingItems.Count == 0 ? default : ResolvePendingItemsAsync();
+
+		private async ValueTask ResolvePendingItemsAsync()
 		{
 			if (_freeExpected.Count < _pendingItems.Count)
 			{
@@ -202,18 +268,40 @@ public partial class CollectionMatchOptions
 			}
 		}
 
-		private async ValueTask<(bool IsMatch, Exception? Unanswered)> Compare(int index, TItem value,
-			TExpected expected)
+		/// <remarks>
+		///     A comparison that completes synchronously returns without a state machine.
+		/// </remarks>
+		private ValueTask<(bool IsMatch, Exception? Unanswered)> Compare(int index, TItem value, TExpected expected)
+		{
+			ValueTask<bool> isMatch;
+			try
+			{
+				isMatch = _isMatch(index, value, expected);
+			}
+			catch (Exception exception) when (IsUnanswered(exception))
+			{
+				return new ValueTask<(bool IsMatch, Exception? Unanswered)>((false, exception));
+			}
+
+			return isMatch.IsCompletedSuccessfully
+				? new ValueTask<(bool IsMatch, Exception? Unanswered)>((isMatch.Result, null))
+				: CompareAsync(isMatch);
+		}
+
+		private static async ValueTask<(bool IsMatch, Exception? Unanswered)> CompareAsync(ValueTask<bool> isMatch)
 		{
 			try
 			{
-				return (await _isMatch(index, value, expected), null);
+				return (await isMatch, null);
 			}
-			catch (Exception exception) when (exception is UserCodeException or UnansweredItemException)
+			catch (Exception exception) when (IsUnanswered(exception))
 			{
 				return (false, exception);
 			}
 		}
+
+		private static bool IsUnanswered(Exception exception)
+			=> exception is UserCodeException or UnansweredItemException;
 
 		private void DiscardPendingItemsWhenNothingIsFree()
 		{

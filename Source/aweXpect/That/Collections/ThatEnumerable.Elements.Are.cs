@@ -23,8 +23,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
 							it, grammars,
 							quantifier,
-							g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
-							a => a is TType,
+							ElementOfType<TItem, TType>.Instance,
 							"were")),
 				_subject);
 		}
@@ -43,8 +42,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<IEnumerable<TItem>?, TItem>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsOfType(g, Formatter.Format(state.Type)),
-							a => state.Type.IsInstanceOfType(a),
+							new ElementOfType<TItem>(state.Type, false),
 							"were")),
 				_subject);
 		}
@@ -65,8 +63,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<TEnumerable, object?>(
 							it, grammars,
 							quantifier,
-							g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
-							a => a is TType,
+							ElementOfType<object?, TType>.Instance,
 							"were")),
 				_subject);
 		}
@@ -85,8 +82,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<TEnumerable, object?>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsOfType(g, Formatter.Format(state.Type)),
-							a => state.Type.IsInstanceOfType(a),
+							new ElementOfType<object?>(state.Type, false),
 							"were")),
 				_subject);
 		}
@@ -107,8 +103,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<TEnumerable, object?>(
 							it, grammars,
 							quantifier,
-							g => ElementExpectations.IsOfType(g, Formatter.Format(typeof(TType))),
-							a => a is TType,
+							ElementOfType<object?, TType>.Instance,
 							"were")),
 				_subject);
 		}
@@ -127,8 +122,7 @@ public static partial class ThatEnumerable
 						=> new CollectionConstraint<TEnumerable, object?>(
 							it, grammars,
 							state.Quantifier,
-							g => ElementExpectations.IsOfType(g, Formatter.Format(state.Type)),
-							a => state.Type.IsInstanceOfType(a),
+							new ElementOfType<object?>(state.Type, false),
 							"were")),
 				_subject);
 		}
