@@ -18,6 +18,21 @@ public partial class CollectionMatchOptions
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, T expected,
 			IOptionsEquality<T2> options)
 			=> options.AreConsideredEqual(value, expected);
+
+		/// <remarks>
+		///     Only ordinal string equality and the default equality of a primitive are known to compare like
+		///     <see cref="EqualityComparer{T}.Default" />: the default equality of other types also checks the kind of a
+		///     <see cref="DateTime" /> and calls <see cref="object.Equals(object)" /> and
+		///     <see cref="object.GetHashCode()" /> of the caller, which can throw or disagree with each other.
+		/// </remarks>
+		protected override ExpectedItemCounts<T>? CountExpectedItems(List<T> expected, IOptionsEquality<T2> options)
+			=> options switch
+			{
+				StringEqualityOptions { ComparesByOrdinalEquality: true, } => new ExpectedItemCounts<T>(expected),
+				ObjectEqualityOptions<T2> { UsesEqualsMatch: true, } when typeof(T).IsPrimitive
+					=> new ExpectedItemCounts<T>(expected),
+				_ => null,
+			};
 	}
 
 	private sealed class AnyOrderFromExpectationCollectionMatcher<T, T2>(
@@ -53,6 +68,12 @@ public partial class CollectionMatchOptions
 		private readonly Dictionary<int, T> _additionalItems = new();
 		private readonly EquivalenceRelations _equivalenceRelations;
 		private readonly List<T3> _expected;
+
+		/// <summary>
+		///     The counts of the expected items, as long as every item was found among them, so that none was matched.
+		/// </summary>
+		private ExpectedItemCounts<T>? _expectedCounts;
+
 		private int _index;
 
 		/// <summary>
@@ -84,10 +105,70 @@ public partial class CollectionMatchOptions
 			   (!_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) || _additionalItems.Count > 0);
 
 		/// <remarks>
-		///     An item whose comparisons complete synchronously returns without a state machine.
+		///     An item that is found among the counted expected items is not matched, as long as all items before it
+		///     were found as well.
 		/// </remarks>
 		public ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
+		{
+			if (GetExpectedCounts(options) is not { } expectedCounts)
+			{
+				return Match(it, value, options, maximumNumber);
+			}
+
+			return expectedCounts.TryFind(value)
+				? new ValueTask<(bool, string?)>((false, null))
+				: MatchAfterTheFoundItems(expectedCounts, it, value, options, maximumNumber);
+		}
+
+		private async ValueTask<(bool, string?)> MatchAfterTheFoundItems(ExpectedItemCounts<T> expectedCounts,
+			string it, T value, IOptionsEquality<T2> options, int maximumNumber)
+		{
+			await MatchTheFoundItems(expectedCounts, it, options, maximumNumber);
+			return await Match(it, value, options, maximumNumber);
+		}
+
+		/// <summary>
+		///     Matches the items that were only counted so far, so that the matching continues as if every item had
+		///     been matched.
+		/// </summary>
+		/// <remarks>
+		///     Each of these items is equal to a distinct expected item, so none of them is a deviation.
+		/// </remarks>
+		private async ValueTask MatchTheFoundItems(ExpectedItemCounts<T> expectedCounts, string it,
+			IOptionsEquality<T2> options, int maximumNumber)
+		{
+			// The matching ends the counting, also when no item was found.
+			_ = GetMatching(options);
+			_expectedCounts = null;
+			foreach (T item in expectedCounts.FoundItems)
+			{
+				await Match(it, item, options, maximumNumber);
+			}
+		}
+
+		/// <summary>
+		///     The counts of the expected items, as long as no item has to be matched.
+		/// </summary>
+		/// <remarks>
+		///     Only equality requires every item to be found among the expected items and the other way round. The
+		///     options are only known once the items are compared.
+		/// </remarks>
+		private ExpectedItemCounts<T>? GetExpectedCounts(IOptionsEquality<T2> options)
+		{
+			if (_matching is not null || _equivalenceRelations.Includes(EquivalenceRelations.Contains) ||
+			    _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn))
+			{
+				return null;
+			}
+
+			return _expectedCounts ??= CountExpectedItems(_expected, options);
+		}
+
+		/// <remarks>
+		///     An item whose comparisons complete synchronously returns without a state machine.
+		/// </remarks>
+		private ValueTask<(bool, string?)> Match(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			int index = _index++;
 			ItemMatching<T, T3> matching = GetMatching(options);
@@ -139,10 +220,34 @@ public partial class CollectionMatchOptions
 		}
 
 		/// <remarks>
-		///     Without pending items that have to be awaited, it returns without a state machine.
+		///     When every item was found among the counted expected items and none of them is left, the expectation is
+		///     met.
 		/// </remarks>
 		public ValueTask<(bool, string?)>
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
+		{
+			if (GetExpectedCounts(options) is not { } expectedCounts)
+			{
+				return CompleteTheMatching(it, options, maximumNumber);
+			}
+
+			return expectedCounts.HasFoundAll
+				? new ValueTask<(bool, string?)>((false, null))
+				: CompleteAfterTheFoundItems(expectedCounts, it, options, maximumNumber);
+		}
+
+		private async ValueTask<(bool, string?)> CompleteAfterTheFoundItems(ExpectedItemCounts<T> expectedCounts,
+			string it, IOptionsEquality<T2> options, int maximumNumber)
+		{
+			await MatchTheFoundItems(expectedCounts, it, options, maximumNumber);
+			return await CompleteTheMatching(it, options, maximumNumber);
+		}
+
+		/// <remarks>
+		///     Without pending items that have to be awaited, it returns without a state machine.
+		/// </remarks>
+		private ValueTask<(bool, string?)>
+			CompleteTheMatching(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			ItemMatching<T, T3> matching = GetMatching(options);
 			ValueTask resolved = matching.ResolvePendingItems();
@@ -254,5 +359,13 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		protected abstract ValueTask<bool>
 			AreConsideredEqual(int index, T value, T3 expected, IOptionsEquality<T2> options);
+
+		/// <summary>
+		///     Counts the <paramref name="expected" /> items, when the <paramref name="options" /> compare an item with
+		///     an expected item like <see cref="EqualityComparer{T}.Default" /> does; otherwise
+		///     <see langword="null" />.
+		/// </summary>
+		protected virtual ExpectedItemCounts<T>? CountExpectedItems(List<T3> expected, IOptionsEquality<T2> options)
+			=> null;
 	}
 }
