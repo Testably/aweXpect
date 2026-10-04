@@ -271,21 +271,28 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	/// </remarks>
 	[StackTraceHidden]
 	public ValueTaskAwaiter<TType> GetAwaiter()
+		=> Evaluate().GetAwaiter();
+
+	/// <summary>
+	///     Evaluates the expectations, see <see cref="GetAwaiter" />.
+	/// </summary>
+	[StackTraceHidden]
+	internal ValueTask<TType> Evaluate()
 	{
 		ValueTask<ConstraintResult> isMet = ExpectationBuilder.IsMet();
 		if (!isMet.IsCompletedSuccessfully)
 		{
-			return new ValueTask<TType>(GetResultOrThrow(isMet)).GetAwaiter();
+			return new ValueTask<TType>(GetResultOrThrow(isMet));
 		}
 
 		ConstraintResult result = isMet.Result;
 		if (result.Outcome == Outcome.Success && Customize.aweXpect.TraceWriter is null &&
 		    result.TryGetStoredValue(out TType? value))
 		{
-			return new ValueTask<TType>(value!).GetAwaiter();
+			return new ValueTask<TType>(value!);
 		}
 
-		return new ValueTask<TType>(GetResultOrThrow(new ValueTask<ConstraintResult>(result))).GetAwaiter();
+		return new ValueTask<TType>(GetResultOrThrow(new ValueTask<ConstraintResult>(result)));
 	}
 
 	/// <summary>
