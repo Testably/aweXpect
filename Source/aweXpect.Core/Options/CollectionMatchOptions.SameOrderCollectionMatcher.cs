@@ -12,8 +12,10 @@ public partial class CollectionMatchOptions
 	private sealed class SameOrderCollectionMatcher<T, T2>(
 		EquivalenceRelations equivalenceRelation,
 		IEnumerable<T> expected,
-		bool ignoreInterspersedItems)
-		: SameOrderCollectionMatcherBase<T, T2, T>(equivalenceRelation, expected, ignoreInterspersedItems)
+		bool ignoreInterspersedItems,
+		bool addsInAnyOrderHint)
+		: SameOrderCollectionMatcherBase<T, T2, T>(equivalenceRelation, expected, ignoreInterspersedItems,
+			addsInAnyOrderHint)
 		where T : T2
 	{
 		private HashSet<T>? _expectedValues;
@@ -27,27 +29,35 @@ public partial class CollectionMatchOptions
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, T expected,
 			IOptionsEquality<T2> options)
 			=> options.AreConsideredEqual(value, expected);
+
+		protected override ICollectionMatcher<T, T2> CreateAnyOrderMatcher()
+			=> new AnyOrderCollectionMatcher<T, T2>(EquivalenceRelation, ExpectedItems);
 	}
 
 	private sealed class SameOrderFromExpectationCollectionMatcher<T, T2>(
 		EquivalenceRelations equivalenceRelation,
 		IEnumerable<ExpectationItem<T>> expected,
-		bool ignoreInterspersedItems)
+		bool ignoreInterspersedItems,
+		bool addsInAnyOrderHint)
 		: SameOrderCollectionMatcherBase<T, T2, ExpectationItem<T>>(equivalenceRelation, expected,
-			ignoreInterspersedItems)
+			ignoreInterspersedItems, addsInAnyOrderHint)
 		where T : T2
 	{
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, ExpectationItem<T> expected,
 			IOptionsEquality<T2> options)
 			=> expected.IsMetBy(value, index);
+
+		protected override ICollectionMatcher<T, T2> CreateAnyOrderMatcher()
+			=> new AnyOrderFromExpectationCollectionMatcher<T, T2>(EquivalenceRelation, ExpectedItems);
 	}
 
 	private sealed class SameOrderFromPredicateCollectionMatcher<T, T2>(
 		EquivalenceRelations equivalenceRelation,
 		IEnumerable<Expression<Func<T, bool>>> expected,
-		bool ignoreInterspersedItems)
+		bool ignoreInterspersedItems,
+		bool addsInAnyOrderHint)
 		: SameOrderCollectionMatcherBase<T, T2, Expression<Func<T, bool>>>(equivalenceRelation, expected,
-			ignoreInterspersedItems)
+			ignoreInterspersedItems, addsInAnyOrderHint)
 		where T : T2
 	{
 		private readonly CompiledPredicates<T> _predicates = new();
@@ -55,16 +65,23 @@ public partial class CollectionMatchOptions
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, Expression<Func<T, bool>> expected,
 			IOptionsEquality<T2> options)
 			=> _predicates.Invoke(expected, value, index);
+
+		protected override ICollectionMatcher<T, T2> CreateAnyOrderMatcher()
+			=> new AnyOrderFromPredicateCollectionMatcher<T, T2>(EquivalenceRelation, ExpectedItems);
 	}
 
 	/// <summary>
 	///     Equality compares each item with the expected item at its position; the containment relations search a run
 	///     or a subsequence, and their failures are described by <see cref="InOrderMismatch" />.
 	/// </summary>
-	private abstract class SameOrderCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>,
-		IRecordingCollectionMatcher<T>
+	private abstract class SameOrderCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
 		where T : T2
 	{
+		/// <summary>
+		///     Whether a failure gets a hint, when the same items match in any order.
+		/// </summary>
+		private readonly bool _addsInAnyOrderHint;
+
 		private readonly EquivalenceRelations _equivalenceRelations;
 		private readonly T3[] _expectedItems;
 		private readonly bool _ignoreInterspersedItems;
@@ -102,16 +119,17 @@ public partial class CollectionMatchOptions
 
 		protected SameOrderCollectionMatcherBase(EquivalenceRelations equivalenceRelation,
 			IEnumerable<T3> expected,
-			bool ignoreInterspersedItems)
+			bool ignoreInterspersedItems,
+			bool addsInAnyOrderHint)
 		{
 			_equivalenceRelations = equivalenceRelation;
 			_ignoreInterspersedItems = ignoreInterspersedItems;
+			_addsInAnyOrderHint = addsInAnyOrderHint;
 			_expectedItems = expected as T3[] ?? expected.ToArray();
 			_isFound = _expectedItems.Length == 0;
 		}
 
-		/// <inheritdoc />
-		public IReadOnlyList<T> Values => _values;
+		protected EquivalenceRelations EquivalenceRelation => _equivalenceRelations;
 
 		protected T3[] ExpectedItems => _expectedItems;
 
@@ -150,8 +168,45 @@ public partial class CollectionMatchOptions
 			return (false, null);
 		}
 
-		public async ValueTask<(bool, string?)>
+		/// <remarks>
+		///     The matcher that checks the items in any order for the hint is only created for a failure.
+		/// </remarks>
+		public ValueTask<(bool, string?)>
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
+			=> _addsInAnyOrderHint
+				? VerifyCompleteWithInAnyOrderHint(it, options, maximumNumber)
+				: VerifyCompleteInOrder(it, options, maximumNumber);
+
+		private async ValueTask<(bool, string?)>
+			VerifyCompleteWithInAnyOrderHint(string it, IOptionsEquality<T2> options, int maximumNumber)
+		{
+			(bool isFailure, string? error) = await VerifyCompleteInOrder(it, options, maximumNumber);
+			if (error is null || !await MatchesInAnyOrder(it, options, maximumNumber))
+			{
+				return (isFailure, error);
+			}
+
+			return (isFailure, error + Environment.NewLine + ItemsMatchInADifferentOrderHint);
+		}
+
+		private async ValueTask<bool> MatchesInAnyOrder(string it, IOptionsEquality<T2> options, int maximumNumber)
+		{
+			ICollectionMatcher<T, T2> matcher = CreateAnyOrderMatcher();
+			foreach (T value in _values)
+			{
+				(bool isFailure, string? _) = await matcher.Verify(it, value, options, maximumNumber);
+				if (isFailure)
+				{
+					return false;
+				}
+			}
+
+			(bool isCompleteFailure, string? _) = await matcher.VerifyComplete(it, options, maximumNumber);
+			return !isCompleteFailure;
+		}
+
+		private async ValueTask<(bool, string?)>
+			VerifyCompleteInOrder(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
 			    !_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
@@ -505,5 +560,10 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		protected abstract ValueTask<bool>
 			AreConsideredEqual(int index, T value, T3 expected, IOptionsEquality<T2> options);
+
+		/// <summary>
+		///     Creates the matcher that checks whether the same items match in any order.
+		/// </summary>
+		protected abstract ICollectionMatcher<T, T2> CreateAnyOrderMatcher();
 	}
 }
