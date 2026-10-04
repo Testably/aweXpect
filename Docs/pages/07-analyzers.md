@@ -134,11 +134,11 @@ also reports a delegate whose `ValueTask` is given explicitly as the type argume
 
 After an expectation that a `null` subject can never satisfy, such as `IsNotNull()`, the
 `aweXpect` package suppresses the nullability warnings CS8600, CS8602, CS8604 and CS8629 for that subject, with the
-suppression IDs `aweXpect1001` to `aweXpect1004`. The subject has to be a local variable or a parameter that is not a
-`ref`, and the expectation has to be awaited or verified in a preceding statement in the same method, local function
-or lambda, without a branch, a label or a write to the subject in between. A `ref` alias of the subject prevents the
-suppression, as it can change the subject unnoticed. Only the warnings are suppressed; the null state of the compiler
-is unchanged.
+suppression IDs `aweXpect1001` to `aweXpect1004`. The subject has to be a local variable or a parameter that is
+neither a `ref` nor a parameter of a primary constructor, which any member can write to, and the expectation has to be
+awaited or verified in a preceding statement in the same method, local function or lambda, without a branch, a label
+or a write to the subject in between. A `ref` alias of the subject prevents the suppression, as it can change the
+subject unnoticed. Only the warnings are suppressed; the null state of the compiler is unchanged.
 Expectations of extension packages take part when they are marked with `[GuaranteesNotNull]`, see
 [nullability warnings](./11-extending/02-constraints-and-results.md#nullability-warnings).
 
@@ -154,3 +154,15 @@ int length = title.Length;   // no CS8602
 The source generator warns with `aweXpect2001` when a type named in
 `[assembly: GenerateMetadata(typeof(…))]` yields no registration and stays on the reflection path. See
 [Native AOT and trimming](./03-how-it-works/08-native-aot.md#equivalency).
+
+## Test framework adapter
+
+The source generator warns with `aweXpect2002` when a test project on .NET 8 or later sets `<LangVersion>` below 9.
+The generated test framework adapter registers itself with a module initializer, which needs C# 9, and on .NET 8 or
+later the loaded assemblies are not scanned for it. Without the adapter, aweXpect throws its own exceptions, so a
+skipped or inconclusive test is reported as failed. Set `<LangVersion>` to 9 or later, or register the adapter before
+the first expectation, see [initialization](./11-extending/05-initialization.md).
+
+```csharp no-compile
+TestFrameworkRegistry.Register(new aweXpect.Frameworks.NunitAdapter());
+```

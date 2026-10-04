@@ -16,9 +16,10 @@ namespace aweXpect.Analyzers;
 /// </summary>
 /// <remarks>
 ///     The suppression is limited to expectations that are guaranteed to have been evaluated for the same subject:
-///     the subject must be a local variable or a parameter that is not a <see langword="ref" />, the expectation must
-///     be awaited or verified in a preceding statement in an enclosing block of the warning, must not be separated
-///     from it by any branching or label and the subject must not be written to in between.
+///     the subject must be a local variable or a parameter that is neither a <see langword="ref" /> nor a parameter
+///     of a primary constructor, the expectation must be awaited or verified in a preceding statement in an
+///     enclosing block of the warning, must not be separated from it by any branching or label and the subject must
+///     not be written to in between.
 ///     <para />
 ///     Only the warnings are suppressed, the null state of the compiler remains unchanged.
 /// </remarks>
@@ -61,8 +62,10 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 
 		// Only local variables and parameters can be tracked reliably: a field could be changed by any method call
 		// in between and a property could even return a different value on each access. The same applies to a
-		// `ref` local or parameter, which can refer to a field.
-		if (subject is not (ILocalSymbol { RefKind: RefKind.None, } or IParameterSymbol { RefKind: RefKind.None, }))
+		// `ref` local or parameter, which can refer to a field, and to a primary constructor parameter used in a
+		// member, which is captured in a field.
+		if (subject is not (ILocalSymbol { RefKind: RefKind.None, } or IParameterSymbol { RefKind: RefKind.None, }) ||
+		    IsPrimaryConstructorParameter(subject, context.CancellationToken))
 		{
 			return false;
 		}
@@ -71,6 +74,14 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 		return ExpectsNotNullBefore(identifier, subject, semanticModel, context.CancellationToken) &&
 		       !IsWrittenIndirectly(identifier, subject, semanticModel, context.CancellationToken);
 	}
+
+	private static bool IsPrimaryConstructorParameter(ISymbol subject, CancellationToken cancellationToken)
+		=> subject is IParameterSymbol
+		   {
+			   ContainingSymbol: IMethodSymbol { MethodKind: MethodKind.Constructor, } constructor,
+		   } &&
+		   constructor.DeclaringSyntaxReferences.Any(reference =>
+			   reference.GetSyntax(cancellationToken) is TypeDeclarationSyntax);
 
 	/// <summary>
 	///     Returns the identifier that the nullability warning refers to.

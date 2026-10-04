@@ -105,7 +105,8 @@ assembly named `Systemics`.
 :::note
 The loaded assemblies are only scanned for a test framework adapter below .NET 8, e.g. on .NET Framework. On .NET 8 or
 later the generated adapter registers itself when the test assembly is loaded, so `ExcludedAssemblyPrefixes` has no
-effect there.
+effect there. This registration needs C# 9 or later, see
+[aweXpect2002](../07-analyzers.md#test-framework-adapter).
 :::
 
 ## Settings

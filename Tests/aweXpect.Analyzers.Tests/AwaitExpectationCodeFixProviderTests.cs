@@ -552,6 +552,33 @@ public class AwaitExpectationCodeFixProviderTests
 		""");
 
 	[Fact]
+	public async Task ShouldNotOfferAFixForABareGetAwaiter() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest()
+		    {
+		        {|aweXpect0001:Expect.That(true)|}.IsTrue().GetAwaiter();
+		    }
+		}
+		""",
+		"""
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest()
+		    {
+		        {|aweXpect0001:Expect.That(true)|}.IsTrue().GetAwaiter();
+		    }
+		}
+		""");
+
+	[Fact]
 	public async Task ShouldNotOfferAFixForACalledLocalFunction() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using aweXpect;
