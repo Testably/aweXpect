@@ -121,11 +121,11 @@ internal sealed class AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 		}
 		catch (Exception exception)
 		{
-			resolvedReason =
-				$"the reason did throw {Formatter.Format(exception.GetType()).PrependAOrAn()}: {exception.Message}";
+			resolvedReason = $"the reason did throw {Formatter.Format(exception.GetType()).PrependAOrAn()}: " +
+			                 exception.Message.DisplayWhitespace();
 		}
 
-		if (!string.IsNullOrEmpty(resolvedReason))
+		if (!string.IsNullOrWhiteSpace(resolvedReason))
 		{
 			_message = CreateMessage(resolvedReason);
 		}

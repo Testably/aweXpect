@@ -206,7 +206,8 @@ public static partial class ValueFormatters
 		// The registered formatters are bypassed, as one of them might be the thrower.
 		StringBuilder exceptionType = new();
 		FormatType(exception.GetType(), exceptionType);
-		return $"{thrower} did throw {exceptionType.ToString().PrependAOrAn()}: {exception.Message}";
+		return
+			$"{thrower} did throw {exceptionType.ToString().PrependAOrAn()}: {exception.Message.DisplayWhitespace()}";
 	}
 
 	/// <summary>

@@ -282,6 +282,24 @@ public class ValueFormatterTests
 	}
 
 	[Fact]
+	public async Task CustomFormatter_WhenItThrows_ShouldEscapeLineBreaksInTheMessage()
+	{
+		MyThrowingFormattableClass subject = new();
+		using IDisposable lifetime = ValueFormatter.Register(
+			new MyThrowingCustomFormatter(new InvalidOperationException("formatter\nfailed")));
+
+		async Task Act()
+			=> await That(subject).IsNull();
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             is null,
+			             but it was [the formatter did throw an InvalidOperationException: formatter\nfailed]
+			             """);
+	}
+
+	[Fact]
 	public async Task CustomFormatter_WhenItThrows_ShouldRenderAPlaceholderInTheFailureMessage()
 	{
 		MyThrowingFormattableClass subject = new();

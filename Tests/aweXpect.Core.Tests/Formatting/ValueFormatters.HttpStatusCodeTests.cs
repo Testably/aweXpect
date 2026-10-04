@@ -74,6 +74,28 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
+		[Fact]
+		public async Task WhenUndefined_ShouldOnlyIncludeNumber()
+		{
+			HttpStatusCode value = (HttpStatusCode)499;
+			StringBuilder sb = new();
+			StringBuilder sbWithType = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			string resultWithType = Formatter.Format(value, FormattingOptions.WithType);
+			string objectResultWithType = Formatter.Format((object?)value, FormattingOptions.WithType);
+			Formatter.Format(sb, value);
+			Formatter.Format(sbWithType, value, FormattingOptions.WithType);
+
+			await That(result).IsEqualTo("499");
+			await That(objectResult).IsEqualTo("499");
+			await That(resultWithType).IsEqualTo("HttpStatusCode 499");
+			await That(objectResultWithType).IsEqualTo("HttpStatusCode 499");
+			await That(sb.ToString()).IsEqualTo("499");
+			await That(sbWithType.ToString()).IsEqualTo("HttpStatusCode 499");
+		}
+
 		[Theory]
 		[InlineData(HttpStatusCode.OK, "HttpStatusCode 200 OK")]
 		[InlineData(HttpStatusCode.BadRequest, "HttpStatusCode 400 BadRequest")]
