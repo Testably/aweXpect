@@ -558,6 +558,7 @@ An expectation on the items of a collection, i.e. an extension method on `IEnume
 `IEnumerableElements<TItem>` gives access to the quantifier and the subject:
 
 ```csharp
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Options;
 
 public static AndOrResult<IEnumerable<Track>, IThat<IEnumerable<Track>?>> AreRadioFriendly(
@@ -574,15 +575,15 @@ private sealed class AreRadioFriendlyConstraint(
     EnumerableQuantifier quantifier)
     : QuantifiedCollectionConstraint<IEnumerable<Track>?, Track>(it, grammars, quantifier,
             g => g.IsPlural() ? "are radio friendly" : "is radio friendly", "were"),
-        IValueConstraint<IEnumerable<Track>?>
+        IContextConstraint<IEnumerable<Track>?>
 {
-    public ConstraintResult IsMetBy(IEnumerable<Track>? actual)
+    public ConstraintResult IsMetBy(IEnumerable<Track>? actual, IEvaluationContext context)
     {
         StartEvaluation();
         Actual = actual;
         if (actual is not null)
         {
-            foreach (Track track in actual)
+            foreach (Track track in context.UseMaterializedEnumerable(actual))
             {
                 Record(track, track.Duration <= TimeSpan.FromMinutes(3));
             }

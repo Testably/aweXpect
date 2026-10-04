@@ -286,9 +286,9 @@ so a type whose `Equals` called more instances equal than its members do passed 
 comparison now fails; to let `Equals` decide, compare the type
 [by value](../04-values/13-equivalency.md#comparing-by-value-or-by-members).
 
-`IsEquivalentTo` fails when it finds no member to compare, unless all members were excluded explicitly. Only public
-members are registered at compile time, so asking for internal members falls back to reflection, which is unavailable
-under trimming.
+`IsEquivalentTo` throws an `InvalidOperationException` when it finds no member to compare, unless all members were
+excluded explicitly. Only public members are registered at compile time, so asking for internal members falls back to
+reflection, which is unavailable under trimming.
 
 `IncludeMembers.Private` is gone: protected and private members are implementation details and are never compared.
 To compare a type whose state is private, compare it
@@ -356,8 +356,8 @@ hid global changes to the other values of its group. Set each value on its own i
 [customization values](../11-extending/04-customization-values.md#add-a-customization-group).
 
 Whether a value set in an assembly-level setup reached the tests depended on the test framework and on whether the
-setup was asynchronous. Set such defaults on the new Customize.aweXpect.Global, e.g.
-Customize.aweXpect.Global.Formatting().MaximumStringLength.Set(500), which applies them to all async flows; a value
+setup was asynchronous. Set such defaults on the new `Customize.aweXpect.Global`, e.g.
+`Customize.aweXpect.Global.Formatting().MaximumStringLength.Set(500)`, which applies them to all async flows; a value
 set in a test still takes precedence. See [Global defaults](../03-how-it-works/07-configuration.md#global-defaults).
 
 ## Extensions and aweXpect.Core
