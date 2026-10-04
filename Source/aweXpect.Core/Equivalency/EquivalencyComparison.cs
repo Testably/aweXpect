@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -13,6 +14,14 @@ namespace aweXpect.Equivalency;
 /// </summary>
 public static partial class EquivalencyComparison
 {
+	private static readonly ConditionalWeakTable<EquivalencyOptions, ConcurrentDictionary<Type, EquivalencyTypeOptions?>>
+		RegisteredOptionsCache = new();
+
+	/// <remarks>
+	///     Shared, because a comparison that only decides never writes to it.
+	/// </remarks>
+	private static readonly StringBuilder UnusedFailureBuilder = new();
+
 	/// <summary>
 	///     Checks if <paramref name="actual" /> is considered equivalent to <paramref name="expected" /> using the
 	///     <paramref name="equivalencyOptions" />.
@@ -36,10 +45,32 @@ public static partial class EquivalencyComparison
 			failureBuilder,
 			"",
 			MemberType.Value,
-			new EquivalencyContext());
+			new EquivalencyContext(equivalencyOptions));
 		JoinSingleLineEntries(failureBuilder, start);
 		return result;
 	}
+
+	/// <summary>
+	///     Checks if <paramref name="actual" /> is considered equivalent to <paramref name="expected" /> using the
+	///     <paramref name="equivalencyOptions" />, without explaining a difference.
+	/// </summary>
+	internal static ValueTask<bool>
+		IsEquivalent<TActual, TExpected>(
+			TActual actual,
+			TExpected expected,
+			EquivalencyOptions equivalencyOptions)
+		=> Compare(
+			actual,
+			expected,
+			equivalencyOptions,
+			equivalencyOptions,
+			UnusedFailureBuilder,
+			"",
+			MemberType.Value,
+			new EquivalencyContext(equivalencyOptions)
+			{
+				IsDecidingOnly = true,
+			});
 
 	/// <remarks>
 	///     The entries are written with the "and" on its own line, because whether any of them spans several lines is
@@ -62,16 +93,20 @@ public static partial class EquivalencyComparison
 		failureBuilder.Replace(separator, $" and{Environment.NewLine}", start, failureBuilder.Length - start);
 	}
 
-	private sealed class EquivalencyContext
+	private sealed class EquivalencyContext(EquivalencyOptions equivalencyOptions)
 	{
+		private HashSet<ComparedPair>? _comparedPairs;
+		private ConcurrentDictionary<Type, EquivalencyTypeOptions?>? _registeredOptions;
+
 		/// <summary>
 		///     Tracks the pairs that are compared on the current path to catch recursions.
 		/// </summary>
 		/// <remarks>
 		///     Only the ancestors of the current pair are tracked, so that an instance which is reached again via a
-		///     second, independent path is still compared against its own expected counterpart.
+		///     second, independent path is still compared against its own expected counterpart.<br />
+		///     Created on first use, as values that are compared by value have no nested pairs.
 		/// </remarks>
-		public HashSet<ComparedPair> ComparedPairs { get; } = [];
+		public HashSet<ComparedPair> ComparedPairs => _comparedPairs ??= [];
 
 		/// <summary>
 		///     The number of nested comparisons on the current path.
@@ -95,8 +130,9 @@ public static partial class EquivalencyComparison
 		///     differences.
 		/// </summary>
 		/// <remarks>
-		///     Set while elements whose order is ignored are paired, as most of the pairs that are tried are not
-		///     equivalent and never reported, so formatting their values would be wasted.
+		///     Set for a comparison whose differences nobody reads, e.g. of the items of a collection, and while elements
+		///     whose order is ignored are paired, as most of the pairs that are tried are not equivalent and never
+		///     reported, so formatting their values would be wasted.
 		/// </remarks>
 		public bool IsDecidingOnly { get; set; }
 
@@ -113,10 +149,12 @@ public static partial class EquivalencyComparison
 		///     The options registered for a type, or <see langword="null" /> when it has no registration.
 		/// </summary>
 		/// <remarks>
-		///     Cached, because resolving a registration invokes its callback, and every compared pair looks up both
-		///     of its types.
+		///     Cached per <see cref="EquivalencyOptions" /> instance instead of per comparison, because resolving a
+		///     registration invokes its callback, every compared pair looks up both of its types, and the items of a
+		///     collection are compared one by one with the same options. Only read when the options have registrations.
 		/// </remarks>
-		public Dictionary<Type, EquivalencyTypeOptions?> RegisteredOptions { get; } = [];
+		public ConcurrentDictionary<Type, EquivalencyTypeOptions?> RegisteredOptions
+			=> _registeredOptions ??= RegisteredOptionsCache.GetOrCreateValue(equivalencyOptions);
 
 		private EquivalencyTypeOptions? _lastParentOptions;
 		private EquivalencyTypeOptions? _lastInheritedOptions;

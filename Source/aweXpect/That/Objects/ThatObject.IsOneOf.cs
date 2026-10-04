@@ -76,6 +76,8 @@ public static partial class ThatObject
 		: ConstraintResult.WithValue<TSubject>(it, grammars),
 			IAsyncConstraint<TSubject>
 	{
+		private IObjectMatchResult? _matchResult;
+
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
@@ -83,12 +85,17 @@ public static partial class ThatObject
 			options.AppendContexts(contexts);
 		}
 
+		/// <remarks>
+		///     Every candidate is compared with an explanation, as the failure message explains the comparison with a
+		///     single candidate, or with the matching one when negated.
+		/// </remarks>
 		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			foreach (TExpected? value in expected)
 			{
-				if (await options.AreConsideredEqual(actual, value))
+				_matchResult = await options.AreConsideredEqualWithExplanation(actual, value);
+				if (_matchResult.IsMatch)
 				{
 					Outcome = Outcome.Success;
 					return this;
@@ -115,7 +122,7 @@ public static partial class ThatObject
 		{
 			TExpected?[] candidates = expected.Take(2).ToArray();
 			stringBuilder.Append(candidates.Length == 1
-				? options.GetExtendedFailure(It, Grammars, Actual, candidates[0])
+				? _matchResult!.GetExtendedFailure(It, Grammars, Actual, candidates[0])
 				: $"{It}{Grammars.SubjectVerb(It, " was ", " were ")}{Formatter.Format(Actual, FormattingOptions.Indented())}");
 		}
 
@@ -124,6 +131,6 @@ public static partial class ThatObject
 				"one of " + (expectedExpression ?? Formatter.Format(expected)).TrimCommonWhiteSpace()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
 	}
 }

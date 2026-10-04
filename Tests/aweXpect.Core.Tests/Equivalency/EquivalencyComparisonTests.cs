@@ -1235,6 +1235,27 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenComparedRepeatedlyWithTheSameOptions_ShouldResolveTheRegistrationOnce()
+	{
+		int resolutions = 0;
+		EquivalencyOptions options = new EquivalencyOptions().For<WithProperty>(typeOptions =>
+		{
+			resolutions++;
+			return typeOptions;
+		});
+
+		bool first = await EquivalencyComparison.Compare(new WithProperty(1), new WithProperty(1), options,
+			new StringBuilder());
+		bool second = await EquivalencyComparison.Compare(new WithProperty(2), new WithProperty(3), options,
+			new StringBuilder());
+
+		await That(first).IsTrue();
+		await That(second).IsFalse();
+		await That(resolutions).IsEqualTo(1)
+			.Because("the registered options are cached per options instance, e.g. for the items of a collection");
+	}
+
+	[Fact]
 	public async Task WhenCultureInfoMemberDiffers_ShouldReportTheDifference()
 	{
 		var actual = new

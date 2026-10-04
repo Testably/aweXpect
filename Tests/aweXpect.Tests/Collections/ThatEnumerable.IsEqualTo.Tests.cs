@@ -1879,6 +1879,67 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenEquivalentAndAnItemDiffers_ShouldFail()
+			{
+				IEnumerable<MyClass> subject = ToEnumerable([new MyClass(1), new MyClass(2), new MyClass(3),]);
+				MyClass[] expected = [new MyClass(3), new MyClass(1), new MyClass(4),];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).InAnyOrder().Equivalent();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected using equivalency in any order,
+					             but it
+					               contained item MyClass {
+					                 StringValue = "",
+					                 Value = 2
+					               } at index 1 that was not expected
+					             and
+					               lacked 1 of 3 expected items: MyClass {
+					                 StringValue = "",
+					                 Value = 4
+					               }
+
+					             Collection:
+					             [
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 1
+					               },
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 2
+					               },
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 3
+					               }
+					             ]
+
+					             Expected:
+					             [
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 3
+					               },
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 1
+					               },
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 4
+					               }
+					             ]
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenMaximumNumberOfCollectionItemsIsIntMaxValue_ShouldFailNormally()
 			{
 				int[] subject = [1, 2, 3,];

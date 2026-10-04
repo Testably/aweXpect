@@ -494,19 +494,31 @@ public static TSelf ByTitle<TSelf, TElement>(this IObjectEqualityResult<TSelf, T
 private sealed class ByTitleMatchType : IObjectMatchType
 {
     public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-        => new(actual is Track a && expected is Track e ? a.Title == e.Title : actual is null && expected is null);
+        => new(HaveSameTitle(actual, expected));
+
+    public ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(
+        TActual actual, TExpected expected)
+        => new(new ByTitleResult(HaveSameTitle(actual, expected)));
 
     public string GetExpectation(string expected, ExpectationGrammars grammars)
         => $"{(grammars.IsPlural() ? "are" : "is")} {(grammars.IsNegated() ? "not " : "")}titled like {expected}";
-
-    public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
-        => $"{it}{(grammars.IsPlural() && it != "it" ? " were" : " was")} titled {Formatter.Format((actual as Track)?.Title)}";
 
     public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
         => $"{(itemNoun is null ? "" : itemNoun + " ")}titled like {expected}";
 
     public void AppendContexts(ResultContextCollector contexts)
     {
+    }
+
+    private static bool HaveSameTitle(object? actual, object? expected)
+        => actual is Track a && expected is Track e ? a.Title == e.Title : actual is null && expected is null;
+
+    private sealed class ByTitleResult(bool isMatch) : IObjectMatchResult
+    {
+        public bool IsMatch => isMatch;
+
+        public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
+            => $"{it}{(grammars.IsPlural() && it != "it" ? " were" : " was")} titled {Formatter.Format((actual as Track)?.Title)}";
     }
 }
 ```
@@ -517,7 +529,11 @@ Track track = new("Hey Jude", new TimeSpan(0, 7, 11));
 await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4))).ByTitle();
 ```
 
-- `GetExpectation` replaces "is equal to …" in the expectation text, and `GetExtendedFailure` writes the result text.
+- `AreConsideredEqual` only decides, e.g. for each item of a collection. `AreConsideredEqualWithExplanation` compares
+  for a failure message and returns an `IObjectMatchResult`, whose `GetExtendedFailure` writes the result text. A match
+  type that keeps the differences of the comparison may return itself as the result, which is then only valid until
+  its next comparison.
+- `GetExpectation` replaces "is equal to …" in the expectation text.
 - `PrependItemAndComparison` describes a single expected item, e.g. in "has item titled like …".
 - `AppendContexts` can add [contexts](03-message-conventions.md#contexts) that explain a failure, e.g. the options of
   the comparison.

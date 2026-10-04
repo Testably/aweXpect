@@ -78,6 +78,53 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task Equivalent_WhenNoItemIsEquivalent_ShouldFail()
+			{
+				IEnumerable<MyClass> subject = Factory.GetFibonacciNumbers(5).Select(x => new MyClass(x));
+				MyClass expected = new(4);
+
+				async Task Act()
+					=> await That(subject).Contains(expected).Equivalent();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains an item equivalent to MyClass {
+					               StringValue = "",
+					               Value = 4
+					             } at least once,
+					             but it did not contain it
+
+					             Collection:
+					             [
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 1
+					               },
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 1
+					               },
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 2
+					               },
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 3
+					               },
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 5
+					               }
+					             ]
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """);
+			}
+
 			[Theory]
 			[InlineData(1, true)]
 			[InlineData(2, true)]

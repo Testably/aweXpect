@@ -391,12 +391,17 @@ public static partial class EquivalencyComparison
 	private static EquivalencyTypeOptions? GetRegisteredOptions(Type type, EquivalencyOptions equivalencyOptions,
 		EquivalencyContext context)
 	{
+		if (!equivalencyOptions.HasRegistrations)
+		{
+			return null;
+		}
+
 		if (!context.RegisteredOptions.TryGetValue(type, out EquivalencyTypeOptions? options))
 		{
 			options = equivalencyOptions.TryGetOptionsFor(type, out EquivalencyTypeOptions? registeredOptions)
 				? registeredOptions
 				: null;
-			context.RegisteredOptions.Add(type, options);
+			options = context.RegisteredOptions.GetOrAdd(type, options);
 		}
 
 		return options;

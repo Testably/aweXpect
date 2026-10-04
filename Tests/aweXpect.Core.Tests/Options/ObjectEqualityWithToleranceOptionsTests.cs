@@ -5,6 +5,21 @@ namespace aweXpect.Core.Tests.Options;
 
 public class ObjectEqualityWithToleranceOptionsTests
 {
+	[Theory]
+	[InlineData(3, true)]
+	[InlineData(4, false)]
+	public async Task AreConsideredEqualWithExplanation_ShouldDecideWithTheTolerance(int expected, bool expectMatch)
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new((a, e, t) => Math.Abs(a - e) <= t);
+		sut.Within(2);
+
+		IObjectMatchResult result = await sut.AreConsideredEqualWithExplanation(1, expected);
+
+		await That(result.IsMatch).IsEqualTo(expectMatch);
+		await That(result.GetExtendedFailure("it", ExpectationGrammars.None, 1, expected)).IsEqualTo("it was 1");
+	}
+
 	[Fact]
 	public async Task ForEvaluation_ShouldReadTheDefaultToleranceOnce()
 	{

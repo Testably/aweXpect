@@ -96,6 +96,11 @@ public record EquivalencyOptions : EquivalencyTypeOptions
 	public EquivalencyTypeOptions GetOptionsFor(Type type)
 		=> TryGetOptionsFor(type, out EquivalencyTypeOptions? options) ? options : this;
 
+	/// <summary>
+	///     Whether options are registered for any type with <see cref="For{TMember}" />.
+	/// </summary>
+	internal bool HasRegistrations => Registrations.Count > 0;
+
 	/// <remarks>
 	///     The base types are walked, most derived first: the <paramref name="type" /> is the runtime type of a value,
 	///     which can never be an abstract type the user registered options for. A <see cref="Type" /> member is a
