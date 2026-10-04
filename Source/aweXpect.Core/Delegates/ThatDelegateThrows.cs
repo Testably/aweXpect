@@ -16,7 +16,7 @@ public partial class ThatDelegateThrows<TException>(
 	/// <summary>
 	///     The throw options.
 	/// </summary>
-	public ThatDelegate.ThrowsOption ThrowOptions { get; } = throwOptions;
+	internal ThatDelegate.ThrowsOption ThrowOptions { get; } = throwOptions;
 
 	/// <inheritdoc cref="IExpectThat{T}.ExpectationBuilder" />
 	ExpectationBuilder IExpectThat<TException>.ExpectationBuilder => ExpectationBuilder;

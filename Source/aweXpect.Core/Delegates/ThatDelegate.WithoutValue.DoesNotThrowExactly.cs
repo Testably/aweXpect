@@ -17,7 +17,7 @@ public abstract partial class ThatDelegate
 		[GuaranteesNotNull]
 		public ExpectationResult DoesNotThrowExactly<TException>()
 			where TException : Exception
-			=> new(ExpectationBuilder.AddConstraint((it, grammars) =>
+			=> new(_expectationBuilder.AddConstraint((it, grammars) =>
 				new DoesNotThrowConstraint(it, grammars, typeof(TException), true, null)));
 
 		/// <summary>
@@ -28,7 +28,7 @@ public abstract partial class ThatDelegate
 		public ExpectationResult DoesNotThrowExactly(Type type)
 		{
 			type.ThrowIfNotAnExceptionType();
-			return new(ExpectationBuilder.AddConstraint(type, static (exceptionType, it, grammars) =>
+			return new(_expectationBuilder.AddConstraint(type, static (exceptionType, it, grammars) =>
 				new DoesNotThrowConstraint(it, grammars, exceptionType, true, null)));
 		}
 	}

@@ -12,10 +12,7 @@ namespace aweXpect.Delegates;
 /// </summary>
 public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder)
 {
-	/// <summary>
-	///     The expectation builder.
-	/// </summary>
-	public ExpectationBuilder ExpectationBuilder { get; } = expectationBuilder;
+	private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 
 	internal static string FormatForMessage(Exception? exception, string? indentation, string relation = "")
 	{

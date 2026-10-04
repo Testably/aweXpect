@@ -10,5 +10,7 @@ public abstract partial class ThatDelegate
 	public sealed partial class WithoutValue(ExpectationBuilder expectationBuilder)
 		: ThatDelegate(expectationBuilder), IExpectThat<WithoutValue>
 	{
+		/// <inheritdoc cref="IExpectThat{T}.ExpectationBuilder" />
+		ExpectationBuilder IExpectThat<WithoutValue>.ExpectationBuilder => _expectationBuilder;
 	}
 }

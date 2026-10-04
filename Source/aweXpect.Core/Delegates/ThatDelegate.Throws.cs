@@ -43,7 +43,7 @@ public abstract partial class ThatDelegate
 		where TException : Exception
 	{
 		ThrowsOption throwOptions = new();
-		return new ThatDelegateThrows<TException>(ExpectationBuilder
+		return new ThatDelegateThrows<TException>(_expectationBuilder
 				.AddConstraint((ExceptionType: exceptionType, Exactly: exactly, ThrowOptions: throwOptions),
 					static (state, it, grammars) => new DelegateThrowsWithinTimeoutConstraint(it, grammars,
 						state.ExceptionType, state.Exactly, state.ThrowOptions))

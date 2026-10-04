@@ -8,7 +8,7 @@ namespace aweXpect.Delegates;
 /// <summary>
 ///     The subject of <see cref="ThatDelegate.WithValue{T}.Eventually()" />, which allows configuring the retries.
 /// </summary>
-[DebuggerDisplay("EventuallySubject<{typeof(T)}>: {ExpectationBuilder}")]
+[DebuggerDisplay("EventuallySubject<{typeof(T)}>: {_expectationBuilder}")]
 public readonly struct EventuallySubject<T> : IExpectThat<T>, IThatSubject<T>
 {
 	private readonly EventuallyExpectationBuilder<T> _expectationBuilder;
@@ -19,7 +19,7 @@ public readonly struct EventuallySubject<T> : IExpectThat<T>, IThatSubject<T>
 	}
 
 	/// <inheritdoc cref="IExpectThat{T}.ExpectationBuilder" />
-	public ExpectationBuilder ExpectationBuilder => _expectationBuilder;
+	ExpectationBuilder IExpectThat<T>.ExpectationBuilder => _expectationBuilder;
 
 	/// <summary>
 	///     Sets the <paramref name="interval" /> in which the delegate is re-evaluated.

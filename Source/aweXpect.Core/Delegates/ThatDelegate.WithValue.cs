@@ -26,6 +26,9 @@ public abstract partial class ThatDelegate
 			: base(expectationBuilder)
 			=> _subject = subject;
 
+		/// <inheritdoc cref="IExpectThat{T}.ExpectationBuilder" />
+		ExpectationBuilder IExpectThat<WithValue<T>>.ExpectationBuilder => _expectationBuilder;
+
 		/// <summary>
 		///     Specify expectations that the delegate must eventually satisfy.
 		/// </summary>
@@ -44,6 +47,6 @@ public abstract partial class ThatDelegate
 		///     When the expectation is canceled before the timeout expires, it is reported as inconclusive.
 		/// </remarks>
 		public EventuallySubject<T> Eventually()
-			=> new(new EventuallyExpectationBuilder<T>(_subject, ExpectationBuilder.Subject));
+			=> new(new EventuallyExpectationBuilder<T>(_subject, _expectationBuilder.Subject));
 	}
 }
