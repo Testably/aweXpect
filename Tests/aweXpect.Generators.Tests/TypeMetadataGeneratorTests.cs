@@ -701,6 +701,21 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenGenerateMetadataAttributeNamesAnUnregistrableType_ShouldLinkToTheDocumentation()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class Generic<T> { public T Value { get; set; } = default!; } }",
+			"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(Models.Generic<>))]",
+		]);
+
+		await That(result.GeneratorDiagnostics).HasSingle().Which
+			.Satisfies(x => x.Descriptor.HelpLinkUri == "https://docs.testably.org/aweXpect/analyzers#metadata-generator" &&
+			                x.Descriptor.Description.ToString().Length > 0)
+			.Because("every rule links to its section on the analyzers page and explains itself in the IDE");
+	}
+
+	[Fact]
 	public async Task WhenGenerateMetadataAttributeNamesAnUnregistrableType_ShouldReportADiagnostic()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(

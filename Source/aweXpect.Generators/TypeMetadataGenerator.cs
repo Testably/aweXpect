@@ -48,7 +48,9 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		"'{0}' yields no metadata registration, because it is compared by value, enumerated, abstract, an open generic, not accessible from this assembly, has neither public instance members nor public events, or has a member or event the generated code cannot name; it stays on the reflection path",
 		"aweXpect.Generators",
 		DiagnosticSeverity.Warning,
-		true);
+		true,
+		"The generator registers a type named in GenerateMetadataAttribute, so that an equivalency comparison or event recording does not have to reflect over it, which publishing with trimming or Native AOT enabled would break. A type it cannot register stays on the reflection path.",
+		"https://docs.testably.org/aweXpect/analyzers#metadata-generator");
 
 	private static readonly SymbolDisplayFormat TypeFormat = SymbolDisplayFormat.FullyQualifiedFormat
 		.WithMiscellaneousOptions(SymbolDisplayFormat.FullyQualifiedFormat.MiscellaneousOptions &

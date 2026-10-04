@@ -132,6 +132,29 @@ public sealed class FrameworkGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenConsumerUsesCSharp8_AndCoreScansTheLoadedAssemblies_ShouldNotWarn()
+	{
+		MetadataReference netStandardCore = GeneratorRunner.CompileToReference("aweXpect.Core", """
+			[assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0")]
+			namespace aweXpect.Core.Adapters
+			{
+				public interface ITestFrameworkAdapter { }
+				public static class TestFrameworkRegistry
+				{
+					public static void Register(ITestFrameworkAdapter testFrameworkAdapter, bool overwrite = true) { }
+				}
+			}
+			""");
+
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(new FrameworkGenerator(),
+			["public class Foo { }",], false, LanguageVersion.CSharp8, Frameworks["nunit.framework"], netStandardCore);
+
+		await That(result.Generated).Contains("class NunitAdapter ");
+		await That(result.GeneratorDiagnostics).IsEmpty()
+			.Because("a consumer below .NET 8 resolves the .NET Standard build of aweXpect.Core, which still finds the adapter by scanning the loaded assemblies");
+	}
+
+	[Fact]
 	public async Task WhenConsumerUsesCSharp8_ShouldNotRegisterTheAdapter()
 	{
 		GeneratorRunner.GeneratorResult result = Run("nunit.framework", LanguageVersion.CSharp8);
@@ -139,7 +162,17 @@ public sealed class FrameworkGeneratorTests
 		await That(result.Errors).IsEmpty();
 		await That(result.Generated).Contains("class NunitAdapter ").And
 			.DoesNotContain("ModuleInitializer")
-			.Because("a module initializer needs C# 9, so the adapter is found by scanning the loaded assemblies");
+			.Because("a module initializer needs C# 9, which a consumer pinned to an older language version cannot compile");
+	}
+
+	[Fact]
+	public async Task WhenConsumerUsesCSharp8_ShouldWarnThatTheAdapterIsNotRegistered()
+	{
+		GeneratorRunner.GeneratorResult result = Run("nunit.framework", LanguageVersion.CSharp8);
+
+		await That(result.GeneratorDiagnostics.Select(x => $"{x.Id} {x.Severity}: {x.GetMessage()}")).Contains(
+				"aweXpect2002 Warning: The NunitAdapter cannot register itself, because module initializers need C# 9 or later. Set <LangVersion> to 9 or later, or call TestFrameworkRegistry.Register(new aweXpect.Frameworks.NunitAdapter()) before the first expectation.")
+			.Because("the .NET 8 build of aweXpect.Core no longer scans the loaded assemblies, so without the registration a skipped or inconclusive test would fail");
 	}
 
 	[Fact]
@@ -148,6 +181,7 @@ public sealed class FrameworkGeneratorTests
 		GeneratorRunner.GeneratorResult result = Run("nunit.framework", LanguageVersion.CSharp9);
 
 		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics).IsEmpty();
 		await That(result.Generated).Contains(
 			"global::aweXpect.Core.Adapters.TestFrameworkRegistry.Register(new NunitAdapter(), overwrite: false);");
 	}

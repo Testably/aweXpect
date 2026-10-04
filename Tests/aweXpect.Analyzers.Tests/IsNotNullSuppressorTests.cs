@@ -969,6 +969,28 @@ public class IsNotNullSuppressorTests
 		);
 
 	[Fact]
+	public async Task WhenSubjectIsPrimaryConstructorParameter_ShouldNotSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass(string? subject)
+			{
+			    private void Reset() => subject = null;
+
+			    public async Task MyTest()
+			    {
+			        await Expect.That(subject).IsNotNull();
+			        Reset();
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			NotSuppressedNullabilityWarning()
+		);
+
+	[Fact]
 	public async Task WhenSubjectIsProperty_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""

@@ -13,6 +13,20 @@ namespace aweXpect.Generators;
 [Generator]
 public class FrameworkGenerator : IIncrementalGenerator
 {
+	/// <summary>
+	///     Reported for each generated adapter that is never used, because it cannot register itself and the
+	///     referenced aweXpect.Core does not scan the loaded assemblies for it.
+	/// </summary>
+	private static readonly DiagnosticDescriptor CannotRegisterAdapter = new(
+		"aweXpect2002",
+		"The test framework adapter cannot register itself",
+		"The {0} cannot register itself, because module initializers need C# 9 or later. Set <LangVersion> to 9 or later, or call TestFrameworkRegistry.Register(new aweXpect.Frameworks.{0}()) before the first expectation.",
+		"aweXpect.Generators",
+		DiagnosticSeverity.Warning,
+		true,
+		"On .NET 8 or later, the generated test framework adapter is only used when its module initializer registers it. Without it, aweXpect throws its own exceptions, so a skipped or inconclusive test is reported as failed and a failure as an unexpected exception.",
+		"https://docs.testably.org/aweXpect/analyzers#test-framework-adapter");
+
 	void IIncrementalGenerator.Initialize(IncrementalGeneratorInitializationContext context)
 	{
 		IncrementalValueProvider<Settings> settings = context.CompilationProvider
@@ -28,8 +42,9 @@ public class FrameworkGenerator : IIncrementalGenerator
 				HasDoesNotReturn: HasAttribute(c, "System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute"),
 				HasStackTraceHidden: HasAttribute(c, "System.Diagnostics.StackTraceHiddenAttribute"),
 				HasTestFrameworkRegistry: SupportsAdapterRegistration(c),
-				HasModuleInitializer: HasAttribute(c, "System.Runtime.CompilerServices.ModuleInitializerAttribute") &&
-				                      HasModuleInitializerLanguageVersion(c)));
+				HasModuleInitializerAttribute: HasAttribute(c, "System.Runtime.CompilerServices.ModuleInitializerAttribute"),
+				CanCompileModuleInitializer: HasModuleInitializerLanguageVersion(c),
+				IsAdapterFoundByScan: CoreScansForAdapters(c)));
 
 		context.RegisterSourceOutput(settings, Emit);
 	}
@@ -84,14 +99,32 @@ public class FrameworkGenerator : IIncrementalGenerator
 			registeredAdapters.Add("Xunit3Adapter");
 		}
 
+		EmitRegistrations(context, settings, registeredAdapters);
+	}
+
+	private static void EmitRegistrations(SourceProductionContext context, Settings settings, List<string> adapters)
+	{
 		// Without `ModuleInitializerAttribute` the target framework cannot be trimmed or AOT-published anyway,
 		// and emitting a polyfill would collide with generators like PolySharp, which are invisible here.
-		if (!settings.HasTestFrameworkRegistry || !settings.HasModuleInitializer || registeredAdapters.Count == 0)
+		if (!settings.HasTestFrameworkRegistry || !settings.HasModuleInitializerAttribute)
 		{
 			return;
 		}
 
-		foreach (string adapter in registeredAdapters)
+		if (!settings.CanCompileModuleInitializer)
+		{
+			if (!settings.IsAdapterFoundByScan)
+			{
+				foreach (string adapter in adapters)
+				{
+					context.ReportDiagnostic(Diagnostic.Create(CannotRegisterAdapter, Location.None, adapter));
+				}
+			}
+
+			return;
+		}
+
+		foreach (string adapter in adapters)
 		{
 			context.AddSource($"{adapter}.Registration.g.cs", AdapterRegistration(adapter));
 		}
@@ -115,11 +148,28 @@ public class FrameworkGenerator : IIncrementalGenerator
 			          x.Parameters[1].Type.SpecialType == SpecialType.System_Boolean) == true;
 
 	/// <remarks>
-	///     A consumer pinned below C# 9 could not compile the module initializer, so the adapter is then found by the
-	///     assembly scan.
+	///     A consumer pinned below C# 9 could not compile the module initializer.
 	/// </remarks>
 	private static bool HasModuleInitializerLanguageVersion(Compilation compilation)
 		=> compilation is CSharpCompilation { LanguageVersion: >= LanguageVersion.CSharp9, };
+
+	/// <remarks>
+	///     Only the builds of aweXpect.Core for .NET 8 or later no longer scan the loaded assemblies for an adapter. A
+	///     consumer on .NET 5 to .NET 7 has a module initializer, but resolves the .NET Standard build.
+	/// </remarks>
+	private static bool CoreScansForAdapters(Compilation compilation)
+	{
+		const string netCoreApp = ".NETCoreApp,Version=v";
+		string? targetFramework = compilation
+			.GetTypeByMetadataName("aweXpect.Core.Adapters.TestFrameworkRegistry")?.ContainingAssembly
+			.GetAttributes()
+			.FirstOrDefault(x => x.AttributeClass?.ToDisplayString() ==
+			                     "System.Runtime.Versioning.TargetFrameworkAttribute")?
+			.ConstructorArguments.FirstOrDefault().Value as string;
+		return targetFramework?.StartsWith(netCoreApp, StringComparison.Ordinal) != true ||
+		       !Version.TryParse(targetFramework.Substring(netCoreApp.Length), out Version? version) ||
+		       version.Major < 8;
+	}
 
 	private readonly record struct Settings(
 		bool HasMsTest,
@@ -132,7 +182,9 @@ public class FrameworkGenerator : IIncrementalGenerator
 		bool HasDoesNotReturn,
 		bool HasStackTraceHidden,
 		bool HasTestFrameworkRegistry,
-		bool HasModuleInitializer);
+		bool HasModuleInitializerAttribute,
+		bool CanCompileModuleInitializer,
+		bool IsAdapterFoundByScan);
 
 	private static string AdapterRegistration(string adapterName) =>
 		$$"""

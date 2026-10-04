@@ -73,7 +73,7 @@ public class AwaitExpectationAnalyzer : DiagnosticAnalyzer
 					return false;
 				case IVariableInitializerOperation initializer:
 					return IsLocalUsed(initializer);
-				case IInvocationOperation invocation when IsVerification(invocation.TargetMethod):
+				case IInvocationOperation invocation when IsVerification(invocation):
 					return true;
 				case IArgumentOperation argument when !IsExtensionReceiver(argument):
 					return true;
@@ -155,12 +155,19 @@ public class AwaitExpectationAnalyzer : DiagnosticAnalyzer
 
 	/// <summary>
 	///     An invocation that consumes the expectation instead of continuing it: nothing can be chained on a
-	///     <c>void</c> continuation, and <c>GetAwaiter</c> starts the synchronous evaluation.
+	///     <c>void</c> continuation, and <c>GetResult</c> on the awaiter waits for the evaluation and throws its failure.
 	/// </summary>
-	private static bool IsVerification(IMethodSymbol methodSymbol)
-		=> methodSymbol.ReturnsVoid ||
-		   methodSymbol.Name == "GetAwaiter" ||
-		   methodSymbol.MatchesFullName("aweXpect", "Synchronous", "SynchronouslyExtensions", "VerifySynchronously");
+	/// <remarks>
+	///     <c>GetAwaiter</c> alone only starts the evaluation, so a failure would remain in a task nobody observes.
+	/// </remarks>
+	private static bool IsVerification(IInvocationOperation invocation)
+		=> invocation.TargetMethod.ReturnsVoid ||
+		   invocation is
+		   {
+			   TargetMethod.Name: "GetResult", Instance: IInvocationOperation { TargetMethod.Name: "GetAwaiter", },
+		   } ||
+		   invocation.TargetMethod.MatchesFullName("aweXpect", "Synchronous", "SynchronouslyExtensions",
+			   "VerifySynchronously");
 
 	private static bool IsExtensionReceiver(IArgumentOperation argument)
 		=> argument is
