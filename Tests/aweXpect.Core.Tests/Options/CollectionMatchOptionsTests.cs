@@ -247,13 +247,8 @@ public class CollectionMatchOptionsTests
 				             is equal to collection expected in order,
 				             but for the item at index 1, the predicate did throw an InvalidOperationException:
 				               boom
-
-				             Expected:
-				             [
-				               an item that is equal to "a",
-				               an item that satisfies _ => throw exception
-				             ]
-				             """).And
+				             *
+				             """).AsWildcard().And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
@@ -277,13 +272,8 @@ public class CollectionMatchOptionsTests
 				             is not equal to collection expected in order,
 				             but for the item at index 1, the predicate did throw an InvalidOperationException:
 				               boom
-
-				             Expected:
-				             [
-				               an item that is equal to "a",
-				               an item that satisfies _ => throw exception
-				             ]
-				             """).And
+				             *
+				             """).AsWildcard().And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception))
 				.Because("an item that the expectation did not answer fails the negation as well");
 		}

@@ -387,6 +387,7 @@ aweXpect.Core.ResultContextCollector
 aweXpect.Core.ResultContextCollector.Add(aweXpect.Core.ResultContext! context) -> void
 aweXpect.Core.ResultContextCollector.Visit(aweXpect.Core.Constraints.ConstraintResult! result) -> void
 aweXpect.Core.ResultContextCollector.VisitMember(string! member, aweXpect.Core.Constraints.ConstraintResult! result) -> void
+aweXpect.Core.ResultContextCollector.VisitItem(int index, aweXpect.Core.Constraints.ConstraintResult! result) -> void
 virtual aweXpect.Core.Constraints.ConstraintResult.AppendContexts(aweXpect.Core.ResultContextCollector! contexts) -> void
 override aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.AppendContexts(aweXpect.Core.ResultContextCollector! contexts) -> void
 aweXpect.QuantifiedCollectionConstraintBase<TValue, TItem>.Record(TItem item, aweXpect.Core.Constraints.ConstraintResult! itemResult) -> void

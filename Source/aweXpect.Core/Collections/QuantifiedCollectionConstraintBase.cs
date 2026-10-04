@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Helpers;
 using aweXpect.Options;
 
 namespace aweXpect;
@@ -38,6 +39,8 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	private ItemContexts _firstNotMatchingItem;
 	private bool _isCompleted;
 	private bool _isIncomplete;
+	private bool _isStopped;
+	private bool _isUndecided;
 	private int _matchingCount;
 	private LimitedCollection<TItem>? _matchingItems;
 	private int _notMatchingCount;
@@ -67,7 +70,7 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	/// <summary>
 	///     Indicates that the items recorded so far determine the outcome, so the remaining items need not be read.
 	/// </summary>
-	protected bool IsDetermined => Quantifier.IsDeterminable(_matchingCount, _notMatchingCount);
+	protected bool IsDetermined => _isStopped || Quantifier.IsDeterminable(_matchingCount, _notMatchingCount);
 
 	/// <summary>
 	///     The type used to format the matching and not matching items.
@@ -113,6 +116,11 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 			Reset();
 		}
 
+		if (_isStopped)
+		{
+			return;
+		}
+
 		if (isMatch)
 		{
 			(_matchingItems ??= new LimitedCollection<TItem>()).Add(item, _matchingCount + _notMatchingCount);
@@ -132,11 +140,27 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	/// <remarks>
 	///     The contexts of the first matching and of the first not matching item are kept, so that the failure message
 	///     shows those of the item that explains it, labelled with its index, e.g. <c>Actual (item [2]):</c>.
+	///     <para />
+	///     An item result that fails both ways (e.g. because the nested expectations threw) is neither matching nor not
+	///     matching: unless the items recorded before already determine the outcome, the evaluation stops at it and the
+	///     expectation and its negation fail with its result. An undecided item result (e.g. because the evaluation was
+	///     canceled) leaves the outcome undecided, unless it is already determined.
 	/// </remarks>
 	protected void Record(TItem item, ConstraintResult itemResult)
 	{
+		if (itemResult.Outcome is Outcome.FailureBothWays or Outcome.Undecided)
+		{
+			RecordUnanswered(item, itemResult);
+			return;
+		}
+
 		bool isMatch = itemResult.Outcome == Outcome.Success;
 		Record(item, isMatch);
+		if (_isStopped)
+		{
+			return;
+		}
+
 		int index = _matchingCount + _notMatchingCount - 1;
 		if (isMatch)
 		{
@@ -225,9 +249,12 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 			Reset();
 		}
 
+		isIncomplete |= _isStopped;
 		_isCompleted = true;
 		_totalCount = isIncomplete ? null : _matchingCount + _notMatchingCount;
-		Outcome = Quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
+		Outcome = _isUndecided
+			? Outcome.Undecided
+			: Quantifier.GetOutcome(_matchingCount, _notMatchingCount, _totalCount);
 
 		_isIncomplete = isIncomplete;
 	}
@@ -239,11 +266,46 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 	private bool CouldShow(EnumerableQuantifier.QuantifierContexts items)
 		=> (Quantifier.GetQuantifierContext() | Quantifier.GetNegatedQuantifierContext()).HasFlag(items);
 
+	/// <summary>
+	///     Stops the evaluation at the <paramref name="item" /> whose <paramref name="itemResult" /> did not answer
+	///     whether it matches, unless the items recorded before determine the outcome.
+	/// </summary>
+	/// <remarks>
+	///     An item result that fails both ways is thrown, so that the evaluation fails with it like at an item of the
+	///     built-in expectations.
+	/// </remarks>
+	private void RecordUnanswered(TItem item, ConstraintResult itemResult)
+	{
+		if (_isCompleted)
+		{
+			Reset();
+		}
+
+		if (_isStopped)
+		{
+			return;
+		}
+
+		if (!IsDetermined)
+		{
+			if (itemResult.Outcome == Outcome.FailureBothWays)
+			{
+				throw new UnansweredItemException(itemResult, item, _matchingCount + _notMatchingCount);
+			}
+
+			_isUndecided = true;
+		}
+
+		_isStopped = true;
+	}
+
 	private void Reset()
 	{
 		_firstMatchingItem = default;
 		_firstNotMatchingItem = default;
 		_isCompleted = false;
+		_isStopped = false;
+		_isUndecided = false;
 		_matchingCount = 0;
 		_notMatchingCount = 0;
 		_matchingItems = null;

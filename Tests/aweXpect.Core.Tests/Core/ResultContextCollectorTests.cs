@@ -248,6 +248,29 @@ public sealed class ResultContextCollectorTests
 			             """);
 	}
 
+	[Fact]
+	public async Task VisitItem_ShouldLabelTheContextsWithTheItemAfterThoseOfTheCollection()
+	{
+		int[] subject = [1, 2,];
+
+		async Task Act()
+			=> await That(subject).HasItemThat(x => x.MatchesValue("Value", 3, priority: 1)).AtIndex(1);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             has an item that matches Value 3 at index 1,
+			             but it had item 2 at index 1
+
+			             Collection:
+			             [1, 2]
+
+			             Value (item [1]):
+			             2
+			             """)
+			.Because("the contexts of an item follow those of the collection, whatever their priority");
+	}
+
 	private sealed record Pair(int First, int Second);
 
 	private sealed record Outer(Pair Inner);

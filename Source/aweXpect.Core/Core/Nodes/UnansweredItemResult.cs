@@ -16,11 +16,12 @@ internal sealed class UnansweredItemResult : ConstraintResult
 	private readonly ConstraintResult _inner;
 	private readonly object? _item;
 	private readonly ConstraintResult _itemResult;
+	private readonly bool _showsItemContexts;
 	private readonly object? _value;
 	private readonly Type _valueType;
 
 	private UnansweredItemResult(ConstraintResult inner, ConstraintResult itemResult, object? item, int? index,
-		object? value, Type valueType)
+		object? value, Type valueType, bool showsItemContexts)
 		: base(inner.FurtherProcessingStrategy)
 	{
 		_inner = inner;
@@ -29,6 +30,7 @@ internal sealed class UnansweredItemResult : ConstraintResult
 		_index = index;
 		_value = value;
 		_valueType = valueType;
+		_showsItemContexts = showsItemContexts;
 		Outcome = Outcome.FailureBothWays;
 	}
 
@@ -42,11 +44,13 @@ internal sealed class UnansweredItemResult : ConstraintResult
 	/// </summary>
 	/// <remarks>
 	///     The item is named by its <paramref name="index" /> in the collection, or by its value when the index is
-	///     unknown.
+	///     unknown.<br />
+	///     Set <paramref name="showsItemContexts" /> when the <paramref name="itemResult" /> has contexts that the
+	///     <paramref name="inner" /> result does not show, e.g. those of the nested expectations on the item.
 	/// </remarks>
 	public static UnansweredItemResult Create<T>(ConstraintResult inner, ConstraintResult itemResult, object? item,
-		int? index, T value)
-		=> new(inner, itemResult, item, index, value, typeof(T));
+		int? index, T value, bool showsItemContexts = false)
+		=> new(inner, itemResult, item, index, value, typeof(T), showsItemContexts);
 
 	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -86,10 +90,17 @@ internal sealed class UnansweredItemResult : ConstraintResult
 
 	/// <inheritdoc />
 	/// <remarks>
-	///     The constraint describes what it evaluated until the item was not answered.
+	///     The constraint describes what it evaluated until the item was not answered, followed by the contexts of the
+	///     item result, labelled with the index of the item.
 	/// </remarks>
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> contexts.Visit(_inner);
+	{
+		contexts.Visit(_inner);
+		if (_showsItemContexts && _index is not null)
+		{
+			contexts.VisitItem(_index.Value, _itemResult);
+		}
+	}
 
 	/// <inheritdoc />
 	public override ConstraintResult Negate()

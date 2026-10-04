@@ -275,6 +275,41 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenItemAtIndexDoesNotComply_ShouldShowTheContextsOfTheItem()
+			{
+				int[][] subject = [[1, 2,], [1, 3,],];
+
+				async Task Act()
+					=> await That(subject).HasItemThat(it => it.IsEqualTo([1, 2,])).AtIndex(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item that is equal to collection [1, 2,] in order at index 1,
+					             but it had item [1, 3] at index 1
+
+					             Collection:
+					             [
+					               [
+					                 1,
+					                 2
+					               ],
+					               [
+					                 1,
+					                 3
+					               ]
+					             ]
+
+					             Collection (item [1]):
+					             [1, 3]
+
+					             Expected (item [1]):
+					             [1, 2]
+					             """)
+					.Because("exactly the item at the index decides the outcome");
+			}
+
+			[Fact]
 			public async Task WhenItemsDoNotComplyWithAndEnumerableIsEmpty_ShouldNegateExpectation()
 			{
 				List<int> subject = [];
@@ -454,6 +489,35 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenNoItemComplies_ShouldNotShowTheContextsOfAnItem()
+			{
+				int[][] subject = [[1, 3,], [1, 4,],];
+
+				async Task Act()
+					=> await That(subject).HasItemThat(it => it.IsEqualTo([1, 2,]));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item that is equal to collection [1, 2,] in order,
+					             but it had no matching item
+
+					             Collection:
+					             [
+					               [
+					                 1,
+					                 3
+					               ],
+					               [
+					                 1,
+					                 4
+					               ]
+					             ]
+					             """)
+					.Because("no single item decides the outcome when any item could match");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable<int>? subject = null;
@@ -628,6 +692,41 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithParamName("index").And
 					.WithMessage("The index must not be negative.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenItemAtIndexDoesNotComply_ShouldShowTheContextsOfTheItem()
+			{
+				int[][] subject = [[1, 3,], [1, 2,],];
+
+				async Task Act()
+					=> await That(subject).HasItemThat(it => it.IsEqualTo([1, 2,])).AtIndexFromEnd(1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item that is equal to collection [1, 2,] in order at index 1 from end,
+					             but it had item [1, 3] at index 1 from end
+
+					             Collection:
+					             [
+					               [
+					                 1,
+					                 3
+					               ],
+					               [
+					                 1,
+					                 2
+					               ]
+					             ]
+
+					             Collection (item [0]):
+					             [1, 3]
+
+					             Expected (item [0]):
+					             [1, 2]
+					             """)
+					.Because("exactly the item at the index decides the outcome");
 			}
 
 			[Fact]

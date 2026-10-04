@@ -626,7 +626,10 @@ it does not add the "Collection" context.
   from nested expectations, derive from `QuantifiedCollectionConstraintBase<TValue, TItem>` and implement
   `AppendItemExpectation` and `Verb` instead.
 - An item result with `Outcome.FailureBothWays` is neither matching nor not matching, e.g. because the nested
-  expectations threw. The built-in `ComplyWith` stops at such an item and fails with its result, also when negated.
+  expectations threw. Like the built-in `ComplyWith`, `Record(item, itemResult)` stops at such an item and fails with
+  its result and the contexts of the item, also when negated. An item result with `Outcome.Undecided`, e.g. after a
+  canceled evaluation, leaves the outcome undecided. Neither changes an outcome that the items before already
+  determine: `IsDetermined` is then `true`, and the remaining items are not counted.
 
 ## Asynchronous constraints
 

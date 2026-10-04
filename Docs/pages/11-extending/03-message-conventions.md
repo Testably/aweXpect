@@ -252,7 +252,8 @@ private sealed class HasPlaylistConstraint(string it, ExpectationGrammars gramma
 - A context of a member is labelled with it, e.g. `Playlist (Albums):`. Contexts with the same title and member are
   shown once when their content is the same, and are numbered otherwise, e.g. `Playlist #1:`.
 - A result that combines other results adds their contexts with `contexts.Visit(result)` for the parts that explain
-  its outcome, or `contexts.VisitMember("name", result)` to label them with a member.
+  its outcome, or `contexts.VisitMember("name", result)` to label them with a member. `contexts.VisitItem(2, result)`
+  labels them with the item of a collection, e.g. `Actual (item [2]):`, after the contexts of the collection.
 - The contexts of the built-in expectations are available as extensions on the `ResultContextCollector`, so that a
   custom expectation shows them alike: `AddCollectionContext`, `AddDictionaryContext`, `AddExpectedValuesContext`,
   `AddStringContext`, `AddEqualityOptionsContexts` and `AddEquivalencyContext`. An `ObjectEqualityOptions<T>`
