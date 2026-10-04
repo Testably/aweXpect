@@ -122,7 +122,7 @@ internal sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>(
 	string expectedExpression,
 	TMatch[] expected,
 	IOptionsEquality<TMatch> options,
-	Func<object?, bool>? useComparerOf = null)
+	ISubjectComparing? subjectComparing = null)
 	: StartsWithConstraintBase<TEnumerable, TItem, TMatch>(it, grammars, expectedExpression, expected, options),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
@@ -155,7 +155,7 @@ internal sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>(
 			return this;
 		}
 
-		useComparerOf?.Invoke(actual);
+		subjectComparing?.UseComparerOf(actual);
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		_items = materialized.Items;
 		foreach (TItem item in _items)

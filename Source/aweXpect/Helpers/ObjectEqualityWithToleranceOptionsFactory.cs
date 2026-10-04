@@ -158,12 +158,6 @@ internal static class ObjectEqualityWithToleranceOptionsFactory
 #endif
 	};
 
-	/// <summary>
-	///     Tells whether the tolerance <paramref name="options" /> created here still use their default match type.
-	/// </summary>
-	public static bool HasDefaultMatchType<TItem, TTolerance>(ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
-		=> options is ItemEqualityWithToleranceOptions<TItem, TTolerance> { HasDefaultMatchType: true, };
-
 	private static TimeSpan DefaultTimeTolerance()
 		=> Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
 }

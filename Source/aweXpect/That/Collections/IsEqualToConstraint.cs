@@ -316,12 +316,7 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 	///     Whether the comparison of the options was not changed, so that the comparer of a set subject may decide.
 	/// </summary>
 	protected bool HasDefaultEquality()
-		=> options switch
-		{
-			IHasDefaultMatchType itemOptions => itemOptions.HasDefaultMatchType,
-			StringEqualityOptions stringOptions => stringOptions.ComparesByOrdinalEquality,
-			_ => false,
-		};
+		=> DefaultEquality.IsUsedBy(options);
 
 	/// <inheritdoc />
 	protected override void AppendExpectedContexts(ResultContextCollector contexts)
@@ -392,9 +387,7 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 			: null;
 		if (SubjectComparer is not null)
 		{
-			SubjectEqualityOptions<TItem, TMatch> subjectOptions = new(itemOptions, static () => true);
-			subjectOptions.UseComparerOf(actual);
-			itemOptions = subjectOptions;
+			itemOptions = new SubjectEqualityOptions<TItem, TMatch>(itemOptions, SubjectComparer);
 		}
 
 		return isTyped

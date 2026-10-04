@@ -82,7 +82,7 @@ public static partial class ThatEnumerable
 					static (state, it, grammars) =>
 					{
 						SubjectEqualityOptions<string?, string?> itemOptions =
-							new(state.Options, () => state.Options.ComparesByOrdinalEquality);
+							new(state.Options);
 						return new AreUniqueConstraint<IEnumerable<string?>?, string?, string?>(
 							it, grammars,
 							state.Quantifier,
@@ -90,7 +90,7 @@ public static partial class ThatEnumerable
 							a => a,
 							(a, b) => state.Options.AreConsideredEqual(a, b),
 							state.ExpectUnique,
-							itemOptions.UseComparerOf,
+							itemOptions,
 							createGetHashCode: () => MemberHashing.For(state.Options));
 					}),
 				_subject,
@@ -219,7 +219,7 @@ public static partial class ThatEnumerable
 					static (state, it, grammars) =>
 					{
 						SubjectEqualityOptions<TItem, TItem> itemOptions =
-							new(state.Options, () => state.Options.HasDefaultMatchType);
+							new(state.Options);
 						return new AreUniqueConstraint<IEnumerable<TItem>?, TItem, TItem>(
 							it, grammars,
 							state.Quantifier,
@@ -227,7 +227,7 @@ public static partial class ThatEnumerable
 							a => a,
 							(a, b) => state.Options.AreConsideredEqual(a, b),
 							state.ExpectUnique,
-							itemOptions.UseComparerOf,
+							itemOptions,
 							appendOptionsContexts: state.Options.AppendContexts,
 							createGetHashCode: () => MemberHashing.For(state.Options));
 					}),
@@ -357,7 +357,7 @@ public static partial class ThatEnumerable
 					static (state, it, grammars) =>
 					{
 						SubjectEqualityOptions<object?, object?> itemOptions =
-							new(state.Options, () => state.Options.HasDefaultMatchType);
+							new(state.Options);
 						return new AreUniqueConstraint<TEnumerable, object?, object?>(
 							it, grammars,
 							state.Quantifier,
@@ -365,7 +365,7 @@ public static partial class ThatEnumerable
 							a => a,
 							(a, b) => state.Options.AreConsideredEqual(a, b),
 							state.ExpectUnique,
-							itemOptions.UseComparerOf,
+							itemOptions,
 							appendOptionsContexts: state.Options.AppendContexts,
 							createGetHashCode: () => MemberHashing.For(state.Options));
 					}),

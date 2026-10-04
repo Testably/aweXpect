@@ -53,10 +53,10 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					SubjectEqualityOptions<TItem, TItem> itemOptions =
-						new(state.Options, () => state.Options.HasDefaultMatchType);
+						new(state.Options);
 					StartsWithConstraint<IEnumerable<TItem>?, TItem, TItem> constraint = new(it, grammars,
 						state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.ExpectedValues),
-						state.ExpectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
+						state.ExpectedValues.ToArray(), itemOptions, itemOptions);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -84,10 +84,10 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					SubjectEqualityOptions<string?, string?> itemOptions =
-						new(state.Options, () => state.Options.ComparesByOrdinalEquality);
+						new(state.Options);
 					StartsWithConstraint<IEnumerable<string?>?, string?, string?> constraint = new(it, grammars,
 						state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.ExpectedValues),
-						state.ExpectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
+						state.ExpectedValues.ToArray(), itemOptions, itemOptions);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -115,11 +115,10 @@ public static partial class ThatEnumerable
 					ExpectedValues: expectedValues, Negated: negated),
 				static (state, it, grammars) =>
 				{
-					SubjectEqualityOptions<TItem, TItem> itemOptions = new(state.Options,
-						() => ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(state.Options));
+					SubjectEqualityOptions<TItem, TItem> itemOptions = new(state.Options);
 					StartsWithConstraint<IEnumerable<TItem>?, TItem, TItem> constraint = new(it, grammars,
 						state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.ExpectedValues),
-						state.ExpectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
+						state.ExpectedValues.ToArray(), itemOptions, itemOptions);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -148,11 +147,11 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					SubjectEqualityOptions<TItem, TItem> itemOptions =
-						new(state.Options, () => state.Options.HasDefaultMatchType);
+						new(state.Options);
 					StartsWithConstraint<IEnumerable?, object?, TItem> constraint = new(
 						it, grammars,
 						state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.ExpectedValues),
-						state.ExpectedValues.ToArray(), itemOptions, itemOptions.UseComparerOf);
+						state.ExpectedValues.ToArray(), itemOptions, itemOptions);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -190,11 +189,11 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					SubjectEqualityOptions<string?, string?> itemOptions =
-						new(state.Options, () => state.Options.HasDefaultMatchType);
+						new(state.Options);
 					StartsWithConstraint<IEnumerable?, object?, string?> constraint = new(
 						it, grammars,
 						Formatter.Format(state.ExpectedItems), state.ExpectedItems, itemOptions,
-						itemOptions.UseComparerOf);
+						itemOptions);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
