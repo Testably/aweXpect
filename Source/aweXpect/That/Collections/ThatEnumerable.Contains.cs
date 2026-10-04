@@ -396,8 +396,7 @@ public static partial class ThatEnumerable
 						usesDefaultEquality: () => state.Options.HasDefaultMatchType).InvertIf(state.Negated)),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
@@ -427,8 +426,7 @@ public static partial class ThatEnumerable
 						usesDefaultEquality: () => state.Options.ComparesByOrdinalEquality).InvertIf(state.Negated)),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
@@ -455,8 +453,7 @@ public static partial class ThatEnumerable
 						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
@@ -491,8 +488,7 @@ public static partial class ThatEnumerable
 						.InvertIf(state.Negated)),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
@@ -522,8 +518,7 @@ public static partial class ThatEnumerable
 						usesDefaultEquality: () => state.Options.HasDefaultMatchType).InvertIf(state.Negated)),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true, Priority = -1,
@@ -564,8 +559,7 @@ public static partial class ThatEnumerable
 						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true,
@@ -593,8 +587,7 @@ public static partial class ThatEnumerable
 						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true,
@@ -623,8 +616,7 @@ public static partial class ThatEnumerable
 						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
@@ -649,8 +641,7 @@ public static partial class ThatEnumerable
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.MatchOptions,
 						failsForNullSubject: true).InvertIf(state.Negated)),
 			subject,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
@@ -676,8 +667,7 @@ public static partial class ThatEnumerable
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.MatchOptions,
 						failsForNullSubject: true).InvertIf(state.Negated)),
 			subject,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true, Priority = -1,
@@ -704,8 +694,7 @@ public static partial class ThatEnumerable
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.MatchOptions,
 						failsForNullSubject: true).InvertIf(state.Negated)),
 			subject,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true, Priority = -1,
@@ -733,7 +722,6 @@ public static partial class ThatEnumerable
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.MatchOptions,
 						failsForNullSubject: true).InvertIf(state.Negated)),
 			subject,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 }

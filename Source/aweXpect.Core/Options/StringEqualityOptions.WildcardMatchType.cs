@@ -15,7 +15,7 @@ public partial class StringEqualityOptions
 	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </summary>
 	/// <exception cref="System.InvalidOperationException">
-	///     A custom comparer is already set, which the regex engine cannot honour.
+	///     A custom comparer is already set, which the regex engine cannot honour, or a match type is already specified.
 	/// </exception>
 	public StringEqualityOptions AsWildcard()
 	{
@@ -24,7 +24,7 @@ public partial class StringEqualityOptions
 			throw ComparerAndPatternConflict();
 		}
 
-		_matchType = WildcardMatch;
+		SetMatchType(WildcardMatch, nameof(AsWildcard));
 		return this;
 	}
 

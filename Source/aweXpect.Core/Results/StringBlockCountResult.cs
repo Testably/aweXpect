@@ -8,18 +8,19 @@ namespace aweXpect.Results;
 ///     The result for verifying that a string contains a block of lines a specified number of times.
 /// </summary>
 /// <remarks>
-///     <seealso cref="CountResult{TType,TThat,TSelf}" />
+///     A block compares the lines on its own, so of the string options only the casing and a comparer can be
+///     specified.
 /// </remarks>
 public class StringBlockCountResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
 	Quantifier quantifier,
 	StringEqualityOptions options)
-	: CountResult<TType, TThat, StringBlockCountResult<TType, TThat>>(expectationBuilder, returnValue, quantifier),
-		IOptionsProvider<StringEqualityOptions>
+	: AndOrResult<TType, TThat, StringBlockCountResult<TType, TThat>>(expectationBuilder, returnValue),
+		IOptionsProvider<Quantifier>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
+	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
 
 	/// <summary>
 	///     Ignores casing when comparing the <see langword="string" />s.

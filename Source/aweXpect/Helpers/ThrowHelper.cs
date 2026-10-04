@@ -102,38 +102,6 @@ internal static class ThrowHelper
 	}
 
 	/// <summary>
-	///     Rejects a negative duration, because an elapsed time is never below zero and the bound could therefore
-	///     only ever be unsatisfiable or vacuous.
-	/// </summary>
-	/// <remarks>
-	///     The <paramref name="description" /> defaults to the parameter name, which reads naturally for a
-	///     <c>duration</c>, a <c>minimum</c> or a <c>maximum</c>, but not for every caller.
-	/// </remarks>
-	public static void ThrowIfDurationIsNegative(TimeSpan duration, string? description = null,
-		[CallerArgumentExpression(nameof(duration))] string? paramName = null)
-	{
-		if (duration < TimeSpan.Zero)
-		{
-			// ReSharper disable once LocalizableElement
-			throw Tracing.WriteException(new ArgumentOutOfRangeException(paramName,
-				$"The {description ?? paramName} must not be negative."));
-		}
-	}
-
-	/// <summary>
-	///     Rejects a negative timeout, except <see cref="System.Threading.Timeout.InfiniteTimeSpan" />, which imposes no
-	///     limit.
-	/// </summary>
-	public static void ThrowIfTimeoutIsNegative(TimeSpan timeout,
-		[CallerArgumentExpression(nameof(timeout))] string? paramName = null)
-	{
-		if (timeout != System.Threading.Timeout.InfiniteTimeSpan)
-		{
-			ThrowIfDurationIsNegative(timeout, paramName: paramName);
-		}
-	}
-
-	/// <summary>
 	///     Rejects an inverted range, so that a negated expectation cannot silently succeed on a range that can
 	///     never contain anything.
 	/// </summary>
@@ -159,20 +127,6 @@ internal static class ThrowHelper
 			// ReSharper disable once LocalizableElement
 			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(maximum),
 				"The maximum must be greater than or equal to the minimum."));
-		}
-	}
-
-	/// <summary>
-	///     Rejects the <paramref name="option" /> when it <paramref name="isAlreadySpecified" />, because the later
-	///     value would silently replace the earlier one.
-	/// </summary>
-	public static void ThrowIfOptionIsAlreadySpecified(bool isAlreadySpecified, string option)
-	{
-		if (isAlreadySpecified)
-		{
-			// ReSharper disable once LocalizableElement
-			throw Tracing.WriteException(new InvalidOperationException(
-				$"{option} cannot be specified more than once."));
 		}
 	}
 

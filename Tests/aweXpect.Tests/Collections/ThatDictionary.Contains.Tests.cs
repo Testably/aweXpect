@@ -362,7 +362,7 @@ public sealed partial class ThatDictionary
 				SortedDictionary<string, int> subject = new() { { "a", 1 }, };
 
 				async Task Act()
-					=> await (ObjectEqualityResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>, int>)
+					=> await (ObjectEqualityWithToleranceResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>, int, int>)
 						That(subject).Contains(new KeyValuePair<string, int>("a", 1));
 
 				await That(Act).DoesNotThrow()
@@ -375,7 +375,7 @@ public sealed partial class ThatDictionary
 				SortedDictionary<string, int> subject = new() { { "a", 1 }, };
 
 				async Task Act()
-					=> await (ObjectEqualityResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>, int>)
+					=> await (ObjectEqualityWithToleranceResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>, int, int>)
 						That(subject).Contains("a", 1);
 
 				await That(Act).DoesNotThrow()

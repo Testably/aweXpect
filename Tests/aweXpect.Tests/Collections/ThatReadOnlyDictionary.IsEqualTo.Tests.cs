@@ -144,8 +144,8 @@ public sealed partial class ThatReadOnlyDictionary
 				IReadOnlyDictionary<string, int> expected = ToDictionary(["A",], [1,]);
 
 				async Task Act()
-					=> await (ObjectEqualityResult<IReadOnlyDictionary<string, int>?,
-						IThat<IReadOnlyDictionary<string, int>?>, int>)That(subject).IsEqualTo(expected);
+					=> await (ObjectEqualityWithToleranceResult<IReadOnlyDictionary<string, int>?,
+						IThat<IReadOnlyDictionary<string, int>?>, int, int>)That(subject).IsEqualTo(expected);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

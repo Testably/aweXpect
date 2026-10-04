@@ -661,7 +661,7 @@ public sealed partial class ThatDictionary
 				Dictionary<string, int> expected = new() { { "b", 2 }, { "a", 1 }, };
 
 				async Task Act()
-					=> await (ObjectEqualityResult<Dictionary<string, int>?, IThat<Dictionary<string, int>?>, int>)
+					=> await (ObjectEqualityWithToleranceResult<Dictionary<string, int>?, IThat<Dictionary<string, int>?>, int, int>)
 						That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow()
@@ -740,7 +740,7 @@ public sealed partial class ThatDictionary
 				Dictionary<string, int> expected = new() { { "a", 1 }, { "b", 2 }, };
 
 				async Task Act()
-					=> await (ObjectEqualityResult<IDictionary<string, int>?, IThat<IDictionary<string, int>?>, int>)
+					=> await (ObjectEqualityWithToleranceResult<IDictionary<string, int>?, IThat<IDictionary<string, int>?>, int, int>)
 						That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow()

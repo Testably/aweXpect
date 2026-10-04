@@ -354,6 +354,19 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task WhenAMinimumAndAMaximumAreSpecified_ShouldThrowInvalidOperationException()
+			{
+				int[] subject = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).Contains(1).AtLeast(2).AtMost(5);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AtMost cannot be combined with AtLeast.")
+					.Because("the maximum would silently replace the minimum; use Between(2).And(5) instead");
+			}
+
 			[Theory]
 			[AutoData]
 			public async Task WhenEnumerableContainsExpectedValue_ShouldSucceed(

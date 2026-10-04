@@ -339,7 +339,8 @@ public sealed partial class ThatEnumerable
 					yield return 3;
 				}
 
-				ObjectProperCollectionMatchResult<IEnumerable<int>, IThat<IEnumerable<int>?>, int> expectation =
+				ObjectProperCollectionMatchWithToleranceResult<IEnumerable<int>, IThat<IEnumerable<int>?>, int, int>
+					expectation =
 					That(subject).Contains(GetExpected());
 				int readItemsWhenBuilt = readItems;
 				await expectation;

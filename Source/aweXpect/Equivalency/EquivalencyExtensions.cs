@@ -20,39 +20,11 @@ public static class EquivalencyExtensions
 	/// <summary>
 	///     Use equivalency to compare objects.
 	/// </summary>
-	public static TSelf Equivalent<TType, TThat, [RequiresMemberMetadata] TElement, TSelf>(
-		this ObjectEqualityResult<TType, TThat, TElement, TSelf> result,
+	public static TSelf Equivalent<TSelf, [RequiresMemberMetadata] TElement>(
+		this IObjectEqualityResult<TSelf, TElement> result,
 		Func<EquivalencyOptions, EquivalencyOptions>? options = null)
-		where TSelf : ObjectEqualityResult<TType, TThat, TElement, TSelf>
 	{
-		((IOptionsProvider<ObjectEqualityOptions<TElement>>)result).Options.Equivalent(
-			EquivalencyOptionsExtensions.FromCallback(options));
-		return (TSelf)result;
-	}
-
-	/// <summary>
-	///     Use equivalency to compare objects.
-	/// </summary>
-	public static TSelf Equivalent<TCollection, [RequiresMemberMetadata] TItem, TSelf>(
-		this ObjectHasItemResult<TCollection, TItem, TSelf> result,
-		Func<EquivalencyOptions, EquivalencyOptions>? options = null)
-		where TSelf : ObjectHasItemResult<TCollection, TItem, TSelf>
-	{
-		((IOptionsProvider<ObjectEqualityOptions<TItem>>)result).Options.Equivalent(
-			EquivalencyOptionsExtensions.FromCallback(options));
-		return (TSelf)result;
-	}
-
-	/// <summary>
-	///     Use equivalency to compare objects.
-	/// </summary>
-	public static TSelf Equivalent<TType, TThat, [RequiresMemberMetadata] TElement, TSelf>(
-		this ObjectCountResult<TType, TThat, TElement, TSelf> result,
-		Func<EquivalencyOptions, EquivalencyOptions>? options = null)
-		where TSelf : ObjectCountResult<TType, TThat, TElement, TSelf>
-	{
-		((IOptionsProvider<ObjectEqualityOptions<TElement>>)result).Options.Equivalent(
-			EquivalencyOptionsExtensions.FromCallback(options));
+		result.Options.Equivalent(EquivalencyOptionsExtensions.FromCallback(options));
 		return (TSelf)result;
 	}
 

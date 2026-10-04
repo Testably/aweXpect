@@ -396,6 +396,52 @@ or converts the subject returns the converted value there. The helper classes re
 A result of your own that derives from `AndOrResult<TType, TThat>` reaches the `ExpectationBuilder` through the
 protected property of the same name, e.g. to continue with `ExpectationBuilder.And()` or `ExpectationBuilder.Or()`.
 
+## Options
+
+The options, such as `.AtLeast(2)`, `.IgnoringCase()` or `.InAnyOrder()`, are extension methods in the `aweXpect`
+namespace. They apply to every result that provides the matching options object, so they can be chained in any order.
+A result of your own declares which options it offers by implementing `IOptionsProvider<TOptions>` and passing itself as
+`TSelf` to `AndOrResult<TType, TThat, TSelf>`, so that every option returns your result again:
+
+```csharp
+using aweXpect.Options;
+
+public class TrackCountResult<TThat>(
+    ExpectationBuilder expectationBuilder,
+    TThat returnValue,
+    Quantifier quantifier,
+    StringEqualityOptions options)
+    : AndOrResult<IEnumerable<Track>, TThat, TrackCountResult<TThat>>(expectationBuilder, returnValue),
+        IOptionsProvider<Quantifier>,
+        IOptionsProvider<StringEqualityOptions>
+{
+    Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+
+    StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => options;
+}
+```
+
+An expectation that returns this result then offers the count and the string options, e.g.
+`.ContainsTitle("let it be").IgnoringCase().AtLeast(2)`.
+
+| Options                                 | Offered by implementing                                                   |
+|-----------------------------------------|---------------------------------------------------------------------------|
+| `AtLeast`, `Between`, `Once`, …         | `IOptionsProvider<Quantifier>`                                            |
+| `IgnoringCase`, `Using`, …              | `IOptionsProvider<StringEqualityOptions>`                                 |
+| `AsPrefix`, `AsRegex`, `AsWildcard`, …  | additionally `IStringMatchTypeOptions`                                    |
+| `InAnyOrder`, `IgnoringDuplicates`      | `IOptionsProvider<CollectionMatchOptions>`                                |
+| `IgnoringInterspersedItems`, `Properly` | additionally `ICollectionContainmentOptions`, `IProperContainmentOptions` |
+| `AtIndex`, `AtIndexFromEnd`             | `IOptionsProvider<CollectionIndexOptions>`                                |
+| `Using`, `Equivalent`                   | `IObjectEqualityResult<TSelf, TElement>`                                  |
+| `Within` on items                       | `IObjectEqualityWithToleranceResult<TSelf, TElement, TTolerance>`         |
+| `Within` on numbers                     | `INumberToleranceResult<TSelf, TNumber>`                                  |
+| `Within` on times                       | `IOptionsProvider<TimeTolerance>`                                         |
+
+The interfaces with `TSelf` let the compiler infer the element type from your result, so pass your result type as
+`TSelf`. Every option can be specified only once, and options that would replace each other, e.g. two match types or
+`AtLeast(2).AtMost(5)`, throw an `InvalidOperationException` at the call. An expectation that already sets an option
+itself, e.g. `StartsWith` the match type, returns a result that does not offer it again.
+
 ## Time tolerances
 
 A `TimeToleranceResult<TType, TThat>` adds `.Within(…)` and stores the tolerance in the `TimeTolerance` options you

@@ -11,18 +11,25 @@ namespace aweXpect.Results;
 /// <summary>
 ///     A trigger result that also allows specifying parameter filters.
 /// </summary>
+/// <remarks>
+///     The number of times is specified via <see cref="QuantifierExtensions" />.
+/// </remarks>
 public class EventTriggerResult<TSubject>(
 	ExpectationBuilder expectationBuilder,
 	IThat<IEventRecording<TSubject>> returnValue,
 	TriggerEventFilter filter,
 	Quantifier quantifier,
 	RepeatedCheckOptions options)
-	: CountResult<IEventRecording<TSubject>, IThat<IEventRecording<TSubject>>, EventTriggerResult<TSubject>>(
-			expectationBuilder, returnValue, quantifier),
+	: AndOrResult<IEventRecording<TSubject>, IThat<IEventRecording<TSubject>>, EventTriggerResult<TSubject>>(
+			expectationBuilder, returnValue),
 		EventTriggerResult<TSubject>.ICustomParameterFilter,
+		IOptionsProvider<Quantifier>,
 		IOptionsProvider<RepeatedCheckOptions>
 	where TSubject : notnull
 {
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+
 	/// <inheritdoc cref="ICustomParameterFilter.WithParameter{TParameter}(string, int?, Func{TParameter, bool})" />
 	EventTriggerResult<TSubject> ICustomParameterFilter.WithParameter<TParameter>(
 		string expression,

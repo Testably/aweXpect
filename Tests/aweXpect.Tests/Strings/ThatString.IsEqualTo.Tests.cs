@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace aweXpect.Tests;
 
@@ -353,6 +354,46 @@ public sealed partial class ThatString
 					               "expected other text"
 					                ↑ (expected)
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenTheSameMatchTypeIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			{
+				string subject = "abc";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("a.*").AsRegex().AsRegex(RegexOptions.IgnoreCase);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AsRegex cannot be specified more than once.");
+			}
+
+			[Fact]
+			public async Task WhenTwoMatchTypesAreSpecified_ShouldThrowAtTheCall()
+			{
+				string subject = "abc";
+
+				void Act()
+#pragma warning disable aweXpect0001
+					=> _ = That(subject).IsEqualTo("a*").AsWildcard().AsPrefix();
+#pragma warning restore aweXpect0001
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AsPrefix cannot be combined with AsWildcard.")
+					.Because("the conflict is detected when the expectation is built, not when it is awaited");
+			}
+
+			[Fact]
+			public async Task WhenTwoMatchTypesAreSpecified_ShouldThrowInvalidOperationException()
+			{
+				string subject = "abc";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("a*").AsWildcard().AsPrefix();
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AsPrefix cannot be combined with AsWildcard.")
+					.Because("the prefix would silently replace the wildcard");
 			}
 
 			private sealed class ThrowingComparer(Exception exception) : IEqualityComparer<string>

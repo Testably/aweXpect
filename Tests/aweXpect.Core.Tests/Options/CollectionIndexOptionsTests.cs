@@ -5,6 +5,42 @@ namespace aweXpect.Core.Tests.Options;
 public class CollectionIndexOptionsTests
 {
 	[Fact]
+	public async Task AtIndex_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+	{
+		CollectionIndexOptions sut = new();
+		sut.AtIndex(1);
+
+		void Act() => sut.AtIndex(2);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("AtIndex cannot be specified more than once.");
+	}
+
+	[Fact]
+	public async Task AtIndexFromEnd_ShouldMatchTheIndexCountedFromTheEnd()
+	{
+		CollectionIndexOptions sut = new();
+
+		sut.AtIndexFromEnd(1);
+
+		await That(sut.Match.GetDescription()).IsEqualTo(" at index 1 from end");
+		await That(sut.Match).Is<CollectionIndexOptions.IMatchFromEnd>()
+			.Whose(match => match.MatchesIndex(3, 5), it => it.IsTrue());
+	}
+
+	[Fact]
+	public async Task AtIndexFromEnd_WhenAtIndexIsSpecified_ShouldThrowInvalidOperationException()
+	{
+		CollectionIndexOptions sut = new();
+		sut.AtIndex(1);
+
+		void Act() => sut.AtIndexFromEnd(1);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("AtIndexFromEnd cannot be combined with AtIndex.");
+	}
+
+	[Fact]
 	public async Task DefaultMatch_FromEnd_ShouldThrowNotSupportedException()
 	{
 		CollectionIndexOptions sut = new();

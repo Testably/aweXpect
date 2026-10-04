@@ -7,22 +7,10 @@
 *REMOVED*aweXpect.Results.StringProperCollectionMatchResult<TType, TThat>.Properly() -> aweXpect.Results.StringCollectionMatchResult<TType, TThat>!
 aweXpect.Results.CollectionContainmentResult<TType, TThat, TElement>
 aweXpect.Results.CollectionContainmentResult<TType, TThat, TElement>.CollectionContainmentResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
-aweXpect.Results.CollectionContainmentResult<TType, TThat, TElement, TSelf>
-aweXpect.Results.CollectionContainmentResult<TType, TThat, TElement, TSelf>.CollectionContainmentResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
-aweXpect.Results.CollectionContainmentResult<TType, TThat, TElement, TSelf>.IgnoringInterspersedItems() -> TSelf!
 aweXpect.Results.ObjectCollectionContainmentResult<TType, TThat, TElement>
 aweXpect.Results.ObjectCollectionContainmentResult<TType, TThat, TElement>.ObjectCollectionContainmentResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityOptions<TElement>! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
-aweXpect.Results.ObjectCollectionContainmentResult<TType, TThat, TElement, TSelf>
-aweXpect.Results.ObjectCollectionContainmentResult<TType, TThat, TElement, TSelf>.IgnoringInterspersedItems() -> TSelf!
-aweXpect.Results.ObjectCollectionContainmentResult<TType, TThat, TElement, TSelf>.ObjectCollectionContainmentResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityOptions<TElement>! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
-aweXpect.Results.ObjectProperCollectionMatchResult<TType, TThat, TItem>.Properly() -> aweXpect.Results.ObjectCollectionContainmentResult<TType, TThat, TItem>!
-aweXpect.Results.ProperCollectionMatchResult<TType, TThat, TItem>.Properly() -> aweXpect.Results.CollectionContainmentResult<TType, TThat, TItem>!
 aweXpect.Results.StringCollectionContainmentResult<TType, TThat>
 aweXpect.Results.StringCollectionContainmentResult<TType, TThat>.StringCollectionContainmentResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
-aweXpect.Results.StringCollectionContainmentResult<TType, TThat, TSelf>
-aweXpect.Results.StringCollectionContainmentResult<TType, TThat, TSelf>.IgnoringInterspersedItems() -> TSelf!
-aweXpect.Results.StringCollectionContainmentResult<TType, TThat, TSelf>.StringCollectionContainmentResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
-aweXpect.Results.StringProperCollectionMatchResult<TType, TThat>.Properly() -> aweXpect.Results.StringCollectionContainmentResult<TType, TThat>!
 static aweXpect.ThatBool.DoesNotImply(this aweXpect.Core.IThat<bool>! subject, bool consequent) -> aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>!>!
 *REMOVED*aweXpect.ThatDelegate
 *REMOVED*static aweXpect.ThatDelegate.ExecutesWithin(this aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithoutValue!>! subject, System.TimeSpan duration) -> aweXpect.Results.ExpectationResult!
@@ -808,16 +796,11 @@ static aweXpect.ThatTimeSpan.IsOneOf(this aweXpect.Core.IThat<System.TimeSpan>! 
 static aweXpect.ThatTimeSpan.IsOneOf(this aweXpect.Core.IThat<System.TimeSpan>! subject, System.Collections.Generic.IEnumerable<System.TimeSpan>! expected, string! doNotPopulateThisValue = "") -> aweXpect.Results.TimeToleranceResult<System.TimeSpan, aweXpect.Core.IThat<System.TimeSpan>!>!
 aweXpect.Results.ObjectCountWithToleranceResult<TType, TThat, TElement, TTolerance>
 aweXpect.Results.ObjectCountWithToleranceResult<TType, TThat, TElement, TTolerance>.ObjectCountWithToleranceResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance>! options) -> void
-aweXpect.Results.ObjectCountWithToleranceResult<TType, TThat, TElement, TTolerance>.Within(TTolerance tolerance) -> aweXpect.Results.ObjectCountResult<TType, TThat, TElement>!
 aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>
 aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>.ObjectEqualityWithToleranceResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance>! options) -> void
-aweXpect.Results.ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>.Within(TTolerance tolerance) -> aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement>!
 aweXpect.Results.ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>
 aweXpect.Results.ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>.ObjectHasItemWithToleranceResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection?>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions, aweXpect.Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance>! options) -> void
-aweXpect.Results.ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>.Within(TTolerance tolerance) -> aweXpect.Results.ObjectHasItemResult<TCollection, TItem>!
 aweXpect.Results.ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>
-aweXpect.Results.ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>.ObjectProperCollectionMatchWithToleranceResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance>! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions, aweXpect.Options.CollectionMatchOptions.EquivalenceRelations properEquivalenceRelation) -> void
-aweXpect.Results.ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>.Within(TTolerance tolerance) -> aweXpect.Results.ObjectProperCollectionMatchResult<TType, TThat, TItem>!
 static aweXpect.ThatAsyncEnumerable.Contains(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<decimal?>?>! subject, decimal? expected) -> aweXpect.Results.ObjectCountWithToleranceResult<System.Collections.Generic.IAsyncEnumerable<decimal?>!, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<decimal?>?>!, decimal?, decimal>!
 static aweXpect.ThatAsyncEnumerable.Contains(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<decimal?>?>! subject, System.Collections.Generic.IEnumerable<decimal?>! expected, string! doNotPopulateThisValue = "") -> aweXpect.Results.ObjectProperCollectionMatchWithToleranceResult<System.Collections.Generic.IAsyncEnumerable<decimal?>!, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<decimal?>?>!, decimal?, decimal>!
 static aweXpect.ThatAsyncEnumerable.Contains(this aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<decimal?>?>! subject, System.Collections.Generic.IEnumerable<decimal>! expected, string! doNotPopulateThisValue = "") -> aweXpect.Results.ObjectProperCollectionMatchWithToleranceResult<System.Collections.Generic.IAsyncEnumerable<decimal?>!, aweXpect.Core.IThat<System.Collections.Generic.IAsyncEnumerable<decimal?>?>!, decimal?, decimal>!
@@ -5353,11 +5336,40 @@ static aweXpect.ThatEnumerable.StartsWith(this aweXpect.Core.IThat<System.Collec
 *REMOVED*static aweXpect.ThatSignaler.Signaled<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! subject, aweXpect.Core.Times times) -> aweXpect.Results.SignalCountWhoseResult<TParameter>!
 aweXpect.Results.SignaledResult
 aweXpect.Results.SignaledResult.SignaledResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler!>! returnValue, aweXpect.Options.SignalerOptions! options) -> void
-aweXpect.Results.SignaledResult.Within(System.TimeSpan timeout) -> aweXpect.Results.SignaledResult!
 aweXpect.Results.SignaledWhoseResult<TParameter>
 aweXpect.Results.SignaledWhoseResult<TParameter>.SignaledWhoseResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! returnValue, aweXpect.Options.SignalerOptions<TParameter>! options) -> void
 aweXpect.Results.SignaledWhoseResult<TParameter>.WhoseParameters.get -> aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<TParameter>!>!
-aweXpect.Results.SignaledWhoseResult<TParameter>.With(System.Func<TParameter, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.SignaledWhoseResult<TParameter>!
-aweXpect.Results.SignaledWhoseResult<TParameter>.Within(System.TimeSpan timeout) -> aweXpect.Results.SignaledWhoseResult<TParameter>!
 static aweXpect.ThatSignaler.Signaled(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler!>! subject, aweXpect.Core.Times times) -> aweXpect.Results.SignaledResult!
 static aweXpect.ThatSignaler.Signaled<TParameter>(this aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! subject, aweXpect.Core.Times times) -> aweXpect.Results.SignaledWhoseResult<TParameter>!
+*REMOVED*aweXpect.Results.CollectionMatchResult<TType, TThat, TElement, TSelf>
+*REMOVED*aweXpect.Results.CollectionMatchResult<TType, TThat, TElement, TSelf>.CollectionMatchResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
+*REMOVED*aweXpect.Results.CollectionMatchResult<TType, TThat, TElement, TSelf>.IgnoringDuplicates() -> TSelf!
+*REMOVED*aweXpect.Results.CollectionMatchResult<TType, TThat, TElement, TSelf>.InAnyOrder() -> TSelf!
+*REMOVED*aweXpect.Results.DidNotSignalResult.Within(System.TimeSpan timeout) -> aweXpect.Results.DidNotSignalResult!
+*REMOVED*aweXpect.Results.DidNotSignalResult<TParameter>.With(System.Func<TParameter, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.DidNotSignalResult<TParameter>!
+*REMOVED*aweXpect.Results.DidNotSignalResult<TParameter>.Within(System.TimeSpan timeout) -> aweXpect.Results.DidNotSignalResult<TParameter>!
+*REMOVED*aweXpect.Results.ObjectCollectionMatchResult<TType, TThat, TElement, TSelf>
+*REMOVED*aweXpect.Results.ObjectCollectionMatchResult<TType, TThat, TElement, TSelf>.IgnoringDuplicates() -> TSelf!
+*REMOVED*aweXpect.Results.ObjectCollectionMatchResult<TType, TThat, TElement, TSelf>.InAnyOrder() -> TSelf!
+*REMOVED*aweXpect.Results.ObjectCollectionMatchResult<TType, TThat, TElement, TSelf>.ObjectCollectionMatchResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityOptions<TElement>! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
+*REMOVED*aweXpect.Results.ObjectCollectionMatchWithToleranceResult<TType, TThat, TElement, TTolerance>.Within(TTolerance tolerance) -> aweXpect.Results.ObjectCollectionMatchResult<TType, TThat, TElement>!
+*REMOVED*aweXpect.Results.ObjectProperCollectionMatchResult<TType, TThat, TItem>.ObjectProperCollectionMatchResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityOptions<TItem>! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions, aweXpect.Options.CollectionMatchOptions.EquivalenceRelations properEquivalenceRelation) -> void
+*REMOVED*aweXpect.Results.ProperCollectionMatchResult<TType, TThat, TItem>.ProperCollectionMatchResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions, aweXpect.Options.CollectionMatchOptions.EquivalenceRelations properEquivalenceRelation) -> void
+*REMOVED*aweXpect.Results.SignalCountResult.Within(System.TimeSpan timeout) -> aweXpect.Results.SignalCountResult!
+*REMOVED*aweXpect.Results.SignalCountResult<TParameter, TSelf>
+*REMOVED*aweXpect.Results.SignalCountResult<TParameter, TSelf>.SignalCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.SignalerOptions<TParameter>! options) -> void
+*REMOVED*aweXpect.Results.SignalCountResult<TParameter, TSelf>.With(System.Func<TParameter, bool>! predicate, string! doNotPopulateThisValue = "") -> TSelf!
+*REMOVED*aweXpect.Results.SignalCountResult<TParameter, TSelf>.Within(System.TimeSpan timeout) -> TSelf!
+*REMOVED*aweXpect.Results.StringCollectionMatchResult<TType, TThat, TSelf>
+*REMOVED*aweXpect.Results.StringCollectionMatchResult<TType, TThat, TSelf>.IgnoringDuplicates() -> TSelf!
+*REMOVED*aweXpect.Results.StringCollectionMatchResult<TType, TThat, TSelf>.InAnyOrder() -> TSelf!
+*REMOVED*aweXpect.Results.StringCollectionMatchResult<TType, TThat, TSelf>.StringCollectionMatchResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
+*REMOVED*aweXpect.Results.StringProperCollectionMatchResult<TType, TThat>.StringProperCollectionMatchResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions, aweXpect.Options.CollectionMatchOptions.EquivalenceRelations properEquivalenceRelation) -> void
+*REMOVED*static aweXpect.EquivalencyExtensions.Equivalent<TCollection, TItem, TSelf>(this aweXpect.Results.ObjectHasItemResult<TCollection, TItem, TSelf!>! result, System.Func<aweXpect.Equivalency.EquivalencyOptions!, aweXpect.Equivalency.EquivalencyOptions!>? options = null) -> TSelf!
+*REMOVED*static aweXpect.EquivalencyExtensions.Equivalent<TType, TThat, TElement, TSelf>(this aweXpect.Results.ObjectCountResult<TType, TThat, TElement, TSelf!>! result, System.Func<aweXpect.Equivalency.EquivalencyOptions!, aweXpect.Equivalency.EquivalencyOptions!>? options = null) -> TSelf!
+*REMOVED*static aweXpect.EquivalencyExtensions.Equivalent<TType, TThat, TElement, TSelf>(this aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement, TSelf!>! result, System.Func<aweXpect.Equivalency.EquivalencyOptions!, aweXpect.Equivalency.EquivalencyOptions!>? options = null) -> TSelf!
+aweXpect.Results.ObjectProperCollectionMatchResult<TType, TThat, TItem>.ObjectProperCollectionMatchResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityOptions<TItem>! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
+aweXpect.Results.ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>.ObjectProperCollectionMatchWithToleranceResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance>! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
+aweXpect.Results.ProperCollectionMatchResult<TType, TThat, TItem>.ProperCollectionMatchResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
+aweXpect.Results.StringProperCollectionMatchResult<TType, TThat>.StringProperCollectionMatchResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
+static aweXpect.EquivalencyExtensions.Equivalent<TSelf, TElement>(this aweXpect.Results.IObjectEqualityResult<TSelf, TElement>! result, System.Func<aweXpect.Equivalency.EquivalencyOptions!, aweXpect.Equivalency.EquivalencyOptions!>? options = null) -> TSelf

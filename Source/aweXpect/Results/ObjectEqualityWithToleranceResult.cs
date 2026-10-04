@@ -8,20 +8,21 @@ namespace aweXpect.Results;
 ///     <typeparamref name="TTolerance" /> on the comparison.
 /// </summary>
 /// <remarks>
-///     <seealso cref="ObjectEqualityResult{TType,TThat,TElement}" />
+///     The options are specified via <see cref="ObjectEqualityOptionsExtensions" />.
 /// </remarks>
 public class ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
 	ObjectEqualityWithToleranceOptions<TElement, TTolerance> options)
-	: ObjectEqualityResult<TType, TThat, TElement>(expectationBuilder, returnValue, options)
+	: AndOrResult<TType, TThat, ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>>(
+			expectationBuilder, returnValue),
+		IObjectEqualityWithToleranceResult<ObjectEqualityWithToleranceResult<TType, TThat, TElement, TTolerance>,
+			TElement, TTolerance>
 {
-	/// <summary>
-	///     Specifies a <paramref name="tolerance" /> to apply on the comparison.
-	/// </summary>
-	public ObjectEqualityResult<TType, TThat, TElement> Within(TTolerance tolerance)
-	{
-		options.Within(tolerance);
-		return this;
-	}
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	ObjectEqualityOptions<TElement> IOptionsProvider<ObjectEqualityOptions<TElement>>.Options => options;
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	ObjectEqualityWithToleranceOptions<TElement, TTolerance>
+		IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>.Options => options;
 }

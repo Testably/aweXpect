@@ -14,9 +14,10 @@ public partial class StringEqualityOptions
 	/// <summary>
 	///     Interprets the expected <see langword="string" /> to be a prefix for the actual string.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A match type is already specified.</exception>
 	public StringEqualityOptions AsPrefix()
 	{
-		_matchType = PrefixMatch;
+		SetMatchType(PrefixMatch, nameof(AsPrefix));
 		return this;
 	}
 

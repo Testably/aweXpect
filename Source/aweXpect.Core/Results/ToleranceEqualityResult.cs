@@ -3,39 +3,22 @@ using aweXpect.Options;
 
 namespace aweXpect.Results;
 
-#pragma warning disable S2436 // Reduce the number of generic parameters
 /// <summary>
 ///     The result of an expectation with an underlying value of type <typeparamref name="TType" />
 ///     that allows specifying a <typeparamref name="TTolerance" />.
 ///     <para />
 ///     In addition to the combinations from <see cref="AndOrResult{TType,TThat}" />, allows specifying
-///     options on the <see cref="ObjectEqualityOptions" />.
+///     options on the <see cref="ObjectEqualityWithToleranceOptions{TSubject,TTolerance}" /> via
+///     <see cref="ObjectEqualityOptionsExtensions" />.
 /// </summary>
 public class ToleranceEqualityResult<TType, TThat, TElement, TTolerance>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
 	ObjectEqualityWithToleranceOptions<TElement, TTolerance> options)
-	: ToleranceEqualityResult<TType, TThat, TElement, TTolerance,
-		ToleranceEqualityResult<TType, TThat, TElement, TTolerance>>(
-		expectationBuilder,
-		returnValue,
-		options);
-
-/// <summary>
-///     The result of an expectation with an underlying value of type <typeparamref name="TType" />
-///     that allows specifying a <typeparamref name="TTolerance" />.
-///     <para />
-///     In addition to the combinations from <see cref="AndOrResult{TType,TThat}" />, allows specifying
-///     options on the <see cref="ObjectEqualityOptions" />.
-/// </summary>
-public class ToleranceEqualityResult<TType, TThat, TElement, TTolerance, TSelf>(
-	ExpectationBuilder expectationBuilder,
-	TThat returnValue,
-	ObjectEqualityWithToleranceOptions<TElement, TTolerance> options)
-	: AndOrResult<TType, TThat, TSelf>(expectationBuilder, returnValue),
-		IOptionsProvider<ObjectEqualityOptions<TElement>>,
-		IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>
-	where TSelf : ToleranceEqualityResult<TType, TThat, TElement, TTolerance, TSelf>
+	: AndOrResult<TType, TThat, ToleranceEqualityResult<TType, TThat, TElement, TTolerance>>(expectationBuilder,
+			returnValue),
+		IObjectEqualityWithToleranceResult<ToleranceEqualityResult<TType, TThat, TElement, TTolerance>, TElement,
+			TTolerance>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	ObjectEqualityOptions<TElement> IOptionsProvider<ObjectEqualityOptions<TElement>>.Options => options;
@@ -43,14 +26,4 @@ public class ToleranceEqualityResult<TType, TThat, TElement, TTolerance, TSelf>(
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	ObjectEqualityWithToleranceOptions<TElement, TTolerance>
 		IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>.Options => options;
-
-	/// <summary>
-	///     Specifies a <paramref name="tolerance" /> to apply.
-	/// </summary>
-	public AndOrResult<TType, TThat, TSelf> Within(TTolerance tolerance)
-	{
-		options.Within(tolerance);
-		return this;
-	}
 }
-#pragma warning restore S2436 // Reduce the number of generic parameters

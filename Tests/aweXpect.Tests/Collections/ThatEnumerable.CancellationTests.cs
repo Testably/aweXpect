@@ -528,7 +528,7 @@ public sealed partial class ThatEnumerable
 			});
 
 			async Task Act()
-				=> await That(subject).HasItem(-1).AtIndex(2).FromEnd().WithCancellation(cts.Token);
+				=> await That(subject).HasItem(-1).AtIndexFromEnd(2).WithCancellation(cts.Token);
 
 			await That(Act).Throws<InconclusiveException>()
 				.WithMessage("""
@@ -598,7 +598,7 @@ public sealed partial class ThatEnumerable
 			});
 
 			async Task Act()
-				=> await That(subject).HasItem(x => x < 0).AtIndex(2).FromEnd().WithCancellation(cts.Token);
+				=> await That(subject).HasItem(x => x < 0).AtIndexFromEnd(2).WithCancellation(cts.Token);
 
 			await That(Act).Throws<InconclusiveException>()
 				.WithMessage("""
@@ -668,7 +668,7 @@ public sealed partial class ThatEnumerable
 			});
 
 			async Task Act()
-				=> await That(subject).HasItemThat(it => it.IsNegative()).AtIndex(2).FromEnd().WithCancellation(cts.Token);
+				=> await That(subject).HasItemThat(it => it.IsNegative()).AtIndexFromEnd(2).WithCancellation(cts.Token);
 
 			await That(Act).Throws<InconclusiveException>()
 				.WithMessage("""

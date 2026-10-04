@@ -24,7 +24,19 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	private bool _ignoreLeadingWhiteSpace;
 	private bool _ignoreNewlineStyle;
 	private bool _ignoreTrailingWhiteSpace;
+	private bool _isIgnoreCaseSpecified;
+	private bool _isIgnoreIndentationSpecified;
+	private bool _isIgnoreLeadingWhiteSpaceSpecified;
+	private bool _isIgnoreNewlineStyleSpecified;
+	private bool _isIgnoreTrailingWhiteSpaceSpecified;
+
+	/// <summary>
+	///     The first specified option that changes the lines, which <see cref="AsBlock()" /> cannot honour.
+	/// </summary>
+	private string? _lineOption;
+
 	private IStringMatchType _matchType = ExactMatch;
+	private string? _matchTypeOption;
 
 	/// <summary>
 	///     The pattern that was parsed last, because a collection expectation compares every item with the same one.
@@ -225,9 +237,28 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
-	///     Specifies a new <see cref="IStringMatchType" /> to use for matching two strings.
+	///     Specifies a new <see cref="IStringMatchType" /> to use for matching two strings, named
+	///     <paramref name="optionName" /> in the exception when another match type is already specified.
 	/// </summary>
-	public void SetMatchType(IStringMatchType matchType) => _matchType = matchType;
+	/// <exception cref="InvalidOperationException">A match type is already specified.</exception>
+	public void SetMatchType(IStringMatchType matchType, string optionName)
+	{
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_matchTypeOption, optionName);
+		_matchTypeOption = optionName;
+		_matchType = matchType;
+	}
+
+	/// <summary>
+	///     Rejects a second call of the line <paramref name="option" />, and any line option in combination with
+	///     <see cref="AsBlock()" />, which compares the lines on its own.
+	/// </summary>
+	private void SpecifyLineOption(ref bool isSpecified, string option)
+	{
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(isSpecified, option);
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_matchType is BlockMatchType ? nameof(AsBlock) : null, option);
+		_lineOption ??= option;
+		isSpecified = true;
+	}
 
 	/// <summary>
 	///     Get the expectations text.
@@ -322,15 +353,18 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Ignores casing when comparing the <see langword="string" />s.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">
-	///     A custom comparer is already set via <see cref="Using(IEqualityComparer{string})" />.
+	///     The casing is already specified, or a custom comparer is already set via
+	///     <see cref="Using(IEqualityComparer{string})" />.
 	/// </exception>
 	public StringEqualityOptions IgnoringCase(bool ignoreCase = true)
 	{
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isIgnoreCaseSpecified, nameof(IgnoringCase));
 		if (ignoreCase && _comparer is not null)
 		{
 			throw CaseAndComparerConflict();
 		}
 
+		_isIgnoreCaseSpecified = true;
 		_ignoreCase = ignoreCase;
 		return this;
 	}
@@ -347,8 +381,12 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Trailing whitespace within a line is kept, but a line that consists only of whitespace becomes empty.<br />
 	///     The expected value is transformed as well, which also applies to wildcard and regex patterns.
 	/// </remarks>
+	/// <exception cref="InvalidOperationException">
+	///     The indentation is already specified, or the expected value is matched as a block via <see cref="AsBlock()" />.
+	/// </exception>
 	public StringEqualityOptions IgnoringIndentation(bool ignoreIndentation = true)
 	{
+		SpecifyLineOption(ref _isIgnoreIndentationSpecified, nameof(IgnoringIndentation));
 		_ignoreIndentation = ignoreIndentation;
 		return this;
 	}
@@ -360,8 +398,13 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Enabling this option will replace all occurrences of <c>\r\n</c> and <c>\r</c> with <c>\n</c> in the strings before
 	///     comparing them.
 	/// </remarks>
+	/// <exception cref="InvalidOperationException">
+	///     The newline style is already specified, or the expected value is matched as a block via
+	///     <see cref="AsBlock()" />.
+	/// </exception>
 	public StringEqualityOptions IgnoringNewlineStyle(bool ignoreNewlineStyle = true)
 	{
+		SpecifyLineOption(ref _isIgnoreNewlineStyleSpecified, nameof(IgnoringNewlineStyle));
 		_ignoreNewlineStyle = ignoreNewlineStyle;
 		return this;
 	}
@@ -375,8 +418,13 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     The position of the first mismatch in the failure message (its index, or its line and column) refers to the
 	///     original subject, so it also counts the removed whitespace.
 	/// </remarks>
+	/// <exception cref="InvalidOperationException">
+	///     The leading whitespace is already specified, or the expected value is matched as a block via
+	///     <see cref="AsBlock()" />.
+	/// </exception>
 	public StringEqualityOptions IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true)
 	{
+		SpecifyLineOption(ref _isIgnoreLeadingWhiteSpaceSpecified, nameof(IgnoringLeadingWhiteSpace));
 		_ignoreLeadingWhiteSpace = ignoreLeadingWhiteSpace;
 		return this;
 	}
@@ -385,8 +433,13 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Ignores trailing whitespace when comparing <see langword="string" />s,
 	///     according to the <paramref name="ignoreTrailingWhiteSpace" /> parameter.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">
+	///     The trailing whitespace is already specified, or the expected value is matched as a block via
+	///     <see cref="AsBlock()" />.
+	/// </exception>
 	public StringEqualityOptions IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true)
 	{
+		SpecifyLineOption(ref _isIgnoreTrailingWhiteSpaceSpecified, nameof(IgnoringTrailingWhiteSpace));
 		_ignoreTrailingWhiteSpace = ignoreTrailingWhiteSpace;
 		return this;
 	}

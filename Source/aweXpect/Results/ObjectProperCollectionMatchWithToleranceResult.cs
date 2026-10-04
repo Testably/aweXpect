@@ -3,29 +3,34 @@ using aweXpect.Options;
 
 namespace aweXpect.Results;
 
-#pragma warning disable S110 // The result hierarchy is intentionally deep, so that each continuation inherits the complete vocabulary of its base
 /// <summary>
-///     The result for verifying that a collection contains or is contained in another collection, allowing a
-///     <typeparamref name="TTolerance" /> on the comparison.
+///     The result for verifying that a collection contains or is contained in another collection, optionally
+///     properly, allowing a <typeparamref name="TTolerance" /> on the comparison.
 /// </summary>
 /// <remarks>
-///     <seealso cref="ObjectProperCollectionMatchResult{TType,TThat,TItem}" />
+///     The options are specified via <see cref="CollectionMatchOptionsExtensions" /> and
+///     <see cref="ObjectEqualityOptionsExtensions" />.
 /// </remarks>
 public class ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>(
 	ExpectationBuilder expectationBuilder,
 	TThat returnValue,
 	ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
-	CollectionMatchOptions collectionMatchOptions,
-	CollectionMatchOptions.EquivalenceRelations properEquivalenceRelation)
-	: ObjectProperCollectionMatchResult<TType, TThat, TItem>(expectationBuilder, returnValue, options,
-		collectionMatchOptions, properEquivalenceRelation)
+	CollectionMatchOptions collectionMatchOptions)
+	: AndOrResult<TType, TThat, ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>>(
+			expectationBuilder, returnValue),
+		IOptionsProvider<CollectionMatchOptions>,
+		ICollectionContainmentOptions,
+		IProperContainmentOptions,
+		IObjectEqualityWithToleranceResult<
+			ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>, TItem, TTolerance>
 {
-	/// <summary>
-	///     Specifies a <paramref name="tolerance" /> to apply on the comparison.
-	/// </summary>
-	public ObjectProperCollectionMatchResult<TType, TThat, TItem> Within(TTolerance tolerance)
-	{
-		options.Within(tolerance);
-		return this;
-	}
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	CollectionMatchOptions IOptionsProvider<CollectionMatchOptions>.Options => collectionMatchOptions;
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	ObjectEqualityOptions<TItem> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => options;
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	ObjectEqualityWithToleranceOptions<TItem, TTolerance>
+		IOptionsProvider<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>.Options => options;
 }

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using aweXpect.Core;
 using aweXpect.Options;
-using aweXpect.Results;
 
 namespace aweXpect.Tests;
 
@@ -11,20 +10,20 @@ public static class StringEqualityResultExtensions
 	///     The result offers no <c>AsRegex()</c>, so the match type is switched through the options, as an extension
 	///     would do.
 	/// </remarks>
-	public static StringEqualityResult<TType, TThat> AsRegexThroughOptions<TType, TThat>(
-		this StringEqualityResult<TType, TThat> result)
+	public static TResult AsRegexThroughOptions<TResult>(this TResult result)
+		where TResult : IOptionsProvider<StringEqualityOptions>
 	{
-		(result as IOptionsProvider<StringEqualityOptions>).Options.AsRegex();
+		result.Options.AsRegex();
 		return result;
 	}
 
 	/// <remarks>
 	///     A custom match type that compares the subject as a value, as an extension would set it.
 	/// </remarks>
-	public static StringEqualityResult<TType, TThat> AsCaseFolded<TType, TThat>(
-		this StringEqualityResult<TType, TThat> result)
+	public static TResult AsCaseFolded<TResult>(this TResult result)
+		where TResult : IOptionsProvider<StringEqualityOptions>
 	{
-		(result as IOptionsProvider<StringEqualityOptions>).Options.SetMatchType(new CaseFoldedMatchType());
+		result.Options.SetMatchType(new CaseFoldedMatchType(), nameof(AsCaseFolded));
 		return result;
 	}
 

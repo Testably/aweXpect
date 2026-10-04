@@ -1092,6 +1092,83 @@ public class CollectionMatchOptionsTests
 				.WithMessage("InAnyOrder cannot be combined with IgnoringInterspersedItems.")
 				.Because("the any-order match never requires contiguous items, so the option would silently be dropped");
 		}
+
+		[Fact]
+		public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		{
+			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			sut.IgnoringInterspersedItems();
+
+			void Act() => sut.IgnoringInterspersedItems();
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("IgnoringInterspersedItems cannot be specified more than once.");
+		}
+	}
+
+	public class OptionTests
+	{
+		[Fact]
+		public async Task IgnoringDuplicates_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		{
+			CollectionMatchOptions sut = new();
+			sut.IgnoringDuplicates();
+
+			void Act() => sut.IgnoringDuplicates();
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("IgnoringDuplicates cannot be specified more than once.");
+		}
+
+		[Fact]
+		public async Task InAnyOrder_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		{
+			CollectionMatchOptions sut = new();
+			sut.InAnyOrder();
+
+			void Act() => sut.InAnyOrder();
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("InAnyOrder cannot be specified more than once.");
+		}
+
+		[Theory]
+		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains,
+			"contains collection [1] and at least one additional item")]
+		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
+			"is contained in collection [1] that has at least one additional item")]
+		public async Task Properly_ShouldTurnTheRelationIntoItsProperForm(
+			CollectionMatchOptions.EquivalenceRelations relation, string expectedPrefix)
+		{
+			CollectionMatchOptions sut = new(relation);
+
+			sut.Properly();
+
+			await That(sut.GetExpectation("[1]", ExpectationGrammars.None)).StartsWith(expectedPrefix);
+		}
+
+		[Fact]
+		public async Task Properly_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		{
+			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			sut.Properly();
+
+			void Act() => sut.Properly();
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("Properly cannot be specified more than once.");
+		}
+
+		[Fact]
+		public async Task Properly_WhenTheRelationIsEquivalent_ShouldThrowInvalidOperationException()
+		{
+			CollectionMatchOptions sut = new();
+
+			void Act() => sut.Properly();
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("Properly requires a containment relation, but the relation is Equivalent.");
+		}
 	}
 
 	/// <summary>

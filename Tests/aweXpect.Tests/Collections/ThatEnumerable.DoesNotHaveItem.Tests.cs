@@ -730,7 +730,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable<int> subject = values;
 
 				async Task Act()
-					=> await That(subject).DoesNotHaveItem(expected - 1).AtIndex(2).FromEnd();
+					=> await That(subject).DoesNotHaveItem(expected - 1).AtIndexFromEnd(2);
 
 				await That(Act).DoesNotThrow();
 			}
@@ -748,7 +748,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable<int> subject = values;
 
 				async Task Act()
-					=> await That(subject).DoesNotHaveItem(unexpected).AtIndex(2).FromEnd();
+					=> await That(subject).DoesNotHaveItem(unexpected).AtIndexFromEnd(2);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -771,7 +771,7 @@ public sealed partial class ThatEnumerable
 				};
 
 				async Task Act()
-					=> await That(subject).DoesNotHaveItem(unexpected).AtIndex(3).FromEnd();
+					=> await That(subject).DoesNotHaveItem(unexpected).AtIndexFromEnd(3);
 
 				await That(Act).DoesNotThrow();
 			}
@@ -784,7 +784,7 @@ public sealed partial class ThatEnumerable
 				int[] subject = [];
 
 				async Task Act()
-					=> await That(subject).DoesNotHaveItem(0).AtIndex(index).FromEnd();
+					=> await That(subject).DoesNotHaveItem(0).AtIndexFromEnd(index);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithParamName("index").And
@@ -798,7 +798,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable<int>? subject = null;
 
 				async Task Act()
-					=> await That(subject!).DoesNotHaveItem(unexpected).AtIndex(0).FromEnd();
+					=> await That(subject!).DoesNotHaveItem(unexpected).AtIndexFromEnd(0);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

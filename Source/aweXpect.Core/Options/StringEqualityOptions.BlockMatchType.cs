@@ -20,9 +20,14 @@ public partial class StringEqualityOptions
 	///     The newline style is always ignored, and a single trailing line terminator does not start a new line,
 	///     so <c>"a\nb\n"</c> has the same two lines as <c>"a\nb"</c>.
 	/// </remarks>
+	/// <exception cref="InvalidOperationException">
+	///     A match type is already specified, or an option that changes the lines, e.g. the indentation, which the
+	///     block compares on its own.
+	/// </exception>
 	public StringEqualityOptions AsBlock()
 	{
-		_matchType = BlockMatch;
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_matchTypeOption ?? _lineOption, nameof(AsBlock));
+		SetMatchType(BlockMatch, nameof(AsBlock));
 		return this;
 	}
 

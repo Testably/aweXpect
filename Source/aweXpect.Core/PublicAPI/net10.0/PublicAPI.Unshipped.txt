@@ -20,8 +20,6 @@ aweXpect.Core.UserCode
 static aweXpect.Core.UserCode.Invoke<TArgument, TResult>(System.Func<TArgument, TResult>! callback, TArgument argument, string? thrower = null) -> TResult
 static aweXpect.Core.UserCode.Invoke<TResult>(System.Func<TResult>! callback, string? thrower = null) -> TResult
 static aweXpect.Core.UserCode.InvokeAsync<TResult>(System.Func<System.Threading.Tasks.ValueTask<TResult>>! callback, string? thrower = null, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask<TResult>
-aweXpect.Results.StringCountResult<TType, TThat, TSelf>.IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) -> TSelf!
-aweXpect.Results.StringCountResult<TType, TThat, TSelf>.IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) -> TSelf!
 *REMOVED*aweXpect.Options.StringEqualityOptions.Using(System.Collections.Generic.IEqualityComparer<string!>? comparer) -> aweXpect.Options.StringEqualityOptions!
 aweXpect.Options.StringEqualityOptions.Using(System.Collections.Generic.IEqualityComparer<string!>! comparer) -> aweXpect.Options.StringEqualityOptions!
 aweXpect.Options.ObjectEqualityOptions<TSubject>.SetMatchType(aweXpect.Core.IObjectMatchType! matchType, string! optionName) -> void
@@ -36,12 +34,8 @@ aweXpect.Delegates.EventuallySubject<T>.IsNot<TType>() -> aweXpect.Results.AndOr
 aweXpect.Delegates.EventuallySubject<T>.IsNotExactly<TType>() -> aweXpect.Results.AndOrResult<T, aweXpect.Core.IThatSubject<T>!>!
 aweXpect.Delegates.EventuallySubject<T>.Within(System.TimeSpan timeout) -> aweXpect.Delegates.EventuallySubject<T>
 aweXpect.Delegates.ThatDelegate.WithValue<T>.Eventually() -> aweXpect.Delegates.EventuallySubject<T>
-aweXpect.Results.HasItemAtIndexResult<TCollection>.FromEnd() -> aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection?>!>!
-aweXpect.Results.HasItemAtIndexResult<TCollection>.HasItemAtIndexResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection?>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions) -> void
 aweXpect.Results.HasItemResult<TCollection>.HasItemResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection?>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions) -> void
-aweXpect.Results.ObjectHasItemResult<TCollection, TItem, TSelf>.ObjectHasItemResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection?>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions, aweXpect.Options.ObjectEqualityOptions<TItem>! options) -> void
 aweXpect.Results.ObjectHasItemResult<TCollection, TItem>.ObjectHasItemResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection?>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions, aweXpect.Options.ObjectEqualityOptions<TItem>! options) -> void
-aweXpect.Results.StringHasItemResult<TCollection, TSelf>.StringHasItemResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection?>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions, aweXpect.Options.StringEqualityOptions! options) -> void
 aweXpect.Results.StringHasItemResult<TCollection>.StringHasItemResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection?>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions, aweXpect.Options.StringEqualityOptions! options) -> void
 *REMOVED*aweXpect.Results.HasItemAtIndexResult<TCollection>.FromEnd() -> aweXpect.Results.AndOrResult<TCollection, aweXpect.Core.IThat<TCollection>!>!
 *REMOVED*aweXpect.Results.HasItemAtIndexResult<TCollection>.HasItemAtIndexResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<TCollection>! collection, aweXpect.Options.CollectionIndexOptions! collectionIndexOptions) -> void
@@ -88,8 +82,6 @@ aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotLessThan(Syste
 aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotLessThanOrEqualTo(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
 aweXpect.Options.CollectionOrderOptions<TItem>.HasComparer.get -> bool
 aweXpect.Options.ObjectEqualityOptions<TSubject>.Using(System.Collections.Generic.IEqualityComparer<TSubject>! comparer) -> aweXpect.Options.ObjectEqualityOptions<TSubject>!
-aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement, TSelf>.Using(System.Collections.Generic.IEqualityComparer<TElement>! comparer) -> TSelf!
-aweXpect.Results.ObjectHasItemResult<TCollection, TItem, TSelf>.Using(System.Collections.Generic.IEqualityComparer<TItem>! comparer) -> TSelf!
 aweXpect.Options.StringEqualityOptions.FormatExpectedItem(string? expected) -> string!
 *REMOVED*aweXpect.Equivalency.IncludeMembers.Private = 8 -> aweXpect.Equivalency.IncludeMembers
 *REMOVED*aweXpect.Equivalency.EquivalencyOptions.CustomOptions.get -> System.Collections.Generic.Dictionary<System.Type!, aweXpect.Equivalency.EquivalencyTypeOptions!>!
@@ -330,10 +322,6 @@ aweXpect.Results.CollectionCountResult<TReturn>.NotLessThan(int? expected) -> TR
 aweXpect.Results.CollectionCountResult<TReturn>.NotLessThanOrEqualTo(int? expected) -> TReturn
 aweXpect.Results.ExpectationResult.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
 aweXpect.Results.ExpectationResult<TType, TSelf>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
-aweXpect.Results.ObjectCountResult<TType, TThat, TElement, TSelf>
-aweXpect.Results.ObjectCountResult<TType, TThat, TElement, TSelf>.ObjectCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.ObjectEqualityOptions<TElement>! options) -> void
-aweXpect.Results.ObjectCountResult<TType, TThat, TElement, TSelf>.Using(System.Collections.Generic.IEqualityComparer<TElement>! comparer) -> TSelf!
-aweXpect.Results.ObjectCountResult<TType, TThat, TElement, TSelf>.Using(System.Collections.Generic.IEqualityComparer<object!>! comparer) -> TSelf!
 aweXpect.Results.ObjectCountResult<TType, TThat, TElement>
 aweXpect.Results.ObjectCountResult<TType, TThat, TElement>.ObjectCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.ObjectEqualityOptions<TElement>! options) -> void
 aweXpect.Results.RepeatedCheckResult<TType, TThat>
@@ -468,3 +456,144 @@ static aweXpect.Core.ResultContextCollectorExtensions.AddStringContext(this aweX
 *REMOVED*aweXpect.Core.Constraints.IAsyncContextConstraint<TValue>.IsMetBy(TValue actual, aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<aweXpect.Core.Constraints.ConstraintResult!>!
 aweXpect.Core.Constraints.IAsyncConstraint<TValue>.IsMetBy(TValue actual, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult!>
 aweXpect.Core.Constraints.IAsyncContextConstraint<TValue>.IsMetBy(TValue actual, aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult!>
+*REMOVED*aweXpect.Options.StringEqualityOptions.SetMatchType(aweXpect.Core.IStringMatchType! matchType) -> void
+*REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>
+*REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>.AtLeast() -> aweXpect.Results.CountTimesResult<TSelf!>!
+*REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>.AtLeast(aweXpect.Core.Times minimum) -> TSelf!
+*REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>.AtMost() -> aweXpect.Results.CountTimesResult<TSelf!>!
+*REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>.AtMost(aweXpect.Core.Times maximum) -> TSelf!
+*REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>.Between(int minimum) -> aweXpect.Results.BetweenResult<TSelf!>!
+*REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>.CountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier) -> void
+*REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>.Exactly(aweXpect.Core.Times expected) -> TSelf!
+*REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>.LessThan() -> aweXpect.Results.CountTimesResult<TSelf!>!
+*REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>.LessThan(aweXpect.Core.Times maximum) -> TSelf!
+*REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>.MoreThan() -> aweXpect.Results.CountTimesResult<TSelf!>!
+*REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>.MoreThan(aweXpect.Core.Times minimum) -> TSelf!
+*REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>.Never() -> TSelf!
+*REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>.Once() -> TSelf!
+*REMOVED*aweXpect.Results.CountResult<TType, TThat, TSelf>.Twice() -> TSelf!
+*REMOVED*aweXpect.Results.HasItemAtIndexResult<TCollection>
+*REMOVED*aweXpect.Results.HasItemResult<TCollection>.AtIndex(int index) -> aweXpect.Results.HasItemAtIndexResult<TCollection>!
+*REMOVED*aweXpect.Results.NullableNumberToleranceResult<TType, TThat, TSelf>
+*REMOVED*aweXpect.Results.NullableNumberToleranceResult<TType, TThat, TSelf>.NullableNumberToleranceResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TType>! options) -> void
+*REMOVED*aweXpect.Results.NullableNumberToleranceResult<TType, TThat, TSelf>.Within(TType tolerance) -> TSelf!
+*REMOVED*aweXpect.Results.NumberToleranceResult<TType, TThat, TSelf>
+*REMOVED*aweXpect.Results.NumberToleranceResult<TType, TThat, TSelf>.NumberToleranceResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.NumberTolerance<TType>! options) -> void
+*REMOVED*aweXpect.Results.NumberToleranceResult<TType, TThat, TSelf>.Within(TType tolerance) -> TSelf!
+*REMOVED*aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement, TSelf>
+*REMOVED*aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement, TSelf>.ObjectEqualityResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityOptions<TElement>! options) -> void
+*REMOVED*aweXpect.Results.ObjectEqualityResult<TType, TThat, TElement, TSelf>.Using(System.Collections.Generic.IEqualityComparer<object!>! comparer) -> TSelf!
+*REMOVED*aweXpect.Results.ObjectHasItemResult<TCollection, TItem, TSelf>
+*REMOVED*aweXpect.Results.ObjectHasItemResult<TCollection, TItem, TSelf>.Using(System.Collections.Generic.IEqualityComparer<object!>! comparer) -> TSelf!
+*REMOVED*aweXpect.Results.StringCountResult<TType, TThat, TSelf>
+*REMOVED*aweXpect.Results.StringCountResult<TType, TThat, TSelf>.IgnoringCase(bool ignoreCase = true) -> TSelf!
+*REMOVED*aweXpect.Results.StringCountResult<TType, TThat, TSelf>.IgnoringIndentation(bool ignoreIndentation = true) -> TSelf!
+*REMOVED*aweXpect.Results.StringCountResult<TType, TThat, TSelf>.IgnoringNewlineStyle(bool ignoreNewlineStyle = true) -> TSelf!
+*REMOVED*aweXpect.Results.StringCountResult<TType, TThat, TSelf>.StringCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.StringEqualityOptions! options) -> void
+*REMOVED*aweXpect.Results.StringCountResult<TType, TThat, TSelf>.Using(System.Collections.Generic.IEqualityComparer<string!>! comparer) -> TSelf!
+*REMOVED*aweXpect.Results.StringEqualityResult<TType, TThat, TSelf>
+*REMOVED*aweXpect.Results.StringEqualityResult<TType, TThat, TSelf>.IgnoringCase(bool ignoreCase = true) -> TSelf!
+*REMOVED*aweXpect.Results.StringEqualityResult<TType, TThat, TSelf>.IgnoringIndentation(bool ignoreIndentation = true) -> TSelf!
+*REMOVED*aweXpect.Results.StringEqualityResult<TType, TThat, TSelf>.IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) -> TSelf!
+*REMOVED*aweXpect.Results.StringEqualityResult<TType, TThat, TSelf>.IgnoringNewlineStyle(bool ignoreNewlineStyle = true) -> TSelf!
+*REMOVED*aweXpect.Results.StringEqualityResult<TType, TThat, TSelf>.IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) -> TSelf!
+*REMOVED*aweXpect.Results.StringEqualityResult<TType, TThat, TSelf>.StringEqualityResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options) -> void
+*REMOVED*aweXpect.Results.StringEqualityResult<TType, TThat, TSelf>.Using(System.Collections.Generic.IEqualityComparer<string!>! comparer) -> TSelf!
+*REMOVED*aweXpect.Results.StringEqualityTypeCountResult<TType, TThat>.AsPrefix() -> aweXpect.Results.StringCountResult<TType, TThat>!
+*REMOVED*aweXpect.Results.StringEqualityTypeCountResult<TType, TThat>.AsRegex() -> aweXpect.Results.StringCountResult<TType, TThat>!
+*REMOVED*aweXpect.Results.StringEqualityTypeCountResult<TType, TThat>.AsRegex(System.Text.RegularExpressions.RegexOptions regexOptions) -> aweXpect.Results.StringCountResult<TType, TThat>!
+*REMOVED*aweXpect.Results.StringEqualityTypeCountResult<TType, TThat>.AsSuffix() -> aweXpect.Results.StringCountResult<TType, TThat>!
+*REMOVED*aweXpect.Results.StringEqualityTypeCountResult<TType, TThat>.AsWildcard() -> aweXpect.Results.StringCountResult<TType, TThat>!
+*REMOVED*aweXpect.Results.StringEqualityTypeResult<TType, TThat, TSelf>
+*REMOVED*aweXpect.Results.StringEqualityTypeResult<TType, TThat, TSelf>.AsPrefix() -> TSelf!
+*REMOVED*aweXpect.Results.StringEqualityTypeResult<TType, TThat, TSelf>.AsRegex() -> TSelf!
+*REMOVED*aweXpect.Results.StringEqualityTypeResult<TType, TThat, TSelf>.AsRegex(System.Text.RegularExpressions.RegexOptions regexOptions) -> TSelf!
+*REMOVED*aweXpect.Results.StringEqualityTypeResult<TType, TThat, TSelf>.AsSuffix() -> TSelf!
+*REMOVED*aweXpect.Results.StringEqualityTypeResult<TType, TThat, TSelf>.AsWildcard() -> TSelf!
+*REMOVED*aweXpect.Results.StringEqualityTypeResult<TType, TThat, TSelf>.StringEqualityTypeResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options) -> void
+*REMOVED*aweXpect.Results.StringHasItemResult<TCollection, TSelf>
+*REMOVED*aweXpect.Results.StringHasItemResult<TCollection, TSelf>.AsPrefix() -> TSelf!
+*REMOVED*aweXpect.Results.StringHasItemResult<TCollection, TSelf>.AsRegex() -> TSelf!
+*REMOVED*aweXpect.Results.StringHasItemResult<TCollection, TSelf>.AsRegex(System.Text.RegularExpressions.RegexOptions regexOptions) -> TSelf!
+*REMOVED*aweXpect.Results.StringHasItemResult<TCollection, TSelf>.AsSuffix() -> TSelf!
+*REMOVED*aweXpect.Results.StringHasItemResult<TCollection, TSelf>.AsWildcard() -> TSelf!
+*REMOVED*aweXpect.Results.StringHasItemResult<TCollection, TSelf>.IgnoringCase(bool ignoreCase = true) -> TSelf!
+*REMOVED*aweXpect.Results.StringHasItemResult<TCollection, TSelf>.IgnoringIndentation(bool ignoreIndentation = true) -> TSelf!
+*REMOVED*aweXpect.Results.StringHasItemResult<TCollection, TSelf>.IgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace = true) -> TSelf!
+*REMOVED*aweXpect.Results.StringHasItemResult<TCollection, TSelf>.IgnoringNewlineStyle(bool ignoreNewlineStyle = true) -> TSelf!
+*REMOVED*aweXpect.Results.StringHasItemResult<TCollection, TSelf>.IgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace = true) -> TSelf!
+*REMOVED*aweXpect.Results.StringHasItemResult<TCollection, TSelf>.Using(System.Collections.Generic.IEqualityComparer<string!>! comparer) -> TSelf!
+*REMOVED*aweXpect.Results.TimeToleranceResult<TType, TThat, TSelf>
+*REMOVED*aweXpect.Results.TimeToleranceResult<TType, TThat, TSelf>.TimeToleranceResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.TimeTolerance! options) -> void
+*REMOVED*aweXpect.Results.TimeToleranceResult<TType, TThat, TSelf>.Within(System.TimeSpan tolerance) -> TSelf!
+*REMOVED*aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance, TSelf>
+*REMOVED*aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance, TSelf>.ToleranceEqualityResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityWithToleranceOptions<TElement, TTolerance>! options) -> void
+*REMOVED*aweXpect.Results.ToleranceEqualityResult<TType, TThat, TElement, TTolerance, TSelf>.Within(TTolerance tolerance) -> aweXpect.Results.AndOrResult<TType, TThat, TSelf!>!
+aweXpect.CollectionIndexOptionsExtensions
+aweXpect.CollectionMatchOptionsExtensions
+aweXpect.ObjectEqualityOptionsExtensions
+aweXpect.Options.CollectionIndexOptions.AtIndex(int index) -> void
+aweXpect.Options.CollectionIndexOptions.AtIndexFromEnd(int index) -> void
+aweXpect.Options.CollectionMatchOptions.Properly() -> void
+aweXpect.Options.StringEqualityOptions.SetMatchType(aweXpect.Core.IStringMatchType! matchType, string! optionName) -> void
+aweXpect.QuantifierExtensions
+aweXpect.Results.ICollectionContainmentOptions
+aweXpect.Results.INumberToleranceResult<TSelf, TNumber>
+aweXpect.Results.IObjectEqualityResult<TSelf, TElement>
+aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, TTolerance>
+aweXpect.Results.IProperContainmentOptions
+aweXpect.Results.ISignalerResult<TSelf, TParameter>
+aweXpect.Results.IStringMatchTypeOptions
+aweXpect.SignalerOptionsExtensions
+aweXpect.StringEqualityOptionsExtensions
+aweXpect.ToleranceExtensions
+static aweXpect.CollectionIndexOptionsExtensions.AtIndex<TResult>(this TResult result, int index) -> TResult
+static aweXpect.CollectionIndexOptionsExtensions.AtIndexFromEnd<TResult>(this TResult result, int index) -> TResult
+static aweXpect.CollectionMatchOptionsExtensions.IgnoringDuplicates<TResult>(this TResult result) -> TResult
+static aweXpect.CollectionMatchOptionsExtensions.IgnoringInterspersedItems<TResult>(this TResult result) -> TResult
+static aweXpect.CollectionMatchOptionsExtensions.InAnyOrder<TResult>(this TResult result) -> TResult
+static aweXpect.CollectionMatchOptionsExtensions.Properly<TResult>(this TResult result) -> TResult
+static aweXpect.ObjectEqualityOptionsExtensions.Using<TSelf, TElement>(this aweXpect.Results.IObjectEqualityResult<TSelf, TElement>! result, System.Collections.Generic.IEqualityComparer<TElement>! comparer) -> TSelf
+static aweXpect.ObjectEqualityOptionsExtensions.Using<TSelf, TElement>(this aweXpect.Results.IObjectEqualityResult<TSelf, TElement>! result, System.Collections.Generic.IEqualityComparer<object!>! comparer) -> TSelf
+static aweXpect.ObjectEqualityOptionsExtensions.Within<TSelf, TElement, TTolerance>(this aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, TTolerance>! result, TTolerance tolerance) -> TSelf
+static aweXpect.QuantifierExtensions.AtLeast<TResult>(this TResult result) -> aweXpect.Results.CountTimesResult<TResult>!
+static aweXpect.QuantifierExtensions.AtLeast<TResult>(this TResult result, aweXpect.Core.Times minimum) -> TResult
+static aweXpect.QuantifierExtensions.AtMost<TResult>(this TResult result) -> aweXpect.Results.CountTimesResult<TResult>!
+static aweXpect.QuantifierExtensions.AtMost<TResult>(this TResult result, aweXpect.Core.Times maximum) -> TResult
+static aweXpect.QuantifierExtensions.Between<TResult>(this TResult result, int minimum) -> aweXpect.Results.BetweenResult<TResult>!
+static aweXpect.QuantifierExtensions.Exactly<TResult>(this TResult result, aweXpect.Core.Times expected) -> TResult
+static aweXpect.QuantifierExtensions.LessThan<TResult>(this TResult result) -> aweXpect.Results.CountTimesResult<TResult>!
+static aweXpect.QuantifierExtensions.LessThan<TResult>(this TResult result, aweXpect.Core.Times maximum) -> TResult
+static aweXpect.QuantifierExtensions.MoreThan<TResult>(this TResult result) -> aweXpect.Results.CountTimesResult<TResult>!
+static aweXpect.QuantifierExtensions.MoreThan<TResult>(this TResult result, aweXpect.Core.Times minimum) -> TResult
+static aweXpect.QuantifierExtensions.Never<TResult>(this TResult result) -> TResult
+static aweXpect.QuantifierExtensions.Once<TResult>(this TResult result) -> TResult
+static aweXpect.QuantifierExtensions.Twice<TResult>(this TResult result) -> TResult
+static aweXpect.SignalerOptionsExtensions.With<TSelf, TParameter>(this aweXpect.Results.ISignalerResult<TSelf, TParameter>! result, System.Func<TParameter, bool>! predicate, string! doNotPopulateThisValue = "") -> TSelf
+static aweXpect.SignalerOptionsExtensions.Within<TResult>(this TResult result, System.TimeSpan timeout) -> TResult
+static aweXpect.StringEqualityOptionsExtensions.AsPrefix<TResult>(this TResult result) -> TResult
+static aweXpect.StringEqualityOptionsExtensions.AsRegex<TResult>(this TResult result) -> TResult
+static aweXpect.StringEqualityOptionsExtensions.AsRegex<TResult>(this TResult result, System.Text.RegularExpressions.RegexOptions regexOptions) -> TResult
+static aweXpect.StringEqualityOptionsExtensions.AsSuffix<TResult>(this TResult result) -> TResult
+static aweXpect.StringEqualityOptionsExtensions.AsWildcard<TResult>(this TResult result) -> TResult
+static aweXpect.StringEqualityOptionsExtensions.IgnoringCase<TResult>(this TResult result, bool ignoreCase = true) -> TResult
+static aweXpect.StringEqualityOptionsExtensions.IgnoringIndentation<TResult>(this TResult result, bool ignoreIndentation = true) -> TResult
+static aweXpect.StringEqualityOptionsExtensions.IgnoringLeadingWhiteSpace<TResult>(this TResult result, bool ignoreLeadingWhiteSpace = true) -> TResult
+static aweXpect.StringEqualityOptionsExtensions.IgnoringNewlineStyle<TResult>(this TResult result, bool ignoreNewlineStyle = true) -> TResult
+static aweXpect.StringEqualityOptionsExtensions.IgnoringTrailingWhiteSpace<TResult>(this TResult result, bool ignoreTrailingWhiteSpace = true) -> TResult
+static aweXpect.StringEqualityOptionsExtensions.Using<TResult>(this TResult result, System.Collections.Generic.IEqualityComparer<string!>! comparer) -> TResult
+static aweXpect.ToleranceExtensions.Within<TResult>(this TResult result, System.TimeSpan tolerance) -> TResult
+static aweXpect.ToleranceExtensions.Within<TSelf, TNumber>(this aweXpect.Results.INumberToleranceResult<TSelf, TNumber>! result, TNumber tolerance) -> TSelf
+static aweXpect.ObjectEqualityOptionsExtensions.Within<TSelf, TElement>(this aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, byte>! result, byte tolerance) -> TSelf
+static aweXpect.ObjectEqualityOptionsExtensions.Within<TSelf, TElement>(this aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, sbyte>! result, sbyte tolerance) -> TSelf
+static aweXpect.ObjectEqualityOptionsExtensions.Within<TSelf, TElement>(this aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, short>! result, short tolerance) -> TSelf
+static aweXpect.ObjectEqualityOptionsExtensions.Within<TSelf, TElement>(this aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, uint>! result, uint tolerance) -> TSelf
+static aweXpect.ObjectEqualityOptionsExtensions.Within<TSelf, TElement>(this aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, ulong>! result, ulong tolerance) -> TSelf
+static aweXpect.ObjectEqualityOptionsExtensions.Within<TSelf, TElement>(this aweXpect.Results.IObjectEqualityWithToleranceResult<TSelf, TElement, ushort>! result, ushort tolerance) -> TSelf
+static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, byte>! result, byte tolerance) -> TSelf
+static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, nuint>! result, nuint tolerance) -> TSelf
+static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, sbyte>! result, sbyte tolerance) -> TSelf
+static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, short>! result, short tolerance) -> TSelf
+static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, uint>! result, uint tolerance) -> TSelf
+static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, ulong>! result, ulong tolerance) -> TSelf
+static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, ushort>! result, ushort tolerance) -> TSelf

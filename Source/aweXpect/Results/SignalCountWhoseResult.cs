@@ -10,15 +10,24 @@ namespace aweXpect.Results;
 ///     The result for verifying how often a <see cref="Signaler{TParameter}" /> was signaled, which allows specifying
 ///     the timeout, filtering the signals by their parameter and verifying the parameters of the signals.
 /// </summary>
+/// <remarks>
+///     The options are specified via <see cref="QuantifierExtensions" /> and <see cref="SignalerOptionsExtensions" />.
+/// </remarks>
 public class SignalCountWhoseResult<TParameter>(
 	ExpectationBuilder expectationBuilder,
 	IThat<Signaler<TParameter>> returnValue,
 	Quantifier quantifier,
 	SignalerOptions<TParameter> options)
-	: SignalCountResult<TParameter, SignalCountWhoseResult<TParameter>>(expectationBuilder, returnValue, quantifier,
-		options)
+	: AndOrResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>>, SignalCountWhoseResult<TParameter>>(
+			expectationBuilder, returnValue),
+		IOptionsProvider<Quantifier>,
+		ISignalerResult<SignalCountWhoseResult<TParameter>, TParameter>
 {
-	private readonly SignalerOptions<TParameter> _options = options;
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	SignalerOptions<TParameter> IOptionsProvider<SignalerOptions<TParameter>>.Options => options;
 
 	/// <summary>
 	///     …with parameters that…
@@ -29,7 +38,7 @@ public class SignalCountWhoseResult<TParameter>(
 	public IThat<IEnumerable<TParameter>> WhoseParameters
 		=> new ThatSubject<IEnumerable<TParameter>>(
 			ExpectationBuilder.ForWhich<SignalerResult<TParameter>, IEnumerable<TParameter>>(
-				x => x.Parameters.Where(_options.Matches).ToArray(),
+				x => x.Parameters.Where(options.Matches).ToArray(),
 				" with parameters that ", null,
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural |
 				            ExpectationGrammars.Introduced));

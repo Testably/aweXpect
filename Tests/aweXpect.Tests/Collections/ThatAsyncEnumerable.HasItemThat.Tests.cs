@@ -214,7 +214,7 @@ public sealed partial class ThatAsyncEnumerable
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, expected, 3, 4);
 
 				async Task Act()
-					=> await That(subject).HasItemThat(it => it.IsEqualTo(expected - 1)).AtIndex(2).FromEnd();
+					=> await That(subject).HasItemThat(it => it.IsEqualTo(expected - 1)).AtIndexFromEnd(2);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -234,7 +234,7 @@ public sealed partial class ThatAsyncEnumerable
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, expected, 3, 4);
 
 				async Task Act()
-					=> await That(subject).HasItemThat(it => it.IsEqualTo(expected)).AtIndex(2).FromEnd();
+					=> await That(subject).HasItemThat(it => it.IsEqualTo(expected)).AtIndexFromEnd(2);
 
 				await That(Act).DoesNotThrow();
 			}
@@ -246,7 +246,7 @@ public sealed partial class ThatAsyncEnumerable
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(expected, 3, 4);
 
 				async Task Act()
-					=> await That(subject).HasItemThat(it => it.IsEqualTo(expected)).AtIndex(3).FromEnd();
+					=> await That(subject).HasItemThat(it => it.IsEqualTo(expected)).AtIndexFromEnd(3);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -266,7 +266,7 @@ public sealed partial class ThatAsyncEnumerable
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
 
 				async Task Act()
-					=> await That(subject).HasItemThat(it => it.IsEqualTo(expected)).AtIndex(0).FromEnd();
+					=> await That(subject).HasItemThat(it => it.IsEqualTo(expected)).AtIndexFromEnd(0);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
@@ -287,7 +287,7 @@ public sealed partial class ThatAsyncEnumerable
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
 
 				async Task Act()
-					=> await That(subject).HasItemThat(it => it.IsEqualTo(0)).AtIndex(index).FromEnd();
+					=> await That(subject).HasItemThat(it => it.IsEqualTo(0)).AtIndexFromEnd(index);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithParamName("index").And
@@ -301,7 +301,7 @@ public sealed partial class ThatAsyncEnumerable
 				IAsyncEnumerable<int>? subject = null;
 
 				async Task Act()
-					=> await That(subject!).HasItemThat(it => it.IsEqualTo(expected)).AtIndex(0).FromEnd();
+					=> await That(subject!).HasItemThat(it => it.IsEqualTo(expected)).AtIndexFromEnd(0);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""

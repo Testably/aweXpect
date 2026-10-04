@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using aweXpect.Core;
-using aweXpect.Helpers;
+﻿using aweXpect.Core;
 using aweXpect.Options;
 using aweXpect.Signaling;
 
@@ -10,89 +7,45 @@ namespace aweXpect.Results;
 /// <summary>
 ///     The result for verifying how often a <see cref="Signaler" /> was signaled, which allows specifying the timeout.
 /// </summary>
+/// <remarks>
+///     The options are specified via <see cref="QuantifierExtensions" /> and <see cref="SignalerOptionsExtensions" />.
+/// </remarks>
 public class SignalCountResult(
 	ExpectationBuilder expectationBuilder,
 	IThat<Signaler> returnValue,
 	Quantifier quantifier,
 	SignalerOptions options)
-	: CountResult<SignalerResult, IThat<Signaler>, SignalCountResult>(expectationBuilder, returnValue, quantifier),
+	: AndOrResult<SignalerResult, IThat<Signaler>, SignalCountResult>(expectationBuilder, returnValue),
+		IOptionsProvider<Quantifier>,
 		IOptionsProvider<SignalerOptions>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	SignalerOptions IOptionsProvider<SignalerOptions>.Options => options;
+	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
 
-	/// <summary>
-	///     Specifies a timeout for waiting on the callback.
-	/// </summary>
-	/// <remarks>
-	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
-	/// </remarks>
-	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
-	public SignalCountResult Within(TimeSpan timeout)
-	{
-		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(options.Timeout is not null, nameof(Within));
-		options.Timeout = timeout;
-		return this;
-	}
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	SignalerOptions IOptionsProvider<SignalerOptions>.Options => options;
 }
 
 /// <summary>
 ///     The result for verifying how often a <see cref="Signaler{TParameter}" /> was signaled, which allows specifying
 ///     the timeout and filtering the signals by their parameter.
 /// </summary>
+/// <remarks>
+///     The options are specified via <see cref="QuantifierExtensions" /> and <see cref="SignalerOptionsExtensions" />.
+/// </remarks>
 public class SignalCountResult<TParameter>(
 	ExpectationBuilder expectationBuilder,
 	IThat<Signaler<TParameter>> returnValue,
 	Quantifier quantifier,
 	SignalerOptions<TParameter> options)
-	: SignalCountResult<TParameter, SignalCountResult<TParameter>>(expectationBuilder, returnValue, quantifier,
-		options);
-
-/// <summary>
-///     The result for verifying how often a <see cref="Signaler{TParameter}" /> was signaled, which allows specifying
-///     the timeout and filtering the signals by their parameter.
-/// </summary>
-public class SignalCountResult<TParameter, TSelf>(
-	ExpectationBuilder expectationBuilder,
-	IThat<Signaler<TParameter>> returnValue,
-	Quantifier quantifier,
-	SignalerOptions<TParameter> options)
-	: CountResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>>, TSelf>(expectationBuilder, returnValue,
-			quantifier),
-		IOptionsProvider<SignalerOptions>
-	where TSelf : SignalCountResult<TParameter, TSelf>
+	: AndOrResult<SignalerResult<TParameter>, IThat<Signaler<TParameter>>, SignalCountResult<TParameter>>(
+			expectationBuilder, returnValue),
+		IOptionsProvider<Quantifier>,
+		ISignalerResult<SignalCountResult<TParameter>, TParameter>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	SignalerOptions IOptionsProvider<SignalerOptions>.Options => options;
+	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
 
-	/// <summary>
-	///     Specifies a timeout for waiting on the callback.
-	/// </summary>
-	/// <remarks>
-	///     <see cref="System.Threading.Timeout.InfiniteTimeSpan" /> waits without a limit.
-	/// </remarks>
-	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
-	/// <exception cref="InvalidOperationException">A timeout is already set.</exception>
-	public TSelf Within(TimeSpan timeout)
-	{
-		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(options.Timeout is not null, nameof(Within));
-		options.Timeout = timeout;
-		return (TSelf)this;
-	}
-
-	/// <summary>
-	///     Specifies a predicate to filter for signals with a matching parameter.
-	/// </summary>
-	public TSelf With(
-		Func<TParameter, bool> predicate,
-		[CallerArgumentExpression("predicate")]
-		string doNotPopulateThisValue = "")
-	{
-		predicate.ThrowIfNull();
-		options.WithPredicate(predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
-		return (TSelf)this;
-	}
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	SignalerOptions<TParameter> IOptionsProvider<SignalerOptions<TParameter>>.Options => options;
 }

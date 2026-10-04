@@ -164,8 +164,7 @@ public static partial class ThatAsyncEnumerable
 						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
@@ -195,8 +194,7 @@ public static partial class ThatAsyncEnumerable
 						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
@@ -223,8 +221,7 @@ public static partial class ThatAsyncEnumerable
 						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
@@ -259,8 +256,7 @@ public static partial class ThatAsyncEnumerable
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.MatchOptions,
 						failsForNullSubject: true).InvertIf(state.Negated)),
 			subject,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", GuaranteesNotNull = true,
@@ -295,8 +291,7 @@ public static partial class ThatAsyncEnumerable
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.MatchOptions,
 						failsForNullSubject: true).InvertIf(state.Negated)),
 			subject,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.ContainsProperly);
+			matchOptions);
 	}
 }
 #endif

@@ -19,6 +19,19 @@ public class QuantifierTests
 			.WithMessage("*The minimum must not be negative.*").AsWildcard();
 	}
 
+	[Fact]
+	public async Task AtMost_WhenAMinimumIsSpecified_ShouldThrowInvalidOperationException()
+	{
+		Quantifier sut = new();
+		sut.AtLeast(2);
+
+		void Act() => sut.AtMost(5);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("AtMost cannot be combined with AtLeast.")
+			.Because("the maximum would silently replace the minimum");
+	}
+
 	[Theory]
 	[InlineData(-1, true)]
 	[InlineData(0, false)]
@@ -210,6 +223,18 @@ public class QuantifierTests
 
 		await That(Act).Throws<ArgumentOutOfRangeException>().OnlyIf(expectThrow)
 			.WithMessage("*The expected count must not be negative.*").AsWildcard();
+	}
+
+	[Fact]
+	public async Task Exactly_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+	{
+		Quantifier sut = new();
+		sut.Exactly(1);
+
+		void Act() => sut.Exactly(2);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("Exactly cannot be specified more than once.");
 	}
 
 	[Theory]

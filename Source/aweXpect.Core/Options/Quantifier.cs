@@ -1,4 +1,5 @@
-﻿using aweXpect.Core.Helpers;
+﻿using System;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
@@ -11,6 +12,7 @@ public class Quantifier
 	private bool _isNegated;
 	private int? _maximum;
 	private int? _minimum = 1;
+	private string? _specifiedBy;
 
 	/// <summary>
 	///     Flag indicating if the <see cref="Quantifier" /> is negated.
@@ -58,63 +60,53 @@ public class Quantifier
 	/// <summary>
 	///     Verifies that it occurs at least <paramref name="minimum" /> times.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
 	public void AtLeast(int minimum)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(minimum);
-
-		_minimum = minimum;
-		_maximum = null;
-		_allowEqual = true;
+		Set(minimum, null, true, nameof(AtLeast));
 	}
 
 	/// <summary>
 	///     Verifies that it occurs at most <paramref name="maximum" /> times.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
 	public void AtMost(int maximum)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(maximum);
-
-		_minimum = null;
-		_maximum = maximum;
-		_allowEqual = true;
+		Set(null, maximum, true, nameof(AtMost));
 	}
 
 	/// <summary>
 	///     Verifies that it occurs between <paramref name="minimum" /> and <paramref name="maximum" /> times.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
 	public void Between(int minimum, int maximum)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(minimum);
 		ThrowHelper.ThrowIfCountIsNegative(maximum);
 		ThrowHelper.ThrowIfMaximumIsBelowMinimum<int>(minimum, maximum);
-
-		_minimum = minimum;
-		_maximum = maximum;
-		_allowEqual = true;
+		Set(minimum, maximum, true, nameof(Between));
 	}
 
 	/// <summary>
 	///     Verifies that it occurs fewer than <paramref name="maximum" /> times.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
 	public void LessThan(int maximum)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(maximum);
-
-		_minimum = null;
-		_maximum = maximum;
-		_allowEqual = false;
+		Set(null, maximum, false, nameof(LessThan));
 	}
 
 	/// <summary>
 	///     Verifies that it occurs more than <paramref name="minimum" /> times.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
 	public void MoreThan(int minimum)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(minimum);
-
-		_minimum = minimum;
-		_maximum = null;
-		_allowEqual = false;
+		Set(minimum, null, false, nameof(MoreThan));
 	}
 
 	/// <summary>
@@ -145,13 +137,29 @@ public class Quantifier
 	/// <summary>
 	///     Verifies that it occurs exactly <paramref name="expected" /> times.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">The quantifier is already specified.</exception>
 	public void Exactly(int expected)
+		=> Exactly(expected, nameof(Exactly));
+
+	/// <summary>
+	///     Verifies that it occurs exactly <paramref name="expected" /> times, as specified by the <paramref name="option" />.
+	/// </summary>
+	internal void Exactly(int expected, string option)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(expected, "expected count");
+		Set(expected, expected, true, option);
+	}
 
-		_minimum = expected;
-		_maximum = expected;
-		_allowEqual = true;
+	/// <summary>
+	///     Rejects a second quantifier, because it would silently replace the bounds of the first one.
+	/// </summary>
+	private void Set(int? minimum, int? maximum, bool allowEqual, string option)
+	{
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_specifiedBy, option);
+		_specifiedBy = option;
+		_minimum = minimum;
+		_maximum = maximum;
+		_allowEqual = allowEqual;
 	}
 
 	/// <inheritdoc />

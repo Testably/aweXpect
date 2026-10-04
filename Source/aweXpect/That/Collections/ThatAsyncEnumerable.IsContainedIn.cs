@@ -57,8 +57,7 @@ public static partial class ThatAsyncEnumerable
 						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 
 	/// <summary>
@@ -93,8 +92,7 @@ public static partial class ThatAsyncEnumerable
 							state.MatchOptions, failsForNullSubject: true)),
 				subject,
 				options,
-				matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+				matchOptions);
 	}
 
 	/// <summary>
@@ -130,8 +128,7 @@ public static partial class ThatAsyncEnumerable
 						state.MatchOptions, failsForNullSubject: true)),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 
 	/// <summary>
@@ -162,8 +159,7 @@ public static partial class ThatAsyncEnumerable
 						state.Expected,
 						state.MatchOptions, failsForNullSubject: true)),
 			subject,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 
 	/// <summary>
@@ -194,8 +190,7 @@ public static partial class ThatAsyncEnumerable
 						state.Expected,
 						state.MatchOptions, failsForNullSubject: true)),
 			subject,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 
 	/// <summary>
@@ -230,8 +225,7 @@ public static partial class ThatAsyncEnumerable
 							state.MatchOptions, failsForNullSubject: true).Invert()),
 				subject,
 				options,
-				matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+				matchOptions);
 	}
 
 	/// <summary>
@@ -267,8 +261,7 @@ public static partial class ThatAsyncEnumerable
 						state.MatchOptions, failsForNullSubject: true).Invert()),
 			subject,
 			options,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 
 	/// <summary>
@@ -299,8 +292,7 @@ public static partial class ThatAsyncEnumerable
 						state.Unexpected,
 						state.MatchOptions, failsForNullSubject: true).Invert()),
 			subject,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 
 	/// <summary>
@@ -331,8 +323,7 @@ public static partial class ThatAsyncEnumerable
 						state.Unexpected,
 						state.MatchOptions, failsForNullSubject: true).Invert()),
 			subject,
-			matchOptions,
-			CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly);
+			matchOptions);
 	}
 }
 #endif

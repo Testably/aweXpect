@@ -177,7 +177,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable subject = new[] { 0, 1, 2, };
 
 				async Task Act()
-					=> await That(subject).HasItemThat(it => it.IsEqualTo(1)).AtIndex(1).FromEnd();
+					=> await That(subject).HasItemThat(it => it.IsEqualTo(1)).AtIndexFromEnd(1);
 
 				await That(Act).DoesNotThrow();
 			}
