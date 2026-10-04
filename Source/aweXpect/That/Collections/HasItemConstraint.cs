@@ -18,40 +18,32 @@ namespace aweXpect;
 internal abstract class HasItemConstraintBase<TValue, TItem>
 	: ConstraintResult.WithNotNullValue<TValue>
 {
-	private readonly Action<ResultContextCollector>? _appendOptionsContexts;
-	private readonly Func<TItem, ValueTask<bool>>? _asyncPredicate;
-	private readonly Func<TItem, bool>? _predicate;
-	private readonly Func<string> _predicateDescription;
+	/// <summary>
+	///     The grammars when the expectation was added, which the description of the item uses.
+	/// </summary>
+	private readonly ExpectationGrammars _itemGrammars;
+
+	private readonly SynchronouslyMatchedItem<TItem>? _synchronousItem;
 	private TItem? _actual;
 	private bool _hasIndex;
 
 	protected HasItemConstraintBase(
 		string it,
 		ExpectationGrammars grammars,
-		Func<TItem, bool> predicate,
-		Func<string> predicateDescription,
+		ContainedItem<TItem> item,
 		CollectionIndexOptions options)
 		: base(it, grammars)
 	{
-		_predicate = predicate;
-		_predicateDescription = predicateDescription;
+		_itemGrammars = grammars;
+		Item = item;
+		_synchronousItem = item as SynchronouslyMatchedItem<TItem>;
 		Options = options;
 	}
 
-	protected HasItemConstraintBase(
-		string it,
-		ExpectationGrammars grammars,
-		Func<TItem, ValueTask<bool>> predicate,
-		Func<string> predicateDescription,
-		CollectionIndexOptions options,
-		Action<ResultContextCollector>? appendOptionsContexts)
-		: base(it, grammars)
-	{
-		_asyncPredicate = predicate;
-		_predicateDescription = predicateDescription;
-		Options = options;
-		_appendOptionsContexts = appendOptionsContexts;
-	}
+	/// <summary>
+	///     What the collection is searched for.
+	/// </summary>
+	protected ContainedItem<TItem> Item { get; }
 
 	/// <summary>
 	///     The options for the index of the item.
@@ -60,7 +52,7 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> _appendOptionsContexts?.Invoke(contexts);
+		=> Item.AppendContexts(contexts);
 
 	/// <summary>
 	///     Starts a new evaluation, which fails unless an item at the index matches.
@@ -75,21 +67,19 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 	/// <summary>
 	///     Whether the predicate is synchronous, so that the items can be verified without awaiting it.
 	/// </summary>
-	protected bool IsSynchronous => _asyncPredicate is null;
+	protected bool IsSynchronous => _synchronousItem is not null;
 
 	/// <summary>
 	///     Whether the <paramref name="item" /> matches the synchronous predicate.
 	/// </summary>
 	protected bool MatchesSynchronously(TItem item)
-		=> UserCode.Invoke(_predicate!, item, "the predicate");
+		=> _synchronousItem!.IsMatch(item);
 
 	/// <summary>
 	///     Whether the <paramref name="item" /> matches.
 	/// </summary>
 	protected ValueTask<bool> Matches(TItem item)
-		=> _asyncPredicate is null
-			? new ValueTask<bool>(MatchesSynchronously(item))
-			: _asyncPredicate(item);
+		=> Item.Matches(item);
 
 	/// <summary>
 	///     Whether the item at the <paramref name="index" /> of a collection with <paramref name="count" /> items is at
@@ -112,7 +102,8 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 	}
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> stringBuilder.Append(Grammars.Verb("has an item ", "have an item ")).Append(_predicateDescription())
+		=> stringBuilder.Append(Grammars.Verb("has an item ", "have an item "))
+			.Append(Item.GetHasItemExpectation(_itemGrammars))
 			.Append(Options.Match.GetDescription());
 
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -138,7 +129,7 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(Grammars.Verb("does not have an item ", "do not have an item "))
-			.Append(_predicateDescription())
+			.Append(Item.GetHasItemExpectation(_itemGrammars))
 			.Append(Options.Match.GetDescription());
 
 	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
@@ -149,36 +140,16 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 	}
 }
 
-internal sealed class HasItemConstraint<TEnumerable, TItem>
-	: HasItemConstraintBase<TEnumerable, TItem>,
+internal sealed class HasItemConstraint<TEnumerable, TItem>(
+	string it,
+	ExpectationGrammars grammars,
+	ContainedItem<TItem> containedItem,
+	CollectionIndexOptions options)
+	: HasItemConstraintBase<TEnumerable, TItem>(it, grammars, containedItem, options),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
 {
-	private readonly Func<object?, bool>? _useComparerOf;
 	private CollectionContext _collectionContext;
-
-	public HasItemConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		Func<TItem, bool> predicate,
-		Func<string> predicateDescription,
-		CollectionIndexOptions options)
-		: base(it, grammars, predicate, predicateDescription, options)
-	{
-	}
-
-	public HasItemConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		Func<TItem, ValueTask<bool>> predicate,
-		Func<string> predicateDescription,
-		CollectionIndexOptions options,
-		Func<object?, bool>? useComparerOf = null,
-		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: base(it, grammars, predicate, predicateDescription, options, appendOptionsContexts)
-	{
-		_useComparerOf = useComparerOf;
-	}
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
@@ -203,7 +174,7 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>
 			return new ValueTask<ConstraintResult>(this);
 		}
 
-		_useComparerOf?.Invoke(actual);
+		Item.UseComparerOf(actual);
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		materialized.SetContext(ref _collectionContext);
 
@@ -223,7 +194,7 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>
 		CancellationToken cancellationToken)
 	{
 		int index = 0;
-		foreach (TItem item in materialized.Items)
+		foreach (TItem item in materialized)
 		{
 			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 			{
@@ -245,7 +216,7 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>
 		CancellationToken cancellationToken)
 	{
 		int index = 0;
-		foreach (TItem item in materialized.Items)
+		foreach (TItem item in materialized)
 		{
 			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 			{
@@ -265,32 +236,15 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>
 }
 
 #if NET8_0_OR_GREATER
-internal sealed class AsyncHasItemConstraint<TItem>
-	: HasItemConstraintBase<IAsyncEnumerable<TItem>?, TItem>,
+internal sealed class AsyncHasItemConstraint<TItem>(
+	string it,
+	ExpectationGrammars grammars,
+	ContainedItem<TItem> containedItem,
+	CollectionIndexOptions options)
+	: HasItemConstraintBase<IAsyncEnumerable<TItem>?, TItem>(it, grammars, containedItem, options),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
 	private CollectionContext _collectionContext;
-
-	public AsyncHasItemConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		Func<TItem, bool> predicate,
-		Func<string> predicateDescription,
-		CollectionIndexOptions options)
-		: base(it, grammars, predicate, predicateDescription, options)
-	{
-	}
-
-	public AsyncHasItemConstraint(
-		string it,
-		ExpectationGrammars grammars,
-		Func<TItem, ValueTask<bool>> predicate,
-		Func<string> predicateDescription,
-		CollectionIndexOptions options,
-		Action<ResultContextCollector>? appendOptionsContexts = null)
-		: base(it, grammars, predicate, predicateDescription, options, appendOptionsContexts)
-	{
-	}
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)

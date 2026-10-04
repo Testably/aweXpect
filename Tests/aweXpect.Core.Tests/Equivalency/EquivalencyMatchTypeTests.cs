@@ -226,7 +226,7 @@ internal static class EquivalencyMatchTypeTestExtensions
 		public override void AppendContexts(ResultContextCollector contexts)
 			=> contexts.AddEqualityOptionsContexts(options);
 
-		public async Task<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			Outcome = await options.AreConsideredEqual(actual, expected) ? Outcome.Success : Outcome.Failure;

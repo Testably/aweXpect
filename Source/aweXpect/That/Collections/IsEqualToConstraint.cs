@@ -118,7 +118,7 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 		where TItem : TMatch
 	{
 		int maximumNumber = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
-		foreach (TItem item in materialized.Items)
+		foreach (TItem item in materialized)
 		{
 			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 			{

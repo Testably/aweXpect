@@ -39,6 +39,14 @@ internal readonly struct CollectionItems<TItem>
 	public object Value => _typed ?? (object)_untyped!;
 
 	/// <summary>
+	///     Enumerates the <see cref="Items" />.
+	/// </summary>
+	/// <remarks>
+	///     An array or a <see cref="List{T}" /> is enumerated without allocating an enumerator, as most subjects are one.
+	/// </remarks>
+	public Enumerator GetEnumerator() => new(Items);
+
+	/// <summary>
 	///     The items of the <paramref name="actual" /> subject without materializing them, e.g. for a collection that
 	///     knows its number of items.
 	/// </summary>
@@ -120,6 +128,84 @@ internal readonly struct CollectionItems<TItem>
 		{
 			context.Set(_untyped, isIncomplete);
 		}
+	}
+
+	/// <summary>
+	///     The enumerator of <see cref="CollectionItems{TItem}" />.
+	/// </summary>
+	/// <remarks>
+	///     A <see cref="List{T}" /> keeps its own enumerator, so that a modification during the enumeration still throws.
+	/// </remarks>
+	public struct Enumerator : IDisposable
+	{
+		private readonly TItem[]? _array;
+		private readonly IEnumerator<TItem>? _enumerator;
+		private readonly bool _isList;
+		private List<TItem>.Enumerator _listEnumerator;
+		private int _index;
+
+		internal Enumerator(IEnumerable<TItem> items)
+		{
+			_array = null;
+			_enumerator = null;
+			_isList = false;
+			_listEnumerator = default;
+			_index = -1;
+			Current = default!;
+			if (items is TItem[] array)
+			{
+				_array = array;
+			}
+			else if (items is List<TItem> list)
+			{
+				_isList = true;
+				_listEnumerator = list.GetEnumerator();
+			}
+			else
+			{
+				_enumerator = items.GetEnumerator();
+			}
+		}
+
+		/// <inheritdoc cref="IEnumerator{T}.Current" />
+		public TItem Current { get; private set; }
+
+		/// <inheritdoc cref="IEnumerator.MoveNext()" />
+		public bool MoveNext()
+		{
+			if (_array is not null)
+			{
+				if (++_index >= _array.Length)
+				{
+					return false;
+				}
+
+				Current = _array[_index];
+				return true;
+			}
+
+			if (_isList)
+			{
+				if (!_listEnumerator.MoveNext())
+				{
+					return false;
+				}
+
+				Current = _listEnumerator.Current;
+				return true;
+			}
+
+			if (!_enumerator!.MoveNext())
+			{
+				return false;
+			}
+
+			Current = _enumerator.Current;
+			return true;
+		}
+
+		/// <inheritdoc cref="IDisposable.Dispose()" />
+		public void Dispose() => _enumerator?.Dispose();
 	}
 
 	/// <remarks>

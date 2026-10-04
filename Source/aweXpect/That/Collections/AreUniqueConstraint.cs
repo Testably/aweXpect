@@ -124,7 +124,7 @@ internal sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
 		bool isUntyped = !CollectionItems<TItem>.IsTyped<TEnumerable>();
 		if (isUniqueBySubject?.Invoke(actual) == true)
 		{
-			foreach (TItem item in materialized.Items)
+			foreach (TItem item in materialized)
 			{
 				KeepItemType(item, isUntyped);
 				Record(item, ExpectUnique);
@@ -138,7 +138,7 @@ internal sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
 		bool cancelEarly = CollectionItems<TItem>.CountOf(actual) is null;
 		OccurrenceCounter<TMember> occurrences = CreateCounter();
 		List<(TItem Item, int MemberIndex)> items = [];
-		foreach (TItem item in materialized.Items)
+		foreach (TItem item in materialized)
 		{
 			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 			{

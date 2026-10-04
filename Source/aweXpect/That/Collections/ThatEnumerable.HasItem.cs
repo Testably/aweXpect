@@ -42,8 +42,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((Options: options, IndexOptions: indexOptions, Negated: negated),
 				static (state, it, grammars)
 					=> new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
-						x => state.Options.Matches(x),
-						state.Options.GetDescription,
+						new ItemMatchingOptions<TItem>(state.Options),
 						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
@@ -67,8 +66,9 @@ public static partial class ThatEnumerable
 				(Predicate: predicate, PredicateExpression: predicateExpression, IndexOptions: indexOptions,
 					Negated: negated),
 				static (state, it, grammars)
-					=> new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars, state.Predicate,
-						() => $"matching {state.PredicateExpression}", state.IndexOptions).InvertIf(state.Negated)),
+					=> new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
+						new ItemMatchingPredicate<TItem>(state.Predicate, state.PredicateExpression),
+						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions);
 	}
@@ -87,18 +87,10 @@ public static partial class ThatEnumerable
 		return new ObjectHasItemResult<IEnumerable<TItem>, TItem>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
-				static (state, it, grammars) =>
-				{
-					SubjectEqualityOptions<TItem, TItem> itemOptions =
-						new(state.Options, () => state.Expected is not null && state.Options.HasDefaultMatchType);
-					return new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
-						a => itemOptions.AreConsideredEqual(a, state.Expected),
-						() => state.Options.GetItemExpectation(Formatter.Format(state.Expected),
-							comparison: "equal to") + itemOptions.Comparer,
-						state.IndexOptions,
-						itemOptions.UseComparerOf,
-						appendOptionsContexts: state.Options.AppendContexts).InvertIf(state.Negated);
-				}),
+				static (state, it, grammars)
+					=> new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
+						new SubjectComparedItem<TItem, TItem>(new EqualItem<TItem>(state.Options, state.Expected)),
+						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
 			options);
@@ -119,19 +111,10 @@ public static partial class ThatEnumerable
 		return new ObjectHasItemWithToleranceResult<IEnumerable<TItem>, TItem, TTolerance>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
-				static (state, it, grammars) =>
-				{
-					SubjectEqualityOptions<TItem, TItem> itemOptions = new(state.Options,
-						() => state.Expected is not null &&
-						      ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(state.Options));
-					return new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
-						a => itemOptions.AreConsideredEqual(a, state.Expected),
-						() => state.Options.GetItemExpectation(Formatter.Format(state.Expected),
-							comparison: "equal to") + itemOptions.Comparer,
-						state.IndexOptions,
-						itemOptions.UseComparerOf,
-						appendOptionsContexts: state.Options.AppendContexts).InvertIf(state.Negated);
-				}),
+				static (state, it, grammars)
+					=> new HasItemConstraint<IEnumerable<TItem>?, TItem>(it, grammars,
+						new SubjectComparedItem<TItem, TItem>(new EqualItem<TItem>(state.Options, state.Expected)),
+						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
 			options);
@@ -151,16 +134,10 @@ public static partial class ThatEnumerable
 		return new StringHasItemResult<IEnumerable<string?>>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
-				static (state, it, grammars) =>
-				{
-					SubjectEqualityOptions<string?, string?> itemOptions =
-						new(state.Options, () => state.Expected is not null && state.Options.ComparesByOrdinalEquality);
-					return new HasItemConstraint<IEnumerable<string?>?, string?>(it, grammars,
-						a => itemOptions.AreConsideredEqual(a, state.Expected),
-						() => state.Options.GetExpectation(state.Expected, grammars) + itemOptions.Comparer,
-						state.IndexOptions,
-						itemOptions.UseComparerOf).InvertIf(state.Negated);
-				}),
+				static (state, it, grammars)
+					=> new HasItemConstraint<IEnumerable<string?>?, string?>(it, grammars,
+						new SubjectComparedItem<string?, string?>(new EqualStringItem(state.Options, state.Expected)),
+						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
 			options);
@@ -180,7 +157,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((Options: options, IndexOptions: indexOptions, Negated: negated),
 				static (state, it, grammars)
 					=> new HasItemConstraint<IEnumerable, object?>(it, grammars,
-						x => state.Options.Matches(x), state.Options.GetDescription, state.IndexOptions)
+						new ItemMatchingOptions<object?>(state.Options), state.IndexOptions)
 						.InvertIf(state.Negated)),
 			subject,
 			indexOptions,
@@ -206,7 +183,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars)
 					=> new HasItemConstraint<IEnumerable, object?>(
 						it, grammars,
-						state.Predicate, () => $"matching {state.PredicateExpression}",
+						new ItemMatchingPredicate<object?>(state.Predicate, state.PredicateExpression),
 						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions);
@@ -226,19 +203,11 @@ public static partial class ThatEnumerable
 		return new ObjectHasItemResult<IEnumerable, object?>(
 			expectationBuilder.AddConstraint(
 				(Options: options, Expected: expected, IndexOptions: indexOptions, Negated: negated),
-				static (state, it, grammars) =>
-				{
-					SubjectEqualityOptions<object?, object?> itemOptions =
-						new(state.Options, () => state.Expected is not null && state.Options.HasDefaultMatchType);
-					return new HasItemConstraint<IEnumerable, object?>(
+				static (state, it, grammars)
+					=> new HasItemConstraint<IEnumerable, object?>(
 						it, grammars,
-						a => itemOptions.AreConsideredEqual(a, state.Expected),
-						() => state.Options.GetItemExpectation(Formatter.Format(state.Expected),
-							comparison: "equal to") + itemOptions.Comparer,
-						state.IndexOptions,
-						itemOptions.UseComparerOf,
-						appendOptionsContexts: state.Options.AppendContexts).InvertIf(state.Negated);
-				}),
+						new SubjectComparedItem<object?, object?>(new EqualItem<object?>(state.Options, state.Expected)),
+						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
 			options);
@@ -264,7 +233,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars)
 					=> new HasItemConstraint<TCollection, TItem>(
 						it, grammars,
-						state.Predicate, () => $"matching {state.PredicateExpression}",
+						new ItemMatchingPredicate<TItem>(state.Predicate, state.PredicateExpression),
 						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions);
@@ -285,7 +254,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((Options: options, IndexOptions: indexOptions, Negated: negated),
 				static (state, it, grammars)
 					=> new HasItemConstraint<TCollection, TItem>(it, grammars,
-						x => state.Options.Matches(x), state.Options.GetDescription, state.IndexOptions)
+						new ItemMatchingOptions<TItem>(state.Options), state.IndexOptions)
 						.InvertIf(state.Negated)),
 			subject,
 			indexOptions,
@@ -310,11 +279,8 @@ public static partial class ThatEnumerable
 				static (state, it, grammars)
 					=> new HasItemConstraint<TCollection, TItem>(
 						it, grammars,
-						a => state.Options.AreConsideredEqual(a, state.Expected),
-						() => state.Options.GetItemExpectation(Formatter.Format(state.Expected),
-							comparison: "equal to"),
-						state.IndexOptions,
-						appendOptionsContexts: state.Options.AppendContexts).InvertIf(state.Negated)),
+						new EqualItem<TItem>(state.Options, state.Expected),
+						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
 			options);
@@ -339,11 +305,8 @@ public static partial class ThatEnumerable
 				static (state, it, grammars)
 					=> new HasItemConstraint<TCollection, TItem>(
 						it, grammars,
-						a => state.Options.AreConsideredEqual(a, state.Expected),
-						() => state.Options.GetItemExpectation(Formatter.Format(state.Expected),
-							comparison: "equal to"),
-						state.IndexOptions,
-						appendOptionsContexts: state.Options.AppendContexts).InvertIf(state.Negated)),
+						new EqualItem<TItem>(state.Options, state.Expected),
+						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,
 			options);
@@ -367,8 +330,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars)
 					=> new HasItemConstraint<TCollection, string?>(
 						it, grammars,
-						a => state.Options.AreConsideredEqual(a, state.Expected),
-						() => state.Options.GetExpectation(state.Expected, grammars),
+						new EqualStringItem(state.Options, state.Expected),
 						state.IndexOptions).InvertIf(state.Negated)),
 			subject,
 			indexOptions,

@@ -156,7 +156,7 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>
 	private CollectionConstraint<TEnumerable, TItem> Verify(CollectionItems<TItem> materialized, bool cancelEarly,
 		CancellationToken cancellationToken)
 	{
-		foreach (TItem item in materialized.Items)
+		foreach (TItem item in materialized)
 		{
 			if (IsCanceled(materialized, cancellationToken))
 			{
@@ -175,7 +175,7 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>
 	private async ValueTask<ConstraintResult> VerifyAsync(CollectionItems<TItem> materialized, bool cancelEarly,
 		CancellationToken cancellationToken)
 	{
-		foreach (TItem item in materialized.Items)
+		foreach (TItem item in materialized)
 		{
 			if (IsCanceled(materialized, cancellationToken))
 			{

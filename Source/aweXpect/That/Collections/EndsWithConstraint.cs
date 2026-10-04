@@ -166,7 +166,7 @@ internal sealed class EndsWithConstraint<TEnumerable, TItem, TMatch>(
 		else
 		{
 			List<TItem> readItems = [];
-			foreach (TItem item in materialized.Items)
+			foreach (TItem item in materialized)
 			{
 				if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 				{

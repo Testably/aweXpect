@@ -177,7 +177,7 @@ internal sealed class IsInOrderConstraint<TEnumerable, TItem, TMember>(
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		materialized.SetContext(ref _collectionContext);
 		Start(GetSubjectOrder(actual));
-		foreach (TItem item in materialized.Items)
+		foreach (TItem item in materialized)
 		{
 			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 			{
