@@ -1417,7 +1417,7 @@ public static partial class EquivalencyComparison
 			for (int actualIndex = previous + 1; actualIndex >= previous - 1; actualIndex -= 2)
 			{
 				if (actualIndex >= 0 && actualIndex < _actualIndices.Length && _matchedTo[actualIndex] < 0 &&
-				    await IsEquivalent(actualIndex, expectedIndex))
+				    await AreEquivalentElements(actualIndex, expectedIndex))
 				{
 					_matchedTo[actualIndex] = expectedIndex;
 					return actualIndex;
@@ -1435,7 +1435,7 @@ public static partial class EquivalencyComparison
 			{
 				// Starting at the same position pairs collections that are already in order without any search.
 				int actualIndex = (expectedIndex + offset) % _actualIndices.Length;
-				if (_visitedInSearch[actualIndex] == _search || !await IsEquivalent(actualIndex, expectedIndex))
+				if (_visitedInSearch[actualIndex] == _search || !await AreEquivalentElements(actualIndex, expectedIndex))
 				{
 					continue;
 				}
@@ -1456,7 +1456,7 @@ public static partial class EquivalencyComparison
 		///     reported. The code of the caller is still called as for a reported pair, so that it throws alike.
 		/// </remarks>
 		private async ValueTask<bool>
-			IsEquivalent(int actualIndex, int expectedIndex)
+			AreEquivalentElements(int actualIndex, int expectedIndex)
 		{
 			if (_results.TryGet(actualIndex, expectedIndex, out bool cachedResult))
 			{
