@@ -76,7 +76,7 @@ internal static class ObjectEqualityOptions
 			// A primitive's Equals(object) agrees with its typed Equals, so comparing the boxed values cannot differ.
 			if (typeof(TActual).IsPrimitive && expected is TActual)
 			{
-				return new ValueTask<bool>(false);
+				return false;
 			}
 
 			if (typeof(TActual) == typeof(object) &&
