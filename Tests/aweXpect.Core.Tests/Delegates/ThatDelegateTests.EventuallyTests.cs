@@ -513,7 +513,8 @@ public sealed partial class ThatDelegateTests
 		[Fact]
 		public async Task WhenCreatedWithANullDelegate_ShouldThrowArgumentNullException()
 		{
-			ExpectationBuilder expectationBuilder = That(() => 0).ExpectationBuilder;
+			ExpectationBuilder expectationBuilder =
+				((IExpectThat<ThatDelegate.WithValue<int>>)That(() => 0)).ExpectationBuilder;
 
 			void Act()
 				=> _ = new ThatDelegate.WithValue<int>(expectationBuilder, null!);
@@ -527,7 +528,8 @@ public sealed partial class ThatDelegateTests
 		public async Task WhenCreatedWithTheConstructor_ShouldReinvokeTheDelegate()
 		{
 			Counter counter = new(2);
-			ExpectationBuilder expectationBuilder = That(() => 0).ExpectationBuilder;
+			ExpectationBuilder expectationBuilder =
+				((IExpectThat<ThatDelegate.WithValue<int>>)That(() => 0)).ExpectationBuilder;
 			ThatDelegate.WithValue<int> subject = new(expectationBuilder, _ => Task.FromResult(counter.Value));
 
 			async Task Act()
