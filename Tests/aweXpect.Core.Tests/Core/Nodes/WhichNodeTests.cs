@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Threading;
+using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Core.Nodes;
@@ -918,6 +919,61 @@ public sealed class WhichNodeTests
 	}
 
 	[Fact]
+	public async Task WhenAsyncMemberCompletesWithinTheTimeout_ShouldSucceed()
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await WhoseAsyncLength(That(subject),
+					s => Task.Delay(50.Milliseconds()).ContinueWith(_ => s.Length))
+				.IsEqualTo(3)
+				.WithTimeout(30.Seconds());
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Fact]
+	public async Task WhenAsyncMemberDoesNotFinishBeforeTheCancellation_ShouldBeInconclusive()
+	{
+		string subject = "foo";
+		using CancellationTokenSource cts = new();
+		cts.CancelAfter(50.Milliseconds());
+
+		async Task Act()
+			=> await WhoseAsyncLength(That(subject), _ => PendingTask.Of<int>())
+				.IsEqualTo(3)
+				.WithCancellation(cts.Token);
+
+		await That(Act).Throws<InconclusiveException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose length is equal to 3,
+			             but it could not be verified, because the evaluation was already canceled
+			             """)
+			.Because("the cancellation must stop waiting for a member task that does not observe it");
+	}
+
+	[Fact]
+	public async Task WhenAsyncMemberDoesNotFinishWithinTheTimeout_ShouldFailWithTheTimeout()
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await WhoseAsyncLength(That(subject), _ => PendingTask.Of<int>())
+				.IsEqualTo(3)
+				.WithTimeout(50.Milliseconds());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose length is equal to 3,
+			             but it did not finish within 0:00.050
+			             """).And
+			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+			.Because("the timeout must abandon a member task that never finishes, and report it like any other timeout");
+	}
+
+	[Fact]
 	public async Task WhenBothAreFailure_ShouldOnlyIncludeLeftResult()
 	{
 		WhichNode<string, int> whichNode = new(new DummyNode("",
@@ -1131,6 +1187,9 @@ public sealed class WhichNodeTests
 	}
 
 	private static ThatSubject<int> WhoseLength(IThat<string> subject, Func<string, int> length)
+		=> new ThatSubject<int>(subject.Get().ExpectationBuilder.ForWhich(length, " whose length "));
+
+	private static ThatSubject<int> WhoseAsyncLength(IThat<string> subject, Func<string, Task<int>> length)
 		=> new ThatSubject<int>(subject.Get().ExpectationBuilder.ForWhich(length, " whose length "));
 
 	private sealed class StartsWithBarConstraint(string it, ExpectationGrammars grammars)

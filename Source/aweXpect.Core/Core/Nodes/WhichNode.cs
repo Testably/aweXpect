@@ -126,7 +126,7 @@ internal class WhichNode<TSource, TMember> : Node
 		(TMember? Value, NullSubjectKind NullKind) matching;
 		try
 		{
-			matching = await ComputeMatchingValueAsync(source);
+			matching = await ComputeMatchingValueAsync(source, cancellationToken);
 		}
 		catch (Exception exception)
 		{
@@ -180,7 +180,8 @@ internal class WhichNode<TSource, TMember> : Node
 				$"The member type for the actual value in the which node did not match.{Environment.NewLine}Expected: {Formatter.Format(typeof(TSource))}{Environment.NewLine}   Found: {Formatter.Format(value.GetType())}"));
 	}
 
-	private async ValueTask<(TMember? Value, NullSubjectKind NullKind)> ComputeMatchingValueAsync(TSource? source)
+	private async ValueTask<(TMember? Value, NullSubjectKind NullKind)> ComputeMatchingValueAsync(TSource? source,
+		CancellationToken cancellationToken)
 	{
 #pragma warning disable S2583
 		if (source is null)
@@ -195,7 +196,9 @@ internal class WhichNode<TSource, TMember> : Node
 		}
 
 		Task<TMember?>? task = _asyncMemberAccessor!.Invoke(source);
-		return task is null ? (default, NullSubjectKind.NullTaskReturned) : (await task, NullSubjectKind.None);
+		return task is null
+			? (default, NullSubjectKind.NullTaskReturned)
+			: (await task.AbandonOnCancellation(cancellationToken), NullSubjectKind.None);
 	}
 
 	/// <inheritdoc cref="object.Equals(object?)" />
