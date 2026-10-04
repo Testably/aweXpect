@@ -196,26 +196,26 @@ internal sealed class EqualStringItem(StringEqualityOptions options, string? exp
 }
 
 /// <summary>
-///     The <paramref name="item" />, compared by the comparer of a subject that is a set of
+///     The <paramref name="inner" /> item, compared by the comparer of a subject that is a set of
 ///     <typeparamref name="TSetItem" /> with a custom comparer, as long as the comparison of the item is the default one.
 /// </summary>
 /// <remarks>
 ///     The subject is only known during the evaluation, so <see cref="UseComparerOf" /> or <see cref="LookUpIn" /> has
 ///     to be called before comparing, and the texts name the comparer only afterwards.
 /// </remarks>
-internal sealed class SubjectComparedItem<TSetItem, TItem>(ExpectedItem<TItem> item) : ExpectedItem<TItem>(item.Expected)
+internal sealed class SubjectComparedItem<TSetItem, TItem>(ExpectedItem<TItem> inner) : ExpectedItem<TItem>(inner.Expected)
 {
 	private SubjectComparer<TSetItem>? _comparer;
 
 	/// <inheritdoc />
-	public override ValueTask<bool> Matches(TItem actual)
+	public override ValueTask<bool> Matches(TItem item)
 		=> _comparer is null
-			? item.Matches(actual)
-			: new ValueTask<bool>(_comparer.AreEqual(actual, Expected));
+			? inner.Matches(item)
+			: new ValueTask<bool>(_comparer.AreEqual(item, Expected));
 
 	/// <inheritdoc />
 	public override void UseComparerOf(object collection)
-		=> _comparer = item.UsesDefaultEquality
+		=> _comparer = inner.UsesDefaultEquality
 			? CollectionComparerHelpers.GetSubjectComparer<TSetItem>(collection)
 			: null;
 
@@ -235,13 +235,13 @@ internal sealed class SubjectComparedItem<TSetItem, TItem>(ExpectedItem<TItem> i
 
 	/// <inheritdoc />
 	public override string GetItemExpectation()
-		=> item.GetItemExpectation() + _comparer;
+		=> inner.GetItemExpectation() + _comparer;
 
 	/// <inheritdoc />
 	public override string GetHasItemExpectation(ExpectationGrammars grammars)
-		=> item.GetHasItemExpectation(grammars) + _comparer;
+		=> inner.GetHasItemExpectation(grammars) + _comparer;
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
-		=> item.AppendContexts(contexts);
+		=> inner.AppendContexts(contexts);
 }

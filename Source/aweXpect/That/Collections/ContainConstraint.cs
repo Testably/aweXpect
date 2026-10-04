@@ -218,9 +218,9 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 internal sealed class ContainConstraint<TEnumerable, TItem>(
 	string it,
 	ExpectationGrammars grammars,
-	ContainedItem<TItem> item,
+	ContainedItem<TItem> containedItem,
 	Quantifier quantifier)
-	: ContainConstraintBase<TItem>(it, grammars, item, quantifier),
+	: ContainConstraintBase<TItem>(it, grammars, containedItem, quantifier),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
 {
@@ -328,9 +328,9 @@ internal sealed class ContainConstraint<TEnumerable, TItem>(
 internal sealed class AsyncContainConstraint<TItem>(
 	string it,
 	ExpectationGrammars grammars,
-	ContainedItem<TItem> item,
+	ContainedItem<TItem> containedItem,
 	Quantifier quantifier)
-	: ContainConstraintBase<TItem>(it, grammars, item, quantifier),
+	: ContainConstraintBase<TItem>(it, grammars, containedItem, quantifier),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
 	private CollectionContext _collectionContext;

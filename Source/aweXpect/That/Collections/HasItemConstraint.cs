@@ -143,9 +143,9 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 internal sealed class HasItemConstraint<TEnumerable, TItem>(
 	string it,
 	ExpectationGrammars grammars,
-	ContainedItem<TItem> item,
+	ContainedItem<TItem> containedItem,
 	CollectionIndexOptions options)
-	: HasItemConstraintBase<TEnumerable, TItem>(it, grammars, item, options),
+	: HasItemConstraintBase<TEnumerable, TItem>(it, grammars, containedItem, options),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
 {
@@ -239,9 +239,9 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>(
 internal sealed class AsyncHasItemConstraint<TItem>(
 	string it,
 	ExpectationGrammars grammars,
-	ContainedItem<TItem> item,
+	ContainedItem<TItem> containedItem,
 	CollectionIndexOptions options)
-	: HasItemConstraintBase<IAsyncEnumerable<TItem>?, TItem>(it, grammars, item, options),
+	: HasItemConstraintBase<IAsyncEnumerable<TItem>?, TItem>(it, grammars, containedItem, options),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
 	private CollectionContext _collectionContext;
