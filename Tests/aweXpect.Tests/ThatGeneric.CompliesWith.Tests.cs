@@ -72,6 +72,44 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenInnerExpectationHasAsyncReason_InASkippedOrOperand_ShouldNotAwaitTheReason()
+			{
+				bool reasonWasResolved = false;
+				Task<string?> becauseTask = Task.Delay(TimeSpan.FromSeconds(30)).ContinueWith(_ =>
+				{
+					reasonWasResolved = true;
+					return (string?)"of reasons";
+				});
+				int subject = 1;
+
+				await That(subject).IsEqualTo(1).Or.CompliesWith(x => x.IsEqualTo(2).Because(becauseTask));
+
+				await That(reasonWasResolved).IsFalse()
+					.Because("a met expectation never builds a failure message, so it must not wait for the reason");
+			}
+
+			[Fact]
+			public async Task WhenInnerExpectationHasAsyncReason_InASkippedOrOperand_WhenNegated_ShouldAppendIt()
+			{
+				Task<string?> becauseTask = Task.Delay(TimeSpan.FromMilliseconds(50))
+					.ContinueWith(_ => (string?)"of reasons");
+				int subject = 1;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it
+						.IsEqualTo(1).Or
+						.CompliesWith(x => x.IsEqualTo(2).Because(becauseTask)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equal to 1 and is not equal to 2, because of reasons,
+					             but it was 1
+					             """)
+					.Because("the text of the skipped operand is shown, so its reason is awaited for the failure");
+			}
+
+			[Fact]
 			public async Task WhenInnerExpectationHasReason_ShouldAppendItAfterTheInnerExpectation()
 			{
 				int subject = 1;

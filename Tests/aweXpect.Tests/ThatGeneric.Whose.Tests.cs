@@ -666,6 +666,50 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenMemberExpectationHasAsyncReason_InASkippedOrOperand_ShouldNotAwaitTheReason()
+			{
+				bool reasonWasResolved = false;
+				Task<string?> becauseTask = Task.Delay(TimeSpan.FromSeconds(30)).ContinueWith(_ =>
+				{
+					reasonWasResolved = true;
+					return (string?)"of a";
+				});
+				MyCombinationClass subject = new()
+				{
+					A = true,
+				};
+
+				await That(subject).IsNotNull().Or.Whose(o => o.A, v => v.IsTrue().Because(becauseTask));
+
+				await That(reasonWasResolved).IsFalse()
+					.Because("a met expectation never builds a failure message, so it must not wait for the reason");
+			}
+
+			[Fact]
+			public async Task WhenMemberExpectationHasAsyncReason_InASkippedOrOperand_WhenNegated_ShouldFollowTheMember()
+			{
+				Task<string?> becauseTask = Task.Delay(TimeSpan.FromMilliseconds(50))
+					.ContinueWith(_ => (string?)"of b");
+				MyCombinationClass subject = new()
+				{
+					A = true,
+				};
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it
+						.Whose(o => o.A, v => v.IsTrue()).Or
+						.Whose(o => o.B, v => v.IsTrue().Because(becauseTask)));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose A is not True and whose B is not True, because of b,
+					             but A was True
+					             """)
+					.Because("the text of the skipped operand is shown, so its reason is awaited for the failure");
+			}
+
+			[Fact]
 			public async Task WhenMemberExpectationHasAsyncReason_WhenMet_ShouldNotAwaitTheReason()
 			{
 				bool reasonWasResolved = false;
@@ -876,6 +920,43 @@ public sealed partial class ThatGeneric
 					             but t!.Length was 1, which differs by -1
 					             """)
 					.Because("each member introduces its own subject again for the next one");
+			}
+
+			[Fact]
+			public async Task WhenMemberThrows_AndAnotherOperandIsMet_ShouldNotAwaitTheAsyncReason()
+			{
+				bool reasonWasResolved = false;
+				Task<string?> becauseTask = Task.Delay(TimeSpan.FromSeconds(30)).ContinueWith(_ =>
+				{
+					reasonWasResolved = true;
+					return (string?)"of reasons";
+				});
+				ThrowingClass subject = new();
+
+				await That(subject).Whose(o => o.Throwing, v => v.IsEqualTo(1).Because(becauseTask)).Or.IsNotNull();
+
+				await That(reasonWasResolved).IsFalse()
+					.Because("a met expectation never builds a failure message, so it must not wait for the reason");
+			}
+
+			[Fact]
+			public async Task WhenMemberThrows_AndMemberExpectationHasAsyncReason_ShouldFollowTheMember()
+			{
+				Task<string?> becauseTask = Task.Delay(TimeSpan.FromMilliseconds(50))
+					.ContinueWith(_ => (string?)"of reasons");
+				ThrowingClass subject = new();
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Throwing, v => v.IsEqualTo(1).Because(becauseTask));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Throwing is equal to 1, because of reasons,
+					             but Throwing did throw an InvalidOperationException:
+					               member failed
+					             """)
+					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
 			}
 
 			[Fact]
