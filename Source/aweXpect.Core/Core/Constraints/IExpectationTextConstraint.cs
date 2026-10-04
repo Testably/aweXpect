@@ -21,6 +21,6 @@ public interface IExpectationTextConstraint : IConstraint
 	///     Nested expectations must be evaluated with the given <paramref name="context" />, so that they are not
 	///     evaluated either.
 	/// </remarks>
-	public Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+	public ValueTask<ConstraintResult> GetExpectationResult(IEvaluationContext context,
 		CancellationToken cancellationToken);
 }

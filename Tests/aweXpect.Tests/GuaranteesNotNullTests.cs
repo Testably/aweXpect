@@ -80,7 +80,7 @@ public sealed class GuaranteesNotNullTests
 
 		await That(inert).IsEmpty()
 			.Because(
-				"the attribute exists so that IsNotNullSuppressor can drop a nullability warning, and a subject that cannot be null never raises one — marking it says nothing and makes the attribute read as documentation rather than as the suppression directive it is");
+				"the attribute exists so that IsNotNullSuppressor can drop a nullability warning, and a subject that cannot be null never raises one, so marking it says nothing and makes the attribute read as documentation rather than as the suppression directive it is");
 	}
 
 	[Fact]
@@ -164,7 +164,7 @@ public sealed class GuaranteesNotNullTests
 	/// <summary>
 	///     The rule: a null subject fails every expectation, except these. `IsEqualTo` and the other
 	///     comparisons may be handed a null of their own to compare against, and the negated tri-state
-	///     `bool?` expectations exist to cover the null case — making `IsNotTrue()` fail for it would
+	///     `bool?` expectations exist to cover the null case: making `IsNotTrue()` fail for it would
 	///     leave it identical to `IsFalse()`, with no null-tolerant twin. `Eventually` continues a
 	///     delegate expectation rather than taking a subject, so it has no null-subject behaviour of
 	///     its own. `Satisfies` and `CompliesWith` hand the subject to the caller's own predicate or
@@ -537,8 +537,8 @@ public sealed class GuaranteesNotNullTests
 			.Where(method => method.GetCustomAttribute<GuaranteesNotNullAttribute>() is not null);
 
 	/// <summary>
-	///     Whether the value the suppressor tracks — the subject of the <c>Expect.That(subject)</c> the expectation
-	///     belongs to — can be <see langword="null" />, and a nullability warning can therefore exist to be dropped.
+	///     Whether the value the suppressor tracks (the subject of the <c>Expect.That(subject)</c> the expectation
+	///     belongs to) can be <see langword="null" />, and a nullability warning can therefore exist to be dropped.
 	/// </summary>
 	/// <remarks>
 	///     This is not <see cref="CanHaveNullSubject" />, which asks whether the harness can invoke the method on a

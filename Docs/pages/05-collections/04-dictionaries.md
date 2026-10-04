@@ -121,6 +121,12 @@ await Expect.That(playCounts).DoesNotContainKeys("Help!", "Something")
 
 ## Keys and values
 
+:::info[C# 14 or later]
+`Keys` and `Values` are extension properties, which need C# 14 or later, the default only for .NET 10 and later. With
+an older language version, pass the keys or values themselves, e.g. `Expect.That(playCounts.Values).All().AreUnique()`;
+the keys then no longer use the key comparer of the dictionary.
+:::
+
 You can continue with expectations on the keys or on the values of a dictionary:
 
 ```csharp

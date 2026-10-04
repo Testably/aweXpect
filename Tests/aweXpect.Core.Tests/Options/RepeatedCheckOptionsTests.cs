@@ -193,7 +193,7 @@ public sealed class RepeatedCheckOptionsTests
 				_items = checkContext.UseMaterializedEnumerable(actual).ToList();
 				bool isMatch = _items.Any(item => UserCode.Invoke(predicate, item, "the predicate"));
 				Outcome = isMatch ? Outcome.Success : Outcome.Failure;
-				return Task.FromResult(isMatch != IsNegated);
+				return new ValueTask<bool>(isMatch != IsNegated);
 			}, context);
 			if (outcome == Outcome.Undecided)
 			{

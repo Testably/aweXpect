@@ -55,7 +55,7 @@ internal abstract class ComplyWithConstraintBase<TValue, TItem>
 	protected override string Verb => _builder.GetResultVerb();
 
 	/// <inheritdoc cref="IExpectationTextConstraint.GetExpectationResult(IEvaluationContext, CancellationToken)" />
-	public async Task<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+	public async ValueTask<ConstraintResult> GetExpectationResult(IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
 		await PrepareExpectation(context, cancellationToken);

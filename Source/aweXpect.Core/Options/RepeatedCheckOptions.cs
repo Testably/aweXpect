@@ -137,7 +137,8 @@ public class RepeatedCheckOptions
 	///     the last check returned <see langword="false" />, and <see cref="Outcome.Undecided" /> when the evaluation was
 	///     canceled before the <see cref="Timeout" />, by the caller or by a shorter timeout.
 	/// </returns>
-	public async Task<Outcome> CheckRepeatedly(Func<IEvaluationContext, Task<bool>> check, IEvaluationContext context)
+	public async ValueTask<Outcome> CheckRepeatedly(Func<IEvaluationContext, ValueTask<bool>> check,
+		IEvaluationContext context)
 	{
 		long startTimestamp = Stopwatch.GetTimestamp();
 		if (!IsRepeated)
@@ -185,7 +186,7 @@ public class RepeatedCheckOptions
 	///     A cancellation of the evaluation still aborts it, like everywhere else.
 	/// </remarks>
 	private static async ValueTask<(bool IsMet, UserCodeException? Exception)> Check(
-		Func<IEvaluationContext, Task<bool>> check, IEvaluationContext context)
+		Func<IEvaluationContext, ValueTask<bool>> check, IEvaluationContext context)
 	{
 		try
 		{

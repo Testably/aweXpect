@@ -307,7 +307,7 @@ internal class ExpectationNode : Node
 	///     The expectation of the <paramref name="constraint" />, for when it could not be evaluated, because code of the
 	///     caller threw.
 	/// </summary>
-	private static async Task<ConstraintResult> GetExpectationResult(IConstraint constraint,
+	private static async ValueTask<ConstraintResult> GetExpectationResult(IConstraint constraint,
 		IEvaluationContext context, CancellationToken cancellationToken)
 		=> constraint switch
 		{
