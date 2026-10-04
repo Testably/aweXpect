@@ -24,6 +24,34 @@ internal static class ThrowHelper
 	}
 
 	/// <summary>
+	///     Rejects an exclusive <paramref name="maximum" /> of zero, so that a negated expectation cannot silently
+	///     succeed on a range that can never contain anything.
+	/// </summary>
+	public static void ThrowIfNoCountIsFewerThan(int maximum)
+	{
+		if (maximum < 1)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(maximum),
+				"The maximum must be greater than zero."));
+		}
+	}
+
+	/// <summary>
+	///     Rejects an exclusive <paramref name="minimum" /> of <see cref="int.MaxValue" />, so that a negated
+	///     expectation cannot silently succeed on a range that can never contain anything.
+	/// </summary>
+	public static void ThrowIfNoCountIsMoreThan(int minimum)
+	{
+		if (minimum == int.MaxValue)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new ArgumentOutOfRangeException(nameof(minimum),
+				"The minimum must be less than 2147483647."));
+		}
+	}
+
+	/// <summary>
 	///     Rejects an inverted range, so that a negated expectation cannot silently succeed on a range that can
 	///     never contain anything.
 	/// </summary>

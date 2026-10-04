@@ -81,12 +81,14 @@ internal readonly record struct CountBounds
 	public static CountBounds LessThan(int maximum)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(maximum);
+		ThrowHelper.ThrowIfNoCountIsFewerThan(maximum);
 		return new CountBounds(null, maximum, false);
 	}
 
 	public static CountBounds MoreThan(int minimum)
 	{
 		ThrowHelper.ThrowIfCountIsNegative(minimum);
+		ThrowHelper.ThrowIfNoCountIsMoreThan(minimum);
 		return new CountBounds(minimum, null, false);
 	}
 

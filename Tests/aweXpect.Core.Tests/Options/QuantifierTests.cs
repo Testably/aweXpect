@@ -169,7 +169,7 @@ public class QuantifierTests
 	}
 
 	[Theory]
-	[InlineData(0, 0)]
+	[InlineData(1, 1)]
 	[InlineData(3, 3)]
 	public async Task DeterminableAmount_LessThan_ShouldBeTheMaximum(int maximum, int expected)
 	{
@@ -234,7 +234,7 @@ public class QuantifierTests
 		Quantifier atMost = new();
 		atMost.AtMost(int.MaxValue);
 		Quantifier moreThan = new();
-		moreThan.MoreThan(int.MaxValue);
+		moreThan.MoreThan(int.MaxValue - 1);
 
 		await That(atMost.DeterminableAmount).IsEqualTo(int.MaxValue);
 		await That(moreThan.DeterminableAmount).IsEqualTo(int.MaxValue);
@@ -298,6 +298,56 @@ public class QuantifierTests
 		Quantifier sut = Configure(method, value);
 
 		await That(sut.IsNever(false)).IsEqualTo(expected);
+	}
+
+	[Fact]
+	public async Task LessThan_WhenMaximumIsNegative_ShouldThrowArgumentOutOfRangeException()
+	{
+		Quantifier sut = new();
+
+		void Act() => sut.LessThan(-1);
+
+		await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
+			.WithParamName("maximum").And
+			.WithMessage("The maximum must not be negative.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task LessThan_WhenMaximumIsZero_ShouldThrowArgumentOutOfRangeException()
+	{
+		Quantifier sut = new();
+
+		void Act() => sut.LessThan(0);
+
+		await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
+			.WithParamName("maximum").And
+			.WithMessage("The maximum must be greater than zero.").AsPrefix()
+			.Because("no count is fewer than zero, so the expectation could never succeed and its negation never fail");
+	}
+
+	[Fact]
+	public async Task MoreThan_WhenMinimumIsNegative_ShouldThrowArgumentOutOfRangeException()
+	{
+		Quantifier sut = new();
+
+		void Act() => sut.MoreThan(-1);
+
+		await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
+			.WithParamName("minimum").And
+			.WithMessage("The minimum must not be negative.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task MoreThan_WhenMinimumIsTheLargestValue_ShouldThrowArgumentOutOfRangeException()
+	{
+		Quantifier sut = new();
+
+		void Act() => sut.MoreThan(int.MaxValue);
+
+		await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
+			.WithParamName("minimum").And
+			.WithMessage("The minimum must be less than 2147483647.").AsPrefix()
+			.Because("no count is more than int.MaxValue, so the expectation could never succeed and its negation never fail");
 	}
 
 	[Theory]

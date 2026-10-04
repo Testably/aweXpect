@@ -101,6 +101,22 @@ public class CountBoundsTests
 		}
 	}
 
+	[Theory]
+	[InlineData("LessThan", 0, "maximum", "The maximum must be greater than zero.")]
+	[InlineData("MoreThan", int.MaxValue, "minimum", "The minimum must be less than 2147483647.")]
+	public async Task EnumerableQuantifier_WhenNoCountCanMeetTheBounds_ShouldThrowArgumentOutOfRangeException(
+		string method, int value, string paramName, string expectedMessage)
+	{
+		void Act() => _ = method == "LessThan"
+			? EnumerableQuantifier.LessThan(value)
+			: EnumerableQuantifier.MoreThan(value);
+
+		await That(Act).ThrowsExactly<ArgumentOutOfRangeException>()
+			.WithParamName(paramName).And
+			.WithMessage(expectedMessage).AsPrefix()
+			.Because("a collection quantifier must reject an empty range like the occurrence quantifier does");
+	}
+
 	private static CountBounds Create(string method, int value)
 		=> method switch
 		{

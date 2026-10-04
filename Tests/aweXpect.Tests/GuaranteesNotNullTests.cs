@@ -919,6 +919,11 @@ public sealed class GuaranteesNotNullTests
 			return 1.Times();
 		}
 
+		if (type == typeof(int))
+		{
+			return 1;
+		}
+
 		if (parameter.IsOptional)
 		{
 			return parameter.DefaultValue;
