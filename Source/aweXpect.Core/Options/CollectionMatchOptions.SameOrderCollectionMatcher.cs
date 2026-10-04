@@ -65,19 +65,32 @@ public partial class CollectionMatchOptions
 		IRecordingCollectionMatcher<T>
 		where T : T2
 	{
-		private readonly Dictionary<int, T> _additionalItems = new();
 		private readonly EquivalenceRelations _equivalenceRelations;
 		private readonly T3[] _expectedItems;
 		private readonly bool _ignoreInterspersedItems;
-		private readonly Dictionary<int, (T Item, T3 Expected)> _incorrectItems = new();
 		private readonly List<T> _values = new();
-		private List<int> _candidateOffsets = new();
+
+		/// <summary>
+		///     The deviating items, which are only created for the first deviation, as a met expectation has none.
+		/// </summary>
+		private Dictionary<int, T>? _additionalItems;
+
+		/// <inheritdoc cref="_additionalItems" />
+		private Dictionary<int, (T Item, T3 Expected)>? _incorrectItems;
+
+		/// <summary>
+		///     The lists of the run searches, which only the containment relations create.
+		/// </summary>
+		private List<int>? _candidateOffsets;
 
 		/// <summary>
 		///     The list that the next item fills for <see cref="_candidateOffsets" /> or <see cref="_runLengths" />, so
 		///     that the two are swapped instead of allocating a new list for every item.
 		/// </summary>
-		private List<int> _nextOffsetsOrRunLengths = new();
+		private List<int>? _nextOffsetsOrRunLengths;
+
+		/// <inheritdoc cref="_candidateOffsets" />
+		private List<int>? _runLengths;
 
 		private BoundedEditDistance<T3>? _editDistance;
 		private bool _isBroken;
@@ -85,7 +98,6 @@ public partial class CollectionMatchOptions
 		private int _lastMatchedExpectedIndex = -1;
 		private int _matchIndex;
 		private int _positionalDeviations;
-		private List<int> _runLengths = new();
 		private int _subjectItemsMatchingNothing;
 
 		protected SameOrderCollectionMatcherBase(EquivalenceRelations equivalenceRelation,
@@ -197,13 +209,16 @@ public partial class CollectionMatchOptions
 		/// <returns><see langword="true" />, when a run is complete.</returns>
 		private async ValueTask<bool> CompletesARun(int index, IOptionsEquality<T2> options)
 		{
-			List<int> runLengths = _nextOffsetsOrRunLengths;
+			List<int> runLengths = _nextOffsetsOrRunLengths ??= new List<int>();
 			runLengths.Clear();
-			foreach (int runLength in _runLengths)
+			if (_runLengths is not null)
 			{
-				if (await IsMatch(index, _expectedItems[runLength], options))
+				foreach (int runLength in _runLengths)
 				{
-					runLengths.Add(runLength + 1);
+					if (await IsMatch(index, _expectedItems[runLength], options))
+					{
+						runLengths.Add(runLength + 1);
+					}
 				}
 			}
 
@@ -270,12 +285,12 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		private async ValueTask<bool> ContinuesTheRunInTheExpectedItems(int index, IOptionsEquality<T2> options)
 		{
-			List<int> candidateOffsets = _nextOffsetsOrRunLengths;
+			List<int> candidateOffsets = _nextOffsetsOrRunLengths ??= new List<int>();
 			candidateOffsets.Clear();
-			int count = index == 0 ? _expectedItems.Length : _candidateOffsets.Count;
+			int count = index == 0 ? _expectedItems.Length : _candidateOffsets!.Count;
 			for (int i = 0; i < count; i++)
 			{
-				int offset = index == 0 ? i : _candidateOffsets[i];
+				int offset = index == 0 ? i : _candidateOffsets![i];
 				if (offset + index < _expectedItems.Length &&
 				    await IsMatch(index, _expectedItems[offset + index], options))
 				{
@@ -330,8 +345,8 @@ public partial class CollectionMatchOptions
 		///     Additional items are no deviation for the containment relation, so they are left out.
 		/// </summary>
 		private IEnumerable<string> GetDeviations(IOptionsEquality<T2> options)
-			=> IncorrectItemsError(_incorrectItems, options)
-				.Concat(AdditionalItemsError(_additionalItems, CreateItemFormatter()));
+			=> IncorrectItemsError(_incorrectItems ?? new Dictionary<int, (T Item, T3 Expected)>(), options)
+				.Concat(AdditionalItemsError(_additionalItems ?? new Dictionary<int, T>(), CreateItemFormatter()));
 
 		/// <summary>
 		///     Every subject item was compared with the expected item at its position, so the expected items beyond the
@@ -342,6 +357,11 @@ public partial class CollectionMatchOptions
 			VerifyCompleteForPositionalMatch(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			int positionalDeviations = _positionalDeviations + Math.Max(0, _expectedItems.Length - _values.Count);
+			if (positionalDeviations == 0)
+			{
+				return (false, null);
+			}
+
 			if (_editDistance is not null)
 			{
 				List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)>? edits = await _editDistance.GetEdits(
@@ -358,7 +378,8 @@ public partial class CollectionMatchOptions
 			}
 
 			List<T3> missingItems = _expectedItems.Skip(_values.Count).ToList();
-			return ReturnError(it, _incorrectItems, new Dictionary<int, T>(), _additionalItems, missingItems, options,
+			return ReturnError(it, _incorrectItems ?? new Dictionary<int, (T Item, T3 Expected)>(),
+				new Dictionary<int, T>(), _additionalItems ?? new Dictionary<int, T>(), missingItems, options,
 				maximumNumber);
 		}
 
@@ -447,11 +468,12 @@ public partial class CollectionMatchOptions
 				{
 					if (isAdditional)
 					{
-						_additionalItems.Add(index, value);
+						(_additionalItems ??= new Dictionary<int, T>()).Add(index, value);
 					}
 					else
 					{
-						_incorrectItems.Add(index, (value, _expectedItems[index]));
+						(_incorrectItems ??= new Dictionary<int, (T Item, T3 Expected)>()).Add(index,
+							(value, _expectedItems[index]));
 					}
 				}
 
@@ -472,7 +494,7 @@ public partial class CollectionMatchOptions
 		///     An unexpected and a missing item that format equally differ only in their runtime type.
 		/// </summary>
 		private Func<object?, string> CreateItemFormatter()
-			=> GetItemFormatter(_additionalItems.Values.Cast<object?>(), []);
+			=> GetItemFormatter((_additionalItems ?? new Dictionary<int, T>()).Values.Cast<object?>(), []);
 
 		private ValueTask<bool> IsMatch(int index, T3 expected, IOptionsEquality<T2> options)
 			=> AreConsideredEqual(index, _values[index], expected, options);
