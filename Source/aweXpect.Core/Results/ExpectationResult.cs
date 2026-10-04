@@ -127,7 +127,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 		}
 
 		ConstraintResult result = isMet.Result;
-		if (result.Outcome == Outcome.Success && Customize.aweXpect.TraceWriter is null)
+		if (result.Outcome == Outcome.Success && !ExpectationBuilder.IsTracing)
 		{
 			return Task.CompletedTask.GetAwaiter();
 		}
@@ -294,7 +294,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 		}
 
 		ConstraintResult result = isMet.Result;
-		if (result.Outcome == Outcome.Success && Customize.aweXpect.TraceWriter is null &&
+		if (result.Outcome == Outcome.Success && !ExpectationBuilder.IsTracing &&
 		    result.TryGetStoredValue(out TType? storedValue))
 		{
 			value = storedValue!;

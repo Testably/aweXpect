@@ -41,17 +41,32 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 
 	/// <inheritdoc cref="IAwexpectCustomization.Get{TValue}(string, TValue)" />
 	TValue IAwexpectCustomization.Get<TValue>(string key, TValue defaultValue)
+		=> Lookup(_isGlobal ? null : _store.Value, _global.Store, key, defaultValue);
+
+	/// <summary>
+	///     The settings that every evaluation reads, with a single access to the value of the current async flow.
+	/// </summary>
+	internal (TestCancellation? TestCancellation, ITraceWriter? TraceWriter) GetEvaluationSettings()
 	{
-		if (!_isGlobal)
+		CustomizationStore? store = _isGlobal ? null : _store.Value;
+		CustomizationStore? globalStore = _global.Store;
+		if (store is null && globalStore is null)
 		{
-			CustomizationStore? store = _store.Value;
-			if (store != null && store.TryGetValue(key, out object? value))
-			{
-				return AsValue(value, defaultValue);
-			}
+			return (null, null);
 		}
 
-		CustomizationStore? globalStore = _global.Store;
+		return (Lookup<TestCancellation?>(store, globalStore, SettingsCustomization.TestCancellationKey, null),
+			Lookup<ITraceWriter?>(store, globalStore, TraceWriterKey, null));
+	}
+
+	private static TValue Lookup<TValue>(CustomizationStore? store, CustomizationStore? globalStore, string key,
+		TValue defaultValue)
+	{
+		if (store != null && store.TryGetValue(key, out object? value))
+		{
+			return AsValue(value, defaultValue);
+		}
+
 		if (globalStore != null && globalStore.TryGetValue(key, out object? globalValue))
 		{
 			return AsValue(globalValue, defaultValue);

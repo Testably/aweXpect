@@ -103,6 +103,15 @@ public abstract class ExpectationBuilder
 	internal bool IsTrueWithoutExpectations { private get; set; }
 
 	/// <summary>
+	///     Whether a trace writer was set when the current evaluation started.
+	/// </summary>
+	/// <remarks>
+	///     Read once per evaluation together with the test cancellation, because each read of a customization costs
+	///     about as much as a simple constraint.
+	/// </remarks>
+	internal bool IsTracing { get; private set; }
+
+	/// <summary>
 	///     Adds the <see cref="IValueConstraint{TValue}" /> from the <paramref name="constraintBuilder" /> which verifies the
 	///     underlying value.
 	/// </summary>
@@ -803,7 +812,9 @@ public abstract class ExpectationBuilder
 		try
 		{
 			ITimeSystem timeSystem = _timeSystem ?? RealTimeSystem.Instance;
-			TestCancellation? testCancellation = Customize.aweXpect.Settings().TestCancellation.Get();
+			(TestCancellation? testCancellation, ITraceWriter? traceWriter) =
+				Customize.aweXpect.GetEvaluationSettings();
+			IsTracing = traceWriter is not null;
 			CancellationToken cancellationToken = CancellationToken ??
 			                                      testCancellation?.CancellationTokenFactory?.Invoke() ??
 			                                      System.Threading.CancellationToken.None;
@@ -1029,7 +1040,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 	{
 		if (timeout is null && !cancellationToken.CanBeCanceled &&
 		    _subjectSource is ValueSource<TValue> { Value: not DelegateValue, } valueSource &&
-		    Customize.aweXpect.TraceWriter is null)
+		    !IsTracing)
 		{
 			context.Cancellation = EvaluationCancellation.None;
 			return rootNode.IsMetBy(valueSource.Value, context, cancellationToken);
