@@ -34,7 +34,7 @@ public static class TypeMetadataRegistry
 	///     Registers the public field <paramref name="name" /> of <typeparamref name="T" />.
 	/// </summary>
 	public static void RegisterField<T, TMember>(string name, Func<T, TMember> getValue)
-		=> Instance.AddField(typeof(T), name, typeof(TMember), Wrap(getValue));
+		=> Instance.AddField(typeof(T), name, typeof(TMember), Wrap(getValue), ValueComparer.For(getValue));
 
 	/// <summary>
 	///     Registers the public field <paramref name="name" /> of the type of <paramref name="probe" />.
@@ -50,7 +50,7 @@ public static class TypeMetadataRegistry
 	///     Registers the public property <paramref name="name" /> of <typeparamref name="T" />.
 	/// </summary>
 	public static void RegisterProperty<T, TMember>(string name, Func<T, TMember> getValue)
-		=> Instance.AddProperty(typeof(T), name, typeof(TMember), Wrap(getValue));
+		=> Instance.AddProperty(typeof(T), name, typeof(TMember), Wrap(getValue), ValueComparer.For(getValue));
 
 	/// <summary>
 	///     Registers the public property <paramref name="name" /> of the type of <paramref name="probe" />.
@@ -127,13 +127,17 @@ public static class TypeMetadataRegistry
 		private int _order;
 		private int _version;
 
-		public void AddField(Type type, string name, Type memberType, Func<object, object?> getValue)
+		public void AddField(Type type, string name, Type memberType, Func<object, object?> getValue,
+			ValueComparer? valueComparer = null)
 			=> Add(type, metadata
-				=> metadata.Fields[name] = new RegisteredMember(name, memberType, getValue, NextOrder()));
+				=> metadata.Fields[name] =
+					new RegisteredMember(name, memberType, getValue, NextOrder(), valueComparer));
 
-		public void AddProperty(Type type, string name, Type memberType, Func<object, object?> getValue)
+		public void AddProperty(Type type, string name, Type memberType, Func<object, object?> getValue,
+			ValueComparer? valueComparer = null)
 			=> Add(type, metadata
-				=> metadata.Properties[name] = new RegisteredMember(name, memberType, getValue, NextOrder()));
+				=> metadata.Properties[name] =
+					new RegisteredMember(name, memberType, getValue, NextOrder(), valueComparer));
 
 		public void AddExplicitProperty(Type type, string name, Type memberType, Func<object, object?> getValue)
 			=> Add(type, metadata
@@ -292,7 +296,8 @@ public static class TypeMetadataRegistry
 		private static EquivalencyMember[] Order(ConcurrentDictionary<string, RegisteredMember> members)
 			=> members.Values
 				.OrderBy(member => member.Order)
-				.Select(member => new EquivalencyMember(member.Name, member.MemberType, member.GetValue))
+				.Select(member => new EquivalencyMember(member.Name, member.MemberType, member.GetValue,
+					member.ValueComparer))
 				.ToArray();
 	}
 
@@ -306,12 +311,56 @@ public static class TypeMetadataRegistry
 		public bool HasMembers { get; } = hasMembers;
 	}
 
-	internal sealed class RegisteredMember(string name, Type memberType, Func<object, object?> getValue, int order)
+	internal sealed class RegisteredMember(
+		string name,
+		Type memberType,
+		Func<object, object?> getValue,
+		int order,
+		ValueComparer? valueComparer = null)
 	{
 		public string Name { get; } = name;
 		public Type MemberType { get; } = memberType;
 		public Func<object, object?> GetValue { get; } = getValue;
 		public int Order { get; } = order;
+		public ValueComparer? ValueComparer { get; } = valueComparer;
+	}
+
+	/// <summary>
+	///     Compares the values of a member of a primitive or enum type on two objects of the registered type without
+	///     boxing them.
+	/// </summary>
+	internal abstract class ValueComparer
+	{
+		public abstract Type MemberType { get; }
+
+		/// <summary>
+		///     Reads the member of the <paramref name="actual" /> and then of the <paramref name="expected" /> object
+		///     and returns whether the values are equal, and only when they are not, the values themselves.
+		/// </summary>
+		/// <remarks>
+		///     The values are equal exactly when their <see cref="object.Equals(object)" /> says so, which for a
+		///     primitive or enum type never throws.
+		/// </remarks>
+		public abstract (bool IsEqual, object? Actual, object? Expected) Compare(object actual, object expected);
+
+		public static ValueComparer? For<T, TMember>(Func<T, TMember> getValue)
+			=> typeof(TMember).IsPrimitive || typeof(TMember).IsEnum
+				? new Typed<T, TMember>(getValue)
+				: null;
+
+		private sealed class Typed<T, TMember>(Func<T, TMember> getValue) : ValueComparer
+		{
+			public override Type MemberType => typeof(TMember);
+
+			public override (bool IsEqual, object? Actual, object? Expected) Compare(object actual, object expected)
+			{
+				TMember actualValue = getValue((T)actual);
+				TMember expectedValue = getValue((T)expected);
+				return EqualityComparer<TMember>.Default.Equals(actualValue, expectedValue)
+					? (true, null, null)
+					: (false, actualValue, expectedValue);
+			}
+		}
 	}
 
 	internal sealed class RegisteredEvent(

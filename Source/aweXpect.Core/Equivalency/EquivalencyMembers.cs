@@ -12,7 +12,11 @@ namespace aweXpect.Equivalency;
 /// <summary>
 ///     A field or property of a type, resolved either from the <see cref="TypeMetadataRegistry" /> or by reflection.
 /// </summary>
-internal readonly struct EquivalencyMember(string name, Type declaredType, Func<object, object?> getValue)
+internal readonly struct EquivalencyMember(
+	string name,
+	Type declaredType,
+	Func<object, object?> getValue,
+	TypeMetadataRegistry.ValueComparer? valueComparer = null)
 {
 	public string Name { get; } = name;
 
@@ -22,6 +26,12 @@ internal readonly struct EquivalencyMember(string name, Type declaredType, Func<
 	/// </remarks>
 	public Type DeclaredType { get; } = Nullable.GetUnderlyingType(declaredType) ?? declaredType;
 	public Func<object, object?> GetValue { get; } = getValue;
+
+	/// <summary>
+	///     Compares the member on two objects of the registered type without boxing, when it has a primitive or enum
+	///     type.
+	/// </summary>
+	public TypeMetadataRegistry.ValueComparer? ValueComparer { get; } = valueComparer;
 }
 
 /// <summary>
