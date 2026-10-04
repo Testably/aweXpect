@@ -164,8 +164,7 @@ public class ExecutionTimeOptions
 			stringBuilder.Append(prefix);
 			stringBuilder.Append("approximately ");
 			Formatter.Format(stringBuilder, Expected);
-			stringBuilder.Append(" ± ");
-			Formatter.Format(stringBuilder, Tolerance);
+			ToleranceHelpers.Append(stringBuilder, Tolerance);
 		}
 
 		public override void AppendFailureResult(StringBuilder stringBuilder, TimeSpan actual)

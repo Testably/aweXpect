@@ -94,6 +94,36 @@ public class QuantifierTests
 	}
 
 	[Theory]
+	[InlineData(0, false, false)]
+	[InlineData(1, false, true)]
+	[InlineData(2, false, true)]
+	[InlineData(3, false, false)]
+	[InlineData(0, true, true)]
+	[InlineData(1, true, false)]
+	[InlineData(2, true, false)]
+	[InlineData(3, true, true)]
+	public async Task Check_ShouldInvertTheDecisionWhenNegated(int amount, bool isNegated, bool expected)
+	{
+		Quantifier sut = Configure(q => q.Between(1, 2));
+
+		bool? result = sut.Check(amount, true, isNegated);
+
+		await That(result ?? isNegated).IsEqualTo(expected);
+	}
+
+	[Fact]
+	public async Task Check_ShouldNotChangeTheQuantifier()
+	{
+		Quantifier sut = Configure(q => q.AtLeast(2));
+
+		bool? negated = sut.Check(2, true, true);
+		bool? notNegated = sut.Check(2, true);
+
+		await That(negated).IsFalse();
+		await That(notNegated).IsTrue().Because("a negated check must not leave the shared quantifier negated");
+	}
+
+	[Theory]
 	[InlineData(0, 0)]
 	[InlineData(1, 1)]
 	[InlineData(3, 3)]
@@ -238,7 +268,39 @@ public class QuantifierTests
 	}
 
 	[Theory]
-	[InlineData(1, "fewer than once")]
+	[InlineData("AtLeast", 1, true)]
+	[InlineData("AtLeast", 2, false)]
+	[InlineData("AtMost", 0, false)]
+	[InlineData("Exactly", 0, false)]
+	[InlineData("LessThan", 1, false)]
+	[InlineData("MoreThan", 0, true)]
+	[InlineData("MoreThan", 1, false)]
+	public async Task IsNever_WhenNegated_ShouldBeTrueWhenTheComplementIsOnlyMetByZero(string method, int value,
+		bool expected)
+	{
+		Quantifier sut = Configure(method, value);
+
+		await That(sut.IsNever(true)).IsEqualTo(expected);
+	}
+
+	[Theory]
+	[InlineData("AtLeast", 1, false)]
+	[InlineData("AtMost", 0, true)]
+	[InlineData("AtMost", 1, false)]
+	[InlineData("Between", 0, false)]
+	[InlineData("Exactly", 0, true)]
+	[InlineData("LessThan", 1, true)]
+	[InlineData("LessThan", 2, false)]
+	[InlineData("MoreThan", 0, false)]
+	public async Task IsNever_WhenNotNegated_ShouldBeTrueWhenOnlyZeroMeetsTheQuantifier(string method, int value,
+		bool expected)
+	{
+		Quantifier sut = Configure(method, value);
+
+		await That(sut.IsNever(false)).IsEqualTo(expected);
+	}
+
+	[Theory]
 	[InlineData(2, "fewer than twice")]
 	[InlineData(3, "fewer than 3 times")]
 	public async Task ToString_LessThan_ShouldSayFewerThan(int maximum, string expected)
@@ -262,24 +324,17 @@ public class QuantifierTests
 	[InlineData("Exactly", 3, "not exactly 3 times")]
 	[InlineData("LessThan", 1, "at least once")]
 	[InlineData("LessThan", 4, "at least 4 times")]
+	[InlineData("MoreThan", 0, "never")]
 	[InlineData("MoreThan", 1, "at most once")]
 	[InlineData("MoreThan", 2, "at most twice")]
 	[InlineData("MoreThan", 3, "at most 3 times")]
 	public async Task ToString_WhenNegated_ShouldDescribeTheComplement(string method, int value, string expected)
 	{
-		Quantifier sut = Configure(method switch
-		{
-			"AtLeast" => q => q.AtLeast(value),
-			"AtMost" => q => q.AtMost(value),
-			"Between" => q => q.Between(value, 5),
-			"Exactly" => q => q.Exactly(value),
-			"LessThan" => q => q.LessThan(value),
-			_ => q => q.MoreThan(value),
-		});
+		Quantifier sut = Configure(method, value);
 
-		sut.Negate();
+		string result = sut.ToString(true);
 
-		await That(sut.ToString()).IsEqualTo(expected);
+		await That(result).IsEqualTo(expected);
 	}
 
 	[Fact]
@@ -287,7 +342,18 @@ public class QuantifierTests
 	{
 		Quantifier sut = new();
 
-		sut.Negate();
+		string result = sut.ToString(true);
+
+		await That(result).IsEqualTo("never");
+	}
+
+	[Theory]
+	[InlineData("AtMost", 0)]
+	[InlineData("Exactly", 0)]
+	[InlineData("LessThan", 1)]
+	public async Task ToString_WhenOnlyZeroMeetsTheQuantifier_ShouldBeNever(string method, int value)
+	{
+		Quantifier sut = Configure(method, value);
 
 		await That(sut.ToString()).IsEqualTo("never");
 	}
@@ -298,4 +364,15 @@ public class QuantifierTests
 		configure(quantifier);
 		return quantifier;
 	}
+
+	private static Quantifier Configure(string method, int value)
+		=> Configure(method switch
+		{
+			"AtLeast" => q => q.AtLeast(value),
+			"AtMost" => q => q.AtMost(value),
+			"Between" => q => q.Between(value, 5),
+			"Exactly" => q => q.Exactly(value),
+			"LessThan" => q => q.LessThan(value),
+			_ => q => q.MoreThan(value),
+		});
 }

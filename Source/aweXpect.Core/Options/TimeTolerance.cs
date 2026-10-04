@@ -1,5 +1,4 @@
 ﻿using System;
-using aweXpect.Core;
 using aweXpect.Core.Helpers;
 using aweXpect.Customization;
 
@@ -33,12 +32,7 @@ public class TimeTolerance
 	/// <exception cref="InvalidOperationException">A tolerance is already set.</exception>
 	public virtual void SetTolerance(TimeSpan tolerance)
 	{
-		if (tolerance < TimeSpan.Zero)
-		{
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(tolerance), "The tolerance must not be negative."));
-		}
-
+		ToleranceHelpers.ThrowIfInvalid(tolerance);
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(Tolerance is not null, "Within");
 		Tolerance = tolerance;
 	}
@@ -77,7 +71,7 @@ public class TimeTolerance
 			return "";
 		}
 
-		return $" \u00b1 {Formatter.Format(tolerance)}";
+		return ToleranceHelpers.Format(tolerance);
 	}
 
 	private static TimeSpan GetDefaultTolerance()

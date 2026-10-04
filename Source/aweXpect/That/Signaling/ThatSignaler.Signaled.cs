@@ -16,8 +16,6 @@ namespace aweXpect;
 
 public static partial class ThatSignaler
 {
-	private const string Times = " times";
-
 	/// <summary>
 	///     Verifies that the expected callback was signaled at least once.
 	/// </summary>
@@ -201,16 +199,20 @@ public static partial class ThatSignaler
 			options);
 	}
 
-	private static void AppendNormalCallbackExpectation(StringBuilder stringBuilder, Quantifier quantifier,
+	/// <remarks>
+	///     The negated expectation reads as the complementary quantifier, e.g. <c>DidNotSignal()</c> like
+	///     <c>Signaled().Never()</c>.
+	/// </remarks>
+	private static void AppendCallbackExpectation(StringBuilder stringBuilder, Quantifier quantifier, bool isNegated,
 		SignalerOptions options, TimeSpan? defaultTimeout)
 	{
-		if (quantifier.IsNever)
+		if (quantifier.IsNever(isNegated))
 		{
 			stringBuilder.Append("has never recorded the callback");
 		}
 		else
 		{
-			stringBuilder.Append("has recorded the callback ").Append(quantifier);
+			stringBuilder.Append("has recorded the callback ").Append(quantifier.ToString(isNegated));
 		}
 
 		stringBuilder.Append(options);
@@ -219,15 +221,6 @@ public static partial class ThatSignaler
 			stringBuilder.Append(" within ");
 			Formatter.Format(stringBuilder, defaultTimeout.Value);
 		}
-	}
-
-	private static void AppendNegatedCallbackExpectation(StringBuilder stringBuilder, Quantifier quantifier,
-		SignalerOptions options, TimeSpan? defaultTimeout)
-	{
-		// Rendering the complementary quantifier makes e.g. DidNotSignal() read like Signaled().Never().
-		quantifier.Negate();
-		AppendNormalCallbackExpectation(stringBuilder, quantifier, options, defaultTimeout);
-		quantifier.Negate();
 	}
 
 	/// <summary>
@@ -244,7 +237,8 @@ public static partial class ThatSignaler
 	///     <c>only</c> says that too few occurred, so it is left out when fewer would also meet the
 	///     <paramref name="quantifier" />, e.g. for <c>not exactly once</c>.
 	/// </remarks>
-	internal static void AppendOccurrences(StringBuilder stringBuilder, Quantifier quantifier, int count)
+	internal static void AppendOccurrences(StringBuilder stringBuilder, Quantifier quantifier, bool isNegated,
+		int count)
 	{
 		if (count == 0)
 		{
@@ -252,24 +246,12 @@ public static partial class ThatSignaler
 			return;
 		}
 
-		if (quantifier.Check(count, false) is null && !(quantifier.Check(0, true) ?? quantifier.IsNegated))
+		if (quantifier.Check(count, false) is null && !(quantifier.Check(0, true, isNegated) ?? isNegated))
 		{
 			stringBuilder.Append("only ");
 		}
 
-		stringBuilder.Append("recorded ");
-		if (count == 1)
-		{
-			stringBuilder.Append("once");
-		}
-		else if (count == 2)
-		{
-			stringBuilder.Append("twice");
-		}
-		else
-		{
-			stringBuilder.Append(count).Append(Times);
-		}
+		stringBuilder.Append("recorded ").AppendOccurrences(count);
 	}
 
 	/// <remarks>
@@ -335,17 +317,17 @@ public static partial class ThatSignaler
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalCallbackExpectation(stringBuilder, quantifier, options, _defaultTimeout);
+			=> AppendCallbackExpectation(stringBuilder, quantifier, false, options, _defaultTimeout);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was ");
-			AppendOccurrences(stringBuilder, quantifier, Actual?.Count ?? 0);
+			AppendOccurrences(stringBuilder, quantifier, false, Actual?.Count ?? 0);
 			AppendWaitedTime(stringBuilder, _waitedTime, Actual?.IsSuccess);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNegatedCallbackExpectation(stringBuilder, quantifier, options, _defaultTimeout);
+			=> AppendCallbackExpectation(stringBuilder, quantifier, true, options, _defaultTimeout);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
@@ -399,12 +381,12 @@ public static partial class ThatSignaler
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalCallbackExpectation(stringBuilder, quantifier, options, _defaultTimeout);
+			=> AppendCallbackExpectation(stringBuilder, quantifier, false, options, _defaultTimeout);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was ");
-			AppendOccurrences(stringBuilder, quantifier, _actualCount);
+			AppendOccurrences(stringBuilder, quantifier, false, _actualCount);
 
 			if (Actual?.Count > 0)
 			{
@@ -416,7 +398,7 @@ public static partial class ThatSignaler
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNegatedCallbackExpectation(stringBuilder, quantifier, options, _defaultTimeout);
+			=> AppendCallbackExpectation(stringBuilder, quantifier, true, options, _defaultTimeout);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);

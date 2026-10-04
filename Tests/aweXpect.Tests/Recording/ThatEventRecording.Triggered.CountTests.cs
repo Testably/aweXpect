@@ -118,6 +118,29 @@ public sealed partial class ThatEventRecording
 			[Theory]
 			[InlineData(0, true)]
 			[InlineData(1, false)]
+			public async Task ShouldSupportLessThanOnceLikeNever(int count, bool expectSuccess)
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording = sut.Record().Events();
+
+				sut.NotifyCustomEvents(count);
+
+				async Task Act() =>
+					await That(recording).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.LessThan(1.Times());
+
+				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+					.WithMessage("""
+					             Expected that recording
+					             has never recorded the CustomEvent event on sut,
+					             but it was recorded once in *
+					             """).AsWildcard()
+					.Because("fewer than once is the same as never");
+			}
+
+			[Theory]
+			[InlineData(0, true)]
+			[InlineData(1, false)]
 			public async Task ShouldSupportNever(int count, bool expectSuccess)
 			{
 				CustomEventWithoutParametersClass sut = new();

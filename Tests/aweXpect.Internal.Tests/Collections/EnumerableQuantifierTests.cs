@@ -227,6 +227,20 @@ public sealed class EnumerableQuantifierTests
 			await That(sb.ToString()).IsEqualTo("6 of 8 were");
 		}
 
+		[Theory]
+		[InlineData(1, " for exactly one item")]
+		[InlineData(2, " for exactly 2 items")]
+		public async Task WhenMinimumEqualsMaximum_ShouldReadLikeExactly(int count, string expected)
+		{
+			EnumerableQuantifier sut = EnumerableQuantifier.Between(count, count);
+			StringBuilder sb = new();
+
+			sut.AppendExpectation(sb, ExpectationGrammars.None, (_, _) => { });
+
+			await That(sb.ToString()).IsEqualTo(expected)
+				.Because("a range of a single count is the same as exactly this count");
+		}
+
 		[Fact]
 		public async Task WhenNotEnumeratedCompletely_ShouldHaveUndecidedOutcome()
 		{
@@ -290,6 +304,20 @@ public sealed class EnumerableQuantifierTests
 			sut.AppendResult(sb, ExpectationGrammars.None, "it", matchingCount, notMatchingCount, totalCount, "were");
 			await That(result).IsEqualTo(Outcome.Failure);
 			await That(sb.ToString()).IsEqualTo($"{foundItems} of 8 were");
+		}
+
+		[Theory]
+		[InlineData(0, " for at least one item")]
+		[InlineData(2, " for not exactly 2 items")]
+		public async Task WhenNegated_ShouldAppendTheComplementIfThereIsOne(int expectedCount, string expected)
+		{
+			EnumerableQuantifier sut = EnumerableQuantifier.Exactly(expectedCount);
+			StringBuilder sb = new();
+
+			sut.AppendExpectation(sb, ExpectationGrammars.Negated, (_, _) => { });
+
+			await That(sb.ToString()).IsEqualTo(expected)
+				.Because("only the negation of exactly zero is a single range");
 		}
 
 		[Fact]

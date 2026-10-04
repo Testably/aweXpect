@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
@@ -24,11 +25,11 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 	/// </exception>
 	public ObjectEqualityOptions<TSubject> Within(TTolerance tolerance)
 	{
-		ThrowIfToleranceIsInvalid(tolerance);
+		ToleranceHelpers.ThrowIfInvalid(tolerance);
 		ThrowIfMatchTypeIsSpecified(nameof(Within));
 		_validateTolerance?.Invoke(tolerance);
 		SetMatchType(new WithinMatchType(() => tolerance, false, isWithinTolerance,
-			toString ?? DefaultToleranceFormatter), nameof(Within));
+			toString ?? ToleranceHelpers.Format), nameof(Within));
 		return this;
 	}
 
@@ -56,7 +57,7 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 		Func<TTolerance> defaultTolerance)
 	{
 		MatchType = new WithinMatchType(defaultTolerance, true, isWithinTolerance,
-			toString ?? DefaultToleranceFormatter);
+			toString ?? ToleranceHelpers.Format);
 		return this;
 	}
 
@@ -72,37 +73,6 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 		options.SetMatchType(matchType.WithResolvedTolerance());
 		return options;
 	}
-
-	/// <summary>
-	///     Rejects the same tolerances as <see cref="NumberTolerance{TNumber}" /> and <see cref="TimeTolerance" />,
-	///     which a comparison with a tolerance can never honour.
-	/// </summary>
-	/// <remarks>
-	///     The tolerance is generic here, so both checks are made against the runtime value: only a floating point
-	///     number can be NaN, and a negative value is one that compares below the default of its own type, which
-	///     exists only for a value type.
-	/// </remarks>
-	private static void ThrowIfToleranceIsInvalid(TTolerance tolerance)
-	{
-		if ((tolerance is double doubleTolerance && double.IsNaN(doubleTolerance)) ||
-		    (tolerance is float floatTolerance && float.IsNaN(floatTolerance)))
-		{
-			// ReSharper disable once LocalizableElement
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(tolerance), "The tolerance must not be NaN."));
-		}
-
-		if (default(TTolerance) is { } zero && tolerance is IComparable<TTolerance> comparable &&
-		    comparable.CompareTo(zero) < 0)
-		{
-			// ReSharper disable once LocalizableElement
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(tolerance), "The tolerance must not be negative."));
-		}
-	}
-
-	private static string DefaultToleranceFormatter(TTolerance tolerance)
-		=> $" ± {Formatter.Format(tolerance)}";
 
 	private sealed class WithinMatchType(
 		Func<TTolerance> tolerance,

@@ -8,116 +8,94 @@ namespace aweXpect.Helpers;
 internal static class ObjectEqualityWithToleranceOptionsFactory
 {
 	public static ObjectEqualityWithToleranceOptions<double, double> CreateDouble() =>
-		new ItemEqualityWithToleranceOptions<double, double>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<double, double>((a, e, t) => a.IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<double?, double> CreateNullableDouble() =>
-		new ItemEqualityWithToleranceOptions<double?, double>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<double?, double>((a, e, t) => a.IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<float, float> CreateFloat() =>
-		new ItemEqualityWithToleranceOptions<float, float>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<float, float>((a, e, t) => a.IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<float?, float> CreateNullableFloat() =>
-		new ItemEqualityWithToleranceOptions<float?, float>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<float?, float>((a, e, t) => a.IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<decimal, decimal> CreateDecimal() =>
-		new ItemEqualityWithToleranceOptions<decimal, decimal>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<decimal, decimal>((a, e, t) => a.IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<decimal?, decimal> CreateNullableDecimal() =>
-		new ItemEqualityWithToleranceOptions<decimal?, decimal>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<decimal?, decimal>((a, e, t) => a.IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<byte, byte> CreateByte() =>
-		new ItemEqualityWithToleranceOptions<byte, byte>((a, e, t) => ((ulong)a).IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<byte, byte>((a, e, t) => ((ulong)a).IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<byte?, byte> CreateNullableByte() =>
-		new ItemEqualityWithToleranceOptions<byte?, byte>((a, e, t) => ((ulong?)a).IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<byte?, byte>((a, e, t) => ((ulong?)a).IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<sbyte, sbyte> CreateSByte() =>
-		new ItemEqualityWithToleranceOptions<sbyte, sbyte>((a, e, t) => ((long)a).IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<sbyte, sbyte>((a, e, t) => ((long)a).IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<sbyte?, sbyte> CreateNullableSByte() =>
-		new ItemEqualityWithToleranceOptions<sbyte?, sbyte>((a, e, t) => ((long?)a).IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<sbyte?, sbyte>((a, e, t) => ((long?)a).IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<short, short> CreateShort() =>
-		new ItemEqualityWithToleranceOptions<short, short>((a, e, t) => ((long)a).IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<short, short>((a, e, t) => ((long)a).IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<short?, short> CreateNullableShort() =>
-		new ItemEqualityWithToleranceOptions<short?, short>((a, e, t) => ((long?)a).IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<short?, short>((a, e, t) => ((long?)a).IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<ushort, ushort> CreateUShort() =>
-		new ItemEqualityWithToleranceOptions<ushort, ushort>((a, e, t) => ((ulong)a).IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<ushort, ushort>((a, e, t) => ((ulong)a).IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<ushort?, ushort> CreateNullableUShort() =>
-		new ItemEqualityWithToleranceOptions<ushort?, ushort>((a, e, t) => ((ulong?)a).IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<ushort?, ushort>((a, e, t) => ((ulong?)a).IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<int, int> CreateInt() =>
-		new ItemEqualityWithToleranceOptions<int, int>((a, e, t) => ((long)a).IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<int, int>((a, e, t) => ((long)a).IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<int?, int> CreateNullableInt() =>
-		new ItemEqualityWithToleranceOptions<int?, int>((a, e, t) => ((long?)a).IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<int?, int>((a, e, t) => ((long?)a).IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<uint, uint> CreateUInt() =>
-		new ItemEqualityWithToleranceOptions<uint, uint>((a, e, t) => ((ulong)a).IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<uint, uint>((a, e, t) => ((ulong)a).IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<uint?, uint> CreateNullableUInt() =>
-		new ItemEqualityWithToleranceOptions<uint?, uint>((a, e, t) => ((ulong?)a).IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<uint?, uint>((a, e, t) => ((ulong?)a).IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<long, long> CreateLong() =>
-		new ItemEqualityWithToleranceOptions<long, long>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<long, long>((a, e, t) => a.IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<long?, long> CreateNullableLong() =>
-		new ItemEqualityWithToleranceOptions<long?, long>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<long?, long>((a, e, t) => a.IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<ulong, ulong> CreateULong() =>
-		new ItemEqualityWithToleranceOptions<ulong, ulong>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<ulong, ulong>((a, e, t) => a.IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<ulong?, ulong> CreateNullableULong() =>
-		new ItemEqualityWithToleranceOptions<ulong?, ulong>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}");
+		new ItemEqualityWithToleranceOptions<ulong?, ulong>((a, e, t) => a.IsConsideredEqualTo(e, t));
 
 	public static ObjectEqualityWithToleranceOptions<DateTime, TimeSpan> CreateDateTime() =>
 		new ItemEqualityWithToleranceOptions<DateTime, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}", DefaultTimeTolerance);
+			defaultTolerance: DefaultTimeTolerance);
 
 	public static ObjectEqualityWithToleranceOptions<DateTime?, TimeSpan> CreateNullableDateTime() =>
 		new ItemEqualityWithToleranceOptions<DateTime?, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}", DefaultTimeTolerance);
+			defaultTolerance: DefaultTimeTolerance);
 
 	public static ObjectEqualityWithToleranceOptions<DateTimeOffset, TimeSpan> CreateDateTimeOffset() =>
 		new ItemEqualityWithToleranceOptions<DateTimeOffset, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}", DefaultTimeTolerance);
+			defaultTolerance: DefaultTimeTolerance);
 
 	public static ObjectEqualityWithToleranceOptions<DateTimeOffset?, TimeSpan> CreateNullableDateTimeOffset() =>
 		new ItemEqualityWithToleranceOptions<DateTimeOffset?, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}", DefaultTimeTolerance);
+			defaultTolerance: DefaultTimeTolerance);
 
 	public static ObjectEqualityWithToleranceOptions<TimeSpan, TimeSpan> CreateTimeSpan() =>
 		new ItemEqualityWithToleranceOptions<TimeSpan, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}", DefaultTimeTolerance);
+			defaultTolerance: DefaultTimeTolerance);
 
 	public static ObjectEqualityWithToleranceOptions<TimeSpan?, TimeSpan> CreateNullableTimeSpan() =>
 		new ItemEqualityWithToleranceOptions<TimeSpan?, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}", DefaultTimeTolerance);
+			defaultTolerance: DefaultTimeTolerance);
 
 #if NET8_0_OR_GREATER
 	public static ObjectEqualityWithToleranceOptions<DateOnly, TimeSpan> CreateDateOnly() =>
@@ -132,11 +110,11 @@ internal static class ObjectEqualityWithToleranceOptionsFactory
 
 	public static ObjectEqualityWithToleranceOptions<TimeOnly, TimeSpan> CreateTimeOnly() =>
 		new ItemEqualityWithToleranceOptions<TimeOnly, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}", DefaultTimeTolerance);
+			defaultTolerance: DefaultTimeTolerance);
 
 	public static ObjectEqualityWithToleranceOptions<TimeOnly?, TimeSpan> CreateNullableTimeOnly() =>
 		new ItemEqualityWithToleranceOptions<TimeOnly?, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
-			t => $" ± {Formatter.Format(t)}", DefaultTimeTolerance);
+			defaultTolerance: DefaultTimeTolerance);
 
 	/// <remarks>
 	///     A date only honours the whole days of the default tolerance, so a shorter one is not named in the text.

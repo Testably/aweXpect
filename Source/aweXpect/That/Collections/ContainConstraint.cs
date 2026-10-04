@@ -108,7 +108,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 			_firstFoundItem = item;
 		}
 
-		return Quantifier.Check(_count, false) switch
+		return Quantifier.Check(_count, false, _isNegated) switch
 		{
 			true => Outcome.Success,
 			false => Outcome.Failure,
@@ -131,11 +131,11 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	protected void Finish()
 	{
 		_isFinished = true;
-		Outcome = Quantifier.Check(_count, true) ?? _isNegated ? Outcome.Success : Outcome.Failure;
+		Outcome = Quantifier.Check(_count, true, _isNegated) ?? _isNegated ? Outcome.Success : Outcome.Failure;
 	}
 
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> stringBuilder.Append(Item.GetExpectation(Quantifier, Grammars));
+		=> stringBuilder.Append(Item.GetExpectation(Quantifier, Grammars, _isNegated));
 
 	public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 	{
@@ -169,19 +169,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 			stringBuilder.Append("it");
 		}
 
-		stringBuilder.Append(_isFinished ? " " : " at least ");
-		if (_count == 1)
-		{
-			stringBuilder.Append("once");
-		}
-		else if (_count == 2)
-		{
-			stringBuilder.Append("twice");
-		}
-		else
-		{
-			stringBuilder.Append(_count).Append(" times");
-		}
+		stringBuilder.Append(_isFinished ? " " : " at least ").AppendOccurrences(_count);
 	}
 
 	/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
@@ -200,7 +188,6 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	public override ConstraintResult Negate()
 	{
 		_isNegated = !_isNegated;
-		Quantifier.Negate();
 		Outcome = Outcome switch
 		{
 			Outcome.Failure => Outcome.Success,

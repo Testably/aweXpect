@@ -18,7 +18,7 @@ internal sealed class ItemEqualityWithToleranceOptions<TSubject, TTolerance>
 	private readonly IObjectMatchType _defaultMatchType;
 
 	public ItemEqualityWithToleranceOptions(Func<TSubject, TSubject, TTolerance, bool> isWithinTolerance,
-		Func<TTolerance, string> toString, Func<TTolerance>? defaultTolerance = null)
+		Func<TTolerance, string>? toString = null, Func<TTolerance>? defaultTolerance = null)
 		: base(isWithinTolerance, toString)
 	{
 		if (defaultTolerance is not null)
