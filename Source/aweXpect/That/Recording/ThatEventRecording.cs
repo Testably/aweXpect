@@ -27,7 +27,9 @@ public static partial class ThatEventRecording
 			IAsyncContextConstraint<IEventRecording<TSubject>>
 		where TSubject : notnull
 	{
+		private readonly Func<object?[], bool> _isMatch = filter.IsMatch;
 		private IEventRecording<TSubject>? _actual;
+		private Func<IEventRecordingResult, bool>? _areFound;
 		private bool _isNegated;
 		private IEventRecordingResult? _result;
 		private bool _stoppedEarly;
@@ -44,12 +46,10 @@ public static partial class ThatEventRecording
 				return this;
 			}
 
-			Stopwatch stopwatch = Stopwatch.StartNew();
-			_result = await actual.StopWhen(result =>
-				quantifier.Check(result.GetEventCount(eventName, filter.IsMatch), false) != null, options.Timeout,
-				context, cancellationToken);
-			int eventCount = _result.GetEventCount(eventName, filter.IsMatch);
-			if (options.IsRepeated)
+			Stopwatch? stopwatch = options.IsRepeated ? Stopwatch.StartNew() : null;
+			_result = await actual.StopWhen(_areFound ??= AreFound, options.Timeout, context, cancellationToken);
+			int eventCount = _result.GetEventCount(eventName, _isMatch);
+			if (stopwatch is not null)
 			{
 				_waitedTime = stopwatch.Elapsed;
 				_stoppedEarly = quantifier.Check(eventCount, false) != null;
@@ -65,6 +65,9 @@ public static partial class ThatEventRecording
 			Outcome = quantifier.Check(eventCount, true, _isNegated) ?? _isNegated ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
+
+		private bool AreFound(IEventRecordingResult result)
+			=> quantifier.Check(result.GetEventCount(eventName, _isMatch), false) != null;
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -106,7 +109,7 @@ public static partial class ThatEventRecording
 
 			stringBuilder.Append(it).Append(" was ");
 			ThatSignaler.AppendOccurrences(stringBuilder, quantifier, _isNegated,
-				_result?.GetEventCount(eventName, filter.IsMatch) ?? 0);
+				_result?.GetEventCount(eventName, _isMatch) ?? 0);
 			if (_result?.GetEventCount(eventName) > 0)
 			{
 				stringBuilder.Append(" in ").Append(_result.ToString(eventName));
