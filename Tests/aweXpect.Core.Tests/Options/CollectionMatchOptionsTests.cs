@@ -12,6 +12,52 @@ public class CollectionMatchOptionsTests
 	public class AnyOrderTests
 	{
 		[Fact]
+		public async Task Contains_PredicatesInAnyOrder_WhenAnItemOnlyMatchesAnAssignedPredicate_ShouldStopOnceDecided()
+		{
+			int readItems = 0;
+
+			IEnumerable<int> Source()
+			{
+				readItems++;
+				yield return 6;
+				for (int i = 0; i < 10000; i++)
+				{
+					readItems++;
+					yield return 3;
+				}
+			}
+
+			async Task Act()
+				=> await That(Source()).Contains([x => x > 0, x => x > 5,]).InAnyOrder();
+
+			await That(Act).DoesNotThrow();
+			await That(readItems).IsEqualTo(2)
+				.Because("6 and 3 already satisfy both predicates, when 6 moves from x > 0 to x > 5");
+		}
+
+		[Fact]
+		public async Task Contains_WithinInAnyOrder_WhenAnItemOnlyMatchesAnAssignedValue_ShouldStopOnceDecided()
+		{
+			int readItems = 0;
+
+			IEnumerable<double> Source()
+			{
+				for (int i = 0; i < 10000; i++)
+				{
+					readItems++;
+					yield return i % 2 == 0 ? 1.1 : 0.95;
+				}
+			}
+
+			async Task Act()
+				=> await That(Source()).Contains([1.0, 1.2,]).Within(0.15).InAnyOrder();
+
+			await That(Act).DoesNotThrow();
+			await That(readItems).IsEqualTo(2)
+				.Because("1.1 and 0.95 already match both values, when 1.1 moves from 1.0 to 1.2");
+		}
+
+		[Fact]
 		public async Task Contains_WithinInAnyOrder_WhenAValidAssignmentExists_ShouldSucceed()
 		{
 			double[] subject = [1.1, 1.0, 5.0,];
@@ -844,6 +890,29 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Fact]
+		public async Task WhenAnItemMatchesExpectedItemsApartFromEachOtherInAnyOrder_ShouldStopReadingWhenContained()
+		{
+			int readItems = 0;
+
+			IEnumerable<int> Source()
+			{
+				for (int i = 0; i < 10000; i++)
+				{
+					readItems++;
+					yield return i % 2 == 0 ? 6 : 3;
+				}
+			}
+
+			async Task Act()
+				=> await That(Source()).Contains([x => x > 0, x => x == 3, x => x > 5,]).InAnyOrder()
+					.IgnoringDuplicates();
+
+			await That(Act).DoesNotThrow();
+			await That(readItems).IsEqualTo(2)
+				.Because("6 matches x > 0 and x > 5, and 3 matches x == 3");
+		}
+
+		[Fact]
 		public async Task WhenAnItemMatchesTwoExpectedValuesInAnyOrder_ShouldMatchBoth()
 		{
 			double[] subject = [1.1,];
@@ -880,6 +949,85 @@ public class CollectionMatchOptionsTests
 				               "a"
 				             ]
 				             """);
+		}
+
+		[Fact]
+		public async Task WhenEqualExpectedItemsDifferForTheComparerInAnyOrder_ShouldNotBeDuplicates()
+		{
+			IdOnlyEquality[] subject = [new(1, "a"),];
+			IdOnlyEquality[] expected = [new(1, "a"), new(1, "b"),];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates()
+					.Using(new ByNameComparer());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection expected * in any order ignoring duplicates,
+				             but it lacked 1 of 2 expected items: *"b"*
+				             """).AsWildcard()
+				.Because("the comparer tells the expected items apart, although they are equal");
+		}
+
+		[Fact]
+		public async Task WhenEqualItemsDifferForTheComparerInAnyOrder_ShouldNotBeDuplicates()
+		{
+			IdOnlyEquality[] subject = [new(1, "a"), new(1, "b"),];
+			IdOnlyEquality[] expected = [new(1, "a"),];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates()
+					.Using(new ByNameComparer());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection expected * in any order ignoring duplicates,
+				             but it contained item *"b"* at index 1 that was not expected
+				             *
+				             """).AsWildcard()
+				.Because("the comparer tells the items apart, although they are equal");
+		}
+
+		[Fact]
+		public async Task WhenEqualItemsDifferForTheComparerInSameOrder_ShouldNotBeDuplicates()
+		{
+			IdOnlyEquality[] subject = [new(1, "a"), new(1, "b"),];
+			IdOnlyEquality[] expected = [new(1, "a"),];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected).IgnoringDuplicates().Using(new ByNameComparer());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection expected * in order ignoring duplicates,
+				             but it contained item *"b"* at index 1 that was not expected
+				             *
+				             """).AsWildcard()
+				.Because("the comparer tells the items apart, although they are equal");
+		}
+
+		[Fact]
+		public async Task WhenEqualObjectsDifferInTheirDateTimeKindInAnyOrder_ShouldNotBeDuplicates()
+		{
+			DateTime local = new(2026, 1, 1, 0, 0, 0, DateTimeKind.Local);
+			DateTime utc = DateTime.SpecifyKind(local, DateTimeKind.Utc);
+			object[] subject = [local, utc,];
+			object[] expected = [local,];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage($"""
+				              Expected that subject
+				              is equal to collection expected in any order ignoring duplicates,
+				              but it contained item {Formatter.Format(utc)} at index 1 that was not expected
+				              *
+				              """).AsWildcard()
+				.Because("a Utc and a Local value with the same ticks denote different instants");
 		}
 
 		[Fact]
@@ -1053,6 +1201,23 @@ public class CollectionMatchOptionsTests
 		private static CollectionMatchOptions.ExpectationItem<int> IsNearExpectation(int value)
 			=> new(x => x.Satisfies(item => Math.Abs(item - value) <= 1), ExpectationGrammars.None,
 				new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
+
+		private sealed class IdOnlyEquality(int id, string name)
+		{
+			public int Id { get; } = id;
+			public string Name { get; } = name;
+
+			public override bool Equals(object? obj) => obj is IdOnlyEquality other && other.Id == Id;
+
+			public override int GetHashCode() => Id;
+		}
+
+		private sealed class ByNameComparer : IEqualityComparer<IdOnlyEquality>
+		{
+			public bool Equals(IdOnlyEquality? x, IdOnlyEquality? y) => x?.Name == y?.Name;
+
+			public int GetHashCode(IdOnlyEquality obj) => obj.Name.GetHashCode();
+		}
 	}
 
 	public class IgnoringInterspersedItemsTests

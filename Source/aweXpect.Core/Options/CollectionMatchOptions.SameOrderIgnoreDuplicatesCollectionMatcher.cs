@@ -74,22 +74,25 @@ public partial class CollectionMatchOptions
 	private abstract class SameOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, T3> : ICollectionMatcher<T, T2>
 		where T : T2
 	{
-		private readonly bool _areExpectedItemsUnique;
+		private readonly IEqualityComparer<T3>? _comparer;
 		private readonly EquivalenceRelations _equivalenceRelations;
-		private readonly T3[] _expectedDistinctItems;
-		private readonly int[] _expectedIds;
 		private readonly T3[] _expectedItems;
 		private readonly List<int> _firstIndexOfSubjectItem = new();
 		private readonly bool _ignoreInterspersedItems;
 		private readonly ItemIds<T> _subjectIds = new(null);
 		private readonly List<int> _subjectIdAt = new();
+		private bool _areExpectedItemsUnique;
+		private T3[] _expectedDistinctItems = [];
+		private int[] _expectedIds = [];
 		private int _followedExpectedItems;
 		private int _lastMatchedExpectedId = -1;
+		private bool? _mergesEqualItems;
 		private int _subjectItemsMatchingNothing;
 
 		/// <remarks>
-		///     The comparer merges equal expected values; predicates and expectations cannot be compared with each other,
-		///     so without it each expected item stands for itself.
+		///     The <paramref name="comparer" /> merges equal expected values, when the comparison cannot tell them apart;
+		///     predicates and expectations cannot be compared with each other, so without it each expected item stands for
+		///     itself.
 		/// </remarks>
 		protected SameOrderIgnoreDuplicatesCollectionMatcherBase(EquivalenceRelations equivalenceRelation,
 			IEnumerable<T3> expected,
@@ -99,17 +102,7 @@ public partial class CollectionMatchOptions
 			_equivalenceRelations = equivalenceRelation;
 			_ignoreInterspersedItems = ignoreInterspersedItems;
 			_expectedItems = expected as T3[] ?? expected.ToArray();
-			_areExpectedItemsUnique = comparer is not null;
-			if (comparer is null)
-			{
-				_expectedIds = Enumerable.Range(0, _expectedItems.Length).ToArray();
-				_expectedDistinctItems = _expectedItems;
-				return;
-			}
-
-			ItemIds<T3> expectedIds = new(comparer);
-			_expectedIds = _expectedItems.Select(item => expectedIds.GetOrAdd(item, out _)).ToArray();
-			_expectedDistinctItems = expectedIds.Items.ToArray();
+			_comparer = comparer;
 		}
 
 		protected T3[] ExpectedItems => _expectedItems;
@@ -124,8 +117,16 @@ public partial class CollectionMatchOptions
 		public async ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
+			bool mergesEqualItems = MergesEqualItems(options);
 			int index = _subjectIdAt.Count;
 			int subjectId = _subjectIds.GetOrAdd(value, out bool isNew);
+			if (!isNew && !mergesEqualItems && !IsIdenticalToEqualValues(value) &&
+			    !await MatchesTheSameExpectedItems(subjectId, index, value, options))
+			{
+				subjectId = _subjectIds.Add(value);
+				isNew = true;
+			}
+
 			_subjectIdAt.Add(subjectId);
 			if (isNew)
 			{
@@ -152,6 +153,7 @@ public partial class CollectionMatchOptions
 		public async ValueTask<(bool, string?)>
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
+			MergesEqualItems(options);
 			DistinctItemsInOrder order = CreateOrder(options);
 			bool requiresAdditionalItem = _equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) ||
 			                              _equivalenceRelations.Includes(EquivalenceRelations.IsContainedInProperly);
@@ -178,6 +180,72 @@ public partial class CollectionMatchOptions
 		///     This only decides, whether the comparison can abort early, so it may err towards a match.
 		/// </remarks>
 		protected virtual bool IsEqualToAnExpectedItem(T value) => false;
+
+		/// <summary>
+		///     Whether all equal items are merged without comparing them, which depends on the <paramref name="options" />.
+		/// </summary>
+		/// <remarks>
+		///     Otherwise only identical items are merged, and another item only with an earlier equal item that matches
+		///     the same expected items.
+		/// </remarks>
+		private bool MergesEqualItems(IOptionsEquality<T2> options)
+		{
+			if (_mergesEqualItems is { } mergesEqualItems)
+			{
+				return mergesEqualItems;
+			}
+
+			mergesEqualItems = CanMergeEqualItems<T, T2>(options);
+			_areExpectedItemsUnique = _comparer is not null;
+			if (_comparer is null)
+			{
+				_expectedIds = Enumerable.Range(0, _expectedItems.Length).ToArray();
+				_expectedDistinctItems = _expectedItems;
+			}
+			else
+			{
+				NumberTheExpectedValues(_comparer, mergesEqualItems);
+			}
+
+			_mergesEqualItems = mergesEqualItems;
+			return mergesEqualItems;
+		}
+
+		/// <remarks>
+		///     When an equal value is kept apart, the count of expected items is no longer the count of unique ones.
+		/// </remarks>
+		private void NumberTheExpectedValues(IEqualityComparer<T3> comparer, bool mergesEqualItems)
+		{
+			ItemIds<T3> expectedIds = new(comparer);
+			_expectedIds = new int[_expectedItems.Length];
+			for (int i = 0; i < _expectedItems.Length; i++)
+			{
+				T3 value = _expectedItems[i];
+				_expectedIds[i] = expectedIds.GetOrAdd(value, out bool isNew);
+				if (!isNew && !mergesEqualItems && !IsIdenticalToEqualValues(value))
+				{
+					_expectedIds[i] = expectedIds.Add(value);
+					_areExpectedItemsUnique = false;
+				}
+			}
+
+			_expectedDistinctItems = expectedIds.Items.ToArray();
+		}
+
+		private async ValueTask<bool> MatchesTheSameExpectedItems(int subjectId, int index, T value,
+			IOptionsEquality<T2> options)
+		{
+			for (int expectedId = 0; expectedId < _expectedDistinctItems.Length; expectedId++)
+			{
+				if (await IsMatch(subjectId, expectedId, options) !=
+				    await AreConsideredEqual(index, value, _expectedDistinctItems[expectedId], options))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
 
 		/// <summary>
 		///     The decision is only consulted, once the items so far followed all expected items in order, so that it does
@@ -296,6 +364,15 @@ public partial class CollectionMatchOptions
 			}
 
 			return id;
+		}
+
+		/// <summary>
+		///     Numbers the <paramref name="item" /> as a distinct item, although an equal item already has an id.
+		/// </summary>
+		public int Add(TItem item)
+		{
+			Items.Add(item);
+			return Items.Count - 1;
 		}
 
 		/// <summary>

@@ -253,6 +253,11 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 
 	private string? _matchTypeOption;
 
+	/// <summary>
+	///     Whether the options compare by <see cref="object.Equals(object)" />.
+	/// </summary>
+	internal bool UsesEqualsMatch => MatchType == ObjectEqualityOptions.EqualsMatch;
+
 	/// <inheritdoc />
 	public ValueTask<bool> AreConsideredEqual<TExpected>(TSubject actual, TExpected expected)
 		=> MatchType.AreConsideredEqual(actual, expected);

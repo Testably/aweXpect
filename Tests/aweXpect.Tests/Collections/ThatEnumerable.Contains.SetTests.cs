@@ -365,7 +365,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             contains "A" using the subject's StringComparer.OrdinalIgnoreCase at least twice,
-					             but it contained "A" once
+					             but it contained "a" once
 
 					             Collection:
 					             [
@@ -373,7 +373,7 @@ public sealed partial class ThatEnumerable
 					               "b"
 					             ]
 					             """)
-					.Because("a set holds an item at most once");
+					.Because("a set holds an item at most once, and the result names the item it holds");
 			}
 
 			[Fact]

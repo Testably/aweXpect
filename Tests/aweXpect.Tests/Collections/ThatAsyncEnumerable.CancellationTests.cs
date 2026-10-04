@@ -111,7 +111,7 @@ public sealed partial class ThatAsyncEnumerable
 		}
 
 		[Fact]
-		public async Task WhenCancellationIsRequestedDuringTheFinalCheck_ShouldAbortContainsExpectationsInAnyOrder()
+		public async Task WhenCancellationIsRequestedDuringTheReassignment_ShouldAbortContainsExpectationsInAnyOrder()
 		{
 			using CancellationTokenSource cts = new();
 			IAsyncEnumerable<IEnumerable<int>> subject =
@@ -146,7 +146,8 @@ public sealed partial class ThatAsyncEnumerable
 				                 9,
 				                 (… and maybe more)
 				               ],
-				               []
+				               [],
+				               (… and maybe more)
 				             ]
 
 				             Expected:
@@ -155,7 +156,7 @@ public sealed partial class ThatAsyncEnumerable
 				               an item that contains an item equal to -1 at least once
 				             ]
 				             """)
-				.Because("the first item is only compared with the second expectation when the items are reassigned at the end, where its cancellation must not be reported as a missing item");
+				.Because("the first item is only compared with the second expectation when the second item reassigns it, where its cancellation must not be reported as a missing item");
 		}
 
 		[Fact]

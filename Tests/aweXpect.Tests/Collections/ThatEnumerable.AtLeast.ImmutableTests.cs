@@ -36,6 +36,9 @@ public sealed partial class ThatEnumerable
 					             is equal to 1 for at least 5 items,
 					             but only 4 of 7 were
 
+					             Not matching items:
+					             [2, 2, 3]
+
 					             Collection:
 					             [1, 1, 1, 1, 2, 2, 3]
 					             """);
@@ -57,6 +60,11 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to "foo" ignoring case for at least 3 items,
 					             but only 2 of 3 were
+
+					             Not matching items:
+					             [
+					               "bar"
+					             ]
 
 					             Collection:
 					             [
@@ -91,6 +99,12 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to "foo" for at least 3 items,
 					             but only 2 of 4 were
+
+					             Not matching items:
+					             [
+					               "FOO",
+					               "bar"
+					             ]
 
 					             Collection:
 					             [

@@ -34,6 +34,8 @@ public partial class CollectionMatchOptions
 		private readonly List<(int Index, TItem Value)> _items = new();
 		private readonly List<int> _pendingItems = new();
 		private readonly Dictionary<int, TItem> _unmatchedItems;
+		private List<(int Item, int Next, int Via)>? _itemPath;
+		private bool[]? _visitedExpected;
 
 		/// <param name="expected">The expected items.</param>
 		/// <param name="isMatch">Compares an item at its index with an expected item.</param>
@@ -184,9 +186,17 @@ public partial class CollectionMatchOptions
 		/// <summary>
 		///     Keeps the <paramref name="value" />, which matches no free expected item, as pending.
 		/// </summary>
+		/// <remarks>
+		///     A <paramref name="value" /> that matches no expected item at all is unmatched for good right away.
+		/// </remarks>
 		private async ValueTask<int> AddPending(int index, TItem value, Exception? unanswered)
 		{
-			await ThrowIfUnansweredAndNoAssignedExpectedItemMatches(index, value, unanswered);
+			if (!await MatchesAnAssignedExpectedItem(index, value, unanswered))
+			{
+				_unmatchedItems.Add(index, value);
+				return Unmatched;
+			}
+
 			_items.Add((index, value));
 			_expectedOfItem.Add(Unmatched);
 			_pendingItems.Add(_items.Count - 1);
@@ -227,11 +237,15 @@ public partial class CollectionMatchOptions
 			}
 			else
 			{
-				foreach (int item in _pendingItems.ToList())
+				for (int i = 0; i < _pendingItems.Count;)
 				{
-					if (_freeExpected.Count > 0 && await TryAugmentFromItem(item))
+					if (_freeExpected.Count > 0 && await TryAugmentFromItem(_pendingItems[i]))
 					{
-						_pendingItems.Remove(item);
+						_pendingItems.RemoveAt(i);
+					}
+					else
+					{
+						i++;
 					}
 				}
 			}
@@ -240,11 +254,13 @@ public partial class CollectionMatchOptions
 		}
 
 		/// <summary>
-		///     Compares the <paramref name="value" />, which matches no free expected item, with the expected items that are
-		///     assigned to other items, and throws the first unanswered comparison, unless one of them matches.
+		///     Whether the <paramref name="value" />, which matches no free expected item, matches an expected item that is
+		///     assigned to another item.
 		/// </summary>
-		private async ValueTask ThrowIfUnansweredAndNoAssignedExpectedItemMatches(int index, TItem value,
-			Exception? unanswered)
+		/// <remarks>
+		///     Without such a match, the first unanswered comparison is thrown.
+		/// </remarks>
+		private async ValueTask<bool> MatchesAnAssignedExpectedItem(int index, TItem value, Exception? unanswered)
 		{
 			for (int expectedIndex = 0; expectedIndex < _expected.Length; expectedIndex++)
 			{
@@ -256,7 +272,7 @@ public partial class CollectionMatchOptions
 				(bool isMatch, Exception? exception) = await Compare(index, value, _expected[expectedIndex]);
 				if (isMatch)
 				{
-					return;
+					return true;
 				}
 
 				unanswered ??= exception;
@@ -266,6 +282,8 @@ public partial class CollectionMatchOptions
 			{
 				ExceptionDispatchInfo.Capture(unanswered).Throw();
 			}
+
+			return false;
 		}
 
 		/// <remarks>
@@ -330,12 +348,16 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		/// <remarks>
 		///     The search is iterative, because the path can be as long as the matching. The root is not compared with the
-		///     free expected items, because it was compared with all of them when it was added.
+		///     free expected items, because it was compared with all of them when it was added.<br />
+		///     The search can run for every item that only matches assigned expected items, so the buffers are reused.
 		/// </remarks>
 		private async ValueTask<bool> TryAugmentFromItem(int root)
 		{
-			bool[] visited = new bool[_expected.Length];
-			List<(int Item, int Next, int Via)> path = [(root, 0, Unmatched),];
+			bool[] visited = _visitedExpected ??= new bool[_expected.Length];
+			Array.Clear(visited, 0, visited.Length);
+			List<(int Item, int Next, int Via)> path = _itemPath ??= new List<(int Item, int Next, int Via)>();
+			path.Clear();
+			path.Add((root, 0, Unmatched));
 			while (path.Count > 0)
 			{
 				(int item, int next, _) = path[path.Count - 1];

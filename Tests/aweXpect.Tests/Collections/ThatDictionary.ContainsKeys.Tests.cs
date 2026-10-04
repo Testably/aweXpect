@@ -288,6 +288,12 @@ public sealed partial class ThatDictionary
 					             contains keys [1, 2, 3] whose values at least 2 are equal to "foo",
 					             but only 1 of 3 were
 
+					             Not matching items (values of keys [1, 2, 3]):
+					             [
+					               [2] = "bar",
+					               [3] = "baz"
+					             ]
+
 					             Collection (values of keys [1, 2, 3]):
 					             [
 					               [1] = "foo",

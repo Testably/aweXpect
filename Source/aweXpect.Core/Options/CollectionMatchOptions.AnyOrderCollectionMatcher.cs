@@ -98,13 +98,8 @@ public partial class CollectionMatchOptions
 			}
 
 			_lastAssigned = assigned.Result;
-			if (_equivalenceRelations.Includes(EquivalenceRelations.Contains))
-			{
-				// Additional items are no deviations, so the reassignment is deferred until it decides the result.
-				return new ValueTask<(bool, string?)>((false, null));
-			}
-
-			// Resolving each item right away keeps the earlier items matched, so the later ones are reported.
+			// Resolving each item right away keeps the earlier items matched, so the later ones are reported, and lets
+			// the containment relation stop, once the item completes the assignment.
 			ValueTask resolved = matching.ResolvePendingItems();
 			return resolved.IsCompletedSuccessfully
 				? new ValueTask<(bool, string?)>(CountTheAdditionalItems(it, matching, maximumNumber))
@@ -115,11 +110,6 @@ public partial class CollectionMatchOptions
 			ItemMatching<T, T3> matching, int maximumNumber)
 		{
 			_lastAssigned = await assigned;
-			if (_equivalenceRelations.Includes(EquivalenceRelations.Contains))
-			{
-				return (false, null);
-			}
-
 			await matching.ResolvePendingItems();
 			return CountTheAdditionalItems(it, matching, maximumNumber);
 		}
@@ -134,9 +124,12 @@ public partial class CollectionMatchOptions
 		/// <summary>
 		///     Aborts early, when more items are additional than can be listed.
 		/// </summary>
+		/// <remarks>
+		///     Additional items are no deviations for the containment relation.
+		/// </remarks>
 		private (bool, string?) CountTheAdditionalItems(string it, ItemMatching<T, T3> matching, int maximumNumber)
 		{
-			if (_additionalItems.Count > 2L * maximumNumber)
+			if (CountAdditionalDeviations() > 2L * maximumNumber)
 			{
 				_missingItems = matching.UnmatchedExpectedItems();
 				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));

@@ -361,7 +361,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("""
 					             Expected that subject
 					             has keys that do not contain "A" using the subject's StringComparer.OrdinalIgnoreCase,
-					             but it contained "A" once
+					             but it contained "a" once
 
 					             Collection (keys):
 					             [
