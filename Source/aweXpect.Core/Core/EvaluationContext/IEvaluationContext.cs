@@ -14,6 +14,10 @@ public interface IEvaluationContext
 	/// <summary>
 	///     Stores a <paramref name="value" /> under the <paramref name="key" /> in the evaluation context.
 	/// </summary>
+	/// <remarks>
+	///     A value stored while an item of a collection or a member (e.g. after <c>Whose</c> or <c>Which</c>) is
+	///     evaluated is only received by the expectations on that item or member.
+	/// </remarks>
 	void Store<T>(string key, T value);
 
 	/// <summary>

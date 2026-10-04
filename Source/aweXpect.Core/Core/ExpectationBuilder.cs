@@ -614,21 +614,34 @@ public abstract class ExpectationBuilder
 	///     Supports chaining for subsequent expectation constraints with the <paramref name="textSeparator" />.
 	/// </summary>
 	public ExpectationBuilder And(string textSeparator = " and ")
+		=> AddAndOperand(new ExpectationNode(), textSeparator);
+
+	/// <summary>
+	///     Supports chaining expectations on further members of the value that the preceding expectation passes on, e.g.
+	///     for <c>AndWhose</c>, with the <paramref name="textSeparator" />.
+	/// </summary>
+	internal ExpectationBuilder AndContinuing(string textSeparator)
+		=> AddAndOperand(new ExpectationNode
+		{
+			ContinuesPrecedingOperand = true,
+		}, textSeparator);
+
+	private ExpectationBuilder AddAndOperand(ExpectationNode operand, string textSeparator)
 	{
 		if (_node is AndNode andNode)
 		{
-			andNode.AddNode(new ExpectationNode(), textSeparator);
+			andNode.AddNode(operand, textSeparator);
 		}
 		else if (_node is OrNode orNode)
 		{
 			AndNode newNode = new(orNode.Current);
-			newNode.AddNode(new ExpectationNode(), textSeparator);
+			newNode.AddNode(operand, textSeparator);
 			orNode.Current = newNode;
 		}
 		else
 		{
 			AndNode newNode = new(_node);
-			newNode.AddNode(new ExpectationNode(), textSeparator);
+			newNode.AddNode(operand, textSeparator);
 			_node = newNode;
 		}
 
@@ -903,6 +916,12 @@ public abstract class ExpectationBuilder
 
 		if (_evaluationContext is not null)
 		{
+			if (result.Outcome == Outcome.Undecided &&
+			    _evaluationContext.Cancellation.Reason == CancellationReason.None)
+			{
+				result = new ConstraintResult.WithoutDecision(result);
+			}
+
 			await _evaluationContext.ResolvePendingReasons();
 		}
 

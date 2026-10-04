@@ -20,21 +20,12 @@ public static class MyCustomizationExtensions
     public static ICustomizationValueSetter<int> MyCustomization(this AwexpectCustomization awexpectCustomization)
         => new CustomizationValue<int>(awexpectCustomization, "MyExtension.MyCustomization", 42);
 }
-
-internal sealed class CustomizationValue<TValue>(IAwexpectCustomization awexpectCustomization, string key, TValue defaultValue)
-    : ICustomizationValueSetter<TValue>
-{
-    public TValue Get()
-        => awexpectCustomization.Get(key, defaultValue);
-
-    public CustomizationLifetime Set(TValue value)
-        => awexpectCustomization.Set(key, value);
-}
 ```
 
-The key identifies the value, so choose one that no other package uses, e.g. prefixed with the name of your package.
-A `null` that was set is returned as `null`, not as the default value, so reject `null` in `Set` if your value must
-not be `null`.
+`CustomizationValue<TValue>` from `aweXpect.Customization` stores the value under the key. The key identifies the
+value, so choose one that no other package uses, e.g. prefixed with the name of your package. A `null` that was set is
+returned as `null`, not as the default value, so pass a `validate` callback that rejects `null` if your value must not
+be `null`, as the group below does.
 
 This allows expectations to access the value:
 
@@ -76,7 +67,14 @@ public static class JsonAwexpectCustomizationExtensions
             DefaultJsonDocumentOptions = new CustomizationValue<JsonDocumentOptions>(awexpectCustomization,
                 "MyExtension.Json.DefaultJsonDocumentOptions", new JsonDocumentOptions { AllowTrailingCommas = true });
             DefaultJsonSerializerOptions = new CustomizationValue<JsonSerializerOptions>(awexpectCustomization,
-                "MyExtension.Json.DefaultJsonSerializerOptions", new JsonSerializerOptions { AllowTrailingCommas = true });
+                "MyExtension.Json.DefaultJsonSerializerOptions", new JsonSerializerOptions { AllowTrailingCommas = true },
+                value =>
+                {
+                    if (value is null)
+                    {
+                        throw new ArgumentNullException(nameof(value), "The 'value' cannot be null.");
+                    }
+                });
         }
 
         public ICustomizationValueSetter<JsonDocumentOptions> DefaultJsonDocumentOptions { get; }
@@ -85,8 +83,8 @@ public static class JsonAwexpectCustomizationExtensions
 }
 ```
 
-The group reuses the `CustomizationValue<TValue>` class of the simple value above. Expectations access each value on
-its own:
+The `validate` callback checks a value before `Set` stores it, so that `Set(null)` throws and changes nothing.
+Expectations access each value on its own:
 
 ```csharp
  // will return the default value 'true'

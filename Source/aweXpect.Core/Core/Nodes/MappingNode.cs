@@ -90,10 +90,41 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 	}
 
 	/// <inheritdoc />
-	public override async ValueTask<ConstraintResult> IsMetBy<TValue>(
+	public override ValueTask<ConstraintResult> IsMetBy<TValue>(
 		TValue? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken) where TValue : default
+		=> IsMetByContinuing(value, null, context, cancellationToken);
+
+	/// <inheritdoc />
+	/// <remarks>
+	///     The member is accessed on the value that a met <paramref name="source" /> stores, e.g. after a constraint
+	///     that converts the value, and otherwise on the <paramref name="value" /> itself.
+	/// </remarks>
+	public override ValueTask<ConstraintResult> IsMetByContinuing<TValue>(
+		TValue? value,
+		ConstraintResult? source,
+		IEvaluationContext context,
+		CancellationToken cancellationToken) where TValue : default
+	{
+		if (source is MappingResult mappingResult)
+		{
+			source = mappingResult.Source;
+		}
+
+		if (source is { Outcome: Outcome.Success, } && context is not ExpectationTextEvaluationContext &&
+		    source.TryGetStoredValue(out TSource? storedValue))
+		{
+			return IsMetByValue(storedValue, context, cancellationToken);
+		}
+
+		return IsMetByValue(value, context, cancellationToken);
+	}
+
+	private async ValueTask<ConstraintResult> IsMetByValue<TValue>(
+		TValue? value,
+		IEvaluationContext context,
+		CancellationToken cancellationToken)
 	{
 		if (context is ExpectationTextEvaluationContext)
 		{
@@ -143,7 +174,12 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 			return NullSubjectResult.CreateForNullTask(result, MemberAccessor.ToString().Trim(), value);
 		}
 
-		ConstraintResult memberResult = await IsMetByMember(member, context, cancellationToken);
+		ConstraintResult memberResult;
+		using (EvaluationContext.EvaluationContext.StartNestedEvaluation(context))
+		{
+			memberResult = await IsMetByMember(member, context, cancellationToken);
+		}
+
 		return memberResult.UseValue(value);
 	}
 

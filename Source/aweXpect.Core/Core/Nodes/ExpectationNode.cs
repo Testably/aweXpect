@@ -54,6 +54,12 @@ internal class ExpectationNode : Node
 				$"Don't specify the inner node for Expectation nodes directly. Use {nameof(AddMapping)}() instead."));
 
 	/// <summary>
+	///     Whether the members of this node continue from the value that the preceding operand of an <c>And</c> stores,
+	///     e.g. for <c>AndWhose</c>.
+	/// </summary>
+	public bool ContinuesPrecedingOperand { get; init; }
+
+	/// <summary>
 	///     Indicates, if the node is empty.
 	/// </summary>
 	public bool IsEmpty() => _constraint is null && _inner is null;
@@ -105,8 +111,18 @@ internal class ExpectationNode : Node
 			}
 		}
 
-		return IsMetByAsync(value, context, cancellationToken);
+		return IsMetByAsync(value, null, context, cancellationToken);
 	}
+
+	/// <summary>
+	///     Verifies the expectations of the node like <see cref="IsMetBy{TValue}" />, but lets the members continue from
+	///     the value that the <paramref name="source" /> stores, when the node has no constraint of its own.
+	/// </summary>
+	public virtual ValueTask<ConstraintResult> IsMetByContinuing<TValue>(TValue? value,
+		ConstraintResult? source,
+		IEvaluationContext context,
+		CancellationToken cancellationToken)
+		=> IsMetByAsync(value, source, context, cancellationToken);
 
 	/// <summary>
 	///     Returns the result of an asynchronous constraint of the fast path in <see cref="IsMetBy{TValue}" /> without
@@ -143,6 +159,7 @@ internal class ExpectationNode : Node
 	}
 
 	private async ValueTask<ConstraintResult> IsMetByAsync<TValue>(TValue? value,
+		ConstraintResult? source,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
@@ -197,7 +214,8 @@ internal class ExpectationNode : Node
 
 		if (_inner != null)
 		{
-			ConstraintResult innerResult = await _inner.IsMetBy(value, context, cancellationToken);
+			ConstraintResult innerResult =
+				await IsInnerMetBy(_inner, value, result ?? source, context, cancellationToken);
 			innerResult = _combineResults?.Invoke(result, innerResult) ?? innerResult;
 			return await ApplyReasons(innerResult, context);
 		}
@@ -211,6 +229,19 @@ internal class ExpectationNode : Node
 
 		return await ApplyReasons(result, context);
 	}
+
+	/// <summary>
+	///     Verifies the <paramref name="inner" /> node, whose members continue from the value that the
+	///     <paramref name="source" /> stores, when it is a mapping.
+	/// </summary>
+	private static ValueTask<ConstraintResult> IsInnerMetBy<TValue>(Node inner,
+		TValue? value,
+		ConstraintResult? source,
+		IEvaluationContext context,
+		CancellationToken cancellationToken)
+		=> inner is MappingNode mappingNode
+			? mappingNode.IsMetByContinuing(value, source, context, cancellationToken)
+			: inner.IsMetBy(value, context, cancellationToken);
 
 	/// <summary>
 	///     Adds the <paramref name="reasons" /> which were given for the expectations of this node.

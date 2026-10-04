@@ -89,14 +89,22 @@ public sealed class ManualExpectationBuilder<TValue>(
 	///     Evaluate if the expectations are met by the <paramref name="value" />.
 	/// </summary>
 	/// <remarks>
-	///     The reasons are not applied to the result, see <see cref="AppendReasons" />.
+	///     The reasons are not applied to the result, see <see cref="AppendReasons" />.<br />
+	///     The values stored in the <paramref name="context" /> during the evaluation, e.g. for one item of a collection,
+	///     are only received by the expectations of this evaluation. The materialized collections are shared with the
+	///     surrounding evaluation.
 	/// </remarks>
 	public async ValueTask<ConstraintResult> IsMetBy(
 		TValue value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
-		ConstraintResult result = await GetRootNode().IsMetBy(value, context, cancellationToken);
+		ConstraintResult result;
+		using (EvaluationContext.EvaluationContext.StartNestedEvaluation(context))
+		{
+			result = await GetRootNode().IsMetBy(value, context, cancellationToken);
+		}
+
 		if (result.Outcome != Outcome.Success)
 		{
 			await ResolveReasons();

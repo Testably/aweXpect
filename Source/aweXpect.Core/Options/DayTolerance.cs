@@ -38,4 +38,7 @@ public sealed class DayTolerance : TimeTolerance
 
 		base.SetTolerance(tolerance);
 	}
+
+	/// <inheritdoc cref="TimeTolerance.ToDayString()" />
+	public override string ToString() => ToDayString();
 }

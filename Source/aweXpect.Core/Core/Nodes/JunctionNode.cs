@@ -66,11 +66,16 @@ internal abstract class JunctionNode : Node
 	}
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     An operand that continues the preceding one, e.g. from <c>AndWhose</c>, receives the result of the last
+	///     operand that does not, so that its members continue from the same stored value.
+	/// </remarks>
 	public override async ValueTask<ConstraintResult> IsMetBy<TValue>(TValue? value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken) where TValue : default
 	{
 		ConstraintResult? combinedResult = null;
+		ConstraintResult? source = null;
 		bool isSkipped = false;
 		for (int index = 0; index <= _nodes.Count; index++)
 		{
@@ -86,9 +91,14 @@ internal abstract class JunctionNode : Node
 				result = await node.IsMetBy(value, ExpectationTextEvaluationContext.For(context), cancellationToken);
 				result = result.AsExpectationOnly();
 			}
+			else if (node is ExpectationNode { ContinuesPrecedingOperand: true, } continuingNode)
+			{
+				result = await continuingNode.IsMetByContinuing(value, source, context, cancellationToken);
+			}
 			else
 			{
 				result = await node.IsMetBy(value, context, cancellationToken);
+				source = result;
 			}
 
 			combinedResult = CombineResults(combinedResult, result, separator,

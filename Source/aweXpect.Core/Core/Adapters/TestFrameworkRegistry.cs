@@ -27,8 +27,8 @@ public static class TestFrameworkRegistry
 	///     otherwise the adapter is only used when none was registered yet. The generated registration for a detected
 	///     test framework passes <see langword="false" />, so that an explicit registration always wins, independent of
 	///     the order in which both run.<br />
-	///     The adapter has to be registered before the first expectation is evaluated, because it is resolved once and
-	///     then cached.<br />
+	///     The adapter has to be registered before the first expectation is created or a value is first formatted with
+	///     <c>Format.Formatter</c>, because it is resolved once and then cached.<br />
 	///     When no adapter is registered, the loaded assemblies are scanned for one below .NET 8, and aweXpect throws
 	///     its own exceptions otherwise.
 	/// </remarks>

@@ -10,6 +10,8 @@ internal class EvaluationContext : IEvaluationContext
 {
 	private EvaluationContext? _attempt;
 	private List<EvaluationContext>? _checks;
+	private int _nestingDepth;
+	private List<Dictionary<string, object?>?>? _nestedStores;
 	private List<AsyncBecauseReason>? _pendingReasons;
 	private List<Action>? _releases;
 	private Dictionary<string, object?>? _store;
@@ -17,8 +19,23 @@ internal class EvaluationContext : IEvaluationContext
 	#region IEvaluationContext Members
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     A value stored while an item or a member is evaluated is only received during that evaluation.
+	/// </remarks>
 	public void Store<T>(string key, T value)
 	{
+		if (IsNested(key))
+		{
+			_nestedStores ??= [];
+			while (_nestedStores.Count < _nestingDepth)
+			{
+				_nestedStores.Add(null);
+			}
+
+			(_nestedStores[_nestingDepth - 1] ??= new Dictionary<string, object?>())[key] = value;
+			return;
+		}
+
 		_store ??= new Dictionary<string, object?>();
 		_store[key] = value;
 	}
@@ -26,8 +43,9 @@ internal class EvaluationContext : IEvaluationContext
 	/// <inheritdoc />
 	public bool TryReceive<T>(string key, [NotNullWhen(true)] out T? value)
 	{
-		if (_store != null &&
-		    _store.TryGetValue(key, out object? storedValue)
+		Dictionary<string, object?>? store = IsNested(key) ? GetNestedStore() : _store;
+		if (store != null &&
+		    store.TryGetValue(key, out object? storedValue)
 		    && storedValue is T typeMatchingValue)
 		{
 			value = typeMatchingValue;
@@ -42,6 +60,25 @@ internal class EvaluationContext : IEvaluationContext
 	public EvaluationCancellation Cancellation { get; set; } = EvaluationCancellation.None;
 
 	#endregion
+
+	/// <summary>
+	///     Starts the evaluation of an item or a member in the <paramref name="context" />, whose stored values are
+	///     separate from those of the surrounding evaluation and are forgotten when the returned scope is disposed.
+	/// </summary>
+	/// <remarks>
+	///     The materialized collections, the reasons and the resources to release stay shared with the surrounding
+	///     evaluation. Nothing is allocated unless a value is stored during the nested evaluation.
+	/// </remarks>
+	public static NestedEvaluation StartNestedEvaluation(IEvaluationContext context)
+		=> new(context as EvaluationContext);
+
+	private bool IsNested(string key)
+		=> _nestingDepth > 0 && !EvaluationContextExtensions.IsMaterializationKey(key);
+
+	private Dictionary<string, object?>? GetNestedStore()
+		=> _nestedStores is not null && _nestedStores.Count >= _nestingDepth
+			? _nestedStores[_nestingDepth - 1]
+			: null;
 
 	/// <summary>
 	///     Registers the <paramref name="release" /> of a resource that the evaluation, including its failure message,
@@ -165,5 +202,33 @@ internal class EvaluationContext : IEvaluationContext
 			Cancellation = Cancellation,
 		};
 		return _attempt;
+	}
+
+	/// <summary>
+	///     The scope of a nested evaluation, see <see cref="StartNestedEvaluation" />.
+	/// </summary>
+	internal readonly struct NestedEvaluation : IDisposable
+	{
+		private readonly EvaluationContext? _context;
+
+		public NestedEvaluation(EvaluationContext? context)
+		{
+			_context = context;
+			if (context is not null)
+			{
+				context._nestingDepth++;
+			}
+		}
+
+		public void Dispose()
+		{
+			if (_context is null)
+			{
+				return;
+			}
+
+			_context.GetNestedStore()?.Clear();
+			_context._nestingDepth--;
+		}
 	}
 }

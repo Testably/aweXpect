@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
@@ -70,6 +73,85 @@ public class EvaluationContextTests
 	}
 
 	[Fact]
+	public async Task Store_AfterAnItemEvaluation_ShouldNotReceiveTheValuesOfTheItem()
+	{
+		Context context = new();
+		ManualExpectationBuilder<string> builder = new();
+		builder.AddConstraint((_, _) => new SharesValueConstraint<string>(s => s));
+
+		await builder.IsMetBy("a", context, CancellationToken.None);
+
+		await That(context.TryReceive(SharesValueConstraint<string>.Key, out string? _)).IsFalse()
+			.Because("the values stored for an item are only visible while the item is evaluated");
+	}
+
+	[Fact]
+	public async Task Store_InAMemberOfWhich_ShouldNotReceiveTheValuesOfTheSubject()
+	{
+		Pair sut = new("a", "b");
+		IThat<Pair> that = That(sut);
+
+		async Task Act()
+			=> await new ExpectationResult(that.Get().ExpectationBuilder
+				.AddConstraint((_, _) => new SharesValueConstraint<Pair>(p => p.First))
+				.ForWhich<Pair, string>(p => p.Second, " which ")
+				.AddConstraint((_, _) => new SharesValueConstraint<string>(s => s)));
+
+		await That(Act).DoesNotThrow()
+			.Because("the member is evaluated with its own stored values");
+	}
+
+	[Fact]
+	public async Task Store_InAMemberOfWhose_ShouldNotReceiveTheValuesOfTheSubject()
+	{
+		Pair sut = new("a", "b");
+		IThat<Pair> that = That(sut);
+
+		async Task Act()
+			=> await new AndOrWhoseResult<Pair, IThat<Pair>>(that.Get().ExpectationBuilder
+					.AddConstraint((_, _) => new SharesValueConstraint<Pair>(p => p.First)), that)
+				.Whose(p => p.Second, s => s.Get().ExpectationBuilder
+					.AddConstraint((_, _) => new SharesValueConstraint<string?>(x => x!)));
+
+		await That(Act).DoesNotThrow()
+			.Because("the member is evaluated with its own stored values");
+	}
+
+	[Fact]
+	public async Task Store_InItemEvaluations_ShouldNotShareTheValuesBetweenTheItems()
+	{
+		Context context = new();
+		ManualExpectationBuilder<string> builder = new();
+		builder.AddConstraint((_, _) => new SharesValueConstraint<string>(s => s));
+
+		ConstraintResult first = await builder.IsMetBy("a", context, CancellationToken.None);
+		ConstraintResult second = await builder.IsMetBy("b", context, CancellationToken.None);
+
+		await That(first.Outcome).IsEqualTo(Outcome.Success);
+		await That(second.Outcome).IsEqualTo(Outcome.Success)
+			.Because("the second item must not receive the value stored for the first one");
+	}
+
+	[Fact]
+	public async Task UseMaterializedEnumerable_InAnItemEvaluation_ShouldShareTheMaterializationOfTheEvaluation()
+	{
+		Context context = new();
+		DisposeTrackingEnumerable source = new(null, 1, 2);
+		IEnumerable<int> materialized = context.UseMaterializedEnumerable<int>(source);
+		_ = materialized.First();
+		MaterializesConstraint constraint = new(source);
+		ManualExpectationBuilder<int> builder = new();
+		builder.AddConstraint((_, _) => constraint);
+
+		await builder.IsMetBy(1, context, CancellationToken.None);
+		await context.ReleaseMaterializations();
+
+		await That(constraint.Materialized).IsSameAs(materialized)
+			.Because("the items share the materialized collections of the evaluation");
+		await That(source.DisposeCount).IsEqualTo(1);
+	}
+
+	[Fact]
 	public async Task WhenNotStoredPreviously_ShouldReturnFalse()
 	{
 		IEvaluationContext context = await GetSut();
@@ -117,6 +199,20 @@ public class EvaluationContextTests
 		return constraint.Context!;
 	}
 
+	private sealed class MaterializesConstraint(IEnumerable<int> source) : IContextConstraint<int>
+	{
+		public IEnumerable<int>? Materialized { get; private set; }
+
+		public ConstraintResult IsMetBy(int actual, IEvaluationContext context)
+		{
+			Materialized = context.UseMaterializedEnumerable(source);
+			return new DummyConstraintResult<int>(Outcome.Success, actual, "materializes the source");
+		}
+
+		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("materializes the source");
+	}
+
 	private sealed class MyContextConstraint : IContextConstraint<bool>
 	{
 		public IEvaluationContext? Context { get; private set; }
@@ -130,5 +226,36 @@ public class EvaluationContextTests
 
 		/// <inheritdoc />
 		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null) { }
+	}
+
+	private sealed class Pair(string first, string second)
+	{
+		public string First { get; } = first;
+		public string Second { get; } = second;
+	}
+
+	/// <summary>
+	///     Stores the selected value, or compares it with the value that is already stored, like a constraint that caches
+	///     what it parsed from the subject for the following constraints.
+	/// </summary>
+	private sealed class SharesValueConstraint<T>(Func<T, string> selector) : IContextConstraint<T>
+	{
+		public const string Key = "SharesValue";
+
+		public ConstraintResult IsMetBy(T actual, IEvaluationContext context)
+		{
+			string value = selector(actual);
+			if (!context.TryReceive(Key, out string? stored))
+			{
+				context.Store(Key, value);
+				stored = value;
+			}
+
+			return new DummyConstraintResult<T>(stored == value ? Outcome.Success : Outcome.Failure, actual,
+				"shares the value", $"it received {stored}");
+		}
+
+		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("shares the value");
 	}
 }

@@ -659,3 +659,4 @@ aweXpect.Delegates.ThatDelegateThrows<TException>.WithInner<TInnerException>(Sys
 aweXpect.Results.DelegateWithOptionalValueResult<T>
 aweXpect.Results.DelegateWithOptionalValueResult<T>.DelegateWithOptionalValueResult(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
 aweXpect.Results.DelegateWithOptionalValueResult<T>.WhoseResult.get -> aweXpect.Core.IThat<T>!
+override aweXpect.Options.DayTolerance.ToString() -> string!

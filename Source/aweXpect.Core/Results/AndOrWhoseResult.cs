@@ -145,7 +145,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 		{
 			memberAccessor.ThrowIfNull();
 			expectations.ThrowIfNull();
-			ExpectationBuilder.And(" and");
+			ExpectationBuilder.AndContinuing(" and");
 			return new AdditionalAndOrWhoseResult(
 				ExpectationBuilder
 					.ForMember(
@@ -178,7 +178,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 		{
 			memberAccessor.ThrowIfNull();
 			expectations.ThrowIfNull();
-			ExpectationBuilder.And(" and");
+			ExpectationBuilder.AndContinuing(" and");
 			return new AdditionalAndOrWhoseResult(
 				ExpectationBuilder
 					.ForAsyncMember(

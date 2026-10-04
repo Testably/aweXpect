@@ -11,6 +11,27 @@ namespace aweXpect.Core.Tests.Collections;
 public sealed class QuantifiedCollectionConstraintBaseTests
 {
 	[Fact]
+	public async Task IsMetBy_WhenTheEvaluationIsNotCompleted_ShouldFail()
+	{
+		int[] subject = [2, 4,];
+		IEnumerableElements<int> elements = That(subject).All();
+
+		async Task Act()
+			=> await new AndOrResult<IEnumerable<int>, IThat<IEnumerable<int>?>>(
+				((IExpectThat<IEnumerable<int>?>)elements.Subject).ExpectationBuilder.AddConstraint((it, grammars)
+					=> new DoesNotCompleteConstraint(it, grammars, elements.Quantifier)),
+				elements.Subject);
+
+		await That(Act).ThrowsExactly<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             is even for all items,
+			             but it could not be verified, because the expectation did not decide its outcome
+			             """)
+			.Because("a constraint that forgets to complete the evaluation must not pass as inconclusive");
+	}
+
+	[Fact]
 	public async Task Record_WhenItemIsUnansweredAfterTheOutcomeIsDetermined_ShouldNotCountTheRemainingItems()
 	{
 		InvalidOperationException exception = new("boom");
@@ -113,9 +134,12 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 	public async Task Record_WhenItemIsUndecided_ShouldNotDecideTheOutcome()
 	{
 		int[] subject = [1, 2,];
+		using CancellationTokenSource cts = new();
+		cts.Cancel();
 
 		async Task Act()
-			=> await That(subject).None().AreVerifiedBy(x => x.IsEqualTo(3), undecidedItem: 2);
+			=> await That(subject).None().AreVerifiedBy(x => x.IsEqualTo(3), undecidedItem: 2)
+				.WithCancellation(cts.Token);
 
 		await That(Act).Throws<InconclusiveException>()
 			.WithMessage("""
@@ -198,6 +222,23 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 			}
 
 			Complete();
+			return this;
+		}
+	}
+
+	private sealed class DoesNotCompleteConstraint(string it, ExpectationGrammars grammars, EnumerableQuantifier quantifier)
+		: QuantifiedCollectionConstraint<IEnumerable<int>?, int>(it, grammars, quantifier, _ => "is even", "were"),
+			IValueConstraint<IEnumerable<int>?>
+	{
+		public ConstraintResult IsMetBy(IEnumerable<int>? actual)
+		{
+			StartEvaluation();
+			Actual = actual;
+			foreach (int item in actual ?? [])
+			{
+				Record(item, item % 2 == 0);
+			}
+
 			return this;
 		}
 	}
