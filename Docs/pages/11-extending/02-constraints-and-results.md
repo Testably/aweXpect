@@ -477,17 +477,17 @@ the built-in expectations do.
 
 `IsEqualTo` compares two values with `Equals`, unless the caller chooses another comparison, e.g. with `.Equivalent()`.
 You can offer a comparison of your own: implement `IObjectMatchType` and set it on the options of the result with
-`SetMatchType`. For example, two tracks with the same title can count as equal:
+`SetMatchType`, passing the name of your option, so that combining it with another comparison throws. For example, two
+tracks with the same title can count as equal:
 
 ```csharp
 using System.Threading.Tasks;
 using aweXpect.Options;
 
-public static TSelf ByTitle<TType, TThat, TElement, TSelf>(
-    this ObjectEqualityResult<TType, TThat, TElement, TSelf> result)
-    where TSelf : ObjectEqualityResult<TType, TThat, TElement, TSelf>
+public static TSelf ByTitle<TSelf, TElement>(this IObjectEqualityResult<TSelf, TElement> result)
+    where TSelf : IObjectEqualityResult<TSelf, TElement>
 {
-    ((IOptionsProvider<ObjectEqualityOptions<TElement>>)result).Options.SetMatchType(new ByTitleMatchType());
+    result.Options.SetMatchType(new ByTitleMatchType(), nameof(ByTitle));
     return (TSelf)result;
 }
 
