@@ -26,16 +26,14 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((Options: options, Expected: expected, Quantifier: iElements.Quantifier),
 				static (state, it, grammars) =>
 				{
-					SubjectEqualityOptions<TItem, TItem> itemOptions = new(state.Options,
-						() => state.Expected is not null &&
-						      ObjectEqualityWithToleranceOptionsFactory.HasDefaultMatchType(state.Options));
+					SubjectEqualityOptions<TItem, TItem> itemOptions = new(state.Options, state.Expected is not null);
 					return new CollectionConstraint<IEnumerable<TItem>?, TItem>(
 						it, grammars,
 						state.Quantifier,
 						g => ElementExpectations.IsEqualTo(g, Formatter.Format(state.Expected), itemOptions),
 						a => itemOptions.AreConsideredEqual(a, state.Expected),
 						"were",
-						itemOptions.UseComparerOf);
+						itemOptions);
 				}),
 			iElements.Subject,
 			options);
@@ -55,14 +53,14 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					SubjectEqualityOptions<TItem, TItem> itemOptions =
-						new(state.Options, () => state.Expected is not null && state.Options.HasDefaultMatchType);
+						new(state.Options, state.Expected is not null);
 					return new CollectionConstraint<IEnumerable<TItem>?, TItem>(
 						it, grammars,
 						state.Quantifier,
 						g => ElementExpectations.IsEqualTo(g, Formatter.Format(state.Expected), itemOptions),
 						a => itemOptions.AreConsideredEqual(a, state.Expected),
 						"were",
-						itemOptions.UseComparerOf,
+						itemOptions,
 						appendOptionsContexts: state.Options.AppendContexts);
 				}),
 			iElements.Subject,
@@ -84,14 +82,14 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					SubjectEqualityOptions<object?, object?> itemOptions =
-						new(state.Options, () => state.Expected is not null && state.Options.HasDefaultMatchType);
+						new(state.Options, state.Expected is not null);
 					return new CollectionConstraint<IEnumerable, object?>(
 						it, grammars,
 						state.Quantifier,
 						g => ElementExpectations.IsEqualTo(g, Formatter.Format(state.Expected), itemOptions),
 						a => itemOptions.AreConsideredEqual(a, state.Expected),
 						"were",
-						itemOptions.UseComparerOf,
+						itemOptions,
 						appendOptionsContexts: state.Options.AppendContexts);
 				}),
 			iElements.Subject,
@@ -160,14 +158,14 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 				{
 					SubjectEqualityOptions<string?, string?> itemOptions =
-						new(state.Options, () => state.Expected is not null && state.Options.ComparesByOrdinalEquality);
+						new(state.Options, state.Expected is not null);
 					return new CollectionConstraint<IEnumerable<string?>?, string?>(
 						it, grammars,
 						state.Quantifier,
 						g => ElementExpectations.IsEqualToString(g, state.Expected, state.Options, itemOptions),
 						a => itemOptions.AreConsideredEqual(a, state.Expected),
 						"were",
-						itemOptions.UseComparerOf);
+						itemOptions);
 				}),
 			iElements.Subject,
 			options);

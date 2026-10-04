@@ -88,7 +88,7 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>
 	where TEnumerable : IEnumerable?
 {
 	private readonly bool _isUntyped = !CollectionItems<TItem>.IsTyped<TEnumerable>();
-	private readonly Func<object?, bool>? _useComparerOf;
+	private readonly ISubjectComparing? _subjectComparing;
 	private CollectionContext _collectionContext;
 	private Type? _itemType;
 
@@ -110,11 +110,11 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>
 		Func<ExpectationGrammars, string> expectationText,
 		Func<TItem, ValueTask<bool>> predicate,
 		string verb,
-		Func<object?, bool>? useComparerOf = null,
+		ISubjectComparing? subjectComparing = null,
 		Action<ResultContextCollector>? appendOptionsContexts = null)
 		: base(it, grammars, quantifier, expectationText, predicate, verb, appendOptionsContexts)
 	{
-		_useComparerOf = useComparerOf;
+		_subjectComparing = subjectComparing;
 	}
 
 	/// <inheritdoc />
@@ -145,7 +145,7 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>
 			return new ValueTask<ConstraintResult>(this);
 		}
 
-		_useComparerOf?.Invoke(actual);
+		_subjectComparing?.UseComparerOf(actual);
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		bool cancelEarly = CollectionItems<TItem>.CountOf(actual) is null;
 		return IsSynchronous

@@ -19,14 +19,21 @@ namespace aweXpect;
 internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 	string it,
 	ExpectationGrammars grammars,
-	string expectedExpression,
+	string? expectedExpression,
+	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
 	IOptionsEquality<TMatch> options)
 	: ConstraintResult.WithNotNullValue<TValue>(it, grammars)
 {
+	private string? _expectedText;
 	private TItem? _firstMismatchItem;
 	private bool _foundMismatch;
 	private int _index;
+
+	/// <summary>
+	///     The expected items in the expectation text, formatted only when the text is written.
+	/// </summary>
+	private string ExpectedText => _expectedText ??= expectedExpression ?? Formatter.Format(expectedValues);
 
 	/// <summary>
 	///     The number of items that were compared.
@@ -81,7 +88,7 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
-		stringBuilder.Append(Grammars.Verb("starts with ", "start with ")).Append(expectedExpression);
+		stringBuilder.Append(Grammars.Verb("starts with ", "start with ")).Append(ExpectedText);
 		stringBuilder.Append(options);
 	}
 
@@ -105,7 +112,7 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
 		stringBuilder.Append(Grammars.Verb("does not start with ", "do not start with "))
-			.Append(expectedExpression);
+			.Append(ExpectedText);
 		stringBuilder.Append(options);
 	}
 
@@ -119,11 +126,13 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 internal sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>(
 	string it,
 	ExpectationGrammars grammars,
-	string expectedExpression,
+	string? expectedExpression,
+	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
 	IOptionsEquality<TMatch> options,
-	Func<object?, bool>? useComparerOf = null)
-	: StartsWithConstraintBase<TEnumerable, TItem, TMatch>(it, grammars, expectedExpression, expected, options),
+	ISubjectComparing? subjectComparing = null)
+	: StartsWithConstraintBase<TEnumerable, TItem, TMatch>(it, grammars, expectedExpression, expectedValues, expected,
+			options),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
 {
@@ -155,7 +164,7 @@ internal sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>(
 			return this;
 		}
 
-		useComparerOf?.Invoke(actual);
+		subjectComparing?.UseComparerOf(actual);
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		_items = materialized.Items;
 		foreach (TItem item in _items)
@@ -202,11 +211,12 @@ internal sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>(
 internal sealed class AsyncStartsWithConstraint<TItem, TMatch>(
 	string it,
 	ExpectationGrammars grammars,
-	string expectedExpression,
+	string? expectedExpression,
+	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
 	IOptionsEquality<TMatch> options)
-	: StartsWithConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMatch>(it, grammars, expectedExpression, expected,
-			options),
+	: StartsWithConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMatch>(it, grammars, expectedExpression,
+			expectedValues, expected, options),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
 	private readonly List<TItem> _foundValues = [];

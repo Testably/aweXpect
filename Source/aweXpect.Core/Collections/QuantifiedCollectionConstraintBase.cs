@@ -102,20 +102,14 @@ public abstract class QuantifiedCollectionConstraintBase<TValue, TItem>
 			Reset();
 		}
 
-		if (_matchingItems is null || _notMatchingItems is null)
-		{
-			_matchingItems = new LimitedCollection<TItem>();
-			_notMatchingItems = new LimitedCollection<TItem>();
-		}
-
 		if (isMatch)
 		{
-			_matchingItems.Add(item, _matchingCount + _notMatchingCount);
+			(_matchingItems ??= new LimitedCollection<TItem>()).Add(item, _matchingCount + _notMatchingCount);
 			_matchingCount++;
 		}
 		else
 		{
-			_notMatchingItems.Add(item, _matchingCount + _notMatchingCount);
+			(_notMatchingItems ??= new LimitedCollection<TItem>()).Add(item, _matchingCount + _notMatchingCount);
 			_notMatchingCount++;
 		}
 	}
