@@ -1,12 +1,20 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 
 namespace aweXpect.Core.Helpers;
 
-internal readonly struct BecauseReason(string reason) : IBecauseReason
+/// <remarks>
+///     The message is only created once it is written, and the delegate that writes it is created once per reason
+///     instead of once per evaluation.
+/// </remarks>
+internal sealed class BecauseReason(string reason) : IBecauseReason
 {
-	private readonly Lazy<string> _message = new(() => CreateMessage(reason));
+	private Action<StringBuilder>? _appendMessage;
+	private string? _message;
+
+	private string Message => _message ??= CreateMessage(reason);
 
 	private static string CreateMessage(string reason)
 	{
@@ -19,12 +27,9 @@ internal readonly struct BecauseReason(string reason) : IBecauseReason
 	}
 
 	public override string ToString()
-		=> _message.Value;
-	
+		=> Message;
+
 	public ValueTask<ConstraintResult>
-	ApplyTo(ConstraintResult result)
-	{
-		string message = _message.Value;
-		return new ValueTask<ConstraintResult>(result.AppendExpectationText(e => e.Append(message)));
-	}
+		ApplyTo(ConstraintResult result)
+		=> new(result.AppendExpectationText(_appendMessage ??= stringBuilder => stringBuilder.Append(Message)));
 }

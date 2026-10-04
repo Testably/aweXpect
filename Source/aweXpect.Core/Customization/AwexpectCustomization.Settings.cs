@@ -25,6 +25,11 @@ public partial class AwexpectCustomization
 	{
 		private const string KeyPrefix = "aweXpect.Settings.";
 
+		/// <summary>
+		///     The key of <see cref="TestCancellation" />, which every evaluation reads.
+		/// </summary>
+		internal const string TestCancellationKey = KeyPrefix + nameof(TestCancellation);
+
 		internal SettingsCustomization(IAwexpectCustomization awexpectCustomization)
 		{
 			DefaultCheckInterval = new CustomizationValue<TimeSpan>(awexpectCustomization,
@@ -56,7 +61,7 @@ public partial class AwexpectCustomization
 					}
 				});
 			TestCancellation = new CustomizationValue<TestCancellation?>(awexpectCustomization,
-				KeyPrefix + nameof(TestCancellation), null);
+				TestCancellationKey, null);
 		}
 
 		/// <summary>

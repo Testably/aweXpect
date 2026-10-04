@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 
@@ -10,6 +11,12 @@ namespace aweXpect.Core.Helpers;
 /// </remarks>
 internal sealed class AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 {
+	/// <summary>
+	///     Writes the message; created once per reason instead of a closure at the start of every
+	///     <see cref="ApplyTo" />.
+	/// </summary>
+	private Action<StringBuilder>? _appendMessage;
+
 	private bool _isResolved;
 	private string? _message;
 
@@ -46,12 +53,12 @@ internal sealed class AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 		}
 
 		await Resolve();
-		if (_message is not { } message)
+		if (_message is null)
 		{
 			return result;
 		}
 
-		return result.AppendExpectationText(e => e.Append(message));
+		return result.AppendExpectationText(_appendMessage ??= stringBuilder => stringBuilder.Append(_message));
 	}
 
 	/// <summary>
