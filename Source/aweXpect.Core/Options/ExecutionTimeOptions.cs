@@ -12,6 +12,7 @@ public class ExecutionTimeOptions
 {
 	private Limit? _limit;
 	private Action<TimeSpan>? _onUpperBound;
+	private TimeSpan? _upperBound;
 
 	/// <summary>
 	///     Flag indicating if a thrown exception leaves the outcome to the measured duration.
@@ -57,6 +58,17 @@ public class ExecutionTimeOptions
 	}
 
 	/// <summary>
+	///     Checks if a synchronous delegate that returned only after the <paramref name="timeout" /> elapsed is judged by
+	///     its measured <paramref name="duration" /> instead of failing with the timeout.
+	/// </summary>
+	/// <remarks>
+	///     A timeout tighter than the upper bound of the limit wins, unless the <paramref name="duration" /> violates the
+	///     limit on its own.
+	/// </remarks>
+	internal bool JudgesLateResult(TimeSpan timeout, TimeSpan duration)
+		=> timeout >= _upperBound || !IsWithinLimit(duration);
+
+	/// <summary>
 	///     Appends the failure result text of the <paramref name="actual" /> value to the <paramref name="stringBuilder" />.
 	/// </summary>
 	public void AppendFailureResult(StringBuilder stringBuilder, TimeSpan actual)
@@ -75,7 +87,7 @@ public class ExecutionTimeOptions
 	{
 		ThrowHelper.ThrowIfDurationIsNegative(duration);
 		_limit = new MaximumLimit(duration, true);
-		_onUpperBound?.Invoke(duration);
+		SetUpperBound(duration);
 	}
 
 	/// <summary>
@@ -85,7 +97,7 @@ public class ExecutionTimeOptions
 	{
 		ThrowHelper.ThrowIfDurationIsNegative(maximum);
 		_limit = new MaximumLimit(maximum);
-		_onUpperBound?.Invoke(maximum);
+		SetUpperBound(maximum);
 	}
 
 	/// <summary>
@@ -95,6 +107,7 @@ public class ExecutionTimeOptions
 	{
 		ThrowHelper.ThrowIfDurationIsNegative(minimum);
 		_limit = new MinimumLimit(minimum);
+		_upperBound = null;
 	}
 
 	/// <summary>
@@ -110,7 +123,7 @@ public class ExecutionTimeOptions
 		}
 
 		_limit = new ApproximatelyLimit(expected, tolerance);
-		_onUpperBound?.Invoke(tolerance > TimeSpan.MaxValue - expected ? TimeSpan.MaxValue : expected + tolerance);
+		SetUpperBound(tolerance > TimeSpan.MaxValue - expected ? TimeSpan.MaxValue : expected + tolerance);
 	}
 
 	/// <summary>
@@ -122,7 +135,13 @@ public class ExecutionTimeOptions
 		ThrowHelper.ThrowIfDurationIsNegative(maximum);
 		ThrowHelper.ThrowIfMaximumIsBelowMinimum<TimeSpan>(minimum, maximum);
 		_limit = new BetweenLimit(minimum, maximum);
-		_onUpperBound?.Invoke(maximum);
+		SetUpperBound(maximum);
+	}
+
+	private void SetUpperBound(TimeSpan upperBound)
+	{
+		_upperBound = upperBound;
+		_onUpperBound?.Invoke(upperBound);
 	}
 
 	private abstract record Limit

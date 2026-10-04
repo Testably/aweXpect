@@ -250,8 +250,8 @@ therefore applies no timeout. The duration of `Throws().Within(…)` is applied 
 The task of an asynchronous delegate is abandoned once the timeout elapsed, even if the delegate ignores or does not
 accept a `CancellationToken`, and the expectation fails the same way. A synchronous delegate cannot be interrupted and
 runs to completion, however long that takes; neither `WithTimeout` nor `WithCancellation` changes that. If it returns
-after the timeout elapsed, the expectation fails the same way, while `ExecutesIn()` and `Throws().Within(…)` report the
-duration it took. A
+after the timeout elapsed, the expectation fails the same way. `ExecutesIn()` and `Throws().Within(…)` report the
+duration it took instead, when the timeout is their own upper bound or the duration also violates their limit. A
 [task](../06-behaviour/02-tasks.md) is already running when the expectation receives it, so only the duration that
 remains is measured.
 
