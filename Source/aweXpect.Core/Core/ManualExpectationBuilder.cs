@@ -36,7 +36,7 @@ public sealed class ManualExpectationBuilder<TValue>(
 	///     Append them after the whole expectation that the expectations are nested in (e.g. after a quantifier like
 	///     <c>for all items</c>).<br />
 	///     Reasons that must be awaited are omitted until they are resolved by <see cref="PrepareExpectation" /> or by a
-	///     failed evaluation.
+	///     failed evaluation, also of the expectation that the expectations are nested in.
 	/// </remarks>
 	public void AppendReasons(StringBuilder stringBuilder)
 	{
@@ -101,6 +101,10 @@ public sealed class ManualExpectationBuilder<TValue>(
 		{
 			await ResolveReasons();
 		}
+		else
+		{
+			ResolveReasonsOnFailureOf(context);
+		}
 
 		return result;
 	}
@@ -128,7 +132,13 @@ public sealed class ManualExpectationBuilder<TValue>(
 		};
 		try
 		{
-			return await IsMetBy(value, context, cancellationToken);
+			ConstraintResult result = await IsMetBy(value, context, cancellationToken);
+			if (result.Outcome != Outcome.Success)
+			{
+				await context.ResolvePendingReasons();
+			}
+
+			return result;
 		}
 		finally
 		{

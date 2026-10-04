@@ -232,6 +232,38 @@ public sealed partial class ThatObject
 					await That(Act).DoesNotThrow();
 				}
 
+				[Fact]
+				public async Task WhenMemberWithAsyncReasonIsMet_AndAnotherConditionFails_ShouldIncludeTheReason()
+				{
+					DummyClass subject = new()
+					{
+						StringValue = "foo",
+					};
+					var expected = new
+					{
+						StringValue = It.Is<string>().That
+							.Whose(s => s.Length, l => l.IsEqualTo(3).Because(Task.FromResult<string?>("of a"))).And
+							.IsEqualTo("bar"),
+					};
+
+					async Task Act()
+						=> await That(subject).IsEquivalentTo(expected);
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equivalent to expected,
+						             but it was not:
+						               Property StringValue differed:
+						                   Actual: "foo"
+						                 Expected: is string that whose Length is equal to 3, because of a and is equal to "bar"
+
+						             Equivalency options:
+						              - include public fields and properties
+						             """)
+						.Because("a reason that must be awaited is shown like a string reason, although its member is met");
+				}
+
 				// ReSharper disable UnusedAutoPropertyAccessor.Local
 				private sealed class DummyClass
 				{

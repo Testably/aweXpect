@@ -52,6 +52,25 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenInnerExpectationHasAsyncReason_AndAnotherExpectationFails_ShouldAppendIt()
+			{
+				int subject = 1;
+
+				async Task Act()
+					=> await That(subject)
+						.CompliesWith(x => x.IsEqualTo(1).Because(Task.FromResult<string?>("of reasons")))
+						.And.IsEqualTo(2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to 1, because of reasons and is equal to 2,
+					             but it was 1, which differs by -1
+					             """)
+					.Because("a reason that must be awaited is shown like a string reason, although its expectation is met");
+			}
+
+			[Fact]
 			public async Task WhenInnerExpectationHasReason_ShouldAppendItAfterTheInnerExpectation()
 			{
 				int subject = 1;

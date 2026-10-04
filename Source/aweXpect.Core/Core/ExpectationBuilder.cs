@@ -591,6 +591,26 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
+	///     Registers the reasons that must be awaited, to be resolved when the evaluation in the
+	///     <paramref name="context" /> fails, e.g. because an outer negation inverts the met expectations.
+	/// </summary>
+	internal void ResolveReasonsOnFailureOf(IEvaluationContext context)
+	{
+		if (_reasons is null)
+		{
+			return;
+		}
+
+		foreach (IBecauseReason reason in _reasons)
+		{
+			if (reason is AsyncBecauseReason asyncReason)
+			{
+				asyncReason.ResolveOnFailureOf(context);
+			}
+		}
+	}
+
+	/// <summary>
 	///     Supports chaining for subsequent expectation constraints with the <paramref name="textSeparator" />.
 	/// </summary>
 	public ExpectationBuilder And(string textSeparator = " and ")
@@ -879,6 +899,11 @@ public abstract class ExpectationBuilder
 		{
 			await EndEvaluation();
 			return result;
+		}
+
+		if (_evaluationContext is not null)
+		{
+			await _evaluationContext.ResolvePendingReasons();
 		}
 
 		return _otherExceptions is null ? result : new ConstraintResult.WithOtherExceptions(result, _otherExceptions);

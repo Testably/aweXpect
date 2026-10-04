@@ -392,6 +392,10 @@ public static partial class EquivalencyComparison
 		{
 			result = await equivalencyExpectationBuilder.IsMetBy(actual, evaluationContext,
 				CancellationToken.None);
+			if (result.Outcome != Outcome.Success)
+			{
+				await evaluationContext.ResolvePendingReasons();
+			}
 		}
 		finally
 		{
