@@ -1241,6 +1241,26 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Fact]
+	public async Task WhenTypeIsASet_ShouldRegisterItsItemTypeOnce()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Models,
+			Call(
+				"Expect.That(new System.Collections.Generic.HashSet<Models.Other>()).IsEquivalentTo(new System.Collections.Generic.HashSet<Models.Other>());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains("global::aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterSet<global::Models.Other>();")
+			.Once()
+			.Because("the comparison reads the comparer through a reader for the type argument of both set interfaces");
+		await That(result.Generated)
+			.Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);")
+			.Because("the items are still compared by their members when the comparer does not find them");
+	}
+
+	[Fact]
 	public async Task WhenTypeIsAnUnnameableDictionary_ShouldNotRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1262,6 +1282,30 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Errors).IsEmpty();
 		await That(result.Generated).DoesNotContain("RegisterDictionary")
 			.Because("the generated code cannot name the private value type");
+	}
+
+	[Fact]
+	public async Task WhenTypeIsAnUnnameableSet_ShouldNotRegisterIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			using aweXpect;
+
+			public class Tests
+			{
+				private class Hidden { public int Id { get; set; } }
+
+				public void Test()
+					=> Expect.That(new System.Collections.Generic.HashSet<Hidden>())
+						.IsEquivalentTo(new System.Collections.Generic.HashSet<Hidden>());
+			}
+			""",
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("RegisterSet")
+			.Because("the generated code cannot name the private item type");
 	}
 
 	[Fact]

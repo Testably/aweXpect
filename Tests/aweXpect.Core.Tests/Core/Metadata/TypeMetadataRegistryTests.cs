@@ -162,6 +162,19 @@ public sealed class TypeMetadataRegistryTests
 			.Because("the comparison finds the reader through the dictionary interface the runtime type implements");
 	}
 
+	[Fact]
+	public async Task RegisterSet_ShouldRegisterAReaderOfTheItemComparer()
+	{
+		HashSet<Batched> set = new(new SameValueComparer());
+
+		TypeMetadataRegistry.RegisterSet<Batched>();
+
+		TypeMetadataRegistry.Instance.TryGet(typeof(ISet<Batched>), out TypeMetadataRegistry.TypeMetadata? metadata);
+		Func<object?, object?, bool>? itemComparer = metadata?.ItemComparer?.Read(set);
+		await That(itemComparer?.Invoke(new Batched { Value = 1, }, new Batched { Value = 1, })).IsTrue()
+			.Because("the comparison finds the reader through the set interface the runtime type implements");
+	}
+
 	private static bool IsRegisteredOnAnotherThread(TypeMetadataRegistry.Registration registration, Type type)
 	{
 		bool isRegistered = false;
@@ -185,6 +198,13 @@ public sealed class TypeMetadataRegistryTests
 	}
 
 	private sealed class Dummy;
+
+	private sealed class SameValueComparer : IEqualityComparer<Batched>
+	{
+		public bool Equals(Batched? x, Batched? y) => x?.Value == y?.Value;
+
+		public int GetHashCode(Batched obj) => obj.Value;
+	}
 
 	private sealed class Other;
 }

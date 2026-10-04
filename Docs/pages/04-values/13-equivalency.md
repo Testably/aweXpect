@@ -115,6 +115,12 @@ reported as ambiguous. Failures name the kind of the *expected* member.
 
 - A set on either side is enough to match the items without an order, exactly like
   [ignoring collection order](#ignoring-collection-order), so a `HashSet<T>` can be compared against an array.
+- An actual `HashSet<T>` that was created with a custom comparer decides with it which items are the same, as the key
+  comparer of a dictionary does for its keys: an expected item that this comparer finds in the set is matched, whatever
+  its members are, and only the remaining items are matched by the equivalency comparison. The same holds for an
+  `ImmutableHashSet<T>` and a `FrozenSet<T>` [on .NET 8 or later](../02-getting-started.md#target-frameworks). The
+  comparer of an expected set is not used. In a project that enables trimming or Native AOT, the comparer is read for
+  the sets that the source generator sees.
 - A dictionary reports a differing, missing or superfluous entry under its key. Each expected key is looked up through
   the actual dictionary, so its key comparer decides which keys are the same, as it does for
   [`IsEqualTo`](../05-collections/04-dictionaries.md#equality). Two expected keys that this comparer considers the same

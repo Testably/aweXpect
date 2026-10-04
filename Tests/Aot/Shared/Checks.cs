@@ -68,6 +68,18 @@ internal static class Checks
 					["a"] = 1,
 				});
 			})),
+		new("a set is compared with its comparer",
+			() => ShouldPass(async () =>
+			{
+				HashSet<string> actual = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"A",
+				};
+				await That(actual).IsEquivalentTo(new HashSet<string>
+				{
+					"a",
+				});
+			})),
 		new("a read-only dictionary is compared with the key comparer of the dictionary it wraps",
 			() => ShouldPass(async () =>
 			{

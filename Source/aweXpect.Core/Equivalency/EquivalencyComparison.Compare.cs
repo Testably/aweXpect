@@ -829,7 +829,20 @@ public static partial class EquivalencyComparison
 	///     their content. One side being a set is enough: the other side has nothing left to be compared against in
 	///     order.
 	/// </remarks>
-	private static bool IsSet(object value) => GetTypeShape(value.GetType()).ImplementsSet;
+	private static bool IsSet(object value) => GetTypeShape(value.GetType()).SetInterface is not null;
+
+	/// <summary>
+	///     Returns whether two items are the same for the comparer of the <paramref name="actual" /> set, or
+	///     <see langword="null" /> when it is no set, uses the default equality or its comparer cannot be read.
+	/// </summary>
+	/// <remarks>
+	///     The type argument of the set is out of reach here, so its comparer is read by the
+	///     <see cref="SetItemComparer" /> for the generic set interface it implements.
+	/// </remarks>
+	private static Func<object?, object?, bool>? GetItemComparer(object actual)
+		=> GetTypeShape(actual.GetType()).SetInterface is { } setInterface
+			? SetItemComparer.For(setInterface)?.Read(actual)
+			: null;
 
 	/// <remarks>
 	///     netstandard2.0 has no <c>IReadOnlySet&lt;T&gt;</c>, but is served to runtimes that have it, so it is
@@ -849,19 +862,19 @@ public static partial class EquivalencyComparison
 	private static TypeShape GetTypeShape(Type type)
 		=> TypeShapes.GetOrAdd(type, static key => new TypeShape(
 			key.FindGenericInterface(IsDictionaryDefinition),
-			key.FindGenericInterface(IsSetInterface) is not null));
+			key.FindGenericInterface(IsSetInterface)));
 
 	/// <summary>
-	///     The generic dictionary interface that a type implements first, and whether it is a set.
+	///     The generic dictionary interface and the generic set interface that a type implements first.
 	/// </summary>
 	/// <remarks>
 	///     Cached, because the interfaces of a type never change, while every object that is compared by its members is
 	///     checked for a dictionary, and every sequence for a set.
 	/// </remarks>
-	private sealed class TypeShape(Type? dictionaryInterface, bool implementsSet)
+	private sealed class TypeShape(Type? dictionaryInterface, Type? setInterface)
 	{
 		public Type? DictionaryInterface { get; } = dictionaryInterface;
-		public bool ImplementsSet { get; } = implementsSet;
+		public Type? SetInterface { get; } = setInterface;
 	}
 
 	/// <remarks>
@@ -1079,8 +1092,8 @@ public static partial class EquivalencyComparison
 
 		if (typeOptions.IgnoreCollectionOrder || IsSet(actual) || IsSet(expected))
 		{
-			return await CompareInAnyOrder(actualObjects, expectedObjects, failureBuilder, memberPath, options,
-				typeOptions, context);
+			return await CompareInAnyOrder(actualObjects, expectedObjects, GetItemComparer(actual), failureBuilder,
+				memberPath, options, typeOptions, context);
 		}
 
 		for (int i = 0; i < Math.Min(actualObjects.Length, expectedObjects.Length); i++)
@@ -1149,11 +1162,17 @@ public static partial class EquivalencyComparison
 	///     is equivalent to an unmatched expected one, so any two of them can be reported against each other: they
 	///     really differ. Which two are reported against each other still decides how much the message helps, so the
 	///     leftovers are paired by the fewest differences rather than by their position.
+	///     <para />
+	///     A set that was created with its own comparer defines which items are the same, like the key comparer of a
+	///     dictionary does for its keys, so an expected element that the <paramref name="itemComparer" /> finds in it
+	///     is equivalent to the element it was found as, and only the other pairs are left to the equivalency
+	///     comparison.
 	/// </remarks>
 	private static async ValueTask<bool>
 		CompareInAnyOrder(
 			object?[] actualObjects,
 			object?[] expectedObjects,
+			Func<object?, object?, bool>? itemComparer,
 			StringBuilder failureBuilder,
 			string memberPath,
 			EquivalencyOptions options,
@@ -1162,8 +1181,8 @@ public static partial class EquivalencyComparison
 	{
 		int[] actualIndices = GetIndicesToCompare(actualObjects, memberPath, typeOptions);
 		int[] expectedIndices = GetIndicesToCompare(expectedObjects, memberPath, typeOptions);
-		ElementMatcher matcher = new(actualObjects, actualIndices, expectedObjects, expectedIndices, memberPath,
-			options, typeOptions, context);
+		ElementMatcher matcher = new(actualObjects, actualIndices, expectedObjects, expectedIndices, itemComparer,
+			memberPath, options, typeOptions, context);
 		await matcher.MatchAll();
 		if (context.IsDecidingOnly)
 		{
@@ -1256,6 +1275,11 @@ public static partial class EquivalencyComparison
 		private readonly object?[] _expectedObjects;
 
 		/// <summary>
+		///     Whether two elements are the same for the comparer of the actual set, when it has one of its own.
+		/// </summary>
+		private readonly Func<object?, object?, bool>? _itemComparer;
+
+		/// <summary>
 		///     The expected element each actual element is matched to, or <c>-1</c> while it is still free.
 		/// </summary>
 		private readonly int[] _matchedTo;
@@ -1289,13 +1313,14 @@ public static partial class EquivalencyComparison
 		private int _search;
 
 		public ElementMatcher(object?[] actualObjects, int[] actualIndices, object?[] expectedObjects,
-			int[] expectedIndices, string memberPath, EquivalencyOptions options,
-			EquivalencyTypeOptions typeOptions, EquivalencyContext context)
+			int[] expectedIndices, Func<object?, object?, bool>? itemComparer, string memberPath,
+			EquivalencyOptions options, EquivalencyTypeOptions typeOptions, EquivalencyContext context)
 		{
 			_actualObjects = actualObjects;
 			_actualIndices = actualIndices;
 			_expectedObjects = expectedObjects;
 			_expectedIndices = expectedIndices;
+			_itemComparer = itemComparer;
 			_memberPath = memberPath;
 			_options = options;
 			_typeOptions = typeOptions;
@@ -1461,6 +1486,15 @@ public static partial class EquivalencyComparison
 			if (_results.TryGet(actualIndex, expectedIndex, out bool cachedResult))
 			{
 				return cachedResult;
+			}
+
+			if (_itemComparer is not null && UserCode.Invoke(
+				    static pair => pair.Comparer(pair.Actual, pair.Expected),
+				    (Comparer: _itemComparer, Actual: _actualObjects[_actualIndices[actualIndex]],
+					    Expected: _expectedObjects[_expectedIndices[expectedIndex]]), "the comparer"))
+			{
+				_results.Set(actualIndex, expectedIndex, true);
+				return true;
 			}
 
 			bool wasDecidingOnly = _context.IsDecidingOnly;

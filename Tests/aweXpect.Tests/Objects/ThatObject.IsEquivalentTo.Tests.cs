@@ -928,6 +928,105 @@ public sealed partial class ThatObject
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Fact]
+			public async Task WhenSetSubjectUsesACaseInsensitiveComparer_ShouldSucceed()
+			{
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"A",
+				};
+				HashSet<string> expected = ["a",];
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("the comparer of the subject decides which items are the same");
+			}
+
+			[Fact]
+			public async Task WhenSetSubjectUsesACaseInsensitiveComparer_WhenNegated_ShouldFail()
+			{
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"A",
+				};
+				HashSet<string> expected = ["a",];
+
+				async Task Act()
+					=> await That(subject).IsNotEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equivalent to expected,
+					             but it was*
+					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenSetSubjectUsesACaseInsensitiveComparer_WithAnItemThatItDoesNotFind_ShouldFail()
+			{
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"A",
+					"B",
+				};
+				HashSet<string> expected = ["a", "c",];
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to expected,
+					             but it was not:
+					               Element [1] differed:
+					                   Actual: "B"
+					                 Expected: "c"
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenSetSubjectUsesAComparerThatThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("comparer failed");
+				HashSet<string> subject = new(new ThrowingComparer(exception))
+				{
+					"A",
+				};
+				HashSet<string> expected = ["a",];
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to expected,
+					             but the comparer did throw an InvalidOperationException:
+					               comparer failed
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+
+			/// <remarks>
+			///     Only throws when it compares two items, so that the subject can be created.
+			/// </remarks>
+			private sealed class ThrowingComparer(Exception exception) : IEqualityComparer<string>
+			{
+				public bool Equals(string? x, string? y) => throw exception;
+
+				public int GetHashCode(string obj) => obj.Length;
+			}
 		}
 
 		public sealed class DictionaryTests

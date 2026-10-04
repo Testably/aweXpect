@@ -665,3 +665,4 @@ aweXpect.Results.DelegateWithOptionalValueResult<T>.WhoseResult.get -> aweXpect.
 override aweXpect.Options.DayTolerance.ToString() -> string!
 *REMOVED*aweXpect.Core.Constraints.IExpectationTextConstraint.GetExpectationResult(aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<aweXpect.Core.Constraints.ConstraintResult!>!
 aweXpect.Core.Constraints.IExpectationTextConstraint.GetExpectationResult(aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<aweXpect.Core.Constraints.ConstraintResult!>
+static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterSet<T>() -> void
