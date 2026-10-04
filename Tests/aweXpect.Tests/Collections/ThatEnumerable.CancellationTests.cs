@@ -1149,13 +1149,13 @@ public sealed partial class ThatEnumerable
 		}
 
 		/// <remarks>
-		///     Blocks the evaluation ten times as long as the timeout of 50 ms, so that the following expectations are
+		///     Blocks the evaluation four times as long as the timeout of 50 ms, so that the following expectations are
 		///     evaluated after it elapsed. A delegate subject cannot be used, as a delegate that returns after the timeout
 		///     did not finish within it.
 		/// </remarks>
 		private static bool OutlastTheTimeout()
 		{
-			Thread.Sleep(500.Milliseconds());
+			Thread.Sleep(200.Milliseconds());
 			return true;
 		}
 

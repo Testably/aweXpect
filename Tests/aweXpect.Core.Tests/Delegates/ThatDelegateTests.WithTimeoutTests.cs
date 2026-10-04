@@ -10,7 +10,7 @@ public sealed partial class ThatDelegateTests
 		[Fact]
 		public async Task WhenAsyncDelegateReturnsAfterTheTimeout_ShouldFail()
 		{
-			Func<Task> @delegate = () => Task.Delay(300.Milliseconds());
+			Func<Task> @delegate = () => Task.Delay(100.Milliseconds());
 
 			async Task Act()
 				=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds());
@@ -28,7 +28,7 @@ public sealed partial class ThatDelegateTests
 		[Fact]
 		public async Task WhenSyncDelegateReturnsAfterTheTimeout_ShouldFail()
 		{
-			Action @delegate = () => Thread.Sleep(300.Milliseconds());
+			Action @delegate = () => Block(100.Milliseconds());
 
 			async Task Act()
 				=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds());
@@ -48,7 +48,7 @@ public sealed partial class ThatDelegateTests
 		{
 			Func<int> @delegate = () =>
 			{
-				Thread.Sleep(300.Milliseconds());
+				Block(100.Milliseconds());
 				return 1;
 			};
 
@@ -63,6 +63,16 @@ public sealed partial class ThatDelegateTests
 				             """).And
 				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
 				.Because("a synchronous delegate that overran the timeout must fail like an asynchronous one");
+		}
+
+		/// <remarks>
+		///     Blocks the calling thread like a synchronous delegate that cannot be interrupted. Its overrun is decided by
+		///     its measured duration, which load can only lengthen.
+		/// </remarks>
+		private static void Block(TimeSpan duration)
+		{
+			using ManualResetEventSlim neverSet = new();
+			_ = neverSet.Wait(duration);
 		}
 	}
 }
