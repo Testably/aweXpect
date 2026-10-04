@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "e00183f58af478d0f9ad0a7a31570e366f1ca12c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
-        "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
-      },
-      {
         "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
         "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
+      },
+      {
+        "sha": "16c242c7a802228b567807b63b844edd15ff3626",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
       }
     ],
     "labels": [
-      "e00183f5",
       "34d794ec",
       "f9b4540a",
       "00dff638",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "6f9d4282",
       "62b5cca4",
       "a4298247",
-      "bfeb4fc2"
+      "bfeb4fc2",
+      "16c242c7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          306.65425740755524,
           337.75201447804767,
           302.21210071018766,
           338.3181185086568,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           281.60245819091796,
           181.4545805624553,
           351.66029326121014,
-          371.91328716278076
+          371.91328716278076,
+          163.3961702823639
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -427,7 +427,6 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
-          840,
           936,
           936,
           936,
@@ -469,7 +468,8 @@ window.BENCHMARK_DATA = {
           800,
           800,
           800,
-          800
+          800,
+          392
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          255.23794501168388,
           254.61803455352782,
           250.2746205670493,
           251.7722088609423,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           204.47215623514992,
           145.49324812207902,
           252.23526869501387,
-          256.7717856725057
+          256.7717856725057,
+          251.36319078717912
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -610,12 +610,6 @@ window.BENCHMARK_DATA = {
   "Equivalency": {
     "commits": [
       {
-        "sha": "e00183f58af478d0f9ad0a7a31570e366f1ca12c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
-        "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
-      },
-      {
         "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
@@ -908,10 +902,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
         "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
+      },
+      {
+        "sha": "16c242c7a802228b567807b63b844edd15ff3626",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
       }
     ],
     "labels": [
-      "e00183f5",
       "34d794ec",
       "f9b4540a",
       "00dff638",
@@ -960,14 +959,14 @@ window.BENCHMARK_DATA = {
       "6f9d4282",
       "62b5cca4",
       "a4298247",
-      "bfeb4fc2"
+      "bfeb4fc2",
+      "16c242c7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          326566.2730794271,
           345701.63971354166,
           316975.791796875,
           322006.48678385414,
@@ -1016,7 +1015,8 @@ window.BENCHMARK_DATA = {
           220585.15937151227,
           148709.5198625837,
           290245.4733698918,
-          287580.0322614397
+          287580.0322614397,
+          164669.80224609375
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1028,7 +1028,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          618120,
           618120,
           618120,
           618120,
@@ -1077,7 +1076,8 @@ window.BENCHMARK_DATA = {
           86138,
           86138,
           86138,
-          86138
+          86138,
+          29440
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1092,7 +1092,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2588997.383072917,
           2772641.68359375,
           2531028.349739583,
           2641841.021614583,
@@ -1141,7 +1140,8 @@ window.BENCHMARK_DATA = {
           1808925.5673177084,
           1295520.78984375,
           2303982.52421875,
-          2703740.744270833
+          2703740.744270833,
+          2558308.1489583333
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1153,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841651,
           4841651,
@@ -1202,6 +1201,7 @@ window.BENCHMARK_DATA = {
           4841648,
           4841647,
           4841647,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1217,12 +1217,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "e00183f58af478d0f9ad0a7a31570e366f1ca12c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
-        "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
-      },
       {
         "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
         "author": "Valentin Breu\u00DF",
@@ -1516,10 +1510,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
         "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
+      },
+      {
+        "sha": "16c242c7a802228b567807b63b844edd15ff3626",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
       }
     ],
     "labels": [
-      "e00183f5",
       "34d794ec",
       "f9b4540a",
       "00dff638",
@@ -1568,14 +1567,14 @@ window.BENCHMARK_DATA = {
       "6f9d4282",
       "62b5cca4",
       "a4298247",
-      "bfeb4fc2"
+      "bfeb4fc2",
+      "16c242c7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          538.1694253512791,
           577.7639307022094,
           530.6930157343546,
           538.7581422170003,
@@ -1624,7 +1623,8 @@ window.BENCHMARK_DATA = {
           388.9199968973796,
           284.65417126814526,
           566.9924236297608,
-          594.5345482145037
+          594.5345482145037,
+          353.0453771523067
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1643,7 +1643,6 @@ window.BENCHMARK_DATA = {
           1512,
           1512,
           1512,
-          1512,
           1608,
           1608,
           1608,
@@ -1685,7 +1684,8 @@ window.BENCHMARK_DATA = {
           1104,
           1104,
           1104,
-          1104
+          1104,
+          640
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1700,7 +1700,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          518.6470956802368,
           555.1492535273234,
           479.2288476058415,
           507.55058492933,
@@ -1749,7 +1748,8 @@ window.BENCHMARK_DATA = {
           400.45877707799275,
           268.01146796771457,
           491.15626989092146,
-          488.9102769851685
+          488.9102769851685,
+          468.2079619680132
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1826,12 +1826,6 @@ window.BENCHMARK_DATA = {
   "Int_GreaterThan": {
     "commits": [
       {
-        "sha": "e00183f58af478d0f9ad0a7a31570e366f1ca12c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
-        "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
-      },
-      {
         "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
@@ -2124,10 +2118,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
         "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
+      },
+      {
+        "sha": "16c242c7a802228b567807b63b844edd15ff3626",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
       }
     ],
     "labels": [
-      "e00183f5",
       "34d794ec",
       "f9b4540a",
       "00dff638",
@@ -2176,14 +2175,14 @@ window.BENCHMARK_DATA = {
       "6f9d4282",
       "62b5cca4",
       "a4298247",
-      "bfeb4fc2"
+      "bfeb4fc2",
+      "16c242c7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          323.1038678487142,
           348.18458862304686,
           307.96899785314287,
           308.0331859248025,
@@ -2232,7 +2231,8 @@ window.BENCHMARK_DATA = {
           303.6057075353769,
           182.40172738295334,
           380.74375101498197,
-          392.31012461980185
+          392.31012461980185,
+          174.2242868423462
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2251,7 +2251,6 @@ window.BENCHMARK_DATA = {
           1008,
           1008,
           1008,
-          1008,
           1104,
           1104,
           1104,
@@ -2293,7 +2292,8 @@ window.BENCHMARK_DATA = {
           952,
           952,
           952,
-          952
+          952,
+          496
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2308,7 +2308,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          258.2499782562256,
           285.1541458129883,
           258.28920259475706,
           256.62382987340294,
@@ -2357,7 +2356,8 @@ window.BENCHMARK_DATA = {
           191.07920319239298,
           134.61963035265606,
           244.56347176233928,
-          254.0459478378296
+          254.0459478378296,
+          241.38362261454265
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2434,12 +2434,6 @@ window.BENCHMARK_DATA = {
   "String": {
     "commits": [
       {
-        "sha": "e00183f58af478d0f9ad0a7a31570e366f1ca12c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
-        "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
-      },
-      {
         "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
@@ -2732,10 +2726,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
         "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
+      },
+      {
+        "sha": "16c242c7a802228b567807b63b844edd15ff3626",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
       }
     ],
     "labels": [
-      "e00183f5",
       "34d794ec",
       "f9b4540a",
       "00dff638",
@@ -2784,14 +2783,14 @@ window.BENCHMARK_DATA = {
       "6f9d4282",
       "62b5cca4",
       "a4298247",
-      "bfeb4fc2"
+      "bfeb4fc2",
+      "16c242c7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          590.45237159729,
           603.0279440198626,
           546.6077763484075,
           553.947010676066,
@@ -2840,7 +2839,8 @@ window.BENCHMARK_DATA = {
           392.96149935041154,
           243.23858434813363,
           502.5803561528524,
-          524.4031518055842
+          524.4031518055842,
+          332.72294425964355
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2852,7 +2852,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1400,
           1400,
           1400,
           1400,
@@ -2901,7 +2900,8 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
-          1080
+          1080,
+          624
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2916,7 +2916,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1185.8738259633383,
           1327.5965039571126,
           1216.9129625467153,
           1258.8664143880208,
@@ -2965,7 +2964,8 @@ window.BENCHMARK_DATA = {
           882.7562196731567,
           597.8788195610047,
           1152.8177640279134,
-          1190.6806184132895
+          1190.6806184132895,
+          1280.5390829722087
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3042,12 +3042,6 @@ window.BENCHMARK_DATA = {
   "StringArray": {
     "commits": [
       {
-        "sha": "e00183f58af478d0f9ad0a7a31570e366f1ca12c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
-        "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
-      },
-      {
         "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
@@ -3340,10 +3334,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
         "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
+      },
+      {
+        "sha": "16c242c7a802228b567807b63b844edd15ff3626",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
       }
     ],
     "labels": [
-      "e00183f5",
       "34d794ec",
       "f9b4540a",
       "00dff638",
@@ -3392,14 +3391,14 @@ window.BENCHMARK_DATA = {
       "6f9d4282",
       "62b5cca4",
       "a4298247",
-      "bfeb4fc2"
+      "bfeb4fc2",
+      "16c242c7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2019.8510101863317,
           2122.979504449027,
           2134.2143231709797,
           2227.4863881429037,
@@ -3448,7 +3447,8 @@ window.BENCHMARK_DATA = {
           1944.4431457519531,
           1419.1521091461182,
           2781.446640777588,
-          2727.2405586242676
+          2727.2405586242676,
+          2500.675132751465
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3460,7 +3460,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3104,
           3104,
           3104,
           3104,
@@ -3509,7 +3508,8 @@ window.BENCHMARK_DATA = {
           2896,
           2896,
           2896,
-          2896
+          2896,
+          2576
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3524,7 +3524,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1315.3896138509115,
           1399.3660079956055,
           1370.7772269930158,
           1325.5950056711833,
@@ -3573,7 +3572,8 @@ window.BENCHMARK_DATA = {
           1062.8478544871011,
           646.5440812792096,
           1316.2379275004068,
-          1341.730094273885
+          1341.730094273885,
+          1306.213110224406
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3650,12 +3650,6 @@ window.BENCHMARK_DATA = {
   "StringArrayInAnyOrder": {
     "commits": [
       {
-        "sha": "e00183f58af478d0f9ad0a7a31570e366f1ca12c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 18 20:56:20 2026 \u002B0200",
-        "message": "fix: render a negated quantifier as \u0060for not all items\u0060 (#1198)"
-      },
-      {
         "sha": "34d794ecd4612241cbba134f8a1de02916b80459",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 18 21:55:41 2026 \u002B0200",
@@ -3948,10 +3942,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
         "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
+      },
+      {
+        "sha": "16c242c7a802228b567807b63b844edd15ff3626",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
       }
     ],
     "labels": [
-      "e00183f5",
       "34d794ec",
       "f9b4540a",
       "00dff638",
@@ -4000,14 +3999,14 @@ window.BENCHMARK_DATA = {
       "6f9d4282",
       "62b5cca4",
       "a4298247",
-      "bfeb4fc2"
+      "bfeb4fc2",
+      "16c242c7"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2583.1968972342356,
           2728.427665201823,
           2713.9010078430174,
           2825.083543141683,
@@ -4056,7 +4055,8 @@ window.BENCHMARK_DATA = {
           2463.241643172044,
           1690.9833320617677,
           3321.210398864746,
-          3404.726574452718
+          3404.726574452718,
+          3094.7631594340005
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4068,7 +4068,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3296,
           3296,
           3296,
           3296,
@@ -4117,7 +4116,8 @@ window.BENCHMARK_DATA = {
           3176,
           3176,
           3176,
-          3176
+          3176,
+          2816
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4132,7 +4132,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          27306.86591491699,
           27231.05518798828,
           27495.22459411621,
           27270.3803914388,
@@ -4181,7 +4180,8 @@ window.BENCHMARK_DATA = {
           15590.14028676351,
           10010.612716674805,
           20295.053096516927,
-          26673.899533081054
+          26673.899533081054,
+          26633.9291469029
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4204,7 +4204,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33468,
           33471,
           33471,
@@ -4236,6 +4235,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
@@ -4304,6 +4304,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
         "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
+      },
+      {
+        "sha": "16c242c7a802228b567807b63b844edd15ff3626",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
       }
     ],
     "labels": [
@@ -4314,7 +4320,8 @@ window.BENCHMARK_DATA = {
       "6f9d4282",
       "62b5cca4",
       "a4298247",
-      "bfeb4fc2"
+      "bfeb4fc2",
+      "16c242c7"
     ],
     "datasets": [
       {
@@ -4328,7 +4335,8 @@ window.BENCHMARK_DATA = {
           3987.009569440569,
           2820.00571568807,
           5096.47492980957,
-          5795.983270498423
+          5795.983270498423,
+          5119.240317281087
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4347,7 +4355,8 @@ window.BENCHMARK_DATA = {
           7472,
           7472,
           7472,
-          7472
+          7472,
+          7000
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4369,7 +4378,8 @@ window.BENCHMARK_DATA = {
           53261.49040120443,
           29120.87935093471,
           62192.45831298828,
-          83824.33119710286
+          83824.33119710286,
+          84180.45454624722
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4387,6 +4397,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252,
           5252
         ],
@@ -4450,6 +4461,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sat Oct 3 18:18:16 2026 \u002B0200",
         "message": "perf: evaluate a simple expectation synchronously when nothing in it waits (#1578)"
+      },
+      {
+        "sha": "16c242c7a802228b567807b63b844edd15ff3626",
+        "author": "Valentin Breu\u00DF",
+        "date": "Sun Oct 4 05:38:06 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.12 (#1585)"
       }
     ],
     "labels": [
@@ -4460,7 +4477,8 @@ window.BENCHMARK_DATA = {
       "6f9d4282",
       "62b5cca4",
       "a4298247",
-      "bfeb4fc2"
+      "bfeb4fc2",
+      "16c242c7"
     ],
     "datasets": [
       {
@@ -4474,7 +4492,8 @@ window.BENCHMARK_DATA = {
           423.7307744026184,
           260.7688136100769,
           560.0543730417887,
-          587.4366920471191
+          587.4366920471191,
+          340.21241470745633
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4493,7 +4512,8 @@ window.BENCHMARK_DATA = {
           1176,
           1176,
           1176,
-          1176
+          1176,
+          712
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4515,7 +4535,8 @@ window.BENCHMARK_DATA = {
           14791.289885384696,
           9445.914090983073,
           18669.087475585937,
-          31424.79204450335
+          31424.79204450335,
+          30653.864783653848
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4533,6 +4554,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
+          5614,
           5614,
           5614
         ],
