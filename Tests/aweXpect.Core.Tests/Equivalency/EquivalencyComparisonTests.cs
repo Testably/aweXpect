@@ -3801,6 +3801,127 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Fact]
+	public async Task WhenSameInstanceHasNoComparableMembers_AsCollectionElement_ShouldSucceed()
+	{
+		object shared = new();
+		object[] actual = [1, shared,];
+		object[] expected = [1, shared,];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue();
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenSameInstanceHasNoComparableMembers_AsDictionaryValue_ShouldSucceed()
+	{
+		object shared = new();
+		Dictionary<string, object> actual = new()
+		{
+			["a"] = shared,
+		};
+		Dictionary<string, object> expected = new()
+		{
+			["a"] = shared,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue();
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenSameInstanceHasNoComparableMembers_AsMember_ShouldSucceed()
+	{
+		var actual = new
+		{
+			Args = EventArgs.Empty,
+		};
+		var expected = new
+		{
+			Args = EventArgs.Empty,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("an instance is equivalent to itself, so there is nothing left to verify");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenSameInstanceHasNoComparableMembers_AsRoot_ShouldSucceed()
+	{
+		object subject = new();
+
+		async Task Act()
+			=> await That(subject).IsEquivalentTo(subject);
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Fact]
+	public async Task WhenSameInstanceHasNoComparableMembers_AsRoot_WhenNegated_ShouldFail()
+	{
+		object subject = new();
+
+		async Task Act()
+			=> await That(subject).IsNotEquivalentTo(subject);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             is not equivalent to subject,
+			             but it was*
+			             """).AsWildcard();
+	}
+
+	[Fact]
+	public async Task WhenSameInstanceIsAnEnumerable_ShouldNotEnumerateIt()
+	{
+		CountingEnumerable shared = new();
+		var actual = new
+		{
+			Items = shared,
+		};
+		var expected = new
+		{
+			Items = shared,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue();
+		await That(shared.Enumerations).IsEqualTo(0)
+			.Because("an enumerable that can only be enumerated once could not be compared against itself");
+	}
+
+	[Fact]
+	public async Task WhenSameInstanceIsComparedByValue_ShouldStillCallItsEquals()
+	{
+		WithThrowingEquals shared = new();
+
+		async Task Act()
+			=> await That(shared).IsEquivalentTo(shared, o => o
+				.For<WithThrowingEquals>(t => t with
+				{
+					ComparisonType = EquivalencyComparisonType.ByValue,
+				}));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("*Equals of EquivalencyComparisonTests.WithThrowingEquals did throw a NotSupportedException*")
+			.AsWildcard().And
+			.Whose(e => e.InnerException, i => i.Is<NotSupportedException>())
+			.Because("how a type that is compared by value treats the same instance is up to its Equals");
+	}
+
+	[Fact]
 	public async Task WhenSetElementsAreInDifferentOrder_ShouldSucceed()
 	{
 		var actual = new
@@ -4610,6 +4731,19 @@ public sealed partial class EquivalencyComparisonTests
 	private sealed class ClassWithPrivateStateMember(ClassWithOnlyPrivateState inner)
 	{
 		public ClassWithOnlyPrivateState Inner { get; } = inner;
+	}
+
+	private sealed class CountingEnumerable : IEnumerable<int>
+	{
+		public int Enumerations { get; private set; }
+
+		public IEnumerator<int> GetEnumerator()
+		{
+			Enumerations++;
+			yield return 1;
+		}
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 
 	private sealed class DerivedFromExplicitValue(int value, int other) : ExplicitValue(value, other);
