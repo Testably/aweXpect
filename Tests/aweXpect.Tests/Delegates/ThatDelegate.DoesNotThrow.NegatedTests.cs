@@ -163,7 +163,8 @@ public sealed partial class ThatDelegate
 				=> new(((IExpectThat<DelegateValue>)subject).ExpectationBuilder);
 
 			private static Delegates.ThatDelegate.WithValue<int> WithValue(IThat<DelegateValue<int>> subject)
-				=> new(((IExpectThat<DelegateValue<int>>)subject).ExpectationBuilder);
+				=> new(((IExpectThat<DelegateValue<int>>)subject).ExpectationBuilder,
+					_ => throw new NotSupportedException());
 		}
 	}
 }
