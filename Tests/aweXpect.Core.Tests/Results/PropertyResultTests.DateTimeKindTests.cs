@@ -6,6 +6,62 @@ public sealed partial class PropertyResultTests
 {
 	public sealed class DateTimeKindTests
 	{
+		[Fact]
+		public async Task EqualTo_WhenValueIsNull_ShouldFail()
+		{
+			PropertyResult.DateTimeKind<MyClass?> sut = MyClass.HasNullDateTimeKindValue();
+
+			async Task Act()
+				=> await sut.EqualTo(DateTimeKind.Utc);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has kind value equal to Utc,
+				             but it had kind value <null>
+				             """);
+		}
+
+		[Fact]
+		public async Task EqualTo_WhenValueIsNullAndExpectedIsNull_ShouldSucceed()
+		{
+			PropertyResult.DateTimeKind<MyClass?> sut = MyClass.HasNullDateTimeKindValue();
+
+			async Task Act()
+				=> await sut.EqualTo(null);
+
+			await That(Act).DoesNotThrow()
+				.Because("null is equal to null");
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenValueIsNull_ShouldSucceed()
+		{
+			PropertyResult.DateTimeKind<MyClass?> sut = MyClass.HasNullDateTimeKindValue();
+
+			async Task Act()
+				=> await sut.NotEqualTo(DateTimeKind.Utc);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenValueIsNullAndUnexpectedIsNull_ShouldFail()
+		{
+			PropertyResult.DateTimeKind<MyClass?> sut = MyClass.HasNullDateTimeKindValue();
+
+			async Task Act()
+				=> await sut.NotEqualTo(null);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have kind value equal to <null>,
+				             but it had kind value <null>
+				             """)
+				.Because("null is equal to null");
+		}
+
 		public sealed class GrammarTests
 		{
 			[Fact]

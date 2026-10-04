@@ -163,6 +163,34 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Fact]
+		public async Task EqualTo_WhenValueIsNull_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasNullLongValue();
+
+			async Task Act()
+				=> await sut.EqualTo(42L);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has long value equal to 42,
+				             but it had long value <null>
+				             """);
+		}
+
+		[Fact]
+		public async Task EqualTo_WhenValueIsNullAndExpectedIsNull_ShouldSucceed()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasNullLongValue();
+
+			async Task Act()
+				=> await sut.EqualTo(null);
+
+			await That(Act).DoesNotThrow()
+				.Because("null is equal to null");
+		}
+
+		[Fact]
 		public async Task GreaterThan_ShouldTriggerValidation()
 		{
 			Signaler<long?> signal = new();
@@ -511,6 +539,34 @@ public sealed partial class PropertyResultTests
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception))
 				.Because("a property that was never read cannot prove inequality either");
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenValueIsNull_ShouldSucceed()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasNullLongValue();
+
+			async Task Act()
+				=> await sut.NotEqualTo(42L);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenValueIsNullAndUnexpectedIsNull_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasNullLongValue();
+
+			async Task Act()
+				=> await sut.NotEqualTo(null);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have long value equal to <null>,
+				             but it had long value <null>
+				             """)
+				.Because("null is equal to null");
 		}
 
 		[Fact]

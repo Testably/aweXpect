@@ -123,6 +123,34 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Fact]
+		public async Task EqualTo_WhenValueIsNull_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasNullTimeSpanValue();
+
+			async Task Act()
+				=> await sut.EqualTo(42.Seconds());
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has TimeSpan value equal to 0:42,
+				             but it had TimeSpan value <null>
+				             """);
+		}
+
+		[Fact]
+		public async Task EqualTo_WhenValueIsNullAndExpectedIsNull_ShouldSucceed()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasNullTimeSpanValue();
+
+			async Task Act()
+				=> await sut.EqualTo(null);
+
+			await That(Act).DoesNotThrow()
+				.Because("null is equal to null");
+		}
+
+		[Fact]
 		public async Task GreaterThan_ShouldTriggerValidation()
 		{
 			Signaler<TimeSpan?> signal = new();
@@ -456,6 +484,34 @@ public sealed partial class PropertyResultTests
 			MyClass? result = await sut.NotEqualTo(41.Seconds());
 
 			await That(result?.TimeSpanValue).IsEqualTo(42.Seconds());
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenValueIsNull_ShouldSucceed()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasNullTimeSpanValue();
+
+			async Task Act()
+				=> await sut.NotEqualTo(42.Seconds());
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenValueIsNullAndUnexpectedIsNull_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasNullTimeSpanValue();
+
+			async Task Act()
+				=> await sut.NotEqualTo(null);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have TimeSpan value equal to <null>,
+				             but it had TimeSpan value <null>
+				             """)
+				.Because("null is equal to null");
 		}
 
 		[Fact]

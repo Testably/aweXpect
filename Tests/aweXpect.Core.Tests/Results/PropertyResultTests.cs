@@ -56,6 +56,49 @@ public sealed partial class PropertyResultTests
 			IThat<MyClass?> source, ExpectationGrammars grammars)
 			=> new(source, a => a?.DateTimeKindValue, "kind value", grammars);
 
+		/// <summary>
+		///     The mapper returns <see langword="null" /> for a subject that is not <see langword="null" />, which is the
+		///     shape of a nullable property.
+		/// </summary>
+		public static PropertyResult.DateTimeKind<MyClass?> HasNullDateTimeKindValue()
+		{
+			MyClass subject = new();
+#pragma warning disable aweXpect0001
+			IThat<MyClass> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.DateTimeKind<MyClass?>(source, _ => null, "kind value");
+		}
+
+		/// <inheritdoc cref="HasNullDateTimeKindValue" />
+		public static PropertyResult.Int<MyClass?> HasNullIntValue()
+		{
+			MyClass subject = new();
+#pragma warning disable aweXpect0001
+			IThat<MyClass> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.Int<MyClass?>(source, _ => null, "int value");
+		}
+
+		/// <inheritdoc cref="HasNullDateTimeKindValue" />
+		public static PropertyResult.Long<MyClass?> HasNullLongValue()
+		{
+			MyClass subject = new();
+#pragma warning disable aweXpect0001
+			IThat<MyClass> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.Long<MyClass?>(source, _ => null, "long value");
+		}
+
+		/// <inheritdoc cref="HasNullDateTimeKindValue" />
+		public static PropertyResult.TimeSpan<MyClass?> HasNullTimeSpanValue()
+		{
+			MyClass subject = new();
+#pragma warning disable aweXpect0001
+			IThat<MyClass> source = That(subject);
+#pragma warning restore aweXpect0001
+			return new PropertyResult.TimeSpan<MyClass?>(source, _ => null, "TimeSpan value");
+		}
+
 		public static PropertyResult.Int<MyClass?> HasIntValue(int intValue)
 		{
 			MyClass subject = new()

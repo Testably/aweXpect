@@ -328,6 +328,18 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
+		[Fact]
+		public async Task EqualTo_WhenValueIsNullAndExpectedIsNull_ShouldSucceed()
+		{
+			StringProperty sut = MyClass.HasStringValue(null);
+
+			async Task Act()
+				=> await sut.EqualTo(null);
+
+			await That(Act).DoesNotThrow()
+				.Because("null is equal to null");
+		}
+
 		[Theory]
 		[InlineData("foo", "foo")]
 		[InlineData("foobar", "oob")]
@@ -713,6 +725,23 @@ public sealed partial class PropertyResultTests
 				             but it had string value <null>
 				             """)
 				.Because("a null value has no content to inspect, like a null string subject");
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenValueIsNullAndUnexpectedIsNull_ShouldFail()
+		{
+			StringProperty sut = MyClass.HasStringValue(null);
+
+			async Task Act()
+				=> await sut.NotEqualTo(null);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have string value equal to <null>,
+				             but it had string value <null>
+				             """)
+				.Because("null is equal to null");
 		}
 
 		[Theory]
