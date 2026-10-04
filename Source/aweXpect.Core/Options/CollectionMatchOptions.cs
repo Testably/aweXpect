@@ -469,6 +469,28 @@ public partial class CollectionMatchOptions(
 		}
 	}
 
+	/// <summary>
+	///     Whether items of <typeparamref name="T" /> that are equal by <see cref="object.Equals(object)" /> are also
+	///     equal for the comparison of the <paramref name="options" />, so that ignoring duplicates may merge them without
+	///     comparing them.
+	/// </summary>
+	/// <remarks>
+	///     This holds when the comparison is <see cref="object.Equals(object)" /> itself, except for a
+	///     <see cref="DateTime" />, as the comparison also checks its kind. Otherwise only equal values that are
+	///     identical can be merged, see <see cref="IsIdenticalToEqualValues{TValue}(TValue)" />.
+	/// </remarks>
+	private static bool CanMergeEqualItems<T, T2>(IOptionsEquality<T2> options)
+		=> options is ObjectEqualityOptions<T2> { UsesEqualsMatch: true, } &&
+		   !typeof(T).IsAssignableFrom(typeof(DateTime));
+
+	/// <summary>
+	///     Whether the <paramref name="value" /> is identical to every value that it is equal to by
+	///     <see cref="object.Equals(object)" />, so that no comparison can tell them apart.
+	/// </summary>
+	private static bool IsIdenticalToEqualValues<TValue>(TValue value)
+		=> value is null or string or Enum or bool or char or byte or sbyte or short or ushort or int or uint or long
+			or ulong;
+
 	private static async ValueTask<bool> Any<T>(IEnumerable<T> items, Func<T, ValueTask<bool>> predicate)
 	{
 		foreach (T item in items)

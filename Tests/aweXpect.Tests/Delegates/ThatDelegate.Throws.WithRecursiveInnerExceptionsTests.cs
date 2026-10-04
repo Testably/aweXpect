@@ -97,6 +97,14 @@ public sealed partial class ThatDelegate
 					             throws an exception with recursive inner exceptions of which at least 2 are of type ThatDelegate.CustomException,
 					             but only 1 of 5 were
 
+					             Not matching items (recursive inner exceptions):
+					             [
+					               ThatDelegate.OtherException: WhenFewerInnerExceptionsMatchThanRequired_ShouldFail*,
+					               AggregateException: *,
+					               ThatDelegate.OtherException: WhenFewerInnerExceptionsMatchThanRequired_ShouldFail*,
+					               ThatDelegate.OtherException: WhenFewerInnerExceptionsMatchThanRequired_ShouldFail*
+					             ]
+
 					             Collection (recursive inner exceptions):
 					             [
 					               ThatDelegate.OtherException: WhenFewerInnerExceptionsMatchThanRequired_ShouldFail*,

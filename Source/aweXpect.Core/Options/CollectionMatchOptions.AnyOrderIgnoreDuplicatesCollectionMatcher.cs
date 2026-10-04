@@ -14,7 +14,7 @@ public partial class CollectionMatchOptions
 	private sealed class AnyOrderIgnoreDuplicatesCollectionMatcher<T, T2>(
 		EquivalenceRelations equivalenceRelation,
 		IEnumerable<T> expected)
-		: AnyOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, T>(equivalenceRelation, expected.Distinct(), true)
+		: AnyOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, T>(equivalenceRelation, expected, true)
 		where T : T2
 	{
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, T expected,
@@ -56,7 +56,8 @@ public partial class CollectionMatchOptions
 	///     Only a subject item is ever compared with an expected item, so items that match the same expected item are
 	///     duplicates, e.g. "a" and "A" when ignoring the casing, and so are expected items that the same item matches.
 	///     This needs no comparison of two items of the same side, which the options cannot do for untyped subjects or
-	///     patterns, and which predicates and expectations do not support at all.<br />
+	///     patterns, and which predicates and expectations do not support at all. Equal items are only merged without
+	///     a comparison, when the comparison cannot tell them apart.<br />
 	///     A comparison that code of the caller did not answer is no match. It only decides the result when the item
 	///     matches no expected item at all.
 	/// </remarks>
@@ -64,26 +65,28 @@ public partial class CollectionMatchOptions
 		where T : T2
 	{
 		private readonly Dictionary<int, T> _additionalItems = new();
-		private readonly bool _areExpectedItemsUnique;
+		private readonly bool _areExpectedValues;
 		private readonly List<T3> _coveredItems = new();
 		private readonly List<(int Index, T Value)> _distinctItems = new();
 		private readonly EquivalenceRelations _equivalenceRelations;
-		private readonly List<T3> _missingItems;
-		private readonly int _totalExpectedCount;
+		private readonly IEnumerable<T3> _expected;
 		private readonly HashSet<T> _uniqueItems = new();
+		private bool _areExpectedItemsUnique;
 		private int _index;
+		private bool? _mergesEqualItems;
+		private List<T3> _missingItems = [];
+		private int _totalExpectedCount;
 
 		/// <remarks>
-		///     Only expected values can be told apart from each other, so only for them the count of expected items is
+		///     Only expected values can be told apart from each other, so only for them the count of expected items can be
 		///     the count of unique ones.
 		/// </remarks>
 		protected AnyOrderIgnoreDuplicatesCollectionMatcherBase(EquivalenceRelations equivalenceRelation,
-			IEnumerable<T3> expected, bool areExpectedItemsUnique)
+			IEnumerable<T3> expected, bool areExpectedValues)
 		{
 			_equivalenceRelations = equivalenceRelation;
-			_missingItems = expected.ToList();
-			_totalExpectedCount = _missingItems.Count;
-			_areExpectedItemsUnique = areExpectedItemsUnique;
+			_expected = expected;
+			_areExpectedValues = areExpectedValues;
 		}
 
 		/// <inheritdoc />
@@ -100,13 +103,14 @@ public partial class CollectionMatchOptions
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			int index = _index++;
-			if (!_uniqueItems.Add(value))
+			bool mergesEqualItems = MergesEqualItems(options) || IsIdenticalToEqualValues(value);
+			if (mergesEqualItems && !_uniqueItems.Add(value))
 			{
 				return (false, null);
 			}
 
 			_distinctItems.Add((index, value));
-			if (await IsAdditionalItem(index, value, options))
+			if (await IsAdditionalItem(index, value, options) && (mergesEqualItems || _uniqueItems.Add(value)))
 			{
 				_additionalItems.Add(index, value);
 			}
@@ -119,6 +123,7 @@ public partial class CollectionMatchOptions
 		public async ValueTask<(bool, string?)>
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
+			MergesEqualItems(options);
 			await CoverTheRemainingMissingItems(options, maximumNumber);
 
 			// For the containment relation, all deviations are missing items, which are known completely here.
@@ -159,9 +164,9 @@ public partial class CollectionMatchOptions
 		///     until its first match.
 		/// </summary>
 		/// <remarks>
-		///     For the containment relation, which can be decided before the end, the value also covers the missing items
-		///     right behind its match as long as it matches them, so that an expected item that repeats the previous one
-		///     does not delay the decision; this costs a single further comparison per item.
+		///     For the containment relation, which can be decided before the end, the value covers all missing items it
+		///     matches right away, as a later equal item is a duplicate that would not cover them; this costs one further
+		///     comparison per missing item.
 		/// </remarks>
 		/// <returns>
 		///     <see langword="true" />, when the <paramref name="value" /> matches no expected item and is relevant as an
@@ -176,12 +181,12 @@ public partial class CollectionMatchOptions
 				unanswered ??= exception;
 				if (isMatch)
 				{
-					do
+					_coveredItems.Add(_missingItems[i]);
+					_missingItems.RemoveAt(i);
+					if (_equivalenceRelations.Includes(EquivalenceRelations.Contains))
 					{
-						_coveredItems.Add(_missingItems[i]);
-						_missingItems.RemoveAt(i);
-					} while (_equivalenceRelations.Includes(EquivalenceRelations.Contains) && i < _missingItems.Count &&
-					         (await Compare(index, value, _missingItems[i], options)).IsMatch);
+						await CoverTheMatchingMissingItemsFrom(i, index, value, options);
+					}
 
 					return false;
 				}
@@ -208,6 +213,71 @@ public partial class CollectionMatchOptions
 			}
 
 			return IsAdditionalItemRelevant();
+		}
+
+		private async ValueTask CoverTheMatchingMissingItemsFrom(int start, int index, T value,
+			IOptionsEquality<T2> options)
+		{
+			for (int i = start; i < _missingItems.Count;)
+			{
+				if ((await Compare(index, value, _missingItems[i], options)).IsMatch)
+				{
+					_coveredItems.Add(_missingItems[i]);
+					_missingItems.RemoveAt(i);
+				}
+				else
+				{
+					i++;
+				}
+			}
+		}
+
+		/// <summary>
+		///     Whether all equal items are merged without comparing them, which depends on the <paramref name="options" />.
+		/// </summary>
+		/// <remarks>
+		///     Otherwise only identical items are merged, every other item is compared, and equal additional items are
+		///     only reported once.
+		/// </remarks>
+		private bool MergesEqualItems(IOptionsEquality<T2> options)
+		{
+			if (_mergesEqualItems is { } mergesEqualItems)
+			{
+				return mergesEqualItems;
+			}
+
+			mergesEqualItems = CanMergeEqualItems<T, T2>(options);
+			_missingItems = _areExpectedValues ? GetExpectedValues(mergesEqualItems) : _expected.ToList();
+			_totalExpectedCount = _missingItems.Count;
+			_mergesEqualItems = mergesEqualItems;
+			return mergesEqualItems;
+		}
+
+		/// <summary>
+		///     The expected values without the ones that are merged with an equal earlier one.
+		/// </summary>
+		/// <remarks>
+		///     When an equal value is kept, the count of expected items is no longer the count of unique ones.
+		/// </remarks>
+		private List<T3> GetExpectedValues(bool mergesEqualItems)
+		{
+			List<T3> values = new();
+			HashSet<T3> uniqueValues = new();
+			_areExpectedItemsUnique = true;
+			foreach (T3 value in _expected)
+			{
+				if (uniqueValues.Add(value))
+				{
+					values.Add(value);
+				}
+				else if (!mergesEqualItems && !IsIdenticalToEqualValues(value))
+				{
+					values.Add(value);
+					_areExpectedItemsUnique = false;
+				}
+			}
+
+			return values;
 		}
 
 		/// <summary>

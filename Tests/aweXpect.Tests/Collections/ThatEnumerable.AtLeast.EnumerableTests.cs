@@ -81,6 +81,9 @@ public sealed partial class ThatEnumerable
 					             is equal to 1 for at least 5 items,
 					             but only 4 of 7 were
 
+					             Not matching items:
+					             [2, 2, 3]
+
 					             Collection:
 					             [1, 1, 1, 1, 2, 2, 3]
 					             """);

@@ -1407,6 +1407,30 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenAnItemOnlyMatchesAnAlreadyMatchedPredicate_ShouldStopOnceDecided()
+			{
+				int readItems = 0;
+
+				IEnumerable<int> Source()
+				{
+					readItems++;
+					yield return 6;
+					for (int i = 0; i < 10000; i++)
+					{
+						readItems++;
+						yield return 3;
+					}
+				}
+
+				async Task Act()
+					=> await That(Source()).Contains([x => x > 0, x => x > 5,]).InAnyOrder();
+
+				await That(Act).DoesNotThrow();
+				await That(readItems).IsEqualTo(2)
+					.Because("6 and 3 already satisfy both predicates");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IEnumerable<int> subject = Enumerable.Range(1, 11);

@@ -126,6 +126,11 @@ internal abstract class ExpectedItem<TItem>(TItem expected) : ContainedItem<TIte
 	public virtual bool UsesDefaultEquality => false;
 
 	/// <summary>
+	///     The item of the set <paramref name="collection" /> that <see cref="ContainedItem{TItem}.LookUpIn" /> found.
+	/// </summary>
+	public virtual TItem FoundIn(object collection) => Expected;
+
+	/// <summary>
 	///     The text for the expected item, without the quantifier.
 	/// </summary>
 	public abstract string GetItemExpectation();
@@ -231,6 +236,24 @@ internal sealed class SubjectComparedItem<TSetItem, TItem>(ExpectedItem<TItem> i
 			? UserCode.Invoke(static values => values.Collection.Contains(values.Expected),
 				(Collection: (ICollection<TSetItem>)collection, Expected: expected), "the comparer")
 			: null;
+	}
+
+	/// <inheritdoc />
+	/// <remarks>
+	///     The set only tells whether it holds an item equal to the expected one, so the result searches its items for
+	///     it.
+	/// </remarks>
+	public override TItem FoundIn(object collection)
+	{
+		foreach (TSetItem item in (IEnumerable<TSetItem>)collection)
+		{
+			if (item is TItem typedItem && _comparer!.AreEqual(typedItem, Expected))
+			{
+				return typedItem;
+			}
+		}
+
+		return Expected;
 	}
 
 	/// <inheritdoc />

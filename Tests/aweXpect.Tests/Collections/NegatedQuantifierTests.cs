@@ -161,14 +161,14 @@ public sealed class NegatedQuantifier
 		[InlineData("All", "a,b", "all are", "only 1 of 2 were", "Not matching items", "b")]
 		[InlineData("None", "a,a", "none are", "2 of 2 were", "Matching items", "a,a")]
 		[InlineData("AtLeast(1)", "b,b", "at least one is", "none of 2 were", null, "")]
-		[InlineData("AtLeast(2)", "a,b", "at least 2 are", "only 1 of 2 were", null, "")]
+		[InlineData("AtLeast(2)", "a,b", "at least 2 are", "only 1 of 2 were", "Not matching items", "b")]
 		[InlineData("AtMost(0)", "a,a", "at most 0 are", "2 of 2 were", "Matching items", "a,a")]
 		[InlineData("AtMost(1)", "a,a", "at most one is", "2 of 2 were", "Matching items", "a,a")]
 		[InlineData("Between(1, 2)", "b,b", "between 1 and 2 are", "none of 2 were", null, "")]
 		[InlineData("Exactly(1)", "a,a", "exactly one is", "2 of 2 were", null, "")]
 		[InlineData("LessThan(1)", "a,a", "fewer than one is", "2 of 2 were", "Matching items", "a,a")]
 		[InlineData("LessThan(2)", "a,a", "fewer than 2 are", "2 of 2 were", "Matching items", "a,a")]
-		[InlineData("MoreThan(0)", "b,b", "more than 0 are", "none of 2 were", "Not matching items", "b,b")]
+		[InlineData("MoreThan(0)", "b,b", "more than 0 are", "none of 2 were", null, "")]
 		[InlineData("MoreThan(1)", "a,b", "more than one is", "only 1 of 2 were", "Not matching items", "b")]
 		public async Task NestedComplyWith_ShouldUseTheVerbNumberOfTheQuantifier(
 			string quantifier, string lines, string expectedQuantifier, string expectedResult,
@@ -200,7 +200,7 @@ public sealed class NegatedQuantifier
 		[InlineData("Between(1, 2)", "a,b", "not between 1 and 2 are", "1 of 2 were", null, "")]
 		[InlineData("Exactly(1)", "a,b", "not exactly one is", "1 of 2 were", null, "")]
 		[InlineData("LessThan(1)", "b,b", "at least one is", "none of 2 were", null, "")]
-		[InlineData("LessThan(2)", "a,b", "at least 2 are", "1 of 2 were", null, "")]
+		[InlineData("LessThan(2)", "a,b", "at least 2 are", "1 of 2 were", "Not matching items", "b")]
 		[InlineData("MoreThan(0)", "a,b", "none are", "1 of 2 were", "Matching items", "a")]
 		[InlineData("MoreThan(1)", "a,a", "at most one is", "2 of 2 were", "Matching items", "a,a")]
 		public async Task NestedComplyWith_WhenNegated_ShouldUseTheVerbNumberOfTheComplement(
@@ -250,14 +250,14 @@ public sealed class NegatedQuantifier
 		[InlineData("All", "a,b", "all satisfy", "only 1 of 2 did", "Not matching items", "b")]
 		[InlineData("None", "a,a", "none satisfy", "2 of 2 did", "Matching items", "a,a")]
 		[InlineData("AtLeast(1)", "b,b", "at least one satisfies", "none of 2 did", null, "")]
-		[InlineData("AtLeast(2)", "a,b", "at least 2 satisfy", "only 1 of 2 did", null, "")]
+		[InlineData("AtLeast(2)", "a,b", "at least 2 satisfy", "only 1 of 2 did", "Not matching items", "b")]
 		[InlineData("AtMost(0)", "a,a", "at most 0 satisfy", "2 of 2 did", "Matching items", "a,a")]
 		[InlineData("AtMost(1)", "a,a", "at most one satisfies", "2 of 2 did", "Matching items", "a,a")]
 		[InlineData("Between(1, 2)", "b,b", "between 1 and 2 satisfy", "none of 2 did", null, "")]
 		[InlineData("Exactly(1)", "a,a", "exactly one satisfies", "2 of 2 did", null, "")]
 		[InlineData("LessThan(1)", "a,a", "fewer than one satisfies", "2 of 2 did", "Matching items", "a,a")]
 		[InlineData("LessThan(2)", "a,a", "fewer than 2 satisfy", "2 of 2 did", "Matching items", "a,a")]
-		[InlineData("MoreThan(0)", "b,b", "more than 0 satisfy", "none of 2 did", "Not matching items", "b,b")]
+		[InlineData("MoreThan(0)", "b,b", "more than 0 satisfy", "none of 2 did", null, "")]
 		[InlineData("MoreThan(1)", "a,b", "more than one satisfies", "only 1 of 2 did", "Not matching items", "b")]
 		public async Task NestedSatisfy_ShouldUseTheVerbNumberOfTheQuantifier(
 			string quantifier, string lines, string expectedQuantifier, string expectedResult,
@@ -289,7 +289,7 @@ public sealed class NegatedQuantifier
 		[InlineData("Between(1, 2)", "a,b", "not between 1 and 2 satisfy", "1 of 2 did", null, "")]
 		[InlineData("Exactly(1)", "a,b", "not exactly one satisfies", "1 of 2 did", null, "")]
 		[InlineData("LessThan(1)", "b,b", "at least one satisfies", "none of 2 did", null, "")]
-		[InlineData("LessThan(2)", "a,b", "at least 2 satisfy", "1 of 2 did", null, "")]
+		[InlineData("LessThan(2)", "a,b", "at least 2 satisfy", "1 of 2 did", "Not matching items", "b")]
 		[InlineData("MoreThan(0)", "a,b", "none satisfy", "1 of 2 did", "Matching items", "a")]
 		[InlineData("MoreThan(1)", "a,a", "at most one satisfies", "2 of 2 did", "Matching items", "a,a")]
 		public async Task NestedSatisfy_WhenNegated_ShouldNegateTheQuantifierOnceAndShowTheItemsThatExplainTheFailure(
@@ -389,7 +389,7 @@ public sealed class NegatedQuantifier
 		[InlineData("Between(1, 2)", "a,b", "for not between 1 and 2 items", "1 of 2 did", null, "")]
 		[InlineData("Exactly(1)", "a,b", "for not exactly one item", "1 of 2 did", null, "")]
 		[InlineData("LessThan(1)", "b,b", "for at least one item", "none of 2 did", null, "")]
-		[InlineData("LessThan(2)", "a,b", "for at least 2 items", "1 of 2 did", null, "")]
+		[InlineData("LessThan(2)", "a,b", "for at least 2 items", "1 of 2 did", "Not matching items", "b")]
 		[InlineData("MoreThan(0)", "a,b", "for no items", "1 of 2 did", "Matching items", "a")]
 		[InlineData("MoreThan(1)", "a,a", "for at most one item", "2 of 2 did", "Matching items", "a,a")]
 		public async Task NotNestedSatisfy_WhenNegated_ShouldShowTheItemsThatExplainTheFailure(

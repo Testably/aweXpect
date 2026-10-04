@@ -13,6 +13,110 @@ public sealed partial class ThatEnumerable
 			private static readonly DateTime Utc = new(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
 			[Fact]
+			public async Task WhenAnExpectedItemDiffersOnlyInKindIgnoringDuplicates_ShouldReportItAsLacking()
+			{
+				DateTime[] subject = [Local,];
+				IEnumerable<DateTime> expected = [Local, Utc,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringDuplicates();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to collection expected in order ignoring duplicates,
+					              but it lacked 1 of 2 expected items: {Formatter.Format(Utc)}
+					              *
+					              """).AsWildcard()
+					.Because("a Utc and a Local value with the same ticks denote different instants");
+			}
+
+			[Fact]
+			public async Task WhenAnExpectedItemDiffersOnlyInKindInAnyOrderIgnoringDuplicates_ShouldReportItAsLacking()
+			{
+				DateTime[] subject = [Local,];
+				IEnumerable<DateTime> expected = [Local, Utc,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to collection expected in any order ignoring duplicates,
+					              but it lacked 1 of 2 expected items: {Formatter.Format(Utc)}
+					              *
+					              """).AsWildcard()
+					.Because("a Utc and a Local value with the same ticks denote different instants");
+			}
+
+			[Fact]
+			public async Task WhenAnItemDiffersOnlyInKindIgnoringDuplicates_ShouldFail()
+			{
+				DateTime[] subject = [Local, Utc,];
+				IEnumerable<DateTime> expected = [Local,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringDuplicates();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to collection expected in order ignoring duplicates,
+					              but it contained item {Formatter.Format(Utc)} at index 1 that was not expected
+					              *
+					              """).AsWildcard()
+					.Because("a Utc and a Local value with the same ticks denote different instants");
+			}
+
+			[Fact]
+			public async Task WhenAnItemDiffersOnlyInKindIgnoringDuplicates_ShouldNotBeEqual()
+			{
+				DateTime[] subject = [Local, Utc,];
+				IEnumerable<DateTime> expected = [Local,];
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(expected).IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow()
+					.Because("a Utc and a Local value with the same ticks denote different instants");
+			}
+
+			[Fact]
+			public async Task WhenAnItemDiffersOnlyInKindInAnyOrderIgnoringDuplicates_ShouldFail()
+			{
+				DateTime[] subject = [Local, Utc, Utc,];
+				IEnumerable<DateTime> expected = [Local,];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to collection expected in any order ignoring duplicates,
+					              but it contained item {Formatter.Format(Utc)} at index 1 that was not expected
+
+					              Collection:
+					              *
+					              """).AsWildcard()
+					.Because("a Utc and a Local value with the same ticks denote different instants, and the repeated Utc value is a duplicate");
+			}
+
+			[Fact]
+			public async Task WhenAnItemDiffersOnlyInKindInAnyOrderIgnoringDuplicates_ShouldNotBeEqual()
+			{
+				DateTime[] subject = [Local, Utc,];
+				IEnumerable<DateTime> expected = [Local,];
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(expected).InAnyOrder().IgnoringDuplicates();
+
+				await That(Act).DoesNotThrow()
+					.Because("a Utc and a Local value with the same ticks denote different instants");
+			}
+
+			[Fact]
 			public async Task WhenKindsAreIncompatible_ShouldFail()
 			{
 				DateTime[] subject = [Utc,];

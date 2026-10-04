@@ -31,6 +31,14 @@ public sealed partial class ThatEnumerable
 					             whose Value is equal to 1 for at least 2 items,
 					             but only 1 of 2 did
 
+					             Not matching items:
+					             [
+					               MyClass {
+					                 StringValue = "",
+					                 Value = 2
+					               }
+					             ]
+
 					             Collection:
 					             [
 					               MyClass {

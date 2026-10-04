@@ -26,6 +26,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	private int _count;
 	private TItem? _firstFoundItem;
 	private bool _isFinished;
+	private bool _isLookedUp;
 	private bool _isNegated;
 
 	protected ContainConstraintBase(
@@ -74,6 +75,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 		_count = 0;
 		_firstFoundItem = default;
 		_isFinished = false;
+		_isLookedUp = false;
 		if (actual is null)
 		{
 			Outcome = Outcome.FailureBothWays;
@@ -122,7 +124,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	protected void CountExpected(bool isContained)
 	{
 		_count = isContained ? 1 : 0;
-		_firstFoundItem = _expected is null ? default : _expected.Expected;
+		_isLookedUp = true;
 	}
 
 	/// <summary>
@@ -162,7 +164,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 		stringBuilder.Append(It).Append(" contained ");
 		if (_expected is not null)
 		{
-			Formatter.Format(stringBuilder, _count == 1 ? _firstFoundItem : _expected.Expected);
+			Formatter.Format(stringBuilder, _count == 1 ? GetFoundItem(_expected) : _expected.Expected);
 		}
 		else
 		{
@@ -171,6 +173,12 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 
 		stringBuilder.Append(_isFinished ? " " : " at least ").AppendOccurrences(_count);
 	}
+
+	/// <summary>
+	///     A set that was asked for the item is only searched for the item it holds, when the result names it.
+	/// </summary>
+	private TItem? GetFoundItem(ExpectedItem<TItem> expected)
+		=> _isLookedUp ? expected.FoundIn(_actual!) : _firstFoundItem;
 
 	/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
 	public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default

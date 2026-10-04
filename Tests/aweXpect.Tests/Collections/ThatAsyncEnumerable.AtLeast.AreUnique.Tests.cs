@@ -52,6 +52,9 @@ public sealed partial class ThatAsyncEnumerable
 						             is unique for at least 4 items,
 						             but only 2 of 6 were
 
+						             Not matching items:
+						             [3, 3, 4, 4]
+
 						             Collection:
 						             [1, 2, 3, 3, 4, 4]
 						             """);

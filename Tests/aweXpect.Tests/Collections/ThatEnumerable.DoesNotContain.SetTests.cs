@@ -105,11 +105,12 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not contain an item equal to 11 using the subject's ThatEnumerable.DoesNotContain.SetItemTests.ModuloComparer,
-					             but it contained 11 once
+					             but it contained 1 once
 
 					             Collection:
 					             [1]
-					             """);
+					             """)
+					.Because("the result names the item that the set holds");
 			}
 
 			[Fact]
@@ -135,7 +136,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "A" using the subject's StringComparer.OrdinalIgnoreCase,
-					             but it contained "A" once
+					             but it contained "a" once
 
 					             Collection:
 					             [
@@ -156,7 +157,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("""
 					             Expected that subject
 					             does not contain an item equal to "A" using the subject's StringComparer.OrdinalIgnoreCase,
-					             but it contained "A" once
+					             but it contained "a" once
 
 					             Collection:
 					             [

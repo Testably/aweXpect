@@ -101,6 +101,9 @@ public sealed class QuantifiedCollectionConstraintTests
 			             Expected that values
 			             has values of which at least 2 are even,
 			             but only 1 of 3 were
+
+			             Not matching items (values):
+			             [1, 3]
 			             """)
 			.Because("the extension renders the nested quantifier like the built-in Satisfy");
 	}

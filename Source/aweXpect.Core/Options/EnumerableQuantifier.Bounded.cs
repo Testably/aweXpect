@@ -74,11 +74,15 @@ public abstract partial class EnumerableQuantifier
 			};
 
 		/// <inheritdoc />
+		/// <remarks>
+		///     A lower bound lists the not matching items, whether it is inclusive or not, except when a single matching
+		///     item suffices, as then every item is a not matching one.
+		/// </remarks>
 		public override QuantifierContexts GetQuantifierContext()
-			=> (bounds.Minimum, bounds.Maximum, bounds.AllowEqual) switch
+			=> (bounds.Minimum, bounds.Maximum) switch
 			{
-				(null, _, _) => QuantifierContexts.MatchingItems,
-				(_, null, false) => QuantifierContexts.NotMatchingItems,
+				(null, _) => QuantifierContexts.MatchingItems,
+				(_, null) when bounds.DeterminableAmount > 1 => QuantifierContexts.NotMatchingItems,
 				_ => QuantifierContexts.None,
 			};
 
