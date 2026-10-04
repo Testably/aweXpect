@@ -892,6 +892,7 @@ public static class PropertyResult
 		public ConstraintResult IsMetBy(TItem actual)
 		{
 			Actual = actual;
+			_exception = null;
 			try
 			{
 				_value = mapper(actual);
@@ -989,6 +990,8 @@ public static class PropertyResult
 		public async ValueTask<ConstraintResult> IsMetBy(TItem actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			_exception = null;
+			_value = null;
 			try
 			{
 				_value = mapper(actual);

@@ -90,6 +90,30 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenAnEarlierAttemptHadOtherItems_AndTheLastAttemptStopsAtAnItem_ShouldNotShowThem()
+				{
+					InvalidOperationException exception = new("boom");
+					int calls = 0;
+					Func<int[]> subject = () => calls++ == 0 ? [1,] : [3,];
+
+					async Task Act()
+						=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+							.All().ComplyWith(x => x.Satisfies(y => y < 2 ? false : throw exception));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             eventually satisfies y => y < 2 ? false : throw exception for all items within 0:00.200,
+						             but for the item at index 0, the predicate did throw an InvalidOperationException:
+						               boom
+
+						             Collection:
+						             [3]
+						             """)
+						.Because("the items of an earlier attempt do not describe the last one");
+				}
+
+				[Fact]
 				public async Task WhenAnEarlierAttemptHadOtherItems_ShouldDescribeTheLastAttempt()
 				{
 					int calls = 0;
@@ -481,6 +505,25 @@ public sealed partial class ThatEnumerable
 						             ]
 						             """)
 						.Because("the async member text must survive the node tree rendering");
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNull_AfterAnEarlierAttempt_ShouldNotShowItsItems()
+				{
+					int calls = 0;
+					Func<IEnumerable<int>?> subject = () => calls++ == 0 ? [1, 2,] : null;
+
+					async Task Act()
+						=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+							.All().ComplyWith(x => x.IsGreaterThan(5));
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             eventually is greater than 5 for all items within 0:00.200,
+						             but it was <null>
+						             """)
+						.Because("the items of an earlier attempt do not describe the last one");
 				}
 
 				[Fact]

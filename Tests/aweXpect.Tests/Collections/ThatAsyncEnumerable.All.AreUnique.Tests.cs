@@ -104,6 +104,25 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Fact]
+				public async Task WhenSubjectIsNull_AfterAnEarlierAttempt_ShouldNotShowItsItems()
+				{
+					int calls = 0;
+					Func<IAsyncEnumerable<int>?> subject = () => calls++ == 0 ? ToAsyncEnumerable(1, 1) : null;
+
+					async Task Act()
+						=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+							.All().AreUnique();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             eventually is unique for all items within 0:00.200,
+						             but it was <null>
+						             """)
+						.Because("the items of an earlier attempt do not describe the last one");
+				}
+
+				[Fact]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IAsyncEnumerable<int>? subject = null;

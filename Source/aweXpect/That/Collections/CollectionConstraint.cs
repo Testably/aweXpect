@@ -132,6 +132,7 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
+		StartEvaluation();
 		_collectionContext = default;
 		_itemType = null;
 		Actual = actual;
@@ -271,6 +272,7 @@ internal sealed class AsyncCollectionConstraint<TItem>
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
+		StartEvaluation();
 		_collectionContext = default;
 		Actual = actual;
 		if (actual is null)

@@ -292,6 +292,8 @@ public static partial class ThatSignaler
 			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 			if (actual == null)
 			{
+				Actual = null;
+				_defaultTimeout = null;
 				Outcome = Outcome.Failure;
 				return this;
 			}
@@ -353,6 +355,8 @@ public static partial class ThatSignaler
 			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 			if (actual == null)
 			{
+				Actual = null;
+				_defaultTimeout = null;
 				Outcome = Outcome.Failure;
 				return this;
 			}

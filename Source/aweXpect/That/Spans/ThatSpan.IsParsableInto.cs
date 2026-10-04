@@ -92,11 +92,15 @@ public static partial class ThatSpan
 		}
 
 		/// <inheritdoc />
-		public override Exception? FailureCause => _exception;
+		/// <remarks>
+		///     The parse exception is why the negated expectation is met, so it only explains a failure when not negated.
+		/// </remarks>
+		public override Exception? FailureCause => Outcome == Outcome.Failure ? _exception : null;
 
 		public ConstraintResult IsMetBy(SpanWrapper<char> actual)
 		{
 			Actual = actual;
+			_exception = null;
 
 			try
 			{
@@ -168,11 +172,15 @@ public static partial class ThatSpan
 		}
 
 		/// <inheritdoc />
-		public override Exception? FailureCause => _exception;
+		/// <remarks>
+		///     The parse exception is why the negated expectation is met, so it only explains a failure when not negated.
+		/// </remarks>
+		public override Exception? FailureCause => Outcome == Outcome.Failure ? _exception : null;
 
 		public ConstraintResult IsMetBy(SpanWrapper<byte> actual)
 		{
 			Actual = actual;
+			_exception = null;
 
 			try
 			{

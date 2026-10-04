@@ -59,11 +59,15 @@ public static partial class ThatString
 		}
 
 		/// <inheritdoc />
-		public override Exception? FailureCause => _exception;
+		/// <remarks>
+		///     The parse exception is why the negated expectation is met, so it only explains a failure when not negated.
+		/// </remarks>
+		public override Exception? FailureCause => Outcome == Outcome.Failure ? _exception : null;
 
 		public ConstraintResult IsMetBy(string? actual)
 		{
 			Actual = actual;
+			_exception = null;
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;

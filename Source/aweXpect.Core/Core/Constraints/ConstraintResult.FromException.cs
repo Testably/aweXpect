@@ -18,6 +18,7 @@ public abstract partial class ConstraintResult
 	{
 		private readonly Exception _exception;
 		private readonly TimeSpan? _exceededTimeout;
+		private readonly bool _hasContexts;
 		private readonly ConstraintResult _inner;
 		private readonly string _it;
 
@@ -25,17 +26,27 @@ public abstract partial class ConstraintResult
 		///     A failed <see cref="ConstraintResult" /> due to a thrown <paramref name="exception" />, or due to the
 		///     subject <paramref name="it" /> not finishing within the <paramref name="exceededTimeout" />.
 		/// </summary>
+		/// <param name="inner">The result of the expectation.</param>
+		/// <param name="exception">The exception that failed the expectation.</param>
+		/// <param name="it">The subject.</param>
+		/// <param name="exceededTimeout">The timeout that the subject did not finish within.</param>
+		/// <param name="hasContexts">
+		///     Whether the <paramref name="inner" /> result describes what the expectation saw, which it does not when it
+		///     still holds an earlier evaluation.
+		/// </param>
 		public FromException(
 			ConstraintResult inner,
 			Exception exception,
 			string it,
-			TimeSpan? exceededTimeout = null)
+			TimeSpan? exceededTimeout = null,
+			bool hasContexts = true)
 			: base(inner.Grammars)
 		{
 			_inner = inner;
 			_exception = exception;
 			_it = it;
 			_exceededTimeout = exceededTimeout;
+			_hasContexts = hasContexts;
 			FurtherProcessingStrategy = inner.FurtherProcessingStrategy;
 		}
 
@@ -76,7 +87,12 @@ public abstract partial class ConstraintResult
 		///     The constraints that were evaluated until then describe what the expectation saw.
 		/// </remarks>
 		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.Visit(_inner);
+		{
+			if (_hasContexts)
+			{
+				contexts.Visit(_inner);
+			}
+		}
 
 		/// <inheritdoc cref="ConstraintResult.Negate()" />
 		public override ConstraintResult Negate()

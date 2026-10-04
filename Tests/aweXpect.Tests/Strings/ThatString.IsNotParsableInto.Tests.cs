@@ -10,6 +10,48 @@ public sealed partial class ThatString
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenAnEarlierAttemptWasNotParsable_ShouldNotFailWithItsException()
+			{
+				int calls = 0;
+				Func<string> subject = () => calls++ == 0 ? "abc" : "1";
+
+				async Task Act()
+					=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+						.IsNotParsableInto<int>().And.IsParsableInto<int>();
+
+				XunitException exception = await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             eventually is not parsable into int and is parsable into int within 0:00.200,
+					             but it was "1", which is parsable into 1
+					             """);
+				await That(exception.InnerException).IsNull()
+					.Because("the last attempt parsed the subject without an exception");
+			}
+
+			[Fact]
+			public async Task WhenCombinedWithAFailingExpectation_ShouldNotFailWithTheParseException()
+			{
+				string subject = "abc";
+
+				async Task Act()
+					=> await That(subject).IsNotParsableInto<int>().And.IsEqualTo("xyz");
+
+				XunitException exception = await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not parsable into int and is equal to "xyz",
+					             but it was "abc", which differs at index 0:
+					                ↓ (actual)
+					               "abc"
+					               "xyz"
+					                ↑ (expected)
+					             """);
+				await That(exception.InnerException).IsNull()
+					.Because("the parse exception is why the subject is not parsable, not why the expectation failed");
+			}
+
+			[Fact]
 			public async Task WhenNull_ShouldFail()
 			{
 				string? subject = null;

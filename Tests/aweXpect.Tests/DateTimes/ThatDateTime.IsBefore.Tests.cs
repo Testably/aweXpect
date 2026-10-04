@@ -7,6 +7,29 @@ public sealed partial class ThatDateTime
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenAnEarlierAttemptHadAnIncompatibleKind_ShouldDescribeTheLastAttempt()
+			{
+				DateTime later = DateTime.SpecifyKind(LaterTime(), DateTimeKind.Local);
+				DateTime expected = DateTime.SpecifyKind(CurrentTime(), DateTimeKind.Local);
+				int calls = 0;
+				Func<DateTime> subject = () => calls++ == 0
+					? DateTime.SpecifyKind(EarlierTime(), DateTimeKind.Utc)
+					: later;
+
+				async Task Act()
+					=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+						.IsBefore(expected);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              eventually is before {Formatter.Format(expected)} within 0:00.200,
+					              but it was {Formatter.Format(later)}, which differs by 0:01
+					              """)
+					.Because("the kind of an earlier attempt does not describe the last one");
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateTime subject = CurrentTime();

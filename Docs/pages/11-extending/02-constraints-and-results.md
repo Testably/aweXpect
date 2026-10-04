@@ -578,6 +578,7 @@ private sealed class AreRadioFriendlyConstraint(
 {
     public ConstraintResult IsMetBy(IEnumerable<Track>? actual)
     {
+        StartEvaluation();
         Actual = actual;
         if (actual is not null)
         {
@@ -600,6 +601,8 @@ Track[] tracks = [new("Love Me Do", new TimeSpan(0, 2, 22)), new("She Loves You"
 await Expect.That(tracks).All().AreRadioFriendly();
 ```
 
+- `StartEvaluation` forgets the items of an earlier evaluation, as the constraint is evaluated again, e.g. by
+  `Eventually()` or for each item of an outer collection.
 - `Record` classifies an item as matching or not matching, and `Complete` decides the outcome from the quantifier.
 - The expectation text is for a single item and is never negated, as the quantifier carries the negation. The
   `Plural` grammar asks for the plural form, e.g. in "whose Tracks are radio friendly for at least 2 items".
