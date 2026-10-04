@@ -19,16 +19,23 @@ namespace aweXpect;
 internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 	string it,
 	ExpectationGrammars grammars,
-	string expectedExpression,
+	string? expectedExpression,
+	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
 	IOptionsEquality<TMatch> options)
 	: ConstraintResult.WithNotNullValue<TValue>(it, grammars)
 {
+	private string? _expectedText;
 	private TItem? _firstMismatchItem;
 	private bool _foundMismatch;
 	private int _index;
 	private IList<TItem>? _items;
 	private int _itemsCount;
+
+	/// <summary>
+	///     The expected items in the expectation text, formatted only when the text is written.
+	/// </summary>
+	private string ExpectedText => _expectedText ??= expectedExpression ?? Formatter.Format(expectedValues);
 	private int _offset;
 
 	/// <inheritdoc />
@@ -84,7 +91,7 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
-		stringBuilder.Append(Grammars.Verb("ends with ", "end with ")).Append(expectedExpression);
+		stringBuilder.Append(Grammars.Verb("ends with ", "end with ")).Append(ExpectedText);
 		stringBuilder.Append(options);
 	}
 
@@ -107,7 +114,7 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
-		stringBuilder.Append(Grammars.Verb("does not end with ", "do not end with ")).Append(expectedExpression);
+		stringBuilder.Append(Grammars.Verb("does not end with ", "do not end with ")).Append(ExpectedText);
 		stringBuilder.Append(options);
 	}
 
@@ -121,11 +128,13 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 internal sealed class EndsWithConstraint<TEnumerable, TItem, TMatch>(
 	string it,
 	ExpectationGrammars grammars,
-	string expectedExpression,
+	string? expectedExpression,
+	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
 	IOptionsEquality<TMatch> options,
-	Func<object?, bool>? useComparerOf = null)
-	: EndsWithConstraintBase<TEnumerable, TItem, TMatch>(it, grammars, expectedExpression, expected, options),
+	ISubjectComparing? subjectComparing = null)
+	: EndsWithConstraintBase<TEnumerable, TItem, TMatch>(it, grammars, expectedExpression, expectedValues, expected,
+			options),
 		IAsyncContextConstraint<TEnumerable>
 	where TEnumerable : IEnumerable?
 {
@@ -155,7 +164,7 @@ internal sealed class EndsWithConstraint<TEnumerable, TItem, TMatch>(
 			return this;
 		}
 
-		useComparerOf?.Invoke(actual);
+		subjectComparing?.UseComparerOf(actual);
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		IList<TItem> items;
 		if (materialized.Value is TItem[] or List<TItem>)
@@ -206,11 +215,12 @@ internal sealed class EndsWithConstraint<TEnumerable, TItem, TMatch>(
 internal sealed class AsyncEndsWithConstraint<TItem, TMatch>(
 	string it,
 	ExpectationGrammars grammars,
-	string expectedExpression,
+	string? expectedExpression,
+	IEnumerable<TMatch> expectedValues,
 	TMatch[] expected,
 	IOptionsEquality<TMatch> options)
-	: EndsWithConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMatch>(it, grammars, expectedExpression, expected,
-			options),
+	: EndsWithConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMatch>(it, grammars, expectedExpression,
+			expectedValues, expected, options),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
 	private CollectionContext _collectionContext;

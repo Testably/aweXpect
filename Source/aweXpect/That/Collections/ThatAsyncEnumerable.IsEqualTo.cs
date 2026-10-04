@@ -31,12 +31,16 @@ public static partial class ThatAsyncEnumerable
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCollectionMatchResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
-			{
-				AsyncIsEqualToConstraint<TItem, TItem> constraint = new(it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
-				return negated ? constraint.Invert() : constraint;
-			}),
+			expectationBuilder.AddConstraint(
+				(ExpectedExpression: expectedExpression, Expected: expected, Options: options,
+					MatchOptions: matchOptions, Negated: negated),
+				static (state, it, grammars) =>
+				{
+					AsyncIsEqualToConstraint<TItem, TItem> constraint = new(it, grammars,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
+						state.MatchOptions);
+					return state.Negated ? constraint.Invert() : constraint;
+				}),
 			subject,
 			options,
 			matchOptions);
@@ -54,12 +58,16 @@ public static partial class ThatAsyncEnumerable
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new StringCollectionMatchResult<IAsyncEnumerable<string?>?, IThat<IAsyncEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint<IAsyncEnumerable<string?>?>((it, grammars) =>
-			{
-				AsyncIsEqualToConstraint<string?, string?> constraint = new(it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
-				return negated ? constraint.Invert() : constraint;
-			}),
+			expectationBuilder.AddConstraint(
+				(ExpectedExpression: expectedExpression, Expected: expected, Options: options,
+					MatchOptions: matchOptions, Negated: negated),
+				static (state, it, grammars) =>
+				{
+					AsyncIsEqualToConstraint<string?, string?> constraint = new(it, grammars,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
+						state.MatchOptions);
+					return state.Negated ? constraint.Invert() : constraint;
+				}),
 			subject,
 			options,
 			matchOptions);
@@ -80,12 +88,16 @@ public static partial class ThatAsyncEnumerable
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ObjectCollectionMatchWithToleranceResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>,
 			TItem, TTolerance>(
-			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
-			{
-				AsyncIsEqualToConstraint<TItem, TItem> constraint = new(it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, options, matchOptions);
-				return negated ? constraint.Invert() : constraint;
-			}),
+			expectationBuilder.AddConstraint(
+				(ExpectedExpression: expectedExpression, Expected: expected, Options: options,
+					MatchOptions: matchOptions, Negated: negated),
+				static (state, it, grammars) =>
+				{
+					AsyncIsEqualToConstraint<TItem, TItem> constraint = new(it, grammars,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
+						state.MatchOptions);
+					return state.Negated ? constraint.Invert() : constraint;
+				}),
 			subject,
 			options,
 			matchOptions);
@@ -105,12 +117,15 @@ public static partial class ThatAsyncEnumerable
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionMatchResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
-			{
-				AsyncIsEqualToFromPredicateConstraint<TItem, TItem> constraint = new(it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions);
-				return negated ? constraint.Invert() : constraint;
-			}),
+			expectationBuilder.AddConstraint(
+				(ExpectedExpression: expectedExpression, Expected: expected, MatchOptions: matchOptions,
+					Negated: negated),
+				static (state, it, grammars) =>
+				{
+					AsyncIsEqualToFromPredicateConstraint<TItem, TItem> constraint = new(it, grammars,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.MatchOptions);
+					return state.Negated ? constraint.Invert() : constraint;
+				}),
 			subject,
 			matchOptions);
 	}
@@ -129,12 +144,15 @@ public static partial class ThatAsyncEnumerable
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionMatchResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint<IAsyncEnumerable<TItem>?>((it, grammars) =>
-			{
-				AsyncIsEqualToFromExpectationsConstraint<TItem, TItem> constraint = new(it, grammars,
-					expectedExpression.TrimCommonWhiteSpace(), expected, matchOptions);
-				return negated ? constraint.Invert() : constraint;
-			}),
+			expectationBuilder.AddConstraint(
+				(ExpectedExpression: expectedExpression, Expected: expected, MatchOptions: matchOptions,
+					Negated: negated),
+				static (state, it, grammars) =>
+				{
+					AsyncIsEqualToFromExpectationsConstraint<TItem, TItem> constraint = new(it, grammars,
+						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.MatchOptions);
+					return state.Negated ? constraint.Invert() : constraint;
+				}),
 			subject,
 			matchOptions);
 	}

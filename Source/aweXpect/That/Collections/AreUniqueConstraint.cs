@@ -65,7 +65,7 @@ internal abstract class AreUniqueConstraintBase<TValue, TItem, TMember>(
 }
 
 /// <remarks>
-///     When <paramref name="isUniqueBySubject" /> holds for the subject, e.g. for a set with a custom comparer
+///     When the <paramref name="subjectComparing" /> lets the subject decide, e.g. for a set with a custom comparer
 ///     whose comparison was not changed, every item is unique without being compared, because a set never holds two
 ///     items that its comparer considers equal.
 ///     <para />
@@ -80,7 +80,7 @@ internal sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
 	Func<TItem, TMember> memberAccessor,
 	Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
 	bool expectUnique,
-	Func<object?, bool>? isUniqueBySubject = null,
+	ISubjectComparing? subjectComparing = null,
 	Action<ResultContextCollector>? appendOptionsContexts = null,
 	Func<Func<TMember, int>?>? createGetHashCode = null)
 	: AreUniqueConstraintBase<TEnumerable, TItem, TMember>(it, grammars, quantifier, expectationText, memberAccessor,
@@ -122,7 +122,7 @@ internal sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
 
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		bool isUntyped = !CollectionItems<TItem>.IsTyped<TEnumerable>();
-		if (isUniqueBySubject?.Invoke(actual) == true)
+		if (subjectComparing?.UseComparerOf(actual) == true)
 		{
 			foreach (TItem item in materialized)
 			{

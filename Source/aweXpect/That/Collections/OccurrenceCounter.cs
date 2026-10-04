@@ -18,7 +18,17 @@ internal sealed class OccurrenceCounter<TMember>(
 	Func<TMember, TMember, ValueTask<bool>> areConsideredEqual,
 	Func<TMember, int>? getHashCode = null)
 {
-	private readonly Dictionary<int, List<int>>? _candidates = getHashCode is null ? null : new();
+	/// <summary>
+	///     The index of the first distinct member with each hash code.
+	/// </summary>
+	private readonly Dictionary<int, int>? _candidates = getHashCode is null ? null : new();
+
+	/// <summary>
+	///     The indices of the further distinct members with the same hash code, which are rare, so that a list is only
+	///     created for a hash code that is shared.
+	/// </summary>
+	private Dictionary<int, List<int>>? _furtherCandidates;
+
 	private readonly List<TMember> _distinctMembers = [];
 	private readonly List<int> _occurrences = [];
 	private int _notUniqueCount;
@@ -42,10 +52,23 @@ internal sealed class OccurrenceCounter<TMember>(
 		}
 
 		int hashCode = getHashCode!(member);
-		if (!_candidates.TryGetValue(hashCode, out List<int>? candidates))
+		if (!_candidates.TryGetValue(hashCode, out int firstCandidate))
+		{
+			int firstIndex = AddDistinct(member);
+			_candidates.Add(hashCode, firstIndex);
+			return firstIndex;
+		}
+
+		if (await areConsideredEqual(member, _distinctMembers[firstCandidate]))
+		{
+			return Count(firstCandidate);
+		}
+
+		_furtherCandidates ??= new Dictionary<int, List<int>>();
+		if (!_furtherCandidates.TryGetValue(hashCode, out List<int>? candidates))
 		{
 			candidates = [];
-			_candidates.Add(hashCode, candidates);
+			_furtherCandidates.Add(hashCode, candidates);
 		}
 
 		foreach (int i in candidates)
