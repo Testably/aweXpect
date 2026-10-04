@@ -61,6 +61,7 @@ public static partial class ThatSignaler
 		this IThat<Signaler> subject,
 		Times times)
 	{
+		ThrowHelper.ThrowIfTimesIsNotPositive(times);
 		Quantifier quantifier = new();
 		quantifier.AtLeast(times.Value);
 		SignalerOptions options = new();
@@ -81,6 +82,7 @@ public static partial class ThatSignaler
 		this IThat<Signaler<TParameter>> subject,
 		Times times)
 	{
+		ThrowHelper.ThrowIfTimesIsNotPositive(times);
 		Quantifier quantifier = new();
 		quantifier.AtLeast(times.Value);
 		SignalerOptions<TParameter> options = new();

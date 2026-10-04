@@ -98,8 +98,8 @@ public sealed partial class ThatDelegate
 						=> await That(subject!).Throws().Within(-5.Milliseconds());
 
 					await That(Act).Throws<ArgumentOutOfRangeException>()
-						.WithParamName("duration").And
-						.WithMessage("The duration must not be negative").AsPrefix();
+						.WithParamName("timeout").And
+						.WithMessage("The timeout must not be negative").AsPrefix();
 				}
 
 				[Fact]
@@ -385,8 +385,8 @@ public sealed partial class ThatDelegate
 						=> await That(subject!).Throws<CustomException>().Within(-5.Milliseconds());
 
 					await That(Act).Throws<ArgumentOutOfRangeException>()
-						.WithParamName("duration").And
-						.WithMessage("The duration must not be negative").AsPrefix();
+						.WithParamName("timeout").And
+						.WithMessage("The timeout must not be negative").AsPrefix();
 				}
 
 				[Fact]
@@ -619,8 +619,8 @@ public sealed partial class ThatDelegate
 						=> await That(subject!).Throws(typeof(CustomException)).Within(-5.Milliseconds());
 
 					await That(Act).Throws<ArgumentOutOfRangeException>()
-						.WithParamName("duration").And
-						.WithMessage("The duration must not be negative").AsPrefix();
+						.WithParamName("timeout").And
+						.WithMessage("The timeout must not be negative").AsPrefix();
 				}
 
 				[Fact]
