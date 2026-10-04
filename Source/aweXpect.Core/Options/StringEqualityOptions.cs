@@ -95,7 +95,44 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Compares the already normalized <paramref name="actual" /> value with the already normalized and validated
 	///     <paramref name="expected" /> pattern, which was parsed as <paramref name="regex" /> for a regex match type.
 	/// </summary>
-	private async ValueTask<bool> AreConsideredEqualToPattern(string? actual, string expected, Regex? regex)
+	/// <remarks>
+	///     Without a pattern, a comparison that completes synchronously is returned without a state machine, because
+	///     every item of a string collection is compared this way.
+	/// </remarks>
+	private ValueTask<bool> AreConsideredEqualToPattern(string? actual, string expected, Regex? regex)
+	{
+		if (regex is not null || _matchType is WildcardMatchType)
+		{
+			return AreConsideredEqualToPatternAsync(actual, expected, regex);
+		}
+
+		try
+		{
+			return CompletedOrAwaited(_matchType.AreConsideredEqual(actual, expected, _ignoreCase, _comparer),
+				expected);
+		}
+		catch (RegexMatchTimeoutException exception)
+		{
+			throw CreateTimeoutException(expected, exception);
+		}
+	}
+
+	private ValueTask<bool> CompletedOrAwaited(ValueTask<bool> isEqual, string expected)
+		=> isEqual.IsCompletedSuccessfully ? isEqual : AwaitTheComparison(isEqual, expected);
+
+	private async ValueTask<bool> AwaitTheComparison(ValueTask<bool> isEqual, string expected)
+	{
+		try
+		{
+			return await isEqual;
+		}
+		catch (RegexMatchTimeoutException exception)
+		{
+			throw CreateTimeoutException(expected, exception);
+		}
+	}
+
+	private async ValueTask<bool> AreConsideredEqualToPatternAsync(string? actual, string expected, Regex? regex)
 	{
 		try
 		{
