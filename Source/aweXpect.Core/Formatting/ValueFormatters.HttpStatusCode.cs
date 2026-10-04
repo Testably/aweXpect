@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Text;
 
@@ -23,10 +24,11 @@ public static partial class ValueFormatters
 			return customValue;
 		}
 
+		string name = IsDefined(value.Value) ? $" {value}" : "";
 		return options?.IncludeType switch
 		{
-			true => $"HttpStatusCode {(int)value} {value}",
-			_ => $"{(int)value} {value}",
+			true => $"HttpStatusCode {(int)value}{name}",
+			_ => $"{(int)value}{name}",
 		};
 	}
 
@@ -56,6 +58,20 @@ public static partial class ValueFormatters
 			stringBuilder.Append("HttpStatusCode ");
 		}
 
-		stringBuilder.Append((int)value).Append(' ').Append(value);
+		stringBuilder.Append((int)value);
+		if (IsDefined(value.Value))
+		{
+			stringBuilder.Append(' ').Append(value);
+		}
 	}
+
+	/// <summary>
+	///     An undefined value has no name, so <see cref="Enum.ToString()" /> would only repeat its number.
+	/// </summary>
+	private static bool IsDefined(HttpStatusCode value)
+#if NET8_0_OR_GREATER
+		=> Enum.IsDefined(value);
+#else
+		=> Enum.IsDefined(typeof(HttpStatusCode), value);
+#endif
 }

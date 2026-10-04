@@ -59,6 +59,22 @@ public partial class ValueFormatters
 		}
 
 		[Fact]
+		public async Task InFailureMessage_WhenEnumerationThrows_ShouldEscapeLineBreaksInTheMessage()
+		{
+			object subject = Throwing(new InvalidOperationException("enumeration\nfailed"));
+
+			async Task Act()
+				=> await That(subject).IsNull();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is null,
+				             but it was [the enumeration did throw an InvalidOperationException: enumeration\nfailed]
+				             """);
+		}
+
+		[Fact]
 		public async Task InFailureMessage_WhenEnumerationThrows_ShouldRenderAPlaceholder()
 		{
 			object subject = Throwing(new InvalidOperationException("enumeration failed"));
@@ -72,6 +88,26 @@ public partial class ValueFormatters
 				             is null,
 				             but it was [the enumeration did throw an InvalidOperationException: enumeration failed]
 				             """);
+		}
+
+		[Fact]
+		public async Task InFailureMessage_WhenEnumerationThrowsAfterTheFirstItem_ShouldEscapeLineBreaksInTheMessage()
+		{
+			object subject = Throwing(new InvalidOperationException("enumeration\nfailed"), 1);
+
+			async Task Act()
+				=> await That(subject).IsNull();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is null,
+				             but it was [
+				                 1,
+				                 (the enumeration did throw an InvalidOperationException: enumeration\nfailed)
+				               ]
+				             """)
+				.Because("the placeholder must stay on the line of an item");
 		}
 
 		[Fact]

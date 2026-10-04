@@ -12,6 +12,25 @@ public partial class ValueFormatters
 	public sealed class ObjectTests
 	{
 		[Fact]
+		public async Task InFailureMessage_WhenMemberGetterThrows_ShouldEscapeLineBreaksInTheMessage()
+		{
+			object subject = new ClassWithExceptionProperty(new InvalidOperationException("getter\nfailed"));
+
+			async Task Act()
+				=> await That(subject).IsNull();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is null,
+				             but it was ValueFormatters.ObjectTests.ClassWithExceptionProperty {
+				                 Value = [Value did throw an InvalidOperationException: getter\nfailed]
+				               }
+				             """)
+				.Because("the placeholder must stay on the line of the member");
+		}
+
+		[Fact]
 		public async Task InFailureMessage_WhenMemberGetterThrows_ShouldRenderAPlaceholder()
 		{
 			object subject = new ClassWithExceptionProperty(new InvalidOperationException("getter failed"));
@@ -93,6 +112,22 @@ public partial class ValueFormatters
 				                   "b"
 				                 ]
 				               }
+				             """);
+		}
+
+		[Fact]
+		public async Task InFailureMessage_WhenToStringThrows_ShouldEscapeLineBreaksInTheMessage()
+		{
+			object subject = new ClassWithThrowingToString(new InvalidOperationException("ToString\nfailed"));
+
+			async Task Act()
+				=> await That(subject).IsNull();
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is null,
+				             but it was [ToString of ValueFormatters.ObjectTests.ClassWithThrowingToString did throw an InvalidOperationException: ToString\nfailed]
 				             """);
 		}
 

@@ -36,7 +36,8 @@ public class BecauseTests
 	[Theory]
 	[InlineData(null)]
 	[InlineData("")]
-	public async Task ActionDelegate_WhenAsyncReasonIsNullOrEmpty_ShouldNotIncludeBecause(string? because)
+	[InlineData("  ")]
+	public async Task ActionDelegate_WhenAsyncReasonIsNullOrWhitespace_ShouldNotIncludeBecause(string? because)
 	{
 		Task<string?> becauseTask = Task.FromResult(because);
 		Action subject = () => throw new MyException();
@@ -53,7 +54,8 @@ public class BecauseTests
 	[Theory]
 	[InlineData(null)]
 	[InlineData("")]
-	public async Task ActionDelegate_WhenReasonIsNullOrEmpty_ShouldNotIncludeBecause(string? because)
+	[InlineData("  ")]
+	public async Task ActionDelegate_WhenReasonIsNullOrWhitespace_ShouldNotIncludeBecause(string? because)
 	{
 		Action subject = () => throw new MyException();
 
@@ -184,7 +186,8 @@ public class BecauseTests
 	[Theory]
 	[InlineData(null)]
 	[InlineData("")]
-	public async Task WhenAsyncReasonIsNullOrEmpty_ShouldNotIncludeBecause(string? because)
+	[InlineData("  ")]
+	public async Task WhenAsyncReasonIsNullOrWhitespace_ShouldNotIncludeBecause(string? because)
 	{
 		Task<string?> becauseTask = Task.FromResult(because);
 		bool subject = true;
@@ -216,6 +219,26 @@ public class BecauseTests
 
 		await That(reasonWasResolved).IsFalse()
 			.Because("a met expectation never builds a failure message, so it must not wait for the reason");
+	}
+
+	[Fact]
+	public async Task WhenAsyncReasonThrows_WhenExpectationFails_ShouldEscapeLineBreaksInTheMessage()
+	{
+		Task<string?> becauseTask = Task.FromException<string?>(new MyException("the reason provider\nis broken"));
+		bool subject = true;
+
+		async Task Act()
+		{
+			await That(subject).IsFalse().Because(becauseTask);
+		}
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected that subject
+			             is False, because the reason did throw a MyException: the reason provider\nis broken,
+			             but it was True
+			             """)
+			.Because("the reason must stay on the line of the expectation");
 	}
 
 	[Fact]
@@ -388,7 +411,8 @@ public class BecauseTests
 	[Theory]
 	[InlineData(null)]
 	[InlineData("")]
-	public async Task WhenReasonIsNullOrEmpty_ShouldNotIncludeBecause(string? because)
+	[InlineData("  ")]
+	public async Task WhenReasonIsNullOrWhitespace_ShouldNotIncludeBecause(string? because)
 	{
 		bool subject = true;
 

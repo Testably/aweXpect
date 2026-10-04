@@ -36,11 +36,11 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	///     If the phrase does not start with the word <i>because</i>, it is prepended automatically.
 	/// </summary>
 	/// <remarks>
-	///     When the <paramref name="reason" /> is <see langword="null" /> or empty, it is ignored.
+	///     When the <paramref name="reason" /> is <see langword="null" />, empty or only whitespace, it is ignored.
 	/// </remarks>
 	public ExpectationResult Because(string? reason)
 	{
-		if (!string.IsNullOrEmpty(reason))
+		if (!string.IsNullOrWhiteSpace(reason))
 		{
 			ExpectationBuilder.AddReason(reason);
 		}
@@ -53,7 +53,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	///     If the phrase does not start with the word <i>because</i>, it is prepended automatically.
 	/// </summary>
 	/// <remarks>
-	///     When the <paramref name="reason" /> resolves to <see langword="null" /> or empty, it is ignored.
+	///     When the <paramref name="reason" /> resolves to <see langword="null" />, empty or only whitespace, it is ignored.
 	/// </remarks>
 	public ExpectationResult Because(Task<string?> reason)
 	{
@@ -230,11 +230,11 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	///     If the phrase does not start with the word <i>because</i>, it is prepended automatically.
 	/// </summary>
 	/// <remarks>
-	///     When the <paramref name="reason" /> is <see langword="null" /> or empty, it is ignored.
+	///     When the <paramref name="reason" /> is <see langword="null" />, empty or only whitespace, it is ignored.
 	/// </remarks>
 	public TSelf Because(string? reason)
 	{
-		if (!string.IsNullOrEmpty(reason))
+		if (!string.IsNullOrWhiteSpace(reason))
 		{
 			ExpectationBuilder.AddReason(reason);
 		}
@@ -247,7 +247,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	///     If the phrase does not start with the word <i>because</i>, it is prepended automatically.
 	/// </summary>
 	/// <remarks>
-	///     When the <paramref name="reason" /> resolves to <see langword="null" /> or empty, it is ignored.
+	///     When the <paramref name="reason" /> resolves to <see langword="null" />, empty or only whitespace, it is ignored.
 	/// </remarks>
 	public TSelf Because(Task<string?> reason)
 	{
