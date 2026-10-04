@@ -23,4 +23,9 @@ public partial class HappyCaseBenchmarks
 	[Benchmark]
 	public AndConstraint<StringCollectionAssertions<IEnumerable<string>>> StringArrayInAnyOrder_FluentAssertions()
 		=> _stringArrayAnyOrderSubject.Should().BeEquivalentTo(_stringArrayAnyOrderExpectation);
+
+	[Benchmark]
+	public async Task StringArrayInAnyOrder_TUnit()
+		=> (await Assert.That(_stringArrayAnyOrderSubject)
+			.IsEquivalentTo(_stringArrayAnyOrderExpectation, CollectionOrdering.Any))?.Consume(_consumer);
 }

@@ -6,7 +6,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import BenchmarkResult from '@site/src/components/BenchmarkResult';
 
-These benchmarks compare aweXpect's happy-path overhead (passing assertions, the dominant case in a healthy test suite) against the equivalent [FluentAssertions](https://fluentassertions.com/) calls.
+These benchmarks compare aweXpect's happy-path overhead (passing assertions, the dominant case in a healthy test suite) against the equivalent [FluentAssertions](https://fluentassertions.com/) and [TUnit](https://tunit.dev/) calls.
 
 :::info[Methodology]
 
@@ -33,6 +33,10 @@ await Expect.That(_stringSubject).IsEqualTo(_stringExpectation).IgnoringCase();
 _stringSubject.Should().BeEquivalentTo(_stringExpectation, o => o.IgnoringCase());
 ```
 
+```csharp no-compile title="TUnit"
+await Assert.That(_stringSubject).IsEqualTo(_stringExpectation).IgnoringCase();
+```
+
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.String.cs)
 
 </TabItem>
@@ -49,6 +53,10 @@ await Expect.That(_boolSubject).IsTrue();
 
 ```csharp no-compile title="FluentAssertions"
 _boolSubject.Should().BeTrue();
+```
+
+```csharp no-compile title="TUnit"
+await Assert.That(_boolSubject).IsTrue();
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.Bool.cs)
@@ -69,6 +77,10 @@ await Expect.That(_intSubject).IsGreaterThan(_intMinimum);
 _intSubject.Should().BeGreaterThan(_intMinimum);
 ```
 
+```csharp no-compile title="TUnit"
+await Assert.That(_intSubject).IsGreaterThan(_intMinimum);
+```
+
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.Int_GreaterThan.cs)
 
 </TabItem>
@@ -87,6 +99,10 @@ await Expect.That(_nestedSubject).IsEquivalentTo(_nestedExpectation);
 _nestedSubject.Should().BeEquivalentTo(_nestedExpectation);
 ```
 
+```csharp no-compile title="TUnit"
+await Assert.That(_nestedSubject).IsEquivalentTo(_nestedExpectation);
+```
+
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.Equivalency.cs)
 
 </TabItem>
@@ -103,6 +119,10 @@ await Expect.That(_enumerableSubject).HasCount().GreaterThanOrEqualTo(_enumerabl
 
 ```csharp no-compile title="FluentAssertions"
 _enumerableSubject.Should().HaveCountGreaterThanOrEqualTo(_enumerableCount);
+```
+
+```csharp no-compile title="TUnit"
+await Assert.That(_enumerableSubject).Count().IsGreaterThanOrEqualTo(_enumerableCount);
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.ItemsCount_AtLeast.cs)
@@ -133,6 +153,14 @@ _stringArraySubject.Should().Equal(_stringArrayExpectation);
 _stringArrayAnyOrderSubject.Should().BeEquivalentTo(_stringArrayAnyOrderExpectation);
 ```
 
+```csharp no-compile title="TUnit"
+await Assert.That(_stringArraySubject)
+    .IsEquivalentTo(_stringArrayExpectation, CollectionOrdering.Matching);
+// In any order
+await Assert.That(_stringArrayAnyOrderSubject)
+    .IsEquivalentTo(_stringArrayAnyOrderExpectation, CollectionOrdering.Any);
+```
+
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.StringArray.cs)
 
 [View source on GitHub (in any order) →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.StringArrayInAnyOrder.cs)
@@ -153,6 +181,10 @@ await Expect.That(_satisfiesSubject).Satisfies(x => x > 0);
 _satisfiesSubject.Should().Match(x => x > 0);
 ```
 
+```csharp no-compile title="TUnit"
+await Assert.That(_satisfiesSubject).Satisfies(x => x > 0);
+```
+
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.Satisfies.cs)
 
 </TabItem>
@@ -160,6 +192,7 @@ _satisfiesSubject.Should().Match(x => x > 0);
 <TabItem value="EventTriggered" label="Events">
 
 Verifies that an event was raised, including starting the recording and raising the event.
+TUnit has no event recording to compare against, so it is not part of this benchmark.
 
 <BenchmarkResult name="EventTriggered" />
 

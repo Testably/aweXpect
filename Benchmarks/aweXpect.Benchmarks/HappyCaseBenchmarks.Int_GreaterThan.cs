@@ -19,4 +19,8 @@ public partial class HappyCaseBenchmarks
 	[Benchmark]
 	public AndConstraint<NumericAssertions<int>> Int_GreaterThan_FluentAssertions()
 		=> _intSubject.Should().BeGreaterThan(_intMinimum);
+
+	[Benchmark]
+	public async Task<int> Int_GreaterThan_TUnit()
+		=> await Assert.That(_intSubject).IsGreaterThan(_intMinimum);
 }
