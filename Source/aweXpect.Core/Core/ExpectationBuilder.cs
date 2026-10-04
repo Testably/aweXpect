@@ -822,12 +822,16 @@ public abstract class ExpectationBuilder
 	///     A met expectation that was evaluated synchronously and has nothing to release returns without starting a state
 	///     machine, because most expectations are of this kind.
 	/// </remarks>
-	internal ValueTask<ConstraintResult> IsMet()
+	/// <param name="endsWhenMet">
+	///     Whether a met expectation ends its evaluation. The member of a combination leaves that to the combination,
+	///     so that the resources it shares with the other members, like an event recording, stay usable for them.
+	/// </param>
+	internal ValueTask<ConstraintResult> IsMet(bool endsWhenMet = true)
 	{
 		Task previousEvaluation = EndEvaluation();
 		if (previousEvaluation.Status != TaskStatus.RanToCompletion)
 		{
-			return IsMetAfter(previousEvaluation);
+			return IsMetAfter(previousEvaluation, endsWhenMet);
 		}
 
 		ResetOtherExceptions();
@@ -836,13 +840,18 @@ public abstract class ExpectationBuilder
 		ValueTask<ConstraintResult> isMet = StartEvaluation(context);
 		if (_reasons is not null || !isMet.IsCompletedSuccessfully)
 		{
-			return CompleteEvaluation(isMet);
+			return CompleteEvaluation(isMet, endsWhenMet);
 		}
 
 		ConstraintResult result = isMet.Result;
 		if (result.Outcome != Outcome.Success)
 		{
-			return CompleteEvaluation(new ValueTask<ConstraintResult>(result));
+			return CompleteEvaluation(new ValueTask<ConstraintResult>(result), endsWhenMet);
+		}
+
+		if (!endsWhenMet)
+		{
+			return new ValueTask<ConstraintResult>(result);
 		}
 
 		Task endEvaluation = EndEvaluation();
@@ -851,10 +860,10 @@ public abstract class ExpectationBuilder
 			: ReturnAfter(endEvaluation, result);
 	}
 
-	private async ValueTask<ConstraintResult> IsMetAfter(Task previousEvaluation)
+	private async ValueTask<ConstraintResult> IsMetAfter(Task previousEvaluation, bool endsWhenMet)
 	{
 		await previousEvaluation;
-		return await IsMet();
+		return await IsMet(endsWhenMet);
 	}
 
 	private static async ValueTask<ConstraintResult> ReturnAfter(Task endEvaluation, ConstraintResult result)
@@ -891,7 +900,8 @@ public abstract class ExpectationBuilder
 		}
 	}
 
-	private async ValueTask<ConstraintResult> CompleteEvaluation(ValueTask<ConstraintResult> isMet)
+	private async ValueTask<ConstraintResult> CompleteEvaluation(ValueTask<ConstraintResult> isMet,
+		bool endsWhenMet)
 	{
 		ConstraintResult result;
 		try
@@ -910,7 +920,11 @@ public abstract class ExpectationBuilder
 
 		if (result.Outcome == Outcome.Success)
 		{
-			await EndEvaluation();
+			if (endsWhenMet)
+			{
+				await EndEvaluation();
+			}
+
 			return result;
 		}
 

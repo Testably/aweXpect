@@ -386,6 +386,180 @@ public sealed class EventRecordingTests
 			.Because("the second constraint is only reached because the first one did not stop the expectation");
 	}
 
+	[Theory]
+	[InlineData(false, false)]
+	[InlineData(false, true)]
+	[InlineData(true, false)]
+	[InlineData(true, true)]
+	public async Task WhenCombinedWithNestedCombinations_ShouldCheckEveryMember(bool isFirstMet, bool isSecondMet)
+	{
+		TwoEventsClass sut = new();
+		IEventRecording<TwoEventsClass> recording = sut.Record().Events();
+		sut.Notify(isFirstMet, isSecondMet);
+
+		async Task Act()
+			=> await ThatAny(
+				ThatAll(
+					That(recording).Triggered(nameof(TwoEventsClass.FirstEvent)),
+					That(recording).Triggered(nameof(TwoEventsClass.SecondEvent))),
+				ThatAll(
+					That(recording).Triggered(nameof(TwoEventsClass.FirstEvent)),
+					That(recording).DidNotTrigger(nameof(TwoEventsClass.SecondEvent))));
+
+		await That(Act).Throws<XunitException>().OnlyIf(!isFirstMet)
+			.Because("nested combinations share the recording with the outermost one");
+		await That(sut.HasSubscribers()).IsFalse()
+			.Because("the recording is stopped once the outermost combination was evaluated");
+	}
+
+	[Theory]
+	[InlineData(false, false)]
+	[InlineData(false, true)]
+	[InlineData(true, false)]
+	[InlineData(true, true)]
+	public async Task WhenCombinedWithThatAll_ShouldCheckEveryMember(bool isFirstMet, bool isSecondMet)
+	{
+		TwoEventsClass sut = new();
+		IEventRecording<TwoEventsClass> recording = sut.Record().Events();
+		sut.Notify(isFirstMet, isSecondMet);
+
+		async Task Act()
+			=> await ThatAll(
+				That(recording).Triggered(nameof(TwoEventsClass.FirstEvent)),
+				That(recording).Triggered(nameof(TwoEventsClass.SecondEvent)));
+
+		await That(Act).Throws<XunitException>().OnlyIf(!isFirstMet || !isSecondMet)
+			.Because("the members of one combination share the recording");
+	}
+
+	[Fact]
+	public async Task WhenCombinedWithThatAll_ShouldDetachTheHandlers()
+	{
+		TwoEventsClass sut = new();
+		IEventRecording<TwoEventsClass> recording = sut.Record().Events();
+		sut.Notify(true, true);
+
+		await ThatAll(
+			That(recording).Triggered(nameof(TwoEventsClass.FirstEvent)),
+			That(recording).Triggered(nameof(TwoEventsClass.SecondEvent)));
+
+		await That(sut.HasSubscribers()).IsFalse()
+			.Because("the recording is stopped once the whole combination was evaluated");
+	}
+
+	[Fact]
+	public async Task WhenCombinedWithThatAll_ShouldRecordTheEventsDuringTheEvaluationOfAnEarlierMember()
+	{
+		TwoEventsClass sut = new();
+		IEventRecording<TwoEventsClass> recording = sut.Record().Events();
+		sut.Notify(true, false);
+		bool isRaised = false;
+
+		bool RaisesTheSecondEventWhenFirstCalled(EventArgs _)
+		{
+			if (!isRaised)
+			{
+				isRaised = true;
+				sut.Notify(false, true);
+			}
+
+			return true;
+		}
+
+		async Task Act()
+			=> await ThatAll(
+				That(recording).Triggered(nameof(TwoEventsClass.FirstEvent))
+					.WithParameter<EventArgs>(RaisesTheSecondEventWhenFirstCalled),
+				That(recording).Triggered(nameof(TwoEventsClass.SecondEvent)));
+
+		await That(Act).DoesNotThrow()
+			.Because("the recording keeps listening until the last member was evaluated");
+	}
+
+	[Fact]
+	public async Task WhenCombinedWithThatAll_WhenFailing_ShouldDescribeEveryMember()
+	{
+		TwoEventsClass sut = new();
+		IEventRecording<TwoEventsClass> recording = sut.Record().Events();
+		sut.Notify(true, false);
+
+		async Task Act()
+			=> await ThatAll(
+				That(recording).Triggered(nameof(TwoEventsClass.FirstEvent)),
+				That(recording).Triggered(nameof(TwoEventsClass.SecondEvent)));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that recording has recorded the FirstEvent event on sut at least once
+			              [02] Expected that recording has recorded the SecondEvent event on sut at least once
+			             but
+			              [02] it was never recorded
+			             """);
+		await That(sut.HasSubscribers()).IsFalse()
+			.Because("the recording is stopped once the whole combination was evaluated");
+	}
+
+	[Fact]
+	public async Task WhenCombinedWithThatAll_WithAFurtherExpectation_ShouldThrowInvalidOperationException()
+	{
+		TwoEventsClass sut = new();
+		IEventRecording<TwoEventsClass> recording = sut.Record().Events();
+		sut.Notify(true, true);
+		await ThatAll(
+			That(recording).Triggered(nameof(TwoEventsClass.FirstEvent)),
+			That(recording).Triggered(nameof(TwoEventsClass.SecondEvent)));
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(TwoEventsClass.FirstEvent));
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage(
+				"The recording was already stopped. Use .UntilDisposed() to keep recording across multiple expectations.")
+			.AsSuffix()
+			.Because("the recording is stopped once the evaluation of the combination ended");
+	}
+
+	[Theory]
+	[InlineData(false, false)]
+	[InlineData(false, true)]
+	[InlineData(true, false)]
+	[InlineData(true, true)]
+	public async Task WhenCombinedWithThatAny_ShouldCheckEveryMember(bool isFirstMet, bool isSecondMet)
+	{
+		TwoEventsClass sut = new();
+		IEventRecording<TwoEventsClass> recording = sut.Record().Events();
+		sut.Notify(isFirstMet, isSecondMet);
+
+		async Task Act()
+			=> await ThatAny(
+				That(recording).Triggered(nameof(TwoEventsClass.FirstEvent)),
+				That(recording).Triggered(nameof(TwoEventsClass.SecondEvent)));
+
+		await That(Act).Throws<XunitException>().OnlyIf(!isFirstMet && !isSecondMet)
+			.Because("the members of one combination share the recording");
+	}
+
+	[Fact]
+	public async Task WhenCombinedWithThatAny_WithAFurtherExpectation_ShouldThrowInvalidOperationException()
+	{
+		TwoEventsClass sut = new();
+		IEventRecording<TwoEventsClass> recording = sut.Record().Events();
+		sut.Notify(true, false);
+		await ThatAny(
+			That(recording).Triggered(nameof(TwoEventsClass.FirstEvent)),
+			That(recording).Triggered(nameof(TwoEventsClass.SecondEvent)));
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(TwoEventsClass.FirstEvent));
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage(
+				"The recording was already stopped. Use .UntilDisposed() to keep recording across multiple expectations.")
+			.AsSuffix()
+			.Because("the recording is stopped once the evaluation of the combination ended");
+	}
+
 	[Fact]
 	public async Task WhenDisposed_ShouldStopListening()
 	{
@@ -1022,6 +1196,28 @@ public sealed class EventRecordingTests
 		public bool HasOtherEventSubscribers() => OtherEvent is not null;
 
 		public void NotifyOtherEvent() => OtherEvent?.Invoke(this, EventArgs.Empty);
+	}
+
+	private sealed class TwoEventsClass
+	{
+		public event EventHandler? FirstEvent;
+
+		public event EventHandler? SecondEvent;
+
+		public bool HasSubscribers() => FirstEvent is not null || SecondEvent is not null;
+
+		public void Notify(bool first, bool second)
+		{
+			if (first)
+			{
+				FirstEvent?.Invoke(this, EventArgs.Empty);
+			}
+
+			if (second)
+			{
+				SecondEvent?.Invoke(this, EventArgs.Empty);
+			}
+		}
 	}
 
 	private sealed class OnlyUnrecordableClass

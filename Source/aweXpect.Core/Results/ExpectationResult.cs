@@ -137,7 +137,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 
 	/// <inheritdoc />
 	internal override async Task<Result> GetResult(int index)
-		=> new(index + 1, ExpectationBuilder.Subject, await ExpectationBuilder.IsMet(), true);
+		=> new(index + 1, ExpectationBuilder.Subject, await ExpectationBuilder.IsMet(endsWhenMet: false), true);
 
 	/// <inheritdoc />
 	internal override Task EndEvaluation()
@@ -356,7 +356,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 
 	/// <inheritdoc />
 	internal override async Task<Result> GetResult(int index)
-		=> new(index + 1, ExpectationBuilder.Subject, await ExpectationBuilder.IsMet(), true);
+		=> new(index + 1, ExpectationBuilder.Subject, await ExpectationBuilder.IsMet(endsWhenMet: false), true);
 
 	/// <inheritdoc />
 	internal override Task EndEvaluation()
