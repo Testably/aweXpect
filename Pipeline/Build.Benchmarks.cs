@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -233,8 +234,13 @@ partial class Build
 
 	string CreateBenchmarkCommentBody()
 	{
-		string[] fileContent = File.ReadAllLines(ArtifactsDirectory / "Benchmarks" / "results" /
-		                                         "aweXpect.Benchmarks.HappyCaseBenchmarks-report-github.md");
+		AbsolutePath resultsDirectory = ArtifactsDirectory / "Benchmarks" / "results";
+		string[] fileContent = File.ReadAllLines(
+			resultsDirectory / "aweXpect.Benchmarks.HappyCaseBenchmarks-report-github.md");
+		Dictionary<string, BenchmarkMeasurement> measurements = ReadBenchmarkMeasurements(
+			resultsDirectory / "aweXpect.Benchmarks.HappyCaseBenchmarks-report-full-compressed.json");
+		int meanColumn = -1;
+		int allocatedColumn = -1;
 		StringBuilder sb = new();
 		sb.AppendLine("## :rocket: Benchmark Results");
 		sb.AppendLine("<details>");
@@ -259,9 +265,32 @@ partial class Build
 				continue;
 			}
 
-			if (line.StartsWith('|') && line.Contains("_aweXpect") && line.EndsWith('|'))
+			if (line.StartsWith('|') && line.EndsWith('|'))
 			{
-				MakeLineBold(sb, line);
+				List<string> cells = line
+					.Split("|", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)
+					.ToList();
+				string method = cells[0];
+				string meanComparison, allocatedComparison;
+				if (method == "Method")
+				{
+					meanColumn = cells.IndexOf("Mean");
+					allocatedColumn = cells.IndexOf("Allocated");
+					meanComparison = allocatedComparison = "vs aweXpect";
+				}
+				else if (method.StartsWith('-'))
+				{
+					meanComparison = allocatedComparison = "---:";
+				}
+				else
+				{
+					meanComparison = CompareToAweXpect(measurements, method, m => m.Mean);
+					allocatedComparison = CompareToAweXpect(measurements, method, m => m.Allocated);
+				}
+
+				cells.Insert(allocatedColumn + 1, allocatedComparison);
+				cells.Insert(meanColumn + 1, meanComparison);
+				AppendTableRow(sb, cells, method.EndsWith("_aweXpect"));
 				continue;
 			}
 
@@ -272,15 +301,43 @@ partial class Build
 		return body;
 	}
 
-	static void MakeLineBold(StringBuilder sb, string line)
+	static Dictionary<string, BenchmarkMeasurement> ReadBenchmarkMeasurements(string path)
 	{
-		string[] tokens = line.Split("|", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-		sb.Append('|');
-		foreach (string token in tokens)
+		using JsonDocument document = JsonDocument.Parse(File.ReadAllText(path));
+		return document.RootElement.GetProperty("Benchmarks").EnumerateArray().ToDictionary(
+			benchmark => benchmark.GetProperty("Method").GetString(),
+			benchmark => new BenchmarkMeasurement(
+				benchmark.GetProperty("Statistics").GetProperty("Mean").GetDouble(),
+				benchmark.GetProperty("Memory").GetProperty("BytesAllocatedPerOperation").GetDouble()));
+	}
+
+	/// <summary>
+	///     Returns by how many percent the <paramref name="method" /> is above or below the aweXpect benchmark of the
+	///     same group.
+	/// </summary>
+	static string CompareToAweXpect(Dictionary<string, BenchmarkMeasurement> measurements, string method,
+		Func<BenchmarkMeasurement, double> selector)
+	{
+		string aweXpectMethod = method.Substring(0, method.LastIndexOf('_') + 1) + "aweXpect";
+		if (method == aweXpectMethod ||
+		    !measurements.TryGetValue(method, out BenchmarkMeasurement measurement) ||
+		    !measurements.TryGetValue(aweXpectMethod, out BenchmarkMeasurement aweXpect))
 		{
-			sb.Append(" **");
-			sb.Append(token);
-			sb.Append("** |");
+			return "";
+		}
+
+		double percent = ((selector(measurement) / selector(aweXpect)) - 1) * 100;
+		return percent.ToString("+0;-0;±0", CultureInfo.InvariantCulture) + "%";
+	}
+
+	static void AppendTableRow(StringBuilder sb, List<string> cells, bool bold)
+	{
+		sb.Append('|');
+		foreach (string cell in cells)
+		{
+			sb.Append(' ');
+			sb.Append(bold && cell != "" ? $"**{cell}**" : cell);
+			sb.Append(" |");
 		}
 
 		sb.AppendLine();
@@ -293,4 +350,6 @@ partial class Build
 	// ReSharper restore InconsistentNaming
 
 	private record BenchmarkFile(string Content, string Sha);
+
+	private record BenchmarkMeasurement(double Mean, double Allocated);
 }

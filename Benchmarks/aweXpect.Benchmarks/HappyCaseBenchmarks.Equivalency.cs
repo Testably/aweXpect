@@ -22,6 +22,10 @@ public partial class HappyCaseBenchmarks
 	public AndConstraint<ObjectAssertions> Equivalency_FluentAssertions()
 		=> _nestedSubject.Should().BeEquivalentTo(_nestedExpectation);
 
+	[Benchmark]
+	public async Task<Nested?> Equivalency_TUnit()
+		=> await Assert.That(_nestedSubject).IsEquivalentTo(_nestedExpectation);
+
 	public sealed class Nested
 	{
 		public int A { get; set; }
