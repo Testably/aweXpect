@@ -191,7 +191,7 @@ public sealed partial class ThatDelegate
 				{
 					Action action = () =>
 					{
-						System.Threading.Thread.Sleep(200.Milliseconds());
+						Block(200.Milliseconds());
 						throw new CustomException();
 					};
 
@@ -212,7 +212,7 @@ public sealed partial class ThatDelegate
 				{
 					Action action = () =>
 					{
-						System.Threading.Thread.Sleep(200.Milliseconds());
+						Block(200.Milliseconds());
 						throw new CustomException();
 					};
 
@@ -234,7 +234,7 @@ public sealed partial class ThatDelegate
 				{
 					Func<int> action = () =>
 					{
-						System.Threading.Thread.Sleep(200.Milliseconds());
+						Block(200.Milliseconds());
 						throw new CustomException();
 					};
 
@@ -306,6 +306,15 @@ public sealed partial class ThatDelegate
 					await That(Act).Throws<InvalidOperationException>()
 						.WithMessage("Within cannot be specified more than once.")
 						.Because("the continuation shares the duration of the expectation");
+				}
+
+				/// <remarks>
+				///     Blocks the calling thread like a synchronous delegate that cannot be interrupted.
+				/// </remarks>
+				private static void Block(TimeSpan duration)
+				{
+					using System.Threading.ManualResetEventSlim neverSet = new();
+					_ = neverSet.Wait(duration);
 				}
 			}
 
