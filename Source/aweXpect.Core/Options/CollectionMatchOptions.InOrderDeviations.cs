@@ -120,19 +120,21 @@ public partial class CollectionMatchOptions
 				.ToList();
 
 		/// <remarks>
-		///     Like for the matchers in any order, the containment relation lists all missing items instead of reporting
+		///     Like for the matchers in any order, deviations that are only missing items are listed instead of reporting
 		///     too many deviations.
 		/// </remarks>
 		public string? GetError(string it, EquivalenceRelations equivalenceRelation, bool ignoringDuplicates,
 			int totalExpectedItems, object options, int maximumNumber)
 		{
-			bool isContains = equivalenceRelation.Includes(EquivalenceRelations.Contains);
 			bool isContainedIn = equivalenceRelation.Includes(EquivalenceRelations.IsContainedIn);
 			List<string> errors = ListDeviations(equivalenceRelation, options);
 			int missingDeviations = isContainedIn ? 0 : MissingItems.Count;
-			if (errors.Count + missingDeviations > 2L * maximumNumber && (!isContains || errors.Count > 0))
+			if (errors.Count > 0 && errors.Count + missingDeviations > 2L * maximumNumber)
 			{
-				return TooManyDeviationsError(it, maximumNumber, errors);
+				return TooManyDeviationsError(it, maximumNumber, errors, isContainedIn
+					? []
+					: MissingItemsError(totalExpectedItems, MissingItems, equivalenceRelation, ignoringDuplicates,
+						CreateItemFormatter(), options, maximumNumber));
 			}
 
 			if (equivalenceRelation.Includes(EquivalenceRelations.ContainsProperly) && !HasAdditionalItem)

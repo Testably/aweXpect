@@ -603,12 +603,15 @@ public partial class CollectionMatchOptions
 				}
 			}
 
-			if (positionalDeviations > 2L * maximumNumber)
+			List<T3> missingItems = _expectedItems.Skip(_values.Count).ToList();
+			// Without a deviating item, all deviations are missing items, which are known completely here.
+			if (_positionalDeviations > 0 && positionalDeviations > 2L * maximumNumber)
 			{
-				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)));
+				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options),
+					MissingItemsError(_expectedItems.Length, missingItems, _equivalenceRelations, false,
+						CreateItemFormatter(), options, maximumNumber)));
 			}
 
-			List<T3> missingItems = _expectedItems.Skip(_values.Count).ToList();
 			return ReturnError(it, _incorrectItems ?? new Dictionary<int, (T Item, T3 Expected)>(),
 				new Dictionary<int, T>(), _additionalItems ?? new Dictionary<int, T>(), missingItems, options,
 				maximumNumber);
@@ -762,7 +765,8 @@ public partial class CollectionMatchOptions
 			if (_editDistance is not null &&
 			    !await _editDistance.Add((subjectIndex, expected) => IsMatch(subjectIndex, expected, options)))
 			{
-				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options)));
+				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options),
+					exceededDeviations: _editDistance.MaximumEdits));
 			}
 
 			return (false, null);

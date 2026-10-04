@@ -438,6 +438,32 @@ public sealed partial class ThatEnumerable
 					.Because("int.MaxValue lists all items, so it must not overflow the limits derived from it");
 			}
 
+			[Theory]
+			[InlineData(100, 200)]
+			[InlineData(127, 254)]
+			[InlineData(128, 254)]
+			[InlineData(200, 254)]
+			[InlineData(int.MaxValue, 254)]
+			public async Task WhenMoreEditsAreNeededThanAreTracked_ShouldReportTheExceededNumberOfDeviations(
+				int maximumNumberOfCollectionItems, int expectedDeviations)
+			{
+				IEnumerable<int> subject = ToEnumerable(Enumerable.Range(1, 300).ToArray());
+				int[] expected = Enumerable.Range(1001, 300).ToArray();
+
+				async Task Act()
+				{
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems
+						       .Set(maximumNumberOfCollectionItems))
+					{
+						await That(subject).IsEqualTo(expected);
+					}
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"*but it had more than {expectedDeviations} deviations:*").AsWildcard()
+					.Because("at most 254 edits are tracked, whatever the maximum number of collection items is");
+			}
+
 			[Fact]
 			public async Task WhenReferenceTypeDoesNotMatchNullability_ShouldStillWork()
 			{
@@ -1116,6 +1142,102 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WithMissingAndOtherDeviationsAboveTheLimit_ShouldAlsoListTheMissingItems()
+			{
+				IEnumerable<int> subject = ToEnumerable([9, 1,]);
+				int[] expected = Enumerable.Range(1, 8).ToArray();
+
+				async Task Act()
+				{
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(2))
+					{
+						await That(subject).IsEqualTo(expected);
+					}
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it had more than 4 deviations:
+					               contained item 9 at index 0 instead of 1,
+					               contained item 1 at index 1 instead of 2,
+					               lacked 6 of 8 expected items:
+					                 3,
+					                 4,
+					                 (… and 4 more)
+
+					             Collection:
+					             [9, 1]
+
+					             Expected:
+					             [1, 2, (… and 6 more)]
+					             """)
+					.Because("the run completed, so the missing items are known");
+			}
+
+			[Fact]
+			public async Task WithOnlyMissingItemsAboveTheDeviationLimit_ShouldListTheMissingItems()
+			{
+				IEnumerable<int> subject = ToEnumerable([1,]);
+				int[] expected = Enumerable.Range(1, 6).ToArray();
+
+				async Task Act()
+				{
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(2))
+					{
+						await That(subject).IsEqualTo(expected);
+					}
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it lacked 5 of 6 expected items:
+					               2,
+					               3,
+					               (… and 3 more)
+
+					             Collection:
+					             [1]
+
+					             Expected:
+					             [1, 2, (… and 4 more)]
+					             """)
+					.Because("the run completed, so the exact number of missing items is known");
+			}
+
+			[Fact]
+			public async Task WithOnlyMissingItemsAboveTheDeviationLimit_WhenSubjectIsEmpty_ShouldReportTheirNumber()
+			{
+				IEnumerable<int> subject = ToEnumerable(Array.Empty<int>());
+				int[] expected = Enumerable.Range(1, 5).ToArray();
+
+				async Task Act()
+				{
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(2))
+					{
+						await That(subject).IsEqualTo(expected);
+					}
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it lacked all 5 expected items
+
+					             Collection:
+					             []
+
+					             Expected:
+					             [1, 2, (… and 3 more)]
+					             """)
+					.Because("the run completed, so the exact number of missing items is known");
+			}
+
+			[Fact]
 			public async Task WithSameCollection_ShouldSucceed()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
@@ -1251,7 +1373,8 @@ public sealed partial class ThatEnumerable
 					               contained item 8 at index 7 that was not expected,
 					               contained item 9 at index 8 that was not expected,
 					               contained item 10 at index 9 that was not expected,
-					               (… and maybe more)
+					               (… and maybe more),
+					               lacked all 11 unique expected items
 
 					             Collection:
 					             [
@@ -1678,6 +1801,101 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WithMissingAndOtherDeviationsAboveTheLimit_ShouldAlsoListTheMissingItems()
+			{
+				IEnumerable<int> subject = ToEnumerable([9, 1,]);
+				int[] expected = Enumerable.Range(1, 8).ToArray();
+
+				async Task Act()
+				{
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(2))
+					{
+						await That(subject).IsEqualTo(expected).IgnoringDuplicates();
+					}
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order ignoring duplicates,
+					             but it had more than 4 deviations:
+					               contained item 9 at index 0 that was not expected,
+					               lacked 7 of 8 expected items:
+					                 2,
+					                 3,
+					                 (… and 5 more)
+
+					             Collection:
+					             [9, 1]
+
+					             Expected:
+					             [1, 2, (… and 6 more)]
+					             """)
+					.Because("the run completed, so the missing items are known");
+			}
+
+			[Fact]
+			public async Task WithOnlyMissingItemsAboveTheDeviationLimit_ShouldListTheMissingItems()
+			{
+				IEnumerable<int> subject = ToEnumerable([1,]);
+				int[] expected = Enumerable.Range(1, 6).ToArray();
+
+				async Task Act()
+				{
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(2))
+					{
+						await That(subject).IsEqualTo(expected).IgnoringDuplicates();
+					}
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order ignoring duplicates,
+					             but it lacked 5 of 6 expected items:
+					               2,
+					               3,
+					               (… and 3 more)
+
+					             Collection:
+					             [1]
+
+					             Expected:
+					             [1, 2, (… and 4 more)]
+					             """)
+					.Because("the run completed, so the exact number of missing items is known");
+			}
+
+			[Fact]
+			public async Task WithOnlyMissingItemsAboveTheDeviationLimit_WhenSubjectIsEmpty_ShouldReportTheirNumber()
+			{
+				IEnumerable<int> subject = ToEnumerable(Array.Empty<int>());
+				int[] expected = Enumerable.Range(1, 5).ToArray();
+
+				async Task Act()
+				{
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(2))
+					{
+						await That(subject).IsEqualTo(expected).IgnoringDuplicates();
+					}
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order ignoring duplicates,
+					             but it lacked all 5 unique expected items
+
+					             Collection:
+					             []
+
+					             Expected:
+					             [1, 2, (… and 3 more)]
+					             """)
+					.Because("the run completed, so the exact number of missing items is known");
+			}
+
+			[Fact]
 			public async Task WithSameCollection_ShouldSucceed()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
@@ -1761,7 +1979,8 @@ public sealed partial class ThatEnumerable
 					               contained item 8 at index 7 that was not expected,
 					               contained item 9 at index 8 that was not expected,
 					               contained item 10 at index 9 that was not expected,
-					               (… and maybe more)
+					               (… and maybe more),
+					               lacked all 11 expected items
 
 					             Collection:
 					             [
@@ -2356,6 +2575,101 @@ public sealed partial class ThatEnumerable
 
 
 			[Fact]
+			public async Task WithMissingAndOtherDeviationsAboveTheLimit_ShouldAlsoListTheMissingItems()
+			{
+				IEnumerable<int> subject = ToEnumerable([9, 1,]);
+				int[] expected = Enumerable.Range(1, 8).ToArray();
+
+				async Task Act()
+				{
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(2))
+					{
+						await That(subject).IsEqualTo(expected).InAnyOrder();
+					}
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in any order,
+					             but it had more than 4 deviations:
+					               contained item 9 at index 0 that was not expected,
+					               lacked 7 of 8 expected items:
+					                 2,
+					                 3,
+					                 (… and 5 more)
+
+					             Collection:
+					             [9, 1]
+
+					             Expected:
+					             [1, 2, (… and 6 more)]
+					             """)
+					.Because("the run completed, so the missing items are known");
+			}
+
+			[Fact]
+			public async Task WithOnlyMissingItemsAboveTheDeviationLimit_ShouldListTheMissingItems()
+			{
+				IEnumerable<int> subject = ToEnumerable([1,]);
+				int[] expected = Enumerable.Range(1, 6).ToArray();
+
+				async Task Act()
+				{
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(2))
+					{
+						await That(subject).IsEqualTo(expected).InAnyOrder();
+					}
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in any order,
+					             but it lacked 5 of 6 expected items:
+					               2,
+					               3,
+					               (… and 3 more)
+
+					             Collection:
+					             [1]
+
+					             Expected:
+					             [1, 2, (… and 4 more)]
+					             """)
+					.Because("the run completed, so the exact number of missing items is known");
+			}
+
+			[Fact]
+			public async Task WithOnlyMissingItemsAboveTheDeviationLimit_WhenSubjectIsEmpty_ShouldReportTheirNumber()
+			{
+				IEnumerable<int> subject = ToEnumerable(Array.Empty<int>());
+				int[] expected = Enumerable.Range(1, 5).ToArray();
+
+				async Task Act()
+				{
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(2))
+					{
+						await That(subject).IsEqualTo(expected).InAnyOrder();
+					}
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in any order,
+					             but it lacked all 5 expected items
+
+					             Collection:
+					             []
+
+					             Expected:
+					             [1, 2, (… and 3 more)]
+					             """)
+					.Because("the run completed, so the exact number of missing items is known");
+			}
+
+			[Fact]
 			public async Task WithSameCollection_ShouldSucceed()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
@@ -2440,7 +2754,8 @@ public sealed partial class ThatEnumerable
 					               contained item 8 at index 7 that was not expected,
 					               contained item 9 at index 8 that was not expected,
 					               contained item 10 at index 9 that was not expected,
-					               (… and maybe more)
+					               (… and maybe more),
+					               lacked all 11 unique expected items
 
 					             Collection:
 					             [
@@ -2845,6 +3160,101 @@ public sealed partial class ThatEnumerable
 					               "e"
 					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task WithMissingAndOtherDeviationsAboveTheLimit_ShouldAlsoListTheMissingItems()
+			{
+				IEnumerable<int> subject = ToEnumerable([9, 1,]);
+				int[] expected = Enumerable.Range(1, 8).ToArray();
+
+				async Task Act()
+				{
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(2))
+					{
+						await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
+					}
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in any order ignoring duplicates,
+					             but it had more than 4 deviations:
+					               contained item 9 at index 0 that was not expected,
+					               lacked 7 of 8 expected items:
+					                 2,
+					                 3,
+					                 (… and 5 more)
+
+					             Collection:
+					             [9, 1]
+
+					             Expected:
+					             [1, 2, (… and 6 more)]
+					             """)
+					.Because("the run completed, so the missing items are known");
+			}
+
+			[Fact]
+			public async Task WithOnlyMissingItemsAboveTheDeviationLimit_ShouldListTheMissingItems()
+			{
+				IEnumerable<int> subject = ToEnumerable([1,]);
+				int[] expected = Enumerable.Range(1, 6).ToArray();
+
+				async Task Act()
+				{
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(2))
+					{
+						await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
+					}
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in any order ignoring duplicates,
+					             but it lacked 5 of 6 expected items:
+					               2,
+					               3,
+					               (… and 3 more)
+
+					             Collection:
+					             [1]
+
+					             Expected:
+					             [1, 2, (… and 4 more)]
+					             """)
+					.Because("the run completed, so the exact number of missing items is known");
+			}
+
+			[Fact]
+			public async Task WithOnlyMissingItemsAboveTheDeviationLimit_WhenSubjectIsEmpty_ShouldReportTheirNumber()
+			{
+				IEnumerable<int> subject = ToEnumerable(Array.Empty<int>());
+				int[] expected = Enumerable.Range(1, 5).ToArray();
+
+				async Task Act()
+				{
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(2))
+					{
+						await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
+					}
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in any order ignoring duplicates,
+					             but it lacked all 5 unique expected items
+
+					             Collection:
+					             []
+
+					             Expected:
+					             [1, 2, (… and 3 more)]
+					             """)
+					.Because("the run completed, so the exact number of missing items is known");
 			}
 
 			[Fact]

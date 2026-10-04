@@ -865,7 +865,8 @@ public sealed partial class ThatAsyncEnumerable
 					               contained item 8 at index 7 that was not expected,
 					               contained item 9 at index 8 that was not expected,
 					               contained item 10 at index 9 that was not expected,
-					               (… and maybe more)
+					               (… and maybe more),
+					               lacked all 11 unique expected items
 
 					             Collection:
 					             [
@@ -1387,7 +1388,8 @@ public sealed partial class ThatAsyncEnumerable
 					               contained item 8 at index 7 that was not expected,
 					               contained item 9 at index 8 that was not expected,
 					               contained item 10 at index 9 that was not expected,
-					               (… and maybe more)
+					               (… and maybe more),
+					               lacked all 11 expected items
 
 					             Collection:
 					             [
@@ -1938,7 +1940,8 @@ public sealed partial class ThatAsyncEnumerable
 					               contained item 8 at index 7 that was not expected,
 					               contained item 9 at index 8 that was not expected,
 					               contained item 10 at index 9 that was not expected,
-					               (… and maybe more)
+					               (… and maybe more),
+					               lacked all 11 unique expected items
 
 					             Collection:
 					             [
