@@ -3,7 +3,7 @@ using aweXpect.Equivalency;
 
 namespace aweXpect.Internal.Tests.Helpers;
 
-public sealed partial class EquivalencyComparerTests
+public sealed partial class EquivalencyMatchTypeTests
 {
 	public sealed class RecordTests
 	{
@@ -12,10 +12,11 @@ public sealed partial class EquivalencyComparerTests
 		{
 			AnAlwaysEqualRecord actual = new(1);
 			AnAlwaysEqualRecord expected = new(2);
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
-			string failure = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
+			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 			await That(result).IsFalse()
 				.Because("a record that declares itself always equal must not overrule its differing members");
@@ -32,10 +33,11 @@ public sealed partial class EquivalencyComparerTests
 		{
 			ARecordWithValue actual = new(1);
 			ARecordWithValue expected = new(2);
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
-			string failure = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
+			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 			await That(result).IsFalse();
 			await That(failure).IsEqualTo("""
@@ -51,7 +53,7 @@ public sealed partial class EquivalencyComparerTests
 		{
 			ARecordWithValue actual = new(1);
 			ARecordWithValue expected = new(1);
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
 			bool result = await sut.AreConsideredEqual(actual, expected);
 
@@ -63,17 +65,18 @@ public sealed partial class EquivalencyComparerTests
 		{
 			SomeRecord actual = new();
 			SomeOtherRecord expected = new();
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
-			string failure = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
+			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 			await That(result).IsFalse();
 			await That(failure).IsEqualTo("""
 			                              it was not:
 			                                It differed:
-			                                    Actual: EquivalencyComparerTests.RecordTests.SomeRecord { }
-			                                  Expected: EquivalencyComparerTests.RecordTests.SomeOtherRecord { }
+			                                    Actual: EquivalencyMatchTypeTests.RecordTests.SomeRecord { }
+			                                  Expected: EquivalencyMatchTypeTests.RecordTests.SomeOtherRecord { }
 			                              """);
 		}
 
@@ -82,7 +85,7 @@ public sealed partial class EquivalencyComparerTests
 		{
 			SomeRecord actual = new();
 			SomeRecord expected = new();
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
 			async Task Act() => await sut.AreConsideredEqual(actual, expected);
 

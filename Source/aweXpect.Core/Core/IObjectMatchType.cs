@@ -11,17 +11,28 @@ public interface IObjectMatchType
 	///     Returns <see langword="true" /> if the two objects <paramref name="actual" /> and <paramref name="expected" /> are
 	///     considered equal; otherwise <see langword="false" />.
 	/// </summary>
+	/// <remarks>
+	///     Only decides, without keeping anything for a failure message, as most callers, e.g. the items of a
+	///     collection, never explain a single comparison.
+	/// </remarks>
 	ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected);
+
+	/// <summary>
+	///     Compares the two objects <paramref name="actual" /> and <paramref name="expected" /> like
+	///     <see cref="AreConsideredEqual{TActual, TExpected}(TActual, TExpected)" />, and returns a result that can
+	///     explain a failure.
+	/// </summary>
+	/// <remarks>
+	///     The match type may return itself as the result, which is then only valid until its next call of this
+	///     method.
+	/// </remarks>
+	ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual,
+		TExpected expected);
 
 	/// <summary>
 	///     Get the expectations text.
 	/// </summary>
 	string GetExpectation(string expected, ExpectationGrammars grammars);
-
-	/// <summary>
-	///     Get an extended failure text.
-	/// </summary>
-	string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected);
 
 	/// <summary>
 	///     Get the expectation text for a single expected item, e.g. <c>equivalent to {expected}</c>.

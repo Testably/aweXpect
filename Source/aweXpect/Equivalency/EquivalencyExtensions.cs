@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using aweXpect.Core;
 using aweXpect.Core.Metadata;
 using aweXpect.Equivalency;
 using aweXpect.Options;
@@ -39,15 +38,7 @@ public static class EquivalencyExtensions
 	internal static ObjectEqualityOptions<TSubject> Equivalent<TSubject>(this ObjectEqualityOptions<TSubject> options,
 		EquivalencyOptions equivalencyOptions)
 	{
-		options.SetMatchType(new EquivalencyComparer(equivalencyOptions), nameof(Equivalent));
+		options.SetMatchType(new EquivalencyMatchType(equivalencyOptions), nameof(Equivalent));
 		return options;
 	}
-
-	/// <summary>
-	///     Adds the <paramref name="equivalencyOptions" /> as context.
-	/// </summary>
-	internal static void AddEquivalencyContext(this ResultContextCollector contexts,
-		EquivalencyOptions equivalencyOptions)
-		=> contexts.Add(new ResultContext.SyncCallback("Equivalency options", equivalencyOptions.ToString,
-			int.MinValue));
 }

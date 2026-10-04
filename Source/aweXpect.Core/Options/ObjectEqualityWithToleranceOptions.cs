@@ -93,23 +93,16 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 
 		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TSubject, TExpected}(TSubject, TExpected)" />
 		public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-		{
-			if (actual is null && expected is null)
-			{
-				return new ValueTask<bool>(true);
-			}
+			=> new(IsEqual(actual, expected));
 
-			return new ValueTask<bool>(actual is TSubject typedActual && expected is TSubject typedExpected &&
-			                           isWithinTolerance(typedActual, typedExpected, tolerance()));
-		}
+		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqualWithExplanation{TActual, TExpected}(TActual, TExpected)" />
+		public ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual,
+			TExpected expected)
+			=> ObjectEqualityOptions.ExplainWithActualValue(IsEqual(actual, expected));
 
 		/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
 		public string GetExpectation(string expected, ExpectationGrammars grammars)
 			=> $"{grammars.Verb("is", "are")} {(grammars.HasFlag(ExpectationGrammars.Negated) ? "not " : "")}equal to {expected}" + ToString();
-
-		/// <inheritdoc cref="IObjectMatchType.GetExtendedFailure(string, ExpectationGrammars, object?, object?)" />
-		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
-			=> $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented())}";
 
 		/// <inheritdoc cref="IObjectMatchType.AppendContexts(ResultContextCollector)" />
 		public void AppendContexts(ResultContextCollector contexts)
@@ -128,6 +121,17 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 			return isDefault && EqualityComparer<TTolerance>.Default.Equals(value, default!)
 				? ""
 				: toString.Invoke(value);
+		}
+
+		private bool IsEqual<TActual, TExpected>(TActual actual, TExpected expected)
+		{
+			if (actual is null && expected is null)
+			{
+				return true;
+			}
+
+			return actual is TSubject typedActual && expected is TSubject typedExpected &&
+			       isWithinTolerance(typedActual, typedExpected, tolerance());
 		}
 
 		#endregion

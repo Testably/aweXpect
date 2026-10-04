@@ -449,6 +449,10 @@ members that an equivalency comparison includes.
 A custom `IObjectMatchType` must implement the new `AppendContexts(ResultContextCollector)`, which adds the contexts
 that explain a failed comparison, e.g. the equivalency options. Leave its body empty when the match type adds no
 context.
+`IObjectMatchType.AreConsideredEqual` only decides, so that the items of a collection are compared without writing a
+failure text. A custom match type implements the new `AreConsideredEqualWithExplanation`, which returns an
+`IObjectMatchResult`, and moves its `GetExtendedFailure` there. A caller of `ObjectEqualityOptions<T>.GetExtendedFailure`
+compares with `AreConsideredEqualWithExplanation` instead and calls `GetExtendedFailure` on its result.
 
 ## New expectations
 

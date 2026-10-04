@@ -4,7 +4,7 @@ using aweXpect.Equivalency;
 
 namespace aweXpect.Internal.Tests.Helpers;
 
-public sealed partial class EquivalencyComparerTests
+public sealed partial class EquivalencyMatchTypeTests
 {
 	public sealed class CollectionInAnyOrderTests
 	{
@@ -13,7 +13,7 @@ public sealed partial class EquivalencyComparerTests
 		{
 			int[] actual = [3, 2, 4, 1, 5,];
 			List<int> expected = [1, 4, 3, 2, 5,];
-			EquivalencyComparer sut = new(new EquivalencyOptions().IgnoringCollectionOrder());
+			EquivalencyMatchType sut = new(new EquivalencyOptions().IgnoringCollectionOrder());
 
 			bool result = await sut.AreConsideredEqual(actual, expected);
 
@@ -25,7 +25,7 @@ public sealed partial class EquivalencyComparerTests
 		{
 			List<int> actual = [1, 5, 3, 4, 2,];
 			int[] expected = [5, 4, 3, 2, 1,];
-			EquivalencyComparer sut = new(new EquivalencyOptions().IgnoringCollectionOrder());
+			EquivalencyMatchType sut = new(new EquivalencyOptions().IgnoringCollectionOrder());
 
 			bool result = await sut.AreConsideredEqual(actual, expected);
 
@@ -37,10 +37,11 @@ public sealed partial class EquivalencyComparerTests
 		{
 			int[] actual = [1, 4, 3, 2,];
 			List<int> expected = [1, 5, 3, 4, 2,];
-			EquivalencyComparer sut = new(new EquivalencyOptions().IgnoringCollectionOrder());
+			EquivalencyMatchType sut = new(new EquivalencyOptions().IgnoringCollectionOrder());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
-			string failure = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
+			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 			await That(result).IsFalse();
 			await That(failure).IsEqualTo("""
@@ -55,10 +56,11 @@ public sealed partial class EquivalencyComparerTests
 		{
 			int[] actual = [1, 5, 4, 3, 2,];
 			List<int> expected = [1, 3, 2, 4,];
-			EquivalencyComparer sut = new(new EquivalencyOptions().IgnoringCollectionOrder());
+			EquivalencyMatchType sut = new(new EquivalencyOptions().IgnoringCollectionOrder());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
-			string failure = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
+			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 			await That(result).IsFalse();
 			await That(failure).IsEqualTo("""
@@ -75,7 +77,7 @@ public sealed partial class EquivalencyComparerTests
 		{
 			int[] actual = [1, 2, 3, 4, 5,];
 			List<int> expected = [1, 5, 2, 3, 4,];
-			EquivalencyComparer sut = new(new EquivalencyOptions().IgnoringCollectionOrder(ignoreCollectionOrder));
+			EquivalencyMatchType sut = new(new EquivalencyOptions().IgnoringCollectionOrder(ignoreCollectionOrder));
 
 			bool result = await sut.AreConsideredEqual(actual, expected);
 

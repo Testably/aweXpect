@@ -5,6 +5,53 @@ namespace aweXpect.Core.Tests.Options;
 
 public class ObjectEqualityOptionsTests
 {
+	[Fact]
+	public async Task AreConsideredEqualWithExplanation_WhenEqual_ShouldReturnAMatch()
+	{
+		ObjectEqualityOptions<int> sut = new();
+
+		IObjectMatchResult result = await sut.AreConsideredEqualWithExplanation(1, 1);
+
+		await That(result.IsMatch).IsTrue();
+	}
+
+	[Fact]
+	public async Task AreConsideredEqualWithExplanation_WhenNotEqual_ShouldExplainWithTheActualValue()
+	{
+		ObjectEqualityOptions<int> sut = new();
+
+		IObjectMatchResult result = await sut.AreConsideredEqualWithExplanation(1, 2);
+
+		await That(result.IsMatch).IsFalse();
+		await That(result.GetExtendedFailure("it", ExpectationGrammars.None, 1, 2)).IsEqualTo("it was 1");
+	}
+
+	[Theory]
+	[InlineData(11, true)]
+	[InlineData(12, false)]
+	public async Task AreConsideredEqualWithExplanation_WithATypedComparer_ShouldDecideWithIt(int expected,
+		bool expectMatch)
+	{
+		ObjectEqualityOptions<int> sut = new();
+		sut.Using(new ModuloComparer(10));
+
+		IObjectMatchResult result = await sut.AreConsideredEqualWithExplanation(1, expected);
+
+		await That(result.IsMatch).IsEqualTo(expectMatch);
+		await That(result.GetExtendedFailure("it", ExpectationGrammars.None, 1, expected)).IsEqualTo("it was 1");
+	}
+
+	[Fact]
+	public async Task AreConsideredEqualWithExplanation_WithAnUntypedComparer_ShouldDecideWithIt()
+	{
+		ObjectEqualityOptions<object> sut = new();
+		sut.Using(new AllEqualComparer());
+
+		IObjectMatchResult result = await sut.AreConsideredEqualWithExplanation(1, "foo");
+
+		await That(result.IsMatch).IsTrue();
+	}
+
 	[Theory]
 	[MemberData(nameof(DifferentNumbers), DisableDiscoveryEnumeration = true)]
 	public async Task AreConsideredEqual_WhenNumbersHaveDifferentValues_ShouldReturnFalse(
@@ -274,10 +321,11 @@ public class ObjectEqualityOptionsTests
 		public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
 			=> new(true);
 
-		public string GetExpectation(string expected, ExpectationGrammars grammars) => "";
+		public ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual,
+			TExpected expected)
+			=> throw new NotSupportedException();
 
-		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
-			=> "";
+		public string GetExpectation(string expected, ExpectationGrammars grammars) => "";
 
 		public string PrependItemAndComparison(string expected, string? itemNoun = null, string? comparison = null)
 			=> "";

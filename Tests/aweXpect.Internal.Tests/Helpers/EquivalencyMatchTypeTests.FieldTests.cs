@@ -3,7 +3,7 @@ using aweXpect.Equivalency;
 
 namespace aweXpect.Internal.Tests.Helpers;
 
-public sealed partial class EquivalencyComparerTests
+public sealed partial class EquivalencyMatchTypeTests
 {
 	public sealed class FieldTests
 	{
@@ -18,7 +18,7 @@ public sealed partial class EquivalencyComparerTests
 			{
 				MyValue = "foo",
 			};
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
 			bool result = await sut.AreConsideredEqual(actual, expected);
 
@@ -30,7 +30,7 @@ public sealed partial class EquivalencyComparerTests
 		{
 			MyClassWithFields actual = new(1, 2, 3);
 			MyClassWithFields expected = new(1, 3, 4);
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
 			bool result = await sut.AreConsideredEqual(actual, expected);
 
@@ -51,10 +51,11 @@ public sealed partial class EquivalencyComparerTests
 			{
 				MyValue = expectedValue,
 			};
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
-			string failure = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
+			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 			await That(result).IsFalse();
 			await That(failure).IsEqualTo($"""
@@ -76,10 +77,11 @@ public sealed partial class EquivalencyComparerTests
 			{
 				MyValue = "bar",
 			};
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
-			string failure = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
+			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 			await That(result).IsFalse();
 			await That(failure).IsEqualTo("""
@@ -95,16 +97,17 @@ public sealed partial class EquivalencyComparerTests
 		{
 			MyClassWithProtectedFields actual = new(1, 3);
 			MyClassWithProtectedFields expected = new(2, 3);
-			EquivalencyComparer sut = new(new EquivalencyOptions
+			EquivalencyMatchType sut = new(new EquivalencyOptions
 			{
 				Fields = IncludeMembers.Internal,
 			});
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
 
 			await That(result).IsFalse()
 				.Because("a protected internal field is visible to the whole assembly like an internal one");
-			await That(sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected))
+			await That(explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected))
 				.IsEqualTo("""
 				           it was not:
 				             Field MyProtectedInternalField differed:
@@ -121,17 +124,18 @@ public sealed partial class EquivalencyComparerTests
 		{
 			MyClassWithFields actual = new(1, actualInternalValue, 3);
 			MyClassWithFields expected = new(2, expectedInternalValue, 4);
-			EquivalencyComparer sut = new(new EquivalencyOptions
+			EquivalencyMatchType sut = new(new EquivalencyOptions
 			{
 				Fields = IncludeMembers.Internal,
 			});
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
 
 			await That(result).IsEqualTo(expectedResult);
 			if (!expectedResult)
 			{
-				await That(sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected))
+				await That(explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected))
 					.IsEqualTo($"""
 					            it was not:
 					              Field MyInternalField differed:
@@ -146,7 +150,7 @@ public sealed partial class EquivalencyComparerTests
 		{
 			MyClassWithProtectedFields actual = new(1, 3);
 			MyClassWithProtectedFields expected = new(1, 4);
-			EquivalencyComparer sut = new(new EquivalencyOptions
+			EquivalencyMatchType sut = new(new EquivalencyOptions
 			{
 				Fields = IncludeMembers.Internal,
 			});
@@ -167,7 +171,7 @@ public sealed partial class EquivalencyComparerTests
 		{
 			MyClassWithFields actual = new(actualPublicValue, actualInternalValue, 3);
 			MyClassWithFields expected = new(expectedPublicValue, expectedInternalValue, 4);
-			EquivalencyComparer sut = new(new EquivalencyOptions
+			EquivalencyMatchType sut = new(new EquivalencyOptions
 			{
 				Fields = IncludeMembers.Public | IncludeMembers.Internal,
 			});
@@ -186,17 +190,18 @@ public sealed partial class EquivalencyComparerTests
 		{
 			MyClassWithFields actual = new(actualPublicValue, 1, 3);
 			MyClassWithFields expected = new(expectedPublicValue, 2, 4);
-			EquivalencyComparer sut = new(new EquivalencyOptions
+			EquivalencyMatchType sut = new(new EquivalencyOptions
 			{
 				Fields = IncludeMembers.Public,
 			});
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
 
 			await That(result).IsEqualTo(expectedResult);
 			if (!expectedResult)
 			{
-				await That(sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected))
+				await That(explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected))
 					.IsEqualTo($"""
 					            it was not:
 					              Field MyPublicField differed:

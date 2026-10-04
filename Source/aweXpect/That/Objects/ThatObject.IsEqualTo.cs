@@ -127,6 +127,8 @@ public static partial class ThatObject
 		: ConstraintResult.WithEqualToValue<TSubject>(it, grammars, expected is null),
 			IAsyncConstraint<TSubject>
 	{
+		private IObjectMatchResult? _matchResult;
+
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
 			=> options.AppendContexts(contexts);
@@ -134,7 +136,8 @@ public static partial class ThatObject
 		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome = await options.AreConsideredEqual(actual, expected) ? Outcome.Success : Outcome.Failure;
+			_matchResult = await options.AreConsideredEqualWithExplanation(actual, expected);
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -143,14 +146,14 @@ public static partial class ThatObject
 				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
 				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
 	}
 
 	private sealed class IsEqualToConstraint<T>(
@@ -162,6 +165,8 @@ public static partial class ThatObject
 			IAsyncConstraint<T>
 		where T : struct
 	{
+		private IObjectMatchResult? _matchResult;
+
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
 			=> options.AppendContexts(contexts);
@@ -169,7 +174,8 @@ public static partial class ThatObject
 		public async ValueTask<ConstraintResult> IsMetBy(T actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome = await options.AreConsideredEqual(actual, expected) ? Outcome.Success : Outcome.Failure;
+			_matchResult = await options.AreConsideredEqualWithExplanation(actual, expected);
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -178,14 +184,14 @@ public static partial class ThatObject
 				Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
 				Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
 	}
 
 	private sealed class NullableIsEqualToConstraint<T>(
@@ -197,6 +203,8 @@ public static partial class ThatObject
 			IAsyncConstraint<T?>
 		where T : struct
 	{
+		private IObjectMatchResult? _matchResult;
+
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
 			=> options.AppendContexts(contexts);
@@ -204,7 +212,8 @@ public static partial class ThatObject
 		public async ValueTask<ConstraintResult> IsMetBy(T? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome = await options.AreConsideredEqual(actual, expected) ? Outcome.Success : Outcome.Failure;
+			_matchResult = await options.AreConsideredEqualWithExplanation(actual, expected);
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -213,13 +222,13 @@ public static partial class ThatObject
 				Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
 				Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
 	}
 }

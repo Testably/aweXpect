@@ -3,7 +3,7 @@ using aweXpect.Equivalency;
 
 namespace aweXpect.Internal.Tests.Helpers;
 
-public sealed partial class EquivalencyComparerTests
+public sealed partial class EquivalencyMatchTypeTests
 {
 	public sealed class PropertyTests
 	{
@@ -18,7 +18,7 @@ public sealed partial class EquivalencyComparerTests
 			{
 				MyValue = "foo",
 			};
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
 			bool result = await sut.AreConsideredEqual(actual, expected);
 
@@ -32,7 +32,7 @@ public sealed partial class EquivalencyComparerTests
 			{
 				MyValue = "foo",
 			};
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
 			bool result = await sut.AreConsideredEqual(actual, new
 			{
@@ -56,10 +56,11 @@ public sealed partial class EquivalencyComparerTests
 			{
 				MyValue = expectedValue,
 			};
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
-			string failure = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
+			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 			await That(result).IsFalse();
 			await That(failure).IsEqualTo($"""
@@ -81,10 +82,11 @@ public sealed partial class EquivalencyComparerTests
 			{
 				MyValue = "bar",
 			};
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
-			string failure = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
+			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 			await That(result).IsFalse();
 			await That(failure).IsEqualTo("""
@@ -100,16 +102,17 @@ public sealed partial class EquivalencyComparerTests
 		{
 			MyClassWithProtectedProperties actual = new(1, 3);
 			MyClassWithProtectedProperties expected = new(2, 3);
-			EquivalencyComparer sut = new(new EquivalencyOptions
+			EquivalencyMatchType sut = new(new EquivalencyOptions
 			{
 				Properties = IncludeMembers.Internal,
 			});
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
 
 			await That(result).IsFalse()
 				.Because("a protected internal property is visible to the whole assembly like an internal one");
-			await That(sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected))
+			await That(explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected))
 				.IsEqualTo("""
 				           it was not:
 				             Property MyProtectedInternalProperty differed:
@@ -126,17 +129,18 @@ public sealed partial class EquivalencyComparerTests
 		{
 			MyClassWithProperties actual = new(1, actualInternalValue, 3);
 			MyClassWithProperties expected = new(2, expectedInternalValue, 4);
-			EquivalencyComparer sut = new(new EquivalencyOptions
+			EquivalencyMatchType sut = new(new EquivalencyOptions
 			{
 				Properties = IncludeMembers.Internal,
 			});
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
 
 			await That(result).IsEqualTo(expectedResult);
 			if (!expectedResult)
 			{
-				await That(sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected))
+				await That(explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected))
 					.IsEqualTo($"""
 					            it was not:
 					              Property MyInternalProperty differed:
@@ -151,7 +155,7 @@ public sealed partial class EquivalencyComparerTests
 		{
 			MyClassWithProtectedProperties actual = new(1, 3);
 			MyClassWithProtectedProperties expected = new(1, 4);
-			EquivalencyComparer sut = new(new EquivalencyOptions
+			EquivalencyMatchType sut = new(new EquivalencyOptions
 			{
 				Properties = IncludeMembers.Internal,
 			});
@@ -172,7 +176,7 @@ public sealed partial class EquivalencyComparerTests
 		{
 			MyClassWithProperties actual = new(actualPublicValue, actualInternalValue, 3);
 			MyClassWithProperties expected = new(expectedPublicValue, expectedInternalValue, 4);
-			EquivalencyComparer sut = new(new EquivalencyOptions
+			EquivalencyMatchType sut = new(new EquivalencyOptions
 			{
 				Properties = IncludeMembers.Public | IncludeMembers.Internal,
 			});
@@ -191,17 +195,18 @@ public sealed partial class EquivalencyComparerTests
 		{
 			MyClassWithProperties actual = new(actualPublicValue, 1, 3);
 			MyClassWithProperties expected = new(expectedPublicValue, 2, 4);
-			EquivalencyComparer sut = new(new EquivalencyOptions
+			EquivalencyMatchType sut = new(new EquivalencyOptions
 			{
 				Properties = IncludeMembers.Public,
 			});
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
 
 			await That(result).IsEqualTo(expectedResult);
 			if (!expectedResult)
 			{
-				await That(sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected))
+				await That(explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected))
 					.IsEqualTo($"""
 					            it was not:
 					              Property MyPublicProperty differed:

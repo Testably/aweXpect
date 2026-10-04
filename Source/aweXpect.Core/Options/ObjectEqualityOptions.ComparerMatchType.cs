@@ -43,18 +43,16 @@ public partial class ObjectEqualityOptions<TSubject>
 
 		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TSubject, TExpected}(TSubject, TExpected)" />
 		public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-			=> new ValueTask<bool>(TryCast(actual, out TSubject typedActual) &&
-			                       TryCast(expected, out TSubject typedExpected) &&
-			                       UserCode.Invoke(static values => values.Comparer.Equals(values.Actual, values.Expected),
-				                       (Comparer: comparer, Actual: typedActual, Expected: typedExpected), "the comparer"));
+			=> new(IsEqual(actual, expected));
+
+		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqualWithExplanation{TActual, TExpected}(TActual, TExpected)" />
+		public ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual,
+			TExpected expected)
+			=> ObjectEqualityOptions.ExplainWithActualValue(IsEqual(actual, expected));
 
 		/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
 		public string GetExpectation(string expected, ExpectationGrammars grammars)
 			=> $"{grammars.Verb("is", "are")} {(grammars.HasFlag(ExpectationGrammars.Negated) ? "not " : "")}equal to {expected}" + ToString();
-
-		/// <inheritdoc cref="IObjectMatchType.GetExtendedFailure(string, ExpectationGrammars, object?, object?)" />
-		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
-			=> $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented())}";
 
 		/// <inheritdoc cref="IObjectMatchType.AppendContexts(ResultContextCollector)" />
 		public void AppendContexts(ResultContextCollector contexts)
@@ -69,6 +67,12 @@ public partial class ObjectEqualityOptions<TSubject>
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
 			=> $" using {Formatter.Format(comparer.GetType())}";
+
+		private bool IsEqual<TActual, TExpected>(TActual actual, TExpected expected)
+			=> TryCast(actual, out TSubject typedActual) &&
+			   TryCast(expected, out TSubject typedExpected) &&
+			   UserCode.Invoke(static values => values.Comparer.Equals(values.Actual, values.Expected),
+				   (Comparer: comparer, Actual: typedActual, Expected: typedExpected), "the comparer");
 
 		/// <remarks>
 		///     A <see langword="null" /> value is not matched by a type pattern, but is a valid value whenever
@@ -95,16 +99,16 @@ public partial class ObjectEqualityOptions<TSubject>
 
 		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TSubject, TExpected}(TSubject, TExpected)" />
 		public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-			=> new ValueTask<bool>(UserCode.Invoke(static values => values.Comparer.Equals(values.Actual, values.Expected),
-				(Comparer: comparer, Actual: (object?)actual, Expected: (object?)expected), "the comparer"));
+			=> new(IsEqual(actual, expected));
+
+		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqualWithExplanation{TActual, TExpected}(TActual, TExpected)" />
+		public ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual,
+			TExpected expected)
+			=> ObjectEqualityOptions.ExplainWithActualValue(IsEqual(actual, expected));
 
 		/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
 		public string GetExpectation(string expected, ExpectationGrammars grammars)
 			=> $"{grammars.Verb("is", "are")} {(grammars.HasFlag(ExpectationGrammars.Negated) ? "not " : "")}equal to {expected}" + ToString();
-
-		/// <inheritdoc cref="IObjectMatchType.GetExtendedFailure(string, ExpectationGrammars, object?, object?)" />
-		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
-			=> $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented())}";
 
 		/// <inheritdoc cref="IObjectMatchType.AppendContexts(ResultContextCollector)" />
 		public void AppendContexts(ResultContextCollector contexts)
@@ -119,6 +123,10 @@ public partial class ObjectEqualityOptions<TSubject>
 		/// <inheritdoc cref="object.ToString()" />
 		public override string ToString()
 			=> $" using {Formatter.Format(comparer.GetType())}";
+
+		private bool IsEqual<TActual, TExpected>(TActual actual, TExpected expected)
+			=> UserCode.Invoke(static values => values.Comparer.Equals(values.Actual, values.Expected),
+				(Comparer: comparer, Actual: (object?)actual, Expected: (object?)expected), "the comparer");
 
 		#endregion
 	}

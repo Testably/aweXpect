@@ -446,9 +446,9 @@ aweXpect.Core.ResultContextCollectorExtensions
 aweXpect.Equivalency.EquivalencyMatchType
 aweXpect.Equivalency.EquivalencyMatchType.AppendContexts(aweXpect.Core.ResultContextCollector! contexts) -> void
 aweXpect.Equivalency.EquivalencyMatchType.AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected) -> System.Threading.Tasks.ValueTask<bool>
+aweXpect.Equivalency.EquivalencyMatchType.AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual, TExpected expected) -> System.Threading.Tasks.ValueTask<aweXpect.Core.IObjectMatchResult!>
 aweXpect.Equivalency.EquivalencyMatchType.EquivalencyMatchType(aweXpect.Equivalency.EquivalencyOptions! equivalencyOptions) -> void
 aweXpect.Equivalency.EquivalencyMatchType.GetExpectation(string! expected, aweXpect.Core.ExpectationGrammars grammars) -> string!
-aweXpect.Equivalency.EquivalencyMatchType.GetExtendedFailure(string! it, aweXpect.Core.ExpectationGrammars grammars, object? actual, object? expected) -> string!
 aweXpect.Equivalency.EquivalencyMatchType.PrependItemAndComparison(string! expected, string? itemNoun = null, string? comparison = null) -> string!
 override aweXpect.Equivalency.EquivalencyMatchType.ToString() -> string!
 static aweXpect.Core.ResultContextCollectorExtensions.AddCollectionContext(this aweXpect.Core.ResultContextCollector! contexts, System.Collections.IEnumerable? collection, bool isIncomplete = false) -> void
@@ -617,3 +617,10 @@ aweXpect.Delegates.ThatDelegate.WithValue<T>.WithValue(aweXpect.Core.Expectation
 aweXpect.Options.Quantifier.Check(int amount, bool isLast, bool isNegated = false) -> bool?
 aweXpect.Options.Quantifier.IsNever(bool isNegated) -> bool
 aweXpect.Options.Quantifier.ToString(bool isNegated) -> string!
+*REMOVED*aweXpect.Core.IObjectMatchType.GetExtendedFailure(string! it, aweXpect.Core.ExpectationGrammars grammars, object? actual, object? expected) -> string!
+*REMOVED*aweXpect.Options.ObjectEqualityOptions<TSubject>.GetExtendedFailure(string! it, aweXpect.Core.ExpectationGrammars grammars, object? actual, object? expected) -> string!
+aweXpect.Core.IObjectMatchResult
+aweXpect.Core.IObjectMatchResult.GetExtendedFailure(string! it, aweXpect.Core.ExpectationGrammars grammars, object? actual, object? expected) -> string!
+aweXpect.Core.IObjectMatchResult.IsMatch.get -> bool
+aweXpect.Core.IObjectMatchType.AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual, TExpected expected) -> System.Threading.Tasks.ValueTask<aweXpect.Core.IObjectMatchResult!>
+aweXpect.Options.ObjectEqualityOptions<TSubject>.AreConsideredEqualWithExplanation<TExpected>(TSubject actual, TExpected expected) -> System.Threading.Tasks.ValueTask<aweXpect.Core.IObjectMatchResult!>

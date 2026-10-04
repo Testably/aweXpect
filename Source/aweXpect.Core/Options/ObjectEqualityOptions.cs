@@ -26,6 +26,13 @@ internal static class ObjectEqualityOptions
 	internal static string GetItemExpectation(string expected, string? itemNoun, string? comparison)
 		=> (itemNoun is null ? "" : itemNoun + " ") + (comparison is null ? "" : comparison + " ") + expected;
 
+	/// <summary>
+	///     Returns a cached result for the <paramref name="isMatch" /> outcome that explains a failure with the actual
+	///     value, e.g. <c>it was 2</c>.
+	/// </summary>
+	internal static ValueTask<IObjectMatchResult> ExplainWithActualValue(bool isMatch)
+		=> new(isMatch ? ActualValueResult.Match : ActualValueResult.NoMatch);
+
 	private sealed class EqualsMatchType : IObjectMatchType
 	{
 		/// <inheritdoc cref="object.ToString()" />
@@ -35,27 +42,35 @@ internal static class ObjectEqualityOptions
 
 		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TSubject, TExpected}(TSubject, TExpected)" />
 		public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
+			=> new(IsEqual(actual, expected));
+
+		/// <inheritdoc cref="IObjectMatchType.AreConsideredEqualWithExplanation{TActual, TExpected}(TActual, TExpected)" />
+		public ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual,
+			TExpected expected)
+			=> ExplainWithActualValue(IsEqual(actual, expected));
+
+		private static bool IsEqual<TActual, TExpected>(TActual actual, TExpected expected)
 		{
 			if (actual is null && expected is null)
 			{
-				return new ValueTask<bool>(true);
+				return true;
 			}
 
 			if (actual is null || expected is null)
 			{
-				return new ValueTask<bool>(false);
+				return false;
 			}
 
 			if (DateTimeKindComparison.AreKindsIncompatible(actual, expected))
 			{
-				return new ValueTask<bool>(false);
+				return false;
 			}
 
 			if (expected is TActual castedExpected &&
 			    UserCode.Invoke(static values => EqualityComparer<TActual>.Default.Equals(values.Actual, values.Expected),
 				    (Actual: actual, Expected: castedExpected), static values => UserCode.EqualsOf(values.Actual!)))
 			{
-				return new ValueTask<bool>(true);
+				return true;
 			}
 
 			// A primitive's Equals(object) agrees with its typed Equals, so comparing the boxed values cannot differ.
@@ -67,11 +82,11 @@ internal static class ObjectEqualityOptions
 			if (typeof(TActual) == typeof(object) &&
 			    AreNumericsEqual(actual, expected))
 			{
-				return new ValueTask<bool>(true);
+				return true;
 			}
 
-			return new ValueTask<bool>(UserCode.Invoke(static values => Equals(values.Actual, values.Expected),
-				(Actual: actual, Expected: expected), static values => UserCode.EqualsOf(values.Actual!)));
+			return UserCode.Invoke(static values => Equals(values.Actual, values.Expected),
+				(Actual: actual, Expected: expected), static values => UserCode.EqualsOf(values.Actual!));
 		}
 
 		private static bool AreNumericsEqual(object actual, object expected)
@@ -195,10 +210,6 @@ internal static class ObjectEqualityOptions
 		public string GetExpectation(string expected, ExpectationGrammars grammars)
 			=> $"{grammars.Verb("is", "are")} {(grammars.IsNegated() ? "not " : "")}equal to {expected}";
 
-		/// <inheritdoc cref="IObjectMatchType.GetExtendedFailure(string, ExpectationGrammars, object?, object?)" />
-		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
-			=> $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented())}";
-
 		/// <inheritdoc cref="IObjectMatchType.AppendContexts(ResultContextCollector)" />
 		public void AppendContexts(ResultContextCollector contexts)
 		{
@@ -210,6 +221,23 @@ internal static class ObjectEqualityOptions
 			=> GetItemExpectation(expected, itemNoun, comparison);
 
 		#endregion
+	}
+
+	/// <summary>
+	///     A result that explains a failure only with the actual value, so that it holds no state of the comparison
+	///     and one instance per outcome is shared.
+	/// </summary>
+	private sealed class ActualValueResult(bool isMatch) : IObjectMatchResult
+	{
+		public static readonly IObjectMatchResult Match = new ActualValueResult(true);
+		public static readonly IObjectMatchResult NoMatch = new ActualValueResult(false);
+
+		/// <inheritdoc cref="IObjectMatchResult.IsMatch" />
+		public bool IsMatch => isMatch;
+
+		/// <inheritdoc cref="IObjectMatchResult.GetExtendedFailure(string, ExpectationGrammars, object?, object?)" />
+		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
+			=> $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented())}";
 	}
 }
 
@@ -228,6 +256,18 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	/// <inheritdoc />
 	public ValueTask<bool> AreConsideredEqual<TExpected>(TSubject actual, TExpected expected)
 		=> MatchType.AreConsideredEqual(actual, expected);
+
+	/// <summary>
+	///     Compares the <paramref name="actual" /> with the <paramref name="expected" /> value and returns a result that
+	///     can explain a failure.
+	/// </summary>
+	/// <remarks>
+	///     The result is only valid until the next comparison with
+	///     <see cref="AreConsideredEqualWithExplanation{TExpected}(TSubject, TExpected)" />, so read it right away.
+	/// </remarks>
+	public ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TExpected>(TSubject actual,
+		TExpected expected)
+		=> MatchType.AreConsideredEqualWithExplanation(actual, expected);
 
 	/// <summary>
 	///     Returns the options to use for all comparisons of one evaluation.
@@ -262,12 +302,6 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	/// </summary>
 	private protected void ThrowIfMatchTypeIsSpecified(string optionName)
 		=> ThrowHelper.ThrowIfOptionIsAlreadySpecified(_matchTypeOption, optionName);
-
-	/// <summary>
-	///     Get an extended failure text.
-	/// </summary>
-	public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
-		=> MatchType.GetExtendedFailure(it, grammars, actual, expected);
 
 	/// <summary>
 	///     Returns the expectation string, e.g. <c>be equal to {expectedExpression}</c>.

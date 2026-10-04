@@ -5,7 +5,7 @@ using aweXpect.Equivalency;
 // ReSharper disable NotAccessedField.Local
 namespace aweXpect.Internal.Tests.Helpers;
 
-public sealed partial class EquivalencyComparerTests
+public sealed partial class EquivalencyMatchTypeTests
 {
 	public sealed class Tests
 	{
@@ -16,7 +16,7 @@ public sealed partial class EquivalencyComparerTests
 			{
 				MyValue = "foo",
 			};
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
 			bool result = await sut.AreConsideredEqual(actual, actual);
 
@@ -36,10 +36,11 @@ public sealed partial class EquivalencyComparerTests
 			};
 			actual.Nested = expected;
 			expected.Nested = actual;
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
-			string failure = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
+			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 			await That(result).IsFalse();
 			await That(failure).IsEqualTo("""
@@ -59,7 +60,7 @@ public sealed partial class EquivalencyComparerTests
 		{
 			MyClass? actual = null;
 			MyClass? expected = null;
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
 			bool result = await sut.AreConsideredEqual(actual, expected);
 
@@ -71,14 +72,15 @@ public sealed partial class EquivalencyComparerTests
 		{
 			MyClass? actual = null;
 			MyClass expected = new();
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
-			string failure = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
+			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 			await That(result).IsFalse();
 			await That(failure).IsEqualTo("""
-			                              it was <null> instead of EquivalencyComparerTests.MyClass { MyValue = <null>, Nested = <null> }
+			                              it was <null> instead of EquivalencyMatchTypeTests.MyClass { MyValue = <null>, Nested = <null> }
 			                              """);
 		}
 
@@ -87,14 +89,15 @@ public sealed partial class EquivalencyComparerTests
 		{
 			MyClass actual = new();
 			MyClass? expected = null;
-			EquivalencyComparer sut = new(new EquivalencyOptions());
+			EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
-			string failure = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
+			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 			await That(result).IsFalse();
 			await That(failure).IsEqualTo("""
-			                              it was EquivalencyComparerTests.MyClass { MyValue = <null>, Nested = <null> } instead of <null>
+			                              it was EquivalencyMatchTypeTests.MyClass { MyValue = <null>, Nested = <null> } instead of <null>
 			                              """);
 		}
 	}

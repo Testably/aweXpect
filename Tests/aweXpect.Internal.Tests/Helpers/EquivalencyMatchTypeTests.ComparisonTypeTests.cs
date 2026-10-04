@@ -5,7 +5,7 @@ using aweXpect.Equivalency;
 
 namespace aweXpect.Internal.Tests.Helpers;
 
-public sealed partial class EquivalencyComparerTests
+public sealed partial class EquivalencyMatchTypeTests
 {
 	public sealed class ComparisonTypeTests
 	{
@@ -34,21 +34,22 @@ public sealed partial class EquivalencyComparerTests
 					Value = 1,
 				},
 			};
-			EquivalencyComparer sut = new(new EquivalencyOptions()
+			EquivalencyMatchType sut = new(new EquivalencyOptions()
 				.For<MyClass2>(o => o with
 				{
 					ComparisonType = EquivalencyComparisonType.ByValue,
 				}));
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
-			string failure = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
+			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 			await That(result).IsFalse();
 			await That(failure).IsEqualTo("""
 			                              it was not:
 			                                Property Property2 differed:
-			                                    Actual: EquivalencyComparerTests.ComparisonTypeTests.MyClass2 { Value = 1 }
-			                                  Expected: EquivalencyComparerTests.ComparisonTypeTests.MyClass2 { Value = 1 }
+			                                    Actual: EquivalencyMatchTypeTests.ComparisonTypeTests.MyClass2 { Value = 1 }
+			                                  Expected: EquivalencyMatchTypeTests.ComparisonTypeTests.MyClass2 { Value = 1 }
 			                              """);
 		}
 
@@ -63,20 +64,21 @@ public sealed partial class EquivalencyComparerTests
 			{
 				MyValue = "foo",
 			};
-			EquivalencyComparer sut = new(new EquivalencyOptions
+			EquivalencyMatchType sut = new(new EquivalencyOptions
 			{
 				DefaultComparisonTypeSelector = _ => EquivalencyComparisonType.ByValue,
 			});
 
-			bool result = await sut.AreConsideredEqual(actual, expected);
-			string failure = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+			IObjectMatchResult explanation = await sut.AreConsideredEqualWithExplanation(actual, expected);
+			bool result = explanation.IsMatch;
+			string failure = explanation.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
 
 			await That(result).IsFalse();
 			await That(failure).IsEqualTo("""
 			                              it was not:
 			                                It differed:
-			                                    Actual: EquivalencyComparerTests.MyClass { MyValue = "foo", Nested = <null> }
-			                                  Expected: EquivalencyComparerTests.MyClass { MyValue = "foo", Nested = <null> }
+			                                    Actual: EquivalencyMatchTypeTests.MyClass { MyValue = "foo", Nested = <null> }
+			                                  Expected: EquivalencyMatchTypeTests.MyClass { MyValue = "foo", Nested = <null> }
 			                              """);
 		}
 

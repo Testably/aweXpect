@@ -14,6 +14,39 @@ namespace aweXpect.Core.Tests.Equivalency;
 public sealed class EquivalencyMatchTypeTests
 {
 	[Fact]
+	public async Task AreConsideredEqualWithExplanation_ShouldReturnTheMatchTypeItself()
+	{
+		EquivalencyMatchType sut = new(new EquivalencyOptions());
+
+		IObjectMatchResult result = await sut.AreConsideredEqualWithExplanation(new Dummy { Value = 1, },
+			new Dummy { Value = 2, });
+
+		await That(result).IsSameAs(sut)
+			.Because("the match type keeps the differences itself, so that a comparison allocates no result");
+		await That(result.IsMatch).IsFalse();
+		await That(result.GetExtendedFailure("it", ExpectationGrammars.None, new Dummy(), new Dummy()))
+			.IsEqualTo("""
+			           it was not:
+			             Property Value differed:
+			                 Actual: 1
+			               Expected: 2
+			           """);
+	}
+
+	[Theory]
+	[InlineData(1, true)]
+	[InlineData(2, false)]
+	public async Task AreConsideredEqual_ShouldDecideWhetherTheObjectsAreEquivalent(int expectedValue,
+		bool expectMatch)
+	{
+		EquivalencyMatchType sut = new(new EquivalencyOptions());
+
+		bool result = await sut.AreConsideredEqual(new Dummy { Value = 1, }, new Dummy { Value = expectedValue, });
+
+		await That(result).IsEqualTo(expectMatch);
+	}
+
+	[Fact]
 	public async Task Constructor_WhenOptionsAreNull_ShouldThrowArgumentNullException()
 	{
 		void Act()
@@ -223,13 +256,16 @@ internal static class EquivalencyMatchTypeTestExtensions
 		: ConstraintResult.WithEqualToValue<TSubject>(it, grammars, expected is null),
 			IAsyncConstraint<TSubject>
 	{
+		private IObjectMatchResult? _matchResult;
+
 		public override void AppendContexts(ResultContextCollector contexts)
 			=> contexts.AddEqualityOptionsContexts(options);
 
 		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome = await options.AreConsideredEqual(actual, expected) ? Outcome.Success : Outcome.Failure;
+			_matchResult = await options.AreConsideredEqualWithExplanation(actual, expected);
+			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 
@@ -238,13 +274,13 @@ internal static class EquivalencyMatchTypeTestExtensions
 				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
 				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(options.GetExtendedFailure(It, Grammars, Actual, expected));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
 	}
 }

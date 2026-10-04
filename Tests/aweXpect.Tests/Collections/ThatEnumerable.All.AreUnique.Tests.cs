@@ -120,6 +120,55 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Fact]
+				public async Task WhenItContainsEquivalentDuplicates_ShouldFail()
+				{
+					IEnumerable<MyClass> subject = ToEnumerable([new MyClass(1), new MyClass(2), new MyClass(1),]);
+
+					async Task Act()
+						=> await That(subject).All().AreUnique().Equivalent();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is unique using equivalency for all items,
+						             but only 1 of at least 3 were
+
+						             Not matching items:
+						             [
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 1
+						               },
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 1
+						               },
+						               (… and maybe more)
+						             ]
+
+						             Collection:
+						             [
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 1
+						               },
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 2
+						               },
+						               MyClass {
+						                 StringValue = "",
+						                 Value = 1
+						               },
+						               (… and maybe more)
+						             ]
+
+						             Equivalency options:
+						              - include public fields and properties
+						             """);
+				}
+
+				[Fact]
 				public async Task WhenItContainsMultipleDuplicates_ShouldFail()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 3, 1, 2, -1,]);
