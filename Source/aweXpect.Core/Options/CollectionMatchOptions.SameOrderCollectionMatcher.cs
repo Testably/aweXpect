@@ -85,7 +85,7 @@ public partial class CollectionMatchOptions
 		private readonly EquivalenceRelations _equivalenceRelations;
 		private readonly T3[] _expectedItems;
 		private readonly bool _ignoreInterspersedItems;
-		private readonly List<T> _values = new();
+		private readonly List<T> _values;
 
 		/// <summary>
 		///     The deviating items, which are only created for the first deviation, as a met expectation has none.
@@ -126,6 +126,7 @@ public partial class CollectionMatchOptions
 			_ignoreInterspersedItems = ignoreInterspersedItems;
 			_addsInAnyOrderHint = addsInAnyOrderHint;
 			_expectedItems = expected as T3[] ?? expected.ToArray();
+			_values = new List<T>(_expectedItems.Length);
 			_isFound = _expectedItems.Length == 0;
 		}
 
@@ -143,19 +144,25 @@ public partial class CollectionMatchOptions
 			   (!_equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) ||
 			    _values.Count > _expectedItems.Length);
 
-		public async ValueTask<(bool, string?)>
+		public ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			if (_equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn))
 			{
-				return await VerifyTheCurrentValueIsContainedInTheExpectedItems(it, value, options, maximumNumber);
+				return VerifyTheCurrentValueIsContainedInTheExpectedItems(it, value, options, maximumNumber);
 			}
 
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains))
 			{
-				return await VerifyTheCurrentValueMatchesTheItemAtItsPosition(it, value, options, maximumNumber);
+				return VerifyTheCurrentValueMatchesTheItemAtItsPosition(it, value, options, maximumNumber);
 			}
 
+			return VerifyTheCurrentValueContainsTheExpectedItems(value, options);
+		}
+
+		private async ValueTask<(bool, string?)>
+			VerifyTheCurrentValueContainsTheExpectedItems(T value, IOptionsEquality<T2> options)
+		{
 			_values.Add(value);
 			if (!_isFound)
 			{
@@ -510,32 +517,79 @@ public partial class CollectionMatchOptions
 		///     removed items instead of every shifted item; the positional deviations are only recorded as far as they
 		///     can be listed.
 		/// </remarks>
-		private async ValueTask<(bool, string?)>
+		/// <remarks>
+		///     An item that matches synchronously before the first deviation returns without a state machine, because
+		///     every item of a met expectation does.
+		/// </remarks>
+		private ValueTask<(bool, string?)>
 			VerifyTheCurrentValueMatchesTheItemAtItsPosition(string it, T value, IOptionsEquality<T2> options,
 				int maximumNumber)
 		{
 			int index = _values.Count;
 			_values.Add(value);
-			bool isAdditional = index >= _expectedItems.Length;
-			if (isAdditional || !await IsMatch(index, _expectedItems[index], options))
-			{
-				if (_positionalDeviations++ <= 2L * maximumNumber)
-				{
-					if (isAdditional)
-					{
-						(_additionalItems ??= new Dictionary<int, T>()).Add(index, value);
-					}
-					else
-					{
-						(_incorrectItems ??= new Dictionary<int, (T Item, T3 Expected)>()).Add(index,
-							(value, _expectedItems[index]));
-					}
-				}
+			return index < _expectedItems.Length
+				? ContinueAfterTheComparison(IsMatch(index, _expectedItems[index], options), it, index, value, options,
+					maximumNumber)
+				: ContinueAfterADeviation(it, index, value, options, maximumNumber);
+		}
 
-				_editDistance ??= new BoundedEditDistance<T3>(_expectedItems,
-					(int)Math.Min(2L * maximumNumber, int.MaxValue), index);
+		private ValueTask<(bool, string?)> ContinueAfterTheComparison(ValueTask<bool> isMatch, string it, int index,
+			T value, IOptionsEquality<T2> options, int maximumNumber)
+		{
+			if (_editDistance is null && isMatch.IsCompletedSuccessfully)
+			{
+				return isMatch.Result
+					? new ValueTask<(bool, string?)>((false, null))
+					: ContinueAfterADeviation(it, index, value, options, maximumNumber);
 			}
 
+			return ContinueAfterTheComparisonAsync(isMatch, it, index, value, options, maximumNumber);
+		}
+
+		private async ValueTask<(bool, string?)> ContinueAfterTheComparisonAsync(ValueTask<bool> isMatch, string it,
+			int index, T value, IOptionsEquality<T2> options, int maximumNumber)
+		{
+			if (!await isMatch)
+			{
+				RecordADeviation(index, value, maximumNumber);
+			}
+
+			return await ContinueTheEditDistance(it, options, maximumNumber);
+		}
+
+		private async ValueTask<(bool, string?)> ContinueAfterADeviation(string it, int index, T value,
+			IOptionsEquality<T2> options, int maximumNumber)
+		{
+			RecordADeviation(index, value, maximumNumber);
+			return await ContinueTheEditDistance(it, options, maximumNumber);
+		}
+
+		/// <summary>
+		///     Records the <paramref name="value" /> at the <paramref name="index" /> as additional or incorrect, as far as
+		///     the deviations can be listed, and starts tracking the edit distance.
+		/// </summary>
+		private void RecordADeviation(int index, T value, int maximumNumber)
+		{
+			if (_positionalDeviations++ <= 2L * maximumNumber)
+			{
+				if (index >= _expectedItems.Length)
+				{
+					(_additionalItems ??= new Dictionary<int, T>()).Add(index, value);
+				}
+				else
+				{
+					(_incorrectItems ??= new Dictionary<int, (T Item, T3 Expected)>()).Add(index,
+						(value, _expectedItems[index]));
+				}
+			}
+
+			_editDistance ??= new BoundedEditDistance<T3>(_expectedItems,
+				(int)Math.Min(2L * maximumNumber, int.MaxValue), index);
+		}
+
+		private async ValueTask<(bool, string?)> ContinueTheEditDistance(string it, IOptionsEquality<T2> options,
+			int maximumNumber)
+		{
 			if (_editDistance is not null &&
 			    !await _editDistance.Add((subjectIndex, expected) => IsMatch(subjectIndex, expected, options)))
 			{
