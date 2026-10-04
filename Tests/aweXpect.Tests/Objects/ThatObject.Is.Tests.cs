@@ -66,6 +66,46 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WhenCombinedWithOr_AndLeftIsMetByAValueOfTheAwaitedType_ShouldReturnSubject()
+			{
+				object subject = new MyClass();
+
+				MyClass result = await That(subject).Is<MyBaseClass>().Or.Is<MyClass>();
+
+				await That(result).IsSameAs(subject);
+			}
+
+			[Fact]
+			public async Task WhenCombinedWithOr_AndOnlyLeftIsMet_ShouldReturnNull()
+			{
+				object subject = new MyClass();
+
+				OtherClass result = await That(subject).Is<MyClass>().Or.Is<OtherClass>();
+
+				await That(result).IsNull();
+			}
+
+			[Fact]
+			public async Task WhenCombinedWithOr_AndOnlyLeftIsMet_ShouldReturnTheDefaultOfAValueType()
+			{
+				object subject = "foo";
+
+				int result = await That(subject).Is<string>().Or.Is<int>();
+
+				await That(result).IsEqualTo(0);
+			}
+
+			[Fact]
+			public async Task WhenCombinedWithOr_AndOnlyRightIsMet_ShouldReturnSubject()
+			{
+				object subject = new MyClass();
+
+				MyClass result = await That(subject).Is<OtherClass>().Or.Is<MyClass>();
+
+				await That(result).IsSameAs(subject);
+			}
+
+			[Fact]
 			public async Task WhenNestedInHasInner_ShouldFail()
 			{
 				Exception subject = new("outer", new ArgumentException("inner"));
@@ -189,6 +229,16 @@ public sealed partial class ThatObject
 				object? result = await That(subject).Is(typeof(MyClass));
 
 				await That(result).IsSameAs(subject);
+			}
+
+			[Fact]
+			public async Task WhenCombinedWithOr_AndSubjectIsNull_ShouldReturnNull()
+			{
+				object? subject = null;
+
+				object? result = await That(subject).IsNull().Or.Is(typeof(MyClass));
+
+				await That(result).IsNull();
 			}
 
 			[Fact]

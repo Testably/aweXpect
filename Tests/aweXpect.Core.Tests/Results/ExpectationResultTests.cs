@@ -22,18 +22,34 @@ public class ExpectationResultTests
 	}
 
 	[Fact]
-	public async Task IsMet_InvalidType_ShouldThrowFailException()
+	public async Task IsMet_InvalidType_ShouldReturnDefault()
 	{
 		MyExpectationBuilder myBuilder =
 			new("my-subject", () => new DummyConstraintResult<string>(Outcome.Success, "foo", "SUCCESS"));
 		ExpectationResult<int> sut = new(myBuilder);
 
-		async Task Act() => await sut;
+		int result = await sut;
 
-		await That(Act).Throws<FailException>()
-			.WithMessage("""
-			             The value in DummyConstraintResult<string> did not match expected type int.
-			             """);
+		await That(result).IsEqualTo(0)
+			.Because("a met expectation never throws, also without a value of the expected type");
+	}
+
+	[Fact]
+	public async Task IsMet_InvalidType_WhenTracing_ShouldReturnDefault()
+	{
+		MyExpectationBuilder myBuilder =
+			new("my-subject", () => new DummyConstraintResult<string>(Outcome.Success, "foo", "SUCCESS"));
+		ExpectationResult<int> sut = new(myBuilder);
+		TestTraceWriter traceWriter = new();
+		int result;
+
+		using (traceWriter.Register())
+		{
+			result = await sut;
+		}
+
+		await That(result).IsEqualTo(0);
+		await That(traceWriter.Messages).IsEqualTo(["  Successfully verified that my-subject SUCCESS",]);
 	}
 
 	[Fact]
