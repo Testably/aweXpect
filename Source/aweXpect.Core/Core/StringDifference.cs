@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using aweXpect.Core.Helpers;
 using aweXpect.Customization;
@@ -160,8 +159,7 @@ public sealed class StringDifference(
 		string visibleText = actual[trimStart..indexOfFirstMismatch];
 		whiteSpaceCountBeforeArrow += visibleText.Escape().Length - visibleText.Length;
 
-		string matchingString = actual[..indexOfFirstMismatch];
-		int lineNumber = matchingString.Count(c => c == '\n');
+		int lineNumber = CountLineFeeds(actual, indexOfFirstMismatch);
 		if (settings is not null)
 		{
 			lineNumber += settings.IgnoredTrailingLines;
@@ -169,10 +167,12 @@ public sealed class StringDifference(
 
 		int column = GetIgnoredColumns(settings, lineNumber);
 
-		if (settings?.IgnoredTrailingLines > 0 || actual.Any(c => c == '\n'))
+		if (settings?.IgnoredTrailingLines > 0 || actual.IndexOf('\n') >= 0)
 		{
-			int indexOfLastNewlineBeforeMismatch = matchingString.LastIndexOf('\n');
-			column += matchingString.Length - indexOfLastNewlineBeforeMismatch;
+			int indexOfLastNewlineBeforeMismatch = indexOfFirstMismatch > 0
+				? actual.LastIndexOf('\n', indexOfFirstMismatch - 1)
+				: -1;
+			column += indexOfFirstMismatch - indexOfLastNewlineBeforeMismatch;
 			sb.Append(prefix).Append(" on line ").Append(lineNumber + 1).Append(" and column ")
 				.Append(column).AppendLine(":");
 		}
@@ -214,6 +214,23 @@ public sealed class StringDifference(
 		}
 
 		return sb.ToString();
+	}
+
+	/// <summary>
+	///     Counts the <c>\n</c> characters in the first <paramref name="length" /> characters of the
+	///     <paramref name="value" />.
+	/// </summary>
+	private static int CountLineFeeds(string value, int length)
+	{
+		int count = 0;
+		int index = value.IndexOf('\n', 0, length);
+		while (index >= 0)
+		{
+			count++;
+			index = value.IndexOf('\n', index + 1, length - index - 1);
+		}
+
+		return count;
 	}
 
 	/// <summary>
@@ -269,7 +286,7 @@ public sealed class StringDifference(
 	{
 		int minimumNumberOfCharactersAfterMismatch = Math.Max(0,
 			Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference.Get());
-		int subjectLength = GetLengthOfPhraseToShowOrDefaultLength(text[indexOfStartingPhrase..],
+		int subjectLength = GetLengthOfPhraseToShowOrDefaultLength(text, indexOfStartingPhrase,
 			indexOfFirstMismatch - indexOfStartingPhrase + minimumNumberOfCharactersAfterMismatch);
 		const char ellipsis = '\u2026';
 
@@ -305,7 +322,7 @@ public sealed class StringDifference(
 		StringBuilder? stringBuilder = new();
 		int indexOfFirstMismatch = text.Length - indexFromEnd;
 		int minLength = indexOfFirstMismatch + 10 - indexOfStartingPhrase;
-		int subjectLength = GetLengthOfPhraseToShowOrDefaultLength(text[indexOfStartingPhrase..], minLength);
+		int subjectLength = GetLengthOfPhraseToShowOrDefaultLength(text, indexOfStartingPhrase, minLength);
 		const char ellipsis = '\u2026';
 
 		stringBuilder.Append(prefix);
@@ -340,7 +357,7 @@ public sealed class StringDifference(
 			return 0;
 		}
 
-		StringComparison? comparison = GetOrdinalComparison(comparer);
+		StringComparison? comparison = GetComparison(comparer);
 		int maxCommonLength = Math.Min(actualValue.Length, expectedValue.Length);
 		int min = 0;
 		int max = maxCommonLength + 1;
@@ -366,9 +383,14 @@ public sealed class StringDifference(
 	}
 
 	/// <summary>
-	///     The comparison that decides like the <paramref name="comparer" />, when it is one of the default comparers.
+	///     The comparison that decides like the <paramref name="comparer" />, when it is one of the ordinal or culture-aware
+	///     comparers of <see cref="StringComparer" />.
 	/// </summary>
-	private static StringComparison? GetOrdinalComparison(IEqualityComparer<string> comparer)
+	/// <remarks>
+	///     A culture-aware comparer is recognized by its equality to the well-known comparer, which compares the culture
+	///     and the options, so that this does not call into a custom comparer.
+	/// </remarks>
+	private static StringComparison? GetComparison(IEqualityComparer<string> comparer)
 	{
 		if (ReferenceEquals(comparer, StringComparer.Ordinal))
 		{
@@ -380,6 +402,26 @@ public sealed class StringDifference(
 			return StringComparison.OrdinalIgnoreCase;
 		}
 
+		if (StringComparer.InvariantCulture.Equals(comparer))
+		{
+			return StringComparison.InvariantCulture;
+		}
+
+		if (StringComparer.InvariantCultureIgnoreCase.Equals(comparer))
+		{
+			return StringComparison.InvariantCultureIgnoreCase;
+		}
+
+		if (StringComparer.CurrentCulture.Equals(comparer))
+		{
+			return StringComparison.CurrentCulture;
+		}
+
+		if (StringComparer.CurrentCultureIgnoreCase.Equals(comparer))
+		{
+			return StringComparison.CurrentCultureIgnoreCase;
+		}
+
 		return null;
 	}
 
@@ -389,8 +431,7 @@ public sealed class StringDifference(
 	/// <remarks>
 	///     With a <paramref name="comparison" />, the ranges are compared without copying them: a substring per step of
 	///     the search allocates about twice the length of the values for every halving, which adds up to gigabytes for
-	///     long values. An ordinal comparison of the ranges decides exactly like the default comparers do for the
-	///     substrings.
+	///     long values. A comparison of the ranges decides exactly like the matching comparer does for the substrings.
 	/// </remarks>
 	private static bool AreEqual(string actualValue, string expectedValue, int length, bool fromEnd,
 		IEqualityComparer<string> comparer, StringComparison? comparison)
@@ -409,29 +450,32 @@ public sealed class StringDifference(
 	}
 
 	/// <summary>
-	///     Calculates how many characters to keep in <paramref name="value" />.
+	///     Calculates how many characters to keep in <paramref name="text" /> from the <paramref name="startIndex" /> on.
 	/// </summary>
 	/// <remarks>
 	///     If a word end is found between <paramref name="minLength" /> and 15 characters more, use this word end,
 	///     otherwise keep 5 characters more than <paramref name="minLength" />, or one more, so that a surrogate pair or a
 	///     <c>\r\n</c> line break is not split.
 	/// </remarks>
-	private static int GetLengthOfPhraseToShowOrDefaultLength(string value, int minLength)
+	private static int GetLengthOfPhraseToShowOrDefaultLength(string text, int startIndex, int minLength)
 	{
 		int defaultLength = minLength + 5;
 		int maxLength = minLength + 15;
 		const int lengthOfWhitespace = 1;
 
-		int indexOfWordBoundary = value
-			.LastIndexOf(' ', Math.Min(maxLength + lengthOfWhitespace, value.Length) - 1);
+		int remainingLength = text.Length - startIndex;
+		int searchLength = Math.Min(maxLength + lengthOfWhitespace, remainingLength);
+		int indexOfWordBoundary = searchLength > 0
+			? text.LastIndexOf(' ', startIndex + searchLength - 1, searchLength)
+			: -1;
 
-		if (indexOfWordBoundary > minLength)
+		if (indexOfWordBoundary >= 0 && indexOfWordBoundary - startIndex > minLength)
 		{
-			return indexOfWordBoundary;
+			return indexOfWordBoundary - startIndex;
 		}
 
-		int length = Math.Min(defaultLength, value.Length);
-		return value.IsSplitAt(length) ? length + 1 : length;
+		int length = Math.Min(defaultLength, remainingLength);
+		return text.IsSplitAt(startIndex + length) ? length + 1 : length;
 	}
 
 	/// <summary>

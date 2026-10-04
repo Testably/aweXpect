@@ -406,6 +406,23 @@ public class StringDifferenceTests
 		}
 
 		[Fact]
+		public async Task WhenTextHasLineFeedsOnly_ShouldIncludeLineAndColumnNumbers()
+		{
+			StringDifference sut = new(
+				"first line\nsecond line\nthird line with X here\nlast line",
+				"first line\nsecond line\nthird line with Y here\nlast line");
+
+			await That(sut.ToString()).IsEqualTo(
+				"""
+				differs on line 3 and column 17:
+				              ↓ (actual)
+				  "…line with X here\nlast line"
+				  "…line with Y here\nlast line"
+				              ↑ (expected)
+				""");
+		}
+
+		[Fact]
 		public async Task WhenTextHasMultipleLines_ShouldIncludeLineAndColumnNumbers()
 		{
 			int expectedIndex = 100 + (3 * Environment.NewLine.Length);
@@ -451,6 +468,77 @@ public class StringDifferenceTests
 
 			await That(sut.IndexOfFirstMismatch(StringDifference.MatchType.Equality)).IsEqualTo(-1);
 			await That(sut.ToString()).IsEqualTo("differs");
+		}
+
+		[Fact]
+		public async Task WhenUsingACultureAwareComparer_ShouldCompareWithTheCulture()
+		{
+			StringDifference sut = new(
+				"Prefix with an accented cafe\u0301 and MORE text X here",
+				"prefix with an accented café and more text Y here",
+				StringComparer.InvariantCultureIgnoreCase);
+
+			await That(sut.ToString()).IsEqualTo(
+				"""
+				differs at index 27:
+				                   ↓ (actual)
+				  "…an accented cafe\u0301 and MORE text X here"
+				  "…an accented café and more text Y here"
+				                   ↑ (expected)
+				""");
+		}
+
+		[Fact]
+		public async Task WhenUsingACustomComparer_ShouldCompareWithTheComparer()
+		{
+			StringDifference sut = new(
+				"some TEXT that differs at X here",
+				"some text that differs at Y here",
+				new UpperCaseComparer());
+
+			await That(sut.ToString()).IsEqualTo(
+				"""
+				differs at index 26:
+				               ↓ (actual)
+				  "…differs at X here"
+				  "…differs at Y here"
+				               ↑ (expected)
+				""");
+		}
+
+		[Fact]
+		public async Task WhenUsingTheCurrentCultureComparer_ShouldCompareWithTheCurrentCulture()
+		{
+			StringDifference sut = new(
+				"some TEXT that differs at X here",
+				"some text that differs at Y here",
+				StringComparer.CurrentCultureIgnoreCase);
+
+			await That(sut.ToString()).IsEqualTo(
+				"""
+				differs at index 26:
+				               ↓ (actual)
+				  "…differs at X here"
+				  "…differs at Y here"
+				               ↑ (expected)
+				""");
+		}
+
+		[Fact]
+		public async Task WhenWindowContainsADecomposedCharacter_ShouldEscapeTheCombiningMark()
+		{
+			StringDifference sut = new(
+				"some text with a cafe\u0301 and X here",
+				"some text with a cafe\u0301 and Y here");
+
+			await That(sut.ToString()).IsEqualTo(
+				"""
+				differs at index 27:
+				                     ↓ (actual)
+				  "…a cafe\u0301 and X here"
+				  "…a cafe\u0301 and Y here"
+				                     ↑ (expected)
+				""");
 		}
 
 		[Fact]
@@ -836,6 +924,25 @@ public class StringDifferenceTests
 		}
 
 		[Fact]
+		public async Task WhenUsingACultureAwareComparer_ShouldCompareWithTheCulture()
+		{
+			StringDifference sut = new(
+				"Prefix with an accented cafe\u0301 and MORE text X here",
+				"prefix with an accented café and more text Y here",
+				StringComparer.InvariantCultureIgnoreCase,
+				Settings);
+
+			await That(sut.ToString()).IsEqualTo(
+				"""
+				differs before index 44:
+				                                                    ↓ (actual)
+				  "Prefix with an accented cafe\u0301 and MORE text X here"
+				        "prefix with an accented café and more text Y here"
+				                                                    ↑ (expected suffix)
+				""");
+		}
+
+		[Fact]
 		public async Task WhenWindowEndsInsideLineBreak_ShouldIncludeTheWholeLineBreak()
 		{
 			StringDifference sut = new("abXccccccccccccc\r\ndd", "abYccccccccccccc\r\ndd", null, Settings);
@@ -933,5 +1040,13 @@ public class StringDifferenceTests
 		}
 
 		public int GetHashCode(string obj) => obj.GetHashCode();
+	}
+
+	private sealed class UpperCaseComparer : IEqualityComparer<string>
+	{
+		public bool Equals(string? x, string? y)
+			=> string.Equals(x?.ToUpperInvariant(), y?.ToUpperInvariant(), StringComparison.Ordinal);
+
+		public int GetHashCode(string obj) => obj.ToUpperInvariant().GetHashCode();
 	}
 }
