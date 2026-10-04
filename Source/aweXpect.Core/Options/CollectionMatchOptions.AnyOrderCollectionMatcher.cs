@@ -112,6 +112,10 @@ public partial class CollectionMatchOptions
 			ItemMatching<T, T3> matching = GetMatching(options);
 			await matching.ResolvePendingItems();
 			_missingItems = matching.UnmatchedExpectedItems();
+			if (!HasDeviations())
+			{
+				return (false, null);
+			}
 
 			// For the containment relation, all deviations are missing items, which are known completely here.
 			if (!_equivalenceRelations.HasFlag(EquivalenceRelations.Contains) &&
@@ -143,6 +147,21 @@ public partial class CollectionMatchOptions
 
 			string? error = ReturnErrorString(it, errors);
 			return (error != null, error);
+		}
+
+		/// <summary>
+		///     Whether <see cref="VerifyComplete" /> reports an error, without creating the error texts, as a met
+		///     expectation has none.
+		/// </summary>
+		private bool HasDeviations()
+		{
+			bool hasAdditionalItemError = _equivalenceRelations.HasFlag(EquivalenceRelations.Contains)
+				? _equivalenceRelations.HasFlag(EquivalenceRelations.ContainsProperly) && _additionalItems.Count == 0
+				: _additionalItems.Count > 0;
+			bool hasMissingItemError = _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedIn)
+				? _equivalenceRelations.HasFlag(EquivalenceRelations.IsContainedInProperly) && _missingItems.Count == 0
+				: _expected.Count > 0 && _missingItems.Count > 0;
+			return hasAdditionalItemError || hasMissingItemError;
 		}
 
 		/// <summary>
