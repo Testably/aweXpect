@@ -454,6 +454,7 @@ public abstract class ExpectationBuilder
 		memberNode.Source = (_it, ExpectationGrammars);
 		Node mappingNode = _node.AddMapping(memberNode);
 		_node = new ExpectationNode();
+		string previousIt = _it;
 		if (replaceIt)
 		{
 			_it = memberAccessor.ToString().Trim();
@@ -479,10 +480,7 @@ public abstract class ExpectationBuilder
 		mappingNode.AddNode(_node);
 		MoveReasonsTo(mappingNode, outerReasonCount);
 		_node = root;
-		if (replaceIt)
-		{
-			_it = DefaultCurrentSubject;
-		}
+		_it = previousIt;
 
 		return this;
 	}

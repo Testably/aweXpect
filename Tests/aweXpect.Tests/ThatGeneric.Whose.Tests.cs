@@ -834,6 +834,47 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenMemberIsNested_AndOuterMemberExpectationFollows_ShouldNameTheOuterMember()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Value,
+						v => v.Whose(i => i.ToString(), s => s.IsEqualTo("1")).And.IsEqualTo(2));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Value has ToString() that is equal to "1" and is equal to 2,
+					             but Value was 1, which differs by -1
+					             """)
+					.Because("the expectation after the nested member is on the outer member again");
+			}
+
+			[Fact]
+			public async Task WhenMemberIsNested_AndOuterMemberExpectationPrecedes_ShouldNameTheOuterMember()
+			{
+				MyClass subject = new()
+				{
+					Value = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).Whose(o => o.Value,
+						v => v.IsEqualTo(2).And.Whose(i => i.ToString(), s => s.IsEqualTo("1")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Value is equal to 2 and has ToString() that is equal to "1",
+					             but Value was 1, which differs by -1
+					             """);
+			}
+
+			[Fact]
 			public async Task WhenMemberIsNested_ShouldNotRepeatWhose()
 			{
 				MyClass subject = new()

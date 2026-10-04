@@ -77,17 +77,40 @@ internal sealed class JunctionResult : CombinedResult
 	}
 
 	/// <inheritdoc />
+	internal override bool IsNegatedAnd => _isAnd && GetAndSeparator() != _separator;
+
+	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
-		Left.AppendExpectation(stringBuilder, indentation);
 		if (_isAnd)
 		{
+			Left.AppendExpectation(stringBuilder, indentation);
 			stringBuilder.AppendSeparatedExpectation(GetAndSeparator(), Right, indentation);
 			return;
 		}
 
-		stringBuilder.Append(_separator == " or " && IsNegated ? " and " : _separator);
-		Right.AppendExpectation(stringBuilder, indentation);
+		bool isNegatedOr = _separator == " or " && IsNegated;
+		AppendOrOperand(stringBuilder, Left, isNegatedOr, indentation);
+		stringBuilder.Append(isNegatedOr ? " and " : _separator);
+		AppendOrOperand(stringBuilder, Right, isNegatedOr, indentation);
+	}
+
+	/// <remarks>
+	///     A negated combination is evaluated as "and" (De Morgan). A negated <c>And</c> operand reads as "or", which
+	///     binds weaker, so it is put in parentheses to keep the evaluated structure.
+	/// </remarks>
+	private static void AppendOrOperand(StringBuilder stringBuilder, ConstraintResult operand, bool isNegatedOr,
+		string? indentation)
+	{
+		if (!isNegatedOr || !operand.IsNegatedAnd)
+		{
+			operand.AppendExpectation(stringBuilder, indentation);
+			return;
+		}
+
+		stringBuilder.Append('(');
+		operand.AppendExpectation(stringBuilder, indentation);
+		stringBuilder.Append(')');
 	}
 
 	/// <remarks>

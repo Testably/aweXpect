@@ -157,6 +157,8 @@ public static class ConstraintResultExtensions
 
 		internal override bool IsExpectationOnly => true;
 
+		internal override bool IsNegatedAnd => _inner.IsNegatedAnd;
+
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> _inner.AppendExpectation(stringBuilder, indentation);
 
