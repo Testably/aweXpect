@@ -598,3 +598,5 @@ static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberT
 static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, uint>! result, uint tolerance) -> TSelf
 static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, ulong>! result, ulong tolerance) -> TSelf
 static aweXpect.ToleranceExtensions.Within<TSelf>(this aweXpect.Results.INumberToleranceResult<TSelf, ushort>! result, ushort tolerance) -> TSelf
+*REMOVED*aweXpect.Delegates.ThatDelegate.WithValue<T>.WithValue(aweXpect.Core.ExpectationBuilder! expectationBuilder) -> void
+aweXpect.Delegates.ThatDelegate.WithValue<T>.WithValue(aweXpect.Core.ExpectationBuilder! expectationBuilder, System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<T>!>! subject) -> void

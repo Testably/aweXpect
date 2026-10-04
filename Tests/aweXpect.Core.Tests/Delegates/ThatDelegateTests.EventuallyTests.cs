@@ -4,6 +4,7 @@ using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
+using aweXpect.Delegates;
 
 namespace aweXpect.Core.Tests.Delegates;
 
@@ -507,6 +508,34 @@ public sealed partial class ThatDelegateTests
 
 			await That(stopwatch.Elapsed).IsLessThan(10.Seconds())
 				.Because("the cancellation must stop waiting for a subject that does not observe it");
+		}
+
+		[Fact]
+		public async Task WhenCreatedWithANullDelegate_ShouldThrowArgumentNullException()
+		{
+			ExpectationBuilder expectationBuilder = That(() => 0).ExpectationBuilder;
+
+			void Act()
+				=> _ = new ThatDelegate.WithValue<int>(expectationBuilder, null!);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("subject").And
+				.WithMessage("The 'subject' cannot be null.").AsPrefix();
+		}
+
+		[Fact]
+		public async Task WhenCreatedWithTheConstructor_ShouldReinvokeTheDelegate()
+		{
+			Counter counter = new(2);
+			ExpectationBuilder expectationBuilder = That(() => 0).ExpectationBuilder;
+			ThatDelegate.WithValue<int> subject = new(expectationBuilder, _ => Task.FromResult(counter.Value));
+
+			async Task Act()
+				=> await subject.Eventually().Within(SuccessTimeout).IsGreaterThan(3);
+
+			await That(Act).DoesNotThrow();
+			await That(counter.EvaluationCount).IsEqualTo(4)
+				.Because("Eventually() invokes the delegate passed to the constructor on every attempt");
 		}
 
 		[Fact]

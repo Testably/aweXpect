@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Delegates;
 
@@ -17,14 +18,28 @@ public abstract partial class ThatDelegate
 		/// <summary>
 		///     A delegate with value of type <typeparamref name="T" />.
 		/// </summary>
-		public WithValue(ExpectationBuilder expectationBuilder)
+		/// <param name="expectationBuilder">The builder for the expectations on the delegate.</param>
+		/// <param name="subject">The delegate, which <see cref="Eventually()" /> invokes again on every attempt.</param>
+		/// <exception cref="ArgumentNullException">The <paramref name="subject" /> is <see langword="null" />.</exception>
+		public WithValue(ExpectationBuilder expectationBuilder, Func<CancellationToken, Task<T>> subject)
+			: base(expectationBuilder)
+		{
+			subject.ThrowIfNull();
+			_subject = subject;
+		}
+
+		private WithValue(ExpectationBuilder expectationBuilder)
 			: base(expectationBuilder)
 		{
 		}
 
-		internal WithValue(ExpectationBuilder expectationBuilder, Func<CancellationToken, Task<T>>? subject)
-			: base(expectationBuilder)
-			=> _subject = subject;
+		/// <summary>
+		///     Creates the subject also for a <see langword="null" /> <paramref name="subject" />, which the expectations
+		///     report as <c>&lt;null&gt;</c> instead of throwing.
+		/// </summary>
+		internal static WithValue<T> Create(ExpectationBuilder expectationBuilder,
+			Func<CancellationToken, Task<T>>? subject)
+			=> subject is null ? new WithValue<T>(expectationBuilder) : new WithValue<T>(expectationBuilder, subject);
 
 		/// <summary>
 		///     Specify expectations that the delegate must eventually satisfy.
