@@ -44,20 +44,21 @@ public static class Synchronously
 	{
 		if (CallerSchedulesContinuations())
 		{
-			return WaitFor(StartDetached(result.Evaluate));
+			(Task<TType>? detachedEvaluation, TType detachedValue) =
+				StartDetached(() => (result.Evaluate(out TType value), value));
+			return WaitFor(detachedEvaluation, detachedValue);
 		}
 
-		return WaitFor(result.Evaluate());
+		Task<TType>? evaluation = result.Evaluate(out TType metValue);
+		return WaitFor(evaluation, metValue);
 	}
 
 	/// <summary>
-	///     Returns the value of the <paramref name="evaluation" />, and blocks until it is available, when the evaluation
-	///     has not completed yet.
+	///     Returns the <paramref name="value" /> of an expectation that was met right away, or blocks until the
+	///     <paramref name="evaluation" /> completes.
 	/// </summary>
-	private static TType WaitFor<TType>(ValueTask<TType> evaluation)
-		=> evaluation.IsCompletedSuccessfully
-			? evaluation.Result
-			: evaluation.AsTask().GetAwaiter().GetResult();
+	private static TType WaitFor<TType>(Task<TType>? evaluation, TType value)
+		=> evaluation is null ? value : evaluation.GetAwaiter().GetResult();
 
 	private static bool CallerSchedulesContinuations()
 		=> SynchronizationContext.Current is not null || TaskScheduler.Current != TaskScheduler.Default;
