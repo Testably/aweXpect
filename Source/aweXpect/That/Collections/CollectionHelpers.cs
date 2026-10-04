@@ -43,32 +43,6 @@ internal static class CollectionHelpers
 #endif
 	];
 
-	internal static string CreateDuplicateFailureMessage<TItem>(string it, List<TItem> duplicates)
-	{
-		StringBuilder sb = new();
-		sb.Append(it).Append(" contained ");
-		if (duplicates.Count == 1)
-		{
-			sb.Append("1 duplicate:");
-		}
-		else
-		{
-			sb.Append(duplicates.Count).Append(" duplicates:");
-		}
-
-		foreach (TItem duplicate in duplicates)
-		{
-			sb.AppendLine();
-			sb.Append("  ");
-			Formatter.Format(sb, duplicate);
-			sb.Append(',');
-		}
-
-		sb.Length--;
-		string failure = sb.ToString();
-		return failure;
-	}
-
 	/// <summary>
 	///     Continues the expectation on the collection that the <paramref name="memberAccessor" /> selects from the
 	///     subject, rendered as <c>has {memberName} that …</c>.
@@ -323,38 +297,6 @@ internal static class CollectionHelpers
 		{
 			yield return item;
 		}
-	}
-
-	internal static bool ExceedsFormatterLimit<TItem>(this IEnumerable<TItem> subject)
-	{
-		int limit = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
-		if (subject is ICollection<TItem> collection)
-		{
-			return collection.Count > limit;
-		}
-
-		if (subject is ICountable { Count: { } countableCount })
-		{
-			return countableCount > limit;
-		}
-
-		return subject.Skip(limit).Any();
-	}
-
-	internal static bool ExceedsFormatterLimit(this IEnumerable subject)
-	{
-		int limit = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
-		if (subject is ICollection collection)
-		{
-			return collection.Count > limit;
-		}
-
-		if (subject is ICountable { Count: { } countableCount })
-		{
-			return countableCount > limit;
-		}
-
-		return subject.Cast<object?>().Skip(limit).Any();
 	}
 
 	internal static string AppendIsIncomplete(this string formattedItems, bool isIncomplete)

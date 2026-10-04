@@ -16,6 +16,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Include="..\aweXpect.Core\Core\Polyfills\CallerArgumentExpressionAttribute.cs" Link="Polyfills\CallerArgumentExpressionAttribute.cs"/>
+		<Compile Include="..\aweXpect.Core\Core\Polyfills\Index.cs" Link="Polyfills\Index.cs"/>
+		<Compile Include="..\aweXpect.Core\Core\Polyfills\OverloadResolutionPriorityAttribute.cs" Link="Polyfills\OverloadResolutionPriorityAttribute.cs"/>
+		<Compile Include="..\aweXpect.Core\Core\Polyfills\Range.cs" Link="Polyfills\Range.cs"/>
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\aweXpect.Analyzers\aweXpect.Analyzers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
 		<None Include="$(MSBuildProjectDirectory)\..\aweXpect.Analyzers\bin\$(Configuration)\netstandard2.0\aweXpect.Analyzers.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
 		<ProjectReference Include="..\aweXpect.Analyzers.CodeFixers\aweXpect.Analyzers.CodeFixers.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
