@@ -27,9 +27,18 @@ public abstract partial class ConstraintResult
 		private Outcome _outcome = Outcome.Success;
 
 		/// <inheritdoc />
+		/// <remarks>
+		///     A set outcome applies to the expectation that is not negated and is inverted while the expectation is
+		///     negated, like for <see cref="ConstraintResult.WithValue{T}" />.
+		/// </remarks>
 		public override Outcome Outcome
 		{
-			get => _outcome;
+			get => (_hasOutcome && Grammars.IsNegated(), _outcome) switch
+			{
+				(true, Outcome.Success) => Outcome.Failure,
+				(true, Outcome.Failure) => Outcome.Success,
+				(_, _) => _outcome,
+			};
 			protected set
 			{
 				_outcome = value;

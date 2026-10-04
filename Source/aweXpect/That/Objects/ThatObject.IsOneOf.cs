@@ -123,7 +123,7 @@ public static partial class ThatObject
 			TExpected?[] candidates = expected.Take(2).ToArray();
 			stringBuilder.Append(candidates.Length == 1
 				? _matchResult!.GetExtendedFailure(It, Grammars, Actual, candidates[0])
-				: $"{It}{Grammars.SubjectVerb(It, " was ", " were ")}{Formatter.Format(Actual, FormattingOptions.Indented())}");
+				: $"{It}{Grammars.SubjectVerb(It, " was ", " were ")}{Formatter.Format(Actual, FormattingOptions.Indented(indentation))}");
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

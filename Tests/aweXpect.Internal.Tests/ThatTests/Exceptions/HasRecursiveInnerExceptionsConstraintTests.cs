@@ -56,4 +56,17 @@ public class HasRecursiveInnerExceptionsConstraintTests
 
 		await That(result.Outcome).IsEqualTo(hasInnerException ? Outcome.Success : Outcome.Failure);
 	}
+
+	[Fact]
+	public async Task IsMetBy_WhenReusedAfterAnExceptionWithoutInnerExceptions_ShouldContinueTheFurtherProcessing()
+	{
+		ThatException.HasRecursiveInnerExceptionsConstraint sut = new(
+			"it", ExpectationGrammars.None);
+		sut.IsMetBy(new AggregateException());
+
+		ConstraintResult result = sut.IsMetBy(new AggregateException(new Exception("inner")));
+
+		await That(result.FurtherProcessingStrategy).IsEqualTo(FurtherProcessingStrategy.Continue)
+			.Because("the expectations on the inner exceptions explain the result again, when there are inner exceptions");
+	}
 }

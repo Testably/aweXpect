@@ -88,7 +88,6 @@ public static partial class ThatSpan
 			IFormatProvider? formatProvider) : base(it, grammars)
 		{
 			_formatProvider = formatProvider;
-			FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
 		}
 
 		/// <inheritdoc />
@@ -168,7 +167,6 @@ public static partial class ThatSpan
 			IFormatProvider? formatProvider) : base(it, grammars)
 		{
 			_formatProvider = formatProvider;
-			FurtherProcessingStrategy = FurtherProcessingStrategy.IgnoreResult;
 		}
 
 		/// <inheritdoc />

@@ -11,18 +11,18 @@ public sealed partial class ThatSignaler
 		public sealed class NegatedTests
 		{
 			[Theory]
-			[InlineData("Default", 1, "has never recorded the callback")]
-			[InlineData("Never", 0, "has recorded the callback at least once")]
-			[InlineData("Once", 1, "has recorded the callback not exactly once")]
-			[InlineData("Twice", 2, "has recorded the callback not exactly twice")]
-			[InlineData("Exactly3", 3, "has recorded the callback not exactly 3 times")]
-			[InlineData("AtLeast2", 2, "has recorded the callback fewer than twice")]
-			[InlineData("AtMost1", 1, "has recorded the callback more than once")]
-			[InlineData("MoreThan1", 2, "has recorded the callback at most once")]
-			[InlineData("LessThan3", 2, "has recorded the callback at least 3 times")]
-			[InlineData("Between1And3", 2, "has recorded the callback not between 1 and 3 times")]
+			[InlineData("Default", 1, "has never recorded the callback", "recorded once")]
+			[InlineData("Never", 0, "has recorded the callback at least once", "never recorded")]
+			[InlineData("Once", 1, "has recorded the callback not exactly once", "recorded once")]
+			[InlineData("Twice", 2, "has recorded the callback not exactly twice", "recorded twice")]
+			[InlineData("Exactly3", 3, "has recorded the callback not exactly 3 times", "recorded 3 times")]
+			[InlineData("AtLeast2", 2, "has recorded the callback fewer than twice", "recorded twice")]
+			[InlineData("AtMost1", 1, "has recorded the callback more than once", "only recorded once")]
+			[InlineData("MoreThan1", 2, "has recorded the callback at most once", "recorded twice")]
+			[InlineData("LessThan3", 2, "has recorded the callback at least 3 times", "only recorded twice")]
+			[InlineData("Between1And3", 2, "has recorded the callback not between 1 and 3 times", "recorded twice")]
 			public async Task WhenPositiveExpectationIsMet_ShouldFailWithTheComplementaryExpectation(
-				string quantifier, int signalCount, string expectation)
+				string quantifier, int signalCount, string expectation, string result)
 			{
 				Signaler signaler = new();
 				for (int i = 0; i < signalCount; i++)
@@ -38,8 +38,32 @@ public sealed partial class ThatSignaler
 					.WithMessage($"""
 					              Expected that signaler
 					              {expectation} within 0:00.040,
-					              but it was *
-					              """).AsWildcard();
+					              but it was {result} *
+					              """).AsWildcard()
+					.Because("the result says \"only\" exactly when more signals would meet the negated expectation");
+			}
+
+			[Fact]
+			public async Task WhenPositiveExpectationWithParameterIsMet_ShouldNotClaimTooFewSignals()
+			{
+				Signaler<int> signaler = new();
+				signaler.Signal(1);
+				signaler.Signal(2);
+
+				async Task Act() =>
+					await That(signaler).DoesNotComplyWith(s
+						=> s.Signaled().Between(1).And(3.Times()).Within(40.Milliseconds()));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has recorded the callback not between 1 and 3 times within 0:00.040,
+					             but it was recorded twice in [
+					               1,
+					               2
+					             ] within 0:*
+					             """).AsWildcard()
+					.Because("the count lies inside the range, so it is not too low");
 			}
 
 			private static SignalCountResult Quantify(SignalCountResult result, string quantifier)

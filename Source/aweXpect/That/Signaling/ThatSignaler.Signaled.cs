@@ -326,7 +326,7 @@ public static partial class ThatSignaler
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was ");
-			AppendOccurrences(stringBuilder, quantifier, false, Actual?.Count ?? 0);
+			AppendOccurrences(stringBuilder, quantifier, IsNegated, Actual?.Count ?? 0);
 			AppendWaitedTime(stringBuilder, _waitedTime, Actual?.IsSuccess);
 		}
 
@@ -392,7 +392,7 @@ public static partial class ThatSignaler
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" was ");
-			AppendOccurrences(stringBuilder, quantifier, false, _actualCount);
+			AppendOccurrences(stringBuilder, quantifier, IsNegated, _actualCount);
 
 			if (Actual?.Count > 0)
 			{

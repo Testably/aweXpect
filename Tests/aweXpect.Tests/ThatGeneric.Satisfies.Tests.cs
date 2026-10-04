@@ -26,8 +26,8 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             satisfies _ => predicateResult,
 					             but it was ThatGeneric.Other {
-					               Value = 0
-					             }
+					                 Value = 0
+					               }
 					             """);
 			}
 
@@ -243,8 +243,8 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             satisfies StartsTheClock within 0:00.050,
 					             but it was ThatGeneric.Other {
-					               Value = 0
-					             }
+					                 Value = 0
+					               }
 					             """)
 					.Because("a cancellation at about the timeout must not hide the result of the last check");
 				await cancellation;
@@ -325,8 +325,8 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             satisfies _ => false within 0:00.200,
 					             but it was ThatGeneric.Other {
-					               Value = 0
-					             }
+					                 Value = 0
+					               }
 					             """)
 					.Because("the timeout elapsed at the same time as the global timeout");
 			}
@@ -380,8 +380,8 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             satisfies _ => stopwatch.Elapsed >= 3.Seconds() within 0:00.100,
 					             but it was ThatGeneric.Other {
-					               Value = 0
-					             }
+					                 Value = 0
+					               }
 					             """)
 					.Because("no check is made after the timeout");
 			}
@@ -642,8 +642,8 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             satisfies _ => ++count > 42 within 0:00.050,
 					             but it was ThatGeneric.Other {
-					               Value = 0
-					             }
+					                 Value = 0
+					               }
 					             """);
 			}
 		}

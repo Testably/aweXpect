@@ -79,15 +79,15 @@ internal sealed class JunctionResult : CombinedResult
 	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
-		Left.AppendExpectation(stringBuilder);
+		Left.AppendExpectation(stringBuilder, indentation);
 		if (_isAnd)
 		{
-			stringBuilder.AppendSeparatedExpectation(GetAndSeparator(), Right);
+			stringBuilder.AppendSeparatedExpectation(GetAndSeparator(), Right, indentation);
 			return;
 		}
 
 		stringBuilder.Append(_separator == " or " && IsNegated ? " and " : _separator);
-		Right.AppendExpectation(stringBuilder);
+		Right.AppendExpectation(stringBuilder, indentation);
 	}
 
 	/// <remarks>

@@ -283,14 +283,14 @@ internal class WhichNode<TSource, TMember> : Node
 
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
-			Left.AppendExpectation(stringBuilder);
+			Left.AppendExpectation(stringBuilder, indentation);
 			if (_negatedRightExpectation is not null)
 			{
 				stringBuilder.Append(_negatedRightExpectation);
 				return;
 			}
 
-			stringBuilder.AppendSeparatedExpectation(_separator, Right);
+			stringBuilder.AppendSeparatedExpectation(_separator, Right, indentation);
 		}
 
 		/// <inheritdoc />
@@ -401,7 +401,7 @@ internal class WhichNode<TSource, TMember> : Node
 		private string GetRightExpectation()
 		{
 			StringBuilder stringBuilder = new();
-			stringBuilder.AppendSeparatedExpectation(_separator, Right);
+			stringBuilder.AppendSeparatedExpectation(_separator, Right, null);
 			return stringBuilder.ToString();
 		}
 	}

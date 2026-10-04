@@ -29,8 +29,8 @@ internal static class StringBuilderExtensions
 	///     <paramref name="right" /> result starts with its own <c>whose</c>, to avoid rendering <c>that whose</c>.
 	/// </remarks>
 	public static void AppendSeparatedExpectation(this StringBuilder stringBuilder, string separator,
-		ConstraintResult right)
-		=> stringBuilder.AppendSeparatedExpectation(separator, sb => right.AppendExpectation(sb));
+		ConstraintResult right, string? indentation)
+		=> stringBuilder.AppendSeparatedExpectation(separator, sb => right.AppendExpectation(sb, indentation));
 
 	/// <summary>
 	///     Appends the <paramref name="separator" /> followed by the expectation written by

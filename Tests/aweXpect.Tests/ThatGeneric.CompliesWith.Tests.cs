@@ -87,6 +87,18 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
+			[Fact]
+			public async Task WhenInnerExpectationHasValueOfTheSubjectType_ShouldReturnTheSubject()
+			{
+				object[] inner = [1,];
+				object[] subject = [inner,];
+
+				object[]? result = await That(subject).CompliesWith(it => it.HasSingle());
+
+				await That(result).IsSameAs(subject)
+					.Because("the single item has the subject's type, but the result of CompliesWith is the subject");
+			}
+
 			[Theory]
 			[InlineData(1, true)]
 			[InlineData(2, false)]
@@ -151,8 +163,8 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             satisfies StartsTheClock within 0:00.050,
 					             but it was ThatGeneric.Other {
-					               Value = 0
-					             }
+					                 Value = 0
+					               }
 					             """)
 					.Because("a cancellation at about the timeout must not hide the result of the last check");
 				await cancellation;
@@ -253,6 +265,18 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
+			public async Task WhenInnerExpectationHasValueOfTheSubjectType_ShouldReturnTheSubject()
+			{
+				object[] inner = [1,];
+				object[] subject = [inner,];
+
+				object[]? result = await That(subject).CompliesWith(it => it.HasSingle()).Within(1.Seconds());
+
+				await That(result).IsSameAs(subject)
+					.Because("the single item has the subject's type, but the result of CompliesWith is the subject");
+			}
+
+			[Fact]
 			public async Task WhenIntervalExceedsTheTimeout_ShouldCheckAgainAtTheTimeout()
 			{
 				int count = 0;
@@ -282,8 +306,8 @@ public sealed partial class ThatGeneric
 					             Expected that subject
 					             satisfies _ => stopwatch.Elapsed >= 3.Seconds() within 0:00.100,
 					             but it was ThatGeneric.Other {
-					               Value = 0
-					             }
+					                 Value = 0
+					               }
 					             """)
 					.Because("no check is made after the timeout");
 			}

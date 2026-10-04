@@ -10,6 +10,51 @@ public sealed partial class ThatString
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task InAndChain_WhenLaterOperandsFail_ShouldExplainEachOfThem()
+			{
+				string subject = "5";
+
+				async Task Act()
+					=> await That(subject).IsParsableInto<int>().And.IsEqualTo("6").And.HasLength().EqualTo(3);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is parsable into int and is equal to "6" and has length equal to 3,
+					             but it was "5", which differs at index 0:
+					                ↓ (actual)
+					               "5"
+					               "6"
+					                ↑ (expected)
+					             and it had length 1
+					             """)
+					.Because("a successful parse must not hide the failing operands that follow it");
+			}
+
+			[Fact]
+			public async Task InOr_WhenBothOperandsFail_ShouldExplainBoth()
+			{
+				string subject = "abc";
+
+				async Task Act()
+					=> await That(subject).IsParsableInto<int>().Or.IsEqualTo("xyz");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is parsable into int or is equal to "xyz",
+					             but Parse of int did throw a FormatException:
+					               The input string 'abc' was not in a correct format.
+					             and it was "abc", which differs at index 0:
+					                ↓ (actual)
+					               "abc"
+					               "xyz"
+					                ↑ (expected)
+					             """)
+					.Because("each alternative failed on its own, so both explain the failure");
+			}
+
+			[Fact]
 			public async Task WhenNegatedInOrCombination_ShouldReportTheFailingExpectation()
 			{
 				string subject = "abc";

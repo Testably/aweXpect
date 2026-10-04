@@ -50,21 +50,21 @@ internal sealed class MappingResult : CombinedResult
 	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
-		Left.AppendExpectation(stringBuilder);
+		Left.AppendExpectation(stringBuilder, indentation);
 		if (_negatedRightExpectation is not null)
 		{
 			stringBuilder.Append(_negatedRightExpectation);
 			return;
 		}
 
-		AppendRightExpectation(stringBuilder);
+		AppendRightExpectation(stringBuilder, indentation);
 	}
 
-	private void AppendRightExpectation(StringBuilder stringBuilder)
+	private void AppendRightExpectation(StringBuilder stringBuilder, string? indentation)
 	{
 		StringBuilder separator = new();
 		_appendMemberText(separator);
-		stringBuilder.AppendSeparatedExpectation(separator.ToString(), Right);
+		stringBuilder.AppendSeparatedExpectation(separator.ToString(), Right, indentation);
 	}
 
 	/// <inheritdoc />
@@ -108,7 +108,7 @@ internal sealed class MappingResult : CombinedResult
 	private string GetRightExpectation()
 	{
 		StringBuilder stringBuilder = new();
-		AppendRightExpectation(stringBuilder);
+		AppendRightExpectation(stringBuilder, null);
 		return stringBuilder.ToString();
 	}
 }
