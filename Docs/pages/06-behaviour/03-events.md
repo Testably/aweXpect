@@ -60,6 +60,10 @@ player.Play("Yesterday");
 await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Twice();
 ```
 
+The expectations within one `Expect.ThatAll(…)` or `Expect.ThatAny(…)`, including nested ones, share the recording: it
+is stopped when the whole combination was evaluated. They are evaluated one after the other, so the events that arrive
+while one of them waits with `Within(…)` also count for the following ones, as with `.And`.
+
 `.UntilDisposed()` keeps the recording running across multiple expectations and hands its lifetime to you:
 
 ```csharp
