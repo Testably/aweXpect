@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "bb219e53eac11456ebba32f2a58fb4c432790570",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 21 16:00:58 2026 \u002B0200",
-        "message": "test: separate the two mechanisms that could keep an interface implementation"
-      },
-      {
         "sha": "d6b2af7c886d4a64d5d143b31c3655f5ff0d71b0",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 21 18:07:47 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
         "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
+      },
+      {
+        "sha": "272bbb23db0b17bf4bfdffd1a5431707dacffa73",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:59 2026 \u002B0200",
+        "message": "fix: skip every type that is compared by value or by content in the metadata generator (#1667)"
       }
     ],
     "labels": [
-      "bb219e53",
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "2197836c",
       "07887350",
       "7e0a5c0d",
-      "647847aa"
+      "647847aa",
+      "272bbb23"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          363.00908807118736,
           361.90503655947174,
           364.719633324941,
           342.6122290293376,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           123.21925603548685,
           135.93758130868275,
           144.7517062664032,
-          130.7010422150294
+          130.7010422150294,
+          126.17584438323975
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -431,7 +431,6 @@ window.BENCHMARK_DATA = {
           936,
           936,
           936,
-          936,
           912,
           912,
           912,
@@ -467,6 +466,7 @@ window.BENCHMARK_DATA = {
           368,
           384,
           384,
+          408,
           408,
           408,
           408
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          257.86671654383343,
           255.29758116404216,
           289.4803840637207,
           247.38781152452742,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           253.7104582445962,
           273.90108908925737,
           310.6382609776088,
-          236.5798888047536
+          236.5798888047536,
+          235.69773082733155
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -612,7 +612,8 @@ window.BENCHMARK_DATA = {
           168.19114556312562,
           216.457492181233,
           192.4195573012034,
-          194.4343194791249
+          194.4343194791249,
+          192.71065312165481
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -624,6 +625,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -642,12 +644,6 @@ window.BENCHMARK_DATA = {
   },
   "Equivalency": {
     "commits": [
-      {
-        "sha": "bb219e53eac11456ebba32f2a58fb4c432790570",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 21 16:00:58 2026 \u002B0200",
-        "message": "test: separate the two mechanisms that could keep an interface implementation"
-      },
       {
         "sha": "d6b2af7c886d4a64d5d143b31c3655f5ff0d71b0",
         "author": "Valentin Breu\u00DF",
@@ -941,10 +937,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
         "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
+      },
+      {
+        "sha": "272bbb23db0b17bf4bfdffd1a5431707dacffa73",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:59 2026 \u002B0200",
+        "message": "fix: skip every type that is compared by value or by content in the metadata generator (#1667)"
       }
     ],
     "labels": [
-      "bb219e53",
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
@@ -993,14 +994,14 @@ window.BENCHMARK_DATA = {
       "2197836c",
       "07887350",
       "7e0a5c0d",
-      "647847aa"
+      "647847aa",
+      "272bbb23"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          388905.0842285156,
           417273.9706624349,
           401476.0254952567,
           401936.7021484375,
@@ -1049,7 +1050,8 @@ window.BENCHMARK_DATA = {
           71241.77766113282,
           112203.96711222331,
           83117.49717494419,
-          106705.51186899039
+          106705.51186899039,
+          111758.13438197544
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1061,7 +1063,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          628408,
           628408,
           628408,
           628408,
@@ -1110,6 +1111,7 @@ window.BENCHMARK_DATA = {
           15392,
           16288,
           16288,
+          16288,
           16288
         ],
         "borderColor": "#63A2AC",
@@ -1125,7 +1127,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2645361.366927083,
           2681513.6515625,
           2390517.840401786,
           2591831.70859375,
@@ -1174,7 +1175,8 @@ window.BENCHMARK_DATA = {
           1998209.278125,
           2802684.4479166665,
           2170578.661979167,
-          2707223.26171875
+          2707223.26171875,
+          2716606.77578125
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1186,7 +1188,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841648,
           4841631,
           4841651,
@@ -1235,6 +1236,7 @@ window.BENCHMARK_DATA = {
           4841609,
           4841651,
           4841613,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1253,7 +1255,8 @@ window.BENCHMARK_DATA = {
           180093.46688406807,
           221737.8497721354,
           193501.29067758413,
-          202644.6450544085
+          202644.6450544085,
+          207843.27697753906
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1265,6 +1268,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -1283,12 +1287,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "bb219e53eac11456ebba32f2a58fb4c432790570",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 21 16:00:58 2026 \u002B0200",
-        "message": "test: separate the two mechanisms that could keep an interface implementation"
-      },
       {
         "sha": "d6b2af7c886d4a64d5d143b31c3655f5ff0d71b0",
         "author": "Valentin Breu\u00DF",
@@ -1582,10 +1580,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
         "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
+      },
+      {
+        "sha": "272bbb23db0b17bf4bfdffd1a5431707dacffa73",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:59 2026 \u002B0200",
+        "message": "fix: skip every type that is compared by value or by content in the metadata generator (#1667)"
       }
     ],
     "labels": [
-      "bb219e53",
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
@@ -1634,14 +1637,14 @@ window.BENCHMARK_DATA = {
       "2197836c",
       "07887350",
       "7e0a5c0d",
-      "647847aa"
+      "647847aa",
+      "272bbb23"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          595.5922500610352,
           576.7297085982102,
           619.2734131495158,
           600.8308386484782,
@@ -1690,7 +1693,8 @@ window.BENCHMARK_DATA = {
           264.9918999989828,
           294.93251040776573,
           292.19269075393674,
-          319.36239130156383
+          319.36239130156383,
+          264.6428901468004
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1703,7 +1707,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           1608,
-          1608,
           1616,
           1616,
           1616,
@@ -1749,6 +1752,7 @@ window.BENCHMARK_DATA = {
           560,
           576,
           576,
+          600,
           600,
           600,
           600
@@ -1766,7 +1770,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          492.16536572774254,
           476.6302760442098,
           550.5547884532383,
           533.289975643158,
@@ -1815,7 +1818,8 @@ window.BENCHMARK_DATA = {
           505.3793038050334,
           606.454922358195,
           573.3669003804524,
-          465.99084561665853
+          465.99084561665853,
+          456.7539663632711
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1894,7 +1898,8 @@ window.BENCHMARK_DATA = {
           364.3075108528137,
           423.54536778586254,
           416.8841130256653,
-          387.66392567952477
+          387.66392567952477,
+          391.5603183678218
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1906,6 +1911,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -1924,12 +1930,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "bb219e53eac11456ebba32f2a58fb4c432790570",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 21 16:00:58 2026 \u002B0200",
-        "message": "test: separate the two mechanisms that could keep an interface implementation"
-      },
       {
         "sha": "d6b2af7c886d4a64d5d143b31c3655f5ff0d71b0",
         "author": "Valentin Breu\u00DF",
@@ -2223,10 +2223,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
         "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
+      },
+      {
+        "sha": "272bbb23db0b17bf4bfdffd1a5431707dacffa73",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:59 2026 \u002B0200",
+        "message": "fix: skip every type that is compared by value or by content in the metadata generator (#1667)"
       }
     ],
     "labels": [
-      "bb219e53",
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
@@ -2275,14 +2280,14 @@ window.BENCHMARK_DATA = {
       "2197836c",
       "07887350",
       "7e0a5c0d",
-      "647847aa"
+      "647847aa",
+      "272bbb23"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          359.2989922670218,
           365.8065305709839,
           375.70752239227295,
           345.2246816953023,
@@ -2331,7 +2336,8 @@ window.BENCHMARK_DATA = {
           142.23167179425556,
           157.44477806091308,
           165.41466786311224,
-          136.18030888693673
+          136.18030888693673,
+          141.3437429024623
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2354,7 +2360,6 @@ window.BENCHMARK_DATA = {
           1104,
           1104,
           1104,
-          1104,
           1080,
           1080,
           1080,
@@ -2390,6 +2395,7 @@ window.BENCHMARK_DATA = {
           472,
           488,
           488,
+          512,
           512,
           512,
           512
@@ -2407,7 +2413,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          243.5403353055318,
           247.26381438573202,
           307.92783781687416,
           254.87316243989127,
@@ -2456,7 +2461,8 @@ window.BENCHMARK_DATA = {
           265.96006746292113,
           289.2777038574219,
           320.30807129542035,
-          243.7638168334961
+          243.7638168334961,
+          235.86193222658974
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2535,7 +2541,8 @@ window.BENCHMARK_DATA = {
           206.79213620935167,
           268.0511569658915,
           242.46904532114664,
-          235.56220450401307
+          235.56220450401307,
+          230.35924092928568
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2547,6 +2554,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -2565,12 +2573,6 @@ window.BENCHMARK_DATA = {
   },
   "String": {
     "commits": [
-      {
-        "sha": "bb219e53eac11456ebba32f2a58fb4c432790570",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 21 16:00:58 2026 \u002B0200",
-        "message": "test: separate the two mechanisms that could keep an interface implementation"
-      },
       {
         "sha": "d6b2af7c886d4a64d5d143b31c3655f5ff0d71b0",
         "author": "Valentin Breu\u00DF",
@@ -2864,10 +2866,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
         "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
+      },
+      {
+        "sha": "272bbb23db0b17bf4bfdffd1a5431707dacffa73",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:59 2026 \u002B0200",
+        "message": "fix: skip every type that is compared by value or by content in the metadata generator (#1667)"
       }
     ],
     "labels": [
-      "bb219e53",
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
@@ -2916,14 +2923,14 @@ window.BENCHMARK_DATA = {
       "2197836c",
       "07887350",
       "7e0a5c0d",
-      "647847aa"
+      "647847aa",
+      "272bbb23"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          619.83853831658,
           635.7641259602138,
           666.1042346318562,
           682.4214453379313,
@@ -2972,7 +2979,8 @@ window.BENCHMARK_DATA = {
           221.35651461283365,
           274.23531373341876,
           258.3419983727591,
-          248.4108333905538
+          248.4108333905538,
+          239.0947183095492
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2995,7 +3003,6 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
           1576,
           1576,
           1576,
@@ -3031,6 +3038,7 @@ window.BENCHMARK_DATA = {
           536,
           552,
           552,
+          576,
           576,
           576,
           576
@@ -3048,7 +3056,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1267.7719751993816,
           1192.4736000061034,
           1338.6829133351644,
           1383.8630406697591,
@@ -3097,7 +3104,8 @@ window.BENCHMARK_DATA = {
           1135.539410318647,
           1299.6425857543945,
           1333.580323292659,
-          1220.938505445208
+          1220.938505445208,
+          1226.340755902804
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3176,7 +3184,8 @@ window.BENCHMARK_DATA = {
           309.5602923539969,
           351.97543039321897,
           345.8780006408691,
-          307.8225899423872
+          307.8225899423872,
+          317.6704689172598
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3188,6 +3197,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -3206,12 +3216,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "bb219e53eac11456ebba32f2a58fb4c432790570",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 21 16:00:58 2026 \u002B0200",
-        "message": "test: separate the two mechanisms that could keep an interface implementation"
-      },
       {
         "sha": "d6b2af7c886d4a64d5d143b31c3655f5ff0d71b0",
         "author": "Valentin Breu\u00DF",
@@ -3505,10 +3509,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
         "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
+      },
+      {
+        "sha": "272bbb23db0b17bf4bfdffd1a5431707dacffa73",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:59 2026 \u002B0200",
+        "message": "fix: skip every type that is compared by value or by content in the metadata generator (#1667)"
       }
     ],
     "labels": [
-      "bb219e53",
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
@@ -3557,14 +3566,14 @@ window.BENCHMARK_DATA = {
       "2197836c",
       "07887350",
       "7e0a5c0d",
-      "647847aa"
+      "647847aa",
+      "272bbb23"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2486.5309656583345,
           2295.0043688456217,
           2439.2200119018553,
           2733.3808873494468,
@@ -3613,7 +3622,8 @@ window.BENCHMARK_DATA = {
           694.6372636159261,
           643.4332926823542,
           568.4772125652859,
-          640.4088826497396
+          640.4088826497396,
+          593.7735684076945
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3625,7 +3635,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3488,
           3488,
           3808,
           3808,
@@ -3674,6 +3683,7 @@ window.BENCHMARK_DATA = {
           840,
           832,
           832,
+          840,
           840
         ],
         "borderColor": "#63A2AC",
@@ -3689,7 +3699,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1294.0115017524133,
           1326.4313330332438,
           1443.1622580119542,
           1428.1928583780925,
@@ -3738,7 +3747,8 @@ window.BENCHMARK_DATA = {
           1268.664249420166,
           1492.1926101684571,
           1504.2217179707118,
-          1320.280786259969
+          1320.280786259969,
+          1326.0671399434407
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3817,7 +3827,8 @@ window.BENCHMARK_DATA = {
           560.787110265096,
           682.4615844726562,
           635.4836355845133,
-          611.9931491851806
+          611.9931491851806,
+          610.7512573401133
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3829,6 +3840,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -3847,12 +3859,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "bb219e53eac11456ebba32f2a58fb4c432790570",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 21 16:00:58 2026 \u002B0200",
-        "message": "test: separate the two mechanisms that could keep an interface implementation"
-      },
       {
         "sha": "d6b2af7c886d4a64d5d143b31c3655f5ff0d71b0",
         "author": "Valentin Breu\u00DF",
@@ -4146,10 +4152,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
         "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
+      },
+      {
+        "sha": "272bbb23db0b17bf4bfdffd1a5431707dacffa73",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:59 2026 \u002B0200",
+        "message": "fix: skip every type that is compared by value or by content in the metadata generator (#1667)"
       }
     ],
     "labels": [
-      "bb219e53",
       "d6b2af7c",
       "4b77c45c",
       "de2b5ef6",
@@ -4198,14 +4209,14 @@ window.BENCHMARK_DATA = {
       "2197836c",
       "07887350",
       "7e0a5c0d",
-      "647847aa"
+      "647847aa",
+      "272bbb23"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2947.9482546488443,
           2892.8446628863994,
           2952.2586067744664,
           3135.0400232950847,
@@ -4254,7 +4265,8 @@ window.BENCHMARK_DATA = {
           1057.5368544260662,
           978.3539214815412,
           883.2034430821736,
-          1053.141568844135
+          1053.141568844135,
+          975.4341665903727
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4266,7 +4278,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3488,
           3488,
           3808,
           3808,
@@ -4315,6 +4326,7 @@ window.BENCHMARK_DATA = {
           1776,
           1240,
           1240,
+          1248,
           1248
         ],
         "borderColor": "#63A2AC",
@@ -4330,7 +4342,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26771.651077270508,
           27610.790985107422,
           24906.509231567383,
           26194.006308419364,
@@ -4379,7 +4390,8 @@ window.BENCHMARK_DATA = {
           15907.751792399089,
           27136.571333665113,
           17792.257829938615,
-          26669.563818359376
+          26669.563818359376,
+          26816.98806966146
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4392,7 +4404,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           33471,
-          33471,
           33468,
           33471,
           33471,
@@ -4440,6 +4451,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33465,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4458,7 +4470,8 @@ window.BENCHMARK_DATA = {
           676.301778793335,
           828.1300044059753,
           758.3990545954023,
-          753.8996606554304
+          753.8996606554304,
+          780.9781115849813
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4470,6 +4483,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -4595,6 +4609,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
         "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
+      },
+      {
+        "sha": "272bbb23db0b17bf4bfdffd1a5431707dacffa73",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:59 2026 \u002B0200",
+        "message": "fix: skip every type that is compared by value or by content in the metadata generator (#1667)"
       }
     ],
     "labels": [
@@ -4615,7 +4635,8 @@ window.BENCHMARK_DATA = {
       "2197836c",
       "07887350",
       "7e0a5c0d",
-      "647847aa"
+      "647847aa",
+      "272bbb23"
     ],
     "datasets": [
       {
@@ -4639,7 +4660,8 @@ window.BENCHMARK_DATA = {
           648.3735916137696,
           790.674650700887,
           736.5681552886963,
-          706.9937650680542
+          706.9937650680542,
+          716.2311901728312
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4666,6 +4688,7 @@ window.BENCHMARK_DATA = {
           6912,
           1784,
           1784,
+          1808,
           1808,
           1808,
           1808
@@ -4700,7 +4723,8 @@ window.BENCHMARK_DATA = {
           30342.70344895583,
           85274.41571044922,
           33411.314623151506,
-          81257.22533307757
+          81257.22533307757,
+          81844.91207682292
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4729,6 +4753,7 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -4851,6 +4876,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
         "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
+      },
+      {
+        "sha": "272bbb23db0b17bf4bfdffd1a5431707dacffa73",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:59 2026 \u002B0200",
+        "message": "fix: skip every type that is compared by value or by content in the metadata generator (#1667)"
       }
     ],
     "labels": [
@@ -4871,7 +4902,8 @@ window.BENCHMARK_DATA = {
       "2197836c",
       "07887350",
       "7e0a5c0d",
-      "647847aa"
+      "647847aa",
+      "272bbb23"
     ],
     "datasets": [
       {
@@ -4895,7 +4927,8 @@ window.BENCHMARK_DATA = {
           258.8384858131409,
           306.4812316527733,
           284.45962436382587,
-          277.62686608632407
+          277.62686608632407,
+          262.4779659679958
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4922,6 +4955,7 @@ window.BENCHMARK_DATA = {
           616,
           632,
           632,
+          656,
           656,
           656,
           656
@@ -4956,7 +4990,8 @@ window.BENCHMARK_DATA = {
           15005.187881469727,
           32536.284558105468,
           16134.795623779297,
-          30893.274315467246
+          30893.274315467246,
+          31673.233797200523
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4985,6 +5020,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -5003,7 +5039,8 @@ window.BENCHMARK_DATA = {
           208.05497562090557,
           264.06445630391437,
           238.22447112401326,
-          242.6730498313904
+          242.6730498313904,
+          236.24986244837444
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5015,6 +5052,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
