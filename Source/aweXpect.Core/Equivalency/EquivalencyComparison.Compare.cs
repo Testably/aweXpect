@@ -621,12 +621,12 @@ public static partial class EquivalencyComparison
 		}
 
 		ComparedPair comparedPair = new(actual, expected);
-		if (!context.ComparedPairs.Add(comparedPair))
+		if (!context.TryEnter(comparedPair, typeOptions, out ComparisonScope scope))
 		{
 			return true;
 		}
 
-		context.Depth++;
+		bool isEquivalent = false;
 		try
 		{
 			string path = memberPath.ToString();
@@ -642,7 +642,6 @@ public static partial class EquivalencyComparison
 				await Task.Yield();
 			}
 
-			bool isEquivalent;
 			if (TryGetDictionary(actual, path, out IDictionary? actualDictionary,
 				    out object? actualKeyComparer) &&
 			    TryGetDictionary(expected, path, out IDictionary? expectedDictionary, out _))
@@ -671,8 +670,7 @@ public static partial class EquivalencyComparison
 		}
 		finally
 		{
-			context.Depth--;
-			context.ComparedPairs.Remove(comparedPair);
+			context.Leave(comparedPair, typeOptions, scope, isEquivalent);
 		}
 	}
 

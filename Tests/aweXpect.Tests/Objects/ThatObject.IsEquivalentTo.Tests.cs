@@ -2159,6 +2159,20 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
+			[Fact]
+			public async Task WhenSameInstancesAreReferencedTwiceOnEveryLevel_ShouldNotCompareThemOncePerPath()
+			{
+				int[] reads = [0,];
+				DiamondClass subject = DiamondClass.WithDepth(40, reads);
+				DiamondClass expected = DiamondClass.WithDepth(40, reads);
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("every level doubles the number of paths, so that there are 2^40 of them");
+			}
+
 			private sealed class ChainClass
 			{
 				public ChainClass? Next { get; set; }
@@ -2178,6 +2192,40 @@ public sealed partial class ThatObject
 					}
 
 					return result;
+				}
+			}
+
+			/// <remarks>
+			///     Throws when its members were read more than 100000 times, so that a comparison that walks every path
+			///     fails instead of running for days.
+			/// </remarks>
+			private sealed class DiamondClass(int[] reads, DiamondClass? next)
+			{
+				public DiamondClass? First => Read();
+				public DiamondClass? Second => Read();
+
+				/// <remarks>
+				///     A chain of <paramref name="depth" /> instances, each of which references the next one twice.
+				/// </remarks>
+				public static DiamondClass WithDepth(int depth, int[] reads)
+				{
+					DiamondClass result = new(reads, null);
+					for (int i = 1; i < depth; i++)
+					{
+						result = new DiamondClass(reads, result);
+					}
+
+					return result;
+				}
+
+				private DiamondClass? Read()
+				{
+					if (++reads[0] > 100000)
+					{
+						throw new InvalidOperationException("The members were read more than 100000 times.");
+					}
+
+					return next;
 				}
 			}
 
