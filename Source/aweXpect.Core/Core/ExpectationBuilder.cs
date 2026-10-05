@@ -716,6 +716,9 @@ public abstract class ExpectationBuilder
 	///     the exception as <see cref="ConstraintResult.FailureCause" />, which a negation does not invert. An
 	///     <see cref="OperationCanceledException" /> thrown while the evaluation is canceled aborts the evaluation
 	///     instead.
+	///     <para />
+	///     Canceling the evaluation while the member is awaited leaves the expectation inconclusive, and a timeout
+	///     fails it with <c>did not finish within …</c>, even if the member ignores the cancellation.
 	/// </remarks>
 	/// <param name="asyncMemberAccessor">Accesses the member on the source value asynchronously.</param>
 	/// <param name="separator">The text between the previous expectation and the expectations on the member.</param>
