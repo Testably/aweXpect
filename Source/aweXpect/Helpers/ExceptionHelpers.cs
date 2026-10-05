@@ -88,19 +88,7 @@ internal static class ExceptionHelpers
 	public static IEnumerable<T>? WithoutNullElements<T>(this IEnumerable<T>? parameter,
 		[CallerArgumentExpression(nameof(parameter))] string? paramName = null)
 		where T : class
-	{
-		if (parameter is not (ICollection<T> or IReadOnlyCollection<T>))
-		{
-			return parameter is null ? null : RejectNullElements(parameter, paramName);
-		}
-
-		if (parameter.Any(element => element is null))
-		{
-			throw Tracing.WriteException(NullElement(paramName));
-		}
-
-		return parameter;
-	}
+		=> WithoutNullElementsNamed(parameter, paramName);
 
 	/// <summary>
 	///     <see cref="WithoutNullElements{T}(IEnumerable{T}?,string?)" /> for the <paramref name="parameter" /> named
@@ -110,20 +98,24 @@ internal static class ExceptionHelpers
 	[return: NotNullIfNotNull(nameof(parameter))]
 	public static IEnumerable<T>? WithoutNullElements<T>(this IEnumerable<T>? parameter, bool negated)
 		where T : class
-		=> parameter.WithoutNullElements(negated ? "unexpected" : "expected");
+		=> WithoutNullElementsNamed(parameter, negated ? "unexpected" : "expected");
 
-	private static IEnumerable<T> RejectNullElements<T>(IEnumerable<T> parameter, string? paramName)
+	[return: NotNullIfNotNull(nameof(parameter))]
+	private static IEnumerable<T>? WithoutNullElementsNamed<T>(IEnumerable<T>? parameter, string? paramName)
 		where T : class
 	{
-		foreach (T element in parameter)
+		if (parameter is not (ICollection<T> or IReadOnlyCollection<T>))
 		{
-			if (element is null)
-			{
-				throw Tracing.WriteException(NullElement(paramName));
-			}
-
-			yield return element;
+			return parameter?.Select(element
+				=> element ?? throw Tracing.WriteException(NullElement(paramName)));
 		}
+
+		if (parameter.Any(element => element is null))
+		{
+			throw Tracing.WriteException(NullElement(paramName));
+		}
+
+		return parameter;
 	}
 
 	private static ArgumentException NullElement(string? paramName)
