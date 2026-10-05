@@ -174,6 +174,28 @@ public sealed partial class ThatDictionary
 			}
 
 			[Fact]
+			public async Task WhenKeyExists_WithWhose_AndValueExpectationFollows_ShouldNameTheValue()
+			{
+				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
+
+				async Task Act()
+					=> await That(subject).ContainsKey(2).WhoseValue
+						.Whose(x => x?.Length, l => l.IsEqualTo(3)).And.IsEqualTo("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains key 2 whose value has Length that is equal to 3 and is equal to "foo",
+					             but value of key 2 was "bar", which differs at index 0:
+					                ↓ (actual)
+					               "bar"
+					               "foo"
+					                ↑ (expected)
+					             """)
+					.Because("the expectation after the member is on the value again");
+			}
+
+			[Fact]
 			public async Task WhenKeyExists_WithWhose_ShouldKeepValueConnector()
 			{
 				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);

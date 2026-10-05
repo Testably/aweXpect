@@ -81,6 +81,12 @@ public abstract partial class ConstraintResult
 	internal virtual bool IsExpectationOnly => false;
 
 	/// <summary>
+	///     Indicates that the expectation text combines its operands with the "or" of a negated <c>And</c>, so that a
+	///     surrounding "and" has to group it.
+	/// </summary>
+	internal virtual bool IsNegatedAnd => false;
+
+	/// <summary>
 	///     Returns <paramref name="it" />, when the result text starts with it, otherwise <see langword="null" />.
 	/// </summary>
 	protected string? GetSubjectOfResult(string it)
