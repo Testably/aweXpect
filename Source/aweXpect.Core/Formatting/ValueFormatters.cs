@@ -155,7 +155,8 @@ public static partial class ValueFormatters
 				return;
 		}
 
-		if (TryFormatWithRegistrations(stringBuilder, value, options, context))
+		if (TryFormatWithRegistrations(stringBuilder, value, options, context) ||
+		    TryFormatTask(stringBuilder, value, options, context))
 		{
 			return;
 		}

@@ -133,6 +133,11 @@ public static partial class EquivalencyComparison
 		(string actualText, string expectedText) =
 			ValuePairFormatter.Format(actual, expected, FormattingOptions.SingleLine);
 		failureBuilder.Append(actualText).AppendLine().Append("    Expected: ").Append(expectedText);
+		if (actual is Task && expected is Task)
+		{
+			// Two tasks in the same state are written the same, which alone would not explain the difference.
+			failureBuilder.AppendLine().Append("    (tasks are compared by reference)");
+		}
 	}
 
 	private static void AppendDifferenceHeader(StringBuilder failureBuilder, MemberType memberType,

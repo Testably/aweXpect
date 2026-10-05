@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 #endif
 using System.Text;
+using System.Threading.Tasks;
 
 namespace aweXpect.Equivalency;
 
@@ -41,6 +42,7 @@ public static class EquivalencyDefaults
 		    || IsDateOrTime(type)
 		    || IsNumber(type)
 		    || IsHandle(type)
+		    || IsTask(type)
 		    || EquivalencyContent.IsComparedByContent(type))
 		{
 			return EquivalencyComparisonType.ByValue;
@@ -114,4 +116,15 @@ public static class EquivalencyDefaults
 		   || typeof(CultureInfo).IsAssignableFrom(type)
 		   || typeof(IPAddress).IsAssignableFrom(type)
 		   || typeof(Encoding).IsAssignableFrom(type);
+
+	/// <remarks>
+	///     The state of a task changes over time, and reading its <c>Result</c> blocks until it completes, so a task
+	///     is identified by its instance, which is what its <see cref="object.Equals(object)" /> compares.<br />
+	///     A <see cref="ValueTask" /> is a value that wraps a task, a source or the result itself, and its
+	///     <see cref="object.Equals(object)" /> compares exactly these without waiting.
+	/// </remarks>
+	private static bool IsTask(Type type)
+		=> typeof(Task).IsAssignableFrom(type)
+		   || type == typeof(ValueTask)
+		   || (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(ValueTask<>));
 }
