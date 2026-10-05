@@ -261,5 +261,57 @@ public sealed partial class ThatDictionary
 				await That(result).IsSameAs(subject);
 			}
 		}
+
+		public sealed class ThrowingSubjectTests
+		{
+			[Fact]
+			public async Task WhenTheKeyComparerThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("comparer failed");
+				ThrowingKeyComparer<string> comparer = new(exception);
+				Dictionary<string, int> subject = new(comparer) { ["a"] = 1, ["b"] = 2, };
+				comparer.IsArmed = true;
+
+				async Task Act()
+					=> await That(subject).DoesNotContain("a", 7);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain ["a"] = 7,
+					             but it did throw an InvalidOperationException:
+					               comparer failed
+
+					             Dictionary:
+					             {["a"] = 1, ["b"] = 2}
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("a dictionary that answered nothing cannot prove the negation either");
+			}
+
+			[Fact]
+			public async Task WhenTheLookupThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("lookup failed");
+				IDictionary<string, int> subject =
+					new ThrowingDictionary<string, int>(exception, ThrowingMembers.TryGetValue) { ["a"] = 1, ["b"] = 2, };
+
+				async Task Act()
+					=> await That(subject).DoesNotContain("a", 7);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain ["a"] = 7,
+					             but it did throw an InvalidOperationException:
+					               lookup failed
+
+					             Dictionary:
+					             {["a"] = 1, ["b"] = 2}
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+					.Because("a dictionary that answered nothing cannot prove the negation either");
+			}
+		}
 	}
 }

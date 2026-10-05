@@ -123,22 +123,29 @@ internal struct CollectionContext
 	}
 #endif
 
+	/// <remarks>
+	///     The count is read as code of the caller, so that a dictionary whose count throws gets no context instead of
+	///     aborting the failure message.
+	/// </remarks>
 	private static class DictionaryFormat<TKey, TValue>
 	{
 		public static readonly Func<object, bool, int?, string?> Format = (value, isIncomplete, _) =>
 		{
 			IDictionary<TKey, TValue> dictionary = (IDictionary<TKey, TValue>)value;
-			return Formatter.Format(dictionary, typeof(TValue).GetFormattingOption(dictionary.Count))
+			int count = UserCode.Invoke(static subject => subject.Count, dictionary);
+			return Formatter.Format(dictionary, typeof(TValue).GetFormattingOption(count))
 				.AppendIsIncomplete(isIncomplete);
 		};
 	}
 
+	/// <inheritdoc cref="DictionaryFormat{TKey,TValue}" />
 	private static class ReadOnlyDictionaryFormat<TKey, TValue>
 	{
 		public static readonly Func<object, bool, int?, string?> Format = (value, isIncomplete, _) =>
 		{
 			IReadOnlyDictionary<TKey, TValue> dictionary = (IReadOnlyDictionary<TKey, TValue>)value;
-			return Formatter.Format(dictionary, typeof(TValue).GetFormattingOption(dictionary.Count))
+			int count = UserCode.Invoke(static subject => subject.Count, dictionary);
+			return Formatter.Format(dictionary, typeof(TValue).GetFormattingOption(count))
 				.AppendIsIncomplete(isIncomplete);
 		};
 	}

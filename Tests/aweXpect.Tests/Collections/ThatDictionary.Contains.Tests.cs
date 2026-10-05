@@ -396,5 +396,55 @@ public sealed partial class ThatDictionary
 					.Because("the tolerance overloads of both dictionary interfaces must not become ambiguous");
 			}
 		}
+
+		public sealed class ThrowingSubjectTests
+		{
+			[Fact]
+			public async Task WhenTheKeyComparerThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("comparer failed");
+				ThrowingKeyComparer<string> comparer = new(exception);
+				Dictionary<string, int> subject = new(comparer) { ["a"] = 1, ["b"] = 2, };
+				comparer.IsArmed = true;
+
+				async Task Act()
+					=> await That(subject).Contains("a", 1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains ["a"] = 1,
+					             but it did throw an InvalidOperationException:
+					               comparer failed
+
+					             Dictionary:
+					             {["a"] = 1, ["b"] = 2}
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+
+			[Fact]
+			public async Task WhenTheLookupThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("lookup failed");
+				IDictionary<string, int> subject =
+					new ThrowingDictionary<string, int>(exception, ThrowingMembers.TryGetValue) { ["a"] = 1, ["b"] = 2, };
+
+				async Task Act()
+					=> await That(subject).Contains("a", 1);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains ["a"] = 1,
+					             but it did throw an InvalidOperationException:
+					               lookup failed
+
+					             Dictionary:
+					             {["a"] = 1, ["b"] = 2}
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+		}
 	}
 }

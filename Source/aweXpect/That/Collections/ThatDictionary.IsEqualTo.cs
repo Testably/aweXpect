@@ -152,13 +152,14 @@ public static partial class ThatDictionary
 			ISet<TKey> matchedKeys = KeyComparers.CreateKeySet(actual);
 			foreach (KeyValuePair<TKey, TValue> pair in expected)
 			{
-				if (!tryGetValue(pair.Key, out TValue? value))
+				if (!TryLookUp(tryGetValue, pair.Key, out TValue? value))
 				{
 					(missingKeys ??= []).Add(pair.Key);
 					continue;
 				}
 
-				if (!matchedKeys.Add(pair.Key))
+				if (!UserCode.Invoke(static values => values.MatchedKeys.Add(values.Key),
+					    (MatchedKeys: matchedKeys, Key: pair.Key)))
 				{
 					(collapsedKeys ??= []).Add(pair.Key);
 				}
@@ -171,7 +172,8 @@ public static partial class ThatDictionary
 			}
 
 			if (missingKeys is null && collapsedKeys is null && incorrectValues is null &&
-			    !HasAdditionalKeys(actual, matchedKeys))
+			    !UserCode.Invoke(static values => HasAdditionalKeys(values.Actual, values.MatchedKeys),
+				    (Actual: actual, MatchedKeys: matchedKeys)))
 			{
 				_failure = null;
 				Outcome = Outcome.Success;
@@ -244,16 +246,9 @@ public static partial class ThatDictionary
 		/// </remarks>
 		private static IEnumerable<string> AdditionalKeysError(TDictionary actual, ISet<TKey> matchedKeys)
 		{
-			int count = 0;
-			List<TKey> additionalKeys = [];
-			foreach (KeyValuePair<TKey, TValue> pair in actual)
-			{
-				count++;
-				if (!matchedKeys.Contains(pair.Key))
-				{
-					additionalKeys.Add(pair.Key);
-				}
-			}
+			(int count, List<TKey> additionalKeys) = UserCode.Invoke(
+				static values => FindAdditionalKeys(values.Actual, values.MatchedKeys),
+				(Actual: actual, MatchedKeys: matchedKeys));
 
 			int matchedCount = matchedKeys.Count;
 			if (count == matchedCount && additionalKeys.Count == 0)
@@ -271,6 +266,27 @@ public static partial class ThatDictionary
 					$"contained {additionalKeys.Count} keys that matched no expected key: {Formatter.Format(additionalKeys, FormattingOptions.SingleLine)}",
 				_ => $"contained {count} {KeyNoun(count)} and matched {matchedCount} expected {KeyNoun(matchedCount)}",
 			};
+		}
+
+		/// <summary>
+		///     Counts the keys of the <paramref name="actual" /> dictionary and collects those that are not among the
+		///     <paramref name="matchedKeys" />.
+		/// </summary>
+		private static (int Count, List<TKey> AdditionalKeys) FindAdditionalKeys(TDictionary actual,
+			ISet<TKey> matchedKeys)
+		{
+			int count = 0;
+			List<TKey> additionalKeys = [];
+			foreach (KeyValuePair<TKey, TValue> pair in actual)
+			{
+				count++;
+				if (!matchedKeys.Contains(pair.Key))
+				{
+					additionalKeys.Add(pair.Key);
+				}
+			}
+
+			return (count, additionalKeys);
 		}
 
 		private static string KeyNoun(int count) => count == 1 ? "key" : "keys";

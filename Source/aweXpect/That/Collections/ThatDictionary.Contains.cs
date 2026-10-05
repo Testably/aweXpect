@@ -123,7 +123,7 @@ public static partial class ThatDictionary
 				return this;
 			}
 
-			_hasKey = GetLookup(actual)(expected.Key, out _actualValue);
+			_hasKey = TryLookUp(GetLookup(actual), expected.Key, out _actualValue);
 			Outcome = _hasKey && await options.AreConsideredEqual(_actualValue!, expected.Value)
 				? Outcome.Success
 				: Outcome.Failure;

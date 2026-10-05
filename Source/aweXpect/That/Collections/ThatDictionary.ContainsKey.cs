@@ -29,7 +29,7 @@ public static partial class ThatDictionary
 						.InvertIf(state.Negated)),
 			subject,
 			expected,
-			f => GetLookup(f)(expected, out TValue? value) ? value : default
+			f => TryLookUp(GetLookup(f), expected, out TValue? value) ? value : default
 		);
 	}
 
@@ -44,8 +44,7 @@ public static partial class ThatDictionary
 		public ConstraintResult IsMetBy(TDictionary? actual)
 		{
 			Actual = actual;
-			Outcome = actual is not null && UserCode.Invoke(
-				static values => ContainsKey(values.Dictionary, values.Key), (Dictionary: actual, Key: expected))
+			Outcome = actual is not null && ContainsKey(actual, expected)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;

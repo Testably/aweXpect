@@ -55,7 +55,7 @@ public static partial class ThatDictionary
 			dictionary => new KeyedValues<TKey, TValue?>(keys
 				.Where(key => ContainsKey(dictionary, key))
 				.Select(key => new KeyValuePair<TKey, TValue?>(key,
-					GetLookup(dictionary)(key, out TValue? value) ? value : default)))
+					TryLookUp(GetLookup(dictionary), key, out TValue? value) ? value : default)))
 		);
 	}
 
@@ -89,8 +89,7 @@ public static partial class ThatDictionary
 				_existingKeys = [];
 				foreach (TKey item in expected)
 				{
-					if (UserCode.Invoke(static values => ContainsKey(values.Dictionary, values.Key),
-						    (Dictionary: actual, Key: item)))
+					if (ContainsKey(actual, item))
 					{
 						_existingKeys.Add(item);
 					}

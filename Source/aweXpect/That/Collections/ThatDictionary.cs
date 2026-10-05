@@ -31,12 +31,18 @@ public static partial class ThatDictionary
 	///     Compares the values with the equality <paramref name="options" /> of the expectation, as values, unlike keys,
 	///     have no comparer of the dictionary to honour.
 	/// </summary>
+	/// <remarks>
+	///     Only the enumeration of the dictionary is called as code of the caller, so that its exception fails the
+	///     expectation, while the comparison of the values reports its own.
+	/// </remarks>
 	private static async Task<bool> ContainsValue<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> dictionary,
 		TValue value, IOptionsEquality<TValue> options)
 	{
-		foreach (KeyValuePair<TKey, TValue> entry in dictionary)
+		using IEnumerator<KeyValuePair<TKey, TValue>> entries =
+			UserCode.Invoke(static subject => subject.GetEnumerator(), dictionary);
+		while (UserCode.Invoke(static enumerator => enumerator.MoveNext(), entries))
 		{
-			if (await options.AreConsideredEqual(entry.Value, value))
+			if (await options.AreConsideredEqual(entries.Current.Value, value))
 			{
 				return true;
 			}
@@ -57,12 +63,29 @@ public static partial class ThatDictionary
 			: ((IReadOnlyDictionary<TKey, TValue>)dictionary).TryGetValue;
 
 	/// <summary>
+	///     Looks the <paramref name="key" /> up with the <paramref name="lookup" /> of the dictionary as code of the
+	///     caller, so that an exception of the dictionary or of its key comparer fails the expectation.
+	/// </summary>
+	private static bool TryLookUp<TKey, TValue>(ValueLookup<TKey, TValue> lookup, TKey key, out TValue? value)
+	{
+		(bool hasKey, value) = UserCode.Invoke(
+			static values => (values.Lookup(values.Key, out TValue? found), found), (Lookup: lookup, Key: key));
+		return hasKey;
+	}
+
+	/// <summary>
 	///     Asks the dictionary itself for the <paramref name="key" />, so that its key comparer decides.
 	/// </summary>
+	/// <remarks>
+	///     The dictionary is asked as code of the caller, so that an exception of it or of its key comparer fails the
+	///     expectation.
+	/// </remarks>
 	private static bool ContainsKey<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> dictionary, TKey key)
-		=> dictionary is IDictionary<TKey, TValue> mutableDictionary
-			? mutableDictionary.ContainsKey(key)
-			: ((IReadOnlyDictionary<TKey, TValue>)dictionary).ContainsKey(key);
+		=> UserCode.Invoke(
+			static values => values.Dictionary is IDictionary<TKey, TValue> mutableDictionary
+				? mutableDictionary.ContainsKey(values.Key)
+				: ((IReadOnlyDictionary<TKey, TValue>)values.Dictionary).ContainsKey(values.Key),
+			(Dictionary: dictionary, Key: key));
 
 	/// <summary>
 	///     Adds the "Dictionary" context for the <paramref name="dictionary" />.
