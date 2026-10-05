@@ -71,7 +71,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	}
 
 	/// <summary>
-	///     …of type <typeparamref name="T" />.
+	///     …exactly of type <typeparamref name="T" />.
 	/// </summary>
 	public HasItemResult<TCollection> MatchingExactly<T>()
 	{
@@ -83,7 +83,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	}
 
 	/// <summary>
-	///     …of type <typeparamref name="T" /> that satisfies the <paramref name="predicate" />.
+	///     …exactly of type <typeparamref name="T" /> that satisfies the <paramref name="predicate" />.
 	/// </summary>
 	public HasItemResult<TCollection> MatchingExactly<T>(Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]

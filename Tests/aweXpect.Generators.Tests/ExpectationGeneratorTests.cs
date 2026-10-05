@@ -273,6 +273,32 @@ public sealed class ExpectationGeneratorTests
 			.Because("only a name with {Not} declares a negated overload");
 	}
 
+	[Theory]
+	[InlineData("CreateExpectationOn")]
+	[InlineData("CreateExpectationOnNullable")]
+	public async Task WithNegatedRemarks_ShouldUseThemForTheNegatedOverload(string attribute)
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			$$"""
+			  using aweXpect.SourceGenerators;
+
+			  namespace Lib;
+
+			  [{{attribute}}<int>("Is{Not}Zero", "{value} == 0", ExpectationText = "is {not} zero",
+			  	Remarks = "The value is zero.",
+			  	NegatedRemarks = "The value is\nnot zero.")]
+			  public static partial class ThatInt;
+			  """);
+
+		await That(DocumentationOf(result.Generated, "IsZero"))
+			.Contains("\t/// <remarks>\n\t///     The value is zero.\n\t/// </remarks>").And
+			.DoesNotContain("not zero");
+		await That(DocumentationOf(result.Generated, "IsNotZero"))
+			.Contains("\t/// <remarks>\n\t///     The value is\n\t///     not zero.\n\t/// </remarks>").And
+			.DoesNotContain("The value is zero.")
+			.Because("the remarks of the positive overload describe the opposite");
+	}
+
 	[Fact]
 	public async Task WithNotPlaceholder_ShouldEmitBothPolarities()
 	{
@@ -290,6 +316,28 @@ public sealed class ExpectationGeneratorTests
 		await That(result.Generated).Contains(" IsNotZero(this ").Once();
 		await That(result.Generated).Contains("///     Verifies that the subject is not zero.").Once();
 		await That(result.Generated).Contains("Grammars.Verb(\"is not zero\", \"are not zero\")").Once();
+	}
+
+	[Theory]
+	[InlineData("CreateExpectationOn")]
+	[InlineData("CreateExpectationOnNullable")]
+	public async Task WithRemarks_WithoutNegatedRemarks_ShouldEmitNoRemarksForTheNegatedOverload(string attribute)
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			$$"""
+			  using aweXpect.SourceGenerators;
+
+			  namespace Lib;
+
+			  [{{attribute}}<int>("Is{Not}Zero", "{value} == 0", ExpectationText = "is {not} zero",
+			  	Remarks = "The value is zero.")]
+			  public static partial class ThatInt;
+			  """);
+
+		await That(DocumentationOf(result.Generated, "IsZero"))
+			.Contains("\t/// <remarks>\n\t///     The value is zero.\n\t/// </remarks>");
+		await That(DocumentationOf(result.Generated, "IsNotZero")).DoesNotContain("<remarks>")
+			.Because("the remarks of the positive overload describe the opposite");
 	}
 
 	[Fact]
@@ -314,6 +362,16 @@ public sealed class ExpectationGeneratorTests
 			.Once();
 		await That(result.Generated).Contains("///     Verifies that the subject is not null or empty.").Once()
 			.Because("the summary only replaces the one of the positive overload");
+	}
+
+	/// <summary>
+	///     The documentation comment and the attributes of the generated <paramref name="methodName" />.
+	/// </summary>
+	private static string DocumentationOf(string generated, string methodName)
+	{
+		int method = generated.IndexOf($" {methodName}(this ", StringComparison.Ordinal);
+		int summary = generated.LastIndexOf("/// <summary>", method, StringComparison.Ordinal);
+		return generated.Substring(summary, method - summary).Replace("\r\n", "\n");
 	}
 
 	private static GeneratorRunner.GeneratorResult Run(string source)

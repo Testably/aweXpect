@@ -7,6 +7,10 @@ namespace aweXpect;
 	Remarks = """
 	          This means that the specified Unicode character is categorized as a number.<br />
 	          <seealso cref="char.IsNumber(char)" />
-	          """
+	          """,
+	NegatedRemarks = """
+	                 This means that the specified Unicode character is not categorized as a number.<br />
+	                 <seealso cref="char.IsNumber(char)" />
+	                 """
 )]
 public static partial class ThatChar;

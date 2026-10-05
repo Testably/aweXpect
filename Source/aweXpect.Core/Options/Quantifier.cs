@@ -94,10 +94,13 @@ public class Quantifier
 	///     Verifies the amount against the conditions, or against their negation when <paramref name="isNegated" />.
 	/// </summary>
 	/// <remarks>
-	///     Returns <see langword="true" /> when the condition is satisfied,
-	///     <see langword="false" /> when the condition is not satisfied
-	///     and <see langword="null" /> when the condition could still be satisfied
-	///     with a larger <paramref name="amount" />.
+	///     Returns <see langword="true" /> when the <paramref name="amount" /> meets the conditions and no larger amount
+	///     can exceed them, <see langword="false" /> when it exceeds them and <see langword="null" /> as long as a larger
+	///     amount could still meet or exceed them. When <paramref name="isNegated" />, <see langword="true" /> and
+	///     <see langword="false" /> are swapped.<br />
+	///     At the <paramref name="isLast" /> amount no larger amount follows, so <see langword="null" /> means that the
+	///     amount is too low. It is returned regardless of <paramref name="isNegated" />: the conditions are not met, so
+	///     their negation is.
 	/// </remarks>
 	public bool? Check(int amount, bool isLast, bool isNegated = false)
 		=> _bounds.Check(amount, isLast) is { } isMet ? isMet != isNegated : null;

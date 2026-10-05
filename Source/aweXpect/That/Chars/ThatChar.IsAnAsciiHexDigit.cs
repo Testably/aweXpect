@@ -8,7 +8,11 @@ namespace aweXpect;
 	Remarks = """
 	          This means that the specified Unicode character is categorized as an ASCII hexadecimal digit.<br />
 	          <seealso cref="char.IsAsciiHexDigit(char)" />
-	          """
+	          """,
+	NegatedRemarks = """
+	                 This means that the specified Unicode character is not categorized as an ASCII hexadecimal digit.<br />
+	                 <seealso cref="char.IsAsciiHexDigit(char)" />
+	                 """
 )]
 #else
 [CreateExpectationOn<char>("Is{Not}AnAsciiHexDigit", "{value} is >= '0' and <= '9' or >= 'a' and <= 'f' or >= 'A' and <= 'F'",

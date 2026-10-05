@@ -11,6 +11,11 @@ namespace aweXpect;
 	Remarks = """
 	          This means that the specified Unicode character is categorized as whitespace.<br />
 	          <seealso cref="char.IsWhiteSpace(char)" />
-	          """
+	          """,
+	NegatedRemarks = """
+	                 This means that the specified Unicode character is not categorized as whitespace.<br />
+	                 <see langword="null" /> is neither treated as whitespace nor as not whitespace, so it fails.<br />
+	                 <seealso cref="char.IsWhiteSpace(char)" />
+	                 """
 )]
 public static partial class ThatNullableChar;

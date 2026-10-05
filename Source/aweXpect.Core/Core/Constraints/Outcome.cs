@@ -16,8 +16,12 @@ public enum Outcome
 	Failure,
 
 	/// <summary>
-	///     The result could not be determined (e.g. due to timeout).
+	///     The constraint did not decide its outcome, e.g. because the evaluation was canceled before it could.
 	/// </summary>
+	/// <remarks>
+	///     An expectation only stays undecided when the caller canceled the evaluation. It fails when the timeout
+	///     canceled the evaluation, and also when its outcome is undecided although nothing canceled the evaluation.
+	/// </remarks>
 	Undecided,
 
 	/// <summary>
