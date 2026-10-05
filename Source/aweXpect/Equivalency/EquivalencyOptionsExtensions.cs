@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Helpers;
 
@@ -17,10 +18,20 @@ public static class EquivalencyOptionsExtensions
 		this TEquivalencyOptions options,
 		string memberToIgnore)
 		where TEquivalencyOptions : EquivalencyTypeOptions
-		=> options with
+	{
+		memberToIgnore.ThrowIfNull();
+		if (memberToIgnore.Length == 0)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new ArgumentException(
+				"The 'memberToIgnore' cannot be empty.", nameof(memberToIgnore)));
+		}
+
+		return options with
 		{
 			MembersToIgnore = [..options.MembersToIgnore, new MemberToIgnore.ByName(memberToIgnore),],
 		};
+	}
 
 	/// <summary>
 	///     Ignores members matching the <paramref name="predicate" /> when checking for equivalency.
@@ -31,7 +42,9 @@ public static class EquivalencyOptionsExtensions
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TEquivalencyOptions : EquivalencyTypeOptions
-		=> options with
+	{
+		predicate.ThrowIfNull();
+		return options with
 		{
 			MembersToIgnore =
 			[
@@ -39,6 +52,7 @@ public static class EquivalencyOptionsExtensions
 				new MemberToIgnore.ByPredicate(predicate, doNotPopulateThisValue),
 			],
 		};
+	}
 
 	/// <summary>
 	///     Ignores members matching the <paramref name="predicate" /> when checking for equivalency.
@@ -49,7 +63,9 @@ public static class EquivalencyOptionsExtensions
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TEquivalencyOptions : EquivalencyTypeOptions
-		=> options with
+	{
+		predicate.ThrowIfNull();
+		return options with
 		{
 			MembersToIgnore =
 			[
@@ -58,6 +74,7 @@ public static class EquivalencyOptionsExtensions
 					doNotPopulateThisValue),
 			],
 		};
+	}
 
 	/// <summary>
 	///     Ignores members matching the <paramref name="predicate" /> when checking for equivalency.
@@ -68,7 +85,9 @@ public static class EquivalencyOptionsExtensions
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TEquivalencyOptions : EquivalencyTypeOptions
-		=> options with
+	{
+		predicate.ThrowIfNull();
+		return options with
 		{
 			MembersToIgnore =
 			[
@@ -77,6 +96,7 @@ public static class EquivalencyOptionsExtensions
 					doNotPopulateThisValue),
 			],
 		};
+	}
 
 	/// <summary>
 	///     Ignores fields matching the <paramref name="predicate" /> when checking for equivalency.
@@ -87,7 +107,9 @@ public static class EquivalencyOptionsExtensions
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TEquivalencyOptions : EquivalencyTypeOptions
-		=> options with
+	{
+		predicate.ThrowIfNull();
+		return options with
 		{
 			MembersToIgnore =
 			[
@@ -95,6 +117,7 @@ public static class EquivalencyOptionsExtensions
 				new MemberToIgnore.ByFieldPredicate(predicate, doNotPopulateThisValue),
 			],
 		};
+	}
 
 	/// <summary>
 	///     Ignores properties matching the <paramref name="predicate" /> when checking for equivalency.
@@ -105,7 +128,9 @@ public static class EquivalencyOptionsExtensions
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 		where TEquivalencyOptions : EquivalencyTypeOptions
-		=> options with
+	{
+		predicate.ThrowIfNull();
+		return options with
 		{
 			MembersToIgnore =
 			[
@@ -113,6 +138,7 @@ public static class EquivalencyOptionsExtensions
 				new MemberToIgnore.ByPropertyPredicate(predicate, doNotPopulateThisValue),
 			],
 		};
+	}
 
 	/// <summary>
 	///     Includes fields according to the <paramref name="fieldsToInclude" /> parameter.

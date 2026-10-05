@@ -65,6 +65,9 @@ An empty or `null` value to search for, such as `Contains("")` or `ContainsKeys(
 expectation that could never fail. Such calls now throw at the call site: `ArgumentNullException` for `null`,
 `ArgumentException` for an empty value.
 
+A member to ignore is validated the same way: `IgnoringMember("")` in the equivalency options used to ignore
+nothing and now throws an `ArgumentException`.
+
 Ranges, counts and tolerances are validated the same way, when the expectation is built rather than when it is
 evaluated, and every one of them throws an `ArgumentOutOfRangeException`:
 

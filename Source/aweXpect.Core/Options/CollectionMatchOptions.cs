@@ -166,34 +166,64 @@ public partial class CollectionMatchOptions(
 	/// <summary>
 	///     Get the collection matcher for the <paramref name="expected" /> enumerable of predicates.
 	/// </summary>
+	/// <exception cref="ArgumentException">
+	///     A predicate of the <paramref name="expected" /> enumerable is <see langword="null" />.
+	/// </exception>
 	public ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(IEnumerable<Expression<Func<T, bool>>> expected)
 		where T : T2
-		=> (_inAnyOrder, _ignoringDuplicates) switch
+	{
+		Expression<Func<T, bool>>[] predicates = WithoutNullElements(expected, nameof(expected));
+		return (_inAnyOrder, _ignoringDuplicates) switch
 		{
 			(true, true) => new AnyOrderIgnoreDuplicatesFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations,
-				expected),
-			(true, false) => new AnyOrderFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations, expected),
+				predicates),
+			(true, false) => new AnyOrderFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations, predicates),
 			(false, true) => new SameOrderIgnoreDuplicatesFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations,
-				expected, _ignoringInterspersedItems),
-			(false, false) => new SameOrderFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations, expected,
+				predicates, _ignoringInterspersedItems),
+			(false, false) => new SameOrderFromPredicateCollectionMatcher<T, T2>(_equivalenceRelations, predicates,
 				_ignoringInterspersedItems, AddsInAnyOrderHint),
 		};
+	}
 
 	/// <summary>
 	///     Get the collection matcher for the <paramref name="expected" /> enumerable of predicates.
 	/// </summary>
+	/// <exception cref="ArgumentException">
+	///     An expectation of the <paramref name="expected" /> enumerable is <see langword="null" />.
+	/// </exception>
 	public ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(IEnumerable<ExpectationItem<T>> expected)
 		where T : T2
-		=> (_inAnyOrder, _ignoringDuplicates) switch
+	{
+		ExpectationItem<T>[] expectations = WithoutNullElements(expected, nameof(expected));
+		return (_inAnyOrder, _ignoringDuplicates) switch
 		{
 			(true, true) => new AnyOrderIgnoreDuplicatesFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations,
-				expected),
-			(true, false) => new AnyOrderFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations, expected),
+				expectations),
+			(true, false) => new AnyOrderFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations, expectations),
 			(false, true) => new SameOrderIgnoreDuplicatesFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations,
-				expected, _ignoringInterspersedItems),
-			(false, false) => new SameOrderFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations, expected,
+				expectations, _ignoringInterspersedItems),
+			(false, false) => new SameOrderFromExpectationCollectionMatcher<T, T2>(_equivalenceRelations, expectations,
 				_ignoringInterspersedItems, AddsInAnyOrderHint),
 		};
+	}
+
+	/// <summary>
+	///     Materializes the <paramref name="expected" /> predicates or expectations, which the matcher needs anyway,
+	///     and rejects a <see langword="null" /> one, because it could not be evaluated for any item.
+	/// </summary>
+	private static T[] WithoutNullElements<T>(IEnumerable<T> expected, string paramName)
+		where T : class
+	{
+		T[] elements = expected as T[] ?? expected.ToArray();
+		if (elements.Any(element => element is null))
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(new ArgumentException(
+				$"The '{paramName}' collection cannot contain <null>.", paramName));
+		}
+
+		return elements;
+	}
 
 	/// <summary>
 	///     Only equality guarantees that a successful any-order match means the same items in a different order; the
@@ -559,6 +589,7 @@ public partial class CollectionMatchOptions(
 			IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
+			expectation.ThrowIfNull();
 			_context = context;
 			_cancellationToken = cancellationToken;
 			ItemExpectationBuilder = new ManualExpectationBuilder<TItem>((grammars & ~ExpectationGrammars.Plural) | ExpectationGrammars.Introduced);

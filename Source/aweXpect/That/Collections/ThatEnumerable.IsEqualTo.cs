@@ -217,10 +217,11 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
+		IEnumerable<Expression<Func<TItem, bool>>>? expectedValues = expected.WithoutNullElements(negated);
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionMatchResult<IEnumerable<TItem>?, IThat<IEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((ExpectedExpression: expectedExpression, Expected: expected,
+			expectationBuilder.AddConstraint((ExpectedExpression: expectedExpression, Expected: expectedValues,
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 				{
@@ -242,10 +243,11 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
+		IEnumerable<Action<IThatSubject<TItem?>>>? expectedValues = expected.WithoutNullElements(negated);
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionMatchResult<IEnumerable<TItem>?, IThat<IEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((ExpectedExpression: expectedExpression, Expected: expected,
+			expectationBuilder.AddConstraint((ExpectedExpression: expectedExpression, Expected: expectedValues,
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 				{
@@ -361,10 +363,11 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable<TItem>
 	{
+		IEnumerable<Expression<Func<TItem, bool>>>? expectedValues = expected.WithoutNullElements(negated);
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
-			expectationBuilder.AddConstraint((ExpectedExpression: expectedExpression, Expected: expected,
+			expectationBuilder.AddConstraint((ExpectedExpression: expectedExpression, Expected: expectedValues,
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 				{
@@ -388,10 +391,11 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable<TItem>
 	{
+		IEnumerable<Action<IThatSubject<TItem?>>>? expectedValues = expected.WithoutNullElements(negated);
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
-			expectationBuilder.AddConstraint((ExpectedExpression: expectedExpression, Expected: expected,
+			expectationBuilder.AddConstraint((ExpectedExpression: expectedExpression, Expected: expectedValues,
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 				{

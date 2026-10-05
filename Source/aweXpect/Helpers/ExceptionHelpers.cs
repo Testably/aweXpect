@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
@@ -86,6 +87,55 @@ internal static class ExceptionHelpers
 	private static ArgumentException EmptyCollection(string? paramName)
 		// ReSharper disable once LocalizableElement
 		=> new($"The '{paramName}' collection cannot be empty.", paramName);
+
+	/// <summary>
+	///     Rejects a <see langword="null" /> element of the <paramref name="parameter" />, which is a collection of
+	///     expectations or predicates that are invoked for the items.
+	/// </summary>
+	/// <remarks>
+	///     A materialized collection is verified right away. Any other sequence is returned wrapped and verified while
+	///     it is enumerated, so that it is neither enumerated early nor more often.
+	///     <para />
+	///     The read-only collection is covariant, so it also recognizes a collection whose element type only converts
+	///     to <typeparamref name="T" />, e.g. a list of expectations on a less specific subject.
+	/// </remarks>
+	[return: NotNullIfNotNull(nameof(parameter))]
+	public static IEnumerable<T>? WithoutNullElements<T>(this IEnumerable<T>? parameter,
+		[CallerArgumentExpression(nameof(parameter))] string? paramName = null)
+		where T : class
+		=> WithoutNullElementsNamed(parameter, paramName);
+
+	/// <summary>
+	///     <see cref="WithoutNullElements{T}(IEnumerable{T}?,string?)" /> for the <paramref name="parameter" /> named
+	///     after the polarity of the expectation: the expected collection, or the unexpected one when
+	///     <paramref name="negated" />.
+	/// </summary>
+	[return: NotNullIfNotNull(nameof(parameter))]
+	public static IEnumerable<T>? WithoutNullElements<T>(this IEnumerable<T>? parameter, bool negated)
+		where T : class
+		=> WithoutNullElementsNamed(parameter, negated ? "unexpected" : "expected");
+
+	[return: NotNullIfNotNull(nameof(parameter))]
+	private static IEnumerable<T>? WithoutNullElementsNamed<T>(IEnumerable<T>? parameter, string? paramName)
+		where T : class
+	{
+		if (parameter is not (ICollection<T> or IReadOnlyCollection<T>))
+		{
+			return parameter?.Select(element
+				=> element ?? throw Tracing.WriteException(NullElement(paramName)));
+		}
+
+		if (parameter.Any(element => element is null))
+		{
+			throw Tracing.WriteException(NullElement(paramName));
+		}
+
+		return parameter;
+	}
+
+	private static ArgumentException NullElement(string? paramName)
+		// ReSharper disable once LocalizableElement
+		=> new($"The '{paramName}' collection cannot contain <null>.", paramName);
 
 	/// <summary>
 	///     Formats the type of the <paramref name="exception" /> and its message, or the <paramref name="exceptionMessage" />

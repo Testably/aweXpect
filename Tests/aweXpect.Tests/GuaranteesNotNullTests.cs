@@ -1046,8 +1046,30 @@ public sealed class GuaranteesNotNullTests
 	private static Array CreateSingleElementArray(Type elementType)
 	{
 		Array array = Array.CreateInstance(elementType, 1);
-		array.SetValue(CreateValue(elementType), 0);
+		array.SetValue(CreateElement(elementType), 0);
 		return array;
+	}
+
+	/// <summary>
+	///     A collection of expectations or predicates rejects a <see langword="null" /> element as an invalid argument,
+	///     so its element is one that can be invoked.
+	/// </summary>
+	private static object? CreateElement(Type type)
+	{
+		if (typeof(Delegate).IsAssignableFrom(type))
+		{
+			return CreateDelegate(type);
+		}
+
+		if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Expression<>))
+		{
+			Type delegateType = type.GetGenericArguments()[0];
+			MethodInfo invoke = delegateType.GetMethod("Invoke")!;
+			return Expression.Lambda(delegateType, Expression.Default(invoke.ReturnType),
+				invoke.GetParameters().Select(parameter => Expression.Parameter(parameter.ParameterType, parameter.Name)));
+		}
+
+		return CreateValue(type);
 	}
 
 	private static object? CreateValue(Type type)
