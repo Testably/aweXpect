@@ -219,10 +219,10 @@ public sealed partial class ThatString
 				string subject = "abc";
 
 				async Task Act()
-					=> await That(subject).Contains("a").AsWildcard().AsSuffix();
+					=> await That(subject).Contains("a").AsWildcard().AsRegex();
 
 				await That(Act).Throws<InvalidOperationException>()
-					.WithMessage("AsSuffix cannot be combined with AsWildcard.");
+					.WithMessage("AsRegex cannot be combined with AsWildcard.");
 			}
 		}
 
@@ -380,24 +380,6 @@ public sealed partial class ThatString
 					              does not contain "a\nb" as block,
 					              but it contained "a\nb" once in "  a\n  b"
 					              """);
-			}
-		}
-
-		public sealed class AsPrefixTests
-		{
-			[Fact]
-			public async Task WhenExpectedIsEmptyAfterTheIndentationIsIgnored_ShouldThrowArgumentException()
-			{
-				string subject = "some text";
-				string expected = " ";
-
-				async Task Act()
-					=> await That(subject).Contains(expected).AsPrefix().IgnoringIndentation();
-
-				await That(Act).Throws<ArgumentException>()
-					.WithMessage("The 'expected' prefix cannot be empty.").AsPrefix().And
-					.WithParamName("expected")
-					.Because("the counted prefix is the normalized one, which every subject starts with");
 			}
 		}
 
@@ -947,7 +929,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it =>
 					{
-						StringEqualityTypeCountResult<string, IThat<string?>> contains = it.Contains("some");
+						StringOccurrenceCountResult<string, IThat<string?>> contains = it.Contains("some");
 						_ = quantifier switch
 						{
 							"AtLeast(2)" => contains.AtLeast(2),

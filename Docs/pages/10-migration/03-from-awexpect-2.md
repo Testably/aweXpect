@@ -120,6 +120,12 @@ line anchors, pass the option explicitly with `AsRegex(RegexOptions.Multiline)` 
 occurrences with `Contains(…)` still finds a pattern anywhere in the subject. See
 [Match types](../04-values/03-string.md#match-types).
 
+`Contains(…).AsPrefix()` and `Contains(…).AsSuffix()` on a `string` no longer compile. They counted every occurrence
+anywhere in the subject, so use `StartsWith(…)` or `EndsWith(…)` instead. `Contains` and `DoesNotContain` on a
+`string` therefore return a `StringOccurrenceCountResult<string, IThat<string?>>` instead of a
+`StringEqualityTypeCountResult<string, IThat<string?>>`. On a collection of strings both options are still available
+and apply to each item.
+
 ## Consistent vocabulary
 
 A continuation on a **value** compares (`EqualTo`, `GreaterThan`, `LessThanOrEqualTo`, `Between`, …) and a
