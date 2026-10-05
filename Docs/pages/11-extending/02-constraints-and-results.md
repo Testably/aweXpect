@@ -394,7 +394,8 @@ or converts the subject returns the converted value there. `Whose` and `AndWhose
 the expectation is met; when it is not met, a member of a converted value is not evaluated, only its expectations are
 shown. The helper classes return their `Actual` value. A stored
 `null` value of a matching type still returns `true`, so that awaiting the expectation returns `null`. When
-`TryGetStoredValue` returns `false` for the type, awaiting the successful expectation throws a `FailException`.
+`TryGetStoredValue` returns `false` for the type, awaiting the successful expectation returns the `default` of the
+type, e.g. after an `.Or` whose earlier alternative was met.
 `TryGetValue<TValue>` builds on it and only returns `true` for a value that is not `null`.
 
 A result of your own that derives from `AndOrResult<TType, TThat>` reaches the `ExpectationBuilder` through the

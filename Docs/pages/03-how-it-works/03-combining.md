@@ -123,3 +123,14 @@ IEnumerable<int> playCounts = [42];
 
 int single = await Expect.That(playCounts).HasSingle();
 ```
+
+After an `.Or`, the value is only meaningful when the last expectation was the one that was met. When an earlier
+alternative was met instead, there is no value of the awaited type and the result is its `default`: `null` for a
+reference type (also when it is not annotated as nullable) and the zero value for a value type, which cannot be told
+apart from a real value:
+
+```csharp
+object subject = "Yesterday";
+
+int result = await Expect.That(subject).Is<string>().Or.Is<int>(); // 0
+```

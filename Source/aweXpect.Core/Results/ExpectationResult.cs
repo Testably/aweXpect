@@ -294,10 +294,9 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 		}
 
 		ConstraintResult result = isMet.Result;
-		if (result.Outcome == Outcome.Success && !ExpectationBuilder.IsTracing &&
-		    result.TryGetStoredValue(out TType? storedValue))
+		if (result.Outcome == Outcome.Success && !ExpectationBuilder.IsTracing)
 		{
-			value = storedValue!;
+			value = GetStoredValueOrDefault(result);
 			evaluation = null;
 			return true;
 		}
@@ -391,8 +390,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 
 		switch (result.Outcome)
 		{
-			case Outcome.Success
-				when result.TryGetStoredValue(out TType? value):
+			case Outcome.Success:
 				ITraceWriter? traceWriter = Customize.aweXpect.TraceWriter;
 				if (traceWriter != null)
 				{
@@ -406,7 +404,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 					traceWriter.WriteMessage(sb.ToString());
 				}
 
-				return value!;
+				return GetStoredValueOrDefault(result);
 			case Outcome.Undecided:
 				Fail.Inconclusive(await FromFailure(result));
 				break;
@@ -417,7 +415,16 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 		}
 
 		throw Tracing.WriteException(
-			new FailException(
-				$"The value in {Formatter.Format(result.GetType())} did not match expected type {Formatter.Format(typeof(TType))}."));
+			new FailException($"The outcome {result.Outcome} of {Formatter.Format(result.GetType())} is not supported."));
 	}
+
+	/// <summary>
+	///     The stored value of the met <paramref name="result" />.
+	/// </summary>
+	/// <remarks>
+	///     A met expectation can be without a <typeparamref name="TType" />, e.g. when another alternative of an
+	///     <c>Or</c> was met than the one that determines the type. It is then the <see langword="default" /> value.
+	/// </remarks>
+	private static TType GetStoredValueOrDefault(ConstraintResult result)
+		=> result.TryGetStoredValue(out TType? value) ? value! : default!;
 }

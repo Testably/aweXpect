@@ -55,6 +55,26 @@ public sealed partial class ThatObject
 			}
 
 			[Fact]
+			public async Task WhenCombinedWithOr_AndOnlyLeftIsMet_ShouldReturnNull()
+			{
+				object subject = new MyClass();
+
+				OtherClass result = await That(subject).IsExactly<MyClass>().Or.IsExactly<OtherClass>();
+
+				await That(result).IsNull();
+			}
+
+			[Fact]
+			public async Task WhenCombinedWithOr_AndOnlyRightIsMet_ShouldReturnSubject()
+			{
+				object subject = new MyClass();
+
+				MyClass result = await That(subject).IsExactly<OtherClass>().Or.IsExactly<MyClass>();
+
+				await That(result).IsSameAs(subject);
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				object? subject = null;
