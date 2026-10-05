@@ -2,6 +2,7 @@
 using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Core.TimeSystem;
 using aweXpect.Customization;
 using aweXpect.Signaling;
 
@@ -13,18 +14,18 @@ public sealed class CustomizeSettingsTests
 	public async Task DefaultCheckInterval_ShouldBeUsedInTimeComparisons()
 	{
 		TimeSpan timeout = 2.Seconds();
+		VirtualTimeSystem time = new();
 
-		ChangingClass sut1 = new();
-		ChangingClass sut2 = new();
+		ChangingClass sut1 = new(time);
+		ChangingClass sut2 = new(time);
 
 		await That(Customize.aweXpect.Settings().DefaultCheckInterval.Get()).IsEqualTo(100.Milliseconds());
-		await That(sut1).Satisfies(x => x.HasMeasuredInterval).Within(30.Seconds());
-		await That(sut1.Interval).IsGreaterThanOrEqualTo(50.Milliseconds()).And.IsLessThan(10.Seconds());
+		await That(sut1).Satisfies(x => x.HasMeasuredInterval).Within(30.Seconds()).UseTimeSystem(time);
+		await That(sut1.Interval).IsEqualTo(100.Milliseconds());
 		using (IDisposable __ = Customize.aweXpect.Settings().DefaultCheckInterval.Set(timeout))
 		{
-			await That(sut2).Satisfies(x => x.HasMeasuredInterval).Within(30.Seconds());
-			await That(sut2.Interval).IsGreaterThanOrEqualTo(timeout).Within(50.Milliseconds()).And
-				.IsLessThan(20.Seconds());
+			await That(sut2).Satisfies(x => x.HasMeasuredInterval).Within(30.Seconds()).UseTimeSystem(time);
+			await That(sut2.Interval).IsEqualTo(timeout);
 		}
 	}
 
@@ -383,9 +384,9 @@ public sealed class CustomizeSettingsTests
 		await That(stopwatch.Elapsed).IsLessThanOrEqualTo(10.Seconds());
 	}
 
-	private sealed class ChangingClass
+	private sealed class ChangingClass(VirtualTimeSystem time)
 	{
-		private readonly Stopwatch _stopwatch = new();
+		private readonly IStopwatch _stopwatch = time.Stopwatch.New();
 
 		public bool HasMeasuredInterval
 		{

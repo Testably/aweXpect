@@ -15,13 +15,22 @@ namespace aweXpect.Core.Tests.TestHelpers;
 ///     its attempt took. As a wait is the only thing that moves the clock on its own, a repeated check with a limited
 ///     budget and a positive interval always ends.
 ///     <para />
-///     The timers that cancel stay real: the limit after which <c>Eventually()</c> abandons an attempt that is still
-///     running, the timeout of the evaluation (<c>WithTimeout(…)</c> and the test cancellation) and a
-///     <see cref="CancellationTokenSource" /> with a delay. They cannot influence a subject that completes
-///     synchronously without throwing an <see cref="OperationCanceledException" />, because it is judged by the
-///     measured, i.e. virtual, time only. Every other test must either stay on the real time system (a subject that
-///     never completes, <c>WithTimeout(…)</c> shorter than the budget) or use a budget that real time does not reach
-///     (a subject that completes asynchronously or throws an <see cref="OperationCanceledException" />).
+///     The timers that cancel stay real, so a test on the virtual clock has to keep them out of its way:
+///     <list type="bullet">
+///         <item>
+///             The timeout of the evaluation (<c>WithTimeout(…)</c> and the test cancellation) and a
+///             <see cref="CancellationTokenSource" /> with a delay cancel after real time. A test that needs a
+///             timeout which is shorter than the budget stays on the real time system, and a cancellation is
+///             scheduled with <see cref="CancelAt(TimeSpan, CancellationTokenSource)" />.
+///         </item>
+///         <item>
+///             The limit of an attempt of <c>Eventually()</c> cancels the token of the attempt after the remaining
+///             budget in real time, and abandons a subject that is still running then. A subject that completes
+///             synchronously, ignores its token and throws no <see cref="OperationCanceledException" /> is not
+///             affected, because only the measured, i.e. virtual, time judges it. Any other subject needs a budget
+///             that real time does not reach, and a subject that never completes stays on the real time system.
+///         </item>
+///     </list>
 /// </remarks>
 internal sealed class VirtualTimeSystem : ITimeSystem, IStopwatchFactory
 {
