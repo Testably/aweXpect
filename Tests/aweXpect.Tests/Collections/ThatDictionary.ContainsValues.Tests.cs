@@ -334,5 +334,31 @@ public sealed partial class ThatDictionary
 					.Because("a type that implements both dictionary interfaces must not become ambiguous");
 			}
 		}
+
+		public sealed class ThrowingSubjectTests
+		{
+			[Fact]
+			public async Task WhenTheEnumerationThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("enumeration failed");
+				IDictionary<string, int> subject =
+					new ThrowingDictionary<string, int>(exception, ThrowingMembers.Enumeration) { ["a"] = 1, ["b"] = 2, };
+
+				async Task Act()
+					=> await That(subject).ContainsValues(1, 2);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains values [1, 2],
+					             but it did throw an InvalidOperationException:
+					               enumeration failed
+
+					             Dictionary:
+					             [the enumeration did throw an InvalidOperationException: enumeration failed]
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+		}
 	}
 }

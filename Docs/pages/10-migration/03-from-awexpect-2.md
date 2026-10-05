@@ -91,11 +91,11 @@ range; it now throws an `ArgumentOutOfRangeException` instead of a plain `Argume
 
 An exception thrown by your code while an expectation is evaluated fails the expectation, and its negation alike, with
 the exception as inner exception. This covers predicates such as in `All().Satisfy(…)`, `Contains(…)` or `HasItem(…)`,
-member selectors, comparers, a throwing `Equals`, a throwing property getter in equivalency and the enumeration of a
-collection subject. v2 threw some of these exceptions directly or wrapped them in an
-`InvalidOperationException("Error evaluating … constraint with value …")`, so a test that expected such an exception
-now gets a failed expectation instead. Exceptions of aweXpect itself, such as the argument validation above, are
-still thrown.
+member selectors, comparers, a throwing `Equals`, a throwing property getter in equivalency, the enumeration of a
+collection subject and the lookups in a dictionary subject, including its key comparer. v2 threw some of these
+exceptions directly or wrapped them in an `InvalidOperationException("Error evaluating … constraint with value …")`,
+so a test that expected such an exception now gets a failed expectation instead. Exceptions of aweXpect itself, such
+as the argument validation above, are still thrown.
 
 ## Conflicting string options
 
