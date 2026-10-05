@@ -52,6 +52,11 @@ public partial class CollectionMatchOptions
 		}
 
 		/// <summary>
+		///     The number of edits up to which the distance is computed.
+		/// </summary>
+		public int MaximumEdits => _maximumEdits;
+
+		/// <summary>
 		///     Adds the next subject item, which <paramref name="areConsideredEqual" /> receives by its index.
 		/// </summary>
 		/// <returns>

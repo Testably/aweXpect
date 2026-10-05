@@ -124,16 +124,17 @@ public partial class CollectionMatchOptions
 			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			MergesEqualItems(options);
-			await CoverTheRemainingMissingItems(options, maximumNumber);
-
-			// For the containment relation, all deviations are missing items, which are known completely here.
-			if (!_equivalenceRelations.Includes(EquivalenceRelations.Contains) &&
-			    CountMissingDeviations() + CountAdditionalDeviations() > 2L * maximumNumber)
-			{
-				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
-			}
+			await CoverTheRemainingMissingItems(options);
 
 			Func<object?, string> formatItem = CreateItemFormatter();
+			// Without an additional item, all deviations are missing items, which are known completely here.
+			if (CountAdditionalDeviations() > 0 &&
+			    CountMissingDeviations() + CountAdditionalDeviations() > 2L * maximumNumber)
+			{
+				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(),
+					ListedMissingItemsError(formatItem, options, maximumNumber)));
+			}
+
 			List<string> errors = new();
 			if (!_equivalenceRelations.Includes(EquivalenceRelations.Contains))
 			{
@@ -285,16 +286,15 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		/// <remarks>
 		///     The search stops once the result no longer depends on it: the proper containment only needs one missing
-		///     item, and too many deviations only list the additional items.
+		///     item.
 		/// </remarks>
-		private async ValueTask CoverTheRemainingMissingItems(IOptionsEquality<T2> options, int maximumNumber)
+		private async ValueTask CoverTheRemainingMissingItems(IOptionsEquality<T2> options)
 		{
 			if (_equivalenceRelations == EquivalenceRelations.IsContainedIn)
 			{
 				return;
 			}
 
-			int stillMissing = 0;
 			for (int i = 0; i < _missingItems.Count; i++)
 			{
 				T3 expected = _missingItems[i];
@@ -302,9 +302,7 @@ public partial class CollectionMatchOptions
 				{
 					_missingItems.RemoveAt(i--);
 				}
-				else if (_equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn) ||
-				         (!_equivalenceRelations.Includes(EquivalenceRelations.Contains) &&
-				          ++stillMissing + CountAdditionalDeviations() > 2L * maximumNumber))
+				else if (_equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn))
 				{
 					return;
 				}
@@ -345,6 +343,16 @@ public partial class CollectionMatchOptions
 
 		private IEnumerable<string> GetDeviations()
 			=> AdditionalItemsError(_additionalItems, CreateItemFormatter());
+
+		/// <summary>
+		///     Missing items are no deviation for the IsContainedIn relation, so they are not listed.
+		/// </summary>
+		private IEnumerable<string> ListedMissingItemsError(Func<object?, string> formatItem, object options,
+			int maximumNumber)
+			=> _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn)
+				? []
+				: MissingItemsError(_totalExpectedCount, _missingItems, _equivalenceRelations,
+					_areExpectedItemsUnique, formatItem, options, maximumNumber);
 
 		/// <summary>
 		///     An unexpected and a missing item that format equally differ only in their runtime type.

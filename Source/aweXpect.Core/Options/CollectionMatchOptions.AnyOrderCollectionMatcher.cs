@@ -278,14 +278,15 @@ public partial class CollectionMatchOptions
 				return (false, null);
 			}
 
-			// For the containment relation, all deviations are missing items, which are known completely here.
-			if (!_equivalenceRelations.Includes(EquivalenceRelations.Contains) &&
+			Func<object?, string> formatItem = CreateItemFormatter();
+			// Without an additional item, all deviations are missing items, which are known completely here.
+			if (CountAdditionalDeviations() > 0 &&
 			    CountAdditionalDeviations() + CountMissingDeviations() > 2L * maximumNumber)
 			{
-				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations()));
+				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(),
+					ListedMissingItemsError(formatItem, options, maximumNumber)));
 			}
 
-			Func<object?, string> formatItem = CreateItemFormatter();
 			List<string> errors = new();
 			if (!_equivalenceRelations.Includes(EquivalenceRelations.Contains))
 			{
@@ -346,6 +347,16 @@ public partial class CollectionMatchOptions
 
 		private IEnumerable<string> GetDeviations()
 			=> AdditionalItemsError(_additionalItems, CreateItemFormatter());
+
+		/// <summary>
+		///     Missing items are no deviation for the IsContainedIn relation, so they are not listed.
+		/// </summary>
+		private IEnumerable<string> ListedMissingItemsError(Func<object?, string> formatItem, object options,
+			int maximumNumber)
+			=> _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn)
+				? []
+				: MissingItemsError(_expected.Count, _missingItems, _equivalenceRelations, false, formatItem, options,
+					maximumNumber);
 
 		/// <summary>
 		///     An unexpected and a missing item that format equally differ only in their runtime type.

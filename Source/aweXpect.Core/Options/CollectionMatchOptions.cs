@@ -329,27 +329,37 @@ public partial class CollectionMatchOptions(
 	///     marker for an unknown total.
 	/// </summary>
 	/// <remarks>
-	///     Only the deviations of the subject items that were inspected are listed, because the expected items are not
-	///     accounted for completely while the run is aborted.
+	///     An aborted run only lists the deviations of the subject items that were inspected, because the expected
+	///     items are not accounted for completely. A completed run knows the <paramref name="missingItems" />, which
+	///     are listed after the deviations of the subject items, and whether these were truncated.
 	/// </remarks>
-	private static string TooManyDeviationsError(string it, int maximumNumber, IEnumerable<string> deviations)
+	/// <remarks>
+	///     The <paramref name="exceededDeviations" /> are twice the <paramref name="maximumNumber" />, unless the run
+	///     was aborted at a lower limit.
+	/// </remarks>
+	private static string TooManyDeviationsError(string it, int maximumNumber, IEnumerable<string> deviations,
+		IEnumerable<string>? missingItems = null, long? exceededDeviations = null)
 	{
 		StringBuilder sb = new();
-		sb.Append(it).Append(" had more than ").Append(2L * maximumNumber).Append(" deviations");
-		List<string> listedDeviations = deviations.Take(maximumNumber).ToList();
-		if (listedDeviations.Count == 0)
+		sb.Append(it).Append(" had more than ").Append(exceededDeviations ?? 2L * maximumNumber)
+			.Append(" deviations");
+		List<string> allDeviations = deviations.ToList();
+		bool isTruncated = missingItems is null || allDeviations.Count > maximumNumber;
+		List<string> entries = allDeviations.Take(maximumNumber).ToList();
+		if (entries.Count > 0 && isTruncated)
+		{
+			entries.Add("(… and maybe more)");
+		}
+
+		entries.AddRange(missingItems ?? []);
+		if (entries.Count == 0)
 		{
 			return sb.ToString();
 		}
 
-		sb.Append(':');
-		foreach (string deviation in listedDeviations)
-		{
-			sb.AppendLine().Append(deviation.Indent()).Append(',');
-		}
-
-		sb.AppendLine().Append("  (… and maybe more)");
-		return sb.ToString();
+		return sb.Append(':').AppendLine()
+			.Append(string.Join($",{Environment.NewLine}", entries.Select(entry => entry.Indent())))
+			.ToString();
 	}
 
 	private static IEnumerable<string> AdditionalItemsError<T>(Dictionary<int, T> additionalItems,
