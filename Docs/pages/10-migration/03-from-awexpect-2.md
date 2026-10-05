@@ -55,6 +55,10 @@ negations) return a `NumberToleranceResult<TNumber, IThat<TNumber?>>` instead of
 In turn, a comparison that a `null` subject can satisfy hands the subject out as nullable, so
 `IEnumerable<int> values = await Expect.That(items).IsNotEqualTo(other);` now warns that `values` can be `null`.
 
+A default `ImmutableArray<T>` is a `null` collection for the collection expectations, as the subject and as the
+expected collection: `IsEqualTo(default)` and `IsNotEqualTo(other)` succeed for a default subject, and a default
+expected collection is reported or rejected like `null`.
+
 ## Argument validation
 
 An empty or `null` value to search for, such as `Contains("")` or `ContainsKeys()` without arguments, made an

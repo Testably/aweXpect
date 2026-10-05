@@ -184,8 +184,8 @@ public static partial class ThatEnumerable
 			IEnumerable expected,
 			string expectedExpression,
 			bool negated)
-		=> IsContainedInForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, expectedExpression,
-			negated);
+		=> IsContainedInForEnumerableCore<object?>(subject,
+			expected.NullIfDefaultImmutableArray()?.Cast<object?>()!, expectedExpression, negated);
 
 	[CreateExpectationFamily("Is{Not}ContainedIn", GuaranteesNotNull = true, Priority = -1,
 		Summary =
@@ -284,7 +284,8 @@ public static partial class ThatEnumerable
 					IsEqualToConstraint<TCollection, TItem, TItem> constraint = new(
 						it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
-						state.MatchOptions);
+						state.MatchOptions,
+						failsForNullSubject: true);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -315,7 +316,8 @@ public static partial class ThatEnumerable
 					IsEqualToConstraint<TCollection, string?, string?> constraint = new(
 						it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
-						state.MatchOptions);
+						state.MatchOptions,
+						failsForNullSubject: true);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -347,7 +349,8 @@ public static partial class ThatEnumerable
 					IsEqualToConstraint<TCollection, TItem, TItem> constraint = new(
 						it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
-						state.MatchOptions);
+						state.MatchOptions,
+						failsForNullSubject: true);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,

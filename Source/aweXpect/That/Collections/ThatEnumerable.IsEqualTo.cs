@@ -167,7 +167,8 @@ public static partial class ThatEnumerable
 				{
 					IsEqualToConstraint<IEnumerable, object?, object?> constraint = new(
 						it, grammars,
-						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected?.Cast<object?>(),
+						state.ExpectedExpression.TrimCommonWhiteSpace(),
+						state.Expected.NullIfDefaultImmutableArray()?.Cast<object?>(),
 						state.Options, state.MatchOptions,
 						canUseSubjectComparer: true);
 					return state.Negated ? constraint.Invert() : constraint;

@@ -167,7 +167,8 @@ public static partial class ThatEnumerable
 			IEnumerable expected,
 			string? expectedExpression,
 			bool negated)
-		=> StartsWithForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, expectedExpression, negated);
+		=> StartsWithForEnumerableCore<object?>(subject, expected.NullIfDefaultImmutableArray()?.Cast<object?>()!,
+			expectedExpression, negated);
 
 	[CreateExpectationFamily("StartsWith", NegatedName = "DoesNotStartWith", GuaranteesNotNull = true,
 		Priority = -1, ExpectedType = "string?",
