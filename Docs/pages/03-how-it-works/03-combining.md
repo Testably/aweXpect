@@ -134,3 +134,5 @@ object subject = "Yesterday";
 
 int result = await Expect.That(subject).Is<string>().Or.Is<int>(); // 0
 ```
+
+The analyzer rule [`aweXpect0008`](../07-analyzers.md#awexpect0008) warns when such a value is used.

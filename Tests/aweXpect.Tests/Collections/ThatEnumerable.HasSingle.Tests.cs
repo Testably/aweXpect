@@ -99,7 +99,9 @@ public sealed partial class ThatEnumerable
 				object item = new();
 				IEnumerable<object> subject = ToEnumerable(item);
 
+#pragma warning disable aweXpect0008
 				object result = await That(subject).IsEmpty().Or.HasSingle();
+#pragma warning restore aweXpect0008
 
 				await That(result).IsSameAs(item)
 					.Because("the collection itself is also an object");

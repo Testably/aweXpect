@@ -47,6 +47,10 @@ internal static class Rules
 		"aweXpect0007", Title("aweXpect0007"), MessageFormat("aweXpect0007"), UsageCategory,
 		DiagnosticSeverity.Error, true, Description("aweXpect0007"), HelpLinkUri("aweXpect0007"));
 
+	public static readonly DiagnosticDescriptor OrResultValueRule = new(
+		"aweXpect0008", Title("aweXpect0008"), MessageFormat("aweXpect0008"), UsageCategory,
+		DiagnosticSeverity.Warning, true, Description("aweXpect0008"), HelpLinkUri("aweXpect0008"));
+
 	/// <summary>
 	///     The nullability warnings that are suppressed after an expectation that guarantees a not-null subject.
 	/// </summary>

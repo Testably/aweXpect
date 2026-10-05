@@ -59,7 +59,9 @@ public sealed partial class ThatObject
 			{
 				object subject = new MyClass();
 
+#pragma warning disable aweXpect0008
 				OtherClass result = await That(subject).IsExactly<MyClass>().Or.IsExactly<OtherClass>();
+#pragma warning restore aweXpect0008
 
 				await That(result).IsNull();
 			}
@@ -69,7 +71,9 @@ public sealed partial class ThatObject
 			{
 				object subject = new MyClass();
 
+#pragma warning disable aweXpect0008
 				MyClass result = await That(subject).IsExactly<OtherClass>().Or.IsExactly<MyClass>();
+#pragma warning restore aweXpect0008
 
 				await That(result).IsSameAs(subject);
 			}
