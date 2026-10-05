@@ -108,6 +108,13 @@ only once, and options that would replace each other, e.g. `AtLeast(2).AtMost(5)
 `InvalidOperationException` at the call instead of silently keeping the later one; write a range as
 `Between(2).And(5)`. `HasItem(…).AtIndex(1).FromEnd()` becomes `HasItem(…).AtIndexFromEnd(1)`.
 
+A second `Matching…` after `HasSingle().Matching…` no longer compiles. It was silently ignored or replaced the first
+one, so combine a type and a predicate in one call, e.g. `HasSingle().Matching<Dog>(d => d.Name == "Rex")`. The
+`Matching…` methods therefore return a `SingleMatchingItemResult<TCollection, TItem>` instead of a
+`SingleItemResult<TCollection, TItem>`, and for an `IAsyncEnumerable<T>` an
+`AsyncSingleMatchingItemResult<TCollection, TItem>` instead of an `AsyncSingleItemResult<TCollection, TItem>`. Only
+code that stores the result in an explicitly typed variable has to change.
+
 The option methods are extension methods in the `aweXpect` namespace, and the result classes with a `TSelf` type
 parameter, e.g. `CountResult<TType, TThat, TSelf>`, are gone. A result of your own derives from
 `AndOrResult<TType, TThat, TSelf>` and implements `IOptionsProvider<TOptions>` for the options it offers, see

@@ -41,20 +41,20 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	/// <summary>
 	///     …that satisfies the <paramref name="predicate" />.
 	/// </summary>
-	public AsyncSingleItemResult<TCollection, TItem> Matching(Func<TItem, bool> predicate,
+	public AsyncSingleMatchingItemResult<TCollection, TItem> Matching(Func<TItem, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
 		_options.SetPredicate(predicate,
 			$" matching {doNotPopulateThisValue}");
-		return this;
+		return new AsyncSingleMatchingItemResult<TCollection, TItem>(ExpectationBuilder, _asyncMemberAccessor);
 	}
 
 	/// <summary>
 	///     …of type <typeparamref name="T" />.
 	/// </summary>
-	public AsyncSingleItemResult<TCollection, T> Matching<T>()
+	public AsyncSingleMatchingItemResult<TCollection, T> Matching<T>()
 	{
 		_options.SetPredicate(item => item is T,
 			$" of type {Formatter.Format(typeof(T))}");
@@ -64,7 +64,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	/// <summary>
 	///     …of type <typeparamref name="T" /> that satisfies the <paramref name="predicate" />.
 	/// </summary>
-	public AsyncSingleItemResult<TCollection, T> Matching<T>(Func<T, bool> predicate,
+	public AsyncSingleMatchingItemResult<TCollection, T> Matching<T>(Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
@@ -77,7 +77,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	/// <summary>
 	///     …exactly of type <typeparamref name="T" />.
 	/// </summary>
-	public AsyncSingleItemResult<TCollection, T> MatchingExactly<T>()
+	public AsyncSingleMatchingItemResult<TCollection, T> MatchingExactly<T>()
 	{
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
 		_options.SetPredicate(item => item is T && item.GetType() == exactType,
@@ -88,7 +88,7 @@ public class AsyncSingleItemResult<TCollection, TItem>
 	/// <summary>
 	///     …exactly of type <typeparamref name="T" /> that satisfies the <paramref name="predicate" />.
 	/// </summary>
-	public AsyncSingleItemResult<TCollection, T> MatchingExactly<T>(Func<T, bool> predicate,
+	public AsyncSingleMatchingItemResult<TCollection, T> MatchingExactly<T>(Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
@@ -99,7 +99,6 @@ public class AsyncSingleItemResult<TCollection, TItem>
 		return Cast<T>(x => (T)(object)x!);
 	}
 
-	private AsyncSingleItemResult<TCollection, T> Cast<T>(Func<TItem?, T> memberAccessor)
-		=> new(ExpectationBuilder, new PredicateOptions<T>(),
-			async x => memberAccessor(await _asyncMemberAccessor(x)));
+	private AsyncSingleMatchingItemResult<TCollection, T> Cast<T>(Func<TItem?, T> memberAccessor)
+		=> new(ExpectationBuilder, async x => memberAccessor(await _asyncMemberAccessor(x)));
 }

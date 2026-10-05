@@ -1,4 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
+using aweXpect.Results;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -466,6 +470,140 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             has a single item matching _ => false,
 					             but it was <null>
+					             """);
+			}
+		}
+
+		public sealed class MatchingResultTests
+		{
+			[Fact]
+			public async Task ShouldNotOfferAnotherMatching()
+			{
+				MethodInfo[] matchingMethods = typeof(SingleItemResult<,>).GetMethods()
+					.Where(method => method.Name.StartsWith("Matching", StringComparison.Ordinal))
+					.ToArray();
+
+				await That(matchingMethods).HasCount(5);
+				await That(matchingMethods).All().Satisfy(method
+					=> method.ReturnType.GetGenericTypeDefinition() == typeof(SingleMatchingItemResult<,>));
+				await That(typeof(SingleMatchingItemResult<,>).GetMethods()
+						.Where(method => method.Name.StartsWith("Matching", StringComparison.Ordinal)))
+					.IsEmpty().Because("a second predicate would replace the first one");
+			}
+
+			[Fact]
+			public async Task WithBecause_WhenNoItemMatches_ShouldIncludeTheReason()
+			{
+				IEnumerable<int> subject = ToEnumerable(1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).HasSingle().Matching(x => x > 5).Because("we need a large item");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item matching x => x > 5, because we need a large item,
+					             but it had no matching item
+					             """);
+			}
+
+			[Fact]
+			public async Task WithExactType_ShouldOfferOptionsAndWhichOnTheTypedItem()
+			{
+				IEnumerable<MyBaseClass> subject =
+					ToEnumerable(new MyClass(1), new MyOtherClass(2), new MyBaseClass(3));
+
+				MyBaseClass result = await That(subject).HasSingle().MatchingExactly<MyBaseClass>()
+					.Because("there is one").WithTimeout(30.Seconds()).WithCancellation(CancellationToken.None)
+					.Which.Satisfies(item => item.Value == 3);
+
+				await That(result.Value).IsEqualTo(3);
+			}
+
+			[Fact]
+			public async Task WithExactTypeAndPredicate_ShouldOfferOptionsAndWhichOnTheTypedItem()
+			{
+				IEnumerable<MyBaseClass> subject =
+					ToEnumerable<MyBaseClass>(new MyClass(1), new MyOtherClass(2), new MyOtherClass(3));
+
+				MyOtherClass result = await That(subject).HasSingle().MatchingExactly<MyOtherClass>(x => x.Value > 2)
+					.Because("there is one").WithTimeout(30.Seconds()).WithCancellation(CancellationToken.None)
+					.Which.Satisfies(item => item.Value == 3);
+
+				await That(result.Value).IsEqualTo(3);
+			}
+
+			[Fact]
+			public async Task WithPredicate_ShouldOfferOptionsAndWhich()
+			{
+				IEnumerable<int> subject = ToEnumerable(1, 2, 3);
+
+				int result = await That(subject).HasSingle().Matching(x => x > 2)
+					.Because("there is one").WithTimeout(30.Seconds()).WithCancellation(CancellationToken.None)
+					.Which.IsGreaterThan(2).And.IsLessThan(4);
+
+				await That(result).IsEqualTo(3);
+			}
+
+			[Fact]
+			public async Task WithType_ShouldOfferOptionsAndWhichOnTheTypedItem()
+			{
+				IEnumerable<MyBaseClass> subject =
+					ToEnumerable(new MyClass(1), new MyOtherClass(2), new MyBaseClass(3));
+
+				MyOtherClass result = await That(subject).HasSingle().Matching<MyOtherClass>()
+					.Because("there is one").WithTimeout(30.Seconds()).WithCancellation(CancellationToken.None)
+					.Which.Satisfies(item => item.Value == 2);
+
+				await That(result.Value).IsEqualTo(2);
+			}
+
+			[Fact]
+			public async Task WithType_WhenWhichIsNotMet_ShouldFail()
+			{
+				IEnumerable<MyBaseClass> subject =
+					ToEnumerable(new MyClass(1), new MyOtherClass(2), new MyBaseClass(3));
+
+				async Task Act()
+					=> await That(subject).HasSingle().Matching<MyOtherClass>()
+						.Which.Satisfies(item => item.Value == 5);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item of type MyOtherClass that satisfies item => item.Value == 5,
+					             but it was MyOtherClass {
+					                 Value = 2
+					               }
+					             """);
+			}
+
+			[Fact]
+			public async Task WithTypeAndPredicate_ShouldOfferOptionsAndWhichOnTheTypedItem()
+			{
+				IEnumerable<MyBaseClass> subject =
+					ToEnumerable<MyBaseClass>(new MyClass(1), new MyOtherClass(2), new MyOtherClass(3));
+
+				MyOtherClass result = await That(subject).HasSingle().Matching<MyOtherClass>(x => x.Value > 2)
+					.Because("there is one").WithTimeout(30.Seconds()).WithCancellation(CancellationToken.None)
+					.Which.Satisfies(item => item.Value == 3);
+
+				await That(result.Value).IsEqualTo(3);
+			}
+
+			[Fact]
+			public async Task WithTypeAndPredicate_WhenTheItemOfTheTypeDoesNotMatch_ShouldFail()
+			{
+				IEnumerable<MyBaseClass> subject = ToEnumerable<MyBaseClass>(new MyClass(1), new MyOtherClass(2));
+
+				async Task Act()
+					=> await That(subject).HasSingle().Matching<MyOtherClass>(x => x.Value == 5);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item of type MyOtherClass matching x => x.Value == 5,
+					             but it had no matching item
 					             """);
 			}
 		}

@@ -191,6 +191,8 @@ await Expect.That(persons).HasSingle().MatchingExactly<Student>();
 await Expect.That(persons).HasSingle().MatchingExactly<Student>(student => student.Courses.Count == 0);
 ```
 
+Only one filter can be applied, so restrict the type and add a condition in the same call.
+
 The awaited result is the single item:
 
 ```csharp

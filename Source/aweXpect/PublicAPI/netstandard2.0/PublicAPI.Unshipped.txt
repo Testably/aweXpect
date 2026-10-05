@@ -1130,12 +1130,28 @@ aweXpect.Results.EnumValueResult<TValue, TType>.NotLessThanOrEqualTo(ulong? expe
 *REMOVED*static aweXpect.ThatNullableChar.IsNotEqualTo(this aweXpect.Core.IThat<char?>! subject, char? unexpected) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 *REMOVED*static aweXpect.ThatNullableChar.IsNotOneOf(this aweXpect.Core.IThat<char?>! subject, params char?[]! unexpected) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
 *REMOVED*static aweXpect.ThatNullableChar.IsOneOf(this aweXpect.Core.IThat<char?>! subject, params char?[]! expected) -> aweXpect.Results.AndOrResult<char?, aweXpect.Core.IThat<char?>!>!
-aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>.MatchingExactly<T>() -> aweXpect.Results.AsyncSingleItemResult<TCollection, T>!
-aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>.MatchingExactly<T>(System.Func<T, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.AsyncSingleItemResult<TCollection, T>!
+*REMOVED*aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>.Matching(System.Func<TItem, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>!
+*REMOVED*aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>.Matching<T>() -> aweXpect.Results.AsyncSingleItemResult<TCollection, T>!
+*REMOVED*aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>.Matching<T>(System.Func<T, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.AsyncSingleItemResult<TCollection, T>!
+*REMOVED*aweXpect.Results.SingleItemResult<TCollection, TItem>.Matching(System.Func<TItem, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.SingleItemResult<TCollection, TItem>!
+*REMOVED*aweXpect.Results.SingleItemResult<TCollection, TItem>.Matching<T>() -> aweXpect.Results.SingleItemResult<TCollection, T>!
+*REMOVED*aweXpect.Results.SingleItemResult<TCollection, TItem>.Matching<T>(System.Func<T, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.SingleItemResult<TCollection, T>!
+aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>.Matching(System.Func<TItem, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.AsyncSingleMatchingItemResult<TCollection, TItem>!
+aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>.Matching<T>() -> aweXpect.Results.AsyncSingleMatchingItemResult<TCollection, T>!
+aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>.Matching<T>(System.Func<T, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.AsyncSingleMatchingItemResult<TCollection, T>!
+aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>.MatchingExactly<T>() -> aweXpect.Results.AsyncSingleMatchingItemResult<TCollection, T>!
+aweXpect.Results.AsyncSingleItemResult<TCollection, TItem>.MatchingExactly<T>(System.Func<T, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.AsyncSingleMatchingItemResult<TCollection, T>!
+aweXpect.Results.AsyncSingleMatchingItemResult<TCollection, TItem>
+aweXpect.Results.AsyncSingleMatchingItemResult<TCollection, TItem>.Which.get -> aweXpect.Core.IThat<TItem>!
 aweXpect.Results.CharEqualityResult<TType, TThat>
 aweXpect.Results.CharEqualityResult<TType, TThat>.IgnoringCase(bool ignoreCase = true) -> aweXpect.Results.AndOrResult<TType, TThat>!
-aweXpect.Results.SingleItemResult<TCollection, TItem>.MatchingExactly<T>() -> aweXpect.Results.SingleItemResult<TCollection, T>!
-aweXpect.Results.SingleItemResult<TCollection, TItem>.MatchingExactly<T>(System.Func<T, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.SingleItemResult<TCollection, T>!
+aweXpect.Results.SingleItemResult<TCollection, TItem>.Matching(System.Func<TItem, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.SingleMatchingItemResult<TCollection, TItem>!
+aweXpect.Results.SingleItemResult<TCollection, TItem>.Matching<T>() -> aweXpect.Results.SingleMatchingItemResult<TCollection, T>!
+aweXpect.Results.SingleItemResult<TCollection, TItem>.Matching<T>(System.Func<T, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.SingleMatchingItemResult<TCollection, T>!
+aweXpect.Results.SingleItemResult<TCollection, TItem>.MatchingExactly<T>() -> aweXpect.Results.SingleMatchingItemResult<TCollection, T>!
+aweXpect.Results.SingleItemResult<TCollection, TItem>.MatchingExactly<T>(System.Func<T, bool>! predicate, string! doNotPopulateThisValue = "") -> aweXpect.Results.SingleMatchingItemResult<TCollection, T>!
+aweXpect.Results.SingleMatchingItemResult<TCollection, TItem>
+aweXpect.Results.SingleMatchingItemResult<TCollection, TItem>.Which.get -> aweXpect.Core.IThat<TItem>!
 static aweXpect.ThatChar.IsEqualTo(this aweXpect.Core.IThat<char>! subject, char? expected) -> aweXpect.Results.CharEqualityResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotEqualTo(this aweXpect.Core.IThat<char>! subject, char? unexpected) -> aweXpect.Results.CharEqualityResult<char, aweXpect.Core.IThat<char>!>!
 static aweXpect.ThatChar.IsNotOneOf(this aweXpect.Core.IThat<char>! subject, params char?[]! unexpected) -> aweXpect.Results.CharEqualityResult<char, aweXpect.Core.IThat<char>!>!
