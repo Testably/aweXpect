@@ -106,6 +106,23 @@ public static class TypeMetadataRegistry
 	}
 
 	/// <summary>
+	///     Registers the sets with items of type <typeparamref name="T" />, so that the equivalency comparison reads
+	///     their comparer.
+	/// </summary>
+	/// <remarks>
+	///     The comparison only knows the type argument of a set at runtime, and reading its comparer for it otherwise
+	///     needs dynamic code.
+	/// </remarks>
+	public static void RegisterSet<T>()
+	{
+		SetItemComparer itemComparer = new SetItemComparer<T>();
+		Instance.AddItemComparer(typeof(ISet<T>), itemComparer);
+#if NET8_0_OR_GREATER
+		Instance.AddItemComparer(typeof(IReadOnlySet<T>), itemComparer);
+#endif
+	}
+
+	/// <summary>
 	///     Runs <paramref name="register" /> and publishes the registrations it makes on the calling thread together, once
 	///     it returns.
 	/// </summary>
@@ -150,6 +167,9 @@ public static class TypeMetadataRegistry
 
 		public void AddKeyComparer(Type dictionaryInterface, DictionaryKeyComparer keyComparer)
 			=> Add(dictionaryInterface, metadata => metadata.KeyComparer = keyComparer);
+
+		public void AddItemComparer(Type setInterface, SetItemComparer itemComparer)
+			=> Add(setInterface, metadata => metadata.ItemComparer = itemComparer);
 
 		/// <summary>
 		///     Whether any member or event was registered for the <paramref name="type" />.
@@ -249,6 +269,11 @@ public static class TypeMetadataRegistry
 		public DictionaryKeyComparer? KeyComparer { get; set; }
 
 		/// <summary>
+		///     The reader of the item comparer, registered for a generic set interface.
+		/// </summary>
+		public SetItemComparer? ItemComparer { get; set; }
+
+		/// <summary>
 		///     The registered events in the order of their registration.
 		/// </summary>
 		/// <remarks>
@@ -276,6 +301,7 @@ public static class TypeMetadataRegistry
 			TypeMetadata merged = new()
 			{
 				KeyComparer = registered.KeyComparer ?? KeyComparer,
+				ItemComparer = registered.ItemComparer ?? ItemComparer,
 			};
 			Merge(merged.Fields, Fields, registered.Fields);
 			Merge(merged.Properties, Properties, registered.Properties);

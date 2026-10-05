@@ -662,6 +662,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		private bool? _supportsDictionaryRegistration;
 
+		private bool? _supportsSetRegistration;
+
 		private bool? _supportsExplicitRegistration;
 
 		public ImmutableArray<TypeRegistration> Registrations => _registrations.ToImmutable();
@@ -697,6 +699,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			{
 				SeedInterfaceRoot(named);
 				SeedDictionaries(named);
+				SeedSets(named);
 				SeedElements(named);
 				return;
 			}
@@ -754,6 +757,35 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 					typeArguments.Select(x => x.ToDisplayString(TypeFormat)));
 				_registrations.Add(new TypeRegistration("dictionary of " + arguments,
 					new StringBuilder().Append("\t\t").Append(Registry).Append(".RegisterDictionary<").Append(arguments)
+						.AppendLine(">();").ToString(), "", null));
+			}
+		}
+
+		/// <remarks>
+		///     The comparison reads the comparer of a set for an item type it only knows at runtime, which needs a
+		///     reader instantiated for it in advance. An aweXpect.Core without the registration matches the items of a
+		///     set by the equivalency comparison alone.
+		/// </remarks>
+		private void SeedSets(INamedTypeSymbol type)
+		{
+			_supportsSetRegistration ??= compilation
+				.GetTypeByMetadataName("aweXpect.Core.Metadata.TypeMetadataRegistry")
+				?.GetMembers("RegisterSet").OfType<IMethodSymbol>()
+				.Any(x => x.IsStatic && x.DeclaredAccessibility == Accessibility.Public) == true;
+			if (_supportsSetRegistration != true)
+			{
+				return;
+			}
+
+			foreach (ITypeSymbol itemType in type.AllInterfaces.Prepend(type).Where(x
+				         => x.OriginalDefinition.ToDisplayString() is "System.Collections.Generic.ISet<T>"
+					         or "System.Collections.Generic.IReadOnlySet<T>")
+				         .Select(set => set.TypeArguments[0])
+				         .Where(x => IsNameable(x) && IsReferenceable(x)))
+			{
+				string argument = itemType.ToDisplayString(TypeFormat);
+				_registrations.Add(new TypeRegistration("set of " + argument,
+					new StringBuilder().Append("\t\t").Append(Registry).Append(".RegisterSet<").Append(argument)
 						.AppendLine(">();").ToString(), "", null));
 			}
 		}

@@ -1,5 +1,11 @@
 using System.Collections;
+#if NET8_0_OR_GREATER
+using System.Collections.Frozen;
+#endif
 using System.Collections.Generic;
+#if NET8_0_OR_GREATER
+using System.Collections.Immutable;
+#endif
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -4058,6 +4064,193 @@ public sealed partial class EquivalencyComparisonTests
 	}
 #endif
 
+#if NET8_0_OR_GREATER
+	[Fact]
+	public async Task WhenSetSubjectIsAFrozenSet_AndUsesACaseInsensitiveComparer_ShouldMatchTheExpectedItemsThroughIt()
+	{
+		FrozenSet<string> actual = new[] { "a", "b", }.ToFrozenSet(StringComparer.OrdinalIgnoreCase);
+		HashSet<string> expected = ["B", "A",];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue();
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenSetSubjectIsAnImmutableHashSet_AndUsesACaseInsensitiveComparer_ShouldMatchTheExpectedItemsThroughIt()
+	{
+		ImmutableHashSet<string> actual = ImmutableHashSet.Create<string>(StringComparer.OrdinalIgnoreCase, "a", "b");
+		HashSet<string> expected = ["B", "A",];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue();
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+#endif
+
+	[Fact]
+	public async Task WhenSetSubjectIsNestedInAMember_AndUsesACaseInsensitiveComparer_ShouldMatchTheExpectedItemsThroughIt()
+	{
+		var actual = new
+		{
+			Value = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+			{
+				"a",
+			},
+		};
+		var expected = new
+		{
+			Value = new HashSet<string>
+			{
+				"A",
+			},
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue();
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenSetSubjectUsesACaseInsensitiveComparer_AndExpectedIsAnArray_ShouldMatchTheExpectedItemsThroughIt()
+	{
+		HashSet<string> actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			"a",
+			"b",
+		};
+		string[] expected = ["B", "A",];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the comparer of the subject decides, whatever collection is expected");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenSetSubjectUsesACaseInsensitiveComparer_ShouldMatchTheExpectedItemsThroughIt()
+	{
+		HashSet<string> actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			"a",
+			"b",
+		};
+		HashSet<string> expected = ["B", "A",];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("the comparer of the subject decides which items are the same");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenSetSubjectUsesACaseInsensitiveComparer_WithAnItemThatItDoesNotFind_ShouldReportTheDifference()
+	{
+		HashSet<string> actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			"a",
+			"b",
+		};
+		HashSet<string> expected = ["A", "c",];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [1] differed:
+		                                                      Actual: "b"
+		                                                    Expected: "c"
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenSetSubjectUsesACaseSensitiveComparer_AndExpectedACaseInsensitiveOne_ShouldReportTheDifference()
+	{
+		HashSet<string> actual = ["a",];
+		HashSet<string> expected = new(StringComparer.OrdinalIgnoreCase)
+		{
+			"A",
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("only the comparer of the subject decides which items are the same");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [0] differed:
+		                                                      Actual: "a"
+		                                                    Expected: "A"
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Fact]
+	public async Task WhenSetSubjectUsesACustomComparer_WithAnItemThatOnlyItsMembersMatch_ShouldSucceed()
+	{
+		HashSet<WithProperty> actual = new(new NeverEqualComparer())
+		{
+			new WithProperty(1),
+		};
+		HashSet<WithProperty> expected = [new(1),];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("an item that the comparer does not find is still matched by the equivalency comparison");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenSetSubjectUsesACustomComparer_WithObjectsThatOnlyItConsidersTheSame_ShouldSucceed()
+	{
+		HashSet<WithProperty> actual = new(new SameParityComparer())
+		{
+			new WithProperty(1),
+			new WithProperty(2),
+		};
+		HashSet<WithProperty> expected = [new(4), new(3),];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("an item that the comparer of the subject finds is contained, whatever its members are");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Fact]
+	public async Task WhenSetSubjectUsesTheDefaultComparer_WithObjectsThatOnlyTheirEqualsConsidersTheSame_ShouldReportTheDifference()
+	{
+		HashSet<AlwaysEqual> actual = [new(1),];
+		HashSet<AlwaysEqual> expected = [new(2),];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("a set with the default comparer leaves its items to the equivalency comparison, which ignores their Equals");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property [0].Value differed:
+		                                                      Actual: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle();
+	}
+
 	[Fact]
 	public async Task WhenStringBuilderMemberDiffers_ShouldReportTheText()
 	{
@@ -4867,6 +5060,15 @@ public sealed partial class EquivalencyComparisonTests
 			TypeMetadataRegistry.RegisterProperty<RegisteredValuesProbe, DayOfWeek>("Day", x => x.DayValue());
 		});
 
+	private sealed class AlwaysEqual(int value)
+	{
+		public int Value => value;
+
+		public override bool Equals(object? obj) => obj is AlwaysEqual;
+
+		public override int GetHashCode() => 0;
+	}
+
 	/// <remarks>
 	///     Implements only the generic <see cref="IEqualityComparer{T}" />, unlike <see cref="StringComparer" />.
 	/// </remarks>
@@ -5203,6 +5405,20 @@ public sealed partial class EquivalencyComparisonTests
 		private int Value { get; } = value;
 
 		public override string ToString() => $"{Value}";
+	}
+
+	private sealed class NeverEqualComparer : IEqualityComparer<WithProperty>
+	{
+		public bool Equals(WithProperty? x, WithProperty? y) => false;
+
+		public int GetHashCode(WithProperty obj) => obj.Value;
+	}
+
+	private sealed class SameParityComparer : IEqualityComparer<WithProperty>
+	{
+		public bool Equals(WithProperty? x, WithProperty? y) => x!.Value % 2 == y!.Value % 2;
+
+		public int GetHashCode(WithProperty obj) => obj.Value % 2;
 	}
 
 	private class WithProperty(int value)
