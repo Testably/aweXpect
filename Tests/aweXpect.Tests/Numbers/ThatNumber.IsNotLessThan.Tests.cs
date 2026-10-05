@@ -1,4 +1,8 @@
-﻿namespace aweXpect.Tests;
+﻿#if NET8_0_OR_GREATER
+using System.Runtime.InteropServices;
+#endif
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatNumber
 {
@@ -1342,6 +1346,37 @@ public sealed partial class ThatNumber
 
 		public sealed class WithinTests
 		{
+			[Fact]
+			public async Task ForDouble_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldFail()
+			{
+				double subject = double.MaxValue;
+				double unexpected = double.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsNotLessThan(unexpected).Within(double.PositiveInfinity);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not less than double.MinValue ± +∞,
+					             but it was double.MaxValue
+					             """)
+					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
+			}
+
+			[Fact]
+			public async Task ForDouble_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldSucceed()
+			{
+				double subject = double.MaxValue;
+				double unexpected = double.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsNotLessThan(unexpected).Within(double.MaxValue);
+
+				await That(Act).DoesNotThrow()
+					.Because("a distance that is not representable exceeds every finite tolerance");
+			}
+
 			[Theory]
 			[InlineData(10.25, ", which differs by 0.25")]
 			[InlineData(10.0, "")]
@@ -1425,6 +1460,70 @@ public sealed partial class ThatNumber
 					.WithMessage("The unexpected value must not be NaN.").AsPrefix()
 					.Because("no tolerance can bring a value within reach of NaN");
 			}
+
+			[Fact]
+			public async Task ForFloat_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldFail()
+			{
+				float subject = float.MaxValue;
+				float unexpected = float.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsNotLessThan(unexpected).Within(float.PositiveInfinity);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not less than float.MinValue ± +∞,
+					             but it was float.MaxValue, which differs by 6.80564693277058E+38
+					             """)
+					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
+			}
+
+			[Fact]
+			public async Task ForFloat_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldSucceed()
+			{
+				float subject = float.MaxValue;
+				float unexpected = float.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsNotLessThan(unexpected).Within(float.MaxValue);
+
+				await That(Act).DoesNotThrow()
+					.Because("a distance that is not representable exceeds every finite tolerance");
+			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForHalf_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldFail()
+			{
+				Half subject = Half.MaxValue;
+				Half unexpected = Half.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsNotLessThan(unexpected).Within(Half.PositiveInfinity);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not less than Half.MinValue ± +∞,
+					             but it was Half.MaxValue, which differs by 131008.0
+					             """)
+					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
+			}
+
+			[Fact]
+			public async Task ForHalf_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldSucceed()
+			{
+				Half subject = Half.MaxValue;
+				Half unexpected = Half.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsNotLessThan(unexpected).Within(Half.MaxValue);
+
+				await That(Act).DoesNotThrow()
+					.Because("a distance that is not representable exceeds every finite tolerance");
+			}
+#endif
 
 			[Theory]
 			[InlineData(5)]
@@ -1534,6 +1633,39 @@ public sealed partial class ThatNumber
 					             """)
 					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
+
+#if NET8_0_OR_GREATER
+			[Fact]
+			public async Task ForNFloat_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldFail()
+			{
+				NFloat subject = NFloat.MaxValue;
+				NFloat unexpected = NFloat.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsNotLessThan(unexpected).Within(NFloat.PositiveInfinity);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not less than NFloat.MinValue ± +∞,
+					             but it was NFloat.MaxValue
+					             """)
+					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
+			}
+
+			[Fact]
+			public async Task ForNFloat_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldSucceed()
+			{
+				NFloat subject = NFloat.MaxValue;
+				NFloat unexpected = NFloat.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsNotLessThan(unexpected).Within(NFloat.MaxValue);
+
+				await That(Act).DoesNotThrow()
+					.Because("a distance that is not representable exceeds every finite tolerance");
+			}
+#endif
 
 			[Theory]
 			[InlineData(10.75)]

@@ -205,7 +205,14 @@ internal static class NumberToleranceExtensions
 		}
 
 		TNumber? diff = TryCalculateDifference(tolerance, actual, expected);
-		return diff is not null && diff.Value.CompareTo(toleranceValue) < 0;
+		if (diff is null)
+		{
+			return false;
+		}
+
+		// The distance of two finite values is below an infinite tolerance, but it cannot be compared with it,
+		// because it becomes infinite itself when the values are more than MaxValue apart.
+		return IsInfinity(toleranceValue) || diff.Value.CompareTo(toleranceValue) < 0;
 	}
 
 	private static TNumber? TryCalculateDifference<TNumber>(
