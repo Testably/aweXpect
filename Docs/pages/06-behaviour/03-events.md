@@ -200,6 +200,11 @@ await Expect.That(recording).TriggeredPropertyChangedFor(x => x.Title)
   .Because("it should trigger the PropertyChanged event for the 'Title' property name");
 ```
 
+The expression has to access a property directly on the subject, as in `x => x.Title`. A nested access like
+`x => x.Artist.Name`, a property of another object or a computed value like `x => !x.IsFavorite` throws an
+`ArgumentException`. For any other name, use the overload with the property name, e.g.
+`TriggeredPropertyChangedFor("Title")`.
+
 The negated expectations verify that the event was not triggered:
 
 ```csharp

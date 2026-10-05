@@ -137,15 +137,19 @@ public static partial class ThatEventRecording
 	/// <remarks>
 	///     Rejecting anything but a property access keeps an unusable expression from silently becoming the
 	///     <see langword="null" /> property name, which would match events raised without a property name.
+	///     <para />
+	///     The property has to be accessed on the subject itself, because the subject does not report the changes of
+	///     a property of another object under the name of that property.
 	/// </remarks>
 	private static string GetPropertyName<TSubject, TProperty>(
 		Expression<Func<TSubject, TProperty>> propertyExpression)
 	{
 		propertyExpression.ThrowIfNull();
-		MemberInfo? memberInfo =
-			(((propertyExpression.Body as UnaryExpression)?.Operand ?? propertyExpression.Body) as MemberExpression)
-			?.Member;
-		if (memberInfo is not PropertyInfo propertyInfo)
+		if (WithoutConversions(propertyExpression.Body, true) is not MemberExpression
+		    {
+			    Member: PropertyInfo propertyInfo,
+		    } memberExpression ||
+		    WithoutConversions(memberExpression.Expression, false) != propertyExpression.Parameters[0])
 		{
 			// ReSharper disable once LocalizableElement
 			throw Tracing.WriteException(new ArgumentException(
@@ -154,5 +158,23 @@ public static partial class ThatEventRecording
 		}
 
 		return propertyInfo.Name;
+	}
+
+	/// <remarks>
+	///     A conversion of the property value still names the property, whereas a conversion of the subject with a
+	///     conversion operator results in another object.
+	/// </remarks>
+	private static Expression? WithoutConversions(Expression? expression, bool includingOperators)
+	{
+		while (expression is UnaryExpression
+		       {
+			       NodeType: ExpressionType.Convert or ExpressionType.ConvertChecked or ExpressionType.TypeAs,
+		       } conversion &&
+		       (includingOperators || conversion.Method is null))
+		{
+			expression = conversion.Operand;
+		}
+
+		return expression;
 	}
 }

@@ -64,6 +64,10 @@ expectation that could never fail. Such calls now throw at the call site: `Argum
 A member to ignore is validated the same way: `IgnoringMember("")` in the equivalency options used to ignore
 nothing and now throws an `ArgumentException`.
 
+The property expression of `TriggeredPropertyChangedFor(…)` and `DidNotTriggerPropertyChangedFor(…)` has to access a
+property directly on the subject. A nested access such as `x => x.Name.Length`, which used to filter for `"Length"`,
+a property of another object or a computed value such as `x => !x.IsActive` now throws an `ArgumentException`.
+
 Ranges, counts and tolerances are validated the same way, when the expectation is built rather than when it is
 evaluated, and every one of them throws an `ArgumentOutOfRangeException`:
 
