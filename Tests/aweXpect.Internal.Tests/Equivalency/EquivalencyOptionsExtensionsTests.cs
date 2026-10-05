@@ -210,5 +210,108 @@ public sealed class EquivalencyOptionsExtensionsTests
 		                                         """);
 	}
 
+	[Fact]
+	public async Task Ignoring_StringAndTypePredicate_WhenPredicateIsNull_ShouldThrowArgumentNullException()
+	{
+		EquivalencyOptions options = new();
+
+		void Act()
+			=> _ = options.Ignoring((Func<string, Type, bool>)null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("predicate").And
+			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task Ignoring_StringPredicate_WhenPredicateIsNull_ShouldThrowArgumentNullException()
+	{
+		EquivalencyOptions options = new();
+
+		void Act()
+			=> _ = options.Ignoring((Func<string, bool>)null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("predicate").And
+			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task Ignoring_TypePredicate_WhenPredicateIsNull_ShouldThrowArgumentNullException()
+	{
+		EquivalencyOptions options = new();
+
+		void Act()
+			=> _ = options.Ignoring((Func<Type, bool>)null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("predicate").And
+			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task IgnoringFields_WhenPredicateIsNull_ShouldThrowArgumentNullException()
+	{
+		EquivalencyOptions options = new();
+
+		void Act()
+			=> _ = options.IgnoringFields(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("predicate").And
+			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task IgnoringMember_WhenMemberIsEmpty_ShouldThrowArgumentException()
+	{
+		EquivalencyOptions options = new();
+
+		void Act()
+			=> _ = options.IgnoringMember("");
+
+		await That(Act).Throws<ArgumentException>()
+			.WithParamName("memberToIgnore").And
+			.WithMessage("The 'memberToIgnore' cannot be empty.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task IgnoringMember_WhenMemberIsEmpty_ShouldThrowFromTheExpectationThatConfiguresIt()
+	{
+		MyClass subject = new();
+
+		async Task Act()
+			=> await That(subject).IsEquivalentTo(new MyClass(), o => o.IgnoringMember(""));
+
+		await That(Act).Throws<ArgumentException>()
+			.WithParamName("memberToIgnore");
+	}
+
+	[Fact]
+	public async Task IgnoringMember_WhenMemberIsNull_ShouldThrowArgumentNullException()
+	{
+		EquivalencyOptions options = new();
+
+		void Act()
+			=> _ = options.IgnoringMember(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("memberToIgnore").And
+			.WithMessage("The 'memberToIgnore' cannot be null.").AsPrefix();
+	}
+
+	[Fact]
+	public async Task IgnoringProperties_WhenPredicateIsNull_ShouldThrowArgumentNullException()
+	{
+		EquivalencyOptions options = new();
+
+		void Act()
+			=> _ = options.IgnoringProperties(null!);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("predicate").And
+			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+	}
+
 	private sealed class MyClass;
 }

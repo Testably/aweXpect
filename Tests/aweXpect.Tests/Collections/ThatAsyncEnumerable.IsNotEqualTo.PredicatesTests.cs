@@ -101,6 +101,21 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenLazyUnexpectedContainsNull_ShouldThrowArgumentException()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Enumerable.Range(1, 3));
+				IEnumerable<Expression<Func<int, bool>>> unexpected =
+					ThatEnumerable.ToEnumerable<Expression<Func<int, bool>>>(a => a == 1, null!);
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' collection cannot contain <null>.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenSubjectAndExpectedIsNull_ShouldFail()
 			{
 				IAsyncEnumerable<int>? subject = null;
@@ -127,6 +142,20 @@ public sealed partial class ThatAsyncEnumerable
 					=> await That(subject).IsNotEqualTo(unexpected);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedContainsNull_ShouldThrowArgumentException()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Enumerable.Range(1, 3));
+				IEnumerable<Expression<Func<int, bool>>> unexpected = [a => a == 1, null!,];
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' collection cannot contain <null>.").AsPrefix();
 			}
 
 			[Fact]

@@ -628,7 +628,8 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		IEnumerable<Expression<Func<TItem, bool>>> expectedValues = expected.ToNonEmptyValues(negated);
+		IEnumerable<Expression<Func<TItem, bool>>> expectedValues =
+			expected.ToNonEmptyValues(negated).WithoutNullElements(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
@@ -653,7 +654,8 @@ public static partial class ThatEnumerable
 			string expectedExpression,
 			bool negated)
 	{
-		IEnumerable<Action<IThatSubject<TItem?>>> expectedValues = expected.ToNonEmptyValues(negated);
+		IEnumerable<Action<IThatSubject<TItem?>>> expectedValues =
+			expected.ToNonEmptyValues(negated).WithoutNullElements(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
@@ -681,7 +683,8 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable<TItem>
 	{
-		IEnumerable<Expression<Func<TItem, bool>>> expectedValues = expected.ToNonEmptyValues(negated);
+		IEnumerable<Expression<Func<TItem, bool>>> expectedValues =
+			expected.ToNonEmptyValues(negated).WithoutNullElements(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(
@@ -708,7 +711,8 @@ public static partial class ThatEnumerable
 			bool negated)
 		where TCollection : IEnumerable<TItem>
 	{
-		IEnumerable<Action<IThatSubject<TItem?>>> expectedValues = expected.ToNonEmptyValues(negated);
+		IEnumerable<Action<IThatSubject<TItem?>>> expectedValues =
+			expected.ToNonEmptyValues(negated).WithoutNullElements(negated);
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.Contains);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<TCollection, IThat<TCollection>, TItem>(

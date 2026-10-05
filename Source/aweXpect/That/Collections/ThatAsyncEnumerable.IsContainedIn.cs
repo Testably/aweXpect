@@ -148,11 +148,12 @@ public static partial class ThatAsyncEnumerable
 			string doNotPopulateThisValue = "")
 	{
 		expected.ThrowIfNull();
+		IEnumerable<Expression<Func<TItem, bool>>> expectedValues = expected.WithoutNullElements();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
-				(DoNotPopulateThisValue: doNotPopulateThisValue, Expected: expected, MatchOptions: matchOptions),
+				(DoNotPopulateThisValue: doNotPopulateThisValue, Expected: expectedValues, MatchOptions: matchOptions),
 				static (state, it, grammars)
 					=> new AsyncIsEqualToFromPredicateConstraint<TItem, TItem>(it, grammars,
 						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
@@ -179,11 +180,12 @@ public static partial class ThatAsyncEnumerable
 			string doNotPopulateThisValue = "")
 	{
 		expected.ThrowIfNull();
+		IEnumerable<Action<IThatSubject<TItem?>>> expectedValues = expected.WithoutNullElements();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
-				(DoNotPopulateThisValue: doNotPopulateThisValue, Expected: expected, MatchOptions: matchOptions),
+				(DoNotPopulateThisValue: doNotPopulateThisValue, Expected: expectedValues, MatchOptions: matchOptions),
 				static (state, it, grammars)
 					=> new AsyncIsEqualToFromExpectationsConstraint<TItem, TItem>(it, grammars,
 						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
@@ -281,11 +283,13 @@ public static partial class ThatAsyncEnumerable
 			string doNotPopulateThisValue = "")
 	{
 		unexpected.ThrowIfNull();
+		IEnumerable<Expression<Func<TItem, bool>>> unexpectedValues = unexpected.WithoutNullElements();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
-				(DoNotPopulateThisValue: doNotPopulateThisValue, Unexpected: unexpected, MatchOptions: matchOptions),
+				(DoNotPopulateThisValue: doNotPopulateThisValue, Unexpected: unexpectedValues,
+					MatchOptions: matchOptions),
 				static (state, it, grammars)
 					=> new AsyncIsEqualToFromPredicateConstraint<TItem, TItem>(it, grammars,
 						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
@@ -312,11 +316,13 @@ public static partial class ThatAsyncEnumerable
 			string doNotPopulateThisValue = "")
 	{
 		unexpected.ThrowIfNull();
+		IEnumerable<Action<IThatSubject<TItem?>>> unexpectedValues = unexpected.WithoutNullElements();
 		CollectionMatchOptions matchOptions = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new ProperCollectionMatchResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
-				(DoNotPopulateThisValue: doNotPopulateThisValue, Unexpected: unexpected, MatchOptions: matchOptions),
+				(DoNotPopulateThisValue: doNotPopulateThisValue, Unexpected: unexpectedValues,
+					MatchOptions: matchOptions),
 				static (state, it, grammars)
 					=> new AsyncIsEqualToFromExpectationsConstraint<TItem, TItem>(it, grammars,
 						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),

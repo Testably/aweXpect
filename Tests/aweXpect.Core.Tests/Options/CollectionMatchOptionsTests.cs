@@ -286,6 +286,21 @@ public class CollectionMatchOptionsTests
 		}
 	}
 
+	public class ExpectationItemTests
+	{
+		[Fact]
+		public async Task WhenExpectationIsNull_ShouldThrowArgumentNullException()
+		{
+			void Act()
+				=> _ = new CollectionMatchOptions.ExpectationItem<int>(null!, ExpectationGrammars.None,
+					new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("expectation").And
+				.WithMessage("The 'expectation' cannot be null.").AsPrefix();
+		}
+	}
+
 	public class FailureMessageTests
 	{
 		[Fact]
@@ -826,6 +841,82 @@ public class CollectionMatchOptionsTests
 
 		private static bool Throw(string _)
 			=> throw new InvalidOperationException("boom");
+	}
+
+	public class GetCollectionMatcherTests
+	{
+		[Fact]
+		public async Task WhenAnExpectationIsNull_ShouldThrowArgumentException()
+		{
+			CollectionMatchOptions sut = new();
+			CollectionMatchOptions.ExpectationItem<int>[] expected = [null!,];
+
+			void Act()
+				=> _ = sut.GetCollectionMatcher<int, int>(expected);
+
+			await That(Act).Throws<ArgumentException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' collection cannot contain <null>.").AsPrefix();
+		}
+
+		[Theory]
+		[InlineData(false, false)]
+		[InlineData(false, true)]
+		[InlineData(true, false)]
+		[InlineData(true, true)]
+		public async Task WhenAPredicateIsNull_ShouldThrowArgumentException(bool inAnyOrder, bool ignoringDuplicates)
+		{
+			CollectionMatchOptions sut = new();
+			if (inAnyOrder)
+			{
+				sut.InAnyOrder();
+			}
+
+			if (ignoringDuplicates)
+			{
+				sut.IgnoringDuplicates();
+			}
+
+			Expression<Func<int, bool>>[] expected = [x => x > 0, null!,];
+
+			void Act()
+				=> _ = sut.GetCollectionMatcher<int, int>(expected);
+
+			await That(Act).Throws<ArgumentException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' collection cannot contain <null>.").AsPrefix();
+		}
+
+		[Fact]
+		public async Task WhenAValueIsNull_ShouldNotThrow()
+		{
+			CollectionMatchOptions sut = new();
+			string?[] expected = ["a", null,];
+
+			void Act()
+				=> _ = sut.GetCollectionMatcher<string?, string?>(expected);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Fact]
+		public async Task WhenThePredicatesAreNotMaterialized_ShouldEnumerateThemOnce()
+		{
+			int enumerations = 0;
+
+			IEnumerable<Expression<Func<int, bool>>> Expected()
+			{
+				enumerations++;
+				yield return x => x > 0;
+			}
+
+			CollectionMatchOptions sut = new();
+
+			ICollectionMatcher<int, int> matcher = sut.GetCollectionMatcher<int, int>(Expected());
+
+			await That(matcher).IsNotNull();
+			await That(enumerations).IsEqualTo(1);
+		}
 	}
 
 	public class GetExpectationTests
