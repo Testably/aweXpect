@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq.Expressions;
+using aweXpect.Core;
 
 namespace aweXpect.Tests;
 
@@ -377,6 +378,27 @@ public sealed partial class ThatEnumerable
 
 			await That(Act).DoesNotThrow()
 				.Because("a default ImmutableArray is equal to null, like a null collection");
+		}
+
+		[Fact]
+		public async Task IsEqualToExpectations_ShouldFail()
+		{
+			int[] subject = [1,];
+			ImmutableArray<Action<IThat<int>>> expected = default;
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection expected in order,
+				             but the expected collection was <null>
+
+				             Collection:
+				             [1]
+				             """)
+				.Because("a default ImmutableArray is not initialized, like a null collection");
 		}
 
 		[Fact]

@@ -119,6 +119,7 @@ internal static class ExceptionHelpers
 	private static IEnumerable<T>? WithoutNullElementsNamed<T>(IEnumerable<T>? parameter, string? paramName)
 		where T : class
 	{
+		parameter = parameter.NullIfDefaultImmutableArray();
 		if (parameter is not (ICollection<T> or IReadOnlyCollection<T>))
 		{
 			return parameter?.Select(element
