@@ -7,3 +7,4 @@
  aweXpect0005 | Usage    | Warning  | Expectations in an async void method or lambda are not observed.         
  aweXpect0006 | Usage    | Warning  | Collections without a defined order must not be compared by position.    
  aweXpect0007 | Usage    | Error    | A "ValueTask" returned by a delegate subject is never awaited.           
+ aweXpect0008 | Usage    | Warning  | The value of an expectation combined with "Or" can be the default value. 

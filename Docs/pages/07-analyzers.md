@@ -130,6 +130,27 @@ These older targets are affected because they use the .NET Standard 2.0 build of
 also reports a delegate whose `ValueTask` is given explicitly as the type argument, as in
 `Expect.That<ValueTask>(() => Act())`. See [Delegates](./06-behaviour/01-delegates.md).
 
+## aweXpect0008
+
+:::warning[Warning]
+The value of an expectation is used although an `.Or` combines it with an alternative that has no value of this type,
+so the value can be the `default`.
+:::
+
+```csharp
+object subject = "Yesterday";
+
+int count = await Expect.That(subject).Is<string>().Or.Is<int>();   // reported: 0 when the subject is a string
+await Expect.That(subject).Is<string>().Or.Is<int>();               // fixed: the value is not used
+```
+
+The last expectation determines the type of the value, also when another alternative is the one that is met. That
+alternative has no value of this type, so the result is `null` for a reference type, also when it is not annotated as
+nullable, and the zero value for a value type. Do not use the value, or check it before using it and suppress the
+warning there. The rule is not reported when the value has the type of the subject, as in
+`await Expect.That(5).IsGreaterThan(3).Or.IsLessThan(1)`, because then every alternative returns the subject. See
+[Combining expectations](./03-how-it-works/03-combining.md#using-the-result).
+
 ## Nullability suppressor
 
 After an expectation that a `null` subject can never satisfy, such as `IsNotNull()`, the

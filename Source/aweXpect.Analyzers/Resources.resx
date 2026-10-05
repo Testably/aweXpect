@@ -115,6 +115,15 @@
 		<value>Return ".AsTask()"</value>
 		<comment>The title of the code fix.</comment>
 	</data>
+	<data name="aweXpect0008Description" xml:space="preserve">
+		<value>An "Or" continues with the subject, so the last expectation determines the type of the value, also when it is another alternative that is met. That alternative has no value of this type, so the expectation returns the default value instead: null for a reference type, also when it is not annotated as nullable, and the zero value for a value type. Evaluate the expectation without using its value, or check the value before using it.</value>
+	</data>
+	<data name="aweXpect0008MessageFormat" xml:space="preserve">
+		<value>The value can be the default value of "{0}", because another alternative of the "Or" can be the one that is met; ignore the value or check it for null before using it</value>
+	</data>
+	<data name="aweXpect0008Title" xml:space="preserve">
+		<value>The value of an expectation combined with "Or" can be the default value</value>
+	</data>
 	<data name="IsNotNullSuppressionJustification" xml:space="preserve">
 		<value>The subject was verified to be not null by a preceding expectation.</value>
 	</data>
