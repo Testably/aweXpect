@@ -365,6 +365,9 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 {
 	private ICollection<TItem>? _expectedItems;
 
+	// Not reset by Start, so that a sequence that is not a collection is enumerated once for all evaluations.
+	private ICollection<TItem>? _materializedExpected;
+
 	/// <summary>
 	///     The comparer of a set subject which compares the items, or <see langword="null" />.
 	/// </summary>
@@ -389,7 +392,8 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 			return null;
 		}
 
-		_expectedItems = expected as ICollection<TItem> ?? expected.ToArray();
+		_materializedExpected ??= expected as ICollection<TItem> ?? expected.ToArray();
+		_expectedItems = _materializedExpected;
 		return _expectedItems;
 	}
 
@@ -512,6 +516,9 @@ internal abstract class IsEqualToFromExpectationsConstraintBase<TValue, TItem>(
 	private CollectionMatchOptions.ExpectationItem<TItem>[] _expectations = [];
 	private bool _showsExpected;
 
+	// Not reset by Start, so that a sequence that is not a collection is enumerated once for all evaluations.
+	private ICollection<Action<IThatSubject<TItem?>>>? _materializedExpected;
+
 	/// <inheritdoc />
 	protected override void Start()
 	{
@@ -531,7 +538,8 @@ internal abstract class IsEqualToFromExpectationsConstraintBase<TValue, TItem>(
 			return null;
 		}
 
-		_expectations = expected.Select(expectation
+		_materializedExpected ??= expected as ICollection<Action<IThatSubject<TItem?>>> ?? expected.ToArray();
+		_expectations = _materializedExpected.Select(expectation
 				=> new CollectionMatchOptions.ExpectationItem<TItem>(expectation,
 					Grammars & ~ExpectationGrammars.Negated,
 					context,
@@ -620,6 +628,9 @@ internal abstract class IsEqualToFromPredicateConstraintBase<TValue, TItem>(
 {
 	private ICollection<Expression<Func<TItem, bool>>>? _expectedItems;
 
+	// Not reset by Start, so that a sequence that is not a collection is enumerated once for all evaluations.
+	private ICollection<Expression<Func<TItem, bool>>>? _materializedExpected;
+
 	/// <inheritdoc />
 	protected override void Start()
 	{
@@ -638,7 +649,8 @@ internal abstract class IsEqualToFromPredicateConstraintBase<TValue, TItem>(
 			return null;
 		}
 
-		_expectedItems = expected as ICollection<Expression<Func<TItem, bool>>> ?? expected.ToArray();
+		_materializedExpected ??= expected as ICollection<Expression<Func<TItem, bool>>> ?? expected.ToArray();
+		_expectedItems = _materializedExpected;
 		return _expectedItems;
 	}
 
