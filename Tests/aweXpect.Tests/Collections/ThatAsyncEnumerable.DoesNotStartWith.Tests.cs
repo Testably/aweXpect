@@ -210,13 +210,13 @@ public sealed partial class ThatAsyncEnumerable
 				IAsyncEnumerable<int> GetSubject() => ToAsyncEnumerable(1, 2, 3);
 
 				async Task Act()
-					=> await That(GetSubject).Eventually().Within(50.Milliseconds()).CheckEvery(1.Milliseconds())
+					=> await That(GetSubject).Eventually().WithinTwoAttempts(5.Seconds())
 						.DoesNotStartWith(1, 2);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that GetSubject
-					             eventually does not start with [1, 2] within 0:00.050,
+					             eventually does not start with [1, 2] within 0:05,
 					             but it did start with [1, 2]
 					             """)
 					.Because("the items of earlier attempts do not belong to the last one");

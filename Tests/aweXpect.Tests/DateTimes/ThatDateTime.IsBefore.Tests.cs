@@ -17,13 +17,13 @@ public sealed partial class ThatDateTime
 					: later;
 
 				async Task Act()
-					=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+					=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
 						.IsBefore(expected);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage($"""
 					              Expected that subject
-					              eventually is before {Formatter.Format(expected)} within 0:00.200,
+					              eventually is before {Formatter.Format(expected)} within 0:05,
 					              but it was {Formatter.Format(later)}, which differs by 0:01
 					              """)
 					.Because("the kind of an earlier attempt does not describe the last one");

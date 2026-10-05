@@ -63,13 +63,13 @@ public sealed partial class ThatEnumerable
 				Func<IEnumerable<int>> subject = () => calls++ == 0 ? [1, 2,] : ToEnumerable([3,]);
 
 				async Task Act()
-					=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+					=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
 						.IsEmpty();
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             eventually is empty within 0:00.200,
+					             eventually is empty within 0:05,
 					             but it was [
 					               3
 					             ]
