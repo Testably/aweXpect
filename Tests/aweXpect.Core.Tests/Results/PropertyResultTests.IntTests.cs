@@ -151,6 +151,51 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Fact]
+		public async Task EqualTo_WhenSubjectIsNullAndExpectedIsNull_ShouldFail()
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValueOfNullSubject();
+
+			async Task Act()
+				=> await sut.EqualTo(null);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has int value equal to <null>,
+				             but it was <null>
+				             """)
+				.Because("a null subject has no int value to compare, whatever the expected value is");
+		}
+
+		[Fact]
+		public async Task EqualTo_WhenValueIsNull_ShouldFail()
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasNullIntValue();
+
+			async Task Act()
+				=> await sut.EqualTo(42);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             has int value equal to 42,
+				             but it had int value <null>
+				             """);
+		}
+
+		[Fact]
+		public async Task EqualTo_WhenValueIsNullAndExpectedIsNull_ShouldSucceed()
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasNullIntValue();
+
+			async Task Act()
+				=> await sut.EqualTo(null);
+
+			await That(Act).DoesNotThrow()
+				.Because("null is equal to null");
+		}
+
+		[Fact]
 		public async Task GreaterThan_ShouldTriggerValidation()
 		{
 			Signaler<int?> signal = new();
@@ -512,6 +557,34 @@ public sealed partial class PropertyResultTests
 				             but it was <null>
 				             """)
 				.Because("a null subject has no int value to compare, whatever the unexpected value is");
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenValueIsNull_ShouldSucceed()
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasNullIntValue();
+
+			async Task Act()
+				=> await sut.NotEqualTo(42);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Fact]
+		public async Task NotEqualTo_WhenValueIsNullAndUnexpectedIsNull_ShouldFail()
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasNullIntValue();
+
+			async Task Act()
+				=> await sut.NotEqualTo(null);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have int value equal to <null>,
+				             but it had int value <null>
+				             """)
+				.Because("null is equal to null");
 		}
 
 		[Fact]

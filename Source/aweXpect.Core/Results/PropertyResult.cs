@@ -48,7 +48,7 @@ public static class PropertyResult
 			int? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a?.Equals(e) == true,
+			return Add(expected, (a, e) => a == e,
 				"equal to ");
 		}
 
@@ -59,7 +59,7 @@ public static class PropertyResult
 			int? unexpected)
 		{
 			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, u) => a?.Equals(u) != true,
+			return Add(unexpected, (a, u) => a != u,
 				"equal to ", isNegative: true);
 		}
 
@@ -250,7 +250,7 @@ public static class PropertyResult
 			long? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a?.Equals(e) == true,
+			return Add(expected, (a, e) => a == e,
 				"equal to ");
 		}
 
@@ -261,7 +261,7 @@ public static class PropertyResult
 			long? unexpected)
 		{
 			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, u) => a?.Equals(u) != true,
+			return Add(unexpected, (a, u) => a != u,
 				"equal to ", isNegative: true);
 		}
 
@@ -448,7 +448,7 @@ public static class PropertyResult
 		/// </summary>
 		public AndOrResult<TType, TThat> EqualTo(
 			DateTimeKind? expected)
-			=> Add(expected, (a, e) => a?.Equals(e) == true,
+			=> Add(expected, (a, e) => a == e,
 				"equal to ");
 
 		/// <summary>
@@ -456,7 +456,7 @@ public static class PropertyResult
 		/// </summary>
 		public AndOrResult<TType, TThat> NotEqualTo(
 			DateTimeKind? unexpected)
-			=> Add(unexpected, (a, u) => a?.Equals(u) != true,
+			=> Add(unexpected, (a, u) => a != u,
 				"equal to ", isNegative: true);
 
 		private AndOrResult<TType, TThat> Add(
@@ -510,7 +510,7 @@ public static class PropertyResult
 			TimeSpan? expected)
 		{
 			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => a?.Equals(e) == true,
+			return Add(expected, (a, e) => a == e,
 				"equal to ");
 		}
 
@@ -521,7 +521,7 @@ public static class PropertyResult
 			TimeSpan? unexpected)
 		{
 			validation?.Invoke(unexpected, nameof(unexpected));
-			return Add(unexpected, (a, u) => a?.Equals(u) != true,
+			return Add(unexpected, (a, u) => a != u,
 				"equal to ", isNegative: true);
 		}
 
