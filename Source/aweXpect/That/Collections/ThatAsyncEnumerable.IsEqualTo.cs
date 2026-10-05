@@ -114,11 +114,12 @@ public static partial class ThatAsyncEnumerable
 			string expectedExpression,
 			bool negated)
 	{
+		IEnumerable<Expression<Func<TItem, bool>>>? expectedValues = expected.WithoutNullElements(negated);
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionMatchResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
-				(ExpectedExpression: expectedExpression, Expected: expected, MatchOptions: matchOptions,
+				(ExpectedExpression: expectedExpression, Expected: expectedValues, MatchOptions: matchOptions,
 					Negated: negated),
 				static (state, it, grammars) =>
 				{
@@ -141,11 +142,12 @@ public static partial class ThatAsyncEnumerable
 			string expectedExpression,
 			bool negated)
 	{
+		IEnumerable<Action<IThatSubject<TItem?>>>? expectedValues = expected.WithoutNullElements(negated);
 		CollectionMatchOptions matchOptions = new();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new CollectionMatchResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 			expectationBuilder.AddConstraint(
-				(ExpectedExpression: expectedExpression, Expected: expected, MatchOptions: matchOptions,
+				(ExpectedExpression: expectedExpression, Expected: expectedValues, MatchOptions: matchOptions,
 					Negated: negated),
 				static (state, it, grammars) =>
 				{

@@ -192,6 +192,20 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenExpectedContainsNull_ShouldThrowArgumentException()
+			{
+				IEnumerable<int> subject = Enumerable.Range(1, 3);
+				IEnumerable<Action<IThat<int>>> expected = [a => a.IsEqualTo(1), null!,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot contain <null>.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IEnumerable<int> subject = Enumerable.Range(1, 11);
@@ -240,6 +254,21 @@ public sealed partial class ThatEnumerable
 					             Expected:
 					             [an item that is not equal to 1 and is not equal to 2]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenLazyExpectedContainsNull_ShouldThrowArgumentException()
+			{
+				IEnumerable<int> subject = Enumerable.Range(1, 3);
+				IEnumerable<Action<IThat<int>>> expected =
+					ToEnumerable<Action<IThat<int>>>(a => a.IsEqualTo(1), null!);
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' collection cannot contain <null>.").AsPrefix();
 			}
 
 			[Fact]

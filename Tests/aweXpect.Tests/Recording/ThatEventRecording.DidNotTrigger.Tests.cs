@@ -57,6 +57,20 @@ public sealed partial class ThatEventRecording
 			}
 
 			[Fact]
+			public async Task WhenEventNameIsNull_ShouldThrowArgumentNullException()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording = sut.Record().Events();
+
+				async Task Act() =>
+					await That(recording).DidNotTrigger(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("eventName").And
+					.WithMessage("The 'eventName' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenMatchingEventIsTriggered_ShouldFail()
 			{
 				CustomEventWithParametersClass<string> sut = new();

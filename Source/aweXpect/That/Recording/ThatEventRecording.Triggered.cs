@@ -21,6 +21,7 @@ public static partial class ThatEventRecording
 		string eventName)
 		where TSubject : notnull
 	{
+		eventName.ThrowIfNull();
 		Quantifier quantifier = new();
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();
@@ -52,6 +53,7 @@ public static partial class ThatEventRecording
 		string eventName)
 		where TSubject : notnull
 	{
+		eventName.ThrowIfNull();
 		Quantifier quantifier = new();
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();

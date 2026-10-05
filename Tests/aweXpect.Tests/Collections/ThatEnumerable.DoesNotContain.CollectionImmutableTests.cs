@@ -66,6 +66,34 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenUnexpectedExpectationsContainNull_ShouldThrowArgumentException()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+				IEnumerable<Action<IThat<int>>> unexpected = [a => a.IsEqualTo(1), null!,];
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(unexpected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' collection cannot contain <null>.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenUnexpectedPredicatesContainNull_ShouldThrowArgumentException()
+			{
+				ImmutableArray<int> subject = [1, 2, 3,];
+				IEnumerable<Expression<Func<int, bool>>> unexpected = [a => a == 1, null!,];
+
+				async Task Act()
+					=> await That(subject).DoesNotContain(unexpected);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' collection cannot contain <null>.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WithAdditionalAndMissingItems_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "d", "e",];
