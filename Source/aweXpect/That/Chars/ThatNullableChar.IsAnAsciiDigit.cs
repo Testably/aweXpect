@@ -12,11 +12,17 @@ namespace aweXpect;
 	Remarks = """
 	          This means that the specified Unicode character is categorized as an ASCII digit.<br />
 	          <seealso cref="char.IsAsciiDigit(char)" />
-	          """
+	          """,
+	NegatedRemarks = """
+	                 This means that the specified Unicode character is not categorized as an ASCII digit.<br />
+	                 <see langword="null" /> is neither treated as an ASCII digit nor as not an ASCII digit, so it fails.<br />
+	                 <seealso cref="char.IsAsciiDigit(char)" />
+	                 """
 )]
 #else
 [CreateExpectationOnNullable<char>("Is{Not}AnAsciiDigit", "{value}.Value is >= '0' and <= '9'",
-	ExpectationText = "is {not} an ASCII digit"
+	ExpectationText = "is {not} an ASCII digit",
+	NegatedRemarks = "<see langword=\"null\" /> is neither treated as an ASCII digit nor as not an ASCII digit, so it fails."
 )]
 #endif
 public static partial class ThatNullableChar;

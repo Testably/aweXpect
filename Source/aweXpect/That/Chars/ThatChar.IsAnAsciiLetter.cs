@@ -8,7 +8,11 @@ namespace aweXpect;
 	Remarks = """
 	          This means that the specified Unicode character is categorized as an ASCII letter.<br />
 	          <seealso cref="char.IsAsciiLetter(char)" />
-	          """
+	          """,
+	NegatedRemarks = """
+	                 This means that the specified Unicode character is not categorized as an ASCII letter.<br />
+	                 <seealso cref="char.IsAsciiLetter(char)" />
+	                 """
 )]
 #else
 [CreateExpectationOn<char>("Is{Not}AnAsciiLetter", "{value} is >= 'a' and <= 'z' or >= 'A' and <= 'Z'",

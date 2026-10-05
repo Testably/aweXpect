@@ -16,8 +16,8 @@ namespace aweXpect;
 
 public static partial class ThatEnumerable
 {
-	private const string InDescendingOrder = "Verifies that the collection is in Descending order.";
-	private const string NotInDescendingOrder = "Verifies that the collection is not in Descending order.";
+	private const string InDescendingOrder = "Verifies that the collection is in descending order.";
+	private const string NotInDescendingOrder = "Verifies that the collection is not in descending order.";
 
 	[CreateExpectationFamily("Is{Not}InDescendingOrder", GuaranteesNotNull = true,
 		Summary = InDescendingOrder, NegatedSummary = NotInDescendingOrder)]

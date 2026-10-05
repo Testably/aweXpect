@@ -8,7 +8,8 @@ using Microsoft.CodeAnalysis.Operations;
 namespace aweXpect.Analyzers;
 
 /// <summary>
-///     An analyzer that checks that all <c>Expect.That</c> expectations are awaited.
+///     An analyzer that reports calls to <c>Equals</c> on an <c>Expect.That</c> subject or on an expectation, which
+///     should use <c>IsEqualTo</c> instead.
 /// </summary>
 [DiagnosticAnalyzer(LanguageNames.CSharp)]
 public class EqualsAnalyzer : DiagnosticAnalyzer

@@ -37,6 +37,8 @@ internal static class SourceGenerationHelper
 			public string? PositiveExpectationText { get; set; }
 			public string? NegativeExpectationText { get; set; }
 			public string? Remarks { get; set; }
+			/// <summary>The remarks of the negated overload, which gets none without them.</summary>
+			public string? NegatedRemarks { get; set; }
 			public string[] Using { get; set; } = [];
 		}
 		#nullable disable
@@ -79,6 +81,8 @@ internal static class SourceGenerationHelper
 			public string? Summary { get; set; }
 			public string? NegatedSummary { get; set; }
 			public string? Remarks { get; set; }
+			/// <summary>The remarks of the negated overload, which gets none without them.</summary>
+			public string? NegatedRemarks { get; set; }
 			public string[] Using { get; set; } = [];
 		}
 		#nullable disable
@@ -133,7 +137,7 @@ internal static class SourceGenerationHelper
 			result += $$"""
 			            	/// <summary>
 			            	///     {{ContinueDocumentation(negatedSummary)}}
-			            	/// </summary>{{expectationToGenerate.AppendRemarks()}}{{negatedGuaranteesNotNull}}
+			            	/// </summary>{{expectationToGenerate.AppendNegatedRemarks()}}{{negatedGuaranteesNotNull}}
 			            	public static AndOrResult<{{negatedResultType}}, IThat<{{expectationToGenerate.TargetType}}>> {{expectationToGenerate.NegatedName}}(this IThat<{{expectationToGenerate.TargetType}}> subject)
 			            		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 			            			new {{expectationToGenerate.Name}}Constraint(it, grammars).Invert()),

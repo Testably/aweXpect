@@ -50,6 +50,9 @@ internal readonly record struct ExpectationToGenerate
 				case "Remarks":
 					Remarks = namedArgument.Value.Value?.ToString();
 					break;
+				case "NegatedRemarks":
+					NegatedRemarks = namedArgument.Value.Value?.ToString();
+					break;
 				case "FailOnNull":
 					FailOnNull = namedArgument.Value.Value as bool? ?? true;
 					break;
@@ -94,10 +97,18 @@ internal readonly record struct ExpectationToGenerate
 	public string? Summary { get; }
 	public string? NegatedSummary { get; }
 	public string? Remarks { get; }
+	public string? NegatedRemarks { get; }
 
-	public string AppendRemarks()
+	public string AppendRemarks() => AppendRemarks(Remarks);
+
+	/// <remarks>
+	///     The remarks of the positive overload describe the opposite, so they are no fallback.
+	/// </remarks>
+	public string AppendNegatedRemarks() => AppendRemarks(NegatedRemarks);
+
+	private static string AppendRemarks(string? remarks)
 	{
-		if (string.IsNullOrEmpty(Remarks))
+		if (string.IsNullOrEmpty(remarks))
 		{
 			return "";
 		}
@@ -105,7 +116,7 @@ internal readonly record struct ExpectationToGenerate
 		return $$"""
 
 		         /// <remarks>
-		         ///     {{Remarks!.Replace("\n", "\n///     ")}}
+		         ///     {{remarks!.Replace("\n", "\n///     ")}}
 		         /// </remarks>
 		         """.Replace("\n", "\n\t");
 	}
