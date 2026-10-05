@@ -276,22 +276,32 @@ public sealed partial class ThatGeneric
 			public async Task WhenAsyncMemberFaults_AndMemberExpectationIsRepeated_ShouldFailWithoutRetrying()
 			{
 				ThrowingClass subject = new();
+				TimeSpan retryWindow = TimeSpan.FromSeconds(30);
+				int evaluations = 0;
 				Stopwatch stopwatch = Stopwatch.StartNew();
+
+				bool IsOne(int x)
+				{
+					evaluations++;
+					return x == 1;
+				}
 
 				async Task Act()
 					=> await That(subject).Whose(o => o.FaultedAsync(),
-						v => v.Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(30)));
+						v => v.Satisfies(IsOne).Within(retryWindow));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             whose FaultedAsync() satisfies x => x == 1 within 0:30,
+					             whose FaultedAsync() satisfies IsOne within 0:30,
 					             but FaultedAsync() did throw an InvalidOperationException:
 					               async member failed
 					             """)
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
-				await That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromSeconds(10))
+				await That(evaluations).IsEqualTo(0)
 					.Because("a faulted async member must fail at once instead of being retried for the 30 s window");
+				await That(stopwatch.Elapsed).IsLessThan(retryWindow)
+					.Because("the member must not be read again for the 30 s window either");
 			}
 
 			[Fact]
@@ -1022,22 +1032,32 @@ public sealed partial class ThatGeneric
 			public async Task WhenMemberThrows_AndMemberExpectationIsRepeated_ShouldFailWithoutRetrying()
 			{
 				ThrowingClass subject = new();
+				TimeSpan retryWindow = TimeSpan.FromSeconds(30);
+				int evaluations = 0;
 				Stopwatch stopwatch = Stopwatch.StartNew();
+
+				bool IsOne(int x)
+				{
+					evaluations++;
+					return x == 1;
+				}
 
 				async Task Act()
 					=> await That(subject).Whose(o => o.Throwing,
-						v => v.Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(30)));
+						v => v.Satisfies(IsOne).Within(retryWindow));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             whose Throwing satisfies x => x == 1 within 0:30,
+					             whose Throwing satisfies IsOne within 0:30,
 					             but Throwing did throw an InvalidOperationException:
 					               member failed
 					             """)
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
-				await That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromSeconds(10))
+				await That(evaluations).IsEqualTo(0)
 					.Because("a throwing member must fail at once instead of being retried for the 30 s window");
+				await That(stopwatch.Elapsed).IsLessThan(retryWindow)
+					.Because("the member must not be read again for the 30 s window either");
 			}
 
 			[Fact]
