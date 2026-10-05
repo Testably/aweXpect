@@ -142,6 +142,8 @@ considers it the same as one, and a type that only implements `IReadOnlyDictiona
 - A type without any members to compare throws an `InvalidOperationException` instead of succeeding without verifying
   anything. Include the relevant members, compare the type [by value](#comparing-by-value-or-by-members), or exclude
   all members explicitly with `IncludeMembers.None`.
+- The same instance on both sides is equivalent to itself, unless its type is compared by value: its members, entries
+  or items are not read, so a shared singleton without members (e.g. `EventArgs.Empty`) does not throw.
 
 ## Configuration
 

@@ -608,6 +608,13 @@ public static partial class EquivalencyComparison
 			MemberType memberType,
 			EquivalencyContext context)
 	{
+		// An instance is equivalent to itself, so its members, entries or items are not read: it may have nothing to
+		// compare, or be a sequence that can only be enumerated once.
+		if (ReferenceEquals(actual, expected))
+		{
+			return true;
+		}
+
 		ComparedPair comparedPair = new(actual, expected);
 		if (!context.ComparedPairs.Add(comparedPair))
 		{
