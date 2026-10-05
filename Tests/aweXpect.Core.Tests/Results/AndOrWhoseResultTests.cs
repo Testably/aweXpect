@@ -727,12 +727,14 @@ public class AndOrWhoseResultTests
 
 	private sealed class MyClass
 	{
+		private readonly TaskCompletionSource<bool> _neverCompleted = new();
+
 		public bool Value1 { get; set; }
 		public bool Value2 { get; set; }
 
 		public Task<bool> GetValue1Async() => Task.FromResult(Value1);
 
-		public Task<bool> NeverCompletesAsync() => new TaskCompletionSource<bool>().Task;
+		public Task<bool> NeverCompletesAsync() => _neverCompleted.Task;
 	}
 
 	private sealed class ThrowingClass(string message)
