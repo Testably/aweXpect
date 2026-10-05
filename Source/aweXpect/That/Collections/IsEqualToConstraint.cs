@@ -438,8 +438,8 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 	CollectionMatchOptions matchOptions,
 	bool failsForNullSubject = false,
 	bool canUseSubjectComparer = false)
-	: IsEqualToConstraintBase<TEnumerable?, TItem, TMatch>(it, grammars, expectedExpression, expected, options,
-			matchOptions, failsForNullSubject),
+	: IsEqualToConstraintBase<TEnumerable?, TItem, TMatch>(it, grammars, expectedExpression,
+			expected.NullIfDefaultImmutableArray(), options, matchOptions, failsForNullSubject),
 		IAsyncContextConstraint<TEnumerable?>
 	where TEnumerable : IEnumerable?
 	where TItem : TMatch
@@ -451,7 +451,7 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 		Actual = actual;
 		if (actual.IsDefaultImmutableArray())
 		{
-			return new ValueTask<ConstraintResult>(this.AsNullSubject(It));
+			return new ValueTask<ConstraintResult>(this.AsNullSubject(It, NullSubjectOutcome));
 		}
 
 		if (actual is null)
@@ -573,8 +573,8 @@ internal sealed class IsEqualToFromExpectationsConstraint<TEnumerable, TItem, TM
 	IEnumerable<Action<IThatSubject<TItem?>>>? expected,
 	CollectionMatchOptions matchOptions,
 	bool failsForNullSubject = false)
-	: IsEqualToFromExpectationsConstraintBase<TEnumerable?, TItem>(it, grammars, expectedExpression, expected,
-			matchOptions, failsForNullSubject),
+	: IsEqualToFromExpectationsConstraintBase<TEnumerable?, TItem>(it, grammars, expectedExpression,
+			expected.NullIfDefaultImmutableArray(), matchOptions, failsForNullSubject),
 		IAsyncContextConstraint<TEnumerable?>
 	where TEnumerable : IEnumerable<TItem>?
 	where TItem : TMatch
@@ -586,7 +586,7 @@ internal sealed class IsEqualToFromExpectationsConstraint<TEnumerable, TItem, TM
 		Actual = actual;
 		if (actual.IsDefaultImmutableArray())
 		{
-			return this.AsNullSubject(It);
+			return this.AsNullSubject(It, NullSubjectOutcome);
 		}
 
 		if (actual is null)
@@ -664,8 +664,8 @@ internal sealed class IsEqualToFromPredicateConstraint<TEnumerable, TItem, TMatc
 	IEnumerable<Expression<Func<TItem, bool>>>? expected,
 	CollectionMatchOptions matchOptions,
 	bool failsForNullSubject = false)
-	: IsEqualToFromPredicateConstraintBase<TEnumerable?, TItem>(it, grammars, expectedExpression, expected,
-			matchOptions, failsForNullSubject),
+	: IsEqualToFromPredicateConstraintBase<TEnumerable?, TItem>(it, grammars, expectedExpression,
+			expected.NullIfDefaultImmutableArray(), matchOptions, failsForNullSubject),
 		IAsyncContextConstraint<TEnumerable?>
 	where TEnumerable : IEnumerable<TItem>?
 	where TItem : TMatch
@@ -677,7 +677,7 @@ internal sealed class IsEqualToFromPredicateConstraint<TEnumerable, TItem, TMatc
 		Actual = actual;
 		if (actual.IsDefaultImmutableArray())
 		{
-			return new ValueTask<ConstraintResult>(this.AsNullSubject(It));
+			return new ValueTask<ConstraintResult>(this.AsNullSubject(It, NullSubjectOutcome));
 		}
 
 		if (actual is null)
@@ -706,8 +706,8 @@ internal sealed class AsyncIsEqualToConstraint<TItem, TMatch>(
 	IOptionsEquality<TMatch> options,
 	CollectionMatchOptions matchOptions,
 	bool failsForNullSubject = false)
-	: IsEqualToConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMatch>(it, grammars, expectedExpression, expected,
-			options, matchOptions, failsForNullSubject),
+	: IsEqualToConstraintBase<IAsyncEnumerable<TItem>?, TItem, TMatch>(it, grammars, expectedExpression,
+			expected.NullIfDefaultImmutableArray(), options, matchOptions, failsForNullSubject),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	where TItem : TMatch
 {
@@ -742,7 +742,7 @@ internal sealed class AsyncIsEqualToFromExpectationsConstraint<TItem, TMatch>(
 	CollectionMatchOptions matchOptions,
 	bool failsForNullSubject = false)
 	: IsEqualToFromExpectationsConstraintBase<IAsyncEnumerable<TItem>?, TItem>(it, grammars, expectedExpression,
-			expected, matchOptions, failsForNullSubject),
+			expected.NullIfDefaultImmutableArray(), matchOptions, failsForNullSubject),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	where TItem : TMatch
 {
@@ -777,7 +777,7 @@ internal sealed class AsyncIsEqualToFromPredicateConstraint<TItem, TMatch>(
 	CollectionMatchOptions matchOptions,
 	bool failsForNullSubject = false)
 	: IsEqualToFromPredicateConstraintBase<IAsyncEnumerable<TItem>?, TItem>(it, grammars, expectedExpression,
-			expected, matchOptions, failsForNullSubject),
+			expected.NullIfDefaultImmutableArray(), matchOptions, failsForNullSubject),
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 	where TItem : TMatch
 {

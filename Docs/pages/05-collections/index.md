@@ -47,6 +47,9 @@ Before .NET 8, only `IsEmpty` and `IsNotEmpty` are available for an `ImmutableAr
 array to use the other collection expectations.
 :::
 
+A default `ImmutableArray<T>` is treated like a `null` collection, as the subject and as the expected collection. To
+tell the two apart, verify its `IsDefault` property.
+
 ## Sets
 
 :::warning[A set or a dictionary has no defined order]

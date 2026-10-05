@@ -1,5 +1,8 @@
 ﻿#if NET8_0_OR_GREATER
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq.Expressions;
+using aweXpect.Core;
 
 namespace aweXpect.Tests;
 
@@ -20,6 +23,26 @@ public sealed partial class ThatEnumerable
 				             Expected that subject
 				             is equal to 1 for all items,
 				             but it was <null>
+				             """)
+				.Because("a default ImmutableArray is not initialized, like a null collection");
+		}
+
+		[Fact]
+		public async Task AllAreEquivalentTo_ShouldFail()
+		{
+			ImmutableArray<int> subject = default;
+
+			async Task Act()
+				=> await That(subject).All().AreEquivalentTo(1);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equivalent to 1 for all items,
+				             but it was <null>
+
+				             Equivalency options:
+				              - include public fields and properties
 				             """)
 				.Because("a default ImmutableArray is not initialized, like a null collection");
 		}
@@ -159,6 +182,18 @@ public sealed partial class ThatEnumerable
 				             """);
 			await That(exception.InnerException).IsNull()
 				.Because("a default ImmutableArray is not initialized, so the single item must not be accessed");
+		}
+
+		[Fact]
+		public async Task DoesNotComplyWithIsEqualTo_ShouldSucceed()
+		{
+			ImmutableArray<int> subject = default;
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(x => x.IsEqualTo([1, 2,]));
+
+			await That(Act).DoesNotThrow()
+				.Because("a default ImmutableArray is not equal to a collection, like a null collection");
 		}
 
 		[Fact]
@@ -469,6 +504,76 @@ public sealed partial class ThatEnumerable
 		}
 
 		[Fact]
+		public async Task IsEqualTo_WhenExpectedIsDefault_ShouldSucceed()
+		{
+			ImmutableArray<int> subject = default;
+			ImmutableArray<int> expected = default;
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected);
+
+			await That(Act).DoesNotThrow()
+				.Because("a default ImmutableArray is equal to another one, like two null collections");
+		}
+
+		[Fact]
+		public async Task IsEqualTo_WhenExpectedIsEmpty_ShouldFail()
+		{
+			ImmutableArray<int> subject = default;
+			ImmutableArray<int> expected = ImmutableArray<int>.Empty;
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection expected in order,
+				             but it was <null>
+				             """)
+				.Because("an empty ImmutableArray is an initialized collection");
+		}
+
+		[Fact]
+		public async Task IsEqualTo_WhenExpectedIsNull_ShouldSucceed()
+		{
+			ImmutableArray<int> subject = default;
+			IEnumerable<int>? expected = null;
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected);
+
+			await That(Act).DoesNotThrow()
+				.Because("a default ImmutableArray is equal to null, like a null collection");
+		}
+
+		[Fact]
+		public async Task IsEqualToExpectations_WhenExpectedIsNull_ShouldSucceed()
+		{
+			ImmutableArray<int> subject = default;
+			IEnumerable<Action<IThat<int>>>? expected = null;
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected!);
+
+			await That(Act).DoesNotThrow()
+				.Because("a default ImmutableArray is equal to null, like a null collection");
+		}
+
+		[Fact]
+		public async Task IsEqualToPredicates_WhenExpectedIsNull_ShouldSucceed()
+		{
+			ImmutableArray<int> subject = default;
+			IEnumerable<Expression<Func<int, bool>>>? expected = null;
+
+			async Task Act()
+				=> await That(subject).IsEqualTo(expected!);
+
+			await That(Act).DoesNotThrow()
+				.Because("a default ImmutableArray is equal to null, like a null collection");
+		}
+
+		[Fact]
 		public async Task IsInAscendingOrder_ShouldFail()
 		{
 			ImmutableArray<int> subject = default;
@@ -554,20 +659,75 @@ public sealed partial class ThatEnumerable
 		}
 
 		[Fact]
-		public async Task IsNotEqualTo_ShouldFail()
+		public async Task IsNotEqualTo_ShouldSucceed()
 		{
 			ImmutableArray<int> subject = default;
 
 			async Task Act()
 				=> await That(subject).IsNotEqualTo([1, 2,]);
 
+			await That(Act).DoesNotThrow()
+				.Because("a default ImmutableArray is not equal to a collection, like a null collection");
+		}
+
+		[Fact]
+		public async Task IsNotEqualTo_WhenUnexpectedIsDefault_ShouldFail()
+		{
+			ImmutableArray<int> subject = default;
+			ImmutableArray<int> unexpected = default;
+
+			async Task Act()
+				=> await That(subject).IsNotEqualTo(unexpected);
+
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             is not equal to collection [1, 2,] in order,
+				             is not equal to collection unexpected in order,
 				             but it was <null>
 				             """)
-				.Because("a default ImmutableArray is not initialized, like a null collection");
+				.Because("a default ImmutableArray is equal to another one, like two null collections");
+		}
+
+		[Fact]
+		public async Task IsNotEqualTo_WhenUnexpectedIsNull_ShouldFail()
+		{
+			ImmutableArray<int> subject = default;
+			IEnumerable<int>? unexpected = null;
+
+			async Task Act()
+				=> await That(subject).IsNotEqualTo(unexpected);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is not equal to collection unexpected in order,
+				             but it was <null>
+				             """)
+				.Because("a default ImmutableArray is equal to null, like a null collection");
+		}
+
+		[Fact]
+		public async Task IsNotEqualToExpectations_ShouldSucceed()
+		{
+			ImmutableArray<int> subject = default;
+
+			async Task Act()
+				=> await That(subject).IsNotEqualTo([x => x.IsEqualTo(1),]);
+
+			await That(Act).DoesNotThrow()
+				.Because("a default ImmutableArray is not equal to a collection, like a null collection");
+		}
+
+		[Fact]
+		public async Task IsNotEqualToPredicates_ShouldSucceed()
+		{
+			ImmutableArray<int> subject = default;
+
+			async Task Act()
+				=> await That(subject).IsNotEqualTo([x => x > 0,]);
+
+			await That(Act).DoesNotThrow()
+				.Because("a default ImmutableArray is not equal to a collection, like a null collection");
 		}
 
 		[Fact]
@@ -619,6 +779,18 @@ public sealed partial class ThatEnumerable
 				             but it was <null>
 				             """)
 				.Because("a default ImmutableArray is not initialized, like a null collection");
+		}
+
+		[Fact]
+		public async Task StringIsNotEqualTo_ShouldSucceed()
+		{
+			ImmutableArray<string?> subject = default;
+
+			async Task Act()
+				=> await That(subject).IsNotEqualTo(["a",]);
+
+			await That(Act).DoesNotThrow()
+				.Because("a default ImmutableArray is not equal to a collection, like a null collection");
 		}
 
 		[Fact]

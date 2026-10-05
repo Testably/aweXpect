@@ -531,7 +531,8 @@ public static partial class ThatEnumerable
 			IEnumerable expected,
 			string expectedExpression,
 			bool negated)
-		=> ContainsForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, expectedExpression, negated);
+		=> ContainsForEnumerableCore<object?>(subject, expected.NullIfDefaultImmutableArray()?.Cast<object?>()!,
+			expectedExpression, negated);
 
 	[CreateExpectationFamily("Contains", NegatedName = "DoesNotContain", PerSubject = true,
 		Summary = ContainsCollection, NegatedSummary = DoesNotContainCollection,

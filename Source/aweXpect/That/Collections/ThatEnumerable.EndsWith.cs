@@ -155,7 +155,8 @@ public static partial class ThatEnumerable
 			IEnumerable expected,
 			string? expectedExpression,
 			bool negated)
-		=> EndsWithForEnumerableCore<object?>(subject, expected?.Cast<object?>()!, expectedExpression, negated);
+		=> EndsWithForEnumerableCore<object?>(subject, expected.NullIfDefaultImmutableArray()?.Cast<object?>()!,
+			expectedExpression, negated);
 
 	[CreateExpectationFamily("EndsWith", NegatedName = "DoesNotEndWith", GuaranteesNotNull = true,
 		Priority = -1, ExpectedType = "string?",

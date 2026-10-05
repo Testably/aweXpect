@@ -35,7 +35,7 @@ internal static class ThrowHelper
 	private static ICollection<KeyValuePair<TKey, TValue>>? EnsureDistinctKeysNamed<TKey, TValue>(
 		IEnumerable<KeyValuePair<TKey, TValue>>? entries, string? paramName)
 	{
-		if (entries is null)
+		if (entries is null || entries.IsDefaultImmutableArray())
 		{
 			return null;
 		}

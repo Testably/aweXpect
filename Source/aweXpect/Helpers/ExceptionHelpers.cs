@@ -20,6 +20,21 @@ internal static class ExceptionHelpers
 		=> ThrowIfNullNamed(parameter, negated ? "unexpected" : "expected");
 
 	/// <summary>
+	///     Throws when the <paramref name="parameter" /> is a null collection, which a default
+	///     <c>ImmutableArray&lt;T&gt;</c> is as well.
+	/// </summary>
+	public static void ThrowIfNull<T>(this IEnumerable<T>? parameter,
+		[CallerArgumentExpression(nameof(parameter))] string? paramName = null)
+		=> ThrowIfNullNamed(parameter.NullIfDefaultImmutableArray(), paramName);
+
+	/// <summary>
+	///     <see cref="ThrowIfNull{T}(IEnumerable{T}?,string?)" /> for the <paramref name="parameter" /> named after the
+	///     polarity of the expectation: the expected collection, or the unexpected one when <paramref name="negated" />.
+	/// </summary>
+	public static void ThrowIfNull<T>(this IEnumerable<T>? parameter, bool negated)
+		=> ThrowIfNullNamed(parameter.NullIfDefaultImmutableArray(), negated ? "unexpected" : "expected");
+
+	/// <summary>
 	///     Throws when the <paramref name="type" /> is null or not an exception type, as no exception could ever match it.
 	/// </summary>
 	public static void ThrowIfNotAnExceptionType(this Type? type,
@@ -58,7 +73,7 @@ internal static class ExceptionHelpers
 	public static IEnumerable<T> ToNonEmptyValues<T>(this IEnumerable<T>? parameter, bool negated)
 	{
 		string paramName = negated ? "unexpected" : "expected";
-		ThrowIfNullNamed(parameter, paramName);
+		ThrowIfNullNamed(parameter.NullIfDefaultImmutableArray(), paramName);
 		IEnumerable<T> values = MaterializingEnumerable<T>.WrapParameter(parameter!);
 		if (!values.Any())
 		{

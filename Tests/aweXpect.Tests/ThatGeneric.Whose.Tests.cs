@@ -1744,7 +1744,7 @@ public sealed partial class ThatGeneric
 			}
 
 			[Fact]
-			public async Task WhenImmutableArrayMemberAfterIsIsDefault_WithIsEqualTo_ShouldFail()
+			public async Task WhenImmutableArrayMemberAfterIsIsDefault_WithIsEqualTo_ShouldSucceed()
 			{
 				Lists subject = new();
 
@@ -1752,18 +1752,8 @@ public sealed partial class ThatGeneric
 					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Lists>()
 						.Whose(x => x.Array, a => a.IsEqualTo([1,])));
 
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that (object)subject
-					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Array are equal to collection [1,] in order,
-					             but it was ThatGeneric.Whose.NegatedTests.Lists and Array were <null>
-
-					             Actual:
-					             ThatGeneric.Whose.NegatedTests.Lists {
-					               Array = [Array did throw an InvalidOperationException: This operation cannot be performed on a default instance of ImmutableArray<T>.  Consider initializing the array, or checking the ImmutableArray<T>.IsDefault property.],
-					               Items = <null>
-					             }
-					             """);
+				await That(Act).DoesNotThrow()
+					.Because("a default ImmutableArray is not equal to a collection, like a null collection");
 			}
 #endif
 
