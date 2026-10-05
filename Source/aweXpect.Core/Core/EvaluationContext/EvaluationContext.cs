@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Core.EvaluationContext;
 
@@ -60,6 +61,11 @@ internal class EvaluationContext : IEvaluationContext
 	public EvaluationCancellation Cancellation { get; set; } = EvaluationCancellation.None;
 
 	#endregion
+
+	/// <summary>
+	///     The time system of the evaluation, with which a repeated check measures the time and waits between its checks.
+	/// </summary>
+	public ITimeSystem TimeSystem { get; set; } = RealTimeSystem.Instance;
 
 	/// <summary>
 	///     Starts the evaluation of an item or a member in the <paramref name="context" />, whose stored values are
@@ -172,6 +178,7 @@ internal class EvaluationContext : IEvaluationContext
 		EvaluationContext check = new()
 		{
 			Cancellation = Cancellation,
+			TimeSystem = TimeSystem,
 		};
 		_checks ??= [];
 		if (previous is null)
@@ -200,6 +207,7 @@ internal class EvaluationContext : IEvaluationContext
 		_attempt = new EvaluationContext()
 		{
 			Cancellation = Cancellation,
+			TimeSystem = TimeSystem,
 		};
 		return _attempt;
 	}

@@ -7,6 +7,7 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Core.TimeSystem;
 using aweXpect.Results;
 using Context = aweXpect.Core.EvaluationContext.EvaluationContext;
 
@@ -56,6 +57,21 @@ public class EvaluationContextTests
 	}
 
 	[Fact]
+	public async Task StartAttempt_ShouldKeepTheTimeSystem()
+	{
+		VirtualTimeSystem timeSystem = new();
+		Context context = new()
+		{
+			TimeSystem = timeSystem,
+		};
+
+		Context attempt = await context.StartAttempt();
+
+		await That(attempt.TimeSystem).IsSameAs(timeSystem)
+			.Because("a repeated check in another attempt measures and waits like the evaluation");
+	}
+
+	[Fact]
 	public async Task StartAttempt_ShouldReleaseTheMaterializedSourcesAndReturnAnEmptyContext()
 	{
 		Context context = new();
@@ -70,6 +86,21 @@ public class EvaluationContextTests
 			.Because("each attempt is a separate evaluation");
 		await That(attempt.TryReceive("foo", out string? _)).IsFalse()
 			.Because("another attempt starts with an empty context");
+	}
+
+	[Fact]
+	public async Task StartCheck_ShouldKeepTheTimeSystem()
+	{
+		VirtualTimeSystem timeSystem = new();
+		Context context = new()
+		{
+			TimeSystem = timeSystem,
+		};
+
+		Context check = await context.StartCheck(null);
+
+		await That(check.TimeSystem).IsSameAs(timeSystem)
+			.Because("a repeated check within another check measures and waits like the evaluation");
 	}
 
 	[Fact]
@@ -130,6 +161,14 @@ public class EvaluationContextTests
 		await That(first.Outcome).IsEqualTo(Outcome.Success);
 		await That(second.Outcome).IsEqualTo(Outcome.Success)
 			.Because("the second item must not receive the value stored for the first one");
+	}
+
+	[Fact]
+	public async Task TimeSystem_ShouldDefaultToTheRealTimeSystem()
+	{
+		Context context = new();
+
+		await That(context.TimeSystem).IsSameAs(RealTimeSystem.Instance);
 	}
 
 	[Fact]

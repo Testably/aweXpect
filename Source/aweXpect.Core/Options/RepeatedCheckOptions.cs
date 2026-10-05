@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Nodes;
+using aweXpect.Core.TimeSystem;
 using aweXpect.Customization;
 using aweXpect.Core.Helpers;
 using aweXpect.Results;
@@ -140,19 +140,20 @@ public class RepeatedCheckOptions
 	public async ValueTask<Outcome> CheckRepeatedly(Func<IEvaluationContext, ValueTask<bool>> check,
 		IEvaluationContext context)
 	{
-		long startTimestamp = Stopwatch.GetTimestamp();
 		if (!IsRepeated)
 		{
 			return await check(context) ? Outcome.Success : Outcome.Failure;
 		}
 
+		long startTimestamp = GetTimeSystem(context).GetTimestamp();
 		(bool isMet, UserCodeException? exception) = await Check(check, context);
 		if (isMet)
 		{
 			return Outcome.Success;
 		}
 
-		using Polling polling = Polling.Start(startTimestamp, Timeout, Interval, context.Cancellation);
+		using Polling polling =
+			Polling.Start(GetTimeSystem(context), startTimestamp, Timeout, Interval, context.Cancellation);
 		Core.EvaluationContext.EvaluationContext? checkContext = null;
 		while (true)
 		{
@@ -181,6 +182,14 @@ public class RepeatedCheckOptions
 			}
 		}
 	}
+
+	/// <summary>
+	///     The time system of the evaluation, or the real one for a <paramref name="context" /> of another implementation.
+	/// </summary>
+	private static ITimeSystem GetTimeSystem(IEvaluationContext context)
+		=> context is Core.EvaluationContext.EvaluationContext evaluationContext
+			? evaluationContext.TimeSystem
+			: RealTimeSystem.Instance;
 
 	/// <remarks>
 	///     A cancellation of the evaluation still aborts it, like everywhere else.

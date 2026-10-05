@@ -1,8 +1,8 @@
 using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Core.Helpers;
 
@@ -43,7 +43,8 @@ internal enum PollStep
 internal sealed class Polling : IDisposable
 {
 	/// <summary>
-	///     The largest wait that <see cref="Task.Delay(TimeSpan, CancellationToken)" /> accepts on every target framework.
+	///     The largest wait that <see cref="Task.Delay(TimeSpan, CancellationToken)" />, with which the real time system
+	///     waits, accepts on every target framework.
 	/// </summary>
 	private static readonly TimeSpan MaximumWait = TimeSpan.FromMilliseconds(int.MaxValue);
 
@@ -53,11 +54,14 @@ internal sealed class Polling : IDisposable
 	private readonly TimeSpan _interval;
 	private readonly CancellationTokenRegistration _registration;
 	private readonly long _startTimestamp;
+	private readonly ITimeSystem _timeSystem;
 	private TimeSpan? _canceledAt;
 	private bool _isLastCheck;
 
-	private Polling(long startTimestamp, TimeSpan budget, TimeSpan interval, EvaluationCancellation cancellation)
+	private Polling(ITimeSystem timeSystem, long startTimestamp, TimeSpan budget, TimeSpan interval,
+		EvaluationCancellation cancellation)
 	{
+		_timeSystem = timeSystem;
 		_startTimestamp = startTimestamp;
 		_budget = budget;
 		_interval = interval;
@@ -88,16 +92,19 @@ internal sealed class Polling : IDisposable
 	/// <summary>
 	///     Starts polling with the <paramref name="budget" />, measured from the <paramref name="startTimestamp" />.
 	/// </summary>
-	/// <param name="startTimestamp">The <see cref="Stopwatch.GetTimestamp()" /> before the first check.</param>
+	/// <param name="timeSystem">The time system that measures the time and waits between the checks.</param>
+	/// <param name="startTimestamp">
+	///     The <see cref="ITimeSystem.GetTimestamp()" /> of the <paramref name="timeSystem" /> before the first check.
+	/// </param>
 	/// <param name="budget">
 	///     The time the checks may take; <see cref="Timeout.InfiniteTimeSpan" /> or <see cref="TimeSpan.MaxValue" /> is
 	///     unlimited.
 	/// </param>
 	/// <param name="interval">The time between two checks; a non-positive interval checks again without waiting.</param>
 	/// <param name="cancellation">The cancellation of the evaluation.</param>
-	public static Polling Start(long startTimestamp, TimeSpan budget, TimeSpan interval,
+	public static Polling Start(ITimeSystem timeSystem, long startTimestamp, TimeSpan budget, TimeSpan interval,
 		EvaluationCancellation cancellation)
-		=> new(startTimestamp, budget, interval, cancellation);
+		=> new(timeSystem, startTimestamp, budget, interval, cancellation);
 
 	/// <summary>
 	///     Waits for the next check.
@@ -149,8 +156,8 @@ internal sealed class Polling : IDisposable
 	/// </summary>
 	/// <remarks>
 	///     A wait of zero still yields, so that checking without waiting does not block the thread. The wait is not
-	///     canceled by the token itself: <see cref="Task.Delay(TimeSpan, CancellationToken)" /> would register its own
-	///     callback, and the callbacks run in reverse order, so the wait could continue before the time of the
+	///     canceled by the token itself: the <see cref="ITimeSystem.Delay(TimeSpan, CancellationToken)" /> would register
+	///     its own callback, and the callbacks run in reverse order, so the wait could continue before the time of the
 	///     cancellation was recorded.
 	/// </remarks>
 	private async Task<bool> IsCanceledDuring(TimeSpan wait)
@@ -162,7 +169,7 @@ internal sealed class Polling : IDisposable
 		}
 
 		using CancellationTokenSource waitCts = new();
-		Task delay = Task.Delay(wait, waitCts.Token);
+		Task delay = _timeSystem.Delay(wait, waitCts.Token);
 		if (await Task.WhenAny(_canceled.Task, delay) != _canceled.Task)
 		{
 			return false;
@@ -172,7 +179,9 @@ internal sealed class Polling : IDisposable
 		return true;
 	}
 
-	internal static TimeSpan GetElapsedTime(long startTimestamp)
-		=> TimeSpan.FromTicks((long)((Stopwatch.GetTimestamp() - startTimestamp) *
-		                             ((double)TimeSpan.TicksPerSecond / Stopwatch.Frequency)));
+	/// <inheritdoc cref="ITimeSystem.GetTimestamp()" />
+	public long GetTimestamp() => _timeSystem.GetTimestamp();
+
+	/// <inheritdoc cref="ITimeSystem.GetElapsedTime(long)" />
+	public TimeSpan GetElapsedTime(long startTimestamp) => _timeSystem.GetElapsedTime(startTimestamp);
 }

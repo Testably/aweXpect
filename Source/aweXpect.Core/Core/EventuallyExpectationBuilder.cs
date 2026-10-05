@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
@@ -62,12 +61,13 @@ internal class EventuallyExpectationBuilder<TValue>(
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 	{
-		ConstraintResult result = await IsMetEventually(rootNode, context, timeout, cancellationToken);
+		ConstraintResult result = await IsMetEventually(rootNode, context, timeSystem, timeout, cancellationToken);
 		return result.PrependExpectationText(sb => sb.Append("eventually "));
 	}
 
 	private async Task<ConstraintResult> IsMetEventually(Node rootNode,
 		EvaluationContext.EvaluationContext context,
+		ITimeSystem timeSystem,
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 	{
@@ -88,7 +88,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 		try
 		{
 			ConstraintResult result =
-				await IsMetRepeatedly(subject, rootNode, context, retryTimeout, cancellation);
+				await IsMetRepeatedly(subject, rootNode, context, timeSystem, retryTimeout, cancellation);
 			if (result.Outcome == Outcome.Undecided && cancellation.Timeout is { } cancellationTimeout &&
 			    cancellation.Reason == CancellationReason.Timeout)
 			{
@@ -120,13 +120,15 @@ internal class EventuallyExpectationBuilder<TValue>(
 	private async Task<ConstraintResult> IsMetRepeatedly(Func<CancellationToken, Task<TValue>> subject,
 		Node rootNode,
 		EvaluationContext.EvaluationContext context,
+		ITimeSystem timeSystem,
 		TimeSpan retryTimeout,
 		EvaluationCancellation cancellation)
 	{
 		TimeSpan interval = _interval ?? Customize.aweXpect.Settings().DefaultCheckInterval.Get();
 		EvaluationContext.EvaluationContext currentContext = context;
 		CancellationToken cancellationToken = cancellation.Token;
-		using Polling polling = Polling.Start(Stopwatch.GetTimestamp(), retryTimeout, interval, cancellation);
+		using Polling polling =
+			Polling.Start(timeSystem, timeSystem.GetTimestamp(), retryTimeout, interval, cancellation);
 
 		bool isLastAttempt = false;
 		bool wasChecked = false;
@@ -195,7 +197,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 		TimeSpan? limit = GetAttemptLimit(retryTimeout, polling.Remaining, interval);
 		using CancellationTokenSource? attemptCts = CreateAttemptCancellation(limit, cancellationToken);
 		CancellationToken attemptToken = attemptCts?.Token ?? cancellationToken;
-		long startTimestamp = Stopwatch.GetTimestamp();
+		long startTimestamp = polling.GetTimestamp();
 		Task<TValue>? task = null;
 		try
 		{
@@ -259,7 +261,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 			return timeout;
 		}
 
-		if (limit > TimeSpan.Zero && Polling.GetElapsedTime(startTimestamp) >= limit)
+		if (limit > TimeSpan.Zero && polling.GetElapsedTime(startTimestamp) >= limit)
 		{
 			return retryTimeout;
 		}
