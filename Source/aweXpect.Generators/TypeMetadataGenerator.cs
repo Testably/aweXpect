@@ -1684,10 +1684,34 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				   or SpecialType.System_Single or SpecialType.System_Double or SpecialType.System_String
 				   or SpecialType.System_Decimal or SpecialType.System_DateTime ||
 			   type.ToDisplayString() is "System.DateTimeOffset" or "System.TimeSpan" or "System.Guid"
+				   or "System.DateOnly" or "System.TimeOnly"
 				   or "System.Text.StringBuilder" or "System.Numerics.BigInteger" or "System.Numerics.Complex"
-				   or "System.Half" or "System.Runtime.InteropServices.NFloat" or "System.Int128" or "System.UInt128" ||
+				   or "System.Half" or "System.Runtime.InteropServices.NFloat" or "System.Int128" or "System.UInt128"
+				   or "System.Text.Json.JsonElement" ||
 			   IsHandle(type) ||
-			   IsTask(type);
+			   IsTask(type) ||
+			   IsComparedByContent(type);
+
+		/// <remarks>
+		///     Mirrors <c>EquivalencyContent.IsComparedByContent</c> for the types that are matched on their bases: a
+		///     <c>Regex</c> and a <c>JsonNode</c>. Only System.Text.Json itself can derive from <c>JsonNode</c>, so
+		///     the comparison takes no type of another namespace for one.
+		/// </remarks>
+		private static bool IsComparedByContent(INamedTypeSymbol type)
+		{
+			bool canBeJson = type.ContainingNamespace.ToDisplayString() == "System.Text.Json.Nodes";
+			for (INamedTypeSymbol? current = type; current is not null; current = current.BaseType)
+			{
+				string name = current.ToDisplayString();
+				if (name == "System.Text.RegularExpressions.Regex" ||
+				    (canBeJson && name == "System.Text.Json.Nodes.JsonNode"))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
 
 		/// <remarks>
 		///     A task is matched on its bases too, because a <c>Task&lt;TResult&gt;</c> derives from <c>Task</c>, and
@@ -1709,7 +1733,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		/// <remarks>
 		///     A handle is matched on its bases too, because the type that reaches the comparison is a derived one:
-		///     a <c>RuntimeType</c> is not <c>typeof(Type)</c>.
+		///     a <c>RuntimeType</c> is not <c>typeof(Type)</c>. An <c>IPAddress</c> and an <c>Encoding</c> are values,
+		///     but the comparison matches them the same way.
 		/// </remarks>
 		private static bool IsHandle(INamedTypeSymbol type)
 		{
@@ -1717,7 +1742,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			{
 				if (current.ToDisplayString() is "System.Reflection.MemberInfo" or "System.Reflection.Assembly"
 				    or "System.Reflection.Module" or "System.Delegate" or "System.Uri"
-				    or "System.Globalization.CultureInfo")
+				    or "System.Globalization.CultureInfo" or "System.Net.IPAddress" or "System.Text.Encoding")
 				{
 					return true;
 				}

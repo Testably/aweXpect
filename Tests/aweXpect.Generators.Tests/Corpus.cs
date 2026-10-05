@@ -370,4 +370,108 @@ public static class Corpus
 
 		public void RaiseOwn() => Own?.Invoke();
 	}
+
+	public enum Level
+	{
+		Low,
+		High,
+	}
+
+	public delegate void Handler(int value);
+
+	public class DerivedType() : System.Reflection.TypeDelegator(typeof(int))
+	{
+		public Base? Own { get; set; }
+	}
+
+	public class DerivedAssembly : System.Reflection.Assembly
+	{
+		public Base? Own { get; set; }
+	}
+
+	public class DerivedModule : System.Reflection.Module
+	{
+		public Base? Own { get; set; }
+	}
+
+	public class DerivedUri() : Uri("https://aweXpect.com")
+	{
+		public Base? Own { get; set; }
+	}
+
+	public class DerivedCulture() : System.Globalization.CultureInfo("en")
+	{
+		public Base? Own { get; set; }
+	}
+
+	public class DerivedAddress() : System.Net.IPAddress(1L)
+	{
+		public Base? Own { get; set; }
+	}
+
+	public class DerivedEncoding : System.Text.UTF8Encoding
+	{
+		public Base? Own { get; set; }
+	}
+
+	public class DerivedRegex() : System.Text.RegularExpressions.Regex("a")
+	{
+		public Base? Own { get; set; }
+	}
+
+	public class DerivedTask() : System.Threading.Tasks.Task(() => { })
+	{
+		public Base? Own { get; set; }
+	}
+
+	public class DerivedTask<T>() : System.Threading.Tasks.Task<T>(() => default!)
+	{
+		public Base? Own { get; set; }
+	}
+
+	/// <summary>
+	///     Types that share only their simple name with a type that is compared by value.
+	/// </summary>
+	public static class Lookalikes
+	{
+		public class DateOnly
+		{
+			public int Own { get; set; }
+		}
+
+		public class IPAddress
+		{
+			public int Own { get; set; }
+		}
+
+		public class Encoding
+		{
+			public int Own { get; set; }
+		}
+
+		public class Regex
+		{
+			public int Own { get; set; }
+		}
+
+		public class JsonElement
+		{
+			public int Own { get; set; }
+		}
+
+		public class JsonNode
+		{
+			public int Own { get; set; }
+		}
+
+		public class Uri
+		{
+			public int Own { get; set; }
+		}
+
+		public class Task
+		{
+			public int Own { get; set; }
+		}
+	}
 }
