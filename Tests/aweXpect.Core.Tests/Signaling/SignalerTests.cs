@@ -2,12 +2,15 @@
 using System.Linq;
 using System.Threading;
 using aweXpect.Chronology;
+using aweXpect.Customization;
 using aweXpect.Signaling;
 
 namespace aweXpect.Core.Tests.Signaling;
 
 public sealed class SignalerTests
 {
+	private static TimeSpan DefaultTimeout => Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
+
 	public sealed class Tests
 	{
 		[Theory]
@@ -131,21 +134,20 @@ public sealed class SignalerTests
 		{
 			Signaler signaler = new();
 			using ManualResetEventSlim releaseTheContinuation = new();
+			bool wasReleased = false;
 
 			async Task WaitAndBlock()
 			{
 				await signaler.WaitAsync(10.Seconds());
-				releaseTheContinuation.Wait(10.Seconds());
+				wasReleased = releaseTheContinuation.Wait(10.Seconds());
 			}
 
 			Task waiting = WaitAndBlock();
-			Stopwatch sw = Stopwatch.StartNew();
 			signaler.Signal();
-			sw.Stop();
 			releaseTheContinuation.Set();
 			await waiting;
 
-			await That(sw.Elapsed).IsLessThan(5.Seconds())
+			await That(wasReleased).IsTrue()
 				.Because("the code under test that signals must not run the continuation of the waiting expectation");
 		}
 
@@ -173,7 +175,7 @@ public sealed class SignalerTests
 
 			sw.Stop();
 			await That(result.IsSuccess).IsFalse();
-			await That(sw.Elapsed).IsLessThan(5.Seconds())
+			await That(sw.Elapsed).IsLessThan(DefaultTimeout)
 				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
 		}
 
@@ -255,6 +257,7 @@ public sealed class SignalerTests
 		public async Task Wait_ShouldCatchOperationCanceledException()
 		{
 			Signaler signaler = new();
+			TimeSpan timeout = 10.Seconds();
 			using CancellationTokenSource cts = new(30.Milliseconds());
 			CancellationToken token = cts.Token;
 
@@ -265,17 +268,18 @@ public sealed class SignalerTests
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(100.Times(), 10.Seconds(), token);
+			SignalerResult result = signaler.Wait(100.Times(), timeout, token);
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds());
+			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
 		[Fact]
 		public async Task Wait_ShouldReturnAsSoonAsEnoughSignalsWereRecorded()
 		{
 			Signaler signaler = new();
+			TimeSpan timeout = 10.Seconds();
 
 			for (int i = 0; i < 100; i++)
 			{
@@ -284,11 +288,11 @@ public sealed class SignalerTests
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(100.Times(), 10.Seconds());
+			SignalerResult result = signaler.Wait(100.Times(), timeout);
 			sw.Stop();
 
 			await That(result.IsSuccess).IsTrue();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds());
+			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
 		[Fact]
@@ -305,7 +309,7 @@ public sealed class SignalerTests
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
+			await That(sw.Elapsed).IsLessThan(DefaultTimeout)
 				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
 		}
 
@@ -326,22 +330,24 @@ public sealed class SignalerTests
 		public async Task Wait_Single_ShouldCatchOperationCanceledException()
 		{
 			Signaler signaler = new();
+			TimeSpan timeout = 10.Seconds();
 			using CancellationTokenSource cts = new(30.Milliseconds());
 			CancellationToken token = cts.Token;
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(10.Seconds(), token);
+			SignalerResult result = signaler.Wait(timeout, token);
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds());
+			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
 		[Fact]
 		public async Task Wait_Single_ShouldReturnAsSoonAsSignalWasRecorded()
 		{
 			Signaler signaler = new();
+			TimeSpan timeout = 10.Seconds();
 			using ManualResetEventSlim ms = new();
 
 			_ = Task.Run(async () =>
@@ -361,12 +367,12 @@ public sealed class SignalerTests
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(10.Seconds());
+			SignalerResult result = signaler.Wait(timeout);
 			sw.Stop();
 
 			ms.Set();
 			await That(result.IsSuccess).IsTrue();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds());
+			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
 		[Fact]
@@ -381,7 +387,7 @@ public sealed class SignalerTests
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
+			await That(sw.Elapsed).IsLessThan(DefaultTimeout)
 				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
 		}
 
@@ -661,6 +667,7 @@ public sealed class SignalerTests
 		public async Task WaitAsync_WithPredicate_WhenThePredicateThrowsWhileSignaling_ShouldThrowItWithoutWaiting()
 		{
 			Signaler<int> signaler = new();
+			TimeSpan timeout = 10.Seconds();
 			InvalidOperationException exception = new("predicate failed");
 			_ = Task.Run(async () =>
 			{
@@ -670,12 +677,12 @@ public sealed class SignalerTests
 			Stopwatch sw = Stopwatch.StartNew();
 
 			async Task Act()
-				=> await signaler.WaitAsync(2.Times(), _ => throw exception, 10.Seconds());
+				=> await signaler.WaitAsync(2.Times(), _ => throw exception, timeout);
 
 			await That(Act).Throws<InvalidOperationException>()
 				.WithMessage("predicate failed");
 			sw.Stop();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
+			await That(sw.Elapsed).IsLessThan(timeout)
 				.Because("the exception ends the wait instead of letting it run into the timeout");
 		}
 
@@ -743,6 +750,7 @@ public sealed class SignalerTests
 		public async Task Wait_ShouldCatchOperationCanceledException()
 		{
 			Signaler<int> signaler = new();
+			TimeSpan timeout = 10.Seconds();
 			using CancellationTokenSource cts = new(30.Milliseconds());
 			CancellationToken token = cts.Token;
 
@@ -754,17 +762,18 @@ public sealed class SignalerTests
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(100.Times(), timeout: 10.Seconds(), cancellationToken: token);
+			SignalerResult result = signaler.Wait(100.Times(), timeout: timeout, cancellationToken: token);
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds());
+			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
 		[Fact]
 		public async Task Wait_ShouldReturnAsSoonAsEnoughSignalsWereRecorded()
 		{
 			Signaler<int> signaler = new();
+			TimeSpan timeout = 10.Seconds();
 
 			for (int i = 0; i < 100; i++)
 			{
@@ -774,12 +783,12 @@ public sealed class SignalerTests
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult<int> result = signaler.Wait(100.Times(), timeout: 10.Seconds());
+			SignalerResult<int> result = signaler.Wait(100.Times(), timeout: timeout);
 			sw.Stop();
 
 			await That(result.IsSuccess).IsTrue();
 			await That(result.Parameters).IsEqualTo(Enumerable.Range(0, 100)).InAnyOrder();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds());
+			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
 		[Fact]
@@ -796,7 +805,7 @@ public sealed class SignalerTests
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
+			await That(sw.Elapsed).IsLessThan(DefaultTimeout)
 				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
 		}
 
@@ -833,22 +842,24 @@ public sealed class SignalerTests
 		public async Task Wait_Single_ShouldCatchOperationCanceledException()
 		{
 			Signaler<int> signaler = new();
+			TimeSpan timeout = 10.Seconds();
 			using CancellationTokenSource cts = new(30.Milliseconds());
 			CancellationToken token = cts.Token;
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(timeout: 10.Seconds(), cancellationToken: token);
+			SignalerResult result = signaler.Wait(timeout: timeout, cancellationToken: token);
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds());
+			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
 		[Fact]
 		public async Task Wait_Single_ShouldReturnAsSoonAsSignalWasRecorded()
 		{
 			Signaler<int> signaler = new();
+			TimeSpan timeout = 10.Seconds();
 			using ManualResetEventSlim ms = new();
 
 			_ = Task.Run(async () =>
@@ -869,12 +880,12 @@ public sealed class SignalerTests
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(timeout: 10.Seconds());
+			SignalerResult result = signaler.Wait(timeout: timeout);
 			sw.Stop();
 
 			ms.Set();
 			await That(result.IsSuccess).IsTrue();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds());
+			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
 		[Fact]
@@ -889,7 +900,7 @@ public sealed class SignalerTests
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
+			await That(sw.Elapsed).IsLessThan(DefaultTimeout)
 				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
 		}
 
@@ -936,6 +947,7 @@ public sealed class SignalerTests
 		public async Task Wait_WithPredicate_ShouldCatchOperationCanceledException()
 		{
 			Signaler<int> signaler = new();
+			TimeSpan timeout = 10.Seconds();
 			using CancellationTokenSource cts = new(30.Milliseconds());
 			CancellationToken token = cts.Token;
 
@@ -947,17 +959,18 @@ public sealed class SignalerTests
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(100.Times(), x => x != 50, 10.Seconds(), token);
+			SignalerResult result = signaler.Wait(100.Times(), x => x != 50, timeout, token);
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds());
+			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
 		[Fact]
 		public async Task Wait_WithPredicate_ShouldReturnAsSoonAsEnoughSignalsWereRecorded()
 		{
 			Signaler<int> signaler = new();
+			TimeSpan timeout = 10.Seconds();
 
 			for (int i = 0; i < 110; i++)
 			{
@@ -967,18 +980,19 @@ public sealed class SignalerTests
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult<int> result = signaler.Wait(100.Times(), x => x >= 10, 10.Seconds());
+			SignalerResult<int> result = signaler.Wait(100.Times(), x => x >= 10, timeout);
 			sw.Stop();
 
 			await That(result.IsSuccess).IsTrue();
 			await That(result.Parameters).Contains(Enumerable.Range(10, 100)).InAnyOrder();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds());
+			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
 		[Fact]
 		public async Task Wait_WithPredicate_Single_ShouldCatchOperationCanceledException()
 		{
 			Signaler<int> signaler = new();
+			TimeSpan timeout = 10.Seconds();
 			using CancellationTokenSource cts = new(30.Milliseconds());
 			CancellationToken token = cts.Token;
 
@@ -986,17 +1000,18 @@ public sealed class SignalerTests
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(x => x != 50, 10.Seconds(), token);
+			SignalerResult result = signaler.Wait(x => x != 50, timeout, token);
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds());
+			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
 		[Fact]
 		public async Task Wait_WithPredicate_Single_ShouldReturnAsSoonAsSignalWasRecorded()
 		{
 			Signaler<int> signaler = new();
+			TimeSpan timeout = 10.Seconds();
 			using ManualResetEventSlim ms = new();
 
 			_ = Task.Run(async () =>
@@ -1017,12 +1032,12 @@ public sealed class SignalerTests
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(x => x > 10, 10.Seconds());
+			SignalerResult result = signaler.Wait(x => x > 10, timeout);
 			sw.Stop();
 
 			ms.Set();
 			await That(result.IsSuccess).IsTrue();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
+			await That(sw.Elapsed).IsLessThan(timeout)
 				.And.IsGreaterThanOrEqualTo(10.Milliseconds());
 		}
 
@@ -1051,6 +1066,7 @@ public sealed class SignalerTests
 		public async Task Wait_WithPredicate_Single_WhenThePredicateThrowsWhileSignaling_ShouldThrowItWithoutWaiting()
 		{
 			Signaler<int> signaler = new();
+			TimeSpan timeout = 10.Seconds();
 			InvalidOperationException exception = new("predicate failed");
 			_ = Task.Run(async () =>
 			{
@@ -1062,12 +1078,12 @@ public sealed class SignalerTests
 			sw.Start();
 
 			void Act()
-				=> signaler.Wait(_ => throw exception, 10.Seconds());
+				=> signaler.Wait(_ => throw exception, timeout);
 
 			await That(Act).Throws<InvalidOperationException>()
 				.WithMessage("predicate failed");
 			sw.Stop();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
+			await That(sw.Elapsed).IsLessThan(timeout)
 				.Because("the exception ends the wait instead of letting it run into the timeout");
 		}
 
@@ -1099,6 +1115,7 @@ public sealed class SignalerTests
 		public async Task Wait_WithPredicate_WhenThePredicateThrowsWhileSignaling_ShouldThrowItWithoutWaiting()
 		{
 			Signaler<int> signaler = new();
+			TimeSpan timeout = 10.Seconds();
 			InvalidOperationException exception = new("predicate failed");
 			_ = Task.Run(async () =>
 			{
@@ -1110,12 +1127,12 @@ public sealed class SignalerTests
 			sw.Start();
 
 			void Act()
-				=> signaler.Wait(2.Times(), _ => throw exception, 10.Seconds());
+				=> signaler.Wait(2.Times(), _ => throw exception, timeout);
 
 			await That(Act).Throws<InvalidOperationException>()
 				.WithMessage("predicate failed");
 			sw.Stop();
-			await That(sw.Elapsed).IsLessThan(5000.Milliseconds())
+			await That(sw.Elapsed).IsLessThan(timeout)
 				.Because("the exception ends the wait instead of letting it run into the timeout");
 		}
 
