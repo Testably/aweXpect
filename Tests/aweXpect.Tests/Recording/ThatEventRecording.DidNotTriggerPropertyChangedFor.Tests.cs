@@ -197,6 +197,168 @@ public sealed partial class ThatEventRecording
 			}
 
 			[Fact]
+			public async Task WhenExpressionIsAsCastOfPropertyAccess_ShouldUsePropertyName()
+			{
+				PropertyChangedBaseClass sut = new();
+				IEventRecording<PropertyChangedBaseClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(nameof(PropertyChangedBaseClass.Name));
+
+				async Task Act() =>
+					await That(recording).DidNotTriggerPropertyChangedFor(x => x.Name as object);
+
+				await That(Act).Throws<XunitException>()
+					.Because("a cast of the property value still names the property");
+			}
+
+			[Fact]
+			public async Task WhenExpressionIsCheckedConversionOfPropertyAccess_ShouldUsePropertyName()
+			{
+				PropertyChangedWithMembersClass sut = new();
+				IEventRecording<PropertyChangedWithMembersClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(nameof(PropertyChangedWithMembersClass.MyValue));
+
+				async Task Act() =>
+					await That(recording).DidNotTriggerPropertyChangedFor(x => checked((long)x.MyValue));
+
+				await That(Act).Throws<XunitException>()
+					.Because("a conversion in a checked context still wraps a property access");
+			}
+
+			[Fact]
+			public async Task WhenExpressionIsConvertedPropertyAccess_ShouldUsePropertyName()
+			{
+				PropertyChangedWithMembersClass sut = new();
+				IEventRecording<PropertyChangedWithMembersClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(nameof(PropertyChangedWithMembersClass.MyValue));
+
+				async Task Act() =>
+					await That(recording).DidNotTriggerPropertyChangedFor(x => (object)x.MyValue);
+
+				await That(Act).Throws<XunitException>()
+					.Because("the conversion still wraps a property access");
+			}
+
+			[Fact]
+			public async Task WhenExpressionIsDowncastOfParameter_ShouldUsePropertyName()
+			{
+				PropertyChangedBaseClass sut = new PropertyChangedDerivedClass();
+				IEventRecording<PropertyChangedBaseClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(nameof(PropertyChangedDerivedClass.Extra));
+
+				async Task Act() =>
+					await That(recording).DidNotTriggerPropertyChangedFor(x => ((PropertyChangedDerivedClass)x).Extra);
+
+				await That(Act).Throws<XunitException>()
+					.Because("a cast of the subject is still the subject");
+			}
+
+			[Fact]
+			public async Task WhenExpressionIsForeignPropertyAccess_ShouldThrowArgumentException()
+			{
+				PropertyChangedWithMembersClass sut = new();
+				IEventRecording<PropertyChangedWithMembersClass> recording = sut.Record().Events();
+				PropertyChangedWithMembersClass other = new();
+
+				sut.NotifyPropertyChanged(nameof(PropertyChangedWithMembersClass.MyValue));
+
+				async Task Act() =>
+					await That(recording).DidNotTriggerPropertyChangedFor(_ => other.MyValue);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("propertyExpression").And
+					.WithMessage("The 'propertyExpression' must refer to a property, but it was value(")
+					.AsPrefix()
+					.Because("a property of another object is no property of the subject");
+			}
+
+			[Fact]
+			public async Task WhenExpressionIsImplicitlyBoxedPropertyAccess_ShouldUsePropertyName()
+			{
+				PropertyChangedWithMembersClass sut = new();
+				IEventRecording<PropertyChangedWithMembersClass> recording = sut.Record().Events();
+				Expression<Func<PropertyChangedWithMembersClass, object>> propertyExpression = x => x.MyValue;
+
+				sut.NotifyPropertyChanged(nameof(PropertyChangedWithMembersClass.MyValue));
+
+				async Task Act() =>
+					await That(recording).DidNotTriggerPropertyChangedFor(propertyExpression);
+
+				await That(Act).Throws<XunitException>()
+					.Because("the compiler-inserted boxing still wraps a property access");
+			}
+
+			[Fact]
+			public async Task WhenExpressionIsImplicitlyConvertedPropertyAccess_ShouldUsePropertyName()
+			{
+				PropertyChangedWithMembersClass sut = new();
+				IEventRecording<PropertyChangedWithMembersClass> recording = sut.Record().Events();
+				Expression<Func<PropertyChangedWithMembersClass, decimal>> propertyExpression = x => x.MyValue;
+
+				sut.NotifyPropertyChanged(nameof(PropertyChangedWithMembersClass.MyValue));
+
+				async Task Act() =>
+					await That(recording).DidNotTriggerPropertyChangedFor(propertyExpression);
+
+				await That(Act).Throws<XunitException>()
+					.Because("the compiler-inserted conversion operator still wraps a property access");
+			}
+
+			[Fact]
+			public async Task WhenExpressionIsInheritedPropertyAccess_ShouldUsePropertyName()
+			{
+				PropertyChangedDerivedClass sut = new();
+				IEventRecording<PropertyChangedDerivedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(nameof(PropertyChangedBaseClass.Name));
+
+				async Task Act() =>
+					await That(recording).DidNotTriggerPropertyChangedFor(x => x.Name);
+
+				await That(Act).Throws<XunitException>()
+					.Because("a property of a base class is a property of the subject");
+			}
+
+			[Fact]
+			public async Task WhenExpressionIsNegatedPropertyAccess_ShouldThrowArgumentException()
+			{
+				PropertyChangedBaseClass sut = new();
+				IEventRecording<PropertyChangedBaseClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(nameof(PropertyChangedBaseClass.IsActive));
+
+				async Task Act() =>
+					await That(recording).DidNotTriggerPropertyChangedFor(x => !x.IsActive);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("propertyExpression").And
+					.WithMessage("The 'propertyExpression' must refer to a property, but it was Not(x.IsActive).")
+					.AsPrefix()
+					.Because("an operator computes a new value and does not name a property");
+			}
+
+			[Fact]
+			public async Task WhenExpressionIsNestedPropertyAccess_ShouldThrowArgumentException()
+			{
+				PropertyChangedWithMembersClass sut = new();
+				IEventRecording<PropertyChangedWithMembersClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(nameof(PropertyChangedWithMembersClass.MyValue));
+
+				async Task Act() =>
+					await That(recording).DidNotTriggerPropertyChangedFor(x => x.Inner!.MyValue);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("propertyExpression").And
+					.WithMessage("The 'propertyExpression' must refer to a property, but it was x.Inner.MyValue.")
+					.AsPrefix()
+					.Because("the subject does not report the changes of a property of another object");
+			}
+
+			[Fact]
 			public async Task WhenExpressionIsNull_ShouldThrowArgumentNullException()
 			{
 				PropertyChangedWithMembersClass sut = new();
@@ -230,6 +392,72 @@ public sealed partial class ThatEventRecording
 			}
 
 			[Fact]
+			public async Task WhenExpressionIsStaticPropertyAccess_ShouldThrowArgumentException()
+			{
+				PropertyChangedWithMembersClass sut = new();
+				IEventRecording<PropertyChangedWithMembersClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(nameof(DateTime.Now));
+
+				async Task Act() =>
+					await That(recording).DidNotTriggerPropertyChangedFor(_ => DateTime.Now);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("propertyExpression").And
+					.WithMessage("The 'propertyExpression' must refer to a property, but it was DateTime.Now.")
+					.AsPrefix()
+					.Because("a static property is no property of the subject");
+			}
+
+			[Fact]
+			public async Task WhenExpressionIsUserDefinedConversionOfParameter_ShouldThrowArgumentException()
+			{
+				PropertyChangedBaseClass sut = new();
+				IEventRecording<PropertyChangedBaseClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(nameof(PropertyChangedConversionTarget.Extra));
+
+				async Task Act() =>
+					await That(recording).DidNotTriggerPropertyChangedFor(x => ((PropertyChangedConversionTarget)x).Extra);
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("propertyExpression").And
+					.WithMessage("The 'propertyExpression' must refer to a property, but it was Convert(x")
+					.AsPrefix()
+					.Because("a conversion operator creates another object than the subject");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsGenericTypeParameter_ShouldUsePropertyName()
+			{
+				PropertyChangedBaseClass sut = new();
+				IEventRecording<PropertyChangedBaseClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(nameof(PropertyChangedBaseClass.Name));
+
+				async Task Act() =>
+					await ForName(recording);
+
+				await That(Act).Throws<XunitException>()
+					.Because("the compiler-inserted cast to the constraint is still the subject");
+			}
+
+			[Fact]
+			public async Task WhenSubjectIsInterface_ShouldUsePropertyName()
+			{
+				IPropertyChangedWithName sut = new PropertyChangedBaseClass();
+				IEventRecording<IPropertyChangedWithName> recording = sut.Record().Events();
+
+				((PropertyChangedBaseClass)sut).NotifyPropertyChanged(nameof(IPropertyChangedWithName.Name));
+
+				async Task Act() =>
+					await That(recording).DidNotTriggerPropertyChangedFor(x => x.Name);
+
+				await That(Act).Throws<XunitException>()
+					.Because("a property of the interface is a property of the subject");
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEventRecording<PropertyChangedClass>? subject = null;
@@ -244,6 +472,10 @@ public sealed partial class ThatEventRecording
 					             but it was <null>
 					             """);
 			}
+
+			private static async Task ForName<T>(IEventRecording<T> recording)
+				where T : IPropertyChangedWithName
+				=> await That(recording).DidNotTriggerPropertyChangedFor(x => x.Name);
 		}
 
 		public sealed class NegatedTests

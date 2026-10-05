@@ -71,6 +71,34 @@ public sealed partial class ThatEventRecording
 #pragma warning restore CS0067 // Event is never used
 	}
 
+	private interface IPropertyChangedWithName : INotifyPropertyChanged
+	{
+		string? Name { get; }
+	}
+
+	private class PropertyChangedBaseClass : IPropertyChangedWithName
+	{
+		public bool IsActive { get; set; }
+		public event PropertyChangedEventHandler? PropertyChanged;
+		public string? Name { get; set; }
+
+		public void NotifyPropertyChanged(string? propertyName)
+			=> PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+	}
+
+	private sealed class PropertyChangedDerivedClass : PropertyChangedBaseClass
+	{
+		public int Extra { get; set; }
+	}
+
+	private sealed class PropertyChangedConversionTarget
+	{
+		public int Extra { get; set; }
+
+		public static explicit operator PropertyChangedConversionTarget(PropertyChangedBaseClass _)
+			=> new();
+	}
+
 	private sealed class PropertyChangedClass : INotifyPropertyChanged
 	{
 		public int MyValue { get; set; }
