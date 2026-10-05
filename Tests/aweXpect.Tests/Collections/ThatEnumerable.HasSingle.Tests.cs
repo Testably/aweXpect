@@ -58,6 +58,54 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Fact]
+			public async Task WhenCombinedAfterContains_AndItemTypeIsObject_ShouldReturnSingleItem()
+			{
+				object item = new();
+				IEnumerable<object> subject = ToEnumerable(item);
+
+				object result = await That(subject).Contains(item).And.HasSingle();
+
+				await That(result).IsSameAs(item)
+					.Because("the collection itself is also an object");
+			}
+
+			[Fact]
+			public async Task WhenCombinedAfterIsNotEmpty_AndItemTypeIsEnumerable_ShouldReturnSingleItem()
+			{
+				IEnumerable<object> item = ToEnumerable<object>(1, 2);
+				IEnumerable<IEnumerable<object>> subject = ToEnumerable(item);
+
+				IEnumerable<object> result = await That(subject).IsNotEmpty().And.HasSingle();
+
+				await That(result).IsSameAs(item)
+					.Because("the collection itself is also an IEnumerable<object>");
+			}
+
+			[Fact]
+			public async Task WhenCombinedAfterIsNotEmpty_AndItemTypeIsObject_ShouldReturnSingleItem()
+			{
+				object item = new();
+				IEnumerable<object> subject = ToEnumerable(item);
+
+				object result = await That(subject).IsNotEmpty().And.HasSingle();
+
+				await That(result).IsSameAs(item)
+					.Because("the collection itself is also an object");
+			}
+
+			[Fact]
+			public async Task WhenCombinedAfterOr_AndItemTypeIsObject_ShouldReturnSingleItem()
+			{
+				object item = new();
+				IEnumerable<object> subject = ToEnumerable(item);
+
+				object result = await That(subject).IsEmpty().Or.HasSingle();
+
+				await That(result).IsSameAs(item)
+					.Because("the collection itself is also an object");
+			}
+
+			[Fact]
 			public async Task WhenEnumerableContainsMoreThanOneElement_ShouldFail()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -760,6 +808,18 @@ public sealed partial class ThatEnumerable
 					             Collection:
 					             [3]
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenAfterAnd_AndItemTypeIsObject_ShouldContinueFromTheSingleItem()
+			{
+				object item = new();
+				IEnumerable<object> subject = ToEnumerable(item);
+
+				object? result = await That(subject).IsNotEmpty().And.HasSingle().Which.IsSameAs(item);
+
+				await That(result).IsSameAs(item)
+					.Because("the collection itself is also an object");
 			}
 
 			[Fact]

@@ -67,6 +67,18 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Fact]
+			public async Task WhenCombinedAfterIsNotEmpty_AndItemTypeIsObject_ShouldReturnSingleItem()
+			{
+				object item = new();
+				IAsyncEnumerable<object> subject = ToAsyncEnumerable(item);
+
+				object result = await That(subject).IsNotEmpty().And.HasSingle();
+
+				await That(result).IsSameAs(item)
+					.Because("the collection itself is also an object");
+			}
+
+			[Fact]
 			public async Task WhenItemTypeIsAsyncEnumerable_ShouldReturnSingleItem()
 			{
 				IAsyncEnumerable<object> item = ToAsyncEnumerable<object>(1, 2);
