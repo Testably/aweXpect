@@ -59,12 +59,12 @@ public sealed partial class ThatDelegateTests
 			Func<Task<int>> sut = FaultWithSeveralExceptions;
 
 			async Task Act()
-				=> await That(sut).Eventually().WithinTwoAttempts(5.Seconds()).IsEqualTo(1);
+				=> await That(sut).Eventually().OnVirtualTime().Within(50.Milliseconds()).IsEqualTo(1);
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that sut
-				             eventually is equal to 1 within 0:05,
+				             eventually is equal to 1 within 0:00.050,
 				             but it did throw an InvalidOperationException:
 				               A
 

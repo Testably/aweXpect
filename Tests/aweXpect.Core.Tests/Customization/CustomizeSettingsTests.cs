@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Threading;
 using aweXpect.Chronology;
+using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 using aweXpect.Signaling;
 
@@ -46,23 +47,20 @@ public sealed class CustomizeSettingsTests
 	public async Task DefaultEventuallyTimeout_ShouldBeUsedInEventually()
 	{
 		await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(30.Seconds());
-		Stopwatch stopwatch = new();
+		VirtualTimeSystem time = new();
 		using (IDisposable __ = Customize.aweXpect.Settings().DefaultEventuallyTimeout.Set(LowTimeout))
 		{
 			await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(LowTimeout);
-			stopwatch.Start();
-			async Task Act() => await That(() => 1).Eventually().IsEqualTo(2);
+			async Task Act() => await That(() => 1).Eventually().OnVirtualTime(time).IsEqualTo(2);
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that () => 1
 				             eventually is equal to 2 within 0:00.100,
 				             but it was 1, which differs by -1
 				             """);
-			stopwatch.Stop();
 		}
 
-		await That(stopwatch.Elapsed).IsGreaterThanOrEqualTo(LowTimeout).Within(50.Milliseconds()).And
-			.IsLessThan(10.Seconds());
+		await That(time.Now).IsEqualTo(LowTimeout);
 		await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(30.Seconds());
 	}
 

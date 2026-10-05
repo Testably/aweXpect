@@ -126,7 +126,7 @@ public sealed partial class PropertyResultTests
 			int calls = 0;
 			Func<int> subject = () => 1;
 			PropertyResult.Long<int> sut = new(
-				That(subject).Eventually().WithinTwoAttempts(5.Seconds()),
+				That(subject).Eventually().OnVirtualTime().Within(1.Seconds()).CheckEvery(10.Milliseconds()),
 				_ => calls++ == 0 ? throw new InvalidOperationException("not ready") : 41L,
 				"long value");
 
@@ -136,7 +136,7 @@ public sealed partial class PropertyResultTests
 			XunitException exception = await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             eventually has long value equal to 42 within 0:05,
+				             eventually has long value equal to 42 within 0:01,
 				             but it had long value 41
 				             """);
 			await That(exception.InnerException).IsNull()

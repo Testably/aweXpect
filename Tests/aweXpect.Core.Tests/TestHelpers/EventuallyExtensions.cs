@@ -5,14 +5,16 @@ namespace aweXpect.Core.Tests.TestHelpers;
 internal static class EventuallyExtensions
 {
 	/// <summary>
-	///     Retries once: the subject is evaluated at once and again when the <paramref name="timeout" /> is used up.
+	///     Lets the attempts measure the time and wait on the virtual clock of the <paramref name="timeSystem" />, or
+	///     of a new one.
 	/// </summary>
 	/// <remarks>
-	///     An attempt that takes longer than its limit is reported as not finished, whatever it observed. The limit is
-	///     the remaining timeout, but at least one check interval, so with a short interval the last attempt, which is
-	///     made when the timeout is used up, only has that interval. With the timeout as interval both attempts have the
-	///     whole timeout, which leaves a busy machine enough time for a subject that returns at once.
+	///     See <see cref="VirtualTimeSystem" /> for the subjects that still depend on real time.
 	/// </remarks>
-	public static EventuallySubject<T> WithinTwoAttempts<T>(this EventuallySubject<T> subject, TimeSpan timeout)
-		=> subject.Within(timeout).CheckEvery(timeout);
+	public static EventuallySubject<T> OnVirtualTime<T>(this EventuallySubject<T> subject,
+		VirtualTimeSystem? timeSystem = null)
+	{
+		((IExpectThat<T>)subject).ExpectationBuilder.UseTimeSystem(timeSystem ?? new VirtualTimeSystem());
+		return subject;
+	}
 }
