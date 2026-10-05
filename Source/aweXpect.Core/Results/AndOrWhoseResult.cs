@@ -123,7 +123,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 	public class AdditionalAndOrWhoseResult(
 		ExpectationBuilder expectationBuilder,
 		TThat returnValue)
-		: AndOrResult<TType, TThat, TSelf>(expectationBuilder, returnValue)
+		: AndOrResult<TType, TThat, AdditionalAndOrWhoseResult>(expectationBuilder, returnValue)
 	{
 		private readonly TThat _returnValue = returnValue;
 

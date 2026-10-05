@@ -1,4 +1,6 @@
 ﻿using System.Text;
+using System.Threading;
+using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
 using aweXpect.Core.Tests.TestHelpers;
@@ -158,6 +160,25 @@ public class AndOrWhoseResultTests
 			             Expected that sut
 			             is of type AndOrWhoseResultTests.MyClass whose Value2 is False and whose GetValue1Async() is True,
 			             but GetValue1Async() was False
+			             """);
+	}
+
+	[Fact]
+	public async Task AndWhose_WithBecause_ShouldIncludeTheReason()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value2, f => f.IsFalse())
+				.AndWhose(f => f.Value1, f => f.IsTrue())
+				.Because("we want to test the reason");
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that sut
+			             is of type AndOrWhoseResultTests.MyClass whose Value2 is False and whose Value1 is True, because we want to test the reason,
+			             but Value1 was False
 			             """);
 	}
 
@@ -463,6 +484,74 @@ public class AndOrWhoseResultTests
 	}
 
 	[Fact]
+	public async Task Whose_WithBecause_ShouldAllowAndWhoseAndKeepTheReasonLast()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value2, f => f.IsFalse())
+				.Because("we want to test the reason")
+				.AndWhose(f => f.Value1, f => f.IsTrue());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that sut
+			             is of type AndOrWhoseResultTests.MyClass whose Value2 is False and whose Value1 is True, because we want to test the reason,
+			             but Value1 was False
+			             """);
+	}
+
+	[Fact]
+	public async Task Whose_WithBecause_ShouldIncludeTheReason()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value1, f => f.IsTrue())
+				.Because("we want to test the reason");
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that sut
+			             is of type AndOrWhoseResultTests.MyClass whose Value1 is True, because we want to test the reason,
+			             but Value1 was False
+			             """);
+	}
+
+	[Fact]
+	public async Task Whose_WithBecauseTask_ShouldIncludeTheReason()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.Value1, f => f.IsTrue())
+				.Because(Task.FromResult<string?>("we want to test the reason"));
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that sut
+			             is of type AndOrWhoseResultTests.MyClass whose Value1 is True, because we want to test the reason,
+			             but Value1 was False
+			             """);
+	}
+
+	[Fact]
+	public async Task Whose_WithCancellation_WhenMet_ShouldReturnTheValue()
+	{
+		MyClass sut = new();
+		using CancellationTokenSource cts = new();
+
+		MyClass result = await That(sut).Is<MyClass>()
+			.Whose(f => f.Value1, f => f.IsFalse())
+			.WithCancellation(cts.Token);
+
+		await That(result).IsSameAs(sut);
+	}
+
+	[Fact]
 	public async Task Whose_WithCast_ShouldKeepWholeSelectorBody()
 	{
 		MyClass sut = new();
@@ -567,6 +656,26 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
+	[Fact]
+	public async Task Whose_WithTimeout_WhenAsyncMemberDoesNotFinish_ShouldFail()
+	{
+		MyClass sut = new();
+
+		async Task Act()
+			=> await That(sut).Is<MyClass>()
+				.Whose(f => f.NeverCompletesAsync(), f => f.IsTrue())
+				.WithTimeout(50.Milliseconds());
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that sut
+			             is of type AndOrWhoseResultTests.MyClass whose NeverCompletesAsync() is True,
+			             but it did not finish within 0:00.050
+			             """)
+			.And.WithInner<TimeoutException>(inner
+				=> inner.HasMessage("The operation did not finish within 0:00.050."));
+	}
+
 	private static AndOrWhoseResult<int, IThat<string?>> IsNumeric(IThat<string?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 			=> new IsNumericConstraint(it, grammars)), subject);
@@ -618,10 +727,14 @@ public class AndOrWhoseResultTests
 
 	private sealed class MyClass
 	{
+		private readonly TaskCompletionSource<bool> _neverCompleted = new();
+
 		public bool Value1 { get; set; }
 		public bool Value2 { get; set; }
 
 		public Task<bool> GetValue1Async() => Task.FromResult(Value1);
+
+		public Task<bool> NeverCompletesAsync() => _neverCompleted.Task;
 	}
 
 	private sealed class ThrowingClass(string message)
