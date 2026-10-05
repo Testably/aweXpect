@@ -253,8 +253,8 @@ internal class ExpectationNode : Node
 		=> (_reasons ??= []).AddRange(reasons);
 
 	/// <remarks>
-	///     When only the expectation text is evaluated, the reasons that must be awaited are resolved, so that
-	///     <see cref="AppendExpectation" /> includes them.
+	///     When only the expectation text is evaluated, the reasons that must be awaited are resolved at the latest
+	///     when the evaluation fails, so that <see cref="AppendExpectation" /> includes them.
 	///     <para />
 	///     A <see cref="ValueTask{TResult}" />, because most nodes have no reasons, and then neither a state machine is
 	///     started nor anything is allocated.

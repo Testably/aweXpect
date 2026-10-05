@@ -105,7 +105,12 @@ public sealed class ManualExpectationBuilder<TValue>(
 			result = await GetRootNode().IsMetBy(value, context, cancellationToken);
 		}
 
-		if (result.Outcome != Outcome.Success)
+		if (context is ExpectationTextEvaluationContext { Evaluation: { } evaluation, })
+		{
+			// An outer combination can still meet the expectation, and a met expectation does not wait for a reason.
+			ResolveReasonsOnFailureOf(evaluation);
+		}
+		else if (result.Outcome != Outcome.Success)
 		{
 			await ResolveReasons();
 		}

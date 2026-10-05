@@ -20,6 +20,11 @@ internal sealed class ExpectationTextEvaluationContext : IEvaluationContext
 		_inner = inner;
 	}
 
+	/// <summary>
+	///     The evaluation whose expectation text is built, or <see langword="null" /> when there is none.
+	/// </summary>
+	public EvaluationContext? Evaluation => _inner as EvaluationContext;
+
 	/// <inheritdoc />
 	public void Store<T>(string key, T value)
 		=> _inner?.Store(key, value);

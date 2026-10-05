@@ -68,11 +68,17 @@ internal sealed class AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 	/// <remarks>
 	///     An outer negation or combination can still fail a met member, so the message is appended to a met
 	///     <paramref name="result" /> as well, and the reason is resolved when the evaluation in the
-	///     <paramref name="context" /> fails.
+	///     <paramref name="context" /> fails.<br />
+	///     The same holds for a member that is only evaluated for its expectation text, as an outer combination can
+	///     still meet the expectation.
 	/// </remarks>
 	public async ValueTask<ConstraintResult> ApplyToMember(ConstraintResult result, IEvaluationContext context)
 	{
-		if (result.Outcome != Outcome.Success || context is ExpectationTextEvaluationContext)
+		if (context is ExpectationTextEvaluationContext { Evaluation: { } evaluation, })
+		{
+			ResolveOnFailureOf(evaluation);
+		}
+		else if (result.Outcome != Outcome.Success || context is ExpectationTextEvaluationContext)
 		{
 			await Resolve();
 		}
