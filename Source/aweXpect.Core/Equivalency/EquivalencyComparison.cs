@@ -95,18 +95,51 @@ public static partial class EquivalencyComparison
 
 	private sealed class EquivalencyContext(EquivalencyOptions equivalencyOptions)
 	{
-		private HashSet<ComparedPair>? _comparedPairs;
+		/// <summary>
+		///     The number of nested comparisons a pair must have taken to be remembered as equivalent.
+		/// </summary>
+		/// <remarks>
+		///     Comparing a smaller pair again costs at most that many comparisons for each reference to it, while
+		///     remembering every pair would cost memory in each comparison, most of which never reach a pair twice.
+		/// </remarks>
+		private const int ComparisonsToRemember = 64;
+
+		/// <summary>
+		///     The pairs that are compared on the current path, with their <see cref="Depth" />, to catch recursions.
+		/// </summary>
+		/// <remarks>
+		///     Created on first use, as values that are compared by value have no nested pairs.
+		/// </remarks>
+		private Dictionary<ComparedPair, int>? _comparedPairs;
+
 		private ConcurrentDictionary<Type, EquivalencyTypeOptions?>? _registeredOptions;
 
 		/// <summary>
-		///     Tracks the pairs that are compared on the current path to catch recursions.
+		///     The number of nested comparisons that were started so far.
+		/// </summary>
+		private int _comparisons;
+
+		/// <summary>
+		///     The pairs that were found equivalent, with the deepest <see cref="Depth" /> they were found equivalent at.
 		/// </summary>
 		/// <remarks>
-		///     Only the ancestors of the current pair are tracked, so that an instance which is reached again via a
-		///     second, independent path is still compared against its own expected counterpart.<br />
-		///     Created on first use, as values that are compared by value have no nested pairs.
+		///     A pair that is reached again via another path is equivalent there as well, when nothing its result was
+		///     derived from can differ on that path. It is therefore only remembered<br />
+		///     - when it was equivalent, as a difference is reported with the path it was found on,<br />
+		///     - together with its type options, as the same pair can be reached with other options,<br />
+		///     - when neither it nor anything nested in it has members to ignore, as they are matched by the path,<br />
+		///     - when nothing nested in it was skipped as a recursion into a pair that encloses it, as it would
+		///     otherwise be remembered as equivalent on the assumption that the enclosing pair is, and<br />
+		///     - for the depths up to the one it was compared at, as it could exceed the maximum recursion depth when it
+		///     is nested deeper.
 		/// </remarks>
-		public HashSet<ComparedPair> ComparedPairs => _comparedPairs ??= [];
+		private Dictionary<EquivalentPair, int>? _equivalentPairs;
+
+		/// <summary>
+		///     The <see cref="Depth" /> of the outermost pair on the current path that the result of the current pair
+		///     was derived from, or <c>0</c> when it was derived from the path itself.
+		/// </summary>
+		private int _outermostDependency = int.MaxValue;
 
 		/// <summary>
 		///     The number of nested comparisons on the current path.
@@ -114,7 +147,63 @@ public static partial class EquivalencyComparison
 		/// <remarks>
 		///     Counted per path and not globally, so that two members on the same level are both at the same depth.
 		/// </remarks>
-		public int Depth { get; set; }
+		public int Depth { get; private set; }
+
+		/// <summary>
+		///     Starts the nested comparison of the <paramref name="pair" />, unless it is equivalent without comparing
+		///     it: because it is already compared on the current path, or because it was found equivalent before.
+		/// </summary>
+		public bool TryEnter(ComparedPair pair, EquivalencyTypeOptions typeOptions, out ComparisonScope scope)
+		{
+			scope = default;
+			if (_equivalentPairs is not null &&
+			    _equivalentPairs.TryGetValue(new EquivalentPair(pair, typeOptions), out int equivalentDepth) &&
+			    Depth < equivalentDepth)
+			{
+				return false;
+			}
+
+			_comparedPairs ??= [];
+#if NET8_0_OR_GREATER
+			if (!_comparedPairs.TryAdd(pair, Depth + 1))
+			{
+				_outermostDependency = Math.Min(_outermostDependency, _comparedPairs[pair]);
+				return false;
+			}
+#else
+			if (_comparedPairs.TryGetValue(pair, out int depth))
+			{
+				_outermostDependency = Math.Min(_outermostDependency, depth);
+				return false;
+			}
+
+			_comparedPairs.Add(pair, Depth + 1);
+#endif
+			Depth++;
+			scope = new ComparisonScope(++_comparisons, _outermostDependency);
+			_outermostDependency = typeOptions.MembersToIgnore.Length > 0 ? 0 : int.MaxValue;
+			return true;
+		}
+
+		/// <summary>
+		///     Ends the nested comparison of the <paramref name="pair" /> that was started with
+		///     <see cref="TryEnter" />.
+		/// </summary>
+		public void Leave(ComparedPair pair, EquivalencyTypeOptions typeOptions, ComparisonScope scope,
+			bool isEquivalent)
+		{
+			bool dependsOnPath = _outermostDependency < Depth;
+			if (isEquivalent && !dependsOnPath && _comparisons - scope.Comparison >= ComparisonsToRemember)
+			{
+				(_equivalentPairs ??= [])[new EquivalentPair(pair, typeOptions)] = Depth;
+			}
+
+			_outermostDependency = dependsOnPath
+				? Math.Min(scope.OutermostDependency, _outermostDependency)
+				: scope.OutermostDependency;
+			_comparedPairs!.Remove(pair);
+			Depth--;
+		}
 
 		/// <summary>
 		///     The number of differences that were appended to a failure message so far.
@@ -242,5 +331,52 @@ public static partial class EquivalencyComparison
 
 		public override int GetHashCode()
 			=> (RuntimeHelpers.GetHashCode(_actual) * 397) ^ RuntimeHelpers.GetHashCode(_expected);
+	}
+
+	/// <summary>
+	///     A <see cref="ComparedPair" /> together with the type options it was compared with.
+	/// </summary>
+	private readonly struct EquivalentPair : IEquatable<EquivalentPair>
+	{
+		private readonly ComparedPair _pair;
+		private readonly EquivalencyTypeOptions _typeOptions;
+
+		public EquivalentPair(ComparedPair pair, EquivalencyTypeOptions typeOptions)
+		{
+			_pair = pair;
+			_typeOptions = typeOptions;
+		}
+
+		public bool Equals(EquivalentPair other)
+			=> _pair.Equals(other._pair) && _typeOptions.Equals(other._typeOptions);
+
+		public override bool Equals(object? obj) => obj is EquivalentPair other && Equals(other);
+
+		/// <remarks>
+		///     Leaves out the type options, as a pair is rarely compared with more than one of them.
+		/// </remarks>
+		public override int GetHashCode() => _pair.GetHashCode();
+	}
+
+	/// <summary>
+	///     The state of the enclosing comparison that a nested comparison restores when it ends.
+	/// </summary>
+	private readonly struct ComparisonScope
+	{
+		public ComparisonScope(int comparison, int outermostDependency)
+		{
+			Comparison = comparison;
+			OutermostDependency = outermostDependency;
+		}
+
+		/// <summary>
+		///     The number of nested comparisons that were started up to and including this one.
+		/// </summary>
+		public int Comparison { get; }
+
+		/// <summary>
+		///     The outermost dependency of the enclosing comparison when this one was started.
+		/// </summary>
+		public int OutermostDependency { get; }
 	}
 }

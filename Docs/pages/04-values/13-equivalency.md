@@ -145,6 +145,10 @@ considers it the same as one, and a type that only implements `IReadOnlyDictiona
 
 - Cyclic references are detected, so graphs that reference themselves don't recurse forever. An instance that is
   referenced more than once is still compared against each of its expected counterparts.
+- Objects that were found equivalent are remembered, so the time does not multiply with the number of paths that lead
+  to a shared object. They are still compared for each path when members are [ignored](#ignoring-members-by-name) in
+  them, as those are matched by their path, when they reference an object that contains them, or when they differ, as
+  a difference is reported for each path.
 - The comparison fails at a recursion depth of 100 nested objects instead of overflowing the stack, see
   [Limiting the recursion depth](#limiting-the-recursion-depth).
 - A type without any members to compare throws an `InvalidOperationException` instead of succeeding without verifying
