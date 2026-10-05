@@ -112,6 +112,29 @@ public sealed class RepeatedCheckOptionsTests
 	}
 
 	[Fact]
+	public async Task CheckRepeatedly_WhenTheIntervalExceedsTheTimeout_ShouldCheckAtTheTimeoutAndNotAfterIt()
+	{
+		VirtualTimeSystem time = new();
+		List<TimeSpan> checks = [];
+		IEnumerable<int> subject = Enumerable.Range(1, 3);
+
+		async Task Act()
+			=> await HasMatchingItem(That(subject), _ => checks.Count > 2, () => checks.Add(time.Now))
+				.Within(100.Milliseconds()).CheckEvery(6.Seconds()).UseTimeSystem(time);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             has a matching item within 0:00.100,
+			             but it had none in [1, 2, 3]
+			             """)
+			.Because("the third check would succeed, but no check is made after the timeout");
+		await That(checks).IsEqualTo([TimeSpan.Zero, 100.Milliseconds(),])
+			.Because("the wait is shortened to the remaining time, so the last check is made at the timeout");
+		await That(time.Now).IsEqualTo(100.Milliseconds());
+	}
+
+	[Fact]
 	public async Task CheckRepeatedly_WhenTheSourceThrowsAtFirst_ShouldReadItAgain()
 	{
 		int enumerations = 0;
