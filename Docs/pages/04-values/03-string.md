@@ -111,7 +111,9 @@ whitespace becomes empty. To keep the relative indentation within the snippet, u
 ## Match types
 
 Instead of comparing for equality, `IsEqualTo` can match the subject against a pattern, a prefix or a suffix. The
-same match types are available for `IsNotEqualTo`, `IsOneOf`, `IsNotOneOf`, `Contains` and `DoesNotContain`.
+same match types are available for `IsNotEqualTo`, `IsOneOf` and `IsNotOneOf`. `Contains` and `DoesNotContain` search
+within the subject, so they take a pattern, but no prefix or suffix: use [`StartsWith` or `EndsWith`](#start--end)
+for that.
 
 :::note[A `null` subject has no content to match]
 Every match type except the plain comparison asks about the content of the subject, so it fails for a `null` subject in

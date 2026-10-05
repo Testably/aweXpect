@@ -92,12 +92,12 @@ public sealed partial class ThatString
 				string? subject = null;
 
 				async Task Act()
-					=> await That(subject).DoesNotContain("p").AsPrefix();
+					=> await That(subject).DoesNotContain("p").AsWildcard();
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             does not contain "p" as prefix,
+					             does not contain "p" as wildcard,
 					             but it was <null>
 					             """);
 			}

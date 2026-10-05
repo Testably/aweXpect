@@ -224,8 +224,8 @@ static aweXpect.ThatStream.IsReadOnly<TStream>(this aweXpect.Core.IThat<TStream?
 static aweXpect.ThatStream.IsSeekable<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.AndOrResult<TStream!, aweXpect.Core.IThat<TStream?>!>!
 static aweXpect.ThatStream.IsWritable<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.AndOrResult<TStream!, aweXpect.Core.IThat<TStream?>!>!
 static aweXpect.ThatStream.IsWriteOnly<TStream>(this aweXpect.Core.IThat<TStream?>! subject) -> aweXpect.Results.AndOrResult<TStream!, aweXpect.Core.IThat<TStream?>!>!
-static aweXpect.ThatString.Contains(this aweXpect.Core.IThat<string?>! subject, string! expected) -> aweXpect.Results.StringEqualityTypeCountResult<string!, aweXpect.Core.IThat<string?>!>!
-static aweXpect.ThatString.DoesNotContain(this aweXpect.Core.IThat<string?>! subject, string! unexpected) -> aweXpect.Results.StringEqualityTypeCountResult<string!, aweXpect.Core.IThat<string?>!>!
+static aweXpect.ThatString.Contains(this aweXpect.Core.IThat<string?>! subject, string! expected) -> aweXpect.Results.StringOccurrenceCountResult<string!, aweXpect.Core.IThat<string?>!>!
+static aweXpect.ThatString.DoesNotContain(this aweXpect.Core.IThat<string?>! subject, string! unexpected) -> aweXpect.Results.StringOccurrenceCountResult<string!, aweXpect.Core.IThat<string?>!>!
 static aweXpect.ThatString.DoesNotEndWith(this aweXpect.Core.IThat<string?>! subject, string! unexpected) -> aweXpect.Results.StringEqualityResult<string!, aweXpect.Core.IThat<string?>!>!
 static aweXpect.ThatString.DoesNotStartWith(this aweXpect.Core.IThat<string?>! subject, string! unexpected) -> aweXpect.Results.StringEqualityResult<string!, aweXpect.Core.IThat<string?>!>!
 static aweXpect.ThatString.EndsWith(this aweXpect.Core.IThat<string?>! subject, string! expected) -> aweXpect.Results.StringEqualityResult<string!, aweXpect.Core.IThat<string?>!>!

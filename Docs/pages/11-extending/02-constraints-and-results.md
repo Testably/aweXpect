@@ -433,7 +433,8 @@ An expectation that returns this result then offers the count and the string opt
 |-----------------------------------------|---------------------------------------------------------------------------|
 | `AtLeast`, `Between`, `Once`, …         | `IOptionsProvider<Quantifier>`                                            |
 | `IgnoringCase`, `Using`, …              | `IOptionsProvider<StringEqualityOptions>`                                 |
-| `AsPrefix`, `AsRegex`, `AsWildcard`, …  | additionally `IStringMatchTypeOptions`                                    |
+| `AsRegex`, `AsWildcard`                 | additionally `IStringPatternMatchTypeOptions`                             |
+| `AsPrefix`, `AsSuffix`                  | additionally `IStringMatchTypeOptions`, which includes the pattern marker |
 | `InAnyOrder`, `IgnoringDuplicates`      | `IOptionsProvider<CollectionMatchOptions>`                                |
 | `IgnoringInterspersedItems`, `Properly` | additionally `ICollectionContainmentOptions`, `IProperContainmentOptions` |
 | `AtIndex`, `AtIndexFromEnd`             | `IOptionsProvider<CollectionIndexOptions>`                                |

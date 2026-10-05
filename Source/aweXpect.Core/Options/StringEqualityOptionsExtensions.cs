@@ -110,7 +110,7 @@ public static class StringEqualityOptionsExtensions
 	///     Interprets the expected <see langword="string" /> as <see cref="Regex" /> pattern.
 	/// </summary>
 	public static TResult AsRegex<TResult>(this TResult result)
-		where TResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
+		where TResult : IOptionsProvider<StringEqualityOptions>, IStringPatternMatchTypeOptions
 	{
 		result.Options.AsRegex();
 		return result;
@@ -121,7 +121,7 @@ public static class StringEqualityOptionsExtensions
 	///     applying the given <paramref name="regexOptions" />.
 	/// </summary>
 	public static TResult AsRegex<TResult>(this TResult result, RegexOptions regexOptions)
-		where TResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
+		where TResult : IOptionsProvider<StringEqualityOptions>, IStringPatternMatchTypeOptions
 	{
 		result.Options.AsRegex(regexOptions);
 		return result;
@@ -142,7 +142,7 @@ public static class StringEqualityOptionsExtensions
 	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </summary>
 	public static TResult AsWildcard<TResult>(this TResult result)
-		where TResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
+		where TResult : IOptionsProvider<StringEqualityOptions>, IStringPatternMatchTypeOptions
 	{
 		result.Options.AsWildcard();
 		return result;

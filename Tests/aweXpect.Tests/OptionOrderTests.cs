@@ -43,6 +43,32 @@ public sealed class OptionOrderTests
 	}
 
 	[Fact]
+	public async Task StringCollectionContains_AtLeastBeforeAsPrefix_ShouldFailLikeTheReversedOrder()
+	{
+		string[] subject = ["abc", "bca",];
+		string expectedMessage = """
+		                         Expected that subject
+		                         contains an item starting with "a" at least twice,
+		                         but it contained "abc" once
+
+		                         Collection:
+		                         [
+		                           "abc",
+		                           "bca"
+		                         ]
+		                         """;
+
+		async Task Act()
+			=> await That(subject).Contains("a").AtLeast(2).AsPrefix();
+
+		async Task ReversedAct()
+			=> await That(subject).Contains("a").AsPrefix().AtLeast(2);
+
+		await That(Act).Throws<XunitException>().WithMessage(expectedMessage);
+		await That(ReversedAct).Throws<XunitException>().WithMessage(expectedMessage);
+	}
+
+	[Fact]
 	public async Task StringCollectionIsEqualTo_IgnoringCaseBeforeInAnyOrder_ShouldSucceed()
 	{
 		string[] subject = ["a", "b",];
@@ -88,20 +114,20 @@ public sealed class OptionOrderTests
 	}
 
 	[Fact]
-	public async Task StringContains_AtLeastBeforeAsPrefix_ShouldFailLikeTheReversedOrder()
+	public async Task StringContains_AtLeastBeforeAsWildcard_ShouldFailLikeTheReversedOrder()
 	{
 		string subject = "abc";
 		string expectedMessage = """
 		                         Expected that subject
-		                         contains "a" as prefix at least twice,
+		                         contains "a" as wildcard at least twice,
 		                         but it contained "a" once in "abc"
 		                         """;
 
 		async Task Act()
-			=> await That(subject).Contains("a").AtLeast(2).AsPrefix();
+			=> await That(subject).Contains("a").AtLeast(2).AsWildcard();
 
 		async Task ReversedAct()
-			=> await That(subject).Contains("a").AsPrefix().AtLeast(2);
+			=> await That(subject).Contains("a").AsWildcard().AtLeast(2);
 
 		await That(Act).Throws<XunitException>().WithMessage(expectedMessage);
 		await That(ReversedAct).Throws<XunitException>().WithMessage(expectedMessage);

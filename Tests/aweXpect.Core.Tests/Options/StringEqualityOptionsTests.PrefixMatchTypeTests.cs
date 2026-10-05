@@ -233,6 +233,20 @@ public sealed partial class StringEqualityOptionsTests
 			await That(result).IsSameAs(sut);
 		}
 
+		[Fact]
+		public async Task CountOccurrences_WhenExpectedIsEmptyAfterTheIndentationIsIgnored_ShouldThrowArgumentException()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsPrefix().IgnoringIndentation();
+
+			async Task Act() => await sut.CountOccurrences("some text", " ");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage("The 'expected' prefix cannot be empty.").AsPrefix().And
+				.WithParamName("expected")
+				.Because("the counted prefix is the normalized one, which every subject starts with");
+		}
+
 		[Theory]
 		[InlineData(ExpectationGrammars.Active, "starts with \"foo\"")]
 		[InlineData(ExpectationGrammars.Active | ExpectationGrammars.Negated, "does not start with \"foo\"")]

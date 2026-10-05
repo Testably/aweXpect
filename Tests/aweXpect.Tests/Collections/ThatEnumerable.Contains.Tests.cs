@@ -1094,6 +1094,18 @@ public sealed partial class ThatEnumerable
 					             but it was <null>
 					             """);
 			}
+
+			[Fact]
+			public async Task WhenTwoMatchTypesAreSpecified_ShouldThrowInvalidOperationException()
+			{
+				string[] subject = ["foo", "bar", "baz",];
+
+				async Task Act()
+					=> await That(subject).Contains("a").AsWildcard().AsSuffix();
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AsSuffix cannot be combined with AsWildcard.");
+			}
 		}
 
 		public sealed class PredicateTests
