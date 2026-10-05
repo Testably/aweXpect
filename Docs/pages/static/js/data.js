@@ -4320,6 +4320,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 17:54:22 2026 \u002B0200",
         "message": "feat: include TUnit in the benchmarks and compare each library to aweXpect in the PR comment (#1631)"
+      },
+      {
+        "sha": "07887350fbb92e49622aabb842b5dc56fd6c820a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 17:48:23 2026 \u002B0200",
+        "message": "chore: bump aweXpect to V3.0.0-pre.15 (#1662)"
       }
     ],
     "labels": [
@@ -5042,7 +5048,8 @@ window.BENCHMARK_DATA = {
       "b125b941",
       "aa3908a6",
       "01bb51bd",
-      "2197836c"
+      "2197836c",
+      "07887350"
     ],
     "datasets": [
       {
@@ -5768,7 +5775,8 @@ window.BENCHMARK_DATA = {
           129.63322416941324,
           148.80444326400757,
           65.28786390168327,
-          123.21925603548685
+          123.21925603548685,
+          135.93758130868275
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6499,7 +6507,8 @@ window.BENCHMARK_DATA = {
           368,
           368,
           384,
-          384
+          384,
+          408
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7233,7 +7242,8 @@ window.BENCHMARK_DATA = {
           242.36627645492553,
           246.6335436957223,
           126.25064843041557,
-          253.7104582445962
+          253.7104582445962,
+          273.90108908925737
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7964,6 +7974,7 @@ window.BENCHMARK_DATA = {
           952,
           952,
           952,
+          952,
           952
         ],
         "borderColor": "#FF671B",
@@ -7979,7 +7990,8 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          168.19114556312562
+          168.19114556312562,
+          216.457492181233
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -7991,6 +8003,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472
         ],
         "borderColor": "#1A6029",
@@ -11863,6 +11876,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 17:54:22 2026 \u002B0200",
         "message": "feat: include TUnit in the benchmarks and compare each library to aweXpect in the PR comment (#1631)"
+      },
+      {
+        "sha": "07887350fbb92e49622aabb842b5dc56fd6c820a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 17:48:23 2026 \u002B0200",
+        "message": "chore: bump aweXpect to V3.0.0-pre.15 (#1662)"
       }
     ],
     "labels": [
@@ -12508,7 +12527,8 @@ window.BENCHMARK_DATA = {
       "b125b941",
       "aa3908a6",
       "01bb51bd",
-      "2197836c"
+      "2197836c",
+      "07887350"
     ],
     "datasets": [
       {
@@ -13157,7 +13177,8 @@ window.BENCHMARK_DATA = {
           166722.3896309989,
           183922.97374549278,
           50791.426143101286,
-          71241.77766113282
+          71241.77766113282,
+          112203.96711222331
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13811,7 +13832,8 @@ window.BENCHMARK_DATA = {
           29344,
           29344,
           15392,
-          15392
+          15392,
+          16288
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14468,7 +14490,8 @@ window.BENCHMARK_DATA = {
           2574825.5831473214,
           2760273.820052083,
           1290644.102701823,
-          1998209.278125
+          1998209.278125,
+          2802684.4479166665
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15122,7 +15145,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841647,
-          4841609
+          4841609,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15137,7 +15161,8 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          180093.46688406807
+          180093.46688406807,
+          221737.8497721354
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -15149,6 +15174,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992
         ],
         "borderColor": "#1A6029",
@@ -19483,6 +19509,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 17:54:22 2026 \u002B0200",
         "message": "feat: include TUnit in the benchmarks and compare each library to aweXpect in the PR comment (#1631)"
+      },
+      {
+        "sha": "07887350fbb92e49622aabb842b5dc56fd6c820a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 17:48:23 2026 \u002B0200",
+        "message": "chore: bump aweXpect to V3.0.0-pre.15 (#1662)"
       }
     ],
     "labels": [
@@ -20205,7 +20237,8 @@ window.BENCHMARK_DATA = {
       "b125b941",
       "aa3908a6",
       "01bb51bd",
-      "2197836c"
+      "2197836c",
+      "07887350"
     ],
     "datasets": [
       {
@@ -20931,7 +20964,8 @@ window.BENCHMARK_DATA = {
           263.43812399644116,
           286.9585498401097,
           126.17466124466488,
-          264.9918999989828
+          264.9918999989828,
+          294.93251040776573
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21662,7 +21696,8 @@ window.BENCHMARK_DATA = {
           560,
           560,
           576,
-          576
+          576,
+          600
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22396,7 +22431,8 @@ window.BENCHMARK_DATA = {
           464.5874978474208,
           485.714777247111,
           248.5611880506788,
-          505.3793038050334
+          505.3793038050334,
+          606.454922358195
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23127,6 +23163,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          2008,
           2008
         ],
         "borderColor": "#FF671B",
@@ -23142,7 +23179,8 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          364.3075108528137
+          364.3075108528137,
+          423.54536778586254
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -23154,6 +23192,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064
         ],
         "borderColor": "#1A6029",
@@ -27488,6 +27527,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 17:54:22 2026 \u002B0200",
         "message": "feat: include TUnit in the benchmarks and compare each library to aweXpect in the PR comment (#1631)"
+      },
+      {
+        "sha": "07887350fbb92e49622aabb842b5dc56fd6c820a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 17:48:23 2026 \u002B0200",
+        "message": "chore: bump aweXpect to V3.0.0-pre.15 (#1662)"
       }
     ],
     "labels": [
@@ -28210,7 +28255,8 @@ window.BENCHMARK_DATA = {
       "b125b941",
       "aa3908a6",
       "01bb51bd",
-      "2197836c"
+      "2197836c",
+      "07887350"
     ],
     "datasets": [
       {
@@ -28936,7 +28982,8 @@ window.BENCHMARK_DATA = {
           138.9340537616185,
           152.58988978068035,
           70.98833587536446,
-          142.23167179425556
+          142.23167179425556,
+          157.44477806091308
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29667,7 +29714,8 @@ window.BENCHMARK_DATA = {
           472,
           472,
           488,
-          488
+          488,
+          512
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30401,7 +30449,8 @@ window.BENCHMARK_DATA = {
           238.82461250745334,
           264.8001092592875,
           126.50146692139762,
-          265.96006746292113
+          265.96006746292113,
+          289.2777038574219
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31132,6 +31181,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1224,
           1224
         ],
         "borderColor": "#FF671B",
@@ -31147,7 +31197,8 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          206.79213620935167
+          206.79213620935167,
+          268.0511569658915
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31159,6 +31210,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776
         ],
         "borderColor": "#1A6029",
@@ -35493,6 +35545,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 17:54:22 2026 \u002B0200",
         "message": "feat: include TUnit in the benchmarks and compare each library to aweXpect in the PR comment (#1631)"
+      },
+      {
+        "sha": "07887350fbb92e49622aabb842b5dc56fd6c820a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 17:48:23 2026 \u002B0200",
+        "message": "chore: bump aweXpect to V3.0.0-pre.15 (#1662)"
       }
     ],
     "labels": [
@@ -36215,7 +36273,8 @@ window.BENCHMARK_DATA = {
       "b125b941",
       "aa3908a6",
       "01bb51bd",
-      "2197836c"
+      "2197836c",
+      "07887350"
     ],
     "datasets": [
       {
@@ -36941,7 +37000,8 @@ window.BENCHMARK_DATA = {
           231.9634806950887,
           240.97939023971557,
           114.78038960236769,
-          221.35651461283365
+          221.35651461283365,
+          274.23531373341876
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37672,7 +37732,8 @@ window.BENCHMARK_DATA = {
           536,
           536,
           552,
-          552
+          552,
+          576
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38406,7 +38467,8 @@ window.BENCHMARK_DATA = {
           1340.4173572540283,
           1243.5558507283529,
           590.953108053941,
-          1135.539410318647
+          1135.539410318647,
+          1299.6425857543945
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39137,6 +39199,7 @@ window.BENCHMARK_DATA = {
           3944,
           3944,
           3944,
+          3944,
           3944
         ],
         "borderColor": "#FF671B",
@@ -39152,7 +39215,8 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          309.5602923539969
+          309.5602923539969,
+          351.97543039321897
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -39164,6 +39228,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912
         ],
         "borderColor": "#1A6029",
@@ -43498,6 +43563,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 17:54:22 2026 \u002B0200",
         "message": "feat: include TUnit in the benchmarks and compare each library to aweXpect in the PR comment (#1631)"
+      },
+      {
+        "sha": "07887350fbb92e49622aabb842b5dc56fd6c820a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 17:48:23 2026 \u002B0200",
+        "message": "chore: bump aweXpect to V3.0.0-pre.15 (#1662)"
       }
     ],
     "labels": [
@@ -44220,7 +44291,8 @@ window.BENCHMARK_DATA = {
       "b125b941",
       "aa3908a6",
       "01bb51bd",
-      "2197836c"
+      "2197836c",
+      "07887350"
     ],
     "datasets": [
       {
@@ -44946,7 +45018,8 @@ window.BENCHMARK_DATA = {
           973.5426871435983,
           1006.4043746948242,
           468.67372042792186,
-          694.6372636159261
+          694.6372636159261,
+          643.4332926823542
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45677,7 +45750,8 @@ window.BENCHMARK_DATA = {
           856,
           856,
           840,
-          840
+          840,
+          832
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46411,7 +46485,8 @@ window.BENCHMARK_DATA = {
           1268.4514553363506,
           1385.089691289266,
           656.0931254900419,
-          1268.664249420166
+          1268.664249420166,
+          1492.1926101684571
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47142,6 +47217,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -47157,7 +47233,8 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          560.787110265096
+          560.787110265096,
+          682.4615844726562
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -47169,6 +47246,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264
         ],
         "borderColor": "#1A6029",
@@ -51503,6 +51581,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 17:54:22 2026 \u002B0200",
         "message": "feat: include TUnit in the benchmarks and compare each library to aweXpect in the PR comment (#1631)"
+      },
+      {
+        "sha": "07887350fbb92e49622aabb842b5dc56fd6c820a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 17:48:23 2026 \u002B0200",
+        "message": "chore: bump aweXpect to V3.0.0-pre.15 (#1662)"
       }
     ],
     "labels": [
@@ -52225,7 +52309,8 @@ window.BENCHMARK_DATA = {
       "b125b941",
       "aa3908a6",
       "01bb51bd",
-      "2197836c"
+      "2197836c",
+      "07887350"
     ],
     "datasets": [
       {
@@ -52951,7 +53036,8 @@ window.BENCHMARK_DATA = {
           2232.514168039958,
           2324.4938428243,
           704.2060158802913,
-          1057.5368544260662
+          1057.5368544260662,
+          978.3539214815412
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -53682,7 +53768,8 @@ window.BENCHMARK_DATA = {
           1920,
           1920,
           1776,
-          1776
+          1776,
+          1240
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54416,7 +54503,8 @@ window.BENCHMARK_DATA = {
           26522.499239240373,
           26840.13290608724,
           9891.756308419364,
-          15907.751792399089
+          15907.751792399089,
+          27136.571333665113
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55147,7 +55235,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55162,7 +55251,8 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          676.301778793335
+          676.301778793335,
+          828.1300044059753
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -55174,6 +55264,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408
         ],
         "borderColor": "#1A6029",
@@ -55278,6 +55369,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 17:54:22 2026 \u002B0200",
         "message": "feat: include TUnit in the benchmarks and compare each library to aweXpect in the PR comment (#1631)"
+      },
+      {
+        "sha": "07887350fbb92e49622aabb842b5dc56fd6c820a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 17:48:23 2026 \u002B0200",
+        "message": "chore: bump aweXpect to V3.0.0-pre.15 (#1662)"
       }
     ],
     "labels": [
@@ -55295,7 +55392,8 @@ window.BENCHMARK_DATA = {
       "b125b941",
       "aa3908a6",
       "01bb51bd",
-      "2197836c"
+      "2197836c",
+      "07887350"
     ],
     "datasets": [
       {
@@ -55316,7 +55414,8 @@ window.BENCHMARK_DATA = {
           4798.72819925944,
           5186.820259681115,
           365.3058863786551,
-          648.3735916137696
+          648.3735916137696,
+          790.674650700887
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55342,7 +55441,8 @@ window.BENCHMARK_DATA = {
           6912,
           6912,
           1784,
-          1784
+          1784,
+          1808
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55371,7 +55471,8 @@ window.BENCHMARK_DATA = {
           81679.9644938151,
           82923.76770019531,
           28526.682120186942,
-          30342.70344895583
+          30342.70344895583,
+          85274.41571044922
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55397,7 +55498,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5256,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55501,6 +55603,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Sun Oct 4 17:54:22 2026 \u002B0200",
         "message": "feat: include TUnit in the benchmarks and compare each library to aweXpect in the PR comment (#1631)"
+      },
+      {
+        "sha": "07887350fbb92e49622aabb842b5dc56fd6c820a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 17:48:23 2026 \u002B0200",
+        "message": "chore: bump aweXpect to V3.0.0-pre.15 (#1662)"
       }
     ],
     "labels": [
@@ -55518,7 +55626,8 @@ window.BENCHMARK_DATA = {
       "b125b941",
       "aa3908a6",
       "01bb51bd",
-      "2197836c"
+      "2197836c",
+      "07887350"
     ],
     "datasets": [
       {
@@ -55539,7 +55648,8 @@ window.BENCHMARK_DATA = {
           264.88970712025963,
           295.1903321266174,
           135.47059973080954,
-          258.8384858131409
+          258.8384858131409,
+          306.4812316527733
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55565,7 +55675,8 @@ window.BENCHMARK_DATA = {
           616,
           616,
           632,
-          632
+          632,
+          656
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55594,7 +55705,8 @@ window.BENCHMARK_DATA = {
           30773.797318522134,
           31524.394270833334,
           10228.495956929524,
-          15005.187881469727
+          15005.187881469727,
+          32536.284558105468
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55620,6 +55732,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -55635,7 +55748,8 @@ window.BENCHMARK_DATA = {
         "label": "TUnit time",
         "unit": "ns",
         "data": [
-          208.05497562090557
+          208.05497562090557,
+          264.06445630391437
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -55647,6 +55761,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712
         ],
         "borderColor": "#1A6029",
