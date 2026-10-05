@@ -4332,6 +4332,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 17:49:15 2026 \u002B0200",
         "message": "fix!: treat a default \u0060ImmutableArray\u0060 like a \u0060null\u0060 collection (#1660)"
+      },
+      {
+        "sha": "647847aae6bff0b87edd4fb2b0f31ea389537e57",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
+        "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
       }
     ],
     "labels": [
@@ -5056,7 +5062,8 @@ window.BENCHMARK_DATA = {
       "01bb51bd",
       "2197836c",
       "07887350",
-      "7e0a5c0d"
+      "7e0a5c0d",
+      "647847aa"
     ],
     "datasets": [
       {
@@ -5784,7 +5791,8 @@ window.BENCHMARK_DATA = {
           65.28786390168327,
           123.21925603548685,
           135.93758130868275,
-          144.7517062664032
+          144.7517062664032,
+          130.7010422150294
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6516,6 +6524,7 @@ window.BENCHMARK_DATA = {
           368,
           384,
           384,
+          408,
           408,
           408
         ],
@@ -7253,7 +7262,8 @@ window.BENCHMARK_DATA = {
           126.25064843041557,
           253.7104582445962,
           273.90108908925737,
-          310.6382609776088
+          310.6382609776088,
+          236.5798888047536
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -7986,6 +7996,7 @@ window.BENCHMARK_DATA = {
           952,
           952,
           952,
+          952,
           952
         ],
         "borderColor": "#FF671B",
@@ -8003,7 +8014,8 @@ window.BENCHMARK_DATA = {
         "data": [
           168.19114556312562,
           216.457492181233,
-          192.4195573012034
+          192.4195573012034,
+          194.4343194791249
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8015,6 +8027,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472
@@ -11901,6 +11914,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 17:49:15 2026 \u002B0200",
         "message": "fix!: treat a default \u0060ImmutableArray\u0060 like a \u0060null\u0060 collection (#1660)"
+      },
+      {
+        "sha": "647847aae6bff0b87edd4fb2b0f31ea389537e57",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
+        "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
       }
     ],
     "labels": [
@@ -12548,7 +12567,8 @@ window.BENCHMARK_DATA = {
       "01bb51bd",
       "2197836c",
       "07887350",
-      "7e0a5c0d"
+      "7e0a5c0d",
+      "647847aa"
     ],
     "datasets": [
       {
@@ -13199,7 +13219,8 @@ window.BENCHMARK_DATA = {
           50791.426143101286,
           71241.77766113282,
           112203.96711222331,
-          83117.49717494419
+          83117.49717494419,
+          106705.51186899039
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13854,6 +13875,7 @@ window.BENCHMARK_DATA = {
           29344,
           15392,
           15392,
+          16288,
           16288,
           16288
         ],
@@ -14514,7 +14536,8 @@ window.BENCHMARK_DATA = {
           1290644.102701823,
           1998209.278125,
           2802684.4479166665,
-          2170578.661979167
+          2170578.661979167,
+          2707223.26171875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15170,7 +15193,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841609,
           4841651,
-          4841613
+          4841613,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15187,7 +15211,8 @@ window.BENCHMARK_DATA = {
         "data": [
           180093.46688406807,
           221737.8497721354,
-          193501.29067758413
+          193501.29067758413,
+          202644.6450544085
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -15199,6 +15224,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992
@@ -19547,6 +19573,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 17:49:15 2026 \u002B0200",
         "message": "fix!: treat a default \u0060ImmutableArray\u0060 like a \u0060null\u0060 collection (#1660)"
+      },
+      {
+        "sha": "647847aae6bff0b87edd4fb2b0f31ea389537e57",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
+        "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
       }
     ],
     "labels": [
@@ -20271,7 +20303,8 @@ window.BENCHMARK_DATA = {
       "01bb51bd",
       "2197836c",
       "07887350",
-      "7e0a5c0d"
+      "7e0a5c0d",
+      "647847aa"
     ],
     "datasets": [
       {
@@ -20999,7 +21032,8 @@ window.BENCHMARK_DATA = {
           126.17466124466488,
           264.9918999989828,
           294.93251040776573,
-          292.19269075393674
+          292.19269075393674,
+          319.36239130156383
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21731,6 +21765,7 @@ window.BENCHMARK_DATA = {
           560,
           576,
           576,
+          600,
           600,
           600
         ],
@@ -22468,7 +22503,8 @@ window.BENCHMARK_DATA = {
           248.5611880506788,
           505.3793038050334,
           606.454922358195,
-          573.3669003804524
+          573.3669003804524,
+          465.99084561665853
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23201,6 +23237,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          2008,
           2008
         ],
         "borderColor": "#FF671B",
@@ -23218,7 +23255,8 @@ window.BENCHMARK_DATA = {
         "data": [
           364.3075108528137,
           423.54536778586254,
-          416.8841130256653
+          416.8841130256653,
+          387.66392567952477
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -23230,6 +23268,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064
@@ -27578,6 +27617,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 17:49:15 2026 \u002B0200",
         "message": "fix!: treat a default \u0060ImmutableArray\u0060 like a \u0060null\u0060 collection (#1660)"
+      },
+      {
+        "sha": "647847aae6bff0b87edd4fb2b0f31ea389537e57",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
+        "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
       }
     ],
     "labels": [
@@ -28302,7 +28347,8 @@ window.BENCHMARK_DATA = {
       "01bb51bd",
       "2197836c",
       "07887350",
-      "7e0a5c0d"
+      "7e0a5c0d",
+      "647847aa"
     ],
     "datasets": [
       {
@@ -29030,7 +29076,8 @@ window.BENCHMARK_DATA = {
           70.98833587536446,
           142.23167179425556,
           157.44477806091308,
-          165.41466786311224
+          165.41466786311224,
+          136.18030888693673
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29762,6 +29809,7 @@ window.BENCHMARK_DATA = {
           472,
           488,
           488,
+          512,
           512,
           512
         ],
@@ -30499,7 +30547,8 @@ window.BENCHMARK_DATA = {
           126.50146692139762,
           265.96006746292113,
           289.2777038574219,
-          320.30807129542035
+          320.30807129542035,
+          243.7638168334961
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31232,6 +31281,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1224,
           1224
         ],
         "borderColor": "#FF671B",
@@ -31249,7 +31299,8 @@ window.BENCHMARK_DATA = {
         "data": [
           206.79213620935167,
           268.0511569658915,
-          242.46904532114664
+          242.46904532114664,
+          235.56220450401307
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31261,6 +31312,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776
@@ -35609,6 +35661,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 17:49:15 2026 \u002B0200",
         "message": "fix!: treat a default \u0060ImmutableArray\u0060 like a \u0060null\u0060 collection (#1660)"
+      },
+      {
+        "sha": "647847aae6bff0b87edd4fb2b0f31ea389537e57",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
+        "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
       }
     ],
     "labels": [
@@ -36333,7 +36391,8 @@ window.BENCHMARK_DATA = {
       "01bb51bd",
       "2197836c",
       "07887350",
-      "7e0a5c0d"
+      "7e0a5c0d",
+      "647847aa"
     ],
     "datasets": [
       {
@@ -37061,7 +37120,8 @@ window.BENCHMARK_DATA = {
           114.78038960236769,
           221.35651461283365,
           274.23531373341876,
-          258.3419983727591
+          258.3419983727591,
+          248.4108333905538
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -37793,6 +37853,7 @@ window.BENCHMARK_DATA = {
           536,
           552,
           552,
+          576,
           576,
           576
         ],
@@ -38530,7 +38591,8 @@ window.BENCHMARK_DATA = {
           590.953108053941,
           1135.539410318647,
           1299.6425857543945,
-          1333.580323292659
+          1333.580323292659,
+          1220.938505445208
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39263,6 +39325,7 @@ window.BENCHMARK_DATA = {
           3944,
           3944,
           3944,
+          3944,
           3944
         ],
         "borderColor": "#FF671B",
@@ -39280,7 +39343,8 @@ window.BENCHMARK_DATA = {
         "data": [
           309.5602923539969,
           351.97543039321897,
-          345.8780006408691
+          345.8780006408691,
+          307.8225899423872
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -39292,6 +39356,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912
@@ -43640,6 +43705,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 17:49:15 2026 \u002B0200",
         "message": "fix!: treat a default \u0060ImmutableArray\u0060 like a \u0060null\u0060 collection (#1660)"
+      },
+      {
+        "sha": "647847aae6bff0b87edd4fb2b0f31ea389537e57",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
+        "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
       }
     ],
     "labels": [
@@ -44364,7 +44435,8 @@ window.BENCHMARK_DATA = {
       "01bb51bd",
       "2197836c",
       "07887350",
-      "7e0a5c0d"
+      "7e0a5c0d",
+      "647847aa"
     ],
     "datasets": [
       {
@@ -45092,7 +45164,8 @@ window.BENCHMARK_DATA = {
           468.67372042792186,
           694.6372636159261,
           643.4332926823542,
-          568.4772125652859
+          568.4772125652859,
+          640.4088826497396
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -45825,7 +45898,8 @@ window.BENCHMARK_DATA = {
           840,
           840,
           832,
-          832
+          832,
+          840
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46561,7 +46635,8 @@ window.BENCHMARK_DATA = {
           656.0931254900419,
           1268.664249420166,
           1492.1926101684571,
-          1504.2217179707118
+          1504.2217179707118,
+          1320.280786259969
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47294,6 +47369,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -47311,7 +47387,8 @@ window.BENCHMARK_DATA = {
         "data": [
           560.787110265096,
           682.4615844726562,
-          635.4836355845133
+          635.4836355845133,
+          611.9931491851806
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -47323,6 +47400,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264
@@ -51671,6 +51749,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 17:49:15 2026 \u002B0200",
         "message": "fix!: treat a default \u0060ImmutableArray\u0060 like a \u0060null\u0060 collection (#1660)"
+      },
+      {
+        "sha": "647847aae6bff0b87edd4fb2b0f31ea389537e57",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
+        "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
       }
     ],
     "labels": [
@@ -52395,7 +52479,8 @@ window.BENCHMARK_DATA = {
       "01bb51bd",
       "2197836c",
       "07887350",
-      "7e0a5c0d"
+      "7e0a5c0d",
+      "647847aa"
     ],
     "datasets": [
       {
@@ -53123,7 +53208,8 @@ window.BENCHMARK_DATA = {
           704.2060158802913,
           1057.5368544260662,
           978.3539214815412,
-          883.2034430821736
+          883.2034430821736,
+          1053.141568844135
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -53856,7 +53942,8 @@ window.BENCHMARK_DATA = {
           1776,
           1776,
           1240,
-          1240
+          1240,
+          1248
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54592,7 +54679,8 @@ window.BENCHMARK_DATA = {
           9891.756308419364,
           15907.751792399089,
           27136.571333665113,
-          17792.257829938615
+          17792.257829938615,
+          26669.563818359376
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55325,7 +55413,8 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33471,
-          33465
+          33465,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55342,7 +55431,8 @@ window.BENCHMARK_DATA = {
         "data": [
           676.301778793335,
           828.1300044059753,
-          758.3990545954023
+          758.3990545954023,
+          753.8996606554304
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -55354,6 +55444,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408
@@ -55472,6 +55563,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 17:49:15 2026 \u002B0200",
         "message": "fix!: treat a default \u0060ImmutableArray\u0060 like a \u0060null\u0060 collection (#1660)"
+      },
+      {
+        "sha": "647847aae6bff0b87edd4fb2b0f31ea389537e57",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
+        "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
       }
     ],
     "labels": [
@@ -55491,7 +55588,8 @@ window.BENCHMARK_DATA = {
       "01bb51bd",
       "2197836c",
       "07887350",
-      "7e0a5c0d"
+      "7e0a5c0d",
+      "647847aa"
     ],
     "datasets": [
       {
@@ -55514,7 +55612,8 @@ window.BENCHMARK_DATA = {
           365.3058863786551,
           648.3735916137696,
           790.674650700887,
-          736.5681552886963
+          736.5681552886963,
+          706.9937650680542
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55541,6 +55640,7 @@ window.BENCHMARK_DATA = {
           6912,
           1784,
           1784,
+          1808,
           1808,
           1808
         ],
@@ -55573,7 +55673,8 @@ window.BENCHMARK_DATA = {
           28526.682120186942,
           30342.70344895583,
           85274.41571044922,
-          33411.314623151506
+          33411.314623151506,
+          81257.22533307757
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55601,7 +55702,8 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5252,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55717,6 +55819,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 17:49:15 2026 \u002B0200",
         "message": "fix!: treat a default \u0060ImmutableArray\u0060 like a \u0060null\u0060 collection (#1660)"
+      },
+      {
+        "sha": "647847aae6bff0b87edd4fb2b0f31ea389537e57",
+        "author": "Valentin Breu\u00DF",
+        "date": "Mon Oct 5 19:14:31 2026 \u002B0200",
+        "message": "fix: enumerate the expected sequence of collection \u0060IsEqualTo\u0060 and \u0060IsContainedIn\u0060 only once per expectation (#1668)"
       }
     ],
     "labels": [
@@ -55736,7 +55844,8 @@ window.BENCHMARK_DATA = {
       "01bb51bd",
       "2197836c",
       "07887350",
-      "7e0a5c0d"
+      "7e0a5c0d",
+      "647847aa"
     ],
     "datasets": [
       {
@@ -55759,7 +55868,8 @@ window.BENCHMARK_DATA = {
           135.47059973080954,
           258.8384858131409,
           306.4812316527733,
-          284.45962436382587
+          284.45962436382587,
+          277.62686608632407
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55786,6 +55896,7 @@ window.BENCHMARK_DATA = {
           616,
           632,
           632,
+          656,
           656,
           656
         ],
@@ -55818,7 +55929,8 @@ window.BENCHMARK_DATA = {
           10228.495956929524,
           15005.187881469727,
           32536.284558105468,
-          16134.795623779297
+          16134.795623779297,
+          30893.274315467246
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55846,6 +55958,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -55863,7 +55976,8 @@ window.BENCHMARK_DATA = {
         "data": [
           208.05497562090557,
           264.06445630391437,
-          238.22447112401326
+          238.22447112401326,
+          242.6730498313904
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -55875,6 +55989,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712
