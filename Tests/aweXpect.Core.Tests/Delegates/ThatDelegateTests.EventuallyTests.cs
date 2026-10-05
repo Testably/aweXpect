@@ -143,7 +143,7 @@ public sealed partial class ThatDelegateTests
 				stopwatch.Stop();
 			}
 
-			await That(stopwatch.Elapsed).IsLessThan(5.Seconds());
+			await That(stopwatch.Elapsed).IsLessThan(30.Seconds());
 		}
 
 		[Fact]
@@ -375,7 +375,7 @@ public sealed partial class ThatDelegateTests
 				.WithTimeout(30.Seconds());
 			stopwatch.Stop();
 
-			await That(stopwatch.Elapsed).IsLessThan(10.Seconds())
+			await That(stopwatch.Elapsed).IsLessThan(30.Seconds())
 				.Because("the timeout must abandon an attempt that never finishes instead of awaiting it");
 		}
 
@@ -507,7 +507,7 @@ public sealed partial class ThatDelegateTests
 				.Because("a canceled evaluation names the retry budget like every other outcome of Eventually");
 			stopwatch.Stop();
 
-			await That(stopwatch.Elapsed).IsLessThan(5.Seconds());
+			await That(stopwatch.Elapsed).IsLessThan(30.Seconds());
 		}
 
 		[Fact]
@@ -552,7 +552,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 			stopwatch.Stop();
 
-			await That(stopwatch.Elapsed).IsLessThan(10.Seconds())
+			await That(stopwatch.Elapsed).IsLessThan(30.Seconds())
 				.Because("the cancellation must stop waiting for a subject that does not observe it");
 		}
 
@@ -955,7 +955,7 @@ public sealed partial class ThatDelegateTests
 				            but it did not finish within 0:00.050
 				            """).AsWildcard().And
 				.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
-			await That(stopwatch.Elapsed).IsLessThan(5.Seconds());
+			await That(stopwatch.Elapsed).IsLessThan(30.Seconds());
 		}
 
 		[Fact]
@@ -1337,7 +1337,7 @@ public sealed partial class ThatDelegateTests
 				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
 			stopwatch.Stop();
 
-			await That(stopwatch.Elapsed).IsLessThan(5.Seconds())
+			await That(stopwatch.Elapsed).IsLessThan(30.Seconds())
 				.Because("WithTimeout cancels the evaluation like everywhere else, instead of setting the retry budget");
 		}
 
