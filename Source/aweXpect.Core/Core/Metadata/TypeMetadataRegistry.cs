@@ -123,6 +123,19 @@ public static class TypeMetadataRegistry
 	}
 
 	/// <summary>
+	///     Registers <typeparamref name="T" /> as a collection, the registered fields and properties of which are the
+	///     members it declares itself, so that the equivalency comparison compares them in addition to its items.
+	/// </summary>
+	/// <remarks>
+	///     The members that the collection types and interfaces of the framework declare, such as <c>Count</c>, are
+	///     not registered, because they describe the collection, which the comparison of the items covers. The
+	///     registration therefore only serves the comparison with another collection: against a value that is no
+	///     collection, all members are compared, which are found by reflection.
+	/// </remarks>
+	public static void RegisterCollection<T>()
+		=> Instance.AddCollection(typeof(T));
+
+	/// <summary>
 	///     Runs <paramref name="register" /> and publishes the registrations it makes on the calling thread together, once
 	///     it returns.
 	/// </summary>
@@ -170,6 +183,9 @@ public static class TypeMetadataRegistry
 
 		public void AddItemComparer(Type setInterface, SetItemComparer itemComparer)
 			=> Add(setInterface, metadata => metadata.ItemComparer = itemComparer);
+
+		public void AddCollection(Type type)
+			=> Add(type, metadata => metadata.IsCollection = true);
 
 		/// <summary>
 		///     Whether any member or event was registered for the <paramref name="type" />.
@@ -274,6 +290,12 @@ public static class TypeMetadataRegistry
 		public SetItemComparer? ItemComparer { get; set; }
 
 		/// <summary>
+		///     Whether the type is registered as a collection, the fields and properties of which are only the
+		///     members it declares itself.
+		/// </summary>
+		public bool IsCollection { get; set; }
+
+		/// <summary>
 		///     The registered events in the order of their registration.
 		/// </summary>
 		/// <remarks>
@@ -302,6 +324,7 @@ public static class TypeMetadataRegistry
 			{
 				KeyComparer = registered.KeyComparer ?? KeyComparer,
 				ItemComparer = registered.ItemComparer ?? ItemComparer,
+				IsCollection = registered.IsCollection || IsCollection,
 			};
 			Merge(merged.Fields, Fields, registered.Fields);
 			Merge(merged.Properties, Properties, registered.Properties);

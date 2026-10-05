@@ -667,3 +667,4 @@ static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterSet<T>() -> void
 aweXpect.Results.StringOccurrenceCountResult<TType, TThat>
 aweXpect.Results.StringOccurrenceCountResult<TType, TThat>.AsBlock() -> aweXpect.Results.StringBlockCountResult<TType, TThat>!
 aweXpect.Results.StringOccurrenceCountResult<TType, TThat>.StringOccurrenceCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.StringEqualityOptions! options) -> void
+static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterCollection<T>() -> void

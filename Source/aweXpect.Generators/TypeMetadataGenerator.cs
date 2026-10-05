@@ -46,7 +46,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	private static readonly DiagnosticDescriptor NothingToRegister = new(
 		"aweXpect2001",
 		"The type yields no metadata registration",
-		"'{0}' yields no metadata registration, because it is compared by value, enumerated, abstract, an open generic, not accessible from this assembly, has neither public instance members nor public events, or has a member or event the generated code cannot name; it stays on the reflection path",
+		"'{0}' yields no metadata registration, because it is compared by value, a collection that declares no members itself, abstract, an open generic, not accessible from this assembly, has neither public instance members nor public events, or has a member or event the generated code cannot name; it stays on the reflection path",
 		"aweXpect.Generators",
 		DiagnosticSeverity.Warning,
 		true,
@@ -664,6 +664,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		private bool? _supportsSetRegistration;
 
+		private bool? _supportsCollectionRegistration;
+
 		private bool? _supportsExplicitRegistration;
 
 		public ImmutableArray<TypeRegistration> Registrations => _registrations.ToImmutable();
@@ -701,17 +703,18 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				SeedDictionaries(named);
 				SeedSets(named);
 				SeedElements(named);
+				SeedMembers(named, true);
 				return;
 			}
 
-			SeedMembers(named);
+			SeedMembers(named, false);
 		}
 
 		/// <remarks>
-		///     A collection registers no members, because it is compared element by element, but the comparison still
-		///     asks its runtime type whether it is a set or a dictionary, and that answer comes from the interface
-		///     list. The trimmer drops an implementation nothing else uses, so the collection is recorded with no
-		///     members of its own, only to keep its interfaces.
+		///     A collection is compared element by element, but the comparison still asks its runtime type whether it
+		///     is a set or a dictionary, and that answer comes from the interface list. The trimmer drops an
+		///     implementation nothing else uses, so the collection is recorded separately from the members it declares
+		///     itself, only to keep its interfaces.
 		/// </remarks>
 		private void SeedInterfaceRoot(INamedTypeSymbol type)
 		{
@@ -803,11 +806,28 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		///     The members are walked even when the type itself cannot be registered, because their types can be.
 		///     Skipping a type that has a member the generated code cannot name keeps the registration in parity with
 		///     reflection, which would compare that member.
+		///     <para />
+		///     A collection is compared by its items and by the members it declares itself, so only these are
+		///     registered for it, and nothing when it has none. An aweXpect.Core that cannot register a collection
+		///     compares it by its items alone.
 		/// </remarks>
-		private void SeedMembers(INamedTypeSymbol type)
+		private void SeedMembers(INamedTypeSymbol type, bool isCollection)
 		{
 			List<Member> members = CollectMembers(type);
-			List<IPropertySymbol> explicitProperties = CollectExplicitProperties(type);
+			List<IPropertySymbol> explicitProperties = [];
+			if (isCollection)
+			{
+				members = SupportsCollectionRegistration() ? OwnMembers(type, members) : [];
+				if (members.Count == 0)
+				{
+					return;
+				}
+			}
+			else
+			{
+				explicitProperties = CollectExplicitProperties(type);
+			}
+
 			foreach (ITypeSymbol memberType in members.Select(member => member.Type)
 				         .Concat(explicitProperties.Select(property => property.Type)))
 			{
@@ -829,13 +849,85 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				return;
 			}
 
-			string? source = EmitRegistration(type, members, explicitProperties);
+			string? source = EmitRegistration(type, members, explicitProperties, isCollection);
 			if (source is not null)
 			{
 				_registrations.Add(new TypeRegistration(type.ToDisplayString(TypeFormat), source,
 					string.Join(",", diagnosticIds),
 					null));
 			}
+		}
+
+		private bool SupportsCollectionRegistration()
+			=> _supportsCollectionRegistration ??= compilation
+				.GetTypeByMetadataName("aweXpect.Core.Metadata.TypeMetadataRegistry")
+				?.GetMembers("RegisterCollection").OfType<IMethodSymbol>()
+				.Any(x => x.IsStatic && x.DeclaredAccessibility == Accessibility.Public) == true;
+
+		/// <summary>
+		///     Returns the <paramref name="members" /> that the collection <paramref name="type" /> declares itself.
+		/// </summary>
+		/// <remarks>
+		///     Mirrors <c>EquivalencyMembers.GetOwnFields</c> and <c>EquivalencyMembers.GetOwnProperties</c>: a member
+		///     is left out when a type of the framework declares it, which is a type in the namespace <c>System</c> or
+		///     <c>Microsoft</c> or in a namespace nested in one of them, where a property that overrides another one
+		///     counts as declared by the type that declared it first, when it is a property that implements a
+		///     property of an interface of the framework, or when the compiler generated the field or the type that
+		///     declares the member.
+		/// </remarks>
+		private static List<Member> OwnMembers(INamedTypeSymbol type, List<Member> members)
+		{
+			HashSet<ISymbol> frameworkImplementations = new(SymbolEqualityComparer.Default);
+			foreach (IPropertySymbol implementation in type.AllInterfaces
+				         .Where(IsFramework)
+				         .SelectMany(interfaceType => interfaceType.GetMembers().OfType<IPropertySymbol>())
+				         .Select(type.FindImplementationForInterfaceMember)
+				         .OfType<IPropertySymbol>())
+			{
+				frameworkImplementations.Add(FirstDeclaration(implementation).OriginalDefinition);
+			}
+
+			return members.Where(member => IsOwnMember(member, frameworkImplementations)).ToList();
+		}
+
+		private static bool IsOwnMember(Member member, HashSet<ISymbol> frameworkImplementations)
+		{
+			if (member.Symbol is not IPropertySymbol property)
+			{
+				return IsOwn(member.Symbol.ContainingType) && !IsCompilerGenerated(member.Symbol);
+			}
+
+			IPropertySymbol declaration = FirstDeclaration(property);
+			return IsOwn(declaration.ContainingType) &&
+			       !frameworkImplementations.Contains(declaration.OriginalDefinition);
+		}
+
+		private static bool IsOwn(INamedTypeSymbol declaringType)
+			=> !IsFramework(declaringType) && !IsCompilerGenerated(declaringType);
+
+		private static bool IsFramework(INamedTypeSymbol type)
+		{
+			INamespaceSymbol root = type.ContainingNamespace;
+			while (root is { IsGlobalNamespace: false, ContainingNamespace.IsGlobalNamespace: false, })
+			{
+				root = root.ContainingNamespace;
+			}
+
+			return root is { IsGlobalNamespace: false, Name: "System" or "Microsoft", };
+		}
+
+		private static bool IsCompilerGenerated(ISymbol symbol)
+			=> symbol.GetAttributes().Any(x => x.AttributeClass?.ToDisplayString() ==
+			                                   "System.Runtime.CompilerServices.CompilerGeneratedAttribute");
+
+		private static IPropertySymbol FirstDeclaration(IPropertySymbol property)
+		{
+			while (property.OverriddenProperty is { } overridden)
+			{
+				property = overridden;
+			}
+
+			return property;
 		}
 
 		/// <summary>
@@ -1241,11 +1333,11 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		}
 
 		private static string? EmitRegistration(INamedTypeSymbol type, List<Member> members,
-			List<IPropertySymbol> explicitProperties)
+			List<IPropertySymbol> explicitProperties, bool isCollection)
 		{
 			if (IsNameable(type))
 			{
-				return EmitNamedRegistration(type, members, explicitProperties);
+				return EmitNamedRegistration(type, members, explicitProperties, isCollection);
 			}
 
 			List<string> helpers = [];
@@ -1279,6 +1371,12 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				            ".RegisterExplicitProperty(name, getValue);");
 			}
 
+			if (isCollection)
+			{
+				sb.AppendLine("\t\tRegisterCollection(probe);");
+				helpers.Add("static void RegisterCollection<T>(T p) => " + Registry + ".RegisterCollection<T>();");
+			}
+
 			foreach (string helper in helpers)
 			{
 				sb.Append("\t\t").AppendLine(helper);
@@ -1288,7 +1386,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		}
 
 		private static string EmitNamedRegistration(INamedTypeSymbol type, List<Member> members,
-			List<IPropertySymbol> explicitProperties)
+			List<IPropertySymbol> explicitProperties, bool isCollection)
 		{
 			StringBuilder sb = new();
 			string typeName = type.ToDisplayString(TypeFormat);
@@ -1305,6 +1403,12 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				sb.Append("\t\t").Append(Registry).Append(".RegisterExplicitProperty<").Append(typeName)
 					.Append(", ").Append(property.Type.ToDisplayString(TypeFormat)).Append(">(")
 					.Append(ExplicitPropertyArguments(property)).AppendLine(");");
+			}
+
+			if (isCollection)
+			{
+				sb.Append("\t\t").Append(Registry).Append(".RegisterCollection<").Append(typeName)
+					.AppendLine(">();");
 			}
 
 			return sb.ToString();

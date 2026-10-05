@@ -127,6 +127,38 @@ reported as ambiguous. Failures name the kind of the *expected* member.
   the actual dictionary, so its key comparer decides which keys are the same, as it does for
   [`IsEqualTo`](../05-collections/04-dictionaries.md#equality). Two expected keys that this comparer considers the same
   can't both be matched by one entry, so the second one is reported as lacking a distinct key.
+- A collection or dictionary type that declares members itself is compared by its items or entries and, in addition,
+  by these members, so two pages with the same items but a different `TotalCount` are not equivalent. They are
+  compared like the members of any other object: they come from the *expected* type, so against an array, which
+  declares none, only the items count, and the [options](#configuration) apply to them.
+
+```csharp
+// class Playlist : List<Track> { public string Name { get; set; } }
+await Expect.That(playlist).IsEquivalentTo(expectedPlaylist);
+
+// compares the tracks only
+await Expect.That(playlist).IsEquivalentTo(expectedPlaylist, o => o.IgnoringMember("Name"));
+```
+
+<details>
+<summary>Which members of a collection type are compared</summary>
+
+The members that describe the collection are left out, because the items already cover them:
+
+- members that a type of the framework declares, which is a type in the `System` or `Microsoft` namespaces, e.g. the
+  `Count` and `Capacity` of a `List<T>` or the `Comparer`, `Keys` and `Values` of a `Dictionary<TKey, TValue>`, also
+  when your type overrides them,
+- properties that implement a property of an interface of the framework, e.g. the `Count` of an
+  `IReadOnlyCollection<T>` or the `Keys` of an `IReadOnlyDictionary<TKey, TValue>` that your type implements itself,
+- what the compiler generates, e.g. the state of an iterator method.
+
+Every other public field or property is compared, whether your type or one of its base types declares it, including
+one that hides a member of the framework with `new`. This also holds for the collection types of other libraries: to
+leave a member out, [ignore it](#ignoring-members-by-name), where a [`For<T>`](#per-type-options-with-fort)
+registration limits the rule to the collection type, or compare the type
+[by value](#comparing-by-value-or-by-members) to let its `Equals` decide.
+
+</details>
 
 <details>
 <summary>How the key comparer is found</summary>

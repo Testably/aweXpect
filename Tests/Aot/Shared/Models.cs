@@ -62,6 +62,14 @@ public sealed class ReadOnlyTags(Dictionary<string, int> entries) : IReadOnlyDic
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
 
+/// <summary>
+///     Declares a member itself, which the comparison of its items does not cover.
+/// </summary>
+public sealed class Playlist : List<string>
+{
+	public string Name { get; set; } = "";
+}
+
 public sealed class Publisher
 {
 	public delegate void CountedHandler(int count, string name, bool flag, DateTime at, int? optional);

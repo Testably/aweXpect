@@ -16,24 +16,26 @@ namespace aweXpect.Equivalency;
 internal sealed class EquivalencyMemberPlan
 {
 	private static readonly ConcurrentDictionary<(Type Expected, Type Actual, IncludeMembers Fields,
-		IncludeMembers Properties), EquivalencyMemberPlan> Plans = new();
+		IncludeMembers Properties, bool OwnMembersOnly), EquivalencyMemberPlan> Plans = new();
 
 	private readonly Type _actualType;
 	private readonly Type _expectedType;
 	private readonly IncludeMembers _fields;
+	private readonly bool _ownMembersOnly;
 	private readonly IncludeMembers _properties;
 	private readonly int _version;
 	private PlannedMember[]? _plannedFields;
 	private PlannedMember[]? _plannedProperties;
 
 	private EquivalencyMemberPlan(int version, Type expectedType, Type actualType, IncludeMembers fields,
-		IncludeMembers properties)
+		IncludeMembers properties, bool ownMembersOnly)
 	{
 		_version = version;
 		_expectedType = expectedType;
 		_actualType = actualType;
 		_fields = fields;
 		_properties = properties;
+		_ownMembersOnly = ownMembersOnly;
 	}
 
 	/// <summary>
@@ -45,30 +47,36 @@ internal sealed class EquivalencyMemberPlan
 	/// </remarks>
 	public PlannedMember[] Fields => _plannedFields ??= _fields == IncludeMembers.None
 		? []
-		: Array.ConvertAll(EquivalencyMembers.GetFields(_expectedType, _fields),
-			member => new PlannedMember(member, true, _actualType, _fields, _properties));
+		: Array.ConvertAll(_ownMembersOnly
+				? EquivalencyMembers.GetOwnFields(_expectedType, _fields)
+				: EquivalencyMembers.GetFields(_expectedType, _fields),
+			member => new PlannedMember(member, true, _actualType, _fields, _properties, _ownMembersOnly));
 
 	/// <inheritdoc cref="Fields" />
 	public PlannedMember[] Properties => _plannedProperties ??= _properties == IncludeMembers.None
 		? []
-		: Array.ConvertAll(EquivalencyMembers.GetProperties(_expectedType, _properties),
-			member => new PlannedMember(member, false, _actualType, _fields, _properties));
+		: Array.ConvertAll(_ownMembersOnly
+				? EquivalencyMembers.GetOwnProperties(_expectedType, _properties)
+				: EquivalencyMembers.GetProperties(_expectedType, _properties),
+			member => new PlannedMember(member, false, _actualType, _fields, _properties, _ownMembersOnly));
 
 	/// <summary>
 	///     Returns the plan for comparing an object of the <paramref name="actualType" /> with one of the
-	///     <paramref name="expectedType" />.
+	///     <paramref name="expectedType" />, or with <paramref name="ownMembersOnly" /> for comparing only the
+	///     members that the expected collection type declares itself.
 	/// </summary>
 	public static EquivalencyMemberPlan For(Type expectedType, Type actualType, IncludeMembers fields,
-		IncludeMembers properties)
+		IncludeMembers properties, bool ownMembersOnly)
 	{
 		int version = TypeMetadataRegistry.Instance.Version;
-		(Type, Type, IncludeMembers, IncludeMembers) key = (expectedType, actualType, fields, properties);
+		(Type, Type, IncludeMembers, IncludeMembers, bool) key =
+			(expectedType, actualType, fields, properties, ownMembersOnly);
 		if (Plans.TryGetValue(key, out EquivalencyMemberPlan? plan) && plan._version == version)
 		{
 			return plan;
 		}
 
-		plan = new EquivalencyMemberPlan(version, expectedType, actualType, fields, properties);
+		plan = new EquivalencyMemberPlan(version, expectedType, actualType, fields, properties, ownMembersOnly);
 		Plans[key] = plan;
 		return plan;
 	}
@@ -81,7 +89,8 @@ internal sealed class EquivalencyMemberPlan
 		bool isField,
 		Type actualType,
 		IncludeMembers fields,
-		IncludeMembers properties)
+		IncludeMembers properties,
+		bool ownMembersOnly)
 	{
 		private Resolution? _resolution;
 
@@ -94,7 +103,9 @@ internal sealed class EquivalencyMemberPlan
 		/// <remarks>
 		///     The member is looked up by its own kind first and falls back to the other kind of the same name, and only
 		///     then to a property that the actual type implements explicitly. It is only looked up when it is compared,
-		///     so a member that is ignored is never looked up.
+		///     so a member that is ignored is never looked up.<br />
+		///     A member that a collection declares itself is looked up among the members that are registered for the
+		///     actual collection first, because the other members of a collection are only found by reflection.
 		/// </remarks>
 		public Func<object, object?>? GetActualAccessor(out bool isAmbiguous)
 		{
@@ -106,7 +117,10 @@ internal sealed class EquivalencyMemberPlan
 		private Resolution Resolve()
 		{
 			bool isAmbiguous = false;
-			Func<object, object?>? accessor = isField
+			Func<object, object?>? accessor = ownMembersOnly
+				? EquivalencyMembers.FindOwnMember(actualType, Expected.Name, isField, fields, properties)
+				: null;
+			accessor ??= isField
 				? EquivalencyMembers.FindField(actualType, Expected.Name, fields) ??
 				  EquivalencyMembers.FindProperty(actualType, Expected.Name, properties) ??
 				  EquivalencyMembers.FindExplicitProperty(actualType, Expected.Name, properties, out isAmbiguous)
