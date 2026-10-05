@@ -97,8 +97,8 @@ The generator works from the declared type, so the same limits apply as for
 - a `private`, `protected` or `file`-local type cannot be referenced by generated code and is reflected over,
 - a subject that reaches `Record()` through your own extension method is only registered if the extension's parameter
   or type parameter carries `[RequiresEventMetadata]`,
-- an event whose handler returns a value or takes a parameter by reference cannot be recorded by the reflective path
-  either, and keeps its type on reflection,
+- an event whose handler returns a value or takes a parameter by reference, a pointer or a ref struct cannot be recorded
+  by the reflective path either, and keeps its type on reflection,
 - a `struct` subject is never registered, because a handler added to a boxed copy never sees the caller's value.
 
 A type the generator did not see can be named explicitly with `[assembly: GenerateMetadata(typeof(MyClass))]`, which
