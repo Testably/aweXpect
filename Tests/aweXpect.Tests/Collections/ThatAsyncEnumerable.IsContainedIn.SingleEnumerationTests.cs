@@ -9,7 +9,7 @@ namespace aweXpect.Tests;
 
 public sealed partial class ThatAsyncEnumerable
 {
-	public sealed partial class IsEqualTo
+	public sealed partial class IsContainedIn
 	{
 		public sealed class SingleEnumerationTests
 		{
@@ -18,8 +18,8 @@ public sealed partial class ThatAsyncEnumerable
 			{
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
+					ToAsyncEnumerable([1, 2,]),
+					ToAsyncEnumerable([2, 3,]),
 					ToAsyncEnumerable([1, 2, 3,]),
 				];
 				IEnumerable<Action<IThat<int>>> expected =
@@ -27,7 +27,7 @@ public sealed partial class ThatAsyncEnumerable
 						a => a.IsEqualTo(3));
 
 				async Task Act()
-					=> await That(subject).All().ComplyWith(x => x.IsEqualTo(expected));
+					=> await That(subject).All().ComplyWith(x => x.IsContainedIn(expected));
 
 				await That(Act).DoesNotThrow();
 			}
@@ -37,31 +37,31 @@ public sealed partial class ThatAsyncEnumerable
 			{
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([1, 1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 2, 3,]),
+					ToAsyncEnumerable([1, 1, 2,]),
+					ToAsyncEnumerable([2, 2, 3,]),
 					ToAsyncEnumerable([1, 2, 3, 3,]),
 				];
 				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(1, 2, 3);
 
 				async Task Act()
-					=> await That(subject).All().ComplyWith(x => x.IsEqualTo(expected).IgnoringDuplicates());
+					=> await That(subject).All().ComplyWith(x => x.IsContainedIn(expected).IgnoringDuplicates());
 
 				await That(Act).DoesNotThrow();
 			}
 
 			[Fact]
-			public async Task InAnyOrderIgnoringDuplicates_WhenEvaluatedForSeveralItems_ShouldEnumerateExpectedOnce()
+			public async Task IgnoringInterspersedItems_WhenEvaluatedForSeveralItems_ShouldEnumerateExpectedOnce()
 			{
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([3, 3, 2, 1,]),
-					ToAsyncEnumerable([1, 2, 2, 3,]),
-					ToAsyncEnumerable([2, 3, 1, 1,]),
+					ToAsyncEnumerable([1, 3,]),
+					ToAsyncEnumerable([1, 2,]),
+					ToAsyncEnumerable([2, 3,]),
 				];
 				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(1, 2, 3);
 
 				async Task Act()
-					=> await That(subject).All().ComplyWith(x => x.IsEqualTo(expected).InAnyOrder().IgnoringDuplicates());
+					=> await That(subject).All().ComplyWith(x => x.IsContainedIn(expected).IgnoringInterspersedItems());
 
 				await That(Act).DoesNotThrow();
 			}
@@ -71,14 +71,14 @@ public sealed partial class ThatAsyncEnumerable
 			{
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([3, 2, 1,]),
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([2, 3, 1,]),
+					ToAsyncEnumerable([2, 1,]),
+					ToAsyncEnumerable([3, 2,]),
+					ToAsyncEnumerable([3, 1,]),
 				];
 				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(1, 2, 3);
 
 				async Task Act()
-					=> await That(subject).All().ComplyWith(x => x.IsEqualTo(expected).InAnyOrder());
+					=> await That(subject).All().ComplyWith(x => x.IsContainedIn(expected).InAnyOrder());
 
 				await That(Act).DoesNotThrow();
 			}
@@ -88,49 +88,17 @@ public sealed partial class ThatAsyncEnumerable
 			{
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
+					ToAsyncEnumerable([1, 2,]),
+					ToAsyncEnumerable([2, 3,]),
 					ToAsyncEnumerable([1, 2, 3,]),
 				];
 				IEnumerable<Expression<Func<int, bool>>> expected =
 					Factory.GetSingleUseEnumerable<Expression<Func<int, bool>>>(a => a == 1, a => a == 2, a => a == 3);
 
 				async Task Act()
-					=> await That(subject).All().ComplyWith(x => x.IsEqualTo(expected));
+					=> await That(subject).All().ComplyWith(x => x.IsContainedIn(expected));
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task Predicates_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
-			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 3, 2,]);
-				IEnumerable<Expression<Func<int, bool>>> expected =
-					Factory.GetSingleUseEnumerable<Expression<Func<int, bool>>>(a => a == 1, a => a == 2, a => a == 3);
-
-				async Task Act()
-					=> await That(subject).IsEqualTo(expected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is equal to collection expected in order,
-					             but it
-					               contained item 3 at index 1 instead of a => (a == 2) and
-					               contained item 2 at index 2 instead of a => (a == 3)
-					             (but the items match in a different order)
-
-					             Collection:
-					             [1, 3, 2]
-
-					             Expected:
-					             [
-					               a => (a == 1),
-					               a => (a == 2),
-					               a => (a == 3)
-					             ]
-					             """)
-					.Because("the comparison, the hint and the message share one enumeration of the expected items");
 			}
 
 			[Fact]
@@ -138,19 +106,19 @@ public sealed partial class ThatAsyncEnumerable
 			{
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 4,]),
+					ToAsyncEnumerable([1, 2,]),
+					ToAsyncEnumerable([2, 3,]),
+					ToAsyncEnumerable([3, 4,]),
 				];
 				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(1, 2, 3);
 
 				async Task Act()
-					=> await That(subject).All().ComplyWith(x => x.IsEqualTo(expected));
+					=> await That(subject).All().ComplyWith(x => x.IsContainedIn(expected));
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             is equal to collection expected in order for all items,
+					             is contained in collection expected in order and contiguous for all items,
 					             but only 2 of 3 were
 
 					             Not matching items:
@@ -166,7 +134,7 @@ public sealed partial class ThatAsyncEnumerable
 					             ]
 
 					             Collection (item [2]):
-					             [1, 2, 4]
+					             [3, 4]
 
 					             Expected (item [2]):
 					             [
@@ -183,47 +151,16 @@ public sealed partial class ThatAsyncEnumerable
 			{
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
+					ToAsyncEnumerable([1, 2,]),
+					ToAsyncEnumerable([2, 3,]),
 					ToAsyncEnumerable([1, 2, 3,]),
 				];
 				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(1, 2, 3);
 
 				async Task Act()
-					=> await That(subject).All().ComplyWith(x => x.IsEqualTo(expected));
+					=> await That(subject).All().ComplyWith(x => x.IsContainedIn(expected));
 
 				await That(Act).DoesNotThrow();
-			}
-
-			[Fact]
-			public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
-			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 3, 2,]);
-				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(1, 2, 3);
-
-				async Task Act()
-					=> await That(subject).IsEqualTo(expected);
-
-				await That(Act).Throws<XunitException>()
-					.WithMessage("""
-					             Expected that subject
-					             is equal to collection expected in order,
-					             but it
-					               contained item 3 at index 1 instead of 2 and
-					               contained item 2 at index 2 instead of 3
-					             (but the items match in a different order)
-
-					             Collection:
-					             [1, 3, 2]
-
-					             Expected:
-					             [
-					               1,
-					               2,
-					               3
-					             ]
-					             """)
-					.Because("the comparison, the hint and the message share one enumeration of the expected items");
 			}
 
 			[Fact]
@@ -232,14 +169,14 @@ public sealed partial class ThatAsyncEnumerable
 				int enumerations = 0;
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
+					ToAsyncEnumerable([1, 2,]),
+					ToAsyncEnumerable([2, 3,]),
 					ToAsyncEnumerable([1, 2, 3,]),
 				];
 				IEnumerable<int> expected = LazySequence();
 
 				async Task Act()
-					=> await That(subject).All().ComplyWith(x => x.IsEqualTo(expected));
+					=> await That(subject).All().ComplyWith(x => x.IsContainedIn(expected));
 
 				await That(Act).DoesNotThrow();
 				await That(enumerations).IsEqualTo(1);
@@ -257,10 +194,10 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WhenExpectedIsALazySequence_ShouldNotEnumerateItBeforeTheEvaluation()
 			{
 				int enumerations = 0;
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2,]);
 				IEnumerable<int> expected = LazySequence();
 
-				Expectation expectation = That(subject).IsEqualTo(expected);
+				Expectation expectation = That(subject).IsContainedIn(expected);
 
 				await That(enumerations).IsEqualTo(0);
 				await ThatAll(expectation);
@@ -282,7 +219,7 @@ public sealed partial class ThatAsyncEnumerable
 				IEnumerable<IAsyncEnumerable<int>> subject = Items();
 
 				async Task Act()
-					=> await That(subject).All().ComplyWith(x => x.IsEqualTo(expected));
+					=> await That(subject).All().ComplyWith(x => x.IsContainedIn(expected));
 
 				await That(Act).DoesNotThrow()
 					.Because("a collection is not copied, so that it is read when an item is compared");
@@ -302,14 +239,14 @@ public sealed partial class ThatAsyncEnumerable
 				MyException exception = new("the expected items are not available");
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
+					ToAsyncEnumerable([1, 2,]),
+					ToAsyncEnumerable([2, 3,]),
 					ToAsyncEnumerable([1, 2, 3,]),
 				];
 				IEnumerable<int> expected = ThrowingSequence();
 
 				async Task Act()
-					=> await That(subject).All().ComplyWith(x => x.IsEqualTo(expected));
+					=> await That(subject).All().ComplyWith(x => x.IsContainedIn(expected));
 
 				await That(Act).Throws<MyException>().Which.IsSameAs(exception);
 				await That(enumerations).IsEqualTo(1);
