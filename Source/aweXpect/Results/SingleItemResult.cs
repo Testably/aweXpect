@@ -41,20 +41,20 @@ public class SingleItemResult<TCollection, TItem>
 	/// <summary>
 	///     …that satisfies the <paramref name="predicate" />.
 	/// </summary>
-	public SingleItemResult<TCollection, TItem> Matching(Func<TItem, bool> predicate,
+	public SingleMatchingItemResult<TCollection, TItem> Matching(Func<TItem, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
 		predicate.ThrowIfNull();
 		_options.SetPredicate(predicate,
 			$" matching {doNotPopulateThisValue}");
-		return this;
+		return new SingleMatchingItemResult<TCollection, TItem>(ExpectationBuilder, _memberAccessor);
 	}
 
 	/// <summary>
 	///     …of type <typeparamref name="T" />.
 	/// </summary>
-	public SingleItemResult<TCollection, T> Matching<T>()
+	public SingleMatchingItemResult<TCollection, T> Matching<T>()
 	{
 		_options.SetPredicate(item => item is T,
 			$" of type {Formatter.Format(typeof(T))}");
@@ -64,7 +64,7 @@ public class SingleItemResult<TCollection, TItem>
 	/// <summary>
 	///     …of type <typeparamref name="T" /> that satisfies the <paramref name="predicate" />.
 	/// </summary>
-	public SingleItemResult<TCollection, T> Matching<T>(Func<T, bool> predicate,
+	public SingleMatchingItemResult<TCollection, T> Matching<T>(Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
@@ -77,7 +77,7 @@ public class SingleItemResult<TCollection, TItem>
 	/// <summary>
 	///     …exactly of type <typeparamref name="T" />.
 	/// </summary>
-	public SingleItemResult<TCollection, T> MatchingExactly<T>()
+	public SingleMatchingItemResult<TCollection, T> MatchingExactly<T>()
 	{
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
 		_options.SetPredicate(item => item is T && item.GetType() == exactType,
@@ -88,7 +88,7 @@ public class SingleItemResult<TCollection, TItem>
 	/// <summary>
 	///     …exactly of type <typeparamref name="T" /> that satisfies the <paramref name="predicate" />.
 	/// </summary>
-	public SingleItemResult<TCollection, T> MatchingExactly<T>(Func<T, bool> predicate,
+	public SingleMatchingItemResult<TCollection, T> MatchingExactly<T>(Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
@@ -99,6 +99,6 @@ public class SingleItemResult<TCollection, TItem>
 		return Cast<T>(x => (T)(object)x!);
 	}
 
-	private SingleItemResult<TCollection, T> Cast<T>(Func<TItem?, T> memberAccessor)
-		=> new(ExpectationBuilder, new PredicateOptions<T>(), x => memberAccessor(_memberAccessor(x)));
+	private SingleMatchingItemResult<TCollection, T> Cast<T>(Func<TItem?, T> memberAccessor)
+		=> new(ExpectationBuilder, x => memberAccessor(_memberAccessor(x)));
 }
