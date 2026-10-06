@@ -9,6 +9,8 @@ using System.Threading;
 
 namespace aweXpect.Core.Tests.Formatting;
 
+// A registered formatter applies process-wide, so these tests would see the registrations of each other.
+[NotInParallel(nameof(ValueFormatterTests))]
 public class ValueFormatterTests
 {
 	[Test]
