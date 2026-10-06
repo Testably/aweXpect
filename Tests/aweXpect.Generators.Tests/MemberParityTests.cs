@@ -69,14 +69,14 @@ public sealed partial class MemberParityTests
 		=> string.Join(Environment.NewLine, CorpusTypes.Select(x
 			=> $"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof({x.Name}))]"));
 
-	public static TheoryData<Type, string> Types
+	public static IEnumerable<(Type, string)> Types
 	{
 		get
 		{
-			TheoryData<Type, string> data = new();
+			List<(Type, string)> data = [];
 			foreach ((Type type, string name) in CorpusTypes)
 			{
-				data.Add(type, name.StartsWith('(') ? name : "global::" + name);
+				data.Add((type, name.StartsWith('(') ? name : "global::" + name));
 			}
 
 			return data;
