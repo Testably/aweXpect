@@ -7,6 +7,7 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Equivalency;
+using aweXpect.Formatting;
 using aweXpect.Options;
 using aweXpect.Results;
 
@@ -62,6 +63,107 @@ public sealed class ResultContextCollectorExtensionsTests
 	}
 
 	[Test]
+	public async Task AddCollectionContext_Untyped_WhenMaterializedItemsAreEmpty_ShouldNotAddAContext()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, _, _)
+				=> contexts.AddCollectionContext(new UntypedMaterializedEnumerable([])));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+			             """);
+	}
+
+	[Test]
+	public async Task AddCollectionContext_Untyped_WhenMaterializedItemsDidNotReachTheEnd_ShouldListThemAsIncomplete()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, _, _)
+				=> contexts.AddCollectionContext(new UntypedMaterializedEnumerable([1, 2,])));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+
+			             Collection:
+			             [1, 2, (… and maybe more)]
+			             """);
+	}
+
+	[Test]
+	public async Task AddCollectionContext_Untyped_WhenTheCountIsKnown_ShouldListTheItems()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, _, _)
+				=> contexts.AddCollectionContext(new UntypedMaterializedEnumerable([1, 2,], 2)));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+
+			             Collection:
+			             [1, 2]
+			             """);
+	}
+
+	[Test]
+	public async Task AddCollectionContext_Untyped_WhenTheEnumerationThrows_ShouldListTheException()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, _, _)
+				=> contexts.AddCollectionContext(new ThrowingEnumerable()));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+
+			             Collection:
+			             [the enumeration did throw an InvalidOperationException: enumeration failed]
+			             """);
+	}
+
+	[Test]
+	public async Task AddCollectionContext_Untyped_WithoutCount_ShouldListTheItemsOnSeparateLines()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, _, _)
+				=> contexts.AddCollectionContext((IEnumerable)Iterate(1, 2)));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+
+			             Collection:
+			             [
+			               1,
+			               2
+			             ]
+			             """)
+			.Because("without a count the single line layout for few items cannot be chosen");
+	}
+
+	[Test]
 	public async Task AddCollectionContext_WhenIncomplete_ShouldMarkTheItemsAsIncomplete()
 	{
 		int[] subject = [1, 2, 3,];
@@ -78,6 +180,23 @@ public sealed class ResultContextCollectorExtensionsTests
 
 			             Collection:
 			             [1, 2, 3, (… and maybe more)]
+			             """);
+	}
+
+	[Test]
+	public async Task AddCollectionContext_WhenMaterializedItemsAreEmpty_ShouldNotAddAContext()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, _, _)
+				=> contexts.AddCollectionContext<int>(new MaterializedEnumerable([])));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
 			             """);
 	}
 
@@ -118,6 +237,46 @@ public sealed class ResultContextCollectorExtensionsTests
 			             """);
 	}
 
+	[Test]
+	public async Task AddCollectionContext_WhenTheCollectionIsKeyed_ShouldListTheItemsWithTheirKeys()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, _, _)
+				=> contexts.AddCollectionContext(new KeyedCollection()));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+
+			             Collection:
+			             [a: 1, b: 2]
+			             """);
+	}
+
+	[Test]
+	public async Task AddCollectionContext_WhenTheCountIsKnown_ShouldListTheItems()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, _, _)
+				=> contexts.AddCollectionContext<int>(new MaterializedEnumerable([1, 2,], 2)));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+
+			             Collection:
+			             [1, 2]
+			             """);
+	}
+
 #if NET8_0_OR_GREATER
 	[Test]
 	public async Task AddCollectionContext_WithMaterializedAsyncEnumerable_ShouldListTheReceivedItems()
@@ -138,7 +297,68 @@ public sealed class ResultContextCollectorExtensionsTests
 			             [1, 2, (… and maybe more)]
 			             """);
 	}
+
+	[Test]
+	public async Task AddCollectionContext_WithMaterializedAsyncEnumerable_WhenNothingWasReceived_ShouldNotAddAContext()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, _, _)
+				=> contexts.AddCollectionContext<int>(new MaterializedAsyncEnumerable([])));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+			             """);
+	}
+
+	[Test]
+	public async Task AddCollectionContext_WithMaterializedAsyncEnumerable_WhenTheCountIsKnown_ShouldListTheItems()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, _, _)
+				=> contexts.AddCollectionContext<int>(new MaterializedAsyncEnumerable([1, 2,], 2)));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+
+			             Collection:
+			             [1, 2]
+			             """);
+	}
 #endif
+
+	[Test]
+	public async Task AddCollectionContext_WithoutCount_ShouldListTheItemsOnSeparateLines()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, _, _)
+				=> contexts.AddCollectionContext(Iterate(1, 2)));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+
+			             Collection:
+			             [
+			               1,
+			               2
+			             ]
+			             """)
+			.Because("without a count the single line layout for few items cannot be chosen");
+	}
 
 	[Test]
 	public async Task AddCollectionContext_WithTotalCount_ShouldNameTheItemsThatAreNotListed()
@@ -148,6 +368,70 @@ public sealed class ResultContextCollectorExtensionsTests
 		async Task Act()
 			=> await That(subject).ShowsContexts((contexts, _, _)
 				=> contexts.AddCollectionContext(Enumerable.Range(1, 11).ToList(), totalCount: 20));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+
+			             Collection:
+			             [
+			               1,
+			               2,
+			               3,
+			               4,
+			               5,
+			               6,
+			               7,
+			               8,
+			               9,
+			               10,
+			               (… and 10 more)
+			             ]
+			             """);
+	}
+
+	[Test]
+	public async Task AddCollectionContext_WithTotalCount_WhenTheItemsAreAReadOnlyCollection_ShouldNameTheItemsThatAreNotListed()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, _, _)
+				=> contexts.AddCollectionContext(new ReadOnlyItems(Enumerable.Range(1, 11).ToArray()), totalCount: 20));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+
+			             Collection:
+			             [
+			               1,
+			               2,
+			               3,
+			               4,
+			               5,
+			               6,
+			               7,
+			               8,
+			               9,
+			               10,
+			               (… and 10 more)
+			             ]
+			             """);
+	}
+
+	[Test]
+	public async Task AddCollectionContext_WithTotalCount_WhenTheItemsAreNoCollection_ShouldNameTheItemsThatAreNotListed()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, _, _)
+				=> contexts.AddCollectionContext(Iterate(Enumerable.Range(1, 11).ToArray()), totalCount: 20));
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -233,6 +517,29 @@ public sealed class ResultContextCollectorExtensionsTests
 	}
 
 	[Test]
+	public async Task AddDictionaryContext_WhenOnlyAReadOnlyDictionary_ShouldListTheEntries()
+	{
+		ReadOnlyDictionaryOnly dictionary = new(new Dictionary<string, int>
+		{
+			{ "a", 1 },
+			{ "b", 2 },
+		});
+
+		async Task Act()
+			=> await That(1).ShowsContexts((contexts, _, _) => contexts.AddDictionaryContext(dictionary));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that 1
+			             shows contexts,
+			             but it did not
+
+			             Dictionary:
+			             {["a"] = 1, ["b"] = 2}
+			             """);
+	}
+
+	[Test]
 	public async Task AddEqualityOptionsContexts_ShouldAddTheContextsOfTheMatchType()
 	{
 		ObjectEqualityOptions<int> options = new();
@@ -240,6 +547,27 @@ public sealed class ResultContextCollectorExtensionsTests
 
 		async Task Act()
 			=> await That(1).ShowsContexts((contexts, _, _) => contexts.AddEqualityOptionsContexts(options));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that 1
+			             shows contexts,
+			             but it did not
+
+			             Equivalency options:
+			              - include public fields and properties
+			             """);
+	}
+
+	[Test]
+	public async Task AddEqualityOptionsContexts_WhenProvidedByAnOptionsProvider_ShouldAddTheContextsOfTheProvidedOptions()
+	{
+		ObjectEqualityOptions<int> options = new();
+		options.SetMatchType(new EquivalencyMatchType(new EquivalencyOptions()), "Equivalent");
+		EqualityOptionsProvider provider = new(options);
+
+		async Task Act()
+			=> await That(1).ShowsContexts((contexts, _, _) => contexts.AddEqualityOptionsContexts(provider));
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -428,21 +756,91 @@ public sealed class ResultContextCollectorExtensionsTests
 		throw new InvalidOperationException("The expectation did not fail.");
 	}
 
-	private sealed class MaterializedEnumerable(IReadOnlyList<int> items) : IMaterializedEnumerable<int>
+	private static IEnumerable<int> Iterate(params int[] items)
 	{
-		public int? Count => null;
+		foreach (int item in items)
+		{
+			yield return item;
+		}
+	}
+
+	private sealed class EqualityOptionsProvider(ObjectEqualityOptions<int> options)
+		: IOptionsEquality<int>, IOptionsProvider<IOptionsEquality<int>>
+	{
+		public ValueTask<bool> AreConsideredEqual<TExpected>(int actual, TExpected expected)
+			=> options.AreConsideredEqual(actual, expected);
+
+		public IOptionsEquality<int> Options => options;
+	}
+
+	private sealed class KeyedCollection : IEnumerable<int>, IKeyedCollection
+	{
+		public IEnumerator<int> GetEnumerator()
+			=> throw new InvalidOperationException("The context must use the format of the keyed collection.");
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		public string Format() => "[a: 1, b: 2]";
+
+		public string Format(IEnumerable<int> indices, int? totalCount)
+			=> throw new InvalidOperationException("The context must list all items.");
+	}
+
+	private sealed class MaterializedEnumerable(IReadOnlyList<int> items, int? count = null)
+		: IMaterializedEnumerable<int>
+	{
+		public int? Count => count;
 		public IReadOnlyList<int> MaterializedItems => items;
 
 		public IEnumerator<int> GetEnumerator()
-			=> throw new InvalidOperationException("The context must not read further items.");
+			=> count is null
+				? throw new InvalidOperationException("The context must not read further items.")
+				: items.GetEnumerator();
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 
-#if NET8_0_OR_GREATER
-	private sealed class MaterializedAsyncEnumerable(IReadOnlyList<int> items) : IMaterializedAsyncEnumerable<int>
+	private sealed class ReadOnlyDictionaryOnly(Dictionary<string, int> inner) : IReadOnlyDictionary<string, int>
 	{
-		public int? Count => null;
+		public int Count => inner.Count;
+		public int this[string key] => inner[key];
+		public IEnumerable<string> Keys => inner.Keys;
+		public IEnumerable<int> Values => inner.Values;
+		public bool ContainsKey(string key) => inner.ContainsKey(key);
+		public bool TryGetValue(string key, out int value) => inner.TryGetValue(key, out value);
+		public IEnumerator<KeyValuePair<string, int>> GetEnumerator() => inner.GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+
+	private sealed class ReadOnlyItems(IReadOnlyList<int> items) : IReadOnlyCollection<int>
+	{
+		public int Count => items.Count;
+		public IEnumerator<int> GetEnumerator() => items.GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+
+	private sealed class ThrowingEnumerable : IEnumerable
+	{
+		public IEnumerator GetEnumerator() => throw new InvalidOperationException("enumeration failed");
+	}
+
+	private sealed class UntypedMaterializedEnumerable(IReadOnlyList<object?> items, int? count = null)
+		: IMaterializedEnumerable
+	{
+		public int? Count => count;
+		public IReadOnlyList<object?> MaterializedItems => items;
+
+		public IEnumerator GetEnumerator()
+			=> count is null
+				? throw new InvalidOperationException("The context must not read further items.")
+				: items.GetEnumerator();
+	}
+
+#if NET8_0_OR_GREATER
+	private sealed class MaterializedAsyncEnumerable(IReadOnlyList<int> items, int? count = null)
+		: IMaterializedAsyncEnumerable<int>
+	{
+		public int? Count => count;
 		public IReadOnlyList<int> MaterializedItems => items;
 
 		public IAsyncEnumerator<int> GetAsyncEnumerator(CancellationToken cancellationToken = default)
