@@ -1,5 +1,4 @@
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Testing;
 using Verifier = aweXpect.Analyzers.Tests.Verifiers.CSharpCodeFixVerifier<aweXpect.Analyzers.ValueTaskDelegateAnalyzer,
 	aweXpect.Analyzers.CodeFixers.ValueTaskDelegateCodeFixProvider>;

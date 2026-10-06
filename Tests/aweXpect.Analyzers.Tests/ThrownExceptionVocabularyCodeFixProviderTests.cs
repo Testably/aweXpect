@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Verifier = aweXpect.Analyzers.Tests.Verifiers.CSharpCodeFixVerifier<aweXpect.Analyzers.ThrownExceptionVocabularyAnalyzer,
 	aweXpect.Analyzers.CodeFixers.ThrownExceptionVocabularyCodeFixProvider>;
 
