@@ -1,10 +1,8 @@
-﻿using System.Collections.Frozen;
+﻿using System.Collections;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using aweXpect.Core;
-#if NET8_0_OR_GREATER
-using System.Collections;
-#endif
 
 namespace aweXpect.Tests;
 

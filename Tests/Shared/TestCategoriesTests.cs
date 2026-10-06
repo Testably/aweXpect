@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using aweXpect;
 
 namespace aweXpect.TestHelpers;
 
@@ -24,7 +27,7 @@ public sealed class TestCategoriesTests
 			.OrderBy(name => name, StringComparer.Ordinal)
 			.ToList();
 
-		await That(notExplicit).IsEmpty()
+		await Expect.That(notExplicit).IsEmpty()
 			.Because($"a test of the category \"{TestCategories.Slow}\" that is not [Explicit] keeps the others from running");
 	}
 

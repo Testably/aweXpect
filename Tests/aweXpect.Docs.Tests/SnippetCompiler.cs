@@ -24,7 +24,7 @@ namespace aweXpect.Docs.Tests;
 ///     and its members, e.g. an extension method, the members of the surrounding class. A <c>#line</c> directive maps
 ///     every part back to the page, and an initializer that is only a <c>//...</c> comment becomes <c>default!</c>.
 /// </remarks>
-internal partial static class SnippetCompiler
+internal static partial class SnippetCompiler
 {
 	private const string OmittedInitializerPattern = @"=\s*//\s*\.\.\.";
 	private static readonly CSharpParseOptions ParseOptions = new(LanguageVersion.Latest);
@@ -177,7 +177,7 @@ internal partial static class SnippetCompiler
 		Dictionary<string, string> paths = new(StringComparer.OrdinalIgnoreCase);
 #if NETFRAMEWORK
 		foreach (string path in Directory.GetFiles(
-				         RuntimeEnvironment.GetRuntimeDirectory(), "*.dll")
+			         RuntimeEnvironment.GetRuntimeDirectory(), "*.dll")
 			         .Concat(Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")))
 		{
 			if (IsManaged(path))
