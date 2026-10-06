@@ -16,18 +16,12 @@ public sealed class DocsPagesTests
 	///     All pages on .NET, but on .NET Framework only the pages for extension authors, so that they also compile
 	///     against the netstandard2.0 build.
 	/// </summary>
-	public static TheoryData<string> Pages()
+	public static IEnumerable<string> Pages()
 	{
 #if NETFRAMEWORK
 		return ExtensionPages();
 #else
-		TheoryData<string> pages = new();
-		foreach (string page in AllPages())
-		{
-			pages.Add(page);
-		}
-
-		return pages;
+		return AllPages();
 #endif
 	}
 
@@ -43,16 +37,8 @@ public sealed class DocsPagesTests
 	/// <summary>
 	///     The pages for extension authors, which tell them to reference only aweXpect.Core.
 	/// </summary>
-	public static TheoryData<string> ExtensionPages()
-	{
-		TheoryData<string> pages = new();
-		foreach (string page in AllPages().Where(page => page.StartsWith("11-extending/")))
-		{
-			pages.Add(page);
-		}
-
-		return pages;
-	}
+	public static IEnumerable<string> ExtensionPages()
+		=> AllPages().Where(page => page.StartsWith("11-extending/"));
 
 	[Test]
 	[MethodDataSource(nameof(ExtensionPages))]
