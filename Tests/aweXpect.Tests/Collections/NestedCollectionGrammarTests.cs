@@ -18,6 +18,50 @@ public sealed class NestedCollectionGrammar
 		}
 
 		[Test]
+		public async Task AreEquivalentTo_ShouldUsePluralVerb()
+		{
+			Dictionary<string, int> subject = new() { { "a", 1 }, { "b", 2 }, };
+
+			async Task Act()
+				=> await That(subject).Values.All().AreEquivalentTo(1);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("*has values of which all are equivalent to 1,*").AsWildcard();
+		}
+
+		[Test]
+		public async Task AreExactly_ShouldUsePluralVerb()
+		{
+			Dictionary<string, int> subject = new() { { "a", 1 }, };
+
+			async Task Act()
+				=> await That(subject).Values.All().AreExactly<long>();
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("*has values of which all are exactly of type long,*").AsWildcard();
+		}
+
+		[Test]
+		public async Task AreNotUnique_ShouldUsePluralVerb()
+		{
+			async Task Act()
+				=> await That("a\nb").HasLines(lines => lines.All().AreNotUnique());
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("*has lines of which all are not unique,*").AsWildcard();
+		}
+
+		[Test]
+		public async Task AreNotUniqueWithMemberAccessor_ShouldUsePluralVerb()
+		{
+			async Task Act()
+				=> await That("a\nbb").HasLines(lines => lines.All().AreNotUnique(l => l!.Length));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("*has lines of which all are not unique by l => l!.Length,*").AsWildcard();
+		}
+
+		[Test]
 		public async Task AreUnique_ShouldUsePluralVerb()
 		{
 			async Task Act()

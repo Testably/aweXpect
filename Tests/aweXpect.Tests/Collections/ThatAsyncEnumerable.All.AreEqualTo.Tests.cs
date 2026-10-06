@@ -135,6 +135,28 @@ public sealed partial class ThatAsyncEnumerable
 						             but it was <null>
 						             """);
 				}
+
+				[Test]
+				public async Task WithItemTypeWithoutTolerance_WhenItemsDiffer_ShouldFail()
+				{
+					IAsyncEnumerable<char> subject = ToAsyncEnumerable(['a', 'b', 'a',]);
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo('a');
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equal to 'a' for all items,
+						             but only 1 of at least 2 were
+
+						             Not matching items:
+						             ['b', (… and maybe more)]
+
+						             Collection:
+						             ['a', 'b', (… and maybe more)]
+						             """);
+				}
 			}
 
 			public sealed class StringItemTests

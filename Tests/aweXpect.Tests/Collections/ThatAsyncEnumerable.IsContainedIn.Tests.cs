@@ -1455,6 +1455,18 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Test]
+			public async Task WithCollectionOfCharsInDifferentOrder_ShouldSucceed()
+			{
+				IAsyncEnumerable<char> subject = ToAsyncEnumerable(['a', 'c', 'b',]);
+				char[] expected = ['a', 'b', 'c',];
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected).InAnyOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["c", "a", "b", "c",]);

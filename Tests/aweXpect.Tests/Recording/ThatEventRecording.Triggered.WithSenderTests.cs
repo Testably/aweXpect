@@ -112,6 +112,29 @@ public sealed partial class ThatEventRecording
 			}
 
 			[Test]
+			public async Task WithCustomEvent_WhenEventHasNoParameters_ShouldFail()
+			{
+				CustomEventWithoutParametersClass sut = new();
+				IEventRecording<CustomEventWithoutParametersClass> recording = sut.Record().Events();
+
+				sut.NotifyCustomEvent();
+
+				async Task Act() =>
+					await That(recording).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
+						.WithSender(_ => true);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the CustomEvent event on sut with sender _ => true at least once,
+					             but it was never recorded in [
+					               CustomEvent()
+					             ]
+					             """)
+					.Because("an event without parameters has no sender to match");
+			}
+
+			[Test]
 			public async Task WithCustomEvent_WhenSenderIsTheOnlyParameter_ShouldSucceed()
 			{
 				CustomEventWithParametersClass<EventArgs> sut = new();

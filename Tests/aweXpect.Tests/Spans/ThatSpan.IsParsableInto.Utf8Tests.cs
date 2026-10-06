@@ -126,8 +126,10 @@ public sealed partial class ThatSpan
 			[Test]
 			public async Task WhenSpanIsParsable_ShouldSucceed()
 			{
+				byte[] subject = "42"u8.ToArray();
+
 				async Task Act()
-					=> await That("42".AsSpan()).IsParsableInto<int>().Which.IsBetween(41).And(43);
+					=> await That(subject.AsSpan()).IsParsableInto<int>().Which.IsBetween(41).And(43);
 
 				await That(Act).DoesNotThrow();
 			}
@@ -135,8 +137,9 @@ public sealed partial class ThatSpan
 			[Test]
 			[Arguments("12,34", "de-AT")]
 			[Arguments("12.34", "en-US")]
-			public async Task WithFormatProvider_ShouldBeUsed(string subject, string cultureName)
+			public async Task WithFormatProvider_ShouldBeUsed(string subjectString, string cultureName)
 			{
+				byte[] subject = Encoding.UTF8.GetBytes(subjectString);
 				IFormatProvider formatProvider = new CultureInfo(cultureName);
 
 				async Task Act()
