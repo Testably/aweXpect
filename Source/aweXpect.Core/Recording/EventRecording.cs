@@ -142,6 +142,10 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 	public string ToString(string eventName)
 		=> _recorders[GetRecorderIndex(eventName)].ToString();
 
+	/// <inheritdoc />
+	public override string ToString()
+		=> _subjectExpression;
+
 	private IRecordableEvent Find(IRecordableEvent[] events, string eventName, TSubject subject)
 	{
 		foreach (IRecordableEvent @event in events)
@@ -275,10 +279,6 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 		_stopsAfterEvaluation = false;
 		return this;
 	}
-
-	/// <inheritdoc />
-	public override string ToString()
-		=> _subjectExpression;
 
 	private void Stop(IEvaluationContext? context)
 	{

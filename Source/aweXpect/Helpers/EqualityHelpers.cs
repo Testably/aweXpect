@@ -236,33 +236,6 @@ internal static class EqualityHelpers
 		return actual.Value.IsConsideredEqualTo(expected, tolerance);
 	}
 
-	/// <summary>
-	///     Checks whether <paramref name="actual" /> and <paramref name="other" /> can be compared at all: a
-	///     <see cref="DateTimeKind.Local" /> and a <see cref="DateTimeKind.Utc" /> value denote different instants for
-	///     the same ticks, so any comparison between them would have to guess the local offset.
-	/// </summary>
-	public static bool IsKindCompatibleWith(this DateTime actual, DateTime other)
-		=> AreKindCompatible(actual.Kind, other.Kind);
-
-	/// <remarks>
-	///     A non-finite value has no distance to any other value, so no tolerance can bridge it, while
-	///     <see cref="double.Equals(double)" /> still lets <c>NaN</c> and each infinity match themselves.
-	/// </remarks>
-	private static bool IsFinite(double value) => !double.IsNaN(value) && !double.IsInfinity(value);
-
-	/// <inheritdoc cref="IsFinite(double)" />
-	private static bool IsFinite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
-
-	public static bool AreKindCompatible(DateTimeKind? actualKind, DateTimeKind? expectedKind)
-	{
-		if (actualKind == DateTimeKind.Unspecified || expectedKind == DateTimeKind.Unspecified)
-		{
-			return true;
-		}
-
-		return actualKind == expectedKind;
-	}
-
 #if NET8_0_OR_GREATER
 	/// <remarks>
 	///     A date has no time of day, so only the whole days of the <paramref name="tolerance" /> count.
@@ -299,4 +272,31 @@ internal static class EqualityHelpers
 		return actual.Value.IsConsideredEqualTo(expected, tolerance);
 	}
 #endif
+
+	/// <summary>
+	///     Checks whether <paramref name="actual" /> and <paramref name="other" /> can be compared at all: a
+	///     <see cref="DateTimeKind.Local" /> and a <see cref="DateTimeKind.Utc" /> value denote different instants for
+	///     the same ticks, so any comparison between them would have to guess the local offset.
+	/// </summary>
+	public static bool IsKindCompatibleWith(this DateTime actual, DateTime other)
+		=> AreKindCompatible(actual.Kind, other.Kind);
+
+	public static bool AreKindCompatible(DateTimeKind? actualKind, DateTimeKind? expectedKind)
+	{
+		if (actualKind == DateTimeKind.Unspecified || expectedKind == DateTimeKind.Unspecified)
+		{
+			return true;
+		}
+
+		return actualKind == expectedKind;
+	}
+
+	/// <remarks>
+	///     A non-finite value has no distance to any other value, so no tolerance can bridge it, while
+	///     <see cref="double.Equals(double)" /> still lets <c>NaN</c> and each infinity match themselves.
+	/// </remarks>
+	private static bool IsFinite(double value) => !double.IsNaN(value) && !double.IsInfinity(value);
+
+	/// <inheritdoc cref="IsFinite(double)" />
+	private static bool IsFinite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
 }
