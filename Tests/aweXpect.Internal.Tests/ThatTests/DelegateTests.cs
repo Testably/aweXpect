@@ -3,6 +3,7 @@ using System.Threading;
 
 namespace aweXpect.Internal.Tests.ThatTests;
 
+#pragma warning disable TUnit0031 // these tests deliberately pass async void delegates
 public sealed class DelegateTests
 {
 	[Test]
@@ -659,3 +660,4 @@ public sealed class DelegateTests
 		Exception? innerException = null)
 		: CustomException(message, innerException);
 }
+#pragma warning restore TUnit0031
