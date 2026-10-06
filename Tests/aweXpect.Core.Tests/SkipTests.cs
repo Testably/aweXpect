@@ -8,7 +8,7 @@ public sealed class SkipTests
 	{
 		void Act() => Skip.Test(reason);
 
-		await That(Act).Throws<SkipException>()
+		await That(Act).Throws<SkipTestException>()
 			.WithMessage($"*{reason}*").AsWildcard();
 	}
 
@@ -19,7 +19,7 @@ public sealed class SkipTests
 	{
 		void Act() => Skip.Unless(condition, reason);
 
-		await That(Act).Throws<SkipException>().OnlyIf(!condition)
+		await That(Act).Throws<SkipTestException>().OnlyIf(!condition)
 			.WithMessage($"*{reason}*").AsWildcard();
 	}
 
@@ -30,7 +30,7 @@ public sealed class SkipTests
 	{
 		void Act() => Skip.When(condition, reason);
 
-		await That(Act).Throws<SkipException>().OnlyIf(condition)
+		await That(Act).Throws<SkipTestException>().OnlyIf(condition)
 			.WithMessage($"*{reason}*").AsWildcard();
 	}
 }

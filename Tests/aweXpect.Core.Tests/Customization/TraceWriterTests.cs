@@ -209,6 +209,6 @@ public class TraceWriterTests
 		}
 
 		await That(traceWriter.Exceptions).Contains(e
-			=> e is SkipException && e.Message == "SKIPPED: foo (xunit v2 does not support skipping test)");
+			=> e is SkipTestException && e.Message == "foo");
 	}
 }
