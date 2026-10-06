@@ -31,8 +31,9 @@ export DOTNET_PATH="/home/runner/work/aweXpect/aweXpect/.fallout/temp/dotnet-uni
 # Build the solution
 $DOTNET_PATH build aweXpect.slnx --configuration Release  # Takes 1m20s. NEVER CANCEL. Set timeout to 3+ minutes.
 
-# Run tests (.NET 8.0 only to avoid mono dependency issues)
-$DOTNET_PATH test aweXpect.slnx --configuration Release --no-build --framework net8.0  # Takes 30s. NEVER CANCEL. Set timeout to 2+ minutes.
+# Run tests (.NET 8.0 only to avoid mono dependency issues). The unit tests run on TUnit as executables of the
+# Microsoft.Testing.Platform, so each project is started with `dotnet run` instead of `dotnet test`.
+$DOTNET_PATH run --project Tests/aweXpect.Tests --configuration Release --no-build --framework net8.0  # Takes 1m. NEVER CANCEL. Set timeout to 3+ minutes.
 ```
 
 ### Available Fallout Build Targets
@@ -60,6 +61,10 @@ Always test basic functionality after making changes:
    ```bash
    ./build.sh UnitTests  # Or use fallback with --framework net8.0
    ```
+   The slow tests are explicit (`[Explicit]` and `[Category(TestCategories.Slow)]`) and only run with a filter:
+   ```bash
+   dotnet run --project Tests/aweXpect.Docs.Tests --framework net8.0 -- --treenode-filter "/*/*/*/*[Category=Slow]"
+   ```
 
 ### Testing Framework Support
 The library supports multiple testing frameworks. Test projects are in `Tests/Frameworks/`:
@@ -70,6 +75,7 @@ The library supports multiple testing frameworks. Test projects are in `Tests/Fr
 
 ### Critical Testing Notes
 - **Framework Limitation**: .NET Framework tests require mono (not available on Linux). Use `--framework net8.0` flag.
+- **Test Framework**: The unit tests use TUnit (`[Test]`, `[Arguments]`, `[MethodDataSource]`, `[AutoArguments]`). See `CONTRIBUTING.md` for filters.
 - **Test Count**: Over 12,000 unit tests. Full test suite takes 5+ minutes.
 - **Coverage Requirements**: Maintain >90% code coverage (SonarCloud requirement).
 
