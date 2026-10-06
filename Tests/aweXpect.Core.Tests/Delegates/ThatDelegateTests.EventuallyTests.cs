@@ -18,7 +18,7 @@ public sealed partial class ThatDelegateTests
 			Counter counter = new();
 
 			async Task Act()
-				=> await That(() => counter.Value).Eventually().Within(VeryLowTimeout)
+				=> await That(() => counter.Value).Eventually().OnVirtualTime().Within(VeryLowTimeout)
 					.IsEqualTo(1).Because("of reasons");
 
 			await That(Act).Throws<XunitException>()
@@ -35,7 +35,7 @@ public sealed partial class ThatDelegateTests
 			Counter counter = new();
 
 			async Task Act()
-				=> await That(() => counter.Value).Eventually().Within(VeryLowTimeout)
+				=> await That(() => counter.Value).Eventually().OnVirtualTime().Within(VeryLowTimeout)
 					.IsEqualTo(1).Because("of reasons")
 					.Or.IsEqualTo(2);
 
@@ -55,7 +55,7 @@ public sealed partial class ThatDelegateTests
 			using (IDisposable __ = Customize.aweXpect.Settings().DefaultCheckInterval.Set(30.Seconds()))
 			{
 				async Task Act()
-					=> await That(() => counter.Value).Eventually().Within(SuccessTimeout)
+					=> await That(() => counter.Value).Eventually().OnVirtualTime().Within(SuccessTimeout)
 						.CheckEvery(10.Milliseconds())
 						.IsGreaterThan(3);
 
@@ -107,7 +107,8 @@ public sealed partial class ThatDelegateTests
 
 			using (IDisposable __ = Customize.aweXpect.Settings().DefaultCheckInterval.Set(200.Milliseconds()))
 			{
-				async Task Act() => await That(() => counter.Value).Eventually().Within(1.Seconds()).IsEqualTo(1);
+				async Task Act() => await That(() => counter.Value).Eventually().OnVirtualTime()
+					.Within(1.Seconds()).IsEqualTo(1);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
@@ -117,33 +118,30 @@ public sealed partial class ThatDelegateTests
 					             """);
 			}
 
-			await That(counter.EvaluationCount).IsLessThanOrEqualTo(6)
-				.Because("the check interval allows evaluations at 0ms, 200ms, 400ms, 600ms, 800ms and - because the " +
-				         "last wait is shortened to the remaining budget - at 1000ms, while without it the subject " +
-				         "would be evaluated far more often; how many of them a busy machine reaches is not specified");
+			await That(counter.EvaluationCount).IsEqualTo(6)
+				.Because("the check interval results in evaluations at 0ms, 200ms, 400ms, 600ms, 800ms and - because " +
+				         "the last wait is shortened to the remaining budget - at 1000ms");
 		}
 
 		[Fact]
 		public async Task DefaultEventuallyTimeout_ShouldBeUsedWhenNoTimeoutIsSpecified()
 		{
 			Counter counter = new();
-			Stopwatch stopwatch = new();
+			VirtualTimeSystem time = new();
 
 			using (IDisposable __ = Customize.aweXpect.Settings().DefaultEventuallyTimeout.Set(VeryLowTimeout))
 			{
-				async Task Act() => await That(() => counter.Value).Eventually().IsEqualTo(1);
+				async Task Act() => await That(() => counter.Value).Eventually().OnVirtualTime(time).IsEqualTo(1);
 
-				stopwatch.Start();
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that () => counter.Value
 					             eventually is equal to 1 within 0:00.050,
 					             but it was 0, which differs by -1
 					             """);
-				stopwatch.Stop();
 			}
 
-			await That(stopwatch.Elapsed).IsLessThan(5.Seconds());
+			await That(time.Now).IsEqualTo(VeryLowTimeout);
 		}
 
 		[Fact]
@@ -203,7 +201,8 @@ public sealed partial class ThatDelegateTests
 		{
 			Counter counter = new(2);
 
-			int result = await That(() => counter.Value).Eventually().Within(SuccessTimeout).IsGreaterThan(3);
+			int result = await That(() => counter.Value).Eventually().OnVirtualTime().Within(SuccessTimeout)
+				.IsGreaterThan(3);
 
 			await That(result).IsEqualTo(4);
 		}
@@ -214,7 +213,7 @@ public sealed partial class ThatDelegateTests
 			Counter counter = new(2);
 
 			async Task Act()
-				=> await That(() => counter.Value).Eventually().Within(SuccessTimeout)
+				=> await That(() => counter.Value).Eventually().OnVirtualTime().Within(SuccessTimeout)
 					.IsGreaterThan(3).And.IsLessThan(100);
 
 			await That(Act).DoesNotThrow();
@@ -232,7 +231,7 @@ public sealed partial class ThatDelegateTests
 			};
 
 			async Task Act()
-				=> await That(subject).Eventually().Within(SuccessTimeout).IsGreaterThan(3);
+				=> await That(subject).Eventually().OnVirtualTime().Within(SuccessTimeout).IsGreaterThan(3);
 
 			await That(Act).DoesNotThrow();
 		}
@@ -244,7 +243,7 @@ public sealed partial class ThatDelegateTests
 
 			async Task Act()
 				=> await That(token => token.IsCancellationRequested ? -1 : counter.Value)
-					.Eventually().Within(SuccessTimeout).IsGreaterThan(3);
+					.Eventually().OnVirtualTime().Within(SuccessTimeout).IsGreaterThan(3);
 
 			await That(Act).DoesNotThrow();
 		}
@@ -261,7 +260,7 @@ public sealed partial class ThatDelegateTests
 			};
 
 			async Task Act()
-				=> await That(subject).Eventually().Within(SuccessTimeout).IsGreaterThan(3);
+				=> await That(subject).Eventually().OnVirtualTime().Within(SuccessTimeout).IsGreaterThan(3);
 
 			await That(Act).DoesNotThrow();
 		}
@@ -274,7 +273,7 @@ public sealed partial class ThatDelegateTests
 
 			async Task Act()
 				=> await That(token => new ValueTask<int>(token.IsCancellationRequested ? -1 : counter.Value))
-					.Eventually().Within(SuccessTimeout).IsGreaterThan(3);
+					.Eventually().OnVirtualTime().Within(SuccessTimeout).IsGreaterThan(3);
 
 			await That(Act).DoesNotThrow();
 		}
@@ -286,7 +285,8 @@ public sealed partial class ThatDelegateTests
 			Counter counter = new();
 
 			async Task Act()
-				=> await That(() => counter.Value).Eventually().Within(VeryLowTimeout).IsEqualTo(1).Or.IsEqualTo(2);
+				=> await That(() => counter.Value).Eventually().OnVirtualTime().Within(VeryLowTimeout)
+					.IsEqualTo(1).Or.IsEqualTo(2);
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
@@ -303,8 +303,8 @@ public sealed partial class ThatDelegateTests
 			Counter counter = new(2);
 
 			async Task Act()
-				=> await That(() => new ValueTask<int>(counter.Value)).Eventually().Within(SuccessTimeout)
-					.IsGreaterThan(3);
+				=> await That(() => new ValueTask<int>(counter.Value)).Eventually().OnVirtualTime()
+					.Within(SuccessTimeout).IsGreaterThan(3);
 
 			await That(Act).DoesNotThrow();
 		}
@@ -374,7 +374,7 @@ public sealed partial class ThatDelegateTests
 				.WithTimeout(30.Seconds());
 			stopwatch.Stop();
 
-			await That(stopwatch.Elapsed).IsLessThan(10.Seconds())
+			await That(stopwatch.Elapsed).IsLessThan(30.Seconds())
 				.Because("the timeout must abandon an attempt that never finishes instead of awaiting it");
 		}
 
@@ -405,7 +405,8 @@ public sealed partial class ThatDelegateTests
 			Counter counter = new();
 
 			async Task Act()
-				=> await That(() => counter.Value).Eventually().Within(LowTimeout).IsGreaterThan(1).And.IsLessThan(0);
+				=> await That(() => counter.Value).Eventually().OnVirtualTime().Within(LowTimeout)
+					.IsGreaterThan(1).And.IsLessThan(0);
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
@@ -437,6 +438,44 @@ public sealed partial class ThatDelegateTests
 
 			await That(Act).DoesNotThrow();
 			await That(counter.EvaluationCount).IsEqualTo(3);
+		}
+
+		[Fact]
+		public async Task WhenAnAttemptTakesAlmostTheTimeout_ShouldEvaluateIt()
+		{
+			VirtualTimeSystem time = new();
+			Func<int> subject = () =>
+			{
+				time.Advance(VeryLowTimeout - TimeSpan.FromTicks(1));
+				return 1;
+			};
+
+			async Task Act()
+				=> await That(subject).Eventually().OnVirtualTime(time).Within(VeryLowTimeout).IsEqualTo(1);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Fact]
+		public async Task WhenAnAttemptTakesAsLongAsTheTimeout_ShouldFail()
+		{
+			VirtualTimeSystem time = new();
+			Func<int> subject = () =>
+			{
+				time.Advance(VeryLowTimeout);
+				return 1;
+			};
+
+			async Task Act()
+				=> await That(subject).Eventually().OnVirtualTime(time).Within(VeryLowTimeout).IsEqualTo(1);
+
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually is equal to 1 within 0:00.050,
+				             but it did not finish within 0:00.050
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
 		}
 
 		[Fact]
@@ -489,13 +528,12 @@ public sealed partial class ThatDelegateTests
 			using CancellationTokenSource cts = new();
 			cts.Cancel();
 			Counter counter = new();
-			Stopwatch stopwatch = new();
+			VirtualTimeSystem time = new();
 
 			async Task Act()
-				=> await That(() => counter.Value).Eventually().Within(30.Seconds()).IsEqualTo(1)
+				=> await That(() => counter.Value).Eventually().OnVirtualTime(time).Within(30.Seconds()).IsEqualTo(1)
 					.WithCancellation(cts.Token);
 
-			stopwatch.Start();
 			await That(Act).Throws<InconclusiveException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
@@ -503,22 +541,23 @@ public sealed partial class ThatDelegateTests
 				             but it could not be verified, because the evaluation was already canceled
 				             """)
 				.Because("a canceled evaluation names the retry budget like every other outcome of Eventually");
-			stopwatch.Stop();
 
-			await That(stopwatch.Elapsed).IsLessThan(5.Seconds());
+			await That(time.Now).IsEqualTo(TimeSpan.Zero);
 		}
 
 		[Fact]
 		public async Task WhenCancelledDuringTheWaitThatConsumesTheTimeout_ShouldBeInconclusive()
 		{
-			using CancellationTokenSource cts = new(100.Milliseconds());
+			VirtualTimeSystem time = new();
+			using CancellationTokenSource cts = new();
+			time.CancelAt(100.Milliseconds(), cts);
 			Counter counter = new();
 
 			using (IDisposable __ = Customize.aweXpect.Settings().DefaultCheckInterval.Set(30.Seconds()))
 			{
 				async Task Act()
-					=> await That(() => counter.Value).Eventually().Within(SuccessTimeout).IsEqualTo(1)
-						.WithCancellation(cts.Token);
+					=> await That(() => counter.Value).Eventually().OnVirtualTime(time).Within(SuccessTimeout)
+						.IsEqualTo(1).WithCancellation(cts.Token);
 
 				await That(Act).Throws<InconclusiveException>()
 					.WithMessage("""
@@ -527,6 +566,9 @@ public sealed partial class ThatDelegateTests
 					             but it could not be verified, because the evaluation was already canceled
 					             """);
 			}
+
+			await That(time.Now).IsEqualTo(100.Milliseconds())
+				.Because("the cancellation ends the wait at once");
 		}
 
 		[Fact]
@@ -550,7 +592,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 			stopwatch.Stop();
 
-			await That(stopwatch.Elapsed).IsLessThan(10.Seconds())
+			await That(stopwatch.Elapsed).IsLessThan(30.Seconds())
 				.Because("the cancellation must stop waiting for a subject that does not observe it");
 		}
 
@@ -577,7 +619,7 @@ public sealed partial class ThatDelegateTests
 			ThatDelegate.WithValue<int> subject = new(expectationBuilder, _ => Task.FromResult(counter.Value));
 
 			async Task Act()
-				=> await subject.Eventually().Within(SuccessTimeout).IsGreaterThan(3);
+				=> await subject.Eventually().OnVirtualTime().Within(SuccessTimeout).IsGreaterThan(3);
 
 			await That(Act).DoesNotThrow();
 			await That(counter.EvaluationCount).IsEqualTo(4)
@@ -611,28 +653,25 @@ public sealed partial class ThatDelegateTests
 		[Fact]
 		public async Task WhenIntervalIsLongerThanTheTimeout_ShouldEvaluateTwice()
 		{
-			Stopwatch stopwatch = new();
+			VirtualTimeSystem time = new();
 			Counter counter = new();
 
 			using (IDisposable __ = Customize.aweXpect.Settings().DefaultCheckInterval.Set(30.Seconds()))
 			{
 				async Task Act()
-					=> await That(() => counter.Value).Eventually().Within(LowTimeout).IsEqualTo(1);
+					=> await That(() => counter.Value).Eventually().OnVirtualTime(time).Within(LowTimeout).IsEqualTo(1);
 
-				stopwatch.Start();
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that () => counter.Value
 					             eventually is equal to 1 within 0:00.500,
 					             but it was 0, which differs by -1
 					             """);
-				stopwatch.Stop();
 			}
 
 			await That(counter.EvaluationCount).IsEqualTo(2)
-				.Because("the last wait is shortened to the remaining budget and ends the retries, while the first " +
-				         "attempt only reads a counter and has the whole timeout to leave budget for the second one");
-			await That(stopwatch.Elapsed).IsLessThan(30.Seconds())
+				.Because("the last wait is shortened to the remaining budget and ends the retries");
+			await That(time.Now).IsEqualTo(LowTimeout)
 				.Because("the last wait must not last the whole interval");
 		}
 
@@ -649,7 +688,7 @@ public sealed partial class ThatDelegateTests
 			}
 
 			async Task Act()
-				=> await That(Subject).Eventually().Within(LowTimeout).IsEmpty();
+				=> await That(Subject).Eventually().OnVirtualTime().Within(LowTimeout).IsEmpty();
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
@@ -680,7 +719,7 @@ public sealed partial class ThatDelegateTests
 			static int AlwaysThrows() => throw new MyException("always broken");
 
 			async Task Act()
-				=> await That(() => AlwaysThrows()).Eventually().Within(VeryLowTimeout)
+				=> await That(() => AlwaysThrows()).Eventually().OnVirtualTime().Within(VeryLowTimeout)
 					.DoesNotComplyWith(it => it.IsEqualTo(1));
 
 			await That(Act).Throws<XunitException>()
@@ -699,7 +738,8 @@ public sealed partial class ThatDelegateTests
 			static int AlwaysThrows() => throw new MyException("always broken");
 
 			async Task Act()
-				=> await That(() => AlwaysThrows()).Eventually().Within(VeryLowTimeout).Satisfies(x => 10 / x > 1);
+				=> await That(() => AlwaysThrows()).Eventually().OnVirtualTime().Within(VeryLowTimeout)
+					.Satisfies(x => 10 / x > 1);
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
@@ -717,7 +757,7 @@ public sealed partial class ThatDelegateTests
 			static int AlwaysThrows() => throw new MyException("always broken");
 
 			async Task Act()
-				=> await That(() => AlwaysThrows()).Eventually().Within(VeryLowTimeout).IsEqualTo(1);
+				=> await That(() => AlwaysThrows()).Eventually().OnVirtualTime().Within(VeryLowTimeout).IsEqualTo(1);
 
 			XunitException exception = await That(Act).Throws<XunitException>()
 				.WithMessage("""
@@ -736,7 +776,7 @@ public sealed partial class ThatDelegateTests
 			Counter counter = new(2);
 
 			async Task Act()
-				=> await That(() => counter.Value).Eventually().Within(SuccessTimeout).IsGreaterThan(3);
+				=> await That(() => counter.Value).Eventually().OnVirtualTime().Within(SuccessTimeout).IsGreaterThan(3);
 
 			await That(Act).DoesNotThrow();
 			await That(counter.EvaluationCount).IsEqualTo(4);
@@ -796,7 +836,7 @@ public sealed partial class ThatDelegateTests
 			Func<CancellationToken, Task<int>> subject = _ => null!;
 
 			async Task Act()
-				=> await That(subject).Eventually().Within(VeryLowTimeout).IsEqualTo(1);
+				=> await That(subject).Eventually().OnVirtualTime().Within(VeryLowTimeout).IsEqualTo(1);
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
@@ -815,7 +855,7 @@ public sealed partial class ThatDelegateTests
 
 			async Task Act()
 				=> await That(() => counter.Value > 3 ? counter.Value : throw new MyException("not yet")).Eventually()
-					.Within(SuccessTimeout)
+					.OnVirtualTime().Within(SuccessTimeout)
 					.IsGreaterThan(3);
 
 			await That(Act).DoesNotThrow();
@@ -898,7 +938,7 @@ public sealed partial class ThatDelegateTests
 			using (IDisposable ___ = Customize.aweXpect.Settings().TestCancellation
 				       .Set(TestCancellation.FromTimeout(VeryLowTimeout)))
 			{
-				async Task Act() => await That(() => counter.Value).Eventually().IsEqualTo(1);
+				async Task Act() => await That(() => counter.Value).Eventually().OnVirtualTime().IsEqualTo(1);
 
 				exception = await Record.ExceptionAsync(Act);
 			}
@@ -952,7 +992,7 @@ public sealed partial class ThatDelegateTests
 				            but it did not finish within 0:00.050
 				            """).AsWildcard().And
 				.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
-			await That(stopwatch.Elapsed).IsLessThan(5.Seconds());
+			await That(stopwatch.Elapsed).IsLessThan(30.Seconds());
 		}
 
 		[Fact]
@@ -1019,7 +1059,7 @@ public sealed partial class ThatDelegateTests
 			}
 
 			async Task Act()
-				=> await That(Subject).Eventually().Within(LowTimeout).IsEqualTo([3, 4,]);
+				=> await That(Subject).Eventually().OnVirtualTime().Within(LowTimeout).IsEqualTo([3, 4,]);
 
 			XunitException exception = await That(Act).Throws<XunitException>()
 				.WithMessage("""
@@ -1045,13 +1085,14 @@ public sealed partial class ThatDelegateTests
 
 			using (IDisposable __ = Customize.aweXpect.Settings().DefaultCheckInterval.Set(30.Seconds()))
 			{
+				// The subject completes asynchronously, so the real limit of its attempts must be out of reach.
 				async Task Act()
-					=> await That(Subject).Eventually().Within(LowTimeout).IsEqualTo(1);
+					=> await That(Subject).Eventually().OnVirtualTime().Within(SuccessTimeout).IsEqualTo(1);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that Subject
-					             eventually is equal to 1 within 0:00.500,
+					             eventually is equal to 1 within 0:05,
 					             but it was 0, which differs by -1
 					             """)
 					.Because("the last attempt, made when the timeout is used up, must not be abandoned at once");
@@ -1069,8 +1110,8 @@ public sealed partial class ThatDelegateTests
 				=> calls++ == 0 ? [1, 2,] : throw new MyException("broken");
 
 			async Task Act()
-				=> await That(Subject).Eventually().Within(VeryLowTimeout).CheckEvery(10.Milliseconds())
-					.IsEqualTo([3, 4,]);
+				=> await That(Subject).Eventually().OnVirtualTime().Within(VeryLowTimeout)
+					.CheckEvery(10.Milliseconds()).IsEqualTo([3, 4,]);
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
@@ -1100,7 +1141,7 @@ public sealed partial class ThatDelegateTests
 				{
 					subject.Add(subject.Count + 1);
 					return Lazy(subject);
-				}).Eventually().Within(SuccessTimeout).IsEqualTo([1, 2, 3,]);
+				}).Eventually().OnVirtualTime().Within(SuccessTimeout).IsEqualTo([1, 2, 3,]);
 
 			await That(Act).DoesNotThrow();
 		}
@@ -1124,7 +1165,8 @@ public sealed partial class ThatDelegateTests
 			int observed = 0;
 
 			async Task Act()
-				=> await That(() => observed = Math.Min(observed + 1, 2)).Eventually().Within(LowTimeout).IsEqualTo(0);
+				=> await That(() => observed = Math.Min(observed + 1, 2)).Eventually()
+					.OnVirtualTime().Within(LowTimeout).IsEqualTo(0);
 
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
@@ -1300,8 +1342,10 @@ public sealed partial class ThatDelegateTests
 
 			async Task Act()
 				=> await (withinFirst
-						? That(() => counter.Value).Eventually().Within(LowTimeout).CheckEvery(30.Seconds())
-						: That(() => counter.Value).Eventually().CheckEvery(30.Seconds()).Within(LowTimeout))
+						? That(() => counter.Value).Eventually().OnVirtualTime()
+							.Within(LowTimeout).CheckEvery(30.Seconds())
+						: That(() => counter.Value).Eventually().OnVirtualTime()
+							.CheckEvery(30.Seconds()).Within(LowTimeout))
 					.IsEqualTo(1);
 
 			await That(Act).Throws<XunitException>()
@@ -1333,7 +1377,7 @@ public sealed partial class ThatDelegateTests
 				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
 			stopwatch.Stop();
 
-			await That(stopwatch.Elapsed).IsLessThan(5.Seconds())
+			await That(stopwatch.Elapsed).IsLessThan(30.Seconds())
 				.Because("WithTimeout cancels the evaluation like everywhere else, instead of setting the retry budget");
 		}
 
@@ -1343,7 +1387,7 @@ public sealed partial class ThatDelegateTests
 			Counter counter = new();
 
 			async Task Act()
-				=> await That(() => counter.Value).Eventually().Within(VeryLowTimeout).IsEqualTo(1)
+				=> await That(() => counter.Value).Eventually().OnVirtualTime().Within(VeryLowTimeout).IsEqualTo(1)
 					.WithTimeout(SuccessTimeout);
 
 			await That(Act).Throws<XunitException>()

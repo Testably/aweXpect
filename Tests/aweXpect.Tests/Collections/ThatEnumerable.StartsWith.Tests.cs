@@ -153,13 +153,13 @@ public sealed partial class ThatEnumerable
 					=> attempts++ == 0 ? [2,] : [];
 
 				async Task Act()
-					=> await That(GetSubject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+					=> await That(GetSubject).Eventually().WithinTwoAttempts(5.Seconds())
 						.StartsWith(1);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that GetSubject
-					             eventually starts with [1] within 0:00.200,
+					             eventually starts with [1] within 0:05,
 					             but it contained only 0 items and lacked 1 item: [
 					               1
 					             ]
@@ -178,13 +178,13 @@ public sealed partial class ThatEnumerable
 					=> attempts++ == 0 ? [3,] : [1,];
 
 				async Task Act()
-					=> await That(GetSubject).Eventually().Within(500.Milliseconds()).CheckEvery(1.Milliseconds())
+					=> await That(GetSubject).Eventually().WithinTwoAttempts(5.Seconds())
 						.StartsWith(1, 2);
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that GetSubject
-					             eventually starts with [1, 2] within 0:00.500,
+					             eventually starts with [1, 2] within 0:05,
 					             but it contained only 1 item and lacked 1 item: [
 					               2
 					             ]

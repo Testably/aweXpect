@@ -332,22 +332,24 @@ public sealed partial class ThatGeneric
 			[Fact]
 			public async Task WhenIntervalExceedsTheTimeout_ShouldNotCountASuccessAfterTheTimeout()
 			{
-				Stopwatch stopwatch = Stopwatch.StartNew();
+				int count = 0;
 				Other subject = new();
 
 				async Task Act()
-					=> await That(subject).CompliesWith(x => x.Satisfies(_ => stopwatch.Elapsed >= 3.Seconds()))
-						.Within(100.Milliseconds()).CheckEvery(6.Seconds());
+					=> await That(subject).CompliesWith(x => x.Satisfies(_ => ++count > 2))
+						.Within(100.Milliseconds()).CheckEvery(1.Hours());
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             satisfies _ => stopwatch.Elapsed >= 3.Seconds() within 0:00.100,
+					             satisfies _ => ++count > 2 within 0:00.100,
 					             but it was ThatGeneric.Other {
 					                 Value = 0
 					               }
-					             """)
+					             """).WithTimeout(30.Seconds())
 					.Because("no check is made after the timeout");
+				await That(count).IsLessThanOrEqualTo(2)
+					.Because("the timeout only allows the first check and the check at its end");
 			}
 
 			[Fact]

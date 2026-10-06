@@ -1,4 +1,5 @@
 ﻿using aweXpect.Chronology;
+using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
 using aweXpect.Signaling;
 
@@ -271,7 +272,7 @@ public sealed partial class PropertyResultTests
 			int calls = 0;
 			Func<int> subject = () => 1;
 			PropertyResult.String<int, int, IThat<int>> sut = new(
-				That(subject).Eventually().Within(1.Seconds()).CheckEvery(10.Milliseconds()),
+				That(subject).Eventually().OnVirtualTime().Within(1.Seconds()).CheckEvery(10.Milliseconds()),
 				_ => calls++ == 0 ? throw new InvalidOperationException("not ready") : "foo",
 				"string value");
 

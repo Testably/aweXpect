@@ -1,4 +1,5 @@
-﻿using aweXpect.Core.TimeSystem;
+﻿using System.Threading;
+using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Core.Tests.TestHelpers;
 
@@ -6,6 +7,13 @@ internal class TimeSystemMock : ITimeSystem
 {
 	private readonly StopwatchFactoryMock _stopwatchFactory = new();
 	public IStopwatchFactory Stopwatch => _stopwatchFactory;
+
+	public long GetTimestamp() => RealTimeSystem.Instance.GetTimestamp();
+
+	public TimeSpan GetElapsedTime(long startTimestamp) => RealTimeSystem.Instance.GetElapsedTime(startTimestamp);
+
+	public Task Delay(TimeSpan delay, CancellationToken cancellationToken)
+		=> RealTimeSystem.Instance.Delay(delay, cancellationToken);
 
 	public TimeSystemMock SetElapsed(TimeSpan elapsed)
 	{

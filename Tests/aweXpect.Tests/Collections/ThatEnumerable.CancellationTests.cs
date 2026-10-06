@@ -1170,7 +1170,8 @@ public sealed partial class ThatEnumerable
 		public async Task WhenTimeoutElapses_ShouldFailStartsWith()
 		{
 			IEnumerable<int> subject = SlowNumbers();
-			int[] expected = Enumerable.Range(0, 1000).ToArray();
+			// More items than the subject yields before it ends, so that only the timeout stops the comparison.
+			int[] expected = Enumerable.Range(0, 100_000).ToArray();
 
 			async Task Act()
 				=> await That(subject).StartsWith(expected).WithTimeout(50.Milliseconds());
@@ -1178,7 +1179,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).Throws<XunitException>()
 				.WithMessage("""
 				             Expected that subject
-				             starts with [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, (… and 990 more)],
+				             starts with [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, (… and 99990 more)],
 				             but it did not finish within 0:00.050
 
 				             Collection:

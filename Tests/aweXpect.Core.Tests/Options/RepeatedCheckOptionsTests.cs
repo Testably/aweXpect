@@ -1,5 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -39,14 +41,19 @@ public sealed class RepeatedCheckOptionsTests
 	}
 
 	[Fact]
-	public async Task CheckRepeatedly_WhenRetrying_ShouldReleaseTheMaterializedSourceOfEachCheck()
+	public async Task CheckRepeatedly_WhenACheckTakesLongerThanTheTimeout_ShouldNotCheckAgain()
 	{
+		VirtualTimeSystem time = new();
 		int checks = 0;
-		DisposeTrackingEnumerable subject = new(null, 1, 2, 3);
+		IEnumerable<int> subject = Enumerable.Range(1, 3);
 
 		async Task Act()
-			=> await HasMatchingItem(That<IEnumerable<int>>(subject), _ => false, () => checks++)
-				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds());
+			=> await HasMatchingItem(That(subject), _ => false, () =>
+				{
+					checks++;
+					time.Advance(600.Milliseconds());
+				})
+				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).UseTimeSystem(time);
 
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
@@ -54,9 +61,77 @@ public sealed class RepeatedCheckOptionsTests
 			             has a matching item within 0:00.500,
 			             but it had none in [1, 2, 3]
 			             """);
-		await That(checks).IsGreaterThan(1);
+		await That(checks).IsEqualTo(1)
+			.Because("the timeout is measured from before the first check");
+		await That(time.Now).IsEqualTo(600.Milliseconds());
+	}
+
+	[Fact]
+	public async Task CheckRepeatedly_WhenRetrying_ShouldReleaseTheMaterializedSourceOfEachCheck()
+	{
+		VirtualTimeSystem time = new();
+		int checks = 0;
+		DisposeTrackingEnumerable subject = new(null, 1, 2, 3);
+
+		async Task Act()
+			=> await HasMatchingItem(That<IEnumerable<int>>(subject), _ => false, () => checks++)
+				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).UseTimeSystem(time);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             has a matching item within 0:00.500,
+			             but it had none in [1, 2, 3]
+			             """);
+		await That(checks).IsEqualTo(51)
+			.Because("the checks are made at once and then every 10 ms until the timeout");
+		await That(time.Now).IsEqualTo(500.Milliseconds());
 		await That(subject.DisposeCount).IsEqualTo(checks)
 			.Because("every check reads the subject again, and the source of each check is released exactly once");
+	}
+
+	[Fact]
+	public async Task CheckRepeatedly_WhenTheContextIsOfAnotherImplementation_ShouldUseTheRealTimeSystem()
+	{
+		RepeatedCheckOptions sut = new();
+		sut.Within(50.Milliseconds());
+		sut.CheckEvery(10.Milliseconds());
+		int checks = 0;
+		Stopwatch stopwatch = Stopwatch.StartNew();
+
+		Outcome outcome = await sut.CheckRepeatedly(_ =>
+		{
+			checks++;
+			return new ValueTask<bool>(false);
+		}, new ForeignEvaluationContext());
+
+		await That(outcome).IsEqualTo(Outcome.Failure);
+		await That(checks).IsGreaterThan(1);
+		await That(stopwatch.Elapsed).IsGreaterThanOrEqualTo(40.Milliseconds())
+			.Because("the checks wait in real time, and a timer can complete a few milliseconds before the stopwatch agrees");
+	}
+
+	[Fact]
+	public async Task CheckRepeatedly_WhenTheIntervalExceedsTheTimeout_ShouldCheckAtTheTimeoutAndNotAfterIt()
+	{
+		VirtualTimeSystem time = new();
+		List<TimeSpan> checks = [];
+		IEnumerable<int> subject = Enumerable.Range(1, 3);
+
+		async Task Act()
+			=> await HasMatchingItem(That(subject), _ => checks.Count > 2, () => checks.Add(time.Now))
+				.Within(100.Milliseconds()).CheckEvery(6.Seconds()).UseTimeSystem(time);
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             has a matching item within 0:00.100,
+			             but it had none in [1, 2, 3]
+			             """)
+			.Because("the third check would succeed, but no check is made after the timeout");
+		await That(checks).IsEqualTo([TimeSpan.Zero, 100.Milliseconds(),])
+			.Because("the wait is shortened to the remaining time, so the last check is made at the timeout");
+		await That(time.Now).IsEqualTo(100.Milliseconds());
 	}
 
 	[Fact]
@@ -110,6 +185,7 @@ public sealed class RepeatedCheckOptionsTests
 	[Fact]
 	public async Task CheckRepeatedly_WhenUserCodeAlwaysThrows_ShouldKeepCheckingAndFailWithTheLastException()
 	{
+		VirtualTimeSystem time = new();
 		int checks = 0;
 		MyException? lastThrown = null;
 		IEnumerable<int> subject = Enumerable.Range(1, 3);
@@ -121,7 +197,7 @@ public sealed class RepeatedCheckOptionsTests
 						throw lastThrown;
 					},
 					() => checks++)
-				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds());
+				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).UseTimeSystem(time);
 
 		Exception? exception = await Record.ExceptionAsync(Act);
 
@@ -134,7 +210,7 @@ public sealed class RepeatedCheckOptionsTests
 			            """).AsWildcard();
 		await That(exception?.InnerException).IsSameAs(lastThrown)
 			.Because("the exception of the last check is reported");
-		await That(checks).IsGreaterThan(1)
+		await That(checks).IsEqualTo(51)
 			.Because("an exception of the code of the caller must not end the repeated check early");
 	}
 
@@ -170,6 +246,19 @@ public sealed class RepeatedCheckOptionsTests
 				=> new HasMatchingItemConstraint(it, grammars, predicate, onCheck, options)),
 			subject,
 			options);
+	}
+
+	private sealed class ForeignEvaluationContext : IEvaluationContext
+	{
+		public EvaluationCancellation Cancellation => EvaluationCancellation.None;
+
+		public void Store<T>(string key, T value) { }
+
+		public bool TryReceive<T>(string key, [NotNullWhen(true)] out T? value)
+		{
+			value = default;
+			return false;
+		}
 	}
 
 	private sealed class HasMatchingItemConstraint(

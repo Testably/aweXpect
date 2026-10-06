@@ -878,6 +878,7 @@ public abstract class ExpectationBuilder
 		try
 		{
 			ITimeSystem timeSystem = _timeSystem ?? RealTimeSystem.Instance;
+			context.TimeSystem = timeSystem;
 			(TestCancellation? testCancellation, ITraceWriter? traceWriter) =
 				Customize.aweXpect.GetEvaluationSettings();
 			IsTracing = traceWriter is not null;

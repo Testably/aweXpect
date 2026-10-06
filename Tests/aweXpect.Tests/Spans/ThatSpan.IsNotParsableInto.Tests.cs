@@ -17,13 +17,13 @@ public sealed partial class ThatSpan
 				Func<SpanWrapper<char>> subject = () => new SpanWrapper<char>((calls++ == 0 ? "abc" : "1").AsSpan());
 
 				async Task Act()
-					=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+					=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
 						.IsNotParsableInto<int>().And.IsParsableInto<int>();
 
 				XunitException exception = await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             eventually is not parsable into int and is parsable into int within 0:00.200,
+					             eventually is not parsable into int and is parsable into int within 0:05,
 					             but it was "1", which is parsable into 1
 					             """);
 				await That(exception.InnerException).IsNull()

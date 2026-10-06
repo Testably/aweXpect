@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using aweXpect.Core.Tests.TestHelpers;
+﻿using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Core;
 
@@ -78,10 +77,10 @@ public sealed class UnexpectedExceptionTests
 	public async Task Task_WhenFailed_AndExpectationIsRepeated_ShouldFailWithoutRetrying()
 	{
 		Task<int> subject = Task.FromException<int>(new MyException("failure"));
-		Stopwatch stopwatch = Stopwatch.StartNew();
+		VirtualTimeSystem time = new();
 
 		async Task Act()
-			=> await That(subject).Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(30));
+			=> await That(subject).Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(30)).UseTimeSystem(time);
 
 		await That(Act).Throws<XunitException>()
 			.WithMessage("""
@@ -91,7 +90,7 @@ public sealed class UnexpectedExceptionTests
 			               failure
 			             """)
 			.And.WithInner<MyException>(inner => inner.HasMessage("failure"));
-		await That(stopwatch.Elapsed).IsLessThan(TimeSpan.FromSeconds(10))
+		await That(time.Now).IsEqualTo(TimeSpan.Zero)
 			.Because("a faulted task must fail at once instead of being retried for the 30 s window");
 	}
 

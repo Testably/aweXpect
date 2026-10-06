@@ -50,13 +50,13 @@ public sealed partial class ThatEnumerable
 				Func<int[]> subject = () => calls++ == 0 ? [1, 2,] : [];
 
 				async Task Act()
-					=> await That(subject).Eventually().Within(200.Milliseconds()).CheckEvery(10.Milliseconds())
+					=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
 						.HasSingle();
 
 				await That(Act).Throws<XunitException>()
 					.WithMessage("""
 					             Expected that subject
-					             eventually has a single item within 0:00.200,
+					             eventually has a single item within 0:05,
 					             but it was empty
 					             """);
 			}
