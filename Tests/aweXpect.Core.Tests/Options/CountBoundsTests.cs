@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using aweXpect.Core.Constraints;
 using aweXpect.Options;
 
@@ -6,21 +7,21 @@ namespace aweXpect.Core.Tests.Options;
 
 public class CountBoundsTests
 {
-	public static TheoryData<string, int> Bounds
-		=> new()
-		{
-			{ "AtLeast", 0 },
-			{ "AtLeast", 2 },
-			{ "AtMost", 0 },
-			{ "AtMost", 2 },
-			{ "Between", 1 },
-			{ "Exactly", 0 },
-			{ "Exactly", 2 },
-			{ "LessThan", 1 },
-			{ "LessThan", 3 },
-			{ "MoreThan", 0 },
-			{ "MoreThan", 2 },
-		};
+	public static IEnumerable<(string, int)> Bounds
+		=>
+		[
+			("AtLeast", 0),
+			("AtLeast", 2),
+			("AtMost", 0),
+			("AtMost", 2),
+			("Between", 1),
+			("Exactly", 0),
+			("Exactly", 2),
+			("LessThan", 1),
+			("LessThan", 3),
+			("MoreThan", 0),
+			("MoreThan", 2),
+		];
 
 	[Test]
 	[Arguments(1, "exactly one")]

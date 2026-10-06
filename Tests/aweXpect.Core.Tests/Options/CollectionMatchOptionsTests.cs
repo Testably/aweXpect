@@ -1388,7 +1388,7 @@ public class CollectionMatchOptionsTests
 				.Because("only which items occur matters, not how often, for values, predicates and expectations alike");
 		}
 
-		public static TheoryData<CollectionMatchOptions.EquivalenceRelations, string, string, string, string, bool>
+		public static IEnumerable<(CollectionMatchOptions.EquivalenceRelations, string, string, string, string, bool)>
 			MatchedOnBothSidesCases()
 		{
 			const CollectionMatchOptions.EquivalenceRelations equivalent =
@@ -1411,7 +1411,7 @@ public class CollectionMatchOptionsTests
 					("9,3", "3,9", "any", [equivalent, contains, isContainedIn,]),
 					("9,3", "3,9", "same,same-interspersed", []),
 				];
-			TheoryData<CollectionMatchOptions.EquivalenceRelations, string, string, string, string, bool> data = new();
+			List<(CollectionMatchOptions.EquivalenceRelations, string, string, string, string, bool)> data = [];
 			foreach ((string subject, string expected, string modes,
 				         CollectionMatchOptions.EquivalenceRelations[] matching) in scenarios)
 			{
@@ -1424,7 +1424,7 @@ public class CollectionMatchOptionsTests
 					{
 						foreach (string kind in new[] { "values", "predicates", "expectations", })
 						{
-							data.Add(relation, mode, kind, subject, expected, matching.Contains(relation));
+							data.Add((relation, mode, kind, subject, expected, matching.Contains(relation)));
 						}
 					}
 				}

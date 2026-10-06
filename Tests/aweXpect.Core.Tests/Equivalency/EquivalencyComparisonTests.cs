@@ -4973,33 +4973,25 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("an ordinary class carries its state in its members, so naming the differing component stays the better message");
 	}
 
-	public static TheoryData<object, object> DifferentNumbers()
-	{
-		TheoryData<object, object> theoryData = new()
-		{
-			{ new BigInteger(3), new BigInteger(5) },
-			{ new Complex(1, 2), new Complex(1, 3) },
-		};
-		theoryData.Add((Half)1, (Half)2);
-		theoryData.Add((NFloat)1, (NFloat)2);
-		theoryData.Add((Int128)1, (Int128)2);
-		theoryData.Add((UInt128)1, (UInt128)2);
-		return theoryData;
-	}
+	public static IEnumerable<(object, object)> DifferentNumbers() =>
+	[
+		(new BigInteger(3), new BigInteger(5)),
+		(new Complex(1, 2), new Complex(1, 3)),
+		((Half)1, (Half)2),
+		((NFloat)1, (NFloat)2),
+		((Int128)1, (Int128)2),
+		((UInt128)1, (UInt128)2),
+	];
 
-	public static TheoryData<object, object> EqualNumbers()
-	{
-		TheoryData<object, object> theoryData = new()
-		{
-			{ new BigInteger(3), new BigInteger(3) },
-			{ new Complex(1, 2), new Complex(1, 2) },
-		};
-		theoryData.Add((Half)1, (Half)1);
-		theoryData.Add((NFloat)1, (NFloat)1);
-		theoryData.Add((Int128)1, (Int128)1);
-		theoryData.Add((UInt128)1, (UInt128)1);
-		return theoryData;
-	}
+	public static IEnumerable<(object, object)> EqualNumbers() =>
+	[
+		(new BigInteger(3), new BigInteger(3)),
+		(new Complex(1, 2), new Complex(1, 2)),
+		((Half)1, (Half)1),
+		((NFloat)1, (NFloat)1),
+		((Int128)1, (Int128)1),
+		((UInt128)1, (UInt128)1),
+	];
 
 	/// <remarks>
 	///     Each call captures the <paramref name="value" /> in a closure of its own, so two delegates over the same
