@@ -10,11 +10,11 @@ public sealed partial class ThatEventRecording
 	{
 		public sealed class CountTests
 		{
-			[Theory]
-			[InlineData(2, 1, true)]
-			[InlineData(2, 2, false)]
-			[InlineData(2, 8, false)]
-			[InlineData(8, 2, true)]
+			[Test]
+			[Arguments(2, 1, true)]
+			[Arguments(2, 2, false)]
+			[Arguments(2, 8, false)]
+			[Arguments(8, 2, true)]
 			public async Task ShouldSupportAtLeast(int minimum, int count, bool expectSuccess)
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -26,7 +26,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.AtLeast(minimum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that recording
 					              has recorded the CustomEvent event on sut fewer than {minimum.ToTimesString()},
@@ -34,9 +34,9 @@ public sealed partial class ThatEventRecording
 					              """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(0, true)]
-			[InlineData(1, false)]
+			[Test]
+			[Arguments(0, true)]
+			[Arguments(1, false)]
 			public async Task ShouldSupportAtLeastOnce(int count, bool expectSuccess)
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -48,7 +48,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.AtLeast(1.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has never recorded the CustomEvent event on sut,
@@ -56,12 +56,12 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(1, 1, false)]
-			[InlineData(1, 2, true)]
-			[InlineData(2, 2, false)]
-			[InlineData(2, 8, true)]
-			[InlineData(8, 2, false)]
+			[Test]
+			[Arguments(1, 1, false)]
+			[Arguments(1, 2, true)]
+			[Arguments(2, 2, false)]
+			[Arguments(2, 8, true)]
+			[Arguments(8, 2, false)]
 			public async Task ShouldSupportAtMost(int maximum, int count, bool expectSuccess)
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -73,7 +73,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.AtMost(maximum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that recording
 					              has recorded the CustomEvent event on sut more than {maximum.ToTimesString()},
@@ -81,13 +81,13 @@ public sealed partial class ThatEventRecording
 					              """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(0, 1, 0, false)]
-			[InlineData(0, 1, 3, true)]
-			[InlineData(6, 8, 5, true)]
-			[InlineData(6, 8, 6, false)]
-			[InlineData(6, 8, 8, false)]
-			[InlineData(6, 8, 9, true)]
+			[Test]
+			[Arguments(0, 1, 0, false)]
+			[Arguments(0, 1, 3, true)]
+			[Arguments(6, 8, 5, true)]
+			[Arguments(6, 8, 6, false)]
+			[Arguments(6, 8, 8, false)]
+			[Arguments(6, 8, 9, true)]
 			public async Task ShouldSupportBetween(int minimum, int maximum, int count, bool expectSuccess)
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -99,7 +99,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Between(minimum).And(maximum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that recording
 					              has recorded the CustomEvent event on sut not between {minimum} and {maximum} times,
@@ -107,12 +107,12 @@ public sealed partial class ThatEventRecording
 					              """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(1, 1, false)]
-			[InlineData(2, 1, true)]
-			[InlineData(1, 2, true)]
-			[InlineData(2, 2, false)]
-			[InlineData(8, 2, true)]
+			[Test]
+			[Arguments(1, 1, false)]
+			[Arguments(2, 1, true)]
+			[Arguments(1, 2, true)]
+			[Arguments(2, 2, false)]
+			[Arguments(8, 2, true)]
 			public async Task ShouldSupportExactly(int expected, int count, bool expectSuccess)
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -124,7 +124,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Exactly(expected.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that recording
 					              has recorded the CustomEvent event on sut not exactly {expected.ToTimesString()},
@@ -132,11 +132,11 @@ public sealed partial class ThatEventRecording
 					              """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(2, 1, false)]
-			[InlineData(2, 2, true)]
-			[InlineData(2, 8, true)]
-			[InlineData(8, 2, false)]
+			[Test]
+			[Arguments(2, 1, false)]
+			[Arguments(2, 2, true)]
+			[Arguments(2, 8, true)]
+			[Arguments(8, 2, false)]
 			public async Task ShouldSupportLessThan(int maximum, int count, bool expectSuccess)
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -148,7 +148,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.LessThan(maximum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that recording
 					              has recorded the CustomEvent event on sut at least {maximum.ToTimesString()},
@@ -156,12 +156,12 @@ public sealed partial class ThatEventRecording
 					              """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(1, 1, true)]
-			[InlineData(1, 2, false)]
-			[InlineData(2, 2, true)]
-			[InlineData(2, 8, false)]
-			[InlineData(8, 2, true)]
+			[Test]
+			[Arguments(1, 1, true)]
+			[Arguments(1, 2, false)]
+			[Arguments(2, 2, true)]
+			[Arguments(2, 8, false)]
+			[Arguments(8, 2, true)]
 			public async Task ShouldSupportMoreThan(int minimum, int count, bool expectSuccess)
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -173,7 +173,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.MoreThan(minimum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that recording
 					              has recorded the CustomEvent event on sut at most {minimum.ToTimesString()},
@@ -181,9 +181,9 @@ public sealed partial class ThatEventRecording
 					              """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(0, false)]
-			[InlineData(1, true)]
+			[Test]
+			[Arguments(0, false)]
+			[Arguments(1, true)]
 			public async Task ShouldSupportNever(int count, bool expectSuccess)
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -195,7 +195,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Never();
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once,
@@ -203,10 +203,10 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Theory]
-			[InlineData(0, true)]
-			[InlineData(1, false)]
-			[InlineData(2, true)]
+			[Test]
+			[Arguments(0, true)]
+			[Arguments(1, false)]
+			[Arguments(2, true)]
 			public async Task ShouldSupportOnce(int count, bool expectSuccess)
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -218,7 +218,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Once();
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut not exactly once,
@@ -228,10 +228,10 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Theory]
-			[InlineData(1, true)]
-			[InlineData(2, false)]
-			[InlineData(3, true)]
+			[Test]
+			[Arguments(1, true)]
+			[Arguments(2, false)]
+			[Arguments(3, true)]
 			public async Task ShouldSupportTwice(int count, bool expectSuccess)
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -243,7 +243,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Twice();
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut not exactly twice,
@@ -254,9 +254,9 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Theory]
-			[InlineData(1, true)]
-			[InlineData(2, false)]
+			[Test]
+			[Arguments(1, true)]
+			[Arguments(2, false)]
 			public async Task WithEventArgs_ShouldOnlyCountMatchingEvents(int matchingCount, bool expectSuccess)
 			{
 				PropertyChangedClass sut = new()
@@ -278,7 +278,7 @@ public sealed partial class ThatEventRecording
 						.With<PropertyChangedEventArgs>(e => e.PropertyName == "MyValue")
 						.AtLeast(2.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut with PropertyChangedEventArgs e => e.PropertyName == "MyValue" fewer than twice,
@@ -286,7 +286,7 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenCountIsNotReachedWithinTimeout_ShouldSucceed()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -302,7 +302,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenCountIsReachedWithinTimeout_ShouldFail()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -316,7 +316,7 @@ public sealed partial class ThatEventRecording
 						.AtLeast(2.Times())
 						.Within(5.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut fewer than twice within 0:05,
@@ -327,7 +327,7 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenExactCountIsReachedWithinTimeout_ShouldFail()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -340,7 +340,7 @@ public sealed partial class ThatEventRecording
 						.Once()
 						.Within(10.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut not exactly once within 0:00.010,
@@ -350,9 +350,9 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(1, true)]
-			[InlineData(2, false)]
+			[Test]
+			[Arguments(1, true)]
+			[Arguments(2, false)]
 			public async Task WithParameter_ShouldOnlyCountMatchingEvents(int matchingCount, bool expectSuccess)
 			{
 				CustomEventWithParametersClass<string> sut = new();
@@ -371,7 +371,7 @@ public sealed partial class ThatEventRecording
 						.WithParameter<string>(s => s == "foo")
 						.Twice();
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut with string parameter s => s == "foo" not exactly twice,
@@ -384,9 +384,9 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Theory]
-			[InlineData(1, false)]
-			[InlineData(2, true)]
+			[Test]
+			[Arguments(1, false)]
+			[Arguments(2, true)]
 			public async Task WithSender_ShouldOnlyCountMatchingEvents(int matchingCount, bool expectSuccess)
 			{
 				PropertyChangedClass sender = new()
@@ -411,7 +411,7 @@ public sealed partial class ThatEventRecording
 						.WithSender(s => s == sender)
 						.AtMost(1.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut with sender s => s == sender more than once,
@@ -422,9 +422,9 @@ public sealed partial class ThatEventRecording
 
 		public sealed class NegatedCountTests
 		{
-			[Theory]
-			[InlineData(1, false)]
-			[InlineData(2, true)]
+			[Test]
+			[Arguments(1, false)]
+			[Arguments(2, true)]
 			public async Task ShouldSupportAtLeast(int count, bool expectSuccess)
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -437,7 +437,7 @@ public sealed partial class ThatEventRecording
 						.DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.AtLeast(2.Times()));
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least twice,

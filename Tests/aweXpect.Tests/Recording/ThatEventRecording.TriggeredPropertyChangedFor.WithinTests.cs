@@ -10,7 +10,7 @@ public sealed partial class ThatEventRecording
 	{
 		public sealed class WithinTests
 		{
-			[Fact]
+			[Test]
 			public async Task TriggersPropertyChangedFor_WhenEventIsNotTriggeredOftenEnoughWithinTimeout_ShouldFail()
 			{
 				PropertyChangedClass sut = new();
@@ -32,7 +32,7 @@ public sealed partial class ThatEventRecording
 						.Within(10.Milliseconds())
 						.AtLeast(3.Times());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut for property MyValue at least 3 times within 0:00.010,
@@ -41,7 +41,7 @@ public sealed partial class ThatEventRecording
 				cts.Cancel();
 			}
 
-			[Fact]
+			[Test]
 			public async Task TriggersPropertyChangedFor_WhenEventIsTriggeredOftenEnoughWithinTimeout_ShouldSucceed()
 			{
 				PropertyChangedClass sut = new();
@@ -64,7 +64,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEventRecording<PropertyChangedClass>? subject = null;
@@ -72,7 +72,7 @@ public sealed partial class ThatEventRecording
 				async Task Act()
 					=> await That(subject!).TriggeredPropertyChangedFor(x => x.MyValue).Within(5678.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has recorded the PropertyChanged event for property MyValue at least once within 0:05.678,

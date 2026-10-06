@@ -12,7 +12,7 @@ public sealed partial class ThatGuid
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					Guid? subject = FixedGuid();
@@ -27,7 +27,7 @@ public sealed partial class ThatGuid
 						.Because("an empty set is rejected when the expectation is built, before it is awaited");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					Guid? subject = FixedGuid();
@@ -41,7 +41,7 @@ public sealed partial class ThatGuid
 						.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedOnlyContainsNull_ShouldSucceed()
 				{
 					Guid? subject = FixedGuid();
@@ -53,7 +53,7 @@ public sealed partial class ThatGuid
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					Guid? subject = FixedGuid();
@@ -68,7 +68,7 @@ public sealed partial class ThatGuid
 						.Because("an empty set is rejected when the expectation is built, before it is awaited");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					Guid? subject = FixedGuid();
@@ -82,7 +82,7 @@ public sealed partial class ThatGuid
 						.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsContained_ShouldFail()
 				{
 					Guid? subject = FixedGuid();
@@ -91,7 +91,7 @@ public sealed partial class ThatGuid
 					async Task Act()
 						=> await That(subject).IsNotOneOf(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not one of unexpected,
@@ -102,7 +102,7 @@ public sealed partial class ThatGuid
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsDifferent_ShouldSucceed()
 				{
 					Guid? subject = FixedGuid();
@@ -114,7 +114,7 @@ public sealed partial class ThatGuid
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndUnexpectedContainsNull_ShouldFail()
 				{
 					Guid? subject = null;
@@ -123,7 +123,7 @@ public sealed partial class ThatGuid
 					async Task Act()
 						=> await That(subject).IsNotOneOf(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not one of unexpected,
@@ -134,7 +134,7 @@ public sealed partial class ThatGuid
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndUnexpectedDoesNotContainNull_ShouldSucceed()
 				{
 					Guid? subject = null;

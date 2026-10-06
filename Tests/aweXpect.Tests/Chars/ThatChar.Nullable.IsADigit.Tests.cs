@@ -8,12 +8,12 @@ public sealed partial class ThatChar
 		{
 			public sealed class Tests
 			{
-				[Theory]
-				[InlineData('0')]
-				[InlineData('5')]
-				[InlineData('9')]
-				[InlineData('\u0663')]
-				[InlineData('\u096B')]
+				[Test]
+				[Arguments('0')]
+				[Arguments('5')]
+				[Arguments('9')]
+				[Arguments('\u0663')]
+				[Arguments('\u096B')]
 				public async Task WhenSubjectIsADigit_ShouldSucceed(char? subject)
 				{
 					async Task Act()
@@ -22,19 +22,19 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData('a')]
-				[InlineData('A')]
-				[InlineData(' ')]
-				[InlineData('@')]
-				[InlineData('\u00BD')]
-				[InlineData('\u2163')]
+				[Test]
+				[Arguments('a')]
+				[Arguments('A')]
+				[Arguments(' ')]
+				[Arguments('@')]
+				[Arguments('\u00BD')]
+				[Arguments('\u2163')]
 				public async Task WhenSubjectIsNoDigit_ShouldFail(char? subject)
 				{
 					async Task Act()
 						=> await That(subject).IsADigit();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is a digit,
@@ -42,7 +42,7 @@ public sealed partial class ThatChar
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					char? subject = null;
@@ -50,7 +50,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).IsADigit();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is a digit,
@@ -61,18 +61,18 @@ public sealed partial class ThatChar
 
 			public sealed class NegatedTests
 			{
-				[Theory]
-				[InlineData('0')]
-				[InlineData('5')]
-				[InlineData('9')]
-				[InlineData('\u0663')]
-				[InlineData('\u096B')]
+				[Test]
+				[Arguments('0')]
+				[Arguments('5')]
+				[Arguments('9')]
+				[Arguments('\u0663')]
+				[Arguments('\u096B')]
 				public async Task WhenSubjectIsADigit_ShouldFail(char? subject)
 				{
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.IsADigit());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not a digit,
@@ -80,13 +80,13 @@ public sealed partial class ThatChar
 						              """);
 				}
 
-				[Theory]
-				[InlineData('a')]
-				[InlineData('A')]
-				[InlineData(' ')]
-				[InlineData('@')]
-				[InlineData('\u00BD')]
-				[InlineData('\u2163')]
+				[Test]
+				[Arguments('a')]
+				[Arguments('A')]
+				[Arguments(' ')]
+				[Arguments('@')]
+				[Arguments('\u00BD')]
+				[Arguments('\u2163')]
 				public async Task WhenSubjectIsNoDigit_ShouldSucceed(char? subject)
 				{
 					async Task Act()
@@ -95,7 +95,7 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					char? subject = null;
@@ -103,7 +103,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.IsADigit());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not a digit,

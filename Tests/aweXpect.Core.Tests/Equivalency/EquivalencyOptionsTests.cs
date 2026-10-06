@@ -5,7 +5,7 @@ namespace aweXpect.Core.Tests.Equivalency;
 
 public sealed class EquivalencyOptionsTests
 {
-	[Fact]
+	[Test]
 	public async Task For_ShouldNotChangeTheOptionsItIsCalledOn()
 	{
 		EquivalencyOptions inner = new();
@@ -18,7 +18,7 @@ public sealed class EquivalencyOptionsTests
 		await That(result.GetOptionsFor(typeof(string))).IsSameAs(result);
 	}
 
-	[Fact]
+	[Test]
 	public async Task For_WhenTypeIsAnInterface_ShouldThrowArgumentException()
 	{
 		void Act()
@@ -34,7 +34,7 @@ public sealed class EquivalencyOptionsTests
 			.Because("a registration for an interface would never apply");
 	}
 
-	[Fact]
+	[Test]
 	public async Task For_WhenTypeIsNullable_ShouldApplyToTheUnderlyingType()
 	{
 		EquivalencyTypeOptions typeOptions = new()
@@ -48,7 +48,7 @@ public sealed class EquivalencyOptionsTests
 			.Because("the runtime type of a boxed nullable value is its underlying type");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToString_WhenVisibilitiesAreCombined_ShouldNameEachOfThem()
 	{
 		EquivalencyOptions options = new()
@@ -62,7 +62,7 @@ public sealed class EquivalencyOptionsTests
 		await That(result).IsEqualTo(" - include public and internal fields and internal properties");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TypedOptions_ShouldKeepComparisonType()
 	{
 		EquivalencyOptions inner = new()
@@ -76,7 +76,7 @@ public sealed class EquivalencyOptionsTests
 			.Because("a globally customized default must survive the typed options of a per-call callback");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TypedOptions_ShouldKeepDefaultComparisonTypeSelector()
 	{
 		EquivalencyOptions inner = new()
@@ -90,7 +90,7 @@ public sealed class EquivalencyOptionsTests
 			.Because("a globally customized default must survive the typed options of a per-call callback");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TypedOptions_ShouldKeepFields()
 	{
 		EquivalencyOptions inner = new()
@@ -104,7 +104,7 @@ public sealed class EquivalencyOptionsTests
 			.Because("a globally customized default must survive the typed options of a per-call callback");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TypedOptions_ShouldKeepIgnoreCollectionOrder()
 	{
 		EquivalencyOptions inner = new()
@@ -118,7 +118,7 @@ public sealed class EquivalencyOptionsTests
 			.Because("a globally customized default must survive the typed options of a per-call callback");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TypedOptions_ShouldKeepMaxRecursionDepth()
 	{
 		EquivalencyOptions inner = new()
@@ -132,7 +132,7 @@ public sealed class EquivalencyOptionsTests
 			.Because("a globally customized default must survive the typed options of a per-call callback");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TypedOptions_ShouldKeepMembersToIgnore()
 	{
 		MemberToIgnore memberToIgnore = new MemberToIgnore.ByName("Foo");
@@ -147,7 +147,7 @@ public sealed class EquivalencyOptionsTests
 			.Because("a globally customized default must survive the typed options of a per-call callback");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TypedOptions_ShouldKeepProperties()
 	{
 		EquivalencyOptions inner = new()
@@ -161,7 +161,7 @@ public sealed class EquivalencyOptionsTests
 			.Because("a globally customized default must survive the typed options of a per-call callback");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TypedOptions_ShouldKeepRegistrations()
 	{
 		EquivalencyTypeOptions typeOptions = new()
@@ -176,7 +176,7 @@ public sealed class EquivalencyOptionsTests
 			.Because("a globally customized default must survive the typed options of a per-call callback");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TypedOptions_WhenInnerOptionsAlreadyContainTheType_ShouldOverrideThem()
 	{
 		EquivalencyOptions inner = new EquivalencyOptions().For<string>(_ => new EquivalencyTypeOptions());
@@ -190,9 +190,9 @@ public sealed class EquivalencyOptionsTests
 			.Because("the options of a single expectation win over the customized default");
 	}
 
-	[Theory]
-	[InlineData(0)]
-	[InlineData(-1)]
+	[Test]
+	[Arguments(0)]
+	[Arguments(-1)]
 	public async Task WhenMaxRecursionDepthIsNotPositive_ShouldThrowArgumentOutOfRangeException(int maxRecursionDepth)
 	{
 		void Act()

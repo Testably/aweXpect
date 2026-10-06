@@ -45,7 +45,7 @@ public sealed class UnansweredItem
 
 	public sealed class ComplyWithTests
 	{
-		[Fact]
+		[Test]
 		public async Task All_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -54,7 +54,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).All().ComplyWith(x => x.Satisfies(y => y < 2 ? true : throw exception));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             satisfies y => y < 2 ? true : throw exception for all items,
@@ -67,7 +67,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task All_WhenItemExpectationWithContextsThrows_ShouldShowTheContextsOfTheItem()
 		{
 			InvalidOperationException exception = new("boom");
@@ -76,7 +76,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).All().ComplyWith(x => x.IsEqualTo("abc").Using(new ThrowingComparer(exception)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to "abc" using UnansweredItem.ThrowingComparer for all items,
@@ -95,7 +95,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task All_WhenItemIsNull_ShouldFail()
 		{
 			string?[] subject = ["a", null,];
@@ -103,7 +103,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).All().ComplyWith(x => x.StartsWith("a"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             starts with "a" for all items,
@@ -118,7 +118,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsNull());
 		}
 
-		[Fact]
+		[Test]
 		public async Task All_WhenNegatedItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -127,7 +127,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).All().ComplyWith(x => x.DoesNotSatisfy(y => Throw(y, exception)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not satisfy y => Throw(y, exception) for all items,
@@ -140,7 +140,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task All_WhenNestedItemExpectationThrows_ShouldNameBothItems()
 		{
 			InvalidOperationException exception = new("boom");
@@ -150,7 +150,7 @@ public sealed class UnansweredItem
 				=> await That(subject).All()
 					.ComplyWith(x => x.None().ComplyWith(y => y.Satisfies(z => z < 3 ? false : throw exception)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             satisfies z => z < 3 ? false : throw exception for no items for all items,
@@ -174,9 +174,9 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Theory]
-		[InlineData(true)]
-		[InlineData(false)]
+		[Test]
+		[Arguments(true)]
+		[Arguments(false)]
 		public async Task AtLeast_WhenThrowingItemFollowsTheDecidingItem_ShouldSucceed(bool isCountKnown)
 		{
 			InvalidOperationException exception = new("boom");
@@ -189,9 +189,9 @@ public sealed class UnansweredItem
 				.Because("the first item already decides the outcome, whether the number of items is known or not");
 		}
 
-		[Theory]
-		[InlineData(true)]
-		[InlineData(false)]
+		[Test]
+		[Arguments(true)]
+		[Arguments(false)]
 		public async Task AtLeast_WhenThrowingItemOfEnumerableFollowsTheDecidingItem_ShouldSucceed(bool isCountKnown)
 		{
 			InvalidOperationException exception = new("boom");
@@ -204,9 +204,9 @@ public sealed class UnansweredItem
 				.Because("the first item already decides the outcome, whether the number of items is known or not");
 		}
 
-		[Theory]
-		[InlineData(true)]
-		[InlineData(false)]
+		[Test]
+		[Arguments(true)]
+		[Arguments(false)]
 		public async Task AtMost_WhenThrowingItemFollowsTheDecidingItems_ShouldFailWithTheDecidingItems(
 			bool isCountKnown)
 		{
@@ -216,7 +216,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).AtMost(1).ComplyWith(x => x.Satisfies(y => y == 1 ? true : throw exception));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             satisfies y => y == 1 ? true : throw exception for at most one item,
@@ -232,7 +232,7 @@ public sealed class UnansweredItem
 				.Because("the first two items already decide the outcome, whether the number of items is known or not");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Dictionary_ValuesNone_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -244,7 +244,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).Values.None().ComplyWith(x => x.Satisfies(y => Throw(y, exception)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has values of which none satisfy y => Throw(y, exception),
@@ -257,7 +257,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task Enumerable_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -266,7 +266,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).None().ComplyWith(x => x.Satisfies(_ => throw exception));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             satisfies _ => throw exception for no items,
@@ -280,7 +280,7 @@ public sealed class UnansweredItem
 		}
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task ImmutableArray_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -289,7 +289,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).None().ComplyWith(x => x.Satisfies(y => Throw(y, exception)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             satisfies y => Throw(y, exception) for no items,
@@ -302,7 +302,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task ImmutableStringArray_WhenItemIsNull_ShouldFail()
 		{
 			ImmutableArray<string?> subject = ["b", null,];
@@ -310,7 +310,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).None().ComplyWith(x => x.StartsWith("a"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             starts with "a" for no items,
@@ -325,7 +325,7 @@ public sealed class UnansweredItem
 		}
 #endif
 
-		[Fact]
+		[Test]
 		public async Task None_WhenCombinedItemExpectationThrows_ShouldNameTheItemBeforeItsResult()
 		{
 			InvalidOperationException exception = new("boom");
@@ -334,7 +334,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).None().ComplyWith(x => x.IsGreaterThan(5).Or.Satisfies(y => Throw(y, exception)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is greater than 5 or satisfies y => Throw(y, exception) for no items,
@@ -347,7 +347,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task None_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -356,7 +356,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).None().ComplyWith(x => x.Satisfies(y => Throw(y, exception)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             satisfies y => Throw(y, exception) for no items,
@@ -369,7 +369,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task None_WhenItemIsNull_ShouldFail()
 		{
 			string?[] subject = ["b", null,];
@@ -377,7 +377,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).None().ComplyWith(x => x.StartsWith("a"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             starts with "a" for no items,
@@ -392,7 +392,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsNull());
 		}
 
-		[Fact]
+		[Test]
 		public async Task None_WhenMemberOfItemIsNull_ShouldFail()
 		{
 			Item[] subject = [new("b"), new(null),];
@@ -400,7 +400,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).None().ComplyWith(x => x.Whose(i => i.Name, n => n.StartsWith("a")));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Name starts with "a" for no items,
@@ -418,7 +418,7 @@ public sealed class UnansweredItem
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task None_WhenOtherOperandDecidesEveryItem_ShouldSucceed()
 		{
 			InvalidOperationException exception = new("boom");
@@ -432,13 +432,13 @@ public sealed class UnansweredItem
 				.Because("an item that is not greater than 5 does not comply, whatever the predicate answers");
 		}
 
-		[Theory]
-		[InlineData("AtLeast(1)", "for at least one item")]
-		[InlineData("AtMost(1)", "for at most one item")]
-		[InlineData("Between(1, 2)", "for between 1 and 2 items")]
-		[InlineData("Exactly(1)", "for exactly one item")]
-		[InlineData("LessThan(2)", "for fewer than 2 items")]
-		[InlineData("MoreThan(0)", "for more than 0 items")]
+		[Test]
+		[Arguments("AtLeast(1)", "for at least one item")]
+		[Arguments("AtMost(1)", "for at most one item")]
+		[Arguments("Between(1, 2)", "for between 1 and 2 items")]
+		[Arguments("Exactly(1)", "for exactly one item")]
+		[Arguments("LessThan(2)", "for fewer than 2 items")]
+		[Arguments("MoreThan(0)", "for more than 0 items")]
 		public async Task OtherQuantifiers_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException(
 			string quantifier, string expectedQuantifier)
 		{
@@ -448,7 +448,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await Quantify(That(subject), quantifier).ComplyWith(x => x.Satisfies(y => Throw(y, exception)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that subject
 				              satisfies y => Throw(y, exception) {expectedQuantifier},
@@ -461,7 +461,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -470,7 +470,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).None().ComplyWith(x => x.Satisfies(_ => throw exception));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             satisfies _ => throw exception for no items,
@@ -502,7 +502,7 @@ public sealed class UnansweredItem
 
 	public sealed class NegatedComplyWithTests
 	{
-		[Fact]
+		[Test]
 		public async Task All_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -512,7 +512,7 @@ public sealed class UnansweredItem
 				=> await That(subject)
 					.DoesNotComplyWith(it => it.All().ComplyWith(x => x.Satisfies(y => Throw(y, exception))));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             satisfies y => Throw(y, exception) not for all items,
@@ -525,7 +525,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasItemThat_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -535,7 +535,7 @@ public sealed class UnansweredItem
 				=> await That(subject)
 					.DoesNotComplyWith(it => it.HasItemThat(x => x.Satisfies(y => Throw(y, exception))));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have an item that satisfies y => Throw(y, exception),
@@ -548,9 +548,9 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Theory]
-		[InlineData(true)]
-		[InlineData(false)]
+		[Test]
+		[Arguments(true)]
+		[Arguments(false)]
 		public async Task None_WhenThrowingItemFollowsTheDecidingItem_ShouldSucceed(bool isCountKnown)
 		{
 			InvalidOperationException exception = new("boom");
@@ -567,7 +567,7 @@ public sealed class UnansweredItem
 
 	public sealed class HasItemThatTests
 	{
-		[Fact]
+		[Test]
 		public async Task DoesNotHaveItemThat_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -576,7 +576,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).DoesNotHaveItemThat(x => x.Satisfies(y => Throw(y, exception)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have an item that satisfies y => Throw(y, exception),
@@ -589,7 +589,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotHaveItemThat_WhenItemIsNull_ShouldFail()
 		{
 			string?[] subject = ["b", null,];
@@ -597,7 +597,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).DoesNotHaveItemThat(x => x.StartsWith("a"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have an item that starts with "a",
@@ -612,7 +612,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsNull());
 		}
 
-		[Fact]
+		[Test]
 		public async Task Enumerable_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -621,7 +621,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).HasItemThat(x => x.Satisfies(_ => throw exception));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item that satisfies _ => throw exception,
@@ -635,7 +635,7 @@ public sealed class UnansweredItem
 		}
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task ImmutableArray_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -644,7 +644,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).DoesNotHaveItemThat(x => x.Satisfies(y => Throw(y, exception)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have an item that satisfies y => Throw(y, exception),
@@ -658,7 +658,7 @@ public sealed class UnansweredItem
 		}
 #endif
 
-		[Fact]
+		[Test]
 		public async Task WhenItemAtIndexThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -667,7 +667,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).HasItemThat(x => x.Satisfies(y => y != 2 ? true : throw exception)).AtIndex(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item that satisfies y => y != 2 ? true : throw exception at index 1,
@@ -680,7 +680,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -689,7 +689,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).HasItemThat(x => x.Satisfies(y => y < 2 ? false : throw exception));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item that satisfies y => y < 2 ? false : throw exception,
@@ -702,7 +702,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenItemExpectationWithContextsThrows_ShouldShowTheContextsOfTheItem()
 		{
 			InvalidOperationException exception = new("boom");
@@ -711,7 +711,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).HasItemThat(x => x.IsEqualTo("abc").Using(new ThrowingComparer(exception)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item that is equal to "abc" using UnansweredItem.ThrowingComparer,
@@ -730,7 +730,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenItemIsNull_ShouldFail()
 		{
 			string?[] subject = [null, "a",];
@@ -738,7 +738,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).HasItemThat(x => x.StartsWith("a"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item that starts with "a",
@@ -753,7 +753,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsNull());
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenMatchingItemPrecedesThrowingItem_ShouldSucceed()
 		{
 			InvalidOperationException exception = new("boom");
@@ -768,7 +768,7 @@ public sealed class UnansweredItem
 
 	public sealed class ExpectationItemsInAnyOrderTests
 	{
-		[Fact]
+		[Test]
 		public async Task IgnoringDuplicates_WhenItemFailsBothWaysForEveryExpectedItem_ShouldFail()
 		{
 			InvalidOperationException exception = new("boom");
@@ -778,7 +778,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in any order ignoring duplicates,
@@ -794,7 +794,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task IgnoringDuplicates_WhenUnansweredItemMatchesAnotherExpectedItem_ShouldSucceed()
 		{
 			string?[] subject = [null, "a", null,];
@@ -806,7 +806,7 @@ public sealed class UnansweredItem
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Predicates_WhenItemFailsBothWaysForEveryExpectedItem_ShouldFail()
 		{
 			string?[] subject = ["b", null,];
@@ -814,7 +814,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).IsEqualTo([x => IsB(x), x => x == "c",]).InAnyOrder();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [x => IsB(x), x => x == "c",] in any order,
@@ -836,7 +836,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.Is<InvalidOperationException>());
 		}
 
-		[Fact]
+		[Test]
 		public async Task Predicates_WhenThrowingItemMatchesAnotherExpectedItem_ShouldSucceed()
 		{
 			string?[] subject = [null, "b",];
@@ -848,7 +848,7 @@ public sealed class UnansweredItem
 				.Because("the predicate that threw for null is only one of the candidates");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenItemFailsBothWaysForEveryExpectedItem_ShouldFail()
 		{
 			InvalidOperationException exception = new("boom");
@@ -858,7 +858,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in any order,
@@ -874,7 +874,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenItemFailsBothWaysWithContexts_ShouldShowTheContextsOfTheItem()
 		{
 			InvalidOperationException exception = new("boom");
@@ -885,7 +885,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in any order,
@@ -911,7 +911,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenItemOnlyMatchesAnAssignedExpectedItem_ShouldBeANormalMismatch()
 		{
 			InvalidOperationException exception = new("boom");
@@ -922,7 +922,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in any order,
@@ -945,7 +945,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsNull());
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenUnansweredItemMatchesAnotherExpectedItem_ShouldSucceed()
 		{
 			string?[] subject = [null, "a",];
@@ -960,7 +960,7 @@ public sealed class UnansweredItem
 
 	public sealed class ExpectationItemsTests
 	{
-		[Fact]
+		[Test]
 		public async Task Contains_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -970,7 +970,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).Contains(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in order and contiguous,
@@ -986,7 +986,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotContain_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -996,7 +996,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).DoesNotContain(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not contain collection expected in order and contiguous,
@@ -1012,7 +1012,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsContainedIn_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -1022,7 +1022,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).IsContainedIn(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is contained in collection expected in order and contiguous,
@@ -1038,7 +1038,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -1048,7 +1048,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -1064,7 +1064,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_WhenItemExpectationWithContextsThrows_ShouldShowTheContextsOfTheItem()
 		{
 			InvalidOperationException exception = new("boom");
@@ -1075,7 +1075,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -1100,7 +1100,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_WhenItemIsNull_ShouldFail()
 		{
 			string?[] subject = ["a", null,];
@@ -1109,7 +1109,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -1130,7 +1130,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsNull());
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsNotContainedIn_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -1140,7 +1140,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).IsNotContainedIn(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is not contained in collection expected in order and contiguous,
@@ -1156,7 +1156,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsNotEqualTo_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -1166,7 +1166,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).IsNotEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is not equal to collection expected in order,
@@ -1186,7 +1186,7 @@ public sealed class UnansweredItem
 #if NET8_0_OR_GREATER
 	public sealed class AsyncEnumerableTests
 	{
-		[Fact]
+		[Test]
 		public async Task AllComplyWith_WhenItemIsNull_ShouldFail()
 		{
 			IAsyncEnumerable<string?> subject = ThatAsyncEnumerable.ToAsyncEnumerable<string?>("a", null);
@@ -1194,7 +1194,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).All().ComplyWith(x => x.StartsWith("a"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             starts with "a" for all items,
@@ -1210,7 +1210,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsNull());
 		}
 
-		[Fact]
+		[Test]
 		public async Task AtLeastComplyWith_WhenThrowingItemFollowsTheDecidingItem_ShouldSucceed()
 		{
 			InvalidOperationException exception = new("boom");
@@ -1223,7 +1223,7 @@ public sealed class UnansweredItem
 				.Because("the first item already decides the outcome, like for a synchronous collection");
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotHaveItemThat_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -1232,7 +1232,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).DoesNotHaveItemThat(x => x.Satisfies(y => Throw(y, exception)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have an item that satisfies y => Throw(y, exception),
@@ -1245,7 +1245,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasItemThat_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -1254,7 +1254,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).HasItemThat(x => x.Satisfies(y => y < 2 ? false : throw exception));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item that satisfies y => y < 2 ? false : throw exception,
@@ -1267,7 +1267,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -1277,7 +1277,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -1293,7 +1293,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_WhenItemExpectationWithContextsThrows_ShouldShowTheContextsOfTheItem()
 		{
 			InvalidOperationException exception = new("boom");
@@ -1304,7 +1304,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -1330,7 +1330,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task NoneComplyWith_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -1339,7 +1339,7 @@ public sealed class UnansweredItem
 			async Task Act()
 				=> await That(subject).None().ComplyWith(x => x.Satisfies(y => y < 2 ? false : throw exception));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             satisfies y => y < 2 ? false : throw exception for no items,
@@ -1352,7 +1352,7 @@ public sealed class UnansweredItem
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task NoneComplyWith_WhenNegatedAndItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -1362,7 +1362,7 @@ public sealed class UnansweredItem
 				=> await That(subject)
 					.DoesNotComplyWith(it => it.None().ComplyWith(x => x.Satisfies(y => Throw(y, exception))));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             satisfies y => Throw(y, exception) for at least one item,

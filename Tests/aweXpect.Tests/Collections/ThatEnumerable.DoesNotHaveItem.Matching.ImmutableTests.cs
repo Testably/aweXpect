@@ -13,7 +13,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class ImmutablePredicateTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsMatchingItemAtGivenIndex_ShouldFail()
 				{
 					ImmutableArray<int> subject = [0, 1, 2,];
@@ -21,7 +21,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().Matching(_ => true).AtIndex(2);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              does not have an item matching _ => true at index 2,
@@ -32,7 +32,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableHasFewerItemsThanTheGivenIndex_ShouldSucceed()
 				{
 					ImmutableArray<int> subject = [0, 1, 2,];
@@ -46,7 +46,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class ImmutableGenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenTypeIsSupertype_ShouldSucceed()
 				{
 					ImmutableArray<MyBaseClass> subject = [new MyBaseClass(0), new MyBaseClass(1),];
@@ -57,7 +57,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeMatchesAtGivenIndex_ShouldFail()
 				{
 					ImmutableArray<MyBaseClass> subject = [new MyBaseClass(0), new MyClass(1),];
@@ -65,7 +65,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().Matching<MyClass>().AtIndex(1);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have an item of type MyClass at index 1,

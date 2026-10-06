@@ -12,7 +12,7 @@ public sealed partial class ThatObject
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllConditionsFail_ShouldFail()
 				{
 					DummyClass subject = new()
@@ -30,7 +30,7 @@ public sealed partial class ThatObject
 					async Task Act()
 						=> await That(subject).IsEquivalentTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to expected,
@@ -52,7 +52,7 @@ public sealed partial class ThatObject
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAllConditionsMeet_ShouldSucceed()
 				{
 					DummyClass subject = new()
@@ -72,7 +72,7 @@ public sealed partial class ThatObject
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAnyConditionFails_ShouldFail()
 				{
 					DummyClass subject = new()
@@ -89,7 +89,7 @@ public sealed partial class ThatObject
 					async Task Act()
 						=> await That(subject).IsEquivalentTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to expected,
@@ -106,7 +106,7 @@ public sealed partial class ThatObject
 				/// <summary>
 				///     It is not possible to determine the type of <see langword="null" />!
 				/// </summary>
-				[Fact]
+				[Test]
 				public async Task WhenAnyNotNullCheckAndItIsNull_ShouldFail()
 				{
 					DummyClass subject = new()
@@ -125,7 +125,7 @@ public sealed partial class ThatObject
 					async Task Act()
 						=> await That(subject).IsEquivalentTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to expected,
@@ -143,7 +143,7 @@ public sealed partial class ThatObject
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAnyTypeDoesNotMatch_ShouldFail()
 				{
 					DummyClass subject = new()
@@ -160,7 +160,7 @@ public sealed partial class ThatObject
 					async Task Act()
 						=> await That(subject).IsEquivalentTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to expected,
@@ -178,7 +178,7 @@ public sealed partial class ThatObject
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenCheckForNullAndItIsNotNull_ShouldFail()
 				{
 					DummyClass subject = new()
@@ -195,7 +195,7 @@ public sealed partial class ThatObject
 					async Task Act()
 						=> await That(subject).IsEquivalentTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to expected,
@@ -212,7 +212,7 @@ public sealed partial class ThatObject
 				/// <summary>
 				///     It is not possible to determine the type of <see langword="null" />!
 				/// </summary>
-				[Fact]
+				[Test]
 				public async Task WhenCheckForNullAndItIsNull_ShouldSucceed()
 				{
 					DummyClass subject = new()
@@ -232,7 +232,7 @@ public sealed partial class ThatObject
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMemberWithAsyncReasonIsMet_AndAnotherConditionFails_ShouldIncludeTheReason()
 				{
 					DummyClass subject = new()
@@ -249,7 +249,7 @@ public sealed partial class ThatObject
 					async Task Act()
 						=> await That(subject).IsEquivalentTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to expected,

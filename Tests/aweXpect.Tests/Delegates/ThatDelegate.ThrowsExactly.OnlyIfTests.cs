@@ -8,7 +8,7 @@ public sealed partial class ThatDelegate
 		{
 			public sealed class GenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldSupportChainedConstraints()
 				{
 					Action action = () => { };
@@ -18,7 +18,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("foo");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAwaited_OnlyIfFalse_ShouldReturnNull()
 				{
 					Action action = () => { };
@@ -29,7 +29,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsNull();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAwaited_OnlyIfTrue_ShouldReturnThrownException()
 				{
 					Exception exception = new CustomException();
@@ -41,7 +41,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenFalse_ShouldFailWhenAnExceptionWasThrown()
 				{
 					Exception exception = new("");
@@ -58,7 +58,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenFalse_ShouldSucceedWhenNoExceptionWasThrown()
 				{
 					Action action = () => { };
@@ -69,7 +69,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTrue_ShouldFailWhenNoExceptionWasThrow()
 				{
 					Action action = () => { };
@@ -85,7 +85,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTrue_ShouldSucceedWhenAnExceptionWasThrow()
 				{
 					Exception exception = new("");
@@ -101,7 +101,7 @@ public sealed partial class ThatDelegate
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 			public sealed class TypeTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldSupportChainedConstraints()
 				{
 					Action action = () => { };
@@ -111,7 +111,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("foo");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAwaited_OnlyIfFalse_ShouldReturnNull()
 				{
 					Action action = () => { };
@@ -122,7 +122,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsNull();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAwaited_OnlyIfTrue_ShouldReturnThrownException()
 				{
 					Exception exception = new CustomException();
@@ -134,7 +134,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenFalse_ShouldFailWhenAnExceptionWasThrown()
 				{
 					Exception exception = new("");
@@ -151,7 +151,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenFalse_ShouldSucceedWhenNoExceptionWasThrown()
 				{
 					Action action = () => { };
@@ -162,7 +162,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTrue_ShouldFailWhenNoExceptionWasThrow()
 				{
 					Action action = () => { };
@@ -178,7 +178,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTrue_ShouldSucceedWhenAnExceptionWasThrow()
 				{
 					Exception exception = new("");

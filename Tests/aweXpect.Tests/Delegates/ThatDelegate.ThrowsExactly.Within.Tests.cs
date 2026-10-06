@@ -8,7 +8,7 @@ public sealed partial class ThatDelegate
 		{
 			public sealed class GenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldSupportChainedConstraints()
 				{
 					Action action = () => { };
@@ -24,8 +24,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenAwaited_ShouldReturnThrownException(string value)
 				{
 					Exception exception = new CustomException
@@ -41,7 +41,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDurationIsNegative_ShouldThrowArgumentOutOfRangeException()
 				{
 					Action? subject = null;
@@ -54,7 +54,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("The timeout must not be negative").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExactExceptionTypeIsThrownInTime_ShouldSucceed()
 				{
 					Exception exception = new CustomException();
@@ -66,7 +66,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExactExceptionTypeIsThrownTooLate_ShouldFail()
 				{
 					Exception exception = new CustomException();
@@ -87,7 +87,7 @@ public sealed partial class ThatDelegate
 						             """).AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoExceptionIsThrownAndExecutionTimeIsTooLarge_ShouldFail()
 				{
 					Action action = () =>
@@ -106,7 +106,7 @@ public sealed partial class ThatDelegate
 						             """).AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoExceptionIsThrownInTime_ShouldFail()
 				{
 					Action action = () => { };
@@ -122,8 +122,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenOtherExceptionIsThrown_ShouldFail(string message)
 				{
 					Exception exception = new OtherException(message);
@@ -141,7 +141,7 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubCustomExceptionIsThrown_ShouldFail()
 				{
 					Exception exception = new SubCustomException();
@@ -159,7 +159,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					Action? subject = null;
@@ -167,7 +167,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(subject!).ThrowsExactly<CustomException>().Within(0.Seconds());
 
-					await That(Act).ThrowsExactly<XunitException>()
+					await That(Act).ThrowsExactly<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             throws exactly a ThatDelegate.CustomException within 0:00,
@@ -175,8 +175,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenSupertypeExceptionIsThrown_ShouldFail(string message)
 				{
 					Exception exception = new CustomException(message);
@@ -198,7 +198,7 @@ public sealed partial class ThatDelegate
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 			public sealed class TypeTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldSupportChainedConstraints()
 				{
 					Action action = () => { };
@@ -215,8 +215,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenAwaited_ShouldReturnThrownException(string value)
 				{
 					Exception exception = new CustomException
@@ -231,7 +231,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDurationIsNegative_ShouldThrowArgumentOutOfRangeException()
 				{
 					Action? subject = null;
@@ -244,7 +244,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("The timeout must not be negative").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExactExceptionTypeIsThrownInTime_ShouldSucceed()
 				{
 					Exception exception = new CustomException();
@@ -256,7 +256,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExactExceptionTypeIsThrownTooLate_ShouldFail()
 				{
 					Exception exception = new CustomException();
@@ -277,7 +277,7 @@ public sealed partial class ThatDelegate
 						             """).AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoExceptionIsThrownAndExecutionTimeIsTooLarge_ShouldFail()
 				{
 					Action action = () =>
@@ -296,7 +296,7 @@ public sealed partial class ThatDelegate
 						             """).AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoExceptionIsThrownInTime_ShouldFail()
 				{
 					Action action = () => { };
@@ -312,8 +312,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenOtherExceptionIsThrown_ShouldFail(string message)
 				{
 					Exception exception = new OtherException(message);
@@ -331,7 +331,7 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubCustomExceptionIsThrown_ShouldFail()
 				{
 					Exception exception = new SubCustomException();
@@ -349,7 +349,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					Action? subject = null;
@@ -357,7 +357,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(subject!).ThrowsExactly(typeof(CustomException)).Within(0.Seconds());
 
-					await That(Act).ThrowsExactly<XunitException>()
+					await That(Act).ThrowsExactly<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             throws exactly a ThatDelegate.CustomException within 0:00,
@@ -365,8 +365,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenSupertypeExceptionIsThrown_ShouldFail(string message)
 				{
 					Exception exception = new CustomException(message);

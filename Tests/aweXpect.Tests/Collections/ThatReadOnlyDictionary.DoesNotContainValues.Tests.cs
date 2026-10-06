@@ -9,7 +9,7 @@ public sealed partial class ThatReadOnlyDictionary
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllValuesDoNotExist_ShouldSucceed()
 			{
 				IReadOnlyDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);
@@ -20,7 +20,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAllValuesDoNotExist_WithNull_ShouldSucceed()
 			{
 				IReadOnlyDictionary<int, int?> subject = ToDictionary<int, int?>([1, 2, 3,], [41, 42, 43,]);
@@ -31,7 +31,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAtLeastOneValueExists_ShouldFail()
 			{
 				IReadOnlyDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);
@@ -39,7 +39,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContainValues(42, 2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain values [42, 2],
@@ -52,7 +52,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAtLeastOneValueExists_WithNull_ShouldFail()
 			{
 				IReadOnlyDictionary<int, int?> subject = ToDictionary<int, int?>([1, 2, 3,], [null, 42, 43,]);
@@ -60,7 +60,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContainValues(2, null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain values [2, <null>],
@@ -73,7 +73,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				ReadOnlyDictionary<int, string>? subject = null;
@@ -81,7 +81,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject)!.DoesNotContainValues("foo", "bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain values ["foo", "bar"],
@@ -89,7 +89,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IReadOnlyDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);
@@ -102,7 +102,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("The 'unexpected' collection cannot be empty.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				IReadOnlyDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);
@@ -119,7 +119,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class ThrowingSubjectTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheEnumerationThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("enumeration failed");
@@ -129,7 +129,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContainValues(7, 8);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain values [7, 8],

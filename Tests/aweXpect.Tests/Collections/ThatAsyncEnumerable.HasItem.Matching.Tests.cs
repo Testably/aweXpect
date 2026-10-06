@@ -13,7 +13,7 @@ public sealed partial class ThatAsyncEnumerable
 		{
 			public sealed class PredicateTests
 			{
-				[Fact]
+				[Test]
 				public async Task DoesNotMaterializeEnumerable()
 				{
 					IAsyncEnumerable<int> subject = Factory.GetAsyncFibonacciNumbers();
@@ -24,7 +24,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
@@ -32,7 +32,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching(_ => false).AtIndex(2);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item matching _ => false at index 2,
@@ -43,7 +43,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldSucceed()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
@@ -54,7 +54,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsNoItemAtGivenIndex_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
@@ -62,7 +62,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching(_ => true).AtIndex(3);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item matching _ => true at index 3,
@@ -73,7 +73,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableIsEmpty_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
@@ -81,7 +81,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching(_ => true);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item matching _ => true,
@@ -92,7 +92,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_WithAnyIndex_ShouldFail()
 				{
 					IAsyncEnumerable<int>? subject = null;
@@ -100,7 +100,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching(_ => true);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item matching _ => true,
@@ -108,7 +108,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_WithFixedIndex_ShouldFail()
 				{
 					IAsyncEnumerable<int>? subject = null;
@@ -116,7 +116,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching(_ => true).AtIndex(0);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item matching _ => true at index 0,
@@ -124,7 +124,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithInvalidMatch_ShouldNotMatch()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2, 3, 4);
@@ -132,7 +132,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching(_ => true).WithInvalidMatch();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item matching _ => true with invalid match,
@@ -143,7 +143,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithMultipleFailures_ShouldIncludeCollectionOnlyOnce()
 				{
 					IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
@@ -155,7 +155,7 @@ public sealed partial class ThatAsyncEnumerable
 							.HasItem().Matching(_ => false)
 					;
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item matching _ => false at index 0 and has an item matching _ => false at index 1 and has an item matching _ => false,
@@ -173,7 +173,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class GenericPredicateTests
 			{
-				[Fact]
+				[Test]
 				public async Task DoesNotMaterializeEnumerable()
 				{
 					IAsyncEnumerable<MyClass> subject = Factory.GetAsyncFibonacciNumbers<MyClass>(x => new MyClass(x));
@@ -184,7 +184,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 				{
 					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable<MyClass>([0, 1, 2,], x => new MyClass(x));
@@ -192,7 +192,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching<MyBaseClass>(_ => false).AtIndex(2);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type MyBaseClass matching _ => false at index 2,
@@ -220,7 +220,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldSucceed()
 				{
 					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable<MyClass>([0, 1, 2,], x => new MyClass(x));
@@ -231,7 +231,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsNoItemAtGivenIndex_ShouldFail()
 				{
 					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable<MyClass>([0, 1, 2,], x => new MyClass(x));
@@ -239,7 +239,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching<MyBaseClass>(_ => true).AtIndex(3);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type MyBaseClass matching _ => true at index 3,
@@ -263,7 +263,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableIsEmpty_ShouldFail()
 				{
 					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable(Array.Empty<MyClass>());
@@ -271,7 +271,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching<MyBaseClass>(_ => true);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type MyBaseClass matching _ => true,
@@ -282,7 +282,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_WithAnyIndex_ShouldFail()
 				{
 					IAsyncEnumerable<MyClass>? subject = null;
@@ -290,7 +290,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching<MyBaseClass>(_ => true);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type MyBaseClass matching _ => true,
@@ -298,7 +298,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_WithFixedIndex_ShouldFail()
 				{
 					IAsyncEnumerable<MyClass>? subject = null;
@@ -306,7 +306,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching<MyBaseClass>(_ => true).AtIndex(0);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type MyBaseClass matching _ => true at index 0,
@@ -314,7 +314,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeDoesNotMatch_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -322,7 +322,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching<uint>(_ => true);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type uint matching _ => true,
@@ -333,7 +333,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeIsSubtype_ShouldSucceed()
 				{
 					IAsyncEnumerable<MyClass> subject =
@@ -345,7 +345,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeIsSupertype_ShouldFail()
 				{
 					IAsyncEnumerable<MyBaseClass> subject =
@@ -354,7 +354,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching<MyClass>(_ => true);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type MyClass matching _ => true,
@@ -375,7 +375,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithInvalidMatch_ShouldNotMatch()
 				{
 					IAsyncEnumerable<MyClass> subject =
@@ -384,7 +384,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching<MyBaseClass>(_ => true).WithInvalidMatch();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type MyBaseClass matching _ => true with invalid match,
@@ -404,7 +404,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class GenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task DoesNotMaterializeEnumerable()
 				{
 					IAsyncEnumerable<MyClass> subject = Factory.GetAsyncFibonacciNumbers<MyClass>(x => new MyClass(x));
@@ -415,7 +415,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 				{
 					IAsyncEnumerable<MyBaseClass> subject =
@@ -424,7 +424,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching<MyClass>().AtIndex(2);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type MyClass at index 2,
@@ -448,7 +448,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldSucceed()
 				{
 					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable<MyClass>([0, 1, 2,], x => new MyClass(x));
@@ -459,7 +459,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsNoItemAtGivenIndex_ShouldFail()
 				{
 					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable<MyClass>([0, 1, 2,], x => new MyClass(x));
@@ -467,7 +467,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching<MyBaseClass>().AtIndex(3);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type MyBaseClass at index 3,
@@ -491,7 +491,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableIsEmpty_ShouldFail()
 				{
 					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable(Array.Empty<MyClass>());
@@ -499,7 +499,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching<MyBaseClass>();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type MyBaseClass,
@@ -510,7 +510,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_WithAnyIndex_ShouldFail()
 				{
 					IAsyncEnumerable<MyClass>? subject = null;
@@ -518,7 +518,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching<MyBaseClass>();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type MyBaseClass,
@@ -526,7 +526,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_WithFixedIndex_ShouldFail()
 				{
 					IAsyncEnumerable<MyClass>? subject = null;
@@ -534,7 +534,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching<MyBaseClass>().AtIndex(0);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type MyBaseClass at index 0,
@@ -542,7 +542,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeDoesNotMatch_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -550,7 +550,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching<uint>();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type uint,
@@ -561,7 +561,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeIsSubtype_ShouldSucceed()
 				{
 					IAsyncEnumerable<MyClass> subject =
@@ -573,7 +573,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeIsSupertype_ShouldFail()
 				{
 					IAsyncEnumerable<MyBaseClass> subject =
@@ -582,7 +582,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching<MyClass>();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type MyClass,
@@ -603,7 +603,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithInvalidMatch_ShouldNotMatch()
 				{
 					IAsyncEnumerable<MyClass> subject =
@@ -612,7 +612,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasItem().Matching<MyBaseClass>().WithInvalidMatch();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type MyBaseClass with invalid match,

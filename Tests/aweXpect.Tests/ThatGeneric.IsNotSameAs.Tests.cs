@@ -6,7 +6,7 @@ public sealed partial class ThatGeneric
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenComparingTheSameObjectReference_ShouldFail()
 			{
 				Other subject = new()
@@ -18,7 +18,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).IsNotSameAs(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not refer to ThatGeneric.Other {
@@ -28,7 +28,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparingTwoIndividualObjectsWithSameValues_ShouldSucceed()
 			{
 				Other subject = new()
@@ -46,7 +46,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldSucceed()
 			{
 				Other subject = new()
@@ -61,7 +61,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedIsNull_ShouldFail()
 			{
 				Other? subject = null;
@@ -70,7 +70,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).IsNotSameAs(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not refer to <null>,
@@ -78,7 +78,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
 				Other? subject = null;
@@ -97,7 +97,7 @@ public sealed partial class ThatGeneric
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldHaveCorrectResultString()
 			{
 				Other subject = new()
@@ -112,7 +112,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotSameAs(expected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             refers to ThatGeneric.Other {

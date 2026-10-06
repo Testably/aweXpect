@@ -6,7 +6,7 @@ public sealed partial class ThatVersion
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsDifferent_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -15,7 +15,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has revision equal to {Formatter.Format(expected)},
@@ -23,7 +23,7 @@ public sealed partial class ThatVersion
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsTheSame_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -35,7 +35,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -44,7 +44,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has revision equal to 1,
@@ -55,7 +55,7 @@ public sealed partial class ThatVersion
 
 		public sealed class EqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -64,7 +64,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().EqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has revision equal to <null>,
@@ -72,7 +72,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsDifferent_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -81,7 +81,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().EqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has revision equal to {Formatter.Format(expected)},
@@ -89,7 +89,7 @@ public sealed partial class ThatVersion
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsTheSame_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -101,7 +101,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -110,7 +110,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().EqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has revision equal to <null>,
@@ -118,7 +118,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -127,7 +127,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().EqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has revision equal to 1,
@@ -138,7 +138,7 @@ public sealed partial class ThatVersion
 
 		public sealed class GreaterThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -147,7 +147,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().GreaterThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has revision greater than or equal to <null>,
@@ -155,7 +155,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -167,7 +167,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsLessThanExpected_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -176,7 +176,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().GreaterThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has revision greater than or equal to {Formatter.Format(expected)},
@@ -184,7 +184,7 @@ public sealed partial class ThatVersion
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsTheSameAsExpected_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -199,7 +199,7 @@ public sealed partial class ThatVersion
 
 		public sealed class GreaterThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -208,7 +208,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has revision greater than <null>,
@@ -216,7 +216,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -228,7 +228,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsLessThanExpected_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -237,7 +237,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has revision greater than {Formatter.Format(expected)},
@@ -245,7 +245,7 @@ public sealed partial class ThatVersion
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsTheSameAsExpected_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -254,7 +254,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has revision greater than {Formatter.Format(expected)},
@@ -265,7 +265,7 @@ public sealed partial class ThatVersion
 
 		public sealed class LessThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -274,7 +274,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().LessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has revision less than or equal to <null>,
@@ -282,7 +282,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -291,7 +291,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().LessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has revision less than or equal to {Formatter.Format(expected)},
@@ -299,7 +299,7 @@ public sealed partial class ThatVersion
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsLessThanExpected_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -311,7 +311,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsTheSameAsExpected_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -326,7 +326,7 @@ public sealed partial class ThatVersion
 
 		public sealed class LessThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -335,7 +335,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has revision less than <null>,
@@ -343,7 +343,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -352,7 +352,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has revision less than {Formatter.Format(expected)},
@@ -360,7 +360,7 @@ public sealed partial class ThatVersion
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsLessThanExpected_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -372,7 +372,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsTheSameAsExpected_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -381,7 +381,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has revision less than {Formatter.Format(expected)},
@@ -392,7 +392,7 @@ public sealed partial class ThatVersion
 
 		public sealed class NotEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsDifferent_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -404,7 +404,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionOfSubjectIsTheSame_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -413,7 +413,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().NotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have revision equal to {Formatter.Format(unexpected)},
@@ -421,7 +421,7 @@ public sealed partial class ThatVersion
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndUnexpectedIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -430,7 +430,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().NotEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have revision equal to <null>,
@@ -438,7 +438,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -447,7 +447,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasRevision().NotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have revision equal to {unexpected},
@@ -455,7 +455,7 @@ public sealed partial class ThatVersion
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsNull_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -468,7 +468,7 @@ public sealed partial class ThatVersion
 			}
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenRevisionIsUnspecified_ShouldBeMinusOne()
 		{
 			Version subject = new(1, 2);
@@ -481,7 +481,7 @@ public sealed partial class ThatVersion
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenRevisionDiffers_ShouldSucceed()
 			{
 				Version subject = new(1, 2, 3, 4);
@@ -492,7 +492,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRevisionMatches_ShouldFail()
 			{
 				Version subject = new(1, 2, 3, 4);
@@ -500,7 +500,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasRevision(4));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have revision equal to 4,

@@ -12,7 +12,7 @@ public sealed partial class ThatAsyncEnumerable
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task CancelledEnumerable_ShouldFail()
 			{
 				using CancellationTokenSource cts = new();
@@ -23,7 +23,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).IsEmpty().WithCancellation(token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that subject
 					             is empty,
@@ -31,7 +31,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ConsidersCancellationToken()
 			{
 				using CancellationTokenSource cts = new();
@@ -42,7 +42,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).IsEmpty().WithCancellation(token);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is empty,
@@ -53,7 +53,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsValues_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 2);
@@ -61,7 +61,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is empty,
@@ -72,7 +72,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldSucceed()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
@@ -83,7 +83,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSourceThrowsAfterTheFirstItem_ShouldListTheItem()
 			{
 				IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("src"), 1, 2);
@@ -91,7 +91,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is empty,
@@ -103,7 +103,7 @@ public sealed partial class ThatAsyncEnumerable
 					.Because("the first item already decides the result, so the exception of the source must not replace it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IAsyncEnumerable<string>? subject = null;
@@ -111,7 +111,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is empty,

@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class AtMostTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursMoreTimes_ShouldFail()
 			{
 				string subject =
@@ -16,7 +16,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).AtMost().Twice();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "in" at most twice,
@@ -24,7 +24,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursShouldSucceed()
 			{
 				string subject =
@@ -37,7 +37,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringSufficientlyFewTimes_ShouldSucceed()
 			{
 				string subject =
@@ -50,7 +50,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaximumIsLessThanZero_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject =

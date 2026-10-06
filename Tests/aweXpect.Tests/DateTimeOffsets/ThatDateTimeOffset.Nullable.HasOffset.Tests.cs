@@ -8,7 +8,7 @@ public sealed partial class ThatDateTimeOffset
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsDifferent_ShouldFail()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -17,7 +17,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasOffset(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has offset equal to {Formatter.Format(expected)},
@@ -25,7 +25,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsTheSame_ShouldSucceed()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -37,7 +37,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					DateTimeOffset? subject = null;
@@ -46,7 +46,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasOffset(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has offset equal to 2:00:00,
@@ -57,7 +57,7 @@ public sealed partial class ThatDateTimeOffset
 
 			public sealed class EqualToTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsDifferent_ShouldFail()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -66,7 +66,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasOffset().EqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has offset equal to {Formatter.Format(expected)},
@@ -74,7 +74,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsTheSame_ShouldSucceed()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -86,7 +86,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					DateTimeOffset? subject = null;
@@ -95,7 +95,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasOffset().EqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has offset equal to 2:00:00,
@@ -106,7 +106,7 @@ public sealed partial class ThatDateTimeOffset
 
 			public sealed class GreaterThanOrEqualToTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -115,7 +115,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasOffset().GreaterThanOrEqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has offset greater than or equal to <null>,
@@ -123,7 +123,7 @@ public sealed partial class ThatDateTimeOffset
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsGreaterThanExpected_ShouldSucceed()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -135,7 +135,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsLessThanExpected_ShouldFail()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -144,7 +144,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasOffset().GreaterThanOrEqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has offset greater than or equal to {Formatter.Format(expected)},
@@ -152,7 +152,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsTheSameAsExpected_ShouldSucceed()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -167,7 +167,7 @@ public sealed partial class ThatDateTimeOffset
 
 			public sealed class GreaterThanTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -176,7 +176,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasOffset().GreaterThan(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has offset greater than <null>,
@@ -184,7 +184,7 @@ public sealed partial class ThatDateTimeOffset
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsGreaterThanExpected_ShouldSucceed()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -196,7 +196,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsLessThanExpected_ShouldFail()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -205,7 +205,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasOffset().GreaterThan(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has offset greater than {Formatter.Format(expected)},
@@ -213,7 +213,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsTheSameAsExpected_ShouldFail()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -222,7 +222,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasOffset().GreaterThan(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has offset greater than {Formatter.Format(expected)},
@@ -233,7 +233,7 @@ public sealed partial class ThatDateTimeOffset
 
 			public sealed class LessThanOrEqualToTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -242,7 +242,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasOffset().LessThanOrEqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has offset less than or equal to <null>,
@@ -250,7 +250,7 @@ public sealed partial class ThatDateTimeOffset
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsGreaterThanExpected_ShouldFail()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -259,7 +259,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasOffset().LessThanOrEqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has offset less than or equal to {Formatter.Format(expected)},
@@ -267,7 +267,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsLessThanExpected_ShouldSucceed()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -279,7 +279,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsTheSameAsExpected_ShouldSucceed()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -294,7 +294,7 @@ public sealed partial class ThatDateTimeOffset
 
 			public sealed class LessThanTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -303,7 +303,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasOffset().LessThan(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has offset less than <null>,
@@ -311,7 +311,7 @@ public sealed partial class ThatDateTimeOffset
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsGreaterThanExpected_ShouldFail()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -320,7 +320,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasOffset().LessThan(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has offset less than {Formatter.Format(expected)},
@@ -328,7 +328,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsLessThanExpected_ShouldSucceed()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -340,7 +340,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsTheSameAsExpected_ShouldFail()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -349,7 +349,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasOffset().LessThan(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has offset less than {Formatter.Format(expected)},
@@ -360,7 +360,7 @@ public sealed partial class ThatDateTimeOffset
 
 			public sealed class NotEqualToTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsDifferent_ShouldSucceed()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -372,7 +372,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOffsetOfSubjectIsTheSame_ShouldFail()
 				{
 					DateTimeOffset? subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -381,7 +381,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasOffset().NotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              does not have offset equal to {Formatter.Format(unexpected)},
@@ -389,7 +389,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					DateTimeOffset? subject = null;
@@ -398,7 +398,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).HasOffset().NotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              does not have offset equal to {Formatter.Format(unexpected)},

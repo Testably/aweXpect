@@ -14,9 +14,9 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class ImmutableTests
 			{
-				[Theory]
-				[InlineData(double.NaN, false)]
-				[InlineData(1.0, true)]
+				[Test]
+				[Arguments(double.NaN, false)]
+				[Arguments(1.0, true)]
 				public async Task DoubleNaNValues_ShouldBeConsideredEqual(double additionalValue, bool expectFailure)
 				{
 					ImmutableArray<double> subject = [double.NaN, double.NaN, additionalValue,];
@@ -24,7 +24,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo(double.NaN);
 
-					await That(Act).Throws<XunitException>().OnlyIf(expectFailure)
+					await That(Act).Throws<FailException>().OnlyIf(expectFailure)
 						.WithMessage("""
 						             Expected that subject
 						             is equal to NaN for all items,
@@ -38,9 +38,9 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Theory]
-				[InlineData(float.NaN, false)]
-				[InlineData(1.0F, true)]
+				[Test]
+				[Arguments(float.NaN, false)]
+				[Arguments(1.0F, true)]
 				public async Task FloatNaNValues_ShouldBeConsideredEqual(float additionalValue, bool expectFailure)
 				{
 					ImmutableArray<float> subject = [float.NaN, float.NaN, additionalValue,];
@@ -48,7 +48,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo(float.NaN);
 
-					await That(Act).Throws<XunitException>().OnlyIf(expectFailure)
+					await That(Act).Throws<FailException>().OnlyIf(expectFailure)
 						.WithMessage("""
 						             Expected that subject
 						             is equal to NaN for all items,
@@ -65,7 +65,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class ImmutableItemTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldSupportNullableValues()
 				{
 					ImmutableArray<int?> subject = [..Factory.GetConstantValueEnumerable<int?>(null, 20),];
@@ -76,7 +76,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldUseCustomComparer()
 				{
 					ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20).ToArray(),];
@@ -87,7 +87,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemsDiffer_ShouldFailAndDisplayNotMatchingItems()
 				{
 					ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20).ToArray(),];
@@ -95,7 +95,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo(5);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 5 for all items,
@@ -133,7 +133,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoItemsDiffer_ShouldSucceed()
 				{
 					int constantValue = 42;
@@ -148,7 +148,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class ImmutableStringItemTests
 			{
-				[Fact]
+				[Test]
 				public async Task AsPrefix_WhenAnItemDoesNotMatchThePattern_ShouldFail()
 				{
 					ImmutableArray<string?> subject = ["# Title", "## Intro", "text",];
@@ -156,7 +156,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo("#").AsPrefix();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             starts with "#" for all items,
@@ -176,7 +176,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task AsRegex_WhenAnItemDoesNotMatchThePattern_ShouldFail()
 				{
 					ImmutableArray<string?> subject = ["# Title", "## Intro", "text",];
@@ -184,7 +184,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo("^#").AsRegex();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             matches regex "^#" for all items,
@@ -204,7 +204,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task AsRegex_WhenExpectedIsAnEmptyPattern_ShouldThrowArgumentException()
 				{
 					ImmutableArray<string?> subject = ["foo",];
@@ -217,7 +217,7 @@ public sealed partial class ThatEnumerable
 						.WithParamName("expected");
 				}
 
-				[Fact]
+				[Test]
 				public async Task AsSuffix_WhenAnItemDoesNotMatchThePattern_ShouldFail()
 				{
 					ImmutableArray<string?> subject = ["# Title", "## Intro", "text",];
@@ -225,7 +225,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo("o").AsSuffix();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             ends with "o" for all items,
@@ -246,7 +246,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task AsWildcard_WhenAnItemDoesNotMatchThePattern_ShouldFail()
 				{
 					ImmutableArray<string?> subject = ["# Title", "## Intro", "text",];
@@ -254,7 +254,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo("#*").AsWildcard();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             matches "#*" for all items,
@@ -274,7 +274,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportNullableValues()
 				{
 					ImmutableArray<string?> subject = [..Factory.GetConstantValueEnumerable<string?>(null, 20),];
@@ -285,7 +285,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldUseCustomComparer()
 				{
 					ImmutableArray<string?> subject = [..Factory.GetFibonacciNumbers(i => $"item-{i}", 20),];
@@ -296,7 +296,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemsDiffer_ShouldFailAndDisplayNotMatchingItems()
 				{
 					ImmutableArray<string> subject = [..Factory.GetFibonacciNumbers(i => $"item-{i}", 10),];
@@ -304,7 +304,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject)!.All().AreEqualTo("item-5");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to "item-5" for all items,
@@ -339,7 +339,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemsDiffer_ShouldShowAllConfigurationsInMessage()
 				{
 					ImmutableArray<string?> subject = ["bar",];
@@ -351,7 +351,7 @@ public sealed partial class ThatEnumerable
 							.IgnoringLeadingWhiteSpace()
 							.IgnoringTrailingWhiteSpace();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to "foo" ignoring case, whitespace and newline style for all items,
@@ -369,7 +369,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemsDiffer_ShouldShowIgnoringCaseInMessage()
 				{
 					ImmutableArray<string?> subject = ["bar",];
@@ -377,7 +377,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo("foo").IgnoringCase();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to "foo" ignoring case for all items,
@@ -395,7 +395,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemsDiffer_ShouldShowIgnoringLeadingWhiteSpaceInMessage()
 				{
 					ImmutableArray<string?> subject = ["bar",];
@@ -403,7 +403,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo("foo").IgnoringLeadingWhiteSpace();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to "foo" ignoring leading whitespace for all items,
@@ -421,7 +421,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemsDiffer_ShouldShowIgnoringNewlineStyleInMessage()
 				{
 					ImmutableArray<string?> subject = ["bar",];
@@ -429,7 +429,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo("foo").IgnoringNewlineStyle();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to "foo" ignoring newline style for all items,
@@ -447,7 +447,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemsDiffer_ShouldShowIgnoringTrailingWhiteSpaceInMessage()
 				{
 					ImmutableArray<string?> subject = ["bar",];
@@ -455,7 +455,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo("foo").IgnoringTrailingWhiteSpace();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to "foo" ignoring trailing whitespace for all items,
@@ -473,9 +473,9 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Theory]
-				[InlineData(true)]
-				[InlineData(false)]
+				[Test]
+				[Arguments(true)]
+				[Arguments(false)]
 				public async Task WhenItemsDifferInCase_ShouldSucceedWhenIgnoringCase(bool ignoreCase)
 				{
 					ImmutableArray<string?> subject = ["foo", "FOO",];
@@ -483,7 +483,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo("foo").IgnoringCase(ignoreCase);
 
-					await That(Act).Throws<XunitException>().OnlyIf(!ignoreCase)
+					await That(Act).Throws<FailException>().OnlyIf(!ignoreCase)
 						.WithMessage("""
 						             Expected that subject
 						             is equal to "foo" for all items,
@@ -502,9 +502,9 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Theory]
-				[InlineData(true)]
-				[InlineData(false)]
+				[Test]
+				[Arguments(true)]
+				[Arguments(false)]
 				public async Task WhenItemsDifferInLeadingWhiteSpace_ShouldSucceedWhenIgnoringLeadingWhiteSpace(
 					bool ignoreLeadingWhiteSpace)
 				{
@@ -514,7 +514,7 @@ public sealed partial class ThatEnumerable
 						=> await That(subject).All().AreEqualTo("foo")
 							.IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace);
 
-					await That(Act).Throws<XunitException>().OnlyIf(!ignoreLeadingWhiteSpace)
+					await That(Act).Throws<FailException>().OnlyIf(!ignoreLeadingWhiteSpace)
 						.WithMessage("""
 						             Expected that subject
 						             is equal to "foo" for all items,
@@ -535,9 +535,9 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Theory]
-				[InlineData(true)]
-				[InlineData(false)]
+				[Test]
+				[Arguments(true)]
+				[Arguments(false)]
 				public async Task WhenItemsDifferInNewlineStyle_ShouldSucceedWhenIgnoringNewlineStyle(
 					bool ignoreNewlineStyle)
 				{
@@ -546,7 +546,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo("foo\nbar").IgnoringNewlineStyle(ignoreNewlineStyle);
 
-					await That(Act).Throws<XunitException>().OnlyIf(!ignoreNewlineStyle)
+					await That(Act).Throws<FailException>().OnlyIf(!ignoreNewlineStyle)
 						.WithMessage("""
 						             Expected that subject
 						             is equal to "foo\nbar" for all items,
@@ -564,9 +564,9 @@ public sealed partial class ThatEnumerable
 						             """).AsWildcard();
 				}
 
-				[Theory]
-				[InlineData(true)]
-				[InlineData(false)]
+				[Test]
+				[Arguments(true)]
+				[Arguments(false)]
 				public async Task WhenItemsDifferInTrailingWhiteSpace_ShouldSucceedWhenIgnoringTrailingWhiteSpace(
 					bool ignoreTrailingWhiteSpace)
 				{
@@ -576,7 +576,7 @@ public sealed partial class ThatEnumerable
 						=> await That(subject).All().AreEqualTo("foo")
 							.IgnoringTrailingWhiteSpace(ignoreTrailingWhiteSpace);
 
-					await That(Act).Throws<XunitException>().OnlyIf(!ignoreTrailingWhiteSpace)
+					await That(Act).Throws<FailException>().OnlyIf(!ignoreTrailingWhiteSpace)
 						.WithMessage("""
 						             Expected that subject
 						             is equal to "foo" for all items,
@@ -597,7 +597,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoItemsDiffer_ShouldSucceed()
 				{
 					string constantValue = "foo";

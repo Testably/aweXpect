@@ -11,7 +11,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task DoesNotEnumerateTwice()
 			{
 				ThrowWhenIteratingTwiceEnumerable subject = new();
@@ -23,7 +23,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportEquivalent()
 			{
 				IEnumerable<MyClass> subject = Factory.GetFibonacciNumbers(x => new MyClass(x), 6);
@@ -38,7 +38,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCollectionsAreIdentical_ShouldSucceed()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -49,7 +49,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableHasDifferentEndingElements_ShouldFail()
 			{
 				IEnumerable<int> subject = ToEnumerable([0, 0, 1, 2, 3,]);
@@ -58,7 +58,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with expected,
@@ -69,7 +69,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedContainsAdditionalElements_ShouldFail()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -77,7 +77,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith(0, 0, 1, 2, 3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with [0, 0, 1, 2, 3],
@@ -91,7 +91,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IEnumerable<int> subject = ToEnumerable([1,]);
@@ -104,7 +104,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				IEnumerable<int> subject = ToEnumerable([1,]);
@@ -117,7 +117,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRetriedAfterAMismatch_ShouldDescribeTheLastAttempt()
 			{
 				int attempts = 0;
@@ -129,7 +129,7 @@ public sealed partial class ThatEnumerable
 					=> await That(GetSubject).Eventually().WithinTwoAttempts(5.Seconds())
 						.EndsWith(1, 2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that GetSubject
 					             eventually ends with [1, 2] within 0:05,
@@ -143,7 +143,7 @@ public sealed partial class ThatEnumerable
 					.Because("the mismatch of the first attempt does not apply to the later ones");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasMoreItemsThanTheFormatterLimit_ShouldNameTheRemainingItems()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,]);
@@ -151,7 +151,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with [2],
@@ -175,7 +175,7 @@ public sealed partial class ThatEnumerable
 					.Because("the subject is enumerated to its end, so the number of remaining items is known");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasOnlyOneItemAndMissesOne_ShouldUseSingular()
 			{
 				IEnumerable<int> subject = ToEnumerable([2,]);
@@ -183,7 +183,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith(1, 2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with [1, 2],
@@ -196,7 +196,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable<int>? subject = null;
@@ -204,7 +204,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with [1],
@@ -215,7 +215,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class StringTests
 		{
-			[Fact]
+			[Test]
 			public async Task AsPrefix_WhenAnItemDoesNotMatchItsPattern_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["# Title", "## Intro", "text",]);
@@ -223,7 +223,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith("### ", "te").AsPrefix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with ["### ", "te"] as prefix,
@@ -238,7 +238,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsPrefix_WhenExpectedContainsNull_ShouldThrowArgumentNullException()
 			{
 				IEnumerable<string> subject = ToEnumerable(["foo",]);
@@ -252,7 +252,7 @@ public sealed partial class ThatEnumerable
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsRegex_WhenAnItemDoesNotMatchItsPattern_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["# Title", "## Intro", "text",]);
@@ -260,7 +260,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith("^### ", "^te").AsRegex();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with ["^### ", "^te"] as regex,
@@ -275,7 +275,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsRegex_WhenExpectedContainsAnEmptyPattern_ShouldThrowArgumentException()
 			{
 				IEnumerable<string> subject = ToEnumerable(["foo",]);
@@ -288,7 +288,7 @@ public sealed partial class ThatEnumerable
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsSuffix_WhenAnItemDoesNotMatchItsPattern_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["# Title", "## Intro", "text",]);
@@ -296,7 +296,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith("Outro", "xt").AsSuffix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with ["Outro", "xt"] as suffix,
@@ -311,7 +311,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsWildcard_WhenAnItemDoesNotMatchItsPattern_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["# Title", "## Intro", "text",]);
@@ -319,7 +319,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith("### *", "t*t").AsWildcard();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with ["### *", "t*t"] as wildcard,
@@ -334,7 +334,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeOptionsInFailureMessage()
 			{
 				IEnumerable<string> subject = ToEnumerable(["foo", "bar", "baz",]);
@@ -342,7 +342,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith("FOO", "BAZ").IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with ["FOO", "BAZ"] ignoring case,
@@ -357,7 +357,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				IEnumerable<string> subject = ToEnumerable(["foo", "bar", "baz",]);
@@ -368,7 +368,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedContainsNull_ShouldMatchANullItem()
 			{
 				string?[] subject = ["b", "a", null,];
@@ -379,7 +379,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedContainsNull_WhenTheItemIsNotNull_ShouldFail()
 			{
 				string?[] subject = ["a", "b",];
@@ -387,7 +387,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith("a", null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with ["a", <null>],
@@ -401,7 +401,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectEndsWithExpectedValues_ShouldSucceed()
 			{
 				IEnumerable<string> subject = ToEnumerable(["foo", "bar", "baz",]);
@@ -416,7 +416,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectDoesNotEndWithExpected_ShouldSucceed()
 			{
 				int[] subject = [1, 2, 3,];
@@ -427,7 +427,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectEndsWithExpected_ShouldFail()
 			{
 				int[] subject = [1, 2, 3,];
@@ -435,7 +435,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.EndsWith(2, 3));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not end with [2, 3],

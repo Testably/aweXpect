@@ -10,7 +10,7 @@ public sealed partial class ThatString
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task AsPrefix_WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -19,7 +19,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsOneOf(expected).AsPrefix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected as prefix,
@@ -31,7 +31,7 @@ public sealed partial class ThatString
 					.Because("a null has no content to inspect, just as for StartsWith");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				string subject = "foo";
@@ -41,7 +41,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of expected,
@@ -53,7 +53,7 @@ public sealed partial class ThatString
 					.Because("the values are cached while they are enumerated, so the comparison and the message share one enumeration");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsAnEmptySequence_ShouldThrowArgumentException()
 			{
 				string subject = "foo";
@@ -68,7 +68,7 @@ public sealed partial class ThatString
 					.Because("a lazily evaluated sequence is also checked when the expectation is built");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "foo";
@@ -83,7 +83,7 @@ public sealed partial class ThatString
 					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsInfiniteAndContainsTheSubject_ShouldSucceed()
 			{
 				string subject = "item-8";
@@ -96,7 +96,7 @@ public sealed partial class ThatString
 					.Because("the values are only enumerated until the subject is found");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "foo";
@@ -110,7 +110,7 @@ public sealed partial class ThatString
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedThrows_ShouldThrowTheExceptionOfTheExpectedItems()
 			{
 				string subject = "foo";
@@ -129,7 +129,7 @@ public sealed partial class ThatString
 					.Because("an exception of the expected values is not reported as if the subject threw it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedThrowsForTheFirstItem_ShouldThrowTheExceptionOfTheExpectedItems()
 			{
 				string subject = "foo";
@@ -152,7 +152,7 @@ public sealed partial class ThatString
 					.Because("the check for an empty sequence passes on the exception of its first item unchanged");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "foo";
@@ -167,7 +167,7 @@ public sealed partial class ThatString
 					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "foo";
@@ -181,7 +181,7 @@ public sealed partial class ThatString
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -190,7 +190,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -201,7 +201,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNullAndExpectedContainsNull_ShouldSucceed()
 			{
 				string? subject = null;
@@ -213,15 +213,15 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("foo", "bar", "baz")]
+			[Test]
+			[Arguments("foo", "bar", "baz")]
 			public async Task WhenValueIsDifferentToAllExpected_ShouldFail(
 				string? subject, params string?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -229,8 +229,8 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Theory]
-			[InlineData("foo", "bar", "foo", "baz")]
+			[Test]
+			[Arguments("foo", "bar", "foo", "baz")]
 			public async Task WhenValueIsEqualToAnyExpected_ShouldSucceed(
 				string? subject, params string?[] expected)
 			{
@@ -240,7 +240,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueIsEqualToAnyExpectedExceptForTheIndentation_ShouldSucceed()
 			{
 				string subject = "  foo\n    bar";
@@ -251,8 +251,8 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenValueIsNull_ShouldFail(
 				params string?[] expected)
 			{
@@ -261,7 +261,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},

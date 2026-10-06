@@ -6,7 +6,7 @@ public sealed partial class ThatVersion
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMaximumIsNull_AndNegated_ShouldFail()
 			{
 				Version? subject = new(1, 5);
@@ -15,7 +15,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsBetween(new Version(1, 0)).And(maximum));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not between 1.0 and <null>,
@@ -24,7 +24,7 @@ public sealed partial class ThatVersion
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaximumIsNull_ShouldFail()
 			{
 				Version? subject = new(1, 5);
@@ -33,7 +33,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsBetween(new Version(1, 2)).And(maximum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is between 1.2 and <null>,
@@ -41,7 +41,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumIsGreaterThanMaximum_ShouldThrowArgumentOutOfRangeException()
 			{
 				Version? subject = new(1, 5);
@@ -55,7 +55,7 @@ public sealed partial class ThatVersion
 					.Because("an inverted range can never be satisfied");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumIsNull_AndNegated_ShouldFail()
 			{
 				Version? subject = new(1, 5);
@@ -64,7 +64,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsBetween(minimum).And(new Version(2, 0)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not between <null> and 2.0,
@@ -73,7 +73,7 @@ public sealed partial class ThatVersion
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumIsNull_ShouldFail()
 			{
 				Version? subject = new(1, 5);
@@ -82,7 +82,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(new Version(2, 0));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is between <null> and 2.0,
@@ -90,7 +90,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsGreaterThanMaximum_ShouldFail()
 			{
 				Version? subject = new(2, 1);
@@ -99,7 +99,7 @@ public sealed partial class ThatVersion
 					=> await That(subject).IsBetween(new Version(1, 2)).And(new Version(2, 0))
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is between 1.2 and 2.0, because we want to test the failure,
@@ -107,7 +107,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsLessThanMinimum_ShouldFail()
 			{
 				Version? subject = new(1, 1);
@@ -115,7 +115,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsBetween(new Version(1, 2)).And(new Version(2, 0));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is between 1.2 and 2.0,
@@ -123,7 +123,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -131,7 +131,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsBetween(new Version(1, 2)).And(new Version(2, 0));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is between 1.2 and 2.0,
@@ -139,7 +139,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsTheMaximum_ShouldSucceed()
 			{
 				Version? subject = new(2, 0);
@@ -150,7 +150,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsTheMinimum_ShouldSucceed()
 			{
 				Version? subject = new(1, 2);
@@ -161,7 +161,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsWithinTheRange_ShouldSucceed()
 			{
 				Version? subject = new(1, 5);

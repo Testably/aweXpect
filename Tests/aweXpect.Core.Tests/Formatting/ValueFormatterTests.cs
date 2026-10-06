@@ -9,9 +9,11 @@ using System.Threading;
 
 namespace aweXpect.Core.Tests.Formatting;
 
+// A registered formatter applies process-wide, so these tests would see the registrations of each other.
+[NotInParallel(nameof(ValueFormatterTests))]
 public class ValueFormatterTests
 {
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_InFailureMessage_ShouldBeUsedForTheSubjectAndTheExpectation()
 	{
 		DateTime subject = new(2020, 1, 2, 3, 4, 5);
@@ -20,7 +22,7 @@ public class ValueFormatterTests
 		async Task Act()
 			=> await That(subject).IsEqualTo(subject.AddDays(1));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is equal to custom,
@@ -28,7 +30,7 @@ public class ValueFormatterTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_ShouldBeUsedByEveryTypedOverload()
 	{
 		string[] results;
@@ -98,7 +100,7 @@ public class ValueFormatterTests
 		await That(results).All().AreEqualTo("custom");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_ShouldBeUsedByEveryTypedOverloadWithStringBuilder()
 	{
 		string[] results;
@@ -177,7 +179,7 @@ public class ValueFormatterTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_ShouldBeUsedDuringLifetime()
 	{
 		MyFormattableClass value = new()
@@ -200,7 +202,7 @@ public class ValueFormatterTests
 		                                   """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_WhenDisposedTwice_ShouldOnlyRemoveItsOwnRegistration()
 	{
 		MyFormattableClass value = new();
@@ -215,7 +217,7 @@ public class ValueFormatterTests
 			.Because("each registration is removed on its own, even when the same formatter was registered twice");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_WhenItFormatsACyclicChildCollection_ShouldFormatTheCycleAsRecursive()
 	{
 		Node a = new("a");
@@ -232,7 +234,7 @@ public class ValueFormatterTests
 			.Because("the formatting context is carried into the formatting calls of a registered formatter");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_WhenItFormatsACyclicDictionary_ShouldFormatTheCycleAsRecursive()
 	{
 		Node a = new("a");
@@ -249,7 +251,7 @@ public class ValueFormatterTests
 			.Because("the formatting context is carried into the dictionary a registered formatter formats");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_WhenItFormatsACyclicKeyValuePair_ShouldFormatTheCycleAsRecursive()
 	{
 		Node a = new("a");
@@ -266,7 +268,7 @@ public class ValueFormatterTests
 			.Because("the formatting context is carried into the key-value pair a registered formatter formats");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_WhenItFormatsTheSameInstanceAsAChild_ShouldFormatItAsRecursive()
 	{
 		Node a = new("a");
@@ -281,7 +283,7 @@ public class ValueFormatterTests
 			.Because("a value is tracked while a registered formatter formats it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_WhenItThrows_ShouldEscapeLineBreaksInTheMessage()
 	{
 		MyThrowingFormattableClass subject = new();
@@ -291,7 +293,7 @@ public class ValueFormatterTests
 		async Task Act()
 			=> await That(subject).IsNull();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is null,
@@ -299,7 +301,7 @@ public class ValueFormatterTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_WhenItThrows_ShouldRenderAPlaceholderInTheFailureMessage()
 	{
 		MyThrowingFormattableClass subject = new();
@@ -309,7 +311,7 @@ public class ValueFormatterTests
 		async Task Act()
 			=> await That(subject).IsNull();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is null,
@@ -318,7 +320,7 @@ public class ValueFormatterTests
 			.Because("what the formatter appended before it threw is discarded");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_WhenItThrowsForEveryValue_ShouldRenderAPlaceholder()
 	{
 		DateTime value = new(2020, 1, 2);
@@ -333,7 +335,7 @@ public class ValueFormatterTests
 			.Because("the type of the exception in the placeholder is not passed to the formatter again");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_WhenMultipleAreRegistered_ShouldUseTheMostRecentOne()
 	{
 		MyFormattableClass value = new();
@@ -345,7 +347,7 @@ public class ValueFormatterTests
 			.Because("the most recently registered formatter takes precedence");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_WhenNull_ShouldUseDefaultNullString()
 	{
 		using IDisposable lifetime = ValueFormatter.Register(new MyCustomFormatter("my-string"));
@@ -356,7 +358,7 @@ public class ValueFormatterTests
 		await That(objectResult).IsEqualTo(ValueFormatter.NullString);
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_WhenSameInstanceIsContainedTwice_ShouldFormatBoth()
 	{
 		Node leaf = new("leaf");
@@ -376,7 +378,7 @@ public class ValueFormatterTests
 			.Because("a value is only tracked while it is being formatted, not after");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_WhenTheMostRecentOneIsDisposed_ShouldFallBackToTheEarlierOne()
 	{
 		MyFormattableClass value = new();
@@ -390,7 +392,7 @@ public class ValueFormatterTests
 			.Because("disposing the most recent formatter restores the precedence of the earlier one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomFormatter_WhenTypeDoesNotMatch_ShouldDoNothing()
 	{
 		int value = 1;

@@ -8,7 +8,7 @@ public partial class ValueFormatters
 {
 	public sealed class KeyValuePairTests
 	{
-		[Fact]
+		[Test]
 		public async Task ShouldFormatKeyAndValue()
 		{
 			string expectedResult = "[\"foo\"] = 42";
@@ -22,7 +22,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenBoxed_ShouldFormatKeyAndValue()
 		{
 			string expectedResult = "[\"foo\"] = 42";
@@ -37,7 +37,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenBoxedAndOnlyPartiallyRegistered_ShouldFallBackToToString()
 		{
 			TypeMetadataRegistry.RegisterProperty<KeyValuePair<PartiallyRegisteredKey, int>, string>(
@@ -50,7 +50,7 @@ public partial class ValueFormatters
 				.Because("a registration without both members cannot render the pair, so the plain rendering stays");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenBoxedAndRegistered_ShouldReadThroughTheRegistration()
 		{
 			TypeMetadataRegistry.RegisterProperty<KeyValuePair<RegisteredKey, int>, string>(
@@ -65,7 +65,7 @@ public partial class ValueFormatters
 				.Because("under the JIT reflection would render the same pair, so only bogus accessors prove the registry path");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenBoxedValueRefersBackToTheOwner_ShouldDetectTheRecursion()
 		{
 			Owner value = new();
@@ -79,7 +79,7 @@ public partial class ValueFormatters
 				.Because("the pair is rendered within the formatting context of its owner, so the cycle is detected");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenKeyAndValueAreNull_ShouldUseDefaultNullString()
 		{
 			string expectedResult = $"[{ValueFormatter.NullString}] = {ValueFormatter.NullString}";
@@ -93,7 +93,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithLineBreaks_ShouldEscapeStringKeyAndValue()
 		{
 			string expectedResult = "[\"a\\nb\"] = \"say \\\"hi\\\"\"";
@@ -111,7 +111,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithType_ShouldIncludeTypeInformation()
 		{
 			string expectedResult = "KeyValuePair<string, int> [\"foo\"] = 42";

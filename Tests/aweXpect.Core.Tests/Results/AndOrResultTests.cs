@@ -7,7 +7,7 @@ namespace aweXpect.Core.Tests.Results;
 
 public class AndOrResultTests
 {
-	[Fact]
+	[Test]
 	public async Task And_ShouldReturnSubject()
 	{
 		int subject = 1;
@@ -22,7 +22,7 @@ public class AndOrResultTests
 		await That(result.Get().ExpectationBuilder.GetRootNode()).Is<AndNode>();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Generic_And_ShouldReturnSubject()
 	{
 		int subject = 1;
@@ -37,7 +37,7 @@ public class AndOrResultTests
 		await That(result.Get().ExpectationBuilder.GetRootNode()).Is<AndNode>();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Generic_Or_ShouldReturnSubject()
 	{
 		int subject = 1;
@@ -52,7 +52,7 @@ public class AndOrResultTests
 		await That(result.Get().ExpectationBuilder.GetRootNode()).Is<OrNode>();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Generic_ShouldBeAwaitable()
 	{
 		int subject = 1;
@@ -63,7 +63,7 @@ public class AndOrResultTests
 		await That(result).IsEqualTo(subject);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Or_ShouldReturnSubject()
 	{
 		int subject = 1;
@@ -78,7 +78,7 @@ public class AndOrResultTests
 		await That(result.Get().ExpectationBuilder.GetRootNode()).Is<OrNode>();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldBeAwaitable()
 	{
 		int subject = 1;

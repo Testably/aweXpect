@@ -7,7 +7,7 @@ namespace aweXpect.Internal.Tests.Helpers;
 
 public class MaterializingEnumerableTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenCompletelyIterated_ShouldDisposeTheSourceOnce()
 	{
 		DisposeTrackingEnumerable source = new(null, 1, 2);
@@ -24,7 +24,7 @@ public class MaterializingEnumerableTests
 		await That(result).IsEqualTo([1, 2,]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEnumeratedWhileEnumerating_ShouldYieldAllItemsToBoth()
 	{
 		IEnumerable<int> materialized = MaterializingEnumerable<int>.WrapParameter(ToEnumerable([1, 1, 2,]));
@@ -45,7 +45,7 @@ public class MaterializingEnumerableTests
 		await That(inner).IsEqualTo([1, 1, 2,]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenIterating_ShouldReturnAllValues()
 	{
 		IEnumerable<int> enumerable = ToEnumerable([1, 2, 3,]);
@@ -57,7 +57,7 @@ public class MaterializingEnumerableTests
 		await That(result).IsEqualTo([1, 2, 3,]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WrapParameter_ForCollection_ShouldUseCollection()
 	{
 		List<int> collection = new();
@@ -67,7 +67,7 @@ public class MaterializingEnumerableTests
 		await That(enumerable).IsSameAs(collection);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WrapParameter_Twice_ShouldUseSameInstance()
 	{
 		IEnumerable<int> enumerable = ToEnumerable([1, 2, 3,]);
@@ -79,7 +79,7 @@ public class MaterializingEnumerableTests
 		await That(materialized1).IsSameAs(materialized2);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WrapParameter_WhenSourceThrows_ShouldDisposeTheSourceOnce()
 	{
 		InvalidOperationException exception = new("the source is broken");
@@ -95,7 +95,7 @@ public class MaterializingEnumerableTests
 			.Because("a source that threw is not advanced again, so it is released right away");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WrapParameter_WhenSourceThrows_ShouldThrowTheSameExceptionOnEveryEnumeration()
 	{
 		InvalidOperationException exception = new("the source is broken");

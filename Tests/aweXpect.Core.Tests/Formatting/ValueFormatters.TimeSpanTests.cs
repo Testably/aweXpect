@@ -7,7 +7,7 @@ public partial class ValueFormatters
 {
 	public sealed class TimeSpanTests
 	{
-		[Fact]
+		[Test]
 		public async Task MinAndMaxValue_ShouldUseCSharpSyntax()
 		{
 			string maxValueResult = Formatter.Format(TimeSpan.MaxValue);
@@ -23,7 +23,7 @@ public partial class ValueFormatters
 			await That(nullableResult).IsEqualTo("TimeSpan.MaxValue");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Nullable_ShouldIncludeSingleDigitMinuteEvenWhenOnlySecondsAreSpecified()
 		{
 			TimeSpan? value = 12.Seconds();
@@ -39,7 +39,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Nullable_ShouldSupportDoubleDigitDays()
 		{
 			TimeSpan? value = 13.Days(4.Hours(5.Minutes(6.Seconds())));
@@ -55,7 +55,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Nullable_ShouldSupportDoubleDigitHours()
 		{
 			TimeSpan? value = 14.Hours(5.Minutes(6.Seconds()));
@@ -71,7 +71,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Nullable_ShouldSupportDoubleDigitsMinutes()
 		{
 			TimeSpan? value = 13.Minutes(4.Seconds());
@@ -87,7 +87,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Nullable_ShouldSupportMilliseconds()
 		{
 			TimeSpan? value = 13.Days(14.Hours(15.Minutes(16.Seconds(1.Milliseconds()))));
@@ -103,7 +103,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Nullable_ShouldSupportSingleDigitDays()
 		{
 			TimeSpan? value = 25.Hours(5.Minutes(6.Seconds()));
@@ -119,7 +119,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Nullable_ShouldSupportSingleDigitHours()
 		{
 			TimeSpan? value = 73.Minutes(4.Seconds());
@@ -135,7 +135,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Nullable_WithType_ShouldIncludeTypeInformation()
 		{
 			TimeSpan? value = 12.Seconds();
@@ -151,7 +151,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldIncludeSingleDigitMinuteEvenWhenOnlySecondsAreSpecified()
 		{
 			TimeSpan value = 12.Seconds();
@@ -167,10 +167,10 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(-10_000_000L, "-0:01")]
-		[InlineData(-15_000L, "-0:00.0015")]
-		[InlineData(-936_000_000_000L, "-1.02:00:00")]
+		[Test]
+		[Arguments(-10_000_000L, "-0:01")]
+		[Arguments(-15_000L, "-0:00.0015")]
+		[Arguments(-936_000_000_000L, "-1.02:00:00")]
 		public async Task ShouldPrefixNegativeValuesWithMinus(long ticks, string expectedResult)
 		{
 			TimeSpan value = TimeSpan.FromTicks(ticks);
@@ -186,7 +186,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportDoubleDigitDays()
 		{
 			TimeSpan value = 13.Days(14.Hours(15.Minutes(16.Seconds())));
@@ -202,7 +202,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportDoubleDigitHours()
 		{
 			TimeSpan value = 14.Hours(15.Minutes(16.Seconds()));
@@ -218,7 +218,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportDoubleDigitsMinutes()
 		{
 			TimeSpan value = 13.Minutes(14.Seconds());
@@ -234,7 +234,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportMilliseconds()
 		{
 			TimeSpan value = 13.Days(14.Hours(15.Minutes(16.Seconds(14.Milliseconds()))));
@@ -250,7 +250,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportSingleDigitDays()
 		{
 			TimeSpan value = 25.Hours(15.Minutes(16.Seconds()));
@@ -266,7 +266,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportSingleDigitHours()
 		{
 			TimeSpan value = 73.Minutes(14.Seconds());
@@ -282,7 +282,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportTenAsHoursOrMinutes()
 		{
 			TimeSpan value = 10.Days(10.Hours(10.Minutes(10.Seconds())));
@@ -298,12 +298,12 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(1L, "0:00.0000001")]
-		[InlineData(15_000L, "0:00.0015")]
-		[InlineData(10_000L, "0:00.001")]
-		[InlineData(100_000L, "0:00.010")]
-		[InlineData(12_345_678L, "0:01.2345678")]
+		[Test]
+		[Arguments(1L, "0:00.0000001")]
+		[Arguments(15_000L, "0:00.0015")]
+		[Arguments(10_000L, "0:00.001")]
+		[Arguments(100_000L, "0:00.010")]
+		[Arguments(12_345_678L, "0:01.2345678")]
 		public async Task ShouldSupportTicksBelowMilliseconds(long ticks, string expectedResult)
 		{
 			TimeSpan value = TimeSpan.FromTicks(ticks);
@@ -319,7 +319,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			TimeSpan? value = null;
@@ -334,7 +334,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithType_ShouldIncludeTypeInformation()
 		{
 			TimeSpan value = 3.Minutes(20.Seconds());
@@ -350,7 +350,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithType_WhenNegative_ShouldPrefixMinusAfterType()
 		{
 			TimeSpan value = TimeSpan.FromSeconds(-200);

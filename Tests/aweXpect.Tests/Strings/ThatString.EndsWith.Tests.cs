@@ -6,9 +6,9 @@ public sealed partial class ThatString
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData(false)]
-			[InlineData(true)]
+			[Test]
+			[Arguments(false)]
+			[Arguments(true)]
 			public async Task
 				IgnoringCase_WhenSubjectEndsWithDifferentCase_ShouldFailUnlessCaseIsIgnored(
 					bool ignoreCase)
@@ -19,7 +19,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).EndsWith(expected).IgnoringCase(ignoreCase);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.OnlyIf(!ignoreCase)
 					.WithMessage("""
 					             Expected that subject
@@ -32,7 +32,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				IgnoringCase_WhenSubjectEndsWithDifferentString_ShouldIncludeIgnoringCaseInMessage()
 			{
@@ -42,7 +42,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).EndsWith(expected).IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with "SOME" ignoring case,
@@ -54,7 +54,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				IgnoringIndentation_WhenSubjectEndsWithDifferentlyIndentedFooter_ShouldSucceed()
 			{
@@ -67,7 +67,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				IgnoringLeadingWhiteSpace_WhenSuffixReachesTheStartOfTheSubject_ShouldIgnoreItsLeadingWhiteSpace()
 			{
@@ -80,7 +80,7 @@ public sealed partial class ThatString
 					.Because("the whitespace of the suffix lies at the start of the subject, where it is ignored");
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				IgnoringLeadingWhiteSpace_WhenSuffixStartsWithWhiteSpaceInsideTheSubject_ShouldFail()
 			{
@@ -89,7 +89,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).EndsWith(" Abbey").IgnoringLeadingWhiteSpace();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with " Abbey" ignoring leading whitespace,
@@ -102,7 +102,7 @@ public sealed partial class ThatString
 					.Because("only whitespace at the start of the subject is ignored, not the space the suffix requires inside it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				Using_WhenSubjectEndsWithIncorrectMatchAccordingToComparer_ShouldIncludeComparerInMessage()
 			{
@@ -113,7 +113,7 @@ public sealed partial class ThatString
 					=> await That(subject).EndsWith(expected)
 						.Using(new IgnoreCaseForVocalsComparer());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with "Text" using IgnoreCaseForVocalsComparer,
@@ -125,7 +125,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				Using_WhenSubjectEndsWithMatchAccordingToComparer_ShouldSucceed()
 			{
@@ -139,7 +139,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsEmpty_ShouldFail()
 			{
 				string subject = "";
@@ -148,7 +148,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).EndsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with "SOME",
@@ -156,7 +156,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "text";
@@ -170,7 +170,7 @@ public sealed partial class ThatString
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsWhiteSpaceAndTrailingWhiteSpaceIsIgnored_ShouldThrowArgumentException()
 			{
 				string subject = "text ";
@@ -184,7 +184,7 @@ public sealed partial class ThatString
 					.Because("the suffix is empty once the trailing whitespace is ignored");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectDoesNotEndWithExpected_ShouldFail()
 			{
 				string subject = "some arbitrary text";
@@ -193,7 +193,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).EndsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with "some",
@@ -205,7 +205,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectEndsWithExpected_ShouldSucceed()
 			{
 				string subject = "some arbitrary text";
@@ -217,7 +217,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsEqualToExpected_ShouldSucceed()
 			{
 				string subject = "some text";
@@ -229,7 +229,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -238,7 +238,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).EndsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with "text",
@@ -246,7 +246,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsShorterThanExpected_ShouldFail()
 			{
 				string subject = "text";
@@ -255,7 +255,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).EndsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with "more than text",
@@ -267,7 +267,7 @@ public sealed partial class ThatString
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectDoesNotEndWithExpected_ShouldSucceed()
 			{
 				string subject = "Some arbitrary text";
@@ -278,7 +278,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectEndsWithExpected_ShouldFail()
 			{
 				string subject = "Some arbitrary text";
@@ -286,7 +286,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.EndsWith("text"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not end with "text",
@@ -294,7 +294,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectEndsWithExpectedIgnoringCase_ShouldFail()
 			{
 				string subject = "Some arbitrary text";
@@ -302,7 +302,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.EndsWith("TEXT").IgnoringCase());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not end with "TEXT" ignoring case,

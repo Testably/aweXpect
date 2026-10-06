@@ -9,7 +9,7 @@ public sealed partial class ThatEventRecording
 	{
 		public sealed class WithinTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNotTriggeredWithinTimeout_ShouldSucceed()
 			{
 				PropertyChangedClass sut = new();
@@ -28,7 +28,7 @@ public sealed partial class ThatEventRecording
 				cts.Cancel();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsTriggeredWithinTimeout_ShouldFail()
 			{
 				PropertyChangedClass sut = new();
@@ -41,7 +41,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTriggerPropertyChanged()
 						.Within(5.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has never recorded the PropertyChanged event on sut within 0:05,

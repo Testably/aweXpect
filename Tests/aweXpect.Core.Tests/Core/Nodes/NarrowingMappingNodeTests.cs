@@ -8,7 +8,7 @@ namespace aweXpect.Core.Tests.Core.Nodes;
 
 public class NarrowingMappingNodeTests
 {
-	[Fact]
+	[Test]
 	public async Task Async_IsMetBy_WhenMemberIsNarrowedType_ShouldUseInnerConstraint()
 	{
 		string? receivedValue = null;
@@ -26,7 +26,7 @@ public class NarrowingMappingNodeTests
 		await That(receivedValue).IsEqualTo("foo");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Async_IsMetBy_WhenMemberIsOfAnotherType_ShouldNotUseInnerConstraint()
 	{
 		MappingNode<object, object?, string> node = new(
@@ -42,7 +42,7 @@ public class NarrowingMappingNodeTests
 		await That(result.GetResultText()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Async_IsMetBy_WhenMemberIsOfAnotherType_ShouldUseTheExpectationResultOfTheInnerConstraint()
 	{
 		MappingNode<object, object?, string> node = new(
@@ -57,7 +57,7 @@ public class NarrowingMappingNodeTests
 			.Because("the expectation text of a constraint can depend on how it is evaluated, e.g. when it is negated");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenMemberIsNarrowedType_ShouldUseInnerConstraint()
 	{
 		string? receivedValue = null;
@@ -75,7 +75,7 @@ public class NarrowingMappingNodeTests
 		await That(receivedValue).IsEqualTo("foo");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenMemberIsNull_ShouldUseInnerConstraint()
 	{
 		bool wasCalled = false;
@@ -93,7 +93,7 @@ public class NarrowingMappingNodeTests
 		await That(wasCalled).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenMemberIsOfAnotherType_ShouldNotUseInnerConstraint()
 	{
 		MappingNode<object, object?, string> node = new(
@@ -109,7 +109,7 @@ public class NarrowingMappingNodeTests
 		await That(result.GetResultText()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenMemberIsOfAnotherType_ShouldUseTheExpectationResultOfTheInnerConstraint()
 	{
 		MappingNode<object, object?, string> node = new(
@@ -124,7 +124,7 @@ public class NarrowingMappingNodeTests
 			.Because("the expectation text of a constraint can depend on how it is evaluated, e.g. when it is negated");
 	}
 
-	[Fact]
+	[Test]
 	public async Task NotApplicableResult_Negate_ShouldStayUndecided()
 	{
 		NotApplicableConstraintResult result = new((sb, _) => sb.Append("foo"));
@@ -134,7 +134,7 @@ public class NarrowingMappingNodeTests
 		await That(negatedResult.Outcome).IsEqualTo(Outcome.Undecided);
 	}
 
-	[Fact]
+	[Test]
 	public async Task NotApplicableResult_TryGetValue_ShouldReturnFalse()
 	{
 		NotApplicableConstraintResult constraintResult = new((sb, _) => sb.Append("foo"));

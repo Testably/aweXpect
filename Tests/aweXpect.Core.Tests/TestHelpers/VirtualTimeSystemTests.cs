@@ -6,7 +6,7 @@ namespace aweXpect.Core.Tests.TestHelpers;
 
 public sealed class VirtualTimeSystemTests
 {
-	[Fact]
+	[Test]
 	public async Task Advance_ShouldMakeTheScheduledCancellationsOnTheWay()
 	{
 		VirtualTimeSystem sut = new();
@@ -21,7 +21,7 @@ public sealed class VirtualTimeSystemTests
 		await That(sut.Now).IsEqualTo(100.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Delay_ShouldAdvanceTheClockByItsDuration()
 	{
 		VirtualTimeSystem sut = new();
@@ -34,7 +34,7 @@ public sealed class VirtualTimeSystemTests
 		await That(sut.Now).IsEqualTo(1.Hours() + 10.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Delay_WhenACancellationIsScheduledAfterIt_ShouldNotCancel()
 	{
 		VirtualTimeSystem sut = new();
@@ -47,7 +47,7 @@ public sealed class VirtualTimeSystemTests
 		await That(sut.Now).IsEqualTo(100.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Delay_WhenACancellationIsScheduledWithinIt_ShouldStopTheClockUntilTheWaitIsCanceled()
 	{
 		VirtualTimeSystem sut = new();
@@ -68,7 +68,7 @@ public sealed class VirtualTimeSystemTests
 		await That(sut.Now).IsEqualTo(40.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Delay_WhenAlreadyCanceled_ShouldNotAdvanceTheClock()
 	{
 		VirtualTimeSystem sut = new();
@@ -81,7 +81,7 @@ public sealed class VirtualTimeSystemTests
 		await That(sut.Now).IsEqualTo(TimeSpan.Zero);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Stopwatch_ShouldMeasureTheVirtualTimeWhileItIsRunning()
 	{
 		VirtualTimeSystem sut = new();

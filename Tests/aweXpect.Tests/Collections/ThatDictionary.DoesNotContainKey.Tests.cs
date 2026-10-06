@@ -10,7 +10,7 @@ public sealed partial class ThatDictionary
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenKeyExists_ShouldFail()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
@@ -18,7 +18,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContainKey(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain key 2,
@@ -29,7 +29,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeyIsMissing_ShouldSucceed()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
@@ -40,7 +40,7 @@ public sealed partial class ThatDictionary
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Dictionary<string, int>? subject = null;
@@ -48,7 +48,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContainKey("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain key "foo",
@@ -56,7 +56,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				Dictionary<string, int> subject = new()
@@ -75,7 +75,7 @@ public sealed partial class ThatDictionary
 
 		public sealed class OverloadTests
 		{
-			[Fact]
+			[Test]
 			public async Task ForASortedDictionary_ShouldBindToTheDictionaryOverload()
 			{
 				SortedDictionary<string, int> subject = new() { { "a", 1 }, };
@@ -91,7 +91,7 @@ public sealed partial class ThatDictionary
 
 		public sealed class ThrowingSubjectTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheKeyComparerThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("comparer failed");
@@ -102,7 +102,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContainKey("x");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain key "x",
@@ -116,7 +116,7 @@ public sealed partial class ThatDictionary
 					.Because("a dictionary that answered nothing cannot prove the negation either");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheLookupThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("lookup failed");
@@ -126,7 +126,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContainKey("x");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain key "x",

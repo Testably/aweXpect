@@ -29,7 +29,7 @@ public sealed partial class TypeMetadataGeneratorTests
 	                              }
 	                              """;
 
-	[Fact]
+	[Test]
 	public async Task ShouldEmitAModuleInitializer()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -40,7 +40,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the metadata has to be registered before any code of the assembly compares anything");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldRegisterEverythingInOneBatch()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -57,7 +57,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("a comparison on another thread must not see a type with only some of its members");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAnonymousTypeCarriesATypeParameter_ShouldNotRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -76,7 +76,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the type parameter of the enclosing method cannot be named in a module initializer");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAnonymousTypeHasAGenericMemberOverAnAnonymousType_ShouldRegisterItThroughAProbe()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -113,7 +113,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the tuple over the anonymous type gets its own registration through a helper as well");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenArgumentIsAnonymous_ShouldRegisterThroughAProbe()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -131,7 +131,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the nested anonymous type is a member type and gets its own registration");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenArgumentIsMarked_ShouldRegisterTheExpectedTypeTransitively()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -147,7 +147,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the comparison recurses into the members, so their types need a registration too");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenArgumentIsMarked_ShouldRegisterTheSubjectType()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -159,7 +159,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the comparison fetches the members of the subject by name, so it needs the subject registered");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenArgumentIsNamed_ShouldRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -171,7 +171,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("a named argument is matched by its name instead of its position");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAssemblyAliasesIncludeGlobal_ShouldRegisterItsTypes()
 	{
 		MetadataReference library = GeneratorRunner.CompileToReference("Lib", Library);
@@ -185,7 +185,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the global alias makes the type reachable through global::");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAssemblyIsReferencedByAliasAndGlobally_ShouldRegisterItsTypes()
 	{
 		MetadataReference library = GeneratorRunner.CompileToReference("Lib", Library);
@@ -199,7 +199,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("one global reference is enough, whatever other aliases the assembly is known under");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAssemblyIsReferencedOnlyByAlias_ShouldNotRegisterItsTypes()
 	{
 		MetadataReference library = GeneratorRunner.CompileToReference("Lib", Library);
@@ -222,7 +222,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("a type that is only reachable through an extern alias cannot be named with global::");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenBasePropertyIsDynamicAndHiddenByAnObjectOne_ShouldNotRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -250,7 +250,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("dynamic is object in metadata, so the private object property hides the dynamic base one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenBasePropertyIsHiddenByAByReferenceOne_ShouldRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -278,7 +278,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("a by-reference return is part of the metadata signature, so the base property is not hidden");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenBasePropertyIsHiddenByALessVisibleOne_ShouldNotRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -306,7 +306,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the runtime drops a base property hidden by name and type when the private hider sits on the reflected type itself");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenBasePropertyIsHiddenPrivatelyOnAnIntermediateType_ShouldRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -338,7 +338,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the runtime never returns private members of a base type, so a private hider on an intermediate type does not hide anything");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenBasePropertyOfANestedGenericIsHiddenPrivately_ShouldRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -369,7 +369,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("metadata numbers U as the second type parameter of the nested type, so it differs from the base's T");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenBasePropertyOnAGenericBaseIsHiddenPrivately_ShouldRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -397,7 +397,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the runtime compares the declared signature, in which the base property is typed by the type parameter, not by int");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCalledAsAStaticMethod_ShouldRegisterTheArgumentAndTheSubject()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -414,7 +414,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the receiver is the first argument when an extension method is called as a static method");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCompilationChanges_ShouldCacheTheCallSites()
 	{
 		GeneratorDriverRunResult result = GeneratorRunner.RunTwice(new TypeMetadataGenerator(),
@@ -429,7 +429,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("an unchanged call site has to compare equal, so that the registrations are not collected again");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCompilationChanges_ShouldWalkTheChangedTypeAgain()
 	{
 		CSharpParseOptions parseOptions = new(LanguageVersion.Latest);
@@ -449,7 +449,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the walks are shared between the call sites of one compilation only");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenConsumerDeclaresNamespacesThatShadowTheSystemNamespace_ShouldCompile()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -465,7 +465,7 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Generated).Contains("typeof(global::System.Collections.Generic.List<global::Models.Other>)");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenConsumerIsExperimental_ShouldRegisterItsTypes()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -480,7 +480,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the compiler reports an experimental assembly only to the assemblies that reference it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenConsumerUsesCSharp8_ShouldNotEmit()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -494,7 +494,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("a module initializer needs C# 9, so emitting one would break the consumer's build");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenConsumerUsesCSharp9_ShouldCompile()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -509,7 +509,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCoreCannotRegisterABatch_ShouldRegisterEachTypeDirectly()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -544,7 +544,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("an aweXpect.Core without the batch would not compile it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCoreCannotRegisterDictionaries_ShouldNotRegisterThem()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -577,7 +577,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("an aweXpect.Core without the registration would not compile it, and reads the key comparer by reflection instead");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCoreCannotRegisterExplicitProperties_ShouldRegisterThePublicMembersOnly()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -609,7 +609,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("an aweXpect.Core without the registration would not compile it, and it lacks the fallback that reads it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCoreIsNotReferenced_ShouldNotEmit()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -632,7 +632,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("a registration against a Core without the registry would not compile");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDiagnosticIdIsMalformed_ShouldNotRegisterTheType()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -647,7 +647,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("an id that is not an identifier cannot be suppressed by a pragma");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDiagnosticIdIsNumeric_ShouldNotRegisterTheType()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -662,7 +662,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the compiler reads a numeric id in a pragma as a CS code, so the warning would stay");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenFieldHidesAProperty_ShouldRegisterBoth()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -691,7 +691,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("reflection compares the field and the hidden property, so the registration has to hold both");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenGenerateMetadataAttributeIsApplied_ShouldRegisterTheType()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -704,7 +704,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the attribute is the escape hatch for a type no marked call site reveals");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenGenerateMetadataAttributeIsSurroundedByAPragma_ShouldSuppressTheDiagnostic()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -722,7 +722,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("a warning on the attribute can be suppressed locally, like any other warning");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenGenerateMetadataAttributeNamesAnArray_ShouldRegisterTheElementWithoutADiagnostic()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -735,7 +735,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenGenerateMetadataAttributeNamesAnUnregistrableType_ShouldLinkToTheDocumentation()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -750,7 +750,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("every rule links to its section on the analyzers page and explains itself in the IDE");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenGenerateMetadataAttributeNamesAnUnregistrableType_ShouldReportADiagnostic()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -766,7 +766,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the escape hatch is used when something already went wrong, so silently doing nothing is not acceptable");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenGetterRequiresUnreferencedCode_ShouldNotRegisterTheType()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -793,7 +793,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("calling such a getter would make the registration itself a trimming warning on publish");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenInheritedGetterRequiresUnreferencedCode_ShouldNotRegisterTheType()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -830,7 +830,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("an override of the setter alone is read through the inherited getter, which would make the registration a trimming warning on publish");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberIsABigTuple_ShouldRegisterRestInsteadOfTheVirtualItems()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -845,7 +845,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the eighth element is a virtual field of the tuple syntax that reflection never sees");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberIsANumberOrAStringBuilder_ShouldNotRegisterItsMembers()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -861,7 +861,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("numbers and string builders are compared by value");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberIsARefStruct_ShouldNotRegisterTheType()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -875,7 +875,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("a ref struct cannot be a type argument, and reflection cannot read such a member either, so the type is compared through reflection where it fails as before");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberIsATask_ShouldNotRegisterItsMembers()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -891,7 +891,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("tasks and value tasks are compared by value");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberIsATuple_ShouldRegisterItsItems()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -906,7 +906,7 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Generated).DoesNotContain("\"Left\"");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberIsAnExpectation_ShouldNotRegisterItsMembers()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -920,7 +920,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("an expectation is evaluated against the actual value instead of being compared member by member");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberIsHidden_ShouldRegisterTheMostDerivedDeclaration()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -948,7 +948,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("reflection keeps the declaration on the most derived type, so the registry has to as well");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberIsNamedLikeAKeyword_ShouldEscapeIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -963,7 +963,7 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Generated).Contains("(\"event\", o => o.@event);");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberIsNullableStruct_ShouldRegisterTheUnderlyingType()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -978,7 +978,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("a boxed nullable has the runtime type of its underlying struct");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberIsObsolete_ShouldRegisterItWithoutWarnings()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -994,7 +994,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("reflection compares an obsolete member like any other");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberIsObsoleteWithDiagnosticId_ShouldRegisterItWithoutWarnings()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1009,7 +1009,7 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Generated).Contains("#pragma warning disable CS0612, CS0618, MYLIB001");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberIsObsoleteWithError_ShouldNotRegisterTheType()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1023,7 +1023,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the member cannot be referenced, and registering the other members alone would compare fewer of them than reflection");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberTypeIsNotReferenced_ShouldNotRegisterTheType()
 	{
 		MetadataReference dependency = GeneratorRunner.CompileToReference("Dependency",
@@ -1041,7 +1041,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the generated code cannot name a type from an assembly the consumer does not reference");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNothingIsMarked_ShouldNotEmit()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1052,7 +1052,7 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 #if DEBUG
-	[Fact]
+	[Test]
 	public async Task WhenPropertyIsImplementedExplicitly_ForAnInaccessibleInterface_ShouldLeaveItOut()
 	{
 		MetadataReference library = GeneratorRunner.CompileToReference("Lib",
@@ -1067,7 +1067,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the generated code cannot cast to an interface it cannot see, and leaving out one fallback must not cost the type its registration");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenPropertyIsImplementedExplicitly_ForAnInterfaceOverAnAnonymousType_ShouldNotRegisterTheType()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1099,7 +1099,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the generated code cannot cast to an interface over an anonymous type, and registering the other members alone would answer the explicit lookup differently than reflection");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenPropertyIsImplementedExplicitly_OnABaseType_ShouldRegisterItOnce()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1133,7 +1133,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the re-implementation hides the one on the base, as it does for reflection");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenPropertyIsImplementedExplicitly_OnAGenericOverAnAnonymousType_ShouldRegisterItThroughAProbe()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1168,7 +1168,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("a registered type answers the explicit lookup from its registration only, so leaving the implementation out would report it as missing although reflection finds it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenPropertyIsImplementedExplicitly_ShouldRegisterItThroughItsInterface()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1206,7 +1206,7 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 #endif
 
-	[Fact]
+	[Test]
 	public async Task WhenPropertyReturnsByReference_ShouldRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1220,7 +1220,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("reflection reads a ref-returning property like any other, so the registry has to hold it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenReceiverIsAnInstance_ShouldRegisterItsTypeArgument()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1235,7 +1235,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the element type of the receiver is the subject of each element comparison");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsADictionary_ShouldRegisterItsKeyAndValueTypesOnce()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1256,7 +1256,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the values are still compared by their members");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsASet_ShouldRegisterItsItemTypeOnce()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1276,7 +1276,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the items are still compared by their members when the comparer does not find them");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsAnUnnameableDictionary_ShouldNotRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1300,7 +1300,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the generated code cannot name the private value type");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsAnUnnameableSet_ShouldNotRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1324,7 +1324,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the generated code cannot name the private item type");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsEnumerable_ShouldKeepItsInterfacesWithoutAWarningOfTheNet8AotCompiler()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1346,7 +1346,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("ILC 8 reports IL2037 for the dependency, which fails a publish that treats warnings as errors");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsEnumerable_ShouldRegisterTheElementTypeInstead()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1367,11 +1367,11 @@ public sealed partial class TypeMetadataGeneratorTests
 				"the collection keeps the interfaces that select the comparison, which the trimmer would drop");
 	}
 
-	[Theory]
-	[InlineData("", "", "[Experimental(\"LIBEXP001\")]")]
-	[InlineData("", "[Experimental(\"LIBEXP001\")]", "")]
-	[InlineData("[assembly: Experimental(\"LIBEXP001\")]", "", "")]
-	[InlineData("[module: Experimental(\"LIBEXP001\")]", "", "")]
+	[Test]
+	[Arguments("", "", "[Experimental(\"LIBEXP001\")]")]
+	[Arguments("", "[Experimental(\"LIBEXP001\")]", "")]
+	[Arguments("[assembly: Experimental(\"LIBEXP001\")]", "", "")]
+	[Arguments("[module: Experimental(\"LIBEXP001\")]", "", "")]
 	public async Task WhenTypeIsExperimental_ShouldNotRegisterIt(string assemblyAttribute, string outerAttribute,
 		string typeAttribute)
 	{
@@ -1398,7 +1398,7 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Generated).DoesNotContain("Lib.Outer.Foo");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsFileLocal_ShouldNotRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1421,7 +1421,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("a file-local type is only visible inside its own file, and the generated code is another one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsNotAccessible_ShouldNotRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1445,7 +1445,7 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 #if DEBUG
-	[Fact]
+	[Test]
 	public async Task WhenTypeOnlyImplementsPropertiesExplicitly_ShouldRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1462,7 +1462,7 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 #endif
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeParameterIsMarked_ShouldRegisterTheTypeArgument()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -1477,7 +1477,7 @@ public sealed partial class TypeMetadataGeneratorTests
 			.Because("the expected value reached the comparison through an earlier call, so only the type argument names it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeReachesTheComparisonTwice_ShouldRegisterItOnce()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(

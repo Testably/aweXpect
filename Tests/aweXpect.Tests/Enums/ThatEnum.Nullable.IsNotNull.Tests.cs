@@ -8,9 +8,9 @@ public sealed partial class ThatEnum
 		{
 			public sealed class Tests
 			{
-				[Theory]
-				[InlineData(MyColors.Blue)]
-				[InlineData((MyColors)42)]
+				[Test]
+				[Arguments(MyColors.Blue)]
+				[Arguments((MyColors)42)]
 				public async Task WhenSubjectIsNotNull_ShouldSucceed(MyColors? subject)
 				{
 					async Task Act()
@@ -19,7 +19,7 @@ public sealed partial class ThatEnum
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					MyColors? subject = null;
@@ -27,7 +27,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).IsNotNull();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not null,

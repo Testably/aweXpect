@@ -7,7 +7,7 @@ namespace aweXpect.Core.Tests.Results;
 
 public sealed class StringOccurrenceCountResultTests
 {
-	[Fact]
+	[Test]
 	public async Task AsBlock_ShouldInterpretExpectedAsBlock()
 	{
 		Quantifier quantifier = new();
@@ -23,7 +23,7 @@ public sealed class StringOccurrenceCountResultTests
 			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferPrefixAndSuffixMatchTypes()
 	{
 		StringOccurrenceCountResult<string, IThat<string>> sut =
@@ -33,7 +33,7 @@ public sealed class StringOccurrenceCountResultTests
 			.Because("an occurrence can be anywhere in the string, so AsPrefix() and AsSuffix() must not compile");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldOfferPatternMatchTypes()
 	{
 		StringEqualityOptions options = new("expected");
@@ -46,7 +46,7 @@ public sealed class StringOccurrenceCountResultTests
 		await That(options.ToString()).IsEqualTo(" as wildcard");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldProvideTheQuantifierAndTheStringOptions()
 	{
 		Quantifier quantifier = new();

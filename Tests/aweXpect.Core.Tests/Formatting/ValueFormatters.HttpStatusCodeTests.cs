@@ -8,10 +8,10 @@ public partial class ValueFormatters
 {
 	public sealed class HttpStatusCodeTests
 	{
-		[Theory]
-		[InlineData(HttpStatusCode.OK, "200 OK")]
-		[InlineData(HttpStatusCode.BadRequest, "400 BadRequest")]
-		[InlineData(null, "<null>")]
+		[Test]
+		[Arguments(HttpStatusCode.OK, "200 OK")]
+		[Arguments(HttpStatusCode.BadRequest, "400 BadRequest")]
+		[Arguments(null, "<null>")]
 		public async Task Nullable_ShouldIncludeNumberAndDescription(HttpStatusCode? value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -25,10 +25,10 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(HttpStatusCode.OK, "HttpStatusCode 200 OK")]
-		[InlineData(HttpStatusCode.BadRequest, "HttpStatusCode 400 BadRequest")]
-		[InlineData(null, "<null>")]
+		[Test]
+		[Arguments(HttpStatusCode.OK, "HttpStatusCode 200 OK")]
+		[Arguments(HttpStatusCode.BadRequest, "HttpStatusCode 400 BadRequest")]
+		[Arguments(null, "<null>")]
 		public async Task Nullable_WithType_ShouldIncludeNumberAndDescription(HttpStatusCode? value,
 			string expectedResult)
 		{
@@ -43,9 +43,9 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(HttpStatusCode.OK, "200 OK")]
-		[InlineData(HttpStatusCode.BadRequest, "400 BadRequest")]
+		[Test]
+		[Arguments(HttpStatusCode.OK, "200 OK")]
+		[Arguments(HttpStatusCode.BadRequest, "400 BadRequest")]
 		public async Task ShouldIncludeNumberAndDescription(HttpStatusCode value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -59,7 +59,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			HttpStatusCode? value = null;
@@ -74,7 +74,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenUndefined_ShouldOnlyIncludeNumber()
 		{
 			HttpStatusCode value = (HttpStatusCode)499;
@@ -96,9 +96,9 @@ public partial class ValueFormatters
 			await That(sbWithType.ToString()).IsEqualTo("HttpStatusCode 499");
 		}
 
-		[Theory]
-		[InlineData(HttpStatusCode.OK, "HttpStatusCode 200 OK")]
-		[InlineData(HttpStatusCode.BadRequest, "HttpStatusCode 400 BadRequest")]
+		[Test]
+		[Arguments(HttpStatusCode.OK, "HttpStatusCode 200 OK")]
+		[Arguments(HttpStatusCode.BadRequest, "HttpStatusCode 400 BadRequest")]
 		public async Task WithType_ShouldIncludeNumberAndDescription(HttpStatusCode value, string expectedResult)
 		{
 			StringBuilder sb = new();

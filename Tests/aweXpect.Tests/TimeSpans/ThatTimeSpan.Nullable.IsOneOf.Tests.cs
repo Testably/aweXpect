@@ -12,7 +12,7 @@ public sealed partial class ThatTimeSpan
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 				{
 					TimeSpan? subject = CurrentTime();
@@ -22,7 +22,7 @@ public sealed partial class ThatTimeSpan
 					async Task Act()
 						=> await That(subject).IsOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is one of expected,
@@ -34,7 +34,7 @@ public sealed partial class ThatTimeSpan
 						.Because("the empty check must not consume the values needed for the comparison and the message");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					TimeSpan? subject = CurrentTime();
@@ -49,7 +49,7 @@ public sealed partial class ThatTimeSpan
 						.Because("an empty set is rejected when the expectation is built, before it is awaited");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					TimeSpan? subject = CurrentTime();
@@ -63,7 +63,7 @@ public sealed partial class ThatTimeSpan
 						.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedOnlyContainsAnOverflowingValue_ShouldFail()
 				{
 					TimeSpan? subject = TimeSpan.MinValue;
@@ -72,7 +72,7 @@ public sealed partial class ThatTimeSpan
 					async Task Act()
 						=> await That(subject).IsOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is one of {Formatter.Format(expected)},
@@ -81,7 +81,7 @@ public sealed partial class ThatTimeSpan
 						.Because("a difference that exceeds the range of a time span must fail instead of overflow");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedOnlyContainsNull_ShouldFail()
 				{
 					TimeSpan? subject = CurrentTime();
@@ -90,7 +90,7 @@ public sealed partial class ThatTimeSpan
 					async Task Act()
 						=> await That(subject).IsOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is one of expected,
@@ -101,7 +101,7 @@ public sealed partial class ThatTimeSpan
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					TimeSpan? subject = CurrentTime();
@@ -116,7 +116,7 @@ public sealed partial class ThatTimeSpan
 						.Because("an empty set is rejected when the expectation is built, before it is awaited");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					TimeSpan? subject = CurrentTime();
@@ -130,7 +130,7 @@ public sealed partial class ThatTimeSpan
 						.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsContained_ShouldSucceed()
 				{
 					TimeSpan? subject = CurrentTime();
@@ -142,7 +142,7 @@ public sealed partial class ThatTimeSpan
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsContainedAfterAnOverflowingValue_ShouldSucceed()
 				{
 					TimeSpan? subject = TimeSpan.MinValue;
@@ -155,7 +155,7 @@ public sealed partial class ThatTimeSpan
 						.Because("an earlier candidate that is far away must not hide a matching later candidate");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsDifferent_ShouldFail()
 				{
 					TimeSpan? subject = CurrentTime();
@@ -164,7 +164,7 @@ public sealed partial class ThatTimeSpan
 					async Task Act()
 						=> await That(subject).IsOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is one of expected,
@@ -175,7 +175,7 @@ public sealed partial class ThatTimeSpan
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					TimeSpan? subject = null;
@@ -184,7 +184,7 @@ public sealed partial class ThatTimeSpan
 					async Task Act()
 						=> await That(subject).IsOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is one of expected,
@@ -195,7 +195,7 @@ public sealed partial class ThatTimeSpan
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndExpectedCanOnlyBeEnumeratedOnce_ShouldSucceed()
 				{
 					TimeSpan? subject = null;
@@ -208,7 +208,7 @@ public sealed partial class ThatTimeSpan
 						.Because("the empty check must not consume the value needed for the comparison");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndExpectedContainsNull_ShouldSucceed()
 				{
 					TimeSpan? subject = null;
@@ -220,7 +220,7 @@ public sealed partial class ThatTimeSpan
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					TimeSpan? subject = null;
@@ -235,7 +235,7 @@ public sealed partial class ThatTimeSpan
 						.Because("missing expected values are an argument error, independent of the subject");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					TimeSpan? subject = null;
@@ -250,7 +250,7 @@ public sealed partial class ThatTimeSpan
 						.Because("a null list of expected values is an argument error, independent of the subject");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndNullableExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					TimeSpan? subject = null;
@@ -265,7 +265,7 @@ public sealed partial class ThatTimeSpan
 						.Because("missing expected values are an argument error, independent of the subject");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndNullableExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					TimeSpan? subject = null;
@@ -280,11 +280,11 @@ public sealed partial class ThatTimeSpan
 						.Because("a null list of expected values is an argument error, independent of the subject");
 				}
 
-				[Theory]
-				[InlineData(3, 2, true)]
-				[InlineData(5, 3, true)]
-				[InlineData(2, 2, false)]
-				[InlineData(0, 2, false)]
+				[Test]
+				[Arguments(3, 2, true)]
+				[Arguments(5, 3, true)]
+				[Arguments(2, 2, false)]
+				[Arguments(0, 2, false)]
 				public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail(
 					int actualDifference, int tolerance, bool expectToThrow)
 				{
@@ -296,7 +296,7 @@ public sealed partial class ThatTimeSpan
 							.Within(tolerance.Seconds())
 							.Because("we want to test the failure");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.OnlyIf(expectToThrow)
 						.WithMessage($"""
 						              Expected that subject
@@ -308,7 +308,7 @@ public sealed partial class ThatTimeSpan
 
 			public sealed class NegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsContained_ShouldFail()
 				{
 					TimeSpan? subject = 5.Seconds();
@@ -316,7 +316,7 @@ public sealed partial class ThatTimeSpan
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(5.Seconds(), 6.Seconds()));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not one of [0:05, 0:06],
@@ -324,7 +324,7 @@ public sealed partial class ThatTimeSpan
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNotContained_ShouldSucceed()
 				{
 					TimeSpan? subject = 5.Seconds();

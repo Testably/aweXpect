@@ -1,12 +1,11 @@
 using System.Threading.Tasks;
-using Xunit;
 using Verifier = aweXpect.Analyzers.Tests.Verifiers.CSharpAnalyzerVerifier<aweXpect.Analyzers.AwaitExpectationAnalyzer>;
 
 namespace aweXpect.Analyzers.Tests;
 
 public class AwaitExpectationAnalyzerTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenAssignedToLocal_ThatIsAwaited_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -25,7 +24,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenAssignedToLocal_ThatIsNeverUsed_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -45,7 +44,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenAssignedToLocal_ThatIsVerified_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -65,7 +64,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenAwaited_InConditionalExpression_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -82,7 +81,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenAwaited_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -100,7 +99,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenAwaited_WithoutReturnValue_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -117,7 +116,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenAwaitedInAsyncLambdaReturningTask_InAsyncVoidMethod_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -136,7 +135,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenAwaitedInAsyncLambdaReturningTask_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -155,7 +154,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenAwaitedInAsyncVoidLambda_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -176,7 +175,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenAwaitedInAsyncVoidLocalFunction_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -199,7 +198,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenAwaitedInAsyncVoidMethod_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -219,7 +218,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenAwaitedInAsyncVoidMethod_WithExpressionBody_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -235,7 +234,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenAwaitedInAsyncVoidPartialMethod_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -253,7 +252,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenAwaitedInLocalFunctionReturningTask_InAsyncVoidMethod_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -273,7 +272,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenChainedWithAnd_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -293,7 +292,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenDiscarded_InConditionalExpression_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -314,7 +313,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(1)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenDiscarded_InSwitchExpression_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -339,7 +338,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(1)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenDiscarded_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -359,7 +358,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenEvaluatedThroughTheAwaiter_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -377,7 +376,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenNotAwaited_InOneBranch_WithVerifyInTheOtherBranch_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -401,7 +400,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenNotAwaited_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -421,7 +420,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenNotAwaited_WithoutReturnValue_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -440,7 +439,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenNotAwaited_WithoutReturnValue_WithVerifyInMethod_ShouldStillBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -460,7 +459,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenOnlyGetAwaiterIsCalled_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -480,7 +479,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenReturnedFromAsyncLambda_ToTaskRun_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -500,7 +499,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenReturnedFromAsyncLambda_WithReturnStatement_ToTaskRun_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -524,7 +523,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenReturnedFromExpressionBodiedMethod_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -539,7 +538,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenReturnedFromLambda_AndAwaitedAgain_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -557,7 +556,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenReturnedFromLambda_AndAwaitedAgain_WithConfigureAwait_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -575,7 +574,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenReturnedFromLambda_AsDelegate_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -596,7 +595,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenReturnedFromLambda_ToTaskRun_AndTaskIsAwaitedLater_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -615,7 +614,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenReturnedFromLambda_ToTaskRun_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -635,7 +634,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenReturnedFromLambda_ToTaskRun_WithConfigureAwait_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -655,7 +654,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenReturnedFromLambda_WithReturnStatement_ToTaskRun_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -678,7 +677,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenReturnedWithReturnStatement_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -695,7 +694,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenThatAllIsAwaited_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -713,7 +712,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenThatAllIsEvaluatedThroughTheAwaiter_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -731,7 +730,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenThatAllIsNotAwaited_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -751,7 +750,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenThatAnyIsNotAwaited_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -771,7 +770,7 @@ public class AwaitExpectationAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenVerified_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -790,7 +789,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenVerified_WithoutReturnValue_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -808,7 +807,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenVerifiedInVoidMethod_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -823,7 +822,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenVerifiedStatically_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -842,7 +841,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenVerifiedStatically_WithoutReturnValue_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -860,7 +859,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenVerifiedWithStaticUsing_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -880,7 +879,7 @@ public class AwaitExpectationAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenVerifiedWithStaticUsing_WithoutReturnValue_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""

@@ -13,7 +13,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class EnumerableTests
 			{
-				[Fact]
+				[Test]
 				public async Task ConsidersCancellationToken()
 				{
 					using CancellationTokenSource cts = new();
@@ -24,7 +24,7 @@ public sealed partial class ThatEnumerable
 						=> await That(subject).None().AreEqualTo(8)
 							.WithCancellation(token);
 
-					await That(Act).Throws<InconclusiveException>()
+					await That(Act).Throws<InconclusiveTestException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 8 for no items,
@@ -35,7 +35,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task DoesNotEnumerateTwice()
 				{
 					IEnumerable subject = new ThrowWhenIteratingTwiceEnumerable();
@@ -47,7 +47,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task DoesNotMaterializeEnumerable()
 				{
 					IEnumerable subject = Factory.GetFibonacciNumbers();
@@ -55,7 +55,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).None().AreEqualTo(5);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 5 for no items,
@@ -69,7 +69,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsEqualValues_ShouldFail()
 				{
 					IEnumerable subject = ToEnumerable([1, 1, 1, 1, 2, 2, 3,]);
@@ -77,7 +77,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).None().AreEqualTo(1);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 1 for no items,
@@ -91,7 +91,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableIsEmpty_ShouldSucceed()
 				{
 					IEnumerable subject = ToEnumerable((int[]) []);
@@ -102,7 +102,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableOnlyContainsDifferentValues_ShouldSucceed()
 				{
 					IEnumerable subject = ToEnumerable([1, 1, 1, 1, 2, 2, 3,]);
@@ -113,7 +113,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable? subject = null;
@@ -121,7 +121,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject)!.None().AreEqualTo(0);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 0 for no items,

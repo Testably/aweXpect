@@ -13,7 +13,7 @@ namespace aweXpect.Core.Tests.Core;
 
 public class ExpectationBuilderTests
 {
-	[Fact]
+	[Test]
 	public async Task AddConstraint_WithState_AsyncConstraint_ShouldPassStateSubjectNameAndGrammars()
 	{
 		ManualExpectationBuilder<int> sut = new(ExpectationGrammars.Plural);
@@ -31,7 +31,7 @@ public class ExpectationBuilderTests
 			.Because("the constraint compares with the state");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddConstraint_WithState_AsyncConstraintWithBuilder_ShouldAlsoPassTheBuilder()
 	{
 		ManualExpectationBuilder<int> sut = new(ExpectationGrammars.Plural);
@@ -52,7 +52,7 @@ public class ExpectationBuilderTests
 			.Because("the constraint compares with the state");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddConstraint_WithState_AsyncContextConstraint_ShouldPassStateSubjectNameAndGrammars()
 	{
 		ManualExpectationBuilder<int> sut = new(ExpectationGrammars.Plural);
@@ -70,7 +70,7 @@ public class ExpectationBuilderTests
 			.Because("the constraint compares with the state");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddConstraint_WithState_AsyncContextConstraintWithBuilder_ShouldAlsoPassTheBuilder()
 	{
 		ManualExpectationBuilder<int> sut = new(ExpectationGrammars.Plural);
@@ -91,7 +91,7 @@ public class ExpectationBuilderTests
 			.Because("the constraint compares with the state");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddConstraint_WithState_ContextConstraint_ShouldPassStateSubjectNameAndGrammars()
 	{
 		ManualExpectationBuilder<int> sut = new(ExpectationGrammars.Plural);
@@ -109,7 +109,7 @@ public class ExpectationBuilderTests
 			.Because("the constraint compares with the state");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddConstraint_WithState_ContextConstraintWithBuilder_ShouldAlsoPassTheBuilder()
 	{
 		ManualExpectationBuilder<int> sut = new(ExpectationGrammars.Plural);
@@ -130,7 +130,7 @@ public class ExpectationBuilderTests
 			.Because("the constraint compares with the state");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddConstraint_WithState_ValueConstraint_ShouldPassStateSubjectNameAndGrammars()
 	{
 		ManualExpectationBuilder<int> sut = new(ExpectationGrammars.Plural);
@@ -148,7 +148,7 @@ public class ExpectationBuilderTests
 			.Because("the constraint compares with the state");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddConstraint_WithState_ValueConstraintWithBuilder_ShouldAlsoPassTheBuilder()
 	{
 		ManualExpectationBuilder<int> sut = new(ExpectationGrammars.Plural);
@@ -169,7 +169,7 @@ public class ExpectationBuilderTests
 			.Because("the constraint compares with the state");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForAsyncMember_ShouldUseAndResetExpectationGrammars()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -189,7 +189,7 @@ public class ExpectationBuilderTests
 		await That(sut.ExpectationGrammars).IsEqualTo(ExpectationGrammars.None);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForAsyncMember_WhenTheSourceOfANestedMemberIsNull_ShouldNameTheOuterMember()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -207,7 +207,7 @@ public class ExpectationBuilderTests
 			.Because("the subject itself was not null, only the member the nested member is read from");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForAsyncMember_WithAndCombinedExpectations_ShouldApplyAllExpectations()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -224,7 +224,7 @@ public class ExpectationBuilderTests
 		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 3 and equal to 2");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForAsyncMember_WithFailingExpectation_ShouldReturnFailureConstraintResult()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -239,7 +239,7 @@ public class ExpectationBuilderTests
 		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 2");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForAsyncMember_WithOrCombinedExpectations_ShouldApplyEitherExpectation()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -258,7 +258,7 @@ public class ExpectationBuilderTests
 		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 2 or equal to 3");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForAsyncMember_WithSucceedingExpectation_ShouldReturnSuccessConstraintResult()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -273,7 +273,7 @@ public class ExpectationBuilderTests
 		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 3");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForAsyncMember_WithValidation_ShouldIncludeValidation()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -289,7 +289,7 @@ public class ExpectationBuilderTests
 		await That(constraintResult.GetExpectationText()).IsEqualTo("validated and length equal to 3");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForMember_ShouldUseAndResetExpectationGrammars()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -309,7 +309,7 @@ public class ExpectationBuilderTests
 		await That(sut.ExpectationGrammars).IsEqualTo(ExpectationGrammars.None);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForMember_WhenTheSourceOfANestedMemberIsNull_ShouldNameTheOuterMember()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -327,7 +327,7 @@ public class ExpectationBuilderTests
 			.Because("the subject itself was not null, only the member the nested member is read from");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForMember_WhenTheSourceOfANestedPluralMemberIsNull_ShouldUseThePluralVerb()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -344,7 +344,7 @@ public class ExpectationBuilderTests
 		await That(constraintResult.GetResultText()).IsEqualTo("items were <null>");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForMember_WhenTheSubjectIsNull_ShouldReferToTheSubjectAsIt()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -358,7 +358,7 @@ public class ExpectationBuilderTests
 		await That(constraintResult.GetResultText()).IsEqualTo("it was <null>");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForMember_WithAndCombinedExpectations_ShouldApplyAllExpectations()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -375,7 +375,7 @@ public class ExpectationBuilderTests
 		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 3 and equal to 2");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForMember_WithFailingExpectation_ShouldReturnFailureConstraintResult()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -390,7 +390,7 @@ public class ExpectationBuilderTests
 		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 2");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForMember_WithOrCombinedExpectations_ShouldApplyEitherExpectation()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -409,7 +409,7 @@ public class ExpectationBuilderTests
 		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 2 or equal to 3");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForMember_WithSucceedingExpectation_ShouldReturnSuccessConstraintResult()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -424,7 +424,7 @@ public class ExpectationBuilderTests
 		await That(constraintResult.GetExpectationText()).IsEqualTo("length equal to 3");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForMember_WithValidation_ShouldIncludeValidation()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -440,7 +440,7 @@ public class ExpectationBuilderTests
 		await That(constraintResult.GetExpectationText()).IsEqualTo("validated and length equal to 3");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForWhich_AfterAnd_WhenTheLeftOperandFails_ShouldStillEvaluateTheMember()
 	{
 		bool isMemberEvaluated = false;
@@ -463,7 +463,7 @@ public class ExpectationBuilderTests
 		await That(result.GetExpectationText()).IsEqualTo("is foo and has length 3 whose first char is 'b'");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForWhich_AfterOr_WhenCalledTwice_ShouldOnlyContinueTheRightOperand()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -482,7 +482,7 @@ public class ExpectationBuilderTests
 			.IsEqualTo("is empty or is foo whose length is 3 and whose first char is 'f'");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForWhich_AfterOr_WhenTheLeftOperandIsMet_ShouldSucceed()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -498,10 +498,10 @@ public class ExpectationBuilderTests
 		await That(result.GetExpectationText()).IsEqualTo("is empty or is foo whose length is 3");
 	}
 
-	[Theory]
-	[InlineData("foo", Outcome.Success)]
-	[InlineData("bar", Outcome.Failure)]
-	[InlineData("fooo", Outcome.Failure)]
+	[Test]
+	[Arguments("foo", Outcome.Success)]
+	[Arguments("bar", Outcome.Failure)]
+	[Arguments("fooo", Outcome.Failure)]
 	public async Task ForWhich_AfterOr_WhenTheLeftOperandIsNotMet_ShouldDependOnTheRightOperand(
 		string subject, Outcome expectedOutcome)
 	{
@@ -517,7 +517,7 @@ public class ExpectationBuilderTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForWhich_AfterOr_WithAMemberExpectationOnTheMember_ShouldOnlyContinueTheRightOperand()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -534,7 +534,7 @@ public class ExpectationBuilderTests
 		await That(result.GetExpectationText()).IsEqualTo("is empty or is foo whose length doubled is 6");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForWhich_AfterOrAndAnd_ShouldOnlyContinueTheRightMostOperand()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -553,7 +553,7 @@ public class ExpectationBuilderTests
 			.IsEqualTo("is empty or starts with f and is foo whose length is 3");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForWhich_Async_AfterOr_WhenTheLeftOperandIsMet_ShouldSucceed()
 	{
 		Func<string, Task<int>> lengthAccessor = s => Task.FromResult(s.Length);
@@ -570,7 +570,7 @@ public class ExpectationBuilderTests
 		await That(result.GetExpectationText()).IsEqualTo("is empty or is foo whose length is 3");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForWhich_Async_CalledTwice_ShouldHonorConstraintsFromAllLevels()
 	{
 		Func<string, Task<string?>> upperAccessor = s => Task.FromResult<string?>(s.ToUpperInvariant());
@@ -589,7 +589,7 @@ public class ExpectationBuilderTests
 			.IsEqualTo("is foo whose upper is FOO and whose doubled is FOOFOO");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForWhich_Async_CalledTwice_WhereSecondProjectsFromFirstResult_ShouldChainProjections()
 	{
 		Func<int, Task<string?>> stringify = i =>
@@ -609,7 +609,7 @@ public class ExpectationBuilderTests
 			.IsEqualTo("is 12 whose string is \"12\" and whose doubled is \"1212\"");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForWhich_Async_InsideAPluralMember_ShouldReferToTheSingularValueAsIt()
 	{
 		Func<string, Task<char>> firstChar = s => Task.FromResult(s[0]);
@@ -634,7 +634,7 @@ public class ExpectationBuilderTests
 		await That(usedExpectationGrammars).IsEqualTo(ExpectationGrammars.None);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForWhich_CalledThreeTimes_EachProjectionChainsFromPrevious_ShouldEvaluateDeeply()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -653,7 +653,7 @@ public class ExpectationBuilderTests
 			.IsEqualTo("is foo whose first char is 'f' whose code point is 102 whose is-even is true");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForWhich_CalledTwice_OuterConstraintFails_ShouldStillEvaluateOuterConstraint()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -670,7 +670,7 @@ public class ExpectationBuilderTests
 			.IsEqualTo("is foo whose length is 3 and whose first char is 'B'");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForWhich_CalledTwice_SecondProjectionFails_ShouldIncludeAllProjectionsInOrder()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -687,7 +687,7 @@ public class ExpectationBuilderTests
 			.IsEqualTo("is foo whose length is 3 and whose first char is 'x'");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForWhich_CalledTwice_ShouldHonorConstraintsFromAllLevels()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -704,7 +704,7 @@ public class ExpectationBuilderTests
 			.IsEqualTo("is foo whose length is 3 and whose first char is 'f'");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForWhich_CalledTwice_WhereSecondProjectsFromFirstResult_ShouldChainProjections()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -722,7 +722,7 @@ public class ExpectationBuilderTests
 			.IsEqualTo("is 123 whose string is \"123\" and whose length is 3");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForWhich_WithSubjectNameAndExpectationGrammars_ShouldApplyThemToTheMember()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -745,7 +745,7 @@ public class ExpectationBuilderTests
 		await That(usedExpectationGrammars).IsEqualTo(ExpectationGrammars.Nested);
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMet_WhenFailing_ShouldReleaseTheMaterializedSourceAfterTheFailureMessage()
 	{
 		DisposeTrackingEnumerable source = new(null, Enumerable.Range(1, 20).ToArray());
@@ -754,7 +754,7 @@ public class ExpectationBuilderTests
 		async Task Act()
 			=> await ThatReadsFirstItem(source, constraint);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             reads the first item,
@@ -766,7 +766,7 @@ public class ExpectationBuilderTests
 			.Because("the source is released once the failure message is created");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMet_WhenSucceeding_ShouldReleaseTheMaterializedSource()
 	{
 		DisposeTrackingEnumerable source = new(null, 1, 2, 3);
@@ -778,13 +778,13 @@ public class ExpectationBuilderTests
 			.Because("the source that was only read partially is released after the evaluation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAConstraintDoesNotDecideItsOutcome_ShouldFail()
 	{
 		async Task Act()
 			=> await ThatUndecided(1);
 
-		await That(Act).ThrowsExactly<XunitException>()
+		await That(Act).ThrowsExactly<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             decides nothing,
@@ -793,7 +793,7 @@ public class ExpectationBuilderTests
 			.Because("an outcome that is left undecided without a cancellation is a mistake of the constraint");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAConstraintDoesNotDecideItsOutcome_WithACancellationThatIsNotRequested_ShouldFail()
 	{
 		using CancellationTokenSource cts = new();
@@ -801,7 +801,7 @@ public class ExpectationBuilderTests
 		async Task Act()
 			=> await ThatUndecided(1).WithCancellation(cts.Token);
 
-		await That(Act).ThrowsExactly<XunitException>()
+		await That(Act).ThrowsExactly<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             decides nothing,
@@ -810,7 +810,7 @@ public class ExpectationBuilderTests
 			.Because("only a requested cancellation leaves the expectation inconclusive");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAConstraintStopsAtTheCancellationWithoutDecidingItsOutcome_ShouldBeInconclusive()
 	{
 		using CancellationTokenSource cts = new();
@@ -820,7 +820,7 @@ public class ExpectationBuilderTests
 			=> await new ExpectationResult(That(1).Get().ExpectationBuilder
 				.AddConstraint((_, _) => new StopsAtTheCancellationConstraint())).WithCancellation(cts.Token);
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected that 1
 			             stops at the cancellation,
@@ -829,7 +829,7 @@ public class ExpectationBuilderTests
 			.Because("the undecided outcome is explained by the cancellation of the caller");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCancellationIsRequestedWhileAConstraintAwaits_ShouldBeInconclusive()
 	{
 		using CancellationTokenSource cts = new();
@@ -838,7 +838,7 @@ public class ExpectationBuilderTests
 		async Task Act()
 			=> await ThatAwaiting(1).WithCancellation(cts.Token);
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected that subject
 			             awaits,
@@ -847,7 +847,7 @@ public class ExpectationBuilderTests
 			.Because("a requested cancellation leaves the expectation unverified instead of failing it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectHasMultipleLines_ShouldTrimCommonWhiteSpace()
 	{
 		async Task Act() => await That(new[]
@@ -855,7 +855,7 @@ public class ExpectationBuilderTests
 			1, 2, 3,
 		}).IsEmpty();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that new[]
 			             {
@@ -870,13 +870,13 @@ public class ExpectationBuilderTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTimeoutElapsesWhileAConstraintAwaits_ShouldFailWithTheTimeout()
 	{
 		async Task Act()
 			=> await ThatAwaiting(1).WithTimeout(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             awaits,
@@ -886,14 +886,14 @@ public class ExpectationBuilderTests
 			.Because("a timeout during the evaluation is reported like a subject that did not finish in time");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeImplementsIDescribableSubject_AndSubjectIsNull_ShouldUseTheSubjectExpression()
 	{
 		MyDescribableSubject? subject = null;
 
 		async Task Act() => await That(subject).IsNotNull();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is not null,
@@ -902,14 +902,14 @@ public class ExpectationBuilderTests
 			.Because("a null subject cannot describe itself, so the subject expression is used instead");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeImplementsIDescribableSubject_ShouldUseToStringFromIt()
 	{
 		MyDescribableSubject subject = new("this long description for the subject");
 
 		async Task Act() => await That(subject).IsNull();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that this long description for the subject
 			             is null,
@@ -917,13 +917,13 @@ public class ExpectationBuilderTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithTimeout_WhenALongerTimeoutFollows_ShouldKeepTheShorterTimeout()
 	{
 		async Task Act()
 			=> await ThatAwaiting(1).WithTimeout(50.Milliseconds()).WithTimeout(20.Seconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             awaits,
@@ -933,13 +933,13 @@ public class ExpectationBuilderTests
 			.Because("the tighter limit wins, so a later timeout must not loosen an earlier one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithTimeout_WhenAShorterTimeoutFollows_ShouldUseTheShorterTimeout()
 	{
 		async Task Act()
 			=> await ThatAwaiting(1).WithTimeout(20.Seconds()).WithTimeout(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             awaits,
@@ -948,13 +948,13 @@ public class ExpectationBuilderTests
 			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithTimeout_WhenInfinite_AndAShorterTimeoutWasSet_ShouldKeepTheShorterTimeout()
 	{
 		async Task Act()
 			=> await ThatAwaiting(1).WithTimeout(50.Milliseconds()).WithTimeout(System.Threading.Timeout.InfiniteTimeSpan);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             awaits,
@@ -964,7 +964,7 @@ public class ExpectationBuilderTests
 			.Because("an infinite timeout imposes no limit, so the shorter one still applies");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithTimeout_WhenInfinite_ShouldNotLimitTheEvaluation()
 	{
 		using CancellationTokenSource cts = new();
@@ -973,7 +973,7 @@ public class ExpectationBuilderTests
 		async Task Act()
 			=> await ThatAwaiting(1).WithTimeout(System.Threading.Timeout.InfiniteTimeSpan).WithCancellation(cts.Token);
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected that subject
 			             awaits,
@@ -982,7 +982,7 @@ public class ExpectationBuilderTests
 			.Because("an infinite timeout imposes no limit, so only the cancellation ends the evaluation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithTimeout_WhenNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		void Act() => ThatAwaiting(1).WithTimeout(-5.Milliseconds());
@@ -993,13 +993,13 @@ public class ExpectationBuilderTests
 			.Because("the timeout is validated when the expectation is built");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithTimeout_WhenZero_ShouldFailWithTheTimeout()
 	{
 		async Task Act()
 			=> await ThatAwaiting(1).WithTimeout(TimeSpan.Zero);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             awaits,

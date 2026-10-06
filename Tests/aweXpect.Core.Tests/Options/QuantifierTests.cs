@@ -4,10 +4,10 @@ namespace aweXpect.Core.Tests.Options;
 
 public class QuantifierTests
 {
-	[Theory]
-	[InlineData(-1, true)]
-	[InlineData(0, false)]
-	[InlineData(1, false)]
+	[Test]
+	[Arguments(-1, true)]
+	[Arguments(0, false)]
+	[Arguments(1, false)]
 	public async Task AtLeast_WhenMinimumIsNegative_ShouldThrowArgumentOutOfRangeException(
 		int minimum, bool expectThrow)
 	{
@@ -19,7 +19,7 @@ public class QuantifierTests
 			.WithMessage("*The minimum must not be negative.*").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task AtMost_WhenAMinimumIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		Quantifier sut = new();
@@ -32,10 +32,10 @@ public class QuantifierTests
 			.Because("the maximum would silently replace the minimum");
 	}
 
-	[Theory]
-	[InlineData(-1, true)]
-	[InlineData(0, false)]
-	[InlineData(1, false)]
+	[Test]
+	[Arguments(-1, true)]
+	[Arguments(0, false)]
+	[Arguments(1, false)]
 	public async Task AtMost_WhenMaximumIsNegative_ShouldThrowArgumentOutOfRangeException(
 		int maximum, bool expectThrow)
 	{
@@ -47,10 +47,10 @@ public class QuantifierTests
 			.WithMessage("*The maximum must not be negative.*").AsWildcard();
 	}
 
-	[Theory]
-	[InlineData(2, 1, true)]
-	[InlineData(1, 1, false)]
-	[InlineData(1, 2, false)]
+	[Test]
+	[Arguments(2, 1, true)]
+	[Arguments(1, 1, false)]
+	[Arguments(1, 2, false)]
 	public async Task Between_WhenMaximumIsLessThanMinimum_ShouldThrowArgumentOutOfRangeException(
 		int minimum, int maximum, bool expectThrow)
 	{
@@ -63,10 +63,10 @@ public class QuantifierTests
 			.WithMessage("*The maximum must be greater than or equal to the minimum.*").AsWildcard();
 	}
 
-	[Theory]
-	[InlineData(-1, true)]
-	[InlineData(0, false)]
-	[InlineData(1, false)]
+	[Test]
+	[Arguments(-1, true)]
+	[Arguments(0, false)]
+	[Arguments(1, false)]
 	public async Task Between_WhenMaximumIsNegative_ShouldThrowArgumentOutOfRangeException(
 		int maximum, bool expectThrow)
 	{
@@ -78,10 +78,10 @@ public class QuantifierTests
 			.WithMessage("*The maximum must not be negative.*").AsWildcard();
 	}
 
-	[Theory]
-	[InlineData(-1, true)]
-	[InlineData(0, false)]
-	[InlineData(1, false)]
+	[Test]
+	[Arguments(-1, true)]
+	[Arguments(0, false)]
+	[Arguments(1, false)]
 	public async Task Between_WhenMinimumIsNegative_ShouldThrowArgumentOutOfRangeException(
 		int minimum, bool expectThrow)
 	{
@@ -93,15 +93,15 @@ public class QuantifierTests
 			.WithMessage("*The minimum must not be negative.*").AsWildcard();
 	}
 
-	[Theory]
-	[InlineData(0, false, false)]
-	[InlineData(1, false, true)]
-	[InlineData(2, false, true)]
-	[InlineData(3, false, false)]
-	[InlineData(0, true, true)]
-	[InlineData(1, true, false)]
-	[InlineData(2, true, false)]
-	[InlineData(3, true, true)]
+	[Test]
+	[Arguments(0, false, false)]
+	[Arguments(1, false, true)]
+	[Arguments(2, false, true)]
+	[Arguments(3, false, false)]
+	[Arguments(0, true, true)]
+	[Arguments(1, true, false)]
+	[Arguments(2, true, false)]
+	[Arguments(3, true, true)]
 	public async Task Check_ShouldInvertTheDecisionWhenNegated(int amount, bool isNegated, bool expected)
 	{
 		Quantifier sut = Configure(q => q.Between(1, 2));
@@ -111,7 +111,7 @@ public class QuantifierTests
 		await That(result ?? isNegated).IsEqualTo(expected);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Check_ShouldNotChangeTheQuantifier()
 	{
 		Quantifier sut = Configure(q => q.AtLeast(2));
@@ -123,10 +123,10 @@ public class QuantifierTests
 		await That(notNegated).IsTrue().Because("a negated check must not leave the shared quantifier negated");
 	}
 
-	[Theory]
-	[InlineData(0, 0)]
-	[InlineData(1, 1)]
-	[InlineData(3, 3)]
+	[Test]
+	[Arguments(0, 0)]
+	[Arguments(1, 1)]
+	[Arguments(3, 3)]
 	public async Task DeterminableAmount_AtLeast_ShouldBeTheMinimum(int minimum, int expected)
 	{
 		Quantifier sut = new();
@@ -135,9 +135,9 @@ public class QuantifierTests
 		await That(sut.DeterminableAmount).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[InlineData(0, 1)]
-	[InlineData(3, 4)]
+	[Test]
+	[Arguments(0, 1)]
+	[Arguments(3, 4)]
 	public async Task DeterminableAmount_AtMost_ShouldBeOneAboveTheMaximum(int maximum, int expected)
 	{
 		Quantifier sut = new();
@@ -146,9 +146,9 @@ public class QuantifierTests
 		await That(sut.DeterminableAmount).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[InlineData(2, 4, 5)]
-	[InlineData(0, 0, 1)]
+	[Test]
+	[Arguments(2, 4, 5)]
+	[Arguments(0, 0, 1)]
 	public async Task DeterminableAmount_Between_ShouldBeOneAboveTheMaximum(int minimum, int maximum, int expected)
 	{
 		Quantifier sut = new();
@@ -157,9 +157,9 @@ public class QuantifierTests
 		await That(sut.DeterminableAmount).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[InlineData(0, 1)]
-	[InlineData(2, 3)]
+	[Test]
+	[Arguments(0, 1)]
+	[Arguments(2, 3)]
 	public async Task DeterminableAmount_Exactly_ShouldBeOneAboveTheExpected(int expectedOccurrences, int expected)
 	{
 		Quantifier sut = new();
@@ -168,9 +168,9 @@ public class QuantifierTests
 		await That(sut.DeterminableAmount).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[InlineData(1, 1)]
-	[InlineData(3, 3)]
+	[Test]
+	[Arguments(1, 1)]
+	[Arguments(3, 3)]
 	public async Task DeterminableAmount_LessThan_ShouldBeTheMaximum(int maximum, int expected)
 	{
 		Quantifier sut = new();
@@ -179,9 +179,9 @@ public class QuantifierTests
 		await That(sut.DeterminableAmount).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[InlineData(0, 1)]
-	[InlineData(2, 3)]
+	[Test]
+	[Arguments(0, 1)]
+	[Arguments(2, 3)]
 	public async Task DeterminableAmount_MoreThan_ShouldBeOneAboveTheMinimum(int minimum, int expected)
 	{
 		Quantifier sut = new();
@@ -190,7 +190,7 @@ public class QuantifierTests
 		await That(sut.DeterminableAmount).IsEqualTo(expected);
 	}
 
-	[Fact]
+	[Test]
 	public async Task DeterminableAmount_ShouldBeTheSmallestAmountThatCheckCanDecide()
 	{
 		Quantifier[] quantifiers =
@@ -220,7 +220,7 @@ public class QuantifierTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task DeterminableAmount_WhenNotSpecified_ShouldBeOne()
 	{
 		Quantifier sut = new();
@@ -228,7 +228,7 @@ public class QuantifierTests
 		await That(sut.DeterminableAmount).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task DeterminableAmount_WhenTheBoundIsTheLargestValue_ShouldNotOverflow()
 	{
 		Quantifier atMost = new();
@@ -240,10 +240,10 @@ public class QuantifierTests
 		await That(moreThan.DeterminableAmount).IsEqualTo(int.MaxValue);
 	}
 
-	[Theory]
-	[InlineData(-1, true)]
-	[InlineData(0, false)]
-	[InlineData(1, false)]
+	[Test]
+	[Arguments(-1, true)]
+	[Arguments(0, false)]
+	[Arguments(1, false)]
 	public async Task Exactly_WhenExpectedIsNegative_ShouldThrowArgumentOutOfRangeException(
 		int expected, bool expectThrow)
 	{
@@ -255,7 +255,7 @@ public class QuantifierTests
 			.WithMessage("*The expected count must not be negative.*").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Exactly_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
 	{
 		Quantifier sut = new();
@@ -267,14 +267,14 @@ public class QuantifierTests
 			.WithMessage("Exactly cannot be specified more than once.");
 	}
 
-	[Theory]
-	[InlineData("AtLeast", 1, true)]
-	[InlineData("AtLeast", 2, false)]
-	[InlineData("AtMost", 0, false)]
-	[InlineData("Exactly", 0, false)]
-	[InlineData("LessThan", 1, false)]
-	[InlineData("MoreThan", 0, true)]
-	[InlineData("MoreThan", 1, false)]
+	[Test]
+	[Arguments("AtLeast", 1, true)]
+	[Arguments("AtLeast", 2, false)]
+	[Arguments("AtMost", 0, false)]
+	[Arguments("Exactly", 0, false)]
+	[Arguments("LessThan", 1, false)]
+	[Arguments("MoreThan", 0, true)]
+	[Arguments("MoreThan", 1, false)]
 	public async Task IsNever_WhenNegated_ShouldBeTrueWhenTheComplementIsOnlyMetByZero(string method, int value,
 		bool expected)
 	{
@@ -283,15 +283,15 @@ public class QuantifierTests
 		await That(sut.IsNever(true)).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[InlineData("AtLeast", 1, false)]
-	[InlineData("AtMost", 0, true)]
-	[InlineData("AtMost", 1, false)]
-	[InlineData("Between", 0, false)]
-	[InlineData("Exactly", 0, true)]
-	[InlineData("LessThan", 1, true)]
-	[InlineData("LessThan", 2, false)]
-	[InlineData("MoreThan", 0, false)]
+	[Test]
+	[Arguments("AtLeast", 1, false)]
+	[Arguments("AtMost", 0, true)]
+	[Arguments("AtMost", 1, false)]
+	[Arguments("Between", 0, false)]
+	[Arguments("Exactly", 0, true)]
+	[Arguments("LessThan", 1, true)]
+	[Arguments("LessThan", 2, false)]
+	[Arguments("MoreThan", 0, false)]
 	public async Task IsNever_WhenNotNegated_ShouldBeTrueWhenOnlyZeroMeetsTheQuantifier(string method, int value,
 		bool expected)
 	{
@@ -300,7 +300,7 @@ public class QuantifierTests
 		await That(sut.IsNever(false)).IsEqualTo(expected);
 	}
 
-	[Fact]
+	[Test]
 	public async Task LessThan_WhenMaximumIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		Quantifier sut = new();
@@ -312,7 +312,7 @@ public class QuantifierTests
 			.WithMessage("The maximum must not be negative.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task LessThan_WhenMaximumIsZero_ShouldThrowArgumentOutOfRangeException()
 	{
 		Quantifier sut = new();
@@ -325,7 +325,7 @@ public class QuantifierTests
 			.Because("no count is fewer than zero, so the expectation could never succeed and its negation never fail");
 	}
 
-	[Fact]
+	[Test]
 	public async Task MoreThan_WhenMinimumIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		Quantifier sut = new();
@@ -337,7 +337,7 @@ public class QuantifierTests
 			.WithMessage("The minimum must not be negative.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task MoreThan_WhenMinimumIsTheLargestValue_ShouldThrowArgumentOutOfRangeException()
 	{
 		Quantifier sut = new();
@@ -350,9 +350,9 @@ public class QuantifierTests
 			.Because("no count is more than int.MaxValue, so the expectation could never succeed and its negation never fail");
 	}
 
-	[Theory]
-	[InlineData(2, "fewer than twice")]
-	[InlineData(3, "fewer than 3 times")]
+	[Test]
+	[Arguments(2, "fewer than twice")]
+	[Arguments(3, "fewer than 3 times")]
 	public async Task ToString_LessThan_ShouldSayFewerThan(int maximum, string expected)
 	{
 		Quantifier sut = Configure(q => q.LessThan(maximum));
@@ -360,24 +360,24 @@ public class QuantifierTests
 		await That(sut.ToString()).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[InlineData("AtLeast", 1, "never")]
-	[InlineData("AtLeast", 2, "fewer than twice")]
-	[InlineData("AtLeast", 3, "fewer than 3 times")]
-	[InlineData("AtMost", 0, "at least once")]
-	[InlineData("AtMost", 1, "more than once")]
-	[InlineData("AtMost", 3, "more than 3 times")]
-	[InlineData("Between", 3, "not between 3 and 5 times")]
-	[InlineData("Exactly", 0, "at least once")]
-	[InlineData("Exactly", 1, "not exactly once")]
-	[InlineData("Exactly", 2, "not exactly twice")]
-	[InlineData("Exactly", 3, "not exactly 3 times")]
-	[InlineData("LessThan", 1, "at least once")]
-	[InlineData("LessThan", 4, "at least 4 times")]
-	[InlineData("MoreThan", 0, "never")]
-	[InlineData("MoreThan", 1, "at most once")]
-	[InlineData("MoreThan", 2, "at most twice")]
-	[InlineData("MoreThan", 3, "at most 3 times")]
+	[Test]
+	[Arguments("AtLeast", 1, "never")]
+	[Arguments("AtLeast", 2, "fewer than twice")]
+	[Arguments("AtLeast", 3, "fewer than 3 times")]
+	[Arguments("AtMost", 0, "at least once")]
+	[Arguments("AtMost", 1, "more than once")]
+	[Arguments("AtMost", 3, "more than 3 times")]
+	[Arguments("Between", 3, "not between 3 and 5 times")]
+	[Arguments("Exactly", 0, "at least once")]
+	[Arguments("Exactly", 1, "not exactly once")]
+	[Arguments("Exactly", 2, "not exactly twice")]
+	[Arguments("Exactly", 3, "not exactly 3 times")]
+	[Arguments("LessThan", 1, "at least once")]
+	[Arguments("LessThan", 4, "at least 4 times")]
+	[Arguments("MoreThan", 0, "never")]
+	[Arguments("MoreThan", 1, "at most once")]
+	[Arguments("MoreThan", 2, "at most twice")]
+	[Arguments("MoreThan", 3, "at most 3 times")]
 	public async Task ToString_WhenNegated_ShouldDescribeTheComplement(string method, int value, string expected)
 	{
 		Quantifier sut = Configure(method, value);
@@ -387,7 +387,7 @@ public class QuantifierTests
 		await That(result).IsEqualTo(expected);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToString_WhenNegatedDefault_ShouldBeNever()
 	{
 		Quantifier sut = new();
@@ -397,10 +397,10 @@ public class QuantifierTests
 		await That(result).IsEqualTo("never");
 	}
 
-	[Theory]
-	[InlineData("AtMost", 0)]
-	[InlineData("Exactly", 0)]
-	[InlineData("LessThan", 1)]
+	[Test]
+	[Arguments("AtMost", 0)]
+	[Arguments("Exactly", 0)]
+	[Arguments("LessThan", 1)]
 	public async Task ToString_WhenOnlyZeroMeetsTheQuantifier_ShouldBeNever(string method, int value)
 	{
 		Quantifier sut = Configure(method, value);

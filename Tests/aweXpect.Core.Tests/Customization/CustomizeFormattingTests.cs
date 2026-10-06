@@ -5,7 +5,7 @@ namespace aweXpect.Core.Tests.Customization;
 
 public sealed class CustomizeFormattingTests
 {
-	[Fact]
+	[Test]
 	public async Task Formatting_ShouldReturnSameInstance()
 	{
 		AwexpectCustomization.FormattingCustomization formatting1 = Customize.aweXpect.Formatting();
@@ -14,7 +14,7 @@ public sealed class CustomizeFormattingTests
 		await That(formatting1).IsSameAs(formatting2);
 	}
 
-	[Fact]
+	[Test]
 	public async Task MaximumNumberOfCollectionItems_ShouldBeUsedInFormatter()
 	{
 		int[] items = Enumerable.Range(1, 6).ToArray();
@@ -31,9 +31,9 @@ public sealed class CustomizeFormattingTests
 		await That(ValueFormatters.Format(Formatter, items)).IsEqualTo("[1, 2, 3, 4, 5, 6]");
 	}
 
-	[Theory]
-	[InlineData(0)]
-	[InlineData(-1)]
+	[Test]
+	[Arguments(0)]
+	[Arguments(-1)]
 	public async Task MaximumNumberOfCollectionItems_WhenNotPositive_ShouldThrowArgumentOutOfRangeException(int count)
 	{
 		void Act() => Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(count);
@@ -45,7 +45,7 @@ public sealed class CustomizeFormattingTests
 		await That(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()).IsEqualTo(10);
 	}
 
-	[Fact]
+	[Test]
 	public async Task MaximumStringLength_ShouldBeUsedInFormatter()
 	{
 		string stringWith100Chars =
@@ -64,7 +64,7 @@ public sealed class CustomizeFormattingTests
 		await That(Formatter.Format(stringWith100Chars)).IsEqualTo($"\"{stringWith100Chars}\"");
 	}
 
-	[Fact]
+	[Test]
 	public async Task MaximumStringLength_WhenNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		void Act() => Customize.aweXpect.Formatting().MaximumStringLength.Set(-1);
@@ -75,7 +75,7 @@ public sealed class CustomizeFormattingTests
 		await That(Customize.aweXpect.Formatting().MaximumStringLength.Get()).IsEqualTo(100);
 	}
 
-	[Fact]
+	[Test]
 	public async Task MaximumStringLength_WhenZero_ShouldOnlyShowTheEllipsis()
 	{
 		using (IDisposable _ = Customize.aweXpect.Formatting().MaximumStringLength.Set(0))
@@ -84,7 +84,7 @@ public sealed class CustomizeFormattingTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task MinimumNumberOfCharactersAfterStringDifference_ShouldBeUsedInStringDifference()
 	{
 		string actual =
@@ -131,7 +131,7 @@ public sealed class CustomizeFormattingTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task MinimumNumberOfCharactersAfterStringDifference_WhenNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		void Act() => Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference.Set(-1);

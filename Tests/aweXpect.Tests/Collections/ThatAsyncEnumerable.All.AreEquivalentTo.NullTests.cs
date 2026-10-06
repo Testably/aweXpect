@@ -11,7 +11,7 @@ public sealed partial class ThatAsyncEnumerable
 		{
 			public sealed class NullTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsAreNull_ShouldSucceed()
 				{
 					IAsyncEnumerable<int?> subject = Factory.GetConstantValueAsyncEnumerable<int?>(null, 3);
@@ -22,7 +22,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemsAreNotNull_ShouldFail()
 				{
 					IAsyncEnumerable<int?> subject = Factory.GetConstantValueAsyncEnumerable<int?>(1, 3);
@@ -30,7 +30,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEquivalentTo(null);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to <null> for all items,
@@ -47,7 +47,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IAsyncEnumerable<int?>? subject = null!;
@@ -55,7 +55,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEquivalentTo(null);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to <null> for all items,

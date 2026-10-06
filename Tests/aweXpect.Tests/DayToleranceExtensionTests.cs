@@ -10,7 +10,7 @@ namespace aweXpect.Tests;
 
 public sealed class DayToleranceExtensionTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenDefaultToleranceIsCustomized_ShouldApplyItLikeTheBuiltInExpectation()
 	{
 		DateOnly subject = new(2020, 1, 10);
@@ -22,7 +22,7 @@ public sealed class DayToleranceExtensionTests
 			.Because("an extension using GetToleranceOrDefault applies the whole days of the default tolerance");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_WhenToleranceIsNotWholeDays_ShouldThrowLikeTheBuiltInExpectation()
 	{
 		DateOnly subject = new(2020, 1, 10);
@@ -34,11 +34,11 @@ public sealed class DayToleranceExtensionTests
 			.WithParamName("tolerance").And
 			.WithMessage("The tolerance must be a whole number of days.").AsPrefix()
 			.Because("an extension using DayTolerance rejects a sub-day tolerance as soon as it is specified");
-		await That(Record.Exception(ActOnExtension)?.Message).IsEqualTo(Record.Exception(ActOnBuiltIn)?.Message)
+		await That(Catch.Exception(ActOnExtension)?.Message).IsEqualTo(Catch.Exception(ActOnBuiltIn)?.Message)
 			.Because("the extension must reject the tolerance exactly like the built-in expectations");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_WhenToleranceIsWholeDays_ShouldApplyIt()
 	{
 		DateOnly subject = new(2020, 1, 10);

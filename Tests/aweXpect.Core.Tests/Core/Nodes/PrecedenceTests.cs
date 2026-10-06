@@ -4,7 +4,7 @@ public sealed class PrecedenceTests
 {
 	public sealed class Negated
 	{
-		[Fact]
+		[Test]
 		public async Task Not_F_and_T_and_F_ShouldSucceed()
 		{
 			async Task Act()
@@ -13,7 +13,7 @@ public sealed class PrecedenceTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Not_F_and_T_or_F_ShouldSucceed()
 		{
 			async Task Act()
@@ -22,7 +22,7 @@ public sealed class PrecedenceTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Not_F_and_T_or_T_and_T_ShouldGroupBothAndOperands()
 		{
 			async Task Act()
@@ -36,7 +36,7 @@ public sealed class PrecedenceTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Not_F_and_T_or_T_or_F_ShouldGroupTheAndOperandOnly()
 		{
 			async Task Act()
@@ -50,7 +50,7 @@ public sealed class PrecedenceTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Not_F_and_T_or_T_ShouldGroupTheLeftAndOperand()
 		{
 			async Task Act()
@@ -65,7 +65,7 @@ public sealed class PrecedenceTests
 				.Because("a negated `And` reads as `or`, which binds weaker than the `and` of the negated `Or`");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Not_T_and_T_and_T_ShouldNotGroup()
 		{
 			async Task Act()
@@ -79,7 +79,7 @@ public sealed class PrecedenceTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Not_T_or_F_and_T_ShouldGroupTheRightAndOperand()
 		{
 			async Task Act()
@@ -93,7 +93,7 @@ public sealed class PrecedenceTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Not_T_or_F_or_F_ShouldNotGroup()
 		{
 			async Task Act()
@@ -110,7 +110,7 @@ public sealed class PrecedenceTests
 
 	public sealed class OrOverAnd
 	{
-		[Fact]
+		[Test]
 		public async Task F_and_T_or_F_ShouldFail()
 		{
 			async Task Act()
@@ -124,7 +124,7 @@ public sealed class PrecedenceTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task F_and_T_or_T_and_F_ShouldFail()
 		{
 			async Task Act()
@@ -138,7 +138,7 @@ public sealed class PrecedenceTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task F_and_T_or_T_ShouldSucceed()
 		{
 			async Task Act()
@@ -147,7 +147,7 @@ public sealed class PrecedenceTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task F_or_T_and_F_ShouldFail()
 		{
 			async Task Act()
@@ -161,7 +161,7 @@ public sealed class PrecedenceTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task T_and_F_or_F_ShouldFail()
 		{
 			async Task Act()
@@ -175,7 +175,7 @@ public sealed class PrecedenceTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task T_and_F_or_T_ShouldSucceed()
 		{
 			async Task Act()
@@ -184,7 +184,7 @@ public sealed class PrecedenceTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task T_and_T_or_X_ShouldNotEvaluateX()
 		{
 			bool isEvaluated = false;
@@ -197,7 +197,7 @@ public sealed class PrecedenceTests
 				.Because("`And` binds tighter than `Or`, so the whole left branch already succeeded");
 		}
 
-		[Fact]
+		[Test]
 		public async Task T_or_T_and_F_ShouldSucceed()
 		{
 			async Task Act()

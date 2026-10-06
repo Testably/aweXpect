@@ -7,7 +7,7 @@ namespace aweXpect.Core.Tests.Customization;
 
 public class AwexpectCustomizationTests
 {
-	[Fact]
+	[Test]
 	public async Task Dispose_OutOfOrder_ShouldKeepLaterValueAndThenFallBackToGlobalValue()
 	{
 		AwexpectCustomization customization = new();
@@ -25,7 +25,7 @@ public class AwexpectCustomizationTests
 			.Because("after all lifetimes in the current flow are disposed, the global value applies again");
 	}
 
-	[Fact]
+	[Test]
 	public async Task DoubleDispose_ShouldNotResetLaterValue()
 	{
 		CustomizationLifetime firstLifetime = Customize.aweXpect.MyConfiguration().Set("first");
@@ -39,7 +39,7 @@ public class AwexpectCustomizationTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equivalency_Dispose_OutOfOrder_ShouldKeepLaterValueAndThenFallBackToGlobalValue()
 	{
 		AwexpectCustomization customization = new();
@@ -63,7 +63,7 @@ public class AwexpectCustomizationTests
 			.Because("after all lifetimes of the value in the current flow are disposed, the global value applies again");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Formatting_PropertyLifetime_Dispose_OutOfOrder_ShouldFallBackToGlobalValue()
 	{
 		AwexpectCustomization customization = new();
@@ -78,7 +78,7 @@ public class AwexpectCustomizationTests
 			.Because("after all lifetimes of the value in the current flow are disposed, the global value applies again");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Formatting_PropertyLifetime_Dispose_OutOfOrder_ShouldKeepLaterValueOfSamePropertyUntilItIsDisposed()
 	{
 		AwexpectCustomization customization = new();
@@ -96,7 +96,7 @@ public class AwexpectCustomizationTests
 			.Because("disposing the last lifetime must not restore a value whose lifetime was already disposed");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Formatting_PropertyLifetime_Dispose_ShouldOnlyRestoreThatProperty()
 	{
 		CustomizationLifetime itemsLifetime =
@@ -114,7 +114,7 @@ public class AwexpectCustomizationTests
 			.Because("disposing a lifetime must not bring back a value of an already disposed lifetime");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Formatting_PropertyLifetime_DoubleDispose_ShouldNotResetLaterValue()
 	{
 		CustomizationLifetime firstLifetime = Customize.aweXpect.Formatting().MaximumStringLength.Set(5);
@@ -128,7 +128,7 @@ public class AwexpectCustomizationTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Formatting_Set_InParallelFlows_ShouldNotInfluenceEachOther()
 	{
 		using CustomizationLifetime parentLifetime = Customize.aweXpect.Formatting().MaximumStringLength.Set(50);
@@ -166,7 +166,7 @@ public class AwexpectCustomizationTests
 			.Because("a value set in a child flow must not leak into the parent flow");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Formatting_ShouldReturnTenAsDefaultMaximumNumberOfCollectionItems()
 	{
 		int defaultValue = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
@@ -174,7 +174,7 @@ public class AwexpectCustomizationTests
 		await That(defaultValue).IsEqualTo(10);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Formatting_ShouldUpdate()
 	{
 		int defaultValue = 10;
@@ -187,7 +187,7 @@ public class AwexpectCustomizationTests
 		await That(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get()).IsEqualTo(defaultValue);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Get_WhenNullIsStored_ShouldReturnNull()
 	{
 		AwexpectCustomization customization = new();
@@ -200,7 +200,7 @@ public class AwexpectCustomizationTests
 			.Because("a null stored in the current flow is a value, which takes precedence over the global value");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Get_WhenValueTypeCannotHoldTheStoredNull_ShouldReturnTheDefaultValue()
 	{
 		AwexpectCustomization customization = new();
@@ -215,7 +215,7 @@ public class AwexpectCustomizationTests
 			.Because("a non-nullable value type cannot hold the stored null");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Global_Get_ShouldIgnoreValueOfCurrentFlow()
 	{
 		AwexpectCustomization customization = new();
@@ -226,7 +226,7 @@ public class AwexpectCustomizationTests
 			.Because("the global customization only reads the global values");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Global_Get_WhenNullIsStored_ShouldReturnNull()
 	{
 		AwexpectCustomization customization = new();
@@ -240,7 +240,7 @@ public class AwexpectCustomizationTests
 			.Because("the current flow follows the global value when it stores none itself");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Global_Global_ShouldReturnTheSameGlobalCustomization()
 	{
 		AwexpectCustomization customization = new();
@@ -252,7 +252,7 @@ public class AwexpectCustomizationTests
 			.Because("a value set on the global customization of the global customization is a global value");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Global_PropertyLifetime_Dispose_OutOfOrder_ShouldKeepLaterValueOfSamePropertyUntilItIsDisposed()
 	{
 		AwexpectCustomization customization = new();
@@ -270,7 +270,7 @@ public class AwexpectCustomizationTests
 			.Because("disposing the last global lifetime must not restore a value whose lifetime was already disposed");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Global_PropertyLifetime_Dispose_ShouldOnlyRestoreThatProperty()
 	{
 		AwexpectCustomization customization = new();
@@ -289,7 +289,7 @@ public class AwexpectCustomizationTests
 			.Because("disposing a lifetime must not bring back a value of an already disposed lifetime");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Global_ScopedPropertyLifetime_Dispose_ShouldApplyGlobalValuesSetInTheMeantime()
 	{
 		AwexpectCustomization customization = new();
@@ -302,7 +302,7 @@ public class AwexpectCustomizationTests
 			.Because("disposing the scoped lifetime removes the value from the current flow again");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Global_ScopedValue_ShouldNotHideGlobalChangeOfAnotherValue()
 	{
 		AwexpectCustomization customization = new();
@@ -313,7 +313,7 @@ public class AwexpectCustomizationTests
 			.Because("a value set in the current flow must not freeze the other formatting values at their global values");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Global_ScopedValue_ShouldTakePrecedence()
 	{
 		AwexpectCustomization customization = new();
@@ -333,7 +333,7 @@ public class AwexpectCustomizationTests
 			.Because("after the scope the global value applies again");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Global_Set_InParallel_ShouldKeepAllValues()
 	{
 		AwexpectCustomization customization = new();
@@ -353,7 +353,7 @@ public class AwexpectCustomizationTests
 			.Because("concurrent disposals of global lifetimes must each remove their own value");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Global_Set_ShouldApplyToOtherFlows()
 	{
 		AwexpectCustomization customization = new();
@@ -370,7 +370,7 @@ public class AwexpectCustomizationTests
 			.Because("disposing the global lifetime restores the global value in all flows");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Global_Set_WhenInvalid_ShouldThrowArgumentOutOfRangeException()
 	{
 		AwexpectCustomization customization = new();
@@ -384,7 +384,7 @@ public class AwexpectCustomizationTests
 		await That(customization.Settings().DefaultCheckInterval.Get()).IsEqualTo(TimeSpan.FromMilliseconds(100));
 	}
 
-	[Fact]
+	[Test]
 	public async Task NestedLifetimes_ShouldSetPreviousValue()
 	{
 		string valueInLifetime1;
@@ -413,7 +413,7 @@ public class AwexpectCustomizationTests
 		);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Set_InAwaitedAsyncMethod_ShouldNotBeVisibleToCaller()
 	{
 		using CustomizationLifetime outerLifetime = Customize.aweXpect.MyConfiguration().Set("outer");
@@ -430,7 +430,7 @@ public class AwexpectCustomizationTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Set_InParallelFlows_ShouldNotInfluenceEachOther()
 	{
 		using CustomizationLifetime parentLifetime = Customize.aweXpect.MyConfiguration().Set("parent");
@@ -468,7 +468,7 @@ public class AwexpectCustomizationTests
 			.Because("a value set in a child flow must not leak into the parent flow");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Set_InSynchronousMethod_ShouldBeVisibleToCaller()
 	{
 		using CustomizationLifetime outerLifetime = Customize.aweXpect.MyConfiguration().Set("outer");
@@ -482,7 +482,7 @@ public class AwexpectCustomizationTests
 			=> Customize.aweXpect.MyConfiguration().Set(value);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Settings_PropertyLifetime_Dispose_OutOfOrder_ShouldFallBackToGlobalValue()
 	{
 		AwexpectCustomization customization = new();

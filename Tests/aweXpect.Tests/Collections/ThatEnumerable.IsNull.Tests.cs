@@ -10,9 +10,9 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData(null)]
-			[InlineData(new int[0])]
+			[Test]
+			[Arguments(null)]
+			[Arguments(new int[0])]
 			public async Task IsNull_ShouldBeChainableWithIsEmpty(int[]? subject)
 			{
 				async Task Act()
@@ -22,7 +22,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsNull_WhenNotNull_ShouldFail()
 			{
 				List<int> subject = [];
@@ -30,7 +30,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNull();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is null,
@@ -38,7 +38,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsNull_WhenNull_ShouldSucceed()
 			{
 				List<int>? subject = null;

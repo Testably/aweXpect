@@ -7,7 +7,7 @@ namespace aweXpect.Core.Tests.Results;
 
 public sealed class HasItemResultTests
 {
-	[Fact]
+	[Test]
 	public async Task ShouldBeOptionsProvider_ForCollectionIndexOptions()
 	{
 		CollectionIndexOptions options = new();

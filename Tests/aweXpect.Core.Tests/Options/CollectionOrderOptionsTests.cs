@@ -5,10 +5,10 @@ namespace aweXpect.Core.Tests.Options;
 
 public class CollectionOrderOptionsTests
 {
-	[Theory]
-	[InlineData(1, 2, -1)]
-	[InlineData(2, 1, 1)]
-	[InlineData(null, 1, -1)]
+	[Test]
+	[Arguments(1, 2, -1)]
+	[Arguments(2, 1, 1)]
+	[Arguments(null, 1, -1)]
 	public async Task GetComparer_ForObjects_ShouldCompareOtherItemsWithTheDefaultComparer(
 		object? x, object? y, int expected)
 	{
@@ -19,10 +19,10 @@ public class CollectionOrderOptionsTests
 		await That(result).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[InlineData("a", "B", 1)]
-	[InlineData("B", "a", -1)]
-	[InlineData("a", "a", 0)]
+	[Test]
+	[Arguments("a", "B", 1)]
+	[Arguments("B", "a", -1)]
+	[Arguments("a", "a", 0)]
 	public async Task GetComparer_ForObjects_ShouldCompareStringsOrdinally(string x, string y, int expected)
 	{
 		CollectionOrderOptions<object?> sut = new();
@@ -33,7 +33,7 @@ public class CollectionOrderOptionsTests
 			.Because("strings are ordered ordinally, whatever the item type of the collection");
 	}
 
-	[Fact]
+	[Test]
 	public async Task SetComparer_WithNull_ShouldThrowArgumentNullException()
 	{
 		CollectionOrderOptions<int> sut = new();
@@ -45,7 +45,7 @@ public class CollectionOrderOptionsTests
 			.WithMessage("The 'comparer' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToString_WithGenericComparer_ShouldFormatTheComparerType()
 	{
 		CollectionOrderOptions<int> sut = new();

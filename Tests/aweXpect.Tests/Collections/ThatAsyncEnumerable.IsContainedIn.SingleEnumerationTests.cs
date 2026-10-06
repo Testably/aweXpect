@@ -13,7 +13,7 @@ public sealed partial class ThatAsyncEnumerable
 	{
 		public sealed class SingleEnumerationTests
 		{
-			[Fact]
+			[Test]
 			public async Task Expectations_WhenEvaluatedForSeveralItems_ShouldEnumerateExpectedOnce()
 			{
 				IAsyncEnumerable<int>[] subject =
@@ -32,7 +32,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringDuplicates_WhenEvaluatedForSeveralItems_ShouldEnumerateExpectedOnce()
 			{
 				IAsyncEnumerable<int>[] subject =
@@ -49,7 +49,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringInterspersedItems_WhenEvaluatedForSeveralItems_ShouldEnumerateExpectedOnce()
 			{
 				IAsyncEnumerable<int>[] subject =
@@ -66,7 +66,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task InAnyOrder_WhenEvaluatedForSeveralItems_ShouldEnumerateExpectedOnce()
 			{
 				IAsyncEnumerable<int>[] subject =
@@ -83,7 +83,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Predicates_WhenEvaluatedForSeveralItems_ShouldEnumerateExpectedOnce()
 			{
 				IAsyncEnumerable<int>[] subject =
@@ -101,7 +101,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEvaluatedForSeveralItems_ShouldCompareEveryItemWithTheExpectedItems()
 			{
 				IAsyncEnumerable<int>[] subject =
@@ -115,7 +115,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).All().ComplyWith(x => x.IsContainedIn(expected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous for all items,
@@ -146,7 +146,7 @@ public sealed partial class ThatAsyncEnumerable
 					.Because("every item is compared with the items of the one enumeration");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEvaluatedForSeveralItems_ShouldEnumerateExpectedOnce()
 			{
 				IAsyncEnumerable<int>[] subject =
@@ -163,7 +163,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsALazySequence_ShouldEnumerateItOnceForSeveralItems()
 			{
 				int enumerations = 0;
@@ -190,7 +190,7 @@ public sealed partial class ThatAsyncEnumerable
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsALazySequence_ShouldNotEnumerateItBeforeTheEvaluation()
 			{
 				int enumerations = 0;
@@ -212,7 +212,7 @@ public sealed partial class ThatAsyncEnumerable
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsAListThatChangesBetweenTheItems_ShouldCompareWithItsCurrentItems()
 			{
 				List<int> expected = [1, 2,];
@@ -232,7 +232,7 @@ public sealed partial class ThatAsyncEnumerable
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedThrowsWhileItIsEnumerated_ShouldThrowTheException()
 			{
 				int enumerations = 0;

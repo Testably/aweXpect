@@ -7,7 +7,7 @@ namespace aweXpect.Internal.Tests.Results;
 
 public sealed class RepeatedCheckResultTests
 {
-	[Fact]
+	[Test]
 	public async Task ShouldBeOptionsProvider_ForRepeatedCheckOptions()
 	{
 		RepeatedCheckOptions options = new();

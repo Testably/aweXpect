@@ -15,7 +15,9 @@ using CoreGeneric = aweXpect.ThatGeneric;
 
 public sealed class GuaranteesNotNullTests
 {
-	[Fact]
+	[Test]
+	[Explicit]
+	[TUnit.Core.Category(TestCategories.Slow)]
 	public async Task EveryExpectation_ShouldFailForANullSubject()
 	{
 		List<string> deviations = Observations
@@ -28,7 +30,9 @@ public sealed class GuaranteesNotNullTests
 			.Because("a null subject must fail every expectation that is not one of the exceptions in Exempt");
 	}
 
-	[Fact]
+	[Test]
+	[Explicit]
+	[TUnit.Core.Category(TestCategories.Slow)]
 	public async Task EveryExpectation_ShouldFailForANullSubjectWhenNegated()
 	{
 		List<string> deviations = Observations
@@ -42,7 +46,9 @@ public sealed class GuaranteesNotNullTests
 				"a null subject must fail an expectation that DoesNotComplyWith negates just as it fails the expectation itself");
 	}
 
-	[Fact]
+	[Test]
+	[Explicit]
+	[TUnit.Core.Category(TestCategories.Slow)]
 	public async Task EveryExpectationThatFails_ShouldGuaranteeNotNull()
 	{
 		List<string> unmarked = Observations
@@ -56,7 +62,9 @@ public sealed class GuaranteesNotNullTests
 				"an expectation that rules a null subject out must say so, or IsNotNullSuppressor cannot drop the CS8602 it has already answered");
 	}
 
-	[Fact]
+	[Test]
+	[Explicit]
+	[TUnit.Core.Category(TestCategories.Slow)]
 	public async Task EveryMarkedExpectation_ShouldFailForANullSubject()
 	{
 		List<string> deviations = Observations
@@ -70,7 +78,7 @@ public sealed class GuaranteesNotNullTests
 				"the attribute drops a CS8602 in user code, so an expectation that does not rule a null subject out must not carry it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task EveryMarkedExpectation_ShouldHaveASubjectThatCanBeNull()
 	{
 		List<string> inert = GetMarkedExpectations().Where(method => !CanHaveANullSubjectValue(method))
@@ -83,7 +91,7 @@ public sealed class GuaranteesNotNullTests
 				"the attribute exists so that IsNotNullSuppressor can drop a nullability warning, and a subject that cannot be null never raises one, so marking it says nothing and makes the attribute read as documentation rather than as the suppression directive it is");
 	}
 
-	[Fact]
+	[Test]
 	public async Task EveryMarkedExpectation_ShouldNarrowTheSubjectToNotNull()
 	{
 		List<string> nullable = GetMarkedExpectations().Where(HandsOutANullableSubject)
@@ -95,7 +103,7 @@ public sealed class GuaranteesNotNullTests
 			.Because("an expectation that rules a null subject out must hand out the subject as not nullable when awaited");
 	}
 
-	[Fact]
+	[Test]
 	public async Task EveryUnmarkedExpectation_ShouldNotNarrowTheSubjectToNotNull()
 	{
 		List<string> notNullable = GetAllExpectations()
@@ -110,11 +118,11 @@ public sealed class GuaranteesNotNullTests
 				"an expectation that a null subject can satisfy must hand out the subject as nullable when awaited, or the compiler does not warn about dereferencing it");
 	}
 
-	[Theory]
-	[InlineData(nameof(HandingOutANotNullableString), true)]
-	[InlineData(nameof(HandingOutANullableString), false)]
-	[InlineData(nameof(HandingOutANotNullableInt), true)]
-	[InlineData(nameof(HandingOutANullableIntFromItsBase), false)]
+	[Test]
+	[Arguments(nameof(HandingOutANotNullableString), true)]
+	[Arguments(nameof(HandingOutANullableString), false)]
+	[Arguments(nameof(HandingOutANotNullableInt), true)]
+	[Arguments(nameof(HandingOutANullableIntFromItsBase), false)]
 	public async Task ShouldDetectANotNullableSubject(string methodName, bool expected)
 	{
 		MethodInfo method = typeof(GuaranteesNotNullTests)
@@ -126,7 +134,9 @@ public sealed class GuaranteesNotNullTests
 			.Because("the check for unmarked expectations must not silently degrade into one that finds nothing");
 	}
 
-	[Fact]
+	[Test]
+	[Explicit]
+	[TUnit.Core.Category(TestCategories.Slow)]
 	public async Task ShouldNegateTheExpectationsThatNeedAContinuation()
 	{
 		List<string> negated = Observations
@@ -140,7 +150,7 @@ public sealed class GuaranteesNotNullTests
 			.Because("an expectation that only adds its constraint in a continuation must be negated as well");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldFindTheMarkedExpectations()
 	{
 		List<MethodInfo> marked = GetMarkedExpectations().ToList();
@@ -193,9 +203,9 @@ public sealed class GuaranteesNotNullTests
 		"IsNotTrue",
 	};
 
-	private static IReadOnlyList<Observation>? _observations;
+	private static readonly Lazy<IReadOnlyList<Observation>> LazyObservations = new(Observe);
 
-	private static IReadOnlyList<Observation> Observations => _observations ??= Observe();
+	private static IReadOnlyList<Observation> Observations => LazyObservations.Value;
 
 	private static bool IsExempt(string name) => Exempt.Contains(name);
 
@@ -267,7 +277,7 @@ public sealed class GuaranteesNotNullTests
 		{
 			return false;
 		}
-		catch (Exception exception) when (exception is not XunitException)
+		catch (Exception exception) when (exception is not FailException)
 		{
 			return false;
 		}
@@ -290,7 +300,7 @@ public sealed class GuaranteesNotNullTests
 					Await(Follow(Invoke(closedMethod, CreateNullSubject(subjectType), nullValues), path, nullValues));
 					return false;
 				}
-				catch (XunitException)
+				catch (FailException)
 				{
 					observed = true;
 				}
@@ -377,7 +387,7 @@ public sealed class GuaranteesNotNullTests
 				Await(InvokeNegated(method, subjectType, path, nullValues));
 				return false;
 			}
-			catch (XunitException)
+			catch (FailException)
 			{
 				observed = true;
 			}

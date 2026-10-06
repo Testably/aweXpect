@@ -10,7 +10,7 @@ public sealed partial class ThatEnumerable
 			private static readonly DateTime Unspecified = new(2026, 1, 1, 0, 0, 0, DateTimeKind.Unspecified);
 			private static readonly DateTime Utc = new(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-			[Fact]
+			[Test]
 			public async Task WhenKindsAreIncompatible_ShouldFail()
 			{
 				DateTime[] subject = [Utc,];
@@ -18,7 +18,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(Local);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item equal to {Formatter.Format(Local)} at least once,
@@ -32,7 +32,7 @@ public sealed partial class ThatEnumerable
 					.Because("a Utc and a Local value with the same ticks denote different instants");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKindsAreIncompatible_ShouldSucceedForDoesNotContain()
 			{
 				DateTime[] subject = [Utc,];
@@ -44,7 +44,7 @@ public sealed partial class ThatEnumerable
 					.Because("an incomparable value is not contained, unlike an ordering check it stays decidable");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOneKindIsUnspecified_ShouldSucceed()
 			{
 				DateTime[] subject = [Unspecified,];

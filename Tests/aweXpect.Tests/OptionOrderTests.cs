@@ -2,7 +2,7 @@
 
 public sealed class OptionOrderTests
 {
-	[Fact]
+	[Test]
 	public async Task DoubleCollectionIsEqualTo_InAnyOrderBeforeWithin_ShouldSucceed()
 	{
 		double[] subject = [1.0, 2.0,];
@@ -13,7 +13,7 @@ public sealed class OptionOrderTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task DoubleCollectionIsEqualTo_InAnyOrderBeforeWithin_WhenOutsideTheTolerance_ShouldFailLikeTheReversedOrder()
 	{
 		double[] subject = [1.0, 2.0,];
@@ -38,11 +38,11 @@ public sealed class OptionOrderTests
 		async Task ReversedAct()
 			=> await That(subject).IsEqualTo(new[] { 2.05, 1.05, }).Within(0.01).InAnyOrder();
 
-		await That(Act).Throws<XunitException>().WithMessage(expectedMessage);
-		await That(ReversedAct).Throws<XunitException>().WithMessage(expectedMessage);
+		await That(Act).Throws<FailException>().WithMessage(expectedMessage);
+		await That(ReversedAct).Throws<FailException>().WithMessage(expectedMessage);
 	}
 
-	[Fact]
+	[Test]
 	public async Task StringCollectionContains_AtLeastBeforeAsPrefix_ShouldFailLikeTheReversedOrder()
 	{
 		string[] subject = ["abc", "bca",];
@@ -64,11 +64,11 @@ public sealed class OptionOrderTests
 		async Task ReversedAct()
 			=> await That(subject).Contains("a").AsPrefix().AtLeast(2);
 
-		await That(Act).Throws<XunitException>().WithMessage(expectedMessage);
-		await That(ReversedAct).Throws<XunitException>().WithMessage(expectedMessage);
+		await That(Act).Throws<FailException>().WithMessage(expectedMessage);
+		await That(ReversedAct).Throws<FailException>().WithMessage(expectedMessage);
 	}
 
-	[Fact]
+	[Test]
 	public async Task StringCollectionIsEqualTo_IgnoringCaseBeforeInAnyOrder_ShouldSucceed()
 	{
 		string[] subject = ["a", "b",];
@@ -79,7 +79,7 @@ public sealed class OptionOrderTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task StringCollectionIsEqualTo_IgnoringCaseBeforeInAnyOrder_WhenNotMatching_ShouldFailLikeTheReversedOrder()
 	{
 		string[] subject = ["a", "b",];
@@ -109,11 +109,11 @@ public sealed class OptionOrderTests
 		async Task ReversedAct()
 			=> await That(subject).IsEqualTo(new[] { "B", "C", }).InAnyOrder().IgnoringCase();
 
-		await That(Act).Throws<XunitException>().WithMessage(expectedMessage);
-		await That(ReversedAct).Throws<XunitException>().WithMessage(expectedMessage);
+		await That(Act).Throws<FailException>().WithMessage(expectedMessage);
+		await That(ReversedAct).Throws<FailException>().WithMessage(expectedMessage);
 	}
 
-	[Fact]
+	[Test]
 	public async Task StringContains_AtLeastBeforeAsWildcard_ShouldFailLikeTheReversedOrder()
 	{
 		string subject = "abc";
@@ -129,11 +129,11 @@ public sealed class OptionOrderTests
 		async Task ReversedAct()
 			=> await That(subject).Contains("a").AsWildcard().AtLeast(2);
 
-		await That(Act).Throws<XunitException>().WithMessage(expectedMessage);
-		await That(ReversedAct).Throws<XunitException>().WithMessage(expectedMessage);
+		await That(Act).Throws<FailException>().WithMessage(expectedMessage);
+		await That(ReversedAct).Throws<FailException>().WithMessage(expectedMessage);
 	}
 
-	[Fact]
+	[Test]
 	public async Task StringHasItem_AtIndexBeforeIgnoringCase_ShouldSucceed()
 	{
 		string[] subject = ["a", "b",];
@@ -144,7 +144,7 @@ public sealed class OptionOrderTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task StringHasItem_AtIndexBeforeIgnoringCase_WhenNotMatching_ShouldFailLikeTheReversedOrder()
 	{
 		string[] subject = ["a", "b",];
@@ -166,11 +166,11 @@ public sealed class OptionOrderTests
 		async Task ReversedAct()
 			=> await That(subject).HasItem("B").IgnoringCase().AtIndex(0);
 
-		await That(Act).Throws<XunitException>().WithMessage(expectedMessage);
-		await That(ReversedAct).Throws<XunitException>().WithMessage(expectedMessage);
+		await That(Act).Throws<FailException>().WithMessage(expectedMessage);
+		await That(ReversedAct).Throws<FailException>().WithMessage(expectedMessage);
 	}
 
-	[Fact]
+	[Test]
 	public async Task StringIsEqualTo_IgnoringCaseBeforeAsWildcard_ShouldSucceed()
 	{
 		string subject = "abc";
@@ -181,7 +181,7 @@ public sealed class OptionOrderTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task StringIsEqualTo_IgnoringCaseBeforeAsWildcard_WhenNotMatching_ShouldFailLikeTheReversedOrder()
 	{
 		string subject = "abc";
@@ -201,7 +201,7 @@ public sealed class OptionOrderTests
 		async Task ReversedAct()
 			=> await That(subject).IsEqualTo("B*").AsWildcard().IgnoringCase();
 
-		await That(Act).Throws<XunitException>().WithMessage(expectedMessage);
-		await That(ReversedAct).Throws<XunitException>().WithMessage(expectedMessage);
+		await That(Act).Throws<FailException>().WithMessage(expectedMessage);
+		await That(ReversedAct).Throws<FailException>().WithMessage(expectedMessage);
 	}
 }

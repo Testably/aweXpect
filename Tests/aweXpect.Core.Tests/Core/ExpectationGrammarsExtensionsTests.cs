@@ -2,12 +2,12 @@
 
 public sealed class ExpectationGrammarsExtensionsTests
 {
-	[Theory]
-	[InlineData(ExpectationGrammars.None, false)]
-	[InlineData(ExpectationGrammars.Negated, true)]
-	[InlineData(ExpectationGrammars.Plural | ExpectationGrammars.Negated, true)]
-	[InlineData(ExpectationGrammars.Nested | ExpectationGrammars.Plural, false)]
-	[InlineData(ExpectationGrammars.Nested | ExpectationGrammars.Plural | ExpectationGrammars.Negated, true)]
+	[Test]
+	[Arguments(ExpectationGrammars.None, false)]
+	[Arguments(ExpectationGrammars.Negated, true)]
+	[Arguments(ExpectationGrammars.Plural | ExpectationGrammars.Negated, true)]
+	[Arguments(ExpectationGrammars.Nested | ExpectationGrammars.Plural, false)]
+	[Arguments(ExpectationGrammars.Nested | ExpectationGrammars.Plural | ExpectationGrammars.Negated, true)]
 	public async Task IsNegated_ShouldReturnExpectedValue(ExpectationGrammars input, bool expected)
 	{
 		bool result = input.IsNegated();
@@ -15,12 +15,12 @@ public sealed class ExpectationGrammarsExtensionsTests
 		await That(result).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[InlineData(ExpectationGrammars.None, false)]
-	[InlineData(ExpectationGrammars.Nested, true)]
-	[InlineData(ExpectationGrammars.Plural | ExpectationGrammars.Nested, true)]
-	[InlineData(ExpectationGrammars.Negated | ExpectationGrammars.Plural, false)]
-	[InlineData(ExpectationGrammars.Nested | ExpectationGrammars.Plural | ExpectationGrammars.Negated, true)]
+	[Test]
+	[Arguments(ExpectationGrammars.None, false)]
+	[Arguments(ExpectationGrammars.Nested, true)]
+	[Arguments(ExpectationGrammars.Plural | ExpectationGrammars.Nested, true)]
+	[Arguments(ExpectationGrammars.Negated | ExpectationGrammars.Plural, false)]
+	[Arguments(ExpectationGrammars.Nested | ExpectationGrammars.Plural | ExpectationGrammars.Negated, true)]
 	public async Task IsNested_ShouldReturnExpectedValue(ExpectationGrammars input, bool expected)
 	{
 		bool result = input.IsNested();
@@ -28,12 +28,12 @@ public sealed class ExpectationGrammarsExtensionsTests
 		await That(result).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[InlineData(ExpectationGrammars.None, false)]
-	[InlineData(ExpectationGrammars.Plural, true)]
-	[InlineData(ExpectationGrammars.Plural | ExpectationGrammars.Nested, true)]
-	[InlineData(ExpectationGrammars.Negated | ExpectationGrammars.Nested, false)]
-	[InlineData(ExpectationGrammars.Nested | ExpectationGrammars.Plural | ExpectationGrammars.Negated, true)]
+	[Test]
+	[Arguments(ExpectationGrammars.None, false)]
+	[Arguments(ExpectationGrammars.Plural, true)]
+	[Arguments(ExpectationGrammars.Plural | ExpectationGrammars.Nested, true)]
+	[Arguments(ExpectationGrammars.Negated | ExpectationGrammars.Nested, false)]
+	[Arguments(ExpectationGrammars.Nested | ExpectationGrammars.Plural | ExpectationGrammars.Negated, true)]
 	public async Task IsPlural_ShouldReturnExpectedValue(ExpectationGrammars input, bool expected)
 	{
 		bool result = input.IsPlural();
@@ -41,10 +41,10 @@ public sealed class ExpectationGrammarsExtensionsTests
 		await That(result).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[InlineData(ExpectationGrammars.None, ExpectationGrammars.Negated)]
-	[InlineData(ExpectationGrammars.Plural, ExpectationGrammars.Plural | ExpectationGrammars.Negated)]
-	[InlineData(ExpectationGrammars.Nested | ExpectationGrammars.Plural,
+	[Test]
+	[Arguments(ExpectationGrammars.None, ExpectationGrammars.Negated)]
+	[Arguments(ExpectationGrammars.Plural, ExpectationGrammars.Plural | ExpectationGrammars.Negated)]
+	[Arguments(ExpectationGrammars.Nested | ExpectationGrammars.Plural,
 		ExpectationGrammars.Nested | ExpectationGrammars.Plural | ExpectationGrammars.Negated)]
 	public async Task Negate_ShouldAddNegated(ExpectationGrammars input, ExpectationGrammars expected)
 	{
@@ -53,13 +53,13 @@ public sealed class ExpectationGrammarsExtensionsTests
 		await That(result).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[InlineData(ExpectationGrammars.None, "it", "was")]
-	[InlineData(ExpectationGrammars.Plural, "it", "was")]
-	[InlineData(ExpectationGrammars.Plural | ExpectationGrammars.Nested, "it", "was")]
-	[InlineData(ExpectationGrammars.None, "lines", "was")]
-	[InlineData(ExpectationGrammars.Plural, "lines", "were")]
-	[InlineData(ExpectationGrammars.Plural | ExpectationGrammars.Negated, "lines", "were")]
+	[Test]
+	[Arguments(ExpectationGrammars.None, "it", "was")]
+	[Arguments(ExpectationGrammars.Plural, "it", "was")]
+	[Arguments(ExpectationGrammars.Plural | ExpectationGrammars.Nested, "it", "was")]
+	[Arguments(ExpectationGrammars.None, "lines", "was")]
+	[Arguments(ExpectationGrammars.Plural, "lines", "were")]
+	[Arguments(ExpectationGrammars.Plural | ExpectationGrammars.Negated, "lines", "were")]
 	public async Task SubjectVerb_ShouldOnlyUsePluralForAMemberName(
 		ExpectationGrammars input, string it, string expected)
 	{
@@ -68,12 +68,12 @@ public sealed class ExpectationGrammarsExtensionsTests
 		await That(result).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[InlineData(ExpectationGrammars.None, "has")]
-	[InlineData(ExpectationGrammars.Nested, "has")]
-	[InlineData(ExpectationGrammars.Negated, "has")]
-	[InlineData(ExpectationGrammars.Plural, "have")]
-	[InlineData(ExpectationGrammars.Plural | ExpectationGrammars.Nested, "have")]
+	[Test]
+	[Arguments(ExpectationGrammars.None, "has")]
+	[Arguments(ExpectationGrammars.Nested, "has")]
+	[Arguments(ExpectationGrammars.Negated, "has")]
+	[Arguments(ExpectationGrammars.Plural, "have")]
+	[Arguments(ExpectationGrammars.Plural | ExpectationGrammars.Nested, "have")]
 	public async Task Verb_ShouldOnlyUsePluralWhenPluralFlagIsSet(ExpectationGrammars input, string expected)
 	{
 		string result = input.Verb("has", "have");

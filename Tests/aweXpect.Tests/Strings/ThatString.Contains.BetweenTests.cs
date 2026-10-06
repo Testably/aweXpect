@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class BetweenTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursFewerTimes_ShouldFail()
 			{
 				string subject =
@@ -16,7 +16,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).Between(4).And(9);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "in" between 4 and 9 times,
@@ -24,7 +24,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursMoreTimes_ShouldFail()
 			{
 				string subject =
@@ -34,7 +34,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).Between(1).And(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "in" between 1 and 2 times,
@@ -42,7 +42,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursSufficientTimes_ShouldSucceed()
 			{
 				string subject =
@@ -55,7 +55,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaximumIsLessThanZero_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject =
@@ -70,7 +70,7 @@ public sealed partial class ThatString
 					.WithParamName("maximum");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumEqualsMaximum_ShouldBehaveLikeExactly()
 			{
 				string subject =
@@ -83,7 +83,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumIsGreaterThanMaximum_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject =
@@ -98,7 +98,7 @@ public sealed partial class ThatString
 					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumIsLessThanZero_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject =

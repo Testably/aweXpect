@@ -14,7 +14,7 @@ public sealed partial class ThatAsyncEnumerable
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task ConsidersCancellationToken()
 				{
 					using CancellationTokenSource cts = new();
@@ -24,7 +24,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).All().ComplyWith(x => x.IsLessThan(6)).WithCancellation(token);
 
-					await That(Act).Throws<InconclusiveException>()
+					await That(Act).Throws<InconclusiveTestException>()
 						.WithMessage("""
 						             Expected that subject
 						             is less than 6 for all items,
@@ -35,7 +35,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ConsidersCancellationToken_WhenNested_ShouldNameTheMember()
 				{
 					using CancellationTokenSource cts = new();
@@ -46,7 +46,7 @@ public sealed partial class ThatAsyncEnumerable
 						=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsLessThan(6)))
 							.WithCancellation(token);
 
-					await That(Act).Throws<InconclusiveException>()
+					await That(Act).Throws<InconclusiveTestException>()
 						.WithMessage("""
 						             Expected that subject
 						             whose Items are less than 6 for all items,
@@ -55,7 +55,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """).AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task DoesNotEnumerateTwice()
 				{
 					ThrowWhenIteratingTwiceAsyncEnumerable subject = new();
@@ -67,7 +67,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task DoesNotMaterializeEnumerable()
 				{
 					IAsyncEnumerable<int> subject = Factory.GetAsyncFibonacciNumbers();
@@ -75,7 +75,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).All().ComplyWith(x => x.IsEqualTo(1));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 1 for all items,
@@ -89,7 +89,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsDifferentValues_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 1, 1, 2, 2, 3);
@@ -97,7 +97,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).All().ComplyWith(x => x.IsEqualTo(1));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 1 for all items,
@@ -111,7 +111,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableIsEmpty_ShouldSucceed()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable((int[])[]);
@@ -122,7 +122,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableOnlyContainsEqualValues_ShouldSucceed()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 1, 1, 1, 1, 1);
@@ -133,7 +133,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -146,7 +146,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemsAreCollections_ShouldVerifyEachItem()
 				{
 					IAsyncEnumerable<int[]> subject = ToAsyncEnumerable<int[]>([1, 2,], [1, 3,]);
@@ -154,7 +154,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).All().ComplyWith(x => x.IsNotEqualTo([1, 3,]));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to collection [1, 3,] in order for all items,
@@ -190,7 +190,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemsUseWhose_ShouldIncludeMemberInExpectation()
 				{
 					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable(new MyClass(1), new MyClass(2));
@@ -198,7 +198,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).All().ComplyWith(x => x.Whose(o => o.Value, v => v.IsEqualTo(5)));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             whose Value is equal to 5 for all items,
@@ -225,7 +225,7 @@ public sealed partial class ThatAsyncEnumerable
 						.Because("the member text must survive the node tree rendering");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_AfterAnEarlierAttempt_ShouldNotShowItsItems()
 				{
 					int calls = 0;
@@ -235,7 +235,7 @@ public sealed partial class ThatAsyncEnumerable
 						=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
 							.All().ComplyWith(x => x.IsGreaterThan(5));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             eventually is greater than 5 for all items within 0:05,
@@ -244,7 +244,7 @@ public sealed partial class ThatAsyncEnumerable
 						.Because("the items of an earlier attempt do not describe the last one");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_NegatedShouldFail()
 				{
 					IAsyncEnumerable<int>? subject = null;
@@ -252,7 +252,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().ComplyWith(x => x.IsEqualTo(0)));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 0 not for all items,
@@ -260,7 +260,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IAsyncEnumerable<int>? subject = null;
@@ -268,7 +268,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).All().ComplyWith(x => x.IsEqualTo(0));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 0 for all items,
@@ -279,7 +279,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class StringTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsMatchExpectation_ShouldSucceed()
 				{
 					IAsyncEnumerable<string?> subject = ToAsyncEnumerable<string?>("apple", "ant", "avocado");
@@ -290,7 +290,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExactlyOneItemMatchesExpectation_ShouldSucceed()
 				{
 					IAsyncEnumerable<string?> subject = ToAsyncEnumerable<string?>("apple", "banana", "cherry");
@@ -301,7 +301,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 				{
 					IAsyncEnumerable<string?> subject = ToAsyncEnumerable<string?>("apple", "ant", "avocado");
@@ -314,7 +314,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNotAllItemsMatch_ShouldFail()
 				{
 					IAsyncEnumerable<string?> subject = ToAsyncEnumerable<string?>("apple", "banana", "avocado");
@@ -322,7 +322,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).All().ComplyWith(it => it.StartsWith("a"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             starts with "a" for all items,
@@ -343,7 +343,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IAsyncEnumerable<string?>? subject = null;
@@ -351,7 +351,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).All().ComplyWith(it => it.StartsWith("a"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             starts with "a" for all items,
@@ -362,7 +362,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class NegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsComply_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3, 4, 5);
@@ -371,7 +371,7 @@ public sealed partial class ThatAsyncEnumerable
 						=> await That(subject).DoesNotComplyWith(it
 							=> it.All().ComplyWith(x => x.IsGreaterThan(0)));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is greater than 0 not for all items,
@@ -382,7 +382,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableOnlyContainsEqualValues_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 1, 1, 1, 1, 1);
@@ -390,7 +390,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).All().ComplyWith(x => x.DoesNotComplyWith(it => it.IsEqualTo(1)));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to 1 for all items,
@@ -404,7 +404,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);

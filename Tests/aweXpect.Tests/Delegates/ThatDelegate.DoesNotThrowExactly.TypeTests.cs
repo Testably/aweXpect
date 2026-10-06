@@ -9,7 +9,7 @@ public sealed partial class ThatDelegate
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 		public sealed class ActionTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDelegateDoesNotThrow_ShouldSucceed()
 			{
 				Action @delegate = () => { };
@@ -20,8 +20,8 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsMatchingException_ShouldFail(string message)
 			{
 				Exception exception = new CustomException(message);
@@ -39,7 +39,7 @@ public sealed partial class ThatDelegate
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateThrowsOpenGenericTypeException_ShouldFail()
 			{
 				Action @delegate = () => throw new GenericException<int>("foo");
@@ -47,7 +47,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).DoesNotThrowExactly(typeof(GenericException<>));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             does not throw exactly a ThatDelegate.GenericException<>,
@@ -56,8 +56,8 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsOtherException_ShouldSucceed(string message)
 			{
 				Exception exception = new OtherException(message);
@@ -69,8 +69,8 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsSubtypeOfException_ShouldSucceed(string message)
 			{
 				Exception exception = new SubCustomException(message);
@@ -82,7 +82,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateThrowsSubtypeOfOpenGenericType_ShouldSucceed()
 			{
 				Action @delegate = () => throw new SubGenericException();
@@ -94,8 +94,8 @@ public sealed partial class ThatDelegate
 					.Because("the subtype of GenericException<int> is not constructed directly from the open generic type");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsSuperTypeOfException_ShouldSucceed(string message)
 			{
 				Exception exception = new CustomException(message);
@@ -107,7 +107,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Action? subject = null;
@@ -115,7 +115,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(subject!).DoesNotThrowExactly(typeof(CustomException));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not throw exactly a ThatDelegate.CustomException,
@@ -123,7 +123,7 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotAnException_ShouldThrowArgumentException()
 			{
 				Action @delegate = () => { };
@@ -137,7 +137,7 @@ public sealed partial class ThatDelegate
 					.Because("no exception could ever be a string");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
 			{
 				Action @delegate = () => { };
@@ -153,7 +153,7 @@ public sealed partial class ThatDelegate
 
 		public sealed class FuncValueTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAwaited_ShouldNotReturnAValue()
 			{
 				Func<int> @delegate = () => throw new OtherException();
@@ -164,7 +164,7 @@ public sealed partial class ThatDelegate
 					.Because("the delegate may throw another exception instead of returning a value");
 			}
 			
-			[Fact]
+			[Test]
 			public async Task WhenDelegateDoesNotThrow_ShouldSucceed()
 			{
 				Func<int> @delegate = () => 1;
@@ -175,8 +175,8 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsMatchingException_ShouldFail(string message)
 			{
 				Exception exception = new CustomException(message);
@@ -194,7 +194,7 @@ public sealed partial class ThatDelegate
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateThrowsOpenGenericTypeException_ShouldFail()
 			{
 				Func<int> @delegate = () => throw new GenericException<int>("foo");
@@ -202,7 +202,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).DoesNotThrowExactly(typeof(GenericException<>));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             does not throw exactly a ThatDelegate.GenericException<>,
@@ -211,8 +211,8 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsOtherException_ShouldSucceed(string message)
 			{
 				Exception exception = new OtherException(message);
@@ -224,8 +224,8 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsSubtypeOfException_ShouldSucceed(string message)
 			{
 				Exception exception = new SubCustomException(message);
@@ -237,8 +237,8 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsSuperTypeOfException_ShouldSucceed(string message)
 			{
 				Exception exception = new CustomException(message);
@@ -250,7 +250,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Func<int>? subject = null;
@@ -258,7 +258,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(subject!).DoesNotThrowExactly(typeof(CustomException));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not throw exactly a ThatDelegate.CustomException,
@@ -266,7 +266,7 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotAnException_ShouldThrowArgumentException()
 			{
 				Func<int> @delegate = () => 1;
@@ -280,7 +280,7 @@ public sealed partial class ThatDelegate
 					.Because("no exception could ever be a string");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
 			{
 				Func<int> @delegate = () => 1;

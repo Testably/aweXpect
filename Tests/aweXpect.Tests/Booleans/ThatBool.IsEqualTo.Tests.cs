@@ -6,9 +6,9 @@ public sealed partial class ThatBool
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task WhenExpectedIsNull_ShouldFail(bool subject)
 			{
 				bool? expected = null;
@@ -16,7 +16,7 @@ public sealed partial class ThatBool
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is <null>,
@@ -24,9 +24,9 @@ public sealed partial class ThatBool
 					              """);
 			}
 
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task WhenSubjectIsDifferent_ShouldFail(bool subject)
 			{
 				bool expected = !subject;
@@ -34,7 +34,7 @@ public sealed partial class ThatBool
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is {Formatter.Format(expected)},
@@ -42,9 +42,9 @@ public sealed partial class ThatBool
 					              """);
 			}
 
-			[Theory]
-			[InlineAutoData(true)]
-			[InlineAutoData(false)]
+			[Test]
+			[AutoArguments(true)]
+			[AutoArguments(false)]
 			public async Task WhenSubjectIsDifferent_ShouldFailWithDescriptiveMessage(
 				bool subject, string reason)
 			{
@@ -53,7 +53,7 @@ public sealed partial class ThatBool
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).Because(reason);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is {Formatter.Format(expected)}, because {reason},
@@ -61,9 +61,9 @@ public sealed partial class ThatBool
 					              """);
 			}
 
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task WhenSubjectIsTheSame_ShouldSucceed(bool subject)
 			{
 				bool expected = subject;

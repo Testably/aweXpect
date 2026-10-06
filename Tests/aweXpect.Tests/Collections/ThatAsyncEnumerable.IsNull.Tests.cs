@@ -11,9 +11,9 @@ public sealed partial class ThatAsyncEnumerable
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData(null)]
-			[InlineData(new int[0])]
+			[Test]
+			[Arguments(null)]
+			[Arguments(new int[0])]
 			public async Task IsNull_ShouldBeChainableWithIsEmpty(int[]? values)
 			{
 				IAsyncEnumerable<int>? subject = values == null ? null : ToAsyncEnumerable(values);
@@ -25,7 +25,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsNull_WhenNotNull_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
@@ -33,7 +33,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).IsNull();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is null,
@@ -41,7 +41,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsNull_WhenNull_ShouldSucceed()
 			{
 				IAsyncEnumerable<int>? subject = null;

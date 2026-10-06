@@ -6,7 +6,7 @@ namespace aweXpect.Core.Tests.Core.Sources;
 
 public class DelegateSourceTests
 {
-	[Fact]
+	[Test]
 	public async Task ForExecutionTime_ShouldUseElapsedFromTimeSystem()
 	{
 		TimeSystemMock timeSystem = new TimeSystemMock().SetElapsed(1100.Milliseconds());
@@ -18,7 +18,7 @@ public class DelegateSourceTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegateIsCanceledByTheTimeout_ShouldReportThatItDidNotFinish()
 	{
 		Action<CancellationToken> @delegate = token =>
@@ -30,7 +30,7 @@ public class DelegateSourceTests
 		async Task Act()
 			=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             executes in at most 0:00.050,

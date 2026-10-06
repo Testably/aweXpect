@@ -9,7 +9,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class ImmutableArrayTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreNotSortedCorrectly_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 1, 2, 3, 1,];
@@ -17,7 +17,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order,
@@ -28,7 +28,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreSortedCorrectly_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -39,7 +39,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableItemIsNotSortedCorrectly_ShouldFail()
 			{
 				ImmutableArray<int?> subject = [2, null, 3,];
@@ -47,7 +47,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order,
@@ -62,7 +62,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableArrayStringTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldNotIgnoreCasing()
 			{
 				ImmutableArray<string> subject = ["a", "A",];
@@ -70,7 +70,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order,
@@ -84,7 +84,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldUseCustomComparer()
 			{
 				ImmutableArray<string> subject = ["a", "A",];
@@ -95,7 +95,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreNotSortedCorrectly_ShouldFail()
 			{
 				ImmutableArray<string> subject = ["a", "b", "c", "a",];
@@ -103,7 +103,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order,
@@ -119,7 +119,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreSortedCorrectly_ShouldSucceed()
 			{
 				ImmutableArray<string> subject = ["a", "b", "c",];
@@ -130,7 +130,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullItemIsNotSortedCorrectly_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", null, "b",];
@@ -138,7 +138,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order,
@@ -157,7 +157,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableArrayMemberTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreNotSortedCorrectly_ShouldFail()
 			{
 				ImmutableArray<MyIntClass> subject = [..ToEnumerable([1, 1, 2, 3, 1,], x => new MyIntClass(x)),];
@@ -165,7 +165,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder(x => x is MyIntClass c ? c.Value : 0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order by x => x is MyIntClass c ? c.Value : 0,
@@ -192,7 +192,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreSortedCorrectly_ShouldSucceed()
 			{
 				ImmutableArray<MyIntClass> subject = [..ToEnumerable([1, 2, 3,], x => new MyIntClass(x)),];
@@ -203,7 +203,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberAccessorIsNull_ShouldThrowArgumentNullException()
 			{
 				ImmutableArray<MyIntClass> subject = [..ToEnumerable([1, 2, 3,], x => new MyIntClass(x)),];
@@ -219,7 +219,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableArrayStringMemberTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldNotIgnoreCasing()
 			{
 				ImmutableArray<MyStringClass> subject = [..ToEnumerable(["a", "A",], x => new MyStringClass(x)),];
@@ -227,7 +227,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder(x => x is MyStringClass c ? c.Value : "");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order by x => x is MyStringClass c ? c.Value : "",
@@ -245,7 +245,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldUseCustomComparer()
 			{
 				ImmutableArray<MyStringClass> subject = [..ToEnumerable(["a", "A",], x => new MyStringClass(x)),];
@@ -257,7 +257,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreNotSortedCorrectly_ShouldFail()
 			{
 				ImmutableArray<MyStringClass> subject =
@@ -266,7 +266,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder(x => x is MyStringClass c ? c.Value : "");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order by x => x is MyStringClass c ? c.Value : "",
@@ -290,7 +290,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreSortedCorrectly_ShouldSucceed()
 			{
 				ImmutableArray<MyStringClass> subject = [..ToEnumerable(["a", "b", "c",], x => new MyStringClass(x)),];

@@ -6,7 +6,7 @@ public sealed partial class ThatTimeSpan
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsMaxValue_ShouldSucceed()
 			{
 				TimeSpan subject = TimeSpan.MaxValue;
@@ -17,7 +17,7 @@ public sealed partial class ThatTimeSpan
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsMinValue_ShouldFail()
 			{
 				TimeSpan subject = TimeSpan.MinValue;
@@ -25,7 +25,7 @@ public sealed partial class ThatTimeSpan
 				async Task Act()
 					=> await That(subject).IsNotNegative();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not negative,
@@ -33,7 +33,7 @@ public sealed partial class ThatTimeSpan
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNegative_ShouldFail()
 			{
 				TimeSpan subject = -1.Seconds();
@@ -41,7 +41,7 @@ public sealed partial class ThatTimeSpan
 				async Task Act()
 					=> await That(subject).IsNotNegative();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not negative,
@@ -49,7 +49,7 @@ public sealed partial class ThatTimeSpan
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsPositive_ShouldSucceed()
 			{
 				TimeSpan subject = 1.Seconds();
@@ -60,7 +60,7 @@ public sealed partial class ThatTimeSpan
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsZero_ShouldSucceed()
 			{
 				TimeSpan subject = TimeSpan.Zero;
@@ -74,7 +74,7 @@ public sealed partial class ThatTimeSpan
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNegative_ShouldSucceed()
 			{
 				TimeSpan subject = -5.Seconds();
@@ -85,7 +85,7 @@ public sealed partial class ThatTimeSpan
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsPositive_ShouldFail()
 			{
 				TimeSpan subject = 5.Seconds();
@@ -93,7 +93,7 @@ public sealed partial class ThatTimeSpan
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotNegative());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is negative,

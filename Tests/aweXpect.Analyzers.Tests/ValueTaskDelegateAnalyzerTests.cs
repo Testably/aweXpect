@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Testing;
-using Xunit;
 using Verifier =
 	aweXpect.Analyzers.Tests.Verifiers.CSharpAnalyzerVerifier<aweXpect.Analyzers.ValueTaskDelegateAnalyzer>;
 
@@ -9,7 +8,7 @@ namespace aweXpect.Analyzers.Tests;
 
 public class ValueTaskDelegateAnalyzerTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenCallingAThatMethodOfAnotherClass_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -35,7 +34,7 @@ public class ValueTaskDelegateAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExplicitlyTypingTheResultAsValueTask_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -58,7 +57,7 @@ public class ValueTaskDelegateAnalyzerTests
 				.WithArguments("ValueTask")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenPassingAFuncOfValueTaskVariable_WithoutValueTaskOverloads_ShouldBeFlagged()
 		=> await VerifyWithoutValueTaskOverloadsAsync(
 			"""
@@ -81,7 +80,7 @@ public class ValueTaskDelegateAnalyzerTests
 				.WithArguments("ValueTask")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenPassingALambdaReturningAsTask_WithoutValueTaskOverloads_ShouldNotBeFlagged()
 		=> await VerifyWithoutValueTaskOverloadsAsync(
 			"""
@@ -101,7 +100,7 @@ public class ValueTaskDelegateAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenPassingALambdaReturningAValueTaskOfInt_WithoutValueTaskOverloads_ShouldBeFlagged()
 		=> await VerifyWithoutValueTaskOverloadsAsync(
 			"""
@@ -124,7 +123,7 @@ public class ValueTaskDelegateAnalyzerTests
 				.WithArguments("ValueTask<int>")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenPassingAMethodGroupReturningAnInt_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -144,7 +143,7 @@ public class ValueTaskDelegateAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenPassingAMethodGroupReturningAnInt_WithoutValueTaskOverloads_ShouldNotBeFlagged()
 		=> await VerifyWithoutValueTaskOverloadsAsync(
 			"""
@@ -164,7 +163,7 @@ public class ValueTaskDelegateAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenPassingAMethodGroupReturningATask_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -184,7 +183,7 @@ public class ValueTaskDelegateAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenPassingAMethodGroupReturningATask_WithoutValueTaskOverloads_ShouldNotBeFlagged()
 		=> await VerifyWithoutValueTaskOverloadsAsync(
 			"""
@@ -204,7 +203,7 @@ public class ValueTaskDelegateAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenPassingAMethodGroupReturningAValueTask_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -224,7 +223,7 @@ public class ValueTaskDelegateAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenPassingAMethodGroupReturningAValueTask_WithoutValueTaskOverloads_ShouldBeFlagged()
 		=> await VerifyWithoutValueTaskOverloadsAsync(
 			"""
@@ -247,7 +246,7 @@ public class ValueTaskDelegateAnalyzerTests
 				.WithArguments("ValueTask")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenPassingAMethodGroupReturningAValueTaskOfInt_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -267,7 +266,7 @@ public class ValueTaskDelegateAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenPassingAMethodGroupReturningAValueTaskOfInt_WithoutValueTaskOverloads_ShouldBeFlagged()
 		=> await VerifyWithoutValueTaskOverloadsAsync(
 			"""
@@ -290,7 +289,7 @@ public class ValueTaskDelegateAnalyzerTests
 				.WithArguments("ValueTask<int>")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenPassingAMethodGroupWithCancellationTokenReturningAValueTask_ShouldNotBeFlagged()
 		=> await Verifier
 			.VerifyAnalyzerAsync(
@@ -312,7 +311,7 @@ public class ValueTaskDelegateAnalyzerTests
 				"""
 			);
 
-	[Fact]
+	[Test]
 	public async Task
 		WhenPassingAMethodGroupWithCancellationTokenReturningAValueTask_WithoutValueTaskOverloads_ShouldBeFlagged()
 		=> await VerifyWithoutValueTaskOverloadsAsync(
@@ -337,7 +336,7 @@ public class ValueTaskDelegateAnalyzerTests
 				.WithArguments("ValueTask")
 		);
 
-	[Fact]
+	[Test]
 	public async Task
 		WhenPassingAMethodGroupWithCancellationTokenReturningAValueTaskOfInt_WithoutValueTaskOverloads_ShouldBeFlagged()
 		=> await VerifyWithoutValueTaskOverloadsAsync(
@@ -362,7 +361,7 @@ public class ValueTaskDelegateAnalyzerTests
 				.WithArguments("ValueTask<int>")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenPassingAValueTask_WithoutValueTaskOverloads_ShouldNotBeFlagged()
 		=> await VerifyWithoutValueTaskOverloadsAsync(
 			"""

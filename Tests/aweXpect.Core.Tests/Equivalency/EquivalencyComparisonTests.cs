@@ -26,7 +26,7 @@ namespace aweXpect.Core.Tests.Equivalency;
 
 public sealed partial class EquivalencyComparisonTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenActualFieldIsPrivate_WithInternalFields_ShouldTreatItAsMissing()
 	{
 		WithPrivateField actual = new(2);
@@ -50,7 +50,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("private members are never compared, also not on the actual object");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualImplementsAByRefLikePropertyExplicitly_ShouldTreatItAsMissing()
 	{
 		ExplicitSpan actual = new(1);
@@ -70,7 +70,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a span cannot be boxed, so reflection cannot read the explicit implementation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualImplementsAPropertyExplicitly_AndHasAPublicPropertyOfTheSameName_ShouldCompareThePublicOne()
 	{
 		ExplicitAndPublicValue actual = new(5, 1);
@@ -92,7 +92,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the explicit implementation is only a fallback for a property the actual type does not have");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualImplementsAPropertyExplicitly_AndItDiffers_ShouldReportTheProperty()
 	{
 		ExplicitValue actual = new(5, 1);
@@ -115,7 +115,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the explicit implementation is reported under the short name the expectation uses");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualImplementsAPropertyExplicitly_AndTheTypeIsRegistered_ShouldCompareTheRegisteredOne()
 	{
 		RegisterExplicitPhantom();
@@ -138,7 +138,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the registered explicit implementation is not one reflection could find, and a type with only explicit implementations still counts as registered");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualImplementsAPropertyExplicitly_ForAGenericInterface_ShouldCompareIt()
 	{
 		ExplicitGenericValue actual = new("foo");
@@ -153,7 +153,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the name of the implementation contains the type arguments of the interface, but still ends with the short name");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualImplementsAPropertyExplicitly_ForTwoInterfaces_AndTheTypeIsRegistered_ShouldReportItAsAmbiguous()
 	{
 		RegisterAmbiguousExplicitPhantom();
@@ -174,7 +174,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the registry has to decide the ambiguity the same way reflection does");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualImplementsAPropertyExplicitly_ForTwoInterfaces_ShouldReportItAsAmbiguous()
 	{
 		ExplicitValueForTwoInterfaces actual = new(1, 2);
@@ -194,7 +194,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("picking one of the implementations would make the result depend on the order reflection returns them in");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualImplementsAPropertyExplicitly_InACollection_ShouldCompareIt()
 	{
 		ExplicitValue[] actual = [new(5, 1),];
@@ -219,7 +219,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualImplementsAPropertyExplicitly_OnABaseType_ShouldCompareIt()
 	{
 		DerivedFromExplicitValue actual = new(5, 1);
@@ -235,7 +235,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("reflection does not return the private members of a base type, so the hierarchy has to be walked");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualImplementsAPropertyExplicitly_OnANestedMember_ShouldCompareIt()
 	{
 		var actual = new
@@ -263,7 +263,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualImplementsAPropertyExplicitly_ShouldCompareIt()
 	{
 		ExplicitValue actual = new(5, 1);
@@ -279,7 +279,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("an explicitly implemented property is matched by the short name of the interface property");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualImplementsAPropertyExplicitly_WithAnExpectedField_ShouldCompareIt()
 	{
 		ExplicitValue actual = new(5, 1);
@@ -298,7 +298,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("an expected field falls back to a property of the same name, which includes an explicit implementation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualImplementsAPropertyExplicitly_WithIsNotEquivalentTo_ShouldFail()
 	{
 		ExplicitValue actual = new(5, 1);
@@ -311,7 +311,7 @@ public sealed partial class EquivalencyComparisonTests
 		async Task Act()
 			=> await That(actual).IsNotEquivalentTo(unexpected);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that actual
 			             is not equivalent to unexpected,
@@ -324,7 +324,7 @@ public sealed partial class EquivalencyComparisonTests
 			             """).Because("the explicit implementation makes the actual object equivalent, even though the formatter does not list it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualImplementsAPropertyExplicitly_WithNonPublicMembers_ShouldCompareIt()
 	{
 		ExplicitValue actual = new(5, 1);
@@ -344,7 +344,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("requesting non-public members still finds the explicit implementation by its short name");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualImplementsAPropertyExplicitly_WithoutProperties_ShouldTreatItAsMissing()
 	{
 		ExplicitValue actual = new(5, 1);
@@ -365,7 +365,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("an explicit implementation is a property, so excluding properties excludes it as well");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualIsComparedByMembers_AndExpectedIsAString_ShouldCompareByValue()
 	{
 		WithLength actual = new(2);
@@ -384,7 +384,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualIsComparedByMembers_AndItsEqualsAcceptsTheExpectedValue_ShouldLetTheExpectedValueDecide()
 	{
 		EqualToAnything actual = new();
@@ -396,7 +396,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a type compared by members has its Equals ignored, so only the Equals of the value compared by value may decide");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualMemberIsMoreVisibleThanRequested_ShouldStillCompareIt()
 	{
 		WithPublicValue actual = new(1);
@@ -413,7 +413,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the visibility selects the members of the expected object, while the actual side only has to have a member of that name");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualMemberIsNull_ShouldReportFoundAndExpected()
 	{
 		var actual = new
@@ -437,7 +437,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualPropertyHasNoPublicGetter_ShouldTreatItAsMissing()
 	{
 		WithPrivateGetter actual = new(1);
@@ -454,7 +454,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a registration cannot call a non-public getter, so reflection must not read one either");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualPropertyIsPrivate_WithInternalProperties_ShouldTreatItAsMissing()
 	{
 		WithPrivateProperty actual = new(2);
@@ -478,7 +478,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("private members are never compared, also not on the actual object");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualTypeHasAFieldAndAPropertyOfTheSameName_WithAnExpectedField_ShouldUseTheField()
 	{
 		FieldHidingProperty actual = new(99, 1);
@@ -497,7 +497,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the member of the same kind takes precedence, so the fallback to the property never applies");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualTypeHasAFieldAndAPropertyOfTheSameName_WithAnExpectedProperty_ShouldUseTheProperty()
 	{
 		FieldHidingProperty actual = new(1, 99);
@@ -516,7 +516,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the member of the same kind takes precedence, so the fallback to the field never applies");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenActualTypeIsComparedByMembersExplicitly_AndExpectedIsAString_ShouldCompareByValue()
 	{
 		WithLength actual = new(2);
@@ -533,7 +533,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("comparing the subject by members cannot make a string equivalent to anything other than an equal string");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAllMembersAreExcludedExplicitly_ShouldNotThrow()
 	{
 		ClassWithOnlyPrivateState actual = new(1);
@@ -551,7 +551,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("excluding every member is an explicit choice by the caller");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAssemblyMemberDiffers_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -576,7 +576,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("an assembly only describes what it loaded, so walking it reaches getters that throw instead of state that could be compared");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenBigIntegerMemberDiffers_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -601,7 +601,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the members of a BigInteger (IsZero, IsEven, Sign, ...) cannot tell 3 and 5 apart");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenBothMembersAreNull_ShouldSucceed()
 	{
 		WithNullableValue actual = new(null);
@@ -615,7 +615,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCharArrayMemberIsComparedWithAString_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -643,7 +643,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionElementDiffers_ShouldReportTheElementIndex()
 	{
 		var actual = new
@@ -673,7 +673,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionElementsFormatIdentically_ShouldAppendTheRuntimeType()
 	{
 		var actual = new
@@ -704,7 +704,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("two elements that format identically are only told apart by their type");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndActualHasFewerElements_ShouldReportTheMissingElement()
 	{
 		int[] actual = [1, 2,];
@@ -725,7 +725,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the index of a missing element is its position in the expected collection");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndActualHasMoreElements_ShouldReportTheSuperfluousElement()
 	{
 		int[] actual = [1, 2, 3,];
@@ -746,7 +746,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the index of a superfluous element is its position in the actual collection");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndActualIsEmpty_ShouldReportEveryMissingElement()
 	{
 		int[] actual = [];
@@ -767,7 +767,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndAnElementIsIgnored_ShouldIgnoreItInBothCollections()
 	{
 		int[] actual = [1, 2, 3,];
@@ -786,7 +786,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndBothCollectionsAreEmpty_ShouldSucceed()
 	{
 		int[] actual = [];
@@ -803,7 +803,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task
 		WhenCollectionOrderIsIgnored_AndElementIsEquivalentToMultipleExpectedElements_ShouldStillMatchEveryElement()
 	{
@@ -833,7 +833,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndElementReferencesItself_ShouldNotExceedTheRecursionLimit()
 	{
 		NestedNode actualNode = new(1);
@@ -856,7 +856,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndElementsAreCollections_ShouldMatchThemInAnyOrder()
 	{
 		int[][] actual = [[1, 2,], [3, 4,],];
@@ -873,7 +873,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndElementsAreNotComparable_ShouldMatchThemInAnyOrder()
 	{
 		WithProperty[] actual = [new(1), new(2),];
@@ -891,7 +891,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndElementsAreNotComparable_WhenInTheSameOrder_ShouldSucceed()
 	{
 		WithProperty[] actual = [new(1), new(2),];
@@ -909,7 +909,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndElementsAreReversedWithDuplicates_ShouldReportTheDifference()
 	{
 		WithTwoPublicValues[] actual = [new(1, 10), new(2, 20), new(2, 20), new(3, 30),];
@@ -932,7 +932,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the neighbour of the previous match is tried first, so the later of the two equal actual elements is matched and the earlier one is left over");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndElementsHaveDifferentTypes_ShouldMatchThemInAnyOrder()
 	{
 		object[] actual = [1, "a",];
@@ -950,7 +950,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndExpectedIsEmpty_ShouldReportEverySuperfluousElement()
 	{
 		int[] actual = [1, 2,];
@@ -971,7 +971,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndLeftoversDiffer_ShouldPairThemByTheFewestDifferences()
 	{
 		WithTwoPublicValues[] actual = [new(1, 10), new(2, 20),];
@@ -998,7 +998,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("pairing each element with the one that shares its Value reports the one member that differs, while pairing them by position would report both members of both elements");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndManyPairsAreCompared_ShouldMatchAllElements()
 	{
 		int[] actual = Enumerable.Range(1, 40).Select(i => i * 17 % 41).ToArray();
@@ -1016,7 +1016,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndMultiplicityDiffers_ShouldReportTheDifference()
 	{
 		int[] actual = [1, 1, 2,];
@@ -1039,7 +1039,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndNestedCollectionsAreInAnyOrder_ShouldSucceed()
 	{
 		int[][] actual = [[1, 2,], [3, 4,],];
@@ -1057,7 +1057,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndOnlySomeLeftoversCanBePaired_ShouldReportThePairsBeforeTheSurplus()
 	{
 		int[] actual = [1, 2,];
@@ -1086,7 +1086,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the expected elements that a leftover could be paired with are reported as differences in the order of the actual elements, and only the surplus that no actual element is left for is reported as missing");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndOnlyTheExpectedElementIsComparedByValue_ShouldReportTheDifference()
 	{
 		object[] actual = [new WithLength(2),];
@@ -1109,7 +1109,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndRecursionDepthExceedsTheLimit_ShouldReportTheMemberPath()
 	{
 		NestedNode[] actual = [new(4),];
@@ -1131,7 +1131,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("an element that could not be matched is reported with the reason it could not be matched for");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndRegisteredValueMembersDiffer_ShouldReportTheLeftoverPair()
 	{
 		RegisterValues();
@@ -1155,7 +1155,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the registered value members decide the pairs without being read as objects, but are reported like any other member");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndTheCollectionContainsItself_ShouldSucceed()
 	{
 		List<object> actual = [1,];
@@ -1175,7 +1175,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndTheOptionIsScopedToAType_ShouldOnlyApplyToThatType()
 	{
 		var actual = new
@@ -1222,7 +1222,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenComparedByValue_ShouldReportTheDifferenceInsteadOfThrowing()
 	{
 		ValueLikeWithoutMembers actual = new(1);
@@ -1240,7 +1240,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("comparing by value is the documented remedy for types without comparable members");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenComparedRepeatedlyWithTheSameOptions_ShouldResolveTheRegistrationOnce()
 	{
 		int resolutions = 0;
@@ -1261,7 +1261,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the registered options are cached per options instance, e.g. for the items of a collection");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCultureInfoMemberDiffers_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -1287,7 +1287,7 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task WhenDateOnlyMemberDiffers_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -1313,7 +1313,7 @@ public sealed partial class EquivalencyComparisonTests
 	}
 #endif
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegateMemberDiffers_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -1338,7 +1338,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a delegate is its target and method, so walking it would drag a captured closure into the comparison");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegatesCaptureEqualValues_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -1358,7 +1358,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).Contains("Property Value differed:");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionaryIsAReadOnlyDictionary_WithTwoKeysThatOnlyTheWrappedComparerUnifies_ShouldReportTheKeyWithoutADistinctKey()
 	{
 		ReadOnlyDictionary<string, int> actual = new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
@@ -1384,7 +1384,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a read-only dictionary looks its keys up through the dictionary it wraps");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionaryIsASortedDictionary_AndExpectedKeysHaveMixedTypes_ShouldReportTheMissingKey()
 	{
 		SortedDictionary<int, int> actual = new()
@@ -1408,7 +1408,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("an expected key of another type than the keys of the sorted dictionary can never be among its matched keys");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionaryIsASortedDictionary_WithTwoKeysThatOnlyItsComparerUnifies_ShouldReportTheKeyWithoutADistinctKey()
 	{
 		SortedDictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
@@ -1434,7 +1434,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a sorted dictionary considers two keys the same when its comparer orders neither before the other");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionaryIsNestedInAMember_AndSubjectUsesACaseInsensitiveComparer_ShouldLookTheExpectedKeysUpThroughIt()
 	{
 		var actual = new
@@ -1460,7 +1460,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionaryKeyContainsABracket_ShouldNotIgnoreTheEntryForAnotherKey()
 	{
 		Dictionary<string, int> actual = new()
@@ -1491,7 +1491,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the bracket inside the key does not open the path segment that the ignored name refers to");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionaryKeyIsCultureDependent_ShouldFormatItInvariantly()
 	{
 		using CultureOverride _ = new("de-DE");
@@ -1523,7 +1523,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a member path to ignore has to match on every machine, whatever its culture");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndEntriesAreInDifferentOrder_ShouldSucceed()
 	{
 		ReadOnlyDictionaryOnly<string, int> actual = new(new Dictionary<string, int>
@@ -1545,7 +1545,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndExpectedIsANonGenericOne_ShouldCompareByKey()
 	{
 		ReadOnlyDictionaryOnly<string, int> actual = new(new Dictionary<string, int>
@@ -1567,7 +1567,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndSubjectExposesAComparerProperty_ShouldCompareTheKeysByTheirEquality()
 	{
 		ReadOnlyDictionaryOnlyWithComparer<string, int> actual = new(
@@ -1592,7 +1592,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the comparer is only read from known dictionary types, as for IsEqualTo and under Native AOT");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndSubjectHidesItsComparer_ShouldCompareTheKeysByTheirEquality()
 	{
 		ReadOnlyDictionaryOnly<string, int> actual = new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
@@ -1616,7 +1616,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a comparer that cannot be read cannot be honoured by the copy of the entries");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndValueDiffers_ShouldReportTheKey()
 	{
 		ReadOnlyDictionaryOnly<string, int> actual = new(new Dictionary<string, int>
@@ -1642,7 +1642,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionarySubjectUsesACaseInsensitiveComparer_ShouldLookTheExpectedKeysUpThroughIt()
 	{
 		Dictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
@@ -1662,7 +1662,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionarySubjectUsesACaseInsensitiveComparer_WithADifferentValue_ShouldReportTheExpectedKey()
 	{
 		Dictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
@@ -1686,7 +1686,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionarySubjectUsesACaseInsensitiveComparer_WithAnAdditionalKey_ShouldReportItAsSuperfluous()
 	{
 		Dictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
@@ -1710,7 +1710,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the matched keys are collected with the comparer of the subject, so the remaining keys are exact");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionarySubjectUsesACaseInsensitiveComparer_WithTwoKeysThatOnlyItUnifies_AndTheSecondIsIgnored_ShouldSucceed()
 	{
 		Dictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
@@ -1734,7 +1734,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionarySubjectUsesACaseInsensitiveComparer_WithTwoKeysThatOnlyItUnifies_ShouldReportTheKeyWithoutADistinctKey()
 	{
 		Dictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
@@ -1758,7 +1758,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("one entry of the subject cannot stand in for two entries of the expected dictionary");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionarySubjectUsesACaseInsensitiveComparer_WithTwoKeysThatOnlyItUnifiesAndAnAdditionalKey_ShouldReportBoth()
 	{
 		Dictionary<string, int> actual = new(StringComparer.OrdinalIgnoreCase)
@@ -1784,7 +1784,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the collapsed expected key counts only once, so the entry count does not hide the leftover key");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionarySubjectUsesACaseSensitiveComparer_AndExpectedACaseInsensitiveOne_ShouldReportMissingAndSuperfluousKeys()
 	{
 		Dictionary<string, int> actual = new()
@@ -1808,7 +1808,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the key comparer of the expected dictionary does not decide which keys the subject has");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionarySubjectUsesACaseSensitiveComparer_WithAKeyThatOnlyTheExpectedOneUnifies_ShouldReportItAsSuperfluous()
 	{
 		Dictionary<string, int> actual = new()
@@ -1831,7 +1831,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionarySubjectUsesACustomComparer_WithTwoKeysThatOnlyItUnifies_ShouldReportTheKeyWithoutADistinctKey()
 	{
 		Dictionary<string, int> actual = new(new CaseInsensitiveComparer())
@@ -1856,7 +1856,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionarySubjectUsesAnUnreadableComparer_WithADifferentlyCasedKey_ShouldReportItAsUnmatched()
 	{
 		Hashtable actual = new(StringComparer.OrdinalIgnoreCase)
@@ -1879,7 +1879,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("without the comparer of the hashtable, the key \"A\" cannot be told apart from a superfluous key");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionarySubjectUsesAnUnreadableComparer_WithTwoKeysThatOnlyItUnifies_ShouldReportTheKeyCounts()
 	{
 		Hashtable actual = new(StringComparer.OrdinalIgnoreCase)
@@ -1903,7 +1903,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a hashtable does not expose its comparer, so naming the keys could overshoot");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionarySubjectUsesAnUnreadableComparer_WithTwoKeysThatOnlyItUnifiesAndAnAdditionalKey_ShouldReportTheUnmatchedKey()
 	{
 		Hashtable actual = new(StringComparer.OrdinalIgnoreCase)
@@ -1928,7 +1928,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("without the comparer of the hashtable, the two expected keys must not hide the key \"b\"");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDictionaryValueDiffers_ShouldReportTheKey()
 	{
 		Dictionary<string, int> actual = new()
@@ -1954,7 +1954,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEncodingMemberDiffers_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -1977,7 +1977,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                 """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEncodingMembersAreEqual_ShouldSucceed()
 	{
 		var actual = new
@@ -1997,7 +1997,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEnumeratingAMemberThrows_ShouldFailWithTheException()
 	{
 		var actual = new
@@ -2012,7 +2012,7 @@ public sealed partial class EquivalencyComparisonTests
 		async Task Act()
 			=> await That(actual).IsEquivalentTo(expected);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that actual
 			             is equivalent to expected,
@@ -2025,7 +2025,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("enumerating a member runs code of the caller, just like its getter");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEnumeratingAMemberThrows_WhenNegated_ShouldFailWithTheException()
 	{
 		var actual = new
@@ -2040,7 +2040,7 @@ public sealed partial class EquivalencyComparisonTests
 		async Task Act()
 			=> await That(actual).IsNotEquivalentTo(unexpected);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that actual
 			             is not equivalent to unexpected,
@@ -2053,7 +2053,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("an enumeration that threw answered nothing, so the negation fails as well");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEnumeratingTheSubjectThrows_ShouldFailWithTheException()
 	{
 		object subject = new[] { 1, }.Select<int, int>(_ => throw new InvalidOperationException("enumeration failed"));
@@ -2062,7 +2062,7 @@ public sealed partial class EquivalencyComparisonTests
 		async Task Act()
 			=> await That(subject).IsEquivalentTo(expected);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is equivalent to expected,
@@ -2074,7 +2074,7 @@ public sealed partial class EquivalencyComparisonTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEnumMembersOfDifferentTypesFormatIdentically_ShouldAppendTheRuntimeType()
 	{
 		var actual = new
@@ -2099,7 +2099,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the rule is about values that cannot be told apart, not about numeric types");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedFieldIsMissingOnTheActualType_ShouldReportItAsMissing()
 	{
 		WithPublicValue actual = new(1);
@@ -2116,7 +2116,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a field is reported as missing just like a property");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedFieldMatchesAnActualProperty_ShouldCompareThem()
 	{
 		WithProperty actual = new(1);
@@ -2130,7 +2130,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedFieldMatchesAnActualProperty_WhenPropertiesAreExcluded_ShouldReportItAsMissing()
 	{
 		WithProperty actual = new(1);
@@ -2151,7 +2151,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the fallback may only reach a kind that the caller included");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedFieldMatchesAnActualProperty_WhenTheyDiffer_ShouldReportItAsAField()
 	{
 		WithProperty actual = new(1);
@@ -2170,7 +2170,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the compared members come from the expected object, so its kind names the difference and agrees with the kind a scoped ignore rule applies to");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedMemberIsAString_AndActualMemberIsComparedByMembers_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -2195,7 +2195,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedMemberIsMissingOnTheActualType_WhenIgnored_ShouldSucceed()
 	{
 		var actual = new
@@ -2220,7 +2220,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedMemberIsNull_ShouldReportFoundAndExpected()
 	{
 		var actual = new
@@ -2244,7 +2244,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedPropertyIsMissingOnTheActualType_ShouldReportItAsMissing()
 	{
 		var actual = new
@@ -2268,7 +2268,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the actual object never had the member, so claiming that it was found as <null> would be wrong");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedPropertyIsMissingOnTheActualType_WithNullValue_ShouldStillFail()
 	{
 		var actual = new
@@ -2292,7 +2292,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedPropertyMatchesAnActualField_AtANestedPath_ShouldReportTheFullMemberPath()
 	{
 		var actual = new
@@ -2317,7 +2317,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the fallback applies at every level of the graph, and the path stays the one of the expected member");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedPropertyMatchesAnActualField_ShouldCompareThem()
 	{
 		WithPublicValue actual = new(1);
@@ -2331,7 +2331,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedPropertyMatchesAnActualField_WhenFieldsAreExcluded_ShouldReportItAsMissing()
 	{
 		WithPublicValue actual = new(1);
@@ -2352,7 +2352,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the fallback may only reach a kind that the caller included");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedPropertyMatchesAnActualField_WhenIgnored_ShouldSucceed()
 	{
 		WithPublicValue actual = new(1);
@@ -2370,7 +2370,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedPropertyMatchesAnActualField_WhenTheyDiffer_ShouldReportItAsAProperty()
 	{
 		WithPublicValue actual = new(1);
@@ -2389,7 +2389,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the compared members come from the expected object, so its kind names the difference and agrees with the kind a scoped ignore rule applies to");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedPropertyMatchesARegisteredField_ShouldCompareThem()
 	{
 		RegisterPhantomField();
@@ -2412,7 +2412,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a registration keeps the kind of the member, so the fallback has to cross it in the registry as well");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedTypeIsComparedByValueByTheSelector_ShouldCompareByValue()
 	{
 		WithProperty actual = new(1);
@@ -2430,7 +2430,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the expected type asks for its own equality, which the subject does not satisfy although it has the same members");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedTypeIsComparedByValueForTheType_AndItsEqualsThrows_ShouldFailWithTheException()
 	{
 		WithProperty actual = new(1);
@@ -2443,7 +2443,7 @@ public sealed partial class EquivalencyComparisonTests
 					ComparisonType = EquivalencyComparisonType.ByValue,
 				}));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that actual
 			             is equivalent to expected,
@@ -2460,7 +2460,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the Equals that is called belongs to the expected value, which is the only side compared by value");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedTypeIsComparedByValueForTheType_AndItsEqualsThrows_WhenNegated_ShouldFail()
 	{
 		WithProperty actual = new(1);
@@ -2473,7 +2473,7 @@ public sealed partial class EquivalencyComparisonTests
 					ComparisonType = EquivalencyComparisonType.ByValue,
 				}));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that actual
 			             is not equivalent to unexpected,
@@ -2490,7 +2490,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("an Equals that threw answered nothing, so the negation fails as well");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedTypeIsComparedByValueForTheType_ShouldCompareByValue()
 	{
 		WithProperty actual = new(1);
@@ -2507,7 +2507,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the expected type asks for its own equality, which the subject does not satisfy although it has the same members");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedTypeIsDerivedFromTheActualType_ShouldReportTheAdditionalMemberAsMissing()
 	{
 		WithProperty actual = new(1);
@@ -2524,9 +2524,9 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the members are taken from the runtime type of the expected object, which the actual type does not have");
 	}
 
-	[Theory]
-	[InlineData(1, 3, 2, 3, "Property Value differed")]
-	[InlineData(1, 3, 1, 4, "Field Value differed")]
+	[Test]
+	[Arguments(1, 3, 2, 3, "Property Value differed")]
+	[Arguments(1, 3, 1, 4, "Field Value differed")]
 	public async Task WhenFieldHidesAProperty_ShouldCompareBoth(int actualProperty, int actualField,
 		int expectedProperty, int expectedField, string expectedDifference)
 	{
@@ -2541,7 +2541,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a field and a property of the same name are both members of the type");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenGetterThrows_ShouldFailWithTheGetterException()
 	{
 		WithThrowingGetter actual = new("getter failed");
@@ -2550,7 +2550,7 @@ public sealed partial class EquivalencyComparisonTests
 		async Task Act()
 			=> await That(actual).IsEquivalentTo(expected);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that actual
 			             is equivalent to expected,
@@ -2564,7 +2564,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("reflection wraps the exception, while a registered accessor lets it through, so both paths have to agree");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenGetterThrows_WhenNegated_ShouldFailWithTheGetterException()
 	{
 		WithThrowingGetter actual = new("getter failed");
@@ -2573,7 +2573,7 @@ public sealed partial class EquivalencyComparisonTests
 		async Task Act()
 			=> await That(actual).IsNotEquivalentTo(unexpected);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that actual
 			             is not equivalent to unexpected,
@@ -2587,7 +2587,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a getter that threw answered nothing, so the negation fails as well");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenGetterThrows_WhenReflected_ShouldThrowTheGetterException()
 	{
 		WithThrowingGetter actual = new("getter failed");
@@ -2606,7 +2606,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("non-public members are read by reflection, which wraps the exception that the cached accessor has to unwrap");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenGraphReferencesItself_ShouldNotExceedTheRecursionLimit()
 	{
 		NestedNode actual = new(1);
@@ -2626,7 +2626,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenHandleMembersAreEqual_ShouldSucceed()
 	{
 		var actual = new
@@ -2658,7 +2658,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenIntPtrMemberDiffers_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -2683,7 +2683,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a native integer is a primitive, so it needs no entry of its own among the by-value defaults");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenIPAddressMemberDiffers_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -2707,7 +2707,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenIPAddressMemberDiffers_WhenNegated_ShouldSucceed()
 	{
 		var actual = new
@@ -2725,9 +2725,9 @@ public sealed partial class EquivalencyComparisonTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Theory]
-	[InlineData("10.0.0.1")]
-	[InlineData("fe80::1%3")]
+	[Test]
+	[Arguments("10.0.0.1")]
+	[Arguments("fe80::1%3")]
 	public async Task WhenIPAddressMembersAreEqual_ShouldSucceed(string address)
 	{
 		var actual = new
@@ -2747,7 +2747,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenItIsMemberDoesNotMatch_ShouldReportTheExpectationAsExpected()
 	{
 		var actual = new
@@ -2771,7 +2771,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenItIsMemberExpectationSpansMultipleLines_ShouldIndentTheContinuationLines()
 	{
 		var actual = new
@@ -2797,7 +2797,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenItIsMemberHasADifferentType_ShouldIncludeTheFoundType()
 	{
 		var actual = new
@@ -2821,7 +2821,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenItIsMemberIsNull_ShouldNotIncludeAType()
 	{
 		var actual = new
@@ -2845,7 +2845,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenJsonElementMemberDiffers_ShouldReportTheJson()
 	{
 		var actual = new
@@ -2870,7 +2870,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenJsonElementMemberIsFromADisposedDocument_ShouldFailWithTheException()
 	{
 		JsonDocument document = JsonDocument.Parse("""{ "a": 1 }""");
@@ -2887,7 +2887,7 @@ public sealed partial class EquivalencyComparisonTests
 		async Task Act()
 			=> await That(actual).IsEquivalentTo(expected);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that actual
 			             is equivalent to expected,
@@ -2897,13 +2897,13 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("reading the JSON of a disposed document runs into the document, just like reading its ValueKind did");
 	}
 
-	[Theory]
-	[InlineData("""{"a":[1,2]}""", """ { "a" : [ 1, 2 ] } """, true)]
-	[InlineData("{\n\t\"a\": 1\r\n}", """{"a":1}""", true)]
-	[InlineData("""{"a":"x y"}""", """{"a":"xy"}""", false)]
-	[InlineData("""{"a":"x\" y"}""", """{"a":"x\"y"}""", false)]
-	[InlineData("\"1\"", "1", false)]
-	[InlineData("""{"a":1,"b":2}""", """{"b":2,"a":1}""", false)]
+	[Test]
+	[Arguments("""{"a":[1,2]}""", """ { "a" : [ 1, 2 ] } """, true)]
+	[Arguments("{\n\t\"a\": 1\r\n}", """{"a":1}""", true)]
+	[Arguments("""{"a":"x y"}""", """{"a":"xy"}""", false)]
+	[Arguments("""{"a":"x\" y"}""", """{"a":"x\"y"}""", false)]
+	[Arguments("\"1\"", "1", false)]
+	[Arguments("""{"a":1,"b":2}""", """{"b":2,"a":1}""", false)]
 	public async Task WhenJsonElementMembersAreCompared_ShouldIgnoreOnlyTheWhitespaceBetweenTokens(
 		string actualJson, string expectedJson, bool isEquivalent)
 	{
@@ -2922,7 +2922,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(result).IsEqualTo(isEquivalent);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenJsonElementMembersAreDefault_ShouldSucceed()
 	{
 		var actual = new
@@ -2942,7 +2942,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenJsonNodeMemberDiffers_ShouldReportTheJson()
 	{
 		var actual = new
@@ -2967,7 +2967,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenListElementsAreInDifferentOrder_ShouldReportTheDifference()
 	{
 		List<int> actual = [1, 2, 3,];
@@ -2990,7 +2990,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenLongStringMembersDifferAfterACustomMaximumStringLength_ShouldKeepTheDifferenceWithinIt()
 	{
 		var actual = new
@@ -3019,7 +3019,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the leading ellipsis and the difference must both fit into the maximum string length");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenLongStringMembersDifferAfterTheMaximumStringLength_ShouldShowTheDifference()
 	{
 		string common = new('a', 120);
@@ -3045,9 +3045,9 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("both truncated texts would be identical, so the strings are shown from shortly before their first difference");
 	}
 
-	[Theory]
-	[InlineData("foo", "foo", true)]
-	[InlineData("foo", "bar", false)]
+	[Test]
+	[Arguments("foo", "foo", true)]
+	[Arguments("foo", "bar", false)]
 	public async Task WhenMemberIsHidden_ShouldCompareTheMostDerivedDeclarationOnly(string actualText,
 		string expectedText, bool expectedResult)
 	{
@@ -3061,7 +3061,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("reflection returns both declarations, but only the one on the most derived type is visible");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMembersFormatIdentically_ShouldAppendTheRuntimeType()
 	{
 		var actual = new
@@ -3086,7 +3086,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("an int member and a long member are a real difference that the formatted values do not show");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMembersFormatIdenticallyWithTheSameType_ShouldNotAppendTheRuntimeType()
 	{
 		ValueLikeWithConstantText actual = new(1);
@@ -3109,7 +3109,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("one and the same type on both sides tells the two values apart just as little as the values do");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMembersOfDifferentTypesFormatDifferently_ShouldNotAppendTheRuntimeType()
 	{
 		var actual = new
@@ -3134,11 +3134,11 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the type would be noise where the values already differ");
 	}
 
-	[Theory]
-	[InlineData("ame", false)]
-	[InlineData("d.Name", false)]
-	[InlineData("Name", true)]
-	[InlineData("Child.Name", true)]
+	[Test]
+	[Arguments("ame", false)]
+	[Arguments("d.Name", false)]
+	[Arguments("Name", true)]
+	[Arguments("Child.Name", true)]
 	public async Task WhenMemberToIgnoreIsGiven_ShouldOnlyIgnoreWholePathSegments(string memberToIgnore,
 		bool expectedResult)
 	{
@@ -3167,7 +3167,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("only a name that covers whole segments of the member path may exclude Child.Name");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemoryMemberIsComparedWithAnArray_ShouldCompareTheItems()
 	{
 		var actual = new
@@ -3187,7 +3187,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMethodInfoMemberDiffers_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -3212,7 +3212,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("walking a member descriptor reports metadata tokens and raw runtime handle addresses instead of the method it stands for");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenModuleMemberDiffers_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -3228,16 +3228,16 @@ public sealed partial class EquivalencyComparisonTests
 		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
 
 		await That(result).IsFalse();
-		await That(failureBuilder.ToString()).IsEqualTo("""
+		await That(failureBuilder.ToString()).IsEqualTo($"""
 
 		                                                  Property Value differed:
-		                                                      Actual: aweXpect.Core.Tests.dll
+		                                                      Actual: {typeof(EquivalencyComparisonTests).Module.Name}
 		                                                    Expected: aweXpect.Core.dll
 		                                                """).IgnoringNewlineStyle()
 			.Because("a module describes an emitted file, so walking it reaches getters that throw instead of state that could be compared");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMultipleMembersAreMissing_ShouldJoinThemWithATrailingAnd()
 	{
 		var actual = new
@@ -3263,7 +3263,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("single-line findings only put the \"and\" on its own line when another finding spans several lines");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMultipleMembersAreMissingOrDiffer_ShouldSeparateThemWithAnd()
 	{
 		var actual = new
@@ -3296,7 +3296,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a missing member has to be separated from the other findings, in either direction");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMultipleMembersDiffer_ShouldSeparateThemWithAnd()
 	{
 		var actual = new
@@ -3326,7 +3326,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNestedExpectedMemberIsMissing_ShouldReportTheFullMemberPath()
 	{
 		var actual = new
@@ -3355,7 +3355,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNestedMemberDiffers_ShouldReportTheFullMemberPath()
 	{
 		var actual = new
@@ -3385,7 +3385,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNestedMemberHasNoComparableMembers_ShouldIncludeTheMemberPath()
 	{
 		ClassWithPrivateStateMember actual = new(new ClassWithOnlyPrivateState(1));
@@ -3399,7 +3399,7 @@ public sealed partial class EquivalencyComparisonTests
 			.AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNestedMembersFormatIdentically_ShouldAppendTheRuntimeType()
 	{
 		var actual = new
@@ -3430,7 +3430,9 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the member path does not tell the values apart either");
 	}
 
-	[Fact]
+	[Test]
+	[Explicit]
+	[Category(TestCategories.Slow)]
 	public async Task WhenNestingExceedsTheStack_ShouldContinueOnAFreshStack()
 	{
 		NestedNode actual = new(5000);
@@ -3446,7 +3448,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("5000 levels need more stack than a thread has, so the comparison continues on a fresh one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNoMembersCanBeCompared_ShouldThrowInvalidOperationException()
 	{
 		ClassWithOnlyPrivateState actual = new(1);
@@ -3460,7 +3462,7 @@ public sealed partial class EquivalencyComparisonTests
 				"It has no members that could be compared on EquivalencyComparisonTests.ClassWithOnlyPrivateState, which would make the equivalency comparison succeed without verifying anything. Adjust the equivalency options to include the relevant members or to compare this type by value, or, when publishing with trimming or Native AOT enabled, ensure that the type is rooted, so that its members are preserved.");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNullableMemberIsIgnoredByType_ShouldMatchTheUnderlyingType()
 	{
 		var actual = new
@@ -3484,8 +3486,8 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Theory]
-	[MemberData(nameof(DifferentNumbers), DisableDiscoveryEnumeration = true)]
+	[Test]
+	[MethodDataSource(nameof(DifferentNumbers))]
 	public async Task WhenNumberMemberDiffers_ShouldFail(object actualValue, object expectedValue)
 	{
 		var actual = new
@@ -3504,8 +3506,8 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).Contains("Property Value differed:");
 	}
 
-	[Theory]
-	[MemberData(nameof(EqualNumbers), DisableDiscoveryEnumeration = true)]
+	[Test]
+	[MethodDataSource(nameof(EqualNumbers))]
 	public async Task WhenNumberMembersAreEqual_ShouldSucceed(object actualValue, object expectedValue)
 	{
 		var actual = new
@@ -3523,7 +3525,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenOneMemberIsNull_ShouldNotAppendTheRuntimeType()
 	{
 		var actual = new
@@ -3548,7 +3550,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a missing value has no runtime type, and it is already distinguishable without one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenOptionsAreScopedToAnExpectedType_ShouldKeepTheRecursionLimit()
 	{
 		NestedNode actual = new(4);
@@ -3566,7 +3568,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).Contains("exceeded the maximum recursion depth of 3");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenPropertyHasAByRefLikeType_ShouldIgnoreIt()
 	{
 		WithSpan actual = new(1);
@@ -3585,7 +3587,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a span cannot be boxed, so reflection cannot read it, and the source generator skips it as well");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenPropertyIsHiddenByAWriteOnlyProperty_ShouldNotCompareTheHiddenOne()
 	{
 		WriteOnlyHidingProperty actual = new(1, 3);
@@ -3598,7 +3600,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the write-only declaration hides the base property by name, like a declaration with a non-public getter does");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenPropertyIsOverriddenWithOnlyASetter_ShouldCompareItThroughTheInheritedGetter()
 	{
 		SetterOnlyOverride actual = new()
@@ -3623,7 +3625,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("an override of the setter alone still inherits the getter, so the property stays readable");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenPropertyReturnsByReference_ShouldIgnoreItByTheReferencedType()
 	{
 		WithRefValue actual = new(1, "foo");
@@ -3640,7 +3642,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a ref-returning property is declared with the type it refers to, as a registration declares it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenReadingADictionaryEntryThrows_ShouldFailWithTheException()
 	{
 		var actual = new
@@ -3661,7 +3663,7 @@ public sealed partial class EquivalencyComparisonTests
 		async Task Act()
 			=> await That(actual).IsEquivalentTo(expected);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that actual
 			             is equivalent to expected,
@@ -3674,7 +3676,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("reading an entry of a dictionary runs code of the caller, just like a getter");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenReadOnlyMemoryMemberDiffers_ShouldReportTheElement()
 	{
 		var actual = new
@@ -3699,7 +3701,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("without its span, only the length of a memory would be left to compare");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenRecursionDepthExceedsTheLimit_ShouldReportTheMemberPath()
 	{
 		NestedNode actual = new(4);
@@ -3720,7 +3722,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenRecursionDepthIsWithinTheLimit_ShouldCompareTheWholeGraph()
 	{
 		NestedNode actual = new(50);
@@ -3734,7 +3736,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenRecursionLimitIsRaised_ShouldCompareTheDeeperLevels()
 	{
 		NestedNode actual = new(150);
@@ -3754,7 +3756,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the configured limit replaces the default");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenRegexDiffersInItsOptions_ShouldReportTheOptions()
 	{
 		Regex actual = PatternAIgnoringCase();
@@ -3773,7 +3775,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenRegexDiffersInItsPattern_ShouldReportThePattern()
 	{
 		Regex actual = PatternA();
@@ -3792,7 +3794,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenRegexHasTheSamePatternAndOptions_ShouldSucceed()
 	{
 		Regex actual = PatternAIgnoringCase();
@@ -3806,7 +3808,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSameInstanceHasNoComparableMembers_AsCollectionElement_ShouldSucceed()
 	{
 		object shared = new();
@@ -3820,7 +3822,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSameInstanceHasNoComparableMembers_AsDictionaryValue_ShouldSucceed()
 	{
 		object shared = new();
@@ -3840,7 +3842,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSameInstanceHasNoComparableMembers_AsMember_ShouldSucceed()
 	{
 		var actual = new
@@ -3860,7 +3862,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSameInstanceHasNoComparableMembers_AsRoot_ShouldSucceed()
 	{
 		object subject = new();
@@ -3871,7 +3873,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSameInstanceHasNoComparableMembers_AsRoot_WhenNegated_ShouldFail()
 	{
 		object subject = new();
@@ -3879,7 +3881,7 @@ public sealed partial class EquivalencyComparisonTests
 		async Task Act()
 			=> await That(subject).IsNotEquivalentTo(subject);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is not equivalent to subject,
@@ -3887,7 +3889,7 @@ public sealed partial class EquivalencyComparisonTests
 			             """).AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSameInstanceIsAnEnumerable_ShouldNotEnumerateIt()
 	{
 		CountingEnumerable shared = new();
@@ -3908,7 +3910,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("an enumerable that can only be enumerated once could not be compared against itself");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSameInstanceIsComparedByValue_ShouldStillCallItsEquals()
 	{
 		WithThrowingEquals shared = new();
@@ -3920,14 +3922,14 @@ public sealed partial class EquivalencyComparisonTests
 					ComparisonType = EquivalencyComparisonType.ByValue,
 				}));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("*Equals of EquivalencyComparisonTests.WithThrowingEquals did throw a NotSupportedException*")
 			.AsWildcard().And
 			.Whose(e => e.InnerException, i => i.Is<NotSupportedException>())
 			.Because("how a type that is compared by value treats the same instance is up to its Equals");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetElementsAreInDifferentOrder_ShouldSucceed()
 	{
 		var actual = new
@@ -3953,7 +3955,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetElementsAreObjects_AndAreInDifferentOrder_ShouldSucceed()
 	{
 		HashSet<WithProperty> actual = [new(1), new(2),];
@@ -3967,7 +3969,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetElementsDiffer_ShouldReportTheDifference()
 	{
 		HashSet<int> actual = [1, 2,];
@@ -3985,7 +3987,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetIsComparedAgainstACollectionWithDuplicates_ShouldReportTheDifference()
 	{
 		HashSet<int> actual = [1, 2,];
@@ -4004,7 +4006,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetIsComparedAgainstAnOrderedCollection_ShouldIgnoreTheOrder()
 	{
 		HashSet<int> actual = [1, 2, 3,];
@@ -4018,7 +4020,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetIsNested_AndAnElementDiffers_ShouldReportTheMemberPath()
 	{
 		var actual = new
@@ -4049,7 +4051,7 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task WhenSetOnlyImplementsTheReadOnlyInterface_AndElementsAreInDifferentOrder_ShouldSucceed()
 	{
 		ReadOnlySetOnly<int> actual = new([1, 2, 3,]);
@@ -4065,7 +4067,7 @@ public sealed partial class EquivalencyComparisonTests
 #endif
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task WhenSetSubjectIsAFrozenSet_AndUsesACaseInsensitiveComparer_ShouldMatchTheExpectedItemsThroughIt()
 	{
 		FrozenSet<string> actual = new[] { "a", "b", }.ToFrozenSet(StringComparer.OrdinalIgnoreCase);
@@ -4078,7 +4080,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetSubjectIsAnImmutableHashSet_AndUsesACaseInsensitiveComparer_ShouldMatchTheExpectedItemsThroughIt()
 	{
 		ImmutableHashSet<string> actual = ImmutableHashSet.Create<string>(StringComparer.OrdinalIgnoreCase, "a", "b");
@@ -4092,7 +4094,7 @@ public sealed partial class EquivalencyComparisonTests
 	}
 #endif
 
-	[Fact]
+	[Test]
 	public async Task WhenSetSubjectIsNestedInAMember_AndUsesACaseInsensitiveComparer_ShouldMatchTheExpectedItemsThroughIt()
 	{
 		var actual = new
@@ -4117,7 +4119,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetSubjectUsesACaseInsensitiveComparer_AndExpectedIsAnArray_ShouldMatchTheExpectedItemsThroughIt()
 	{
 		HashSet<string> actual = new(StringComparer.OrdinalIgnoreCase)
@@ -4135,7 +4137,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetSubjectUsesACaseInsensitiveComparer_ShouldMatchTheExpectedItemsThroughIt()
 	{
 		HashSet<string> actual = new(StringComparer.OrdinalIgnoreCase)
@@ -4153,7 +4155,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetSubjectUsesACaseInsensitiveComparer_WithAnItemThatItDoesNotFind_ShouldReportTheDifference()
 	{
 		HashSet<string> actual = new(StringComparer.OrdinalIgnoreCase)
@@ -4175,7 +4177,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetSubjectUsesACaseSensitiveComparer_AndExpectedACaseInsensitiveOne_ShouldReportTheDifference()
 	{
 		HashSet<string> actual = ["a",];
@@ -4197,7 +4199,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetSubjectUsesACustomComparer_WithAnItemThatOnlyItsMembersMatch_ShouldSucceed()
 	{
 		HashSet<WithProperty> actual = new(new NeverEqualComparer())
@@ -4214,7 +4216,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetSubjectUsesACustomComparer_WithObjectsThatOnlyItConsidersTheSame_ShouldSucceed()
 	{
 		HashSet<WithProperty> actual = new(new SameParityComparer())
@@ -4232,7 +4234,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSetSubjectUsesTheDefaultComparer_WithObjectsThatOnlyTheirEqualsConsidersTheSame_ShouldReportTheDifference()
 	{
 		HashSet<AlwaysEqual> actual = [new(1),];
@@ -4251,7 +4253,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenStringBuilderMemberDiffers_ShouldReportTheText()
 	{
 		var actual = new
@@ -4276,9 +4278,9 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the members of a StringBuilder (Capacity, Length, ...) do not contain its text");
 	}
 
-	[Theory]
-	[InlineData(true)]
-	[InlineData(false)]
+	[Test]
+	[Arguments(true)]
+	[Arguments(false)]
 	public async Task WhenStringBuilderMemberIsComparedWithADifferentString_ShouldReportTheText(
 		bool isStringBuilderActual)
 	{
@@ -4303,9 +4305,9 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Theory]
-	[InlineData(true)]
-	[InlineData(false)]
+	[Test]
+	[Arguments(true)]
+	[Arguments(false)]
 	public async Task WhenStringBuilderMemberIsComparedWithAString_ShouldCompareTheText(bool isStringBuilderActual)
 	{
 		object stringBuilder = new StringBuilder("abc");
@@ -4324,7 +4326,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenStringBuilderMembersContainTheSameText_ShouldSucceed()
 	{
 		var actual = new
@@ -4342,7 +4344,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenStringMemberIsLong_ShouldTruncateIt()
 	{
 		var actual = new
@@ -4366,7 +4368,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                 """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenStringMemberIsMultiLine_ShouldRenderItOnASingleLine()
 	{
 		var actual = new
@@ -4390,7 +4392,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTaskMemberIsTheSameInstance_ShouldSucceedWithoutWaiting()
 	{
 		TaskCompletionSource<int> tcs = new();
@@ -4415,7 +4417,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTaskMembersAreDifferentInstances_ShouldReportTheDifferenceWithANote()
 	{
 		var actual = new
@@ -4441,7 +4443,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the state of a task changes over time, so only the same instance is equivalent");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTaskMembersArePendingAndDifferentInstances_ShouldReportTheDifferenceWithoutWaiting()
 	{
 		TaskCompletionSource<int> actualSource = new();
@@ -4475,7 +4477,7 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task WhenTimeOnlyMemberDiffers_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -4501,7 +4503,7 @@ public sealed partial class EquivalencyComparisonTests
 	}
 #endif
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeHasAnIndexer_ShouldIgnoreTheIndexer()
 	{
 		WithIndexer actual = new()
@@ -4521,7 +4523,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("an indexer cannot be read without an argument, so it is not a comparable member");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsComparedByMembersForTheCollectionElementType_ShouldCompareTheirStringMembersByValue()
 	{
 		List<WithNullableValue> actual = [new("ab"),];
@@ -4545,7 +4547,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the comparison type registered for the element type describes the element only, not its members");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsComparedByMembersForTheType_AndTheOptionsCompareByValue_ShouldCompareItsMembersByValue()
 	{
 		WithNestedNullableValue actual = new(new WithNullableValue("ab"));
@@ -4571,7 +4573,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the top-level comparison type applies to every member without a registration, and two separate instances are not equal by reference");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsComparedByMembersForTheType_ShouldCompareItsIntMemberByValue()
 	{
 		WithProperty actual = new(1);
@@ -4595,7 +4597,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("an int has no members, so comparing it by members only because its owner is would throw");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsComparedByMembersForTheType_ShouldCompareItsStringMemberByValue()
 	{
 		WithNullableValue actual = new("ab");
@@ -4619,7 +4621,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("comparing a string by members only compares its length, which would hide the difference");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsComparedByMembersForTheType_ShouldCompareNestedStringMembersByValue()
 	{
 		WithNestedNullableValue actual = new(new WithNullableValue("ab"));
@@ -4643,7 +4645,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the comparison type must not reach the members of a member without a registration of its own either");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsRegistered_AndItsValueMemberGetterThrows_ShouldFailWithTheGetterException()
 	{
 		TypeMetadataRegistry.RegisterProperty<RegisteredThrowingProbe, int>("Phantom", x => x.PhantomValue());
@@ -4653,7 +4655,7 @@ public sealed partial class EquivalencyComparisonTests
 		async Task Act()
 			=> await That(actual).IsEquivalentTo(expected);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that actual
 			             is equivalent to expected,
@@ -4666,7 +4668,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a registered value member that is compared without being read as an object still names itself as the thrower");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsRegistered_AndItsValueMemberIsComparedByMembers_ShouldThrowInvalidOperationException()
 	{
 		RegisterValues();
@@ -4686,7 +4688,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the comparison type registered for the member type also applies to a registered value member");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsRegistered_AndItsValueMembersAreNaN_ShouldSucceed()
 	{
 		RegisterValues();
@@ -4701,7 +4703,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsRegistered_AndItsValueMembersDiffer_ShouldReportTheDifferences()
 	{
 		RegisterValues();
@@ -4725,7 +4727,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a registered value member is reported like a member that is read as an object");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsRegistered_ShouldCompareTheRegisteredMembers()
 	{
 		RegisterPhantom();
@@ -4740,7 +4742,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the registered member is not a member reflection could find, so only the registry can report it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsRegistered_WithNonPublicMembers_ShouldReflectOverTheWholeType()
 	{
 		RegisterPhantom();
@@ -4758,7 +4760,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a request for non-public members bypasses the registry, and reflection does not know the phantom");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsRegisteredAfterAComparison_ShouldCompareTheRegisteredMembers()
 	{
 		LateRegisteredProbe actual = new(1);
@@ -4777,7 +4779,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).Contains("Property Phantom differed");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeIsRegisteredAsNullable_ShouldApplyTheOptionsToTheMember()
 	{
 		var actual = new
@@ -4809,7 +4811,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeMemberDiffers_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -4834,7 +4836,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("GenericParameterPosition throws on a type that is not a generic parameter, so the walk cannot reach a difference at all");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypesDifferWithoutComparableMembers_ShouldReportTheDifferenceInsteadOfThrowing()
 	{
 		ClassWithOnlyPrivateState actual = new(1);
@@ -4848,9 +4850,9 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("a mismatching type is a difference that can be reported without inspecting members");
 	}
 
-	[Theory]
-	[InlineData("a/b", "a/c", UriKind.Relative)]
-	[InlineData("https://a/b", "https://a/c", UriKind.Absolute)]
+	[Test]
+	[Arguments("a/b", "a/c", UriKind.Relative)]
+	[Arguments("https://a/b", "https://a/c", UriKind.Absolute)]
 	public async Task WhenUriMemberDiffers_ShouldReportTheDifference(string actualUri, string expectedUri,
 		UriKind uriKind)
 	{
@@ -4876,7 +4878,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("every component of a relative URI throws, and the components of an absolute one repeat the same difference many times over");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenValueTaskMembersHaveDifferentResults_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -4900,7 +4902,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenValueTaskMembersHaveTheSameResult_ShouldSucceed()
 	{
 		var actual = new
@@ -4921,7 +4923,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenValueTaskMembersWrapTheSamePendingTask_ShouldSucceedWithoutWaiting()
 	{
 		TaskCompletionSource<int> tcs = new();
@@ -4948,7 +4950,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenVersionMemberDiffers_ShouldStillCompareItByMembers()
 	{
 		var actual = new
@@ -4973,33 +4975,25 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("an ordinary class carries its state in its members, so naming the differing component stays the better message");
 	}
 
-	public static TheoryData<object, object> DifferentNumbers()
-	{
-		TheoryData<object, object> theoryData = new()
-		{
-			{ new BigInteger(3), new BigInteger(5) },
-			{ new Complex(1, 2), new Complex(1, 3) },
-		};
-		theoryData.Add((Half)1, (Half)2);
-		theoryData.Add((NFloat)1, (NFloat)2);
-		theoryData.Add((Int128)1, (Int128)2);
-		theoryData.Add((UInt128)1, (UInt128)2);
-		return theoryData;
-	}
+	public static IEnumerable<(object, object)> DifferentNumbers() =>
+	[
+		(new BigInteger(3), new BigInteger(5)),
+		(new Complex(1, 2), new Complex(1, 3)),
+		((Half)1, (Half)2),
+		((NFloat)1, (NFloat)2),
+		((Int128)1, (Int128)2),
+		((UInt128)1, (UInt128)2),
+	];
 
-	public static TheoryData<object, object> EqualNumbers()
-	{
-		TheoryData<object, object> theoryData = new()
-		{
-			{ new BigInteger(3), new BigInteger(3) },
-			{ new Complex(1, 2), new Complex(1, 2) },
-		};
-		theoryData.Add((Half)1, (Half)1);
-		theoryData.Add((NFloat)1, (NFloat)1);
-		theoryData.Add((Int128)1, (Int128)1);
-		theoryData.Add((UInt128)1, (UInt128)1);
-		return theoryData;
-	}
+	public static IEnumerable<(object, object)> EqualNumbers() =>
+	[
+		(new BigInteger(3), new BigInteger(3)),
+		(new Complex(1, 2), new Complex(1, 2)),
+		((Half)1, (Half)1),
+		((NFloat)1, (NFloat)1),
+		((Int128)1, (Int128)1),
+		((UInt128)1, (UInt128)1),
+	];
 
 	/// <remarks>
 	///     Each call captures the <paramref name="value" /> in a closure of its own, so two delegates over the same

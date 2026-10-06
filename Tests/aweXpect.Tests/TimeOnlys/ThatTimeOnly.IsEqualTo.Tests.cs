@@ -9,7 +9,7 @@ public sealed partial class ThatTimeOnly
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				TimeOnly subject = CurrentTime();
@@ -18,7 +18,7 @@ public sealed partial class ThatTimeOnly
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to <null>,
@@ -26,7 +26,7 @@ public sealed partial class ThatTimeOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDifferent_ShouldFail()
 			{
 				TimeOnly subject = CurrentTime();
@@ -35,7 +35,7 @@ public sealed partial class ThatTimeOnly
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
@@ -43,7 +43,7 @@ public sealed partial class ThatTimeOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsTheSame_ShouldSucceed()
 			{
 				TimeOnly subject = CurrentTime();
@@ -55,7 +55,7 @@ public sealed partial class ThatTimeOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
 			{
 				TimeOnly subject = new(23, 59);
@@ -68,7 +68,7 @@ public sealed partial class ThatTimeOnly
 					await That(subject).IsEqualTo(expected);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 00:01:00.0000000 ± 1:00,
@@ -77,7 +77,7 @@ public sealed partial class ThatTimeOnly
 					.Because("the applied default tolerance is part of the expectation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenToleranceExceedsTwelveHours_ShouldSucceedForOppositeTimes()
 			{
 				TimeOnly subject = new(6, 0);
@@ -91,7 +91,7 @@ public sealed partial class ThatTimeOnly
 					.Because("the circular distance saturates at 12 hours, so a larger tolerance accepts every time");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenToleranceIsJustBelowTwelveHours_ShouldFailForOppositeTimes()
 			{
 				TimeOnly subject = new(6, 0);
@@ -101,7 +101,7 @@ public sealed partial class ThatTimeOnly
 					=> await That(subject).IsEqualTo(expected)
 						.Within(11.Hours() + 59.Minutes());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 18:00:00.0000000 ± 11:59:00,
@@ -110,7 +110,7 @@ public sealed partial class ThatTimeOnly
 					.Because("opposite times are exactly 12 hours apart on the clock face");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenToleranceIsTwelveHours_ShouldSucceedForOppositeTimes()
 			{
 				TimeOnly subject = new(6, 0);
@@ -124,11 +124,11 @@ public sealed partial class ThatTimeOnly
 					.Because("12 hours is the largest possible circular distance, so it accepts every time");
 			}
 
-			[Theory]
-			[InlineData(3, 2, true)]
-			[InlineData(5, 3, true)]
-			[InlineData(2, 2, false)]
-			[InlineData(0, 2, false)]
+			[Test]
+			[Arguments(3, 2, true)]
+			[Arguments(5, 3, true)]
+			[Arguments(2, 2, false)]
+			[Arguments(0, 2, false)]
 			public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail(
 				int actualDifference, int toleranceSeconds, bool expectToThrow)
 			{
@@ -141,7 +141,7 @@ public sealed partial class ThatTimeOnly
 						.Within(tolerance)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.OnlyIf(expectToThrow)
 					.WithMessage($"""
 					              Expected that subject
@@ -150,7 +150,7 @@ public sealed partial class ThatTimeOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenValuesWrapAroundMidnight_ShouldShowTheShorterDifference()
 			{
 				TimeOnly subject = new(23, 59);
@@ -160,7 +160,7 @@ public sealed partial class ThatTimeOnly
 					=> await That(subject).IsEqualTo(expected)
 						.Within(1.Minutes());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 00:01:00.0000000 ± 1:00,
@@ -169,7 +169,7 @@ public sealed partial class ThatTimeOnly
 					.Because("the difference must be the circular distance that the comparison used");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenValuesWrapAroundMidnight_ShouldSucceed()
 			{
 				TimeOnly subject = TimeOnly.MinValue;
@@ -183,7 +183,7 @@ public sealed partial class ThatTimeOnly
 					.Because("equality uses the shortest distance around the clock face");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenValuesWrapAroundMidnightInReverse_ShouldSucceed()
 			{
 				TimeOnly subject = new(23, 59);

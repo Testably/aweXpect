@@ -10,7 +10,7 @@ namespace aweXpect.Core.Tests.Customization;
 
 public sealed class CustomizeSettingsTests
 {
-	[Fact]
+	[Test]
 	public async Task DefaultCheckInterval_ShouldBeUsedInTimeComparisons()
 	{
 		TimeSpan timeout = 2.Seconds();
@@ -29,10 +29,10 @@ public sealed class CustomizeSettingsTests
 		}
 	}
 
-	[Theory]
-	[InlineData(0)]
-	[InlineData(-1)]
-	[InlineData(-5)]
+	[Test]
+	[Arguments(0)]
+	[Arguments(-1)]
+	[Arguments(-5)]
 	public async Task DefaultCheckInterval_WhenNotPositive_ShouldThrowArgumentOutOfRangeException(int milliseconds)
 	{
 		void Act() => Customize.aweXpect.Settings().DefaultCheckInterval.Set(milliseconds.Milliseconds());
@@ -44,7 +44,7 @@ public sealed class CustomizeSettingsTests
 		await That(Customize.aweXpect.Settings().DefaultCheckInterval.Get()).IsEqualTo(100.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task DefaultEventuallyTimeout_ShouldBeUsedInEventually()
 	{
 		await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(30.Seconds());
@@ -53,7 +53,7 @@ public sealed class CustomizeSettingsTests
 		{
 			await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(LowTimeout);
 			async Task Act() => await That(() => 1).Eventually().OnVirtualTime(time).IsEqualTo(2);
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => 1
 				             eventually is equal to 2 within 0:00.100,
@@ -65,7 +65,7 @@ public sealed class CustomizeSettingsTests
 		await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(30.Seconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task DefaultEventuallyTimeout_WhenNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		void Act() => Customize.aweXpect.Settings().DefaultEventuallyTimeout.Set(-5.Milliseconds());
@@ -76,9 +76,9 @@ public sealed class CustomizeSettingsTests
 		await That(Customize.aweXpect.Settings().DefaultEventuallyTimeout.Get()).IsEqualTo(30.Seconds());
 	}
 
-	[Theory]
-	[InlineData(0)]
-	[InlineData(-1)]
+	[Test]
+	[Arguments(0)]
+	[Arguments(-1)]
 	public async Task DefaultEventuallyTimeout_WhenZeroOrInfinite_ShouldBeAccepted(int milliseconds)
 	{
 		TimeSpan timeout = milliseconds.Milliseconds();
@@ -90,7 +90,7 @@ public sealed class CustomizeSettingsTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task DefaultSignalerTimeout_ShouldBeUsedInSignaler()
 	{
 		Signaler signaler = new();
@@ -114,7 +114,7 @@ public sealed class CustomizeSettingsTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task DefaultSignalerTimeout_WhenNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		void Act() => Customize.aweXpect.Settings().DefaultSignalerTimeout.Set(-5.Milliseconds());
@@ -125,9 +125,9 @@ public sealed class CustomizeSettingsTests
 		await That(Customize.aweXpect.Settings().DefaultSignalerTimeout.Get()).IsEqualTo(30.Seconds());
 	}
 
-	[Theory]
-	[InlineData(0)]
-	[InlineData(-1)]
+	[Test]
+	[Arguments(0)]
+	[Arguments(-1)]
 	public async Task DefaultSignalerTimeout_WhenZeroOrInfinite_ShouldBeAccepted(int milliseconds)
 	{
 		TimeSpan timeout = milliseconds.Milliseconds();
@@ -139,14 +139,14 @@ public sealed class CustomizeSettingsTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task DefaultTimeComparisonTimeout_ShouldBeUsedInTimeComparisons()
 	{
 		DateTime time = DateTime.UtcNow;
 		DateTime otherTime = time.AddMilliseconds(10);
 		await That(Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get()).IsEqualTo(TimeSpan.Zero);
 		async Task Act() => await That(time).IsEqualTo(otherTime);
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that time
 			              is equal to {Formatter.Format(otherTime)},
@@ -157,7 +157,7 @@ public sealed class CustomizeSettingsTests
 			await That(Act).DoesNotThrow();
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that time
 			              is equal to {Formatter.Format(otherTime)},
@@ -166,9 +166,9 @@ public sealed class CustomizeSettingsTests
 			.Because("the default tolerance must be restored once the customization is disposed");
 	}
 
-	[Theory]
-	[InlineData(-1)]
-	[InlineData(-5)]
+	[Test]
+	[Arguments(-1)]
+	[Arguments(-5)]
 	public async Task DefaultTimeComparisonTolerance_WhenNegative_ShouldThrowArgumentOutOfRangeException(
 		int milliseconds)
 	{
@@ -180,7 +180,7 @@ public sealed class CustomizeSettingsTests
 			.Because("a negative default tolerance tightens every time comparison instead of widening it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task DefaultTimeComparisonTolerance_WhenZero_ShouldBeAccepted()
 	{
 		using (IDisposable __ = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(TimeSpan.Zero))
@@ -189,7 +189,7 @@ public sealed class CustomizeSettingsTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Settings_ShouldReturnSameInstance()
 	{
 		AwexpectCustomization.SettingsCustomization settings1 = Customize.aweXpect.Settings();
@@ -198,7 +198,7 @@ public sealed class CustomizeSettingsTests
 		await That(settings1).IsSameAs(settings2);
 	}
 
-	[Fact]
+	[Test]
 	public async Task TestCancellation_FromCancellationToken_ShouldBeApplied()
 	{
 		TimeSpan delay = 30.Seconds();
@@ -212,7 +212,7 @@ public sealed class CustomizeSettingsTests
 					.DoesNotThrow();
 
 			stopwatch.Start();
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that cancellationToken => Task.Delay(delay, cancellationToken)
 				             does not throw any exception,
@@ -224,7 +224,7 @@ public sealed class CustomizeSettingsTests
 		await That(stopwatch.Elapsed).IsLessThan(delay);
 	}
 
-	[Fact]
+	[Test]
 	public async Task TestCancellation_FromTimeout_ShouldBeApplied()
 	{
 		TimeSpan delay = 30.Seconds();
@@ -238,11 +238,11 @@ public sealed class CustomizeSettingsTests
 					.Throws<TaskCanceledException>();
 
 			stopwatch.Start();
-			exception = await Record.ExceptionAsync(Act);
+			exception = await Catch.ExceptionAsync(Act);
 			stopwatch.Stop();
 		}
 
-		await That(exception).IsExactly<XunitException>().And
+		await That(exception).IsExactly<FailException>().And
 			.HasMessage("""
 			            Expected that cancellationToken => Task.Delay(delay, cancellationToken)
 			            throws a TaskCanceledException,
@@ -252,7 +252,7 @@ public sealed class CustomizeSettingsTests
 		await That(stopwatch.Elapsed).IsGreaterThanOrEqualTo(LowTimeout).Within(50.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task TestCancellation_FromTimeout_WhenInfinite_ShouldBeAccepted()
 	{
 		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
@@ -266,7 +266,7 @@ public sealed class CustomizeSettingsTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task TestCancellation_FromTimeout_WhenNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		void Act() => TestCancellation.FromTimeout(-5.Seconds());
@@ -276,7 +276,7 @@ public sealed class CustomizeSettingsTests
 			.WithMessage("The timeout must not be negative.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task TestCancellation_FromTimeout_WhenWithTimeoutIsLonger_ShouldApplyTheTestCancellationTimeout()
 	{
 		Exception? exception;
@@ -288,10 +288,10 @@ public sealed class CustomizeSettingsTests
 					.Throws<TaskCanceledException>()
 					.WithTimeout(20.Seconds());
 
-			exception = await Record.ExceptionAsync(Act);
+			exception = await Catch.ExceptionAsync(Act);
 		}
 
-		await That(exception).IsExactly<XunitException>().And
+		await That(exception).IsExactly<FailException>().And
 			.HasMessage("""
 			            Expected that cancellationToken => Task.Delay(30.Seconds(), cancellationToken)
 			            throws a TaskCanceledException,
@@ -300,7 +300,7 @@ public sealed class CustomizeSettingsTests
 			.Because("the tighter limit wins, so a longer local timeout must not loosen the global one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TestCancellation_None_ShouldBeApplied()
 	{
 		Stopwatch stopwatch = new();
@@ -321,7 +321,7 @@ public sealed class CustomizeSettingsTests
 		await That(stopwatch.Elapsed).IsGreaterThanOrEqualTo(LowTimeout).Within(50.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task TestCancellation_PerDefault_ShouldNotCancel()
 	{
 		Stopwatch stopwatch = new();
@@ -332,7 +332,7 @@ public sealed class CustomizeSettingsTests
 		await That(stopwatch.Elapsed).IsGreaterThanOrEqualTo(LowTimeout).Within(50.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithCancellation_OverwritesTheCancellationToken()
 	{
 		TimeSpan delay = 30.Seconds();
@@ -348,7 +348,7 @@ public sealed class CustomizeSettingsTests
 					.WithCancellation(cancelledToken);
 
 			stopwatch.Start();
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that cancellationToken => Task.Delay(delay, cancellationToken)
 				             throws a TaskCanceledException,
@@ -360,7 +360,7 @@ public sealed class CustomizeSettingsTests
 		await That(stopwatch.Elapsed).IsLessThan(delay);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithTimeout_WhenShorterThanTheTestCancellationTimeout_ShouldBeApplied()
 	{
 		TimeSpan delay = 30.Seconds();
@@ -375,7 +375,7 @@ public sealed class CustomizeSettingsTests
 					.WithTimeout(20.Milliseconds());
 
 			stopwatch.Start();
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that cancellationToken => Task.Delay(delay, cancellationToken)
 				             throws a TaskCanceledException,

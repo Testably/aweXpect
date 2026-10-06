@@ -7,7 +7,7 @@ public sealed partial class EquivalencyMatchTypeTests
 {
 	public sealed class RecordTests
 	{
-		[Fact]
+		[Test]
 		public async Task RecordsWithCustomEquals_WhenValuesAreDifferent_ShouldNotBeConsideredEqual()
 		{
 			AnAlwaysEqualRecord actual = new(1);
@@ -28,7 +28,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			                              """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task RecordsWithValue_WhenValuesAreDifferent_ShouldNotBeConsideredEqual()
 		{
 			ARecordWithValue actual = new(1);
@@ -48,7 +48,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			                              """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task RecordsWithValue_WhenValuesAreSame_ShouldBeConsideredEqual()
 		{
 			ARecordWithValue actual = new(1);
@@ -60,7 +60,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			await That(result).IsTrue();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithEmptyRecords_WhenTypesAreDifferent_ShouldNotBeConsideredEqual()
 		{
 			SomeRecord actual = new();
@@ -80,7 +80,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			                              """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithEmptyRecords_WhenTypesAreSame_ShouldThrowInvalidOperationException()
 		{
 			SomeRecord actual = new();

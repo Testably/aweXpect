@@ -5,7 +5,7 @@ namespace aweXpect.Core.Tests.Core.Helpers;
 
 public sealed class ExpressionHelpersTests
 {
-	[Fact]
+	[Test]
 	public async Task GetMemberExpression_FromArrayLength_ShouldReturnNull()
 	{
 		Expression<Func<int[], int>> expression = s => s.Length;
@@ -15,7 +15,7 @@ public sealed class ExpressionHelpersTests
 		await That(memberExpression).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetMemberExpression_FromLambdaExpression_ShouldReturnMemberExpression()
 	{
 		Expression<Func<MyClass, int>> expression = s => s.Foo;
@@ -25,7 +25,7 @@ public sealed class ExpressionHelpersTests
 		await That(memberExpression!.Member.Name).IsEqualTo("Foo");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetMemberExpression_FromLambdaExpressionWithUnaryExpressionBody_ShouldReturnMemberExpression()
 	{
 		Expression<Func<MyClass, int?>> expression = s => s.Foo;
@@ -35,7 +35,7 @@ public sealed class ExpressionHelpersTests
 		await That(memberExpression!.Member.Name).IsEqualTo("Foo");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetMemberExpression_FromMemberExpression_ShouldReturnSameObject()
 	{
 		MyClass subject = new();
@@ -46,7 +46,7 @@ public sealed class ExpressionHelpersTests
 		await That(memberExpression).IsSameAs(expression);
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetMemberExpression_Null_ShouldReturnNull()
 	{
 		Expression? expression = null;

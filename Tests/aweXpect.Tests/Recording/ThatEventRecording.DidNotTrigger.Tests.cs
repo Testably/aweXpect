@@ -8,7 +8,7 @@ public sealed partial class ThatEventRecording
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllRecordedEventsAreFilteredOut_ShouldSucceed()
 			{
 				CustomEventWithParametersClass<string> sut = new();
@@ -23,7 +23,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNotTriggered_ShouldSucceed()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -35,7 +35,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsTriggered_ShouldFail()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -46,7 +46,7 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has never recorded the CustomEvent event on sut,
@@ -56,7 +56,7 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventNameIsNull_ShouldThrowArgumentNullException()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -70,7 +70,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("The 'eventName' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMatchingEventIsTriggered_ShouldFail()
 			{
 				CustomEventWithParametersClass<string> sut = new();
@@ -82,7 +82,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTrigger(nameof(CustomEventWithParametersClass<string>.CustomEvent))
 						.WithParameter<string>(s => s == "foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has never recorded the CustomEvent event on sut with string parameter s => s == "foo",
@@ -92,7 +92,7 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEventRecording<CustomEventWithoutParametersClass>? subject = null;
@@ -100,7 +100,7 @@ public sealed partial class ThatEventRecording
 				async Task Act()
 					=> await That(subject!).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has never recorded the CustomEvent event,
@@ -111,7 +111,7 @@ public sealed partial class ThatEventRecording
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNotTriggered_ShouldFail()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -121,7 +121,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DoesNotComplyWith(r => r
 						.DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once,
@@ -129,7 +129,7 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsTriggered_ShouldSucceed()
 			{
 				CustomEventWithoutParametersClass sut = new();

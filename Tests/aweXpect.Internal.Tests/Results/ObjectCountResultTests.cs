@@ -7,7 +7,7 @@ namespace aweXpect.Internal.Tests.Results;
 
 public sealed class ObjectCountResultTests
 {
-	[Fact]
+	[Test]
 	public async Task ShouldBeOptionsProvider_ForObjectEqualityOptions()
 	{
 		ObjectEqualityOptions<string> options = new();
@@ -19,7 +19,7 @@ public sealed class ObjectCountResultTests
 			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldBeOptionsProvider_ForQuantifier()
 	{
 		ObjectEqualityOptions<string> options = new();

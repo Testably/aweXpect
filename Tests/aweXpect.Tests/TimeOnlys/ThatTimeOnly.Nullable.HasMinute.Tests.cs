@@ -9,7 +9,7 @@ public sealed partial class ThatTimeOnly
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsDifferent_ShouldFail()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -18,7 +18,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has minute equal to {Formatter.Format(expected)},
@@ -26,7 +26,7 @@ public sealed partial class ThatTimeOnly
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsTheSame_ShouldSucceed()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -38,7 +38,7 @@ public sealed partial class ThatTimeOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					TimeOnly? subject = null;
@@ -47,7 +47,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has minute equal to 1,
@@ -58,7 +58,7 @@ public sealed partial class ThatTimeOnly
 
 			public sealed class EqualToTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -67,7 +67,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().EqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has minute equal to <null>,
@@ -75,7 +75,7 @@ public sealed partial class ThatTimeOnly
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsDifferent_ShouldFail()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -84,7 +84,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().EqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has minute equal to {Formatter.Format(expected)},
@@ -92,7 +92,7 @@ public sealed partial class ThatTimeOnly
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsTheSame_ShouldSucceed()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -104,7 +104,7 @@ public sealed partial class ThatTimeOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndExpectedIsNull_ShouldFail()
 				{
 					TimeOnly? subject = null;
@@ -113,7 +113,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().EqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has minute equal to <null>,
@@ -121,7 +121,7 @@ public sealed partial class ThatTimeOnly
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					TimeOnly? subject = null;
@@ -130,7 +130,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().EqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has minute equal to 1,
@@ -141,7 +141,7 @@ public sealed partial class ThatTimeOnly
 
 			public sealed class GreaterThanOrEqualToTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -150,7 +150,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().GreaterThanOrEqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has minute greater than or equal to <null>,
@@ -158,7 +158,7 @@ public sealed partial class ThatTimeOnly
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsGreaterThanExpected_ShouldSucceed()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -170,7 +170,7 @@ public sealed partial class ThatTimeOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsLessThanExpected_ShouldFail()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -179,7 +179,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().GreaterThanOrEqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has minute greater than or equal to {Formatter.Format(expected)},
@@ -187,7 +187,7 @@ public sealed partial class ThatTimeOnly
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsTheSameAsExpected_ShouldSucceed()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -202,7 +202,7 @@ public sealed partial class ThatTimeOnly
 
 			public sealed class GreaterThanTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -211,7 +211,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().GreaterThan(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has minute greater than <null>,
@@ -219,7 +219,7 @@ public sealed partial class ThatTimeOnly
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsGreaterThanExpected_ShouldSucceed()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -231,7 +231,7 @@ public sealed partial class ThatTimeOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsLessThanExpected_ShouldFail()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -240,7 +240,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().GreaterThan(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has minute greater than {Formatter.Format(expected)},
@@ -248,7 +248,7 @@ public sealed partial class ThatTimeOnly
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsTheSameAsExpected_ShouldFail()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -257,7 +257,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().GreaterThan(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has minute greater than {Formatter.Format(expected)},
@@ -268,7 +268,7 @@ public sealed partial class ThatTimeOnly
 
 			public sealed class LessThanOrEqualToTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -277,7 +277,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().LessThanOrEqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has minute less than or equal to <null>,
@@ -285,7 +285,7 @@ public sealed partial class ThatTimeOnly
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsGreaterThanExpected_ShouldFail()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -294,7 +294,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().LessThanOrEqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has minute less than or equal to {Formatter.Format(expected)},
@@ -302,7 +302,7 @@ public sealed partial class ThatTimeOnly
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsLessThanExpected_ShouldSucceed()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -314,7 +314,7 @@ public sealed partial class ThatTimeOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsTheSameAsExpected_ShouldSucceed()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -329,7 +329,7 @@ public sealed partial class ThatTimeOnly
 
 			public sealed class LessThanTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -338,7 +338,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().LessThan(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has minute less than <null>,
@@ -346,7 +346,7 @@ public sealed partial class ThatTimeOnly
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsGreaterThanExpected_ShouldFail()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -355,7 +355,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().LessThan(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has minute less than {Formatter.Format(expected)},
@@ -363,7 +363,7 @@ public sealed partial class ThatTimeOnly
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsLessThanExpected_ShouldSucceed()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -375,7 +375,7 @@ public sealed partial class ThatTimeOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsTheSameAsExpected_ShouldFail()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -384,7 +384,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().LessThan(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has minute less than {Formatter.Format(expected)},
@@ -395,7 +395,7 @@ public sealed partial class ThatTimeOnly
 
 			public sealed class NotEqualToTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsDifferent_ShouldSucceed()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -407,7 +407,7 @@ public sealed partial class ThatTimeOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMinuteOfSubjectIsTheSame_ShouldFail()
 				{
 					TimeOnly? subject = new(13, 14, 15);
@@ -416,7 +416,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().NotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              does not have minute equal to {Formatter.Format(unexpected)},
@@ -424,7 +424,7 @@ public sealed partial class ThatTimeOnly
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndUnexpectedIsNull_ShouldFail()
 				{
 					TimeOnly? subject = null;
@@ -433,7 +433,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().NotEqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have minute equal to <null>,
@@ -441,7 +441,7 @@ public sealed partial class ThatTimeOnly
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					TimeOnly? subject = null;
@@ -450,7 +450,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).HasMinute().NotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              does not have minute equal to {unexpected},
@@ -458,7 +458,7 @@ public sealed partial class ThatTimeOnly
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenUnexpectedIsNull_ShouldSucceed()
 				{
 					TimeOnly? subject = new(13, 14, 15);

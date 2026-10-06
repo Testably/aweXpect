@@ -6,7 +6,7 @@ public sealed partial class ThatDateTimeOffset
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedAreMaxValue_ShouldFail()
 			{
 				DateTimeOffset subject = DateTimeOffset.MaxValue;
@@ -16,7 +16,7 @@ public sealed partial class ThatDateTimeOffset
 					=> await That(subject).IsNotEqualTo(unexpected)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 9999-12-31T23:59:59.9999999+00:00, because we want to test the failure,
@@ -24,7 +24,7 @@ public sealed partial class ThatDateTimeOffset
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedAreMinValue_ShouldFail()
 			{
 				DateTimeOffset subject = DateTimeOffset.MinValue;
@@ -34,7 +34,7 @@ public sealed partial class ThatDateTimeOffset
 					=> await That(subject).IsNotEqualTo(unexpected)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 0001-01-01T00:00:00.0000000+00:00, because we want to test the failure,
@@ -42,7 +42,7 @@ public sealed partial class ThatDateTimeOffset
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDifferent_ShouldSucceed()
 			{
 				DateTimeOffset subject = CurrentTime();
@@ -54,7 +54,7 @@ public sealed partial class ThatDateTimeOffset
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsTheSame_ShouldFail()
 			{
 				DateTimeOffset subject = CurrentTime();
@@ -64,7 +64,7 @@ public sealed partial class ThatDateTimeOffset
 					=> await That(subject).IsNotEqualTo(unexpected)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)}, because we want to test the failure,
@@ -72,7 +72,7 @@ public sealed partial class ThatDateTimeOffset
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_NegativeTolerance_ShouldThrowArgumentOutOfRangeException()
 			{
 				DateTimeOffset subject = CurrentTime();
@@ -86,7 +86,7 @@ public sealed partial class ThatDateTimeOffset
 					.WithParamName("tolerance");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldSucceed()
 			{
 				DateTimeOffset subject = CurrentTime();
@@ -99,7 +99,7 @@ public sealed partial class ThatDateTimeOffset
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenValuesAreWithinTheTolerance_ShouldFail()
 			{
 				DateTimeOffset subject = CurrentTime();
@@ -109,7 +109,7 @@ public sealed partial class ThatDateTimeOffset
 					=> await That(subject).IsNotEqualTo(unexpected).Within(3.Seconds())
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)} ± 0:03, because we want to test the failure,

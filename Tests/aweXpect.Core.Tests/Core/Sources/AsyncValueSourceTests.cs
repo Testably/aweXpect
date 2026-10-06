@@ -7,7 +7,7 @@ namespace aweXpect.Core.Tests.Core.Sources;
 
 public class AsyncValueSourceTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenAbandonedTaskFaultsLater_ShouldNotRaiseUnobservedTaskException()
 	{
 		MyException exception = new();
@@ -36,7 +36,7 @@ public class AsyncValueSourceTests
 			.Because("the exception of an abandoned task must be observed, as nobody else awaits it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCancellationIsRequestedBeforeTheTaskCompletes_ShouldBeInconclusive()
 	{
 		Task<int> subject = PendingTask.Of<int>();
@@ -46,7 +46,7 @@ public class AsyncValueSourceTests
 		async Task Act()
 			=> await That(subject).IsEqualTo(1).WithCancellation(cts.Token);
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected that subject
 			             is equal to 1,
@@ -55,7 +55,7 @@ public class AsyncValueSourceTests
 			.Because("the cancellation must stop waiting for a task that does not observe it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTaskCompletesWithinTheTimeout_ShouldSucceed()
 	{
 		Task<int> subject = Task.Delay(50.Milliseconds()).ContinueWith(_ => 1);
@@ -66,7 +66,7 @@ public class AsyncValueSourceTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTaskDoesNotCompleteWithinTheTimeout_ShouldFail()
 	{
 		Task<int> subject = PendingTask.Of<int>();
@@ -74,7 +74,7 @@ public class AsyncValueSourceTests
 		async Task Act()
 			=> await That(subject).IsEqualTo(1).WithTimeout(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is equal to 1,
@@ -84,7 +84,7 @@ public class AsyncValueSourceTests
 			.Because("the timeout must abandon the task instead of awaiting it to completion");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTaskFaultsWithATimeout_ShouldFail()
 	{
 		Task<int> subject = Task.FromException<int>(new MyException());
@@ -92,7 +92,7 @@ public class AsyncValueSourceTests
 		async Task Act()
 			=> await That(subject).IsEqualTo(1).WithTimeout(5.Seconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is equal to 1,
@@ -103,7 +103,7 @@ public class AsyncValueSourceTests
 			.Because("a faulted task fails the expectation, with or without a timeout");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTaskIsCanceledWithoutACancellationRequest_ShouldFail()
 	{
 		TaskCanceledException exception = new("the task canceled itself");
@@ -112,7 +112,7 @@ public class AsyncValueSourceTests
 		async Task Act()
 			=> await That(subject).IsEqualTo(1).WithTimeout(5.Seconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is equal to 1,
@@ -136,7 +136,7 @@ public class AsyncValueSourceTests
 		async Task Act()
 			=> await That(tcs.Task).IsEqualTo(1).WithTimeout(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that tcs.Task
 			             is equal to 1,

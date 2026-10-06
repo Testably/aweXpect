@@ -7,7 +7,7 @@ public sealed partial class ThatDateOnly
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateOnly subject = CurrentTime();
@@ -16,7 +16,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsBefore(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is before <null>,
@@ -24,7 +24,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedAreMaxValue_ShouldFail()
 			{
 				DateOnly subject = DateOnly.MaxValue;
@@ -33,7 +33,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsBefore(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is before 9999-12-31,
@@ -41,7 +41,7 @@ public sealed partial class ThatDateOnly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedAreMinValue_ShouldFail()
 			{
 				DateOnly subject = DateOnly.MinValue;
@@ -50,7 +50,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsBefore(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is before 0001-01-01,
@@ -58,7 +58,7 @@ public sealed partial class ThatDateOnly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsLater_ShouldFail()
 			{
 				DateOnly subject = LaterTime();
@@ -67,7 +67,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsBefore(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is before {Formatter.Format(expected)},
@@ -75,7 +75,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsSame_ShouldFail()
 			{
 				DateOnly subject = CurrentTime();
@@ -85,7 +85,7 @@ public sealed partial class ThatDateOnly
 					=> await That(subject).IsBefore(expected)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is before {Formatter.Format(expected)}, because we want to test the failure,
@@ -93,7 +93,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectsIsEarlier_ShouldSucceed()
 			{
 				DateOnly subject = EarlierTime();
@@ -105,7 +105,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenNullableExpectedValueIsOutsideTheTolerance_ShouldFail()
 			{
 				DateOnly subject = CurrentTime();
@@ -115,7 +115,7 @@ public sealed partial class ThatDateOnly
 					=> await That(subject).IsBefore(expected)
 						.Within(3.Days());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is before {Formatter.Format(expected)} ± 3 days,
@@ -123,7 +123,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenSubjectIsMinValue_ShouldNotOverflow()
 			{
 				DateOnly subject = DateOnly.MinValue;
@@ -137,7 +137,7 @@ public sealed partial class ThatDateOnly
 					.Because("a widening tolerance must not make the assertion throw at the type limits");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenToleranceIsNotWholeDays_ShouldThrowArgumentOutOfRangeException()
 			{
 				DateOnly subject = CurrentTime();
@@ -152,7 +152,7 @@ public sealed partial class ThatDateOnly
 					.Because("a date has no time of day, so the remainder is rejected as soon as it is specified instead of when the expectation is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail()
 			{
 				DateOnly subject = LaterTime(3);
@@ -163,7 +163,7 @@ public sealed partial class ThatDateOnly
 						.Within(3.Days())
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is before {Formatter.Format(expected)} ± 3 days, because we want to test the failure,
@@ -171,7 +171,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenValuesAreWithinTheTolerance_ShouldSucceed()
 			{
 				DateOnly subject = LaterTime(2);
@@ -187,7 +187,7 @@ public sealed partial class ThatDateOnly
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsEarlier_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -195,7 +195,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsBefore(new DateOnly(2010, 11, 13)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not before 2010-11-13,
@@ -203,7 +203,7 @@ public sealed partial class ThatDateOnly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsLater_ShouldSucceed()
 			{
 				DateOnly subject = new(2010, 11, 12);

@@ -14,7 +14,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class SingleEnumerationTests
 		{
-			[Fact]
+			[Test]
 			public async Task Enumerable_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2, 3,]);
@@ -23,7 +23,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with expected,
@@ -35,7 +35,7 @@ public sealed partial class ThatEnumerable
 					.Because("the guard and the comparison share one enumeration of the expected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Enumerable_WhenSubjectCanOnlyBeEnumeratedOnce_ShouldFailForDoesNotEndWith()
 			{
 				IEnumerable subject = Factory.GetSingleUseEnumerable(1, 2, 3);
@@ -43,7 +43,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotEndWith(2, 3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not end with [2, 3],
@@ -52,7 +52,7 @@ public sealed partial class ThatEnumerable
 					.Because("the message lists the matching items from the enumeration that compared them");
 			}
 
-			[Fact]
+			[Test]
 			public async Task EnumerableWithUntypedExpected_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2, 3,]);
@@ -61,7 +61,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with expected,
@@ -74,7 +74,7 @@ public sealed partial class ThatEnumerable
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task Immutable_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -83,7 +83,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with expected,
@@ -97,7 +97,7 @@ public sealed partial class ThatEnumerable
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ImmutableStrings_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -106,7 +106,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with expected,
@@ -124,7 +124,7 @@ public sealed partial class ThatEnumerable
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ImmutableWithin_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				ImmutableArray<double> subject = [1.0, 2.0, 3.0,];
@@ -133,7 +133,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith(expected).Within(0.25);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with expected ± 0.25,
@@ -146,7 +146,7 @@ public sealed partial class ThatEnumerable
 			}
 #endif
 
-			[Fact]
+			[Test]
 			public async Task Strings_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
@@ -155,7 +155,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with expected,
@@ -171,7 +171,7 @@ public sealed partial class ThatEnumerable
 					.Because("the guard and the comparison share one enumeration of the expected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -180,7 +180,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with expected,
@@ -192,7 +192,7 @@ public sealed partial class ThatEnumerable
 					.Because("the guard and the comparison share one enumeration of the expected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectCanOnlyBeEnumeratedOnce_ShouldFailForDoesNotEndWith()
 			{
 				IEnumerable<int> subject = Factory.GetSingleUseEnumerable(1, 2, 3);
@@ -200,7 +200,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotEndWith(2, 3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not end with [2, 3],
@@ -209,7 +209,7 @@ public sealed partial class ThatEnumerable
 					.Because("the message lists the matching items from the enumeration that compared them");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasSideEffects_ShouldEnumerateItOnlyOnceForDoesNotEndWith()
 			{
 				int enumerations = 0;
@@ -225,7 +225,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(GetSubject()).DoesNotEndWith(2, 3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that GetSubject()
 					             does not end with [2, 3],
@@ -235,7 +235,7 @@ public sealed partial class ThatEnumerable
 					.Because("the message must not run the side effects of the subject a second time");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IEnumerable<double> subject = ToEnumerable(1.0, 2.0, 3.0);
@@ -244,7 +244,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith(expected).Within(0.25);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with expected ± 0.25,

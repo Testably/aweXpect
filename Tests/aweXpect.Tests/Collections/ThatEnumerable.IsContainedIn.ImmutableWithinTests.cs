@@ -15,7 +15,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class DateOnlyTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 				{
 					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -25,7 +25,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsContainedIn(expected).Within(1.Days());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1 day in order and contiguous,
@@ -47,7 +47,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 				{
 					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -60,7 +60,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
 				{
 					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -79,7 +79,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableDateOnlyTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 				{
 					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -89,7 +89,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsContainedIn(expected).Within(1.Days());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1 day in order and contiguous,
@@ -113,7 +113,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 				{
 					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -126,7 +126,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
 				{
 					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -145,7 +145,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class DateTimeTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 				{
 					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
@@ -155,7 +155,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
@@ -177,7 +177,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 				{
 					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
@@ -190,7 +190,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyIt()
 				{
 					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
@@ -208,7 +208,7 @@ public sealed partial class ThatEnumerable
 						.Because("the items fall back to the default tolerance, as a single value does");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
 				{
 					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
@@ -222,7 +222,7 @@ public sealed partial class ThatEnumerable
 						await That(subject).IsContainedIn(expected);
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
@@ -248,7 +248,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableDateTimeTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 				{
 					DateTime?[] values = [new DateTime(2024, 1, 1, 13, 0, 0), null, new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
@@ -258,7 +258,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
@@ -282,7 +282,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 				{
 					DateTime?[] values = [new DateTime(2024, 1, 1, 13, 0, 0), null, new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
@@ -298,7 +298,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class DateTimeOffsetTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 				{
 					DateTimeOffset[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
@@ -308,7 +308,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
@@ -330,7 +330,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 				{
 					DateTimeOffset[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
@@ -346,7 +346,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableDateTimeOffsetTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 				{
 					DateTimeOffset?[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), null, new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
@@ -356,7 +356,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
@@ -380,7 +380,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 				{
 					DateTimeOffset?[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), null, new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
@@ -396,7 +396,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class DecimalTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 				{
 					decimal[] values = [1.0m, 2.0m, 3.0m,];
@@ -406,7 +406,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsContainedIn(expected).Within(0.25m);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 0.25 in order and contiguous,
@@ -420,7 +420,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 				{
 					decimal[] values = [1.0m, 2.0m, 3.0m,];
@@ -436,7 +436,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableDecimalTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 				{
 					decimal?[] values = [1.0m, null, 2.0m, 3.0m,];
@@ -446,7 +446,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsContainedIn(expected).Within(0.25m);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 0.25 in order and contiguous,
@@ -460,7 +460,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 				{
 					decimal?[] values = [1.0m, null, 2.0m, 3.0m,];
@@ -476,7 +476,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class DoubleTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 				{
 					double[] values = [1.0, 2.0, 3.0,];
@@ -486,7 +486,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsContainedIn(expected).Within(0.25);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 0.25 in order and contiguous,
@@ -500,9 +500,9 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Theory]
-				[InlineData(false)]
-				[InlineData(true)]
+				[Test]
+				[Arguments(false)]
+				[Arguments(true)]
 				public async Task WhenCombinedWithUsing_ShouldThrowInvalidOperationException(bool negated)
 				{
 					double[] values = [1.0, 2.0, 3.0,];
@@ -526,7 +526,7 @@ public sealed partial class ThatEnumerable
 						.Because("the comparer would silently replace the tolerance");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 				{
 					double[] values = [1.0, 2.0, 3.0,];
@@ -542,7 +542,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableDoubleTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 				{
 					double?[] values = [1.0, null, 2.0, 3.0,];
@@ -552,7 +552,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsContainedIn(expected).Within(0.25);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 0.25 in order and contiguous,
@@ -566,7 +566,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 				{
 					double?[] values = [1.0, null, 2.0, 3.0,];
@@ -582,7 +582,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class FloatTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 				{
 					float[] values = [1.0F, 2.0F, 3.0F,];
@@ -592,7 +592,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsContainedIn(expected).Within(0.25F);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 0.25 in order and contiguous,
@@ -606,7 +606,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 				{
 					float[] values = [1.0F, 2.0F, 3.0F,];
@@ -622,7 +622,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableFloatTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 				{
 					float?[] values = [1.0F, null, 2.0F, 3.0F,];
@@ -632,7 +632,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsContainedIn(expected).Within(0.25F);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 0.25 in order and contiguous,
@@ -646,7 +646,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 				{
 					float?[] values = [1.0F, null, 2.0F, 3.0F,];
@@ -662,7 +662,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class TimeOnlyTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
 				{
 					TimeOnly[] values = [new TimeOnly(22, 0), new TimeOnly(23, 59, 30), new TimeOnly(2, 0),];
@@ -676,7 +676,7 @@ public sealed partial class ThatEnumerable
 						.Because("the times are compared on the clock face, where 23:59:30 and 00:00:30 are one minute apart");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 				{
 					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
@@ -686,7 +686,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
@@ -708,7 +708,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 				{
 					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
@@ -724,7 +724,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableTimeOnlyTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
 				{
 					TimeOnly?[] values = [new TimeOnly(22, 0), null, new TimeOnly(23, 59, 30), new TimeOnly(2, 0),];
@@ -738,7 +738,7 @@ public sealed partial class ThatEnumerable
 						.Because("the times are compared on the clock face, where 23:59:30 and 00:00:30 are one minute apart");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 				{
 					TimeOnly?[] values = [new TimeOnly(13, 0), null, new TimeOnly(14, 0), new TimeOnly(15, 0),];
@@ -748,7 +748,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
@@ -772,7 +772,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 				{
 					TimeOnly?[] values = [new TimeOnly(13, 0), null, new TimeOnly(14, 0), new TimeOnly(15, 0),];
@@ -788,7 +788,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class TimeSpanTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 				{
 					TimeSpan[] values = [new TimeSpan(1, 0, 0), new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
@@ -798,7 +798,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
@@ -820,7 +820,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 				{
 					TimeSpan[] values = [new TimeSpan(1, 0, 0), new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
@@ -836,7 +836,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableTimeSpanTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 				{
 					TimeSpan?[] values = [new TimeSpan(1, 0, 0), null, new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
@@ -846,7 +846,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsContainedIn(expected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is contained in collection expected ± 1:00 in order and contiguous,
@@ -870,7 +870,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 				{
 					TimeSpan?[] values = [new TimeSpan(1, 0, 0), null, new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
@@ -892,7 +892,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class DateOnlyTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -905,7 +905,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
 				{
 					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -915,7 +915,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Days());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not contained in collection unexpected ± 1 day in order and contiguous,
@@ -932,7 +932,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableDateOnlyTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -945,7 +945,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
 				{
 					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -955,7 +955,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Days());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not contained in collection unexpected ± 1 day in order and contiguous,
@@ -972,7 +972,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class DateTimeTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
@@ -985,7 +985,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
 				{
 					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
@@ -995,7 +995,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not contained in collection unexpected ± 1:00 in order and contiguous,
@@ -1012,7 +1012,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableDateTimeTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					DateTime?[] values = [new DateTime(2024, 1, 1, 13, 0, 0), null, new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
@@ -1025,7 +1025,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
 				{
 					DateTime?[] values = [new DateTime(2024, 1, 1, 13, 0, 0), null, new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
@@ -1035,7 +1035,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not contained in collection unexpected ± 1:00 in order and contiguous,
@@ -1052,7 +1052,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class DateTimeOffsetTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					DateTimeOffset[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
@@ -1065,7 +1065,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
 				{
 					DateTimeOffset[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
@@ -1075,7 +1075,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not contained in collection unexpected ± 1:00 in order and contiguous,
@@ -1092,7 +1092,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableDateTimeOffsetTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					DateTimeOffset?[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), null, new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
@@ -1105,7 +1105,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
 				{
 					DateTimeOffset?[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), null, new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
@@ -1115,7 +1115,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not contained in collection unexpected ± 1:00 in order and contiguous,
@@ -1132,7 +1132,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class DecimalTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					decimal[] values = [1.0m, 2.0m, 3.0m,];
@@ -1145,7 +1145,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
 				{
 					decimal[] values = [1.0m, 2.0m, 3.0m,];
@@ -1155,7 +1155,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25m);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not contained in collection unexpected ± 0.25 in order and contiguous,
@@ -1172,7 +1172,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableDecimalTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					decimal?[] values = [1.0m, null, 2.0m, 3.0m,];
@@ -1185,7 +1185,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
 				{
 					decimal?[] values = [1.0m, null, 2.0m, 3.0m,];
@@ -1195,7 +1195,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25m);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not contained in collection unexpected ± 0.25 in order and contiguous,
@@ -1212,7 +1212,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class DoubleTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					double[] values = [1.0, 2.0, 3.0,];
@@ -1225,7 +1225,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
 				{
 					double[] values = [1.0, 2.0, 3.0,];
@@ -1235,7 +1235,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not contained in collection unexpected ± 0.25 in order and contiguous,
@@ -1252,7 +1252,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableDoubleTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					double?[] values = [1.0, null, 2.0, 3.0,];
@@ -1265,7 +1265,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
 				{
 					double?[] values = [1.0, null, 2.0, 3.0,];
@@ -1275,7 +1275,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not contained in collection unexpected ± 0.25 in order and contiguous,
@@ -1292,7 +1292,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class FloatTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					float[] values = [1.0F, 2.0F, 3.0F,];
@@ -1305,7 +1305,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
 				{
 					float[] values = [1.0F, 2.0F, 3.0F,];
@@ -1315,7 +1315,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25F);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not contained in collection unexpected ± 0.25 in order and contiguous,
@@ -1332,7 +1332,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableFloatTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					float?[] values = [1.0F, null, 2.0F, 3.0F,];
@@ -1345,7 +1345,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
 				{
 					float?[] values = [1.0F, null, 2.0F, 3.0F,];
@@ -1355,7 +1355,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsNotContainedIn(unexpected).Within(0.25F);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not contained in collection unexpected ± 0.25 in order and contiguous,
@@ -1372,7 +1372,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class TimeOnlyTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
@@ -1385,7 +1385,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
 				{
 					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
@@ -1395,7 +1395,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not contained in collection unexpected ± 1:00 in order and contiguous,
@@ -1412,7 +1412,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableTimeOnlyTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					TimeOnly?[] values = [new TimeOnly(13, 0), null, new TimeOnly(14, 0), new TimeOnly(15, 0),];
@@ -1425,7 +1425,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
 				{
 					TimeOnly?[] values = [new TimeOnly(13, 0), null, new TimeOnly(14, 0), new TimeOnly(15, 0),];
@@ -1435,7 +1435,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not contained in collection unexpected ± 1:00 in order and contiguous,
@@ -1452,7 +1452,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class TimeSpanTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					TimeSpan[] values = [new TimeSpan(1, 0, 0), new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
@@ -1465,7 +1465,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
 				{
 					TimeSpan[] values = [new TimeSpan(1, 0, 0), new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
@@ -1475,7 +1475,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not contained in collection unexpected ± 1:00 in order and contiguous,
@@ -1492,7 +1492,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NullableTimeSpanTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
 					TimeSpan?[] values = [new TimeSpan(1, 0, 0), null, new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
@@ -1505,7 +1505,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachItemLiesWithinTheTolerance_ShouldFail()
 				{
 					TimeSpan?[] values = [new TimeSpan(1, 0, 0), null, new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
@@ -1515,7 +1515,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).IsNotContainedIn(unexpected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not contained in collection unexpected ± 1:00 in order and contiguous,

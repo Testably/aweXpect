@@ -11,7 +11,7 @@ public sealed partial class ThatObject
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task SubjectToItself_ShouldFail()
 			{
 				object subject = new MyClass();
@@ -21,7 +21,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsNotOneOf(unexpected)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not one of unexpected, because we want to test the failure,
@@ -34,7 +34,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task SubjectToSomeOtherValue_ShouldSucceed()
 			{
 				object subject = new MyClass();
@@ -46,7 +46,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparingWithEquivalenceAndContainsEquivalentValue_ShouldFail()
 			{
 				object subject = new MyClass();
@@ -55,7 +55,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotOneOf(unexpected).Equivalent();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equivalent to one of [ThatObject.MyClass { Value = 0 }],
@@ -68,7 +68,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				object subject = new MyClass();
@@ -83,7 +83,7 @@ public sealed partial class ThatObject
 					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				object subject = new MyClass();
@@ -97,7 +97,7 @@ public sealed partial class ThatObject
 					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedOnlyContainsNullValues_ShouldSucceed()
 			{
 				MyClass subject = new();
@@ -109,7 +109,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				object subject = new MyClass();
@@ -124,7 +124,7 @@ public sealed partial class ThatObject
 					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				object subject = new MyClass();
@@ -138,7 +138,7 @@ public sealed partial class ThatObject
 					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlyACombinedExpectationFails_ShouldNotListTheUnexpectedValues()
 			{
 				MyClass subject = new();
@@ -147,7 +147,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotOneOf(unexpected).And.IsNull();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not one of unexpected and is null,
@@ -158,7 +158,7 @@ public sealed partial class ThatObject
 					.Because("the values explain only a failure of the expectation that names them");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsAReferenceType_ShouldReturnTheTypedSubject()
 			{
 				MyClass subject = new();
@@ -168,7 +168,7 @@ public sealed partial class ThatObject
 				await That(result).IsSameAs(subject);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsAReferenceType_WithEnumerable_ShouldReturnTheTypedSubject()
 			{
 				MyClass subject = new();
@@ -179,7 +179,7 @@ public sealed partial class ThatObject
 				await That(result).IsSameAs(subject);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
 				MyClass? subject = null;
@@ -190,7 +190,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNullAndUnexpectedContainsNull_ShouldFail()
 			{
 				object? subject = null;
@@ -199,7 +199,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not one of expected,
@@ -210,7 +210,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsAnEnumerable_ShouldNameItsExpression()
 			{
 				MyClass subject = new();
@@ -219,7 +219,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotOneOf(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not one of unexpected,
@@ -232,7 +232,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsPassedAsParams_ShouldFormatTheValues()
 			{
 				MyClass subject = new();
@@ -240,7 +240,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotOneOf(new MyClass { Value = 1, }, subject);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not one of [ThatObject.MyClass { Value = 1 }, ThatObject.MyClass { Value = 0 }],

@@ -5,6 +5,8 @@ using System.Runtime.CompilerServices;
 
 namespace aweXpect.Docs.Tests;
 
+[Explicit]
+[Category(TestCategories.Slow)]
 public sealed class DocsPagesTests
 {
 	private static readonly string ProjectDirectory = GetProjectDirectory();
@@ -16,23 +18,17 @@ public sealed class DocsPagesTests
 	///     All pages on .NET, but on .NET Framework only the pages for extension authors, so that they also compile
 	///     against the netstandard2.0 build.
 	/// </summary>
-	public static TheoryData<string> Pages()
+	public static IEnumerable<string> Pages()
 	{
 #if NETFRAMEWORK
 		return ExtensionPages();
 #else
-		TheoryData<string> pages = new();
-		foreach (string page in AllPages())
-		{
-			pages.Add(page);
-		}
-
-		return pages;
+		return AllPages();
 #endif
 	}
 
-	[Theory]
-	[MemberData(nameof(Pages))]
+	[Test]
+	[MethodDataSource(nameof(Pages))]
 	public void CodeBlocks_ShouldCompile(string page)
 	{
 		List<string> errors = SnippetCompiler.GetErrors(ExtractCodeBlocks(page), ScaffoldFiles(page));
@@ -43,19 +39,11 @@ public sealed class DocsPagesTests
 	/// <summary>
 	///     The pages for extension authors, which tell them to reference only aweXpect.Core.
 	/// </summary>
-	public static TheoryData<string> ExtensionPages()
-	{
-		TheoryData<string> pages = new();
-		foreach (string page in AllPages().Where(page => page.StartsWith("11-extending/")))
-		{
-			pages.Add(page);
-		}
+	public static IEnumerable<string> ExtensionPages()
+		=> AllPages().Where(page => page.StartsWith("11-extending/"));
 
-		return pages;
-	}
-
-	[Theory]
-	[MemberData(nameof(ExtensionPages))]
+	[Test]
+	[MethodDataSource(nameof(ExtensionPages))]
 	public void ExtensionCode_ShouldCompileAgainstCoreOnly(string page)
 	{
 		List<string> errors = SnippetCompiler.GetErrors(ExtractCodeBlocks(page), ScaffoldFiles(page), true);
@@ -63,7 +51,7 @@ public sealed class DocsPagesTests
 		Fail.Unless(errors.Count == 0, string.Join(Environment.NewLine, errors));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Extract_ShouldFindTheCodeBlocksOfAllPages()
 	{
 		int count = AllPages().Sum(page => ExtractCodeBlocks(page).Count);
@@ -72,7 +60,7 @@ public sealed class DocsPagesTests
 			.Because("the check must not pass because it no longer finds the code blocks");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Extract_ShouldOnlyReturnCSharpBlocksWithoutNoCompileMarker()
 	{
 		string[] lines =
@@ -101,7 +89,7 @@ public sealed class DocsPagesTests
 		]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetErrors_ShouldReportThePageAndLineOfTheBlock()
 	{
 		CodeBlock block = new("Docs/pages/page.md", 10, "int value = 1;\nawait Expect.That(value).IsFoo();");
@@ -111,7 +99,7 @@ public sealed class DocsPagesTests
 		await That(errors).HasSingle().Which.StartsWith("Docs/pages/page.md(11,26): CS1061:");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetErrors_ShouldShareTypesAndUsingsBetweenTheBlocksOfAPage()
 	{
 		CodeBlock first = new("page.md", 1, """

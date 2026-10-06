@@ -11,7 +11,7 @@ public sealed partial class ThatAsyncEnumerable
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEnoughItemsAreUnique_ShouldSucceed()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3, 4, 5, 5,]);
@@ -22,7 +22,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IAsyncEnumerable<int>? subject = null;
@@ -30,7 +30,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).AtLeast(4).AreUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique for at least 4 items,
@@ -38,7 +38,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTooFewItemsAreUnique_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3, 3, 4, 4,]);
@@ -46,7 +46,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).AtLeast(4).AreUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique for at least 4 items,
@@ -63,7 +63,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class AreNotUniqueTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsAreUnique_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
@@ -71,7 +71,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).AtLeast(1).AreNotUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not unique for at least one item,
@@ -82,7 +82,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItContainsDuplicates_ShouldSucceed()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3, 1,]);
@@ -96,7 +96,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class NegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEnoughItemsAreUnique_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3, 4, 5, 5,]);
@@ -104,7 +104,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.AtLeast(4).AreUnique());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique for fewer than 4 items,
@@ -118,7 +118,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTooFewItemsAreUnique_ShouldSucceed()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3, 3, 4, 4,]);

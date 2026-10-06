@@ -6,13 +6,13 @@ public sealed partial class ThatString
 	{
 		public sealed class AsWildcardTests
 		{
-			[Theory]
-			[InlineData("some message", "*me me*", true)]
-			[InlineData("some message", "*ME ME*", false)]
-			[InlineData("some message", "some?message", true)]
-			[InlineData("some message", "some*message", true)]
-			[InlineData("some message", "some me?age", false)]
-			[InlineData("some message", "some me??age", true)]
+			[Test]
+			[Arguments("some message", "*me me*", true)]
+			[Arguments("some message", "*ME ME*", false)]
+			[Arguments("some message", "some?message", true)]
+			[Arguments("some message", "some*message", true)]
+			[Arguments("some message", "some me?age", false)]
+			[Arguments("some message", "some me??age", true)]
 			public async Task ShouldDefaultToCaseSensitiveMatch(
 				string subject, string pattern, bool expectMatch)
 			{
@@ -31,12 +31,12 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Theory]
-			[InlineData("a.b", "a.b", true)]
-			[InlineData("axb", "a.b", false)]
-			[InlineData("a+b", "a+b", true)]
-			[InlineData("ab", "a+b", false)]
-			[InlineData("a[b]c", "a[b]c", true)]
+			[Test]
+			[Arguments("a.b", "a.b", true)]
+			[Arguments("axb", "a.b", false)]
+			[Arguments("a+b", "a+b", true)]
+			[Arguments("ab", "a+b", false)]
+			[Arguments("a[b]c", "a[b]c", true)]
 			public async Task ShouldEscapeRegexMetacharactersInThePattern(
 				string subject, string pattern, bool expectMatch)
 			{
@@ -56,7 +56,7 @@ public sealed partial class ThatString
 					.Because("only '*' and '?' are wildcards, every other regex metacharacter is a literal");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldNotMatchASurrogatePairWithTwoQuestionMarks()
 			{
 				string subject = "\U0001F600";
@@ -64,7 +64,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo("??").AsWildcard();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches "??",
@@ -77,15 +77,15 @@ public sealed partial class ThatString
 					.Because("the emoji is one character, so it cannot match two question marks");
 			}
 
-			[Theory]
-			[InlineData("abc", "abc", true)]
-			[InlineData("xyz\nabc", "abc", false)]
-			[InlineData("abc\nxyz", "abc", false)]
-			[InlineData("xyz\nabc\nqqq", "abc", false)]
-			[InlineData("abc\n", "abc", false)]
-			[InlineData("abc\n", "abc*", true)]
-			[InlineData("", "", true)]
-			[InlineData("a\n\nb", "", false)]
+			[Test]
+			[Arguments("abc", "abc", true)]
+			[Arguments("xyz\nabc", "abc", false)]
+			[Arguments("abc\nxyz", "abc", false)]
+			[Arguments("xyz\nabc\nqqq", "abc", false)]
+			[Arguments("abc\n", "abc", false)]
+			[Arguments("abc\n", "abc*", true)]
+			[Arguments("", "", true)]
+			[Arguments("a\n\nb", "", false)]
 			public async Task ShouldRequireThePatternToCoverTheCompleteSubject(
 				string subject, string pattern, bool expectMatch)
 			{
@@ -106,10 +106,10 @@ public sealed partial class ThatString
 					         + "and a trailing newline is part of the subject");
 			}
 
-			[Theory]
-			[InlineData("\U0001F600", "?")]
-			[InlineData("a\U0001F600b", "a?b")]
-			[InlineData("\U0001F600\U0001F601", "??")]
+			[Test]
+			[Arguments("\U0001F600", "?")]
+			[Arguments("a\U0001F600b", "a?b")]
+			[Arguments("\U0001F600\U0001F601", "??")]
 			public async Task ShouldTreatASurrogatePairAsOneCharacter(string subject, string pattern)
 			{
 				async Task Act()
@@ -119,15 +119,15 @@ public sealed partial class ThatString
 					.Because("the emoji is one character, although it consists of two UTF-16 code units");
 			}
 
-			[Theory]
-			[InlineData("a\nb", "a?b", true)]
-			[InlineData("\n", "?", true)]
-			[InlineData("\nb", "?b", true)]
-			[InlineData("a\n", "a?", true)]
-			[InlineData("a\r\nb", "a??b", true)]
-			[InlineData("a\nb", "a*b", true)]
-			[InlineData("a\nb\nc", "a*c", true)]
-			[InlineData("a\r\nb", "a?b", false)]
+			[Test]
+			[Arguments("a\nb", "a?b", true)]
+			[Arguments("\n", "?", true)]
+			[Arguments("\nb", "?b", true)]
+			[Arguments("a\n", "a?", true)]
+			[Arguments("a\r\nb", "a??b", true)]
+			[Arguments("a\nb", "a*b", true)]
+			[Arguments("a\nb\nc", "a*c", true)]
+			[Arguments("a\r\nb", "a?b", false)]
 			public async Task ShouldTreatNewlinesLikeAnyOtherCharacter(
 				string subject, string pattern, bool expectMatch)
 			{
@@ -147,7 +147,7 @@ public sealed partial class ThatString
 					.Because("a newline is a character, so both '*' and '?' have to match it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenACustomComparerIsUsed_ShouldThrowInvalidOperationException()
 			{
 				string subject = "some message";
@@ -160,9 +160,9 @@ public sealed partial class ThatString
 					.Because("the wildcard is translated into a regex, which cannot consult a comparer");
 			}
 
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task WhenIgnoringCase_ShouldIgnoreCase(
 				bool ignoreCase)
 			{
@@ -185,13 +185,13 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Theory]
-			[InlineData("tr-TR", "I", "i", true)]
-			[InlineData("tr-TR", "İ", "i", false)]
-			[InlineData("tr-TR", "ı", "I", false)]
-			[InlineData("", "I", "i", true)]
-			[InlineData("", "İ", "i", false)]
-			[InlineData("", "ı", "I", false)]
+			[Test]
+			[Arguments("tr-TR", "I", "i", true)]
+			[Arguments("tr-TR", "İ", "i", false)]
+			[Arguments("tr-TR", "ı", "I", false)]
+			[Arguments("", "I", "i", true)]
+			[Arguments("", "İ", "i", false)]
+			[Arguments("", "ı", "I", false)]
 			public async Task WhenIgnoringCase_ShouldIgnoreCaseIndependentOfTheCurrentCulture(
 				string cultureName, string subject, string pattern, bool expectMatch)
 			{
@@ -213,7 +213,7 @@ public sealed partial class ThatString
 					.Because("the dotted and dotless Turkish 'I' must not change which characters are considered equal");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenIgnoringCase_ShouldStillRequireThePatternToCoverTheCompleteSubject()
 			{
 				string subject = "XYZ\nABC";
@@ -221,7 +221,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo("abc").AsWildcard().IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches "abc" ignoring case,
@@ -234,17 +234,17 @@ public sealed partial class ThatString
 					.Because("ignoring the casing must not turn the anchors into line anchors");
 			}
 
-			[Theory]
-			[InlineData("k", "K")]
-			[InlineData("K", "k")]
-			[InlineData("xk", "*K")]
+			[Test]
+			[Arguments("k", "K")]
+			[Arguments("K", "k")]
+			[Arguments("xk", "*K")]
 			public async Task WhenIgnoringCase_ShouldTreatTheKelvinSignLikeThePlainComparison(
 				string subject, string pattern)
 			{
 				async Task Act()
 					=> await That(subject).IsEqualTo(pattern).AsWildcard().IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              matches {Formatter.Format(pattern)} ignoring case,
@@ -257,7 +257,7 @@ public sealed partial class ThatString
 					.Because("the casing is ignored like the plain comparison with OrdinalIgnoreCase, which does not consider the Kelvin sign equal to 'k'");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenIgnoringNewlineStyle_ShouldMatchAWindowsNewlineWithASingleQuestionMark()
 			{
 				string subject = "a\r\nb";
@@ -269,7 +269,7 @@ public sealed partial class ThatString
 					.Because("the normalized newline is a single character that '?' has to match");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenIgnoringNewlineStyle_ShouldStillRequireThePatternToCoverTheCompleteSubject()
 			{
 				string subject = "xyz\r\nabc";
@@ -277,7 +277,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo("abc").AsWildcard().IgnoringNewlineStyle();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches "abc" ignoring newline style,
@@ -294,13 +294,13 @@ public sealed partial class ThatString
 					.Because("normalizing the newline style does not remove the first line from the subject");
 			}
 
-			[Theory]
-			[InlineData("tr-TR", "I", "I", true)]
-			[InlineData("tr-TR", "I", "i", false)]
-			[InlineData("tr-TR", "ı", "I", false)]
-			[InlineData("", "I", "I", true)]
-			[InlineData("", "I", "i", false)]
-			[InlineData("", "ı", "I", false)]
+			[Test]
+			[Arguments("tr-TR", "I", "I", true)]
+			[Arguments("tr-TR", "I", "i", false)]
+			[Arguments("tr-TR", "ı", "I", false)]
+			[Arguments("", "I", "I", true)]
+			[Arguments("", "I", "i", false)]
+			[Arguments("", "ı", "I", false)]
 			public async Task WhenNotIgnoringCase_ShouldMatchCaseSensitiveIndependentOfTheCurrentCulture(
 				string cultureName, string subject, string pattern, bool expectMatch)
 			{
@@ -322,7 +322,7 @@ public sealed partial class ThatString
 					.Because("a case-sensitive match never looked at the culture");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
 			{
 				string subject = new('a', 100);
@@ -339,10 +339,10 @@ public sealed partial class ThatString
 					.Because("the message must name the wildcard pattern, not the regex it is translated into");
 			}
 
-			[Theory]
-			[InlineData("", true)]
-			[InlineData("a", false)]
-			[InlineData("\n", false)]
+			[Test]
+			[Arguments("", true)]
+			[Arguments("a", false)]
+			[Arguments("\n", false)]
 			public async Task WhenPatternIsEmpty_ShouldMatchOnlyTheEmptySubject(
 				string subject, bool expectMatch)
 			{
@@ -362,7 +362,7 @@ public sealed partial class ThatString
 					.Because("an empty wildcard pattern has the well-defined meaning of the empty string");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "some message";
@@ -376,7 +376,7 @@ public sealed partial class ThatString
 					.Because("a missing pattern cannot express any expectation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternIsProvidedAsNullVariable_ShouldThrowArgumentNullException()
 			{
 				string subject = "some message";
@@ -391,7 +391,7 @@ public sealed partial class ThatString
 					.Because("a pattern that only becomes null at runtime must be rejected just as a literal one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -399,7 +399,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo("p").AsWildcard();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches "p",

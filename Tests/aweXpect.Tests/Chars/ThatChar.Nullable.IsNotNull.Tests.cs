@@ -8,11 +8,11 @@ public sealed partial class ThatChar
 		{
 			public sealed class Tests
 			{
-				[Theory]
-				[InlineData('a')]
-				[InlineData('X')]
-				[InlineData('5')]
-				[InlineData('\t')]
+				[Test]
+				[Arguments('a')]
+				[Arguments('X')]
+				[Arguments('5')]
+				[Arguments('\t')]
 				public async Task WhenSubjectIsNotNull_ShouldSucceed(char? subject)
 				{
 					async Task Act()
@@ -21,7 +21,7 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					char? subject = null;
@@ -29,7 +29,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).IsNotNull();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not null,

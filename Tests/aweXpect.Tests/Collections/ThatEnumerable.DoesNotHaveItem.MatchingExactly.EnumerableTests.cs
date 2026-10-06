@@ -12,7 +12,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class EnumerableGenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable? subject = null;
@@ -20,7 +20,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyBaseClass>().AtIndex(0);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have an item exactly of type MyBaseClass at index 0,
@@ -28,7 +28,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeIsSubtype_ShouldSucceed()
 				{
 					IEnumerable subject = new object[]
@@ -42,7 +42,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeMatchesExactlyAtGivenIndex_ShouldFail()
 				{
 					IEnumerable subject = new object[]
@@ -53,7 +53,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyClass>().AtIndex(1);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have an item exactly of type MyClass at index 1,
@@ -78,7 +78,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class EnumerableGenericPredicateTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenItemOfTypeMatchesAtGivenIndex_ShouldFail()
 				{
 					IEnumerable subject = new object[]
@@ -89,7 +89,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().MatchingExactly<int>(x => x == 1).AtIndex(1);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have an item exactly of type int matching x => x == 1 at index 1,
@@ -103,7 +103,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenPredicateDoesNotMatch_ShouldSucceed()
 				{
 					IEnumerable subject = new object[]

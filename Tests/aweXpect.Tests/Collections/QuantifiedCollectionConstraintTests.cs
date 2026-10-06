@@ -4,7 +4,7 @@ namespace aweXpect.Tests;
 
 public sealed class QuantifiedCollectionConstraintTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenAllItemsAreEven_ShouldSucceed()
 	{
 		int[] values = [2, 4, 6,];
@@ -15,7 +15,7 @@ public sealed class QuantifiedCollectionConstraintTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEvaluatedAgain_ShouldOnlyCountTheItemsOfTheCurrentCollection()
 	{
 		int[][] values = [[1,], [2,],];
@@ -27,7 +27,7 @@ public sealed class QuantifiedCollectionConstraintTests
 			.Because("the constraint is evaluated again for each collection and must not count the previous items");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEvaluatedAgainForAnEmptyCollection_ShouldNotCountThePreviousItems()
 	{
 		int[][] values = [[1,], [],];
@@ -39,7 +39,7 @@ public sealed class QuantifiedCollectionConstraintTests
 			.Because("all items of an empty collection are even");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNegated_ShouldNegateTheQuantifierAndShowTheMatchingItems()
 	{
 		int[] values = [2, 4, 6,];
@@ -47,7 +47,7 @@ public sealed class QuantifiedCollectionConstraintTests
 		async Task Act()
 			=> await That(values).DoesNotComplyWith(v => v.AtLeast(2).AreEven());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that values
 			             is even for fewer than 2 items,
@@ -59,7 +59,7 @@ public sealed class QuantifiedCollectionConstraintTests
 			.Because("the extension renders the negated quantifier like the built-in Satisfy");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNegatedAndNested_ShouldUseTheComplementOfTheQuantifier()
 	{
 		Dictionary<string, int> values = new()
@@ -71,7 +71,7 @@ public sealed class QuantifiedCollectionConstraintTests
 		async Task Act()
 			=> await That(values).DoesNotComplyWith(v => v.Values.AtMost(1).AreEven());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that values
 			             has values of which more than one is even,
@@ -83,7 +83,7 @@ public sealed class QuantifiedCollectionConstraintTests
 			.Because("the extension renders the nested negated quantifier like the built-in Satisfy");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNested_ShouldUseTheVerbNumberOfTheQuantifier()
 	{
 		Dictionary<string, int> values = new()
@@ -96,7 +96,7 @@ public sealed class QuantifiedCollectionConstraintTests
 		async Task Act()
 			=> await That(values).Values.AtLeast(2).AreEven();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that values
 			             has values of which at least 2 are even,
@@ -108,7 +108,7 @@ public sealed class QuantifiedCollectionConstraintTests
 			.Because("the extension renders the nested quantifier like the built-in Satisfy");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSomeItemsAreOdd_ShouldShowTheNotMatchingItems()
 	{
 		int[] values = [1, 2, 3,];
@@ -116,7 +116,7 @@ public sealed class QuantifiedCollectionConstraintTests
 		async Task Act()
 			=> await That(values).All().AreEven();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that values
 			             is even for all items,
@@ -128,7 +128,7 @@ public sealed class QuantifiedCollectionConstraintTests
 			.Because("the extension renders the quantifier like the built-in Satisfy");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsNull_ShouldFail()
 	{
 		int[]? values = null;
@@ -136,7 +136,7 @@ public sealed class QuantifiedCollectionConstraintTests
 		async Task Act()
 			=> await That(values).DoesNotComplyWith(v => v.All().AreEven());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that values
 			             is even not for all items,

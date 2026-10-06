@@ -6,7 +6,7 @@ namespace aweXpect.Core.Tests.Core;
 
 public sealed class KeyComparersTests
 {
-	[Fact]
+	[Test]
 	public async Task CreateKeySet_ForACustomDictionary_ShouldUseTheDefaultEquality()
 	{
 		CustomDictionary dictionary = new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase));
@@ -17,7 +17,7 @@ public sealed class KeyComparersTests
 			.Because("the comparer of a dictionary type that is not known cannot be read");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CreateKeySet_ForADictionary_ShouldUseItsComparer()
 	{
 		Dictionary<string, int> dictionary = new(StringComparer.OrdinalIgnoreCase);
@@ -27,7 +27,7 @@ public sealed class KeyComparersTests
 		await That(keys.Add("a") && !keys.Add("A")).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task CreateKeySet_ForAReadOnlyDictionary_ShouldUseTheComparerOfTheWrappedDictionary()
 	{
 		ReadOnlyDictionary<string, int> dictionary =
@@ -39,7 +39,7 @@ public sealed class KeyComparersTests
 			.Because("the wrapped dictionary decides which keys are the same");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CreateKeySet_ForASortedDictionary_ShouldTreatKeysThatItsComparerOrdersEquallyAsTheSame()
 	{
 		SortedDictionary<string, int> dictionary = new(StringComparer.OrdinalIgnoreCase);

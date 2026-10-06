@@ -9,7 +9,7 @@ public sealed partial class ThatSignaler
 	{
 		public sealed class TimesTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteredWith_ShouldOnlyCountAndContainTheMatchingParameters()
 			{
 				Signaler<int> signaler = new();
@@ -24,7 +24,7 @@ public sealed partial class ThatSignaler
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggeredOftenEnough_ShouldFail()
 			{
 				Signaler signaler = new();
@@ -35,7 +35,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled(3.Times()).Within(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least 3 times within 0:00.050,
@@ -44,7 +44,7 @@ public sealed partial class ThatSignaler
 					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggeredWithParameter_ShouldFail()
 			{
 				Signaler<int> signaler = new();
@@ -55,7 +55,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled(3.Times()).Within(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least 3 times within 0:00.050,
@@ -67,9 +67,9 @@ public sealed partial class ThatSignaler
 					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
-			[Theory]
-			[InlineData(0)]
-			[InlineData(-1)]
+			[Test]
+			[Arguments(0)]
+			[Arguments(-1)]
 			public async Task WhenTimesIsNotPositive_ShouldThrowArgumentOutOfRangeException(int times)
 			{
 				Signaler signaler = new();
@@ -83,9 +83,9 @@ public sealed partial class ThatSignaler
 					.Because("being signaled at least zero or a negative number of times could never fail");
 			}
 
-			[Theory]
-			[InlineData(0)]
-			[InlineData(-1)]
+			[Test]
+			[Arguments(0)]
+			[Arguments(-1)]
 			public async Task WhenTimesWithParameterIsNotPositive_ShouldThrowArgumentOutOfRangeException(int times)
 			{
 				Signaler<int> signaler = new();
@@ -99,7 +99,7 @@ public sealed partial class ThatSignaler
 					.Because("being signaled at least zero or a negative number of times could never fail");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggeredOftenEnough_ShouldSucceed()
 			{
 				Signaler signaler = new();
@@ -117,7 +117,7 @@ public sealed partial class ThatSignaler
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenWithinIsSpecifiedTwice_ShouldThrowInvalidOperationException()
 			{
 				Signaler signaler = new();

@@ -10,10 +10,10 @@ public sealed partial class ThatDateTime
 		{
 			public sealed class Tests
 			{
-				[Theory]
-				[InlineData(DateTimeKind.Local)]
-				[InlineData(DateTimeKind.Utc)]
-				[InlineData(DateTimeKind.Unspecified)]
+				[Test]
+				[Arguments(DateTimeKind.Local)]
+				[Arguments(DateTimeKind.Utc)]
+				[Arguments(DateTimeKind.Unspecified)]
 				public async Task WhenExpectedKindIsUnspecified_ShouldSucceed(DateTimeKind subjectKind)
 				{
 					DateTime? subject = new(2024, 11, 1, 14, 15, 0, subjectKind);
@@ -26,7 +26,7 @@ public sealed partial class ThatDateTime
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNullableSubjectIsTheExpectedValue_ShouldSucceed()
 				{
 					DateTime? subject = CurrentTime();
@@ -38,7 +38,7 @@ public sealed partial class ThatDateTime
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNullableSubjectIsTheNullableExpectedValue_ShouldSucceed()
 				{
 					DateTime? subject = CurrentTime();
@@ -50,10 +50,10 @@ public sealed partial class ThatDateTime
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(DateTimeKind.Local)]
-				[InlineData(DateTimeKind.Utc)]
-				[InlineData(DateTimeKind.Unspecified)]
+				[Test]
+				[Arguments(DateTimeKind.Local)]
+				[Arguments(DateTimeKind.Utc)]
+				[Arguments(DateTimeKind.Unspecified)]
 				public async Task WhenNullableSubjectKindIsUnspecified_ShouldSucceed(DateTimeKind expectedKind)
 				{
 					DateTime? subject = new(2024, 11, 1, 14, 15, 0, DateTimeKind.Unspecified);
@@ -66,7 +66,7 @@ public sealed partial class ThatDateTime
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndExpectedAreMinValue_ShouldSucceed()
 				{
 					DateTime? subject = DateTime.MinValue;
@@ -78,7 +78,7 @@ public sealed partial class ThatDateTime
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndExpectedAreNull_ShouldSucceed()
 				{
 					DateTime? subject = null;
@@ -90,7 +90,7 @@ public sealed partial class ThatDateTime
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsDifferent_ShouldFail()
 				{
 					DateTime? subject = CurrentTime();
@@ -99,7 +99,7 @@ public sealed partial class ThatDateTime
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Because("we want to test the failure");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to {Formatter.Format(expected)}, because we want to test the failure,
@@ -107,7 +107,7 @@ public sealed partial class ThatDateTime
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectOnlyDiffersInKind_ShouldFail()
 				{
 					DateTime? subject = new(2024, 11, 1, 14, 15, 0, DateTimeKind.Utc);
@@ -117,7 +117,7 @@ public sealed partial class ThatDateTime
 						=> await That(subject).IsEqualTo(expected)
 							.Because("we also test the kind property");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to {Formatter.Format(expected)}, because we also test the kind property,
@@ -125,7 +125,7 @@ public sealed partial class ThatDateTime
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
 				{
 					DateTime? subject = null;
@@ -138,7 +138,7 @@ public sealed partial class ThatDateTime
 						await That(subject).IsEqualTo(expected);
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to {Formatter.Format(expected)} ± 0:03,
@@ -147,7 +147,7 @@ public sealed partial class ThatDateTime
 						.Because("the applied default tolerance is part of the expectation, even for a null subject");
 				}
 
-				[Fact]
+				[Test]
 				public async Task Within_NegativeTolerance_ShouldThrowArgumentOutOfRangeException()
 				{
 					DateTime? subject = CurrentTime();
@@ -161,7 +161,7 @@ public sealed partial class ThatDateTime
 						.WithParamName("tolerance");
 				}
 
-				[Fact]
+				[Test]
 				public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail()
 				{
 					DateTime? subject = CurrentTime();
@@ -171,7 +171,7 @@ public sealed partial class ThatDateTime
 						=> await That(subject).IsEqualTo(expected).Within(3.Seconds())
 							.Because("we want to test the failure");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to {Formatter.Format(expected)} ± 0:03, because we want to test the failure,
@@ -179,7 +179,7 @@ public sealed partial class ThatDateTime
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Within_WhenValuesAreWithinTheTolerance_ShouldSucceed()
 				{
 					DateTime? subject = CurrentTime();

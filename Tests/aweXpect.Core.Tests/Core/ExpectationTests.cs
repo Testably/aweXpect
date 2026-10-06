@@ -2,16 +2,16 @@
 
 public sealed class ExpectationTests
 {
-	[Theory]
-	[InlineData(false, true)]
-	[InlineData(true, false)]
-	[InlineData(false, false)]
+	[Test]
+	[Arguments(false, true)]
+	[Arguments(true, false)]
+	[Arguments(false, false)]
 	public async Task And_ShouldFailWhenAnyArgumentFails(bool a, bool b)
 	{
 		async Task Act()
 			=> await That(true).IsEqualTo(a).And.IsEqualTo(b);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that true
 			              is {a} and is {b},
@@ -19,8 +19,8 @@ public sealed class ExpectationTests
 			              """);
 	}
 
-	[Theory]
-	[InlineData(true, true)]
+	[Test]
+	[Arguments(true, true)]
 	public async Task And_ShouldRequireBothArgumentsToSucceed(bool a, bool b)
 	{
 		async Task Act()
@@ -29,14 +29,14 @@ public sealed class ExpectationTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Theory]
-	[InlineData(false, false)]
+	[Test]
+	[Arguments(false, false)]
 	public async Task Or_ShouldFailWhenBothArgumentsFail(bool a, bool b)
 	{
 		async Task Act()
 			=> await That(true).IsEqualTo(a).Or.IsEqualTo(b);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that true
 			              is {a} or is {b},
@@ -44,10 +44,10 @@ public sealed class ExpectationTests
 			              """);
 	}
 
-	[Theory]
-	[InlineData(false, true)]
-	[InlineData(true, false)]
-	[InlineData(true, true)]
+	[Test]
+	[Arguments(false, true)]
+	[Arguments(true, false)]
+	[Arguments(true, true)]
 	public async Task Or_ShouldRequireAnyArgumentToSucceed(bool a, bool b)
 	{
 		async Task Act()

@@ -12,7 +12,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class ImmutableTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldReturnSingleItem()
 			{
 				ImmutableArray<int> subject = [42,];
@@ -22,7 +22,7 @@ public sealed partial class ThatEnumerable
 				await That(result).IsEqualTo(42);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsMoreThanOneElement_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -30,7 +30,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasSingle();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a single item,
@@ -41,7 +41,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsSingleElement_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [1,];
@@ -51,7 +51,7 @@ public sealed partial class ThatEnumerable
 				await That(result).IsEqualTo(1);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldFail()
 			{
 				ImmutableArray<int> subject = [];
@@ -59,7 +59,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasSingle();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a single item,
@@ -67,7 +67,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemTypeIsEnumerable_ShouldReturnSingleItem()
 			{
 				IEnumerable<object> item = ToEnumerable<object>(1, 2);
@@ -79,7 +79,7 @@ public sealed partial class ThatEnumerable
 					.Because("the collection itself is also an IEnumerable<object>");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemTypeIsObject_ShouldReturnSingleItem()
 			{
 				ImmutableArray<object> subject = [1,];
@@ -92,7 +92,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableMatchingExactlyTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldReturnSingleItem()
 			{
 				ImmutableArray<MyBaseClass> subject =
@@ -103,7 +103,7 @@ public sealed partial class ThatEnumerable
 				await That(result.Value).IsEqualTo(3);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsOnlySubtypes_ShouldFail()
 			{
 				ImmutableArray<MyBaseClass> subject = [new MyClass(1), new MyOtherClass(2),];
@@ -111,7 +111,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasSingle().MatchingExactly<MyBaseClass>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a single item exactly of type MyBaseClass,
@@ -122,7 +122,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableMatchingExactlyTypePredicateTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldReturnSingleItem()
 			{
 				ImmutableArray<MyBaseClass> subject = [new(1), new MyClass(2), new(3),];
@@ -132,7 +132,7 @@ public sealed partial class ThatEnumerable
 				await That(result.Value).IsEqualTo(3);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsNoMatchingElements_ShouldFail()
 			{
 				ImmutableArray<MyBaseClass> subject = [new MyClass(1), new MyClass(2),];
@@ -140,7 +140,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasSingle().MatchingExactly<MyBaseClass>(x => x.Value > 1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a single item exactly of type MyBaseClass matching x => x.Value > 1,
@@ -151,7 +151,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableMatchingPredicateTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldReturnSingleItem()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -161,7 +161,7 @@ public sealed partial class ThatEnumerable
 				await That(result).IsEqualTo(2);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsMoreThanOneElement_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -169,7 +169,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasSingle().Matching(x => x > 1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a single item matching x => x > 1,
@@ -180,7 +180,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsSingleElement_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -190,7 +190,7 @@ public sealed partial class ThatEnumerable
 				await That(result).IsEqualTo(3);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldFail()
 			{
 				ImmutableArray<int> subject = [];
@@ -198,7 +198,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasSingle().Matching(_ => true);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a single item matching _ => true,
@@ -206,7 +206,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 			{
 				ImmutableArray<int> subject = [];
@@ -222,7 +222,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableMatchingTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldReturnSingleItem()
 			{
 				ImmutableArray<MyBaseClass> subject =
@@ -233,7 +233,7 @@ public sealed partial class ThatEnumerable
 				await That(result.Value).IsEqualTo(2);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsMoreThanOneElement_ShouldFail()
 			{
 				ImmutableArray<MyBaseClass> subject = [new MyClass(1), new MyOtherClass(2), new MyClass(3),];
@@ -241,7 +241,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasSingle().Matching<MyClass>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a single item of type MyClass,
@@ -264,7 +264,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsSingleElement_ShouldSucceed()
 			{
 				ImmutableArray<MyBaseClass> subject = [new MyClass(1), new MyOtherClass(2), new(3),];
@@ -274,7 +274,7 @@ public sealed partial class ThatEnumerable
 				await That(result.Value).IsEqualTo(1);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldFail()
 			{
 				ImmutableArray<MyBaseClass> subject = [];
@@ -282,7 +282,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasSingle().Matching<MyClass>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a single item of type MyClass,
@@ -293,7 +293,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableMatchingTypePredicateTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldReturnSingleItem()
 			{
 				ImmutableArray<MyClass> subject = [..ToEnumerable([1, 2, 3,], x => new MyClass(x)),];
@@ -303,7 +303,7 @@ public sealed partial class ThatEnumerable
 				await That(result.Value).IsEqualTo(2);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsMoreThanOneElement_ShouldFail()
 			{
 				ImmutableArray<MyClass> subject = [..ToEnumerable([1, 2, 3,], x => new MyClass(x)),];
@@ -311,7 +311,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasSingle().Matching<MyBaseClass>(x => x.Value > 1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a single item of type MyBaseClass matching x => x.Value > 1,
@@ -335,7 +335,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsNoMatchingElements_ShouldFail()
 			{
 				ImmutableArray<MyBaseClass> subject = [..ToEnumerable([1, 2, 3,], x => new MyBaseClass(x)),];
@@ -343,7 +343,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasSingle().Matching<MyClass>(x => x.Value > 1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a single item of type MyClass matching x => x.Value > 1,
@@ -351,7 +351,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsSingleElement_ShouldSucceed()
 			{
 				ImmutableArray<MyClass> subject = [..ToEnumerable([1, 2, 3,], x => new MyClass(x)),];
@@ -361,7 +361,7 @@ public sealed partial class ThatEnumerable
 				await That(result.Value).IsEqualTo(3);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldFail()
 			{
 				ImmutableArray<MyClass> subject = [];
@@ -369,7 +369,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasSingle().Matching<MyBaseClass>(_ => true);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a single item of type MyBaseClass matching _ => true,
@@ -377,7 +377,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 			{
 				ImmutableArray<MyBaseClass> subject = [..ToEnumerable([1, 2, 3,], x => new MyBaseClass(x)),];
@@ -393,7 +393,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableNegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsMoreThanOneElement_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -404,7 +404,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsSingleElement_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1,];
@@ -412,7 +412,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasSingle());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a single item,
@@ -423,7 +423,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [];
@@ -434,7 +434,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlyOneElementMatchesTheExactType_ShouldFail()
 			{
 				ImmutableArray<MyBaseClass> subject = [new MyClass(1), new(2),];
@@ -442,7 +442,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasSingle().MatchingExactly<MyBaseClass>());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a single item exactly of type MyBaseClass,
@@ -466,7 +466,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableWhichTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldReturnSingleItem()
 			{
 				ImmutableArray<int> subject = [42,];
@@ -477,7 +477,7 @@ public sealed partial class ThatEnumerable
 				await That(result).IsEqualTo(42);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsMoreThanOneElement_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -485,7 +485,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasSingle().Which.IsGreaterThan(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a single item that is greater than 2,
@@ -496,7 +496,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldFail()
 			{
 				ImmutableArray<int> subject = [];
@@ -504,7 +504,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasSingle().Which.IsGreaterThan(4);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a single item that is greater than 4,
@@ -512,7 +512,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSingleItemDoesNotSatisfyExpectation_ShouldFail()
 			{
 				ImmutableArray<int> subject = [3,];
@@ -520,7 +520,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasSingle().Which.IsGreaterThan(4);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a single item that is greater than 4,
@@ -528,7 +528,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSingleItemSatisfiesExpectation_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [3,];

@@ -10,7 +10,7 @@ public sealed partial class ThatVersion
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsContained_ShouldFail()
 			{
 				Version? subject = new(1, 2);
@@ -20,7 +20,7 @@ public sealed partial class ThatVersion
 					=> await That(subject).IsNotOneOf(unexpected)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not one of unexpected, because we want to test the failure,
@@ -31,7 +31,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDifferent_ShouldSucceed()
 			{
 				Version? subject = new(1, 2);
@@ -42,7 +42,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNullAndUnexpectedContainsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -50,7 +50,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsNotOneOf(new Version(1, 3), null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not one of [1.3, <null>],
@@ -58,7 +58,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectOmitsAComponentOfUnexpected_ShouldSucceed()
 			{
 				Version? subject = new(1, 2);
@@ -71,7 +71,7 @@ public sealed partial class ThatVersion
 					.Because("an unset component is not treated as 0");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				Version? subject = new(1, 2);
@@ -89,7 +89,7 @@ public sealed partial class ThatVersion
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsContained_ShouldSucceed()
 			{
 				Version? subject = new(1, 2);
@@ -101,7 +101,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDifferent_ShouldFail()
 			{
 				Version? subject = new(1, 2);
@@ -110,7 +110,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotOneOf(unexpected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of unexpected,

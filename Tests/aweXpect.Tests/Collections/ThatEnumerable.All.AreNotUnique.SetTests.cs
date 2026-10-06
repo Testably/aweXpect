@@ -10,7 +10,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class SetTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldUseTheComparerOfTheSet()
 				{
 					HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
@@ -18,7 +18,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreNotUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not unique using the subject's StringComparer.OrdinalIgnoreCase for all items,
@@ -39,7 +39,7 @@ public sealed partial class ThatEnumerable
 						.Because("a set never holds two items that its comparer considers equal");
 				}
 
-				[Fact]
+				[Test]
 				public async Task Using_ShouldOverrideTheComparerOfTheSet()
 				{
 					HashSet<object> subject = new(new AllDifferentComparer()) { 1, 2, };

@@ -13,7 +13,7 @@ public sealed partial class ThatAsyncEnumerable
 	{
 		public sealed class PredicateTests
 		{
-			[Fact]
+			[Test]
 			public async Task DoesNotEnumerateTwice()
 			{
 				ThrowWhenIteratingTwiceAsyncEnumerable subject = new();
@@ -25,7 +25,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task DoesNotMaterializeEnumerable()
 			{
 				IAsyncEnumerable<int> subject = Factory.GetAsyncFibonacciNumbers();
@@ -36,7 +36,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
@@ -44,7 +44,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(_ => false).AtIndex(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item matching _ => false at index 2,
@@ -55,7 +55,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldSucceed()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
@@ -66,7 +66,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsNoItemAtGivenIndex_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
@@ -74,7 +74,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(_ => true).AtIndex(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item matching _ => true at index 3,
@@ -85,7 +85,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
@@ -93,7 +93,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(_ => true);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item matching _ => true,
@@ -104,7 +104,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
@@ -117,7 +117,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateIsNull_WhenNegated_ShouldThrowArgumentNullException()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
@@ -130,7 +130,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_WithAnyIndex_ShouldFail()
 			{
 				IAsyncEnumerable<int>? subject = null;
@@ -138,7 +138,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(_ => true);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item matching _ => true,
@@ -146,7 +146,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_WithFixedIndex_ShouldFail()
 			{
 				IAsyncEnumerable<int>? subject = null;
@@ -154,7 +154,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(_ => true).AtIndex(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item matching _ => true at index 0,
@@ -162,7 +162,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithInvalidMatch_ShouldNotMatch()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2, 3, 4);
@@ -170,7 +170,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(_ => true).WithInvalidMatch();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item matching _ => true with invalid match,
@@ -181,7 +181,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMultipleFailures_ShouldIncludeCollectionOnlyOnce()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
@@ -191,7 +191,7 @@ public sealed partial class ThatAsyncEnumerable
 						.HasItem(_ => false)
 				;
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item matching _ => false at index 0 and has an item matching _ => false at index 1 and has an item matching _ => false,
@@ -209,7 +209,7 @@ public sealed partial class ThatAsyncEnumerable
 
 		public sealed class ItemTests
 		{
-			[Fact]
+			[Test]
 			public async Task DoesNotEnumerateTwice()
 			{
 				ThrowWhenIteratingTwiceAsyncEnumerable subject = new();
@@ -221,7 +221,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task DoesNotMaterializeEnumerable()
 			{
 				IAsyncEnumerable<int> subject = Factory.GetAsyncFibonacciNumbers();
@@ -232,7 +232,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2, 3, 4, 5);
@@ -240,7 +240,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(3).AtIndex(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to 3 at index 2,
@@ -251,7 +251,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldSucceed()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2, 3, 4, 5);
@@ -262,7 +262,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsNoItemAtGivenIndex_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
@@ -270,7 +270,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(5).AtIndex(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to 5 at index 3,
@@ -281,8 +281,8 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenEnumerableIsEmpty_ShouldFail(int expected)
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
@@ -290,7 +290,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has an item equal to {expected},
@@ -301,9 +301,9 @@ public sealed partial class ThatAsyncEnumerable
 					              """);
 			}
 
-			[Theory]
-			[InlineData(-1)]
-			[InlineData(-10)]
+			[Test]
+			[Arguments(-1)]
+			[Arguments(-10)]
 			public async Task WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException(int index)
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
@@ -316,7 +316,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("The index must not be negative.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSourceHangsAfterTheItemAtGivenIndex_ShouldNotWaitForMoreItems()
 			{
 				IAsyncEnumerable<int> subject = HangAfter([1,]);
@@ -328,7 +328,7 @@ public sealed partial class ThatAsyncEnumerable
 					.Because("the item at the given index already decides the result");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				int expected = 42;
@@ -337,7 +337,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to 42,
@@ -345,7 +345,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_WithFixedIndex_ShouldFail()
 			{
 				int expected = 42;
@@ -354,7 +354,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(expected).AtIndex(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to 42 at index 0,
@@ -362,7 +362,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_WithFixedIndexFromEnd_ShouldFail()
 			{
 				int expected = 42;
@@ -371,7 +371,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(expected).AtIndexFromEnd(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to 42 at index 0 from end,
@@ -379,7 +379,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithInvalidMatch_ShouldNotMatch()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2, 3, 4);
@@ -387,7 +387,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(2).WithInvalidMatch();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to 2 with invalid match,
@@ -398,7 +398,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMultipleFailures_ShouldIncludeCollectionOnlyOnce()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -407,7 +407,7 @@ public sealed partial class ThatAsyncEnumerable
 					=> await That(subject).HasItem(4).AtIndex(0).And.HasItem(5).AtIndex(1).And.HasItem(6)
 				;
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to 4 at index 0 and has an item equal to 5 at index 1 and has an item equal to 6,
@@ -421,7 +421,7 @@ public sealed partial class ThatAsyncEnumerable
 
 		public sealed class StringItemTests
 		{
-			[Fact]
+			[Test]
 			public async Task AsPrefix_WhenItemDoesNotStartWithExpected_ShouldFail()
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);
@@ -429,7 +429,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem("f").AsPrefix().AtIndex(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item starting with "f" at index 1,
@@ -444,7 +444,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsPrefix_WhenItemStartsWithExpected_ShouldSucceed()
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);
@@ -455,7 +455,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsRegex_WhenItemDoesNotMatch_ShouldFail()
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);
@@ -463,7 +463,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem("f[aeiou]?o").AsRegex().AtIndex(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item matching regex "f[aeiou]?o" at index 1,
@@ -478,7 +478,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsRegex_WhenItemMatches_ShouldSucceed()
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);
@@ -489,7 +489,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsSuffix_WhenItemDoesNotEndWithExpected_ShouldFail()
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);
@@ -497,7 +497,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem("o").AsSuffix().AtIndex(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item ending with "o" at index 1,
@@ -512,7 +512,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsSuffix_WhenItemEndsWithExpected_ShouldSucceed()
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);
@@ -523,7 +523,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsWildcard_WhenItemDoesNotMatch_ShouldFail()
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);
@@ -531,7 +531,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem("f*o").AsWildcard().AtIndex(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item matching "f*o" at index 1,
@@ -546,7 +546,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsWildcard_WhenItemMatches_ShouldSucceed()
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);
@@ -557,9 +557,9 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task ShouldSupportIgnoringCase(bool ignoreCase)
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);
@@ -567,7 +567,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem("BAR").IgnoringCase(ignoreCase).AtIndex(1);
 
-				await That(Act).Throws<XunitException>().OnlyIf(!ignoreCase)
+				await That(Act).Throws<FailException>().OnlyIf(!ignoreCase)
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "BAR" at index 1,
@@ -582,9 +582,9 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task ShouldSupportIgnoringIndentation(bool ignoreIndentation)
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(["a\n  b", "c\n  d", "e\n  f",]);
@@ -592,7 +592,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem("c\nd").IgnoringIndentation(ignoreIndentation).AtIndex(1);
 
-				await That(Act).Throws<XunitException>().OnlyIf(!ignoreIndentation)
+				await That(Act).Throws<FailException>().OnlyIf(!ignoreIndentation)
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "c\nd" at index 1,
@@ -607,9 +607,9 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task ShouldSupportIgnoringLeadingWhiteSpace(bool ignoreLeadingWhiteSpace)
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable([" foo", "\tbar", "baz",]);
@@ -617,7 +617,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem("bar").IgnoringLeadingWhiteSpace(ignoreLeadingWhiteSpace).AtIndex(1);
 
-				await That(Act).Throws<XunitException>().OnlyIf(!ignoreLeadingWhiteSpace)
+				await That(Act).Throws<FailException>().OnlyIf(!ignoreLeadingWhiteSpace)
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "bar" at index 1,
@@ -632,9 +632,9 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task ShouldSupportIgnoringNewlineStyle(bool ignoreNewlineStyle)
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(["a\nb", "c\nd", "e\nf",]);
@@ -642,7 +642,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem("c\r\nd").IgnoringNewlineStyle(ignoreNewlineStyle).AtIndex(1);
 
-				await That(Act).Throws<XunitException>().OnlyIf(!ignoreNewlineStyle)
+				await That(Act).Throws<FailException>().OnlyIf(!ignoreNewlineStyle)
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "c\r\nd" at index 1,
@@ -657,9 +657,9 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task ShouldSupportIgnoringTrailingWhiteSpace(bool ignoreTrailingWhiteSpace)
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(["foo ", "bar\t", "baz",]);
@@ -668,7 +668,7 @@ public sealed partial class ThatAsyncEnumerable
 					=> await That(subject).HasItem("bar").IgnoringTrailingWhiteSpace(ignoreTrailingWhiteSpace)
 						.AtIndex(1);
 
-				await That(Act).Throws<XunitException>().OnlyIf(!ignoreTrailingWhiteSpace)
+				await That(Act).Throws<FailException>().OnlyIf(!ignoreTrailingWhiteSpace)
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "bar" at index 1,
@@ -683,7 +683,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "bar", "c",]);
@@ -691,7 +691,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem("foo").AtIndex(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "foo" at index 2,
@@ -707,7 +707,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldSucceed()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "bar", "c",]);
@@ -718,7 +718,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsNoItemAtGivenIndex_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
@@ -726,7 +726,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem("c").AtIndex(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "c" at index 3,
@@ -741,7 +741,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldFail()
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(Array.Empty<string>());
@@ -749,7 +749,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "foo",
@@ -760,7 +760,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_WithAnyIndex_ShouldFail()
 			{
 				IAsyncEnumerable<string>? subject = null;
@@ -768,7 +768,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject!).HasItem("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "foo",
@@ -776,7 +776,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_WithFixedIndex_ShouldFail()
 			{
 				IAsyncEnumerable<string?>? subject = null;
@@ -784,7 +784,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject!).HasItem("bar").AtIndex(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "bar" at index 0,
@@ -792,7 +792,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCustomStringComparer_WhenItemsDoNotMatch_ShouldFail()
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);
@@ -800,7 +800,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem("BaR").Using(new IgnoreCaseForVocalsComparer()).AtIndex(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "BaR" using IgnoreCaseForVocalsComparer at index 1,
@@ -815,7 +815,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCustomStringComparer_WhenItemsMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);
@@ -826,7 +826,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithInvalidMatch_ShouldNotMatch()
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);
@@ -834,7 +834,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem("foo").WithInvalidMatch();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "foo" with invalid match,
@@ -848,7 +848,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMultipleFailures_ShouldIncludeCollectionOnlyOnce()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
@@ -857,7 +857,7 @@ public sealed partial class ThatAsyncEnumerable
 					=> await That(subject).HasItem("d").AtIndex(0).And.HasItem("e").AtIndex(1).And.HasItem("f")
 				;
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "d" at index 0 and has an item equal to "e" at index 1 and has an item equal to "f",
@@ -875,7 +875,7 @@ public sealed partial class ThatAsyncEnumerable
 
 		public sealed class EquivalentTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEquivalentItemIsFound_ShouldSucceed()
 			{
 				IAsyncEnumerable<MyClass> subject =
@@ -888,7 +888,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEquivalentItemIsNotFound_ShouldFail()
 			{
 				IAsyncEnumerable<MyClass> subject =
@@ -898,7 +898,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(expected).Equivalent();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equivalent to MyClass {
@@ -960,7 +960,7 @@ public sealed partial class ThatAsyncEnumerable
 
 		public sealed class UsingTests
 		{
-			[Fact]
+			[Test]
 			public async Task WithAllDifferentComparer_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = Factory.GetAsyncFibonacciNumbers(20);
@@ -968,7 +968,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(1).Using(new AllDifferentComparer());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to 1 using AllDifferentComparer,
@@ -991,7 +991,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAllEqualComparer_ShouldSucceed()
 			{
 				IAsyncEnumerable<int> subject = Factory.GetAsyncFibonacciNumbers(20);
@@ -1005,8 +1005,8 @@ public sealed partial class ThatAsyncEnumerable
 
 		public sealed class FromEndTests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail(int expected)
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, expected, 3, 4);
@@ -1014,7 +1014,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(expected - 1).AtIndexFromEnd(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has an item equal to {expected - 1} at index 2 from end,
@@ -1025,8 +1025,8 @@ public sealed partial class ThatAsyncEnumerable
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldSucceed(int expected)
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, expected, 3, 4);
@@ -1037,8 +1037,8 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenEnumerableContainsNoItemAtGivenIndex_ShouldFail(int expected)
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(expected, 3, 4);
@@ -1046,7 +1046,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(expected).AtIndexFromEnd(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has an item equal to {expected} at index 3 from end,
@@ -1057,8 +1057,8 @@ public sealed partial class ThatAsyncEnumerable
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenEnumerableIsEmpty_ShouldFail(int expected)
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
@@ -1066,7 +1066,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(expected).AtIndexFromEnd(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has an item equal to {expected} at index 0 from end,
@@ -1077,9 +1077,9 @@ public sealed partial class ThatAsyncEnumerable
 					              """);
 			}
 
-			[Theory]
-			[InlineData(-1)]
-			[InlineData(-10)]
+			[Test]
+			[Arguments(-1)]
+			[Arguments(-10)]
 			public async Task WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException(int index)
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
@@ -1092,7 +1092,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("The index must not be negative.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				int expected = 42;
@@ -1101,7 +1101,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject!).HasItem(expected).AtIndexFromEnd(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to 42 at index 0 from end,

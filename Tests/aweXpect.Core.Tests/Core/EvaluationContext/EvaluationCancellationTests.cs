@@ -11,7 +11,7 @@ namespace aweXpect.Core.Tests.Core.EvaluationContext;
 
 public class EvaluationCancellationTests
 {
-	[Fact]
+	[Test]
 	public async Task Cancellation_ShouldHaveTheTokenThatTheConstraintReceives()
 	{
 		CancellationCapturingConstraint constraint = new();
@@ -22,7 +22,7 @@ public class EvaluationCancellationTests
 			.Because("the token of the cancellation and the token parameter describe the same evaluation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Cancellation_WhenTestCancellationTimeoutIsShorter_ShouldUseItAsTimeout()
 	{
 		CancellationCapturingConstraint constraint = new();
@@ -36,7 +36,7 @@ public class EvaluationCancellationTests
 			.Because("the effective timeout is the tighter of WithTimeout and the TestCancellation timeout");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Cancellation_WhenWithTimeoutIsShorter_ShouldUseItAsTimeout()
 	{
 		CancellationCapturingConstraint constraint = new();
@@ -50,7 +50,7 @@ public class EvaluationCancellationTests
 			.Because("the effective timeout is the tighter of WithTimeout and the TestCancellation timeout");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Cancellation_WithoutTimeout_ShouldHaveNoTimeout()
 	{
 		CancellationCapturingConstraint constraint = new();
@@ -60,7 +60,7 @@ public class EvaluationCancellationTests
 		await That(constraint.Timeout).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasWaitElapsed_WhenTheCallerCanceled_ShouldBeFalse()
 	{
 		using CancellationTokenSource cts = new();
@@ -74,7 +74,7 @@ public class EvaluationCancellationTests
 		sut.Release();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasWaitElapsed_WhenTheCancellationCameAtTheEndOfTheWait_ShouldBeTrue()
 	{
 		using CancellationTokenSource cts = new();
@@ -87,7 +87,7 @@ public class EvaluationCancellationTests
 			.Because("the timers of the wait and of the cancellation do not share the clock of the stopwatch");
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasWaitElapsed_WhenTheTimeoutElapsedAndIsNotShorterThanTheWait_ShouldBeTrue()
 	{
 		EvaluationCancellation sut = new(10.Milliseconds(), CancellationToken.None);
@@ -100,7 +100,7 @@ public class EvaluationCancellationTests
 		sut.Release();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasWaitElapsed_WhenTheTimeoutElapsedAndIsShorterThanTheWait_ShouldBeFalse()
 	{
 		EvaluationCancellation sut = new(10.Milliseconds(), CancellationToken.None);
@@ -113,7 +113,7 @@ public class EvaluationCancellationTests
 		sut.Release();
 	}
 
-	[Fact]
+	[Test]
 	public async Task HasWaitElapsed_WhenTheWaitIsInfinite_ShouldBeFalse()
 	{
 		EvaluationCancellation sut = new(10.Milliseconds(), CancellationToken.None);
@@ -126,7 +126,7 @@ public class EvaluationCancellationTests
 		sut.Release();
 	}
 
-	[Fact]
+	[Test]
 	public async Task None_ShouldNotBeCanceledAndHaveNoTimeout()
 	{
 		EvaluationCancellation sut = EvaluationCancellation.None;
@@ -136,7 +136,7 @@ public class EvaluationCancellationTests
 		await That(sut.Reason).IsEqualTo(CancellationReason.None);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Reason_WhenTheCallerCanceled_ShouldBeCaller()
 	{
 		using CancellationTokenSource cts = new();
@@ -149,7 +149,7 @@ public class EvaluationCancellationTests
 		sut.Release();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Reason_WhenTheTimeoutElapsed_ShouldBeTimeout()
 	{
 		EvaluationCancellation sut = new(10.Milliseconds(), CancellationToken.None);
@@ -160,7 +160,7 @@ public class EvaluationCancellationTests
 		sut.Release();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Reason_WhenTheTimeoutElapsedAndTheCallerCanceled_ShouldBeCaller()
 	{
 		using CancellationTokenSource cts = new();
@@ -174,7 +174,7 @@ public class EvaluationCancellationTests
 		sut.Release();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Reason_WithoutCancellation_ShouldBeNone()
 	{
 		EvaluationCancellation sut = new(10.Seconds(), CancellationToken.None);

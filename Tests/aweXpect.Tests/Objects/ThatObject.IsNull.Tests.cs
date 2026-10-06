@@ -6,7 +6,7 @@ public sealed partial class ThatObject
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMultiLineStringIsVerifiedInThatAll_ShouldEscapeIt()
 			{
 				object subject = "a\nb";
@@ -14,7 +14,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await ThatAll(That(subject).IsNull());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected all of the following to succeed:
 					              [01] Expected that subject is null
@@ -24,7 +24,7 @@ public sealed partial class ThatObject
 					.Because("a raw line break would continue the value at the start of the next line");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsAMultiLineString_ShouldEscapeItLikeAStringSubject()
 			{
 				object subject = "say \"hi\"\nbye";
@@ -32,7 +32,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNull();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is null,
@@ -41,7 +41,7 @@ public sealed partial class ThatObject
 					.Because("a string held by an object is formatted like the subject of a string expectation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
 				object? subject = null;
@@ -52,7 +52,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsObject_ShouldFail()
 			{
 				object subject = new MyClass();
@@ -61,7 +61,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsNull()
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is null, because we want to test the failure,
@@ -74,7 +74,7 @@ public sealed partial class ThatObject
 
 		public sealed class StructTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
 				int? subject = null;
@@ -85,7 +85,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsObject_ShouldFail()
 			{
 				int? subject = 1;
@@ -94,7 +94,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsNull()
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is null, because we want to test the failure,

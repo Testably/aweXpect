@@ -13,10 +13,10 @@ namespace aweXpect.Core.Tests.Core.Nodes;
 
 public class AsyncMappingNodeTests
 {
-	[Theory]
-	[InlineData(" that ", "whose bar", "foo whose bar")]
-	[InlineData(" that ", "is bar", "foo that is bar")]
-	[InlineData(" whose value ", "whose bar", "foo whose value whose bar")]
+	[Test]
+	[Arguments(" that ", "whose bar", "foo whose bar")]
+	[Arguments(" that ", "is bar", "foo that is bar")]
+	[Arguments(" whose value ", "whose bar", "foo whose value whose bar")]
 	public async Task AppendExpectation_WhenMemberTextEndsWithThat_ShouldOnlyDropItBeforeWhose(
 		string memberText, string memberExpectation, string expectedExpectation)
 	{
@@ -37,7 +37,7 @@ public class AsyncMappingNodeTests
 			.Because("the result path has to apply the same which/whose rule as the node path");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfMemberAccessorsAreDifferent_ShouldBeFalse()
 	{
 		MappingNode<string, int, int> node1 = new(
@@ -51,7 +51,7 @@ public class AsyncMappingNodeTests
 		await That(node1.GetHashCode()).IsNotEqualTo(node2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfMemberAccessorsAreSame_ShouldBeTrue()
 	{
 		MappingNode<string, int, int> node1 = new(
@@ -65,7 +65,7 @@ public class AsyncMappingNodeTests
 		await That(node1.GetHashCode()).IsEqualTo(node2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_WhenOtherIsDifferentNode_ShouldBeFalse()
 	{
 		MappingNode<string, int, int> node = new(
@@ -78,7 +78,7 @@ public class AsyncMappingNodeTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_WhenOtherIsNull_ShouldBeFalse()
 	{
 		MappingNode<string, int, int> node = new(
@@ -89,7 +89,7 @@ public class AsyncMappingNodeTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_ShouldUseInnerConstraintWithOuterValue()
 	{
 		MappingNode<string, int, int> node =
@@ -107,7 +107,7 @@ public class AsyncMappingNodeTests
 		await That(value).IsEqualTo("foobar");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenAbandonedMemberFaultsLater_ShouldNotRaiseUnobservedTaskException()
 	{
 		NotSupportedException exception = new("foo");
@@ -136,7 +136,7 @@ public class AsyncMappingNodeTests
 			.Because("the exception of an abandoned member task must be observed, as nobody else awaits it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenMemberFaults_ShouldFailWithoutEvaluatingMemberConstraints()
 	{
 		NotSupportedException exception = new("foo");
@@ -153,7 +153,7 @@ public class AsyncMappingNodeTests
 		await That(sb.ToString()).IsEqualTo("yeah!");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenMemberFaults_WhenNegated_ShouldNegateExpectationAndStillFail()
 	{
 		MappingNode<string, int, int> node = new(MemberAccessor<string, Task<int>>.FromFunc(
@@ -169,7 +169,7 @@ public class AsyncMappingNodeTests
 		await That(sb.ToString()).IsEqualTo("not yeah!");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenMemberNeverCompletes_ShouldAbortOnCancellation()
 	{
 		MappingNode<string, int, int> node = new(MemberAccessor<string, Task<int>>.FromFunc(
@@ -185,7 +185,7 @@ public class AsyncMappingNodeTests
 		await That(awaitEvaluation).Throws<OperationCanceledException>();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenMemberReturnsNullTask_ShouldFailWithoutEvaluatingMemberConstraints()
 	{
 		MappingNode<string, int, int> node =
@@ -203,7 +203,7 @@ public class AsyncMappingNodeTests
 		await That(result.GetResultText()).IsEqualTo("length returned <null> instead of a task");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenMemberReturnsNullTask_WhenNegated_ShouldNegateExpectationAndStillFail()
 	{
 		MappingNode<string, int, int> node =
@@ -221,7 +221,7 @@ public class AsyncMappingNodeTests
 		await That(negated.GetResultText()).IsEqualTo("length returned <null> instead of a task");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithInvalidType_ShouldNotApplyTheMemberExpectations()
 	{
 		MappingNode<string, int, int> node =
@@ -235,7 +235,7 @@ public class AsyncMappingNodeTests
 		await That(result.GetResultText()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithNullDelegate_ShouldReturnNullFailure()
 	{
 		DelegateValue<string?> value = new("foo", null, 10.Milliseconds(), true);
@@ -252,7 +252,7 @@ public class AsyncMappingNodeTests
 		await That(result.GetResultText()).IsEqualTo("it was <null>");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithNullValue_ShouldReturnNullFailure()
 	{
 		MappingNode<string?, int?, int?> node =
@@ -268,7 +268,7 @@ public class AsyncMappingNodeTests
 		await That(result.GetResultText()).IsEqualTo("it was <null>");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithNullValue_WhenNegated_ShouldNegateExpectationAndStillFail()
 	{
 		MappingNode<string?, int?, int?> node =
@@ -285,7 +285,7 @@ public class AsyncMappingNodeTests
 		await That(negated.GetResultText()).IsEqualTo("it was <null>");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberCompletesWithinTheTimeout_ShouldSucceed()
 	{
 		string subject = "foo";
@@ -299,7 +299,7 @@ public class AsyncMappingNodeTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberDoesNotFinishWithinTheTimeout_ShouldFailWithTheTimeout()
 	{
 		string subject = "foo";
@@ -310,7 +310,7 @@ public class AsyncMappingNodeTests
 					length => length.IsEqualTo(3))
 				.WithTimeout(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             length is equal to 3,
@@ -321,7 +321,7 @@ public class AsyncMappingNodeTests
 			.Because("the timeout must abandon a member task that never finishes, and report it like any other timeout");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberFaultsWithSeveralExceptions_ShouldListTheOtherExceptions()
 	{
 		string subject = "foo";
@@ -331,7 +331,7 @@ public class AsyncMappingNodeTests
 				_ => FaultWithSeveralExceptions(),
 				length => length.IsEqualTo(3));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             length is equal to 3,
@@ -346,7 +346,7 @@ public class AsyncMappingNodeTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenMemberThrowsWithinTheTimeout_ShouldFail()
 	{
 		string subject = "foo";
@@ -358,7 +358,7 @@ public class AsyncMappingNodeTests
 					length => length.IsEqualTo(3))
 				.WithTimeout(5.Seconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             length is equal to 3,
@@ -368,7 +368,7 @@ public class AsyncMappingNodeTests
 			.WithInner<NotSupportedException>(inner => inner.HasMessage("member failed"));
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNegated_WithValidation_AndFailingMemberExpectation_ShouldSucceed()
 	{
 		string subject = "foo";
@@ -379,7 +379,7 @@ public class AsyncMappingNodeTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNegated_WithValidation_ShouldNegateValidation()
 	{
 		string subject = "foo";
@@ -387,7 +387,7 @@ public class AsyncMappingNodeTests
 		async Task Act()
 			=> await That(subject).DoesNotComplyWith(it => HasLength(it, length => length.IsEqualTo(3)));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             does not have a length which is equal to 3,

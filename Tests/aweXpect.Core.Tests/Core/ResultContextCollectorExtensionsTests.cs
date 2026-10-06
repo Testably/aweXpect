@@ -14,7 +14,7 @@ namespace aweXpect.Core.Tests.Core;
 
 public sealed class ResultContextCollectorExtensionsTests
 {
-	[Fact]
+	[Test]
 	public async Task AddCollectionContext_ShouldListTheItemsLikeTheBuiltInExpectations()
 	{
 		int[] subject = [1, 2, 3,];
@@ -22,7 +22,7 @@ public sealed class ResultContextCollectorExtensionsTests
 		async Task Act()
 			=> await That(subject).ShowsContexts((contexts, actual, _) => contexts.AddCollectionContext(actual));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             shows contexts,
@@ -35,7 +35,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			.Because("the context is the same as the one of the built-in expectations");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddCollectionContext_Untyped_ShouldListTheItemsLikeTheBuiltInExpectations()
 	{
 		IEnumerable subject = new ArrayList { 1, 2, 3, };
@@ -43,7 +43,7 @@ public sealed class ResultContextCollectorExtensionsTests
 		async Task Act()
 			=> await That(subject).ShowsContexts((contexts, actual, _) => contexts.AddCollectionContext(actual));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             shows contexts,
@@ -56,7 +56,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			.Because("the context is the same as the one of the built-in expectations");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddCollectionContext_WhenIncomplete_ShouldMarkTheItemsAsIncomplete()
 	{
 		int[] subject = [1, 2, 3,];
@@ -65,7 +65,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			=> await That(subject).ShowsContexts((contexts, actual, _)
 				=> contexts.AddCollectionContext(actual, true));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             shows contexts,
@@ -76,7 +76,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddCollectionContext_WhenMaterializedItemsDidNotReachTheEnd_ShouldListThemAsIncomplete()
 	{
 		MaterializedEnumerable subject = new([1, 2,]);
@@ -85,7 +85,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			=> await That(subject).ShowsContexts((contexts, actual, _)
 				=> contexts.AddCollectionContext<int>(actual));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             shows contexts,
@@ -96,7 +96,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddCollectionContext_WhenNull_ShouldNotAddAContext()
 	{
 		int[] subject = [1, 2, 3,];
@@ -105,7 +105,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			=> await That(subject).ShowsContexts((contexts, _, _)
 				=> contexts.AddCollectionContext((IEnumerable<int>?)null));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             shows contexts,
@@ -114,7 +114,7 @@ public sealed class ResultContextCollectorExtensionsTests
 	}
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task AddCollectionContext_WithMaterializedAsyncEnumerable_ShouldListTheReceivedItems()
 	{
 		MaterializedAsyncEnumerable subject = new([1, 2,]);
@@ -123,7 +123,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			=> await That(subject).ShowsContexts((contexts, actual, _)
 				=> contexts.AddCollectionContext<int>(actual));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             shows contexts,
@@ -135,7 +135,7 @@ public sealed class ResultContextCollectorExtensionsTests
 	}
 #endif
 
-	[Fact]
+	[Test]
 	public async Task AddCollectionContext_WithTotalCount_ShouldNameTheItemsThatAreNotListed()
 	{
 		int[] subject = [1, 2, 3,];
@@ -144,7 +144,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			=> await That(subject).ShowsContexts((contexts, _, _)
 				=> contexts.AddCollectionContext(Enumerable.Range(1, 11).ToList(), totalCount: 20));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             shows contexts,
@@ -167,7 +167,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddDictionaryContext_ShouldListTheEntriesLikeTheBuiltInExpectations()
 	{
 		Dictionary<string, int> subject = new()
@@ -179,7 +179,7 @@ public sealed class ResultContextCollectorExtensionsTests
 		async Task Act()
 			=> await That(subject).ShowsContexts((contexts, actual, _) => contexts.AddDictionaryContext(actual));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             shows contexts,
@@ -192,7 +192,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			.Because("the context is the same as the one of the built-in expectations");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddDictionaryContext_WhenAlsoACollectionContextIsAdded_ShouldComeAfterIt()
 	{
 		Dictionary<string, int> subject = new()
@@ -207,7 +207,7 @@ public sealed class ResultContextCollectorExtensionsTests
 				contexts.AddCollectionContext(actual.Values);
 			});
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             shows contexts,
@@ -221,7 +221,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddEqualityOptionsContexts_ShouldAddTheContextsOfTheMatchType()
 	{
 		ObjectEqualityOptions<int> options = new();
@@ -230,7 +230,7 @@ public sealed class ResultContextCollectorExtensionsTests
 		async Task Act()
 			=> await That(1).ShowsContexts((contexts, _, _) => contexts.AddEqualityOptionsContexts(options));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that 1
 			             shows contexts,
@@ -241,7 +241,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddEqualityOptionsContexts_WhenTheMatchTypeHasNoContexts_ShouldNotAddAContext()
 	{
 		ObjectEqualityOptions<int> options = new();
@@ -249,7 +249,7 @@ public sealed class ResultContextCollectorExtensionsTests
 		async Task Act()
 			=> await That(1).ShowsContexts((contexts, _, _) => contexts.AddEqualityOptionsContexts(options));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that 1
 			             shows contexts,
@@ -257,7 +257,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddEquivalencyContext_ShouldListTheOptionsLikeTheBuiltInExpectations()
 	{
 		int subject = 1;
@@ -266,7 +266,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			=> await That(subject).ShowsContexts((contexts, _, _)
 				=> contexts.AddEquivalencyContext(new EquivalencyOptions()));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             shows contexts,
@@ -279,7 +279,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			.Because("the context is the same as the one of the built-in expectations");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddExpectedValuesContext_ShouldListTheValuesLikeTheBuiltInExpectations()
 	{
 		int subject = 1;
@@ -289,7 +289,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			=> await That(subject).ShowsContexts((contexts, _, result)
 				=> contexts.AddExpectedValuesContext("values", values, result.Grammars));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             shows contexts,
@@ -302,7 +302,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			.Because("the context is the same as the one of the built-in expectations");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddExpectedValuesContext_WhenNegated_ShouldListTheUnexpectedValuesLikeTheBuiltInExpectations()
 	{
 		int subject = 2;
@@ -312,7 +312,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			=> await That(subject).DoesNotComplyWith(it => it.ShowsContexts((contexts, _, result)
 				=> contexts.AddExpectedValuesContext("values", values, result.Grammars), true));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             does not show contexts,
@@ -325,14 +325,14 @@ public sealed class ResultContextCollectorExtensionsTests
 			.Because("the context is the same as the one of the built-in expectations");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddExpectedValuesContext_WhenTheExpressionIsNull_ShouldNotAddAContext()
 	{
 		async Task Act()
 			=> await That(1).ShowsContexts((contexts, _, result)
 				=> contexts.AddExpectedValuesContext(null, [2, 3,], result.Grammars));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that 1
 			             shows contexts,
@@ -340,7 +340,7 @@ public sealed class ResultContextCollectorExtensionsTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddStringContext_ShouldShowTheFullValuesLikeTheBuiltInExpectations()
 	{
 		string subject = new('a', 101);
@@ -353,7 +353,7 @@ public sealed class ResultContextCollectorExtensionsTests
 				contexts.AddStringContext("Expected", expected, result);
 			});
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that subject
 			              shows contexts,
@@ -369,16 +369,16 @@ public sealed class ResultContextCollectorExtensionsTests
 			.Because("the contexts are the same as the ones of the built-in expectations");
 	}
 
-	[Theory]
-	[InlineData("")]
-	[InlineData(null)]
+	[Test]
+	[Arguments("")]
+	[Arguments(null)]
 	public async Task AddStringContext_WhenEmpty_ShouldNotAddAContext(string? value)
 	{
 		async Task Act()
 			=> await That(1).ShowsContexts((contexts, _, result)
 				=> contexts.AddStringContext("Value", value, result));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that 1
 			             shows contexts,
@@ -386,14 +386,14 @@ public sealed class ResultContextCollectorExtensionsTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddStringContext_WhenTheMessageShowsTheValueCompletely_ShouldNotAddAContext()
 	{
 		async Task Act()
 			=> await That("foo").ShowsContexts((contexts, _, result)
 				=> contexts.AddStringContext("Expected", "bar", result), expectation: "is \"bar\"");
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that "foo"
 			             is "bar",
@@ -408,7 +408,7 @@ public sealed class ResultContextCollectorExtensionsTests
 		{
 			await act();
 		}
-		catch (XunitException exception)
+		catch (FailException exception)
 		{
 			int index = exception.Message.IndexOf(separator, StringComparison.Ordinal);
 			return index < 0 ? "" : exception.Message.Substring(index + separator.Length);

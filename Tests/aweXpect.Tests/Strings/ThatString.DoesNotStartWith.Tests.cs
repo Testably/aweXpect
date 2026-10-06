@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task IgnoringCase_WhenSubjectDoesNotStartWithWithExpected_ShouldSucceed()
 			{
 				string subject = "some text";
@@ -18,7 +18,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringCase_WhenSubjectDoesStartWithExpected_ShouldFail()
 			{
 				string subject = "some text";
@@ -27,7 +27,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotStartWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not start with "some",
@@ -35,7 +35,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				IgnoringTrailingWhiteSpace_WhenPrefixEndsWithWhiteSpaceInsideTheSubject_ShouldSucceed()
 			{
@@ -48,7 +48,7 @@ public sealed partial class ThatString
 					.Because("only whitespace at the end of the subject is ignored, not the space the prefix requires inside it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				Using_WhenSubjectDoesNotStartWithWithExpected_ShouldSucceed()
 			{
@@ -62,7 +62,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				Using_WhenSubjectDoesStartWithExpected_ShouldFail()
 			{
@@ -73,7 +73,7 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotStartWith(expected)
 						.Using(new IgnoreCaseForVocalsComparer());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not start with "sOmE" using IgnoreCaseForVocalsComparer,
@@ -81,7 +81,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "text";
@@ -95,7 +95,7 @@ public sealed partial class ThatString
 					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsWhiteSpaceAndLeadingWhiteSpaceIsIgnored_ShouldThrowArgumentException()
 			{
 				string subject = " text";
@@ -109,7 +109,7 @@ public sealed partial class ThatString
 					.Because("the prefix is empty once the leading whitespace is ignored");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectDoesNotStartWithExpected_ShouldSucceed()
 			{
 				string subject = "some text";
@@ -121,7 +121,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectDoesStartWithExpected_ShouldFail()
 			{
 				string subject = "some text";
@@ -130,7 +130,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotStartWith(expected).IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not start with "SOME" ignoring case,
@@ -138,7 +138,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsEqualToExpected_ShouldFail()
 			{
 				string subject = "some text";
@@ -147,7 +147,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotStartWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not start with "some text",
@@ -155,7 +155,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -164,7 +164,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotStartWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not start with "text",

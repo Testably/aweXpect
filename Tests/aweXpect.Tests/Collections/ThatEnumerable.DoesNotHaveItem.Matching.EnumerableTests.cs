@@ -12,7 +12,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class EnumerablePredicateTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsMatchingItemAtGivenIndex_ShouldFail()
 				{
 					IEnumerable subject = new[]
@@ -23,7 +23,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().Matching(_ => true).AtIndex(2);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              does not have an item matching _ => true at index 2,
@@ -34,7 +34,7 @@ public sealed partial class ThatEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableHasFewerItemsThanTheGivenIndex_ShouldSucceed()
 				{
 					IEnumerable subject = new[]
@@ -48,7 +48,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable? subject = null;
@@ -56,7 +56,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().Matching(_ => true).AtIndex(0);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have an item matching _ => true at index 0,
@@ -67,7 +67,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class EnumerableGenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenTypeDoesNotMatchAtGivenIndex_ShouldSucceed()
 				{
 					IEnumerable subject = new object[]
@@ -81,7 +81,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeMatchesAtGivenIndex_ShouldFail()
 				{
 					IEnumerable subject = new object[]
@@ -92,7 +92,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().Matching<int>().AtIndex(1);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have an item of type int at index 1,
@@ -109,7 +109,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class EnumerableGenericPredicateTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenItemOfTypeMatchesAtGivenIndex_ShouldFail()
 				{
 					IEnumerable subject = new object[]
@@ -120,7 +120,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().Matching<int>(x => x == 1).AtIndex(1);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have an item of type int matching x => x == 1 at index 1,
@@ -134,7 +134,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenPredicateDoesNotMatch_ShouldSucceed()
 				{
 					IEnumerable subject = new object[]

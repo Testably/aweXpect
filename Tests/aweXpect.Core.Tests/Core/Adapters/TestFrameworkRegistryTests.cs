@@ -5,7 +5,7 @@ namespace aweXpect.Core.Tests.Core.Adapters;
 
 public sealed class TestFrameworkRegistryTests
 {
-	[Fact]
+	[Test]
 	public async Task Add_WhenAdapterIsNotAvailable_ShouldBeIgnored()
 	{
 		TestFrameworkRegistry.Registration registration = new();
@@ -16,7 +16,7 @@ public sealed class TestFrameworkRegistryTests
 			.Because("an unavailable adapter cannot report test results");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Add_WhenNotOverwriting_ShouldKeepTheFirstAdapter()
 	{
 		TestFrameworkRegistry.Registration registration = new();
@@ -30,7 +30,7 @@ public sealed class TestFrameworkRegistryTests
 			.Because("two generated registrations must resolve deterministically");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Add_WhenNotOverwriting_ShouldNotReplaceAnExplicitlyRegisteredAdapter()
 	{
 		TestFrameworkRegistry.Registration registration = new();
@@ -43,7 +43,7 @@ public sealed class TestFrameworkRegistryTests
 			.Because("a generated registration must never win over an explicit one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Add_WhenOverwriting_ShouldReplaceAGeneratedAdapter()
 	{
 		TestFrameworkRegistry.Registration registration = new();
@@ -56,7 +56,7 @@ public sealed class TestFrameworkRegistryTests
 			.Because("an explicit registration must win, even though the module initializer ran first");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Add_WhenUnavailableAdapterWasRegisteredBefore_ShouldUseTheAvailableAdapter()
 	{
 		TestFrameworkRegistry.Registration registration = new();
@@ -68,7 +68,7 @@ public sealed class TestFrameworkRegistryTests
 		await That(registration.TestFrameworkAdapter).IsSameAs(available);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Add_WithNullAdapter_ShouldThrowArgumentNullException()
 	{
 		TestFrameworkRegistry.Registration registration = new();
@@ -79,7 +79,7 @@ public sealed class TestFrameworkRegistryTests
 			.WithParamName("testFrameworkAdapter");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TestFrameworkAdapter_WhenNothingIsRegistered_ShouldBeNull()
 	{
 		TestFrameworkRegistry.Registration registration = new();

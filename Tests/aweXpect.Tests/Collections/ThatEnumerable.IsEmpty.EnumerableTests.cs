@@ -10,7 +10,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class EnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task DoesNotMaterializeEnumerable()
 			{
 				IEnumerable subject = Factory.GetFibonacciNumbers();
@@ -18,7 +18,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is empty,
@@ -38,7 +38,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldCallEnumeratorOnlyOnce()
 			{
 				IEnumerable subject = new ThrowWhenIteratingTwiceEnumerable();
@@ -46,7 +46,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is empty,
@@ -56,7 +56,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenArrayContainsValues_ShouldFail()
 			{
 				IEnumerable subject = new[]
@@ -67,7 +67,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is empty,
@@ -77,7 +77,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenArrayIsEmpty_ShouldSucceed()
 			{
 				IEnumerable subject = Array.Empty<object>();
@@ -88,7 +88,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsValues_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 1, 2,]);
@@ -96,7 +96,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is empty,
@@ -108,7 +108,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable((int[]) []);
@@ -119,7 +119,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable? subject = null;
@@ -127,7 +127,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is empty,

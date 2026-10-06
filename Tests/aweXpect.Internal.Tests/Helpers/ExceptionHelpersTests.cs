@@ -6,7 +6,7 @@ namespace aweXpect.Internal.Tests.Helpers;
 
 public class ExceptionHelpersTests
 {
-	[Fact]
+	[Test]
 	public async Task GetInnerExceptions_WhenNull_ShouldBeEmpty()
 	{
 		Exception? exception = null;
@@ -16,7 +16,7 @@ public class ExceptionHelpersTests
 		await That(result).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithoutNullElements_WhenCollectionContainsNull_ShouldThrowAtTheCall()
 	{
 		string[] parameter = ["a", null!,];
@@ -29,7 +29,7 @@ public class ExceptionHelpersTests
 			.WithMessage("The 'parameter' collection cannot contain <null>.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithoutNullElements_WhenCollectionHasNoNull_ShouldReturnTheSameInstance()
 	{
 		string[] parameter = ["a", "b",];
@@ -39,7 +39,7 @@ public class ExceptionHelpersTests
 		await That(result).IsSameAs(parameter);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithoutNullElements_WhenCollectionOfALessSpecificTypeContainsNull_ShouldThrowAtTheCall()
 	{
 		List<Action<object>> list = [_ => { }, null!,];
@@ -52,9 +52,9 @@ public class ExceptionHelpersTests
 			.WithParamName("parameter");
 	}
 
-	[Theory]
-	[InlineData(false, "expected")]
-	[InlineData(true, "unexpected")]
+	[Test]
+	[Arguments(false, "expected")]
+	[Arguments(true, "unexpected")]
 	public async Task WithoutNullElements_WhenNegated_ShouldNameTheParameterAfterThePolarity(bool negated,
 		string expectedParamName)
 	{
@@ -68,7 +68,7 @@ public class ExceptionHelpersTests
 			.WithMessage($"The '{expectedParamName}' collection cannot contain <null>.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithoutNullElements_WhenNull_ShouldReturnNull()
 	{
 		IEnumerable<string>? parameter = null;
@@ -78,7 +78,7 @@ public class ExceptionHelpersTests
 		await That(result).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithoutNullElements_WhenSequenceContainsNull_ShouldOnlyThrowWhenTheNullIsEnumerated()
 	{
 		int enumerations = 0;
@@ -104,7 +104,7 @@ public class ExceptionHelpersTests
 			.WithMessage("The 'unexpected' collection cannot contain <null>.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithoutNullElements_WhenSequenceHasNoNull_ShouldEnumerateItOncePerEnumeration()
 	{
 		int enumerations = 0;

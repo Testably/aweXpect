@@ -10,7 +10,7 @@ namespace aweXpect.Internal.Tests.Options;
 
 public class RepeatedCheckOptionsTests
 {
-	[Fact]
+	[Test]
 	public async Task CheckEvery_WhenIntervalIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		RepeatedCheckOptions sut = new();
@@ -23,7 +23,7 @@ public class RepeatedCheckOptionsTests
 			.Because("the second interval would silently replace the first one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CheckEvery_WhenTheDefaultIntervalWasRead_ShouldNotThrow()
 	{
 		RepeatedCheckOptions sut = new();
@@ -36,7 +36,7 @@ public class RepeatedCheckOptionsTests
 		await That(sut.Interval).IsEqualTo(20.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WhenIntervalIsNotPositive_ShouldYieldBetweenChecks()
 	{
 		RepeatedCheckOptions sut = new();
@@ -60,7 +60,7 @@ public class RepeatedCheckOptionsTests
 		await That(await result).IsEqualTo(Outcome.Success).WithTimeout(10.Seconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Interval_ShouldReadTheCurrentDefaultEachTime()
 	{
 		RepeatedCheckOptions sut = new();
@@ -80,7 +80,7 @@ public class RepeatedCheckOptionsTests
 			.Because("a re-evaluated expectation uses the default of its current evaluation, like Eventually() does");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToString_WhenTimeoutIsNotSpecified_ShouldBeEmpty()
 	{
 		RepeatedCheckOptions sut = new();
@@ -90,7 +90,7 @@ public class RepeatedCheckOptionsTests
 		await That(result).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToString_WhenTimeoutIsZero_ShouldIncludeTheTimeout()
 	{
 		RepeatedCheckOptions sut = new();
@@ -102,7 +102,7 @@ public class RepeatedCheckOptionsTests
 			.Because("an explicit timeout is named like on a signaler, even when it is zero");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_WhenTimeoutIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		RepeatedCheckOptions sut = new();

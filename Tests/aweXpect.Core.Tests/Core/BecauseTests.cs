@@ -4,7 +4,7 @@ namespace aweXpect.Core.Tests.Core;
 
 public class BecauseTests
 {
-	[Fact]
+	[Test]
 	public async Task ActionDelegate_ShouldApplyAsyncBecauseReason()
 	{
 		string because = "this is the reason";
@@ -19,7 +19,7 @@ public class BecauseTests
 		await That(Act).Throws().WithMessage($"*{because}*").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ActionDelegate_ShouldApplyBecauseReason()
 	{
 		string because = "this is the reason";
@@ -33,10 +33,10 @@ public class BecauseTests
 		await That(Act).Throws().WithMessage($"*{because}*").AsWildcard();
 	}
 
-	[Theory]
-	[InlineData(null)]
-	[InlineData("")]
-	[InlineData("  ")]
+	[Test]
+	[Arguments(null)]
+	[Arguments("")]
+	[Arguments("  ")]
 	public async Task ActionDelegate_WhenAsyncReasonIsNullOrWhitespace_ShouldNotIncludeBecause(string? because)
 	{
 		Task<string?> becauseTask = Task.FromResult(because);
@@ -51,10 +51,10 @@ public class BecauseTests
 		await That(exception.Message).DoesNotContain("because");
 	}
 
-	[Theory]
-	[InlineData(null)]
-	[InlineData("")]
-	[InlineData("  ")]
+	[Test]
+	[Arguments(null)]
+	[Arguments("")]
+	[Arguments("  ")]
 	public async Task ActionDelegate_WhenReasonIsNullOrWhitespace_ShouldNotIncludeBecause(string? because)
 	{
 		Action subject = () => throw new MyException();
@@ -68,7 +68,7 @@ public class BecauseTests
 		await That(exception.Message).DoesNotContain("because");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ASpecifiedAsyncBecauseReason_ShouldBeIncludedInMessage()
 	{
 		Task<string?> becauseTask = Task.FromResult<string?>("I want to test an async 'because'");
@@ -87,7 +87,7 @@ public class BecauseTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ASpecifiedBecauseReason_ShouldBeIncludedInMessage()
 	{
 		string because = "I want to test 'because'";
@@ -101,7 +101,7 @@ public class BecauseTests
 		await That(Act).Throws().WithMessage($"*{because}*").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task FuncDelegate_ShouldApplyAsyncBecauseReason()
 	{
 		string because = "this is the reason";
@@ -116,7 +116,7 @@ public class BecauseTests
 		await That(Act).Throws().WithMessage($"*{because}*").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task FuncDelegate_ShouldApplyBecauseReason()
 	{
 		string because = "this is the reason";
@@ -130,10 +130,10 @@ public class BecauseTests
 		await That(Act).Throws().WithMessage($"*{because}*").AsWildcard();
 	}
 
-	[Theory]
-	[InlineData("we prefix the reason", "because we prefix the reason")]
-	[InlineData("  we ignore whitespace", "because we ignore whitespace")]
-	[InlineData("because we honor a leading 'because'", "because we honor a leading 'because'")]
+	[Test]
+	[Arguments("we prefix the reason", "because we prefix the reason")]
+	[Arguments("  we ignore whitespace", "because we ignore whitespace")]
+	[Arguments("because we honor a leading 'because'", "because we honor a leading 'because'")]
 	public async Task ShouldPrefixReasonWithBecause(string because, string expectedWithPrefix)
 	{
 		bool subject = true;
@@ -147,7 +147,7 @@ public class BecauseTests
 			.AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenApplyBecauseReasonMultipleTimes_ShouldNotOverwritePreviousReason()
 	{
 		string because1 = "this is the first reason";
@@ -163,7 +163,7 @@ public class BecauseTests
 		await That(Act).Throws().WithMessage($"*{because1}*").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAsyncReasonIsCancelled_ShouldStillReportTheAssertionFailure()
 	{
 		TaskCompletionSource<string?> becauseSource = new();
@@ -183,10 +183,10 @@ public class BecauseTests
 			             """).AsWildcard();
 	}
 
-	[Theory]
-	[InlineData(null)]
-	[InlineData("")]
-	[InlineData("  ")]
+	[Test]
+	[Arguments(null)]
+	[Arguments("")]
+	[Arguments("  ")]
 	public async Task WhenAsyncReasonIsNullOrWhitespace_ShouldNotIncludeBecause(string? because)
 	{
 		Task<string?> becauseTask = Task.FromResult(because);
@@ -205,7 +205,7 @@ public class BecauseTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAsyncReasonIsSlow_WhenExpectationIsMet_ShouldNotAwaitTheReason()
 	{
 		bool reasonWasResolved = false;
@@ -221,7 +221,7 @@ public class BecauseTests
 			.Because("a met expectation never builds a failure message, so it must not wait for the reason");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAsyncReasonThrows_WhenExpectationFails_ShouldEscapeLineBreaksInTheMessage()
 	{
 		Task<string?> becauseTask = Task.FromException<string?>(new MyException("the reason provider\nis broken"));
@@ -241,7 +241,7 @@ public class BecauseTests
 			.Because("the reason must stay on the line of the expectation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAsyncReasonThrows_WhenExpectationFails_ShouldStillReportTheAssertionFailure()
 	{
 		Task<string?> becauseTask = Task.FromException<string?>(new MyException("the reason provider is broken"));
@@ -260,7 +260,7 @@ public class BecauseTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAsyncReasonThrows_WhenExpectationIsMet_ShouldNotThrow()
 	{
 		Task<string?> becauseTask = Task.FromException<string?>(new MyException("the reason provider is broken"));
@@ -273,7 +273,7 @@ public class BecauseTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCombinedWithWhichContinuation_ShouldAppendReasonAfterTheContinuation()
 	{
 		Action subject = () => throw new MyException("foo");
@@ -299,7 +299,7 @@ public class BecauseTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCombineWithAnd_ShouldAppendReasonAfterAllConstraints()
 	{
 		string because = "we append it after all constraints";
@@ -319,7 +319,7 @@ public class BecauseTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCombineWithAnd_ShouldApplyBecauseReason()
 	{
 		string because1 = "this is the first reason";
@@ -335,7 +335,7 @@ public class BecauseTests
 		await That(Act).Throws().WithMessage($"*{because2}*").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCombineWithAnd_WithReasonOnEachConstraint_ShouldAppendAllReasonsInOrder()
 	{
 		bool subject = true;
@@ -354,7 +354,7 @@ public class BecauseTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCombineWithOr_ShouldAppendReasonAfterAllConstraints()
 	{
 		bool subject = true;
@@ -373,7 +373,7 @@ public class BecauseTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCombineWithOr_ShouldApplyBecauseReason()
 	{
 		string because1 = "this is the first reason";
@@ -390,7 +390,7 @@ public class BecauseTests
 			.AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNoBecauseReasonIsGiven_ShouldNotIncludeBecause()
 	{
 		bool subject = true;
@@ -408,10 +408,10 @@ public class BecauseTests
 			             """);
 	}
 
-	[Theory]
-	[InlineData(null)]
-	[InlineData("")]
-	[InlineData("  ")]
+	[Test]
+	[Arguments(null)]
+	[Arguments("")]
+	[Arguments("  ")]
 	public async Task WhenReasonIsNullOrWhitespace_ShouldNotIncludeBecause(string? because)
 	{
 		bool subject = true;
@@ -429,7 +429,7 @@ public class BecauseTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenReasonStartsWithBecause_ShouldHonorExistingPrefix()
 	{
 		string because = "because we honor a leading 'because'";
@@ -445,7 +445,7 @@ public class BecauseTests
 		await That(exception.Message).DoesNotContain("because because");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenUsedInExpectThatAll_ShouldAppendReasonToEachExpectation()
 	{
 		async Task Act()

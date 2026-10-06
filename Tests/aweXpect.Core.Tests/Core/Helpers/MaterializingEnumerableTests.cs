@@ -8,7 +8,7 @@ namespace aweXpect.Core.Tests.Core.Helpers;
 
 public class MaterializingEnumerableTests
 {
-	[Fact]
+	[Test]
 	public async Task ReleaseSource_ShouldOnlyReplayTheItemsReadSoFar()
 	{
 		MaterializingEnumerable<int> materialized =
@@ -24,7 +24,7 @@ public class MaterializingEnumerableTests
 			.Because("it is unknown how many items the released source has");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ReleaseSource_WhenCompletelyIterated_ShouldNotDisposeTheSourceAgain()
 	{
 		DisposeTrackingEnumerable source = new(null, 1, 2);
@@ -37,7 +37,7 @@ public class MaterializingEnumerableTests
 		await That(source.DisposeCount).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ReleaseSource_WhenDisposingTheSourceThrows_ShouldNotThrow()
 	{
 		DisposeTrackingEnumerable source = new(null, 1, 2)
@@ -55,7 +55,7 @@ public class MaterializingEnumerableTests
 		await That(source.DisposeCount).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ReleaseSource_WhenPartiallyRead_ShouldDisposeTheSourceOnce()
 	{
 		DisposeTrackingEnumerable source = new(null, 1, 2);
@@ -69,7 +69,7 @@ public class MaterializingEnumerableTests
 		await That(source.DisposeCount).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Untyped_ReleaseSource_WhenPartiallyRead_ShouldDisposeTheSourceOnce()
 	{
 		DisposeTrackingEnumerable source = new(null, 1, 2);
@@ -86,7 +86,7 @@ public class MaterializingEnumerableTests
 			.Because("the released source must not be read any further");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Untyped_WhenEnumeratedWhileEnumerating_ShouldYieldAllItemsToBoth()
 	{
 		IEnumerable materialized = MaterializingEnumerable.Wrap(new UntypedEnumerable(ToEnumerable([1, 1, 2,])));
@@ -107,7 +107,7 @@ public class MaterializingEnumerableTests
 		await That(inner).IsEqualTo([1, 1, 2,]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Untyped_WhenSourceThrows_ShouldDisposeTheSourceOnce()
 	{
 		DisposeTrackingEnumerable source = new(new InvalidOperationException("the source is broken"), 1);
@@ -124,7 +124,7 @@ public class MaterializingEnumerableTests
 			.Because("a source that threw is not advanced again, so it is released right away");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCompletelyIterated_ShouldDisposeTheSourceOnce()
 	{
 		DisposeTrackingEnumerable source = new(null, 1, 2);
@@ -141,7 +141,7 @@ public class MaterializingEnumerableTests
 		await That(result).IsEqualTo([1, 2,]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEnumeratedWhileEnumerating_ShouldYieldAllItemsToBoth()
 	{
 		IEnumerable<int> materialized = MaterializingEnumerable<int>.Wrap(ToEnumerable([1, 1, 2,]));
@@ -162,7 +162,7 @@ public class MaterializingEnumerableTests
 		await That(inner).IsEqualTo([1, 1, 2,]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEnumeratedWhileReplaying_ShouldYieldAllItemsToBoth()
 	{
 		IEnumerable<int> materialized = MaterializingEnumerable<int>.Wrap(ToEnumerable([1, 1, 2,]));
@@ -184,7 +184,7 @@ public class MaterializingEnumerableTests
 		await That(inner).IsEqualTo([1, 1, 2,]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenIterating_ShouldReturnAllValues()
 	{
 		IEnumerable<int> enumerable = ToEnumerable([1, 2, 3,]);
@@ -196,7 +196,7 @@ public class MaterializingEnumerableTests
 		await That(result).IsEqualTo([1, 2, 3,]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSourceThrows_ShouldDisposeTheSourceOnce()
 	{
 		DisposeTrackingEnumerable source = new(new InvalidOperationException("the source is broken"), 1);
@@ -214,7 +214,7 @@ public class MaterializingEnumerableTests
 			.Because("a source that threw is not advanced again, so it is released right away");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSourceThrows_ShouldThrowTheSameUserCodeExceptionAgain()
 	{
 		InvalidOperationException exception = new("the source is broken");
@@ -249,7 +249,7 @@ public class MaterializingEnumerableTests
 			.Because("every further enumeration throws the exception of the source again");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Wrap_ForCollection_ShouldUseCollection()
 	{
 		List<int> collection = new();
@@ -259,7 +259,7 @@ public class MaterializingEnumerableTests
 		await That(enumerable).IsSameAs(collection);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Wrap_Twice_ShouldUseSameInstance()
 	{
 		IEnumerable<int> enumerable = ToEnumerable([1, 2, 3,]);

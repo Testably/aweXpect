@@ -6,8 +6,8 @@ public sealed partial class ThatException
 	{
 		public sealed class ContinuationTests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ShouldSupportTheComparisonVocabulary(int hResult)
 			{
 				Exception subject = new HResultException(hResult);
@@ -18,8 +18,8 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenHResultIsDifferent_ShouldRenderLikeTheShorthand(int hResult)
 			{
 				int expectedHResult = hResult + 1;
@@ -28,7 +28,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasHResult().EqualTo(expectedHResult);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has HResult equal to {expectedHResult},
@@ -37,8 +37,8 @@ public sealed partial class ThatException
 					.Because("the continuation renders exactly like the HasHResult(expected) shorthand");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenNested_ShouldReadAsAStatementAboutTheProperty(int hResult)
 			{
 				int expectedHResult = hResult + 1;
@@ -47,7 +47,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasInner(e => e.HasHResult(expectedHResult));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has an inner exception whose HResult is equal to {expectedHResult},
@@ -58,8 +58,8 @@ public sealed partial class ThatException
 
 		public sealed class Tests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenHResultIsDifferent_ShouldFail(int hResult)
 			{
 				int expectedHResult = hResult + 1;
@@ -68,7 +68,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasHResult(expectedHResult);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has HResult equal to {expectedHResult},
@@ -76,8 +76,8 @@ public sealed partial class ThatException
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenHResultMatchesExpected_ShouldSucceed(int hResult)
 			{
 				Exception subject = new HResultException(hResult);
@@ -88,7 +88,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HResultException? subject = null;
@@ -96,7 +96,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasHResult(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has HResult equal to 1,
@@ -107,8 +107,8 @@ public sealed partial class ThatException
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenHResultIsDifferent_ShouldSucceed(int hResult)
 			{
 				int expectedHResult = hResult + 1;
@@ -120,8 +120,8 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenHResultMatchesExpected_ShouldFail(int hResult)
 			{
 				Exception subject = new HResultException(hResult);
@@ -129,7 +129,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(e => e.HasHResult(hResult));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have HResult equal to {hResult},

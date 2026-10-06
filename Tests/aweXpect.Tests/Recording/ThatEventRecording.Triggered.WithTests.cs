@@ -9,7 +9,7 @@ public sealed partial class ThatEventRecording
 	{
 		public sealed class WithTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsTriggeredBySomethingElse_ShouldFail()
 			{
 				PropertyChangedClass sut = new()
@@ -24,7 +24,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).Triggered(nameof(INotifyPropertyChanged.PropertyChanged))
 						.With<PropertyChangedEventArgs>(e => e.PropertyName == "SomethingElse");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut with PropertyChangedEventArgs e => e.PropertyName == "SomethingElse" at least once,
@@ -38,7 +38,7 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsTriggeredByTheExpectedSender_ShouldSucceed()
 			{
 				PropertyChangedClass sut = new()
@@ -56,7 +56,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_WhenNegatedWithinTimeout_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("predicate failed");
@@ -70,7 +70,7 @@ public sealed partial class ThatEventRecording
 						.With<PropertyChangedEventArgs>(_ => throw exception)
 						.Within(10.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has never recorded the PropertyChanged event on sut with PropertyChangedEventArgs _ => throw exception within 0:10,
@@ -81,7 +81,7 @@ public sealed partial class ThatEventRecording
 					.Because("a predicate that threw answered nothing, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_WithinTimeout_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("predicate failed");
@@ -95,7 +95,7 @@ public sealed partial class ThatEventRecording
 						.With<PropertyChangedEventArgs>(_ => throw exception)
 						.Within(10.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut with PropertyChangedEventArgs _ => throw exception at least once within 0:10,
@@ -105,7 +105,7 @@ public sealed partial class ThatEventRecording
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCustomEvent_WhenEventArgsAreFirstParameter_ShouldFail()
 			{
 				CustomEventWithParametersClass<EventArgs> sut = new();
@@ -117,7 +117,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).Triggered(nameof(CustomEventWithParametersClass<EventArgs>.CustomEvent))
 						.With<PropertyChangedEventArgs>(e => e.PropertyName == "foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut with PropertyChangedEventArgs e => e.PropertyName == "foo" at least once,

@@ -12,7 +12,7 @@ public sealed partial class ThatAsyncEnumerable
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ConsidersCancellationToken()
 			{
 				using CancellationTokenSource cts = new();
@@ -22,7 +22,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).All().ComplyWith(item => item.IsLessThan(6)).WithCancellation(token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that subject
 					             is less than 6 for all items,
@@ -30,7 +30,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """).AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task DoesNotEnumerateTwice()
 			{
 				ThrowWhenIteratingTwiceAsyncEnumerable subject = new();
@@ -42,7 +42,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task DoesNotMaterializeEnumerable()
 			{
 				IAsyncEnumerable<int> subject = Factory.GetAsyncFibonacciNumbers();
@@ -50,7 +50,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).All().ComplyWith(item => item.IsEqualTo(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for all items,
@@ -58,7 +58,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """).AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsDifferentValues_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 1, 1, 2, 2, 3);
@@ -66,7 +66,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).All().ComplyWith(item => item.IsEqualTo(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for all items,
@@ -74,7 +74,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """).AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldSucceed()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
@@ -85,7 +85,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableOnlyContainsEqualValues_ShouldSucceed()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 1, 1, 1, 1, 1);
@@ -96,7 +96,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IAsyncEnumerable<int>? subject = null;
@@ -104,7 +104,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).All().ComplyWith(item => item.IsEqualTo(0));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 0 for all items,

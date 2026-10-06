@@ -49,7 +49,7 @@ public sealed class CollectionExpectationGeneratorTests
 
 	                              """;
 
-	[Fact]
+	[Test]
 	public async Task PerSubject_ShouldEmitEachExistingKindWithItsConstraintsPriorityAndRemarks()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -82,7 +82,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).Contains("///     Shared declaring type.").Once();
 	}
 
-	[Fact]
+	[Test]
 	public async Task PerSubject_ShouldPutThePrimaryConstraintFirstWhicheverSideContributesIt()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -109,7 +109,7 @@ public sealed class CollectionExpectationGeneratorTests
 			.Because("the kind contributes the interface and the helper the primary constraint");
 	}
 
-	[Fact]
+	[Test]
 	public async Task PerSubject_WhenKindIsAStruct_ShouldNotMakeItNullable()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -139,7 +139,7 @@ public sealed class CollectionExpectationGeneratorTests
 			.Once();
 	}
 
-	[Fact]
+	[Test]
 	public async Task PerSubject_WhenTheCollectionEnumeratesAnElement_ShouldTakeItForTheKind()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -168,7 +168,7 @@ public sealed class CollectionExpectationGeneratorTests
 			.Contains("IsEqualToCore<global::System.Collections.Immutable.ImmutableArray<TItem>, TItem>(").Once();
 	}
 
-	[Fact]
+	[Test]
 	public async Task PerSubject_WhenTheHelperFixesAReferenceTypeOfTheKind_ShouldEmitItWithoutAnnotations()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -197,7 +197,7 @@ public sealed class CollectionExpectationGeneratorTests
 			.DoesNotContain("string? expected");
 	}
 
-	[Fact]
+	[Test]
 	public async Task PerSubject_WhenTheHelperFixesATypeArgumentOfTheKind_ShouldBindIt()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -226,7 +226,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).Contains("where TKey : notnull").Once();
 	}
 
-	[Fact]
+	[Test]
 	public async Task PerSubject_WhenTheItemIsAReferenceType_ShouldEmitItWithoutAnnotations()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -258,7 +258,7 @@ public sealed class CollectionExpectationGeneratorTests
 			.DoesNotContain("string?[]");
 	}
 
-	[Fact]
+	[Test]
 	public async Task PerSubject_WhenTheItemIsATypeParameter_ShouldKeepTheAnnotations()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -282,7 +282,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).Contains("TItem? expected").Once();
 	}
 
-	[Fact]
+	[Test]
 	public async Task PerSubject_WithFactory_ShouldBindTheTypeArgumentsOfTheKind()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -318,7 +318,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).Contains("where TKey : notnull").Once();
 	}
 
-	[Fact]
+	[Test]
 	public async Task PerSubject_WithoutCollectionSubjects_ShouldReport()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -341,7 +341,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).DoesNotContain("HasItem<");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldEmitBothPolaritiesFromTheHelperSignature()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -372,7 +372,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).Contains("///     Does not match.");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNegatedNameEqualsTheName_ShouldReportAndEmitOnlyThePositiveOverload()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -396,7 +396,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).Contains("Contains<TItem>(").Once();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheConstraintIsANullableClass_ShouldKeepTheAnnotation()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -420,7 +420,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).Contains("where T : class?").Once();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheExpectedCollectionHasNoExpressionParameter_ShouldReport()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -444,7 +444,7 @@ public sealed class CollectionExpectationGeneratorTests
 			.Because("only the declaration without params takes the expected collection as one argument");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheFactoryHasNoCreateMethod_ShouldReport()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -473,7 +473,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).DoesNotContain("IsEqualTo(");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheHelperIsOnlyTouched_ShouldReuseTheCachedOutput()
 	{
 		const string helper = """
@@ -504,7 +504,7 @@ public sealed class CollectionExpectationGeneratorTests
 			.Because("the re-created family equals the previous one, so nothing is re-emitted");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheHelperWithAProblemIsOnlyTouched_ShouldReuseTheCachedOutput()
 	{
 		const string helper = """
@@ -538,7 +538,7 @@ public sealed class CollectionExpectationGeneratorTests
 			.Because("the problem keeps only the position of its location, not the syntax tree that every edit replaces");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithFactory_ShouldFillTheParameterOfTheReturnTypeAndBindWhatItNames()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -577,7 +577,7 @@ public sealed class CollectionExpectationGeneratorTests
 			.Because("a non-nullable element has nothing to cast up");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithFactory_ShouldInstantiateEachElementTypeAndCastUpTheNonNullableExpected()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -615,7 +615,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).DoesNotContain("??");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithFactory_ShouldOnlyUseCreateMethodsThatFillAParameterAfterTheExpectedOne()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -654,7 +654,7 @@ public sealed class CollectionExpectationGeneratorTests
 			.Because("the expected parameter is not filled by the factory");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithFactory_WhenExpectedIsANullableParamsArray_ShouldNotCastUp()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -686,7 +686,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).DoesNotContain("CastingEnumerable");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithFactory_WhenExpectedIsASingleNullableValue_ShouldNotCastUp()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -719,7 +719,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).DoesNotContain("CastingEnumerable");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithFactory_WhenTheExpectedElementIsNotTheFilledItem_ShouldNotCastUp()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -750,7 +750,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).DoesNotContain("CastingEnumerable");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithFactory_WhenTheHelperTakesNoExpectedValue_ShouldNotTakeTheFilledParameterForOne()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -794,7 +794,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).Contains("global::Lib.Factory.CreateInt()").Exactly(3);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithFactory_WhenTypeParameterIsConstrainedToStruct_ShouldKeepNullableOfIt()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -822,7 +822,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).Contains("IThat<double?>").Once();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithKeyAndValue_ShouldTakeTheKeyAndTheValueAndPassThePair()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -854,7 +854,7 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).DoesNotContain("KeyValuePair<TKey, TValue> expected");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithNegatedReturnType_ShouldDeclareItOnlyOnTheNegatedOverload()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -890,7 +890,7 @@ public sealed class CollectionExpectationGeneratorTests
 			.Because("the negated overload hands out the base type and the nullable subject keeps its annotation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithoutSummary_ShouldWarn()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -915,7 +915,7 @@ public sealed class CollectionExpectationGeneratorTests
 			                x.GetMessage().Contains("'IsNotEqualTo' has no NegatedSummary"));
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithParams_ShouldTakeAnArrayAndPassNoExpression()
 	{
 		GeneratorRunner.GeneratorResult result = Run(

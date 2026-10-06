@@ -7,7 +7,7 @@ public sealed partial class ThatTimeOnly
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedAreMaxValue_ShouldSucceed()
 			{
 				TimeOnly subject = TimeOnly.MaxValue;
@@ -19,7 +19,7 @@ public sealed partial class ThatTimeOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedAreMinValue_ShouldSucceed()
 			{
 				TimeOnly subject = TimeOnly.MinValue;
@@ -31,7 +31,7 @@ public sealed partial class ThatTimeOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsEarlier_ShouldFail()
 			{
 				TimeOnly subject = EarlierTime();
@@ -40,7 +40,7 @@ public sealed partial class ThatTimeOnly
 				async Task Act()
 					=> await That(subject).IsNotBefore(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not before {Formatter.Format(unexpected)},
@@ -48,7 +48,7 @@ public sealed partial class ThatTimeOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsSame_ShouldSucceed()
 			{
 				TimeOnly subject = CurrentTime();
@@ -60,7 +60,7 @@ public sealed partial class ThatTimeOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectsIsLater_ShouldSucceed()
 			{
 				TimeOnly subject = LaterTime();
@@ -72,7 +72,7 @@ public sealed partial class ThatTimeOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsNull_ShouldFail()
 			{
 				TimeOnly subject = CurrentTime();
@@ -82,7 +82,7 @@ public sealed partial class ThatTimeOnly
 					=> await That(subject).IsNotBefore(unexpected)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not before <null>, because we want to test the failure,
@@ -90,7 +90,7 @@ public sealed partial class ThatTimeOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenNullableUnexpectedValueIsOutsideTheTolerance_ShouldFail()
 			{
 				TimeOnly subject = CurrentTime();
@@ -101,7 +101,7 @@ public sealed partial class ThatTimeOnly
 						.Within(3.Seconds())
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not before {Formatter.Format(unexpected)} ± 0:03, because we want to test the failure,
@@ -109,7 +109,7 @@ public sealed partial class ThatTimeOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenToleranceWouldWrapAroundMidnight_ShouldFail()
 			{
 				TimeOnly subject = new(23, 30);
@@ -119,7 +119,7 @@ public sealed partial class ThatTimeOnly
 					=> await That(subject).IsNotBefore(unexpected)
 						.Within(1.Hours());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not before {Formatter.Format(unexpected)} ± 1:00:00,
@@ -128,7 +128,7 @@ public sealed partial class ThatTimeOnly
 					.Because("the ordering does not wrap around midnight, so the tolerance extends the unnegated expectation to every time on that side");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail()
 			{
 				TimeOnly subject = EarlierTime(4);
@@ -138,7 +138,7 @@ public sealed partial class ThatTimeOnly
 					=> await That(subject).IsNotBefore(unexpected)
 						.Within(3.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not before {Formatter.Format(unexpected)} ± 0:03,
@@ -146,7 +146,7 @@ public sealed partial class ThatTimeOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenValuesAreWithinTheTolerance_ShouldFail()
 			{
 				TimeOnly subject = LaterTime(2);
@@ -156,7 +156,7 @@ public sealed partial class ThatTimeOnly
 					=> await That(subject).IsNotBefore(unexpected)
 						.Within(3.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not before {Formatter.Format(unexpected)} ± 0:03,

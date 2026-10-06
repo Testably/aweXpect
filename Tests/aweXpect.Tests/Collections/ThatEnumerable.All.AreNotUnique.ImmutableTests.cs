@@ -11,7 +11,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class ImmutableArrayTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldUseCustomComparer()
 				{
 					ImmutableArray<int> subject = [1, 1, 1,];
@@ -19,7 +19,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreNotUnique().Using(new AllDifferentComparer());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not unique using AllDifferentComparer for all items,
@@ -33,7 +33,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsAreDuplicated_ShouldSucceed()
 				{
 					ImmutableArray<int> subject = [1, 2, 1, 2,];
@@ -44,7 +44,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSomeItemsAreUnique_ShouldFail()
 				{
 					ImmutableArray<int> subject = [1, 2, 1, 3,];
@@ -52,7 +52,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreNotUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not unique for all items,
@@ -69,7 +69,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class ImmutableArrayMemberTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllMembersAreDuplicated_ShouldSucceed()
 				{
 					ImmutableArray<MyClass> subject = [new MyClass(1), new MyClass(2), new MyClass(1),
@@ -82,7 +82,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAllStringMembersAreDuplicated_ShouldSucceed()
 				{
 					ImmutableArray<MyClass> subject = [new MyClass(1, "a"), new MyClass(2, "a"),];
@@ -96,7 +96,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class ImmutableArrayStringTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldUseCustomComparer()
 				{
 					ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -107,7 +107,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsAreDuplicated_ShouldSucceed()
 				{
 					ImmutableArray<string?> subject = ["a", "b", "a", "b",];
@@ -118,7 +118,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAllMembersAreDuplicated_ShouldSucceed()
 				{
 					ImmutableArray<string?> subject = ["a", "b", "cc", "dd",];
@@ -129,7 +129,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAllStringMembersAreDuplicated_ShouldSucceed()
 				{
 					ImmutableArray<string?> subject = ["a", "A",];
@@ -140,7 +140,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDiffersInCasingAndCasingIsIgnored_ShouldSucceed()
 				{
 					ImmutableArray<string?> subject = ["a", "A",];

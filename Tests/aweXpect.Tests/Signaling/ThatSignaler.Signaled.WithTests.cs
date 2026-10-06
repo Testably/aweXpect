@@ -9,7 +9,7 @@ public sealed partial class ThatSignaler
 	{
 		public sealed class WithTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenApplyingMultiplePredicates_ShouldVerifyAll()
 			{
 				Signaler<int> signaler = new();
@@ -23,7 +23,7 @@ public sealed partial class ThatSignaler
 						.With(p => p > 1).With(p => p < 3)
 						.Within(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least twice with p => p > 1 and with p => p < 3 within 0:00.050,
@@ -36,7 +36,7 @@ public sealed partial class ThatSignaler
 					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggeredOftenEnoughMatchingPredicate_ShouldFail()
 			{
 				Signaler<int> signaler = new();
@@ -49,7 +49,7 @@ public sealed partial class ThatSignaler
 						.With(p => p > 1)
 						.Within(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least twice with p => p > 1 within 0:00.050,
@@ -61,7 +61,7 @@ public sealed partial class ThatSignaler
 					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 			{
 				Signaler<int> signaler = new();
@@ -74,7 +74,7 @@ public sealed partial class ThatSignaler
 					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrowsWhileSignaling_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("predicate failed");
@@ -99,7 +99,7 @@ public sealed partial class ThatSignaler
 					await That(signaler).Signaled().With(p => p == 2 ? throw exception : false)
 						.Within(10.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once with p => p == 2 ? throw exception : false within 0:10,
@@ -111,7 +111,7 @@ public sealed partial class ThatSignaler
 					.Because("the predicate runs on the thread of the code under test, which must not receive its exception");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrowsWhileSignaling_WhenNegated_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("predicate failed");
@@ -128,7 +128,7 @@ public sealed partial class ThatSignaler
 					await That(signaler).DidNotSignal().With(p => p == 2 ? throw exception : false)
 						.Within(10.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has never recorded the callback with p => p == 2 ? throw exception : false within 0:10,
@@ -139,7 +139,7 @@ public sealed partial class ThatSignaler
 					.Because("a predicate that threw answered nothing, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggeredMoreOftenMatchingPredicate_ShouldSucceed()
 			{
 				Signaler<int> signaler = new();
@@ -160,7 +160,7 @@ public sealed partial class ThatSignaler
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggeredOftenEnoughMatchingPredicate_ShouldSucceed()
 			{
 				Signaler<int> signaler = new();

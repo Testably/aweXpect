@@ -8,7 +8,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class SetTests
 		{
-			[Fact]
+			[Test]
 			public async Task Using_ShouldOverrideTheComparerOfTheSet()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
@@ -19,7 +19,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSetContainsTheItemsAccordingToItsComparer_ShouldFail()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
@@ -27,7 +27,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(["B", "A",]).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection ["B", "A",] using the subject's StringComparer.OrdinalIgnoreCase in any order,

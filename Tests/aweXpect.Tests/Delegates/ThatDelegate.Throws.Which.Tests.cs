@@ -8,8 +8,8 @@ public sealed partial class ThatDelegate
 		{
 			public sealed class Tests
 			{
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task ShouldGiveAccessToThrowsException(int hResult)
 				{
 					Exception exception = new HResultException(hResult);
@@ -22,8 +22,8 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task ShouldIncludeWhichInErrorMessage(int hResult)
 				{
 					int expectedHResult = hResult + 1;
@@ -34,7 +34,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws()
 							.Which.Whose(e => e.HResult, h => h.IsEqualTo(expectedHResult));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws an exception whose HResult is equal to {expectedHResult},
@@ -45,7 +45,7 @@ public sealed partial class ThatDelegate
 
 			public sealed class GenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldGiveAccessToThrowsException()
 				{
 					MyException exception = new();
@@ -58,7 +58,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIncludeWhichInErrorMessage()
 				{
 					MyException exception = new();
@@ -68,7 +68,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws<MyException>()
 							.Which.Whose(h => h.Message, r => r.IsEqualTo("foo"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that Delegate
 						             throws a MyException whose Message is equal to "foo",
@@ -80,7 +80,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportWhichSatisfies()
 				{
 					MyException exception = new();

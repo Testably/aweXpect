@@ -12,7 +12,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExactlyTheExpectedNumberOfItemsIsOfType_ShouldSucceed()
 				{
 					IEnumerable<object> subject = ToEnumerable<object>(1, "a", 2);
@@ -23,7 +23,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemsOnlyInheritFromType_ShouldFail()
 				{
 					IEnumerable<object> subject = ToEnumerable<object>(1, "a", 2);
@@ -31,7 +31,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).Exactly(2).AreExactly<ValueType>();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type ValueType for exactly 2 items,
@@ -46,7 +46,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable<object>? subject = null;
@@ -54,7 +54,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).Exactly(2).AreExactly<int>();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type int for exactly 2 items,
@@ -62,7 +62,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTooManyItemsAreOfType_ShouldFail()
 				{
 					IEnumerable<object> subject = ToEnumerable<object>(1, "a", 2);
@@ -70,7 +70,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).Exactly(1).AreExactly<int>();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type int for exactly one item,
@@ -89,7 +89,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExactlyTheExpectedNumberOfItemsIsOfType_ShouldFail()
 				{
 					IEnumerable<object> subject = ToEnumerable<object>(1, "a", 2);
@@ -97,7 +97,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.Exactly(2).AreExactly<int>());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type int for not exactly 2 items,
@@ -112,7 +112,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTooManyItemsAreOfType_ShouldSucceed()
 				{
 					IEnumerable<object> subject = ToEnumerable<object>(1, "a", 2);

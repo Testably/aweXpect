@@ -6,7 +6,7 @@ public sealed partial class ThatBool
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFalse_ShouldSucceed()
 			{
 				bool subject = false;
@@ -17,7 +17,7 @@ public sealed partial class ThatBool
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTaskFails_ShouldFailWithExceptionMessage()
 			{
 				Task<bool> subject = Task.FromException<bool>(
@@ -26,7 +26,7 @@ public sealed partial class ThatBool
 				async Task Act()
 					=> await That(subject).IsFalse().Because("the exception should be logged");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is False, because the exception should be logged,
@@ -35,7 +35,7 @@ public sealed partial class ThatBool
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTrue_ShouldFail()
 			{
 				bool subject = true;
@@ -43,7 +43,7 @@ public sealed partial class ThatBool
 				async Task Act()
 					=> await That(subject).IsFalse();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is False,
@@ -51,7 +51,7 @@ public sealed partial class ThatBool
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTrue_ShouldFailWithDescriptiveMessage()
 			{
 				bool subject = true;
@@ -59,7 +59,7 @@ public sealed partial class ThatBool
 				async Task Act()
 					=> await That(subject).IsFalse().Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is False, because we want to test the failure,

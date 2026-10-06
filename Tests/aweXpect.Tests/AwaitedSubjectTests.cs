@@ -5,7 +5,7 @@ namespace aweXpect.Tests;
 
 public sealed class AwaitedSubjectTests
 {
-	[Fact]
+	[Test]
 	public async Task ForCollection_HasItem_ShouldReturnTheNotNullSubject()
 	{
 		IEnumerable<int>? subject = [1, 2, 3,];
@@ -15,7 +15,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsSameAs(subject);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForException_HasMessage_ShouldReturnTheNotNullSubject()
 	{
 		Exception? subject = new("foo");
@@ -25,7 +25,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsSameAs(subject);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForNullableBool_IsNotNull_ShouldReturnTheNotNullSubject()
 	{
 		bool? subject = true;
@@ -35,7 +35,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForNullableBool_IsTrue_ShouldReturnTheNotNullSubject()
 	{
 		bool? subject = true;
@@ -45,7 +45,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForNullableChar_IsADigit_ShouldReturnTheNotNullSubject()
 	{
 		char? subject = '1';
@@ -55,7 +55,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsEqualTo('1');
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForNullableDateTime_HasYear_ShouldReturnTheNotNullSubject()
 	{
 		DateTime? subject = new(2010, 11, 12);
@@ -65,7 +65,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsEqualTo(subject);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForNullableDateTime_IsAfter_ShouldReturnTheNotNullSubject()
 	{
 		DateTime? subject = new(2010, 11, 12);
@@ -75,7 +75,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsEqualTo(subject);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForNullableEnum_HasValue_ShouldReturnTheNotNullSubject()
 	{
 		DayOfWeek? subject = DayOfWeek.Monday;
@@ -85,7 +85,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsEqualTo(DayOfWeek.Monday);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForNullableNumber_IsBetween_ShouldReturnTheNotNullSubject()
 	{
 		int? subject = 1;
@@ -95,7 +95,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForNullableNumber_IsGreaterThan_ShouldReturnTheNotNullSubject()
 	{
 		int? subject = 1;
@@ -105,7 +105,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForNullableNumber_IsGreaterThanOrEqualTo_ShouldReturnTheNotNullSubject()
 	{
 		int? subject = 1;
@@ -115,7 +115,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForNullableNumber_IsLessThan_ShouldReturnTheNotNullSubject()
 	{
 		int? subject = 1;
@@ -125,7 +125,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForNullableNumber_IsLessThanOrEqualTo_ShouldReturnTheNotNullSubject()
 	{
 		int? subject = 1;
@@ -135,7 +135,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForNullableNumber_IsNotBetween_ShouldReturnTheNotNullSubject()
 	{
 		int? subject = 1;
@@ -145,7 +145,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForNullableNumber_IsNotGreaterThan_ShouldReturnTheNotNullSubject()
 	{
 		int? subject = 1;
@@ -155,7 +155,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForNullableNumber_IsPositive_ShouldReturnTheNotNullSubject()
 	{
 		int? subject = 1;
@@ -165,7 +165,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForStream_IsReadable_ShouldReturnTheNotNullSubject()
 	{
 		using MemoryStream stream = new();
@@ -176,7 +176,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsSameAs(subject);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForString_IsLowerCased_ShouldReturnTheNotNullSubject()
 	{
 		string? subject = "abc";
@@ -186,7 +186,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsSameAs(subject);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForString_StartsWith_ShouldReturnTheNotNullSubject()
 	{
 		string? subject = "abc";
@@ -196,7 +196,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsSameAs(subject);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForVersion_HasMajor_ShouldReturnTheNotNullSubject()
 	{
 		Version? subject = new(1, 2, 3);
@@ -206,7 +206,7 @@ public sealed class AwaitedSubjectTests
 		await That(result).IsSameAs(subject);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_ShouldReturnTheNotNullSubject()
 	{
 		string? subject = "abc";

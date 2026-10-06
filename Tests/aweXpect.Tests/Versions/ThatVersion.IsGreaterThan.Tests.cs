@@ -6,7 +6,7 @@ public sealed partial class ThatVersion
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_AndNegated_ShouldFail()
 			{
 				Version? subject = new(1, 2);
@@ -15,7 +15,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsGreaterThan(expected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not greater than <null>,
@@ -24,7 +24,7 @@ public sealed partial class ThatVersion
 					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Version? subject = new(1, 2);
@@ -33,7 +33,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than <null>,
@@ -41,7 +41,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsGreater_ShouldSucceed()
 			{
 				Version? subject = new(2, 0);
@@ -53,7 +53,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsLess_ShouldFail()
 			{
 				Version? subject = new(1, 2);
@@ -63,7 +63,7 @@ public sealed partial class ThatVersion
 					=> await That(subject).IsGreaterThan(expected)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 2.0, because we want to test the failure,
@@ -71,7 +71,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -79,7 +79,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsGreaterThan(new Version(1, 2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 1.2,
@@ -87,7 +87,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsTheSame_ShouldFail()
 			{
 				Version? subject = new(1, 2, 3, 4);
@@ -96,7 +96,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 1.2.3.4,
@@ -104,7 +104,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectOmitsAComponentOfExpected_ShouldFail()
 			{
 				Version? subject = new(1, 2);
@@ -113,7 +113,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 1.2.0,

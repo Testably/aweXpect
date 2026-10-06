@@ -6,9 +6,9 @@ public sealed partial class ThatString
 	{
 		public sealed class AsRegexTests
 		{
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task WhenIgnoringCase_ShouldIgnoreCase(
 				bool ignoreCase)
 			{
@@ -27,7 +27,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
 			{
 				string subject = new('a', 30);
@@ -43,7 +43,7 @@ public sealed partial class ThatString
 					.Because("a pattern that cannot be evaluated says nothing about the subject in either polarity");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternIsAnchoredToALineOfTheSubject_ShouldSucceed()
 			{
 				string subject = "a\nb";
@@ -55,7 +55,7 @@ public sealed partial class ThatString
 					.Because("'^' and '$' bind to the complete subject, which is more than the matched line");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "some message";
@@ -69,7 +69,7 @@ public sealed partial class ThatString
 					.Because("an empty pattern matches every subject, so the expectation could never succeed");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "some message";
@@ -83,7 +83,7 @@ public sealed partial class ThatString
 					.Because("a missing pattern matches no subject, so the negated expectation could never fail");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternIsNullAndSubjectIsNull_ShouldThrowArgumentNullException()
 			{
 				string? subject = null;
@@ -97,7 +97,7 @@ public sealed partial class ThatString
 					.Because("the missing pattern is a setup error that outranks the null subject");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -105,7 +105,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(".*").AsRegex();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not match regex ".*",

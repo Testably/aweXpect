@@ -12,7 +12,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenFewEnoughItemsAreEquivalent_ShouldSucceed()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 1, 2, 3,]);
@@ -23,7 +23,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable<int>? subject = null;
@@ -31,7 +31,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).AtMost(2).AreEquivalentTo(1);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to 1 for at most 2 items,
@@ -42,7 +42,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTooManyItemsAreEquivalent_ShouldFail()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 1, 1, 2,]);
@@ -50,7 +50,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).AtMost(2).AreEquivalentTo(1);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to 1 for at most 2 items,
@@ -70,7 +70,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenFewEnoughItemsAreEquivalent_ShouldFail()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 1, 2, 3,]);
@@ -78,7 +78,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.AtMost(2).AreEquivalentTo(1));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to 1 for more than 2 items,
@@ -95,7 +95,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTooManyItemsAreEquivalent_ShouldSucceed()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 1, 1, 2,]);

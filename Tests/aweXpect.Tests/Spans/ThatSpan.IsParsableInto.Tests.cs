@@ -9,13 +9,13 @@ public sealed partial class ThatSpan
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task InAndChain_WhenLaterOperandsFail_ShouldExplainEachOfThem()
 			{
 				async Task Act()
 					=> await That("5".AsSpan()).IsParsableInto<int>().And.IsParsableInto<Guid>().And.IsParsableInto<DateTime>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that "5".AsSpan()
 					             is parsable into int and is parsable into Guid and is parsable into DateTime,
@@ -27,13 +27,13 @@ public sealed partial class ThatSpan
 					.Because("a successful parse must not hide the failing operands that follow it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task InOr_WhenBothOperandsFail_ShouldExplainBoth()
 			{
 				async Task Act()
 					=> await That("abc".AsSpan()).IsParsableInto<int>().Or.IsParsableInto<Guid>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that "abc".AsSpan()
 					             is parsable into int or is parsable into Guid,
@@ -45,13 +45,13 @@ public sealed partial class ThatSpan
 					.Because("each alternative failed on its own, so both explain the failure");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSpanIsNotParsable_ShouldFail()
 			{
 				async Task Act()
 					=> await That("abc".AsSpan()).IsParsableInto<int>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that "abc".AsSpan()
 					             is parsable into int,
@@ -62,7 +62,7 @@ public sealed partial class ThatSpan
 					.Because("the exception of the parser tells why the span is not parsable");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSpanIsParsable_ShouldSucceed()
 			{
 				async Task Act()
@@ -71,9 +71,9 @@ public sealed partial class ThatSpan
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("-12.34", "de-AT")]
-			[InlineData("-12,34", "en-US")]
+			[Test]
+			[Arguments("-12.34", "de-AT")]
+			[Arguments("-12,34", "en-US")]
 			public async Task WithFormatProvider_WhenFormatDoesNotMatch_ShouldFail(string subject, string cultureName)
 			{
 				IFormatProvider formatProvider = new CultureInfo(cultureName);
@@ -81,7 +81,7 @@ public sealed partial class ThatSpan
 				async Task Act()
 					=> await That(subject.AsSpan()).IsParsableInto<uint>(formatProvider);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject.AsSpan()
 					              is parsable into uint using {cultureName},
@@ -90,9 +90,9 @@ public sealed partial class ThatSpan
 					              """);
 			}
 
-			[Theory]
-			[InlineData("12,34", "de-AT")]
-			[InlineData("12.34", "en-US")]
+			[Test]
+			[Arguments("12,34", "de-AT")]
+			[Arguments("12.34", "en-US")]
 			public async Task WithFormatProvider_WhenFormatMatches_ShouldSucceed(string subject, string cultureName)
 			{
 				IFormatProvider formatProvider = new CultureInfo(cultureName);
@@ -106,13 +106,13 @@ public sealed partial class ThatSpan
 
 		public sealed class WhichTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSpanIsNotParsable_ShouldFail()
 			{
 				async Task Act()
 					=> await That("abc".AsSpan()).IsParsableInto<TimeSpan>().Which.IsLessThan(10.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that "abc".AsSpan()
 					             is parsable into TimeSpan that is less than 0:10,
@@ -121,7 +121,7 @@ public sealed partial class ThatSpan
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSpanIsParsable_ShouldSucceed()
 			{
 				async Task Act()
@@ -130,9 +130,9 @@ public sealed partial class ThatSpan
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("12,34", "de-AT")]
-			[InlineData("12.34", "en-US")]
+			[Test]
+			[Arguments("12,34", "de-AT")]
+			[Arguments("12.34", "en-US")]
 			public async Task WithFormatProvider_ShouldBeUsed(string subject, string cultureName)
 			{
 				IFormatProvider formatProvider = new CultureInfo(cultureName);

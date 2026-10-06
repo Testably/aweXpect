@@ -8,8 +8,8 @@ public sealed partial class ThatObject
 	{
 		public sealed class GenericTests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenAwaited_ShouldReturnTypedResult(int value)
 			{
 				object subject = new MyClass
@@ -22,13 +22,13 @@ public sealed partial class ThatObject
 				await That(result).IsSameAs(subject);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCalledFromGenericMethodWithUnconstrainedT_AndTypeMismatch_ShouldFail()
 			{
 				async Task Act()
 					=> await AssertIsExactlyString(42);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that value
 					             is exactly of type string,
@@ -42,7 +42,7 @@ public sealed partial class ThatObject
 					=> await That(value).IsExactly<string>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCalledFromGenericMethodWithUnconstrainedT_ShouldResolve()
 			{
 				async Task Act()
@@ -54,7 +54,7 @@ public sealed partial class ThatObject
 					=> await That(value).IsExactly<string>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCombinedWithOr_AndOnlyLeftIsMet_ShouldReturnNull()
 			{
 				object subject = new MyClass();
@@ -66,7 +66,7 @@ public sealed partial class ThatObject
 				await That(result).IsNull();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCombinedWithOr_AndOnlyRightIsMet_ShouldReturnSubject()
 			{
 				object subject = new MyClass();
@@ -78,7 +78,7 @@ public sealed partial class ThatObject
 				await That(result).IsSameAs(subject);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				object? subject = null;
@@ -86,7 +86,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsExactly<MyClass>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is exactly of type ThatObject.MyClass,
@@ -94,8 +94,8 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenTypeDoesNotMatch_ShouldFail(int value)
 			{
 				object subject = new MyClass
@@ -107,7 +107,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsExactly<OtherClass>()
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that subject
 					               is exactly of type ThatObject.OtherClass, because we want to test the failure,
@@ -120,8 +120,8 @@ public sealed partial class ThatObject
 					               """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenTypeIsSubtype_ShouldFail(int value)
 			{
 				object subject = new MyClass
@@ -133,7 +133,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsExactly<MyBaseClass>()
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that subject
 					               is exactly of type ThatObject.MyBaseClass, because we want to test the failure,
@@ -146,8 +146,8 @@ public sealed partial class ThatObject
 					               """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenTypeIsSupertype_ShouldFail(int value, string reason)
 			{
 				object subject = new MyBaseClass
@@ -159,7 +159,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsExactly<MyClass>()
 						.Because(reason);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that subject
 					               is exactly of type ThatObject.MyClass, because {{reason}},
@@ -172,7 +172,7 @@ public sealed partial class ThatObject
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeMatches_ShouldSucceed()
 			{
 				object subject = new MyClass();
@@ -186,8 +186,8 @@ public sealed partial class ThatObject
 
 		public sealed class TypeTests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenAwaited_ShouldReturnTypedResult(int value)
 			{
 				object subject = new MyClass
@@ -200,7 +200,7 @@ public sealed partial class ThatObject
 				await That(result).IsSameAs(subject);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				object? subject = null;
@@ -208,7 +208,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsExactly(typeof(MyClass));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is exactly of type ThatObject.MyClass,
@@ -216,7 +216,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNullableValueType_ShouldSucceedForTheUnderlyingType()
 			{
 				int? subject = 5;
@@ -228,8 +228,8 @@ public sealed partial class ThatObject
 					.Because("a value-type subject can be checked against a runtime type without a cast to object");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectIsTyped_ShouldAllowChainingOnTheSubjectType(int value)
 			{
 				MyClass subject = new()
@@ -245,8 +245,8 @@ public sealed partial class ThatObject
 					.Because("the chain must continue with the subject type instead of widening it to object");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectIsTyped_ShouldReturnTheSubjectType(int value)
 			{
 				MyClass subject = new()
@@ -260,8 +260,8 @@ public sealed partial class ThatObject
 					.Because("the awaited result must keep the subject type instead of widening it to object");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenTypeDoesNotMatch_ShouldFail(int value)
 			{
 				object subject = new MyClass
@@ -273,7 +273,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsExactly(typeof(OtherClass))
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that subject
 					               is exactly of type ThatObject.OtherClass, because we want to test the failure,
@@ -286,7 +286,7 @@ public sealed partial class ThatObject
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
 			{
 				object subject = new MyClass();
@@ -299,7 +299,7 @@ public sealed partial class ThatObject
 					.WithMessage("The 'type' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNullableAndSubjectHasAValue_ShouldSucceed()
 			{
 				int? subject = 5;
@@ -311,8 +311,8 @@ public sealed partial class ThatObject
 					.Because("a boxed nullable value has the underlying type, so the nullable type is compared by it");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenTypeIsSubtype_ShouldFail(int value)
 			{
 				object subject = new MyClass
@@ -324,7 +324,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsExactly(typeof(MyBaseClass))
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that subject
 					               is exactly of type ThatObject.MyBaseClass, because we want to test the failure,
@@ -337,8 +337,8 @@ public sealed partial class ThatObject
 					               """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenTypeIsSupertype_ShouldFail(int value, string reason)
 			{
 				object subject = new MyBaseClass
@@ -350,7 +350,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsExactly(typeof(MyClass))
 						.Because(reason);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that subject
 					               is exactly of type ThatObject.MyClass, because {{reason}},
@@ -363,7 +363,7 @@ public sealed partial class ThatObject
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeMatches_ShouldSucceed()
 			{
 				object subject = new MyClass();
@@ -374,7 +374,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMatchingOpenGenericInterfaceType_ShouldFail()
 			{
 				List<string> subject = new();
@@ -382,7 +382,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsExactly(typeof(IList<>));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is exactly of type IList<>,
@@ -393,7 +393,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMatchingOpenGenericType_ShouldSucceed()
 			{
 				List<string> subject = new();
@@ -404,7 +404,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithNotMatchingOpenGenericInterfaceType_ShouldFail()
 			{
 				List<string> subject = new();
@@ -412,7 +412,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsExactly(typeof(IDictionary<,>));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is exactly of type IDictionary<,>,
@@ -423,7 +423,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithOpenGenericBaseType_ShouldFail()
 			{
 				object subject = new MyGenericBaseClass();
@@ -432,7 +432,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsExactly(typeof(List<>))
 						.Because("exactly means the type itself, so the base type chain is not walked");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is exactly of type List<>, because exactly means the type itself, so the base type chain is not walked,

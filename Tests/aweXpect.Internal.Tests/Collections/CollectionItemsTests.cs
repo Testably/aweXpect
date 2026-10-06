@@ -5,7 +5,7 @@ namespace aweXpect.Internal.Tests.Collections;
 
 public sealed class CollectionItemsTests
 {
-	[Fact]
+	[Test]
 	public async Task Enumerate_WhenArray_ShouldReturnAllItems()
 	{
 		int[] subject = [1, 2, 3,];
@@ -15,7 +15,7 @@ public sealed class CollectionItemsTests
 		await That(result).IsEqualTo([1, 2, 3,]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Enumerate_WhenEmptyArray_ShouldReturnNoItems()
 	{
 		int[] subject = [];
@@ -25,7 +25,7 @@ public sealed class CollectionItemsTests
 		await That(result).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Enumerate_WhenList_ShouldReturnAllItems()
 	{
 		List<int> subject = [1, 2, 3,];
@@ -35,7 +35,7 @@ public sealed class CollectionItemsTests
 		await That(result).IsEqualTo([1, 2, 3,]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Enumerate_WhenListIsModified_ShouldThrowLikeTheListItself()
 	{
 		string expectedMessage = GetMessageOfModifiedList();
@@ -52,7 +52,7 @@ public sealed class CollectionItemsTests
 		await That(Act).ThrowsExactly<InvalidOperationException>().WithMessage(expectedMessage);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Enumerate_WhenOtherEnumerable_ShouldReturnAllItems()
 	{
 		IEnumerable<int> subject = GetItems();
@@ -62,7 +62,7 @@ public sealed class CollectionItemsTests
 		await That(result).IsEqualTo([1, 2, 3,]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Enumerate_WhenUntyped_ShouldReturnAllItems()
 	{
 		ArrayList subject = new() { "a", "b", };

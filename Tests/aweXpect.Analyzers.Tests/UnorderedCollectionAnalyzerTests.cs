@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Xunit;
 using Verifier =
 	aweXpect.Analyzers.Tests.Verifiers.CSharpAnalyzerVerifier<aweXpect.Analyzers.UnorderedCollectionAnalyzer>;
 
@@ -7,7 +6,7 @@ namespace aweXpect.Analyzers.Tests;
 
 public class UnorderedCollectionAnalyzerTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenChainedWithAndOrOr_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -30,12 +29,12 @@ public class UnorderedCollectionAnalyzerTests
 				.WithArguments("StartsWith", "HashSet<int>")
 		);
 
-	[Theory]
-	[InlineData("Dictionary<string, int>")]
-	[InlineData("IDictionary<string, int>")]
-	[InlineData("IReadOnlyDictionary<string, int>")]
-	[InlineData("ImmutableDictionary<string, int>")]
-	[InlineData("Dictionary<string, int>?")]
+	[Test]
+	[Arguments("Dictionary<string, int>")]
+	[Arguments("IDictionary<string, int>")]
+	[Arguments("IReadOnlyDictionary<string, int>")]
+	[Arguments("ImmutableDictionary<string, int>")]
+	[Arguments("Dictionary<string, int>?")]
 	public async Task WhenComparingADictionary_ShouldBeFlagged(string type) => await Verifier
 		.VerifyAnalyzerAsync(
 			$$"""
@@ -62,9 +61,9 @@ public class UnorderedCollectionAnalyzerTests
 			Verifier.Diagnostic(Rules.UnorderedCollectionRule).WithLocation(3).WithArguments(type.TrimEnd('?'))
 		);
 
-	[Theory]
-	[InlineData("IDictionary<string, int>")]
-	[InlineData("IReadOnlyDictionary<string, int>")]
+	[Test]
+	[Arguments("IDictionary<string, int>")]
+	[Arguments("IReadOnlyDictionary<string, int>")]
 	public async Task WhenComparingADictionaryForEquality_ShouldNotBeFlagged(string type) => await Verifier
 		.VerifyAnalyzerAsync(
 			$$"""
@@ -83,7 +82,7 @@ public class UnorderedCollectionAnalyzerTests
 			  """
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenComparingAnItemOfASet_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -102,13 +101,13 @@ public class UnorderedCollectionAnalyzerTests
 			"""
 		);
 
-	[Theory]
-	[InlineData("List<int>")]
-	[InlineData("int[]")]
-	[InlineData("IEnumerable<int>")]
-	[InlineData("ImmutableArray<int>")]
-	[InlineData("SortedSet<int>")]
-	[InlineData("ImmutableSortedSet<int>")]
+	[Test]
+	[Arguments("List<int>")]
+	[Arguments("int[]")]
+	[Arguments("IEnumerable<int>")]
+	[Arguments("ImmutableArray<int>")]
+	[Arguments("SortedSet<int>")]
+	[Arguments("ImmutableSortedSet<int>")]
 	public async Task WhenComparingAnOrderedCollection_ShouldNotBeFlagged(string type) => await Verifier
 		.VerifyAnalyzerAsync(
 			$$"""
@@ -131,12 +130,12 @@ public class UnorderedCollectionAnalyzerTests
 			  """
 		);
 
-	[Theory]
-	[InlineData("HashSet<int>")]
-	[InlineData("ISet<int>")]
-	[InlineData("IReadOnlySet<int>")]
-	[InlineData("ImmutableHashSet<int>")]
-	[InlineData("HashSet<int>?")]
+	[Test]
+	[Arguments("HashSet<int>")]
+	[Arguments("ISet<int>")]
+	[Arguments("IReadOnlySet<int>")]
+	[Arguments("ImmutableHashSet<int>")]
+	[Arguments("HashSet<int>?")]
 	public async Task WhenComparingASet_ShouldBeFlagged(string type) => await Verifier
 		.VerifyAnalyzerAsync(
 			$$"""
@@ -167,11 +166,11 @@ public class UnorderedCollectionAnalyzerTests
 			Verifier.Diagnostic(Rules.UnorderedCollectionRule).WithLocation(5).WithArguments(type.TrimEnd('?'))
 		);
 
-	[Theory]
-	[InlineData("SortedDictionary<string, int>")]
-	[InlineData("ImmutableSortedDictionary<string, int>")]
-	[InlineData("SortedList<string, int>")]
-	[InlineData("OrderedDictionary<string, int>")]
+	[Test]
+	[Arguments("SortedDictionary<string, int>")]
+	[Arguments("ImmutableSortedDictionary<string, int>")]
+	[Arguments("SortedList<string, int>")]
+	[Arguments("OrderedDictionary<string, int>")]
 	public async Task WhenComparingASortedDictionary_ShouldNotBeFlagged(string type) => await Verifier
 		.VerifyAnalyzerAsync(
 			$$"""
@@ -191,7 +190,7 @@ public class UnorderedCollectionAnalyzerTests
 			  """
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenComparingDictionaryKeysOrValues_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -215,7 +214,7 @@ public class UnorderedCollectionAnalyzerTests
 				.WithArguments("Dictionary<string, int>.ValueCollection")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenComparingSortedDictionaryKeysOrValues_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -234,7 +233,7 @@ public class UnorderedCollectionAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenComparingWithAnUnorderedExpectedCollection_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -259,7 +258,7 @@ public class UnorderedCollectionAnalyzerTests
 			Verifier.Diagnostic(Rules.UnorderedCollectionRule).WithLocation(2).WithArguments("HashSet<int>")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenInsideDoesNotComplyWith_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -279,7 +278,7 @@ public class UnorderedCollectionAnalyzerTests
 			Verifier.Diagnostic(Rules.UnorderedCollectionRule).WithLocation(0).WithArguments("HashSet<int>")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingIgnoringInterspersedItems_AfterAnExtensionMethodOption_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -308,7 +307,7 @@ public class UnorderedCollectionAnalyzerTests
 				.WithArguments("IgnoringInterspersedItems", "HashSet<int>")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingIgnoringInterspersedItems_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -332,7 +331,7 @@ public class UnorderedCollectionAnalyzerTests
 				.WithArguments("IgnoringInterspersedItems", "HashSet<int>")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingInAnyOrder_AfterAnExtensionMethodOption_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -358,7 +357,7 @@ public class UnorderedCollectionAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingInAnyOrder_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -382,7 +381,7 @@ public class UnorderedCollectionAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingStartsWithOrEndsWith_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""

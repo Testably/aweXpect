@@ -6,7 +6,7 @@ public sealed partial class ThatEnum
 	{
 		public sealed class ContinuationTests
 		{
-			[Fact]
+			[Test]
 			public async Task Between_WhenMaximumIsBelowMinimum_AndNegated_ShouldThrowArgumentOutOfRangeException()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -20,7 +20,7 @@ public sealed partial class ThatEnum
 					.Because("an inverted range would let the negated expectation succeed for every value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Between_WhenMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -33,9 +33,9 @@ public sealed partial class ThatEnum
 					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
 			}
 
-			[Theory]
-			[InlineData(null, 3L)]
-			[InlineData(1L, null)]
+			[Test]
+			[Arguments(null, 3L)]
+			[Arguments(1L, null)]
 			public async Task Between_WhenMinimumOrMaximumIsNull_AndNegated_ShouldFail(long? minimum, long? maximum)
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -43,7 +43,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue().Between(minimum).And(maximum));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have value between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
@@ -52,7 +52,7 @@ public sealed partial class ThatEnum
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Between_WhenTheRangeExceedsInt64MaxValue_ShouldSucceed()
 			{
 				EnumULong subject = EnumULong.UInt64LessOne;
@@ -64,7 +64,7 @@ public sealed partial class ThatEnum
 					.Because("a range above long.MaxValue is a legal range for a ulong-backed enum");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Between_WhenTheValueIsInTheRange_ShouldSucceed()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -75,7 +75,7 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Between_WhenUnsignedMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
 			{
 				EnumULong subject = EnumULong.UInt64LessOne;
@@ -88,7 +88,7 @@ public sealed partial class ThatEnum
 					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task GreaterThan_WhenExpectedIsNegative_AndTheBackingTypeIsUnsigned_ShouldSucceed()
 			{
 				EnumULong subject = EnumULong.UInt64Max;
@@ -100,7 +100,7 @@ public sealed partial class ThatEnum
 					.Because("a negative expected value is below every value a ulong-backed enum can have");
 			}
 
-			[Fact]
+			[Test]
 			public async Task GreaterThan_WhenExpectedIsNull_AndNegated_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -108,7 +108,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue().GreaterThan(null));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value greater than <null>,
@@ -117,7 +117,7 @@ public sealed partial class ThatEnum
 					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task GreaterThan_WhenTheValueExceedsInt64MaxValue_ShouldSucceed()
 			{
 				EnumULong subject = EnumULong.UInt64Max;
@@ -129,7 +129,7 @@ public sealed partial class ThatEnum
 					.Because("a ulong-backed member above long.MaxValue is a legal enum value and must not overflow");
 			}
 
-			[Fact]
+			[Test]
 			public async Task GreaterThan_WhenTheValueIsTheMaximumOfItsBackingType_ShouldFail()
 			{
 				EnumULong subject = EnumULong.UInt64Max;
@@ -137,7 +137,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().GreaterThan(ulong.MaxValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value greater than 18446744073709551615,
@@ -145,7 +145,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task GreaterThanOrEqualTo_WhenExpectedIsNull_AndNegated_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -153,7 +153,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue().GreaterThanOrEqualTo(null));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value greater than or equal to <null>,
@@ -162,7 +162,7 @@ public sealed partial class ThatEnum
 					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task GreaterThanOrEqualTo_WhenTheValueEqualsTheMaximumOfItsBackingType_ShouldSucceed()
 			{
 				EnumULong subject = EnumULong.UInt64Max;
@@ -174,7 +174,7 @@ public sealed partial class ThatEnum
 					.Because("ulong.MaxValue is compared exactly rather than approximated");
 			}
 
-			[Fact]
+			[Test]
 			public async Task GreaterThanOrEqualTo_WhenTheValueIsInt64MinValue_ShouldFail()
 			{
 				EnumLong subject = EnumLong.Int64Min;
@@ -182,7 +182,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().GreaterThanOrEqualTo(0L);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value greater than or equal to 0,
@@ -190,7 +190,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task LessThan_WhenExpectedExceedsInt64MaxValue_AndTheSubjectIsSignedBacked_ShouldSucceed()
 			{
 				EnumLong subject = EnumLong.Int64Max;
@@ -202,7 +202,7 @@ public sealed partial class ThatEnum
 					.Because("an unsigned expected value above long.MaxValue compares against a signed subject as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task LessThan_WhenExpectedIsNull_AndNegated_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -210,7 +210,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue().LessThan(null));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value less than <null>,
@@ -219,7 +219,7 @@ public sealed partial class ThatEnum
 					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task LessThan_WhenTheValueIsInt64MinValue_ShouldFail()
 			{
 				EnumLong subject = EnumLong.Int64Min;
@@ -227,7 +227,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().LessThan(long.MinValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value less than -9223372036854775808,
@@ -235,7 +235,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task LessThanOrEqualTo_WhenExpectedIsNull_AndNegated_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -243,7 +243,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue().LessThanOrEqualTo(null));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value less than or equal to <null>,
@@ -252,7 +252,7 @@ public sealed partial class ThatEnum
 					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task LessThanOrEqualTo_WhenTheValueEqualsInt64MinValue_ShouldSucceed()
 			{
 				EnumLong subject = EnumLong.Int64Min;
@@ -264,7 +264,7 @@ public sealed partial class ThatEnum
 					.Because("long.MinValue is compared exactly rather than approximated");
 			}
 
-			[Fact]
+			[Test]
 			public async Task LessThanOrEqualTo_WhenTheValueExceedsInt64MaxValue_ShouldFail()
 			{
 				EnumULong subject = EnumULong.UInt64Max;
@@ -272,7 +272,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().LessThanOrEqualTo(ulong.MaxValue - 1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value less than or equal to 18446744073709551614,
@@ -280,7 +280,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotBetween_WhenMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -294,9 +294,9 @@ public sealed partial class ThatEnum
 					.Because("an inverted range would let the negated expectation succeed for every value");
 			}
 
-			[Theory]
-			[InlineData(null, 3L)]
-			[InlineData(1L, null)]
+			[Test]
+			[Arguments(null, 3L)]
+			[Arguments(1L, null)]
 			public async Task NotBetween_WhenMinimumOrMaximumIsNull_AndNegated_ShouldFail(long? minimum, long? maximum)
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -304,7 +304,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotBetween(minimum).And(maximum));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has value between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
@@ -313,9 +313,9 @@ public sealed partial class ThatEnum
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
 
-			[Theory]
-			[InlineData(null, 3L)]
-			[InlineData(1L, null)]
+			[Test]
+			[Arguments(null, 3L)]
+			[Arguments(1L, null)]
 			public async Task NotBetween_WhenMinimumOrMaximumIsNull_ShouldFail(long? minimum, long? maximum)
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -323,7 +323,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().NotBetween(minimum).And(maximum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have value between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
@@ -332,7 +332,7 @@ public sealed partial class ThatEnum
 					.Because("nothing can be ordered against a null bound");
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotBetween_WhenNegated_ShouldExpectTheRange()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -340,7 +340,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotBetween(3L).And(5L));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value between 3 and 5,
@@ -348,7 +348,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotBetween_WhenTheRangeExceedsInt64MaxValue_ShouldFail()
 			{
 				EnumULong subject = EnumULong.UInt64LessOne;
@@ -356,7 +356,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().NotBetween((ulong)long.MaxValue).And(ulong.MaxValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value between 9223372036854775807 and 18446744073709551615,
@@ -364,7 +364,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotBetween_WhenTheValueIsInTheRange_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -372,7 +372,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().NotBetween(1L).And(3L);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value between 1 and 3,
@@ -380,7 +380,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotBetween_WhenTheValueIsOutsideTheRange_ShouldSucceed()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -391,7 +391,7 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotBetween_WhenUnsignedMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
 			{
 				EnumULong subject = EnumULong.UInt64LessOne;
@@ -404,7 +404,7 @@ public sealed partial class ThatEnum
 					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotEqualTo_WhenNegated_ShouldExpectEquality()
 			{
 				MyNumbers subject = MyNumbers.One;
@@ -412,7 +412,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotEqualTo(2L));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value equal to 2,
@@ -420,10 +420,10 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Theory]
-			[InlineData(MyNumbers.One, 2L)]
-			[InlineData(MyNumbers.Two, -7L)]
-			[InlineData(MyNumbers.Three, 0L)]
+			[Test]
+			[Arguments(MyNumbers.One, 2L)]
+			[Arguments(MyNumbers.Two, -7L)]
+			[Arguments(MyNumbers.Three, 0L)]
 			public async Task NotEqualTo_WhenSubjectDoesNotHaveUnexpectedValue_ShouldSucceed(MyNumbers subject,
 				long unexpected)
 			{
@@ -433,17 +433,17 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(MyNumbers.One, 1L)]
-			[InlineData(MyNumbers.Two, 2L)]
-			[InlineData(MyNumbers.Three, 3L)]
+			[Test]
+			[Arguments(MyNumbers.One, 1L)]
+			[Arguments(MyNumbers.Two, 2L)]
+			[Arguments(MyNumbers.Three, 3L)]
 			public async Task NotEqualTo_WhenSubjectHasUnexpectedValue_ShouldFail(MyNumbers subject,
 				long unexpected)
 			{
 				async Task Act()
 					=> await That(subject).HasValue().NotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have value equal to {Formatter.Format(unexpected)},
@@ -451,7 +451,7 @@ public sealed partial class ThatEnum
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotEqualTo_WhenTheValueExceedsInt64MaxValue_ShouldFail()
 			{
 				EnumULong subject = EnumULong.Int64MaxPlusOne;
@@ -459,7 +459,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().NotEqualTo(9223372036854775808UL);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value equal to 9223372036854775808,
@@ -467,7 +467,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotEqualTo_WhenUnexpectedIsNull_ShouldSucceed()
 			{
 				MyColors subject = MyColors.Yellow;
@@ -478,7 +478,7 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotGreaterThan_WhenExpectedIsNull_AndNegated_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -486,7 +486,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotGreaterThan(null));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value greater than <null>,
@@ -495,7 +495,7 @@ public sealed partial class ThatEnum
 					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotGreaterThan_WhenExpectedIsNull_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -503,7 +503,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().NotGreaterThan(null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value greater than <null>,
@@ -512,7 +512,7 @@ public sealed partial class ThatEnum
 					.Because("nothing can be ordered against null");
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotGreaterThan_WhenNegated_ShouldExpectTheComparison()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -520,7 +520,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotGreaterThan(2L));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value greater than 2,
@@ -528,7 +528,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotGreaterThan_WhenTheValueExceedsInt64MaxValue_ShouldFail()
 			{
 				EnumULong subject = EnumULong.UInt64Max;
@@ -536,7 +536,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().NotGreaterThan((ulong)long.MaxValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value greater than 9223372036854775807,
@@ -544,7 +544,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotGreaterThan_WhenTheValueIsGreater_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -552,7 +552,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().NotGreaterThan(1L);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value greater than 1,
@@ -560,7 +560,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotGreaterThan_WhenTheValueIsNotGreater_ShouldSucceed()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -571,7 +571,7 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotGreaterThanOrEqualTo_WhenExpectedIsNull_AndNegated_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -579,7 +579,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotGreaterThanOrEqualTo(null));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value greater than or equal to <null>,
@@ -588,7 +588,7 @@ public sealed partial class ThatEnum
 					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotGreaterThanOrEqualTo_WhenExpectedIsNull_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -596,7 +596,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().NotGreaterThanOrEqualTo(null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value greater than or equal to <null>,
@@ -605,7 +605,7 @@ public sealed partial class ThatEnum
 					.Because("nothing can be ordered against null");
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotGreaterThanOrEqualTo_WhenNegated_ShouldExpectTheComparison()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -613,7 +613,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotGreaterThanOrEqualTo(3L));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value greater than or equal to 3,
@@ -621,7 +621,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotGreaterThanOrEqualTo_WhenTheValueEqualsTheMaximumOfItsBackingType_ShouldFail()
 			{
 				EnumULong subject = EnumULong.UInt64Max;
@@ -629,7 +629,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().NotGreaterThanOrEqualTo(ulong.MaxValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value greater than or equal to 18446744073709551615,
@@ -637,7 +637,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotGreaterThanOrEqualTo_WhenTheValueIsEqual_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -645,7 +645,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().NotGreaterThanOrEqualTo(2L);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value greater than or equal to 2,
@@ -653,7 +653,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotGreaterThanOrEqualTo_WhenTheValueIsLess_ShouldSucceed()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -664,7 +664,7 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotLessThan_WhenExpectedExceedsInt64MaxValue_AndTheSubjectIsSignedBacked_ShouldFail()
 			{
 				EnumLong subject = EnumLong.Int64Max;
@@ -672,7 +672,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().NotLessThan(ulong.MaxValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value less than 18446744073709551615,
@@ -680,7 +680,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotLessThan_WhenExpectedIsNull_AndNegated_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -688,7 +688,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotLessThan(null));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value less than <null>,
@@ -697,7 +697,7 @@ public sealed partial class ThatEnum
 					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotLessThan_WhenExpectedIsNull_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -705,7 +705,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().NotLessThan(null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value less than <null>,
@@ -714,7 +714,7 @@ public sealed partial class ThatEnum
 					.Because("nothing can be ordered against null");
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotLessThan_WhenNegated_ShouldExpectTheComparison()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -722,7 +722,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotLessThan(2L));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value less than 2,
@@ -730,7 +730,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotLessThan_WhenTheValueIsLess_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -738,7 +738,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().NotLessThan(3L);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value less than 3,
@@ -746,7 +746,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotLessThan_WhenTheValueIsNotLess_ShouldSucceed()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -757,7 +757,7 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotLessThanOrEqualTo_WhenExpectedIsNull_AndNegated_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -765,7 +765,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotLessThanOrEqualTo(null));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value less than or equal to <null>,
@@ -774,7 +774,7 @@ public sealed partial class ThatEnum
 					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotLessThanOrEqualTo_WhenExpectedIsNull_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -782,7 +782,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().NotLessThanOrEqualTo(null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value less than or equal to <null>,
@@ -791,7 +791,7 @@ public sealed partial class ThatEnum
 					.Because("nothing can be ordered against null");
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotLessThanOrEqualTo_WhenNegated_ShouldExpectTheComparison()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -799,7 +799,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue().NotLessThanOrEqualTo(1L));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value less than or equal to 1,
@@ -807,7 +807,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotLessThanOrEqualTo_WhenTheValueEqualsInt64MinValue_ShouldFail()
 			{
 				EnumLong subject = EnumLong.Int64Min;
@@ -815,7 +815,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().NotLessThanOrEqualTo(long.MinValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value less than or equal to -9223372036854775808,
@@ -823,7 +823,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotLessThanOrEqualTo_WhenTheValueIsEqual_ShouldFail()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -831,7 +831,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().NotLessThanOrEqualTo(2L);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value less than or equal to 2,
@@ -839,7 +839,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotLessThanOrEqualTo_WhenTheValueIsGreater_ShouldSucceed()
 			{
 				MyNumbers subject = MyNumbers.Two;
@@ -850,9 +850,9 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(MyNumbers.One, 2L)]
-			[InlineData(MyNumbers.Two, 3L)]
+			[Test]
+			[Arguments(MyNumbers.One, 2L)]
+			[Arguments(MyNumbers.Two, 3L)]
 			public async Task ShouldSupportTheComparisonVocabulary(MyNumbers subject, long maximum)
 			{
 				async Task Act()
@@ -861,7 +861,7 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNested_ShouldNameTheValue()
 			{
 				Exception subject = new("outer", new NumberException(MyNumbers.One));
@@ -870,7 +870,7 @@ public sealed partial class ThatEnum
 					=> await That(subject).HasInner<NumberException>(e
 						=> e.Whose(x => x.Number, n => n.HasValue().EqualTo(2L)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an inner ThatEnum.HasValue.ContinuationTests.NumberException whose Number whose value is equal to 2,
@@ -879,7 +879,7 @@ public sealed partial class ThatEnum
 					.Because("the whose clause makes the value the subject, as for other properties");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectDoesNotHaveExpectedValue_ShouldRenderLikeTheShorthand()
 			{
 				MyNumbers subject = MyNumbers.One;
@@ -887,7 +887,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue().EqualTo(2L);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value equal to 2,
@@ -904,10 +904,10 @@ public sealed partial class ThatEnum
 
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData(EnumLong.Int64Min, long.MinValue)]
-			[InlineData(EnumLong.Int64LessOne, long.MaxValue - 1)]
-			[InlineData(EnumLong.Int64Max, long.MaxValue)]
+			[Test]
+			[Arguments(EnumLong.Int64Min, long.MinValue)]
+			[Arguments(EnumLong.Int64LessOne, long.MaxValue - 1)]
+			[Arguments(EnumLong.Int64Max, long.MaxValue)]
 			public async Task WhenExpectedComesFromInlineData_ShouldSucceed(EnumLong subject, long expected)
 			{
 				async Task Act()
@@ -917,7 +917,7 @@ public sealed partial class ThatEnum
 					.Because("a long is a legal attribute argument, so the expected value can be data-driven");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedExceedsInt64MaxValue_AndTheSubjectIsNegative_ShouldFail()
 			{
 				EnumLong subject = EnumLong.Int64Min;
@@ -925,7 +925,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue(ulong.MaxValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value equal to 18446744073709551615,
@@ -934,7 +934,7 @@ public sealed partial class ThatEnum
 					.Because("a value no member of a long-backed enum can have fails instead of overflowing");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNegative_AndTheBackingTypeIsUnsigned_ShouldFail()
 			{
 				EnumULong subject = EnumULong.UInt64Max;
@@ -942,7 +942,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue(-1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has value equal to -1,
@@ -951,7 +951,7 @@ public sealed partial class ThatEnum
 					.Because("a value no member of the enum can have fails instead of overflowing the conversion");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				MyColors subject = MyColors.Yellow;
@@ -959,7 +959,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).HasValue(null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has value equal to <null>,
@@ -967,17 +967,17 @@ public sealed partial class ThatEnum
 					              """);
 			}
 
-			[Theory]
-			[InlineData(MyNumbers.One, 2L)]
-			[InlineData(MyNumbers.Two, -7)]
-			[InlineData(MyNumbers.Three, 0)]
+			[Test]
+			[Arguments(MyNumbers.One, 2L)]
+			[Arguments(MyNumbers.Two, -7)]
+			[Arguments(MyNumbers.Three, 0)]
 			public async Task WhenSubjectDoesNotHaveExpectedValue_ShouldFail(MyNumbers subject,
 				long expected)
 			{
 				async Task Act()
 					=> await That(subject).HasValue(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has value equal to {Formatter.Format(expected)},
@@ -985,10 +985,10 @@ public sealed partial class ThatEnum
 					              """);
 			}
 
-			[Theory]
-			[InlineData(MyNumbers.One, 1)]
-			[InlineData(MyNumbers.Two, 2)]
-			[InlineData(MyNumbers.Three, 3)]
+			[Test]
+			[Arguments(MyNumbers.One, 1)]
+			[Arguments(MyNumbers.Two, 2)]
+			[Arguments(MyNumbers.Three, 3)]
 			public async Task WhenSubjectHasExpectedValue_ShouldSucceed(MyNumbers subject,
 				long expected)
 			{
@@ -998,7 +998,7 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasTheExtremeValueOfItsBackingType_ShouldSucceed()
 			{
 				async Task Act()
@@ -1025,10 +1025,10 @@ public sealed partial class ThatEnum
 					.Because("every backing type from sbyte to ulong is represented exactly");
 			}
 
-			[Theory]
-			[InlineData(EnumULong.Int64Max, (ulong)long.MaxValue)]
-			[InlineData(EnumULong.Int64MaxPlusOne, 9223372036854775808UL)]
-			[InlineData(EnumULong.UInt64Max, ulong.MaxValue)]
+			[Test]
+			[Arguments(EnumULong.Int64Max, (ulong)long.MaxValue)]
+			[Arguments(EnumULong.Int64MaxPlusOne, 9223372036854775808UL)]
+			[Arguments(EnumULong.UInt64Max, ulong.MaxValue)]
 			public async Task WhenUnsignedExpectedComesFromInlineData_ShouldSucceed(EnumULong subject, ulong expected)
 			{
 				async Task Act()
@@ -1042,7 +1042,7 @@ public sealed partial class ThatEnum
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenValueDiffers_ShouldSucceed()
 			{
 				MyColors subject = MyColors.Yellow;
@@ -1053,7 +1053,7 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueExceedsInt64MaxValue_AndMatches_ShouldFail()
 			{
 				EnumULong subject = EnumULong.UInt64Max;
@@ -1061,7 +1061,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue(ulong.MaxValue));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have value equal to 18446744073709551615,
@@ -1069,7 +1069,7 @@ public sealed partial class ThatEnum
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueMatches_ShouldFail()
 			{
 				MyColors subject = MyColors.Yellow;
@@ -1077,7 +1077,7 @@ public sealed partial class ThatEnum
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasValue((long)subject));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have value equal to {Formatter.Format((long)subject)},

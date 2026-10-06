@@ -14,7 +14,7 @@ public sealed partial class ThatAsyncEnumerable
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task ConsidersCancellationToken()
 				{
 					using CancellationTokenSource cts = new();
@@ -26,7 +26,7 @@ public sealed partial class ThatAsyncEnumerable
 						=> await That(subject).HasCount().NotEqualTo(6)
 							.WithCancellation(token);
 
-					await That(Act).Throws<InconclusiveException>()
+					await That(Act).Throws<InconclusiveTestException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have exactly 6 items,
@@ -37,7 +37,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsMatchingItems_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -45,7 +45,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasCount().NotEqualTo(3);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have exactly 3 items,
@@ -56,7 +56,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsTooFewItems_ShouldSucceed()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -67,7 +67,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsTooManyItems_ShouldSucceed()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -78,7 +78,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IAsyncEnumerable<int>? subject = null;
@@ -86,7 +86,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasCount().NotEqualTo(2);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have exactly 2 items,
@@ -94,7 +94,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenUnexpectedIsNull_ShouldSucceed()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -109,7 +109,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class NegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsMatchingItems_ShouldSucceed()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -121,7 +121,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsTooFewItems_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -130,7 +130,7 @@ public sealed partial class ThatAsyncEnumerable
 						=> await That(subject).DoesNotComplyWith(it =>
 							it.HasCount().NotEqualTo(4));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has exactly 4 items,
@@ -141,7 +141,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenUnexpectedIsNull_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -150,7 +150,7 @@ public sealed partial class ThatAsyncEnumerable
 						=> await That(subject).DoesNotComplyWith(it =>
 							it.HasCount().NotEqualTo(null));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has exactly <null> items,

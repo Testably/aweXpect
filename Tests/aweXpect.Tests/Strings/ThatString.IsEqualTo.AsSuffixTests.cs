@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class AsSuffixTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenActualAndExpectedAreNull_ShouldThrowArgumentNullException()
 			{
 				string? subject = null;
@@ -21,7 +21,7 @@ public sealed partial class ThatString
 					.Because("'is null' is never expressed through a suffix");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -30,7 +30,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).AsSuffix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with "some text",
@@ -38,7 +38,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "some text";
@@ -52,7 +52,7 @@ public sealed partial class ThatString
 					.Because("every subject ends with the empty string, so the expectation says nothing");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsEmptyAfterTheIndentationIsIgnored_ShouldThrowArgumentException()
 			{
 				string subject = "some text";
@@ -67,7 +67,7 @@ public sealed partial class ThatString
 					.Because("the compared suffix is the normalized one, which every subject ends with");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "some text";
@@ -81,7 +81,7 @@ public sealed partial class ThatString
 					.WithMessage("The 'expected' suffix cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLeadingWhitespaceIsIgnored_ShouldStillRequireTheWhitespaceOfTheSuffixInsideTheString()
 			{
 				string subject = "RoadAbbey";
@@ -89,7 +89,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo(" Abbey").AsSuffix().IgnoringLeadingWhiteSpace();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with " Abbey" ignoring leading whitespace,
@@ -102,7 +102,7 @@ public sealed partial class ThatString
 					.Because("only whitespace at the start of the subject is ignored, not the space the suffix requires inside it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringEndsWithExpected_ShouldSucceed()
 			{
 				string subject = "some text without out";
@@ -114,7 +114,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringHasAdditionalLeadingWhitespace_ShouldSucceed()
 			{
 				string subject = " \t some text";
@@ -126,7 +126,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringHasMissingLeadingWhitespace_ShouldFail()
 			{
 				string subject = "some text";
@@ -135,7 +135,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).AsSuffix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with " \t some text",
@@ -143,7 +143,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringHasMissingTrailingWhitespace_ShouldFail()
 			{
 				string subject = "some text";
@@ -152,7 +152,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).AsSuffix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with "some text \t ",
@@ -160,7 +160,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringHasUnexpectedTrailingWhitespace_ShouldFail()
 			{
 				string subject = "and some text \t ";
@@ -169,7 +169,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).AsSuffix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with "some text",
@@ -177,7 +177,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringIsShorter_ShouldFail()
 			{
 				string subject = "text without out";
@@ -186,7 +186,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).AsSuffix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with "some text without out",
@@ -195,8 +195,8 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenStringsAreTheSame_ShouldSucceed(string subject)
 			{
 				string expected = subject;
@@ -207,7 +207,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringsDiffer_ShouldFail()
 			{
 				string subject = "actual text";
@@ -216,7 +216,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).AsSuffix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with "other text",
@@ -231,7 +231,7 @@ public sealed partial class ThatString
 
 		public sealed class AsSuffixNegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "some text";
@@ -245,7 +245,7 @@ public sealed partial class ThatString
 					.Because("the negated expectation is just as meaningless as the positive one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "some text";
@@ -258,7 +258,7 @@ public sealed partial class ThatString
 					.WithMessage("The 'expected' suffix cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringEndsWithExpected_ShouldFail()
 			{
 				string subject = "some text without out";
@@ -267,7 +267,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsEqualTo(expected).AsSuffix().IgnoringCase());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not end with "text without out" ignoring case,
@@ -275,7 +275,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringEndsWithExpected_UsingCustomComparer_ShouldFail()
 			{
 				string subject = "some text without out";
@@ -285,7 +285,7 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.IsEqualTo(expected).AsSuffix().Using(new IgnoreCaseForVocalsComparer()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not end with "text wIthOUt OUt" using IgnoreCaseForVocalsComparer,

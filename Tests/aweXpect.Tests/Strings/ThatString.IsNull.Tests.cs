@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenActualIsEmpty_ShouldFail()
 			{
 				string subject = "";
@@ -14,7 +14,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNull();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is null,
@@ -22,14 +22,14 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenActualIsNotNull_ShouldFail(string? subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNull();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is null,
@@ -37,7 +37,7 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_AndNegatedWithOr_ShouldReportNullOnce()
 			{
 				string? subject = null;
@@ -45,7 +45,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNull().Or.StartsWith("a"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not null and does not start with "a",
@@ -53,7 +53,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_ShouldSucceed()
 			{
 				string? subject = null;

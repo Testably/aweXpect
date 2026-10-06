@@ -6,7 +6,7 @@ public sealed partial class ThatBool
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAntecedentDoesNotImplyConsequent_ShouldSucceed()
 			{
 				bool antecedent = true;
@@ -18,17 +18,17 @@ public sealed partial class ThatBool
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(false, false)]
-			[InlineData(false, true)]
-			[InlineData(true, true)]
+			[Test]
+			[Arguments(false, false)]
+			[Arguments(false, true)]
+			[Arguments(true, true)]
 			public async Task WhenAntecedentImpliesConsequent_ShouldFail(bool antecedent, bool consequent)
 			{
 				async Task Act()
 					=> await That(antecedent).DoesNotImply(consequent)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that antecedent
 					              does not imply {Formatter.Format(consequent)}, because we want to test the failure,
@@ -39,7 +39,7 @@ public sealed partial class ThatBool
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAntecedentDoesNotImplyConsequent_ShouldFail()
 			{
 				bool antecedent = true;
@@ -49,7 +49,7 @@ public sealed partial class ThatBool
 					=> await That(antecedent).DoesNotComplyWith(b => b.DoesNotImply(consequent))
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that antecedent
 					             implies False, because we want to test the failure,
@@ -57,10 +57,10 @@ public sealed partial class ThatBool
 					             """);
 			}
 
-			[Theory]
-			[InlineData(false, false)]
-			[InlineData(false, true)]
-			[InlineData(true, true)]
+			[Test]
+			[Arguments(false, false)]
+			[Arguments(false, true)]
+			[Arguments(true, true)]
 			public async Task WhenAntecedentImpliesConsequent_ShouldSucceed(bool antecedent, bool consequent)
 			{
 				async Task Act()

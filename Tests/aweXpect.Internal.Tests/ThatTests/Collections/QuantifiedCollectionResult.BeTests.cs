@@ -4,7 +4,7 @@ public sealed partial class QuantifiedCollectionResult
 {
 	public sealed class BeTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenCollectionContainsOtherValues_ShouldFail()
 		{
 			object[] subject =
@@ -17,7 +17,7 @@ public sealed partial class QuantifiedCollectionResult
 			async Task Act()
 				=> await That(subject).All().Are<MyClass>();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is of type QuantifiedCollectionResult.MyClass for all items,
@@ -45,7 +45,7 @@ public sealed partial class QuantifiedCollectionResult
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCollectionOnlyContainsEqualValues_ShouldSucceed()
 		{
 			object[] subject =

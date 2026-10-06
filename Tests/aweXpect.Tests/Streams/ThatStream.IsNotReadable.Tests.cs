@@ -8,7 +8,7 @@ public sealed partial class ThatStream
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				ChunkedStreamContainer subject = new(new ChunkedStream(canRead: true));
@@ -16,7 +16,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).Whose(c => c.Chunks, chunks => chunks.IsNotReadable());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Chunks are not readable,
@@ -24,7 +24,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNotReadable_ShouldSucceed()
 			{
 				Stream subject = new MyStream(canRead: false);
@@ -35,7 +35,7 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Stream? subject = null;
@@ -43,7 +43,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).IsNotReadable();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not readable,
@@ -51,7 +51,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsReadable_ShouldFail()
 			{
 				Stream subject = new MyStream(canRead: true);
@@ -59,7 +59,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).IsNotReadable();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not readable,

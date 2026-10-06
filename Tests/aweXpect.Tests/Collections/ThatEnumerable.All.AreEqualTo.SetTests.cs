@@ -11,7 +11,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class SetTests
 			{
-				[Fact]
+				[Test]
 				public async Task ForADoubleSet_ShouldUseTheComparerOfTheSet()
 				{
 					HashSet<double> subject = new(new RoundingComparer()) { 1.0, };
@@ -23,7 +23,7 @@ public sealed partial class ThatEnumerable
 						.Because("an element type that allows a tolerance keeps the comparer of the set until one is specified");
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForAnUntypedSetOfObjects_ShouldUseTheComparerOfTheSet()
 				{
 					IEnumerable subject = new HashSet<object>(new AllEqualComparer()) { 1, };
@@ -34,7 +34,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task IgnoringCase_ShouldIgnoreTheComparerOfTheSet()
 				{
 					HashSet<string> subject = new(new AllDifferentComparer()) { "a", };
@@ -45,7 +45,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task None_WhenSetContainsTheItemAccordingToItsComparer_ShouldFail()
 				{
 					HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
@@ -53,7 +53,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).None().AreEqualTo("A");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to "A" using the subject's StringComparer.OrdinalIgnoreCase for no items,
@@ -72,7 +72,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldUseTheComparerOfTheSet()
 				{
 					HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
@@ -83,7 +83,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task Using_ShouldOverrideTheComparerOfTheSet()
 				{
 					HashSet<int> subject = new(new ModuloComparer(10)) { 1, };
@@ -91,7 +91,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo(11).Using(EqualityComparer<int>.Default);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 11 using GenericEqualityComparer<int> for all items,
@@ -106,7 +106,7 @@ public sealed partial class ThatEnumerable
 						.Because("the default comparer forces the default equality");
 				}
 
-				[Fact]
+				[Test]
 				public async Task UsingTheComparerOfTheSet_ShouldUseIt()
 				{
 					List<int> subject = [1, 21,];
@@ -118,7 +118,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldNotNameTheComparerOfTheSet()
 				{
 					HashSet<string?> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
@@ -126,7 +126,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo(null);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to <null> for all items,
@@ -145,7 +145,7 @@ public sealed partial class ThatEnumerable
 						.Because("the comparer never decides for null, which only equals null");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSetContainsOtherItemsAccordingToItsComparer_ShouldNameTheComparer()
 				{
 					HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
@@ -153,7 +153,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo("A");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to "A" using the subject's StringComparer.OrdinalIgnoreCase for all items,

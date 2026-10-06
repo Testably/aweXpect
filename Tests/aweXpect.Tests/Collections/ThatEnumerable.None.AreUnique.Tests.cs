@@ -12,7 +12,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsAreDuplicated_ShouldSucceed()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 1, 2,]);
@@ -23,7 +23,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSomeItemsAreUnique_ShouldFail()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 1, 3,]);
@@ -31,7 +31,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).None().AreUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique for no items,
@@ -45,7 +45,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable<int>? subject = null;
@@ -53,7 +53,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).None().AreUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique for no items,

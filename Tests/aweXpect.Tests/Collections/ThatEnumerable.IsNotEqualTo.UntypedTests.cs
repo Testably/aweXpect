@@ -11,7 +11,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class UntypedTests
 		{
-			[Fact]
+			[Test]
 			public async Task StringSubject_ShouldBindToTheStringOverload()
 			{
 				string subject = "abc";
@@ -23,7 +23,7 @@ public sealed partial class ThatEnumerable
 					.Because("the declared result type pins the string overload at compile time");
 			}
 
-			[Fact]
+			[Test]
 			public async Task TypedArray_ShouldBindToTheTypedOverload()
 			{
 				IEnumerable subject = new ArrayList { 1, 2, };
@@ -37,7 +37,7 @@ public sealed partial class ThatEnumerable
 					.Because("an IEnumerable<int> expectation must keep its item type instead of falling back to object");
 			}
 
-			[Fact]
+			[Test]
 			public async Task UntypedUnexpected_ShouldBindToTheUntypedOverload()
 			{
 				IEnumerable subject = new ArrayList { 1, 2, };
@@ -51,7 +51,7 @@ public sealed partial class ThatEnumerable
 					.Because("the declared result type pins the untyped collection overload at compile time");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndUnexpectedAreNull_ShouldFail()
 			{
 				IEnumerable? subject = null;
@@ -60,7 +60,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject)!.IsNotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order,
@@ -68,7 +68,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
 				IEnumerable? subject = null;
@@ -80,7 +80,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsNull_ShouldSucceed()
 			{
 				IEnumerable subject = new ArrayList { 1, 2, };
@@ -92,7 +92,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDifferentLength_ShouldSucceed()
 			{
 				IEnumerable subject = new ArrayList { 1, 2, 3, };
@@ -104,7 +104,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDifferentOrder_ShouldSucceed()
 			{
 				IEnumerable subject = new ArrayList { 1, 3, 2, };
@@ -116,7 +116,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDifferentOrder_WhenInAnyOrder_ShouldFail()
 			{
 				IEnumerable subject = new ArrayList { 1, 3, 2, };
@@ -125,7 +125,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order,
@@ -143,7 +143,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicates_WhenIgnoringDuplicates_ShouldFail()
 			{
 				IEnumerable subject = new ArrayList { 1, 1, 2, };
@@ -152,7 +152,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
@@ -169,7 +169,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMultiDimensionalArrayWithDifferentContent_ShouldSucceed()
 			{
 				IEnumerable subject = new[,] { { 1, 2, }, { 3, 4, }, };
@@ -181,7 +181,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMultiDimensionalArrayWithDifferentShape_ShouldFail()
 			{
 				IEnumerable subject = new[,] { { 1, 2, 3, }, { 4, 5, 6, }, };
@@ -190,7 +190,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order,
@@ -213,7 +213,7 @@ public sealed partial class ThatEnumerable
 						"a multi-dimensional array has no shape as an IEnumerable, so it is compared by its flattened content");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithSameItems_ShouldFail()
 			{
 				IEnumerable subject = new ArrayList { 1, 2, };
@@ -222,7 +222,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order,

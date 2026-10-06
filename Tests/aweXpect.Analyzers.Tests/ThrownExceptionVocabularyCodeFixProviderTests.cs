@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Xunit;
 using Verifier =
 	aweXpect.Analyzers.Tests.Verifiers.CSharpCodeFixVerifier<aweXpect.Analyzers.ThrownExceptionVocabularyAnalyzer,
 		aweXpect.Analyzers.CodeFixers.ThrownExceptionVocabularyCodeFixProvider>;
@@ -11,7 +10,7 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 	private const string ReplaceKey = nameof(Resources.aweXpect0003ReplaceCodeFixTitle);
 	private const string InsertWhichKey = nameof(Resources.aweXpect0003InsertWhichCodeFixTitle);
 
-	[Fact]
+	[Test]
 	public async Task ShouldInsertWhich() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -45,7 +44,7 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		""",
 		InsertWhichKey);
 
-	[Fact]
+	[Test]
 	public async Task ShouldInsertWhichBeforeDoesNotHaveInner() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -79,7 +78,7 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		""",
 		InsertWhichKey);
 
-	[Fact]
+	[Test]
 	public async Task ShouldInsertWhichBeforeLineBreak() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -115,7 +114,7 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		""",
 		InsertWhichKey);
 
-	[Fact]
+	[Test]
 	public async Task ShouldReplaceDoesNotHaveInnerWithWithoutInner() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -149,7 +148,7 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		""",
 		ReplaceKey);
 
-	[Fact]
+	[Test]
 	public async Task ShouldReplaceGenericDoesNotHaveInnerWithWithoutInner() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -183,7 +182,7 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		""",
 		ReplaceKey);
 
-	[Fact]
+	[Test]
 	public async Task ShouldReplaceGenericHasInnerWithWithInner() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -217,7 +216,7 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		""",
 		ReplaceKey);
 
-	[Fact]
+	[Test]
 	public async Task ShouldReplaceHasHResultWithArgumentWithWithHResult() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -251,7 +250,7 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		""",
 		ReplaceKey);
 
-	[Fact]
+	[Test]
 	public async Task ShouldReplaceHasHResultWithNullableArgumentWithWithHResult() => await Verifier.VerifyCodeFixAsync(
 		"""
 		#nullable enable
@@ -289,7 +288,7 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		""",
 		ReplaceKey);
 
-	[Fact]
+	[Test]
 	public async Task ShouldReplaceHasHResultWithoutArgumentWithWithHResult() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -323,7 +322,7 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		""",
 		ReplaceKey);
 
-	[Fact]
+	[Test]
 	public async Task ShouldReplaceHasMessageWithNullableArgumentWithWithMessage() => await Verifier.VerifyCodeFixAsync(
 		"""
 		#nullable enable
@@ -361,7 +360,7 @@ public class ThrownExceptionVocabularyCodeFixProviderTests
 		""",
 		ReplaceKey);
 
-	[Fact]
+	[Test]
 	public async Task ShouldReplaceHasMessageWithWithMessage() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;

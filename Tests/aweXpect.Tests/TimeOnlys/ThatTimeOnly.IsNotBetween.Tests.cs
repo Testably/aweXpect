@@ -7,7 +7,7 @@ public sealed partial class ThatTimeOnly
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMaximumIsNull_ShouldFail()
 			{
 				TimeOnly subject = CurrentTime();
@@ -17,7 +17,7 @@ public sealed partial class ThatTimeOnly
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and <null>,
@@ -25,7 +25,7 @@ public sealed partial class ThatTimeOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumIsNull_ShouldFail()
 			{
 				TimeOnly subject = CurrentTime();
@@ -35,7 +35,7 @@ public sealed partial class ThatTimeOnly
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between <null> and {Formatter.Format(maximum)},
@@ -43,7 +43,7 @@ public sealed partial class ThatTimeOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRangeCrossesMidnightAndSubjectIsInside_ShouldFail()
 			{
 				TimeOnly subject = TimeOnly.MinValue;
@@ -51,7 +51,7 @@ public sealed partial class ThatTimeOnly
 				async Task Act()
 					=> await That(subject).IsNotBetween(new TimeOnly(23, 0)).And(new TimeOnly(1, 0));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not between 23:00:00.0000000 and 01:00:00.0000000,
@@ -60,7 +60,7 @@ public sealed partial class ThatTimeOnly
 					.Because("a range runs clockwise from the minimum to the maximum, across midnight if needed");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRangeCrossesMidnightAndSubjectIsOutside_ShouldSucceed()
 			{
 				TimeOnly subject = new(12, 0);
@@ -72,7 +72,7 @@ public sealed partial class ThatTimeOnly
 					.Because("the range covers only two hours, not the rest of the day");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndMaximumAreMaxValue_ShouldFail()
 			{
 				TimeOnly subject = TimeOnly.MaxValue;
@@ -82,7 +82,7 @@ public sealed partial class ThatTimeOnly
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
@@ -90,7 +90,7 @@ public sealed partial class ThatTimeOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndMinimumAreMinValue_ShouldFail()
 			{
 				TimeOnly subject = TimeOnly.MinValue;
@@ -100,7 +100,7 @@ public sealed partial class ThatTimeOnly
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
@@ -108,7 +108,7 @@ public sealed partial class ThatTimeOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsEarlierThanMinimum_ShouldSucceed()
 			{
 				TimeOnly subject = EarlierTime();
@@ -121,7 +121,7 @@ public sealed partial class ThatTimeOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsLaterThanMaximum_ShouldSucceed()
 			{
 				TimeOnly subject = LaterTime();
@@ -134,7 +134,7 @@ public sealed partial class ThatTimeOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNotBetweenMinimumAndMaximum_ShouldFail()
 			{
 				TimeOnly subject = CurrentTime();
@@ -144,7 +144,7 @@ public sealed partial class ThatTimeOnly
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
@@ -152,7 +152,7 @@ public sealed partial class ThatTimeOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsSameAsMaximum_ShouldFail()
 			{
 				TimeOnly subject = CurrentTime();
@@ -162,7 +162,7 @@ public sealed partial class ThatTimeOnly
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
@@ -170,7 +170,7 @@ public sealed partial class ThatTimeOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsSameAsMinimum_ShouldFail()
 			{
 				TimeOnly subject = CurrentTime();
@@ -180,7 +180,7 @@ public sealed partial class ThatTimeOnly
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
@@ -191,7 +191,7 @@ public sealed partial class ThatTimeOnly
 
 		public sealed class WithinTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMaximumValueIsOutsideTheTolerance_ShouldSucceed()
 			{
 				TimeOnly subject = CurrentTime();
@@ -205,7 +205,7 @@ public sealed partial class ThatTimeOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumValueIsOutsideTheTolerance_ShouldSucceed()
 			{
 				TimeOnly subject = CurrentTime();
@@ -219,7 +219,7 @@ public sealed partial class ThatTimeOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableMaximumValueIsOutsideTheTolerance_ShouldSucceed()
 			{
 				TimeOnly subject = CurrentTime();
@@ -233,7 +233,7 @@ public sealed partial class ThatTimeOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableMinimumValueIsOutsideTheTolerance_ShouldSucceed()
 			{
 				TimeOnly subject = CurrentTime();
@@ -247,7 +247,7 @@ public sealed partial class ThatTimeOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenToleranceWidensTheRangeToTheWholeClock_ShouldFail()
 			{
 				TimeOnly subject = new(12, 0);
@@ -258,7 +258,7 @@ public sealed partial class ThatTimeOnly
 					=> await That(subject).IsNotBetween(minimum).And(maximum)
 						.Within(12.Hours());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 12:00:00,
@@ -267,7 +267,7 @@ public sealed partial class ThatTimeOnly
 					.Because("twelve hours on both sides of a single time cover the whole clock face");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueIsWithinTheMaximumTolerance_ShouldFail()
 			{
 				TimeOnly subject = LaterTime(3);
@@ -278,7 +278,7 @@ public sealed partial class ThatTimeOnly
 					=> await That(subject).IsNotBetween(minimum).And(maximum)
 						.Within(3.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,
@@ -286,7 +286,7 @@ public sealed partial class ThatTimeOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueIsWithinTheMinimumTolerance_ShouldFail()
 			{
 				TimeOnly subject = EarlierTime(3);
@@ -297,7 +297,7 @@ public sealed partial class ThatTimeOnly
 					=> await That(subject).IsNotBetween(minimum).And(maximum)
 						.Within(3.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 0:03,

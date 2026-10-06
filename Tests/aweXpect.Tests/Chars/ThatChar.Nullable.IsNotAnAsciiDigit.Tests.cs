@@ -8,16 +8,16 @@ public sealed partial class ThatChar
 		{
 			public sealed class Tests
 			{
-				[Theory]
-				[InlineData('0')]
-				[InlineData('5')]
-				[InlineData('9')]
+				[Test]
+				[Arguments('0')]
+				[Arguments('5')]
+				[Arguments('9')]
 				public async Task WhenSubjectIsAnAsciiDigit_ShouldFail(char? subject)
 				{
 					async Task Act()
 						=> await That(subject).IsNotAnAsciiDigit();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not an ASCII digit,
@@ -25,14 +25,14 @@ public sealed partial class ThatChar
 						              """);
 				}
 
-				[Theory]
-				[InlineData('a')]
-				[InlineData('A')]
-				[InlineData(' ')]
-				[InlineData('/')]
-				[InlineData(':')]
-				[InlineData('\u0663')]
-				[InlineData('\u00BD')]
+				[Test]
+				[Arguments('a')]
+				[Arguments('A')]
+				[Arguments(' ')]
+				[Arguments('/')]
+				[Arguments(':')]
+				[Arguments('\u0663')]
+				[Arguments('\u00BD')]
 				public async Task WhenSubjectIsNoAsciiDigit_ShouldSucceed(char? subject)
 				{
 					async Task Act()
@@ -41,7 +41,7 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					char? subject = null;
@@ -49,7 +49,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).IsNotAnAsciiDigit();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not an ASCII digit,
@@ -60,10 +60,10 @@ public sealed partial class ThatChar
 
 			public sealed class NegatedTests
 			{
-				[Theory]
-				[InlineData('0')]
-				[InlineData('5')]
-				[InlineData('9')]
+				[Test]
+				[Arguments('0')]
+				[Arguments('5')]
+				[Arguments('9')]
 				public async Task WhenSubjectIsAnAsciiDigit_ShouldSucceed(char? subject)
 				{
 					async Task Act()
@@ -72,20 +72,20 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData('a')]
-				[InlineData('A')]
-				[InlineData(' ')]
-				[InlineData('/')]
-				[InlineData(':')]
-				[InlineData('\u0663')]
-				[InlineData('\u00BD')]
+				[Test]
+				[Arguments('a')]
+				[Arguments('A')]
+				[Arguments(' ')]
+				[Arguments('/')]
+				[Arguments(':')]
+				[Arguments('\u0663')]
+				[Arguments('\u00BD')]
 				public async Task WhenSubjectIsNoAsciiDigit_ShouldFail(char? subject)
 				{
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.IsNotAnAsciiDigit());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is an ASCII digit,
@@ -93,7 +93,7 @@ public sealed partial class ThatChar
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					char? subject = null;
@@ -101,7 +101,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.IsNotAnAsciiDigit());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is an ASCII digit,

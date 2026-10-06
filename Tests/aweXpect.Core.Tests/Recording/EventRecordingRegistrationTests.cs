@@ -7,7 +7,7 @@ namespace aweXpect.Core.Tests.Recording;
 
 public sealed class EventRecordingRegistrationTests
 {
-	[Fact]
+	[Test]
 	public async Task GeneratedRegistration_ShouldRecordAnEventWithMoreThanFourValueTypeParameters()
 	{
 		Publisher subject = new();
@@ -20,7 +20,7 @@ public sealed class EventRecordingRegistrationTests
 			.Because("the generated handler boxes every argument itself and has no parameter ceiling");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GeneratedRegistration_ShouldRecordAStaticEvent()
 	{
 		Publisher subject = new();
@@ -34,7 +34,7 @@ public sealed class EventRecordingRegistrationTests
 			.Because("reflection returns the static events of the recorded type, so the registration has to as well");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GeneratedRegistration_ShouldRegisterTheEventsOfTheRecordedType()
 	{
 		bool isRegistered = TypeMetadataRegistry.Instance.TryGet(typeof(Publisher),
@@ -47,7 +47,7 @@ public sealed class EventRecordingRegistrationTests
 			.Because("the events are registered in the order reflection returns them");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GeneratedRegistration_WithMissingEventName_ShouldThrowWithoutTrimmingHint()
 	{
 		Publisher subject = new();

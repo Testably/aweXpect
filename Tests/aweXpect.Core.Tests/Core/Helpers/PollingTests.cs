@@ -9,7 +9,7 @@ namespace aweXpect.Core.Tests.Core.Helpers;
 
 public sealed class PollingTests
 {
-	[Fact]
+	[Test]
 	public async Task Elapsed_AfterACancellation_ShouldStayAtTheTimeOfTheCancellation()
 	{
 		VirtualTimeSystem time = new();
@@ -26,7 +26,7 @@ public sealed class PollingTests
 		await That(sut.Remaining).IsEqualTo(30.Seconds() - 40.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetElapsedTime_ShouldMeasureWithTheTimeSystem()
 	{
 		VirtualTimeSystem time = new();
@@ -40,7 +40,7 @@ public sealed class PollingTests
 		await That(sut.Elapsed).IsEqualTo(80.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_AfterTheLastCheck_ShouldBeElapsed()
 	{
 		VirtualTimeSystem time = new();
@@ -54,7 +54,7 @@ public sealed class PollingTests
 		await That(time.Now).IsEqualTo(20.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_ShouldCheckInTheIntervalAndMakeTheLastCheckAtTheEndOfTheBudget()
 	{
 		VirtualTimeSystem time = new();
@@ -74,7 +74,7 @@ public sealed class PollingTests
 		]).Because("the last wait is shortened to the remaining budget");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_WhenACheckTookLongerThanTheBudget_ShouldBeElapsedWithoutWaiting()
 	{
 		VirtualTimeSystem time = new();
@@ -87,7 +87,7 @@ public sealed class PollingTests
 		await That(time.Now).IsEqualTo(130.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_WhenACheckTookTime_ShouldOnlyWaitForTheRemainingBudget()
 	{
 		VirtualTimeSystem time = new();
@@ -101,7 +101,7 @@ public sealed class PollingTests
 		await That(sut.Elapsed).IsEqualTo(100.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_WhenAlreadyCanceled_ShouldBeCanceled()
 	{
 		VirtualTimeSystem time = new();
@@ -116,7 +116,7 @@ public sealed class PollingTests
 		await That(sut.Elapsed).IsEqualTo(TimeSpan.Zero);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_WhenOnlyASliverOfTheBudgetWouldBeLeft_ShouldMakeTheLastCheck()
 	{
 		VirtualTimeSystem time = new();
@@ -132,7 +132,7 @@ public sealed class PollingTests
 			.Because("no wait follows the last check");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_WhenTheBudgetIsUnlimited_ShouldCheckAgain()
 	{
 		VirtualTimeSystem time = new();
@@ -145,7 +145,7 @@ public sealed class PollingTests
 		await That(sut.Elapsed).IsEqualTo(1.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_WhenTheBudgetIsUnlimitedAndTheCallerCancels_ShouldBeCanceled()
 	{
 		VirtualTimeSystem time = new();
@@ -160,7 +160,7 @@ public sealed class PollingTests
 			.Because("an unlimited budget can never be used up by a cancellation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_WhenTheBudgetIsUnlimitedAndTheIntervalExceedsTheMaximumWait_ShouldCapTheWait()
 	{
 		VirtualTimeSystem time = new();
@@ -173,7 +173,7 @@ public sealed class PollingTests
 			.Because("a longer wait is not accepted by the delay of the real time system");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_WhenTheBudgetIsUsedUp_ShouldBeElapsed()
 	{
 		VirtualTimeSystem time = new();
@@ -185,7 +185,7 @@ public sealed class PollingTests
 		await That(time.Now).IsEqualTo(TimeSpan.Zero);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_WhenTheCallerCancels_ShouldBeCanceled()
 	{
 		VirtualTimeSystem time = new();
@@ -200,7 +200,7 @@ public sealed class PollingTests
 		await That(sut.Elapsed).IsEqualTo(20.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_WhenTheCallerCancelsAtTheEndOfTheBudget_ShouldMakeTheLastCheck()
 	{
 		VirtualTimeSystem time = new();
@@ -215,7 +215,7 @@ public sealed class PollingTests
 			.Because("a cancellation within the tolerance of the timers counts as the budget being used up");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_WhenTheCallerCancelsDuringALaterWait_ShouldBeCanceled()
 	{
 		VirtualTimeSystem time = new();
@@ -233,7 +233,7 @@ public sealed class PollingTests
 		await That(sut.Elapsed).IsEqualTo(250.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_WhenTheIntervalExceedsTheBudget_ShouldMakeTheLastCheckAtTheEndOfTheBudget()
 	{
 		long startTimestamp = RealTimeSystem.Instance.GetTimestamp();
@@ -247,7 +247,7 @@ public sealed class PollingTests
 			.Because("the wait is shortened to the remaining budget, and a timer can complete a few milliseconds before the stopwatch agrees");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_WhenTheIntervalIsNotPositive_ShouldCheckAgainWithoutWaiting()
 	{
 		VirtualTimeSystem time = new();
@@ -259,7 +259,7 @@ public sealed class PollingTests
 		await That(time.Now).IsEqualTo(TimeSpan.Zero);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_WhenTheIntervalIsShorterThanTheBudget_ShouldCheckAgain()
 	{
 		VirtualTimeSystem time = new();
@@ -271,7 +271,7 @@ public sealed class PollingTests
 		await That(sut.Elapsed).IsEqualTo(1.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task WaitForNextCheck_WhenTheTimeoutIsShorterThanTheBudget_ShouldBeCanceled()
 	{
 		EvaluationCancellation cancellation = new(20.Milliseconds(), CancellationToken.None);

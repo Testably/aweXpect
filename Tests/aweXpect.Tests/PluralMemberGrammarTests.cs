@@ -7,7 +7,7 @@ public sealed class PluralMemberGrammar
 {
 	public sealed class Tests
 	{
-		[Fact]
+		[Test]
 		public async Task Booleans_ShouldUsePluralVerb()
 		{
 			Container<bool> subject = new(true, false);
@@ -15,7 +15,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsTrue()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are True for all items,
@@ -24,7 +24,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Booleans_WhenNegated_ShouldUsePluralVerb()
 		{
 			Container<bool> subject = new(true, false);
@@ -32,7 +32,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsNotEqualTo(false)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are not False for all items,
@@ -41,7 +41,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Chars_ShouldUsePluralVerb()
 		{
 			Container<char> subject = new('a', '1');
@@ -49,7 +49,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsALetter()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are a letter for all items,
@@ -59,7 +59,7 @@ public sealed class PluralMemberGrammar
 				.Because("the generated expectations derive the plural form from their leading verb");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Chars_WhenNegated_ShouldUsePluralVerb()
 		{
 			Container<char> subject = new('a', '1');
@@ -67,7 +67,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsNotALetter()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are not a letter for all items,
@@ -76,7 +76,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DateTimes_ShouldUsePluralVerb()
 		{
 			DateTime earlier = new(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -86,7 +86,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsBefore(later)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are before 2021-01-01T00:00:00.0000000Z for all items,
@@ -95,7 +95,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DateTimes_WhenNegated_ShouldUsePluralVerb()
 		{
 			DateTime earlier = new(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -105,7 +105,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsNotBefore(later)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are not before 2021-01-01T00:00:00.0000000Z for all items,
@@ -114,7 +114,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Dictionaries_ShouldUseSingularVerb()
 		{
 			Container<int> subject = new(1);
@@ -122,7 +122,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Map, map => map.ContainsKey(2));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Map contains key 2,
@@ -131,7 +131,7 @@ public sealed class PluralMemberGrammar
 				.Because("a dictionary reads as a single lookup, not as a plural noun");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Dictionaries_WhenDeclaredAsReadOnlyInterface_ShouldUseSingularVerb()
 		{
 			Container<int> subject = new(1);
@@ -139,7 +139,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Lookup, lookup => lookup.ContainsKey(2));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Lookup contains key 2,
@@ -148,7 +148,7 @@ public sealed class PluralMemberGrammar
 				.Because("IReadOnlyDictionary<,> does not implement the non-generic IDictionary");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Enums_ShouldUsePluralVerb()
 		{
 			Container<MyFlags> subject = new(MyFlags.A, MyFlags.B);
@@ -156,7 +156,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.HasFlag(MyFlags.A)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items have flag A for all items,
@@ -165,7 +165,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Enums_WhenNegated_ShouldUsePluralVerb()
 		{
 			Container<MyFlags> subject = new(MyFlags.A, MyFlags.B);
@@ -174,7 +174,7 @@ public sealed class PluralMemberGrammar
 				=> await That(subject).Whose(c => c.Items,
 					items => items.All().ComplyWith(x => x.DoesNotHaveFlag(MyFlags.A)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items do not have flag A for all items,
@@ -183,7 +183,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NestedSingularMember_ShouldUseSingularVerb()
 		{
 			Container<Container<int>> subject = new(new Container<int>(1), new Container<int>(2));
@@ -192,7 +192,7 @@ public sealed class PluralMemberGrammar
 				=> await That(subject).Whose(c => c.Items,
 					items => items.All().ComplyWith(x => x.Whose(y => y.Name, name => name.IsEqualTo("bar"))));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items have Name that is equal to "bar" for all items,
@@ -202,7 +202,7 @@ public sealed class PluralMemberGrammar
 				.Because("the number of a member follows its own type, not the number of the enclosing subject");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NumberComparisons_WhenNegated_ShouldUsePluralVerb()
 		{
 			Container<int> subject = new(4, 7);
@@ -211,7 +211,7 @@ public sealed class PluralMemberGrammar
 				=> await That(subject).Whose(c => c.Items,
 					items => items.All().ComplyWith(x => x.IsNotGreaterThan(6).Within(1)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are not greater than 6 ± 1 for all items,
@@ -220,7 +220,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_ShouldUsePluralVerb()
 		{
 			Container<int> subject = new(5, 6);
@@ -228,7 +228,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsLessThan(6)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are less than 6 for all items,
@@ -237,7 +237,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WhenNegated_ShouldUsePluralVerb()
 		{
 			Container<int> subject = new(5, 6);
@@ -245,7 +245,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsNotEqualTo(6)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are not equal to 6 for all items,
@@ -254,7 +254,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Objects_ShouldUsePluralVerb()
 		{
 			Container<object> subject = new(1, "a");
@@ -262,7 +262,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsEqualTo(1)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are equal to 1 for all items,
@@ -271,7 +271,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Objects_WhenAppliedToTheMemberItself_ShouldUsePluralVerbInResult()
 		{
 			Container<int> subject = new(1, 2);
@@ -279,7 +279,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.IsNull());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are null,
@@ -290,7 +290,7 @@ public sealed class PluralMemberGrammar
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Objects_WhenNegated_ShouldUsePluralVerb()
 		{
 			Container<object> subject = new(1, "a");
@@ -298,7 +298,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsNotEqualTo(1)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are not equal to 1 for all items,
@@ -307,7 +307,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Signs_ShouldUsePluralVerb()
 		{
 			Container<int> subject = new(-1, 1);
@@ -315,7 +315,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsPositive()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are positive for all items,
@@ -324,7 +324,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Signs_WhenNegated_ShouldUsePluralVerb()
 		{
 			Container<int> subject = new(-1, 1);
@@ -332,7 +332,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsNotPositive()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are not positive for all items,
@@ -341,7 +341,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_ShouldUsePluralVerb()
 		{
 			Container<string> subject = new("", "a");
@@ -349,7 +349,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsEmpty()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are empty for all items,
@@ -358,7 +358,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_WhenIncludingUncasedLetters_ShouldUsePluralVerb()
 		{
 			Container<string> subject = new("A", "ß");
@@ -367,7 +367,7 @@ public sealed class PluralMemberGrammar
 				=> await That(subject).Whose(c => c.Items,
 					items => items.All().ComplyWith(x => x.IsUpperCased().IncludingUncasedLetters()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are upper-cased including uncased letters for all items,
@@ -376,7 +376,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_WhenMemberIsAString_ShouldUseSingularVerb()
 		{
 			Container<int> subject = new(1);
@@ -384,7 +384,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Name, name => name.IsEmpty());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Name is empty,
@@ -393,7 +393,7 @@ public sealed class PluralMemberGrammar
 				.Because("a string is not treated as a collection of characters");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_WhenNegated_ShouldUsePluralVerb()
 		{
 			Container<string> subject = new("", "a");
@@ -401,7 +401,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsNotEmpty()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are not empty for all items,
@@ -410,7 +410,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Types_ShouldUsePluralVerb()
 		{
 			Container<object> subject = new(1, "a");
@@ -418,7 +418,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsExactly<string>()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are exactly of type string for all items,
@@ -427,7 +427,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Types_WhenNegated_ShouldUsePluralVerb()
 		{
 			Container<object> subject = new(1, "a");
@@ -435,7 +435,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Items, items => items.All().ComplyWith(x => x.IsNotExactly<string>()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Items are not exactly of type string for all items,
@@ -444,7 +444,7 @@ public sealed class PluralMemberGrammar
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenMemberIsSingular_ShouldUseSingularVerb()
 		{
 			Container<int> subject = new(1);
@@ -452,7 +452,7 @@ public sealed class PluralMemberGrammar
 			async Task Act()
 				=> await That(subject).Whose(c => c.Count, count => count.IsLessThan(1));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             whose Count is less than 1,

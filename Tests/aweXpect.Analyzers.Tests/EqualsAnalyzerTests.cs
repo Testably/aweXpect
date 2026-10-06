@@ -1,12 +1,11 @@
 using System.Threading.Tasks;
-using Xunit;
 using Verifier = aweXpect.Analyzers.Tests.Verifiers.CSharpAnalyzerVerifier<aweXpect.Analyzers.EqualsAnalyzer>;
 
 namespace aweXpect.Analyzers.Tests;
 
 public class EqualsAnalyzerTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenOnlyUsingThat_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -26,7 +25,7 @@ public class EqualsAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingEquals_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -49,7 +48,7 @@ public class EqualsAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingEqualsOnACombination_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -70,7 +69,7 @@ public class EqualsAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingEqualsOnADelegateSubject_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -89,7 +88,7 @@ public class EqualsAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingEqualsOnADelegateSubjectWithValue_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -108,7 +107,7 @@ public class EqualsAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingEqualsOnAnAndOrResult_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -131,7 +130,7 @@ public class EqualsAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingEqualsOnAnExpectation_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -154,7 +153,7 @@ public class EqualsAnalyzerTests
 				.WithLocation(0)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingEqualsOnAnotherObject_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""

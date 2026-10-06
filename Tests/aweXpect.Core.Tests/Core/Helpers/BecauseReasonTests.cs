@@ -4,7 +4,7 @@ namespace aweXpect.Core.Tests.Core.Helpers;
 
 public class BecauseReasonTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenReasonDoesNotStartWithBecause_ShouldPrefixCommaAndBecause()
 	{
 		string reason = "something";
@@ -16,7 +16,7 @@ public class BecauseReasonTests
 		await That(result).IsEqualTo(expected);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenReasonStartsWithBecause_ShouldPrefixComma()
 	{
 		string reason = "because something";

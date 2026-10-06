@@ -6,7 +6,7 @@ public sealed partial class ThatDelegate
 	{
 		public sealed class AtMostTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDelegateIsFastEnough_ShouldSucceed()
 			{
 				Action @delegate = () => { };
@@ -17,7 +17,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
 				Action @delegate = () => Task.Delay(50.Milliseconds()).Wait();
@@ -25,7 +25,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in at most 0:00.010,
@@ -33,7 +33,7 @@ public sealed partial class ThatDelegate
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateThrowsAfterExceedingTheLimit_ShouldFail()
 			{
 				Action @delegate = () =>
@@ -45,7 +45,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that @delegate
 					              executes in at most 0:00.010,
@@ -55,7 +55,7 @@ public sealed partial class ThatDelegate
 					.Because("the exception is the more relevant cause than the exceeded limit");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateThrowsAnException_ShouldFail()
 			{
 				Action @delegate = () => throw new MyException();
@@ -63,7 +63,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtMost(5000.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that @delegate
 					              executes in at most 0:05,

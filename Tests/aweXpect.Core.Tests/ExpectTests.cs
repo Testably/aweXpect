@@ -13,7 +13,7 @@ namespace aweXpect.Core.Tests;
 
 public class ExpectTests
 {
-	[Fact]
+	[Test]
 	public async Task Context_FromSuccess_ShouldNotBeIncludedInMessage()
 	{
 		Expectation.Result result1 = new(1, "foo1",
@@ -25,7 +25,7 @@ public class ExpectTests
 				new MyExpectation(result1, new ResultContext.Fixed("context-title1", "contest-content1")),
 				new MyExpectation(result2, new ResultContext.Fixed("context-title2", "contest-content2")));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			             foo1 expectation1
@@ -38,7 +38,7 @@ public class ExpectTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Context_Multiple_ShouldBeIncludedInMessage()
 	{
 		Expectation.Result result = new(1, "foo", new DummyConstraintResult(Outcome.Failure, "expectation", "result"));
@@ -47,7 +47,7 @@ public class ExpectTests
 			=> await ThatAll(new MyExpectation(result, new ResultContext.Fixed("t1", "c1"), new ResultContext.Fixed("t2", "c2"),
 				new ResultContext.Fixed("t3", "c3")));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			             foo expectation
@@ -65,7 +65,7 @@ public class ExpectTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Context_ShouldBeIncludedInMessage()
 	{
 		Expectation.Result result = new(1, "foo", new DummyConstraintResult(Outcome.Failure, "expectation", "result"));
@@ -73,7 +73,7 @@ public class ExpectTests
 		async Task Act()
 			=> await ThatAll(new MyExpectation(result, new ResultContext.Fixed("context-title", "contest-content")));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			             foo expectation
@@ -85,7 +85,7 @@ public class ExpectTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldAwaitValueTaskSubject()
 	{
 		ValueTask<string?> sut = new(Task.FromResult<string?>(null));
@@ -93,7 +93,7 @@ public class ExpectTests
 		async Task Act()
 			=> await That(sut).IsNotNull();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             is not null,
@@ -102,7 +102,7 @@ public class ExpectTests
 			.Because("the result of the ValueTask must become the subject, not the ValueTask itself");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldConsumeValueTaskSubjectOnlyOnce()
 	{
 		ValueTask sut = new(new SingleUseValueTaskSource(), 0);
@@ -120,7 +120,7 @@ public class ExpectTests
 			.Because("the ValueTask must be consumed when the expectation is created, not on every evaluation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldFailForNullGenericTaskSubject()
 	{
 		Task<int>? sut = null;
@@ -128,7 +128,7 @@ public class ExpectTests
 		async Task Act()
 			=> await That(sut!).IsEqualTo(1);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             is equal to 1,
@@ -138,7 +138,7 @@ public class ExpectTests
 			.Because("a null task is no exception thrown by the subject, but a subject without a value");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldFailForNullGenericTaskSubject_WhenNegated()
 	{
 		Task<int>? sut = null;
@@ -146,7 +146,7 @@ public class ExpectTests
 		async Task Act()
 			=> await That(sut!).DoesNotComplyWith(it => it.IsEqualTo(1));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             is not equal to 1,
@@ -156,7 +156,7 @@ public class ExpectTests
 			.Because("a null task has no value that could meet the negated expectation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldFailForNullGenericTaskSubject_WhenExpectingNull()
 	{
 		Task<string?>? sut = null;
@@ -164,7 +164,7 @@ public class ExpectTests
 		async Task Act()
 			=> await That(sut!).IsNull();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             is null,
@@ -174,7 +174,7 @@ public class ExpectTests
 			.Because("a null task has no value, not a null value");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldFailForNullTaskSubject()
 	{
 		Task? sut = null;
@@ -182,7 +182,7 @@ public class ExpectTests
 		async Task Act()
 			=> await That(sut!).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             does not throw any exception,
@@ -192,7 +192,7 @@ public class ExpectTests
 			.Because("a null task subject is no null delegate and no exception thrown by the subject");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldFailForNullTaskSubject_WhenExpectingAnException()
 	{
 		Task? sut = null;
@@ -200,7 +200,7 @@ public class ExpectTests
 		async Task Act()
 			=> await That(sut!).Throws<InvalidOperationException>().WithMessage("foo");
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             throws an InvalidOperationException with message equal to "foo",
@@ -210,7 +210,7 @@ public class ExpectTests
 			.Because("the expectation on the exception cannot be verified without a task");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldFailForNullTaskSubject_WhenNegated()
 	{
 		Task? sut = null;
@@ -218,7 +218,7 @@ public class ExpectTests
 		async Task Act()
 			=> await That(sut!).Throws().OnlyIf(false);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             does not throw any exception,
@@ -228,7 +228,7 @@ public class ExpectTests
 			.Because("a null task neither throws nor completes successfully");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldObserveExceptionOfTaskSubject()
 	{
 		Task sut = Task.FromException(new InvalidOperationException("my exception"));
@@ -236,7 +236,7 @@ public class ExpectTests
 		async Task Act()
 			=> await That(sut).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             does not throw any exception,
@@ -245,7 +245,7 @@ public class ExpectTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldObserveExceptionOfValueTaskSubject()
 	{
 		ValueTask sut = new(Task.FromException(new InvalidOperationException("my exception")));
@@ -253,7 +253,7 @@ public class ExpectTests
 		async Task Act()
 			=> await That(sut).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             does not throw any exception,
@@ -262,7 +262,7 @@ public class ExpectTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportCollectionExpressionsAsSubject()
 	{
 		async Task Act()
@@ -271,7 +271,7 @@ public class ExpectTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportTaskAsSubject()
 	{
 		Task<int> sut = Task.FromResult(42);
@@ -282,7 +282,7 @@ public class ExpectTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportValueTaskAsSubject()
 	{
 		ValueTask<int> sut = new(42);
@@ -293,7 +293,7 @@ public class ExpectTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAll_WhenACombinationWithAMultiLineValueFails_ShouldIndentTheValueLikeTheEntry()
 	{
 		MyClass expected = new()
@@ -308,7 +308,7 @@ public class ExpectTests
 		async Task Act()
 			=> await ThatAll(That(subject).IsSameAs(expected).And.IsNotNull());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			              [01] Expected that subject refers to ExpectTests.MyClass {
@@ -322,7 +322,7 @@ public class ExpectTests
 			.Because("the operands of a combination are indented like a single expectation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAll_WhenAMemberExpectationWithAMultiLineValueFails_ShouldIndentTheValueLikeTheEntry()
 	{
 		MyClass expected = new()
@@ -337,7 +337,7 @@ public class ExpectTests
 		async Task Act()
 			=> await ThatAll(That(subject).Is<MyHolder>().Whose(h => h.Inner, i => i.IsSameAs(expected)));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			              [01] Expected that subject is of type ExpectTests.MyHolder whose Inner refers to ExpectTests.MyClass {
@@ -351,7 +351,7 @@ public class ExpectTests
 			.Because("the expectation on a member is indented like a single expectation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAll_WhenAMemberFails_ShouldReleaseItsMaterializedSourceAfterTheFailureMessage()
 	{
 		DisposeTrackingEnumerable source = new(null, Enumerable.Range(1, 20).ToArray());
@@ -362,7 +362,7 @@ public class ExpectTests
 			=> await ThatAll(
 				new ExpectationResult(That(subject).Get().ExpectationBuilder.AddConstraint((_, _) => constraint)));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			              [01] Expected that subject reads the first item
@@ -375,7 +375,7 @@ public class ExpectTests
 			.Because("the source is released once the failure message is created");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAll_WhenANestedCombinationFails_ShouldIncludeTheContextsOfItsFailedMembers()
 	{
 		async Task Act()
@@ -385,7 +385,7 @@ public class ExpectTests
 					Member(2, Outcome.Success)),
 				Member(3, Outcome.Failure));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			               Expected all of the following to succeed:
@@ -404,7 +404,7 @@ public class ExpectTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAll_WhenANestedCombinationIsUndecided_ShouldBeInconclusive()
 	{
 		Expectation.Result result1 = new(1, "foo1",
@@ -418,7 +418,7 @@ public class ExpectTests
 				ThatAny(new MyExpectation(result1), new MyExpectation(result2)),
 				new MyExpectation(result3));
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			               Expected any of the following to succeed:
@@ -432,7 +432,7 @@ public class ExpectTests
 			.Because("an undecided nested combination leaves the outer combination undecided");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAll_WhenANestedCombinationIsUndecided_ShouldIncludeTheContextsOfItsUndecidedAndFailedMembers()
 	{
 		async Task Act()
@@ -442,7 +442,7 @@ public class ExpectTests
 					Member(2, Outcome.Failure)),
 				Member(3, Outcome.Success));
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			               Expected any of the following to succeed:
@@ -462,7 +462,7 @@ public class ExpectTests
 			.Because("the context of the succeeded expectation after the nested combination must not be included");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAll_WhenANestedCombinationSucceeds_ShouldExcludeTheContextsOfItsFailedMembers()
 	{
 		async Task Act()
@@ -472,7 +472,7 @@ public class ExpectTests
 					Member(2, Outcome.Success)),
 				Member(3, Outcome.Failure));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			               Expected any of the following to succeed:
@@ -488,7 +488,7 @@ public class ExpectTests
 			.Because("the failure of a member of a succeeded combination is not reported, so neither is its context");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAll_WhenAWhichExpectationWithAMultiLineValueFails_ShouldIndentTheValueLikeTheEntry()
 	{
 		MyClass expected = new()
@@ -506,7 +506,7 @@ public class ExpectTests
 		async Task Act()
 			=> await ThatAll(That(subject).HasSingle().Which.IsSameAs(expected));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			              [01] Expected that subject has a single item that refers to ExpectTests.MyClass {
@@ -520,7 +520,7 @@ public class ExpectTests
 			.Because("the expectation on the item is indented like a single expectation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAll_WhenANestedCombinationSucceeds_ShouldNumberTheContextsOfLaterMembersLikeTheirResults()
 	{
 		async Task Act()
@@ -530,7 +530,7 @@ public class ExpectTests
 					Member(2, Outcome.Failure)),
 				Member(3, Outcome.Failure));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			               Expected any of the following to succeed:
@@ -545,7 +545,7 @@ public class ExpectTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAll_WhenAnExpectationDoesNotDecideItsOutcome_ShouldFail()
 	{
 		async Task Act()
@@ -555,7 +555,7 @@ public class ExpectTests
 						() => new DummyConstraintResult(Outcome.Undecided, "decides nothing", "it was 1")))),
 				That(true).IsTrue());
 
-		await That(Act).ThrowsExactly<XunitException>()
+		await That(Act).ThrowsExactly<FailException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			              [01] Expected that 1 decides nothing
@@ -566,7 +566,7 @@ public class ExpectTests
 			.Because("an expectation that is left undecided without a cancellation fails the combination");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAll_WhenAnExpectationIsNull_ShouldThrowArgumentException()
 	{
 		async Task Act()
@@ -577,7 +577,7 @@ public class ExpectTests
 			.WithMessage("The 'expectations' cannot contain null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAll_WhenDeeplyNested_ShouldNumberTheContextsLikeTheResults()
 	{
 		async Task Act()
@@ -589,7 +589,7 @@ public class ExpectTests
 					Member(3, Outcome.Failure)),
 				Member(4, Outcome.Failure));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			               Expected any of the following to succeed:
@@ -614,7 +614,7 @@ public class ExpectTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAll_WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 	{
 		async Task Act()
@@ -625,7 +625,7 @@ public class ExpectTests
 			.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAll_WhenOneExpectationFailsAndAnotherIsUndecided_ShouldFail()
 	{
 		Expectation.Result result1 = new(1, "foo1",
@@ -636,7 +636,7 @@ public class ExpectTests
 		async Task Act()
 			=> await ThatAll(new MyExpectation(result1), new MyExpectation(result2));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			             foo1 expectation1
@@ -648,7 +648,7 @@ public class ExpectTests
 			.Because("a failed expectation fails all of them, regardless of the undecided one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAll_WhenOneExpectationIsCanceledAndTheOtherSucceeds_ShouldBeInconclusive()
 	{
 		Task<int> subject = PendingTask.Of<int>();
@@ -660,7 +660,7 @@ public class ExpectTests
 				That(subject).IsEqualTo(1).WithCancellation(cts.Token),
 				That(true).IsTrue());
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			              [01] Expected that subject is equal to 1
@@ -671,7 +671,7 @@ public class ExpectTests
 			.Because("the canceled expectation was not verified, so not all of them succeeded");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAny_WhenAllExpectationsAreUndecided_ShouldBeInconclusive()
 	{
 		Expectation.Result result1 = new(1, "foo1",
@@ -682,7 +682,7 @@ public class ExpectTests
 		async Task Act()
 			=> await ThatAny(new MyExpectation(result1), new MyExpectation(result2));
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected any of the following to succeed:
 			             foo1 expectation1
@@ -693,7 +693,7 @@ public class ExpectTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAny_WhenAnExpectationIsNull_ShouldThrowArgumentException()
 	{
 		async Task Act()
@@ -704,7 +704,7 @@ public class ExpectTests
 			.WithMessage("The 'expectations' cannot contain null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAny_WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 	{
 		async Task Act()
@@ -715,7 +715,7 @@ public class ExpectTests
 			.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAny_WhenOneExpectationFailsAndAnotherIsUndecided_ShouldBeInconclusive()
 	{
 		Expectation.Result result1 = new(1, "foo1",
@@ -726,7 +726,7 @@ public class ExpectTests
 		async Task Act()
 			=> await ThatAny(new MyExpectation(result1), new MyExpectation(result2));
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected any of the following to succeed:
 			             foo1 expectation1
@@ -738,7 +738,7 @@ public class ExpectTests
 			.Because("the undecided expectation could still have succeeded");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAny_WhenSeveralNestedCombinationsFail_ShouldIncludeTheContextsOfTheirFailedMembers()
 	{
 		async Task Act()
@@ -751,7 +751,7 @@ public class ExpectTests
 					Member(4, Outcome.Failure)),
 				Member(5, Outcome.Failure));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected any of the following to succeed:
 			               Expected all of the following to succeed:

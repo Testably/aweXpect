@@ -8,7 +8,7 @@ public sealed partial class ThatDelegate
 	{
 		public sealed class AllowingExceptionsTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDelegateIsCanceled_ShouldSucceed()
 			{
 				CancellationToken canceledToken = new(true);
@@ -21,7 +21,7 @@ public sealed partial class ThatDelegate
 					.Because("a delegate that cancels itself for its own reasons throws an ordinary exception, which is allowed");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateThrowsAfterExceedingTheMaximum_ShouldFail()
 			{
 				Action @delegate = () =>
@@ -33,7 +33,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(10.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that @delegate
 					              executes in at most 0:00.010 allowing exceptions,
@@ -43,7 +43,7 @@ public sealed partial class ThatDelegate
 					.Because("the exception is still the most useful context, even when the duration decided");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateThrowsBeforeReachingTheMinimum_ShouldFail()
 			{
 				Action @delegate = () => throw new MyException();
@@ -51,7 +51,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtLeast(5000.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that @delegate
 					              executes in at least 0:05 allowing exceptions,
@@ -61,7 +61,7 @@ public sealed partial class ThatDelegate
 					.Because("allowing exceptions lets the duration decide, and here it was too short");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateThrowsOperationCanceledExceptionBeforeReachingTheMinimum_ShouldFail()
 			{
 				Action @delegate = () => throw new OperationCanceledException("my own reason");
@@ -69,7 +69,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtLeast(5000.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in at least 0:05 allowing exceptions,
@@ -79,7 +79,7 @@ public sealed partial class ThatDelegate
 					.Because("a cancellation that neither the timeout nor the caller requested is an ordinary exception");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateThrowsWithinTheLimit_ShouldSucceed()
 			{
 				Action @delegate = () => throw new MyException();
@@ -91,7 +91,7 @@ public sealed partial class ThatDelegate
 					.Because("the duration alone decides the outcome once exceptions are allowed");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateWithValueThrowsAfterExceedingTheMaximum_ShouldFail()
 			{
 				Func<int> @delegate = () =>
@@ -103,7 +103,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(10.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that @delegate
 					              executes in at most 0:00.010 allowing exceptions,
@@ -113,7 +113,7 @@ public sealed partial class ThatDelegate
 					.Because("the constraint for delegates with a return value must render the same message");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateWithValueThrowsWithinTheLimit_ShouldSucceed()
 			{
 				Func<int> @delegate = () => throw new MyException();
@@ -125,7 +125,7 @@ public sealed partial class ThatDelegate
 					.Because("the constraint for delegates with a return value must decide the same way");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExceptionIsAllowed_ShouldNotForwardItAsInnerException()
 			{
 				Exception exception = new MyException();
@@ -138,12 +138,12 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(10.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.Whose(e => e.InnerException, i => i.IsNull())
 					.Because("the exceeded duration, not the allowed exception, caused the failure");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheUpperBoundCancelsTheDelegate_ShouldFail()
 			{
 				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
@@ -151,7 +151,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AllowingExceptions().AtMost(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in at most 0:00.050 allowing exceptions,
@@ -160,7 +160,7 @@ public sealed partial class ThatDelegate
 					.Because("allowing exceptions must not let a delegate pass by being cancelled at the maximum");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenToleranceIsGivenAndDelegateThrowsWithinIt_ShouldSucceed()
 			{
 				Action @delegate = () =>

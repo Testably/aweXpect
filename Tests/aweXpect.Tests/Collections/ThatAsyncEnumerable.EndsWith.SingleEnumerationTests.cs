@@ -11,7 +11,7 @@ public sealed partial class ThatAsyncEnumerable
 	{
 		public sealed class SingleEnumerationTests
 		{
-			[Fact]
+			[Test]
 			public async Task Strings_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
@@ -20,7 +20,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with expected,
@@ -36,7 +36,7 @@ public sealed partial class ThatAsyncEnumerable
 					.Because("the guard and the comparison share one enumeration of the expected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
@@ -45,7 +45,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with expected,
@@ -57,7 +57,7 @@ public sealed partial class ThatAsyncEnumerable
 					.Because("the guard and the comparison share one enumeration of the expected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IAsyncEnumerable<double> subject = ToAsyncEnumerable(1.0, 2.0, 3.0);
@@ -66,7 +66,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).EndsWith(expected).Within(0.25);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             ends with expected ± 0.25,

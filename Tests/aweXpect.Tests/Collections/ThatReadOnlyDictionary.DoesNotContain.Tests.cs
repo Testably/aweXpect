@@ -8,7 +8,7 @@ public sealed partial class ThatReadOnlyDictionary
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenKeyIsMissing_ShouldSucceed()
 			{
 				ReadOnlyOnlyDictionary<string, int> subject = new(new Dictionary<string, int> { { "a", 1 }, });
@@ -20,7 +20,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.Because("the dictionary has no entry for key b");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPairExists_ShouldFail()
 			{
 				IReadOnlyDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -28,7 +28,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContain(new KeyValuePair<string, int>("a", 1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain ["a"] = 1,
@@ -39,7 +39,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IReadOnlyDictionary<string, int>? subject = null;
@@ -47,7 +47,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContain(new KeyValuePair<string, int>("a", 1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain ["a"] = 1,
@@ -58,7 +58,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class KeyAndValueTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEntryExists_ShouldFail()
 			{
 				IReadOnlyDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -66,7 +66,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContain("a", 1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain ["a"] = 1,
@@ -77,7 +77,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeyIsMissing_ShouldSucceed()
 			{
 				IReadOnlyDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -92,7 +92,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class ThrowingSubjectTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheKeyComparerThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("comparer failed");
@@ -104,7 +104,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContain("a", 7);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain ["a"] = 7,
@@ -118,7 +118,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.Because("a dictionary that answered nothing cannot prove the negation either");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheLookupThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("lookup failed");
@@ -128,7 +128,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContain("a", 7);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain ["a"] = 7,

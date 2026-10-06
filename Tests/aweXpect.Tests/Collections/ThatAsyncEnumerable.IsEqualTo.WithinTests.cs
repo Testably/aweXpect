@@ -14,9 +14,9 @@ public sealed partial class ThatAsyncEnumerable
 		{
 			public sealed class DecimalTests
 			{
-				[Theory]
-				[InlineData(false)]
-				[InlineData(true)]
+				[Test]
+				[Arguments(false)]
+				[Arguments(true)]
 				public async Task WhenCombinedWithUsing_ShouldThrowInvalidOperationException(bool negated)
 				{
 					IAsyncEnumerable<decimal> subject = ToAsyncEnumerable(1.1m, 2.1m, 3.1m);
@@ -40,7 +40,7 @@ public sealed partial class ThatAsyncEnumerable
 						.Because("the comparer would silently replace the tolerance");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					IAsyncEnumerable<decimal> subject = ToAsyncEnumerable(1.1m, 2.1m, 3.1m);
@@ -51,7 +51,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsAMultiLineExpression_ShouldTrimTheCommonWhiteSpace()
 				{
 					IAsyncEnumerable<decimal> subject = ToAsyncEnumerable(1.1m, 2.3m, 3.1m);
@@ -63,7 +63,7 @@ public sealed partial class ThatAsyncEnumerable
 							3.0m,
 						]).Within(0.2m).InAnyOrder();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to collection [
@@ -83,7 +83,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
 					IAsyncEnumerable<decimal> subject = ToAsyncEnumerable(1.1m, 2.3m, 3.1m);
@@ -91,7 +91,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo([1.0m, 2.0m, 3.0m,]).Within(0.2m).InAnyOrder();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to collection [1.0m, 2.0m, 3.0m,] ± 0.2 in any order,
@@ -110,7 +110,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class NullableDecimalTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					IAsyncEnumerable<decimal?> subject = ToAsyncEnumerable<decimal?>(1.1m, null, 2.1m, 3.1m);
@@ -121,7 +121,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
 					IAsyncEnumerable<decimal?> subject = ToAsyncEnumerable<decimal?>(1.1m, null, 2.3m, 3.1m);
@@ -129,7 +129,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo([1.0m, null, 2.0m, 3.0m,]).Within(0.2m).InAnyOrder();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to collection [1.0m, null, 2.0m, 3.0m,] ± 0.2 in any order,
@@ -148,7 +148,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class DoubleTests
 			{
-				[Fact]
+				[Test]
 				public async Task TwoNaNValues_ShouldBeConsideredEqual()
 				{
 					IAsyncEnumerable<double> subject = ToAsyncEnumerable(1.1, double.NaN, 2.1, 3.1);
@@ -159,7 +159,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					IAsyncEnumerable<double> subject = ToAsyncEnumerable(1.1, 2.1, 3.1);
@@ -170,10 +170,10 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(double.PositiveInfinity, 1.0)]
-				[InlineData(double.NegativeInfinity, 1.0)]
-				[InlineData(double.PositiveInfinity, double.PositiveInfinity)]
+				[Test]
+				[Arguments(double.PositiveInfinity, 1.0)]
+				[Arguments(double.NegativeInfinity, 1.0)]
+				[Arguments(double.PositiveInfinity, double.PositiveInfinity)]
 				public async Task WhenNonFiniteValuesAreEqual_ShouldSucceed(double value, double tolerance)
 				{
 					IAsyncEnumerable<double> subject = ToAsyncEnumerable(value);
@@ -184,12 +184,12 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(double.PositiveInfinity, double.NegativeInfinity, 1.0)]
-				[InlineData(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity)]
-				[InlineData(12.5, double.PositiveInfinity, double.PositiveInfinity)]
-				[InlineData(double.PositiveInfinity, 12.5, double.PositiveInfinity)]
-				[InlineData(double.NaN, double.PositiveInfinity, double.PositiveInfinity)]
+				[Test]
+				[Arguments(double.PositiveInfinity, double.NegativeInfinity, 1.0)]
+				[Arguments(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity)]
+				[Arguments(12.5, double.PositiveInfinity, double.PositiveInfinity)]
+				[Arguments(double.PositiveInfinity, 12.5, double.PositiveInfinity)]
+				[Arguments(double.NaN, double.PositiveInfinity, double.PositiveInfinity)]
 				public async Task WhenNonFiniteValuesDiffer_ShouldFail(double value, double expected, double tolerance)
 				{
 					IAsyncEnumerable<double> subject = ToAsyncEnumerable(value);
@@ -197,7 +197,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo([expected,]).Within(tolerance);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection [expected,] ± {Formatter.Format(tolerance)} in order,
@@ -211,7 +211,7 @@ public sealed partial class ThatAsyncEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
 					IAsyncEnumerable<double> subject = ToAsyncEnumerable(1.1, 2.3, 3.1);
@@ -219,7 +219,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo([1.0, 2.0, 3.0,]).Within(0.2).InAnyOrder();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to collection [1.0, 2.0, 3.0,] ± 0.2 in any order,
@@ -238,7 +238,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class NullableDoubleTests
 			{
-				[Fact]
+				[Test]
 				public async Task TwoNaNValues_ShouldBeConsideredEqual()
 				{
 					IAsyncEnumerable<double?> subject = ToAsyncEnumerable<double?>(1.1, double.NaN, 2.1, 3.1);
@@ -249,7 +249,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					IAsyncEnumerable<double?> subject = ToAsyncEnumerable<double?>(1.1, null, 2.1, 3.1);
@@ -260,7 +260,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
 					IAsyncEnumerable<double?> subject = ToAsyncEnumerable<double?>(1.1, null, 2.1);
@@ -269,7 +269,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Within(0.2);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to collection expected ± 0.2 in order,
@@ -278,10 +278,10 @@ public sealed partial class ThatAsyncEnumerable
 						.Because("a null collection of non-nullable items fails like any other null expected collection");
 				}
 
-				[Theory]
-				[InlineData(double.PositiveInfinity, 1.0)]
-				[InlineData(double.NegativeInfinity, 1.0)]
-				[InlineData(double.PositiveInfinity, double.PositiveInfinity)]
+				[Test]
+				[Arguments(double.PositiveInfinity, 1.0)]
+				[Arguments(double.NegativeInfinity, 1.0)]
+				[Arguments(double.PositiveInfinity, double.PositiveInfinity)]
 				public async Task WhenNonFiniteValuesAreEqual_ShouldSucceed(double value, double tolerance)
 				{
 					IAsyncEnumerable<double?> subject = ToAsyncEnumerable<double?>(value);
@@ -292,12 +292,12 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(double.PositiveInfinity, double.NegativeInfinity, 1.0)]
-				[InlineData(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity)]
-				[InlineData(12.5, double.PositiveInfinity, double.PositiveInfinity)]
-				[InlineData(double.PositiveInfinity, 12.5, double.PositiveInfinity)]
-				[InlineData(double.NaN, double.PositiveInfinity, double.PositiveInfinity)]
+				[Test]
+				[Arguments(double.PositiveInfinity, double.NegativeInfinity, 1.0)]
+				[Arguments(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity)]
+				[Arguments(12.5, double.PositiveInfinity, double.PositiveInfinity)]
+				[Arguments(double.PositiveInfinity, 12.5, double.PositiveInfinity)]
+				[Arguments(double.NaN, double.PositiveInfinity, double.PositiveInfinity)]
 				public async Task WhenNonFiniteValuesDiffer_ShouldFail(double value, double expected, double tolerance)
 				{
 					IAsyncEnumerable<double?> subject = ToAsyncEnumerable<double?>(value);
@@ -305,7 +305,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo([expected,]).Within(tolerance);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection [expected,] ± {Formatter.Format(tolerance)} in order,
@@ -319,7 +319,7 @@ public sealed partial class ThatAsyncEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
 					IAsyncEnumerable<double?> subject = ToAsyncEnumerable<double?>(1.1, null, 2.3, 3.1);
@@ -327,7 +327,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo([1.0, null, 2.0, 3.0,]).Within(0.2).InAnyOrder();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to collection [1.0, null, 2.0, 3.0,] ± 0.2 in any order,
@@ -346,7 +346,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class FloatTests
 			{
-				[Fact]
+				[Test]
 				public async Task TwoNaNValues_ShouldBeConsideredEqual()
 				{
 					IAsyncEnumerable<float> subject = ToAsyncEnumerable(1.1F, float.NaN, 2.1F, 3.1F);
@@ -357,7 +357,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					IAsyncEnumerable<float> subject = ToAsyncEnumerable(1.1F, 2.1F, 3.1F);
@@ -368,10 +368,10 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(float.PositiveInfinity, 1.0F)]
-				[InlineData(float.NegativeInfinity, 1.0F)]
-				[InlineData(float.PositiveInfinity, float.PositiveInfinity)]
+				[Test]
+				[Arguments(float.PositiveInfinity, 1.0F)]
+				[Arguments(float.NegativeInfinity, 1.0F)]
+				[Arguments(float.PositiveInfinity, float.PositiveInfinity)]
 				public async Task WhenNonFiniteValuesAreEqual_ShouldSucceed(float value, float tolerance)
 				{
 					IAsyncEnumerable<float> subject = ToAsyncEnumerable(value);
@@ -382,12 +382,12 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(float.PositiveInfinity, float.NegativeInfinity, 1.0F)]
-				[InlineData(float.PositiveInfinity, float.NegativeInfinity, float.PositiveInfinity)]
-				[InlineData(12.5F, float.PositiveInfinity, float.PositiveInfinity)]
-				[InlineData(float.PositiveInfinity, 12.5F, float.PositiveInfinity)]
-				[InlineData(float.NaN, float.PositiveInfinity, float.PositiveInfinity)]
+				[Test]
+				[Arguments(float.PositiveInfinity, float.NegativeInfinity, 1.0F)]
+				[Arguments(float.PositiveInfinity, float.NegativeInfinity, float.PositiveInfinity)]
+				[Arguments(12.5F, float.PositiveInfinity, float.PositiveInfinity)]
+				[Arguments(float.PositiveInfinity, 12.5F, float.PositiveInfinity)]
+				[Arguments(float.NaN, float.PositiveInfinity, float.PositiveInfinity)]
 				public async Task WhenNonFiniteValuesDiffer_ShouldFail(float value, float expected, float tolerance)
 				{
 					IAsyncEnumerable<float> subject = ToAsyncEnumerable(value);
@@ -395,7 +395,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo([expected,]).Within(tolerance);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection [expected,] ± {Formatter.Format(tolerance)} in order,
@@ -409,7 +409,7 @@ public sealed partial class ThatAsyncEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
 					IAsyncEnumerable<float> subject = ToAsyncEnumerable(1.1F, 2.3F, 3.1F);
@@ -417,7 +417,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo([1.0F, 2.0F, 3.0F,]).Within(0.2F).InAnyOrder();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to collection [1.0F, 2.0F, 3.0F,] ± 0.2 in any order,
@@ -436,7 +436,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class NullableFloatTests
 			{
-				[Fact]
+				[Test]
 				public async Task TwoNaNValues_ShouldBeConsideredEqual()
 				{
 					IAsyncEnumerable<float?> subject = ToAsyncEnumerable<float?>(1.1F, float.NaN, 2.1F, 3.1F);
@@ -447,7 +447,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					IAsyncEnumerable<float?> subject = ToAsyncEnumerable<float?>(1.1F, null, 2.1F, 3.1F);
@@ -458,10 +458,10 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(float.PositiveInfinity, 1.0F)]
-				[InlineData(float.NegativeInfinity, 1.0F)]
-				[InlineData(float.PositiveInfinity, float.PositiveInfinity)]
+				[Test]
+				[Arguments(float.PositiveInfinity, 1.0F)]
+				[Arguments(float.NegativeInfinity, 1.0F)]
+				[Arguments(float.PositiveInfinity, float.PositiveInfinity)]
 				public async Task WhenNonFiniteValuesAreEqual_ShouldSucceed(float value, float tolerance)
 				{
 					IAsyncEnumerable<float?> subject = ToAsyncEnumerable<float?>(value);
@@ -472,12 +472,12 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(float.PositiveInfinity, float.NegativeInfinity, 1.0F)]
-				[InlineData(float.PositiveInfinity, float.NegativeInfinity, float.PositiveInfinity)]
-				[InlineData(12.5F, float.PositiveInfinity, float.PositiveInfinity)]
-				[InlineData(float.PositiveInfinity, 12.5F, float.PositiveInfinity)]
-				[InlineData(float.NaN, float.PositiveInfinity, float.PositiveInfinity)]
+				[Test]
+				[Arguments(float.PositiveInfinity, float.NegativeInfinity, 1.0F)]
+				[Arguments(float.PositiveInfinity, float.NegativeInfinity, float.PositiveInfinity)]
+				[Arguments(12.5F, float.PositiveInfinity, float.PositiveInfinity)]
+				[Arguments(float.PositiveInfinity, 12.5F, float.PositiveInfinity)]
+				[Arguments(float.NaN, float.PositiveInfinity, float.PositiveInfinity)]
 				public async Task WhenNonFiniteValuesDiffer_ShouldFail(float value, float expected, float tolerance)
 				{
 					IAsyncEnumerable<float?> subject = ToAsyncEnumerable<float?>(value);
@@ -485,7 +485,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo([expected,]).Within(tolerance);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection [expected,] ± {Formatter.Format(tolerance)} in order,
@@ -499,7 +499,7 @@ public sealed partial class ThatAsyncEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
 					IAsyncEnumerable<float?> subject = ToAsyncEnumerable<float?>(1.1F, null, 2.3F, 3.1F);
@@ -507,7 +507,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo([1.0F, null, 2.0F, 3.0F,]).Within(0.2F).InAnyOrder();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to collection [1.0F, null, 2.0F, 3.0F,] ± 0.2 in any order,
@@ -526,7 +526,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class DateTimeTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					DateTime now = DateTime.Now;
@@ -541,7 +541,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
 					DateTime now = DateTime.Now;
@@ -553,7 +553,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Within(1.Minutes()).InAnyOrder();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection expected ± 1:00 in any order,
@@ -576,7 +576,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class NullableDateTimeTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					DateTime now = DateTime.Now;
@@ -591,7 +591,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
 					DateTime now = DateTime.Now;
@@ -603,7 +603,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Within(1.Minutes()).InAnyOrder();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection expected ± 1:00 in any order,
@@ -627,7 +627,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class DateTimeOffsetTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					DateTimeOffset now = DateTimeOffset.Now;
@@ -642,7 +642,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
 					DateTimeOffset now = DateTimeOffset.Now;
@@ -654,7 +654,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Within(1.Minutes()).InAnyOrder();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection expected ± 1:00 in any order,
@@ -677,7 +677,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class NullableDateTimeOffsetTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					DateTimeOffset now = DateTimeOffset.Now;
@@ -692,7 +692,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedItemsAreNotNullable_ShouldSucceed()
 				{
 					DateTimeOffset now = DateTimeOffset.Now;
@@ -706,7 +706,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
 					DateTimeOffset now = DateTimeOffset.Now;
@@ -718,7 +718,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Within(1.Minutes()).InAnyOrder();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection expected ± 1:00 in any order,
@@ -742,7 +742,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class TimeSpanTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					IAsyncEnumerable<TimeSpan> subject = ToAsyncEnumerable<TimeSpan>(1.Hours(), 2.Hours(), 3.Hours());
@@ -754,7 +754,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
 					IAsyncEnumerable<TimeSpan> subject = ToAsyncEnumerable<TimeSpan>(1.Hours(), 2.Hours(), 3.Hours());
@@ -763,7 +763,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Within(1.Minutes()).InAnyOrder();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to collection expected ± 1:00 in any order,
@@ -787,7 +787,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyAndMentionIt()
 				{
 					IAsyncEnumerable<TimeSpan> subject = ToAsyncEnumerable<TimeSpan>(1.Hours(), 2.Hours(), 3.Hours());
@@ -800,7 +800,7 @@ public sealed partial class ThatAsyncEnumerable
 						await That(subject).IsEqualTo(expected).InAnyOrder();
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to collection expected ± 1:00 in any order,
@@ -828,7 +828,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class NullableTimeSpanTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					IAsyncEnumerable<TimeSpan?> subject =
@@ -841,7 +841,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedItemsAreNotNullable_ShouldSucceed()
 				{
 					IAsyncEnumerable<TimeSpan?> subject = ToAsyncEnumerable<TimeSpan?>(1.Hours(), 2.Hours());
@@ -853,7 +853,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
 					IAsyncEnumerable<TimeSpan?> subject =
@@ -863,7 +863,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Within(1.Minutes()).InAnyOrder();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to collection expected ± 1:00 in any order,
@@ -892,7 +892,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class DateOnlyTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -905,7 +905,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
 					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -915,7 +915,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Within(1.Days());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection expected ± 1 day in order,
@@ -929,7 +929,7 @@ public sealed partial class ThatAsyncEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyIt()
 				{
 					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -947,7 +947,7 @@ public sealed partial class ThatAsyncEnumerable
 						.Because("the items fall back to the default tolerance, as a single value does");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
 				{
 					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -961,7 +961,7 @@ public sealed partial class ThatAsyncEnumerable
 						await That(subject).IsEqualTo(expected);
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection expected ± 1 day in order,
@@ -976,7 +976,7 @@ public sealed partial class ThatAsyncEnumerable
 						.Because("the applied default tolerance is part of the expectation");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
 				{
 					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -995,7 +995,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class NullableDateOnlyTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -1008,7 +1008,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
 					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -1018,7 +1018,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Within(1.Days());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection expected ± 1 day in order,
@@ -1032,7 +1032,7 @@ public sealed partial class ThatAsyncEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
 				{
 					DateOnly?[] values = [new DateOnly(2024, 1, 1), null, new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
@@ -1051,7 +1051,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class TimeOnlyTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
 				{
 					TimeOnly[] values = [new TimeOnly(22, 0), new TimeOnly(23, 59, 30), new TimeOnly(2, 0),];
@@ -1065,7 +1065,7 @@ public sealed partial class ThatAsyncEnumerable
 						.Because("the times are compared on the clock face, where 23:59:30 and 00:00:30 are one minute apart");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
@@ -1078,7 +1078,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
 					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
@@ -1088,7 +1088,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection expected ± 1:00 in order,
@@ -1102,7 +1102,7 @@ public sealed partial class ThatAsyncEnumerable
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyIt()
 				{
 					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
@@ -1120,7 +1120,7 @@ public sealed partial class ThatAsyncEnumerable
 						.Because("the items fall back to the default tolerance, as a single value does");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
 				{
 					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
@@ -1134,7 +1134,7 @@ public sealed partial class ThatAsyncEnumerable
 						await That(subject).IsEqualTo(expected);
 					}
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection expected ± 1:00 in order,
@@ -1152,7 +1152,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class NullableTimeOnlyTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
 				{
 					TimeOnly?[] values = [new TimeOnly(22, 0), null, new TimeOnly(23, 59, 30), new TimeOnly(2, 0),];
@@ -1166,7 +1166,7 @@ public sealed partial class ThatAsyncEnumerable
 						.Because("the times are compared on the clock face, where 23:59:30 and 00:00:30 are one minute apart");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
 					TimeOnly?[] values = [new TimeOnly(13, 0), null, new TimeOnly(14, 0), new TimeOnly(15, 0),];
@@ -1179,7 +1179,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
 					TimeOnly?[] values = [new TimeOnly(13, 0), null, new TimeOnly(14, 0), new TimeOnly(15, 0),];
@@ -1189,7 +1189,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to collection expected ± 1:00 in order,

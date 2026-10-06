@@ -9,14 +9,14 @@ namespace aweXpect.Core.Tests.Core.Nodes;
 
 public class ExpectationNodeTests
 {
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Success)]
-	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Success)]
-	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Success)]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Success, Outcome.Success)]
+	[Arguments(Outcome.Success, Outcome.Failure, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Failure, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Undecided, Outcome.Success)]
+	[Arguments(Outcome.Undecided, Outcome.Failure, Outcome.Success)]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task AddAsyncMapping_NegatedResult_ShouldHaveExpectedOutcome(
 		Outcome node1, Outcome node2, Outcome expectedOutcome)
 	{
@@ -31,16 +31,16 @@ public class ExpectationNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Success, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
-	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Success, Outcome.Undecided, Outcome.Undecided)]
-	[InlineData(Outcome.Undecided, Outcome.Success, Outcome.Undecided)]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Success, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Success, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
+	[Arguments(Outcome.Undecided, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Success, Outcome.Undecided, Outcome.Undecided)]
+	[Arguments(Outcome.Undecided, Outcome.Success, Outcome.Undecided)]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task AddAsyncMapping_ShouldUseAndCombination(Outcome node1, Outcome node2, Outcome expectedOutcome)
 	{
 		ExpectationNode node = new();
@@ -66,7 +66,7 @@ public class ExpectationNodeTests
 		await That(resultSb.ToString()).IsEqualTo(expectedResult);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddAsyncMapping_TryGetValue_ShouldGetValueFromLeftNode()
 	{
 		ExpectationNode node = new();
@@ -83,7 +83,7 @@ public class ExpectationNodeTests
 		await That(value).IsEqualTo("foo");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddAsyncMapping_TryGetValue_ShouldGetValueFromRightNode()
 	{
 		ExpectationNode node = new();
@@ -101,7 +101,7 @@ public class ExpectationNodeTests
 		await That(value).IsEqualTo("foobar");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddAsyncMapping_TryGetValue_WhenTypeDoesNotMatchAnyNode_ShouldReturnFalse()
 	{
 		ExpectationNode node = new();
@@ -118,9 +118,9 @@ public class ExpectationNodeTests
 		await That(value).IsNull();
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
-	[InlineData(Outcome.Failure, Outcome.Success)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.FailureBothWays)]
+	[Arguments(Outcome.Failure, Outcome.Success)]
 	public async Task AddAsyncMapping_WhenNestedMemberIsNull_NegatedResult_ShouldOnlySucceedIfConstraintFails(
 		Outcome node1, Outcome expectedOutcome)
 	{
@@ -140,9 +140,9 @@ public class ExpectationNodeTests
 		}
 	}
 
-	[Theory]
-	[InlineData(false, Outcome.Failure)]
-	[InlineData(true, Outcome.Success)]
+	[Test]
+	[Arguments(false, Outcome.Failure)]
+	[Arguments(true, Outcome.Success)]
 	public async Task AddAsyncMapping_WhenValueHasOtherType_ShouldOnlyUseTheConstraint(bool negate,
 		Outcome expectedOutcome)
 	{
@@ -162,9 +162,9 @@ public class ExpectationNodeTests
 		await That(result.GetResultText()).IsEqualTo(negate ? "" : "bar1");
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
-	[InlineData(Outcome.Failure, Outcome.Success)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.FailureBothWays)]
+	[Arguments(Outcome.Failure, Outcome.Success)]
 	public async Task AddAsyncMapping_WhenSubjectIsNull_NegatedResult_ShouldOnlySucceedIfConstraintFails(
 		Outcome node1, Outcome expectedOutcome)
 	{
@@ -179,7 +179,7 @@ public class ExpectationNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddAsyncMapping_WithCustomExpectationTextGenerator_ShouldUseIt()
 	{
 		ExpectationNode node = new();
@@ -194,7 +194,7 @@ public class ExpectationNodeTests
 		await That(sb.ToString()).IsEqualTo("my custom generator: length: yeah");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddConstraint_Twice_ShouldThrowInvalidOperationException()
 	{
 		ExpectationNode node = new();
@@ -207,7 +207,7 @@ public class ExpectationNodeTests
 				"You have to specify how to combine the expectations. Use `And()` or `Or()` in between adding expectations.");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddConstraint_WithAsyncMapping_ShouldForwardToInnerNode()
 	{
 		ExpectationNode node = new();
@@ -223,7 +223,7 @@ public class ExpectationNodeTests
 	}
 
 
-	[Fact]
+	[Test]
 	public async Task AddConstraint_WithAsyncNarrowingMapping_ShouldForwardToInnerNode()
 	{
 		ExpectationNode node = new();
@@ -238,7 +238,7 @@ public class ExpectationNodeTests
 		await That(sb.ToString()).IsEqualTo("foo with length bar");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddConstraint_WithMapping_ShouldForwardToInnerNode()
 	{
 		ExpectationNode node = new();
@@ -252,7 +252,7 @@ public class ExpectationNodeTests
 		await That(sb.ToString()).IsEqualTo("foo with length bar");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddConstraint_WithNarrowingMapping_ShouldForwardToInnerNode()
 	{
 		ExpectationNode node = new();
@@ -267,14 +267,14 @@ public class ExpectationNodeTests
 		await That(sb.ToString()).IsEqualTo("foo with length bar");
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Success)]
-	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Success)]
-	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Success)]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Success, Outcome.Success)]
+	[Arguments(Outcome.Success, Outcome.Failure, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Failure, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Undecided, Outcome.Success)]
+	[Arguments(Outcome.Undecided, Outcome.Failure, Outcome.Success)]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task AddMapping_NegatedResult_ShouldHaveExpectedOutcome(
 		Outcome node1, Outcome node2, Outcome expectedOutcome)
 	{
@@ -289,16 +289,16 @@ public class ExpectationNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Success, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
-	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Success, Outcome.Undecided, Outcome.Undecided)]
-	[InlineData(Outcome.Undecided, Outcome.Success, Outcome.Undecided)]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Success, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Success, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
+	[Arguments(Outcome.Undecided, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Success, Outcome.Undecided, Outcome.Undecided)]
+	[Arguments(Outcome.Undecided, Outcome.Success, Outcome.Undecided)]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task AddMapping_ShouldUseAndCombination(Outcome node1, Outcome node2, Outcome expectedOutcome)
 	{
 		ExpectationNode node = new();
@@ -324,7 +324,7 @@ public class ExpectationNodeTests
 		await That(resultSb.ToString()).IsEqualTo(expectedResult);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddMapping_TryGetValue_ShouldGetValueFromLeftNode()
 	{
 		ExpectationNode node = new();
@@ -341,7 +341,7 @@ public class ExpectationNodeTests
 		await That(value).IsEqualTo("foo");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddMapping_TryGetValue_ShouldGetValueFromRightNode()
 	{
 		ExpectationNode node = new();
@@ -358,7 +358,7 @@ public class ExpectationNodeTests
 		await That(value).IsEqualTo("foobar");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddMapping_TryGetValue_WhenTypeDoesNotMatchAnyNode_ShouldReturnFalse()
 	{
 		ExpectationNode node = new();
@@ -375,10 +375,10 @@ public class ExpectationNodeTests
 		await That(value).IsNull();
 	}
 
-	[Theory]
-	[InlineData(" that ", "whose bar", "foo whose bar")]
-	[InlineData(" that ", "is bar", "foo that is bar")]
-	[InlineData(" whose ", "whose bar", "foo whose whose bar")]
+	[Test]
+	[Arguments(" that ", "whose bar", "foo whose bar")]
+	[Arguments(" that ", "is bar", "foo that is bar")]
+	[Arguments(" whose ", "whose bar", "foo whose whose bar")]
 	public async Task AddMapping_WhenSeparatorEndsWithThat_ShouldOnlyDropItBeforeWhose(
 		string separator, string rightExpectation, string expectedExpectation)
 	{
@@ -393,7 +393,7 @@ public class ExpectationNodeTests
 		await That(result.GetExpectationText()).IsEqualTo(expectedExpectation);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddMapping_WhenSeparatorEndsWithThat_ShouldRenderRightExpectationAfterIt()
 	{
 		ExpectationNode node = new();
@@ -406,9 +406,9 @@ public class ExpectationNodeTests
 		await That(result.GetExpectationText()).IsEqualTo("foo that follows \" that \"");
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
-	[InlineData(Outcome.Failure, Outcome.Success)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.FailureBothWays)]
+	[Arguments(Outcome.Failure, Outcome.Success)]
 	public async Task AddMapping_WhenNestedMemberIsNull_NegatedResult_ShouldOnlySucceedIfConstraintFails(
 		Outcome node1, Outcome expectedOutcome)
 	{
@@ -428,9 +428,9 @@ public class ExpectationNodeTests
 		}
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Success)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Success)]
 	public async Task AddMapping_WithExpectationOnlyMember_NegatedResult_ShouldOnlyNegateTheConstraint(
 		Outcome node1, Outcome expectedOutcome)
 	{
@@ -447,9 +447,9 @@ public class ExpectationNodeTests
 		await That(result.GetExpectationText()).IsEqualTo("foo1 length: foo2");
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
-	[InlineData(Outcome.Failure, Outcome.Success)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.FailureBothWays)]
+	[Arguments(Outcome.Failure, Outcome.Success)]
 	public async Task AddMapping_WhenMemberResultIsAndWithOperandThatStaysFailed_NegatedResult_ShouldFollowTheAnd(
 		Outcome other, Outcome expectedOutcome)
 	{
@@ -466,9 +466,9 @@ public class ExpectationNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
-	[InlineData(Outcome.Failure, Outcome.Success)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.FailureBothWays)]
+	[Arguments(Outcome.Failure, Outcome.Success)]
 	public async Task
 		AddMapping_WhenMemberResultIsFailedOrWithOperandThatStaysFailed_NegatedResult_ShouldOnlySucceedIfConstraintFails(
 			Outcome left, Outcome expectedOutcome)
@@ -486,9 +486,9 @@ public class ExpectationNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
-	[InlineData(Outcome.Failure, Outcome.Success)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.FailureBothWays)]
+	[Arguments(Outcome.Failure, Outcome.Success)]
 	public async Task
 		AddMapping_WhenUserCodeOfConstraintThrows_NegatedResult_ShouldOnlySucceedIfMemberExpectationFails(
 			Outcome member, Outcome expectedOutcome)
@@ -509,9 +509,9 @@ public class ExpectationNodeTests
 		}
 	}
 
-	[Theory]
-	[InlineData(false, Outcome.Failure)]
-	[InlineData(true, Outcome.Success)]
+	[Test]
+	[Arguments(false, Outcome.Failure)]
+	[Arguments(true, Outcome.Success)]
 	public async Task AddMapping_WhenValueHasOtherType_ShouldOnlyUseTheConstraint(bool negate, Outcome expectedOutcome)
 	{
 		ExpectationNode node = new();
@@ -530,9 +530,9 @@ public class ExpectationNodeTests
 		await That(result.GetResultText()).IsEqualTo(negate ? "" : "bar1");
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
-	[InlineData(Outcome.Failure, Outcome.Success)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.FailureBothWays)]
+	[Arguments(Outcome.Failure, Outcome.Success)]
 	public async Task AddMapping_WhenSubjectIsNull_NegatedResult_ShouldOnlySucceedIfConstraintFails(
 		Outcome node1, Outcome expectedOutcome)
 	{
@@ -547,7 +547,7 @@ public class ExpectationNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddMapping_WithCustomExpectationTextGenerator_ShouldUseIt()
 	{
 		ExpectationNode node = new();
@@ -562,7 +562,7 @@ public class ExpectationNodeTests
 		await That(sb.ToString()).IsEqualTo("my custom generator: length: yeah");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddNode_ShouldThrowNotSupportedException()
 	{
 		ExpectationNode node = new();
@@ -573,7 +573,7 @@ public class ExpectationNodeTests
 			.WithMessage("Don't specify the inner node for Expectation nodes directly. Use AddMapping() instead.");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendExpectation_Empty_ShouldReturnEmptyText()
 	{
 		StringBuilder sb = new();
@@ -584,7 +584,7 @@ public class ExpectationNodeTests
 		await That(sb.ToString()).IsEqualTo("");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendExpectation_WithAsyncConstraintAndWithMapping_ShouldReturnBoth()
 	{
 		StringBuilder sb = new();
@@ -599,7 +599,7 @@ public class ExpectationNodeTests
 		await That(sb.ToString()).IsEqualTo("foowith length: ");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendExpectation_WithAsyncMapping_ShouldReturnMapping()
 	{
 		StringBuilder sb = new();
@@ -613,7 +613,7 @@ public class ExpectationNodeTests
 		await That(sb.ToString()).IsEqualTo("with length: ");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendExpectation_WithConstraint_ShouldReturnConstraint()
 	{
 		StringBuilder sb = new();
@@ -626,7 +626,7 @@ public class ExpectationNodeTests
 		await That(sb.ToString()).IsEqualTo("foo");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendExpectation_WithConstraintAndWithMapping_ShouldReturnBoth()
 	{
 		StringBuilder sb = new();
@@ -640,7 +640,7 @@ public class ExpectationNodeTests
 		await That(sb.ToString()).IsEqualTo("foowith length: ");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendExpectation_WithMapping_ShouldReturnMapping()
 	{
 		StringBuilder sb = new();
@@ -653,7 +653,7 @@ public class ExpectationNodeTests
 		await That(sb.ToString()).IsEqualTo("with length: ");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfConstraintIsDifferent_ShouldBeFalse()
 	{
 		ExpectationNode node1 = new();
@@ -666,7 +666,7 @@ public class ExpectationNodeTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfConstraintIsTheSame_ShouldBeTrue()
 	{
 		ExpectationNode node1 = new();
@@ -680,7 +680,7 @@ public class ExpectationNodeTests
 		await That(node1.GetHashCode()).IsEqualTo(node2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfInnerNodesAreDifferent_ShouldBeFalse()
 	{
 		ExpectationNode node1 = new();
@@ -696,7 +696,7 @@ public class ExpectationNodeTests
 		await That(node1.GetHashCode()).IsNotEqualTo(node2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfInnerNodesAreSame_ShouldBeTrue()
 	{
 		ExpectationNode node1 = new();
@@ -712,7 +712,7 @@ public class ExpectationNodeTests
 		await That(node1.GetHashCode()).IsEqualTo(node2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_WhenOtherIsDifferentNode_ShouldBeFalse()
 	{
 		ExpectationNode node = new();
@@ -723,7 +723,7 @@ public class ExpectationNodeTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_WhenOtherIsNull_ShouldBeFalse()
 	{
 		ExpectationNode node = new();
@@ -733,7 +733,7 @@ public class ExpectationNodeTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenAsyncConstraintThrowsException_ShouldThrowTheException()
 	{
 		MyException exception = new();
@@ -748,7 +748,7 @@ public class ExpectationNodeTests
 			.Because("only an exception from the code of the caller fails the expectation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenAsyncContextConstraintThrowsException_ShouldThrowTheException()
 	{
 		MyException exception = new();
@@ -763,7 +763,7 @@ public class ExpectationNodeTests
 			.Because("only an exception from the code of the caller fails the expectation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenContextConstraintThrowsException_ShouldThrowTheException()
 	{
 		MyException exception = new();
@@ -778,7 +778,7 @@ public class ExpectationNodeTests
 			.Because("only an exception from the code of the caller fails the expectation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenNoConstraintSupportsAFaultedDelegateValue_ShouldFailWithTheException()
 	{
 		MyException exception = new();
@@ -801,7 +801,7 @@ public class ExpectationNodeTests
 		                                    """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenUserCodeIsCancelledWithTheEvaluation_ShouldThrowTheCancellation()
 	{
 		using CancellationTokenSource cts = new();
@@ -818,7 +818,7 @@ public class ExpectationNodeTests
 			.Because("a requested cancellation aborts the evaluation instead of failing it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenUserCodeThrows_ShouldFailWithTheException()
 	{
 		MyException exception = new();
@@ -839,7 +839,7 @@ public class ExpectationNodeTests
 		                                    """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenUserCodeThrows_WhenNegated_ShouldNegateExpectationAndStillFail()
 	{
 		MyException exception = new();
@@ -857,7 +857,7 @@ public class ExpectationNodeTests
 		await That(sb.ToString()).IsEqualTo("not yeah!");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenValueConstraintThrowsException_ShouldThrowTheException()
 	{
 		MyException exception = new();
@@ -872,7 +872,7 @@ public class ExpectationNodeTests
 			.Because("only an exception from the code of the caller fails the expectation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithAsyncMapping_WhenConstraintAndInnerFail_ShouldCombineFailureMessage()
 	{
 		ExpectationNode node = new();
@@ -893,7 +893,7 @@ public class ExpectationNodeTests
 		await That(result.GetResultText()).IsEqualTo("outer failure and inner failure");
 	}
 
-	[Fact]
+	[Test]
 	public async Task
 		IsMetBy_WithAsyncMapping_WhenConstraintAndInnerFailAndWhenBothFailureMessagesAreIdentical_ShouldOnlyPrintOnce()
 	{
@@ -915,7 +915,7 @@ public class ExpectationNodeTests
 		await That(result.GetResultText()).IsEqualTo("same failure");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithAsyncMapping_WhenConstraintFailureSpansMultipleLines_ShouldStartInnerFailureOnItsOwnLine()
 	{
 		ExpectationNode node = new();
@@ -936,7 +936,7 @@ public class ExpectationNodeTests
 			.Because("the inner failure must not be glued onto the last line of the outer failure");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithMapping_WhenConstraintAndInnerFail_ShouldCombineFailureMessage()
 	{
 		ExpectationNode node = new();
@@ -957,7 +957,7 @@ public class ExpectationNodeTests
 		await That(result.GetResultText()).IsEqualTo("outer failure and inner failure");
 	}
 
-	[Fact]
+	[Test]
 	public async Task
 		IsMetBy_WithMapping_WhenConstraintAndInnerFailAndWhenBothFailureMessagesAreIdentical_ShouldOnlyPrintOnce()
 	{
@@ -979,7 +979,7 @@ public class ExpectationNodeTests
 		await That(result.GetResultText()).IsEqualTo("same failure");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithMapping_WhenConstraintFailureSpansMultipleLines_ShouldStartInnerFailureOnItsOwnLine()
 	{
 		ExpectationNode node = new();
@@ -1001,7 +1001,7 @@ public class ExpectationNodeTests
 	}
 
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithUnsupportedConstraint_ShouldThrowInvalidOperationException()
 	{
 		ExpectationNode node = new();
@@ -1014,10 +1014,10 @@ public class ExpectationNodeTests
 			.WithMessage("The expectation node does not support string with value \"42\".");
 	}
 
-	[Theory]
-	[InlineData(FurtherProcessingStrategy.Continue, "failure1 and failure2")]
-	[InlineData(FurtherProcessingStrategy.IgnoreResult, "failure1")]
-	[InlineData(FurtherProcessingStrategy.IgnoreCompletely, "failure1")]
+	[Test]
+	[Arguments(FurtherProcessingStrategy.Continue, "failure1 and failure2")]
+	[Arguments(FurtherProcessingStrategy.IgnoreResult, "failure1")]
+	[Arguments(FurtherProcessingStrategy.IgnoreCompletely, "failure1")]
 	public async Task MultipleFailures_WithAsyncMapping_ShouldIncludeBothOnlyWhenFurtherProcessingStrategyIsContinue(
 		FurtherProcessingStrategy furtherProcessingStrategy, string expectedFailureText)
 	{
@@ -1036,10 +1036,10 @@ public class ExpectationNodeTests
 		await That(result.GetResultText()).IsEqualTo(expectedFailureText);
 	}
 
-	[Theory]
-	[InlineData(FurtherProcessingStrategy.Continue, "failure1 and failure2")]
-	[InlineData(FurtherProcessingStrategy.IgnoreResult, "failure1")]
-	[InlineData(FurtherProcessingStrategy.IgnoreCompletely, "failure1")]
+	[Test]
+	[Arguments(FurtherProcessingStrategy.Continue, "failure1 and failure2")]
+	[Arguments(FurtherProcessingStrategy.IgnoreResult, "failure1")]
+	[Arguments(FurtherProcessingStrategy.IgnoreCompletely, "failure1")]
 	public async Task MultipleFailures_WithMapping_ShouldIncludeBothOnlyWhenFurtherProcessingStrategyIsContinue(
 		FurtherProcessingStrategy furtherProcessingStrategy, string expectedFailureText)
 	{
@@ -1058,14 +1058,14 @@ public class ExpectationNodeTests
 		await That(result.GetResultText()).IsEqualTo(expectedFailureText);
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Success, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
-	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Success, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Success, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
+	[Arguments(Outcome.Undecided, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task Outcome_WithAsyncMapping_ShouldBeExpected(Outcome node1, Outcome node2, Outcome expectedOutcome)
 	{
 		DummyConstraint constraint1 = new("", () => new DummyConstraintResult(node1));
@@ -1080,14 +1080,14 @@ public class ExpectationNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Success, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
-	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Success, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Success, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
+	[Arguments(Outcome.Undecided, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task Outcome_WithMapping_ShouldBeExpected(Outcome node1, Outcome node2, Outcome expectedOutcome)
 	{
 		DummyConstraint constraint1 = new("", () => new DummyConstraintResult(node1));
@@ -1102,7 +1102,7 @@ public class ExpectationNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetValue_WhenLeftHasNoValue_ShouldUseDefaultValue()
 	{
 		DummyConstraint constraint1 = new("", () => new DummyConstraintResult(Outcome.Success, ""));
@@ -1119,7 +1119,7 @@ public class ExpectationNodeTests
 		await That(value).IsEqualTo(3);
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetValue_WhenLeftHasValue_ShouldReturnFalse()
 	{
 		DummyConstraint constraint1 = new("", () => new DummyConstraintResult<int>(Outcome.Success, 1, ""));
@@ -1136,7 +1136,7 @@ public class ExpectationNodeTests
 		await That(value).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetValue_WhenNeitherLeftNorRightHasValue_ShouldReturnFalse()
 	{
 		DummyConstraint constraint1 = new("", () => new DummyConstraintResult(Outcome.Success, ""));

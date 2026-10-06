@@ -11,7 +11,7 @@ public sealed partial class ThatSpan
 	{
 		public sealed class Utf8Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAnEarlierAttemptWasNotParsable_ShouldNotFailWithItsException()
 			{
 				int calls = 0;
@@ -21,7 +21,7 @@ public sealed partial class ThatSpan
 					=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
 						.IsNotParsableInto<int>().And.IsParsableInto<int>();
 
-				XunitException exception = await That(Act).Throws<XunitException>()
+				FailException exception = await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             eventually is not parsable into int and is parsable into int within 0:05,
@@ -31,7 +31,7 @@ public sealed partial class ThatSpan
 					.Because("the last attempt parsed the subject without an exception");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSpanIsNotParsable_ShouldSucceed()
 			{
 				byte[] subject = "abc"u8.ToArray();
@@ -42,7 +42,7 @@ public sealed partial class ThatSpan
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSpanIsParsable_ShouldFail()
 			{
 				byte[] subject = "42"u8.ToArray();
@@ -50,7 +50,7 @@ public sealed partial class ThatSpan
 				async Task Act()
 					=> await That(subject.AsSpan()).IsNotParsableInto<int>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject.AsSpan()
 					             is not parsable into int,
@@ -58,9 +58,9 @@ public sealed partial class ThatSpan
 					             """);
 			}
 
-			[Theory]
-			[InlineData("12,34", "de-AT")]
-			[InlineData("12.34", "en-US")]
+			[Test]
+			[Arguments("12,34", "de-AT")]
+			[Arguments("12.34", "en-US")]
 			public async Task WithFormatProvider_ShouldBeUsed(string subjectString, string cultureName)
 			{
 				byte[] subject = Encoding.UTF8.GetBytes(subjectString);
@@ -69,7 +69,7 @@ public sealed partial class ThatSpan
 				async Task Act()
 					=> await That(subject.AsSpan()).IsNotParsableInto<decimal>(formatProvider);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject.AsSpan()
 					              is not parsable into decimal using {cultureName},

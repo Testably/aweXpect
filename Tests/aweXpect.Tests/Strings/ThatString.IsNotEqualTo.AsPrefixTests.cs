@@ -6,9 +6,9 @@ public sealed partial class ThatString
 	{
 		public sealed class AsPrefixTests
 		{
-			[Theory]
-			[InlineData("some text")]
-			[InlineData(null)]
+			[Test]
+			[Arguments("some text")]
+			[Arguments(null)]
 			public async Task WhenPrefixIsNull_ShouldThrowArgumentNullException(string? subject)
 			{
 				async Task Act()
@@ -20,7 +20,7 @@ public sealed partial class ThatString
 					.Because("a missing prefix is rejected before the subject is looked at");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectDoesNotStartWithUnexpected_ShouldSucceed()
 			{
 				string subject = "some text";
@@ -31,7 +31,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -39,7 +39,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotEqualTo("text").AsPrefix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not start with "text",
@@ -48,7 +48,7 @@ public sealed partial class ThatString
 					.Because("a null has no content to inspect, just as for DoesNotStartWith");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectStartsWithUnexpected_ShouldFail()
 			{
 				string subject = "some text";
@@ -56,7 +56,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotEqualTo("some").AsPrefix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not start with "some",

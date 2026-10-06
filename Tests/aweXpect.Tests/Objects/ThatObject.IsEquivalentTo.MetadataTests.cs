@@ -11,7 +11,7 @@ public sealed partial class ThatObject
 	{
 		public sealed class MetadataTests
 		{
-			[Fact]
+			[Test]
 			public async Task IgnoringFields_ShouldNotIgnoreProperties()
 			{
 				MixedMembers subject = new()
@@ -28,12 +28,12 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected, o => o.IgnoringFields((_, _) => true));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*Property Text differed:*").AsWildcard()
 					.Because("ignoring every field must leave the properties compared");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringProperties_ShouldNotApplyToCollectionElements()
 			{
 				List<string> subject = ["foo",];
@@ -42,12 +42,12 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected, o => o.IgnoringProperties((_, _) => true));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*Element [0] differed:*").AsWildcard()
 					.Because("a collection element is neither a field nor a property");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringProperties_ShouldNotIgnoreFields()
 			{
 				MixedMembers subject = new()
@@ -64,12 +64,12 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected, o => o.IgnoringProperties((_, _) => true));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*Field Number differed:*").AsWildcard()
 					.Because("ignoring every property must leave the fields compared");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlyEventsAreRegistered_ShouldCompareByReflection()
 			{
 				TypeMetadataRegistry.RegisterEvent<WithEvent>(nameof(WithEvent.Changed),
@@ -88,12 +88,12 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*Property Number differed:*").AsWildcard()
 					.Because("an event registration says nothing about the members, which still have to be reflected over");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRegistered_ShouldCompareOnlyTheRegisteredMembers()
 			{
 				RegisterOnlyTheRegisteredProperty();
@@ -115,7 +115,7 @@ public sealed partial class ThatObject
 					.Because("a registered type is compared through its registration instead of by reflection");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRegistered_ShouldCompareTheRegisteredFields()
 			{
 				TypeMetadataRegistry.RegisterField<RegisteredField, int>(
@@ -132,12 +132,12 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*Field Number differed:*").AsWildcard()
 					.Because("a registered field is compared through its registration");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRegistered_WithNonPublicMembers_ShouldReflectOverThem()
 			{
 				TypeMetadataRegistry.RegisterProperty<RegisteredWithSecret, int>(
@@ -149,12 +149,12 @@ public sealed partial class ThatObject
 					=> await That(subject).IsEquivalentTo(expected,
 						o => o.IncludingProperties(IncludeMembers.Internal));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*Property Secret differed:*").AsWildcard()
 					.Because("the registry only holds public members, so the non-public ones are still reflected over");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRegisteredWithProbe_ShouldCompareAnonymousTypes()
 			{
 				var probe = new
@@ -174,7 +174,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*Property MetadataProbeTitle differed:*").AsWildcard()
 					.Because(
 						"the probe overload registers a type whose name cannot be written in source, and the registration is shared by every anonymous type of this shape in the assembly");

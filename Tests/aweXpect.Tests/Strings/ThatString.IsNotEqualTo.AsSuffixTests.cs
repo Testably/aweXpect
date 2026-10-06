@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class AsSuffixTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectDoesNotEndWithUnexpected_ShouldSucceed()
 			{
 				string subject = "some text";
@@ -17,7 +17,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectEndsWithUnexpected_ShouldFail()
 			{
 				string subject = "some text";
@@ -25,7 +25,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotEqualTo("text").AsSuffix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not end with "text",
@@ -33,7 +33,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -41,7 +41,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotEqualTo("text").AsSuffix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not end with "text",
@@ -50,9 +50,9 @@ public sealed partial class ThatString
 					.Because("a null has no content to inspect, just as for DoesNotEndWith");
 			}
 
-			[Theory]
-			[InlineData("some text")]
-			[InlineData(null)]
+			[Test]
+			[Arguments("some text")]
+			[Arguments(null)]
 			public async Task WhenSuffixIsNull_ShouldThrowArgumentNullException(string? subject)
 			{
 				async Task Act()

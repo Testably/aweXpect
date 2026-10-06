@@ -10,7 +10,7 @@ public sealed partial class ThatString
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task IgnoringLeadingWhiteSpace_WhenRegexStartsWithWhiteSpaceInsideTheSubject_ShouldFail()
 			{
 				string subject = "forget";
@@ -18,7 +18,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(" g.t").AsRegex().IgnoringLeadingWhiteSpace();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains " g.t" as regex ignoring leading whitespace at least once,
@@ -27,7 +27,7 @@ public sealed partial class ThatString
 					.Because("only whitespace at the start of the subject is ignored, not the space the pattern requires inside it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				IgnoringLeadingWhiteSpace_WhenSubstringReachesTheStartOfTheSubject_ShouldIgnoreItsLeadingWhiteSpace()
 			{
@@ -40,7 +40,7 @@ public sealed partial class ThatString
 					.Because("the whitespace of the substring lies at the start of the subject, where it is ignored");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringLeadingWhiteSpace_WhenSubstringStartsWithWhiteSpaceInsideTheSubject_ShouldFail()
 			{
 				string subject = "forget";
@@ -48,7 +48,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(" get").IgnoringLeadingWhiteSpace();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains " get" ignoring leading whitespace at least once,
@@ -57,7 +57,7 @@ public sealed partial class ThatString
 					.Because("only whitespace at the start of the subject is ignored, not the space the substring requires inside it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringLeadingWhiteSpace_WhenWildcardStartsWithWhiteSpaceInsideTheSubject_ShouldFail()
 			{
 				string subject = "forget";
@@ -65,7 +65,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(" g?t").AsWildcard().IgnoringLeadingWhiteSpace();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains " g?t" as wildcard ignoring leading whitespace at least once,
@@ -74,7 +74,7 @@ public sealed partial class ThatString
 					.Because("only whitespace at the start of the subject is ignored, not the space the pattern requires inside it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -82,7 +82,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "foo" at least once,
@@ -90,7 +90,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAMinimumAndAMaximumAreSpecified_ShouldThrowInvalidOperationException()
 			{
 				string subject = "abc";
@@ -103,7 +103,7 @@ public sealed partial class ThatString
 					.Because("the maximum would silently replace the minimum; use Between(2).And(5) instead");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenARangeIsSpecifiedWithBetween_ShouldSucceed()
 			{
 				string subject = "abcbb";
@@ -114,7 +114,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "some text";
@@ -128,7 +128,7 @@ public sealed partial class ThatString
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "some text";
@@ -142,16 +142,16 @@ public sealed partial class ThatString
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
-			[Theory]
-			[InlineData("a b", true)]
-			[InlineData(" ab", false)]
+			[Test]
+			[Arguments("a b", true)]
+			[Arguments(" ab", false)]
 			public async Task WhenExpectedIsWhiteSpaceAndLeadingWhiteSpaceIsIgnored_ShouldOnlyFindItInsideTheSubject(
 				string subject, bool expectSuccess)
 			{
 				async Task Act()
 					=> await That(subject).Contains(" ").IgnoringLeadingWhiteSpace();
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains " " ignoring leading whitespace at least once,
@@ -160,7 +160,7 @@ public sealed partial class ThatString
 					.Because("the whitespace at the start of the subject is ignored, but not the one inside it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringIsContained_ShouldSucceed()
 			{
 				string subject = "some text";
@@ -172,7 +172,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringIsNotContained_ShouldFail()
 			{
 				string subject = "some text";
@@ -181,7 +181,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "not" at least once,
@@ -189,7 +189,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnceAndTwiceAreSpecified_ShouldThrowInvalidOperationException()
 			{
 				string subject = "abc";
@@ -201,7 +201,7 @@ public sealed partial class ThatString
 					.WithMessage("Twice cannot be combined with Once.");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheSameQuantifierIsSpecifiedTwice_ShouldThrowInvalidOperationException()
 			{
 				string subject = "abc";
@@ -213,7 +213,7 @@ public sealed partial class ThatString
 					.WithMessage("AtLeast cannot be specified more than once.");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTwoMatchTypesAreSpecified_ShouldThrowInvalidOperationException()
 			{
 				string subject = "abc";
@@ -228,7 +228,7 @@ public sealed partial class ThatString
 
 		public sealed class AsBlockTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeSettingInExpectationText()
 			{
 				string subject = "foo";
@@ -237,7 +237,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).AsBlock();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "bar" as block at least once,
@@ -245,7 +245,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBlockIsIndentedAsAWhole_ShouldSucceed()
 			{
 				string subject = """
@@ -270,7 +270,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBlockOccursWithDifferentIndentations_ShouldCountAllOccurrences()
 			{
 				string subject = "  a\n  b\nx\na\nb";
@@ -282,7 +282,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCombinedWithIgnoringCase_ShouldIgnoreCase()
 			{
 				string subject = "  FOO\n  bar";
@@ -294,7 +294,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCombinedWithIgnoringIndentation_ShouldThrowInvalidOperationException()
 			{
 				string subject = "  foo\n  bar";
@@ -307,7 +307,7 @@ public sealed partial class ThatString
 					.Because("a block compares the lines on its own");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedEndsWithNewline_ShouldIgnoreTheTrailingLineTerminator()
 			{
 				string subject = "x\n  a\n  b";
@@ -319,7 +319,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedMatchesMidLine_ShouldFail()
 			{
 				string subject = "public int Foo;";
@@ -328,7 +328,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).AsBlock();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "int Foo" as block at least once,
@@ -336,7 +336,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLinesAreIndentedDifferently_ShouldFail()
 			{
 				string subject = "    a\nb";
@@ -345,7 +345,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).AsBlock();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              contains "a\nb" as block at least once,
@@ -353,7 +353,7 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectUsesADifferentNewlineStyle_ShouldSucceed()
 			{
 				string subject = "  foo\r\n  bar";
@@ -365,7 +365,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedWithDoesNotContain_ShouldFailWhenBlockIsContained()
 			{
 				string subject = "  a\n  b";
@@ -374,7 +374,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(expected).AsBlock();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not contain "a\nb" as block,
@@ -385,7 +385,7 @@ public sealed partial class ThatString
 
 		public sealed class AsRegexTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeSettingInExpectationText()
 			{
 				string subject = "foo";
@@ -394,7 +394,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).AsRegex();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "b.r" as regex at least once,
@@ -402,9 +402,9 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Theory]
-			[InlineData("IxI", 2)]
-			[InlineData("İxİ", 0)]
+			[Test]
+			[Arguments("IxI", 2)]
+			[Arguments("İxİ", 0)]
 			public async Task WhenCombinedWithIgnoringCase_ShouldCountOccurrencesIndependentOfTheCurrentCulture(
 				string subject, int expectedCount)
 			{
@@ -417,7 +417,7 @@ public sealed partial class ThatString
 					.Because("the dotted and dotless Turkish 'I' must not change how often the pattern occurs");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCombinedWithIgnoringCase_ShouldIgnoreCase()
 			{
 				string subject = "AXXXB";
@@ -429,7 +429,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMatchIsLongerThanThePattern_ShouldSucceed()
 			{
 				string subject = "axxxb";
@@ -441,7 +441,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOptionsContainMultiline_ShouldCountTheMatchesPerLine()
 			{
 				string subject = "a\nb\nb";
@@ -454,7 +454,7 @@ public sealed partial class ThatString
 					.Because("the given options also apply when counting the occurrences");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternIsAnchoredToALineOfTheSubject_ShouldNotCountIt()
 			{
 				string subject = "a\nb";
@@ -467,7 +467,7 @@ public sealed partial class ThatString
 					.Because("'^' binds to the start of the complete subject, which does not start with 'b'");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternIsEmptyAfterTheIndentationIsIgnored_ShouldThrowArgumentException()
 			{
 				string subject = "some text";
@@ -482,7 +482,7 @@ public sealed partial class ThatString
 					.Because("the pattern that is counted is the normalized one, which matches every subject");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternMatchesTheEmptyString_ShouldNotCountEmptyMatches()
 			{
 				string subject = "bbb";
@@ -491,7 +491,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).AsRegex();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "a*" as regex at least once,
@@ -500,7 +500,7 @@ public sealed partial class ThatString
 					.Because("an empty match does not cover any occurrence");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedWithAtLeast_ShouldCountAllMatches()
 			{
 				string subject = "abcabc";
@@ -512,7 +512,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedWithAtMost_ShouldCountAllMatches()
 			{
 				string subject = "abcabc";
@@ -524,7 +524,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedWithExactly_ShouldCountAGreedyMatchOnce()
 			{
 				string subject = "aaaa";
@@ -536,7 +536,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedWithExactly_ShouldCountNonOverlappingMatches()
 			{
 				string subject = "abcabc";
@@ -548,7 +548,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedWithNever_ShouldSucceedWhenPatternDoesNotMatch()
 			{
 				string subject = "xyz";
@@ -560,7 +560,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedWithOnce_ShouldCountTheSingleMatch()
 			{
 				string subject = "axxxb";
@@ -572,7 +572,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedWithTwice_ShouldFailWithTheRealCount()
 			{
 				string subject = "axxxb";
@@ -581,7 +581,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).AsRegex().Twice();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "a.*b" as regex exactly twice,
@@ -592,7 +592,7 @@ public sealed partial class ThatString
 
 		public sealed class AsWildcardTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeSettingInExpectationText()
 			{
 				string subject = "foo";
@@ -601,7 +601,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).AsWildcard();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "b?r" as wildcard at least once,
@@ -609,7 +609,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsteriskSpansNewlines_ShouldCountTheGreedyMatchOnce()
 			{
 				string subject = "a\nxb\nayb";
@@ -622,9 +622,9 @@ public sealed partial class ThatString
 					.Because("'*' matches across newlines and is matched greedily");
 			}
 
-			[Theory]
-			[InlineData("IxI", 2)]
-			[InlineData("İxİ", 0)]
+			[Test]
+			[Arguments("IxI", 2)]
+			[Arguments("İxİ", 0)]
 			public async Task WhenCombinedWithIgnoringCase_ShouldCountOccurrencesIndependentOfTheCurrentCulture(
 				string subject, int expectedCount)
 			{
@@ -637,7 +637,7 @@ public sealed partial class ThatString
 					.Because("the dotted and dotless Turkish 'I' must not change how often the pattern occurs");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCombinedWithIgnoringCase_ShouldIgnoreCase()
 			{
 				string subject = "AXXB";
@@ -649,7 +649,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCombinedWithIgnoringCase_ShouldTreatTheKelvinSignLikeThePlainComparison()
 			{
 				string subject = "k and K";
@@ -661,7 +661,7 @@ public sealed partial class ThatString
 					.Because("the casing is ignored like the plain comparison with OrdinalIgnoreCase, which does not consider the Kelvin sign equal to 'k'");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMatchIsLongerThanThePattern_ShouldSucceed()
 			{
 				string subject = "axxb";
@@ -673,7 +673,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternMatchesTheEmptyString_ShouldNotCountEmptyMatches()
 			{
 				string subject = "";
@@ -682,7 +682,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).AsWildcard();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "*" as wildcard at least once,
@@ -691,7 +691,7 @@ public sealed partial class ThatString
 					.Because("an empty match does not cover any occurrence");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenQuestionMarkMatchesANewline_ShouldCountAllMatches()
 			{
 				string subject = "a\nb a\nb";
@@ -704,7 +704,7 @@ public sealed partial class ThatString
 					.Because("'?' matches the newline of each occurrence");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasMoreLinesThanThePattern_ShouldStillCountTheOccurrence()
 			{
 				string subject = "xyz\nabc\nqqq";
@@ -717,7 +717,7 @@ public sealed partial class ThatString
 					.Because("counting searches for the pattern anywhere, unlike the anchored equality check");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedWithOnce_ShouldCountAGreedyMatchOnce()
 			{
 				string subject = "axxb ayb";
@@ -729,7 +729,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsedWithTwice_ShouldCountAllMatches()
 			{
 				string subject = "axb ayb";
@@ -744,7 +744,7 @@ public sealed partial class ThatString
 
 		public sealed class IgnoringCaseTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeSettingInExpectationText()
 			{
 				string subject =
@@ -754,7 +754,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).AtLeast(7).IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "in" ignoring case at least 7 times,
@@ -762,7 +762,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				WhenExpectedStringOccursEnoughTimesCaseInsensitive_ShouldSucceed()
 			{
@@ -779,7 +779,7 @@ public sealed partial class ThatString
 
 		public sealed class IgnoringIndentationTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeSettingInExpectationText()
 			{
 				string subject = "foo";
@@ -788,7 +788,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).IgnoringIndentation();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "bar" ignoring indentation at least once,
@@ -796,7 +796,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCombinedWithIgnoringCase_ShouldIgnoreBoth()
 			{
 				string subject = "foo\n    BAR";
@@ -808,7 +808,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnippetIsIndentedDifferently_ShouldSucceed()
 			{
 				string subject = """
@@ -833,7 +833,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSnippetOccursWithDifferentIndentations_ShouldCountAllOccurrences()
 			{
 				string subject = "  a\n  b\nx\na\nb";
@@ -845,7 +845,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectUsesADifferentNewlineStyle_ShouldSucceed()
 			{
 				string subject = "foo\r\n    bar";
@@ -860,7 +860,7 @@ public sealed partial class ThatString
 
 		public sealed class IgnoringNewlineStyleTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectUsesADifferentNewlineStyle_ShouldFindAllOccurrences()
 			{
 				string subject = "x\r\na\r\nb\r\ny\r\na\r\nb";
@@ -875,7 +875,7 @@ public sealed partial class ThatString
 
 		public sealed class UsingTests
 		{
-			[Fact]
+			[Test]
 			public async Task
 				WhenExpectedStringOccursEnoughTimesForTheComparer_ShouldSucceed()
 			{
@@ -890,7 +890,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				WhenExpectedStringOccursIncorrectTimesForTheComparer_ShouldIncludeComparerInMessage()
 			{
@@ -902,7 +902,7 @@ public sealed partial class ThatString
 					=> await That(subject).Contains(expected).Exactly(5)
 						.Using(new IgnoreCaseForVocalsComparer());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "in" using IgnoreCaseForVocalsComparer exactly 5 times,
@@ -913,14 +913,14 @@ public sealed partial class ThatString
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData("AtLeast(2)", "contains \"some\" fewer than twice")]
-			[InlineData("AtMost(2)", "contains \"some\" more than twice")]
-			[InlineData("Between(1, 3)", "does not contain \"some\" between 1 and 3 times")]
-			[InlineData("Exactly(2)", "does not contain \"some\" exactly twice")]
-			[InlineData("LessThan(3)", "contains \"some\" at least 3 times")]
-			[InlineData("MoreThan(1)", "contains \"some\" at most once")]
-			[InlineData("Twice", "does not contain \"some\" exactly twice")]
+			[Test]
+			[Arguments("AtLeast(2)", "contains \"some\" fewer than twice")]
+			[Arguments("AtMost(2)", "contains \"some\" more than twice")]
+			[Arguments("Between(1, 3)", "does not contain \"some\" between 1 and 3 times")]
+			[Arguments("Exactly(2)", "does not contain \"some\" exactly twice")]
+			[Arguments("LessThan(3)", "contains \"some\" at least 3 times")]
+			[Arguments("MoreThan(1)", "contains \"some\" at most once")]
+			[Arguments("Twice", "does not contain \"some\" exactly twice")]
 			public async Task WhenQuantifiedExpectationIsMet_ShouldNameTheComplementOrNegateTheVerb(
 				string quantifier, string expectedExpectation)
 			{
@@ -943,7 +943,7 @@ public sealed partial class ThatString
 						};
 					});
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              {expectedExpectation},
@@ -952,7 +952,7 @@ public sealed partial class ThatString
 					.Because("\"not\" in front of a quantifier without a complement reads more naturally on the verb");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectContainsExpected_ShouldFail()
 			{
 				string subject = "some text with some words";
@@ -960,7 +960,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.Contains("some"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "some",
@@ -968,7 +968,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectContainsExpectedExactlyTheExpectedNumberOfTimes_ShouldFail()
 			{
 				string subject = "some text with some words";
@@ -976,7 +976,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.Contains("some").Exactly(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "some" exactly twice,
@@ -984,7 +984,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectContainsExpectedMoreOftenThanExpected_ShouldSucceed()
 			{
 				string subject = "some text with some words";
@@ -995,7 +995,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectDoesNotContainExpected_ShouldSucceed()
 			{
 				string subject = "some text with some words";

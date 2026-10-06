@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Xunit;
 using Verifier =
 	aweXpect.Analyzers.Tests.Verifiers.CSharpCodeFixVerifier<aweXpect.Analyzers.DelegateSubjectAnalyzer,
 		aweXpect.Analyzers.CodeFixers.DelegateSubjectCodeFixProvider>;
@@ -10,7 +9,7 @@ public class DelegateSubjectCodeFixProviderTests
 {
 	private const string InsertWhoseResultKey = nameof(Resources.aweXpect0004CodeFixTitle);
 
-	[Fact]
+	[Test]
 	public async Task ShouldContinueWithTheResultOfTheDelegate() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -44,7 +43,7 @@ public class DelegateSubjectCodeFixProviderTests
 		""",
 		InsertWhoseResultKey);
 
-	[Fact]
+	[Test]
 	public async Task ShouldKeepTheLineBreakBeforeTheExpectation() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -80,7 +79,7 @@ public class DelegateSubjectCodeFixProviderTests
 		""",
 		InsertWhoseResultKey);
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixForADelegateWithoutValue() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;

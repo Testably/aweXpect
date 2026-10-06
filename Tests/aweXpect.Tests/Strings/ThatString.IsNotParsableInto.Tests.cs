@@ -9,7 +9,7 @@ public sealed partial class ThatString
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAnEarlierAttemptWasNotParsable_ShouldNotFailWithItsException()
 			{
 				int calls = 0;
@@ -19,7 +19,7 @@ public sealed partial class ThatString
 					=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
 						.IsNotParsableInto<int>().And.IsParsableInto<int>();
 
-				XunitException exception = await That(Act).Throws<XunitException>()
+				FailException exception = await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             eventually is not parsable into int and is parsable into int within 0:05,
@@ -29,7 +29,7 @@ public sealed partial class ThatString
 					.Because("the last attempt parsed the subject without an exception");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCombinedWithAFailingExpectation_ShouldNotFailWithTheParseException()
 			{
 				string subject = "abc";
@@ -37,7 +37,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotParsableInto<int>().And.IsEqualTo("xyz");
 
-				XunitException exception = await That(Act).Throws<XunitException>()
+				FailException exception = await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not parsable into int and is equal to "xyz",
@@ -51,7 +51,7 @@ public sealed partial class ThatString
 					.Because("the parse exception is why the subject is not parsable, not why the expectation failed");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNull_ShouldFail()
 			{
 				string? subject = null;
@@ -59,7 +59,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotParsableInto<int>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not parsable into int,
@@ -67,7 +67,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringIsNotParsable_ShouldSucceed()
 			{
 				string subject = "abc";
@@ -78,7 +78,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringIsParsable_ShouldFail()
 			{
 				string subject = "42";
@@ -86,7 +86,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotParsableInto<int>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not parsable into int,
@@ -94,9 +94,9 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Theory]
-			[InlineData("12,34", "de-AT")]
-			[InlineData("12.34", "en-US")]
+			[Test]
+			[Arguments("12,34", "de-AT")]
+			[Arguments("12.34", "en-US")]
 			public async Task WithFormatProvider_ShouldBeUsed(string subject, string cultureName)
 			{
 				IFormatProvider formatProvider = new CultureInfo(cultureName);
@@ -104,7 +104,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotParsableInto<decimal>(formatProvider);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not parsable into decimal using {cultureName},
@@ -115,7 +115,7 @@ public sealed partial class ThatString
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenStringIsNotParsable_ShouldFail()
 			{
 				string subject = "abc";
@@ -123,7 +123,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotParsableInto<int>());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is parsable into int,

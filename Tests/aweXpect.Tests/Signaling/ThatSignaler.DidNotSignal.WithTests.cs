@@ -9,7 +9,7 @@ public sealed partial class ThatSignaler
 	{
 		public sealed class WithTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenApplyingMultiplePredicates_ShouldVerifyAll()
 			{
 				Signaler<int> signaler = new();
@@ -26,7 +26,7 @@ public sealed partial class ThatSignaler
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggeredOftenEnoughMatchingPredicate_ShouldSucceed()
 			{
 				Signaler<int> signaler = new();
@@ -42,7 +42,7 @@ public sealed partial class ThatSignaler
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 			{
 				Signaler<int> signaler = new();
@@ -55,7 +55,7 @@ public sealed partial class ThatSignaler
 					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggeredMoreOftenMatchingPredicate_ShouldFail()
 			{
 				Signaler<int> signaler = new();
@@ -73,7 +73,7 @@ public sealed partial class ThatSignaler
 					await That(signaler).DidNotSignal(2.Times())
 						.With(p => p > 1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback fewer than twice with p => p > 1 within 0:30,
@@ -85,7 +85,7 @@ public sealed partial class ThatSignaler
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggeredOftenEnoughMatchingPredicate_ShouldFail()
 			{
 				Signaler<int> signaler = new();
@@ -103,7 +103,7 @@ public sealed partial class ThatSignaler
 					await That(signaler).DidNotSignal(2.Times())
 						.With(p => p > 2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback fewer than twice with p => p > 2 within 0:30,

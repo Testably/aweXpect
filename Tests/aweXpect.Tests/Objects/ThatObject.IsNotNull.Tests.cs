@@ -6,7 +6,7 @@ public sealed partial class ThatObject
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsFaultedTask_ShouldFail()
 			{
 				Task subject = Task.FromException(new InvalidOperationException("boom"));
@@ -16,7 +16,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsNotNull();
 #pragma warning restore aweXpect0004
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not null,
@@ -27,7 +27,7 @@ public sealed partial class ThatObject
 					.Because("a faulted task must be reported as a failed expectation, not as an internal exception");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsFaultedValueTask_ShouldFail()
 			{
 				ValueTask subject = new(Task.FromException(new InvalidOperationException("boom")));
@@ -37,7 +37,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsNotNull();
 #pragma warning restore aweXpect0004
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not null,
@@ -48,7 +48,7 @@ public sealed partial class ThatObject
 					.Because("a faulted value task must be reported as a failed expectation, not as an internal exception");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_AndChainedWithSatisfies_ShouldNotEvaluateThePredicate()
 			{
 				InnerClass? subject = null;
@@ -57,7 +57,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotNull().And.Satisfies(x => (isEvaluated = true) && x!.IntValue == 1);
 
-				XunitException exception = await That(Act).Throws<XunitException>()
+				FailException exception = await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not null and satisfies x => (isEvaluated = true) && x!.IntValue == 1,
@@ -68,7 +68,7 @@ public sealed partial class ThatObject
 				await That(isEvaluated).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_AndChainedWithWhose_ShouldReportNullOnce()
 			{
 				InnerClass? subject = null;
@@ -76,7 +76,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotNull().And.Whose(x => x.IntValue, v => v.IsEqualTo(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not null and whose IntValue is equal to 1,
@@ -84,7 +84,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				object? subject = null;
@@ -93,7 +93,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsNotNull()
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not null, because we want to test the failure,
@@ -101,7 +101,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsObject_ShouldSucceed()
 			{
 				object subject = new MyClass();
@@ -115,7 +115,7 @@ public sealed partial class ThatObject
 
 		public sealed class StructTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				int? subject = null;
@@ -124,7 +124,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsNotNull()
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not null, because we want to test the failure,
@@ -132,7 +132,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsObject_ShouldSucceed()
 			{
 				int? subject = 1;

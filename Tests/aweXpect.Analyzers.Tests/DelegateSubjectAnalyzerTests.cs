@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Xunit;
 using Verifier =
 	aweXpect.Analyzers.Tests.Verifiers.CSharpAnalyzerVerifier<aweXpect.Analyzers.DelegateSubjectAnalyzer>;
 
@@ -7,7 +6,7 @@ namespace aweXpect.Analyzers.Tests;
 
 public class DelegateSubjectAnalyzerTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenUsingACustomHelperOnADelegateSubject_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -29,7 +28,7 @@ public class DelegateSubjectAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingAHelperReturningAnUnconstrainedTypeParameter_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -54,7 +53,7 @@ public class DelegateSubjectAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingAnExpectationReturningAConstrainedTypeParameter_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -90,7 +89,7 @@ public class DelegateSubjectAnalyzerTests
 				.WithArguments("Satisfies")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingAnExtensionDeclaredForADelegateSubject_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -118,7 +117,7 @@ public class DelegateSubjectAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingDoesNotThrowWhoseResult_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -138,7 +137,7 @@ public class DelegateSubjectAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingEventually_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -158,7 +157,7 @@ public class DelegateSubjectAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingIsEqualToOnADelegateWithoutValue_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -183,7 +182,7 @@ public class DelegateSubjectAnalyzerTests
 				.WithArguments("IsEqualTo")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingIsEqualToOnAGenericSubject_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -203,7 +202,7 @@ public class DelegateSubjectAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingIsEqualToOnAnObjectVariableHoldingADelegate_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -223,7 +222,7 @@ public class DelegateSubjectAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingIsEqualToOnAPlainSubject_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -243,7 +242,7 @@ public class DelegateSubjectAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingIsEqualToOnAReturningDelegate_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -266,7 +265,7 @@ public class DelegateSubjectAnalyzerTests
 				.WithArguments("IsEqualTo")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingIsNotNullOnAnExplicitlyTypedTask_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -284,7 +283,7 @@ public class DelegateSubjectAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingIsNotNullOnAReturningDelegate_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -307,7 +306,7 @@ public class DelegateSubjectAnalyzerTests
 				.WithArguments("IsNotNull")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingIsNotNullOnATaskSubject_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -328,7 +327,7 @@ public class DelegateSubjectAnalyzerTests
 				.WithArguments("IsNotNull")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingIsNotOneOfOnAReturningDelegate_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -351,7 +350,7 @@ public class DelegateSubjectAnalyzerTests
 				.WithArguments("IsNotOneOf")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingThrowsOnADelegate_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""

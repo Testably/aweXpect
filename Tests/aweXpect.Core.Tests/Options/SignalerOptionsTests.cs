@@ -7,7 +7,7 @@ public sealed class SignalerOptionsTests
 {
 	public sealed class Tests
 	{
-		[Fact]
+		[Test]
 		public async Task ToString_Empty_ShouldReturnEmptyString()
 		{
 			SignalerOptions sut = new();
@@ -17,7 +17,7 @@ public sealed class SignalerOptionsTests
 			await That(result).IsEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ToString_WithTimeout_ShouldIncludeTimeout()
 		{
 			SignalerOptions sut = new();
@@ -31,7 +31,7 @@ public sealed class SignalerOptionsTests
 
 	public sealed class WithParameterTests
 	{
-		[Fact]
+		[Test]
 		public async Task ToString_Empty_ShouldReturnEmptyString()
 		{
 			SignalerOptions<int> sut = new();
@@ -41,7 +41,7 @@ public sealed class SignalerOptionsTests
 			await That(result).IsEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ToString_WhenPredicateIsAddedAfterFirstCall_ShouldAppendTimeoutLast()
 		{
 			SignalerOptions<int> sut = new();
@@ -55,7 +55,7 @@ public sealed class SignalerOptionsTests
 			await That(result).IsEqualTo(" with my predicate and with my other predicate within 1:15");
 		}
 
-		[Fact]
+		[Test]
 		public async Task ToString_WithPredicate_ShouldIncludePredicateExpression()
 		{
 			SignalerOptions<int> sut = new();
@@ -66,7 +66,7 @@ public sealed class SignalerOptionsTests
 			await That(result).IsEqualTo(" with my predicate");
 		}
 
-		[Fact]
+		[Test]
 		public async Task ToString_WithTimeout_ShouldIncludeTimeout()
 		{
 			SignalerOptions<int> sut = new();
@@ -77,7 +77,7 @@ public sealed class SignalerOptionsTests
 			await That(result).IsEqualTo(" within 0:05");
 		}
 
-		[Fact]
+		[Test]
 		public async Task ToString_WithTimeoutAndPredicate_ShouldIncludePredicateExpression()
 		{
 			SignalerOptions<int> sut = new();
@@ -89,7 +89,7 @@ public sealed class SignalerOptionsTests
 			await That(result).IsEqualTo(" with my predicate within 1:15");
 		}
 
-		[Fact]
+		[Test]
 		public async Task ToString_WithTimeoutAndPredicate_WhenCalledTwice_ShouldReturnSameText()
 		{
 			SignalerOptions<int> sut = new();

@@ -12,7 +12,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenNumberOfUniqueItemsIsInRange_ShouldSucceed()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 1, 2, 3,]);
@@ -23,7 +23,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable<int>? subject = null;
@@ -31,7 +31,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).Between(1).And(2).AreUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique for between 1 and 2 items,
@@ -39,7 +39,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTooManyItemsAreUnique_ShouldFail()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 1, 2, 3, 4,]);
@@ -47,7 +47,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).Between(1).And(2).AreUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique for between 1 and 2 items,
@@ -61,7 +61,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class AreNotUniqueTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenNumberOfDuplicateItemsIsInRange_ShouldSucceed()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 1, 2, 3,]);
@@ -72,7 +72,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTooFewItemsAreNotUnique_ShouldFail()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -80,7 +80,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).Between(1).And(2).AreNotUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not unique for between 1 and 2 items,
@@ -94,7 +94,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenNumberOfUniqueItemsIsInRange_ShouldFail()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 1, 2, 3,]);
@@ -102,7 +102,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.Between(1).And(2).AreUnique());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique for not between 1 and 2 items,
@@ -113,7 +113,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTooManyItemsAreUnique_ShouldSucceed()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 1, 2, 3, 4,]);

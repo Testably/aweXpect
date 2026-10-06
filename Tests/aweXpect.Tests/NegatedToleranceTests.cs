@@ -3,25 +3,25 @@
 public sealed class NegatedToleranceTests
 {
 #if NET8_0_OR_GREATER
-	[Theory]
-	[InlineData("IsNotAfter", -3, true)]
-	[InlineData("IsNotAfter", -2, true)]
-	[InlineData("IsNotAfter", -1, false)]
-	[InlineData("IsNotOnOrAfter", -3, true)]
-	[InlineData("IsNotOnOrAfter", -2, false)]
-	[InlineData("IsNotOnOrAfter", -1, false)]
-	[InlineData("IsNotBefore", 1, false)]
-	[InlineData("IsNotBefore", 2, true)]
-	[InlineData("IsNotBefore", 3, true)]
-	[InlineData("IsNotOnOrBefore", 1, false)]
-	[InlineData("IsNotOnOrBefore", 2, false)]
-	[InlineData("IsNotOnOrBefore", 3, true)]
-	[InlineData("IsNotBetween", -3, true)]
-	[InlineData("IsNotBetween", -2, false)]
-	[InlineData("IsNotBetween", -1, false)]
-	[InlineData("IsNotBetween", 1, false)]
-	[InlineData("IsNotBetween", 2, false)]
-	[InlineData("IsNotBetween", 3, true)]
+	[Test]
+	[Arguments("IsNotAfter", -3, true)]
+	[Arguments("IsNotAfter", -2, true)]
+	[Arguments("IsNotAfter", -1, false)]
+	[Arguments("IsNotOnOrAfter", -3, true)]
+	[Arguments("IsNotOnOrAfter", -2, false)]
+	[Arguments("IsNotOnOrAfter", -1, false)]
+	[Arguments("IsNotBefore", 1, false)]
+	[Arguments("IsNotBefore", 2, true)]
+	[Arguments("IsNotBefore", 3, true)]
+	[Arguments("IsNotOnOrBefore", 1, false)]
+	[Arguments("IsNotOnOrBefore", 2, false)]
+	[Arguments("IsNotOnOrBefore", 3, true)]
+	[Arguments("IsNotBetween", -3, true)]
+	[Arguments("IsNotBetween", -2, false)]
+	[Arguments("IsNotBetween", -1, false)]
+	[Arguments("IsNotBetween", 1, false)]
+	[Arguments("IsNotBetween", 2, false)]
+	[Arguments("IsNotBetween", 3, true)]
 	public async Task ForDateOnly_ShouldBeTheExactInverseOfTheExpectation(string method, int offset, bool expectSuccess)
 	{
 		DateOnly unexpected = new(2020, 1, 10);
@@ -47,8 +47,8 @@ public sealed class NegatedToleranceTests
 			_ => throw new ArgumentOutOfRangeException(nameof(method)),
 		};
 
-		Exception? negationException = await Record.ExceptionAsync(negation);
-		Exception? inverseException = await Record.ExceptionAsync(inverse);
+		Exception? negationException = await Catch.ExceptionAsync(negation);
+		Exception? inverseException = await Catch.ExceptionAsync(inverse);
 
 		await That(negationException is null).IsEqualTo(expectSuccess)
 			.Because("the tolerance widens the unnegated expectation and so narrows its negation");
@@ -57,25 +57,25 @@ public sealed class NegatedToleranceTests
 	}
 #endif
 
-	[Theory]
-	[InlineData("IsNotAfter", -3, true)]
-	[InlineData("IsNotAfter", -2, true)]
-	[InlineData("IsNotAfter", -1, false)]
-	[InlineData("IsNotOnOrAfter", -3, true)]
-	[InlineData("IsNotOnOrAfter", -2, false)]
-	[InlineData("IsNotOnOrAfter", -1, false)]
-	[InlineData("IsNotBefore", 1, false)]
-	[InlineData("IsNotBefore", 2, true)]
-	[InlineData("IsNotBefore", 3, true)]
-	[InlineData("IsNotOnOrBefore", 1, false)]
-	[InlineData("IsNotOnOrBefore", 2, false)]
-	[InlineData("IsNotOnOrBefore", 3, true)]
-	[InlineData("IsNotBetween", -3, true)]
-	[InlineData("IsNotBetween", -2, false)]
-	[InlineData("IsNotBetween", -1, false)]
-	[InlineData("IsNotBetween", 1, false)]
-	[InlineData("IsNotBetween", 2, false)]
-	[InlineData("IsNotBetween", 3, true)]
+	[Test]
+	[Arguments("IsNotAfter", -3, true)]
+	[Arguments("IsNotAfter", -2, true)]
+	[Arguments("IsNotAfter", -1, false)]
+	[Arguments("IsNotOnOrAfter", -3, true)]
+	[Arguments("IsNotOnOrAfter", -2, false)]
+	[Arguments("IsNotOnOrAfter", -1, false)]
+	[Arguments("IsNotBefore", 1, false)]
+	[Arguments("IsNotBefore", 2, true)]
+	[Arguments("IsNotBefore", 3, true)]
+	[Arguments("IsNotOnOrBefore", 1, false)]
+	[Arguments("IsNotOnOrBefore", 2, false)]
+	[Arguments("IsNotOnOrBefore", 3, true)]
+	[Arguments("IsNotBetween", -3, true)]
+	[Arguments("IsNotBetween", -2, false)]
+	[Arguments("IsNotBetween", -1, false)]
+	[Arguments("IsNotBetween", 1, false)]
+	[Arguments("IsNotBetween", 2, false)]
+	[Arguments("IsNotBetween", 3, true)]
 	public async Task ForDateTime_ShouldBeTheExactInverseOfTheExpectation(string method, int offset, bool expectSuccess)
 	{
 		DateTime unexpected = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
@@ -101,8 +101,8 @@ public sealed class NegatedToleranceTests
 			_ => throw new ArgumentOutOfRangeException(nameof(method)),
 		};
 
-		Exception? negationException = await Record.ExceptionAsync(negation);
-		Exception? inverseException = await Record.ExceptionAsync(inverse);
+		Exception? negationException = await Catch.ExceptionAsync(negation);
+		Exception? inverseException = await Catch.ExceptionAsync(inverse);
 
 		await That(negationException is null).IsEqualTo(expectSuccess)
 			.Because("the tolerance widens the unnegated expectation and so narrows its negation");
@@ -110,25 +110,25 @@ public sealed class NegatedToleranceTests
 			.Because("the written negation must decide and report like DoesNotComplyWith");
 	}
 
-	[Theory]
-	[InlineData("IsNotAfter", -3, true)]
-	[InlineData("IsNotAfter", -2, true)]
-	[InlineData("IsNotAfter", -1, false)]
-	[InlineData("IsNotOnOrAfter", -3, true)]
-	[InlineData("IsNotOnOrAfter", -2, false)]
-	[InlineData("IsNotOnOrAfter", -1, false)]
-	[InlineData("IsNotBefore", 1, false)]
-	[InlineData("IsNotBefore", 2, true)]
-	[InlineData("IsNotBefore", 3, true)]
-	[InlineData("IsNotOnOrBefore", 1, false)]
-	[InlineData("IsNotOnOrBefore", 2, false)]
-	[InlineData("IsNotOnOrBefore", 3, true)]
-	[InlineData("IsNotBetween", -3, true)]
-	[InlineData("IsNotBetween", -2, false)]
-	[InlineData("IsNotBetween", -1, false)]
-	[InlineData("IsNotBetween", 1, false)]
-	[InlineData("IsNotBetween", 2, false)]
-	[InlineData("IsNotBetween", 3, true)]
+	[Test]
+	[Arguments("IsNotAfter", -3, true)]
+	[Arguments("IsNotAfter", -2, true)]
+	[Arguments("IsNotAfter", -1, false)]
+	[Arguments("IsNotOnOrAfter", -3, true)]
+	[Arguments("IsNotOnOrAfter", -2, false)]
+	[Arguments("IsNotOnOrAfter", -1, false)]
+	[Arguments("IsNotBefore", 1, false)]
+	[Arguments("IsNotBefore", 2, true)]
+	[Arguments("IsNotBefore", 3, true)]
+	[Arguments("IsNotOnOrBefore", 1, false)]
+	[Arguments("IsNotOnOrBefore", 2, false)]
+	[Arguments("IsNotOnOrBefore", 3, true)]
+	[Arguments("IsNotBetween", -3, true)]
+	[Arguments("IsNotBetween", -2, false)]
+	[Arguments("IsNotBetween", -1, false)]
+	[Arguments("IsNotBetween", 1, false)]
+	[Arguments("IsNotBetween", 2, false)]
+	[Arguments("IsNotBetween", 3, true)]
 	public async Task ForDateTimeOffset_ShouldBeTheExactInverseOfTheExpectation(string method, int offset, bool expectSuccess)
 	{
 		DateTimeOffset unexpected = new(2020, 1, 1, 12, 0, 0, TimeSpan.Zero);
@@ -154,8 +154,8 @@ public sealed class NegatedToleranceTests
 			_ => throw new ArgumentOutOfRangeException(nameof(method)),
 		};
 
-		Exception? negationException = await Record.ExceptionAsync(negation);
-		Exception? inverseException = await Record.ExceptionAsync(inverse);
+		Exception? negationException = await Catch.ExceptionAsync(negation);
+		Exception? inverseException = await Catch.ExceptionAsync(inverse);
 
 		await That(negationException is null).IsEqualTo(expectSuccess)
 			.Because("the tolerance widens the unnegated expectation and so narrows its negation");
@@ -164,25 +164,25 @@ public sealed class NegatedToleranceTests
 	}
 
 #if NET8_0_OR_GREATER
-	[Theory]
-	[InlineData("IsNotAfter", -3, true)]
-	[InlineData("IsNotAfter", -2, true)]
-	[InlineData("IsNotAfter", -1, false)]
-	[InlineData("IsNotOnOrAfter", -3, true)]
-	[InlineData("IsNotOnOrAfter", -2, false)]
-	[InlineData("IsNotOnOrAfter", -1, false)]
-	[InlineData("IsNotBefore", 1, false)]
-	[InlineData("IsNotBefore", 2, true)]
-	[InlineData("IsNotBefore", 3, true)]
-	[InlineData("IsNotOnOrBefore", 1, false)]
-	[InlineData("IsNotOnOrBefore", 2, false)]
-	[InlineData("IsNotOnOrBefore", 3, true)]
-	[InlineData("IsNotBetween", -3, true)]
-	[InlineData("IsNotBetween", -2, false)]
-	[InlineData("IsNotBetween", -1, false)]
-	[InlineData("IsNotBetween", 1, false)]
-	[InlineData("IsNotBetween", 2, false)]
-	[InlineData("IsNotBetween", 3, true)]
+	[Test]
+	[Arguments("IsNotAfter", -3, true)]
+	[Arguments("IsNotAfter", -2, true)]
+	[Arguments("IsNotAfter", -1, false)]
+	[Arguments("IsNotOnOrAfter", -3, true)]
+	[Arguments("IsNotOnOrAfter", -2, false)]
+	[Arguments("IsNotOnOrAfter", -1, false)]
+	[Arguments("IsNotBefore", 1, false)]
+	[Arguments("IsNotBefore", 2, true)]
+	[Arguments("IsNotBefore", 3, true)]
+	[Arguments("IsNotOnOrBefore", 1, false)]
+	[Arguments("IsNotOnOrBefore", 2, false)]
+	[Arguments("IsNotOnOrBefore", 3, true)]
+	[Arguments("IsNotBetween", -3, true)]
+	[Arguments("IsNotBetween", -2, false)]
+	[Arguments("IsNotBetween", -1, false)]
+	[Arguments("IsNotBetween", 1, false)]
+	[Arguments("IsNotBetween", 2, false)]
+	[Arguments("IsNotBetween", 3, true)]
 	public async Task ForNullableDateOnly_ShouldBeTheExactInverseOfTheExpectation(string method, int offset, bool expectSuccess)
 	{
 		DateOnly unexpected = new(2020, 1, 10);
@@ -208,8 +208,8 @@ public sealed class NegatedToleranceTests
 			_ => throw new ArgumentOutOfRangeException(nameof(method)),
 		};
 
-		Exception? negationException = await Record.ExceptionAsync(negation);
-		Exception? inverseException = await Record.ExceptionAsync(inverse);
+		Exception? negationException = await Catch.ExceptionAsync(negation);
+		Exception? inverseException = await Catch.ExceptionAsync(inverse);
 
 		await That(negationException is null).IsEqualTo(expectSuccess)
 			.Because("the tolerance widens the unnegated expectation and so narrows its negation");
@@ -218,25 +218,25 @@ public sealed class NegatedToleranceTests
 	}
 #endif
 
-	[Theory]
-	[InlineData("IsNotAfter", -3, true)]
-	[InlineData("IsNotAfter", -2, true)]
-	[InlineData("IsNotAfter", -1, false)]
-	[InlineData("IsNotOnOrAfter", -3, true)]
-	[InlineData("IsNotOnOrAfter", -2, false)]
-	[InlineData("IsNotOnOrAfter", -1, false)]
-	[InlineData("IsNotBefore", 1, false)]
-	[InlineData("IsNotBefore", 2, true)]
-	[InlineData("IsNotBefore", 3, true)]
-	[InlineData("IsNotOnOrBefore", 1, false)]
-	[InlineData("IsNotOnOrBefore", 2, false)]
-	[InlineData("IsNotOnOrBefore", 3, true)]
-	[InlineData("IsNotBetween", -3, true)]
-	[InlineData("IsNotBetween", -2, false)]
-	[InlineData("IsNotBetween", -1, false)]
-	[InlineData("IsNotBetween", 1, false)]
-	[InlineData("IsNotBetween", 2, false)]
-	[InlineData("IsNotBetween", 3, true)]
+	[Test]
+	[Arguments("IsNotAfter", -3, true)]
+	[Arguments("IsNotAfter", -2, true)]
+	[Arguments("IsNotAfter", -1, false)]
+	[Arguments("IsNotOnOrAfter", -3, true)]
+	[Arguments("IsNotOnOrAfter", -2, false)]
+	[Arguments("IsNotOnOrAfter", -1, false)]
+	[Arguments("IsNotBefore", 1, false)]
+	[Arguments("IsNotBefore", 2, true)]
+	[Arguments("IsNotBefore", 3, true)]
+	[Arguments("IsNotOnOrBefore", 1, false)]
+	[Arguments("IsNotOnOrBefore", 2, false)]
+	[Arguments("IsNotOnOrBefore", 3, true)]
+	[Arguments("IsNotBetween", -3, true)]
+	[Arguments("IsNotBetween", -2, false)]
+	[Arguments("IsNotBetween", -1, false)]
+	[Arguments("IsNotBetween", 1, false)]
+	[Arguments("IsNotBetween", 2, false)]
+	[Arguments("IsNotBetween", 3, true)]
 	public async Task ForNullableDateTime_ShouldBeTheExactInverseOfTheExpectation(string method, int offset, bool expectSuccess)
 	{
 		DateTime unexpected = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
@@ -262,8 +262,8 @@ public sealed class NegatedToleranceTests
 			_ => throw new ArgumentOutOfRangeException(nameof(method)),
 		};
 
-		Exception? negationException = await Record.ExceptionAsync(negation);
-		Exception? inverseException = await Record.ExceptionAsync(inverse);
+		Exception? negationException = await Catch.ExceptionAsync(negation);
+		Exception? inverseException = await Catch.ExceptionAsync(inverse);
 
 		await That(negationException is null).IsEqualTo(expectSuccess)
 			.Because("the tolerance widens the unnegated expectation and so narrows its negation");
@@ -271,25 +271,25 @@ public sealed class NegatedToleranceTests
 			.Because("the written negation must decide and report like DoesNotComplyWith");
 	}
 
-	[Theory]
-	[InlineData("IsNotAfter", -3, true)]
-	[InlineData("IsNotAfter", -2, true)]
-	[InlineData("IsNotAfter", -1, false)]
-	[InlineData("IsNotOnOrAfter", -3, true)]
-	[InlineData("IsNotOnOrAfter", -2, false)]
-	[InlineData("IsNotOnOrAfter", -1, false)]
-	[InlineData("IsNotBefore", 1, false)]
-	[InlineData("IsNotBefore", 2, true)]
-	[InlineData("IsNotBefore", 3, true)]
-	[InlineData("IsNotOnOrBefore", 1, false)]
-	[InlineData("IsNotOnOrBefore", 2, false)]
-	[InlineData("IsNotOnOrBefore", 3, true)]
-	[InlineData("IsNotBetween", -3, true)]
-	[InlineData("IsNotBetween", -2, false)]
-	[InlineData("IsNotBetween", -1, false)]
-	[InlineData("IsNotBetween", 1, false)]
-	[InlineData("IsNotBetween", 2, false)]
-	[InlineData("IsNotBetween", 3, true)]
+	[Test]
+	[Arguments("IsNotAfter", -3, true)]
+	[Arguments("IsNotAfter", -2, true)]
+	[Arguments("IsNotAfter", -1, false)]
+	[Arguments("IsNotOnOrAfter", -3, true)]
+	[Arguments("IsNotOnOrAfter", -2, false)]
+	[Arguments("IsNotOnOrAfter", -1, false)]
+	[Arguments("IsNotBefore", 1, false)]
+	[Arguments("IsNotBefore", 2, true)]
+	[Arguments("IsNotBefore", 3, true)]
+	[Arguments("IsNotOnOrBefore", 1, false)]
+	[Arguments("IsNotOnOrBefore", 2, false)]
+	[Arguments("IsNotOnOrBefore", 3, true)]
+	[Arguments("IsNotBetween", -3, true)]
+	[Arguments("IsNotBetween", -2, false)]
+	[Arguments("IsNotBetween", -1, false)]
+	[Arguments("IsNotBetween", 1, false)]
+	[Arguments("IsNotBetween", 2, false)]
+	[Arguments("IsNotBetween", 3, true)]
 	public async Task ForNullableDateTimeOffset_ShouldBeTheExactInverseOfTheExpectation(string method, int offset, bool expectSuccess)
 	{
 		DateTimeOffset unexpected = new(2020, 1, 1, 12, 0, 0, TimeSpan.Zero);
@@ -315,8 +315,8 @@ public sealed class NegatedToleranceTests
 			_ => throw new ArgumentOutOfRangeException(nameof(method)),
 		};
 
-		Exception? negationException = await Record.ExceptionAsync(negation);
-		Exception? inverseException = await Record.ExceptionAsync(inverse);
+		Exception? negationException = await Catch.ExceptionAsync(negation);
+		Exception? inverseException = await Catch.ExceptionAsync(inverse);
 
 		await That(negationException is null).IsEqualTo(expectSuccess)
 			.Because("the tolerance widens the unnegated expectation and so narrows its negation");
@@ -325,25 +325,25 @@ public sealed class NegatedToleranceTests
 	}
 
 #if NET8_0_OR_GREATER
-	[Theory]
-	[InlineData("IsNotAfter", -3, true)]
-	[InlineData("IsNotAfter", -2, true)]
-	[InlineData("IsNotAfter", -1, false)]
-	[InlineData("IsNotOnOrAfter", -3, true)]
-	[InlineData("IsNotOnOrAfter", -2, false)]
-	[InlineData("IsNotOnOrAfter", -1, false)]
-	[InlineData("IsNotBefore", 1, false)]
-	[InlineData("IsNotBefore", 2, true)]
-	[InlineData("IsNotBefore", 3, true)]
-	[InlineData("IsNotOnOrBefore", 1, false)]
-	[InlineData("IsNotOnOrBefore", 2, false)]
-	[InlineData("IsNotOnOrBefore", 3, true)]
-	[InlineData("IsNotBetween", -3, true)]
-	[InlineData("IsNotBetween", -2, false)]
-	[InlineData("IsNotBetween", -1, false)]
-	[InlineData("IsNotBetween", 1, false)]
-	[InlineData("IsNotBetween", 2, false)]
-	[InlineData("IsNotBetween", 3, true)]
+	[Test]
+	[Arguments("IsNotAfter", -3, true)]
+	[Arguments("IsNotAfter", -2, true)]
+	[Arguments("IsNotAfter", -1, false)]
+	[Arguments("IsNotOnOrAfter", -3, true)]
+	[Arguments("IsNotOnOrAfter", -2, false)]
+	[Arguments("IsNotOnOrAfter", -1, false)]
+	[Arguments("IsNotBefore", 1, false)]
+	[Arguments("IsNotBefore", 2, true)]
+	[Arguments("IsNotBefore", 3, true)]
+	[Arguments("IsNotOnOrBefore", 1, false)]
+	[Arguments("IsNotOnOrBefore", 2, false)]
+	[Arguments("IsNotOnOrBefore", 3, true)]
+	[Arguments("IsNotBetween", -3, true)]
+	[Arguments("IsNotBetween", -2, false)]
+	[Arguments("IsNotBetween", -1, false)]
+	[Arguments("IsNotBetween", 1, false)]
+	[Arguments("IsNotBetween", 2, false)]
+	[Arguments("IsNotBetween", 3, true)]
 	public async Task ForNullableTimeOnly_ShouldBeTheExactInverseOfTheExpectation(string method, int offset, bool expectSuccess)
 	{
 		TimeOnly unexpected = new(12, 0);
@@ -369,8 +369,8 @@ public sealed class NegatedToleranceTests
 			_ => throw new ArgumentOutOfRangeException(nameof(method)),
 		};
 
-		Exception? negationException = await Record.ExceptionAsync(negation);
-		Exception? inverseException = await Record.ExceptionAsync(inverse);
+		Exception? negationException = await Catch.ExceptionAsync(negation);
+		Exception? inverseException = await Catch.ExceptionAsync(inverse);
 
 		await That(negationException is null).IsEqualTo(expectSuccess)
 			.Because("the tolerance widens the unnegated expectation and so narrows its negation");
@@ -379,25 +379,25 @@ public sealed class NegatedToleranceTests
 	}
 #endif
 
-	[Theory]
-	[InlineData("IsNotGreaterThan", -3, true)]
-	[InlineData("IsNotGreaterThan", -2, true)]
-	[InlineData("IsNotGreaterThan", -1, false)]
-	[InlineData("IsNotGreaterThanOrEqualTo", -3, true)]
-	[InlineData("IsNotGreaterThanOrEqualTo", -2, false)]
-	[InlineData("IsNotGreaterThanOrEqualTo", -1, false)]
-	[InlineData("IsNotLessThan", 1, false)]
-	[InlineData("IsNotLessThan", 2, true)]
-	[InlineData("IsNotLessThan", 3, true)]
-	[InlineData("IsNotLessThanOrEqualTo", 1, false)]
-	[InlineData("IsNotLessThanOrEqualTo", 2, false)]
-	[InlineData("IsNotLessThanOrEqualTo", 3, true)]
-	[InlineData("IsNotBetween", -3, true)]
-	[InlineData("IsNotBetween", -2, false)]
-	[InlineData("IsNotBetween", -1, false)]
-	[InlineData("IsNotBetween", 1, false)]
-	[InlineData("IsNotBetween", 2, false)]
-	[InlineData("IsNotBetween", 3, true)]
+	[Test]
+	[Arguments("IsNotGreaterThan", -3, true)]
+	[Arguments("IsNotGreaterThan", -2, true)]
+	[Arguments("IsNotGreaterThan", -1, false)]
+	[Arguments("IsNotGreaterThanOrEqualTo", -3, true)]
+	[Arguments("IsNotGreaterThanOrEqualTo", -2, false)]
+	[Arguments("IsNotGreaterThanOrEqualTo", -1, false)]
+	[Arguments("IsNotLessThan", 1, false)]
+	[Arguments("IsNotLessThan", 2, true)]
+	[Arguments("IsNotLessThan", 3, true)]
+	[Arguments("IsNotLessThanOrEqualTo", 1, false)]
+	[Arguments("IsNotLessThanOrEqualTo", 2, false)]
+	[Arguments("IsNotLessThanOrEqualTo", 3, true)]
+	[Arguments("IsNotBetween", -3, true)]
+	[Arguments("IsNotBetween", -2, false)]
+	[Arguments("IsNotBetween", -1, false)]
+	[Arguments("IsNotBetween", 1, false)]
+	[Arguments("IsNotBetween", 2, false)]
+	[Arguments("IsNotBetween", 3, true)]
 	public async Task ForNullableTimeSpan_ShouldBeTheExactInverseOfTheExpectation(string method, int offset, bool expectSuccess)
 	{
 		TimeSpan unexpected = 10.Seconds();
@@ -423,8 +423,8 @@ public sealed class NegatedToleranceTests
 			_ => throw new ArgumentOutOfRangeException(nameof(method)),
 		};
 
-		Exception? negationException = await Record.ExceptionAsync(negation);
-		Exception? inverseException = await Record.ExceptionAsync(inverse);
+		Exception? negationException = await Catch.ExceptionAsync(negation);
+		Exception? inverseException = await Catch.ExceptionAsync(inverse);
 
 		await That(negationException is null).IsEqualTo(expectSuccess)
 			.Because("the tolerance widens the unnegated expectation and so narrows its negation");
@@ -433,25 +433,25 @@ public sealed class NegatedToleranceTests
 	}
 
 #if NET8_0_OR_GREATER
-	[Theory]
-	[InlineData("IsNotAfter", -3, true)]
-	[InlineData("IsNotAfter", -2, true)]
-	[InlineData("IsNotAfter", -1, false)]
-	[InlineData("IsNotOnOrAfter", -3, true)]
-	[InlineData("IsNotOnOrAfter", -2, false)]
-	[InlineData("IsNotOnOrAfter", -1, false)]
-	[InlineData("IsNotBefore", 1, false)]
-	[InlineData("IsNotBefore", 2, true)]
-	[InlineData("IsNotBefore", 3, true)]
-	[InlineData("IsNotOnOrBefore", 1, false)]
-	[InlineData("IsNotOnOrBefore", 2, false)]
-	[InlineData("IsNotOnOrBefore", 3, true)]
-	[InlineData("IsNotBetween", -3, true)]
-	[InlineData("IsNotBetween", -2, false)]
-	[InlineData("IsNotBetween", -1, false)]
-	[InlineData("IsNotBetween", 1, false)]
-	[InlineData("IsNotBetween", 2, false)]
-	[InlineData("IsNotBetween", 3, true)]
+	[Test]
+	[Arguments("IsNotAfter", -3, true)]
+	[Arguments("IsNotAfter", -2, true)]
+	[Arguments("IsNotAfter", -1, false)]
+	[Arguments("IsNotOnOrAfter", -3, true)]
+	[Arguments("IsNotOnOrAfter", -2, false)]
+	[Arguments("IsNotOnOrAfter", -1, false)]
+	[Arguments("IsNotBefore", 1, false)]
+	[Arguments("IsNotBefore", 2, true)]
+	[Arguments("IsNotBefore", 3, true)]
+	[Arguments("IsNotOnOrBefore", 1, false)]
+	[Arguments("IsNotOnOrBefore", 2, false)]
+	[Arguments("IsNotOnOrBefore", 3, true)]
+	[Arguments("IsNotBetween", -3, true)]
+	[Arguments("IsNotBetween", -2, false)]
+	[Arguments("IsNotBetween", -1, false)]
+	[Arguments("IsNotBetween", 1, false)]
+	[Arguments("IsNotBetween", 2, false)]
+	[Arguments("IsNotBetween", 3, true)]
 	public async Task ForTimeOnly_ShouldBeTheExactInverseOfTheExpectation(string method, int offset, bool expectSuccess)
 	{
 		TimeOnly unexpected = new(12, 0);
@@ -477,8 +477,8 @@ public sealed class NegatedToleranceTests
 			_ => throw new ArgumentOutOfRangeException(nameof(method)),
 		};
 
-		Exception? negationException = await Record.ExceptionAsync(negation);
-		Exception? inverseException = await Record.ExceptionAsync(inverse);
+		Exception? negationException = await Catch.ExceptionAsync(negation);
+		Exception? inverseException = await Catch.ExceptionAsync(inverse);
 
 		await That(negationException is null).IsEqualTo(expectSuccess)
 			.Because("the tolerance widens the unnegated expectation and so narrows its negation");
@@ -487,25 +487,25 @@ public sealed class NegatedToleranceTests
 	}
 #endif
 
-	[Theory]
-	[InlineData("IsNotGreaterThan", -3, true)]
-	[InlineData("IsNotGreaterThan", -2, true)]
-	[InlineData("IsNotGreaterThan", -1, false)]
-	[InlineData("IsNotGreaterThanOrEqualTo", -3, true)]
-	[InlineData("IsNotGreaterThanOrEqualTo", -2, false)]
-	[InlineData("IsNotGreaterThanOrEqualTo", -1, false)]
-	[InlineData("IsNotLessThan", 1, false)]
-	[InlineData("IsNotLessThan", 2, true)]
-	[InlineData("IsNotLessThan", 3, true)]
-	[InlineData("IsNotLessThanOrEqualTo", 1, false)]
-	[InlineData("IsNotLessThanOrEqualTo", 2, false)]
-	[InlineData("IsNotLessThanOrEqualTo", 3, true)]
-	[InlineData("IsNotBetween", -3, true)]
-	[InlineData("IsNotBetween", -2, false)]
-	[InlineData("IsNotBetween", -1, false)]
-	[InlineData("IsNotBetween", 1, false)]
-	[InlineData("IsNotBetween", 2, false)]
-	[InlineData("IsNotBetween", 3, true)]
+	[Test]
+	[Arguments("IsNotGreaterThan", -3, true)]
+	[Arguments("IsNotGreaterThan", -2, true)]
+	[Arguments("IsNotGreaterThan", -1, false)]
+	[Arguments("IsNotGreaterThanOrEqualTo", -3, true)]
+	[Arguments("IsNotGreaterThanOrEqualTo", -2, false)]
+	[Arguments("IsNotGreaterThanOrEqualTo", -1, false)]
+	[Arguments("IsNotLessThan", 1, false)]
+	[Arguments("IsNotLessThan", 2, true)]
+	[Arguments("IsNotLessThan", 3, true)]
+	[Arguments("IsNotLessThanOrEqualTo", 1, false)]
+	[Arguments("IsNotLessThanOrEqualTo", 2, false)]
+	[Arguments("IsNotLessThanOrEqualTo", 3, true)]
+	[Arguments("IsNotBetween", -3, true)]
+	[Arguments("IsNotBetween", -2, false)]
+	[Arguments("IsNotBetween", -1, false)]
+	[Arguments("IsNotBetween", 1, false)]
+	[Arguments("IsNotBetween", 2, false)]
+	[Arguments("IsNotBetween", 3, true)]
 	public async Task ForTimeSpan_ShouldBeTheExactInverseOfTheExpectation(string method, int offset, bool expectSuccess)
 	{
 		TimeSpan unexpected = 10.Seconds();
@@ -531,8 +531,8 @@ public sealed class NegatedToleranceTests
 			_ => throw new ArgumentOutOfRangeException(nameof(method)),
 		};
 
-		Exception? negationException = await Record.ExceptionAsync(negation);
-		Exception? inverseException = await Record.ExceptionAsync(inverse);
+		Exception? negationException = await Catch.ExceptionAsync(negation);
+		Exception? inverseException = await Catch.ExceptionAsync(inverse);
 
 		await That(negationException is null).IsEqualTo(expectSuccess)
 			.Because("the tolerance widens the unnegated expectation and so narrows its negation");

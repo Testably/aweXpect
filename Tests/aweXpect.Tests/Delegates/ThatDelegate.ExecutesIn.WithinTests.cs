@@ -6,7 +6,7 @@ public sealed partial class ThatDelegate
 	{
 		public sealed class WithinTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDelegateIsTooFast_ShouldFail()
 			{
 				Action @delegate = () => Task.Delay(5.Milliseconds()).Wait();
@@ -14,7 +14,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn(10000.Milliseconds()).Within(1123.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in approximately 0:10 ± 0:01.123,
@@ -22,7 +22,7 @@ public sealed partial class ThatDelegate
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateTakesLongEnough_ShouldSucceed()
 			{
 				Action @delegate = () => Task.Delay(50.Milliseconds()).Wait();
@@ -33,7 +33,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateTakesTooLong_ShouldFail()
 			{
 				Action @delegate = () => Task.Delay(50.Milliseconds()).Wait();
@@ -41,7 +41,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn(10.Milliseconds()).Within(5.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in approximately 0:00.010 ± 0:00.005,
@@ -49,7 +49,7 @@ public sealed partial class ThatDelegate
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateThrowsAnException_ShouldFail()
 			{
 				Action @delegate = () =>
@@ -61,7 +61,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn(500.Milliseconds()).Within(50.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that @delegate
 					              executes in approximately 0:00.500 ± 0:50,
@@ -71,7 +71,7 @@ public sealed partial class ThatDelegate
 					.Because("a crashed delegate must fail even though its duration was inside the tolerance");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Action @delegate = () => { };

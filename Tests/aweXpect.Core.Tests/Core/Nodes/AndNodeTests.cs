@@ -8,7 +8,7 @@ namespace aweXpect.Core.Tests.Core.Nodes;
 
 public sealed class AndNodeTests
 {
-	[Fact]
+	[Test]
 	public async Task AddAsyncMapping_ShouldUseCurrentNode()
 	{
 		MemberAccessor<string, Task<int>> memberAccessor =
@@ -24,7 +24,7 @@ public sealed class AndNodeTests
 		await That(second.MappingMemberAccessor).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddAsyncMapping_ShouldUseSecondNode()
 	{
 		MemberAccessor<string, Task<int>> memberAccessor =
@@ -40,7 +40,7 @@ public sealed class AndNodeTests
 		await That(second.MappingMemberAccessor).IsSameAs(memberAccessor);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddMapping_ShouldUseCurrentNode()
 	{
 		MemberAccessor<string, int> memberAccessor = MemberAccessor<string, int>.FromExpression(x => x.Length);
@@ -55,7 +55,7 @@ public sealed class AndNodeTests
 		await That(second.MappingMemberAccessor).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddMapping_ShouldUseSecondNode()
 	{
 		MemberAccessor<string, int> memberAccessor = MemberAccessor<string, int>.FromExpression(x => x.Length);
@@ -70,7 +70,7 @@ public sealed class AndNodeTests
 		await That(second.MappingMemberAccessor).IsSameAs(memberAccessor);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendExpectation_WithAdditionalNodes_ShouldUseAllNodes()
 	{
 		AndNode node = new(new DummyNode("foo"));
@@ -83,7 +83,7 @@ public sealed class AndNodeTests
 		await That(sb.ToString()).IsEqualTo("foo and bar and baz");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendExpectation_WithCustomSeparators_ShouldUseThem()
 	{
 		AndNode node = new(new DummyNode("foo"));
@@ -96,7 +96,7 @@ public sealed class AndNodeTests
 		await That(sb.ToString()).IsEqualTo("foo my bar is baz");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendExpectation_WithoutAdditionalNodes_ShouldUseFirstNode()
 	{
 		AndNode node = new(new DummyNode("foo"));
@@ -107,7 +107,7 @@ public sealed class AndNodeTests
 		await That(sb.ToString()).IsEqualTo("foo");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfCurrentNodeIsDifferent_ShouldBeFalse()
 	{
 		DummyNode innerNode1 = new("1", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
@@ -121,7 +121,7 @@ public sealed class AndNodeTests
 		await That(node1.GetHashCode()).IsNotEqualTo(node2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfCurrentNodeIsTheSame_ShouldBeTrue()
 	{
 		DummyNode innerNode1 = new("1", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
@@ -135,7 +135,7 @@ public sealed class AndNodeTests
 		await That(node1.GetHashCode()).IsEqualTo(node2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfInnerNodesAreDifferent_ShouldBeFalse()
 	{
 		DummyNode innerNode0 = new("0", () => new DummyConstraintResult<string?>(Outcome.Success, "0", ""));
@@ -155,7 +155,7 @@ public sealed class AndNodeTests
 		await That(node1.GetHashCode()).IsNotEqualTo(node2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfInnerNodesAreSame_ShouldBeTrue()
 	{
 		DummyNode innerNode1 = new("1", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
@@ -176,7 +176,7 @@ public sealed class AndNodeTests
 		await That(node1.GetHashCode()).IsEqualTo(node2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_WhenOtherIsDifferentNode_ShouldBeFalse()
 	{
 		DummyNode inner = new("foo");
@@ -188,7 +188,7 @@ public sealed class AndNodeTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_WhenOtherIsNull_ShouldBeFalse()
 	{
 		AndNode node = new(new DummyNode("foo"));
@@ -198,7 +198,7 @@ public sealed class AndNodeTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task FailureCause_WhenLeftFailedDueToException_ShouldForwardException()
 	{
 		Exception exception = new("foo");
@@ -211,7 +211,7 @@ public sealed class AndNodeTests
 		await That(result.FailureCause).IsSameAs(exception);
 	}
 
-	[Fact]
+	[Test]
 	public async Task FailureCause_WhenRightFailedDueToException_ShouldForwardException()
 	{
 		Exception exception = new("foo");
@@ -224,7 +224,7 @@ public sealed class AndNodeTests
 		await That(result.FailureCause).IsSameAs(exception);
 	}
 
-	[Fact]
+	[Test]
 	public async Task FailureCause_WhenSuccessful_ShouldBeNull()
 	{
 		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success, "left")));
@@ -235,14 +235,14 @@ public sealed class AndNodeTests
 		await That(result.FailureCause).IsNull();
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Success)]
-	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Success)]
-	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Success)]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Success, Outcome.Success)]
+	[Arguments(Outcome.Success, Outcome.Failure, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Failure, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Undecided, Outcome.Success)]
+	[Arguments(Outcome.Undecided, Outcome.Failure, Outcome.Success)]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task NegatedOutcome_ShouldBeExpected(Outcome node1, Outcome node2, Outcome expectedOutcome)
 	{
 		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(node1)));
@@ -254,9 +254,9 @@ public sealed class AndNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
-	[InlineData(Outcome.Failure, Outcome.Success)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.FailureBothWays)]
+	[Arguments(Outcome.Failure, Outcome.Success)]
 	public async Task NegatedOutcome_WhenOperandStaysFailedUnderNegation_ShouldOnlySucceedIfOtherOperandSucceeds(
 		Outcome other, Outcome expectedOutcome)
 	{
@@ -270,7 +270,7 @@ public sealed class AndNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
-	[Fact]
+	[Test]
 	public async Task NegatedResult_ShouldUseOrAsSeparator()
 	{
 		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success, "foo")));
@@ -288,11 +288,11 @@ public sealed class AndNodeTests
 		await That(sb2.ToString()).IsEqualTo("foo or bar");
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Success, "l and r")]
-	[InlineData(Outcome.Success, Outcome.Undecided, "l and r")]
-	[InlineData(Outcome.Undecided, Outcome.Success, "l and r")]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, "l and r")]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Success, "l and r")]
+	[Arguments(Outcome.Success, Outcome.Undecided, "l and r")]
+	[Arguments(Outcome.Undecided, Outcome.Success, "l and r")]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, "l and r")]
 	public async Task NegatedResultText_ShouldBeExpected(Outcome node1, Outcome node2, string expectedResultText)
 	{
 		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(node1, "left", "l")));
@@ -305,14 +305,14 @@ public sealed class AndNodeTests
 			.Because("an undecided operand explains why the combination is undecided");
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Success, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
-	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Success, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Success, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
+	[Arguments(Outcome.Undecided, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task Outcome_ShouldBeExpected(Outcome node1, Outcome node2, Outcome expectedOutcome)
 	{
 		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(node1)));
@@ -323,11 +323,11 @@ public sealed class AndNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
-	[Theory]
-	[InlineData(" that ", "whose bar", "foo whose bar")]
-	[InlineData(" that ", "is bar", "foo that is bar")]
-	[InlineData(" that ", "whosever bar", "foo that whosever bar")]
-	[InlineData(" and ", "whose bar", "foo and whose bar")]
+	[Test]
+	[Arguments(" that ", "whose bar", "foo whose bar")]
+	[Arguments(" that ", "is bar", "foo that is bar")]
+	[Arguments(" that ", "whosever bar", "foo that whosever bar")]
+	[Arguments(" and ", "whose bar", "foo and whose bar")]
 	public async Task Result_WithSeparator_ShouldOnlyDropWhichBeforeWhose(
 		string separator, string rightExpectation, string expectedExpectation)
 	{
@@ -340,15 +340,15 @@ public sealed class AndNodeTests
 		await That(result.GetExpectationText()).IsEqualTo(expectedExpectation);
 	}
 
-	[Theory]
-	[InlineData(Outcome.Failure, Outcome.Success, "l")]
-	[InlineData(Outcome.Success, Outcome.Failure, "r")]
-	[InlineData(Outcome.Failure, Outcome.Failure, "l and r")]
-	[InlineData(Outcome.Failure, Outcome.Undecided, "l")]
-	[InlineData(Outcome.Undecided, Outcome.Failure, "r")]
-	[InlineData(Outcome.Success, Outcome.Undecided, "r")]
-	[InlineData(Outcome.Undecided, Outcome.Success, "l")]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, "l and r")]
+	[Test]
+	[Arguments(Outcome.Failure, Outcome.Success, "l")]
+	[Arguments(Outcome.Success, Outcome.Failure, "r")]
+	[Arguments(Outcome.Failure, Outcome.Failure, "l and r")]
+	[Arguments(Outcome.Failure, Outcome.Undecided, "l")]
+	[Arguments(Outcome.Undecided, Outcome.Failure, "r")]
+	[Arguments(Outcome.Success, Outcome.Undecided, "r")]
+	[Arguments(Outcome.Undecided, Outcome.Success, "l")]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, "l and r")]
 	public async Task ResultText_ShouldBeExpected(Outcome node1, Outcome node2, string expectedResultText)
 	{
 		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(node1, "left", "l")));
@@ -360,7 +360,7 @@ public sealed class AndNodeTests
 			.Because("an undecided operand only explains the combination when no operand failed");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ResultText_WhenLeftSpansMultipleLines_ShouldStartRightOnItsOwnLine()
 	{
 		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "left", "l1\nl2")));
@@ -378,7 +378,7 @@ public sealed class AndNodeTests
 			.Because("the right result must not be glued onto the last line of the left result");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldConsiderFurtherProcessingStrategy()
 	{
 		AndNode node = new(new DummyNode("",
@@ -397,7 +397,7 @@ public sealed class AndNodeTests
 		await That(sb.ToString()).IsEqualTo("foo my bar");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetValue_WhenBothHaveValue_ShouldReturnRightValue()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult<int>(Outcome.Success, 1, ""));
@@ -412,7 +412,7 @@ public sealed class AndNodeTests
 		await That(value).IsEqualTo(2);
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetValue_WhenNoneHasValue_ShouldReturnFalse()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult(Outcome.Success, ""));
@@ -427,7 +427,7 @@ public sealed class AndNodeTests
 		await That(value).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetValue_WhenOnlyRightHasValue_ShouldReturnRightValue()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult(Outcome.Success, ""));
@@ -442,7 +442,7 @@ public sealed class AndNodeTests
 		await That(value).IsEqualTo(2);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithCustomSeparator_ShouldUseItInsteadOfOr()
 	{
 		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "foo", "-")));
@@ -455,7 +455,7 @@ public sealed class AndNodeTests
 		await That(sb.ToString()).IsEqualTo("foo my bar");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithCustomSeparators_ShouldUseItInsteadOfOr()
 	{
 		AndNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "foo", "-")));
@@ -469,7 +469,7 @@ public sealed class AndNodeTests
 		await That(sb.ToString()).IsEqualTo("foo my bar is baz");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithFirstFailedTests_ShouldIncludeSingleFailureInMessage()
 	{
 		async Task Act()
@@ -483,7 +483,7 @@ public sealed class AndNodeTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithMultiLineFailures_ShouldStartTheSecondResultOnItsOwnLine()
 	{
 		async Task Act()
@@ -506,7 +506,7 @@ public sealed class AndNodeTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithMultipleFailedTests_ShouldIncludeAllFailuresInMessage()
 	{
 		async Task Act()
@@ -520,7 +520,7 @@ public sealed class AndNodeTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithPartNotStartingWithSubjectInBetween_ShouldRepeatSubjectAfterIt()
 	{
 		int[] subject = [1, 2, 3,];
@@ -542,7 +542,7 @@ public sealed class AndNodeTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithProcessingStrategy_ShouldConsiderIgnoreCompletely()
 	{
 		AndNode node = new(new DummyNode("",
@@ -560,7 +560,7 @@ public sealed class AndNodeTests
 		await That(result.Outcome).IsEqualTo(Outcome.Success);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithProcessingStrategy_WhenFailedOperandIgnoresResult_ShouldOnlyUseExpectationOfFollowingOperands()
 	{
 		AndNode node = new(new DummyNode("",
@@ -577,7 +577,7 @@ public sealed class AndNodeTests
 			.Because("the following operands are only evaluated for their expectation text");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithProcessingStrategy_WhenSucceededOperandIgnoresResult_ShouldEvaluateFollowingOperands()
 	{
 		AndNode node = new(new DummyNode("",
@@ -590,7 +590,7 @@ public sealed class AndNodeTests
 		await That(result.GetResultText()).IsEqualTo("r");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithSecondFailedTests_ShouldIncludeSingleFailureInMessage()
 	{
 		async Task Act()
@@ -604,7 +604,7 @@ public sealed class AndNodeTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithTwoSuccessfulTests_ShouldNotThrow()
 	{
 		async Task Act()

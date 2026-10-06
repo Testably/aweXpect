@@ -9,9 +9,9 @@ public sealed class EnumerableQuantifierTests
 {
 	public sealed class AllTests
 	{
-		[Theory]
-		[InlineData(1)]
-		[InlineData(-1)]
+		[Test]
+		[Arguments(1)]
+		[Arguments(-1)]
 		public async Task WhenMatchingDoesNotEqualTotalItems_ShouldReturnFailure(int difference)
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.All();
@@ -27,7 +27,7 @@ public sealed class EnumerableQuantifierTests
 			await That(sb.ToString()).IsEqualTo($"only {matchingCount} of {totalCount} were");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenMatchingEqualsTotalItems_ShouldReturnSuccess()
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.All();
@@ -40,7 +40,7 @@ public sealed class EnumerableQuantifierTests
 			await That(result).IsEqualTo(Outcome.Success);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNotEnumeratedCompletely_ShouldHaveUndecidedOutcome()
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.All();
@@ -56,9 +56,9 @@ public sealed class EnumerableQuantifierTests
 
 	public sealed class AtLeastTests
 	{
-		[Theory]
-		[InlineData(3)]
-		[InlineData(4)]
+		[Test]
+		[Arguments(3)]
+		[Arguments(4)]
 		public async Task WhenHavingSufficientItems_ShouldReturnSuccess(int foundItems)
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.AtLeast(3);
@@ -71,7 +71,7 @@ public sealed class EnumerableQuantifierTests
 			await That(result).IsEqualTo(Outcome.Success);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenHavingTooFewItems_ShouldReturnFailure()
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.AtLeast(3);
@@ -87,9 +87,9 @@ public sealed class EnumerableQuantifierTests
 			await That(sb.ToString()).IsEqualTo("only 2 of 8 were");
 		}
 
-		[Theory]
-		[InlineData(1, " for no items")]
-		[InlineData(2, " for fewer than 2 items")]
+		[Test]
+		[Arguments(1, " for no items")]
+		[Arguments(2, " for fewer than 2 items")]
 		public async Task WhenNegated_ShouldAppendTheComplement(int minimum, string expected)
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.AtLeast(minimum);
@@ -101,7 +101,7 @@ public sealed class EnumerableQuantifierTests
 				.Because("the negation of a quantifier is its complement, not a prefixed 'not'");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNotEnumeratedCompletely_ShouldHaveUndecidedOutcome()
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.AtLeast(3);
@@ -117,9 +117,9 @@ public sealed class EnumerableQuantifierTests
 
 	public sealed class AtMostTests
 	{
-		[Theory]
-		[InlineData(3)]
-		[InlineData(4)]
+		[Test]
+		[Arguments(3)]
+		[Arguments(4)]
 		public async Task WhenHavingSufficientItems_ShouldReturnSuccess(int foundItems)
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.AtMost(4);
@@ -132,7 +132,7 @@ public sealed class EnumerableQuantifierTests
 			await That(result).IsEqualTo(Outcome.Success);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenHavingTooManyItems_ShouldReturnFailure()
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.AtMost(4);
@@ -148,10 +148,10 @@ public sealed class EnumerableQuantifierTests
 			await That(sb.ToString()).IsEqualTo("5 of 8 were");
 		}
 
-		[Theory]
-		[InlineData(0, " for at least one item")]
-		[InlineData(1, " for more than one item")]
-		[InlineData(4, " for more than 4 items")]
+		[Test]
+		[Arguments(0, " for at least one item")]
+		[Arguments(1, " for more than one item")]
+		[Arguments(4, " for more than 4 items")]
 		public async Task WhenNegated_ShouldAppendTheComplement(int maximum, string expected)
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.AtMost(maximum);
@@ -163,7 +163,7 @@ public sealed class EnumerableQuantifierTests
 				.Because("the negation of a quantifier is its complement, not a prefixed 'not'");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNotEnumeratedCompletely_ShouldHaveUndecidedOutcome()
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.AtMost(4);
@@ -179,10 +179,10 @@ public sealed class EnumerableQuantifierTests
 
 	public sealed class BetweenTests
 	{
-		[Theory]
-		[InlineData(3)]
-		[InlineData(4)]
-		[InlineData(5)]
+		[Test]
+		[Arguments(3)]
+		[Arguments(4)]
+		[Arguments(5)]
 		public async Task WhenHavingSufficientItems_ShouldReturnSuccess(int foundItems)
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.Between(3, 5);
@@ -195,7 +195,7 @@ public sealed class EnumerableQuantifierTests
 			await That(result).IsEqualTo(Outcome.Success);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenHavingTooFewItems_ShouldReturnFailure()
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.Between(3, 5);
@@ -211,7 +211,7 @@ public sealed class EnumerableQuantifierTests
 			await That(sb.ToString()).IsEqualTo("only 2 of 7 were");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenHavingTooManyItems_ShouldReturnFailure()
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.Between(3, 5);
@@ -227,9 +227,9 @@ public sealed class EnumerableQuantifierTests
 			await That(sb.ToString()).IsEqualTo("6 of 8 were");
 		}
 
-		[Theory]
-		[InlineData(1, " for exactly one item")]
-		[InlineData(2, " for exactly 2 items")]
+		[Test]
+		[Arguments(1, " for exactly one item")]
+		[Arguments(2, " for exactly 2 items")]
 		public async Task WhenMinimumEqualsMaximum_ShouldReadLikeExactly(int count, string expected)
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.Between(count, count);
@@ -241,7 +241,7 @@ public sealed class EnumerableQuantifierTests
 				.Because("a range of a single count is the same as exactly this count");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNotEnumeratedCompletely_ShouldHaveUndecidedOutcome()
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.Between(3, 5);
@@ -257,7 +257,7 @@ public sealed class EnumerableQuantifierTests
 
 	public sealed class ExactlyTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenHavingSufficientItems_ShouldReturnSuccess()
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.Exactly(3);
@@ -270,9 +270,9 @@ public sealed class EnumerableQuantifierTests
 			await That(result).IsEqualTo(Outcome.Success);
 		}
 
-		[Theory]
-		[InlineData(1)]
-		[InlineData(2)]
+		[Test]
+		[Arguments(1)]
+		[Arguments(2)]
 		public async Task WhenHavingTooFewItems_ShouldReturnFailure(int foundItems)
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.Exactly(3);
@@ -288,9 +288,9 @@ public sealed class EnumerableQuantifierTests
 			await That(sb.ToString()).IsEqualTo($"only {foundItems} of 8 were");
 		}
 
-		[Theory]
-		[InlineData(4)]
-		[InlineData(5)]
+		[Test]
+		[Arguments(4)]
+		[Arguments(5)]
 		public async Task WhenHavingTooManyItems_ShouldReturnFailure(int foundItems)
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.Exactly(3);
@@ -306,9 +306,9 @@ public sealed class EnumerableQuantifierTests
 			await That(sb.ToString()).IsEqualTo($"{foundItems} of 8 were");
 		}
 
-		[Theory]
-		[InlineData(0, " for at least one item")]
-		[InlineData(2, " for not exactly 2 items")]
+		[Test]
+		[Arguments(0, " for at least one item")]
+		[Arguments(2, " for not exactly 2 items")]
 		public async Task WhenNegated_ShouldAppendTheComplementIfThereIsOne(int expectedCount, string expected)
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.Exactly(expectedCount);
@@ -320,7 +320,7 @@ public sealed class EnumerableQuantifierTests
 				.Because("only the negation of exactly zero is a single range");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNotEnumeratedCompletely_ShouldHaveUndecidedOutcome()
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.Exactly(4);
@@ -336,9 +336,9 @@ public sealed class EnumerableQuantifierTests
 
 	public sealed class LessThanTests
 	{
-		[Theory]
-		[InlineData(1, " for at least one item")]
-		[InlineData(4, " for at least 4 items")]
+		[Test]
+		[Arguments(1, " for at least one item")]
+		[Arguments(4, " for at least 4 items")]
 		public async Task WhenNegated_ShouldAppendTheComplement(int maximum, string expected)
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.LessThan(maximum);
@@ -353,10 +353,10 @@ public sealed class EnumerableQuantifierTests
 
 	public sealed class MoreThanTests
 	{
-		[Theory]
-		[InlineData(0, " for no items")]
-		[InlineData(1, " for at most one item")]
-		[InlineData(4, " for at most 4 items")]
+		[Test]
+		[Arguments(0, " for no items")]
+		[Arguments(1, " for at most one item")]
+		[Arguments(4, " for at most 4 items")]
 		public async Task WhenNegated_ShouldAppendTheComplement(int minimum, string expected)
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.MoreThan(minimum);
@@ -371,11 +371,11 @@ public sealed class EnumerableQuantifierTests
 
 	public sealed class NoneTests
 	{
-		[Theory]
-		[InlineData(ExpectationGrammars.None, "no")]
-		[InlineData(ExpectationGrammars.Plural, "no")]
-		[InlineData(ExpectationGrammars.Nested, "none")]
-		[InlineData(ExpectationGrammars.Nested | ExpectationGrammars.Plural, "none")]
+		[Test]
+		[Arguments(ExpectationGrammars.None, "no")]
+		[Arguments(ExpectationGrammars.Plural, "no")]
+		[Arguments(ExpectationGrammars.Nested, "none")]
+		[Arguments(ExpectationGrammars.Nested | ExpectationGrammars.Plural, "none")]
 		public async Task ShouldUseNoneOnlyWhenNested(ExpectationGrammars grammars, string expected)
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.None(grammars);
@@ -383,7 +383,7 @@ public sealed class EnumerableQuantifierTests
 			await That(sut.ToString()).IsEqualTo(expected);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenMatchingCountIsGreaterThanZero_ShouldReturnFailure()
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.None();
@@ -399,7 +399,7 @@ public sealed class EnumerableQuantifierTests
 			await That(sb.ToString()).IsEqualTo("1 of 4 were");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNotEnumeratedCompletely_ShouldHaveUndecidedOutcome()
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.None();
@@ -412,7 +412,7 @@ public sealed class EnumerableQuantifierTests
 			await That(result).IsEqualTo(Outcome.Undecided);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNotMatchingEqualsTotalItems_ShouldReturnSuccess()
 		{
 			EnumerableQuantifier sut = EnumerableQuantifier.None();

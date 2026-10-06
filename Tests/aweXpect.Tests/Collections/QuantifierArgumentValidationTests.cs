@@ -4,7 +4,7 @@ public sealed class QuantifierArgumentValidation
 {
 	public sealed class Tests
 	{
-		[Fact]
+		[Test]
 		public async Task AtLeast_WhenMinimumIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -17,7 +17,7 @@ public sealed class QuantifierArgumentValidation
 				.WithMessage("The minimum must not be negative.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task AtMost_WhenMaximumIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -30,7 +30,7 @@ public sealed class QuantifierArgumentValidation
 				.WithMessage("The maximum must not be negative.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_WhenMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -43,7 +43,7 @@ public sealed class QuantifierArgumentValidation
 				.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_WhenMaximumIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -56,7 +56,7 @@ public sealed class QuantifierArgumentValidation
 				.WithMessage("The maximum must not be negative.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_WhenMinimumIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -69,7 +69,7 @@ public sealed class QuantifierArgumentValidation
 				.WithMessage("The minimum must not be negative.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Exactly_WhenExpectedIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -82,7 +82,7 @@ public sealed class QuantifierArgumentValidation
 				.WithMessage("The expected count must not be negative.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasCountBetween_WhenMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -95,7 +95,7 @@ public sealed class QuantifierArgumentValidation
 				.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasCountBetween_WhenMaximumIsNegativeAndMinimumIsNull_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -109,7 +109,7 @@ public sealed class QuantifierArgumentValidation
 				.Because("a negative bound is rejected even when the other bound is null");
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasCountBetween_WhenMinimumIsNegativeAndMaximumIsNull_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -123,7 +123,7 @@ public sealed class QuantifierArgumentValidation
 				.Because("a negative bound is rejected even when the other bound is null");
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasCountEqualTo_WhenExpectedIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -136,7 +136,7 @@ public sealed class QuantifierArgumentValidation
 				.WithMessage("The expected count must not be negative.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasCountNotBetween_WhenMaximumIsNegativeAndMinimumIsNull_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -150,7 +150,7 @@ public sealed class QuantifierArgumentValidation
 				.Because("a negative bound is rejected even when the other bound is null");
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasCountNotBetween_WhenMinimumIsNegativeAndMaximumIsNull_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -164,7 +164,7 @@ public sealed class QuantifierArgumentValidation
 				.Because("a negative bound is rejected even when the other bound is null");
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasCountNotEqualTo_WhenUnexpectedIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -178,7 +178,7 @@ public sealed class QuantifierArgumentValidation
 				.Because("a count is never negative, so the negated expectation would hold for every collection");
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasCountShorthand_WhenExpectedIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -191,7 +191,7 @@ public sealed class QuantifierArgumentValidation
 				.WithMessage("The expected count must not be negative.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task LessThan_WhenMaximumIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -204,7 +204,7 @@ public sealed class QuantifierArgumentValidation
 				.WithMessage("The maximum must not be negative.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task MoreThan_WhenMinimumIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -217,7 +217,7 @@ public sealed class QuantifierArgumentValidation
 				.WithMessage("The minimum must not be negative.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NegatedAtMost_WhenMaximumIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];
@@ -231,7 +231,7 @@ public sealed class QuantifierArgumentValidation
 				.Because("the negated form is where a nonsensical count would otherwise pass unnoticed");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NegatedBetween_WhenMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [1, 2, 3,];

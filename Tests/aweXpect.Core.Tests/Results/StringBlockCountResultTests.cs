@@ -7,7 +7,7 @@ namespace aweXpect.Core.Tests.Results;
 
 public sealed class StringBlockCountResultTests
 {
-	[Fact]
+	[Test]
 	public async Task AsBlock_ShouldInterpretExpectedAsBlock()
 	{
 		Quantifier quantifier = new();
@@ -23,7 +23,7 @@ public sealed class StringBlockCountResultTests
 			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
 	}
 
-	[Fact]
+	[Test]
 	public async Task IgnoringCase_ShouldSetOption()
 	{
 		StringEqualityOptions options = new("expected");
@@ -36,7 +36,7 @@ public sealed class StringBlockCountResultTests
 		await That(options.ToString()).IsEqualTo(" as block ignoring case");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Using_ShouldSetComparer()
 	{
 		StringEqualityOptions options = new("expected");

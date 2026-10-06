@@ -5,7 +5,7 @@ namespace aweXpect.Core.Tests.Customization;
 
 public sealed class CustomizeEquivalencyTests
 {
-	[Fact]
+	[Test]
 	public async Task DefaultEquivalencyOptions_WhenNull_ShouldThrowArgumentNullException()
 	{
 		void Act() => Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Set(null!);
@@ -16,7 +16,7 @@ public sealed class CustomizeEquivalencyTests
 			.Because("a stored null would be returned as null instead of the default options");
 	}
 
-	[Fact]
+	[Test]
 	public async Task SetDefaultEquivalencyDocumentOptions_ShouldApplyOptionsWithinScope()
 	{
 		int[] actual = [1, 2,];
@@ -51,7 +51,7 @@ public sealed class CustomizeEquivalencyTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task SetDefaultEquivalencyOptions_ShouldAlsoApplyWhenOptionsArePassedPerCall()
 	{
 		ClassWithField actual = new(1, "foo");
@@ -70,7 +70,7 @@ public sealed class CustomizeEquivalencyTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task SetDefaultEquivalencyOptions_WhenACallbackRegistersAType_ShouldNotChangeTheDefault()
 	{
 		ClassWithField actual = new(1, "foo");
@@ -94,7 +94,7 @@ public sealed class CustomizeEquivalencyTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task SetMaxRecursionDepth_ShouldApplyOptionsWithinScope()
 	{
 		NestedNode actual = new(3);
@@ -124,7 +124,7 @@ public sealed class CustomizeEquivalencyTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldChangeIndividualProperties()
 	{
 		await That(Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get().IgnoreCollectionOrder)

@@ -13,7 +13,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class ImmutableTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsDifferentValues_ShouldFail()
 				{
 					ImmutableArray<int> subject = [1, 1, 1, 1, 2, 2, 3,];
@@ -21,7 +21,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().ComplyWith(x => x.IsEqualTo(1));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 1 for all items,
@@ -35,7 +35,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableIsEmpty_ShouldSucceed()
 				{
 					ImmutableArray<int> subject = [];
@@ -46,7 +46,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableOnlyContainsEqualValues_ShouldSucceed()
 				{
 					ImmutableArray<int> subject = [1, 1, 1, 1, 1, 1, 1,];
@@ -57,7 +57,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 				{
 					ImmutableArray<int> subject = [1, 2, 3,];
@@ -73,7 +73,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class ImmutableNegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsComply_ShouldFail()
 				{
 					ImmutableArray<int> subject = [1, 1, 1,];
@@ -82,7 +82,7 @@ public sealed partial class ThatEnumerable
 						=> await That(subject).DoesNotComplyWith(it
 							=> it.All().ComplyWith(x => x.IsEqualTo(1)));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 1 not for all items,
@@ -93,7 +93,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableOnlyContainsEqualValues_ShouldFail()
 				{
 					ImmutableArray<int> subject = [1, 1, 1, 1, 1, 1, 1,];
@@ -101,7 +101,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().ComplyWith(x => x.DoesNotComplyWith(it => it.IsEqualTo(1)));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to 1 for all items,
@@ -115,7 +115,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 				{
 					ImmutableArray<int> subject = [1, 2, 3,];

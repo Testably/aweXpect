@@ -9,7 +9,7 @@ public sealed partial class ThatString
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task InAndChain_WhenLaterOperandsFail_ShouldExplainEachOfThem()
 			{
 				string subject = "5";
@@ -17,7 +17,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsParsableInto<int>().And.IsEqualTo("6").And.HasLength().EqualTo(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is parsable into int and is equal to "6" and has length equal to 3,
@@ -31,7 +31,7 @@ public sealed partial class ThatString
 					.Because("a successful parse must not hide the failing operands that follow it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task InOr_WhenBothOperandsFail_ShouldExplainBoth()
 			{
 				string subject = "abc";
@@ -39,7 +39,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsParsableInto<int>().Or.IsEqualTo("xyz");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is parsable into int or is equal to "xyz",
@@ -54,7 +54,7 @@ public sealed partial class ThatString
 					.Because("each alternative failed on its own, so both explain the failure");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedInOrCombination_ShouldReportTheFailingExpectation()
 			{
 				string subject = "abc";
@@ -62,7 +62,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(x => x.IsParsableInto<int>().Or.IsEqualTo("abc"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not parsable into int and is not equal to "abc",
@@ -71,7 +71,7 @@ public sealed partial class ThatString
 					.Because("the unparsable string fulfills the negation, so only the equality explains the failure");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNull_ShouldFail()
 			{
 				string? subject = null;
@@ -79,7 +79,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsParsableInto<int>().Because("null should fail");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is parsable into int, because null should fail,
@@ -87,7 +87,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringIsNotParsable_ShouldFail()
 			{
 				string subject = "abc";
@@ -95,7 +95,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsParsableInto<int>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is parsable into int,
@@ -106,7 +106,7 @@ public sealed partial class ThatString
 					.Because("the exception of the parser tells why the string is not parsable");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringIsParsable_ShouldSucceed()
 			{
 				string subject = "42";
@@ -117,9 +117,9 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("-12.34", "de-AT")]
-			[InlineData("-12,34", "en-US")]
+			[Test]
+			[Arguments("-12.34", "de-AT")]
+			[Arguments("-12,34", "en-US")]
 			public async Task WithFormatProvider_WhenFormatDoesNotMatch_ShouldFail(string subject, string cultureName)
 			{
 				IFormatProvider formatProvider = new CultureInfo(cultureName);
@@ -127,7 +127,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsParsableInto<uint>(formatProvider);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is parsable into uint using {cultureName},
@@ -136,9 +136,9 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Theory]
-			[InlineData("12,34", "de-AT")]
-			[InlineData("12.34", "en-US")]
+			[Test]
+			[Arguments("12,34", "de-AT")]
+			[Arguments("12.34", "en-US")]
 			public async Task WithFormatProvider_WhenFormatMatches_ShouldSucceed(string subject, string cultureName)
 			{
 				IFormatProvider formatProvider = new CultureInfo(cultureName);
@@ -152,7 +152,7 @@ public sealed partial class ThatString
 
 		public sealed class WhichTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAfterOr_AndTheLeftOperandIsMet_ShouldSucceed()
 			{
 				string subject = "";
@@ -163,7 +163,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAfterOrInsideTheExpectationsOnAnItem_ShouldOnlyContinueTheRightOperand()
 			{
 				string[] subject = ["",];
@@ -174,7 +174,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAfterOrInsideWhose_ShouldOnlyContinueTheRightOperand()
 			{
 				TextClass subject = new("");
@@ -186,7 +186,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedAfterOr_AndTheLeftOperandIsMet_ShouldFail()
 			{
 				string subject = "";
@@ -195,7 +195,7 @@ public sealed partial class ThatString
 					=> await That(subject)
 						.DoesNotComplyWith(x => x.IsEmpty().Or.IsParsableInto<int>().Which.IsEqualTo(12));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not empty and is not parsable into int that is equal to 12,
@@ -203,7 +203,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberOfWhose_ShouldReferToTheParsedValueAsIt()
 			{
 				TextClass subject = new("1");
@@ -211,7 +211,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Whose(o => o.Text, t => t.IsParsableInto<int>().Which.IsGreaterThan(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Text is parsable into int that is greater than 2,
@@ -220,7 +220,7 @@ public sealed partial class ThatString
 					.Because("the parsed value, not the member Text, is the subject of the continued expectation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNull_ShouldFail()
 			{
 				string? subject = null;
@@ -228,7 +228,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsParsableInto<int>().Which.IsGreaterThan(2).And.IsLessThan(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is parsable into int that is greater than 2 and is less than 3,
@@ -236,7 +236,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringIsNotParsable_ShouldFail()
 			{
 				string subject = "abc";
@@ -244,7 +244,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsParsableInto<TimeSpan>().Which.IsLessThan(10.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is parsable into TimeSpan that is less than 0:10,
@@ -253,7 +253,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringIsParsable_ShouldSucceed()
 			{
 				string subject = "42";
@@ -264,9 +264,9 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("12,34", "de-AT")]
-			[InlineData("12.34", "en-US")]
+			[Test]
+			[Arguments("12,34", "de-AT")]
+			[Arguments("12.34", "en-US")]
 			public async Task WithFormatProvider_ShouldBeUsed(string subject, string cultureName)
 			{
 				IFormatProvider formatProvider = new CultureInfo(cultureName);

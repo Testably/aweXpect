@@ -14,7 +14,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class NullTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsAreNull_ShouldSucceed()
 				{
 					IEnumerable<int?> subject = new int?[]
@@ -28,7 +28,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSomeItemsAreNotNull_ShouldFail()
 				{
 					IEnumerable<int?> subject = new int?[]
@@ -39,7 +39,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEquivalentTo(null);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to <null> for all items,
@@ -56,7 +56,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable<int?>? subject = null!;
@@ -64,7 +64,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEquivalentTo(null);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to <null> for all items,
@@ -75,7 +75,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNullVariable_ShouldRenderNull()
 				{
 					IEnumerable<int?> subject = new int?[]
@@ -87,7 +87,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEquivalentTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to <null> for all items,
@@ -104,7 +104,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNegated_ShouldRenderNull()
 				{
 					IEnumerable<int?> subject = new int?[]
@@ -115,7 +115,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().AreEquivalentTo(null));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to <null> not for all items,
@@ -129,7 +129,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForNonGenericEnumerable_WhenAllItemsAreNull_ShouldSucceed()
 				{
 					IEnumerable subject = new object?[]
@@ -143,7 +143,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForNonGenericEnumerable_WhenSomeItemsAreNotNull_ShouldFail()
 				{
 					IEnumerable subject = new object?[]
@@ -154,7 +154,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEquivalentTo(null);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to <null> for all items,
@@ -177,7 +177,7 @@ public sealed partial class ThatEnumerable
 				}
 
 #if NET8_0_OR_GREATER
-				[Fact]
+				[Test]
 				public async Task ForStructEnumerable_WhenAllItemsAreNull_ShouldSucceed()
 				{
 					ImmutableArray<int?> subject = [null, null,];
@@ -188,7 +188,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ForStructEnumerable_WhenSomeItemsAreNotNull_ShouldFail()
 				{
 					ImmutableArray<int?> subject = [null, 1,];
@@ -196,7 +196,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEquivalentTo(null);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to <null> for all items,

@@ -9,7 +9,7 @@ public sealed partial class ThatReadOnlyDictionary
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectationOnValuesFails_ShouldFail()
 			{
 				IReadOnlyDictionary<int, int> subject = ToDictionary([1, 2, 3, 1,]);
@@ -17,7 +17,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).Values.All().AreUnique();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has values of which all are unique,
@@ -31,7 +31,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationOnValuesIsSatisfied_ShouldSucceed()
 			{
 				IReadOnlyDictionary<int, int> subject = ToDictionary([1, 2, 3,]);
@@ -42,7 +42,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_NegatedShouldFail()
 			{
 				IReadOnlyDictionary<int, int>? subject = null;
@@ -50,7 +50,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.Values.All().AreUnique());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has values of which not all are unique,
@@ -58,7 +58,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IReadOnlyDictionary<int, int>? subject = null;
@@ -66,7 +66,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).Values.All().AreUnique();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has values of which all are unique,
@@ -74,7 +74,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValuesAreStrings_ShouldSupportStringOptions()
 			{
 				IReadOnlyDictionary<int, string?> subject = ToDictionary(["a", "A",]);
@@ -82,7 +82,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).Values.All().AreUnique().IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has values of which all are unique ignoring case,
@@ -105,7 +105,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class ReadOnlyDictionaryTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectationOnValuesIsSatisfied_ShouldSucceed()
 			{
 				ReadOnlyDictionary<int, string> subject = new(new Dictionary<int, string>
@@ -120,7 +120,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				ReadOnlyDictionary<int, string>? subject = null;
@@ -128,7 +128,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).Values.Contains("bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has values that contain "bar" at least once,

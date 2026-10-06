@@ -5,9 +5,9 @@ namespace aweXpect.Core.Tests.Options;
 
 public class ObjectEqualityWithToleranceOptionsTests
 {
-	[Theory]
-	[InlineData(3, true)]
-	[InlineData(4, false)]
+	[Test]
+	[Arguments(3, true)]
+	[Arguments(4, false)]
 	public async Task AreConsideredEqualWithExplanation_ShouldDecideWithTheTolerance(int expected, bool expectMatch)
 	{
 		ObjectEqualityWithToleranceOptions<int, int> sut =
@@ -20,7 +20,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 		await That(result.GetExtendedFailure("it", ExpectationGrammars.None, 1, expected)).IsEqualTo("it was 1");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForEvaluation_ShouldReadTheDefaultToleranceOnce()
 	{
 		int reads = 0;
@@ -38,7 +38,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 		await That(reads).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForEvaluation_WithExplicitTolerance_ShouldReturnTheSameOptions()
 	{
 		ObjectEqualityWithToleranceOptions<int, int> sut =
@@ -52,7 +52,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 			.Because("an explicit tolerance does not depend on a setting");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Using_WhenToleranceIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		ObjectEqualityWithToleranceOptions<double, double> sut =
@@ -66,7 +66,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 			.Because("the comparer would silently replace the tolerance");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Using_WithDefaultTolerance_ShouldNotThrow()
 	{
 		ObjectEqualityWithToleranceOptions<int, int> sut =
@@ -79,7 +79,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 			.Because("a default tolerance is not an explicit option");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTimeSpanToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		ObjectEqualityWithToleranceOptions<DateTime, TimeSpan> sut =
@@ -92,7 +92,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 			.WithMessage("The tolerance must not be negative.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
 	{
 		ObjectEqualityWithToleranceOptions<double, double> sut =
@@ -106,7 +106,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 			.Because("NaN is neither negative nor a usable tolerance");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		ObjectEqualityWithToleranceOptions<double, double> sut =
@@ -119,7 +119,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 			.WithMessage("The tolerance must not be negative.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenToleranceIsZero_ShouldNotThrow()
 	{
 		ObjectEqualityWithToleranceOptions<double, double> sut =
@@ -130,7 +130,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_WhenComparerIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		ObjectEqualityWithToleranceOptions<double, double> sut =
@@ -144,7 +144,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 			.Because("the tolerance would silently replace the comparer");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_WhenToleranceIsRejectedByTheValidation_ShouldThrowItsException()
 	{
 		ObjectEqualityWithToleranceOptions<int, int> sut =
@@ -164,7 +164,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 			.WithMessage("The tolerance must be even.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_WhenToleranceIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		ObjectEqualityWithToleranceOptions<double, double> sut =
@@ -178,7 +178,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 			.Because("the second tolerance would silently replace the first one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_WithDefaultTolerance_ShouldNotThrow()
 	{
 		ObjectEqualityWithToleranceOptions<int, int> sut =
@@ -191,7 +191,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 			.Because("a default tolerance is not an explicit option");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_WithToleranceValidation_WhenToleranceIsAccepted_ShouldApplyIt()
 	{
 		ObjectEqualityWithToleranceOptions<int, int> sut =
@@ -204,7 +204,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_WithToleranceValidation_WhenToleranceIsSpecifiedTwice_ShouldReportTheRepetition()
 	{
 		ObjectEqualityWithToleranceOptions<int, int> sut =
@@ -225,7 +225,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 			.Because("the repetition is the misuse, whatever the second tolerance is");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_WithToleranceValidation_WhenToleranceWasRejected_ShouldAcceptALaterTolerance()
 	{
 		ObjectEqualityWithToleranceOptions<int, int> sut =

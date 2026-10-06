@@ -5,7 +5,7 @@ namespace aweXpect.Core.Tests.Core.Sources;
 
 public class DelegateValueSourceTests
 {
-	[Fact]
+	[Test]
 	public async Task ForExecutionTime_ShouldUseElapsedFromTimeSystem()
 	{
 		TimeSystemMock timeSystem = new TimeSystemMock().SetElapsed(1100.Milliseconds());

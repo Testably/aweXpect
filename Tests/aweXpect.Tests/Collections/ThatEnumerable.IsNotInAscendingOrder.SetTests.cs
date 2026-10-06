@@ -8,7 +8,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class SetTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldUseTheComparerOfTheSet()
 			{
 				SortedSet<string> subject = new(new ReverseComparer()) { "a", "b", "c", };
@@ -16,7 +16,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotInAscendingOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not in ascending order using the subject's ReverseComparer,
@@ -31,7 +31,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Using_ShouldOverrideTheComparerOfTheSet()
 			{
 				SortedSet<string> subject = new(new ReverseComparer()) { "a", "b", "c", };
@@ -42,7 +42,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithTheOrdinalComparer_ShouldNotNameTheComparerOfTheSet()
 			{
 				SortedSet<string> subject = new(StringComparer.Ordinal) { "a", "B", };
@@ -50,7 +50,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotInAscendingOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not in ascending order,

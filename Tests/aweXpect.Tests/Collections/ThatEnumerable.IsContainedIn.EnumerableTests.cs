@@ -12,7 +12,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class EnumerableInSameOrderTests
 		{
-			[Fact]
+			[Test]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
@@ -21,7 +21,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
@@ -70,7 +70,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollection_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(Array.Empty<string>());
@@ -82,7 +82,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task VeryDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 10);
@@ -91,7 +91,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
@@ -137,7 +137,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsADifferentString_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["foo", "bar",]);
@@ -145,7 +145,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection "foo" in order and contiguous,
@@ -165,7 +165,7 @@ public sealed partial class ThatEnumerable
 					.Because("a string argument is a single expected item and not a sequence of characters");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsANonGenericCollectionContainingTheSubject_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable([1, 2,]);
@@ -177,7 +177,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsANonGenericCollectionEqualToTheSubjectAndProperly_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2,]);
@@ -186,7 +186,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
@@ -203,7 +203,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsANonGenericCollectionInAnyOrder_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable([1, 2,]);
@@ -215,7 +215,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsANonGenericCollectionNotContainingTheSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2,]);
@@ -224,7 +224,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
@@ -242,7 +242,7 @@ public sealed partial class ThatEnumerable
 					.Because("a collection argument without an item type is the expected collection");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsANonGenericCollectionThatIsNull_ShouldThrowArgumentNullException()
 			{
 				IEnumerable subject = ToEnumerable([1, 2,]);
@@ -256,7 +256,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsANullString_ShouldThrowArgumentNullException()
 			{
 				IEnumerable subject = ToEnumerable(["foo",]);
@@ -271,7 +271,7 @@ public sealed partial class ThatEnumerable
 					.Because("a null string is still a missing expected collection and not a null item");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsAString_ShouldUseItAsSingleExpectedItem()
 			{
 				IEnumerable subject = ToEnumerable(["foo",]);
@@ -283,7 +283,7 @@ public sealed partial class ThatEnumerable
 					.Because("a string argument is a single expected item and not a sequence of characters");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
@@ -297,7 +297,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsHaveADifferentType_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2,]);
@@ -306,7 +306,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
@@ -322,7 +322,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsHaveMixedTypes_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable<object>(1, "a");
@@ -331,7 +331,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
@@ -345,7 +345,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullItemIsComparedToValueType_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable<object?>(1, null);
@@ -354,7 +354,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
@@ -368,7 +368,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable? subject = null;
@@ -376,7 +376,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject)!.IsContainedIn(Array.Empty<string>());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection Array.Empty<string>() in order and contiguous,
@@ -384,7 +384,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalAndMissingItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);
@@ -393,7 +393,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
@@ -422,7 +422,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalExpectedItemAtBeginningAndEnd_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["b", "b", "c", "d",]);
@@ -434,7 +434,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItem_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d",]);
@@ -443,7 +443,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
@@ -466,7 +466,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);
@@ -475,7 +475,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
@@ -501,7 +501,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCollectionInDifferentOrder_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "c", "b",]);
@@ -510,7 +510,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
@@ -532,7 +532,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["c", "a", "b", "c",]);
@@ -541,7 +541,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
@@ -564,7 +564,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -576,7 +576,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "c",]);
@@ -585,7 +585,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
@@ -608,7 +608,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInExpected_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -620,7 +620,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "a", "b", "c",]);
@@ -629,7 +629,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous,
@@ -652,7 +652,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItem_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -664,7 +664,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItems_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -677,7 +677,7 @@ public sealed partial class ThatEnumerable
 			}
 
 
-			[Fact]
+			[Test]
 			public async Task WithSameCollection_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -692,7 +692,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class EnumerableInSameOrderIgnoringDuplicatesTests
 		{
-			[Fact]
+			[Test]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
@@ -701,7 +701,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous ignoring duplicates,
@@ -750,7 +750,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollection_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(Array.Empty<string>());
@@ -762,7 +762,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollectionWithDuplicatesInExpected_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(Array.Empty<string>());
@@ -774,7 +774,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task VeryDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 10);
@@ -783,7 +783,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous ignoring duplicates,
@@ -829,7 +829,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalAndMissingItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);
@@ -838,7 +838,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous ignoring duplicates,
@@ -867,7 +867,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalExpectedItemAtBeginningAndEnd_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["b", "b", "c", "d",]);
@@ -879,7 +879,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItem_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d",]);
@@ -888,7 +888,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous ignoring duplicates,
@@ -911,7 +911,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);
@@ -920,7 +920,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous ignoring duplicates,
@@ -946,7 +946,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCollectionInDifferentOrder_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "c", "b",]);
@@ -955,7 +955,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous ignoring duplicates,
@@ -977,7 +977,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["c", "a", "b", "c",]);
@@ -986,7 +986,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in order and contiguous ignoring duplicates,
@@ -1010,7 +1010,7 @@ public sealed partial class ThatEnumerable
 					.Because("ignoring duplicates must only relax duplicates, not the order of the remaining items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1022,7 +1022,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfSubject_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "c",]);
@@ -1034,7 +1034,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInExpected_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1046,7 +1046,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInSubject_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "a", "b", "c",]);
@@ -1058,7 +1058,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItem_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1070,7 +1070,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItems_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1082,7 +1082,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithSameCollection_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1097,7 +1097,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class EnumerableInAnyOrderTests
 		{
-			[Fact]
+			[Test]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
@@ -1106,7 +1106,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in any order,
@@ -1155,7 +1155,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollection_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(Array.Empty<string>());
@@ -1167,7 +1167,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task VeryDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 10);
@@ -1176,7 +1176,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in any order,
@@ -1222,7 +1222,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalAndMissingItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);
@@ -1231,7 +1231,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in any order,
@@ -1260,7 +1260,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalExpectedItemAtBeginningAndEnd_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["b", "b", "c", "d",]);
@@ -1272,7 +1272,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItem_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d",]);
@@ -1281,7 +1281,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in any order,
@@ -1304,7 +1304,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);
@@ -1313,7 +1313,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in any order,
@@ -1339,7 +1339,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCollectionInDifferentOrder_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "c", "b",]);
@@ -1351,7 +1351,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["c", "a", "b", "c",]);
@@ -1360,7 +1360,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in any order,
@@ -1383,7 +1383,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1395,7 +1395,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "c",]);
@@ -1404,7 +1404,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in any order,
@@ -1427,7 +1427,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInExpected_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1439,7 +1439,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "a", "b", "c",]);
@@ -1448,7 +1448,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in any order,
@@ -1471,7 +1471,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItem_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1483,7 +1483,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItems_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1496,7 +1496,7 @@ public sealed partial class ThatEnumerable
 			}
 
 
-			[Fact]
+			[Test]
 			public async Task WithSameCollection_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1511,7 +1511,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class EnumerableInAnyOrderIgnoringDuplicatesTests
 		{
-			[Fact]
+			[Test]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
@@ -1520,7 +1520,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).InAnyOrder().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in any order ignoring duplicates,
@@ -1569,7 +1569,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollection_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(Array.Empty<string>());
@@ -1581,7 +1581,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollectionWithDuplicatesInExpected_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(Array.Empty<string>());
@@ -1593,7 +1593,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task VeryDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 10);
@@ -1602,7 +1602,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).InAnyOrder().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in any order ignoring duplicates,
@@ -1648,7 +1648,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalAndMissingItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);
@@ -1657,7 +1657,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).InAnyOrder().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in any order ignoring duplicates,
@@ -1686,7 +1686,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalExpectedItemAtBeginningAndEnd_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["b", "b", "c", "d",]);
@@ -1698,7 +1698,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItem_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d",]);
@@ -1707,7 +1707,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).InAnyOrder().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in any order ignoring duplicates,
@@ -1730,7 +1730,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);
@@ -1739,7 +1739,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).InAnyOrder().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in any order ignoring duplicates,
@@ -1765,7 +1765,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCollectionInDifferentOrder_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "c", "b",]);
@@ -1777,7 +1777,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["c", "a", "b", "c",]);
@@ -1789,7 +1789,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1801,7 +1801,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfSubject_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "c",]);
@@ -1813,7 +1813,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInExpected_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1825,7 +1825,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInSubject_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "a", "b", "c",]);
@@ -1837,7 +1837,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItem_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1849,7 +1849,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItems_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1861,7 +1861,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithSameCollection_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -1876,7 +1876,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class EnumerableProperlyInSameOrderTests
 		{
-			[Fact]
+			[Test]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
@@ -1885,7 +1885,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
@@ -1934,7 +1934,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollection_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(Array.Empty<string>());
@@ -1946,7 +1946,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task VeryDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 10);
@@ -1955,7 +1955,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
@@ -2001,7 +2001,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalAndMissingItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);
@@ -2010,7 +2010,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
@@ -2039,7 +2039,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalExpectedItemAtBeginningAndEnd_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["b", "b", "c", "d",]);
@@ -2051,7 +2051,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItem_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d",]);
@@ -2060,7 +2060,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
@@ -2085,7 +2085,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);
@@ -2094,7 +2094,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
@@ -2121,7 +2121,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCollectionInDifferentOrder_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "c", "b",]);
@@ -2130,7 +2130,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
@@ -2154,7 +2154,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["c", "a", "b", "c",]);
@@ -2163,7 +2163,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
@@ -2188,7 +2188,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -2200,7 +2200,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "c",]);
@@ -2209,7 +2209,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
@@ -2234,7 +2234,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInExpected_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -2246,7 +2246,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "a", "b", "c",]);
@@ -2255,7 +2255,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
@@ -2280,7 +2280,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItem_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -2292,7 +2292,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItems_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -2305,7 +2305,7 @@ public sealed partial class ThatEnumerable
 			}
 
 
-			[Fact]
+			[Test]
 			public async Task WithSameCollection_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -2314,7 +2314,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous,
@@ -2339,7 +2339,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class EnumerableProperlyInSameOrderIgnoringDuplicatesTests
 		{
-			[Fact]
+			[Test]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
@@ -2348,7 +2348,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
@@ -2397,7 +2397,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollection_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(Array.Empty<string>());
@@ -2409,7 +2409,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollectionWithDuplicatesInExpected_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(Array.Empty<string>());
@@ -2421,7 +2421,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task VeryDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 10);
@@ -2430,7 +2430,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
@@ -2476,7 +2476,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalAndMissingItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);
@@ -2485,7 +2485,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
@@ -2514,7 +2514,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalExpectedItemAtBeginningAndEnd_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["b", "b", "c", "d",]);
@@ -2526,7 +2526,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItem_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d",]);
@@ -2535,7 +2535,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
@@ -2560,7 +2560,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);
@@ -2569,7 +2569,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
@@ -2596,7 +2596,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCollectionInDifferentOrder_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "c", "b",]);
@@ -2605,7 +2605,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
@@ -2629,7 +2629,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["c", "a", "b", "c",]);
@@ -2638,7 +2638,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
@@ -2663,7 +2663,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -2672,7 +2672,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
@@ -2695,7 +2695,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "c",]);
@@ -2704,7 +2704,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
@@ -2727,7 +2727,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInExpected_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -2736,7 +2736,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
@@ -2759,7 +2759,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "a", "b", "c",]);
@@ -2768,7 +2768,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
@@ -2791,7 +2791,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItem_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -2803,7 +2803,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItems_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -2815,7 +2815,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithSameCollection_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -2824,7 +2824,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in order and contiguous ignoring duplicates,
@@ -2849,7 +2849,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class EnumerableProperlyInAnyOrderTests
 		{
-			[Fact]
+			[Test]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
@@ -2858,7 +2858,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order,
@@ -2907,7 +2907,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollection_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(Array.Empty<string>());
@@ -2919,7 +2919,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task VeryDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 10);
@@ -2928,7 +2928,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order,
@@ -2974,7 +2974,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalAndMissingItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);
@@ -2983,7 +2983,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order,
@@ -3012,7 +3012,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalExpectedItemAtBeginningAndEnd_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["b", "b", "c", "d",]);
@@ -3024,7 +3024,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItem_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d",]);
@@ -3033,7 +3033,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order,
@@ -3058,7 +3058,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);
@@ -3067,7 +3067,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order,
@@ -3094,7 +3094,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCollectionInDifferentOrder_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "c", "b",]);
@@ -3103,7 +3103,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order,
@@ -3125,7 +3125,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["c", "a", "b", "c",]);
@@ -3134,7 +3134,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order,
@@ -3159,7 +3159,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -3171,7 +3171,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "c",]);
@@ -3180,7 +3180,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order,
@@ -3205,7 +3205,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInExpected_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -3217,7 +3217,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "a", "b", "c",]);
@@ -3226,7 +3226,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order,
@@ -3251,7 +3251,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItem_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -3263,7 +3263,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItems_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -3276,7 +3276,7 @@ public sealed partial class ThatEnumerable
 			}
 
 
-			[Fact]
+			[Test]
 			public async Task WithSameCollection_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -3285,7 +3285,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order,
@@ -3310,7 +3310,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class EnumerableProperlyInAnyOrderIgnoringDuplicatesTests
 		{
-			[Fact]
+			[Test]
 			public async Task CompletelyDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 11);
@@ -3320,7 +3320,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder()
 						.IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order ignoring duplicates,
@@ -3369,7 +3369,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollection_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(Array.Empty<string>());
@@ -3382,7 +3382,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollectionWithDuplicatesInExpected_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(Array.Empty<string>());
@@ -3395,7 +3395,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task VeryDifferentCollections_ShouldFail()
 			{
 				IEnumerable subject = Enumerable.Range(1, 10);
@@ -3405,7 +3405,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder()
 						.IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order ignoring duplicates,
@@ -3451,7 +3451,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalAndMissingItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);
@@ -3461,7 +3461,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder()
 						.IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order ignoring duplicates,
@@ -3490,7 +3490,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalExpectedItemAtBeginningAndEnd_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["b", "b", "c", "d",]);
@@ -3503,7 +3503,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItem_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d",]);
@@ -3513,7 +3513,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder()
 						.IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order ignoring duplicates,
@@ -3538,7 +3538,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "d", "e",]);
@@ -3548,7 +3548,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder()
 						.IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order ignoring duplicates,
@@ -3575,7 +3575,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCollectionInDifferentOrder_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "c", "b",]);
@@ -3585,7 +3585,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder()
 						.IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order ignoring duplicates,
@@ -3607,7 +3607,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["c", "a", "b", "c",]);
@@ -3617,7 +3617,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder()
 						.IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order ignoring duplicates,
@@ -3640,7 +3640,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -3650,7 +3650,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder()
 						.IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order ignoring duplicates,
@@ -3673,7 +3673,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c", "c",]);
@@ -3683,7 +3683,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder()
 						.IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order ignoring duplicates,
@@ -3706,7 +3706,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInExpected_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -3716,7 +3716,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder()
 						.IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order ignoring duplicates,
@@ -3739,7 +3739,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "a", "b", "c",]);
@@ -3749,7 +3749,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder()
 						.IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order ignoring duplicates,
@@ -3772,7 +3772,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItem_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -3785,7 +3785,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItems_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -3798,7 +3798,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithSameCollection_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);
@@ -3808,7 +3808,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsContainedIn(expected).Properly().InAnyOrder()
 						.IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected that has at least one additional item in any order ignoring duplicates,

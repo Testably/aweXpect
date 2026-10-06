@@ -6,7 +6,7 @@ namespace aweXpect.Core.Tests.Options;
 
 public class TimeToleranceTests
 {
-	[Fact]
+	[Test]
 	public async Task GetToleranceOrDefault_WhenToleranceIsNotSet_ShouldReturnTheDefault()
 	{
 		TimeTolerance sut = new();
@@ -17,7 +17,7 @@ public class TimeToleranceTests
 		await That(result).IsEqualTo(36.Hours());
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetToleranceOrDefault_WhenToleranceIsSet_ShouldReturnTheTolerance()
 	{
 		TimeTolerance sut = new();
@@ -29,9 +29,9 @@ public class TimeToleranceTests
 		await That(result).IsEqualTo(3.Seconds());
 	}
 
-	[Theory]
-	[InlineData(0)]
-	[InlineData(2)]
+	[Test]
+	[Arguments(0)]
+	[Arguments(2)]
 	public async Task ToDayString_WhenToleranceIsNotOneDay_ShouldUsePlural(int days)
 	{
 		TimeTolerance sut = new();
@@ -42,7 +42,7 @@ public class TimeToleranceTests
 		await That(result).IsEqualTo($" ± {days} days");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToDayString_WhenToleranceIsNotSet_ShouldBeEmpty()
 	{
 		TimeTolerance sut = new();
@@ -53,7 +53,7 @@ public class TimeToleranceTests
 			.Because("without a customized default no tolerance applies");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToDayString_WhenToleranceIsNotSet_ShouldIgnoreADefaultBelowOneDay()
 	{
 		TimeTolerance sut = new();
@@ -65,7 +65,7 @@ public class TimeToleranceTests
 			.Because("a default below one day is truncated to zero days and must not read as ± 0 days");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToDayString_WhenToleranceIsNotSet_ShouldUseTheWholeDaysOfTheDefault()
 	{
 		TimeTolerance sut = new();
@@ -77,7 +77,7 @@ public class TimeToleranceTests
 			.Because("only the whole days of the default tolerance apply to a date");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToDayString_WhenToleranceIsOneDay_ShouldUseSingular()
 	{
 		TimeTolerance sut = new();
@@ -88,7 +88,7 @@ public class TimeToleranceTests
 		await That(result).IsEqualTo(" ± 1 day");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToString_WhenToleranceIsNotSet_ShouldBeEmpty()
 	{
 		TimeTolerance sut = new();
@@ -99,7 +99,7 @@ public class TimeToleranceTests
 			.Because("without a customized default no tolerance applies");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToString_WhenToleranceIsNotSet_ShouldUseTheDefault()
 	{
 		TimeTolerance sut = new();
@@ -111,7 +111,7 @@ public class TimeToleranceTests
 			.Because("the applied default tolerance is part of the expectation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToString_WhenToleranceIsSet_ShouldIgnoreTheDefault()
 	{
 		TimeTolerance sut = new();
@@ -124,7 +124,7 @@ public class TimeToleranceTests
 			.Because("an explicit tolerance replaces the default tolerance and is always named");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		TimeTolerance sut = new();
@@ -135,7 +135,7 @@ public class TimeToleranceTests
 			.WithMessage("*The tolerance must not be negative.*").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenToleranceIsSetTwice_ShouldThrowInvalidOperationException()
 	{
 		TimeTolerance sut = new();
@@ -148,7 +148,7 @@ public class TimeToleranceTests
 			.Because("the second tolerance would silently replace the first one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenToleranceIsSetWithACustomizedDefault_ShouldNotThrow()
 	{
 		TimeTolerance sut = new();
@@ -161,7 +161,7 @@ public class TimeToleranceTests
 		await That(sut.Tolerance).IsEqualTo(1.Seconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenToleranceIsZero_ShouldNotThrow()
 	{
 		TimeTolerance sut = new();

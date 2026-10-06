@@ -7,7 +7,7 @@ public sealed partial class ThatDateOnly
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMaximumIsNull_ShouldFail()
 			{
 				DateOnly subject = CurrentTime();
@@ -17,7 +17,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and <null>,
@@ -25,7 +25,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaximumIsSmallerThanMinimum_ShouldThrowArgumentOutOfRangeException()
 			{
 				DateOnly subject = CurrentTime();
@@ -38,7 +38,7 @@ public sealed partial class ThatDateOnly
 					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumAndMaximumAreEqual_ShouldFail()
 			{
 				DateOnly subject = CurrentTime();
@@ -46,7 +46,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsNotBetween(subject).And(subject);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(subject)} and {Formatter.Format(subject)},
@@ -55,7 +55,7 @@ public sealed partial class ThatDateOnly
 					.Because("a range with equal bounds is still a valid range");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumIsNull_ShouldFail()
 			{
 				DateOnly subject = CurrentTime();
@@ -65,7 +65,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between <null> and {Formatter.Format(maximum)},
@@ -73,7 +73,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndMaximumAreMaxValue_ShouldFail()
 			{
 				DateOnly subject = DateOnly.MaxValue;
@@ -83,7 +83,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
@@ -91,7 +91,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndMinimumAreMinValue_ShouldFail()
 			{
 				DateOnly subject = DateOnly.MinValue;
@@ -101,7 +101,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
@@ -109,7 +109,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsEarlierThanMinimum_ShouldSucceed()
 			{
 				DateOnly subject = EarlierTime();
@@ -122,7 +122,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsLaterThanMaximum_ShouldSucceed()
 			{
 				DateOnly subject = LaterTime();
@@ -135,7 +135,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNotBetweenMinimumAndMaximum_ShouldFail()
 			{
 				DateOnly subject = CurrentTime();
@@ -145,7 +145,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
@@ -153,7 +153,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsSameAsMaximum_ShouldFail()
 			{
 				DateOnly subject = CurrentTime();
@@ -163,7 +163,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
@@ -171,7 +171,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsSameAsMinimum_ShouldFail()
 			{
 				DateOnly subject = CurrentTime();
@@ -181,7 +181,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
@@ -192,7 +192,7 @@ public sealed partial class ThatDateOnly
 
 		public sealed class WithinTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMaximumIsSmallerThanMinimum_ShouldThrowArgumentOutOfRangeException()
 			{
 				DateOnly subject = CurrentTime();
@@ -207,7 +207,7 @@ public sealed partial class ThatDateOnly
 					.Because("a tolerance must not turn an inverted range into a satisfiable one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaximumValueIsOutsideTheTolerance_ShouldSucceed()
 			{
 				DateOnly subject = CurrentTime();
@@ -221,7 +221,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumValueIsOutsideTheTolerance_ShouldSucceed()
 			{
 				DateOnly subject = CurrentTime();
@@ -235,7 +235,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableMaximumValueIsOutsideTheTolerance_ShouldSucceed()
 			{
 				DateOnly subject = CurrentTime();
@@ -249,7 +249,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableMinimumValueIsOutsideTheTolerance_ShouldSucceed()
 			{
 				DateOnly subject = CurrentTime();
@@ -263,7 +263,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenToleranceIsNotWholeDays_ShouldThrowArgumentOutOfRangeException()
 			{
 				DateOnly subject = CurrentTime();
@@ -278,7 +278,7 @@ public sealed partial class ThatDateOnly
 					.Because("a date has no time of day, so the remainder is rejected as soon as it is specified instead of when the expectation is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueIsWithinTheMaximumTolerance_ShouldFail()
 			{
 				DateOnly subject = LaterTime(3);
@@ -289,7 +289,7 @@ public sealed partial class ThatDateOnly
 					=> await That(subject).IsNotBetween(minimum).And(maximum)
 						.Within(3.Days());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 3 days,
@@ -297,7 +297,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueIsWithinTheMinimumTolerance_ShouldFail()
 			{
 				DateOnly subject = EarlierTime(3);
@@ -308,7 +308,7 @@ public sealed partial class ThatDateOnly
 					=> await That(subject).IsNotBetween(minimum).And(maximum)
 						.Within(3.Days());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} ± 3 days,
@@ -316,7 +316,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenSubjectIsMaxValue_ShouldNotOverflow()
 			{
 				DateOnly subject = DateOnly.MaxValue;
@@ -330,7 +330,7 @@ public sealed partial class ThatDateOnly
 					.Because("a widening tolerance must not make the assertion throw at the type limits");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenSubjectIsMinValue_ShouldNotOverflow()
 			{
 				DateOnly subject = DateOnly.MinValue;
@@ -347,7 +347,7 @@ public sealed partial class ThatDateOnly
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsInsideTheRange_ShouldSucceed()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -358,7 +358,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsOutsideTheRange_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -366,7 +366,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotBetween(new DateOnly(2010, 11, 13)).And(new DateOnly(2010, 11, 14)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is between 2010-11-13 and 2010-11-14,

@@ -15,7 +15,7 @@ namespace aweXpect.Core.Tests.Core.EvaluationContext;
 
 public class EvaluationContextTests
 {
-	[Fact]
+	[Test]
 	public async Task CanStoreMultipleValueInParallel()
 	{
 		IEvaluationContext context = await GetSut();
@@ -29,7 +29,7 @@ public class EvaluationContextTests
 		await That(barResult).IsEqualTo("bar-value");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ReleaseMaterializations_ShouldAlsoReleaseTheSourcesOfTheCurrentAttempt()
 	{
 		Context context = new();
@@ -42,7 +42,7 @@ public class EvaluationContextTests
 		await That(source.DisposeCount).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ResolvePendingReasons_ShouldAlsoResolveTheReasonsOfTheCurrentAttempt()
 	{
 		Context context = new();
@@ -56,7 +56,7 @@ public class EvaluationContextTests
 			.Because("the failure message of the evaluation is created from the result of its last attempt");
 	}
 
-	[Fact]
+	[Test]
 	public async Task StartAttempt_ShouldKeepTheTimeSystem()
 	{
 		VirtualTimeSystem timeSystem = new();
@@ -71,7 +71,7 @@ public class EvaluationContextTests
 			.Because("a repeated check in another attempt measures and waits like the evaluation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task StartAttempt_ShouldReleaseTheMaterializedSourcesAndReturnAnEmptyContext()
 	{
 		Context context = new();
@@ -88,7 +88,7 @@ public class EvaluationContextTests
 			.Because("another attempt starts with an empty context");
 	}
 
-	[Fact]
+	[Test]
 	public async Task StartCheck_ShouldKeepTheTimeSystem()
 	{
 		VirtualTimeSystem timeSystem = new();
@@ -103,7 +103,7 @@ public class EvaluationContextTests
 			.Because("a repeated check within another check measures and waits like the evaluation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Store_AfterAnItemEvaluation_ShouldNotReceiveTheValuesOfTheItem()
 	{
 		Context context = new();
@@ -116,7 +116,7 @@ public class EvaluationContextTests
 			.Because("the values stored for an item are only visible while the item is evaluated");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Store_InAMemberOfWhich_ShouldNotReceiveTheValuesOfTheSubject()
 	{
 		Pair sut = new("a", "b");
@@ -132,7 +132,7 @@ public class EvaluationContextTests
 			.Because("the member is evaluated with its own stored values");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Store_InAMemberOfWhose_ShouldNotReceiveTheValuesOfTheSubject()
 	{
 		Pair sut = new("a", "b");
@@ -148,7 +148,7 @@ public class EvaluationContextTests
 			.Because("the member is evaluated with its own stored values");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Store_InItemEvaluations_ShouldNotShareTheValuesBetweenTheItems()
 	{
 		Context context = new();
@@ -163,7 +163,7 @@ public class EvaluationContextTests
 			.Because("the second item must not receive the value stored for the first one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TimeSystem_ShouldDefaultToTheRealTimeSystem()
 	{
 		Context context = new();
@@ -171,7 +171,7 @@ public class EvaluationContextTests
 		await That(context.TimeSystem).IsSameAs(RealTimeSystem.Instance);
 	}
 
-	[Fact]
+	[Test]
 	public async Task UseMaterializedEnumerable_InAnItemEvaluation_ShouldShareTheMaterializationOfTheEvaluation()
 	{
 		Context context = new();
@@ -190,7 +190,7 @@ public class EvaluationContextTests
 		await That(source.DisposeCount).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNotStoredPreviously_ShouldReturnFalse()
 	{
 		IEvaluationContext context = await GetSut();
@@ -200,7 +200,7 @@ public class EvaluationContextTests
 		await That(fooResult).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeDoesNotMatch_ShouldReturnFalse()
 	{
 		IEvaluationContext context = await GetSut();
@@ -212,7 +212,7 @@ public class EvaluationContextTests
 		await That(fooResult).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTypeMatches_ShouldReturnTrue()
 	{
 		IEvaluationContext context = await GetSut();

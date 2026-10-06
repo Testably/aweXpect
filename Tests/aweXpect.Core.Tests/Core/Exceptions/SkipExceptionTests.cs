@@ -2,8 +2,8 @@
 
 public sealed class SkipExceptionTests
 {
-	[Theory]
-	[AutoData]
+	[Test]
+	[AutoArguments]
 	public async Task Message_ShouldBeSet(string message)
 	{
 		SkipException subject = new(message);

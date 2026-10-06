@@ -10,7 +10,7 @@ public sealed partial class ThatDictionary
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				Dictionary<string, int> subject = new()
@@ -26,7 +26,7 @@ public sealed partial class ThatDictionary
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_WhenNegated_ShouldThrowArgumentNullException()
 			{
 				Dictionary<string, int> subject = new()
@@ -43,7 +43,7 @@ public sealed partial class ThatDictionary
 					.Because("a null key would otherwise let the negated expectation pass for every dictionary");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeyExists_ShouldSucceed()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
@@ -54,7 +54,7 @@ public sealed partial class ThatDictionary
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeyIsMissing_ShouldFail()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
@@ -62,7 +62,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).ContainsKey(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains key 0,
@@ -73,7 +73,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Dictionary<string, int>? subject = null;
@@ -81,7 +81,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).ContainsKey("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains key "foo",
@@ -92,7 +92,7 @@ public sealed partial class ThatDictionary
 
 		public sealed class WhoseValueTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAfterOr_AndTheLeftOperandIsMet_ShouldSucceed()
 			{
 				Dictionary<int, int> subject = new();
@@ -103,7 +103,7 @@ public sealed partial class ThatDictionary
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedAfterOr_AndTheLeftOperandIsMet_ShouldFail()
 			{
 				Dictionary<int, int> subject = new();
@@ -112,7 +112,7 @@ public sealed partial class ThatDictionary
 					=> await That(subject)
 						.DoesNotComplyWith(x => x.IsEmpty().Or.ContainsKey(1).WhoseValue.IsEqualTo(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not empty and does not contain key 1 whose value is equal to 2,
@@ -120,7 +120,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeyExists_ButValueDoesNotMatch_ShouldFail()
 			{
 				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -128,7 +128,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).ContainsKey(2).WhoseValue.IsEqualTo("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains key 2 whose value is equal to "foo",
@@ -140,7 +140,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeyExists_ShouldSucceed()
 			{
 				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -151,7 +151,7 @@ public sealed partial class ThatDictionary
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeyExists_WithNestedWhose_ShouldKeepValueConnector()
 			{
 				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -160,7 +160,7 @@ public sealed partial class ThatDictionary
 					=> await That(subject).ContainsKey(2).WhoseValue
 						.Whose(x => x?.Length, l => l.Whose(v => v.ToString(), s => s.IsEqualTo("4")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains key 2 whose value has Length whose ToString() is equal to "4",
@@ -173,7 +173,7 @@ public sealed partial class ThatDictionary
 					.Because("the member introduces its own subject again, so the nested member reverts to \"whose\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeyExists_WithWhose_AndValueExpectationFollows_ShouldNameTheValue()
 			{
 				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -182,7 +182,7 @@ public sealed partial class ThatDictionary
 					=> await That(subject).ContainsKey(2).WhoseValue
 						.Whose(x => x?.Length, l => l.IsEqualTo(3)).And.IsEqualTo("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains key 2 whose value has Length that is equal to 3 and is equal to "foo",
@@ -195,7 +195,7 @@ public sealed partial class ThatDictionary
 					.Because("the expectation after the member is on the value again");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeyExists_WithWhose_ShouldKeepValueConnector()
 			{
 				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -203,7 +203,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).ContainsKey(2).WhoseValue.Whose(x => x?.Length, l => l.IsEqualTo(4));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains key 2 whose value has Length that is equal to 4,
@@ -212,7 +212,7 @@ public sealed partial class ThatDictionary
 					.Because("the value connector already introduced the subject, so the member must not repeat \"whose\"");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeyIsMissing_ShouldFail()
 			{
 				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -220,7 +220,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).ContainsKey(0).WhoseValue.IsEqualTo("bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains key 0 whose value is equal to "bar",
@@ -235,7 +235,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Dictionary<string, string>? subject = null;
@@ -243,7 +243,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).ContainsKey("foo").WhoseValue.IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains key "foo" whose value is empty,
@@ -251,7 +251,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMultipleFailures_ShouldIncludeCollectionOnlyOnce()
 			{
 				IDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -259,7 +259,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).ContainsKey(4).And.ContainsKey(5);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains key 4 and contains key 5,
@@ -277,7 +277,7 @@ public sealed partial class ThatDictionary
 
 		public sealed class OverloadTests
 		{
-			[Fact]
+			[Test]
 			public async Task ForASortedDictionary_ShouldBindToTheDictionaryOverload()
 			{
 				SortedDictionary<string, int> subject = new() { { "a", 1 }, };
@@ -293,7 +293,7 @@ public sealed partial class ThatDictionary
 
 		public sealed class ThrowingSubjectTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheCountThrows_ShouldOmitTheDictionaryContext()
 			{
 				InvalidOperationException exception = new("count failed");
@@ -303,7 +303,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).ContainsKey("x");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains key "x",
@@ -311,7 +311,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheKeyComparerThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("comparer failed");
@@ -322,7 +322,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).ContainsKey("a");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains key "a",
@@ -335,7 +335,7 @@ public sealed partial class ThatDictionary
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheLookupThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("lookup failed");
@@ -345,7 +345,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).ContainsKey("a");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains key "a",

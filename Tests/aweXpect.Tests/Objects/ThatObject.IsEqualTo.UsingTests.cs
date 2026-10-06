@@ -8,11 +8,11 @@ public sealed partial class ThatObject
 	{
 		public sealed class UsingTests
 		{
-			[Theory]
-			[InlineData(false, false)]
-			[InlineData(false, true)]
-			[InlineData(true, false)]
-			[InlineData(true, true)]
+			[Test]
+			[Arguments(false, false)]
+			[Arguments(false, true)]
+			[Arguments(true, false)]
+			[Arguments(true, true)]
 			public async Task WhenCombinedWithEquivalent_ShouldThrowInvalidOperationException(bool comparerFirst,
 				bool negated)
 			{
@@ -47,7 +47,7 @@ public sealed partial class ThatObject
 					.Because("the second option would silently replace the comparison of the first one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparerConsidersDifferent_ShouldFail()
 			{
 				OuterClass subject = new()
@@ -59,7 +59,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).Using(new MyComparer(false));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to ThatObject.OuterClass {
@@ -73,7 +73,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparerConsidersEqual_ShouldSucceed()
 			{
 				OuterClass subject = new()
@@ -91,9 +91,9 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(false)]
-			[InlineData(true)]
+			[Test]
+			[Arguments(false)]
+			[Arguments(true)]
 			public async Task WhenComparerIsNull_ShouldThrowArgumentNullException(bool negated)
 			{
 				OuterClass subject = new();
@@ -115,9 +115,9 @@ public sealed partial class ThatObject
 					.WithMessage("The 'comparer' cannot be null.").AsPrefix();
 			}
 
-			[Theory]
-			[InlineData(false)]
-			[InlineData(true)]
+			[Test]
+			[Arguments(false)]
+			[Arguments(true)]
 			public async Task WhenComparerIsSpecifiedTwice_ShouldThrowInvalidOperationException(bool negated)
 			{
 				OuterClass subject = new();
@@ -141,7 +141,7 @@ public sealed partial class ThatObject
 					.Because("the second comparer would silently replace the first one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparerThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("comparer failed");
@@ -153,7 +153,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEqualTo(subject).Using(new ThrowingComparer(exception));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to ThatObject.OuterClass {

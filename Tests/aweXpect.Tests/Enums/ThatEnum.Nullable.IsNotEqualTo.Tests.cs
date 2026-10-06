@@ -8,7 +8,7 @@ public sealed partial class ThatEnum
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndUnexpectedAreNull_ShouldFail()
 				{
 					MyColors? subject = null;
@@ -17,7 +17,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to <null>,
@@ -25,13 +25,13 @@ public sealed partial class ThatEnum
 						             """);
 				}
 
-				[Theory]
-				[InlineData(MyColors.Blue, MyColors.Green)]
-				[InlineData(MyColors.Blue, null)]
-				[InlineData(MyColors.Green, MyColors.Blue)]
-				[InlineData(MyColors.Green, null)]
-				[InlineData(null, MyColors.Blue)]
-				[InlineData(null, MyColors.Green)]
+				[Test]
+				[Arguments(MyColors.Blue, MyColors.Green)]
+				[Arguments(MyColors.Blue, null)]
+				[Arguments(MyColors.Green, MyColors.Blue)]
+				[Arguments(MyColors.Green, null)]
+				[Arguments(null, MyColors.Blue)]
+				[Arguments(null, MyColors.Green)]
 				public async Task WhenSubjectIsDifferent_ShouldSucceed(MyColors? subject,
 					MyColors? unexpected)
 				{
@@ -41,10 +41,10 @@ public sealed partial class ThatEnum
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(MyColors.Blue)]
-				[InlineData(MyColors.Green)]
-				[InlineData(null)]
+				[Test]
+				[Arguments(MyColors.Blue)]
+				[Arguments(MyColors.Green)]
+				[Arguments(null)]
 				public async Task WhenSubjectIsTheSame_ShouldFail(MyColors? subject)
 				{
 					MyColors? unexpected = subject;
@@ -52,7 +52,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not equal to {Formatter.Format(unexpected)},
@@ -60,7 +60,7 @@ public sealed partial class ThatEnum
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenUnexpectedIsNull_ShouldSucceed()
 				{
 					MyColors? subject = MyColors.Yellow;
@@ -74,8 +74,8 @@ public sealed partial class ThatEnum
 
 			public sealed class LongTests
 			{
-				[Theory]
-				[InlineData(EnumLong.Int64Max, EnumLong.Int64LessOne)]
+				[Test]
+				[Arguments(EnumLong.Int64Max, EnumLong.Int64LessOne)]
 				public async Task WhenSubjectIsDifferent_ShouldSucceed(EnumLong? subject,
 					EnumLong? unexpected)
 				{
@@ -85,9 +85,9 @@ public sealed partial class ThatEnum
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(EnumLong.Int64Max)]
-				[InlineData(EnumLong.Int64LessOne)]
+				[Test]
+				[Arguments(EnumLong.Int64Max)]
+				[Arguments(EnumLong.Int64LessOne)]
 				public async Task WhenSubjectTheSame_ShouldFail(EnumLong? subject)
 				{
 					EnumLong? unexpected = subject;
@@ -95,7 +95,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not equal to {Formatter.Format(unexpected)},
@@ -106,9 +106,9 @@ public sealed partial class ThatEnum
 
 			public sealed class UlongTests
 			{
-				[Theory]
-				[InlineData(EnumULong.UInt64Max, EnumULong.UInt64LessOne)]
-				[InlineData(EnumULong.UInt64Max, EnumULong.Int64Max)]
+				[Test]
+				[Arguments(EnumULong.UInt64Max, EnumULong.UInt64LessOne)]
+				[Arguments(EnumULong.UInt64Max, EnumULong.Int64Max)]
 				public async Task WhenSubjectIsDifferent_ShouldSucceed(EnumULong? subject,
 					EnumULong? unexpected)
 				{
@@ -118,10 +118,10 @@ public sealed partial class ThatEnum
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(EnumULong.Int64Max)]
-				[InlineData(EnumULong.UInt64LessOne)]
-				[InlineData(EnumULong.UInt64Max)]
+				[Test]
+				[Arguments(EnumULong.Int64Max)]
+				[Arguments(EnumULong.UInt64LessOne)]
+				[Arguments(EnumULong.UInt64Max)]
 				public async Task WhenSubjectTheSame_ShouldFail(EnumULong? subject)
 				{
 					EnumULong? unexpected = subject;
@@ -129,7 +129,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not equal to {Formatter.Format(unexpected)},

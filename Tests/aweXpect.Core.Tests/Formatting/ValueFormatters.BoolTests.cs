@@ -6,9 +6,9 @@ public partial class ValueFormatters
 {
 	public sealed class BoolTests
 	{
-		[Theory]
-		[InlineData(true, "True")]
-		[InlineData(false, "False")]
+		[Test]
+		[Arguments(true, "True")]
+		[Arguments(false, "False")]
 		public async Task Booleans_ShouldHaveCapitalizedFirstLetter(bool value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -22,9 +22,9 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(true, "bool True")]
-		[InlineData(false, "bool False")]
+		[Test]
+		[Arguments(true, "bool True")]
+		[Arguments(false, "bool False")]
 		public async Task Booleans_WithType_ShouldHaveCapitalizedFirstLetter(bool value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -38,10 +38,10 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(true, "True")]
-		[InlineData(false, "False")]
-		[InlineData(null, "<null>")]
+		[Test]
+		[Arguments(true, "True")]
+		[Arguments(false, "False")]
+		[Arguments(null, "<null>")]
 		public async Task NullableBooleans_ShouldHaveCapitalizedFirstLetter(bool? value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -55,10 +55,10 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(true, "bool True")]
-		[InlineData(false, "bool False")]
-		[InlineData(null, "<null>")]
+		[Test]
+		[Arguments(true, "bool True")]
+		[Arguments(false, "bool False")]
+		[Arguments(null, "<null>")]
 		public async Task NullableBooleans_WithType_ShouldHaveCapitalizedFirstLetter(bool? value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -72,7 +72,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			bool? value = null;

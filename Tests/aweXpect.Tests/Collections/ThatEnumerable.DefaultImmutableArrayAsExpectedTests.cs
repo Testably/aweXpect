@@ -11,7 +11,7 @@ public sealed partial class ThatEnumerable
 	public sealed class DefaultImmutableArrayAsExpectedTests
 	{
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task AsyncEnumerable_Contains_ShouldThrowArgumentNullException()
 		{
 			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1,]);
@@ -25,7 +25,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsyncEnumerable_EndsWith_ShouldThrowArgumentNullException()
 		{
 			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1,]);
@@ -39,7 +39,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsyncEnumerable_IsContainedIn_ShouldThrowArgumentNullException()
 		{
 			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1,]);
@@ -53,7 +53,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsyncEnumerable_IsEqualTo_ShouldFail()
 		{
 			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1,]);
@@ -62,7 +62,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -71,7 +71,7 @@ public sealed partial class ThatEnumerable
 				.Because("a default ImmutableArray is not initialized, like a null collection");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsyncEnumerable_IsNotContainedIn_ShouldThrowArgumentNullException()
 		{
 			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1,]);
@@ -85,7 +85,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsyncEnumerable_StartsWith_ShouldThrowArgumentNullException()
 		{
 			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1,]);
@@ -100,7 +100,7 @@ public sealed partial class ThatEnumerable
 		}
 #endif
 
-		[Fact]
+		[Test]
 		public async Task Contains_ShouldThrowArgumentNullException()
 		{
 			int[] subject = [1,];
@@ -114,7 +114,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ContainsKey_WhenTheKeyIsADefaultImmutableArray_ShouldSucceed()
 		{
 			Dictionary<ImmutableArray<int>, int> subject = new() { [default] = 1, };
@@ -127,7 +127,7 @@ public sealed partial class ThatEnumerable
 				.Because("a default ImmutableArray is only a null collection, not a null key");
 		}
 
-		[Fact]
+		[Test]
 		public async Task ContainsKeys_ShouldThrowArgumentNullException()
 		{
 			Dictionary<int, int> subject = new() { [1] = 1, };
@@ -141,7 +141,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ContainsPredicates_ShouldThrowArgumentNullException()
 		{
 			int[] subject = [1,];
@@ -155,7 +155,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DictionaryIsEqualTo_ShouldFail()
 		{
 			Dictionary<int, int> subject = new() { [1] = 1, };
@@ -164,7 +164,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to dictionary expected,
@@ -176,7 +176,7 @@ public sealed partial class ThatEnumerable
 				.Because("a default ImmutableArray is not initialized, like a null collection");
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotContain_ShouldThrowArgumentNullException()
 		{
 			int[] subject = [1,];
@@ -190,7 +190,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotEndWith_ShouldThrowArgumentNullException()
 		{
 			int[] subject = [1,];
@@ -204,7 +204,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotStartWith_ShouldThrowArgumentNullException()
 		{
 			int[] subject = [1,];
@@ -218,7 +218,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task EndsWith_ShouldThrowArgumentNullException()
 		{
 			int[] subject = [1,];
@@ -233,7 +233,7 @@ public sealed partial class ThatEnumerable
 		}
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task ImmutableArray_Contains_ShouldThrowArgumentNullException()
 		{
 			ImmutableArray<int> subject = [1,];
@@ -247,7 +247,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ImmutableArray_EndsWith_ShouldThrowArgumentNullException()
 		{
 			ImmutableArray<int> subject = [1,];
@@ -261,7 +261,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ImmutableArray_IsContainedIn_ShouldThrowArgumentNullException()
 		{
 			ImmutableArray<int> subject = [1,];
@@ -275,7 +275,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ImmutableArray_IsEqualTo_ShouldFail()
 		{
 			ImmutableArray<int> subject = [1,];
@@ -284,7 +284,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -296,7 +296,7 @@ public sealed partial class ThatEnumerable
 				.Because("a default ImmutableArray is not initialized, like a null collection");
 		}
 
-		[Fact]
+		[Test]
 		public async Task ImmutableArray_StartsWith_ShouldThrowArgumentNullException()
 		{
 			ImmutableArray<int> subject = [1,];
@@ -311,7 +311,7 @@ public sealed partial class ThatEnumerable
 		}
 #endif
 
-		[Fact]
+		[Test]
 		public async Task IsContainedIn_ShouldThrowArgumentNullException()
 		{
 			int[] subject = [1,];
@@ -325,7 +325,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_InAnyOrder_ShouldFail()
 		{
 			int[] subject = [1,];
@@ -334,7 +334,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in any order,
@@ -346,7 +346,7 @@ public sealed partial class ThatEnumerable
 				.Because("a default ImmutableArray is not initialized, like a null collection");
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_ShouldFail()
 		{
 			int[] subject = [1,];
@@ -355,7 +355,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -367,7 +367,7 @@ public sealed partial class ThatEnumerable
 				.Because("a default ImmutableArray is not initialized, like a null collection");
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_WhenSubjectIsNull_ShouldSucceed()
 		{
 			int[]? subject = null;
@@ -380,7 +380,7 @@ public sealed partial class ThatEnumerable
 				.Because("a default ImmutableArray is equal to null, like a null collection");
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualToExpectations_ShouldFail()
 		{
 			int[] subject = [1,];
@@ -389,7 +389,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -401,7 +401,7 @@ public sealed partial class ThatEnumerable
 				.Because("a default ImmutableArray is not initialized, like a null collection");
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualToPredicates_ShouldFail()
 		{
 			int[] subject = [1,];
@@ -410,7 +410,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -422,7 +422,7 @@ public sealed partial class ThatEnumerable
 				.Because("a default ImmutableArray is not initialized, like a null collection");
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsNotContainedIn_ShouldThrowArgumentNullException()
 		{
 			int[] subject = [1,];
@@ -436,7 +436,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsNotEqualTo_ShouldSucceed()
 		{
 			int[] subject = [1,];
@@ -449,7 +449,7 @@ public sealed partial class ThatEnumerable
 				.Because("a collection is not equal to a default ImmutableArray, like to a null collection");
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsNotEqualTo_WhenSubjectIsNull_ShouldFail()
 		{
 			int[]? subject = null;
@@ -458,7 +458,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsNotEqualTo(unexpected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is not equal to collection unexpected in order,
@@ -467,7 +467,7 @@ public sealed partial class ThatEnumerable
 				.Because("a default ImmutableArray is equal to null, like a null collection");
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsNotOneOf_ShouldThrowArgumentNullException()
 		{
 			int subject = 1;
@@ -481,7 +481,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsOneOf_ShouldThrowArgumentNullException()
 		{
 			int subject = 1;
@@ -495,7 +495,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task StartsWith_ShouldThrowArgumentNullException()
 		{
 			int[] subject = [1,];
@@ -509,7 +509,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Untyped_Contains_ShouldThrowArgumentNullException()
 		{
 			IEnumerable subject = new[] { 1, };
@@ -523,7 +523,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Untyped_EndsWith_ShouldThrowArgumentNullException()
 		{
 			IEnumerable subject = new[] { 1, };
@@ -537,7 +537,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Untyped_IsContainedIn_ShouldThrowArgumentNullException()
 		{
 			IEnumerable subject = new[] { 1, };
@@ -551,7 +551,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Untyped_IsEqualTo_ShouldFail()
 		{
 			IEnumerable subject = new[] { 1, };
@@ -560,7 +560,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -572,7 +572,7 @@ public sealed partial class ThatEnumerable
 				.Because("a default ImmutableArray is not initialized, like a null collection");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Untyped_StartsWith_ShouldThrowArgumentNullException()
 		{
 			IEnumerable subject = new[] { 1, };

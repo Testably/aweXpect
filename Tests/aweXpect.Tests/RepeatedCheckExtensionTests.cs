@@ -6,7 +6,7 @@ namespace aweXpect.Tests;
 
 public sealed class RepeatedCheckExtensionTests
 {
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WhenCallerCancelsWhileRetrying_ShouldBeInconclusive()
 	{
 		MyRepeatedCheckExtensions.Probe probe = new(() => 0);
@@ -16,7 +16,7 @@ public sealed class RepeatedCheckExtensionTests
 		async Task Act()
 			=> await That(probe).ReturnsPositive().Within(30.Seconds()).WithCancellation(cts.Token);
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected that probe
 			             returns a positive value within 0:30,
@@ -25,7 +25,7 @@ public sealed class RepeatedCheckExtensionTests
 			.Because("an extension reports the undecided outcome of CheckRepeatedly as inconclusive");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WhenInvertedAndProbeBecomesFalseWithinTheTimeout_ShouldSucceed()
 	{
 		int count = 0;
@@ -39,7 +39,7 @@ public sealed class RepeatedCheckExtensionTests
 			.Because("a negated check is repeated until the condition is no longer met");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WhenProbeBecomesTrueWithinTheTimeout_ShouldSucceed()
 	{
 		int count = 0;
@@ -53,7 +53,7 @@ public sealed class RepeatedCheckExtensionTests
 			.Because("the check is repeated until it succeeds and not after");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WhenProbeStaysFalse_ShouldCheckAgainAtTheTimeoutAndFail()
 	{
 		int count = 0;
@@ -66,7 +66,7 @@ public sealed class RepeatedCheckExtensionTests
 		async Task Act()
 			=> await That(probe).ReturnsPositive().Within(500.Milliseconds()).CheckEvery(1.Hours());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that probe
 			             returns a positive value within 0:00.500,
@@ -76,7 +76,7 @@ public sealed class RepeatedCheckExtensionTests
 			.Because("the wait is shortened to the timeout, so the last check is made at the timeout");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WhenProbeThrowsAtFirst_ShouldKeepChecking()
 	{
 		int count = 0;
@@ -90,7 +90,7 @@ public sealed class RepeatedCheckExtensionTests
 		await That(count).IsEqualTo(3);
 	}
 
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WhenProbeThrowsUntilTheTimeout_ShouldFailWithTheException()
 	{
 		int count = 0;
@@ -103,7 +103,7 @@ public sealed class RepeatedCheckExtensionTests
 		async Task Act()
 			=> await That(probe).ReturnsPositive().Within(500.Milliseconds()).CheckEvery(10.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that probe
 			             returns a positive value within 0:00.500,
@@ -114,7 +114,7 @@ public sealed class RepeatedCheckExtensionTests
 			.Because("an exception of the code of the caller must not end the repeated check early");
 	}
 
-	[Fact]
+	[Test]
 	public async Task
 		CheckRepeatedly_WhenTestCancellationTimeoutIsShorterAndWithTimeoutIsLonger_ShouldFailWithTheTestCancellationTimeout()
 	{
@@ -126,10 +126,10 @@ public sealed class RepeatedCheckExtensionTests
 			async Task Act()
 				=> await That(probe).ReturnsPositive().Within(2.Seconds()).WithTimeout(10.Seconds());
 
-			exception = await Record.ExceptionAsync(Act);
+			exception = await Catch.ExceptionAsync(Act);
 		}
 
-		await That(exception).IsExactly<XunitException>().And
+		await That(exception).IsExactly<FailException>().And
 			.HasMessage("""
 			            Expected that probe
 			            returns a positive value within 0:02,
@@ -139,7 +139,7 @@ public sealed class RepeatedCheckExtensionTests
 			.Because("the effective timeout is the tighter of WithTimeout and TestCancellation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WithoutWithin_ShouldCheckOnceAndFail()
 	{
 		int count = 0;
@@ -148,7 +148,7 @@ public sealed class RepeatedCheckExtensionTests
 		async Task Act()
 			=> await That(probe).ReturnsPositive();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that probe
 			             returns a positive value,
@@ -158,7 +158,7 @@ public sealed class RepeatedCheckExtensionTests
 			.Because("without a timeout the check is not repeated");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsRepeated_WhenWithinIsNotSpecified_ShouldBeFalse()
 	{
 		RepeatedCheckOptions options = new();
@@ -166,10 +166,10 @@ public sealed class RepeatedCheckExtensionTests
 		await That(options.IsRepeated).IsFalse();
 	}
 
-	[Theory]
-	[InlineData(0, false)]
-	[InlineData(1, true)]
-	[InlineData(-1, true)]
+	[Test]
+	[Arguments(0, false)]
+	[Arguments(1, true)]
+	[Arguments(-1, true)]
 	public async Task IsRepeated_WhenWithinIsSpecified_ShouldBeTrueForAPositiveOrInfiniteTimeout(
 		int timeoutMilliseconds, bool expected)
 	{

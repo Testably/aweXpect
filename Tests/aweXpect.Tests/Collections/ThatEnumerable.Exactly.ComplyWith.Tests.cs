@@ -6,7 +6,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class ComplyWithTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAnEarlierAttemptStoppedAtAnItem_ShouldOnlyCountTheItemsOfTheLastAttempt()
 			{
 				int calls = 0;
@@ -21,7 +21,7 @@ public sealed partial class ThatEnumerable
 					.Because("the items that the first attempt recorded before it stopped do not count for the second one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExactlyOneItemMatches_ShouldSucceed()
 			{
 				int[] subject = [1, 2, 3, 4, 5,];
@@ -32,7 +32,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMoreItemsMatchThanExpected_ShouldFail()
 			{
 				int[] subject = [1, 2, 3, 2, 5,];
@@ -40,7 +40,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Exactly(1).ComplyWith(it => it.IsEqualTo(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 2 for exactly one item,
@@ -51,7 +51,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoItemsMatch_ShouldFail()
 			{
 				int[] subject = [1, 2, 3, 4, 5,];
@@ -59,7 +59,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Exactly(1).ComplyWith(it => it.IsEqualTo(99));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 99 for exactly one item,
@@ -70,7 +70,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRichExpectationMatchesExactCount_ShouldSucceed()
 			{
 				int[] subject = [5, 10, 15, 20, 25, 30, 35,];
@@ -82,7 +82,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				int[]? subject = null;
@@ -90,7 +90,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Exactly(1).ComplyWith(it => it.IsEqualTo(3));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 3 for exactly one item,
@@ -101,7 +101,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class NegatedComplyWithTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExactlyOneItemMatches_ShouldFail()
 			{
 				int[] subject = [1, 2, 3, 4, 5,];
@@ -110,7 +110,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.Exactly(1).ComplyWith(x => x.IsEqualTo(3)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 3 for not exactly one item,
@@ -121,7 +121,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExactlyTheExpectedNumberComplies_ShouldFail()
 			{
 				int[] subject = [1, 2, 3, 4, 5,];
@@ -130,7 +130,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.Exactly(3).ComplyWith(x => x.IsGreaterThan(2)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 2 for not exactly 3 items,

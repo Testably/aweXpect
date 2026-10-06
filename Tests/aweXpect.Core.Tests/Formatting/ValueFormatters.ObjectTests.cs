@@ -11,7 +11,7 @@ public partial class ValueFormatters
 {
 	public sealed class ObjectTests
 	{
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenMemberGetterThrows_ShouldEscapeLineBreaksInTheMessage()
 		{
 			object subject = new ClassWithExceptionProperty(new InvalidOperationException("getter\nfailed"));
@@ -19,7 +19,7 @@ public partial class ValueFormatters
 			async Task Act()
 				=> await That(subject).IsNull();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is null,
@@ -30,7 +30,7 @@ public partial class ValueFormatters
 				.Because("the placeholder must stay on the line of the member");
 		}
 
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenMemberGetterThrows_ShouldRenderAPlaceholder()
 		{
 			object subject = new ClassWithExceptionProperty(new InvalidOperationException("getter failed"));
@@ -38,7 +38,7 @@ public partial class ValueFormatters
 			async Task Act()
 				=> await That(subject).IsNull();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is null,
@@ -48,7 +48,7 @@ public partial class ValueFormatters
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenMemberToStringThrows_ShouldRenderAPlaceholderForTheMember()
 		{
 			object subject = new ClassWithThrowingToStringMember(
@@ -57,7 +57,7 @@ public partial class ValueFormatters
 			async Task Act()
 				=> await That(subject).IsNull();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is null,
@@ -68,7 +68,7 @@ public partial class ValueFormatters
 				.Because("the getter of the member succeeded, only formatting its value failed");
 		}
 
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenObjectContainsItselfThroughACollection_ShouldDetectTheRecursion()
 		{
 			Node subject = new();
@@ -77,7 +77,7 @@ public partial class ValueFormatters
 			async Task Act()
 				=> await That(subject).IsNull();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is null,
@@ -89,7 +89,7 @@ public partial class ValueFormatters
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenObjectHasACollectionMember_ShouldIndentTheItemsBelowTheMember()
 		{
 			ClassWithCollectionMember subject = new()
@@ -101,7 +101,7 @@ public partial class ValueFormatters
 			async Task Act()
 				=> await That(subject).IsNull();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is null,
@@ -115,7 +115,7 @@ public partial class ValueFormatters
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenToStringThrows_ShouldEscapeLineBreaksInTheMessage()
 		{
 			object subject = new ClassWithThrowingToString(new InvalidOperationException("ToString\nfailed"));
@@ -123,7 +123,7 @@ public partial class ValueFormatters
 			async Task Act()
 				=> await That(subject).IsNull();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is null,
@@ -131,7 +131,7 @@ public partial class ValueFormatters
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenToStringThrows_ShouldRenderAPlaceholder()
 		{
 			object subject = new ClassWithThrowingToString(new InvalidOperationException("ToString failed"));
@@ -139,7 +139,7 @@ public partial class ValueFormatters
 			async Task Act()
 				=> await That(subject).IsNull();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is null,
@@ -147,7 +147,7 @@ public partial class ValueFormatters
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldDisplayNestedObjects()
 		{
 			Dummy value = new()
@@ -170,7 +170,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldDisplayRecursiveObjects()
 		{
 			RecursiveDummy value = new()
@@ -190,7 +190,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportIndentation()
 		{
 			Dummy value = new()
@@ -218,7 +218,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldUseMultipleLinesPerDefault()
 		{
 			Dummy value = new()
@@ -246,8 +246,8 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[AutoData]
+		[Test]
+		[AutoArguments]
 		public async Task ShouldUseToStringWhenImplemented_Default(string[] values)
 		{
 			string value = string.Join(Environment.NewLine, values);
@@ -262,7 +262,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldUseToStringWhenImplemented_WithIndentation_ShouldIndentTheFollowingLinesLikeMembers()
 		{
 			ClassWithToString subject = new($"line1{Environment.NewLine}line2");
@@ -276,8 +276,8 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[AutoData]
+		[Test]
+		[AutoArguments]
 		public async Task ShouldUseToStringWhenImplemented_WithSingleLine(string value)
 		{
 			ClassWithToString subject = new(value);
@@ -291,7 +291,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldUseToStringWhenImplemented_WithSingleLine_ShouldEscapeLineBreaks()
 		{
 			ClassWithToString[] subject = [new("line1\r\nline2\0"),];
@@ -306,7 +306,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAnonymousObject_ShouldFormatMembersWithTheirFormatters()
 		{
 			object value = new
@@ -327,7 +327,7 @@ public partial class ValueFormatters
 		}
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task WhenAsyncIterator_ShouldDisplayTheAsyncEnumerableType()
 		{
 			static async IAsyncEnumerable<int> Numbers()
@@ -348,7 +348,7 @@ public partial class ValueFormatters
 		}
 #endif
 
-		[Fact]
+		[Test]
 		public async Task WhenClassContainsField_ShouldDisplayFieldValue()
 		{
 			object value = new ClassWithField
@@ -365,7 +365,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenClassHasIndexer_ShouldNotDisplayIt()
 		{
 			object value = new ClassWithIndexer
@@ -383,7 +383,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenClassHasPropertyWithNonPublicGetter_ShouldNotDisplayIt()
 		{
 			object value = new ClassWithNonPublicGetter
@@ -402,7 +402,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenClassHasStaticMembers_ShouldDisplayOnlyInstanceMembers()
 		{
 			object value = new ClassWithStaticMembers
@@ -420,7 +420,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenClassHasWriteOnlyProperty_ShouldNotDisplayIt()
 		{
 			object value = new ClassWithWriteOnlyProperty
@@ -439,7 +439,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenClassHidesAField_ShouldDisplayOnlyTheMostDerivedOne()
 		{
 			object value = new ClassHidingField();
@@ -454,7 +454,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenClassHidesAPropertyByAReadableOne_ShouldDisplayItOnce()
 		{
 			object value = new ClassHidingPropertyByReadableOne();
@@ -469,7 +469,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenClassHidesAPropertyByOneWithoutPublicGetter_ShouldNotDisplayTheBaseProperty()
 		{
 			object value = new ClassHidingPropertyByOneWithoutPublicGetter
@@ -487,7 +487,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenClassIsEmpty_ShouldDisplayClassName()
 		{
 			object value = new EmptyClass();
@@ -501,7 +501,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenClassMemberThrowsException_ShouldDisplayException()
 		{
 			Exception exception = new("foo");
@@ -517,7 +517,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenClassOverridesOnlyTheSetter_ShouldDisplayTheInheritedGetter()
 		{
 			object value = new ClassOverridingOnlyTheSetter
@@ -535,7 +535,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenFormattable_ShouldUseTheInvariantCulture()
 		{
 			using CultureOverride _ = new("de-DE");
@@ -550,7 +550,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo("1.5");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenGraphIsDeeperThanTheMaximumDepth_ShouldLeaveOutTheMembersOfTheDeepestObject()
 		{
 			LinkedNode value = LinkedNode.Chain(1000);
@@ -568,7 +568,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenGraphSharesNodesOnEveryLevel_ShouldStopAfterTheMaximumNumberOfWrittenObjects()
 		{
 			SharingNode value = new();
@@ -591,7 +591,7 @@ public partial class ValueFormatters
 				=> (text.Length - text.Replace(part, "").Length) / part.Length;
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenMemberIsAStringWithLineBreaks_ShouldEscapeItLikeACollectionItem()
 		{
 			InnerDummy value = new()
@@ -613,7 +613,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			object? value = null;
@@ -628,7 +628,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenObject_ShouldDisplayHashCode()
 		{
 			object value = new();
@@ -643,7 +643,7 @@ public partial class ValueFormatters
 		}
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task WhenRecordHasOwnRendering_ShouldUseIt()
 		{
 			string toStringResult = Formatter.Format((object)new RecordWithToString(1.5));
@@ -657,7 +657,7 @@ public partial class ValueFormatters
 #endif
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task WhenRecordIsCompilerGenerated_ShouldFormatMembersWithTheirFormatters()
 		{
 			using CultureOverride _ = new("de-DE");
@@ -675,7 +675,7 @@ public partial class ValueFormatters
 #endif
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task WhenRecordStructIsCompilerGenerated_ShouldFormatMembersWithTheirFormatters()
 		{
 			using CultureOverride _ = new("de-DE");
@@ -689,7 +689,7 @@ public partial class ValueFormatters
 		}
 #endif
 
-		[Fact]
+		[Test]
 		public async Task WhenRegistered_ShouldDisplayOnlyTheRegisteredMembers()
 		{
 			TypeMetadataRegistry.RegisterProperty<RegisteredDummy, int>(nameof(RegisteredDummy.Registered),
@@ -710,7 +710,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenStructHasStaticPropertyOfItsOwnType_ShouldNotFollowIt()
 		{
 			object value = new StructWithStaticPropertyOfItsOwnType
@@ -728,7 +728,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTuple_ShouldFormatItemsPositionally()
 		{
 			using CultureOverride _ = new("de-DE");
@@ -753,7 +753,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo("(1.5, \"a\")");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTupleIsNestedDeeperThanTheMaximumDepth_ShouldLeaveOutTheItemsOfTheDeepestTuple()
 		{
 			object value = 1;
@@ -770,7 +770,7 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTwoDeepGraphsAreSiblings_ShouldLeaveOutTheMembersOfBothAtTheSameDepth()
 		{
 			LinkedNode[] value = [LinkedNode.Chain(30), LinkedNode.Chain(30),];
@@ -785,7 +785,7 @@ public partial class ValueFormatters
 				.Because("the collection counts as one level, and the first chain must not use up the depth of the second");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTwoMembersAreEqualButNotTheSame_ShouldFormatBoth()
 		{
 			object value = new
@@ -810,7 +810,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTwoMembersAreTheSameInstance_ShouldFormatBoth()
 		{
 			InnerDummy inner = new()
@@ -834,7 +834,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithType_ShouldDisplayClassNameOnlyOnce()
 		{
 			object value = new EmptyClass();
@@ -848,7 +848,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithType_WhenToStringIsImplemented_ShouldIncludeTheType()
 		{
 			object value = new ClassWithToString("foo");
@@ -863,7 +863,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithType_WhenTuple_ShouldIncludeTheType()
 		{
 			object value = (1, "a");

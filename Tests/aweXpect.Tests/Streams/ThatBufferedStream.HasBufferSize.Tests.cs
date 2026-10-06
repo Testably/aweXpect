@@ -11,7 +11,7 @@ public sealed partial class ThatBufferedStream
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedBufferSizeIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				using BufferedStream subject = GetBufferedStream(1);
@@ -25,8 +25,8 @@ public sealed partial class ThatBufferedStream
 					.WithParamName("expected");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasDifferentBufferSize_ShouldFail(int bufferSize)
 			{
 				int actualBufferSize = bufferSize > 10000 ? bufferSize - 1 : bufferSize + 1;
@@ -35,7 +35,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).HasBufferSize(bufferSize);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has buffer size equal to {bufferSize},
@@ -43,8 +43,8 @@ public sealed partial class ThatBufferedStream
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasSameBufferSize_ShouldSucceed(int bufferSize)
 			{
 				using BufferedStream subject = GetBufferedStream(bufferSize);
@@ -55,7 +55,7 @@ public sealed partial class ThatBufferedStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				using BufferedStream? subject = null;
@@ -63,7 +63,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).HasBufferSize(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has buffer size equal to 0,
@@ -74,7 +74,7 @@ public sealed partial class ThatBufferedStream
 
 		public sealed class EqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedBufferSizeIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				using BufferedStream subject = GetBufferedStream(1);
@@ -88,8 +88,8 @@ public sealed partial class ThatBufferedStream
 					.WithParamName("expected");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasDifferentBufferSize_ShouldFail(int bufferSize)
 			{
 				int actualBufferSize = bufferSize > 10000 ? bufferSize - 1 : bufferSize + 1;
@@ -98,7 +98,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).HasBufferSize().EqualTo(bufferSize);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has buffer size equal to {bufferSize},
@@ -106,8 +106,8 @@ public sealed partial class ThatBufferedStream
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasSameBufferSize_ShouldSucceed(int bufferSize)
 			{
 				using BufferedStream subject = GetBufferedStream(bufferSize);
@@ -118,7 +118,7 @@ public sealed partial class ThatBufferedStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				using BufferedStream? subject = null;
@@ -126,7 +126,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).HasBufferSize().EqualTo(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has buffer size equal to 0,
@@ -137,7 +137,7 @@ public sealed partial class ThatBufferedStream
 
 		public sealed class GreaterThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBufferSizeOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
 				using BufferedStream subject = GetBufferedStream(2010);
@@ -149,7 +149,7 @@ public sealed partial class ThatBufferedStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBufferSizeOfSubjectIsLessThanExpected_ShouldFail()
 			{
 				using BufferedStream subject = GetBufferedStream(2010);
@@ -158,7 +158,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).HasBufferSize().GreaterThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has buffer size greater than or equal to {Formatter.Format(expected)},
@@ -166,7 +166,7 @@ public sealed partial class ThatBufferedStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBufferSizeOfSubjectIsTheSameAsExpected_ShouldSucceed()
 			{
 				using BufferedStream subject = GetBufferedStream(2010);
@@ -178,7 +178,7 @@ public sealed partial class ThatBufferedStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedBufferSizeIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				using BufferedStream subject = GetBufferedStream(1);
@@ -192,7 +192,7 @@ public sealed partial class ThatBufferedStream
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				using BufferedStream subject = GetBufferedStream(2010);
@@ -201,7 +201,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).HasBufferSize().GreaterThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has buffer size greater than or equal to <null>,
@@ -212,7 +212,7 @@ public sealed partial class ThatBufferedStream
 
 		public sealed class GreaterThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBufferSizeOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
 				using BufferedStream subject = GetBufferedStream(2010);
@@ -224,7 +224,7 @@ public sealed partial class ThatBufferedStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBufferSizeOfSubjectIsLessThanExpected_ShouldFail()
 			{
 				using BufferedStream subject = GetBufferedStream(2010);
@@ -233,7 +233,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).HasBufferSize().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has buffer size greater than {Formatter.Format(expected)},
@@ -241,7 +241,7 @@ public sealed partial class ThatBufferedStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBufferSizeOfSubjectIsTheSameAsExpected_ShouldFail()
 			{
 				using BufferedStream subject = GetBufferedStream(2010);
@@ -250,7 +250,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).HasBufferSize().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has buffer size greater than {Formatter.Format(expected)},
@@ -258,7 +258,7 @@ public sealed partial class ThatBufferedStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedBufferSizeIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				using BufferedStream subject = GetBufferedStream(1);
@@ -272,7 +272,7 @@ public sealed partial class ThatBufferedStream
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				using BufferedStream subject = GetBufferedStream(2010);
@@ -281,7 +281,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).HasBufferSize().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has buffer size greater than <null>,
@@ -292,7 +292,7 @@ public sealed partial class ThatBufferedStream
 
 		public sealed class LessThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBufferSizeOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
 				using BufferedStream subject = GetBufferedStream(2010);
@@ -301,7 +301,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).HasBufferSize().LessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has buffer size less than or equal to {Formatter.Format(expected)},
@@ -309,7 +309,7 @@ public sealed partial class ThatBufferedStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBufferSizeOfSubjectIsLessThanExpected_ShouldSucceed()
 			{
 				using BufferedStream subject = GetBufferedStream(2010);
@@ -321,7 +321,7 @@ public sealed partial class ThatBufferedStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBufferSizeOfSubjectIsTheSameAsExpected_ShouldSucceed()
 			{
 				using BufferedStream subject = GetBufferedStream(2010);
@@ -333,7 +333,7 @@ public sealed partial class ThatBufferedStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedBufferSizeIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				using BufferedStream subject = GetBufferedStream(1);
@@ -347,7 +347,7 @@ public sealed partial class ThatBufferedStream
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				using BufferedStream subject = GetBufferedStream(2010);
@@ -356,7 +356,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).HasBufferSize().LessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has buffer size less than or equal to <null>,
@@ -367,7 +367,7 @@ public sealed partial class ThatBufferedStream
 
 		public sealed class LessThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBufferSizeOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
 				using BufferedStream subject = GetBufferedStream(2010);
@@ -376,7 +376,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).HasBufferSize().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has buffer size less than {Formatter.Format(expected)},
@@ -384,7 +384,7 @@ public sealed partial class ThatBufferedStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBufferSizeOfSubjectIsLessThanExpected_ShouldSucceed()
 			{
 				using BufferedStream subject = GetBufferedStream(2010);
@@ -396,7 +396,7 @@ public sealed partial class ThatBufferedStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBufferSizeOfSubjectIsTheSameAsExpected_ShouldFail()
 			{
 				using BufferedStream subject = GetBufferedStream(2010);
@@ -405,7 +405,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).HasBufferSize().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has buffer size less than {Formatter.Format(expected)},
@@ -413,7 +413,7 @@ public sealed partial class ThatBufferedStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedBufferSizeIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				using BufferedStream subject = GetBufferedStream(1);
@@ -427,7 +427,7 @@ public sealed partial class ThatBufferedStream
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				using BufferedStream subject = GetBufferedStream(2010);
@@ -436,7 +436,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).HasBufferSize().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has buffer size less than <null>,
@@ -447,8 +447,8 @@ public sealed partial class ThatBufferedStream
 
 		public sealed class NotEqualToTests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasDifferentBufferSize_ShouldSucceed(int bufferSize)
 			{
 				int actualBufferSize = bufferSize > 10000 ? bufferSize - 1 : bufferSize + 1;
@@ -460,8 +460,8 @@ public sealed partial class ThatBufferedStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasSameBufferSize_ShouldFail(int bufferSize)
 			{
 				using BufferedStream subject = GetBufferedStream(bufferSize);
@@ -469,7 +469,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).HasBufferSize().NotEqualTo(bufferSize);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have buffer size equal to {bufferSize},
@@ -477,7 +477,7 @@ public sealed partial class ThatBufferedStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				using BufferedStream? subject = null;
@@ -485,7 +485,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).HasBufferSize().NotEqualTo(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have buffer size equal to 0,
@@ -493,7 +493,7 @@ public sealed partial class ThatBufferedStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedBufferSizeIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				using BufferedStream subject = GetBufferedStream(1);
@@ -510,7 +510,7 @@ public sealed partial class ThatBufferedStream
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBufferSizeDiffers_ShouldSucceed()
 			{
 				using BufferedStream subject = GetBufferedStream(8);
@@ -521,7 +521,7 @@ public sealed partial class ThatBufferedStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBufferSizeMatches_ShouldFail()
 			{
 				using BufferedStream subject = GetBufferedStream(8);
@@ -529,7 +529,7 @@ public sealed partial class ThatBufferedStream
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasBufferSize(8));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have buffer size equal to 8,

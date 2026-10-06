@@ -1,14 +1,13 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Testing;
-using Xunit;
 using Verifier = aweXpect.Analyzers.Tests.Verifiers.CSharpSuppressorVerifier<aweXpect.Analyzers.IsNotNullSuppressor>;
 
 namespace aweXpect.Analyzers.Tests;
 
 public class IsNotNullSuppressorTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenAwaitedExpectationIsAssigned_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -27,7 +26,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenAwaiterResultIsNotRequested_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -45,7 +44,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenControlFlowIsBetweenExpectationAndUsage_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -69,7 +68,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationAllowsNullCollection_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			// A null collection fulfils `IsNotEqualTo`, even though its result type is the not-nullable collection.
@@ -89,7 +88,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationAllowsNullString_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			// A null string fulfils `IsNotEqualTo`, even though its result type is the not-nullable string.
@@ -109,7 +108,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationHasLookAlikeAttribute_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			// The attribute must come from aweXpect itself, not from a look-alike in the user code.
@@ -141,7 +140,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationIsABareStatement_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -159,7 +158,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationIsCombinedWithAnd_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -178,7 +177,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationIsCombinedWithThatAll_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -197,7 +196,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationIsCombinedWithThatAny_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -216,7 +215,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationIsDeclaredInCore_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			// `IsExactly` is an instance member of `IThatSubject<T>` rather than an `IThat<T>` extension.
@@ -235,7 +234,7 @@ public class IsNotNullSuppressorTests
 			""",
 			SuppressedNullabilityWarning("CS8602")
 		);
-	[Fact]
+	[Test]
 	public async Task WhenExpectationIsDiscarded_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -255,7 +254,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationIsEvaluatedThroughTheAwaiter_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -273,7 +272,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationIsFollowedByOr_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -292,7 +291,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationIsInConditionalBlock_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -315,7 +314,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationIsInConditionalExpression_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -334,7 +333,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationIsInsideLambda_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -355,7 +354,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationIsPassedAsArgument_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -379,7 +378,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationIsPrecededByOr_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -398,7 +397,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationIsStoredAndAwaitedAfterUsage_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -418,7 +417,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationIsVerifiedStatically_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -437,7 +436,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationRequiresNotEmptyCollection_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -456,7 +455,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning("CS8602")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationRequiresNotEmptyString_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -475,7 +474,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationRequiresNotExactlyOfType_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -494,7 +493,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning("CS8602")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationRequiresNotNullOrEmpty_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -513,7 +512,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationRequiresNotNullOrEmptyGuid_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -533,7 +532,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning("CS8629")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationRequiresNotNullOrWhiteSpace_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -552,7 +551,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationRequiresNotOfType_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -571,7 +570,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning("CS8602")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExtensionExpectationFromReferencedAssemblyGuaranteesNotNull_ShouldSuppressWarning()
 		=> await Verifier
 			.VerifySuppressorWithExtensionAsync(
@@ -606,7 +605,7 @@ public class IsNotNullSuppressorTests
 				SuppressedNullabilityWarning()
 			);
 
-	[Fact]
+	[Test]
 	public async Task WhenExtensionExpectationGuaranteesNotNull_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -635,7 +634,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExtensionExpectationIsFollowedByOr_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -664,7 +663,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExtensionExpectationWithoutAttribute_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -692,7 +691,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExtensionKeepsSubjectBeforeAnd_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -720,7 +719,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExtensionReturnsThatOfSameTypeBeforeExpectation_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			// The returned `IThat<string?>` could be a member of the same type, e.g. the file name of a path.
@@ -748,7 +747,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenExtensionSwitchesSubjectBeforeExpectation_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			// The extension continues with a member of the subject, so `IsNotNull` verifies the member.
@@ -781,7 +780,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenGotoSkipsTheExpectation_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -802,7 +801,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenLabelIsBetweenExpectationAndUsage_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -826,7 +825,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenOtherSubjectIsExpectedNotNull_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -845,7 +844,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsArray_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -864,7 +863,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsAssignedToNonNullable_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -883,7 +882,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning("CS8600")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsDeconstructedAfterExpectation_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -905,7 +904,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsField_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -926,7 +925,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsNullableValueType_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -945,7 +944,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning("CS8629")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsPassedAsArgument_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -968,7 +967,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning("CS8604")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsPrimaryConstructorParameter_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -990,7 +989,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsProperty_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1013,7 +1012,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsReassignedAfterExpectation_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1033,7 +1032,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsReassignedInLoop_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1056,7 +1055,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsReassignedInNestedBlock_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1079,7 +1078,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsReassignedInSwitchSection_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1104,7 +1103,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsReassignedInTryBlock_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1130,7 +1129,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsRefLocal_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1155,7 +1154,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsRefParameter_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1179,7 +1178,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsUsedAfterExpectation_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1198,7 +1197,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsUsedAtTopLevel_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(OutputKind.ConsoleApplication,
 			"""
@@ -1211,7 +1210,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsUsedInNestedBlock_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1233,7 +1232,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsUsedInsideLambda_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1254,7 +1253,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsVerifiedInsideLoop_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1277,7 +1276,7 @@ public class IsNotNullSuppressorTests
 			SuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsWrittenInCapturedLambda_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1299,7 +1298,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsWrittenInIfCondition_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1327,7 +1326,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsWrittenInSameStatement_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1356,7 +1355,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsWrittenInTopLevelLambda_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(OutputKind.ConsoleApplication,
 			"""
@@ -1372,7 +1371,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectIsWrittenThroughARefAlias_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1393,7 +1392,7 @@ public class IsNotNullSuppressorTests
 			NotSuppressedNullabilityWarning()
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSubjectMemberIsDereferenced_ShouldSuppressOnlySubjectWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1419,7 +1418,7 @@ public class IsNotNullSuppressorTests
 			DiagnosticResult.CompilerWarning("CS8602").WithSpan(14, 13, 14, 26).WithIsSuppressed(false)
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenSynchronouslyVerifiedExpectationIsAssigned_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""

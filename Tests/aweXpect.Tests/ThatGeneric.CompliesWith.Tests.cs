@@ -13,7 +13,7 @@ public sealed partial class ThatGeneric
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task AllowsNestedIs()
 			{
 				Base subject = new Derived
@@ -28,7 +28,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 			{
 				int subject = 1;
@@ -41,7 +41,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInnerExpectationHasAnotherValueType_ShouldReturnTheSubject()
 			{
 				int[] subject = [1,];
@@ -52,7 +52,7 @@ public sealed partial class ThatGeneric
 					.Because("the value of the inner expectation (the single item) is no int[]");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInnerExpectationHasAsyncReason_AndAnotherExpectationFails_ShouldAppendIt()
 			{
 				int subject = 1;
@@ -62,7 +62,7 @@ public sealed partial class ThatGeneric
 						.CompliesWith(x => x.IsEqualTo(1).Because(Task.FromResult<string?>("of reasons")))
 						.And.IsEqualTo(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1, because of reasons and is equal to 2,
@@ -71,7 +71,7 @@ public sealed partial class ThatGeneric
 					.Because("a reason that must be awaited is shown like a string reason, although its expectation is met");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInnerExpectationHasAsyncReason_InASkippedOrOperand_ShouldNotAwaitTheReason()
 			{
 				bool reasonWasResolved = false;
@@ -88,7 +88,7 @@ public sealed partial class ThatGeneric
 					.Because("a met expectation never builds a failure message, so it must not wait for the reason");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInnerExpectationHasAsyncReason_InASkippedOrOperand_WhenNegated_ShouldAppendIt()
 			{
 				Task<string?> becauseTask = Task.Delay(TimeSpan.FromMilliseconds(50))
@@ -100,7 +100,7 @@ public sealed partial class ThatGeneric
 						.IsEqualTo(1).Or
 						.CompliesWith(x => x.IsEqualTo(2).Because(becauseTask)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 1 and is not equal to 2, because of reasons,
@@ -109,7 +109,7 @@ public sealed partial class ThatGeneric
 					.Because("the text of the skipped operand is shown, so its reason is awaited for the failure");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInnerExpectationHasReason_ShouldAppendItAfterTheInnerExpectation()
 			{
 				int subject = 1;
@@ -117,7 +117,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).CompliesWith(x => x.IsEqualTo(2).Because("of reasons").Or.IsEqualTo(3));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 2 or is equal to 3, because of reasons,
@@ -125,7 +125,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInnerExpectationHasValueOfTheSubjectType_ShouldReturnTheSubject()
 			{
 				object[] inner = [1,];
@@ -137,9 +137,9 @@ public sealed partial class ThatGeneric
 					.Because("the single item has the subject's type, but the result of CompliesWith is the subject");
 			}
 
-			[Theory]
-			[InlineData(1, true)]
-			[InlineData(2, false)]
+			[Test]
+			[Arguments(1, true)]
+			[Arguments(2, false)]
 			public async Task WhenValueIsDifferent_ShouldFail(int expectedValue, bool expectSuccess)
 			{
 				Other subject = new()
@@ -150,7 +150,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).CompliesWith(x => x.IsEquivalentTo(new { Value = expectedValue, }));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
@@ -168,7 +168,7 @@ public sealed partial class ThatGeneric
 
 		public sealed class WithinTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenCanceledShortlyBeforeTheTimeout_ShouldFailWithTheResult()
 			{
 				Other subject = new();
@@ -196,7 +196,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).CompliesWith(x => x.Satisfies(StartsTheClock))
 						.Within(50.Milliseconds()).CheckEvery(1.Hours()).WithCancellation(cts.Token);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             satisfies StartsTheClock within 0:00.050,
@@ -208,7 +208,7 @@ public sealed partial class ThatGeneric
 				await cancellation;
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCancellationIsRequestedWhileRetrying_ShouldBeInconclusive()
 			{
 				int subject = 1;
@@ -219,7 +219,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).CompliesWith(x => x.IsEqualTo(2)).Within(30.Seconds())
 						.WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 2 within 0:30,
@@ -227,7 +227,7 @@ public sealed partial class ThatGeneric
 					             """).WithTimeout(10.Seconds());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDefaultIntervalIsNotPositive_ShouldCheckWithoutWaiting()
 			{
 				int count = 0;
@@ -249,7 +249,7 @@ public sealed partial class ThatGeneric
 				await That(count).IsEqualTo(4);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalTimeoutEqualsTheTimeout_ShouldFailWithTheResult()
 			{
 				int subject = 1;
@@ -258,7 +258,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).CompliesWith(x => x.IsEqualTo(2)).Within(200.Milliseconds())
 						.CheckEvery(1.Hours()).WithTimeout(200.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 2 within 0:00.200,
@@ -267,7 +267,7 @@ public sealed partial class ThatGeneric
 					.Because("the timeout elapsed at the same time as the global timeout");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalTimeoutIsApplied_ShouldFail()
 			{
 				MyChangingClass subject = new(42);
@@ -276,7 +276,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).CompliesWith(x => x.IsEquivalentTo(new { HasWaitedEnough = true, }))
 						.Within(30.Seconds()).WithTimeout(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to new { HasWaitedEnough = true, } within 0:30,
@@ -285,7 +285,7 @@ public sealed partial class ThatGeneric
 					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInnerExpectationHasReason_ShouldAppendItAfterTheTimeout()
 			{
 				int subject = 1;
@@ -294,7 +294,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).CompliesWith(x => x.IsEqualTo(2).Because("of reasons"))
 						.Within(0.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 2 within 0:00, because of reasons,
@@ -302,7 +302,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInnerExpectationHasValueOfTheSubjectType_ShouldReturnTheSubject()
 			{
 				object[] inner = [1,];
@@ -314,7 +314,7 @@ public sealed partial class ThatGeneric
 					.Because("the single item has the subject's type, but the result of CompliesWith is the subject");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenIntervalExceedsTheTimeout_ShouldCheckAgainAtTheTimeout()
 			{
 				int count = 0;
@@ -329,7 +329,7 @@ public sealed partial class ThatGeneric
 				await That(count).IsEqualTo(2);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenIntervalExceedsTheTimeout_ShouldNotCountASuccessAfterTheTimeout()
 			{
 				int count = 0;
@@ -339,7 +339,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).CompliesWith(x => x.Satisfies(_ => ++count > 2))
 						.Within(100.Milliseconds()).CheckEvery(1.Hours());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             satisfies _ => ++count > 2 within 0:00.100,
@@ -352,7 +352,7 @@ public sealed partial class ThatGeneric
 					.Because("the timeout only allows the first check and the check at its end");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenIntervalExceedsTheTimerLimit_ShouldWaitUntilCanceled()
 			{
 				int subject = 1;
@@ -364,7 +364,7 @@ public sealed partial class ThatGeneric
 						.Within(System.Threading.Timeout.InfiniteTimeSpan).CheckEvery(100.Days())
 						.WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 2,
@@ -373,10 +373,10 @@ public sealed partial class ThatGeneric
 					.Because("an interval beyond the limit of a timer is capped instead of rejected");
 			}
 
-			[Theory]
-			[InlineData(1, false)]
-			[InlineData(0, true)]
-			[InlineData(-1, true)]
+			[Test]
+			[Arguments(1, false)]
+			[Arguments(0, true)]
+			[Arguments(-1, true)]
 			public async Task WhenIntervalIsNotPositive_ShouldThrowArgumentOutOfRangeException(int intervalSeconds,
 				bool shouldThrow)
 			{
@@ -392,7 +392,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("The interval must be positive*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateResultTurnsTrueLaterOn_ShouldSucceed()
 			{
 				MyChangingClass subject = new(2);
@@ -406,7 +406,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				WhenTestCancellationTimeoutIsShorterAndWithTimeoutIsLonger_ShouldFailWithTheTestCancellationTimeout()
 			{
@@ -419,10 +419,10 @@ public sealed partial class ThatGeneric
 						=> await That(subject).CompliesWith(x => x.IsEqualTo(2)).Within(2.Seconds())
 							.WithTimeout(10.Seconds());
 
-					exception = await Record.ExceptionAsync(Act);
+					exception = await Catch.ExceptionAsync(Act);
 				}
 
-				await That(exception).IsExactly<XunitException>().And
+				await That(exception).IsExactly<FailException>().And
 					.HasMessage("""
 					            Expected that subject
 					            is equal to 2 within 0:02,
@@ -432,7 +432,7 @@ public sealed partial class ThatGeneric
 					.Because("the effective timeout is the tighter of WithTimeout and TestCancellation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTestCancellationTimeoutIsShorter_ShouldFailWithTheTestCancellationTimeout()
 			{
 				int subject = 1;
@@ -443,10 +443,10 @@ public sealed partial class ThatGeneric
 					async Task Act()
 						=> await That(subject).CompliesWith(x => x.IsEqualTo(2)).Within(2.Seconds());
 
-					exception = await Record.ExceptionAsync(Act);
+					exception = await Catch.ExceptionAsync(Act);
 				}
 
-				await That(exception).IsExactly<XunitException>().And
+				await That(exception).IsExactly<FailException>().And
 					.HasMessage("""
 					            Expected that subject
 					            is equal to 2 within 0:02,
@@ -456,7 +456,7 @@ public sealed partial class ThatGeneric
 					.Because("a TestCancellation timeout that is shorter than Within ends the checks");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheSourceThrowsAtFirst_ShouldReadItAgain()
 			{
 				int enumerations = 0;
@@ -482,7 +482,7 @@ public sealed partial class ThatGeneric
 				await That(enumerations).IsEqualTo(2);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheSubjectGrows_ShouldSeeTheNewItems()
 			{
 				int enumerations = 0;
@@ -506,7 +506,7 @@ public sealed partial class ThatGeneric
 				await That(enumerations).IsEqualTo(3);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsInfinite_ShouldNotMentionTheTimeout()
 			{
 				int subject = 1;
@@ -518,7 +518,7 @@ public sealed partial class ThatGeneric
 						.Within(System.Threading.Timeout.InfiniteTimeSpan)
 						.WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 2,
@@ -527,7 +527,7 @@ public sealed partial class ThatGeneric
 					.Because("an infinite timeout imposes no limit, so only the cancellation ends the retries");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsInfinite_ShouldRetryUntilTheExpectationsAreMet()
 			{
 				MyChangingClass subject = new(2);
@@ -542,10 +542,10 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(1, false)]
-			[InlineData(0, false)]
-			[InlineData(-1, true)]
+			[Test]
+			[Arguments(1, false)]
+			[Arguments(0, false)]
+			[Arguments(-1, true)]
 			public async Task WhenTimeoutIsNegative_ShouldThrowArgumentOutOfRangeException(int timeoutSeconds,
 				bool shouldThrow)
 			{
@@ -560,7 +560,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("The timeout must not be negative*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsTooShort_ShouldFail()
 			{
 				MyChangingClass subject = new(42);
@@ -569,7 +569,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).CompliesWith(x => x.IsEquivalentTo(new { HasWaitedEnough = true, }))
 						.Within(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to new { HasWaitedEnough = true, } within 0:00.050,
@@ -583,7 +583,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsZero_ShouldMentionTheTimeout()
 			{
 				int subject = 1;
@@ -591,7 +591,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).CompliesWith(x => x.IsEqualTo(2)).Within(TimeSpan.Zero);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 2 within 0:00,
@@ -609,7 +609,7 @@ public sealed partial class ThatGeneric
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsAreMet_ShouldFail()
 			{
 				int subject = 1;
@@ -617,7 +617,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.CompliesWith(x => x.IsEqualTo(1)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 1,
@@ -625,7 +625,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsAreNotMet_ShouldSucceed()
 			{
 				int subject = 1;

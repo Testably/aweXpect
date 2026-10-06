@@ -1,11 +1,11 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Fallout.Common;
 using Fallout.Common.IO;
 using Fallout.Solutions;
 using Fallout.Common.Tooling;
 using Fallout.Common.Tools.DotNet;
-using Fallout.Common.Tools.Xunit;
-using static Fallout.Common.Tools.Xunit.XunitTasks;
 using static Fallout.Common.Tools.DotNet.DotNetTasks;
 
 // ReSharper disable UnusedMember.Local
@@ -15,6 +15,27 @@ namespace Build;
 
 partial class Build
 {
+	const string NetFramework = "net48";
+
+	/// <summary>
+	///     Selects the tests of the category <c>Slow</c> (<c>TestCategories.Slow</c> in <c>Tests/Shared</c>), which
+	///     are explicit and therefore left out of a run without a filter.
+	/// </summary>
+	const string SlowTestsFilter = "/*/*/*/*[Category=Slow]";
+
+	/// <summary>
+	///     The projects with slow tests. A project that gets its first slow test must be added here, otherwise the
+	///     pipeline never runs it, and a project without slow tests must not be listed, because the run of its slow
+	///     tests fails when it finds none.
+	/// </summary>
+	Project[] ProjectsWithSlowTests =>
+	[
+		Solution.Tests.aweXpect_Core_Tests,
+		Solution.Tests.aweXpect_Generators_Tests,
+		Solution.Tests.aweXpect_Tests,
+		Solution.Tests.aweXpect_Docs_Tests,
+	];
+
 	Target UnitTests => _ => _
 		.DependsOn(DotNetFrameworkUnitTests)
 		.DependsOn(DotNetUnitTests);
@@ -25,19 +46,8 @@ partial class Build
 		.OnlyWhenDynamic(() => EnvironmentInfo.IsWin)
 		.Executes(() =>
 		{
-			string[] testAssemblies = UnitTestProjects(BuildScope)
-				.SelectMany(project =>
-					project.Directory.GlobFiles(
-						$"bin/{(Configuration == Configuration.Debug || BuildScope == BuildScope.CoreOnly ? "Debug" : "Release")}/net48/*.Tests.dll"))
-				.Select(p => p.ToString())
-				.ToArray();
-
-			Assert.NotEmpty(testAssemblies.ToList());
-
-			Xunit2(s => s
-				.SetFramework("net48")
-				.AddTargetAssemblies(testAssemblies)
-			);
+			RunUnitTests(UnitTestProjects(BuildScope), framework => framework == NetFramework,
+				BuildScope == BuildScope.CoreOnly ? Configuration.Debug : Configuration, TestResultsDirectory, true);
 		});
 
 	Target DotNetUnitTests => _ => _
@@ -45,25 +55,8 @@ partial class Build
 		.DependsOn(Compile)
 		.Executes(() =>
 		{
-			string net48 = "net48";
-			DotNetTest(s => s
-					.SetConfiguration(BuildScope == BuildScope.CoreOnly ? Configuration.Debug : Configuration)
-					.SetProcessEnvironmentVariable("DOTNET_CLI_UI_LANGUAGE", "en-US")
-					.EnableNoBuild()
-					.SetDataCollector("XPlat Code Coverage")
-					.SetResultsDirectory(TestResultsDirectory)
-					.CombineWith(
-						UnitTestProjects(BuildScope),
-						(settings, project) => settings
-							.SetProjectFile(project)
-							.CombineWith(
-								project.GetTargetFrameworks()?.Except([net48,]),
-								(frameworkSettings, framework) => frameworkSettings
-									.SetFramework(framework)
-									.AddLoggers($"trx;LogFileName={project.Name}_{framework}.trx")
-							)
-					), completeOnFailure: true
-			);
+			RunUnitTests(UnitTestProjects(BuildScope), framework => framework != NetFramework,
+				BuildScope == BuildScope.CoreOnly ? Configuration.Debug : Configuration, TestResultsDirectory, true);
 		});
 
 	Project[] UnitTestProjects(BuildScope buildScope)
@@ -99,45 +92,90 @@ partial class Build
 				.SetProjectFile(Solution)
 				.SetConfiguration(Configuration.Debug)
 				.EnableNoLogo());
-			
-			string net48 = "net48";
-			DotNetTest(s => s
-					.SetConfiguration(Configuration.Debug)
-					.SetProcessEnvironmentVariable("DOTNET_CLI_UI_LANGUAGE", "en-US")
-					.EnableNoBuild()
-					.SetResultsDirectory(TestResultsDirectory / Configuration.Debug)
-					.CombineWith(
-						UnitTestProjects(BuildScope.Default),
-						(settings, project) => settings
-							.SetProjectFile(project)
-							.CombineWith(
-								project.GetTargetFrameworks()?.Except([net48,]),
-								(frameworkSettings, framework) => frameworkSettings
-									.SetFramework(framework)
-							)
-					), completeOnFailure: true
-			);
+
+			AbsolutePath resultsDirectory = TestResultsDirectory / Configuration.Debug;
+			RunUnitTests(UnitTestProjects(BuildScope.Default), framework => framework != NetFramework,
+				Configuration.Debug, resultsDirectory, false);
 
 			if (EnvironmentInfo.IsWin)
 			{
-				string[] testAssemblies = UnitTestProjects(BuildScope)
-					.SelectMany(project =>
-						project.Directory.GlobFiles(
-							$"bin/Debug/net48/*.Tests.dll"))
-					.Select(p => p.ToString())
-					.ToArray();
-
-				Assert.NotEmpty(testAssemblies.ToList());
-
-				Xunit2(s => s
-					.SetFramework("net48")
-					.AddTargetAssemblies(testAssemblies)
-				);
+				RunUnitTests(UnitTestProjects(BuildScope), framework => framework == NetFramework,
+					Configuration.Debug, resultsDirectory, false);
 			}
 		});
-	
+
 	Target UnitTestsWithCoverage => _ => _
 		.DependsOn(UnitTests)
 		.DependsOn(DebugUnitTests);
 
+	/// <summary>
+	///     Runs the tests of the <paramref name="projects" /> for their matching target frameworks, and then their
+	///     slow tests.
+	/// </summary>
+	/// <remarks>
+	///     The test projects are executables of the Microsoft.Testing.Platform, which <c>dotnet test</c> only runs
+	///     when the whole repository opts into that platform, so they are started with <c>dotnet run</c>.
+	///     <para />
+	///     With <paramref name="withReports" />, every run writes a TRX file and a Cobertura coverage file named
+	///     after the project, the target framework and the step into the <paramref name="resultsDirectory" />.
+	/// </remarks>
+	void RunUnitTests(Project[] projects, Func<string, bool> includeFramework, Configuration configuration,
+		AbsolutePath resultsDirectory, bool withReports)
+	{
+		(Project Project, string Framework)[] testRuns = projects
+			.SelectMany(project => (project.GetTargetFrameworks() ?? [])
+				.Where(includeFramework)
+				.Select(framework => (project, framework)))
+			.ToArray();
+
+		Assert.NotEmpty(testRuns);
+
+		// All runs are part of one invocation, so that a failed run neither skips the remaining runs nor the slow tests.
+		DotNetRun(s => s
+				.SetConfiguration(configuration)
+				.SetProcessEnvironmentVariable("DOTNET_CLI_UI_LANGUAGE", "en-US")
+				.EnableNoBuild()
+				.CombineWith(
+					testRuns
+						.Select(testRun => (testRun.Project, testRun.Framework, IsSlow: false))
+						.Concat(testRuns
+							.Where(testRun => ProjectsWithSlowTests.Contains(testRun.Project))
+							.Select(testRun => (testRun.Project, testRun.Framework, IsSlow: true))),
+					(settings, testRun) => settings
+						.SetProjectFile(testRun.Project)
+						.SetFramework(testRun.Framework)
+						.SetProcessAdditionalArguments(TestArguments(
+							testRun.IsSlow
+								? $"{testRun.Project.Name}_{testRun.Framework}_Slow"
+								: $"{testRun.Project.Name}_{testRun.Framework}",
+							testRun.IsSlow, resultsDirectory, withReports))),
+			completeOnFailure: true);
+	}
+
+	/// <summary>
+	///     The arguments for the test application behind <c>dotnet run</c>.
+	/// </summary>
+	static string[] TestArguments(string name, bool isSlow, AbsolutePath resultsDirectory, bool withReports)
+	{
+		List<string> arguments = ["--", "--disable-logo", $"--results-directory \"{resultsDirectory}\"",];
+		if (isSlow)
+		{
+			// A project that is listed without having slow tests fails here instead of passing with nothing run.
+			arguments.AddRange([$"--treenode-filter \"{SlowTestsFilter}\"", "--minimum-expected-tests 1",]);
+		}
+
+		if (withReports)
+		{
+			arguments.AddRange(
+			[
+				"--report-trx",
+				$"--report-trx-filename {name}.trx",
+				"--coverage",
+				"--coverage-output-format cobertura",
+				$"--coverage-output {name}.cobertura.xml",
+			]);
+		}
+
+		return arguments.ToArray();
+	}
 }

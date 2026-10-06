@@ -6,7 +6,7 @@ public sealed partial class ThatTimeSpan
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				TimeSpan subject = CurrentTime();
@@ -15,7 +15,7 @@ public sealed partial class ThatTimeSpan
 				async Task Act()
 					=> await That(subject).IsLessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is less than <null>,
@@ -23,7 +23,7 @@ public sealed partial class ThatTimeSpan
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedAreMaxValue_ShouldFail()
 			{
 				TimeSpan subject = TimeSpan.MaxValue;
@@ -32,7 +32,7 @@ public sealed partial class ThatTimeSpan
 				async Task Act()
 					=> await That(subject).IsLessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is less than TimeSpan.MaxValue,
@@ -40,7 +40,7 @@ public sealed partial class ThatTimeSpan
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedAreMinValue_ShouldFail()
 			{
 				TimeSpan subject = TimeSpan.MinValue;
@@ -49,7 +49,7 @@ public sealed partial class ThatTimeSpan
 				async Task Act()
 					=> await That(subject).IsLessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is less than TimeSpan.MinValue,
@@ -57,7 +57,7 @@ public sealed partial class ThatTimeSpan
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsLater_ShouldFail()
 			{
 				TimeSpan subject = LaterTime();
@@ -66,7 +66,7 @@ public sealed partial class ThatTimeSpan
 				async Task Act()
 					=> await That(subject).IsLessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is less than {Formatter.Format(expected)},
@@ -74,7 +74,7 @@ public sealed partial class ThatTimeSpan
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsSame_ShouldFail()
 			{
 				TimeSpan subject = CurrentTime();
@@ -83,7 +83,7 @@ public sealed partial class ThatTimeSpan
 				async Task Act()
 					=> await That(subject).IsLessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is less than {Formatter.Format(expected)},
@@ -91,7 +91,7 @@ public sealed partial class ThatTimeSpan
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectsIsEarlier_ShouldSucceed()
 			{
 				TimeSpan subject = EarlierTime();
@@ -103,7 +103,7 @@ public sealed partial class ThatTimeSpan
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenNullableExpectedValueIsOutsideTheTolerance_ShouldFail()
 			{
 				TimeSpan subject = CurrentTime();
@@ -113,7 +113,7 @@ public sealed partial class ThatTimeSpan
 					=> await That(subject).IsLessThan(expected)
 						.Within(3.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is less than {Formatter.Format(expected)} ± 0:03,
@@ -121,7 +121,7 @@ public sealed partial class ThatTimeSpan
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenSubjectIsMinValue_ShouldNotOverflow()
 			{
 				TimeSpan subject = TimeSpan.MinValue;
@@ -135,7 +135,7 @@ public sealed partial class ThatTimeSpan
 					.Because("a widening tolerance must not make the assertion throw at the type limits");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail()
 			{
 				TimeSpan subject = LaterTime(3);
@@ -145,7 +145,7 @@ public sealed partial class ThatTimeSpan
 					=> await That(subject).IsLessThan(expected)
 						.Within(3.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is less than {Formatter.Format(expected)} ± 0:03,
@@ -153,7 +153,7 @@ public sealed partial class ThatTimeSpan
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenValuesAreWithinTheTolerance_ShouldSucceed()
 			{
 				TimeSpan subject = LaterTime(2);
@@ -169,7 +169,7 @@ public sealed partial class ThatTimeSpan
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsGreater_ShouldSucceed()
 			{
 				TimeSpan subject = 5.Seconds();
@@ -180,7 +180,7 @@ public sealed partial class ThatTimeSpan
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsLess_ShouldFail()
 			{
 				TimeSpan subject = 5.Seconds();
@@ -188,7 +188,7 @@ public sealed partial class ThatTimeSpan
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsLessThan(6.Seconds()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not less than 0:06,

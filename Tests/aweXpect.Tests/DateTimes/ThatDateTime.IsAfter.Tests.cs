@@ -6,7 +6,7 @@ public sealed partial class ThatDateTime
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_AndNegated_ShouldFail()
 			{
 				DateTime subject = CurrentTime();
@@ -15,7 +15,7 @@ public sealed partial class ThatDateTime
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsAfter(expected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not after <null>,
@@ -24,7 +24,7 @@ public sealed partial class ThatDateTime
 					.Because("nothing can be ordered against null, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateTime subject = CurrentTime();
@@ -33,7 +33,7 @@ public sealed partial class ThatDateTime
 				async Task Act()
 					=> await That(subject).IsAfter(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is after <null>,
@@ -41,11 +41,11 @@ public sealed partial class ThatDateTime
 					              """);
 			}
 
-			[Theory]
-			[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified)]
-			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Utc)]
-			[InlineData(DateTimeKind.Local, DateTimeKind.Unspecified)]
-			[InlineData(DateTimeKind.Unspecified, DateTimeKind.Local)]
+			[Test]
+			[Arguments(DateTimeKind.Utc, DateTimeKind.Unspecified)]
+			[Arguments(DateTimeKind.Unspecified, DateTimeKind.Utc)]
+			[Arguments(DateTimeKind.Local, DateTimeKind.Unspecified)]
+			[Arguments(DateTimeKind.Unspecified, DateTimeKind.Local)]
 			public async Task WhenKindIsUnspecified_ShouldSucceed(
 				DateTimeKind subjectKind, DateTimeKind expectedKind)
 			{
@@ -58,9 +58,9 @@ public sealed partial class ThatDateTime
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(DateTimeKind.Utc, DateTimeKind.Local)]
-			[InlineData(DateTimeKind.Local, DateTimeKind.Utc)]
+			[Test]
+			[Arguments(DateTimeKind.Utc, DateTimeKind.Local)]
+			[Arguments(DateTimeKind.Local, DateTimeKind.Utc)]
 			public async Task WhenKindsAreIncompatible_AndNegated_ShouldFail(
 				DateTimeKind subjectKind, DateTimeKind expectedKind)
 			{
@@ -70,7 +70,7 @@ public sealed partial class ThatDateTime
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsAfter(expected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not after {Formatter.Format(expected)},
@@ -79,9 +79,9 @@ public sealed partial class ThatDateTime
 					.Because("values of incompatible kinds cannot be ordered, so the negation fails as well");
 			}
 
-			[Theory]
-			[InlineData(DateTimeKind.Utc, DateTimeKind.Local)]
-			[InlineData(DateTimeKind.Local, DateTimeKind.Utc)]
+			[Test]
+			[Arguments(DateTimeKind.Utc, DateTimeKind.Local)]
+			[Arguments(DateTimeKind.Local, DateTimeKind.Utc)]
 			public async Task WhenKindsAreIncompatible_ShouldFail(
 				DateTimeKind subjectKind, DateTimeKind expectedKind)
 			{
@@ -91,7 +91,7 @@ public sealed partial class ThatDateTime
 				async Task Act()
 					=> await That(subject).IsAfter(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is after {Formatter.Format(expected)},
@@ -99,7 +99,7 @@ public sealed partial class ThatDateTime
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedAreMaxValue_ShouldFail()
 			{
 				DateTime subject = DateTime.MaxValue;
@@ -108,7 +108,7 @@ public sealed partial class ThatDateTime
 				async Task Act()
 					=> await That(subject).IsAfter(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is after 9999-12-31T23:59:59.9999999,
@@ -116,7 +116,7 @@ public sealed partial class ThatDateTime
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedAreMinValue_ShouldFail()
 			{
 				DateTime subject = DateTime.MinValue;
@@ -125,7 +125,7 @@ public sealed partial class ThatDateTime
 				async Task Act()
 					=> await That(subject).IsAfter(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is after 0001-01-01T00:00:00.0000000,
@@ -133,7 +133,7 @@ public sealed partial class ThatDateTime
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsEarlier_ShouldFail()
 			{
 				DateTime subject = EarlierTime();
@@ -142,7 +142,7 @@ public sealed partial class ThatDateTime
 				async Task Act()
 					=> await That(subject).IsAfter(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is after {Formatter.Format(expected)},
@@ -150,7 +150,7 @@ public sealed partial class ThatDateTime
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsSame_ShouldFail()
 			{
 				DateTime subject = CurrentTime();
@@ -160,7 +160,7 @@ public sealed partial class ThatDateTime
 					=> await That(subject).IsAfter(expected)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is after {Formatter.Format(expected)}, because we want to test the failure,
@@ -168,7 +168,7 @@ public sealed partial class ThatDateTime
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectOnlyDiffersInKind_ShouldFail()
 			{
 				DateTime subject = LaterTime(1, DateTimeKind.Utc);
@@ -178,7 +178,7 @@ public sealed partial class ThatDateTime
 					=> await That(subject).IsAfter(expected)
 						.Because("a Local and a Utc value cannot be ordered without guessing the offset");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is after {Formatter.Format(expected)}, because a Local and a Utc value cannot be ordered without guessing the offset,
@@ -186,7 +186,7 @@ public sealed partial class ThatDateTime
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectsIsLater_ShouldSucceed()
 			{
 				DateTime subject = LaterTime();
@@ -198,7 +198,7 @@ public sealed partial class ThatDateTime
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenNullableExpectedValueIsOutsideTheTolerance_ShouldFail()
 			{
 				DateTime subject = CurrentTime();
@@ -208,7 +208,7 @@ public sealed partial class ThatDateTime
 					=> await That(subject).IsAfter(expected)
 						.Within(3.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is after {Formatter.Format(expected)} ± 0:03,
@@ -216,7 +216,7 @@ public sealed partial class ThatDateTime
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenSubjectIsMaxValue_ShouldNotOverflow()
 			{
 				DateTime subject = DateTime.MaxValue;
@@ -230,7 +230,7 @@ public sealed partial class ThatDateTime
 					.Because("a widening tolerance must not make the assertion throw at the type limits");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenSubjectOnlyDiffersInKind_ShouldFail()
 			{
 				DateTime subject = LaterTime(1, DateTimeKind.Utc);
@@ -241,7 +241,7 @@ public sealed partial class ThatDateTime
 						.Within(3.Seconds())
 						.Because("a tolerance cannot bridge incompatible Kinds");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is after {Formatter.Format(expected)} ± 0:03, because a tolerance cannot bridge incompatible Kinds,
@@ -249,7 +249,7 @@ public sealed partial class ThatDateTime
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail()
 			{
 				DateTime subject = EarlierTime(3);
@@ -260,7 +260,7 @@ public sealed partial class ThatDateTime
 						.Within(3.Seconds())
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is after {Formatter.Format(expected)} ± 0:03, because we want to test the failure,
@@ -268,7 +268,7 @@ public sealed partial class ThatDateTime
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenValuesAreWithinTheTolerance_ShouldSucceed()
 			{
 				DateTime subject = EarlierTime(2);

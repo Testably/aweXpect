@@ -6,7 +6,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class ComplyWithTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				int[]? subject = null;
@@ -14,7 +14,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Between(1).And(2).ComplyWith(it => it.IsEqualTo(3));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 3 for between 1 and 2 items,
@@ -25,7 +25,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class NegatedComplyWithTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheNumberOfComplyingItemsIsInRange_ShouldFail()
 			{
 				int[] subject = [1, 2, 3, 4, 5,];
@@ -34,7 +34,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.Between(2).And(4).ComplyWith(x => x.IsGreaterThan(2)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 2 for not between 2 and 4 items,

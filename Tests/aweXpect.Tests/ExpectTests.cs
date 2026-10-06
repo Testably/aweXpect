@@ -4,9 +4,9 @@ public class ExpectTests
 {
 	public class ThatAllTests
 	{
-		[Theory]
-		[InlineData(true, false)]
-		[InlineData(false, true)]
+		[Test]
+		[Arguments(true, false)]
+		[Arguments(false, true)]
 		public async Task ShouldEvaluateAndDisplayAllExpectations(bool subjectA, bool subjectB)
 		{
 			async Task Act()
@@ -14,7 +14,7 @@ public class ExpectTests
 					That(subjectA).IsTrue(),
 					That(subjectB).IsTrue());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected all of the following to succeed:
 				               [01] Expected that subjectA is True
@@ -24,7 +24,7 @@ public class ExpectTests
 				              """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldIncludeProperIndentationForMultilineResults()
 		{
 			string subjectA = "subject A";
@@ -37,7 +37,7 @@ public class ExpectTests
 					That(subjectB).IsEqualTo("subject B"),
 					That(subjectC).IsEqualTo("subject C"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected all of the following to succeed:
 				              [01] Expected that subjectA is equal to "subject A"
@@ -57,7 +57,7 @@ public class ExpectTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldIndentMultiLineObjectsOfCombinationsLikeTheEntry()
 		{
 			MyClass subject = new()
@@ -72,7 +72,7 @@ public class ExpectTests
 			async Task Act()
 				=> await ThatAll(That(subject).IsEqualTo(expected).Equivalent().And.Satisfies(_ => false));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected all of the following to succeed:
 				              [01] Expected that subject is equivalent to ExpectTests.MyClass {
@@ -86,7 +86,7 @@ public class ExpectTests
 				.Because("the objects are indented like the entry they belong to");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAllConditionIsMet_ShouldSucceed()
 		{
 			bool subjectA = true;
@@ -100,7 +100,7 @@ public class ExpectTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenBothConditionsAreNotMet_ShouldFail()
 		{
 			bool subjectA = false;
@@ -111,7 +111,7 @@ public class ExpectTests
 					That(subjectA).IsTrue(),
 					That(subjectB).IsTrue());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected all of the following to succeed:
 				              [01] Expected that subjectA is True
@@ -122,7 +122,7 @@ public class ExpectTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNested_ShouldIncludeProperIndentationForMultilineResults()
 		{
 			string subjectA = "subject A";
@@ -137,7 +137,7 @@ public class ExpectTests
 						That(subjectB).IsEqualTo("subject B"),
 						That(subjectC).IsEqualTo("subject C")));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected all of the following to succeed:
 				              [01] Expected that true is True
@@ -159,7 +159,7 @@ public class ExpectTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNested_ShouldUseIncrementingNumber()
 		{
 			bool subjectA = false;
@@ -175,7 +175,7 @@ public class ExpectTests
 					That(subjectC).IsTrue(),
 					That(subjectD).IsTrue());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected all of the following to succeed:
 				               Expected any of the following to succeed:
@@ -190,7 +190,7 @@ public class ExpectTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNoExpectationWasProvided_ShouldThrowArgumentException()
 		{
 			async Task Act()
@@ -204,7 +204,7 @@ public class ExpectTests
 
 	public class ThatAnyTests
 	{
-		[Fact]
+		[Test]
 		public async Task ShouldEvaluateAndDisplayAllExpectations()
 		{
 			bool subjectA = false;
@@ -215,7 +215,7 @@ public class ExpectTests
 					That(subjectA).IsTrue(),
 					That(subjectB).IsTrue());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected any of the following to succeed:
 				              [01] Expected that subjectA is True
@@ -226,7 +226,7 @@ public class ExpectTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldIncludeProperIndentationForMultilineResults()
 		{
 			string subjectA = "subject X";
@@ -239,7 +239,7 @@ public class ExpectTests
 					That(subjectB).IsEqualTo("subject B"),
 					That(subjectC).IsEqualTo("subject C"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected any of the following to succeed:
 				              [01] Expected that subjectA is equal to "subject A"
@@ -264,10 +264,10 @@ public class ExpectTests
 				             """);
 		}
 
-		[Theory]
-		[InlineData(true, true)]
-		[InlineData(true, false)]
-		[InlineData(false, true)]
+		[Test]
+		[Arguments(true, true)]
+		[Arguments(true, false)]
+		[Arguments(false, true)]
 		public async Task WhenAnyConditionIsMet_ShouldSucceed(bool subjectA, bool subjectB)
 		{
 			async Task Act()
@@ -278,7 +278,7 @@ public class ExpectTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNested_ShouldIncludeProperIndentationForMultilineResults()
 		{
 			string subjectA = "subject X";
@@ -293,7 +293,7 @@ public class ExpectTests
 						That(subjectB).IsEqualTo("subject B"),
 						That(subjectC).IsEqualTo("subject C")));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected any of the following to succeed:
 				              [01] Expected that false is True
@@ -321,7 +321,7 @@ public class ExpectTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNested_ShouldIndentMultiLineResults()
 		{
 			async Task Act()
@@ -341,7 +341,7 @@ public class ExpectTests
 					"""
 				));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected all of the following to succeed:
 				              [01] Expected that true expectation
@@ -356,7 +356,7 @@ public class ExpectTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNested_ShouldUseIncrementingNumber()
 		{
 			bool subjectA = false;
@@ -372,7 +372,7 @@ public class ExpectTests
 					That(subjectC).IsTrue(),
 					That(subjectD).IsTrue());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected any of the following to succeed:
 				               Expected all of the following to succeed:
@@ -387,7 +387,7 @@ public class ExpectTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNoExpectationWasProvided_ShouldThrowArgumentException()
 		{
 			async Task Act()

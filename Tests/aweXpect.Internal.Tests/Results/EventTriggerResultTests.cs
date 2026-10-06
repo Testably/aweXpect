@@ -8,7 +8,7 @@ namespace aweXpect.Internal.Tests.Results;
 
 public sealed class EventTriggerResultTests
 {
-	[Fact]
+	[Test]
 	public async Task ShouldBeOptionsProvider_ForQuantifier()
 	{
 		Quantifier quantifier = new();
@@ -19,7 +19,7 @@ public sealed class EventTriggerResultTests
 			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldBeOptionsProvider_ForRepeatedCheckOptions()
 	{
 		Quantifier quantifier = new();
@@ -30,7 +30,7 @@ public sealed class EventTriggerResultTests
 			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCastingToICustomParameterFilter_CanSpecifyNameOfParameter()
 	{
 		CustomEventWithParametersClass<string> sut = new();
@@ -45,7 +45,7 @@ public sealed class EventTriggerResultTests
 				.WithParameter<string>(" with my parameter", null, s => s == "foo")
 				.AtLeast().Twice();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that recording
 			             has recorded the CustomEvent event on sut with my parameter at least twice,
@@ -56,7 +56,7 @@ public sealed class EventTriggerResultTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCastingToICustomParameterFilter_WhenPositionIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		CustomEventWithParametersClass<string> sut = new();
@@ -74,7 +74,7 @@ public sealed class EventTriggerResultTests
 			.WithMessage("The position must not be negative.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCastingToICustomParameterFilter_WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
 	{
 		InvalidOperationException exception = new("predicate failed");
@@ -88,7 +88,7 @@ public sealed class EventTriggerResultTests
 					.Triggered(nameof(CustomEventWithParametersClass<string>.CustomEvent)))
 				.WithParameter<string>(" with my parameter", null, _ => throw exception);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that recording
 			             has recorded the CustomEvent event on sut with my parameter at least once,
@@ -98,7 +98,7 @@ public sealed class EventTriggerResultTests
 			.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenPredicateIsNull_ForEventArgs_ShouldThrowArgumentNullException()
 	{
 		CustomEventWithParametersClass<string> sut = new();
@@ -113,7 +113,7 @@ public sealed class EventTriggerResultTests
 			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenPredicateIsNull_ForParameter_ShouldThrowArgumentNullException()
 	{
 		CustomEventWithParametersClass<string> sut = new();
@@ -128,7 +128,7 @@ public sealed class EventTriggerResultTests
 			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenPredicateIsNull_ForParameter_WithPosition_ShouldThrowArgumentNullException()
 	{
 		CustomEventWithParametersClass<string> sut = new();
@@ -143,7 +143,7 @@ public sealed class EventTriggerResultTests
 			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenPredicateIsNull_ForSender_ShouldThrowArgumentNullException()
 	{
 		CustomEventWithParametersClass<string> sut = new();
@@ -158,7 +158,7 @@ public sealed class EventTriggerResultTests
 			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithMultipleMatchingParameters_PredicateChecksForAnyOne()
 	{
 		CustomEventWithParametersClass<string, int, string> sut = new();
@@ -176,12 +176,12 @@ public sealed class EventTriggerResultTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Theory]
-	[InlineData(0, false)]
-	[InlineData(1, true)]
-	[InlineData(2, false)]
-	[InlineData(3, true)]
-	[InlineData(4, true)]
+	[Test]
+	[Arguments(0, false)]
+	[Arguments(1, true)]
+	[Arguments(2, false)]
+	[Arguments(3, true)]
+	[Arguments(4, true)]
 	public async Task WithPosition_ShouldConsiderPosition(int position, bool expectFailure)
 	{
 		CustomEventWithParametersClass<string, string, string> sut = new();
@@ -196,7 +196,7 @@ public sealed class EventTriggerResultTests
 						.Triggered(nameof(CustomEventWithParametersClass<string, string, string>.CustomEvent)))
 				.WithParameter<string>(" with my parameter", position, s => s == "foo");
 
-		await That(Act).Throws<XunitException>().OnlyIf(expectFailure)
+		await That(Act).Throws<FailException>().OnlyIf(expectFailure)
 			.WithMessage("""
 			             Expected that recording
 			             has recorded the CustomEvent event on sut with my parameter at least once,

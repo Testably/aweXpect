@@ -10,7 +10,7 @@ public sealed partial class ThatSpan
 	{
 		public sealed class Utf8Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSpanIsInvalidUtf8_ShouldFail()
 			{
 				byte[] subject = [0x31, 0xFF, 0x32,];
@@ -19,7 +19,7 @@ public sealed partial class ThatSpan
 					=> await That(subject.AsSpan()).IsParsableInto<int>();
 
 #if NET10_0_OR_GREATER
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject.AsSpan()
 					             is parsable into int,
@@ -27,7 +27,7 @@ public sealed partial class ThatSpan
 					               Input string was not in a correct format.
 					             """);
 #else
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject.AsSpan()
 					              is parsable into int,
@@ -37,7 +37,7 @@ public sealed partial class ThatSpan
 #endif
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSpanIsNotParsable_ShouldFail()
 			{
 				byte[] subject = "abc"u8.ToArray();
@@ -45,7 +45,7 @@ public sealed partial class ThatSpan
 				async Task Act()
 					=> await That(subject.AsSpan()).IsParsableInto<int>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject.AsSpan()
 					             is parsable into int,
@@ -56,7 +56,7 @@ public sealed partial class ThatSpan
 					.Because("the exception of the parser tells why the span is not parsable");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSpanIsParsable_ShouldSucceed()
 			{
 				byte[] subject = "42"u8.ToArray();
@@ -67,9 +67,9 @@ public sealed partial class ThatSpan
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("-12.34", "de-AT")]
-			[InlineData("-12,34", "en-US")]
+			[Test]
+			[Arguments("-12.34", "de-AT")]
+			[Arguments("-12,34", "en-US")]
 			public async Task WithFormatProvider_WhenFormatDoesNotMatch_ShouldFail(string subjectString,
 				string cultureName)
 			{
@@ -79,7 +79,7 @@ public sealed partial class ThatSpan
 				async Task Act()
 					=> await That(subject.AsSpan()).IsParsableInto<uint>(formatProvider);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject.AsSpan()
 					              is parsable into uint using {cultureName},
@@ -88,9 +88,9 @@ public sealed partial class ThatSpan
 					              """);
 			}
 
-			[Theory]
-			[InlineData("12,34", "de-AT")]
-			[InlineData("12.34", "en-US")]
+			[Test]
+			[Arguments("12,34", "de-AT")]
+			[Arguments("12.34", "en-US")]
 			public async Task WithFormatProvider_WhenFormatMatches_ShouldSucceed(string subjectString,
 				string cultureName)
 			{
@@ -106,7 +106,7 @@ public sealed partial class ThatSpan
 
 		public sealed class Utf8WhichTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSpanIsNotParsable_ShouldFail()
 			{
 				byte[] subject = "abc"u8.ToArray();
@@ -114,7 +114,7 @@ public sealed partial class ThatSpan
 				async Task Act()
 					=> await That(subject.AsSpan()).IsParsableInto<double>().Which.IsLessThan(10.0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject.AsSpan()
 					             is parsable into double that is less than 10.0,
@@ -123,7 +123,7 @@ public sealed partial class ThatSpan
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSpanIsParsable_ShouldSucceed()
 			{
 				async Task Act()
@@ -132,9 +132,9 @@ public sealed partial class ThatSpan
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("12,34", "de-AT")]
-			[InlineData("12.34", "en-US")]
+			[Test]
+			[Arguments("12,34", "de-AT")]
+			[Arguments("12.34", "en-US")]
 			public async Task WithFormatProvider_ShouldBeUsed(string subject, string cultureName)
 			{
 				IFormatProvider formatProvider = new CultureInfo(cultureName);

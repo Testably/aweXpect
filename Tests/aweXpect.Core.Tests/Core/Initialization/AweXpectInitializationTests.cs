@@ -7,7 +7,7 @@ namespace aweXpect.Core.Tests.Core.Initialization;
 public sealed class AweXpectInitializationTests
 {
 #if !NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task DetectFramework_WhenAllFrameworksAreNotAvailable_ShouldReturnNull()
 	{
 		ITestFrameworkAdapter? result = AweXpectInitialization.DetectFramework([typeof(UnavailableFrameworkAdapter),]);
@@ -15,7 +15,7 @@ public sealed class AweXpectInitializationTests
 		await That(result).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task DetectFramework_WhenFrameworkAdapterThrows_ShouldThrowInvalidOperationException()
 	{
 		void Act() => AweXpectInitialization.DetectFramework([typeof(IncorrectFrameworkAdapter),]);
@@ -25,14 +25,14 @@ public sealed class AweXpectInitializationTests
 				$"Could not instantiate test framework AweXpectInitializationTests.{nameof(IncorrectFrameworkAdapter)}.");
 	}
 
-	[Theory]
-	[InlineData("System", "exact framework assembly name")]
-	[InlineData("System.Net.Http", "sub-name of an excluded prefix")]
-	[InlineData("Microsoft.Extensions.Logging")]
-	[InlineData("netstandard")]
-	[InlineData("WindowsBase")]
-	[InlineData("xunit.core")]
-	[InlineData("DynamicProxyGenAssembly2")]
+	[Test]
+	[Arguments("System", "exact framework assembly name")]
+	[Arguments("System.Net.Http", "sub-name of an excluded prefix")]
+	[Arguments("Microsoft.Extensions.Logging")]
+	[Arguments("netstandard")]
+	[Arguments("WindowsBase")]
+	[Arguments("xunit.core")]
+	[Arguments("DynamicProxyGenAssembly2")]
 	public async Task IsAssemblyNameIncluded_WhenExcludedByDefault_ShouldReturnFalse(string assemblyName, string? because = null)
 	{
 		bool included = AweXpectInitialization.IsAssemblyNameIncluded(assemblyName);
@@ -40,11 +40,11 @@ public sealed class AweXpectInitializationTests
 		await That(included).IsEqualTo(false).Because(because);
 	}
 
-	[Theory]
-	[InlineData("Systemics", "shares the \"System\" prefix, but not at a name boundary")]
-	[InlineData("Microsoftish", "shares the \"Microsoft\" prefix, but not at a name boundary")]
-	[InlineData("WindowsBaseExtensions", "shares the \"WindowsBase\" prefix, but not at a name boundary")]
-	[InlineData("MyCompany.Product")]
+	[Test]
+	[Arguments("Systemics", "shares the \"System\" prefix, but not at a name boundary")]
+	[Arguments("Microsoftish", "shares the \"Microsoft\" prefix, but not at a name boundary")]
+	[Arguments("WindowsBaseExtensions", "shares the \"WindowsBase\" prefix, but not at a name boundary")]
+	[Arguments("MyCompany.Product")]
 	public async Task IsAssemblyNameIncluded_WhenNotExcluded_ShouldReturnTrue(string assemblyName, string? because = null)
 	{
 		bool included = AweXpectInitialization.IsAssemblyNameIncluded(assemblyName);
@@ -52,9 +52,9 @@ public sealed class AweXpectInitializationTests
 		await That(included).IsEqualTo(true).Because(because);
 	}
 
-	[Theory]
-	[InlineData(null)]
-	[InlineData("")]
+	[Test]
+	[Arguments(null)]
+	[Arguments("")]
 	public async Task IsAssemblyNameIncluded_WithoutName_ShouldReturnFalse(string? assemblyName)
 	{
 		bool included = AweXpectInitialization.IsAssemblyNameIncluded(assemblyName);
@@ -63,7 +63,7 @@ public sealed class AweXpectInitializationTests
 	}
 #endif
 
-	[Fact]
+	[Test]
 	public async Task DetectTestFramework_WhenAdapterIsRegistered_ShouldReturnRegisteredAdapter()
 	{
 		TestFrameworkRegistry.Registration registration = new();
@@ -77,7 +77,7 @@ public sealed class AweXpectInitializationTests
 	}
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task DetectTestFramework_WhenNothingIsRegistered_ShouldReturnTheFallback()
 	{
 		TestFrameworkRegistry.Registration registration = new();
@@ -88,7 +88,7 @@ public sealed class AweXpectInitializationTests
 			.Because("the generated adapter registers itself, so no adapter is available without a registration");
 	}
 #else
-	[Fact]
+	[Test]
 	public async Task DetectTestFramework_WhenNothingIsRegistered_ShouldScanTheLoadedAssemblies()
 	{
 		TestFrameworkRegistry.Registration registration = new();

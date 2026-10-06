@@ -17,6 +17,8 @@ namespace aweXpect.Generators.Tests;
 ///     them. Here the comparison itself says for every candidate type how it is compared, and the generator is
 ///     held to that answer.
 /// </summary>
+[Explicit]
+[Category(TestCategories.Slow)]
 public sealed class ComparisonTypeParityTests
 {
 	/// <remarks>
@@ -44,7 +46,7 @@ public sealed class ComparisonTypeParityTests
 	private static readonly Lazy<GeneratorRunner.GeneratorResult> ByMembers = new(()
 		=> Run(Candidates.Where(type => !IsComparedByValue(type))));
 
-	[Fact]
+	[Test]
 	public async Task Candidates_ShouldCoverEveryRuleOfTheComparison()
 	{
 		Type[] expected =
@@ -67,7 +69,7 @@ public sealed class ComparisonTypeParityTests
 			.Because("a rule of the comparison that no candidate represents is not held against the generator");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TypesComparedByMembers_ShouldBeRegistered()
 	{
 		HashSet<string> registered = [..Keys(ByMembers.Value.Generated),];
@@ -82,7 +84,7 @@ public sealed class ComparisonTypeParityTests
 			.Because("the comparison reads the members of a type the generator takes for compared by value by reflection, which fails when trimmed");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TypesComparedByValue_ShouldNotBeRegistered()
 	{
 		IEnumerable<string> registered = Keys(ByValue.Value.Generated)

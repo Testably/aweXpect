@@ -8,7 +8,7 @@ public sealed partial class ThatDelegate
 		{
 			public sealed class ContainingTests
 			{
-				[Fact]
+				[Test]
 				public async Task CanCompareCaseInsensitive()
 				{
 					string message = "_FOO_BAR";
@@ -23,7 +23,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldCompareCaseSensitive()
 				{
 					string message = "FOO";
@@ -35,7 +35,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws()
 							.WithMessage().Containing("foo");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that Delegate
 						             throws an exception with message containing "foo",
@@ -46,7 +46,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIgnorePrecedingText()
 				{
 					string message = "some text before foo";
@@ -61,7 +61,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIgnoreSucceedingText()
 				{
 					string message = "foo and some other text";
@@ -76,7 +76,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIncludeExceptionType()
 				{
 					string message = "FOO";
@@ -87,7 +87,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws<CustomException>()
 							.WithMessage().Containing("foo");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that Delegate
 						             throws a ThatDelegate.CustomException with message containing "foo",
@@ -98,8 +98,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenAwaited_ShouldReturnThrownException(string message)
 				{
 					Exception exception =
@@ -112,7 +112,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMessagesAreDifferent_ShouldFail()
 				{
 					string actual = "expected actual text";
@@ -122,7 +122,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithMessage().Containing(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with message containing "expected other text",
@@ -136,7 +136,7 @@ public sealed partial class ThatDelegate
 
 			public sealed class EndingWithTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenMessageDoesNotEndWithExpected_ShouldFail()
 				{
 					Action action = () => throw new CustomException("foo and some other text");
@@ -144,7 +144,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithMessage().EndingWith("foo");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with message ending with "foo",
@@ -158,7 +158,7 @@ public sealed partial class ThatDelegate
 
 			public sealed class EqualToTests
 			{
-				[Fact]
+				[Test]
 				public async Task CanCompareCaseInsensitive()
 				{
 					string message = "FOO";
@@ -173,7 +173,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task CanUseWildcardCheck()
 				{
 					string message = "foo-bar";
@@ -188,7 +188,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMessagesAreDifferent_ShouldFail()
 				{
 					string actual = "actual text";
@@ -198,7 +198,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithMessage().EqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with message equal to "expected other text",
@@ -217,7 +217,7 @@ public sealed partial class ThatDelegate
 
 			public sealed class NotContainingTests
 			{
-				[Fact]
+				[Test]
 				public async Task CanCompareCaseInsensitive()
 				{
 					string message = "_FOO_BAR";
@@ -229,7 +229,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws()
 							.WithMessage().NotContaining("foo").IgnoringCase();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that Delegate
 						             throws an exception with message not containing "foo" ignoring case,
@@ -240,7 +240,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldCompareCaseSensitive()
 				{
 					string message = "FOO";
@@ -255,8 +255,8 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenAwaited_ShouldReturnThrownException(string message)
 				{
 					Exception exception =
@@ -269,7 +269,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMessagesAreDifferent_ShouldSucceed()
 				{
 					string actual = "expected actual text";
@@ -282,7 +282,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTextIsPrecededByOtherText_ShouldFail()
 				{
 					string message = "some text before foo";
@@ -294,7 +294,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws()
 							.WithMessage().NotContaining("foo");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that Delegate
 						             throws an exception with message not containing "foo",
@@ -308,7 +308,7 @@ public sealed partial class ThatDelegate
 
 			public sealed class NotEndingWithTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenMessageEndsWithUnexpected_ShouldFail()
 				{
 					Action action = () => throw new CustomException("some text before foo");
@@ -316,7 +316,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithMessage().NotEndingWith("foo");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with message not ending with "foo",
@@ -330,7 +330,7 @@ public sealed partial class ThatDelegate
 
 			public sealed class NotEqualToTests
 			{
-				[Fact]
+				[Test]
 				public async Task CanCompareCaseInsensitive()
 				{
 					string message = "FOO";
@@ -342,7 +342,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws()
 							.WithMessage().NotEqualTo("foo").IgnoringCase();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that Delegate
 						             throws an exception with message not equal to "foo" ignoring case,
@@ -353,7 +353,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task CanUseWildcardCheck()
 				{
 					string message = "foo-bar";
@@ -365,7 +365,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws()
 							.WithMessage().NotEqualTo("foo*").AsWildcard();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that Delegate
 						             throws an exception with message not matching "foo*",
@@ -376,7 +376,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldCompareCaseSensitive()
 				{
 					string message = "FOO";
@@ -391,8 +391,8 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenAwaited_ShouldReturnThrownException(string message)
 				{
 					Exception exception =
@@ -405,7 +405,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMessagesAreDifferent_ShouldSucceed()
 				{
 					string actual = "actual text";
@@ -421,7 +421,7 @@ public sealed partial class ThatDelegate
 
 			public sealed class NotStartingWithTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenMessageStartsWithUnexpected_ShouldFail()
 				{
 					Action action = () => throw new CustomException("foo and some other text");
@@ -429,7 +429,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithMessage().NotStartingWith("foo");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with message not starting with "foo",
@@ -443,7 +443,7 @@ public sealed partial class ThatDelegate
 
 			public sealed class StartingWithTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenMessageDoesNotStartWithExpected_ShouldFail()
 				{
 					Action action = () => throw new CustomException("some text before foo");
@@ -451,7 +451,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithMessage().StartingWith("foo");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with message starting with "foo",
@@ -465,7 +465,7 @@ public sealed partial class ThatDelegate
 
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task CanCompareCaseInsensitive()
 				{
 					string message = "FOO";
@@ -480,7 +480,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task CanUseWildcardCheck()
 				{
 					string message = "foo-bar";
@@ -495,7 +495,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldCompareCaseSensitive()
 				{
 					string message = "FOO";
@@ -507,7 +507,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws()
 							.WithMessage("foo");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that Delegate
 						             throws an exception with message equal to "foo",
@@ -522,7 +522,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldIncludeExceptionType()
 				{
 					string message = "FOO";
@@ -533,7 +533,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws<CustomException>()
 							.WithMessage("foo");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that Delegate
 						             throws a ThatDelegate.CustomException with message equal to "foo",
@@ -548,8 +548,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenAwaited_ShouldReturnThrownException(string message)
 				{
 					Exception exception =
@@ -562,7 +562,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
 					Action action = () => throw new CustomException("foo");
@@ -570,7 +570,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithMessage(null);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with message equal to <null>,
@@ -582,7 +582,7 @@ public sealed partial class ThatDelegate
 						.Because("only a message of null matches, like for HasMessage(null)");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenMessagesAreDifferent_ShouldFail()
 				{
 					string actual = "actual text";
@@ -592,7 +592,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithMessage(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with message equal to "expected other text",
@@ -607,7 +607,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeDoesNotMatch_ShouldOnlyReportTheType()
 				{
 					Action action = () => throw new OtherException("bar");
@@ -615,7 +615,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws<CustomException>().WithMessage("foo");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws a ThatDelegate.CustomException with message equal to "foo",
@@ -624,7 +624,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeDoesNotMatch_WithThrowsExactly_ShouldOnlyReportTheType()
 				{
 					Action action = () => throw new OtherException("bar");
@@ -632,7 +632,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).ThrowsExactly<CustomException>().WithMessage("foo");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws exactly a ThatDelegate.CustomException with message equal to "foo",
@@ -642,7 +642,7 @@ public sealed partial class ThatDelegate
 						.Because("a message mismatch of an exception of another type does not explain the failure");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeDoesNotMatch_WithThrowsExactlyType_ShouldOnlyReportTheType()
 				{
 					Action action = () => throw new OtherException("bar");
@@ -650,7 +650,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).ThrowsExactly(typeof(CustomException)).WithMessage("foo");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws exactly a ThatDelegate.CustomException with message equal to "foo",
@@ -660,7 +660,7 @@ public sealed partial class ThatDelegate
 						.Because("a message mismatch of an exception of another type does not explain the failure");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeDoesNotMatch_WithThrowsType_ShouldOnlyReportTheType()
 				{
 					Action action = () => throw new OtherException("bar");
@@ -668,7 +668,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws(typeof(CustomException)).WithMessage("foo");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws a ThatDelegate.CustomException with message equal to "foo",

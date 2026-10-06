@@ -1,0 +1,20 @@
+<Project>
+
+	<Import Project="$(MSBuildThisFileDirectory)/../../Directory.Build.props"
+			Condition="Exists('$(MSBuildThisFileDirectory)/../../Directory.Build.props')"/>
+
+	<!--
+	    The API tests run on NUnit through VSTest, unlike the unit tests next to them, so they do not share the
+	    settings of `Tests/Directory.Build.props`.
+	-->
+	<PropertyGroup>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+		<NoWarn>701;1702;CA1845;S2699</NoWarn>
+		<WarningsAsErrors>$(WarningsAsErrors);CS8620</WarningsAsErrors>
+	</PropertyGroup>
+
+</Project>

@@ -10,7 +10,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenComparerIsNull_ShouldThrowArgumentNullException()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -23,7 +23,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("The 'comparer' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreNotSortedCorrectly_ShouldFail()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 1, 2, 3, 1,]);
@@ -31,7 +31,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order,
@@ -42,7 +42,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreSortedCorrectly_ShouldSucceed()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -53,7 +53,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable<int>? subject = null;
@@ -61,7 +61,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order,
@@ -72,7 +72,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenComparerIsNull_ShouldThrowArgumentNullException()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -85,7 +85,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("The 'comparer' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreNotSortedCorrectly_ShouldSucceed()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 1, 2, 3, 1,]);
@@ -96,7 +96,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreSortedCorrectly_ShouldFail()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -104,7 +104,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsInAscendingOrder());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not in ascending order,
@@ -118,7 +118,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class StringTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldNotIgnoreCasing()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "A",]);
@@ -126,7 +126,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order,
@@ -141,7 +141,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldUseCustomComparer()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "A",]);
@@ -152,7 +152,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparerThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("comparer failed");
@@ -161,7 +161,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder().Using(new ThrowingComparer(exception));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order using ThatEnumerable.IsInAscendingOrder.ThrowingComparer,
@@ -179,7 +179,7 @@ public sealed partial class ThatEnumerable
 					.Because("a comparer that throws fails the expectation instead of aborting its evaluation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreNotSortedCorrectly_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c", "a",]);
@@ -187,7 +187,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order,
@@ -204,7 +204,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreSortedCorrectly_ShouldSucceed()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
@@ -215,7 +215,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreTypedAsObjects_ShouldCompareThemOrdinally()
 			{
 				IEnumerable<object> subject = ToEnumerable<object>(["a", "B",]);
@@ -223,7 +223,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order,
@@ -239,7 +239,7 @@ public sealed partial class ThatEnumerable
 					.Because("strings are ordered ordinally, whatever the item type of the collection");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable<string>? subject = null;
@@ -247,7 +247,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order,
@@ -258,7 +258,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class MemberTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreNotSortedCorrectly_ShouldFail()
 			{
 				IEnumerable<MyIntClass> subject = ToEnumerable([1, 1, 2, 3, 1,], x => new MyIntClass(x));
@@ -266,7 +266,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder(x => x.Value);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order by x => x.Value,
@@ -294,7 +294,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreSortedCorrectly_ShouldSucceed()
 			{
 				IEnumerable<MyIntClass> subject = ToEnumerable([1, 2, 3,], x => new MyIntClass(x));
@@ -305,7 +305,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberAccessorIsNull_ShouldThrowArgumentNullException()
 			{
 				IEnumerable<MyIntClass> subject = ToEnumerable([1, 2, 3,], x => new MyIntClass(x));
@@ -318,7 +318,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberSelectorThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("selector failed");
@@ -327,7 +327,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder(x => x.Value == 2 ? throw exception : x.Value);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order by x => x.Value == 2 ? throw exception : x.Value,
@@ -352,7 +352,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class NegatedMemberTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreNotSortedCorrectly_ShouldSucceed()
 			{
 				IEnumerable<MyIntClass> subject = ToEnumerable([1, 1, 2, 3, 1,], x => new MyIntClass(x));
@@ -363,7 +363,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreSortedCorrectly_ShouldFail()
 			{
 				IEnumerable<MyIntClass> subject = ToEnumerable([1, 2, 3,], x => new MyIntClass(x));
@@ -371,7 +371,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsInAscendingOrder(x => x.Value));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not in ascending order by x => x.Value,
@@ -392,7 +392,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberAccessorIsNull_ShouldThrowArgumentNullException()
 			{
 				IEnumerable<MyIntClass> subject = ToEnumerable([1, 2, 3,], x => new MyIntClass(x));
@@ -406,7 +406,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberSelectorThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("selector failed");
@@ -416,7 +416,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.IsInAscendingOrder(x => x.Value == 2 ? throw exception : x.Value));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not in ascending order by x => x.Value == 2 ? throw exception : x.Value,
@@ -441,7 +441,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class StringMemberTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldNotIgnoreCasing()
 			{
 				IEnumerable<MyStringClass> subject = ToEnumerable(["a", "A",], x => new MyStringClass(x));
@@ -449,7 +449,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder(x => x.Value);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order by x => x.Value,
@@ -468,7 +468,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldUseCustomComparer()
 			{
 				IEnumerable<MyStringClass> subject = ToEnumerable(["a", "A",], x => new MyStringClass(x));
@@ -480,7 +480,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreNotSortedCorrectly_ShouldFail()
 			{
 				IEnumerable<MyStringClass> subject = ToEnumerable(["a", "b", "c", "a",], x => new MyStringClass(x));
@@ -488,7 +488,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder(x => x.Value);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is in ascending order by x => x.Value,
@@ -513,7 +513,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsAreSortedCorrectly_ShouldSucceed()
 			{
 				IEnumerable<MyStringClass> subject = ToEnumerable(["a", "b", "c",], x => new MyStringClass(x));

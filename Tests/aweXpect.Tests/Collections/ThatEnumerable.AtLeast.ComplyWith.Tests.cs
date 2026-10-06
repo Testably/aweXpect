@@ -6,7 +6,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class ComplyWithTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAtLeastOneItemMatches_ShouldSucceed()
 			{
 				int[] subject = [1, 2, 3, 4, 5,];
@@ -17,7 +17,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsUseWhose_ShouldIncludeMemberInExpectation()
 			{
 				MyClass[] subject = [new(1), new(2),];
@@ -25,7 +25,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).AtLeast(2).ComplyWith(x => x.Whose(o => o.Value, v => v.IsEqualTo(1)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Value is equal to 1 for at least 2 items,
@@ -54,7 +54,7 @@ public sealed partial class ThatEnumerable
 					.Because("the member text must survive the node tree rendering");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoItemsMatch_ShouldFail()
 			{
 				int[] subject = [1, 2, 3, 4, 5,];
@@ -62,7 +62,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).AtLeast(1).ComplyWith(it => it.IsEqualTo(99));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 99 for at least one item,
@@ -73,7 +73,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				int[]? subject = null;
@@ -81,7 +81,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).AtLeast(1).ComplyWith(it => it.IsEqualTo(3));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 3 for at least one item,
@@ -92,7 +92,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class NegatedComplyWithTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAtLeastTheMinimumComplies_ShouldFail()
 			{
 				int[] subject = [1, 2, 3, 4, 5,];
@@ -101,7 +101,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.AtLeast(2).ComplyWith(x => x.IsGreaterThan(2)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 2 for fewer than 2 items,

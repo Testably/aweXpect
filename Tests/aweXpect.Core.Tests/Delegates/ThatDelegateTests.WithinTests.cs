@@ -11,7 +11,7 @@ public sealed partial class ThatDelegateTests
 {
 	public sealed class WithinTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenContinuingWithAndOrOr_ShouldNotBeOffered()
 		{
 			Type[] continuations = typeof(ThatDelegateThrows<Exception>).GetMethods()
@@ -28,7 +28,7 @@ public sealed partial class ThatDelegateTests
 				.Because("Within limits the whole Throws expectation and must not read like a further condition");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenDelegateExceedsTheDuration_ShouldCancelTheCancellationToken()
 		{
 			TimeSpan delay = 30.Seconds();
@@ -44,7 +44,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(@delegate).Throws<MyException>().Within(50.Milliseconds());
 
 			sw.Start();
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that @delegate
 				             throws a MyException within 0:00.050,
@@ -57,7 +57,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the elapsed duration must cancel the token instead of awaiting the delegate");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutIsANamedArgument_ShouldSucceed()
 		{
 			Action @delegate = () => throw new MyException();

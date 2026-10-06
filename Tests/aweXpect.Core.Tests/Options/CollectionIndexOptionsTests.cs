@@ -4,7 +4,7 @@ namespace aweXpect.Core.Tests.Options;
 
 public class CollectionIndexOptionsTests
 {
-	[Fact]
+	[Test]
 	public async Task AtIndex_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
 	{
 		CollectionIndexOptions sut = new();
@@ -16,7 +16,7 @@ public class CollectionIndexOptionsTests
 			.WithMessage("AtIndex cannot be specified more than once.");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AtIndexFromEnd_ShouldMatchTheIndexCountedFromTheEnd()
 	{
 		CollectionIndexOptions sut = new();
@@ -28,7 +28,7 @@ public class CollectionIndexOptionsTests
 			.Whose(match => match.MatchesIndex(3, 5), it => it.IsTrue());
 	}
 
-	[Fact]
+	[Test]
 	public async Task AtIndexFromEnd_WhenAtIndexIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		CollectionIndexOptions sut = new();
@@ -40,7 +40,7 @@ public class CollectionIndexOptionsTests
 			.WithMessage("AtIndexFromEnd cannot be combined with AtIndex.");
 	}
 
-	[Fact]
+	[Test]
 	public async Task DefaultMatch_FromEnd_ShouldThrowNotSupportedException()
 	{
 		CollectionIndexOptions sut = new();
@@ -53,7 +53,7 @@ public class CollectionIndexOptionsTests
 			.WithMessage("You have to specify a dedicated index condition first.");
 	}
 
-	[Fact]
+	[Test]
 	public async Task DefaultMatch_ShouldHaveExpectedReturnValues()
 	{
 		CollectionIndexOptions sut = new();
@@ -62,11 +62,11 @@ public class CollectionIndexOptionsTests
 		await That(sut.Match.OnlySingleIndex()).IsFalse();
 	}
 
-	[Theory]
-	[InlineData(0)]
-	[InlineData(1)]
-	[InlineData(3)]
-	[InlineData(-1)]
+	[Test]
+	[Arguments(0)]
+	[Arguments(1)]
+	[Arguments(3)]
+	[Arguments(-1)]
 	public async Task DefaultMatch_ShouldMatchAllIndices(int index)
 	{
 		CollectionIndexOptions sut = new();

@@ -8,13 +8,13 @@ public partial class ConstraintResultTests
 {
 	public sealed class WithNotNullValueTests
 	{
-		[Theory]
-		[InlineData("normal", "negated", Outcome.Success, false, "normal")]
-		[InlineData("normal", "negated", Outcome.Failure, false, "normal")]
-		[InlineData("normal", "negated", Outcome.Undecided, false, "normal")]
-		[InlineData("normal", "negated", Outcome.Success, true, "negated")]
-		[InlineData("normal", "negated", Outcome.Failure, true, "negated")]
-		[InlineData("normal", "negated", Outcome.Undecided, true, "negated")]
+		[Test]
+		[Arguments("normal", "negated", Outcome.Success, false, "normal")]
+		[Arguments("normal", "negated", Outcome.Failure, false, "normal")]
+		[Arguments("normal", "negated", Outcome.Undecided, false, "normal")]
+		[Arguments("normal", "negated", Outcome.Success, true, "negated")]
+		[Arguments("normal", "negated", Outcome.Failure, true, "negated")]
+		[Arguments("normal", "negated", Outcome.Undecided, true, "negated")]
 		public async Task AppendExpectation_ShouldUseExpectedText(
 			string expectation, string negatedExpectation, Outcome outcome, bool invert, string expectedText)
 		{
@@ -32,13 +32,13 @@ public partial class ConstraintResultTests
 			await That(expectationText).IsEqualTo(expectedText);
 		}
 
-		[Theory]
-		[InlineData("normal", "negated", "undecided", Outcome.Success, false, "normal")]
-		[InlineData("normal", "negated", "undecided", Outcome.Failure, false, "normal")]
-		[InlineData("normal", "negated", "undecided", Outcome.Undecided, false, "undecided")]
-		[InlineData("normal", "negated", "undecided", Outcome.Success, true, "negated")]
-		[InlineData("normal", "negated", "undecided", Outcome.Failure, true, "negated")]
-		[InlineData("normal", "negated", "undecided", Outcome.Undecided, true, "undecided")]
+		[Test]
+		[Arguments("normal", "negated", "undecided", Outcome.Success, false, "normal")]
+		[Arguments("normal", "negated", "undecided", Outcome.Failure, false, "normal")]
+		[Arguments("normal", "negated", "undecided", Outcome.Undecided, false, "undecided")]
+		[Arguments("normal", "negated", "undecided", Outcome.Success, true, "negated")]
+		[Arguments("normal", "negated", "undecided", Outcome.Failure, true, "negated")]
+		[Arguments("normal", "negated", "undecided", Outcome.Undecided, true, "undecided")]
 		public async Task AppendResult_ShouldUseExpectedText(
 			string result, string negatedResult, string undecidedResult, Outcome outcome, bool invert,
 			string expectedText)
@@ -58,13 +58,13 @@ public partial class ConstraintResultTests
 			await That(resultText).IsEqualTo(expectedText);
 		}
 
-		[Theory]
-		[InlineData("normal", "negated", "undecided", Outcome.Success, false)]
-		[InlineData("normal", "negated", "undecided", Outcome.Failure, false)]
-		[InlineData("normal", "negated", "undecided", Outcome.Undecided, false)]
-		[InlineData("normal", "negated", "undecided", Outcome.Success, true)]
-		[InlineData("normal", "negated", "undecided", Outcome.Failure, true)]
-		[InlineData("normal", "negated", "undecided", Outcome.Undecided, true)]
+		[Test]
+		[Arguments("normal", "negated", "undecided", Outcome.Success, false)]
+		[Arguments("normal", "negated", "undecided", Outcome.Failure, false)]
+		[Arguments("normal", "negated", "undecided", Outcome.Undecided, false)]
+		[Arguments("normal", "negated", "undecided", Outcome.Success, true)]
+		[Arguments("normal", "negated", "undecided", Outcome.Failure, true)]
+		[Arguments("normal", "negated", "undecided", Outcome.Undecided, true)]
 		public async Task AppendResult_WhenActualIsNull_ShouldUseIsNullText(
 			string result, string negatedResult, string undecidedResult, Outcome outcome, bool invert)
 		{
@@ -84,7 +84,7 @@ public partial class ConstraintResultTests
 			await That(resultText).IsEqualTo("my dummy was <null>");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AppendResult_WhenUndecided_ShouldAppendDefaultResultText()
 		{
 			ConstraintResult sut = new MyWithNotNullValueDummy<int?>(0);
@@ -95,7 +95,7 @@ public partial class ConstraintResultTests
 			await That(resultText).IsEqualTo("it could not be verified, because the evaluation was already canceled");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AppendResult_WhenUndecided_ShouldStartWithIt()
 		{
 			ConstraintResult sut = new MyWithNotNullValueDummy<int?>(0, it: "Items");
@@ -106,10 +106,10 @@ public partial class ConstraintResultTests
 			await That(resultText).IsEqualTo("Items could not be verified, because the evaluation was already canceled");
 		}
 
-		[Theory]
-		[InlineData(Outcome.Success, Outcome.Failure)]
-		[InlineData(Outcome.Failure, Outcome.Success)]
-		[InlineData(Outcome.Undecided, Outcome.Undecided)]
+		[Test]
+		[Arguments(Outcome.Success, Outcome.Failure)]
+		[Arguments(Outcome.Failure, Outcome.Success)]
+		[Arguments(Outcome.Undecided, Outcome.Undecided)]
 		public async Task Invert_ShouldFlipSetOutcome(Outcome initialOutcome, Outcome expectedResult)
 		{
 			MyWithNotNullValueDummy<int?> sut = new(0, outcome: initialOutcome);
@@ -121,7 +121,7 @@ public partial class ConstraintResultTests
 			await That(sut.IsNegatedSet).IsTrue();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NormalCase_ShouldNotHaveNegatedGrammarsFlagAndSuccessOutcome()
 		{
 			ConstraintResult sut = new MyWithNotNullValueDummy<int?>(0, grammars: ExpectationGrammars.Plural);
@@ -130,7 +130,7 @@ public partial class ConstraintResultTests
 			await That(sut.Grammars).DoesNotHaveFlag(ExpectationGrammars.Negated);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldInitializeOutcomeToUndecided()
 		{
 			ConstraintResult sut = new MyWithNotNullValueDummy<int?>(0);
@@ -138,7 +138,7 @@ public partial class ConstraintResultTests
 			await That(sut.Outcome).IsEqualTo(Outcome.Undecided);
 		}
 
-		[Fact]
+		[Test]
 		public async Task TryGetStoredValue_ShouldReturnTrueWhenTypeIsSubtypeAndValueIsNull()
 		{
 			ConstraintResult sut = new MyWithNotNullValueDummy<MyDerivedClass?>(null);
@@ -149,7 +149,7 @@ public partial class ConstraintResultTests
 			await That(value).IsNull();
 		}
 
-		[Fact]
+		[Test]
 		public async Task TryGetStoredValue_ShouldReturnTrueWhenTypeMatchesAndValueIsNull()
 		{
 			ConstraintResult sut = new MyWithNotNullValueDummy<MyDerivedClass?>(null);
@@ -160,7 +160,7 @@ public partial class ConstraintResultTests
 			await That(value).IsNull();
 		}
 
-		[Fact]
+		[Test]
 		public async Task TryGetValue_ShouldExtractValueWhenTypeMatches()
 		{
 			ConstraintResult sut = new MyWithNotNullValueDummy<int?>(42);
@@ -171,7 +171,7 @@ public partial class ConstraintResultTests
 			await That(value).IsEqualTo(42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task TryGetValue_ShouldReturnFalseWhenTypeDoesNotMatch()
 		{
 			ConstraintResult sut = new MyWithNotNullValueDummy<int?>(42);
@@ -182,7 +182,7 @@ public partial class ConstraintResultTests
 			await That(value).IsNull();
 		}
 
-		[Fact]
+		[Test]
 		public async Task TryGetValue_ShouldReturnFalseWhenTypeIsSupertype()
 		{
 			ConstraintResult sut = new MyWithNotNullValueDummy<MyBaseClass?>(new MyBaseClass());
@@ -193,7 +193,7 @@ public partial class ConstraintResultTests
 			await That(value).IsNull();
 		}
 
-		[Fact]
+		[Test]
 		public async Task TryGetValue_ShouldReturnFalseWhenValueIsNull()
 		{
 			ConstraintResult sut = new MyWithNotNullValueDummy<MyDerivedClass?>(null);
@@ -204,7 +204,7 @@ public partial class ConstraintResultTests
 			await That(value).IsNull();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenActualIsNull_ShouldHaveFailureBothWaysOutcome()
 		{
 			ConstraintResult sut = new MyWithNotNullValueDummy<int?>(null, outcome: Outcome.Success);
@@ -212,7 +212,7 @@ public partial class ConstraintResultTests
 			await That(sut.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenActualIsNull_WhenInverted_ShouldHaveFailureBothWaysOutcome()
 		{
 			ConstraintResult sut = new MyWithNotNullValueDummy<int?>(null, outcome: Outcome.Success);
@@ -223,7 +223,7 @@ public partial class ConstraintResultTests
 				.Because("negating an expectation that cannot be answered does not make it true");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenInverted_ShouldHaveNegatedGrammarsFlagAndSuccessOutcome()
 		{
 			ConstraintResult sut = new MyWithNotNullValueDummy<int?>(0, grammars: ExpectationGrammars.Nested);

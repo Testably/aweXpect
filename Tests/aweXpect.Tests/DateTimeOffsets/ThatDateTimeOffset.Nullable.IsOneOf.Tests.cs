@@ -12,7 +12,7 @@ public sealed partial class ThatDateTimeOffset
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 				{
 					DateTimeOffset? subject = CurrentTime();
@@ -22,7 +22,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).IsOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is one of expected,
@@ -34,7 +34,7 @@ public sealed partial class ThatDateTimeOffset
 						.Because("the empty check must not consume the values needed for the comparison and the message");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					DateTimeOffset? subject = CurrentTime();
@@ -49,7 +49,7 @@ public sealed partial class ThatDateTimeOffset
 						.Because("an empty set is rejected when the expectation is built, before it is awaited");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					DateTimeOffset? subject = CurrentTime();
@@ -63,7 +63,7 @@ public sealed partial class ThatDateTimeOffset
 						.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedOnlyContainsNull_ShouldFail()
 				{
 					DateTimeOffset? subject = CurrentTime();
@@ -72,7 +72,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).IsOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is one of expected,
@@ -83,7 +83,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					DateTimeOffset? subject = CurrentTime();
@@ -98,7 +98,7 @@ public sealed partial class ThatDateTimeOffset
 						.Because("an empty set is rejected when the expectation is built, before it is awaited");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					DateTimeOffset? subject = CurrentTime();
@@ -112,7 +112,7 @@ public sealed partial class ThatDateTimeOffset
 						.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsContained_ShouldSucceed()
 				{
 					DateTimeOffset? subject = CurrentTime();
@@ -124,7 +124,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsDifferent_ShouldFail()
 				{
 					DateTimeOffset? subject = CurrentTime();
@@ -133,7 +133,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).IsOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is one of expected,
@@ -144,7 +144,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					DateTimeOffset? subject = null;
@@ -153,7 +153,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).IsOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is one of expected,
@@ -164,7 +164,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndExpectedCanOnlyBeEnumeratedOnce_ShouldSucceed()
 				{
 					DateTimeOffset? subject = null;
@@ -178,7 +178,7 @@ public sealed partial class ThatDateTimeOffset
 						.Because("the empty check must not consume the value needed for the comparison");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndExpectedContainsNull_ShouldSucceed()
 				{
 					DateTimeOffset? subject = null;
@@ -190,7 +190,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					DateTimeOffset? subject = null;
@@ -205,7 +205,7 @@ public sealed partial class ThatDateTimeOffset
 						.Because("missing expected values are an argument error, independent of the subject");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					DateTimeOffset? subject = null;
@@ -220,7 +220,7 @@ public sealed partial class ThatDateTimeOffset
 						.Because("a null list of expected values is an argument error, independent of the subject");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndNullableExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					DateTimeOffset? subject = null;
@@ -235,7 +235,7 @@ public sealed partial class ThatDateTimeOffset
 						.Because("missing expected values are an argument error, independent of the subject");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndNullableExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					DateTimeOffset? subject = null;
@@ -250,11 +250,11 @@ public sealed partial class ThatDateTimeOffset
 						.Because("a null list of expected values is an argument error, independent of the subject");
 				}
 
-				[Theory]
-				[InlineData(3, 2, true)]
-				[InlineData(5, 3, true)]
-				[InlineData(2, 2, false)]
-				[InlineData(0, 2, false)]
+				[Test]
+				[Arguments(3, 2, true)]
+				[Arguments(5, 3, true)]
+				[Arguments(2, 2, false)]
+				[Arguments(0, 2, false)]
 				public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail(
 					int actualDifference, int tolerance, bool expectToThrow)
 				{
@@ -266,7 +266,7 @@ public sealed partial class ThatDateTimeOffset
 							.Within(tolerance.Seconds())
 							.Because("we want to test the failure");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.OnlyIf(expectToThrow)
 						.WithMessage($"""
 						              Expected that subject

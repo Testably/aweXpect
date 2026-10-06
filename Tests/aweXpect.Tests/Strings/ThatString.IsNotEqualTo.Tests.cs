@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenActualAndUnexpectedAreNull_ShouldFail()
 			{
 				string? subject = null;
@@ -15,7 +15,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to <null>,
@@ -23,7 +23,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_ShouldSucceed()
 			{
 				string? subject = null;
@@ -35,7 +35,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCustomMatchTypeComparesByValue_AndBothAreNull_ShouldFail()
 			{
 				string? subject = null;
@@ -43,7 +43,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(null).AsCaseFolded();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not case-folded equal to <null>,
@@ -51,7 +51,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCustomMatchTypeComparesByValue_AndOnlySubjectIsNull_ShouldSucceed()
 			{
 				string? subject = null;
@@ -63,7 +63,7 @@ public sealed partial class ThatString
 					.Because("a custom match type that does not inspect the subject compares a null subject as a value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringHasMissingLeadingWhitespace_ShouldSucceed()
 			{
 				string subject = "some text";
@@ -75,7 +75,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringHasMissingTrailingWhitespace_ShouldSucceed()
 			{
 				string subject = "some text";
@@ -87,7 +87,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringHasUnexpectedLeadingWhitespace_ShouldSucceed()
 			{
 				string subject = " \t some text";
@@ -99,7 +99,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringHasUnexpectedTrailingWhitespace_ShouldSucceed()
 			{
 				string subject = "some text \t ";
@@ -111,7 +111,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringIsLonger_ShouldSucceed()
 			{
 				string subject = "some text without out";
@@ -123,7 +123,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringIsShorter_ShouldSucceed()
 			{
 				string subject = "some text with";
@@ -135,7 +135,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringsAreTheSame_ShouldFail()
 			{
 				string subject = "foo";
@@ -144,7 +144,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to "foo",
@@ -152,7 +152,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringsDiffer_ShouldSucceed()
 			{
 				string subject = "actual text";
@@ -164,7 +164,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsNull_ShouldSucceed()
 			{
 				string subject = "some text";
@@ -179,19 +179,19 @@ public sealed partial class ThatString
 
 		public sealed class IgnoringLeadingWhiteSpaceTests
 		{
-			[Theory]
-			[InlineAutoData(" foo", "foo")]
-			[InlineAutoData("foo", " foo")]
-			[InlineAutoData("\tfoo", "\nfoo")]
-			[InlineAutoData("\r\nfoo", "foo")]
-			[InlineAutoData("foo", "\tfoo")]
+			[Test]
+			[AutoArguments(" foo", "foo")]
+			[AutoArguments("foo", " foo")]
+			[AutoArguments("\tfoo", "\nfoo")]
+			[AutoArguments("\r\nfoo", "foo")]
+			[AutoArguments("foo", "\tfoo")]
 			public async Task WhenStringsDifferOnlyInLeadingWhiteSpace_ShouldFail(
 				string subject, string unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).IgnoringLeadingWhiteSpace();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to "{unexpected.DisplayWhitespace()}" ignoring leading whitespace,
@@ -202,20 +202,20 @@ public sealed partial class ThatString
 
 		public sealed class IgnoringNewlineStyleTests
 		{
-			[Theory]
-			[InlineAutoData("foo\nbar", "foo\rbar")]
-			[InlineAutoData("foo\rbar", "foo\nbar")]
-			[InlineAutoData("foo\nbar", "foo\r\nbar")]
-			[InlineAutoData("foo\rbar", "foo\r\nbar")]
-			[InlineAutoData("foo\r\nbar", "foo\nbar")]
-			[InlineAutoData("foo\r\nbar", "foo\rbar")]
+			[Test]
+			[AutoArguments("foo\nbar", "foo\rbar")]
+			[AutoArguments("foo\rbar", "foo\nbar")]
+			[AutoArguments("foo\nbar", "foo\r\nbar")]
+			[AutoArguments("foo\rbar", "foo\r\nbar")]
+			[AutoArguments("foo\r\nbar", "foo\nbar")]
+			[AutoArguments("foo\r\nbar", "foo\rbar")]
 			public async Task WhenStringsDifferOnlyInNewlineStyle_ShouldFail(
 				string subject, string unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).IgnoringNewlineStyle();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to "{unexpected.DisplayWhitespace()}" ignoring newline style,
@@ -226,19 +226,19 @@ public sealed partial class ThatString
 
 		public sealed class IgnoringTrailingWhiteSpaceTests
 		{
-			[Theory]
-			[InlineAutoData("foo ", "foo")]
-			[InlineAutoData("foo", "foo ")]
-			[InlineAutoData("foo\t", "foo\n")]
-			[InlineAutoData("foo\r\n", "foo")]
-			[InlineAutoData("foo", "foo\t")]
+			[Test]
+			[AutoArguments("foo ", "foo")]
+			[AutoArguments("foo", "foo ")]
+			[AutoArguments("foo\t", "foo\n")]
+			[AutoArguments("foo\r\n", "foo")]
+			[AutoArguments("foo", "foo\t")]
 			public async Task WhenStringsDifferOnlyInTrailingWhiteSpace_ShouldFail(
 				string subject, string unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).IgnoringTrailingWhiteSpace();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to "{unexpected.DisplayWhitespace()}" ignoring trailing whitespace,

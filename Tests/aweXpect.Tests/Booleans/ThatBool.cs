@@ -5,7 +5,7 @@ public sealed partial class ThatBool
 {
 	public sealed class Tests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenFalse_ShouldFail()
 		{
 			bool subject = false;
@@ -13,7 +13,7 @@ public sealed partial class ThatBool
 			async Task Act()
 				=> await That(subject);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is True,
@@ -21,7 +21,7 @@ public sealed partial class ThatBool
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenFalse_ShouldFailWithDescriptiveMessage()
 		{
 			bool subject = false;
@@ -29,7 +29,7 @@ public sealed partial class ThatBool
 			async Task Act()
 				=> await That(subject).Because("we want to test the failure");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is True, because we want to test the failure,
@@ -37,7 +37,7 @@ public sealed partial class ThatBool
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTrue_ShouldSucceed()
 		{
 			bool subject = true;

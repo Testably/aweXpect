@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -14,7 +14,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLines(lines => lines.HasCount(0));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has lines that have exactly 0 items,
@@ -22,7 +22,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsAreEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "Starting up\nReady";
@@ -35,7 +35,7 @@ public sealed partial class ThatString
 					.And.WithParamName("expectations");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "Starting up\nReady";
@@ -48,7 +48,7 @@ public sealed partial class ThatString
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLineIsIndented_ShouldSucceedWhenIndentationIsIgnored()
 			{
 				string subject = "Starting up\n    Connected to database\n        Ready";
@@ -59,7 +59,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLineIsMissing_ShouldFail()
 			{
 				string subject = "Starting up\nConnected to database\nReady";
@@ -67,7 +67,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLines(lines => lines.Contains("Error"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has lines that contain "Error" at least once,
@@ -82,7 +82,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLinesContainTheExpectedLine_ShouldSucceed()
 			{
 				string subject = "Starting up\nConnected to database\nReady";
@@ -93,7 +93,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLinesDoNotContainTheUnexpectedLine_ShouldSucceed()
 			{
 				string subject = "Starting up\nConnected to database\nReady";
@@ -104,7 +104,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLinesSatisfyTheCondition_ShouldSucceed()
 			{
 				string subject = "one\ntwo\nthree";
@@ -115,7 +115,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsEmpty_ShouldHaveNoLines()
 			{
 				string subject = "";
@@ -126,7 +126,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubstringMatchesButLineDoesNot_ShouldFail()
 			{
 				string subject = "Ready steady go";
@@ -134,7 +134,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLines(lines => lines.Contains("Ready"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has lines that contain "Ready" at least once,
@@ -147,18 +147,18 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Theory]
-			[InlineData("", 0)]
-			[InlineData("a", 1)]
-			[InlineData("a\nb", 2)]
-			[InlineData("a\nb\n", 2)]
-			[InlineData("a\nb\n\n", 3)]
-			[InlineData("\n", 1)]
-			[InlineData("a\r\n", 1)]
-			[InlineData("a\r\nb\r\n", 2)]
-			[InlineData("\r\n", 1)]
-			[InlineData("\r", 1)]
-			[InlineData("one\r\ntwo\nthree\rfour", 4)]
+			[Test]
+			[Arguments("", 0)]
+			[Arguments("a", 1)]
+			[Arguments("a\nb", 2)]
+			[Arguments("a\nb\n", 2)]
+			[Arguments("a\nb\n\n", 3)]
+			[Arguments("\n", 1)]
+			[Arguments("a\r\n", 1)]
+			[Arguments("a\r\nb\r\n", 2)]
+			[Arguments("\r\n", 1)]
+			[Arguments("\r", 1)]
+			[Arguments("one\r\ntwo\nthree\rfour", 4)]
 			public async Task WhenUsingDifferentNewlineStyles_ShouldSplitConsistently(string subject, int lineCount)
 			{
 				async Task Act()
@@ -167,7 +167,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUsingMixedNewlineStyles_ShouldReturnTheLines()
 			{
 				string subject = "one\r\ntwo\nthree\rfour";
@@ -181,7 +181,7 @@ public sealed partial class ThatString
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -190,7 +190,7 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotComplyWith(it => it
 						.HasLines(lines => lines.Contains("Ready")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have lines that contain "Ready" at least once,
@@ -198,7 +198,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLinesDoNotSatisfyTheExpectations_ShouldSucceed()
 			{
 				string subject = "Starting up\nReady";
@@ -210,7 +210,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLinesSatisfyTheExpectations_ShouldFail()
 			{
 				string subject = "Starting up\nReady";
@@ -219,7 +219,7 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotComplyWith(it => it
 						.HasLines(lines => lines.Contains("Ready")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have lines that contain "Ready" at least once,

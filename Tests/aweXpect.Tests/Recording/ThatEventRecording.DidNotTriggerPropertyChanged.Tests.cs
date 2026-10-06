@@ -10,7 +10,7 @@ public sealed partial class ThatEventRecording
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNotTriggered_ShouldSucceed()
 			{
 				PropertyChangedClass sut = new();
@@ -22,7 +22,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsTriggered_ShouldFail()
 			{
 				PropertyChangedClass sut = new()
@@ -36,7 +36,7 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording).DidNotTriggerPropertyChanged();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has never recorded the PropertyChanged event on sut,
@@ -50,7 +50,7 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEventRecording<PropertyChangedClass>? subject = null;
@@ -58,7 +58,7 @@ public sealed partial class ThatEventRecording
 				async Task Act()
 					=> await That(subject!).DidNotTriggerPropertyChanged();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has never recorded the PropertyChanged event,
@@ -69,7 +69,7 @@ public sealed partial class ThatEventRecording
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNotTriggered_ShouldFail()
 			{
 				PropertyChangedClass sut = new();
@@ -78,7 +78,7 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording).DoesNotComplyWith(n => n.DidNotTriggerPropertyChanged());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut at least once,
@@ -86,7 +86,7 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsTriggered_ShouldSucceed()
 			{
 				PropertyChangedClass sut = new()

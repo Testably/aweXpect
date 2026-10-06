@@ -46,21 +46,21 @@ public sealed partial class TypeMetadataGeneratorTests
 		                             }
 		                             """;
 
-		[Theory]
-		[InlineData("System.DateOnly")]
-		[InlineData("System.TimeOnly")]
-		[InlineData("System.Net.IPAddress")]
-		[InlineData("Models.CustomAddress")]
-		[InlineData("System.Text.Encoding")]
-		[InlineData("System.Text.UTF8Encoding")]
-		[InlineData("Models.CustomEncoding")]
-		[InlineData("System.Text.RegularExpressions.Regex")]
-		[InlineData("Models.CustomRegex")]
-		[InlineData("System.Text.Json.JsonElement")]
-		[InlineData("System.Text.Json.Nodes.JsonNode")]
-		[InlineData("System.Text.Json.Nodes.JsonObject")]
-		[InlineData("System.Text.Json.Nodes.JsonArray")]
-		[InlineData("System.Text.Json.Nodes.JsonValue")]
+		[Test]
+		[Arguments("System.DateOnly")]
+		[Arguments("System.TimeOnly")]
+		[Arguments("System.Net.IPAddress")]
+		[Arguments("Models.CustomAddress")]
+		[Arguments("System.Text.Encoding")]
+		[Arguments("System.Text.UTF8Encoding")]
+		[Arguments("Models.CustomEncoding")]
+		[Arguments("System.Text.RegularExpressions.Regex")]
+		[Arguments("Models.CustomRegex")]
+		[Arguments("System.Text.Json.JsonElement")]
+		[Arguments("System.Text.Json.Nodes.JsonNode")]
+		[Arguments("System.Text.Json.Nodes.JsonObject")]
+		[Arguments("System.Text.Json.Nodes.JsonArray")]
+		[Arguments("System.Text.Json.Nodes.JsonValue")]
 		public async Task WhenGenerateMetadataAttributeNamesATypeComparedByValue_ShouldReportADiagnostic(string type)
 		{
 			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -74,7 +74,7 @@ public sealed partial class TypeMetadataGeneratorTests
 				.Because("the comparison never reads the members of the type, so naming it has no effect");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenMemberHasTheNameOfATypeComparedByValue_ShouldRegisterItsMembers()
 		{
 			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -89,21 +89,21 @@ public sealed partial class TypeMetadataGeneratorTests
 				.Because("only the type in its own namespace is compared by value");
 		}
 
-		[Theory]
-		[InlineData("System.DateOnly")]
-		[InlineData("System.TimeOnly")]
-		[InlineData("System.Net.IPAddress")]
-		[InlineData("Models.CustomAddress")]
-		[InlineData("System.Text.Encoding")]
-		[InlineData("System.Text.UTF8Encoding")]
-		[InlineData("Models.CustomEncoding")]
-		[InlineData("System.Text.RegularExpressions.Regex")]
-		[InlineData("Models.CustomRegex")]
-		[InlineData("System.Text.Json.JsonElement")]
-		[InlineData("System.Text.Json.Nodes.JsonNode")]
-		[InlineData("System.Text.Json.Nodes.JsonObject")]
-		[InlineData("System.Text.Json.Nodes.JsonArray")]
-		[InlineData("System.Text.Json.Nodes.JsonValue")]
+		[Test]
+		[Arguments("System.DateOnly")]
+		[Arguments("System.TimeOnly")]
+		[Arguments("System.Net.IPAddress")]
+		[Arguments("Models.CustomAddress")]
+		[Arguments("System.Text.Encoding")]
+		[Arguments("System.Text.UTF8Encoding")]
+		[Arguments("Models.CustomEncoding")]
+		[Arguments("System.Text.RegularExpressions.Regex")]
+		[Arguments("Models.CustomRegex")]
+		[Arguments("System.Text.Json.JsonElement")]
+		[Arguments("System.Text.Json.Nodes.JsonNode")]
+		[Arguments("System.Text.Json.Nodes.JsonObject")]
+		[Arguments("System.Text.Json.Nodes.JsonArray")]
+		[Arguments("System.Text.Json.Nodes.JsonValue")]
 		public async Task WhenMemberIsComparedByValue_ShouldOnlyRegisterTheOwner(string type)
 		{
 			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -120,7 +120,7 @@ public sealed partial class TypeMetadataGeneratorTests
 				.Contains($"RegisterProperty<global::Models.Owner, global::{type}>(\"Value\", o => o.Value);");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenMembersAreADateAndAnAddress_ShouldOnlyRegisterTheOwner()
 		{
 			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(

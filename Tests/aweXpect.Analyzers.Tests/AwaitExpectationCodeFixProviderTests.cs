@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Testing;
-using Xunit;
 using Verifier = aweXpect.Analyzers.Tests.Verifiers.CSharpCodeFixVerifier<aweXpect.Analyzers.AwaitExpectationAnalyzer,
 	aweXpect.Analyzers.CodeFixers.AwaitExpectationCodeFixProvider>;
 
@@ -11,7 +10,7 @@ namespace aweXpect.Analyzers.Tests;
 
 public class AwaitExpectationCodeFixProviderTests
 {
-	[Fact]
+	[Test]
 	public async Task ShouldAddAsyncBeforeThePartialModifier() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -45,7 +44,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldApplyCodeFix() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -74,7 +73,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldAwaitAGenericTaskReturnedFromTheMethod() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -107,7 +106,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldAwaitTheDiscardedExpectation() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -136,7 +135,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldAwaitTheExpectationInsteadOfAssigningItToAnUnusedLocal() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -165,7 +164,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldAwaitTheExpectationReturnedFromAnAsyncLambda() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -192,7 +191,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldAwaitTheExpectationInTopLevelStatements()
 	{
 		Verifier.Test test = new()
@@ -224,7 +223,7 @@ public class AwaitExpectationCodeFixProviderTests
 		await test.RunAsync(CancellationToken.None);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldFixAllExpectationsInTheSameMethod() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -255,7 +254,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldFixAllExpectationsInTheSameTaskMethod() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -287,7 +286,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldKeepCommentsWhenChangingTheReturnType() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -326,7 +325,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldKeepCommentsWhenRemovingTheFinalReturn() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -356,7 +355,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldKeepReturnValueInContainingMethod() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -387,7 +386,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldMakeAReferencedTaskMethodAsync() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -429,7 +428,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldMakeContainingMethodAsync() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -458,7 +457,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldMakeExpressionBodiedMethodAsync() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -479,7 +478,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldMakeTheLocalFunctionAsyncInsteadOfTheContainingMethod() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -514,7 +513,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotChangeTheContainingMethodOfAnAsyncLambda() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -551,7 +550,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixForABareGetAwaiter() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -578,7 +577,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixForACalledLocalFunction() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using aweXpect;
@@ -613,7 +612,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixForAConditionalMethod() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Diagnostics;
@@ -642,7 +641,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixForAMethodCalledInAnotherFile()
 	{
 		const string caller = """
@@ -683,7 +682,7 @@ public class AwaitExpectationCodeFixProviderTests
 		await test.RunAsync(CancellationToken.None);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixForAMethodCalledSynchronously() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using aweXpect;
@@ -718,7 +717,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixForAMethodThatImplementsAnInterfaceOfADerivedClass()
 	{
 		const string source = """
@@ -760,7 +759,7 @@ public class AwaitExpectationCodeFixProviderTests
 		await test.RunAsync(CancellationToken.None);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixForAMethodUsedAsAMethodGroup() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -801,7 +800,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixForANonAsyncLambda() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -834,7 +833,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixForAPartialVoidMethod() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using aweXpect;
@@ -863,7 +862,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixForATaskMethodReturningAnotherTask() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -892,7 +891,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixInALockStatement() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using aweXpect;
@@ -927,7 +926,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixInFunctionsWithRefLocals()
 	{
 		// A `ref` or `ref struct` local can't be preserved across an `await`.
@@ -982,7 +981,7 @@ public class AwaitExpectationCodeFixProviderTests
 		await VerifyNoCodeFixAsync(source, LanguageVersion.Preview);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixInMembersThatCannotBeAsync() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -1083,7 +1082,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixInUnsafeCode()
 	{
 		const string source = """
@@ -1130,7 +1129,7 @@ public class AwaitExpectationCodeFixProviderTests
 		await VerifyNoCodeFixAsync(source, LanguageVersion.Preview);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixWhenARefStructLocalIsDeclaredBeforeCSharp13()
 		=> await VerifyNoCodeFixAsync(
 			"""
@@ -1149,7 +1148,7 @@ public class AwaitExpectationCodeFixProviderTests
 			""",
 			LanguageVersion.CSharp12);
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixWhenTheReturnTypeIsDictatedByABaseType() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -1206,7 +1205,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotWrapAQualifiedGenericTaskAgain() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using aweXpect;
@@ -1233,7 +1232,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldQualifyTaskWhenItsNamespaceIsNotImported() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using aweXpect;
@@ -1258,7 +1257,7 @@ public class AwaitExpectationCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldReplaceCompletedTaskReturnsWhenMakingTheMethodAsync() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;

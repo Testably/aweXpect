@@ -10,7 +10,7 @@ public sealed partial class ThatDictionary
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenKeyExistsWithADifferentValue_ShouldSucceed()
 			{
 				IDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -22,7 +22,7 @@ public sealed partial class ThatDictionary
 					.Because("the entry for key a holds another value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeyIsMissing_ShouldSucceed()
 			{
 				IDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -34,7 +34,7 @@ public sealed partial class ThatDictionary
 					.Because("the dictionary has no entry for key b");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPairExists_ShouldFail()
 			{
 				IDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -42,7 +42,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContain(new KeyValuePair<string, int>("a", 1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain ["a"] = 1,
@@ -53,7 +53,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IDictionary<string, int>? subject = null;
@@ -61,7 +61,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContain(new KeyValuePair<string, int>("a", 1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain ["a"] = 1,
@@ -69,7 +69,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheDefaultTimeToleranceIsSet_ShouldApplyIt()
 			{
 				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
@@ -83,7 +83,7 @@ public sealed partial class ThatDictionary
 					await That(subject).DoesNotContain(1, unexpected);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not contain [1] = {Formatter.Format(unexpected)} ± 0:01,
@@ -98,7 +98,7 @@ public sealed partial class ThatDictionary
 
 		public sealed class KeyAndValueTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEntryExists_ShouldFail()
 			{
 				IDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -106,7 +106,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContain("a", 1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain ["a"] = 1,
@@ -117,7 +117,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeyIsMissing_ShouldSucceed()
 			{
 				IDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -129,7 +129,7 @@ public sealed partial class ThatDictionary
 					.Because("the key and value overload looks the entry up like the pair overload");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeyIsNull_ShouldThrowArgumentNullException()
 			{
 				Dictionary<string, int> subject = new()
@@ -149,7 +149,7 @@ public sealed partial class ThatDictionary
 
 		public sealed class ComparerTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectUsesACaseInsensitiveComparer_ShouldLookTheKeyUpThroughIt()
 			{
 				IDictionary<string, int> subject =
@@ -158,7 +158,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContain(new KeyValuePair<string, int>("A", 1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain ["A"] = 1,
@@ -172,7 +172,7 @@ public sealed partial class ThatDictionary
 
 		public sealed class StringTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheValueDiffersOnlyInCase_WithIgnoringCase_ShouldFail()
 			{
 				Dictionary<int, string> subject = new() { [1] = "Let It Be", };
@@ -180,7 +180,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContain(1, "let it be").IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain [1] = "let it be" ignoring case,
@@ -193,7 +193,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheValueDiffersOnlyInCase_WithoutIgnoringCase_ShouldSucceed()
 			{
 				Dictionary<int, string> subject = new() { [1] = "Let It Be", };
@@ -207,7 +207,7 @@ public sealed partial class ThatDictionary
 
 		public sealed class WithinTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheValueLiesOutsideTheTolerance_ShouldSucceed()
 			{
 				Dictionary<string, double> subject = new() { ["a"] = 1.2, };
@@ -218,7 +218,7 @@ public sealed partial class ThatDictionary
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheValueLiesWithinTheTolerance_ShouldFail()
 			{
 				Dictionary<string, double> subject = new() { ["a"] = 1.05, };
@@ -226,7 +226,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContain("a", 1.0).Within(0.1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain ["a"] = 1.0 ± 0.1,
@@ -240,7 +240,7 @@ public sealed partial class ThatDictionary
 
 		public sealed class OverloadTests
 		{
-			[Fact]
+			[Test]
 			public async Task ForADictionary_ShouldKeepTheSubjectType()
 			{
 				Dictionary<string, int> subject = new() { { "a", 1 }, };
@@ -251,7 +251,7 @@ public sealed partial class ThatDictionary
 				await That(result).IsSameAs(subject);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForADictionary_WithKeyAndValue_ShouldKeepTheSubjectType()
 			{
 				Dictionary<string, int> subject = new() { { "a", 1 }, };
@@ -264,7 +264,7 @@ public sealed partial class ThatDictionary
 
 		public sealed class ThrowingSubjectTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheKeyComparerThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("comparer failed");
@@ -275,7 +275,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContain("a", 7);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain ["a"] = 7,
@@ -289,7 +289,7 @@ public sealed partial class ThatDictionary
 					.Because("a dictionary that answered nothing cannot prove the negation either");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheLookupThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("lookup failed");
@@ -299,7 +299,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).DoesNotContain("a", 7);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain ["a"] = 7,

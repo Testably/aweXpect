@@ -8,7 +8,7 @@ public sealed partial class ThatBool
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndExpectedAreNull_ShouldFail()
 				{
 					bool? subject = null;
@@ -17,7 +17,7 @@ public sealed partial class ThatBool
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not <null>,
@@ -25,13 +25,13 @@ public sealed partial class ThatBool
 						             """);
 				}
 
-				[Theory]
-				[InlineData(true, false)]
-				[InlineData(true, null)]
-				[InlineData(false, true)]
-				[InlineData(false, null)]
-				[InlineData(null, true)]
-				[InlineData(null, false)]
+				[Test]
+				[Arguments(true, false)]
+				[Arguments(true, null)]
+				[Arguments(false, true)]
+				[Arguments(false, null)]
+				[Arguments(null, true)]
+				[Arguments(null, false)]
 				public async Task WhenSubjectIsDifferent_ShouldSucceed(bool? subject, bool? unexpected)
 				{
 					async Task Act()
@@ -40,9 +40,9 @@ public sealed partial class ThatBool
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(true)]
-				[InlineData(false)]
+				[Test]
+				[Arguments(true)]
+				[Arguments(false)]
 				public async Task WhenSubjectIsTheSame_ShouldFail(bool? subject)
 				{
 					bool? unexpected = subject;
@@ -50,7 +50,7 @@ public sealed partial class ThatBool
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not {Formatter.Format(unexpected)},

@@ -8,7 +8,7 @@ namespace aweXpect.Internal.Tests.Results;
 
 public sealed class DidNotSignalResultTests
 {
-	[Fact]
+	[Test]
 	public async Task Generic_ShouldBeOptionsProvider_ForPredicateOptions()
 	{
 		SignalerOptions<int> options = new();
@@ -18,7 +18,7 @@ public sealed class DidNotSignalResultTests
 			.Whose(x => x.Options, it => it.IsSameAs(options));
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldBeOptionsProvider_ForPredicateOptions()
 	{
 		SignalerOptions options = new();

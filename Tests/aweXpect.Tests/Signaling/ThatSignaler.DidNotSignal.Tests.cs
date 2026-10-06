@@ -9,7 +9,7 @@ public sealed partial class ThatSignaler
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenCanceled_ShouldBeInconclusive()
 			{
 				Signaler signaler = new();
@@ -20,7 +20,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).DidNotSignal().WithCancellation(token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has never recorded the callback within 0:30,
@@ -29,7 +29,7 @@ public sealed partial class ThatSignaler
 					.Because("a cancellation ends the wait before the timeout, so it must not pass early");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggered_ShouldSucceed()
 			{
 				Signaler signaler = new();
@@ -40,7 +40,7 @@ public sealed partial class ThatSignaler
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_AfterAnEarlierItem_ShouldFail()
 			{
 				Signaler[] subject = [new(), null!,];
@@ -48,7 +48,7 @@ public sealed partial class ThatSignaler
 				async Task Act()
 					=> await That(subject).All().ComplyWith(s => s.DidNotSignal().Within(10.Milliseconds()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has never recorded the callback within 0:00.010 for all items,
@@ -63,7 +63,7 @@ public sealed partial class ThatSignaler
 					.Because("the signaler of an earlier item must not decide the outcome for a null item");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Signaler? subject = null;
@@ -71,7 +71,7 @@ public sealed partial class ThatSignaler
 				async Task Act()
 					=> await That(subject!).DidNotSignal();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has never recorded the callback,
@@ -79,7 +79,7 @@ public sealed partial class ThatSignaler
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutElapses_ShouldFail()
 			{
 				Signaler signaler = new();
@@ -87,7 +87,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).DidNotSignal().WithTimeout(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has never recorded the callback within 0:30,
@@ -97,7 +97,7 @@ public sealed partial class ThatSignaler
 					.Because("the timeout of the expectation ends the wait before the signaler timeout, so it must not pass early");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggered_ShouldFail()
 			{
 				Signaler signaler = new();
@@ -108,7 +108,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).DidNotSignal();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has never recorded the callback within 0:30,
@@ -119,7 +119,7 @@ public sealed partial class ThatSignaler
 
 		public sealed class WithParameterTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenCanceled_ShouldBeInconclusive()
 			{
 				Signaler<int> signaler = new();
@@ -130,7 +130,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).DidNotSignal().WithCancellation(token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has never recorded the callback within 0:30,
@@ -139,7 +139,7 @@ public sealed partial class ThatSignaler
 					.Because("a cancellation ends the wait before the timeout, so it must not pass early");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggered_ShouldSucceed()
 			{
 				Signaler<int> signaler = new();
@@ -150,7 +150,7 @@ public sealed partial class ThatSignaler
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Signaler<int>? subject = null;
@@ -158,7 +158,7 @@ public sealed partial class ThatSignaler
 				async Task Act()
 					=> await That(subject!).DidNotSignal();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has never recorded the callback,
@@ -166,7 +166,7 @@ public sealed partial class ThatSignaler
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutElapses_ShouldFail()
 			{
 				Signaler<int> signaler = new();
@@ -174,7 +174,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).DidNotSignal().WithTimeout(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has never recorded the callback within 0:30,
@@ -184,7 +184,7 @@ public sealed partial class ThatSignaler
 					.Because("the timeout of the expectation ends the wait before the signaler timeout, so it must not pass early");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggered_ShouldFail()
 			{
 				Signaler<int> signaler = new();
@@ -195,7 +195,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).DidNotSignal();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has never recorded the callback within 0:30,

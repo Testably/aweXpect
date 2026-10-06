@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Testing;
-using Xunit;
 using Verifier =
 	aweXpect.Analyzers.Tests.Verifiers.CSharpCodeFixVerifier<aweXpect.Analyzers.ValueTaskDelegateAnalyzer,
 		aweXpect.Analyzers.CodeFixers.ValueTaskDelegateCodeFixProvider>;
@@ -12,7 +11,7 @@ public class ValueTaskDelegateCodeFixProviderTests
 {
 	private const string AsTaskKey = nameof(Resources.aweXpect0007CodeFixTitle);
 
-	[Fact]
+	[Test]
 	public async Task ShouldAppendAsTaskToALambda() => await VerifyWithoutValueTaskOverloadsAsync(
 		"""
 		using System;
@@ -45,7 +44,7 @@ public class ValueTaskDelegateCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldAppendAsTaskToALambdaWithCancellationToken() => await VerifyWithoutValueTaskOverloadsAsync(
 		"""
 		using System;
@@ -80,7 +79,7 @@ public class ValueTaskDelegateCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldAppendAsTaskToEachReturnOfABlockLambda() => await VerifyWithoutValueTaskOverloadsAsync(
 		"""
 		using System;
@@ -131,7 +130,7 @@ public class ValueTaskDelegateCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldAppendAsTaskToEachReturnOfAnAnonymousMethod() => await VerifyWithoutValueTaskOverloadsAsync(
 		"""
 		using System;
@@ -164,7 +163,7 @@ public class ValueTaskDelegateCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixForAnAliasedReturnType() => await VerifyWithoutValueTaskOverloadsAsync(
 		"""
 		using System;
@@ -199,7 +198,7 @@ public class ValueTaskDelegateCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixForAnExplicitTypeArgument() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -233,7 +232,7 @@ public class ValueTaskDelegateCodeFixProviderTests
 		""",
 		AsTaskKey);
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixWhenAReturnedValueHasNoValueTaskType() => await VerifyWithoutValueTaskOverloadsAsync(
 		"""
 		using System;
@@ -282,7 +281,7 @@ public class ValueTaskDelegateCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotOfferAFixWhenTheParameterNameIsAlreadyUsed() => await VerifyWithoutValueTaskOverloadsAsync(
 		"""
 		using System;
@@ -317,7 +316,7 @@ public class ValueTaskDelegateCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldParenthesizeTheBodyOfALambda() => await VerifyWithoutValueTaskOverloadsAsync(
 		"""
 		using System;
@@ -350,7 +349,7 @@ public class ValueTaskDelegateCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldReplaceOnlyTheReturnTypeOfAnAsyncLambda() => await VerifyWithoutValueTaskOverloadsAsync(
 		"""
 		using System;
@@ -383,7 +382,7 @@ public class ValueTaskDelegateCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldReplaceTheExplicitGenericReturnTypeOfALambda() => await VerifyWithoutValueTaskOverloadsAsync(
 		"""
 		using System;
@@ -416,7 +415,7 @@ public class ValueTaskDelegateCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldReplaceTheExplicitReturnTypeOfALambda() => await VerifyWithoutValueTaskOverloadsAsync(
 		"""
 		using System;
@@ -449,7 +448,7 @@ public class ValueTaskDelegateCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldWrapAFuncVariableInALambda() => await VerifyWithoutValueTaskOverloadsAsync(
 		"""
 		using System;
@@ -482,7 +481,7 @@ public class ValueTaskDelegateCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldWrapAMethodGroupInALambda() => await VerifyWithoutValueTaskOverloadsAsync(
 		"""
 		using System;
@@ -515,7 +514,7 @@ public class ValueTaskDelegateCodeFixProviderTests
 		}
 		""");
 
-	[Fact]
+	[Test]
 	public async Task ShouldWrapAMethodGroupWithCancellationTokenInALambda() => await VerifyWithoutValueTaskOverloadsAsync(
 		"""
 		using System;

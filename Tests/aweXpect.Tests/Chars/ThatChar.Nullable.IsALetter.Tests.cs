@@ -8,14 +8,14 @@ public sealed partial class ThatChar
 		{
 			public sealed class Tests
 			{
-				[Theory]
-				[InlineData('a')]
-				[InlineData('d')]
-				[InlineData('z')]
-				[InlineData('A')]
-				[InlineData('M')]
-				[InlineData('Z')]
-				[InlineData('\u4E50')]
+				[Test]
+				[Arguments('a')]
+				[Arguments('d')]
+				[Arguments('z')]
+				[Arguments('A')]
+				[Arguments('M')]
+				[Arguments('Z')]
+				[Arguments('\u4E50')]
 				public async Task WhenSubjectIsALetter_ShouldSucceed(char? subject)
 				{
 					async Task Act()
@@ -24,20 +24,20 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData('\t')]
-				[InlineData('5')]
-				[InlineData('@')]
-				[InlineData('[')]
-				[InlineData(']')]
-				[InlineData('{')]
-				[InlineData('}')]
+				[Test]
+				[Arguments('\t')]
+				[Arguments('5')]
+				[Arguments('@')]
+				[Arguments('[')]
+				[Arguments(']')]
+				[Arguments('{')]
+				[Arguments('}')]
 				public async Task WhenSubjectIsNoLetter_ShouldFail(char? subject)
 				{
 					async Task Act()
 						=> await That(subject).IsALetter();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is a letter,
@@ -45,7 +45,7 @@ public sealed partial class ThatChar
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					char? subject = null;
@@ -53,7 +53,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).IsALetter();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is a letter,
@@ -64,20 +64,20 @@ public sealed partial class ThatChar
 
 			public sealed class NegatedTests
 			{
-				[Theory]
-				[InlineData('a')]
-				[InlineData('d')]
-				[InlineData('z')]
-				[InlineData('A')]
-				[InlineData('M')]
-				[InlineData('Z')]
-				[InlineData('\u4E50')]
+				[Test]
+				[Arguments('a')]
+				[Arguments('d')]
+				[Arguments('z')]
+				[Arguments('A')]
+				[Arguments('M')]
+				[Arguments('Z')]
+				[Arguments('\u4E50')]
 				public async Task WhenSubjectIsALetter_ShouldFail(char? subject)
 				{
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.IsALetter());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not a letter,
@@ -85,14 +85,14 @@ public sealed partial class ThatChar
 						              """);
 				}
 
-				[Theory]
-				[InlineData('\t')]
-				[InlineData('5')]
-				[InlineData('@')]
-				[InlineData('[')]
-				[InlineData(']')]
-				[InlineData('{')]
-				[InlineData('}')]
+				[Test]
+				[Arguments('\t')]
+				[Arguments('5')]
+				[Arguments('@')]
+				[Arguments('[')]
+				[Arguments(']')]
+				[Arguments('{')]
+				[Arguments('}')]
 				public async Task WhenSubjectIsNoLetter_ShouldSucceed(char? subject)
 				{
 					async Task Act()
@@ -101,7 +101,7 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					char? subject = null;
@@ -109,7 +109,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.IsALetter());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not a letter,

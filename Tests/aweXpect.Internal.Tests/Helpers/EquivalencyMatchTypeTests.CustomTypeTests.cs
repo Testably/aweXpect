@@ -9,7 +9,7 @@ public sealed partial class EquivalencyMatchTypeTests
 {
 	public sealed class CustomTypeTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenCustomOptionsAreRegisteredForABaseType_ShouldApplyThemToADerivedValue()
 		{
 			SomeWrapper actual = new(new SomeDerivedRecord([1, 2,]));
@@ -25,7 +25,7 @@ public sealed partial class EquivalencyMatchTypeTests
 				.Because("a member of an abstract type is always an instance of a derived type");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenPropertiesDiffer_IgnoreCollectionOrderOnlySetForOneProperty_ShouldFailForOtherProperty()
 		{
 			SomeRecord actual = new(new SomeCustomRecord([1, 2,]), new SomeOtherRecord([1, 2,]));
@@ -52,7 +52,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			                              """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenPropertiesDiffer_ShouldReturnFalse()
 		{
 			SomeRecord actual = new(new SomeCustomRecord([1, 2,]), new SomeOtherRecord([1, 2,]));
@@ -84,7 +84,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			                              """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenPropertiesDifferButIgnoreCollectionOrderIsSet_ShouldReturnTrue()
 		{
 			SomeRecord actual = new(new SomeCustomRecord([1, 2,]), new SomeOtherRecord([1, 2,]));

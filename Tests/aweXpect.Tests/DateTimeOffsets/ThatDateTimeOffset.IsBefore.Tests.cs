@@ -6,7 +6,7 @@ public sealed partial class ThatDateTimeOffset
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateTimeOffset subject = CurrentTime();
@@ -15,7 +15,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).IsBefore(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is before <null>,
@@ -23,7 +23,7 @@ public sealed partial class ThatDateTimeOffset
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedAreMaxValue_ShouldFail()
 			{
 				DateTimeOffset subject = DateTimeOffset.MaxValue;
@@ -32,7 +32,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).IsBefore(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is before 9999-12-31T23:59:59.9999999+00:00,
@@ -40,7 +40,7 @@ public sealed partial class ThatDateTimeOffset
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedAreMinValue_ShouldFail()
 			{
 				DateTimeOffset subject = DateTimeOffset.MinValue;
@@ -49,7 +49,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).IsBefore(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is before 0001-01-01T00:00:00.0000000+00:00,
@@ -57,7 +57,7 @@ public sealed partial class ThatDateTimeOffset
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsLater_ShouldFail()
 			{
 				DateTimeOffset subject = LaterTime();
@@ -66,7 +66,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).IsBefore(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is before {Formatter.Format(expected)},
@@ -74,7 +74,7 @@ public sealed partial class ThatDateTimeOffset
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsSame_ShouldFail()
 			{
 				DateTimeOffset subject = CurrentTime();
@@ -83,7 +83,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).IsBefore(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is before {Formatter.Format(expected)},
@@ -91,7 +91,7 @@ public sealed partial class ThatDateTimeOffset
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectsIsEarlier_ShouldSucceed()
 			{
 				DateTimeOffset subject = EarlierTime();
@@ -103,7 +103,7 @@ public sealed partial class ThatDateTimeOffset
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenNullableExpectedValueIsOutsideTheTolerance_ShouldFail()
 			{
 				DateTimeOffset subject = CurrentTime();
@@ -113,7 +113,7 @@ public sealed partial class ThatDateTimeOffset
 					=> await That(subject).IsBefore(expected)
 						.Within(3.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is before {Formatter.Format(expected)} ± 0:03,
@@ -121,7 +121,7 @@ public sealed partial class ThatDateTimeOffset
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenSubjectIsMinValue_ShouldNotOverflow()
 			{
 				DateTimeOffset subject = DateTimeOffset.MinValue;
@@ -135,7 +135,7 @@ public sealed partial class ThatDateTimeOffset
 					.Because("a widening tolerance must not make the assertion throw at the type limits");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail()
 			{
 				DateTimeOffset subject = LaterTime(3);
@@ -145,7 +145,7 @@ public sealed partial class ThatDateTimeOffset
 					=> await That(subject).IsBefore(expected)
 						.Within(3.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is before {Formatter.Format(expected)} ± 0:03,
@@ -153,7 +153,7 @@ public sealed partial class ThatDateTimeOffset
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenValuesAreWithinTheTolerance_ShouldSucceed()
 			{
 				DateTimeOffset subject = LaterTime(2);

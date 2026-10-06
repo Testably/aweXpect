@@ -6,11 +6,11 @@ public sealed partial class ThatNumber
 	{
 		public sealed class WithinTests
 		{
-			[Theory]
-			[InlineData((byte)1, (byte)2, (byte)8)]
-			[InlineData((byte)2, (byte)2, (byte)8)]
-			[InlineData((byte)8, (byte)2, (byte)8)]
-			[InlineData((byte)9, (byte)2, (byte)8)]
+			[Test]
+			[Arguments((byte)1, (byte)2, (byte)8)]
+			[Arguments((byte)2, (byte)2, (byte)8)]
+			[Arguments((byte)8, (byte)2, (byte)8)]
+			[Arguments((byte)9, (byte)2, (byte)8)]
 			public async Task ForByte_WhenInsideToleranceWidenedRange_ShouldSucceed(
 				byte subject, byte minimum, byte maximum)
 			{
@@ -20,16 +20,16 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((byte)0, (byte)2, (byte)8, "-2 from the minimum")]
-			[InlineData((byte)10, (byte)2, (byte)8, "2 from the maximum")]
+			[Test]
+			[Arguments((byte)0, (byte)2, (byte)8, "-2 from the minimum")]
+			[Arguments((byte)10, (byte)2, (byte)8, "2 from the maximum")]
 			public async Task ForByte_WhenOutsideToleranceWidenedRange_ShouldFail(
 				byte subject, byte minimum, byte maximum, string difference)
 			{
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum).Within(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(
 						$"""
 						 Expected that subject
@@ -38,9 +38,9 @@ public sealed partial class ThatNumber
 						 """);
 			}
 
-			[Theory]
-			[InlineData(11.9, 12.0, 14.0)]
-			[InlineData(14.1, 12.0, 14.0)]
+			[Test]
+			[Arguments(11.9, 12.0, 14.0)]
+			[Arguments(14.1, 12.0, 14.0)]
 			public async Task ForDecimal_WhenInsideTolerance_ShouldSucceed(
 				double subjectValue, double minimumValue, double maximumValue)
 			{
@@ -55,8 +55,8 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(11.0, 12.0, 14.0)]
+			[Test]
+			[Arguments(11.0, 12.0, 14.0)]
 			public async Task ForDecimal_WhenOutsideTolerance_ShouldFail(
 				double subjectValue, double minimumValue, double maximumValue)
 			{
@@ -68,7 +68,7 @@ public sealed partial class ThatNumber
 					=> await That(subject).IsBetween(minimum).And(maximum)
 						.Within(new decimal(0.1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(
 						$"""
 						 Expected that subject
@@ -77,8 +77,8 @@ public sealed partial class ThatNumber
 						 """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task
 				ForDecimal_WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException(
 					decimal subject)
@@ -94,9 +94,9 @@ public sealed partial class ThatNumber
 					.WithParamName("tolerance");
 			}
 
-			[Theory]
-			[InlineData(11.9, 12.0, 14.0)]
-			[InlineData(14.1, 12.0, 14.0)]
+			[Test]
+			[Arguments(11.9, 12.0, 14.0)]
+			[Arguments(14.1, 12.0, 14.0)]
 			public async Task ForDouble_WhenInsideTolerance_ShouldSucceed(
 				double subject, double minimum, double maximum)
 			{
@@ -106,7 +106,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenMinimumIsNaN_ShouldThrowArgumentOutOfRangeException()
 			{
 				double subject = 13.0;
@@ -121,15 +121,15 @@ public sealed partial class ThatNumber
 					.WithMessage("The minimum must not be NaN.").AsPrefix();
 			}
 
-			[Theory]
-			[InlineData(11.0, 12.0, 14.0)]
+			[Test]
+			[Arguments(11.0, 12.0, 14.0)]
 			public async Task ForDouble_WhenOutsideTolerance_ShouldFail(
 				double subject, double minimum, double maximum)
 			{
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum).Within(0.1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(
 						$"""
 						 Expected that subject
@@ -138,15 +138,15 @@ public sealed partial class ThatNumber
 						 """);
 			}
 
-			[Theory]
-			[InlineData(14.1, 12.0, 14.0)]
+			[Test]
+			[Arguments(14.1, 12.0, 14.0)]
 			public async Task ForDouble_WhenOutsideToleranceOnUpperBound_ShouldFail(
 				double subject, double minimum, double maximum)
 			{
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum).Within(0.05);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(
 						$"""
 						 Expected that subject
@@ -155,7 +155,7 @@ public sealed partial class ThatNumber
 						 """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
 			{
 				async Task Act()
@@ -167,9 +167,9 @@ public sealed partial class ThatNumber
 					.Because("NaN is not a negative tolerance, so it needs its own message");
 			}
 
-			[Theory]
-			[InlineData(11.9f, 12.0f, 14.0f)]
-			[InlineData(14.1f, 12.0f, 14.0f)]
+			[Test]
+			[Arguments(11.9f, 12.0f, 14.0f)]
+			[Arguments(14.1f, 12.0f, 14.0f)]
 			public async Task ForFloat_WhenInsideTolerance_ShouldSucceed(
 				float subject, float minimum, float maximum)
 			{
@@ -179,16 +179,16 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(11.0f, 12.0f, 14.0f, "-1.0 from the minimum")]
-			[InlineData(15.0f, 12.0f, 14.0f, "1.0 from the maximum")]
+			[Test]
+			[Arguments(11.0f, 12.0f, 14.0f, "-1.0 from the minimum")]
+			[Arguments(15.0f, 12.0f, 14.0f, "1.0 from the maximum")]
 			public async Task ForFloat_WhenOutsideToleranceWidenedRange_ShouldFail(
 				float subject, float minimum, float maximum, string difference)
 			{
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum).Within(0.1f);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(
 						$"""
 						 Expected that subject
@@ -197,11 +197,11 @@ public sealed partial class ThatNumber
 						 """);
 			}
 
-			[Theory]
-			[InlineData(1, 2, 8)]
-			[InlineData(2, 2, 8)]
-			[InlineData(8, 2, 8)]
-			[InlineData(9, 2, 8)]
+			[Test]
+			[Arguments(1, 2, 8)]
+			[Arguments(2, 2, 8)]
+			[Arguments(8, 2, 8)]
+			[Arguments(9, 2, 8)]
 			public async Task ForInt_WhenInsideToleranceWidenedRange_ShouldSucceed(
 				int subject, int minimum, int maximum)
 			{
@@ -211,16 +211,16 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(0, 2, 8, "-2 from the minimum")]
-			[InlineData(10, 2, 8, "2 from the maximum")]
+			[Test]
+			[Arguments(0, 2, 8, "-2 from the minimum")]
+			[Arguments(10, 2, 8, "2 from the maximum")]
 			public async Task ForInt_WhenOutsideToleranceWidenedRange_ShouldFail(
 				int subject, int minimum, int maximum, string difference)
 			{
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum).Within(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(
 						$"""
 						 Expected that subject
@@ -229,8 +229,8 @@ public sealed partial class ThatNumber
 						 """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task
 				ForInt_WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException(
 					int subject)
@@ -243,9 +243,9 @@ public sealed partial class ThatNumber
 					.WithParamName("tolerance");
 			}
 
-			[Theory]
-			[InlineData(1L, 2L, 8L)]
-			[InlineData(9L, 2L, 8L)]
+			[Test]
+			[Arguments(1L, 2L, 8L)]
+			[Arguments(9L, 2L, 8L)]
 			public async Task ForLong_WhenInsideToleranceWidenedRange_ShouldSucceed(
 				long subject, long minimum, long maximum)
 			{
@@ -255,16 +255,16 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(0L, 2L, 8L, "-2 from the minimum")]
-			[InlineData(10L, 2L, 8L, "2 from the maximum")]
+			[Test]
+			[Arguments(0L, 2L, 8L, "-2 from the minimum")]
+			[Arguments(10L, 2L, 8L, "2 from the maximum")]
 			public async Task ForLong_WhenOutsideToleranceWidenedRange_ShouldFail(
 				long subject, long minimum, long maximum, string difference)
 			{
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum).Within(1L);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(
 						$"""
 						 Expected that subject
@@ -273,9 +273,9 @@ public sealed partial class ThatNumber
 						 """);
 			}
 
-			[Theory]
-			[InlineData(1, 2, 8)]
-			[InlineData(9, 2, 8)]
+			[Test]
+			[Arguments(1, 2, 8)]
+			[Arguments(9, 2, 8)]
 			public async Task ForNullableInt_WhenInsideToleranceWidenedRange_ShouldSucceed(
 				int? subject, int? minimum, int? maximum)
 			{
@@ -285,7 +285,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableInt_WhenSubjectIsNull_ShouldFail()
 			{
 				int? subject = null;
@@ -295,7 +295,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum).Within(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is between 2 and 8 ± 1,
@@ -303,7 +303,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForSByte_WhenDifferenceWouldOverflow_ShouldFailWithoutThrowing()
 			{
 				sbyte subject = sbyte.MinValue;
@@ -313,7 +313,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsBetween(minimum).And(maximum).Within((sbyte)1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is between 0 and 127 ± 1,
@@ -322,16 +322,16 @@ public sealed partial class ThatNumber
 					.Because("the difference must not overflow the range of sbyte");
 			}
 
-			[Theory]
-			[InlineData(1, 2, 8, "-1 from the minimum")]
-			[InlineData(9, 2, 8, "1 from the maximum")]
+			[Test]
+			[Arguments(1, 2, 8, "-1 from the minimum")]
+			[Arguments(9, 2, 8, "1 from the maximum")]
 			public async Task IsNotBetween_ForInt_WhenInsideToleranceWidenedRange_ShouldFail(
 				int subject, int minimum, int maximum, string difference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotBetween(minimum).And(maximum).Within(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(
 						$"""
 						 Expected that subject
@@ -340,9 +340,9 @@ public sealed partial class ThatNumber
 						 """);
 			}
 
-			[Theory]
-			[InlineData(0, 2, 8)]
-			[InlineData(10, 2, 8)]
+			[Test]
+			[Arguments(0, 2, 8)]
+			[Arguments(10, 2, 8)]
 			public async Task IsNotBetween_ForInt_WhenOutsideToleranceWidenedRange_ShouldSucceed(
 				int subject, int minimum, int maximum)
 			{

@@ -7,7 +7,7 @@ namespace aweXpect.Generators.Tests;
 
 public sealed class ExpectationGeneratorTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenClassHasNoNamespace_ShouldEmitItWithoutANamespace()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -23,7 +23,7 @@ public sealed class ExpectationGeneratorTests
 			.Because("a class in the global namespace has no namespace to declare");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenClassIsDeclaredInSeveralParts_ShouldEmitEachExpectationOnce()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(new ExpectationGenerator(),
@@ -51,7 +51,7 @@ public sealed class ExpectationGeneratorTests
 		await That(result.Generated).Contains(" IsOne(this ").Once();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenClassIsInternal_ShouldKeepItsAccessibility()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -68,7 +68,7 @@ public sealed class ExpectationGeneratorTests
 			.Because("the parts of a partial class must not declare conflicting accessibilities");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenClassIsNested_AndOnlyTouched_ShouldReuseTheCachedProblem()
 	{
 		CSharpCompilation compilation = GeneratorRunner.CreateCompilation([
@@ -105,7 +105,7 @@ public sealed class ExpectationGeneratorTests
 			.Because("the problem keeps only the position of its location, not the syntax tree that every edit replaces");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenClassIsNested_ShouldReportADiagnostic()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -129,7 +129,7 @@ public sealed class ExpectationGeneratorTests
 			                "'Lib.Outer.ThatInt' cannot hold the generated expectations, because extension methods need a top-level static class");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCompilationChanges_ShouldCacheTheExpectations()
 	{
 		GeneratorDriverRunResult result = GeneratorRunner.RunTwice(new ExpectationGenerator(),
@@ -152,7 +152,7 @@ public sealed class ExpectationGeneratorTests
 			.Because("an unchanged declaration has to compare equal, so that its output is not produced again");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCompilationChanges_ShouldKeepTheGeneratedSources()
 	{
 		GeneratorDriverRunResult result = GeneratorRunner.RunTwice(new ExpectationGenerator(),
@@ -171,7 +171,7 @@ public sealed class ExpectationGeneratorTests
 			.Because("an edit elsewhere must not drop the output of an unchanged declaration");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationTextContainsQuotesAndBackslashes_ShouldEscapeThem()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -189,7 +189,7 @@ public sealed class ExpectationGeneratorTests
 		await That(result.Generated).Contains("""Grammars.Verb("is not \"\\\"", "are not \"\\\"")""").Once();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectationTextContainsXmlCharacters_ShouldEscapeThemInTheSummary()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -207,7 +207,7 @@ public sealed class ExpectationGeneratorTests
 		await That(result.Generated).Contains("///     Verifies that the subject is not &gt; 0 &amp; &lt; 10.").Once();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSameNamedClassesAreInDifferentNamespaces_ShouldEmitBoth()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(new ExpectationGenerator(),
@@ -237,7 +237,7 @@ public sealed class ExpectationGeneratorTests
 		await That(result.Generated).Contains("namespace Lib.B;").Once();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSummaryHasSeveralLines_ShouldContinueTheDocumentationComment()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -255,7 +255,7 @@ public sealed class ExpectationGeneratorTests
 			.Because("every line of the summary has to stay inside the documentation comment");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTheNameHasNoNotPlaceholder_ShouldEmitOnlyThePositiveOverload()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -273,9 +273,9 @@ public sealed class ExpectationGeneratorTests
 			.Because("only a name with {Not} declares a negated overload");
 	}
 
-	[Theory]
-	[InlineData("CreateExpectationOn")]
-	[InlineData("CreateExpectationOnNullable")]
+	[Test]
+	[Arguments("CreateExpectationOn")]
+	[Arguments("CreateExpectationOnNullable")]
 	public async Task WithNegatedRemarks_ShouldUseThemForTheNegatedOverload(string attribute)
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -299,7 +299,7 @@ public sealed class ExpectationGeneratorTests
 			.Because("the remarks of the positive overload describe the opposite");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithNotPlaceholder_ShouldEmitBothPolarities()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -318,9 +318,9 @@ public sealed class ExpectationGeneratorTests
 		await That(result.Generated).Contains("Grammars.Verb(\"is not zero\", \"are not zero\")").Once();
 	}
 
-	[Theory]
-	[InlineData("CreateExpectationOn")]
-	[InlineData("CreateExpectationOnNullable")]
+	[Test]
+	[Arguments("CreateExpectationOn")]
+	[Arguments("CreateExpectationOnNullable")]
 	public async Task WithRemarks_WithoutNegatedRemarks_ShouldEmitNoRemarksForTheNegatedOverload(string attribute)
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -340,7 +340,7 @@ public sealed class ExpectationGeneratorTests
 			.Because("the remarks of the positive overload describe the opposite");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithSummary_ShouldUseItForThePositiveOverload()
 	{
 		GeneratorRunner.GeneratorResult result = Run(

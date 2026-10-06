@@ -7,7 +7,7 @@ namespace aweXpect.Core.Tests.Results;
 
 public sealed class CollectionOrderResultTests
 {
-	[Fact]
+	[Test]
 	public async Task ShouldBeOptionsProvider_ForCollectionOrderOptions()
 	{
 		CollectionOrderOptions<int> options = new();

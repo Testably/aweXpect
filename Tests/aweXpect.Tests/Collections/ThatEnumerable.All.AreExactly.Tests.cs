@@ -13,7 +13,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class GenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenItemsHaveAValueAndTypeIsNullable_ShouldSucceed()
 				{
 					IEnumerable<int?> subject = [1, 2,];
@@ -25,7 +25,7 @@ public sealed partial class ThatEnumerable
 						.Because("a boxed nullable value has the underlying type, so the nullable type is compared by it");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeDoesNotMatch_ShouldFail()
 				{
 					IEnumerable<MyBaseClass> subject = Enumerable.Range(1, 10).Select(_ => new MyBaseClass());
@@ -33,7 +33,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreExactly<MyClass>();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type ThatEnumerable.All.AreExactly.MyClass for all items,
@@ -57,7 +57,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeMatchesBaseType_ShouldFail()
 				{
 					IEnumerable<MyClass> subject = Enumerable.Range(1, 10).Select(v => new MyClass
@@ -68,7 +68,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreExactly<MyBaseClass>();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type ThatEnumerable.All.AreExactly.MyBaseClass for all items,
@@ -94,7 +94,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeMatchesExactly_ShouldSucceed()
 				{
 					IEnumerable<MyClass> subject = Enumerable.Range(1, 10).Select(v => new MyClass
@@ -112,7 +112,7 @@ public sealed partial class ThatEnumerable
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 			public sealed class TypeTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenItemsHaveAValueAndTypeIsNullable_ShouldSucceed()
 				{
 					IEnumerable<int?> subject = [1, 2,];
@@ -124,7 +124,7 @@ public sealed partial class ThatEnumerable
 						.Because("a boxed nullable value has the underlying type, so the nullable type is compared by it");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeDoesNotMatch_ShouldFail()
 				{
 					IEnumerable<MyBaseClass> subject = Enumerable.Range(1, 10).Select(v => new MyBaseClass
@@ -135,7 +135,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreExactly(typeof(MyClass));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type ThatEnumerable.All.AreExactly.MyClass for all items,
@@ -159,7 +159,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
 				{
 					IEnumerable<int> subject = Enumerable.Range(1, 10);
@@ -172,7 +172,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("The 'type' cannot be null.").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeMatchesBaseType_ShouldFail()
 				{
 					IEnumerable<MyClass> subject = Enumerable.Range(1, 10).Select(v => new MyClass
@@ -183,7 +183,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreExactly(typeof(MyBaseClass));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type ThatEnumerable.All.AreExactly.MyBaseClass for all items,
@@ -209,7 +209,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeMatchesExactly_ShouldSucceed()
 				{
 					IEnumerable<MyClass> subject = Enumerable.Range(1, 10).Select(v => new MyClass
@@ -227,7 +227,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsMatchTypeExactly_ShouldFail()
 				{
 					IEnumerable<MyBaseClass> subject = [new MyClass { Foo = 1, }, new MyClass { Foo = 2, },];
@@ -235,7 +235,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().AreExactly<MyClass>());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type ThatEnumerable.All.AreExactly.MyClass not for all items,
@@ -255,7 +255,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemsHaveAValueAndTypeIsNullable_ShouldFail()
 				{
 					IEnumerable<int?> subject = [1, 2,];
@@ -263,7 +263,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().AreExactly<int?>());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is exactly of type int? not for all items,
@@ -274,7 +274,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOneItemIsOfDerivedType_ShouldSucceed()
 				{
 					IEnumerable<MyBaseClass> subject = [new MyClass { Foo = 1, }, new MyBaseClass { Foo = 2, },];

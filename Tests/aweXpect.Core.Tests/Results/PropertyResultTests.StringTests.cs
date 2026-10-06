@@ -9,10 +9,10 @@ public sealed partial class PropertyResultTests
 {
 	public sealed class StringTests
 	{
-		[Theory]
-		[InlineData("foo", "foobar")]
-		[InlineData("foo", "bar")]
-		[InlineData("foo", "FOO")]
+		[Test]
+		[Arguments("foo", "foobar")]
+		[Arguments("foo", "bar")]
+		[Arguments("foo", "FOO")]
 		public async Task Containing_ShouldFailWhenActualDoesNotContainExpected(string actual, string expected)
 		{
 			StringProperty sut = MyClass.HasStringValue(actual);
@@ -20,7 +20,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.Containing(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that subject
 				              has string value containing "{expected}",
@@ -28,9 +28,9 @@ public sealed partial class PropertyResultTests
 				              """).AsWildcard();
 		}
 
-		[Theory]
-		[InlineData(true)]
-		[InlineData(false)]
+		[Test]
+		[Arguments(true)]
+		[Arguments(false)]
 		public async Task Containing_ShouldSupportIgnoringCase(bool ignoringCase)
 		{
 			StringProperty sut = MyClass.HasStringValue("something with foo in it");
@@ -38,7 +38,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.Containing("FOO").IgnoringCase(ignoringCase);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.OnlyIf(!ignoringCase)
 				.WithMessage("""
 				             Expected that subject
@@ -47,7 +47,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Containing_ShouldTriggerValidation()
 		{
 			Signaler<string?> signal = new();
@@ -61,9 +61,9 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == "foo");
 		}
 
-		[Theory]
-		[InlineData("foo", "foo")]
-		[InlineData("foobar", "oob")]
+		[Test]
+		[Arguments("foo", "foo")]
+		[Arguments("foobar", "oob")]
 		public async Task Containing_ShouldVerifyThatActualContainsExpected(string actual, string expected)
 		{
 			StringProperty sut = MyClass.HasStringValue(actual);
@@ -73,7 +73,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.StringValue).IsEqualTo(actual);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Containing_WhenExpectedIsEmpty_ShouldThrowArgumentException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -86,7 +86,7 @@ public sealed partial class PropertyResultTests
 				.WithParamName("expected");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Containing_WhenExpectedIsNull_ShouldThrowArgumentNullException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -99,7 +99,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Containing_WhenSubjectIsNull_ShouldFail()
 		{
 			StringProperty sut = MyClass.HasStringValueOfNullSubject();
@@ -107,7 +107,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.Containing("foo");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has string value containing "foo",
@@ -115,10 +115,10 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Theory]
-		[InlineData("foo", "bar")]
-		[InlineData("foobar", "FOOBAR")]
-		[InlineData("foobar", "foo")]
+		[Test]
+		[Arguments("foo", "bar")]
+		[Arguments("foobar", "FOOBAR")]
+		[Arguments("foobar", "foo")]
 		public async Task EndingWith_ShouldFailWhenActualDoesNotEndWithExpected(string actual, string expected)
 		{
 			StringProperty sut = MyClass.HasStringValue(actual);
@@ -126,7 +126,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.EndingWith(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that subject
 				              has string value ending with "{expected}",
@@ -134,7 +134,7 @@ public sealed partial class PropertyResultTests
 				              """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task EndingWith_ShouldTriggerValidation()
 		{
 			Signaler<string?> signal = new();
@@ -148,9 +148,9 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == "foo");
 		}
 
-		[Theory]
-		[InlineData("foo", "foo")]
-		[InlineData("foobar", "bar")]
+		[Test]
+		[Arguments("foo", "foo")]
+		[Arguments("foobar", "bar")]
 		public async Task EndingWith_ShouldVerifyThatActualEndsWithExpected(string actual, string expected)
 		{
 			StringProperty sut = MyClass.HasStringValue(actual);
@@ -160,7 +160,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.StringValue).IsEqualTo(actual);
 		}
 
-		[Fact]
+		[Test]
 		public async Task EndingWith_WhenExpectedIsEmpty_ShouldThrowArgumentException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -173,7 +173,7 @@ public sealed partial class PropertyResultTests
 				.WithParamName("expected");
 		}
 
-		[Fact]
+		[Test]
 		public async Task EndingWith_WhenExpectedIsNull_ShouldThrowArgumentNullException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -186,13 +186,13 @@ public sealed partial class PropertyResultTests
 				.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 		}
 
-		[Theory]
-		[InlineData("foo", "bar")]
-		[InlineData("foo", "FOO")]
-		[InlineData("foo", "foo2")]
-		[InlineData("foo", "2foo")]
-		[InlineData("foo2", "foo")]
-		[InlineData("2foo", "foo")]
+		[Test]
+		[Arguments("foo", "bar")]
+		[Arguments("foo", "FOO")]
+		[Arguments("foo", "foo2")]
+		[Arguments("foo", "2foo")]
+		[Arguments("foo2", "foo")]
+		[Arguments("2foo", "foo")]
 		public async Task EqualTo_ShouldFailWhenActualDoesNotEqualExpected(string actual, string expected)
 		{
 			StringProperty sut = MyClass.HasStringValue(actual);
@@ -200,7 +200,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.EqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that subject
 				              has string value equal to "{expected}",
@@ -208,9 +208,9 @@ public sealed partial class PropertyResultTests
 				              """).AsWildcard();
 		}
 
-		[Theory]
-		[InlineData(true)]
-		[InlineData(false)]
+		[Test]
+		[Arguments(true)]
+		[Arguments(false)]
 		public async Task EqualTo_ShouldSupportIgnoringCase(bool ignoringCase)
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -218,7 +218,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.EqualTo("FOO").IgnoringCase(ignoringCase);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.OnlyIf(!ignoringCase)
 				.WithMessage("""
 				             Expected that subject
@@ -231,7 +231,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task EqualTo_ShouldSupportMatchTypes()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo-bar");
@@ -242,7 +242,7 @@ public sealed partial class PropertyResultTests
 				.Because("the continuation exposes the As… family of StringEqualityTypeResult");
 		}
 
-		[Fact]
+		[Test]
 		public async Task EqualTo_ShouldTriggerValidation()
 		{
 			Signaler<string?> signal = new();
@@ -256,7 +256,7 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == "foo");
 		}
 
-		[Fact]
+		[Test]
 		public async Task EqualTo_ShouldVerifyThatActualIsEqualToExpected()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -266,7 +266,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.StringValue).IsEqualTo("foo");
 		}
 
-		[Fact]
+		[Test]
 		public async Task EqualTo_WhenAnEarlierEvaluationThrew_ShouldDescribeTheLastValue()
 		{
 			int calls = 0;
@@ -279,7 +279,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.EqualTo("bar");
 
-			XunitException exception = await That(Act).Throws<XunitException>()
+			FailException exception = await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             eventually has string value equal to "bar" within 0:01,
@@ -293,7 +293,7 @@ public sealed partial class PropertyResultTests
 				.Because("only the first evaluation could not read the property");
 		}
 
-		[Fact]
+		[Test]
 		public async Task EqualTo_WhenReadingThePropertyThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("foo");
@@ -302,7 +302,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.EqualTo("bar");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has string value equal to "bar",
@@ -313,7 +313,7 @@ public sealed partial class PropertyResultTests
 				.Because("a property that cannot be read fails the expectation instead of aborting its evaluation");
 		}
 
-		[Fact]
+		[Test]
 		public async Task EqualTo_WhenSubjectIsNull_ShouldFail()
 		{
 			StringProperty sut = MyClass.HasStringValueOfNullSubject();
@@ -321,7 +321,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.EqualTo("foo");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has string value equal to "foo",
@@ -329,7 +329,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task EqualTo_WhenValueIsNullAndExpectedIsNull_ShouldSucceed()
 		{
 			StringProperty sut = MyClass.HasStringValue(null);
@@ -341,9 +341,9 @@ public sealed partial class PropertyResultTests
 				.Because("null is equal to null");
 		}
 
-		[Theory]
-		[InlineData("foo", "foo")]
-		[InlineData("foobar", "oob")]
+		[Test]
+		[Arguments("foo", "foo")]
+		[Arguments("foobar", "oob")]
 		public async Task NotContaining_ShouldFailWhenActualContainsExpected(string actual, string expected)
 		{
 			StringProperty sut = MyClass.HasStringValue(actual);
@@ -351,7 +351,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotContaining(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that subject
 				              does not have string value containing "{expected}",
@@ -359,9 +359,9 @@ public sealed partial class PropertyResultTests
 				              """);
 		}
 
-		[Theory]
-		[InlineData(true)]
-		[InlineData(false)]
+		[Test]
+		[Arguments(true)]
+		[Arguments(false)]
 		public async Task NotContaining_ShouldSupportIgnoringCase(bool ignoringCase)
 		{
 			StringProperty sut = MyClass.HasStringValue("something with foo in it");
@@ -369,7 +369,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotContaining("FOO").IgnoringCase(ignoringCase);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.OnlyIf(ignoringCase)
 				.WithMessage("""
 				             Expected that subject
@@ -378,7 +378,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotContaining_ShouldTriggerValidation()
 		{
 			Signaler<string?> signal = new();
@@ -392,10 +392,10 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == "foo");
 		}
 
-		[Theory]
-		[InlineData("foo", "foobar")]
-		[InlineData("foo", "bar")]
-		[InlineData("foo", "FOO")]
+		[Test]
+		[Arguments("foo", "foobar")]
+		[Arguments("foo", "bar")]
+		[Arguments("foo", "FOO")]
 		public async Task NotContaining_ShouldVerifyThatActualDoesNotContainExpected(string actual, string expected)
 		{
 			StringProperty sut = MyClass.HasStringValue(actual);
@@ -405,7 +405,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.StringValue).IsEqualTo(actual);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotContaining_WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -418,7 +418,7 @@ public sealed partial class PropertyResultTests
 				.WithParamName("unexpected");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotContaining_WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -431,7 +431,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotContaining_WhenValueIsNull_ShouldFail()
 		{
 			StringProperty sut = MyClass.HasStringValue(null);
@@ -439,7 +439,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotContaining("foo");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have string value containing "foo",
@@ -448,9 +448,9 @@ public sealed partial class PropertyResultTests
 				.Because("a null value has no content to inspect, like a null string subject");
 		}
 
-		[Theory]
-		[InlineData("foo", "foo")]
-		[InlineData("foobar", "bar")]
+		[Test]
+		[Arguments("foo", "foo")]
+		[Arguments("foobar", "bar")]
 		public async Task NotEndingWith_ShouldFailWhenActualEndsWithUnexpected(string actual, string unexpected)
 		{
 			StringProperty sut = MyClass.HasStringValue(actual);
@@ -458,7 +458,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotEndingWith(unexpected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that subject
 				              does not have string value ending with "{unexpected}",
@@ -466,7 +466,7 @@ public sealed partial class PropertyResultTests
 				              """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEndingWith_ShouldTriggerValidation()
 		{
 			Signaler<string?> signal = new();
@@ -480,10 +480,10 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == "foo");
 		}
 
-		[Theory]
-		[InlineData("foo", "bar")]
-		[InlineData("foobar", "FOOBAR")]
-		[InlineData("foobar", "foo")]
+		[Test]
+		[Arguments("foo", "bar")]
+		[Arguments("foobar", "FOOBAR")]
+		[Arguments("foobar", "foo")]
 		public async Task NotEndingWith_ShouldVerifyThatActualDoesNotEndWithUnexpected(string actual, string unexpected)
 		{
 			StringProperty sut = MyClass.HasStringValue(actual);
@@ -493,7 +493,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.StringValue).IsEqualTo(actual);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEndingWith_WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -506,7 +506,7 @@ public sealed partial class PropertyResultTests
 				.WithParamName("unexpected");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEndingWith_WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -519,7 +519,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEndingWith_WhenUnexpectedIsWhiteSpaceAndTrailingWhiteSpaceIsIgnored_ShouldThrowArgumentException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -533,7 +533,7 @@ public sealed partial class PropertyResultTests
 				.Because("the suffix is empty once the trailing whitespace is ignored");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEndingWith_WhenValueIsNull_ShouldFail()
 		{
 			StringProperty sut = MyClass.HasStringValue(null);
@@ -541,7 +541,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotEndingWith("foo");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have string value ending with "foo",
@@ -550,7 +550,7 @@ public sealed partial class PropertyResultTests
 				.Because("a null value has no content to inspect, like a null string subject");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_ShouldFailWhenActualDoesNotEqualExpected()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -558,7 +558,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotEqualTo("foo");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have string value equal to "foo",
@@ -566,9 +566,9 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Theory]
-		[InlineData(true)]
-		[InlineData(false)]
+		[Test]
+		[Arguments(true)]
+		[Arguments(false)]
 		public async Task NotEqualTo_ShouldSupportIgnoringCase(bool ignoringCase)
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -576,7 +576,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotEqualTo("FOO").IgnoringCase(ignoringCase);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.OnlyIf(ignoringCase)
 				.WithMessage("""
 				             Expected that subject
@@ -585,7 +585,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_ShouldTriggerValidation()
 		{
 			Signaler<string?> signal = new();
@@ -599,13 +599,13 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == "foo");
 		}
 
-		[Theory]
-		[InlineData("foo", "bar")]
-		[InlineData("foo", "FOO")]
-		[InlineData("foo", "foo2")]
-		[InlineData("foo", "2foo")]
-		[InlineData("foo2", "foo")]
-		[InlineData("2foo", "foo")]
+		[Test]
+		[Arguments("foo", "bar")]
+		[Arguments("foo", "FOO")]
+		[Arguments("foo", "foo2")]
+		[Arguments("foo", "2foo")]
+		[Arguments("foo2", "foo")]
+		[Arguments("2foo", "foo")]
 		public async Task NotEqualTo_ShouldVerifyThatActualIsNotEqualToExpected(string actual, string expected)
 		{
 			StringProperty sut = MyClass.HasStringValue(actual);
@@ -615,7 +615,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.StringValue).IsEqualTo(actual);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_WhenPatternIsNull_ShouldThrowArgumentNullException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -629,7 +629,7 @@ public sealed partial class PropertyResultTests
 				.Because("the negated expectation receives the pattern as 'unexpected'");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_WhenReadingThePropertyThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("foo");
@@ -638,7 +638,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotEqualTo("bar");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have string value equal to "bar",
@@ -649,7 +649,7 @@ public sealed partial class PropertyResultTests
 				.Because("a property that was never read cannot prove inequality either");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_WhenSubjectIsNull_ShouldFail()
 		{
 			StringProperty sut = MyClass.HasStringValueOfNullSubject();
@@ -657,7 +657,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotEqualTo("foo");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have string value equal to "foo",
@@ -665,7 +665,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_WhenSubjectIsNullAndUnexpectedIsNull_ShouldFail()
 		{
 			StringProperty sut = MyClass.HasStringValueOfNullSubject();
@@ -673,7 +673,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotEqualTo(null);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have string value equal to <null>,
@@ -682,7 +682,7 @@ public sealed partial class PropertyResultTests
 				.Because("a null subject has no string value to compare, whatever the unexpected value is");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_WhenValueIsNull_ShouldSucceed()
 		{
 			StringProperty sut = MyClass.HasStringValue(null);
@@ -694,7 +694,7 @@ public sealed partial class PropertyResultTests
 				.Because("an exact comparison treats null as a value that differs from \"foo\"");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_WhenValueIsNullAndPatternIsRegex_ShouldFail()
 		{
 			StringProperty sut = MyClass.HasStringValue(null);
@@ -702,7 +702,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotEqualTo(".*").AsRegex();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have string value matching regex ".*",
@@ -711,7 +711,7 @@ public sealed partial class PropertyResultTests
 				.Because("a null value has no content to inspect, like a null string subject");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_WhenValueIsNullAndPatternIsWildcard_ShouldFail()
 		{
 			StringProperty sut = MyClass.HasStringValue(null);
@@ -719,7 +719,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotEqualTo("*").AsWildcard();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have string value matching "*",
@@ -728,7 +728,7 @@ public sealed partial class PropertyResultTests
 				.Because("a null value has no content to inspect, like a null string subject");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_WhenValueIsNullAndUnexpectedIsNull_ShouldFail()
 		{
 			StringProperty sut = MyClass.HasStringValue(null);
@@ -736,7 +736,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotEqualTo(null);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have string value equal to <null>,
@@ -745,9 +745,9 @@ public sealed partial class PropertyResultTests
 				.Because("null is equal to null");
 		}
 
-		[Theory]
-		[InlineData("foo", "foo")]
-		[InlineData("foobar", "foo")]
+		[Test]
+		[Arguments("foo", "foo")]
+		[Arguments("foobar", "foo")]
 		public async Task NotStartingWith_ShouldFailWhenActualStartsWithUnexpected(string actual, string unexpected)
 		{
 			StringProperty sut = MyClass.HasStringValue(actual);
@@ -755,7 +755,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotStartingWith(unexpected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that subject
 				              does not have string value starting with "{unexpected}",
@@ -763,7 +763,7 @@ public sealed partial class PropertyResultTests
 				              """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotStartingWith_ShouldTriggerValidation()
 		{
 			Signaler<string?> signal = new();
@@ -777,10 +777,10 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == "foo");
 		}
 
-		[Theory]
-		[InlineData("foo", "bar")]
-		[InlineData("foobar", "FOOBAR")]
-		[InlineData("foobar", "bar")]
+		[Test]
+		[Arguments("foo", "bar")]
+		[Arguments("foobar", "FOOBAR")]
+		[Arguments("foobar", "bar")]
 		public async Task NotStartingWith_ShouldVerifyThatActualDoesNotStartWithUnexpected(string actual,
 			string unexpected)
 		{
@@ -791,7 +791,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.StringValue).IsEqualTo(actual);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotStartingWith_WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -804,7 +804,7 @@ public sealed partial class PropertyResultTests
 				.WithParamName("unexpected");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotStartingWith_WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -817,7 +817,7 @@ public sealed partial class PropertyResultTests
 				.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotStartingWith_WhenUnexpectedIsWhiteSpaceAndLeadingWhiteSpaceIsIgnored_ShouldThrowArgumentException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -831,7 +831,7 @@ public sealed partial class PropertyResultTests
 				.Because("the prefix is empty once the leading whitespace is ignored");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotStartingWith_WhenValueIsNull_ShouldFail()
 		{
 			StringProperty sut = MyClass.HasStringValue(null);
@@ -839,7 +839,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotStartingWith("foo");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have string value starting with "foo",
@@ -848,10 +848,10 @@ public sealed partial class PropertyResultTests
 				.Because("a null value has no content to inspect, like a null string subject");
 		}
 
-		[Theory]
-		[InlineData("foo", "bar")]
-		[InlineData("foobar", "FOOBAR")]
-		[InlineData("foobar", "bar")]
+		[Test]
+		[Arguments("foo", "bar")]
+		[Arguments("foobar", "FOOBAR")]
+		[Arguments("foobar", "bar")]
 		public async Task StartingWith_ShouldFailWhenActualDoesNotStartWithExpected(string actual, string expected)
 		{
 			StringProperty sut = MyClass.HasStringValue(actual);
@@ -859,7 +859,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.StartingWith(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that subject
 				              has string value starting with "{expected}",
@@ -867,7 +867,7 @@ public sealed partial class PropertyResultTests
 				              """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task StartingWith_ShouldTriggerValidation()
 		{
 			Signaler<string?> signal = new();
@@ -881,9 +881,9 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == "foo");
 		}
 
-		[Theory]
-		[InlineData("foo", "foo")]
-		[InlineData("foobar", "foo")]
+		[Test]
+		[Arguments("foo", "foo")]
+		[Arguments("foobar", "foo")]
 		public async Task StartingWith_ShouldVerifyThatActualStartsWithExpected(string actual, string expected)
 		{
 			StringProperty sut = MyClass.HasStringValue(actual);
@@ -893,7 +893,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.StringValue).IsEqualTo(actual);
 		}
 
-		[Fact]
+		[Test]
 		public async Task StartingWith_WhenExpectedIsEmpty_ShouldThrowArgumentException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -906,7 +906,7 @@ public sealed partial class PropertyResultTests
 				.WithParamName("expected");
 		}
 
-		[Fact]
+		[Test]
 		public async Task StartingWith_WhenExpectedIsNull_ShouldThrowArgumentNullException()
 		{
 			StringProperty sut = MyClass.HasStringValue("foo");
@@ -921,7 +921,7 @@ public sealed partial class PropertyResultTests
 
 		public sealed class ContextTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenIncluded_ShouldAppendTheValue()
 			{
 				StringProperty sut = MyClass.StringValueOf(MyClass.WithStringValue("foo"), true);
@@ -929,7 +929,7 @@ public sealed partial class PropertyResultTests
 				async Task Act()
 					=> await sut.EqualTo("bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has string value equal to "bar",
@@ -940,7 +940,7 @@ public sealed partial class PropertyResultTests
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenIncludedTwiceWithTheSameValue_ShouldAppendTheValueOnlyOnce()
 			{
 				IThat<MyClass?> source = MyClass.WithStringValue("foo-bar");
@@ -949,7 +949,7 @@ public sealed partial class PropertyResultTests
 				async Task Act()
 					=> await MyClass.StringValueOf(afterFirstProperty, true).Containing("baz");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has string value containing "foo" and has string value containing "baz",
@@ -961,7 +961,7 @@ public sealed partial class PropertyResultTests
 					.Because("a chained expectation over the same property must not repeat the identical block");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotIncluded_ShouldNotAppendTheValue()
 			{
 				StringProperty sut = MyClass.StringValueOf(MyClass.WithStringValue("foo"));
@@ -969,7 +969,7 @@ public sealed partial class PropertyResultTests
 				async Task Act()
 					=> await sut.EqualTo("bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has string value equal to "bar",
@@ -982,7 +982,7 @@ public sealed partial class PropertyResultTests
 					.Because("the value is only appended as context when the property asks for it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheValueIsEmpty_ShouldNotAppendTheValue()
 			{
 				StringProperty sut = MyClass.StringValueOf(MyClass.WithStringValue(""), true);
@@ -990,7 +990,7 @@ public sealed partial class PropertyResultTests
 				async Task Act()
 					=> await sut.EqualTo("bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has string value equal to "bar",
@@ -1003,7 +1003,7 @@ public sealed partial class PropertyResultTests
 
 		public sealed class GrammarTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenActive_ShouldUseTheActiveVoice()
 			{
 				PropertyResult.String<MyClass?, MyClass?, IThat<MyClass?>> sut =
@@ -1012,7 +1012,7 @@ public sealed partial class PropertyResultTests
 				async Task Act()
 					=> await sut.EqualTo("bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             with string value equal to "bar",
@@ -1020,14 +1020,14 @@ public sealed partial class PropertyResultTests
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_ShouldNegateTheComparison()
 			{
 				async Task Act()
 					=> await MyClass.WithStringValue("foo")
 						.DoesNotComplyWith(s => MyClass.StringValueOf(s).EqualTo("foo"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have string value equal to "foo",
@@ -1035,7 +1035,7 @@ public sealed partial class PropertyResultTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNested_ShouldReadAsAStatementAboutTheProperty()
 			{
 				PropertyResult.String<MyClass?, MyClass?, IThat<MyClass?>> sut =
@@ -1044,7 +1044,7 @@ public sealed partial class PropertyResultTests
 				async Task Act()
 					=> await sut.EqualTo("bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose string value is equal to "bar",
@@ -1052,7 +1052,7 @@ public sealed partial class PropertyResultTests
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPlural_ShouldUseThePluralVerb()
 			{
 				PropertyResult.String<MyClass?, MyClass?, IThat<MyClass?>> sut =
@@ -1061,7 +1061,7 @@ public sealed partial class PropertyResultTests
 				async Task Act()
 					=> await sut.EqualTo("bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             have string value equal to "bar",
@@ -1072,13 +1072,13 @@ public sealed partial class PropertyResultTests
 
 		public sealed class NarrowedTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheMapperIsTypedAtTheBaseType_ShouldFailForAMismatch()
 			{
 				async Task Act()
 					=> await MyClass.HasStringValueOfNarrowedSubject("foo").EqualTo("bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has string value equal to "bar",
@@ -1087,7 +1087,7 @@ public sealed partial class PropertyResultTests
 					.Because("a constraint typed at the narrowed type would silently never be matched");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheMapperIsTypedAtTheBaseType_ShouldReturnTheNarrowedType()
 			{
 				MyDerivedClass? result = await MyClass.HasStringValueOfNarrowedSubject("foo").EqualTo("foo");

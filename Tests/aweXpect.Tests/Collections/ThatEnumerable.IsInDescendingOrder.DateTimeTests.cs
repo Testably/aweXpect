@@ -15,7 +15,7 @@ public sealed partial class ThatEnumerable
 			private static readonly DateTime Unspecified = new(2026, 1, 1, 1, 0, 0, DateTimeKind.Unspecified);
 			private static readonly DateTime Local = new(2026, 1, 1, 2, 0, 0, DateTimeKind.Local);
 
-			[Fact]
+			[Test]
 			public async Task WhenCustomComparerIsUsed_ShouldNotCheckKinds()
 			{
 				IEnumerable<DateTime> subject = [Local, Utc,];
@@ -27,7 +27,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKindsAreIncompatible_ShouldFail()
 			{
 				IEnumerable<DateTime> subject = [Local, Unspecified, Utc,];
@@ -35,7 +35,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInDescendingOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is in descending order,
@@ -43,7 +43,7 @@ public sealed partial class ThatEnumerable
 					              """).AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKindIsUnspecified_ShouldSucceed()
 			{
 				IEnumerable<DateTime> subject = [Utc.AddHours(2), Unspecified, Utc,];
@@ -54,7 +54,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberKindsAreIncompatible_ShouldFail()
 			{
 				IEnumerable<Item> subject = [new(Local), new(Utc),];
@@ -62,7 +62,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInDescendingOrder(x => x.Value);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is in descending order by x => x.Value,
@@ -70,7 +70,7 @@ public sealed partial class ThatEnumerable
 					              """).AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableItemKindsAreIncompatible_ShouldFail()
 			{
 				IEnumerable<DateTime?> subject = [Local, Utc, null, null,];
@@ -78,7 +78,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInDescendingOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is in descending order,
@@ -86,7 +86,7 @@ public sealed partial class ThatEnumerable
 					              """).AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableMemberKindsAreIncompatible_ShouldFail()
 			{
 				IEnumerable<Item> subject = [new(Local), new(Utc),];
@@ -94,7 +94,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInDescendingOrder(x => x.NullableValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is in descending order by x => x.NullableValue,
@@ -103,7 +103,7 @@ public sealed partial class ThatEnumerable
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task WhenImmutableArrayKindsAreIncompatible_ShouldFail()
 			{
 				ImmutableArray<DateTime> subject = [Local, Utc,];
@@ -111,7 +111,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInDescendingOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is in descending order,
@@ -119,7 +119,7 @@ public sealed partial class ThatEnumerable
 					              """).AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenImmutableArrayMemberKindsAreIncompatible_ShouldFail()
 			{
 				ImmutableArray<Item> subject = [new(Local), new(Utc),];
@@ -127,7 +127,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsInDescendingOrder(x => x.NullableValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is in descending order by x => x.NullableValue,

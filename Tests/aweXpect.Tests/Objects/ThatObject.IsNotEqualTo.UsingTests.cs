@@ -8,7 +8,7 @@ public sealed partial class ThatObject
 	{
 		public sealed class UsingTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenComparerConsidersDifferent_ShouldSucceed()
 			{
 				OuterClass subject = new()
@@ -26,7 +26,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparerConsidersEqual_ShouldFail()
 			{
 				OuterClass subject = new()
@@ -38,7 +38,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(expected).Using(new MyComparer(true));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to ThatObject.OuterClass {
@@ -52,7 +52,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparerThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("comparer failed");
@@ -64,7 +64,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(subject).Using(new ThrowingComparer(exception));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to ThatObject.OuterClass {

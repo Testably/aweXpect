@@ -66,6 +66,9 @@
   <Folder Name="/_/Tests/Aot/">
     <File Path="Tests/Aot/Directory.Build.props" />
   </Folder>
+  <Folder Name="/_/Tests/aweXpect.Api.Tests/">
+    <File Path="Tests/aweXpect.Api.Tests/Directory.Build.props" />
+  </Folder>
   <Folder Name="/_/Tests/Frameworks/">
     <File Path="Tests/Frameworks/Directory.Build.props" />
   </Folder>

@@ -69,21 +69,21 @@ public sealed partial class MemberParityTests
 		=> string.Join(Environment.NewLine, CorpusTypes.Select(x
 			=> $"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof({x.Name}))]"));
 
-	public static TheoryData<Type, string> Types
+	public static IEnumerable<(Type, string)> Types
 	{
 		get
 		{
-			TheoryData<Type, string> data = new();
+			List<(Type, string)> data = [];
 			foreach ((Type type, string name) in CorpusTypes)
 			{
-				data.Add(type, name.StartsWith('(') ? name : "global::" + name);
+				data.Add((type, name.StartsWith('(') ? name : "global::" + name));
 			}
 
 			return data;
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task GeneratedRegistrations_ShouldCompileWithoutWarnings()
 	{
 		await That(Result.Value.Errors).IsEmpty();
@@ -92,7 +92,7 @@ public sealed partial class MemberParityTests
 			.Because("every corpus type is meant to be registered");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GeneratedRegistrations_WhenCorpusIsReferenced_ShouldCompileWithoutWarnings()
 	{
 		await That(LibraryResult.Value.Errors).IsEmpty();
@@ -101,8 +101,8 @@ public sealed partial class MemberParityTests
 	}
 
 #if DEBUG
-	[Theory]
-	[MemberData(nameof(Types))]
+	[Test]
+	[MethodDataSource(nameof(Types))]
 	public async Task RegisteredExplicitProperties_ShouldMatchReflection(Type type, string key)
 	{
 		Dictionary<string, HashSet<string>> registrations = ParseExplicit(Result.Value.Generated);
@@ -111,8 +111,8 @@ public sealed partial class MemberParityTests
 			.Because("the comparison falls back to the explicit implementations, so a registration that differs would match a different member under AOT");
 	}
 
-	[Theory]
-	[MemberData(nameof(Types))]
+	[Test]
+	[MethodDataSource(nameof(Types))]
 	public async Task RegisteredExplicitProperties_WhenCorpusIsReferenced_ShouldMatchReflection(Type type, string key)
 	{
 		Dictionary<string, HashSet<string>> registrations = ParseExplicit(LibraryResult.Value.Generated);
@@ -122,8 +122,8 @@ public sealed partial class MemberParityTests
 	}
 #endif
 
-	[Theory]
-	[MemberData(nameof(Types))]
+	[Test]
+	[MethodDataSource(nameof(Types))]
 	public async Task RegisteredMembers_ShouldMatchReflection(Type type, string key)
 	{
 		Dictionary<string, HashSet<string>> registrations = Parse(Result.Value.Generated);
@@ -134,8 +134,8 @@ public sealed partial class MemberParityTests
 			.Because("a registration that differs from reflection would compare a different set of members under AOT");
 	}
 
-	[Theory]
-	[MemberData(nameof(Types))]
+	[Test]
+	[MethodDataSource(nameof(Types))]
 	public async Task RegisteredMembers_WhenCorpusIsReferenced_ShouldMatchReflection(Type type, string key)
 	{
 		Dictionary<string, HashSet<string>> registrations = Parse(LibraryResult.Value.Generated);

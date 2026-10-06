@@ -6,15 +6,15 @@ public sealed partial class StringEqualityOptionsTests
 {
 	public sealed class ContainingMatchTypeTests
 	{
-		[Theory]
-		[InlineData("forget", " get", false)]
-		[InlineData("for get", " get", true)]
-		[InlineData("get", "\t get", true)]
-		[InlineData("forget ", "for ", false)]
-		[InlineData("for", "for \t", true)]
-		[InlineData("a", " a ", true)]
-		[InlineData("a b", " ", true)]
-		[InlineData(" ab ", " ", false)]
+		[Test]
+		[Arguments("forget", " get", false)]
+		[Arguments("for get", " get", true)]
+		[Arguments("get", "\t get", true)]
+		[Arguments("forget ", "for ", false)]
+		[Arguments("for", "for \t", true)]
+		[Arguments("a", " a ", true)]
+		[Arguments("a b", " ", true)]
+		[Arguments(" ab ", " ", false)]
 		public async Task
 			AreConsideredEqual_WhenWhiteSpaceIsIgnored_ShouldOnlyIgnoreTheWhiteSpaceOfTheSubstringAtTheEdgesOfTheSubject(
 				string actual, string expected, bool expectMatch)
@@ -28,7 +28,7 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("the whitespace of the substring is only optional where it reaches an edge of the subject");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Contains_ShouldReturnSameInstance()
 		{
 			StringEqualityOptions sut = new("expected");

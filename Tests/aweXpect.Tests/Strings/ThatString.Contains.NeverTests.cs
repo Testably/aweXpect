@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class NeverTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringDoesNotOccur_ShouldSucceed()
 			{
 				string subject =
@@ -19,7 +19,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursMoreTimes_ShouldFail()
 			{
 				string subject =
@@ -29,7 +29,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).Never();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "investigator",
@@ -37,7 +37,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -45,7 +45,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains("p").Never();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "p",
@@ -53,7 +53,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNullAndPatternIsAWildcard_ShouldFail()
 			{
 				string? subject = null;
@@ -61,7 +61,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains("p*").AsWildcard().Never();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "p*" as wildcard,

@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Testing;
-using Xunit;
 using Verifier =
 	aweXpect.Analyzers.Tests.Verifiers.CSharpCodeFixVerifier<aweXpect.Analyzers.UnorderedCollectionAnalyzer,
 		aweXpect.Analyzers.CodeFixers.UnorderedCollectionCodeFixProvider>;
@@ -12,13 +11,13 @@ public class UnorderedCollectionCodeFixProviderTests
 {
 	private const string AppendInAnyOrderKey = nameof(Resources.aweXpect0006CodeFixTitle);
 
-	[Theory]
-	[InlineData("IsEqualTo")]
-	[InlineData("IsNotEqualTo")]
-	[InlineData("Contains")]
-	[InlineData("DoesNotContain")]
-	[InlineData("IsContainedIn")]
-	[InlineData("IsNotContainedIn")]
+	[Test]
+	[Arguments("IsEqualTo")]
+	[Arguments("IsNotEqualTo")]
+	[Arguments("Contains")]
+	[Arguments("DoesNotContain")]
+	[Arguments("IsContainedIn")]
+	[Arguments("IsNotContainedIn")]
 	public async Task ShouldAppendInAnyOrder(string method) => await Verifier.VerifyCodeFixAsync(
 		$$"""
 		  using System.Collections.Generic;
@@ -49,7 +48,7 @@ public class UnorderedCollectionCodeFixProviderTests
 		  """,
 		AppendInAnyOrderKey);
 
-	[Fact]
+	[Test]
 	public async Task ShouldAppendInAnyOrderBeforeOtherOptions() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Collections.Generic;
@@ -80,7 +79,7 @@ public class UnorderedCollectionCodeFixProviderTests
 		""",
 		AppendInAnyOrderKey);
 
-	[Fact]
+	[Test]
 	public async Task ShouldAppendInAnyOrderForADictionary() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Collections.Generic;
@@ -114,7 +113,7 @@ public class UnorderedCollectionCodeFixProviderTests
 		""",
 		AppendInAnyOrderKey);
 
-	[Fact]
+	[Test]
 	public async Task ShouldKeepTheLineBreakBeforeOtherOptions() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Collections.Generic;
@@ -147,10 +146,10 @@ public class UnorderedCollectionCodeFixProviderTests
 		""",
 		AppendInAnyOrderKey);
 
-	[Theory]
-	[InlineData("{|#0:StartsWith|}(1)", "StartsWith")]
-	[InlineData("{|#0:EndsWith|}(1)", "EndsWith")]
-	[InlineData("Contains(new[] { 1, 2, }).InAnyOrder().{|#0:IgnoringInterspersedItems|}()", "IgnoringInterspersedItems")]
+	[Test]
+	[Arguments("{|#0:StartsWith|}(1)", "StartsWith")]
+	[Arguments("{|#0:EndsWith|}(1)", "EndsWith")]
+	[Arguments("Contains(new[] { 1, 2, }).InAnyOrder().{|#0:IgnoringInterspersedItems|}()", "IgnoringInterspersedItems")]
 	public async Task ShouldNotOfferAFixWhenInAnyOrderCannotHelp(string expectation, string method)
 	{
 		string source = $$"""

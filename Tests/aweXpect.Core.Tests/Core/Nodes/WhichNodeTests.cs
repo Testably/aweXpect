@@ -10,7 +10,7 @@ namespace aweXpect.Core.Tests.Core.Nodes;
 
 public sealed class WhichNodeTests
 {
-	[Fact]
+	[Test]
 	public async Task AddAsyncMapping_WithInnerNode_ShouldAddMappingToInnerNode()
 	{
 		MemberAccessor<string, Task<int>> memberAccessor =
@@ -25,7 +25,7 @@ public sealed class WhichNodeTests
 		await That(innerNode.MappingMemberAccessor).IsSameAs(memberAccessor);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddAsyncMapping_WithoutInnerNode_ShouldNotThrow()
 	{
 		MemberAccessor<string, Task<int>> memberAccessor =
@@ -38,7 +38,7 @@ public sealed class WhichNodeTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddConstraint_WithoutInnerNode_ShouldNotThrow()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
@@ -50,7 +50,7 @@ public sealed class WhichNodeTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddMapping_WithInnerNode_ShouldAddMappingToInnerNode()
 	{
 		MemberAccessor<string, int> memberAccessor = MemberAccessor<string, int>.FromExpression(s => s.Length);
@@ -64,7 +64,7 @@ public sealed class WhichNodeTests
 		await That(innerNode.MappingMemberAccessor).IsSameAs(memberAccessor);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddMapping_WithoutInnerNode_ShouldNotThrow()
 	{
 		MemberAccessor<string, int> memberAccessor = MemberAccessor<string, int>.FromExpression(s => s.Length);
@@ -76,7 +76,7 @@ public sealed class WhichNodeTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendExpectation_WithoutInnerNode_ShouldAppendParentAndSeparator()
 	{
 		WhichNode<string, int> whichNode = new(new DummyNode("foo"), s => s.Length, " foo-separator ");
@@ -87,10 +87,10 @@ public sealed class WhichNodeTests
 		await That(sb.ToString()).IsEqualTo("foo foo-separator ");
 	}
 
-	[Theory]
-	[InlineData(" whose parent ", "is bar", "whose parent is bar")]
-	[InlineData(" that ", "whose bar", "whose bar")]
-	[InlineData(" that ", "is bar", "that is bar")]
+	[Test]
+	[Arguments(" whose parent ", "is bar", "whose parent is bar")]
+	[Arguments(" that ", "whose bar", "whose bar")]
+	[Arguments(" that ", "is bar", "that is bar")]
 	public async Task AppendExpectation_WithoutParent_ShouldTrimTheSeparatorAtTheStart(
 		string separator, string rightExpectation, string expectedExpectation)
 	{
@@ -108,7 +108,7 @@ public sealed class WhichNodeTests
 			.Because("a manual evaluation renders the expectation through the node and has to read the same");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendExpectation_WithoutSeparator_WithInnerNode_ShouldOnlyAppendInnerExpectation()
 	{
 		DummyNode innerNode = new("inner-node", () => new DummyConstraintResult<string?>(Outcome.Success, "inner", ""));
@@ -121,10 +121,10 @@ public sealed class WhichNodeTests
 		await That(sb.ToString()).IsEqualTo("inner-node");
 	}
 
-	[Theory]
-	[InlineData(" that ", "whose bar", "foo whose bar")]
-	[InlineData(" that ", "is bar", "foo that is bar")]
-	[InlineData(" whose value ", "whose bar", "foo whose value whose bar")]
+	[Test]
+	[Arguments(" that ", "whose bar", "foo whose bar")]
+	[Arguments(" that ", "is bar", "foo that is bar")]
+	[Arguments(" whose value ", "whose bar", "foo whose value whose bar")]
 	public async Task AppendExpectation_WithParent_ShouldMatchTheResultExpectation(
 		string separator, string rightExpectation, string expectedExpectation)
 	{
@@ -142,14 +142,14 @@ public sealed class WhichNodeTests
 			.Because("a manual evaluation renders the expectation through the node and has to read the same");
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Success)]
-	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Success)]
-	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Undecided)]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Success, Outcome.Success)]
+	[Arguments(Outcome.Success, Outcome.Failure, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Failure, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Undecided, Outcome.Success)]
+	[Arguments(Outcome.Undecided, Outcome.Failure, Outcome.Undecided)]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task CombinedResult_ShouldBeNegatable(Outcome node1, Outcome node2, Outcome expectedOutcome)
 	{
 		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(node1)),
@@ -163,7 +163,7 @@ public sealed class WhichNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfInnerAreDifferent_ShouldBeFalse()
 	{
 		DummyNode node1 = new("1", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
@@ -178,7 +178,7 @@ public sealed class WhichNodeTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfInnerAreSame_ShouldBeTrue()
 	{
 		DummyNode node1 = new("1", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
@@ -193,7 +193,7 @@ public sealed class WhichNodeTests
 		await That(whichNode1.GetHashCode()).IsEqualTo(whichNode2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfParentsAreBothNull_ShouldBeTrue()
 	{
 		WhichNode<string, int> whichNode1 = new(null, s => s.Length);
@@ -204,7 +204,7 @@ public sealed class WhichNodeTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfParentsAreDifferent_ShouldBeFalse()
 	{
 		DummyNode node1 = new("1", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
@@ -218,7 +218,7 @@ public sealed class WhichNodeTests
 		await That(whichNode1.GetHashCode()).IsNotEqualTo(whichNode2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfParentsAreSame_ShouldBeTrue()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
@@ -231,7 +231,7 @@ public sealed class WhichNodeTests
 		await That(whichNode1.GetHashCode()).IsEqualTo(whichNode2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfTypesAreDifferent_ShouldBeFalse()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
@@ -244,7 +244,7 @@ public sealed class WhichNodeTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task FailureCause_WhenLeftFailedDueToException_ShouldForwardException()
 	{
 		Exception exception = new("foo");
@@ -259,7 +259,7 @@ public sealed class WhichNodeTests
 		await That(result.FailureCause).IsSameAs(exception);
 	}
 
-	[Fact]
+	[Test]
 	public async Task FailureCause_WhenSuccessful_ShouldBeNull()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult(Outcome.Success, "1"));
@@ -272,7 +272,7 @@ public sealed class WhichNodeTests
 		await That(result.FailureCause).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetResult_WhenBothFailed_ShouldUseOnlyFirst()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult(Outcome.Failure, "1", "r1"));
@@ -284,7 +284,7 @@ public sealed class WhichNodeTests
 		await That(constraintResult.GetResultText()).IsEqualTo("r1");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetResult_WhenBothHaveSameFailureText_ShouldOnlyIncludeOnce()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult(Outcome.Failure, "1", "same result"));
@@ -296,7 +296,7 @@ public sealed class WhichNodeTests
 		await That(constraintResult.GetResultText()).IsEqualTo("same result");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetResult_WithIgnoreResultFurtherProcessingStrategy_ShouldOnlyIncludeFirstFailure()
 	{
 		DummyNode node1 = new("",
@@ -309,7 +309,7 @@ public sealed class WhichNodeTests
 		await That(constraintResult.GetResultText()).IsEqualTo("r1");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_EmptyExpectationNode_ShouldThrowInvalidOperationException()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
@@ -321,7 +321,7 @@ public sealed class WhichNodeTests
 			.WithMessage("The expectation node does not support int with value 1.");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_ExpectationNodeWithConstraint_ShouldApplyConstraint()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult<string?>(Outcome.Success, "1", "e1"));
@@ -338,7 +338,7 @@ public sealed class WhichNodeTests
 		await That(sb.ToString()).IsEqualTo("e1e2");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenAsyncMemberAccessorReturnsNullTask_ShouldFailWithoutAnException()
 	{
 		Func<string, Task<int>> memberAccessor = _ => null!;
@@ -358,7 +358,7 @@ public sealed class WhichNodeTests
 		await That(result.GetResultText()).IsEqualTo("it returned <null> instead of a task");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenAsyncMemberAccessorReturnsNullTask_WhenNegated_ShouldNegateExpectationAndStillFail()
 	{
 		Func<string, Task<int>> memberAccessor = _ => null!;
@@ -375,7 +375,7 @@ public sealed class WhichNodeTests
 		await That(negated.GetResultText()).IsEqualTo("it returned <null> instead of a task");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenMemberAccessorIsCancelledWithTheEvaluation_ShouldThrowTheCancellation()
 	{
 		using CancellationTokenSource cts = new();
@@ -393,7 +393,7 @@ public sealed class WhichNodeTests
 			.Because("a requested cancellation aborts the evaluation instead of failing it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenMemberAccessorThrows_ShouldFailWithTheException()
 	{
 		MyException exception = new();
@@ -415,7 +415,7 @@ public sealed class WhichNodeTests
 		                                             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenMemberAccessorThrows_WhenNegated_ShouldNegateExpectationAndStillFail()
 	{
 		MyException exception = new();
@@ -436,7 +436,7 @@ public sealed class WhichNodeTests
 		                                              """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenMemberAccessorThrowsFromUserCode_ShouldFailWithTheExceptionOfTheCaller()
 	{
 		MyException exception = new();
@@ -452,7 +452,7 @@ public sealed class WhichNodeTests
 			.Because("the exception of the caller is reported instead of the one that carried it out of the accessor");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenOuterTypeDoesNotMatchButParentExposesProjectedValue_ShouldFallBackToParentProjection()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult<string?>(Outcome.Success, "abcd", ""));
@@ -471,9 +471,9 @@ public sealed class WhichNodeTests
 		await That(observed).IsEqualTo(4);
 	}
 
-	[Theory]
-	[InlineData(Outcome.Failure)]
-	[InlineData(Outcome.Undecided)]
+	[Test]
+	[Arguments(Outcome.Failure)]
+	[Arguments(Outcome.Undecided)]
 	public async Task IsMetBy_WhenParentIsNotMet_ShouldNeitherAccessNorEvaluateTheMember(Outcome parentOutcome)
 	{
 		WhichNode<string, int> whichNode = new(
@@ -490,7 +490,7 @@ public sealed class WhichNodeTests
 		await That(result.GetResultText()).IsEqualTo("r1");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenParentIsNotMet_ShouldNotReturnTheDefaultMemberAsValue()
 	{
 		WhichNode<string, int> whichNode = new(
@@ -504,7 +504,7 @@ public sealed class WhichNodeTests
 		await That(hasValue).IsFalse().Because("the member does not exist");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenParentChainProjectsThroughThreeLevels_ShouldPropagateInnermostValue()
 	{
 		WhichNode<string, char> level1 = new(null, s => s![0]);
@@ -530,7 +530,7 @@ public sealed class WhichNodeTests
 		await That(observed).IsEqualTo(true);
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenParentWhichNodeProjectsToInnerSource_ShouldEvaluateAgainstProjectedValue()
 	{
 		WhichNode<string, int> outerWhich = new(null, s => s!.Length);
@@ -552,7 +552,7 @@ public sealed class WhichNodeTests
 		await That(observed).IsEqualTo(true);
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenTypeDoesNotMatch_ShouldThrowInvalidOperationException()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult(Outcome.Success));
@@ -572,9 +572,9 @@ public sealed class WhichNodeTests
 			             """);
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.FailureBothWays, Outcome.FailureBothWays)]
-	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Success)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.FailureBothWays, Outcome.FailureBothWays)]
+	[Arguments(Outcome.Failure, Outcome.Failure, Outcome.Success)]
 	public async Task IsMetBy_WithNullValue_WhenNegated_ShouldOnlySucceedIfParentFails(Outcome parentOutcome,
 		Outcome expectedOutcome, Outcome expectedNegatedOutcome)
 	{
@@ -591,7 +591,7 @@ public sealed class WhichNodeTests
 		await That(result.Outcome).IsEqualTo(expectedNegatedOutcome);
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithNullValueAndWithoutParent_ShouldFailAlsoWhenNegated()
 	{
 		WhichNode<string, int> whichNode = new(null, s => s.Length);
@@ -608,7 +608,7 @@ public sealed class WhichNodeTests
 		await That(negated.GetResultText()).IsEqualTo("it was <null>");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithoutInnerNode_ShouldThrowInvalidOperationException()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
@@ -619,7 +619,7 @@ public sealed class WhichNodeTests
 			.WithMessage("No inner node specified for the which node.");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithoutParent_ShouldUseNodeResult()
 	{
 		WhichNode<string, int> whichNode = new(null, s => s.Length);
@@ -635,7 +635,7 @@ public sealed class WhichNodeTests
 		await That(sb.ToString()).IsEqualTo("e2");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Negate_ShouldNegateTheWholeExpectation()
 	{
 		WhichNode<string, int> whichNode = new(
@@ -653,7 +653,7 @@ public sealed class WhichNodeTests
 		await That(negated.GetResultText()).IsEqualTo("not r1");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Negate_WhenParentFailed_ShouldOnlyNegateTheParent()
 	{
 		WhichNode<string, int> whichNode = new(
@@ -670,7 +670,7 @@ public sealed class WhichNodeTests
 		await That(sb.ToString()).IsEqualTo("not e1 which e2");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Negate_WhenParentFailedAndStaysFailedUnderNegation_ShouldFail()
 	{
 		// The negation of this parent keeps it failed, like for a subject that is null.
@@ -686,16 +686,16 @@ public sealed class WhichNodeTests
 		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Success)]
-	[InlineData(Outcome.Success, Outcome.Undecided, Outcome.Undecided)]
-	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
-	[InlineData(Outcome.Undecided, Outcome.Success, Outcome.Undecided)]
-	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Undecided)]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Success, Outcome.Failure, Outcome.Success)]
+	[Arguments(Outcome.Success, Outcome.Undecided, Outcome.Undecided)]
+	[Arguments(Outcome.Failure, Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
+	[Arguments(Outcome.Undecided, Outcome.Success, Outcome.Undecided)]
+	[Arguments(Outcome.Undecided, Outcome.Failure, Outcome.Undecided)]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task Negate_WithNegateMemberOnly_ShouldCombineParentWithNegatedMember(Outcome parentOutcome,
 		Outcome memberOutcome, Outcome expectedOutcome)
 	{
@@ -711,7 +711,7 @@ public sealed class WhichNodeTests
 			.Because("only the member is negated, so the parent keeps its outcome");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Negate_WithNegateMemberOnly_ShouldNegateTheContinuedExpectation()
 	{
 		WhichNode<string, int> whichNode = new(
@@ -730,7 +730,7 @@ public sealed class WhichNodeTests
 		await That(negated.GetResultText()).IsEqualTo("not r2");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Negate_WithNegateMemberOnlyAndFailedParent_ShouldRenderTheParent()
 	{
 		WhichNode<string, int> whichNode = new(
@@ -750,7 +750,7 @@ public sealed class WhichNodeTests
 			.Because("the failed parent decides the outcome");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Negate_WithNegateMemberOnlyAndNullValue_ShouldNegateTheContinuedExpectationAndStayFailed()
 	{
 		WhichNode<string, int> whichNode = new(
@@ -769,7 +769,7 @@ public sealed class WhichNodeTests
 		await That(negated.GetResultText()).IsEqualTo("it was <null>");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Negate_WithExpectationOnlyMember_ShouldOnlyNegateTheParent()
 	{
 		WhichNode<string, int> whichNode = new(
@@ -786,7 +786,7 @@ public sealed class WhichNodeTests
 		await That(negated.GetResultText()).IsEqualTo("not r1");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Negate_WithNullMemberOfValue_ShouldNegateTheWholeExpectationAndStayFailed()
 	{
 		WhichNode<Dummy, Dummy.Nested> whichNode = new(
@@ -803,7 +803,7 @@ public sealed class WhichNodeTests
 		await That(negated.GetResultText()).IsEqualTo("it was <null>");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Negate_WithNullValue_ShouldNegateTheWholeExpectationAndStayFailed()
 	{
 		WhichNode<string, int> whichNode = new(
@@ -821,14 +821,14 @@ public sealed class WhichNodeTests
 		await That(negated.GetResultText()).IsEqualTo("it was <null>");
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Success, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
-	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Undecided)]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Success, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Success, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Undecided, Outcome.Failure)]
+	[Arguments(Outcome.Undecided, Outcome.Failure, Outcome.Undecided)]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task Outcome_ShouldBeExpected(Outcome node1, Outcome node2, Outcome expectedOutcome)
 	{
 		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(node1)),
@@ -841,11 +841,11 @@ public sealed class WhichNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
-	[Theory]
-	[InlineData(Outcome.Failure, Outcome.Undecided, "l")]
-	[InlineData(Outcome.Success, Outcome.Undecided, "r")]
-	[InlineData(Outcome.Undecided, Outcome.Success, "l")]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, "l")]
+	[Test]
+	[Arguments(Outcome.Failure, Outcome.Undecided, "l")]
+	[Arguments(Outcome.Success, Outcome.Undecided, "r")]
+	[Arguments(Outcome.Undecided, Outcome.Success, "l")]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, "l")]
 	public async Task ResultText_ShouldBeExpected(Outcome node1, Outcome node2, string expectedResultText)
 	{
 		WhichNode<string, int> whichNode = new(new DummyNode("",
@@ -858,7 +858,7 @@ public sealed class WhichNodeTests
 			.Because("an undecided part only explains the combination when no part failed");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetValue_WhenLeftHasValue_ShouldReturnLeftValue()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
@@ -873,7 +873,7 @@ public sealed class WhichNodeTests
 		await That(value).IsEqualTo("1");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetValue_WhenMemberAccessorHasCorrectValue_ShouldReturnMemberValue()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult<string>(Outcome.Success, "1", ""));
@@ -888,7 +888,7 @@ public sealed class WhichNodeTests
 		await That(value).IsEqualTo(3);
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetValue_WhenNoneHasValue_ShouldReturnFalse()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult(Outcome.Success, ""));
@@ -903,7 +903,7 @@ public sealed class WhichNodeTests
 		await That(value).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetValue_WhenOnlyRightHasValue_ShouldReturnRightValue()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult(Outcome.Success, ""));
@@ -918,7 +918,7 @@ public sealed class WhichNodeTests
 		await That(value).IsEqualTo("2");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAsyncMemberCompletesWithinTheTimeout_ShouldSucceed()
 	{
 		string subject = "foo";
@@ -932,7 +932,7 @@ public sealed class WhichNodeTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAsyncMemberDoesNotFinishBeforeTheCancellation_ShouldBeInconclusive()
 	{
 		string subject = "foo";
@@ -944,7 +944,7 @@ public sealed class WhichNodeTests
 				.IsEqualTo(3)
 				.WithCancellation(cts.Token);
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected that subject
 			             whose length is equal to 3,
@@ -953,7 +953,7 @@ public sealed class WhichNodeTests
 			.Because("the cancellation must stop waiting for a member task that does not observe it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAsyncMemberDoesNotFinishWithinTheTimeout_ShouldFailWithTheTimeout()
 	{
 		string subject = "foo";
@@ -963,7 +963,7 @@ public sealed class WhichNodeTests
 				.IsEqualTo(3)
 				.WithTimeout(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             whose length is equal to 3,
@@ -973,7 +973,7 @@ public sealed class WhichNodeTests
 			.Because("the timeout must abandon a member task that never finishes, and report it like any other timeout");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenBothAreFailure_ShouldOnlyIncludeLeftResult()
 	{
 		WhichNode<string, int> whichNode = new(new DummyNode("",
@@ -986,7 +986,7 @@ public sealed class WhichNodeTests
 		await That(result.GetResultText()).IsEqualTo("r1");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenBothAreSuccess_ShouldHaveEmptyResultText()
 	{
 		WhichNode<string, int> whichNode = new(new DummyNode("",
@@ -999,7 +999,7 @@ public sealed class WhichNodeTests
 		await That(result.GetResultText()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenLeftIsFailureAndHasIgnoreResultFurtherProcessingStrategy_ShouldExcludeRightResultText()
 	{
 		WhichNode<string, int> whichNode = new(new DummyNode("",
@@ -1013,7 +1013,7 @@ public sealed class WhichNodeTests
 		await That(result.GetResultText()).IsEqualTo("r1");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenLeftIsSuccessAndHasIgnoreResultFurtherProcessingStrategy_ShouldStillIncludeRightResultText()
 	{
 		WhichNode<string, int> whichNode = new(new DummyNode("",
@@ -1027,7 +1027,7 @@ public sealed class WhichNodeTests
 		await That(result.GetResultText()).IsEqualTo("r2");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenOnlyRightHasFailure_ShouldIncludeRightResultText()
 	{
 		WhichNode<string, int> whichNode = new(new DummyNode("",
@@ -1040,10 +1040,10 @@ public sealed class WhichNodeTests
 		await That(result.GetResultText()).IsEqualTo("r2");
 	}
 
-	[Theory]
-	[InlineData(" that ", "whose bar", "foo whose bar")]
-	[InlineData(" that ", "is bar", "foo that is bar")]
-	[InlineData(" whose value ", "whose bar", "foo whose value whose bar")]
+	[Test]
+	[Arguments(" that ", "whose bar", "foo whose bar")]
+	[Arguments(" that ", "is bar", "foo that is bar")]
+	[Arguments(" whose value ", "whose bar", "foo whose value whose bar")]
 	public async Task WhenSeparatorEndsWithThat_ShouldOnlyDropItBeforeWhose(
 		string separator, string rightExpectation, string expectedExpectation)
 	{
@@ -1057,7 +1057,7 @@ public sealed class WhichNodeTests
 		await That(result.GetExpectationText()).IsEqualTo(expectedExpectation);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhichCreatesGoodMessage()
 	{
 		Dummy subject = new()
@@ -1073,7 +1073,7 @@ public sealed class WhichNodeTests
 			=> await That(subject).Is<Dummy>()
 				.Whose(p => p.Value, e => e.IsEqualTo("bar"));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is of type WhichNodeTests.Dummy whose Value is equal to "bar",
@@ -1085,7 +1085,7 @@ public sealed class WhichNodeTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhichWithNegateMemberOnly_WhenParentFails_ShouldFailAlsoWhenNegated()
 	{
 		string subject = "foo";
@@ -1096,7 +1096,7 @@ public sealed class WhichNodeTests
 					.ForWhich<string, int>(s => s.Length, " whose length ", negateMemberOnly: true))
 				.IsEqualTo(3));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             starts with "bar" whose length is not equal to 3,
@@ -1105,7 +1105,7 @@ public sealed class WhichNodeTests
 			.Because("the negation only applies to the member, so the failed parent still fails the expectation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhichWithoutParent_ShouldKeepTheSeparator()
 	{
 		string subject = "foo";
@@ -1113,7 +1113,7 @@ public sealed class WhichNodeTests
 		async Task Act()
 			=> await WhoseLength(That(subject), _ => 3).IsEqualTo(4);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             whose length is equal to 4,
@@ -1121,7 +1121,7 @@ public sealed class WhichNodeTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhichWithoutParent_WhenMemberAccessorThrows_ShouldKeepTheSeparator()
 	{
 		string subject = "foo";
@@ -1129,7 +1129,7 @@ public sealed class WhichNodeTests
 		async Task Act()
 			=> await WhoseLength(That(subject), _ => throw new MyException("no length")).IsEqualTo(4);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             whose length is equal to 4,
@@ -1139,7 +1139,7 @@ public sealed class WhichNodeTests
 			.Because("the failure message is the only place that names the member whose accessor threw");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhichWithWhose_InManualEvaluation_ShouldReadLikeTheSingleValueExpectation()
 	{
 		string[][] subject = [["foo",],];
@@ -1148,7 +1148,7 @@ public sealed class WhichNodeTests
 			=> await That(subject).All()
 				.ComplyWith(x => x.HasSingle().Which.Whose(s => s.Length, l => l.IsEqualTo(4)));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             has a single item whose Length is equal to 4 for all items,
@@ -1170,7 +1170,7 @@ public sealed class WhichNodeTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhichWithWhose_ShouldNotRepeatConnector()
 	{
 		string[] subject = ["foo",];
@@ -1178,7 +1178,7 @@ public sealed class WhichNodeTests
 		async Task Act()
 			=> await That(subject).HasSingle().Which.Whose(x => x.Length, l => l.IsEqualTo(4));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             has a single item whose Length is equal to 4,

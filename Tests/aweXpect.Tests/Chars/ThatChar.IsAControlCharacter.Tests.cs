@@ -6,14 +6,14 @@ public sealed partial class ThatChar
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData('\0')]
-			[InlineData('\t')]
-			[InlineData('\n')]
-			[InlineData('\r')]
-			[InlineData('\u001B')]
-			[InlineData('\u007F')]
-			[InlineData('\u0085')]
+			[Test]
+			[Arguments('\0')]
+			[Arguments('\t')]
+			[Arguments('\n')]
+			[Arguments('\r')]
+			[Arguments('\u001B')]
+			[Arguments('\u007F')]
+			[Arguments('\u0085')]
 			public async Task WhenSubjectIsAControlCharacter_ShouldSucceed(char subject)
 			{
 				async Task Act()
@@ -22,18 +22,18 @@ public sealed partial class ThatChar
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData('a')]
-			[InlineData('1')]
-			[InlineData(' ')]
-			[InlineData('@')]
-			[InlineData('\u00A0')]
+			[Test]
+			[Arguments('a')]
+			[Arguments('1')]
+			[Arguments(' ')]
+			[Arguments('@')]
+			[Arguments('\u00A0')]
 			public async Task WhenSubjectIsNoControlCharacter_ShouldFail(char subject)
 			{
 				async Task Act()
 					=> await That(subject).IsAControlCharacter();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is a control character,
@@ -44,20 +44,20 @@ public sealed partial class ThatChar
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData('\0')]
-			[InlineData('\t')]
-			[InlineData('\n')]
-			[InlineData('\r')]
-			[InlineData('\u001B')]
-			[InlineData('\u007F')]
-			[InlineData('\u0085')]
+			[Test]
+			[Arguments('\0')]
+			[Arguments('\t')]
+			[Arguments('\n')]
+			[Arguments('\r')]
+			[Arguments('\u001B')]
+			[Arguments('\u007F')]
+			[Arguments('\u0085')]
 			public async Task WhenSubjectIsAControlCharacter_ShouldFail(char subject)
 			{
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsAControlCharacter());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not a control character,
@@ -65,12 +65,12 @@ public sealed partial class ThatChar
 					              """);
 			}
 
-			[Theory]
-			[InlineData('a')]
-			[InlineData('1')]
-			[InlineData(' ')]
-			[InlineData('@')]
-			[InlineData('\u00A0')]
+			[Test]
+			[Arguments('a')]
+			[Arguments('1')]
+			[Arguments(' ')]
+			[Arguments('@')]
+			[Arguments('\u00A0')]
 			public async Task WhenSubjectIsNoControlCharacter_ShouldSucceed(char subject)
 			{
 				async Task Act()

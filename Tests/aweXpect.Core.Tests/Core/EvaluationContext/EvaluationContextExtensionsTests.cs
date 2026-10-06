@@ -12,7 +12,7 @@ namespace aweXpect.Core.Tests.Core.EvaluationContext;
 public class EvaluationContextExtensionsTests
 {
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task UseMaterializedAsyncEnumerable_ForDifferentSources_ShouldReturnDifferentInstances()
 	{
 		IEvaluationContext context = new Context();
@@ -28,7 +28,7 @@ public class EvaluationContextExtensionsTests
 #endif
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task UseMaterializedAsyncEnumerable_ForSameSource_ShouldReturnSameInstance()
 	{
 		IEvaluationContext context = new Context();
@@ -43,7 +43,7 @@ public class EvaluationContextExtensionsTests
 #endif
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task UseMaterializedAsyncEnumerable_WhenCalledAgainWithAnotherToken_ShouldKeepTheTokenOfTheFirstCall()
 	{
 		using CancellationTokenSource cts = new();
@@ -67,7 +67,7 @@ public class EvaluationContextExtensionsTests
 #endif
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task UseMaterializedAsyncEnumerable_WhenCompletelyEnumerated_ShouldKnowTheCount()
 	{
 		IEvaluationContext context = new Context();
@@ -85,7 +85,7 @@ public class EvaluationContextExtensionsTests
 #endif
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task UseMaterializedAsyncEnumerable_WhenNull_ShouldThrowArgumentNullException()
 	{
 		IEvaluationContext context = new Context();
@@ -99,7 +99,7 @@ public class EvaluationContextExtensionsTests
 #endif
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task UseMaterializedAsyncEnumerable_WithOneShotSource_ShouldEnumerateTheSourceOnlyOnce()
 	{
 		IEvaluationContext context = new Context();
@@ -125,7 +125,7 @@ public class EvaluationContextExtensionsTests
 	}
 #endif
 
-	[Fact]
+	[Test]
 	public async Task UseMaterializedEnumerable_ForCollection_ShouldReturnTheCollection()
 	{
 		IEvaluationContext context = new Context();
@@ -137,7 +137,7 @@ public class EvaluationContextExtensionsTests
 			.Because("a collection can be enumerated repeatedly");
 	}
 
-	[Fact]
+	[Test]
 	public async Task UseMaterializedEnumerable_ForDifferentSources_ShouldReturnDifferentInstances()
 	{
 		IEvaluationContext context = new Context();
@@ -149,7 +149,7 @@ public class EvaluationContextExtensionsTests
 			.Because("nested expectations evaluate different sources in the same context");
 	}
 
-	[Fact]
+	[Test]
 	public async Task UseMaterializedEnumerable_ForSameSource_ShouldReturnSameInstance()
 	{
 		IEvaluationContext context = new Context();
@@ -162,7 +162,7 @@ public class EvaluationContextExtensionsTests
 		await That(materialized1).IsNotSameAs(source);
 	}
 
-	[Fact]
+	[Test]
 	public async Task UseMaterializedEnumerable_InDifferentContexts_ShouldReturnDifferentInstances()
 	{
 		IEnumerable<int> source = ToEnumerable(1, 2);
@@ -174,7 +174,7 @@ public class EvaluationContextExtensionsTests
 			.Because("every evaluation materializes the source anew");
 	}
 
-	[Fact]
+	[Test]
 	public async Task UseMaterializedEnumerable_Untyped_ForNull_ShouldReturnNull()
 	{
 		IEvaluationContext context = new Context();
@@ -184,7 +184,7 @@ public class EvaluationContextExtensionsTests
 		await That(materialized).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task UseMaterializedEnumerable_Untyped_ForSameSource_ShouldReturnSameInstance()
 	{
 		IEvaluationContext context = new Context();
@@ -197,7 +197,7 @@ public class EvaluationContextExtensionsTests
 		await That(materialized1).IsNotSameAs(source);
 	}
 
-	[Fact]
+	[Test]
 	public async Task UseMaterializedEnumerable_Untyped_WhenPartiallyEnumerated_ShouldKeepTheReadItems()
 	{
 		IEvaluationContext context = new Context();
@@ -210,7 +210,7 @@ public class EvaluationContextExtensionsTests
 			.Because("only the items that were read are kept, without reading further items");
 	}
 
-	[Fact]
+	[Test]
 	public async Task UseMaterializedEnumerable_Untyped_WithOneShotSource_ShouldEnumerateTheSourceOnlyOnce()
 	{
 		IEvaluationContext context = new Context();
@@ -226,7 +226,7 @@ public class EvaluationContextExtensionsTests
 		await That(source.Enumerations).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task UseMaterializedEnumerable_WhenCompletelyEnumerated_ShouldKnowTheCount()
 	{
 		IEvaluationContext context = new Context();
@@ -240,7 +240,7 @@ public class EvaluationContextExtensionsTests
 		await That(materialized).Is<ICountable>().Whose(c => c.Count, count => count.IsEqualTo(3));
 	}
 
-	[Fact]
+	[Test]
 	public async Task UseMaterializedEnumerable_WhenNull_ShouldThrowArgumentNullException()
 	{
 		IEvaluationContext context = new Context();
@@ -252,7 +252,7 @@ public class EvaluationContextExtensionsTests
 			.WithMessage("The 'collection' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task UseMaterializedEnumerable_WhenPartiallyEnumerated_ShouldKeepTheReadItems()
 	{
 		IEvaluationContext context = new Context();
@@ -267,7 +267,7 @@ public class EvaluationContextExtensionsTests
 		await That(((ICountable)materialized).Count).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task UseMaterializedEnumerable_WithOneShotSource_ShouldEnumerateTheSourceOnlyOnce()
 	{
 		IEvaluationContext context = new Context();

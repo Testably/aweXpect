@@ -9,14 +9,14 @@ namespace aweXpect.Tests;
 
 public sealed class CustomResultTests
 {
-	[Fact]
+	[Test]
 	public async Task ConstraintResult_WithSubjectOfResult_ShouldMergeTheSubjectLikeTheBuiltInExpectations()
 	{
 		int subject = 5;
 
 		async Task Act() => await That(subject).IsEvenNumber().And.IsNegativeNumber();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is even and is negative,
@@ -24,14 +24,14 @@ public sealed class CustomResultTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomResult_ShouldAccessTheExpectationBuilder()
 	{
 		int subject = 5;
 
 		async Task Act() => await That(subject).IsEvenNumber().OrNegative();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is even or is negative,
@@ -39,14 +39,14 @@ public sealed class CustomResultTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task CustomResult_WithQuantifier_ShouldOfferTheCountOptions()
 	{
 		string subject = "1a2b3";
 
 		async Task Act() => await That(subject).HasDigits().Because("of the count").Between(4).And(5);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             has digits between 4 and 5 times, because of the count,

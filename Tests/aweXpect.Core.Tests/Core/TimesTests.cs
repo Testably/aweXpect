@@ -2,8 +2,8 @@
 
 public class TimesTests
 {
-	[Theory]
-	[AutoData]
+	[Test]
+	[AutoArguments]
 	public async Task ExplicitConstructor_ShouldSetValueProperty(int value)
 	{
 		Times times = new(value);
@@ -11,8 +11,8 @@ public class TimesTests
 		await That(times.Value).IsEqualTo(value);
 	}
 
-	[Theory]
-	[AutoData]
+	[Test]
+	[AutoArguments]
 	public async Task ExtensionMethod_ShouldSetValueProperty(int value)
 	{
 		Times times = value.Times();
@@ -20,7 +20,7 @@ public class TimesTests
 		await That(times.Value).IsEqualTo(value);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ImplicitConversion_ShouldWorkAsExpected()
 	{
 		int expectedValue = 5;
@@ -32,8 +32,8 @@ public class TimesTests
 		await That(actualValue).IsEqualTo(expectedValue);
 	}
 
-	[Theory]
-	[AutoData]
+	[Test]
+	[AutoArguments]
 	public async Task ImplicitOperator_ShouldSetValueProperty(int value)
 	{
 		Times times = value;

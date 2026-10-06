@@ -4,7 +4,7 @@ namespace aweXpect.Core.Tests.Core.Helpers;
 
 public class ToleranceHelpersTests
 {
-	[Fact]
+	[Test]
 	public async Task Format_Char_ShouldShowTheCodePoint()
 	{
 		string result = ToleranceHelpers.Format('a');
@@ -13,7 +13,7 @@ public class ToleranceHelpersTests
 			.Because("a char tolerance is a distance between code points");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Format_Double_ShouldShowTheValue()
 	{
 		string result = ToleranceHelpers.Format(0.25);
@@ -21,7 +21,7 @@ public class ToleranceHelpersTests
 		await That(result).IsEqualTo(" ± 0.25");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Format_TimeSpan_ShouldShowTheFormattedDuration()
 	{
 		string result = ToleranceHelpers.Format(TimeSpan.FromSeconds(2));
@@ -29,7 +29,7 @@ public class ToleranceHelpersTests
 		await That(result).IsEqualTo(" ± 0:02");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThrowIfInvalid_WhenDecimalIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		void Act() => ToleranceHelpers.ThrowIfInvalid(-0.1m);
@@ -39,7 +39,7 @@ public class ToleranceHelpersTests
 			.WithMessage("The tolerance must not be negative.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThrowIfInvalid_WhenDoubleIsNaN_ShouldThrowArgumentOutOfRangeException()
 	{
 		void Act() => ToleranceHelpers.ThrowIfInvalid(double.NaN);
@@ -49,7 +49,7 @@ public class ToleranceHelpersTests
 			.WithMessage("The tolerance must not be NaN.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThrowIfInvalid_WhenFloatIsNaN_ShouldThrowArgumentOutOfRangeException()
 	{
 		void Act() => ToleranceHelpers.ThrowIfInvalid(float.NaN);
@@ -59,7 +59,7 @@ public class ToleranceHelpersTests
 			.WithMessage("The tolerance must not be NaN.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThrowIfInvalid_WhenIntIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		void Act() => ToleranceHelpers.ThrowIfInvalid(-1);
@@ -69,7 +69,7 @@ public class ToleranceHelpersTests
 			.WithMessage("The tolerance must not be negative.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThrowIfInvalid_WhenTimeSpanIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		void Act() => ToleranceHelpers.ThrowIfInvalid(TimeSpan.FromSeconds(-1));
@@ -79,7 +79,7 @@ public class ToleranceHelpersTests
 			.WithMessage("The tolerance must not be negative.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThrowIfInvalid_WhenZero_ShouldNotThrow()
 	{
 		void Act()

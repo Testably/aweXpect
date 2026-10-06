@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class AtLeastTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursEnoughTimes_ShouldSucceed()
 			{
 				string subject =
@@ -19,7 +19,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursFewerTimes_ShouldFail()
 			{
 				string subject =
@@ -29,7 +29,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).AtLeast(5);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "in" at least 5 times,
@@ -37,7 +37,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursShouldFail()
 			{
 				string subject =
@@ -47,7 +47,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).AtLeast().Once();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "text that does not occur" at least once,
@@ -55,7 +55,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumIsLessThanZero_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject =

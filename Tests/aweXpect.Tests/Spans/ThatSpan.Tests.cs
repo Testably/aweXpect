@@ -5,7 +5,7 @@ public sealed partial class ThatSpan
 {
 	public sealed class Tests
 	{
-		[Fact]
+		[Test]
 		public async Task ShouldSupportIsEmpty()
 		{
 			var subject = new[]
@@ -15,7 +15,7 @@ public sealed partial class ThatSpan
 			async Task Act()
 				=> await That(subject.AsSpan()).IsEmpty();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject.AsSpan()
 				             is empty,
@@ -27,7 +27,7 @@ public sealed partial class ThatSpan
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportIsInAscendingOrder()
 		{
 			async Task Act()

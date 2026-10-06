@@ -11,7 +11,7 @@ public sealed partial class ThatAsyncEnumerable
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsValues_ShouldSucceed()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 2);
@@ -22,7 +22,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
@@ -30,7 +30,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not empty,
@@ -38,7 +38,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSourceHangsAfterTheFirstItem_ShouldNotWaitForMoreItems()
 			{
 				IAsyncEnumerable<int> subject = HangAfter([1,]);
@@ -50,7 +50,7 @@ public sealed partial class ThatAsyncEnumerable
 					.Because("the first item already decides that the collection is not empty");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSourceThrowsAfterTheFirstItem_ShouldSucceed()
 			{
 				IAsyncEnumerable<int> subject = ThrowAfter(new InvalidOperationException("enumerated too far"), 1);
@@ -62,7 +62,7 @@ public sealed partial class ThatAsyncEnumerable
 					.Because("the first item already decides that the collection is not empty");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IAsyncEnumerable<int>? subject = null;
@@ -70,7 +70,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not empty,

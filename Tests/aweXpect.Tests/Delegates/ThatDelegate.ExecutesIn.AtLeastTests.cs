@@ -6,7 +6,7 @@ public sealed partial class ThatDelegate
 	{
 		public sealed class AtLeastTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDelegateIsTooFast_ShouldFail()
 			{
 				Action @delegate = () => Task.Delay(5.Milliseconds()).Wait();
@@ -14,7 +14,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtLeast(5123.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in at least 0:05.123,
@@ -22,7 +22,7 @@ public sealed partial class ThatDelegate
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateTakesLongEnough_ShouldSucceed()
 			{
 				Action @delegate = () => Task.Delay(50.Milliseconds()).Wait();
@@ -33,7 +33,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateThrowsAnException_ShouldFail()
 			{
 				Action @delegate = () =>
@@ -45,7 +45,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().AtLeast(5.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that @delegate
 					              executes in at least 0:00.005,

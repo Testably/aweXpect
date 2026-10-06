@@ -6,7 +6,7 @@ public partial class ValueFormatters
 {
 	public sealed class CharTests
 	{
-		[Fact]
+		[Test]
 		public async Task NullableValue_ShouldAddSingleQuotes()
 		{
 			char? value = 'X';
@@ -22,7 +22,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NullableValue_WithType_ShouldAddSingleQuotes()
 		{
 			char? value = 'X';
@@ -38,7 +38,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Value_ShouldAddSingleQuotes()
 		{
 			char value = 'a';
@@ -54,18 +54,18 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData('\n', "'\\n'")]
-		[InlineData('\r', "'\\r'")]
-		[InlineData('\t', "'\\t'")]
-		[InlineData('\0', "'\\0'")]
-		[InlineData('\u00A0', "'\\u00A0'")]
-		[InlineData('\u200B', "'\\u200B'")]
-		[InlineData('\u0301', "'\\u0301'")]
-		[InlineData('\uD83D', "'\\uD83D'")]
-		[InlineData('\\', "'\\\\'")]
-		[InlineData('\'', "'\\''")]
-		[InlineData('"', "'\"'")]
+		[Test]
+		[Arguments('\n', "'\\n'")]
+		[Arguments('\r', "'\\r'")]
+		[Arguments('\t', "'\\t'")]
+		[Arguments('\0', "'\\0'")]
+		[Arguments('\u00A0', "'\\u00A0'")]
+		[Arguments('\u200B', "'\\u200B'")]
+		[Arguments('\u0301', "'\\u0301'")]
+		[Arguments('\uD83D', "'\\uD83D'")]
+		[Arguments('\\', "'\\\\'")]
+		[Arguments('\'', "'\\''")]
+		[Arguments('"', "'\"'")]
 		public async Task Value_ShouldEscapeLikeCSharpCharLiterals(char value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -82,7 +82,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Value_WithType_ShouldAddSingleQuotes()
 		{
 			char value = 'a';
@@ -98,7 +98,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			char? value = null;

@@ -1,27 +1,26 @@
 using System.Threading.Tasks;
-using Xunit;
 using Verifier = aweXpect.Analyzers.Tests.Verifiers.CSharpAnalyzerVerifier<aweXpect.Analyzers.OrResultValueAnalyzer>;
 
 namespace aweXpect.Analyzers.Tests;
 
 public class OrResultValueAnalyzerTests
 {
-	[Theory]
-	[InlineData("var result = await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>();")]
-	[InlineData("B result = await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>();")]
-	[InlineData("B result; result = await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>();")]
-	[InlineData("var result = await Expect.That(subject).IsExactly<A>().{|#0:Or|}.IsExactly<B>();")]
-	[InlineData("var result = await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>().Because(\"foo\");")]
-	[InlineData("var result = (await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>())!;")]
-	[InlineData("var result = (object)await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>();")]
-	[InlineData("object result = await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>();")]
-	[InlineData("var result = (await (Expect.That(subject).Is<A>().{|#0:Or|}).Is<B>());")]
-	[InlineData("var name = (await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>()).Name;")]
-	[InlineData("var name = (await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>())?.Name;")]
-	[InlineData("Consume(await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>());")]
-	[InlineData("if (await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>() is null) { }")]
-	[InlineData("B[] results = [await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>(),];")]
-	[InlineData("Func<Task<B>> callback = async () => await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>();")]
+	[Test]
+	[Arguments("var result = await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>();")]
+	[Arguments("B result = await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>();")]
+	[Arguments("B result; result = await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>();")]
+	[Arguments("var result = await Expect.That(subject).IsExactly<A>().{|#0:Or|}.IsExactly<B>();")]
+	[Arguments("var result = await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>().Because(\"foo\");")]
+	[Arguments("var result = (await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>())!;")]
+	[Arguments("var result = (object)await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>();")]
+	[Arguments("object result = await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>();")]
+	[Arguments("var result = (await (Expect.That(subject).Is<A>().{|#0:Or|}).Is<B>());")]
+	[Arguments("var name = (await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>()).Name;")]
+	[Arguments("var name = (await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>())?.Name;")]
+	[Arguments("Consume(await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>());")]
+	[Arguments("if (await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>() is null) { }")]
+	[Arguments("B[] results = [await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>(),];")]
+	[Arguments("Func<Task<B>> callback = async () => await Expect.That(subject).Is<A>().{|#0:Or|}.Is<B>();")]
 	public async Task WhenUsingTheValueAfterAnOr_ShouldBeFlagged(string statement) => await Verifier
 		.VerifyAnalyzerAsync(
 			$$"""
@@ -53,17 +52,17 @@ public class OrResultValueAnalyzerTests
 				.WithArguments("B")
 		);
 
-	[Theory]
-	[InlineData("await Expect.That(subject).Is<A>().Or.Is<B>();")]
-	[InlineData("_ = await Expect.That(subject).Is<A>().Or.Is<B>();")]
-	[InlineData("await Expect.That(subject).Is<A>().Or.Is<B>().Because(\"foo\");")]
-	[InlineData("var result = await Expect.That(subject).Is<A>().And.Is<B>();")]
-	[InlineData("var result = await Expect.That(subject).Is<B>();")]
-	[InlineData("var result = await Expect.That(subject).Is<A>().Or.IsNotNull();")]
-	[InlineData("var result = await Expect.That(subject).Is<A>().Or.Is<B>().And.IsNotNull();")]
-	[InlineData("Func<Task> callback = async () => await Expect.That(subject).Is<A>().Or.Is<B>();")]
-	[InlineData("async Task Act() => await Expect.That(subject).Is<A>().Or.Is<B>();")]
-	[InlineData("var result = await Expect.That(subject).Whose(x => x.ToString(), x => x.IsNull().Or.IsEmpty());")]
+	[Test]
+	[Arguments("await Expect.That(subject).Is<A>().Or.Is<B>();")]
+	[Arguments("_ = await Expect.That(subject).Is<A>().Or.Is<B>();")]
+	[Arguments("await Expect.That(subject).Is<A>().Or.Is<B>().Because(\"foo\");")]
+	[Arguments("var result = await Expect.That(subject).Is<A>().And.Is<B>();")]
+	[Arguments("var result = await Expect.That(subject).Is<B>();")]
+	[Arguments("var result = await Expect.That(subject).Is<A>().Or.IsNotNull();")]
+	[Arguments("var result = await Expect.That(subject).Is<A>().Or.Is<B>().And.IsNotNull();")]
+	[Arguments("Func<Task> callback = async () => await Expect.That(subject).Is<A>().Or.Is<B>();")]
+	[Arguments("async Task Act() => await Expect.That(subject).Is<A>().Or.Is<B>();")]
+	[Arguments("var result = await Expect.That(subject).Whose(x => x.ToString(), x => x.IsNull().Or.IsEmpty());")]
 	public async Task WhenNotUsingAValueThatAnOrMakesUnreliable_ShouldNotBeFlagged(string statement)
 		=> await Verifier
 			.VerifyAnalyzerAsync(
@@ -86,7 +85,7 @@ public class OrResultValueAnalyzerTests
 				  """
 			);
 
-	[Fact]
+	[Test]
 	public async Task WhenAllAlternativesReturnTheSubject_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -110,7 +109,7 @@ public class OrResultValueAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenAnAndFollowsTheOr_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -139,7 +138,7 @@ public class OrResultValueAnalyzerTests
 				.WithArguments("string")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenCombiningMultipleOr_ShouldBeFlaggedOnceAtTheLastOr() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -165,7 +164,7 @@ public class OrResultValueAnalyzerTests
 				.WithArguments("C")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenReturningTheValue_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -195,7 +194,7 @@ public class OrResultValueAnalyzerTests
 				.WithArguments("B")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenTheLastExpectationReturnsAnItemOfTheCollection_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -220,7 +219,7 @@ public class OrResultValueAnalyzerTests
 				.WithArguments("int")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenTheOrFollowsAWhich_ShouldCompareWithTheNewSubject() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -242,7 +241,7 @@ public class OrResultValueAnalyzerTests
 				.WithArguments("int")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenTheValueIsAValueType_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -262,7 +261,7 @@ public class OrResultValueAnalyzerTests
 				.WithArguments("int")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenTheValueIsNotTheOneOfTheExpectation_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -292,7 +291,7 @@ public class OrResultValueAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingAnOrOfAnotherType_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -322,7 +321,7 @@ public class OrResultValueAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingTheStaticThat_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -354,7 +353,7 @@ public class OrResultValueAnalyzerTests
 				.WithArguments("B")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenVerifyingSynchronously_ShouldBeFlaggedWhenTheValueIsUsed() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""

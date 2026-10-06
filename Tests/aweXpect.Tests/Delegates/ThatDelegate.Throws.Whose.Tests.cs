@@ -8,8 +8,8 @@ public sealed partial class ThatDelegate
 		{
 			public sealed class Tests
 			{
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task ShouldResetItAfterWhichClause(int hResult)
 				{
 					int otherHResult = hResult + 1;
@@ -21,7 +21,7 @@ public sealed partial class ThatDelegate
 							.Whose(e => e.HResult, h => h.IsEqualTo(hResult)).And
 							.WithHResult(otherHResult);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws an exception whose HResult is equal to {hResult} and with HResult equal to {otherHResult},
@@ -29,8 +29,8 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenMemberIsDifferent_ShouldFail(int hResult)
 				{
 					int expectedHResult = hResult + 1;
@@ -42,7 +42,7 @@ public sealed partial class ThatDelegate
 							.Whose(e => e.HResult, h => h.IsEqualTo(expectedHResult)).And
 							.WithHResult(hResult);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws an exception whose HResult is equal to {expectedHResult} and with HResult equal to {hResult},
@@ -50,8 +50,8 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenMemberMatchesExpected_ShouldSucceed(int hResult)
 				{
 					Exception exception = new HResultException(hResult);
@@ -64,7 +64,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeDoesNotMatch_WithThrowsType_ShouldOnlyReportTheType()
 				{
 					Action action = () => throw new OtherException("bar");
@@ -73,7 +73,7 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws(typeof(CustomException))
 							.Whose(e => e.HResult, h => h.IsEqualTo(42));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws a ThatDelegate.CustomException whose HResult is equal to 42,
@@ -83,8 +83,8 @@ public sealed partial class ThatDelegate
 						.Because("the members of an exception of another type are irrelevant");
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WithNamedMemberAccessor_ShouldSucceed(int hResult)
 				{
 					Exception exception = new HResultException(hResult);
@@ -100,7 +100,7 @@ public sealed partial class ThatDelegate
 
 			public sealed class GenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task AllowsNestedIs()
 				{
 					void Throwing()
@@ -117,8 +117,8 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task ShouldResetItAfterWhichClause(int hResult)
 				{
 					int otherHResult = hResult + 1;
@@ -130,7 +130,7 @@ public sealed partial class ThatDelegate
 							.Whose(e => e.HResult, h => h.IsEqualTo(hResult)).And
 							.WithHResult(otherHResult);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws an HResultException whose HResult is equal to {hResult} and with HResult equal to {otherHResult},
@@ -138,8 +138,8 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenAsyncMemberIsDifferent_ShouldFail(int value)
 				{
 					int expectedValue = value + 1;
@@ -149,7 +149,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws<AsyncException>()
 							.Whose(e => e.GetValueAsync(), v => v.IsEqualTo(expectedValue));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws a ThatDelegate.Throws.Whose.AsyncException whose GetValueAsync() is equal to {expectedValue},
@@ -157,8 +157,8 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenAsyncMemberMatchesExpected_ShouldSucceed(int value)
 				{
 					void Delegate() => throw new AsyncException(value);
@@ -170,8 +170,8 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenMemberIsDifferent_ShouldFail(int hResult)
 				{
 					int expectedHResult = hResult + 1;
@@ -183,7 +183,7 @@ public sealed partial class ThatDelegate
 							.Whose(e => e.HResult, h => h.IsEqualTo(expectedHResult)).And
 							.WithHResult(hResult);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws an HResultException whose HResult is equal to {expectedHResult} and with HResult equal to {hResult},
@@ -191,8 +191,8 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenMemberMatchesExpected_ShouldSucceed(int hResult)
 				{
 					Exception exception = new HResultException(hResult);
@@ -205,8 +205,8 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenValueTaskMemberIsDifferent_ShouldFail(int value)
 				{
 					int expectedValue = value + 1;
@@ -216,7 +216,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws<AsyncException>()
 							.Whose(e => e.GetValueAsValueTaskAsync(), v => v.IsEqualTo(expectedValue));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws a ThatDelegate.Throws.Whose.AsyncException whose GetValueAsValueTaskAsync() is equal to {expectedValue},
@@ -224,7 +224,7 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WithInner_AllowsNestedIs()
 				{
 					void Throwing()
@@ -243,7 +243,7 @@ public sealed partial class ThatDelegate
 
 			public sealed class AsyncMemberFaultTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAsyncMemberFaults_ShouldFail()
 				{
 					void Delegate() => throw new AsyncException(1);
@@ -252,7 +252,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws<AsyncException>()
 							.Whose(e => e.FaultedAsync(), v => v.IsEqualTo(1));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that Delegate
 						             throws a ThatDelegate.Throws.Whose.AsyncException whose FaultedAsync() is equal to 1,
@@ -262,7 +262,7 @@ public sealed partial class ThatDelegate
 						.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenValueTaskMemberFaults_ShouldFail()
 				{
 					void Delegate() => throw new AsyncException(1);
@@ -271,7 +271,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws<AsyncException>()
 							.Whose(e => e.FaultedValueTaskAsync(), v => v.IsEqualTo(1));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that Delegate
 						             throws a ThatDelegate.Throws.Whose.AsyncException whose FaultedValueTaskAsync() is equal to 1,
@@ -284,7 +284,7 @@ public sealed partial class ThatDelegate
 
 			public sealed class MemberExpectationThrowsOnDefaultTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAsyncMemberFaults_ShouldFail()
 				{
 					void Delegate() => throw new AsyncException(1);
@@ -293,7 +293,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws<AsyncException>()
 							.Whose(e => e.FaultedAsync(), v => v.Satisfies(x => 10 / x > 1));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that Delegate
 						             throws a ThatDelegate.Throws.Whose.AsyncException whose FaultedAsync() satisfies x => 10 / x > 1,

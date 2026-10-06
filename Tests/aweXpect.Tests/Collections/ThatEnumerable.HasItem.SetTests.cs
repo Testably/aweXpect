@@ -9,7 +9,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class SetTests
 		{
-			[Fact]
+			[Test]
 			public async Task ForADoubleSet_ShouldUseTheComparerOfTheSet()
 			{
 				HashSet<double> subject = new(new RoundingComparer()) { 1.0, };
@@ -20,7 +20,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow()
 					.Because("an element type that allows a tolerance keeps the comparer of the set until one is specified");
 			}
-			[Fact]
+			[Test]
 			public async Task ForAnUntypedSetOfObjects_ShouldUseTheComparerOfTheSet()
 			{
 				IEnumerable subject = new HashSet<object>(new AllEqualComparer()) { 1, };
@@ -31,7 +31,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForAnUntypedStringSet_ShouldUseTheDefaultEquality()
 			{
 				IEnumerable subject = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "a", };
@@ -39,7 +39,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasItem("A").AtIndex(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "A" at index 0,
@@ -53,7 +53,7 @@ public sealed partial class ThatEnumerable
 					.Because("the comparer of a set of another item type than the expected one cannot be read");
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringCase_ShouldIgnoreTheComparerOfTheSet()
 			{
 				HashSet<string> subject = new(new AllDifferentComparer()) { "a", };
@@ -64,7 +64,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldUseTheComparerOfTheSet()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
@@ -75,7 +75,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Using_ShouldOverrideTheComparerOfTheSet()
 			{
 				HashSet<int> subject = new(new ModuloComparer(10)) { 1, };
@@ -83,7 +83,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(11).Using(EqualityComparer<int>.Default).AtIndex(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to 11 using GenericEqualityComparer<int> at index 0,
@@ -95,7 +95,7 @@ public sealed partial class ThatEnumerable
 					.Because("the default comparer forces the default equality");
 			}
 
-			[Fact]
+			[Test]
 			public async Task UsingTheComparerOfTheSet_ShouldUseIt()
 			{
 				List<int> subject = [1,];
@@ -107,7 +107,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSetDoesNotHaveTheItemAccordingToItsComparer_ShouldNameTheComparer()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
@@ -115,7 +115,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasItem("b").AtIndex(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to "b" using the subject's StringComparer.OrdinalIgnoreCase at index 0,
@@ -128,7 +128,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSetHasTheItemAccordingToItsComparer_ShouldSucceed()
 			{
 				HashSet<int> subject = new(new ModuloComparer(10)) { 1, };
@@ -139,7 +139,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_ShouldIgnoreTheComparerOfTheSet()
 			{
 				HashSet<double> subject = new(new RoundingComparer()) { 1.0, };
@@ -147,7 +147,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasItem(1.25).Within(0.125).AtIndex(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item equal to 1.25 ± 0.125 at index 0,

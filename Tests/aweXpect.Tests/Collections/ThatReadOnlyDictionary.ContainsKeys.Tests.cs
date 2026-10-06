@@ -9,7 +9,7 @@ public sealed partial class ThatReadOnlyDictionary
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAllKeysExists_ShouldSucceed()
 			{
 				IReadOnlyDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
@@ -20,7 +20,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IReadOnlyDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
@@ -33,7 +33,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				IReadOnlyDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
@@ -47,7 +47,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOneKeyIsMissing_ShouldFail()
 			{
 				IReadOnlyDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
@@ -55,7 +55,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).ContainsKeys(0, 2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [0, 2],
@@ -68,7 +68,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				ReadOnlyDictionary<string, int>? subject = null;
@@ -76,7 +76,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).ContainsKeys("foo", "bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains keys ["foo", "bar"],
@@ -87,7 +87,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenOneKeyIsMissingAndOneExists_ShouldSucceed()
 			{
 				IReadOnlyDictionary<int, int> subject = ToDictionary([1, 2, 3,], [0, 0, 0,]);
@@ -101,7 +101,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class WhoseValuesTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenKeysAreMissing_ShouldFail()
 			{
 				IReadOnlyDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -109,7 +109,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).ContainsKeys(0).WhoseValues.All().AreEqualTo("bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [0] whose values all are equal to "bar",
@@ -126,7 +126,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeysExist_AndAValueIsNull_ShouldSucceed()
 			{
 				IReadOnlyDictionary<int, string?> subject = ToDictionary([1, 2,], ["foo", null,]);
@@ -137,7 +137,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeysExist_ButOneValueCompliesWithNone_ShouldFail()
 			{
 				IReadOnlyDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -145,7 +145,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).ContainsKeys(1, 2).WhoseValues.None().ComplyWith(v => v.StartsWith("f"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values none start with "f",
@@ -164,7 +164,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeysExist_ButSomeValuesDoNotMatch_ShouldFail()
 			{
 				IReadOnlyDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -172,7 +172,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).ContainsKeys(1, 2).WhoseValues.All().AreEqualTo("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values all are equal to "foo",
@@ -191,7 +191,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeysExist_ButValuesAreNotEqualToExpected_ShouldFail()
 			{
 				IReadOnlyDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -199,7 +199,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).ContainsKeys(1, 2).WhoseValues.IsEqualTo(["foo", "baz",]);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values are equal to collection ["foo", "baz",] in order,
@@ -219,7 +219,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeysExist_ButValuesAreNotUnique_ShouldFail()
 			{
 				IReadOnlyDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "foo",]);
@@ -227,7 +227,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).ContainsKeys(1, 2, 3).WhoseValues.All().AreUnique();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2, 3] whose values all are unique,
@@ -248,7 +248,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeysExist_ButValuesDoNotComply_ShouldFail()
 			{
 				IReadOnlyDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -256,7 +256,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).ContainsKeys(1, 2).WhoseValues.All().ComplyWith(v => v.StartsWith("f"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values all start with "f",
@@ -275,7 +275,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeysExist_ButValuesDoNotContainExpectedValue_ShouldFail()
 			{
 				IReadOnlyDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -283,7 +283,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).ContainsKeys(1, 2).WhoseValues.Contains("baz");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values contain "baz" at least once,
@@ -297,7 +297,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeysExist_ButValuesDoNotMatch_ShouldFail()
 			{
 				IReadOnlyDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -305,7 +305,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).ContainsKeys(2).WhoseValues.All().AreEqualTo("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [2] whose values all are equal to "foo",
@@ -323,7 +323,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeysExist_ButValuesDoNotSatisfy_ShouldFail()
 			{
 				IReadOnlyDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -331,7 +331,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).ContainsKeys(1, 2).WhoseValues.All().Satisfy(v => v?.StartsWith("fo") == true);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values all satisfy v => v?.StartsWith("fo") == true,
@@ -350,7 +350,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeysExist_ButValuesHaveDifferentCount_ShouldFail()
 			{
 				IReadOnlyDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -358,7 +358,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).ContainsKeys(1, 2).WhoseValues.HasCount(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 2] whose values have exactly 3 items,
@@ -372,7 +372,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeysExist_ShouldSucceed()
 			{
 				IReadOnlyDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -383,7 +383,7 @@ public sealed partial class ThatReadOnlyDictionary
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlySomeKeysAreMissing_ShouldFail()
 			{
 				IReadOnlyDictionary<int, string> subject = ToDictionary([1, 2, 3,], ["foo", "bar", "baz",]);
@@ -391,7 +391,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).ContainsKeys(1, 0, 3).WhoseValues.All().AreEqualTo("bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains keys [1, 0, 3] whose values all are equal to "bar",
@@ -408,7 +408,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				ReadOnlyDictionary<string, string>? subject = null;
@@ -416,7 +416,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).ContainsKeys("foo").WhoseValues.All().AreEqualTo("");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains keys ["foo"] whose values all are equal to "",
@@ -427,7 +427,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class ThrowingSubjectTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheKeyComparerThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("comparer failed");
@@ -439,7 +439,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).ContainsKeys("a", "b");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains keys ["a", "b"],
@@ -452,7 +452,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheLookupThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("lookup failed");
@@ -462,7 +462,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).ContainsKeys("a", "b");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains keys ["a", "b"],

@@ -10,7 +10,7 @@ public sealed partial class ThatString
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task AsPrefix_WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -19,7 +19,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotOneOf(unexpected).AsPrefix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not one of unexpected as prefix,
@@ -31,7 +31,7 @@ public sealed partial class ThatString
 					.Because("a null has no content to inspect, just as for DoesNotStartWith");
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsPrefix_WhenUnexpectedContainsNull_ShouldThrowArgumentNullException()
 			{
 				string? subject = null;
@@ -46,7 +46,7 @@ public sealed partial class ThatString
 					.Because("a missing prefix is rejected like a missing regex pattern");
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsRegex_WhenUnexpectedContainsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "bar";
@@ -61,7 +61,7 @@ public sealed partial class ThatString
 					.Because("the negated expectation receives the patterns as 'unexpected'");
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsWildcard_WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -70,7 +70,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotOneOf(unexpected).AsWildcard();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not one of unexpected as wildcard,
@@ -82,7 +82,7 @@ public sealed partial class ThatString
 					.Because("a null has no content to match the pattern against");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "foo";
@@ -97,7 +97,7 @@ public sealed partial class ThatString
 					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "foo";
@@ -111,7 +111,7 @@ public sealed partial class ThatString
 					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "foo";
@@ -126,7 +126,7 @@ public sealed partial class ThatString
 					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "foo";
@@ -140,7 +140,7 @@ public sealed partial class ThatString
 					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
 				string? subject = null;
@@ -152,7 +152,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNullAndUnexpectedContainsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -161,7 +161,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not one of expected,
@@ -172,7 +172,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				string subject = "foo";
@@ -182,7 +182,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotOneOf(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not one of unexpected,
@@ -194,7 +194,7 @@ public sealed partial class ThatString
 					.Because("the values are cached while they are enumerated, so the comparison and the message share one enumeration");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsAnEmptySequence_ShouldThrowArgumentException()
 			{
 				string subject = "foo";
@@ -209,7 +209,7 @@ public sealed partial class ThatString
 					.Because("a lazily evaluated sequence is also checked when the expectation is built");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsInfiniteAndContainsTheSubject_ShouldFail()
 			{
 				string subject = "item-8";
@@ -218,7 +218,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotOneOf(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not one of unexpected,
@@ -230,8 +230,8 @@ public sealed partial class ThatString
 					.Because("the values are only enumerated until the subject is found");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenUnexpectedIsNull_ShouldSucceed(
 				string subject)
 			{
@@ -243,8 +243,8 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("foo", "bar", "baz")]
+			[Test]
+			[Arguments("foo", "bar", "baz")]
 			public async Task WhenValueIsDifferentToAllUnexpected_ShouldSucceed(string subject,
 				params string?[] unexpected)
 			{
@@ -254,15 +254,15 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("foo", "bar", "foo", "baz")]
+			[Test]
+			[Arguments("foo", "bar", "foo", "baz")]
 			public async Task WhenValueIsEqualToAnyUnexpected_ShouldFail(string subject,
 				params string?[] unexpected)
 			{
 				async Task Act()
 					=> await That(subject).IsNotOneOf(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not one of {Formatter.Format(unexpected)},

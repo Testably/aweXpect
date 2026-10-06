@@ -8,7 +8,7 @@ public sealed partial class ThatDictionary
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldSupportChainingWithAnd()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,]);
@@ -16,7 +16,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).Values.HasCount(3).And.Contains(4);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has values that have exactly 3 items and contain an item equal to 4 at least once,
@@ -27,7 +27,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationOnValuesFails_ShouldFail()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3, 1,]);
@@ -35,7 +35,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).Values.All().AreUnique();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has values of which all are unique,
@@ -49,7 +49,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationOnValuesIsSatisfied_ShouldSucceed()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,]);
@@ -60,7 +60,7 @@ public sealed partial class ThatDictionary
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_AndExpectationOnValuesFails_ShouldSucceed()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3, 1,]);
@@ -71,7 +71,7 @@ public sealed partial class ThatDictionary
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_AndExpectationOnValuesIsSatisfied_ShouldFail()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,]);
@@ -79,7 +79,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.Values.All().AreUnique());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has values of which not all are unique,
@@ -90,7 +90,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_NegatedShouldFail()
 			{
 				IDictionary<int, int>? subject = null;
@@ -98,7 +98,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.Values.All().AreUnique());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has values of which not all are unique,
@@ -106,7 +106,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IDictionary<int, int>? subject = null;
@@ -114,7 +114,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).Values.All().AreUnique();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has values of which all are unique,
@@ -122,7 +122,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValuesAreStrings_ShouldSupportStringOptions()
 			{
 				IDictionary<int, string?> subject = ToDictionary(["a", "A",]);
@@ -130,7 +130,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).Values.All().AreUnique().IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has values of which all are unique ignoring case,
@@ -150,7 +150,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMemberAccessor_ShouldVerifyTheMember()
 			{
 				IDictionary<int, MyClass> subject = ToDictionary([1, 2, 1,], x => new MyClass(x));
@@ -158,7 +158,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).Values.All().AreUnique(x => x.Value);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has values of which all are unique by x => x.Value,
@@ -170,7 +170,7 @@ public sealed partial class ThatDictionary
 
 		public sealed class DictionaryTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectationOnValuesFails_ShouldFail()
 			{
 				Dictionary<int, string> subject = new()
@@ -182,7 +182,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).Values.Contains("baz");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has values that contain "baz" at least once,
@@ -196,7 +196,7 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationOnValuesIsSatisfied_ShouldSucceed()
 			{
 				Dictionary<int, string> subject = new()
@@ -211,7 +211,7 @@ public sealed partial class ThatDictionary
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Dictionary<int, string>? subject = null;
@@ -219,7 +219,7 @@ public sealed partial class ThatDictionary
 				async Task Act()
 					=> await That(subject).Values.Contains("bar");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has values that contain "bar" at least once,
@@ -230,7 +230,7 @@ public sealed partial class ThatDictionary
 
 		public sealed class OverloadTests
 		{
-			[Fact]
+			[Test]
 			public async Task ForASortedDictionary_ShouldNotBeAmbiguous()
 			{
 				SortedDictionary<string, int> subject = new() { { "a", 1 }, };

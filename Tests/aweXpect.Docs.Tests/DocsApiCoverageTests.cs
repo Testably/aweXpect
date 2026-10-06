@@ -9,9 +9,11 @@ using aweXpect.Core;
 
 namespace aweXpect.Docs.Tests;
 
+[Explicit]
+[TUnit.Core.Category(TestCategories.Slow)]
 public sealed class DocsApiCoverageTests
 {
-	[Fact]
+	[Test]
 	public async Task ExpectationMethodNames_ShouldFindTheExpectations()
 	{
 		List<string> names = ExpectationMethodNames();
@@ -20,7 +22,7 @@ public sealed class DocsApiCoverageTests
 			.Because("the coverage check must not pass because it no longer finds the expectation methods");
 	}
 
-	[Fact]
+	[Test]
 	public void ExpectationMethods_ShouldBeMentionedInTheDocs()
 	{
 		string text = string.Join("\n", Directory

@@ -7,7 +7,7 @@ public sealed partial class ThatDelegateTests
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 	public sealed class ParameterNameTests
 	{
-		[Fact]
+		[Test]
 		public async Task DoesNotThrow_WithoutValue_ShouldAcceptTypeAsNamedArgument()
 		{
 			Action @delegate = () => { };
@@ -18,7 +18,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotThrow_WithValue_ShouldAcceptTypeAsNamedArgument()
 		{
 			Func<int> @delegate = () => 1;
@@ -29,7 +29,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotThrowExactly_WithoutValue_ShouldAcceptTypeAsNamedArgument()
 		{
 			Action @delegate = () => { };
@@ -40,7 +40,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotThrowExactly_WithValue_ShouldAcceptTypeAsNamedArgument()
 		{
 			Func<int> @delegate = () => 1;
@@ -51,7 +51,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task OnlyIf_ShouldAcceptConditionAsNamedArgument()
 		{
 			Action @delegate = () => { };
@@ -62,7 +62,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_ShouldAcceptTypeAsNamedArgument()
 		{
 			Action @delegate = () => throw new MyException();
@@ -73,7 +73,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ThrowsExactly_ShouldAcceptTypeAsNamedArgument()
 		{
 			Action @delegate = () => throw new MyException();
@@ -84,7 +84,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithInner_ShouldAcceptTypeAsNamedArgument()
 		{
 			Action @delegate = () => throw new MyException(innerException: new MyException());
@@ -95,7 +95,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithInner_WithExpectations_ShouldAcceptTypeAsNamedArgument()
 		{
 			Action @delegate = () => throw new MyException(innerException: new MyException());

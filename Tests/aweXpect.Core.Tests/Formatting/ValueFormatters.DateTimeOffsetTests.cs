@@ -7,7 +7,7 @@ public partial class ValueFormatters
 {
 	public sealed class DateTimeOffsetTests
 	{
-		[Fact]
+		[Test]
 		public async Task Nullable_ShouldUseRoundtripFormat()
 		{
 			DateTimeOffset? value = 2.November(2024).At(15, 42, 08, 123).WithOffset(3.Hours());
@@ -23,7 +23,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Nullable_WithType_ShouldUseRoundtripFormat()
 		{
 			DateTimeOffset? value = 2.November(2024).At(15, 42, 08, 123).WithOffset(3.Hours());
@@ -39,7 +39,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldUseRoundtripFormat()
 		{
 			DateTimeOffset value = 2.November(2024).At(15, 42, 08, 123).WithOffset(3.Hours());
@@ -55,7 +55,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			DateTimeOffset? value = null;
@@ -70,7 +70,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithType_ShouldUseRoundtripFormat()
 		{
 			DateTimeOffset value = 2.November(2024).At(15, 42, 08, 123).WithOffset(3.Hours());

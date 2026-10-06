@@ -9,7 +9,7 @@ namespace aweXpect.Core.Tests.Results;
 
 public sealed class TimeToleranceResultTests
 {
-	[Fact]
+	[Test]
 	public async Task ShouldBeOptionsProvider_ForTimeTolerance()
 	{
 		TimeTolerance options = new();

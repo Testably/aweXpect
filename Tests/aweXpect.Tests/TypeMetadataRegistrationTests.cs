@@ -6,7 +6,7 @@ namespace aweXpect.Tests;
 public sealed class TypeMetadataRegistrationTests
 {
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task ShouldRegisterTheTypeMetadataFromAModuleInitializer()
 	{
 		MethodInfo? registration = GetRegistrationMethod();
@@ -17,7 +17,7 @@ public sealed class TypeMetadataRegistrationTests
 			.Because("the metadata has to be registered before any other code of this assembly runs");
 	}
 #else
-	[Fact]
+	[Test]
 	public async Task ShouldNotRegisterTheTypeMetadata()
 	{
 		await That(GetRegistrationMethod()).IsNull()

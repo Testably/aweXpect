@@ -8,7 +8,7 @@ public sealed partial class ThatObject
 	{
 		public sealed class NullTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBothAreNull_ShouldSucceed()
 			{
 				OuterClass? subject = null;
@@ -19,7 +19,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNotNull_ShouldStillUseTheTypedOverload()
 			{
 				OuterClass subject = new()
@@ -42,7 +42,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOptionsAreSpecified_ShouldApplyThem()
 			{
 				OuterClass? subject = new()
@@ -53,7 +53,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(null, o => o.IgnoringMember("Value"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to <null>,
@@ -65,7 +65,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNotNull_ShouldFail()
 			{
 				OuterClass? subject = new()
@@ -76,7 +76,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to <null>,

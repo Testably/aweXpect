@@ -6,10 +6,10 @@ public partial class ValueFormatters
 {
 	public sealed class EnumTests
 	{
-		[Theory]
-		[InlineData(Dummy.Foo, "Foo")]
-		[InlineData(Dummy.Bar, "Bar")]
-		[InlineData(null, "<null>")]
+		[Test]
+		[Arguments(Dummy.Foo, "Foo")]
+		[Arguments(Dummy.Bar, "Bar")]
+		[Arguments(null, "<null>")]
 		public async Task Nullable_ShouldUseStringRepresentation(Dummy? value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -23,10 +23,10 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(Dummy.Foo, "ValueFormatters.EnumTests.Dummy Foo")]
-		[InlineData(Dummy.Bar, "ValueFormatters.EnumTests.Dummy Bar")]
-		[InlineData(null, "<null>")]
+		[Test]
+		[Arguments(Dummy.Foo, "ValueFormatters.EnumTests.Dummy Foo")]
+		[Arguments(Dummy.Bar, "ValueFormatters.EnumTests.Dummy Bar")]
+		[Arguments(null, "<null>")]
 		public async Task Nullable_WithType_ShouldUseStringRepresentation(Dummy? value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -40,7 +40,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenCombinedFlagsAreCollectionItems_ShouldKeepThemApartFromTheOtherItems()
 		{
 			MyFlags[] subject = [MyFlags.A | MyFlags.B, MyFlags.A,];
@@ -48,7 +48,7 @@ public partial class ValueFormatters
 			async Task Act()
 				=> await That(subject).IsNull();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is null,
@@ -59,11 +59,11 @@ public partial class ValueFormatters
 				             """);
 		}
 
-		[Theory]
-		[InlineData(MyFlags.A | MyFlags.B, "A | B")]
-		[InlineData(MyFlags.A | MyFlags.B | MyFlags.C, "A | B | C")]
-		[InlineData(MyFlags.None, "None")]
-		[InlineData((MyFlags)8, "8")]
+		[Test]
+		[Arguments(MyFlags.A | MyFlags.B, "A | B")]
+		[Arguments(MyFlags.A | MyFlags.B | MyFlags.C, "A | B | C")]
+		[Arguments(MyFlags.None, "None")]
+		[Arguments((MyFlags)8, "8")]
 		public async Task ShouldJoinCombinedFlagsLikeInCSharp(MyFlags value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -80,9 +80,9 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(Dummy.Foo, "Foo")]
-		[InlineData(Dummy.Bar, "Bar")]
+		[Test]
+		[Arguments(Dummy.Foo, "Foo")]
+		[Arguments(Dummy.Bar, "Bar")]
 		public async Task ShouldUseStringRepresentation(Dummy value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -96,7 +96,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			Dummy? value = null;
@@ -111,9 +111,9 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Theory]
-		[InlineData(Dummy.Foo, "ValueFormatters.EnumTests.Dummy Foo")]
-		[InlineData(Dummy.Bar, "ValueFormatters.EnumTests.Dummy Bar")]
+		[Test]
+		[Arguments(Dummy.Foo, "ValueFormatters.EnumTests.Dummy Foo")]
+		[Arguments(Dummy.Bar, "ValueFormatters.EnumTests.Dummy Bar")]
 		public async Task WithType_ShouldUseStringRepresentation(Dummy value, string expectedResult)
 		{
 			StringBuilder sb = new();

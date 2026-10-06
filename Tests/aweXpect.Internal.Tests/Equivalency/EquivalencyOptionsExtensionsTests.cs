@@ -4,7 +4,7 @@ namespace aweXpect.Internal.Tests.Equivalency;
 
 public sealed class EquivalencyOptionsExtensionsTests
 {
-	[Fact]
+	[Test]
 	public async Task Generic_For_Ignoring_StringAndTypePredicate_ShouldSetOptionForType()
 	{
 		EquivalencyOptions options = new();
@@ -25,7 +25,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 		                                        """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Generic_For_Ignoring_StringPredicate_ShouldSetOptionForType()
 	{
 		EquivalencyOptions options = new();
@@ -45,7 +45,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 		                                        """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Generic_For_Ignoring_TypePredicate_ShouldSetOptionForType()
 	{
 		EquivalencyOptions options = new();
@@ -65,9 +65,9 @@ public sealed class EquivalencyOptionsExtensionsTests
 		                                        """);
 	}
 
-	[Theory]
-	[InlineData(true)]
-	[InlineData(false)]
+	[Test]
+	[Arguments(true)]
+	[Arguments(false)]
 	public async Task Generic_For_IgnoringCollectionOrder_ShouldSetOptionForType(bool ignoreCollectionOrder)
 	{
 		EquivalencyOptions options = new();
@@ -91,7 +91,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task Generic_For_IgnoringFields_ShouldSetOptionForType()
 	{
 		EquivalencyOptions options = new();
@@ -113,8 +113,8 @@ public sealed class EquivalencyOptionsExtensionsTests
 			.Because("the rendering has to say which kind of member the predicate is applied to");
 	}
 
-	[Theory]
-	[AutoData]
+	[Test]
+	[AutoArguments]
 	public async Task Generic_For_IgnoringMember_ShouldSetOptionForType(string memberToIgnore)
 	{
 		EquivalencyOptions options = new();
@@ -134,7 +134,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 		                                         """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Generic_For_IgnoringProperties_ShouldSetOptionForType()
 	{
 		EquivalencyOptions options = new();
@@ -156,9 +156,9 @@ public sealed class EquivalencyOptionsExtensionsTests
 			.Because("the rendering has to say which kind of member the predicate is applied to");
 	}
 
-	[Theory]
-	[InlineData(IncludeMembers.None)]
-	[InlineData(IncludeMembers.Internal)]
+	[Test]
+	[Arguments(IncludeMembers.None)]
+	[Arguments(IncludeMembers.Internal)]
 	public async Task Generic_For_IncludingFields_ShouldSetOptionForType(IncludeMembers fieldsToInclude)
 	{
 		EquivalencyOptions options = new();
@@ -183,9 +183,9 @@ public sealed class EquivalencyOptionsExtensionsTests
 		                                         """);
 	}
 
-	[Theory]
-	[InlineData(IncludeMembers.None)]
-	[InlineData(IncludeMembers.Internal)]
+	[Test]
+	[Arguments(IncludeMembers.None)]
+	[Arguments(IncludeMembers.Internal)]
 	public async Task Generic_For_IncludingProperties_ShouldSetOptionForType(IncludeMembers propertiesToInclude)
 	{
 		EquivalencyOptions options = new();
@@ -210,7 +210,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 		                                         """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Ignoring_StringAndTypePredicate_WhenPredicateIsNull_ShouldThrowArgumentNullException()
 	{
 		EquivalencyOptions options = new();
@@ -223,7 +223,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Ignoring_StringPredicate_WhenPredicateIsNull_ShouldThrowArgumentNullException()
 	{
 		EquivalencyOptions options = new();
@@ -236,7 +236,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Ignoring_TypePredicate_WhenPredicateIsNull_ShouldThrowArgumentNullException()
 	{
 		EquivalencyOptions options = new();
@@ -249,7 +249,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IgnoringFields_WhenPredicateIsNull_ShouldThrowArgumentNullException()
 	{
 		EquivalencyOptions options = new();
@@ -262,7 +262,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IgnoringMember_WhenMemberIsEmpty_ShouldThrowArgumentException()
 	{
 		EquivalencyOptions options = new();
@@ -275,7 +275,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 			.WithMessage("The 'memberToIgnore' cannot be empty.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IgnoringMember_WhenMemberIsEmpty_ShouldThrowFromTheExpectationThatConfiguresIt()
 	{
 		MyClass subject = new();
@@ -287,7 +287,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 			.WithParamName("memberToIgnore");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IgnoringMember_WhenMemberIsNull_ShouldThrowArgumentNullException()
 	{
 		EquivalencyOptions options = new();
@@ -300,7 +300,7 @@ public sealed class EquivalencyOptionsExtensionsTests
 			.WithMessage("The 'memberToIgnore' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IgnoringProperties_WhenPredicateIsNull_ShouldThrowArgumentNullException()
 	{
 		EquivalencyOptions options = new();

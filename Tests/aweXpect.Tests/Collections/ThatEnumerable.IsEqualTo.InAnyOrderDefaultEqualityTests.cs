@@ -13,7 +13,7 @@ public sealed partial class ThatEnumerable
 		/// </summary>
 		public sealed class InAnyOrderDefaultEqualityTests
 		{
-			[Fact]
+			[Test]
 			public async Task Numbers_WhenAComparerIsUsed_ShouldCompareWithIt()
 			{
 				int[] subject = [11, 22, 33,];
@@ -25,7 +25,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Numbers_WhenAToleranceIsUsed_ShouldCompareWithIt()
 			{
 				double[] subject = [3.05, 1.05, 2.05,];
@@ -37,7 +37,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Numbers_WithAdditionalItem_ShouldFail()
 			{
 				int[] subject = [3, 1, 2, 4,];
@@ -46,7 +46,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order,
@@ -60,7 +60,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Numbers_WithDifferentMultiplicities_ShouldFail()
 			{
 				int[] subject = [1, 1, 2,];
@@ -69,7 +69,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order,
@@ -85,7 +85,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Numbers_WithMissingItem_ShouldFail()
 			{
 				int[] subject = [3, 1,];
@@ -94,7 +94,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order,
@@ -108,7 +108,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Numbers_WithSameMultiplicities_ShouldSucceed()
 			{
 				long[] subject = [2, 1, 2, 3, 1,];
@@ -120,7 +120,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Objects_WhenEqualsThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				Exception exception = new NotSupportedException("thrown by Equals");
@@ -130,12 +130,12 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-				XunitException failure = await That(Act).Throws<XunitException>()
+				FailException failure = await That(Act).Throws<FailException>()
 					.WithMessage("*thrown by Equals*").AsWildcard();
 				await That(failure.InnerException).IsSameAs(exception);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Objects_WithDatesOfIncompatibleKinds_ShouldFail()
 			{
 				DateTime[] subject = [new(2026, 10, 4, 12, 0, 0, DateTimeKind.Utc),];
@@ -144,11 +144,11 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it*lacked the one expected item*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Objects_WithDifferentMultiplicities_ShouldFail()
 			{
 				Item[] subject = [new(1), new(1), new(2),];
@@ -157,7 +157,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order,
@@ -198,7 +198,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Objects_WithEqualItemsInADifferentOrder_ShouldSucceed()
 			{
 				Item[] subject = [new(2), new(1), new(2),];
@@ -210,7 +210,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Strings_WhenAComparerIsUsed_ShouldCompareWithIt()
 			{
 				string[] subject = ["B", "a", "C",];
@@ -222,7 +222,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Strings_WhenBothAreEmpty_ShouldSucceed()
 			{
 				string[] subject = [];
@@ -234,7 +234,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Strings_WhenCaseIsIgnored_ShouldMatchItemsThatDifferInCase()
 			{
 				string[] subject = ["B", "a", "C",];
@@ -246,7 +246,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Strings_WhenExpectedIsEmpty_ShouldFail()
 			{
 				string[] subject = ["a",];
@@ -255,7 +255,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order,
@@ -271,7 +271,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Strings_WhenItemsDifferInCase_ShouldFail()
 			{
 				string[] subject = ["B", "a",];
@@ -280,7 +280,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order,
@@ -302,7 +302,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Strings_WhenSubjectIsEmpty_ShouldFail()
 			{
 				string[] subject = [];
@@ -311,7 +311,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order,
@@ -327,7 +327,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Strings_WhenTheSetOfTheSubjectHasAComparer_ShouldCompareWithIt()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "B", "a", };
@@ -339,7 +339,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Strings_WithAdditionalNull_ShouldFail()
 			{
 				string?[] subject = ["a", null, null,];
@@ -348,7 +348,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order,
@@ -369,7 +369,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Strings_WithDifferentMultiplicities_ShouldFail()
 			{
 				string[] subject = ["a", "a", "b",];
@@ -378,7 +378,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order,
@@ -402,7 +402,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Strings_WithMissingNull_ShouldFail()
 			{
 				string?[] subject = ["a", "b",];
@@ -411,7 +411,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order,
@@ -432,7 +432,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Strings_WithMoreThan20AdditionalItems_ShouldFail()
 			{
 				string[] expected = ["a", "b", "c",];
@@ -441,7 +441,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in any order,
@@ -482,7 +482,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Strings_WithSameMultiplicitiesAndNulls_ShouldSucceed()
 			{
 				string?[] subject = [null, "b", "a", null, "a",];

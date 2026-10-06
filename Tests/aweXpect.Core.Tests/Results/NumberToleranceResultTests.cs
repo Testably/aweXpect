@@ -10,7 +10,7 @@ namespace aweXpect.Core.Tests.Results;
 
 public sealed class NumberToleranceResultTests
 {
-	[Fact]
+	[Test]
 	public async Task ShouldBeOptionsProvider_ForNumberTolerance()
 	{
 		NumberTolerance<int> options = new((a, b) => a - b);

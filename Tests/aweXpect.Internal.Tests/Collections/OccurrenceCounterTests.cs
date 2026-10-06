@@ -5,7 +5,7 @@ namespace aweXpect.Internal.Tests.Collections;
 
 public sealed class OccurrenceCounterTests
 {
-	[Fact]
+	[Test]
 	public async Task Add_WhenAllHashCodesAreEqual_ShouldCountEqualMembersOnly()
 	{
 		OccurrenceCounter<int> sut = new(new ObjectEqualityOptions<int>(), _ => 0);
@@ -19,7 +19,7 @@ public sealed class OccurrenceCounterTests
 		await That(sut.IsUnique(2)).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Add_WhenHashCodesDiffer_ShouldCountEqualMembers()
 	{
 		OccurrenceCounter<int> sut = new(new ObjectEqualityOptions<int>(), x => x);
@@ -32,7 +32,7 @@ public sealed class OccurrenceCounterTests
 		await That(sut.IsUnique(2)).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Add_WhenSomeHashCodesCollide_ShouldCountEqualMembersOnly()
 	{
 		OccurrenceCounter<int> sut = new(new ObjectEqualityOptions<int>(), x => x % 2);
@@ -47,7 +47,7 @@ public sealed class OccurrenceCounterTests
 		await That(sut.IsUnique(4)).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Add_WithoutHashCode_ShouldCountEqualMembers()
 	{
 		OccurrenceCounter<int> sut = new(new ObjectEqualityOptions<int>());

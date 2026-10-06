@@ -4,7 +4,7 @@ namespace aweXpect.Core.Tests.Results;
 
 public class ExpectationTests
 {
-	[Fact]
+	[Test]
 	public async Task Equals_ShouldThrowNotSupportedException()
 	{
 #pragma warning disable aweXpect0001, aweXpect0002
@@ -17,7 +17,7 @@ public class ExpectationTests
 			.WithMessage("Equals is not supported. Did you mean IsEqualTo() instead?");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetHashCode_ShouldThrowNotSupportedException()
 	{
 #pragma warning disable aweXpect0001
@@ -30,7 +30,7 @@ public class ExpectationTests
 			.WithMessage("GetHashCode is not supported.");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetType_ShouldForwardToBase()
 	{
 #pragma warning disable aweXpect0001
@@ -42,7 +42,7 @@ public class ExpectationTests
 		await That(type).IsEqualTo(typeof(AndOrResult<bool, IThat<bool>>));
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToString_ShouldForwardToExpectationBuilder()
 	{
 #pragma warning disable aweXpect0001

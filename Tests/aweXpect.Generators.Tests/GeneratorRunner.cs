@@ -94,7 +94,8 @@ internal static class GeneratorRunner
 
 	/// <remarks>
 	///     The trusted platform assemblies include this test assembly, whose copy of the corpus would clash with the
-	///     corpus source fed to the generator, so it is left out.
+	///     corpus source fed to the generator, so it is left out. The test framework that runs these tests is left
+	///     out as well, so that a generator only sees the frameworks a test adds as a reference.
 	/// </remarks>
 	private static IEnumerable<MetadataReference> GetReferences(bool referenceCore)
 	{
@@ -105,6 +106,12 @@ internal static class GeneratorRunner
 		}
 
 		paths.Remove(typeof(GeneratorRunner).Assembly.GetName().Name!);
+		foreach (string testFramework in paths.Keys.Where(name => name.StartsWith("TUnit", StringComparison.Ordinal))
+			         .ToList())
+		{
+			paths.Remove(testFramework);
+		}
+
 		paths["aweXpect"] = typeof(EquivalencyExtensions).Assembly.Location;
 		paths["aweXpect.Core"] = typeof(TypeMetadataRegistry).Assembly.Location;
 		if (!referenceCore)

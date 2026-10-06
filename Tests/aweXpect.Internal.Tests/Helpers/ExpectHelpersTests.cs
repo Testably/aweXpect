@@ -5,7 +5,7 @@ namespace aweXpect.Internal.Tests.Helpers;
 
 public class ExpectHelpersTests
 {
-	[Fact]
+	[Test]
 	public async Task Get_WhenClassDoesNotHaveAnExpectationBuilder_ShouldThrowNotSupportedException()
 	{
 		IThat<int> subject = new ThatWith();
@@ -16,7 +16,7 @@ public class ExpectHelpersTests
 			.WithMessage("IThat<T> must also implement IExpectThat<T>.");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Get_WhenClassImplementsBoth_ShouldReturnSameObject()
 	{
 		IThat<int> subject = new ThatWithExpectThat();

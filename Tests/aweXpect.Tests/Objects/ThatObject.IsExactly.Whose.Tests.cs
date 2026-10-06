@@ -6,7 +6,7 @@ public sealed partial class ThatObject
 	{
 		public sealed class WhoseTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPropertyDoesNotMatch_ShouldFail()
 			{
 				object subject = new MyClass
@@ -18,7 +18,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsExactly<MyClass>()
 						.Whose(x => x.Value, x => x.IsLessThan(42));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is exactly of type ThatObject.MyClass whose Value is less than 42,
@@ -26,7 +26,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyMatches_ShouldSucceed()
 			{
 				object subject = new MyClass

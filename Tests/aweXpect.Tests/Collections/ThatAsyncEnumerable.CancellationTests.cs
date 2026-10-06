@@ -14,7 +14,7 @@ public sealed partial class ThatAsyncEnumerable
 {
 	public sealed class CancellationTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenAbandonedSourceFaultsLater_ShouldNotRaiseUnobservedTaskException()
 		{
 			MyException exception = new();
@@ -43,7 +43,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the exception of an abandoned source must be observed, as nobody else awaits it");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedBetweenItems_ShouldAbortANegatedExpectation()
 		{
 			IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -52,7 +52,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).DoesNotContain(item => Cancel(cts, item == 3)).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not contain an item matching item => Cancel(cts, item == 3),
@@ -64,7 +64,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("a cancellation between two items must not be mistaken for the end of the source");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedBetweenItems_ShouldAbortContains()
 		{
 			IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -73,7 +73,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).Contains(item => Cancel(cts, item == 3)).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item matching item => Cancel(cts, item == 3) at least once,
@@ -85,7 +85,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("a cancellation between two items must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedBetweenItems_ShouldAbortIsEqualTo()
 		{
 			IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -95,7 +95,7 @@ public sealed partial class ThatAsyncEnumerable
 				=> await That(subject).IsEqualTo([1, 2, 3]).Using(new CancellingComparer(cts))
 					.WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [1, 2, 3] using ThatAsyncEnumerable.CancellationTests.CancellingComparer in order,
@@ -110,7 +110,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("a cancellation between two items must not be reported as missing items");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedDuringTheReassignment_ShouldAbortContainsExpectationsInAnyOrder()
 		{
 			using CancellationTokenSource cts = new();
@@ -125,7 +125,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).Contains(expected).InAnyOrder().WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in any order,
@@ -159,7 +159,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the first item is only compared with the second expectation when the second item reassigns it, where its cancellation must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldDecideDoesNotHaveItemAtAnEarlierIndex()
 		{
 			using CancellationTokenSource cts = new();
@@ -172,7 +172,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the item at index 0 decides the outcome, so the source must not be read any further");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldDecideHasItemAtAnEarlierIndex()
 		{
 			using CancellationTokenSource cts = new();
@@ -181,7 +181,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).HasItem(1).AtIndex(0).WithCancellation(cts.Token);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item equal to 1 at index 0,
@@ -193,7 +193,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the item at index 0 decides the outcome, so the source must not be read any further");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldDecideHasItemThatAtAnEarlierIndex()
 		{
 			using CancellationTokenSource cts = new();
@@ -202,7 +202,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).HasItemThat(x => x.IsEqualTo(1)).AtIndex(0).WithCancellation(cts.Token);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item that is equal to 1 at index 0,
@@ -214,7 +214,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the item at index 0 decides the outcome, so the source must not be read any further");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldLetAnAlternativeToHasItemDecide()
 		{
 			using CancellationTokenSource cts = new();
@@ -227,7 +227,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the received items already contain 1, so the undecided item search does not matter");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldLetAnAlternativeToHasItemThatDecide()
 		{
 			using CancellationTokenSource cts = new();
@@ -240,7 +240,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the received items already contain 1, so the undecided item search does not matter");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldLetAnAlternativeToIsInAscendingOrderDecide()
 		{
 			using CancellationTokenSource cts = new();
@@ -253,7 +253,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the received items already contain 1, so the undecided order does not matter");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportACountAsNotVerified()
 		{
 			using CancellationTokenSource cts = new();
@@ -262,7 +262,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).HasCount(3).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has exactly 3 items,
@@ -273,7 +273,7 @@ public sealed partial class ThatAsyncEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportContainsAsNotVerified()
 		{
 			using CancellationTokenSource cts = new();
@@ -282,7 +282,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).Contains(3).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 3 at least once,
@@ -293,7 +293,7 @@ public sealed partial class ThatAsyncEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportDoesNotContainAsNotVerified()
 		{
 			using CancellationTokenSource cts = new();
@@ -302,7 +302,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).DoesNotContain(item => item == 3).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not contain an item matching item => item == 3,
@@ -313,7 +313,7 @@ public sealed partial class ThatAsyncEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportEndsWithAsNotVerified()
 		{
 			using CancellationTokenSource cts = new();
@@ -322,7 +322,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).EndsWith(2).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             ends with [2],
@@ -333,7 +333,7 @@ public sealed partial class ThatAsyncEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportHasItemAsNotVerified()
 		{
 			using CancellationTokenSource cts = new();
@@ -342,7 +342,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).HasItem(3).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item equal to 3,
@@ -353,7 +353,7 @@ public sealed partial class ThatAsyncEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportHasItemFromTheEndAsNotVerified()
 		{
 			using CancellationTokenSource cts = new();
@@ -362,7 +362,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).HasItem(2).AtIndexFromEnd(0).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item equal to 2 at index 0 from end,
@@ -373,7 +373,7 @@ public sealed partial class ThatAsyncEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportHasItemThatAsNotVerified()
 		{
 			using CancellationTokenSource cts = new();
@@ -382,7 +382,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).HasItemThat(x => x.IsEqualTo(3)).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item that is equal to 3,
@@ -393,7 +393,7 @@ public sealed partial class ThatAsyncEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportHasSingleAsNotVerified()
 		{
 			using CancellationTokenSource cts = new();
@@ -402,7 +402,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).HasSingle().WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has a single item,
@@ -413,7 +413,7 @@ public sealed partial class ThatAsyncEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportIsEqualToAsNotVerified()
 		{
 			using CancellationTokenSource cts = new();
@@ -422,7 +422,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).IsEqualTo([1, 2, 3]).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [1, 2, 3] in order,
@@ -437,7 +437,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the items received before the cancellation explain where the evaluation stopped");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportIsEqualToExpectationsAsNotVerified()
 		{
 			using CancellationTokenSource cts = new();
@@ -447,7 +447,7 @@ public sealed partial class ThatAsyncEnumerable
 				=> await That(subject).IsEqualTo([x => x.IsEqualTo(1), x => x.IsEqualTo(2), x => x.IsEqualTo(3),])
 					.WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [x => x.IsEqualTo(1), x => x.IsEqualTo(2), x => x.IsEqualTo(3),] in order,
@@ -462,7 +462,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the items received before the cancellation explain where the evaluation stopped");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportIsEqualToPredicatesAsNotVerified()
 		{
 			using CancellationTokenSource cts = new();
@@ -472,7 +472,7 @@ public sealed partial class ThatAsyncEnumerable
 				=> await That(subject).IsEqualTo([x => x == 1, x => x == 2, x => x == 3,])
 					.WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [x => x == 1, x => x == 2, x => x == 3,] in order,
@@ -491,7 +491,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the items received before the cancellation explain where the evaluation stopped");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportIsInAscendingOrderAsNotVerified()
 		{
 			using CancellationTokenSource cts = new();
@@ -500,7 +500,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).IsInAscendingOrder().WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             is in ascending order,
@@ -512,7 +512,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the items received before the cancellation explain where the evaluation stopped");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldReportStartsWithAsNotVerified()
 		{
 			using CancellationTokenSource cts = new();
@@ -521,7 +521,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).StartsWith(1, 2, 3).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             starts with [1, 2, 3],
@@ -533,7 +533,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the items received before the cancellation explain where the evaluation stopped");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWhileTheSourceHangs_ShouldStopWaiting()
 		{
 			IAsyncEnumerable<int> subject = HangAfter();
@@ -543,7 +543,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).Contains(1).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 1 at least once,
@@ -555,7 +555,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("a requested cancellation aborts the evaluation, even if the source ignores it");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWithinAnItem_ShouldAbortAllComplyWith()
 		{
 			using CancellationTokenSource cts = new();
@@ -565,7 +565,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).All().ComplyWith(x => x.DoesNotContain(-1)).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not contain an item equal to -1 for all items,
@@ -589,7 +589,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("a cancellation within an item must not be reported as a not matching item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWithinAnItem_ShouldAbortContainsExpectations()
 		{
 			using CancellationTokenSource cts = new();
@@ -604,7 +604,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).Contains(expected).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in order and contiguous,
@@ -638,7 +638,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the item expectation must stop at the cancellation instead of enumerating the whole item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWithinAnItem_ShouldAbortHasItemThat()
 		{
 			using CancellationTokenSource cts = new();
@@ -647,7 +647,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).HasItemThat(x => x.HasCount(3)).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item that has exactly 3 items,
@@ -674,7 +674,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the first item was canceled before its count was known");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedWithinAnItem_ShouldAbortIsEqualToExpectations()
 		{
 			using CancellationTokenSource cts = new();
@@ -686,7 +686,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -725,7 +725,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("a cancellation within an item must not be reported as a deviation");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenChainedExpectationsAreMet_ShouldEnumerateTheSourceOnce()
 		{
 			int enumerations = 0;
@@ -750,7 +750,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the chained expectations continue the materialized source instead of enumerating it again");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenExpectedItemPrecedesAHang_ShouldSucceed()
 		{
 			IAsyncEnumerable<int> subject = HangAfter(1);
@@ -762,7 +762,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the source is only enumerated as far as necessary");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenGlobalTimeoutElapsesWhileTheSourceHangs_ShouldFail()
 		{
 			IAsyncEnumerable<int> subject = HangAfter();
@@ -774,7 +774,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(subject).Contains(1);
 			}
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 1 at least once,
@@ -785,7 +785,7 @@ public sealed partial class ThatAsyncEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSourceEndedBeforeTheCancellation_ShouldJudgeHasSingle()
 		{
 			using CancellationTokenSource cts = new();
@@ -799,7 +799,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the source was read to its end before the cancellation, so all items are known");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSourceHangsAfterSomeItems_ShouldFailAfterTheTimeout()
 		{
 			IAsyncEnumerable<int> subject = HangAfter(1, 2, 3);
@@ -807,7 +807,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).Contains(4).WithTimeout(1.Seconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 4 at least once,
@@ -820,7 +820,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the timeout must be long enough that the items are delivered before it elapses, even on a busy machine");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSourceHangsBeforeTheCollectionIsFormatted_ShouldFailAfterTheTimeout()
 		{
 			IAsyncEnumerable<int> subject = HangAfter(1, 2);
@@ -828,7 +828,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).IsInAscendingOrder().WithTimeout(1.Seconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is in ascending order,
@@ -840,7 +840,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the timeout must be long enough that the items are delivered before it elapses, even on a busy machine");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSourceIgnoresTheToken_ShouldFailAfterTheTimeout()
 		{
 			IAsyncEnumerable<int> subject = HangAfter();
@@ -848,7 +848,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).Contains(1).WithTimeout(50.Milliseconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 1 at least once,
@@ -859,7 +859,7 @@ public sealed partial class ThatAsyncEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSourceIgnoresTheToken_ShouldFailANegatedExpectationAfterTheTimeout()
 		{
 			IAsyncEnumerable<int> subject = HangAfter();
@@ -867,7 +867,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).DoesNotContain(1).WithTimeout(50.Milliseconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not contain an item equal to 1,
@@ -879,7 +879,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("a timeout must not be mistaken for the end of the source");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSourceObservesTheToken_ShouldCancelTheSource()
 		{
 			CancellationToken sourceToken = CancellationToken.None;
@@ -896,7 +896,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).Contains(1).WithTimeout(50.Milliseconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 1 at least once,
@@ -909,7 +909,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("the token of the evaluation must reach the source");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutElapsesBetweenItems_ShouldFailANegatedExpectation()
 		{
 			CancellationToken sourceToken = CancellationToken.None;
@@ -929,7 +929,7 @@ public sealed partial class ThatAsyncEnumerable
 				=> await That(subject).DoesNotContain(item => BlockUntilCancelled(item == 2, sourceToken))
 					.WithTimeout(1.Seconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not contain an item matching item => BlockUntilCancelled(item == 2, sourceToken),
@@ -941,7 +941,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("a timeout between two items must not be mistaken for the end of the source");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldFailACount()
 		{
 			IAsyncEnumerable<int> subject = HangAfter(1, 2);
@@ -949,7 +949,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).HasCount(3).WithTimeout(1.Seconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has exactly 3 items,
@@ -962,7 +962,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("a timeout is reported the same way, whichever expectation was pending");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldFailIsEqualTo()
 		{
 			IAsyncEnumerable<int> subject = HangAfter(1, 2);
@@ -970,7 +970,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).IsEqualTo([1, 2, 3]).WithTimeout(1.Seconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [1, 2, 3] in order,
@@ -986,7 +986,7 @@ public sealed partial class ThatAsyncEnumerable
 				.Because("a timeout lists the items received so far, whichever expectation was pending");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldKeepTheFailureOfASiblingOfIsEqualTo()
 		{
 			IAsyncEnumerable<int> subject = HangAfter(1, 2);
@@ -994,7 +994,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).HasCount().EqualTo(0).And.IsEqualTo([1, 2, 3,]).WithTimeout(1.Seconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has exactly 0 items and is equal to collection [1, 2, 3,] in order,
@@ -1025,7 +1025,7 @@ public sealed partial class ThatAsyncEnumerable
 			async Task Act()
 				=> await That(subject).Contains(1).WithTimeout(50.Milliseconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 1 at least once,

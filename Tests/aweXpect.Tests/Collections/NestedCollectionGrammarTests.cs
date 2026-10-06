@@ -7,157 +7,157 @@ public sealed class NestedCollectionGrammar
 {
 	public sealed class Tests
 	{
-		[Fact]
+		[Test]
 		public async Task AreEqualToAsPrefix_ShouldUsePluralVerb()
 		{
 			async Task Act()
 				=> await That("a\nb").HasLines(lines => lines.All().AreEqualTo("a").AsPrefix());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""*has lines of which all start with "a",*""").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task AreUnique_ShouldUsePluralVerb()
 		{
 			async Task Act()
 				=> await That("a\na").HasLines(lines => lines.All().AreUnique());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*has lines of which all are unique,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task AreUniqueWithMemberAccessor_ShouldUsePluralVerb()
 		{
 			async Task Act()
 				=> await That("a\nb").HasLines(lines => lines.All().AreUnique(l => l!.Length));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*has lines of which all are unique by l => l!.Length,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task AtLeast_ShouldUseOfWhich()
 		{
 			async Task Act()
 				=> await That("a\nb").HasLines(lines => lines.AtLeast(2).AreEqualTo("a"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""*has lines of which at least 2 are equal to "a",*""").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotContain_ShouldUsePluralVerb()
 		{
 			async Task Act()
 				=> await That("a\nb").HasLines(lines => lines.DoesNotContain("a"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""*has lines that do not contain "a",*""").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotEndWith_ShouldUsePluralVerb()
 		{
 			async Task Act()
 				=> await That("a\nb").HasLines(lines => lines.DoesNotEndWith("b"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""*has lines that do not end with ["b"],*""").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotStartWith_ShouldUsePluralVerb()
 		{
 			async Task Act()
 				=> await That("a\nb").HasLines(lines => lines.DoesNotStartWith("a"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""*has lines that do not start with ["a"],*""").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task EndsWith_ShouldUsePluralVerb()
 		{
 			async Task Act()
 				=> await That("a\nb").HasLines(lines => lines.EndsWith("a"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""*has lines that end with ["a"],*""").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasCountNotEqualTo_ShouldUsePluralVerb()
 		{
 			async Task Act()
 				=> await That("a\nb").HasLines(lines => lines.HasCount().NotEqualTo(2));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*has lines that do not have exactly 2 items,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasItem_ShouldUsePluralVerb()
 		{
 			async Task Act()
 				=> await That("a\nb").HasLines(lines => lines.HasItem("c"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""*has lines that have an item equal to "c",*""").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasItemThat_ShouldUsePluralVerb()
 		{
 			async Task Act()
 				=> await That("a\nb").HasLines(lines => lines.HasItemThat(i => i.IsEqualTo("c")));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""*has lines that have an item that is equal to "c",*""").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasSingle_ShouldUsePluralVerb()
 		{
 			async Task Act()
 				=> await That("a\nb").HasLines(lines => lines.HasSingle());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*has lines that have a single item,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsInAscendingOrder_ShouldUsePluralVerb()
 		{
 			async Task Act()
 				=> await That("b\na").HasLines(lines => lines.IsInAscendingOrder());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*has lines that are in ascending order,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsNotEmpty_ShouldUsePluralVerb()
 		{
 			async Task Act()
 				=> await That("").HasLines(lines => lines.IsNotEmpty());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*has lines that are not empty,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsNotInAscendingOrder_ShouldUsePluralVerb()
 		{
 			async Task Act()
 				=> await That("a\nb").HasLines(lines => lines.IsNotInAscendingOrder());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*has lines that are not in ascending order,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsNotOneOf_ShouldUsePluralVerb()
 		{
 			object?[] unexpected = [null,];
@@ -165,11 +165,11 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That("a\nb").HasLines(lines => lines.IsNotOneOf(unexpected).Using(new AllEqualComparer()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*has lines that are not one of [<null>] using AllEqualComparer,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsOneOf_ShouldUsePluralVerb()
 		{
 			object?[] expected = [null,];
@@ -177,21 +177,21 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That("a\nb").HasLines(lines => lines.IsOneOf(expected));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*has lines that are one of [<null>],*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task StartsWith_ShouldUsePluralVerb()
 		{
 			async Task Act()
 				=> await That("a\nb").HasLines(lines => lines.StartsWith("b"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""*has lines that start with ["b"],*""").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSubjectIsNotNested_ShouldUseSingularVerb()
 		{
 			IEnumerable<string> subject = ["a", "a",];
@@ -199,24 +199,24 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That(subject).All().AreUnique();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*is unique for all items,*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSubjectIsThePronoun_ShouldKeepSingularResultVerb()
 		{
 			async Task Act()
 				=> await That("").HasLines(lines => lines.HasSingle());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*but it was empty*").AsWildcard();
 		}
 	}
 
 	public sealed class NegatedTests
 	{
-		[Fact]
+		[Test]
 		public async Task ContainsForEnumerableWithNullSubject_ShouldUseSingularVerb()
 		{
 			IEnumerable? subject = null;
@@ -224,11 +224,11 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That(subject!).Contains((object?)1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*but it was <null>*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasItemThatWithNullSubject_ShouldUseSingularVerb()
 		{
 			IEnumerable<int>? subject = null;
@@ -236,11 +236,11 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That(subject!).HasItemThat(i => i.IsEqualTo(1));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*but it was <null>*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEmptyForEnumerable_ShouldUseSingularVerb()
 		{
 			IEnumerable subject = Array.Empty<int>();
@@ -248,11 +248,11 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.IsEmpty());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*is not empty,*but it was*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotHasItemForEnumerable_ShouldUseSingularVerb()
 		{
 			IEnumerable subject = new[] { 1, 2, };
@@ -260,11 +260,11 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem((object?)1));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*does not have an item*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotHasItemThat_ShouldUseSingularVerb()
 		{
 			IEnumerable<int> subject = [1, 2,];
@@ -272,11 +272,11 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.HasItemThat(i => i.IsEqualTo(1)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*does not have an item that*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotHasItemWithExpected_ShouldUseSingularVerb()
 		{
 			IEnumerable<int> subject = [1, 2,];
@@ -284,11 +284,11 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem(1));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*does not have an item*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotHasItemWithPredicate_ShouldUseSingularVerb()
 		{
 			IEnumerable<int> subject = [1, 2,];
@@ -296,11 +296,11 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem(x => x == 1));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*does not have an item*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotHasItemWithPredicateForEnumerable_ShouldUseSingularVerb()
 		{
 			IEnumerable subject = new[] { 1, 2, };
@@ -308,11 +308,11 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem(x => Equals(x, 1)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*does not have an item*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotHasItemWithString_ShouldUseSingularVerb()
 		{
 			IEnumerable<string?> subject = ["a", "b",];
@@ -320,7 +320,7 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem("a"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*does not have an item*").AsWildcard();
 		}
 	}
@@ -328,7 +328,7 @@ public sealed class NestedCollectionGrammar
 #if NET8_0_OR_GREATER
 	public sealed class AsyncTests
 	{
-		[Fact]
+		[Test]
 		public async Task HasCountWithNullSubject_ShouldUseSingularVerb()
 		{
 			IAsyncEnumerable<int>? subject = null;
@@ -336,11 +336,11 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That(subject!).HasCount(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*but it was <null>*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotHasItem_ShouldUseSingularVerb()
 		{
 			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 2,]);
@@ -348,11 +348,11 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem(1));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*does not have an item*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotHasItemThat_ShouldUseSingularVerb()
 		{
 			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 2,]);
@@ -360,11 +360,11 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.HasItemThat(i => i.IsEqualTo(1)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*does not have an item that*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotHasItemWithPredicate_ShouldUseSingularVerb()
 		{
 			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 2,]);
@@ -372,11 +372,11 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem(x => x == 1));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*does not have an item*").AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotHasSingle_ShouldUseSingularVerb()
 		{
 			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1,]);
@@ -384,7 +384,7 @@ public sealed class NestedCollectionGrammar
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.HasSingle());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("*does not have a single item*").AsWildcard();
 		}
 	}

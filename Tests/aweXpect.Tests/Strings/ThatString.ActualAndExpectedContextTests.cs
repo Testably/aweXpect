@@ -6,7 +6,7 @@ public sealed partial class ThatString
 {
 	public sealed class ActualAndExpectedContextTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenActualExceedsTheMaximumStringLength_ShouldIncludeActual()
 		{
 			string subject = "a subject with more than twenty characters";
@@ -19,7 +19,7 @@ public sealed partial class ThatString
 				}
 			}
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains "foo" at least once,
@@ -30,7 +30,7 @@ public sealed partial class ThatString
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTheDiffShortensTheValues_ShouldIncludeActualAndExpected()
 		{
 			string subject = "The quick brown fox jumps over the lazy dog and keeps on running far away from here";
@@ -39,7 +39,7 @@ public sealed partial class ThatString
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to "The quick brown fox jumps…",
@@ -57,7 +57,7 @@ public sealed partial class ThatString
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTheDiffShowsTheWholeValue_ShouldOmitActual()
 		{
 			string subject = "this subject is longer than thirty characters";
@@ -66,7 +66,7 @@ public sealed partial class ThatString
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to "short",
@@ -78,7 +78,7 @@ public sealed partial class ThatString
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenValuesAreShownCompletely_ShouldOmitActualAndExpected()
 		{
 			string subject = "foo\nbar";
@@ -87,7 +87,7 @@ public sealed partial class ThatString
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to "foo\nbaz",
