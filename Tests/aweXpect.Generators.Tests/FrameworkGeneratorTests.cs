@@ -92,8 +92,8 @@ public sealed class FrameworkGeneratorTests
 		}
 	}
 
-	[Theory]
-	[MemberData(nameof(AdaptersAndFrameworks))]
+	[Test]
+	[MethodDataSource(nameof(AdaptersAndFrameworks))]
 	public async Task WhenConsumerDeclaresNamespacesAndTypesThatShadowTheUsedOnes_ShouldCompile(string adapter,
 		string frameworks)
 	{
@@ -118,8 +118,8 @@ public sealed class FrameworkGeneratorTests
 		await That(result.Generated).Contains($"class {adapter} ");
 	}
 
-	[Theory]
-	[MemberData(nameof(AdaptersAndFrameworks))]
+	[Test]
+	[MethodDataSource(nameof(AdaptersAndFrameworks))]
 	public async Task WhenConsumerSeesTheAdapterOfAnotherAssembly_ShouldNotWarn(string adapter, string frameworks)
 	{
 		MetadataReference helpers = GeneratorRunner.CompileToReference("Company.Testing", $$"""
@@ -141,8 +141,8 @@ public sealed class FrameworkGeneratorTests
 			.Because("a helper library that uses aweXpect with the same test framework and exposes its internals to the test project has its own generated adapter, which must not conflict with the one generated in the test project");
 	}
 
-	[Theory]
-	[MemberData(nameof(AdaptersAndFrameworksForEachLanguageVersion))]
+	[Test]
+	[MethodDataSource(nameof(AdaptersAndFrameworksForEachLanguageVersion))]
 	public async Task WhenConsumerUsesCSharp7_3OrLater_ShouldCompile(string adapter, string frameworks,
 		LanguageVersion languageVersion)
 	{
@@ -154,7 +154,7 @@ public sealed class FrameworkGeneratorTests
 		await That(result.Generated).Contains($"class {adapter} ");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenConsumerUsesCSharp8_AndCoreScansTheLoadedAssemblies_ShouldNotWarn()
 	{
 		MetadataReference netStandardCore = GeneratorRunner.CompileToReference("aweXpect.Core", """
@@ -177,7 +177,7 @@ public sealed class FrameworkGeneratorTests
 			.Because("a consumer below .NET 8 resolves the .NET Standard build of aweXpect.Core, which still finds the adapter by scanning the loaded assemblies");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenConsumerUsesCSharp8_ShouldDeclareTheAdapterThatCanBeRegisteredManually()
 	{
 		GeneratorRunner.GeneratorResult result = Run("nunit.framework", LanguageVersion.CSharp8, """
@@ -192,7 +192,7 @@ public sealed class FrameworkGeneratorTests
 			.Because("the warning aweXpect2002 tells a consumer that cannot compile a module initializer to register `aweXpect.Frameworks.NunitAdapter` manually");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenConsumerUsesCSharp8_ShouldNotRegisterTheAdapter()
 	{
 		GeneratorRunner.GeneratorResult result = Run("nunit.framework", LanguageVersion.CSharp8);
@@ -203,7 +203,7 @@ public sealed class FrameworkGeneratorTests
 			.Because("a module initializer needs C# 9, which a consumer pinned to an older language version cannot compile");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenConsumerUsesCSharp8_ShouldWarnThatTheAdapterIsNotRegistered()
 	{
 		GeneratorRunner.GeneratorResult result = Run("nunit.framework", LanguageVersion.CSharp8);
@@ -213,7 +213,7 @@ public sealed class FrameworkGeneratorTests
 			.Because("the .NET 8 build of aweXpect.Core no longer scans the loaded assemblies, so without the registration a skipped or inconclusive test would fail");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenConsumerUsesCSharp9_ShouldRegisterTheAdapter()
 	{
 		GeneratorRunner.GeneratorResult result = Run("nunit.framework", LanguageVersion.CSharp9);
@@ -224,7 +224,7 @@ public sealed class FrameworkGeneratorTests
 			"global::aweXpect.Core.Adapters.TestFrameworkRegistry.Register(new NunitAdapter(), overwrite: false);");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTUnitAssertionsIsNotReferenced_ShouldFailWithTheFailExceptionOfAweXpect()
 	{
 		GeneratorRunner.GeneratorResult result = Run("TUnit.Core", LanguageVersion.Latest);
@@ -238,7 +238,7 @@ public sealed class FrameworkGeneratorTests
 			.Because("skipping only needs TUnit.Core, which is all a project that uses aweXpect instead of TUnit's assertions references");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTUnitAssertionsIsReferenced_ShouldFailWithTheAssertionExceptionOfTUnit()
 	{
 		GeneratorRunner.GeneratorResult result = Run("TUnit.Core,TUnit.Assertions", LanguageVersion.Latest);

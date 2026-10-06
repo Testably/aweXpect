@@ -61,7 +61,7 @@ public sealed partial class EventParityTests
 		}
 	}
 
-	[Fact]
+	[Test]
 	public async Task GeneratedRegistrations_ShouldCompileWithoutWarnings()
 	{
 		await That(Result.Value.Errors).IsEmpty();
@@ -70,7 +70,7 @@ public sealed partial class EventParityTests
 			.Because("every corpus type is meant to be registered");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GeneratedRegistrations_WhenCorpusIsReferenced_ShouldCompileWithoutWarnings()
 	{
 		await That(LibraryResult.Value.Errors).IsEmpty();
@@ -78,8 +78,8 @@ public sealed partial class EventParityTests
 		await That(LibraryResult.Value.GeneratorDiagnostics).IsEmpty();
 	}
 
-	[Theory]
-	[MemberData(nameof(Types))]
+	[Test]
+	[MethodDataSource(nameof(Types))]
 	public async Task RegisteredEvents_ShouldMatchReflection(Type type, string key)
 	{
 		Dictionary<string, HashSet<string>> registrations = Parse(Result.Value.Generated);
@@ -90,8 +90,8 @@ public sealed partial class EventParityTests
 			.Because("a registration that differs from reflection would record a different set of events under AOT");
 	}
 
-	[Theory]
-	[MemberData(nameof(Types))]
+	[Test]
+	[MethodDataSource(nameof(Types))]
 	public async Task RegisteredEvents_WhenCorpusIsReferenced_ShouldMatchReflection(Type type, string key)
 	{
 		Dictionary<string, HashSet<string>> registrations = Parse(LibraryResult.Value.Generated);
