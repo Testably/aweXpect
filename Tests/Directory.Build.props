@@ -21,7 +21,7 @@
 	    use TUnit. The list goes away with the last of them.
 	-->
 	<PropertyGroup>
-		<TUnitProjects>;aweXpect.Internal.Tests;aweXpect.Tests;</TUnitProjects>
+		<TUnitProjects>;aweXpect.Internal.Tests;aweXpect.Tests;aweXpect.Core.Tests;</TUnitProjects>
 		<UseTUnit Condition="$(TUnitProjects.Contains(';$(MSBuildProjectName);'))">true</UseTUnit>
 	</PropertyGroup>
 
