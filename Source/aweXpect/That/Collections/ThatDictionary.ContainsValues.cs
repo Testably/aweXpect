@@ -46,8 +46,8 @@ public static partial class ThatDictionary
 				(ExpectedExpression: expectedExpression, Values: values, Options: options, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainValuesConstraint<TCollection, TKey, TValue>(it, grammars,
-						state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.Values),
-						state.Values, state.Options, state.Negated)
+							state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.Values),
+							state.Values, state.Options, state.Negated)
 						.InvertIf(state.Negated)),
 			subject,
 			options);
@@ -77,8 +77,8 @@ public static partial class ThatDictionary
 				(ExpectedExpression: expectedExpression, Values: values, Options: options, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainValuesConstraint<TCollection, TKey, TValue>(it, grammars,
-						state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.Values),
-						state.Values, state.Options, state.Negated)
+							state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.Values),
+							state.Values, state.Options, state.Negated)
 						.InvertIf(state.Negated)),
 			subject,
 			options);
@@ -106,8 +106,8 @@ public static partial class ThatDictionary
 				(ExpectedExpression: expectedExpression, Values: values, Options: options, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainValuesConstraint<TCollection, TKey, string?>(it, grammars,
-						state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.Values),
-						state.Values, state.Options, state.Negated)
+							state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.Values),
+							state.Values, state.Options, state.Negated)
 						.InvertIf(state.Negated)),
 			subject,
 			options);
@@ -130,13 +130,6 @@ public static partial class ThatDictionary
 	{
 		private List<TValue>? _existingValues;
 		private List<TValue>? _missingValues;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			AddDictionaryContext(contexts, Actual);
-			contexts.AddOptionsContexts(options);
-		}
 
 		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual, CancellationToken cancellationToken)
 		{
@@ -166,6 +159,13 @@ public static partial class ThatDictionary
 				(false, _, _) => Outcome.Failure,
 			};
 			return this;
+		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			AddDictionaryContext(contexts, Actual);
+			contexts.AddOptionsContexts(options);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

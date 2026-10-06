@@ -58,7 +58,7 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
-		return Format(formatter, value.Value, options);
+		return formatter.Format(value.Value, options);
 	}
 
 	/// <summary>
@@ -77,6 +77,6 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		Format(formatter, stringBuilder, value.Value, options);
+		formatter.Format(stringBuilder, value.Value, options);
 	}
 }

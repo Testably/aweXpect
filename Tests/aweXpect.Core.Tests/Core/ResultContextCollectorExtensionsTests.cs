@@ -38,7 +38,12 @@ public sealed class ResultContextCollectorExtensionsTests
 	[Test]
 	public async Task AddCollectionContext_Untyped_ShouldListTheItemsLikeTheBuiltInExpectations()
 	{
-		IEnumerable subject = new ArrayList { 1, 2, 3, };
+		IEnumerable subject = new ArrayList
+		{
+			1,
+			2,
+			3,
+		};
 
 		async Task Act()
 			=> await That(subject).ShowsContexts((contexts, actual, _) => contexts.AddCollectionContext(actual));
@@ -83,7 +88,7 @@ public sealed class ResultContextCollectorExtensionsTests
 
 		async Task Act()
 			=> await That(subject).ShowsContexts((contexts, actual, _)
-				=> contexts.AddCollectionContext<int>(actual));
+				=> contexts.AddCollectionContext(actual));
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -121,7 +126,7 @@ public sealed class ResultContextCollectorExtensionsTests
 
 		async Task Act()
 			=> await That(subject).ShowsContexts((contexts, actual, _)
-				=> contexts.AddCollectionContext<int>(actual));
+				=> contexts.AddCollectionContext(actual));
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -172,8 +177,12 @@ public sealed class ResultContextCollectorExtensionsTests
 	{
 		Dictionary<string, int> subject = new()
 		{
-			{ "a", 1 },
-			{ "b", 2 },
+			{
+				"a", 1
+			},
+			{
+				"b", 2
+			},
 		};
 
 		async Task Act()
@@ -197,7 +206,9 @@ public sealed class ResultContextCollectorExtensionsTests
 	{
 		Dictionary<string, int> subject = new()
 		{
-			{ "a", 1 },
+			{
+				"a", 1
+			},
 		};
 
 		async Task Act()

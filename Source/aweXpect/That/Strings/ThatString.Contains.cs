@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -94,6 +93,10 @@ public static partial class ThatString
 			return this;
 		}
 
+		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(quantifier.ToContainsExpectation(Grammars, $"{Formatter.Format(expected)}{options}",
+				_isNegated));
+
 		/// <inheritdoc />
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
@@ -103,10 +106,6 @@ public static partial class ThatString
 				contexts.AddStringContext("Expected", expected, this);
 			}
 		}
-
-		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(quantifier.ToContainsExpectation(Grammars, $"{Formatter.Format(expected)}{options}",
-				_isNegated));
 
 		/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
 		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default

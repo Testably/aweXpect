@@ -165,7 +165,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WhenExpectedContainsDuplicateButMissingItems_ShouldFail()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 1, 3, 12, 2, 2,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 1, 3, 12, 2, 2);
 				IEnumerable<Action<IThat<int>>> expected =
 				[
 					a => a.IsEqualTo(1),

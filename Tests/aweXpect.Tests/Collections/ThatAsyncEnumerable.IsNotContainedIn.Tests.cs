@@ -1112,7 +1112,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithManyMissingItems_ShouldFail()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1);
 				int[] expected = [..Enumerable.Range(100, 25), 1,];
 
 				async Task Act()
@@ -1621,7 +1621,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithManyMissingItems_ShouldFail()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1);
 				int[] expected = [..Enumerable.Range(100, 25), 1,];
 
 				async Task Act()

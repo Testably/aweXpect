@@ -6,6 +6,21 @@ public partial class ValueFormatters
 {
 	public sealed class EnumTests
 	{
+		public enum Dummy
+		{
+			Foo,
+			Bar,
+		}
+
+		[Flags]
+		public enum MyFlags
+		{
+			None = 0,
+			A = 1,
+			B = 2,
+			C = 4,
+		}
+
 		[Test]
 		[Arguments(Dummy.Foo, "Foo")]
 		[Arguments(Dummy.Bar, "Bar")]
@@ -125,21 +140,6 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(expectedResult);
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
-		}
-
-		public enum Dummy
-		{
-			Foo,
-			Bar,
-		}
-
-		[Flags]
-		public enum MyFlags
-		{
-			None = 0,
-			A = 1,
-			B = 2,
-			C = 4,
 		}
 	}
 }

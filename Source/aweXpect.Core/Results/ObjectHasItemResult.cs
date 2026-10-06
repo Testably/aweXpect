@@ -21,8 +21,8 @@ public class ObjectHasItemResult<TCollection, TItem>(
 		IObjectEqualityResult<ObjectHasItemResult<TCollection, TItem>, TItem>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
+	ObjectEqualityOptions<TItem> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	ObjectEqualityOptions<TItem> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => options;
+	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
 }

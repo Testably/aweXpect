@@ -1287,7 +1287,7 @@ public sealed partial class ThatEnumerable
 					               "b",
 					               "\tc"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               "a",
@@ -1312,14 +1312,14 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is not equal to collection unexpected ignoring trailing whitespace in order,
 					             but it was
-					             
+
 					             Collection:
 					             [
 					               "a ",
 					               "b",
 					               "c\t"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               "a",

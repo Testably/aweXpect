@@ -180,7 +180,12 @@ public sealed class UnansweredItem
 		public async Task AtLeast_WhenThrowingItemFollowsTheDecidingItem_ShouldSucceed(bool isCountKnown)
 		{
 			InvalidOperationException exception = new("boom");
-			IEnumerable<int> subject = isCountKnown ? new[] { 1, 2, } : Lazy(1, 2);
+			IEnumerable<int> subject = isCountKnown
+				? new[]
+				{
+					1, 2,
+				}
+				: Lazy(1, 2);
 
 			async Task Act()
 				=> await That(subject).AtLeast(1).ComplyWith(x => x.Satisfies(y => y == 1 ? true : throw exception));
@@ -195,7 +200,12 @@ public sealed class UnansweredItem
 		public async Task AtLeast_WhenThrowingItemOfEnumerableFollowsTheDecidingItem_ShouldSucceed(bool isCountKnown)
 		{
 			InvalidOperationException exception = new("boom");
-			IEnumerable subject = isCountKnown ? new[] { 1, 2, } : Lazy(1, 2);
+			IEnumerable subject = isCountKnown
+				? new[]
+				{
+					1, 2,
+				}
+				: Lazy(1, 2);
 
 			async Task Act()
 				=> await That(subject).AtLeast(1).ComplyWith(x => x.Satisfies(y => y is 1 ? true : throw exception));
@@ -211,7 +221,12 @@ public sealed class UnansweredItem
 			bool isCountKnown)
 		{
 			InvalidOperationException exception = new("boom");
-			IEnumerable<int> subject = isCountKnown ? new[] { 1, 1, 2, } : Lazy(1, 1, 2);
+			IEnumerable<int> subject = isCountKnown
+				? new[]
+				{
+					1, 1, 2,
+				}
+				: Lazy(1, 1, 2);
 
 			async Task Act()
 				=> await That(subject).AtMost(1).ComplyWith(x => x.Satisfies(y => y == 1 ? true : throw exception));
@@ -261,7 +276,10 @@ public sealed class UnansweredItem
 		public async Task Enumerable_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
-			IEnumerable subject = new[] { 1, 2, };
+			IEnumerable subject = new[]
+			{
+				1, 2,
+			};
 
 			async Task Act()
 				=> await That(subject).None().ComplyWith(x => x.Satisfies(_ => throw exception));
@@ -278,52 +296,6 @@ public sealed class UnansweredItem
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
-
-#if NET8_0_OR_GREATER
-		[Test]
-		public async Task ImmutableArray_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
-		{
-			InvalidOperationException exception = new("boom");
-			ImmutableArray<int> subject = [1, 2,];
-
-			async Task Act()
-				=> await That(subject).None().ComplyWith(x => x.Satisfies(y => Throw(y, exception)));
-
-			await That(Act).Throws<FailException>()
-				.WithMessage("""
-				             Expected that subject
-				             satisfies y => Throw(y, exception) for no items,
-				             but for the item at index 0, the predicate did throw an InvalidOperationException:
-				               boom
-
-				             Collection:
-				             [1, 2]
-				             """).And
-				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
-		}
-
-		[Test]
-		public async Task ImmutableStringArray_WhenItemIsNull_ShouldFail()
-		{
-			ImmutableArray<string?> subject = ["b", null,];
-
-			async Task Act()
-				=> await That(subject).None().ComplyWith(x => x.StartsWith("a"));
-
-			await That(Act).Throws<FailException>()
-				.WithMessage("""
-				             Expected that subject
-				             starts with "a" for no items,
-				             but for the item at index 1, it was <null>
-
-				             Collection:
-				             [
-				               "b",
-				               <null>
-				             ]
-				             """);
-		}
-#endif
 
 		[Test]
 		public async Task None_WhenCombinedItemExpectationThrows_ShouldNameTheItemBeforeItsResult()
@@ -498,6 +470,52 @@ public sealed class UnansweredItem
 				"MoreThan(0)" => subject.MoreThan(0),
 				_ => throw new ArgumentOutOfRangeException(nameof(quantifier)),
 			};
+
+#if NET8_0_OR_GREATER
+		[Test]
+		public async Task ImmutableArray_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
+		{
+			InvalidOperationException exception = new("boom");
+			ImmutableArray<int> subject = [1, 2,];
+
+			async Task Act()
+				=> await That(subject).None().ComplyWith(x => x.Satisfies(y => Throw(y, exception)));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             satisfies y => Throw(y, exception) for no items,
+				             but for the item at index 0, the predicate did throw an InvalidOperationException:
+				               boom
+
+				             Collection:
+				             [1, 2]
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+		}
+
+		[Test]
+		public async Task ImmutableStringArray_WhenItemIsNull_ShouldFail()
+		{
+			ImmutableArray<string?> subject = ["b", null,];
+
+			async Task Act()
+				=> await That(subject).None().ComplyWith(x => x.StartsWith("a"));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             starts with "a" for no items,
+				             but for the item at index 1, it was <null>
+
+				             Collection:
+				             [
+				               "b",
+				               <null>
+				             ]
+				             """);
+		}
+#endif
 	}
 
 	public sealed class NegatedComplyWithTests
@@ -554,7 +572,12 @@ public sealed class UnansweredItem
 		public async Task None_WhenThrowingItemFollowsTheDecidingItem_ShouldSucceed(bool isCountKnown)
 		{
 			InvalidOperationException exception = new("boom");
-			IEnumerable<int> subject = isCountKnown ? new[] { 1, 2, } : Lazy(1, 2);
+			IEnumerable<int> subject = isCountKnown
+				? new[]
+				{
+					1, 2,
+				}
+				: Lazy(1, 2);
 
 			async Task Act()
 				=> await That(subject)
@@ -616,7 +639,10 @@ public sealed class UnansweredItem
 		public async Task Enumerable_WhenItemExpectationThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
-			IEnumerable subject = new[] { 1, 2, };
+			IEnumerable subject = new[]
+			{
+				1, 2,
+			};
 
 			async Task Act()
 				=> await That(subject).HasItemThat(x => x.Satisfies(_ => throw exception));
@@ -1189,7 +1215,7 @@ public sealed class UnansweredItem
 		[Test]
 		public async Task AllComplyWith_WhenItemIsNull_ShouldFail()
 		{
-			IAsyncEnumerable<string?> subject = ThatAsyncEnumerable.ToAsyncEnumerable<string?>("a", null);
+			IAsyncEnumerable<string?> subject = ThatAsyncEnumerable.ToAsyncEnumerable("a", null);
 
 			async Task Act()
 				=> await That(subject).All().ComplyWith(x => x.StartsWith("a"));

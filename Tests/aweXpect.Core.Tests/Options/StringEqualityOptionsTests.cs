@@ -894,27 +894,6 @@ public sealed partial class StringEqualityOptionsTests
 			}
 		}
 
-		private sealed class CustomMatchType : IStringMatchType
-		{
-			public bool InspectsSubject => false;
-
-			public ValueTask<bool> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
-				IEqualityComparer<string>? comparer)
-				=> throw new NotSupportedException();
-
-			public string GetExpectation(string? expected, ExpectationGrammars grammars)
-				=> throw new NotSupportedException();
-
-			public string GetExtendedFailure(string it, string? actual, string? expected, bool ignoreCase,
-				IEqualityComparer<string> comparer, StringDifferenceSettings? settings)
-				=> throw new NotSupportedException();
-
-			public string GetTypeString() => throw new NotSupportedException();
-
-			public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
-				=> throw new NotSupportedException();
-		}
-
 		/// <remarks>
 		///     The exact match type is the default, so it is selected by naming no method at all.
 		/// </remarks>
@@ -944,6 +923,27 @@ public sealed partial class StringEqualityOptionsTests
 			}
 
 			return options;
+		}
+
+		private sealed class CustomMatchType : IStringMatchType
+		{
+			public bool InspectsSubject => false;
+
+			public ValueTask<bool> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
+				IEqualityComparer<string>? comparer)
+				=> throw new NotSupportedException();
+
+			public string GetExpectation(string? expected, ExpectationGrammars grammars)
+				=> throw new NotSupportedException();
+
+			public string GetExtendedFailure(string it, string? actual, string? expected, bool ignoreCase,
+				IEqualityComparer<string> comparer, StringDifferenceSettings? settings)
+				=> throw new NotSupportedException();
+
+			public string GetTypeString() => throw new NotSupportedException();
+
+			public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
+				=> throw new NotSupportedException();
 		}
 
 		private sealed class ThrowingComparer(Exception exception) : IEqualityComparer<string>

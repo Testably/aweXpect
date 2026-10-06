@@ -36,17 +36,6 @@ public sealed partial class EventParityTests
 		=> GeneratorRunner.Run([Attributes(),],
 			additionalReferences: GeneratorRunner.CompileToReference("Corpus", Corpus())));
 
-	private static string Corpus()
-	{
-		using Stream stream = typeof(EventParityTests).Assembly.GetManifestResourceStream("Corpus.cs")!;
-		using StreamReader reader = new(stream);
-		return reader.ReadToEnd();
-	}
-
-	private static string Attributes()
-		=> string.Join(Environment.NewLine, CorpusTypes.Select(x
-			=> $"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof({x.Name}))]"));
-
 	public static IEnumerable<(Type, string)> Types
 	{
 		get
@@ -60,6 +49,17 @@ public sealed partial class EventParityTests
 			return data;
 		}
 	}
+
+	private static string Corpus()
+	{
+		using Stream stream = typeof(EventParityTests).Assembly.GetManifestResourceStream("Corpus.cs")!;
+		using StreamReader reader = new(stream);
+		return reader.ReadToEnd();
+	}
+
+	private static string Attributes()
+		=> string.Join(Environment.NewLine, CorpusTypes.Select(x
+			=> $"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof({x.Name}))]"));
 
 	[Test]
 	public async Task GeneratedRegistrations_ShouldCompileWithoutWarnings()

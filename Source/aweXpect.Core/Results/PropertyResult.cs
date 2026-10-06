@@ -60,7 +60,7 @@ public static class PropertyResult
 		{
 			validation?.Invoke(unexpected, nameof(unexpected));
 			return Add(unexpected, (a, u) => a != u,
-				"equal to ", isNegative: true);
+				"equal to ", true);
 		}
 
 		/// <summary>
@@ -83,8 +83,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => !(a > e),
-				"greater than ", isNegative: true,
-				isOrderedAgainstNull: expected is null);
+				"greater than ", true,
+				expected is null);
 		}
 
 		/// <summary>
@@ -107,8 +107,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => !(a >= e),
-				"greater than or equal to ", isNegative: true,
-				isOrderedAgainstNull: expected is null);
+				"greater than or equal to ", true,
+				expected is null);
 		}
 
 		/// <summary>
@@ -131,8 +131,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => !(a < e),
-				"less than ", isNegative: true,
-				isOrderedAgainstNull: expected is null);
+				"less than ", true,
+				expected is null);
 		}
 
 		/// <summary>
@@ -155,8 +155,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => !(a <= e),
-				"less than or equal to ", isNegative: true,
-				isOrderedAgainstNull: expected is null);
+				"less than or equal to ", true,
+				expected is null);
 		}
 
 		/// <summary>
@@ -189,9 +189,9 @@ public static class PropertyResult
 				validation?.Invoke(maximum, nameof(maximum));
 				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 				return Add(minimum, (a, e) => !(a >= e && a <= maximum),
-					"between ", isNegative: true,
-					isOrderedAgainstNull: minimum is null || maximum is null,
-					hasMaximum: true, maximum: maximum);
+					"between ", true,
+					minimum is null || maximum is null,
+					true, maximum);
 			});
 		}
 
@@ -262,7 +262,7 @@ public static class PropertyResult
 		{
 			validation?.Invoke(unexpected, nameof(unexpected));
 			return Add(unexpected, (a, u) => a != u,
-				"equal to ", isNegative: true);
+				"equal to ", true);
 		}
 
 		/// <summary>
@@ -285,8 +285,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => !(a > e),
-				"greater than ", isNegative: true,
-				isOrderedAgainstNull: expected is null);
+				"greater than ", true,
+				expected is null);
 		}
 
 		/// <summary>
@@ -309,8 +309,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => !(a >= e),
-				"greater than or equal to ", isNegative: true,
-				isOrderedAgainstNull: expected is null);
+				"greater than or equal to ", true,
+				expected is null);
 		}
 
 		/// <summary>
@@ -333,8 +333,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => !(a < e),
-				"less than ", isNegative: true,
-				isOrderedAgainstNull: expected is null);
+				"less than ", true,
+				expected is null);
 		}
 
 		/// <summary>
@@ -357,8 +357,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => !(a <= e),
-				"less than or equal to ", isNegative: true,
-				isOrderedAgainstNull: expected is null);
+				"less than or equal to ", true,
+				expected is null);
 		}
 
 		/// <summary>
@@ -391,9 +391,9 @@ public static class PropertyResult
 				validation?.Invoke(maximum, nameof(maximum));
 				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 				return Add(minimum, (a, e) => !(a >= e && a <= maximum),
-					"between ", isNegative: true,
-					isOrderedAgainstNull: minimum is null || maximum is null,
-					hasMaximum: true, maximum: maximum);
+					"between ", true,
+					minimum is null || maximum is null,
+					true, maximum);
 			});
 		}
 
@@ -457,7 +457,7 @@ public static class PropertyResult
 		public AndOrResult<TType, TThat> NotEqualTo(
 			DateTimeKind? unexpected)
 			=> Add(unexpected, (a, u) => a != u,
-				"equal to ", isNegative: true);
+				"equal to ", true);
 
 		private AndOrResult<TType, TThat> Add(
 			DateTimeKind? expected,
@@ -522,7 +522,7 @@ public static class PropertyResult
 		{
 			validation?.Invoke(unexpected, nameof(unexpected));
 			return Add(unexpected, (a, u) => a != u,
-				"equal to ", isNegative: true);
+				"equal to ", true);
 		}
 
 		/// <summary>
@@ -545,8 +545,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => !(a > e),
-				"greater than ", isNegative: true,
-				isOrderedAgainstNull: expected is null);
+				"greater than ", true,
+				expected is null);
 		}
 
 		/// <summary>
@@ -569,8 +569,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => !(a >= e),
-				"greater than or equal to ", isNegative: true,
-				isOrderedAgainstNull: expected is null);
+				"greater than or equal to ", true,
+				expected is null);
 		}
 
 		/// <summary>
@@ -593,8 +593,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => !(a < e),
-				"less than ", isNegative: true,
-				isOrderedAgainstNull: expected is null);
+				"less than ", true,
+				expected is null);
 		}
 
 		/// <summary>
@@ -617,8 +617,8 @@ public static class PropertyResult
 		{
 			validation?.Invoke(expected, nameof(expected));
 			return Add(expected, (a, e) => !(a <= e),
-				"less than or equal to ", isNegative: true,
-				isOrderedAgainstNull: expected is null);
+				"less than or equal to ", true,
+				expected is null);
 		}
 
 		/// <summary>
@@ -651,9 +651,9 @@ public static class PropertyResult
 				validation?.Invoke(maximum, nameof(maximum));
 				ThrowHelper.ThrowIfMaximumIsBelowMinimum(minimum, maximum);
 				return Add(minimum, (a, e) => !(a >= e && a <= maximum),
-					"between ", isNegative: true,
-					isOrderedAgainstNull: minimum is null || maximum is null,
-					hasMaximum: true, maximum: maximum);
+					"between ", true,
+					minimum is null || maximum is null,
+					true, maximum);
 			});
 		}
 
@@ -907,7 +907,7 @@ public static class PropertyResult
 		string propertyExpression,
 		StructComparison<TProperty> comparison)
 		: ConstraintResult.WithNotNullValue<TItem>(it, grammars),
-		IValueConstraint<TItem>
+			IValueConstraint<TItem>
 		where TProperty : struct
 	{
 		private Exception? _exception;

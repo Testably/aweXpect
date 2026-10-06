@@ -77,7 +77,7 @@ public sealed partial class ThatSignaler
 				cts.CancelAfter(50.Milliseconds());
 
 				async Task Act() =>
-					await That(signaler).DidNotSignal().Within(System.Threading.Timeout.InfiniteTimeSpan).WithCancellation(cts.Token);
+					await That(signaler).DidNotSignal().Within(Timeout.InfiniteTimeSpan).WithCancellation(cts.Token);
 
 				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
@@ -96,7 +96,7 @@ public sealed partial class ThatSignaler
 				cts.CancelAfter(50.Milliseconds());
 
 				async Task Act() =>
-					await That(signaler).DidNotSignal().Within(System.Threading.Timeout.InfiniteTimeSpan).WithCancellation(cts.Token);
+					await That(signaler).DidNotSignal().Within(Timeout.InfiniteTimeSpan).WithCancellation(cts.Token);
 
 				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""

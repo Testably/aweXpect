@@ -20,7 +20,8 @@ internal static class ThrowHelper
 	/// </remarks>
 	public static ICollection<KeyValuePair<TKey, TValue>>? EnsureDistinctKeys<TKey, TValue>(
 		IEnumerable<KeyValuePair<TKey, TValue>>? entries,
-		[CallerArgumentExpression(nameof(entries))] string? paramName = null)
+		[CallerArgumentExpression(nameof(entries))]
+		string? paramName = null)
 		=> EnsureDistinctKeysNamed(entries, paramName);
 
 	/// <summary>
@@ -89,7 +90,8 @@ internal static class ThrowHelper
 	///     <c>minimum</c> or a <c>maximum</c>, but not for an <c>expected</c> count.
 	/// </remarks>
 	public static void ThrowIfCountIsNegative(int? count, string? description = null,
-		[CallerArgumentExpression(nameof(count))] string? paramName = null)
+		[CallerArgumentExpression(nameof(count))]
+		string? paramName = null)
 	{
 		if (count < 0)
 		{
@@ -103,7 +105,8 @@ internal static class ThrowHelper
 	///     Rejects a negative position when the filter is built, because it could never address a parameter.
 	/// </summary>
 	public static void ThrowIfPositionIsNegative(int? position,
-		[CallerArgumentExpression(nameof(position))] string? paramName = null)
+		[CallerArgumentExpression(nameof(position))]
+		string? paramName = null)
 	{
 		if (position < 0)
 		{

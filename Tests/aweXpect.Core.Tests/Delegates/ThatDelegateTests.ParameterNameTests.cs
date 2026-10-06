@@ -13,7 +13,7 @@ public sealed partial class ThatDelegateTests
 			Action @delegate = () => { };
 
 			async Task Act()
-				=> await That(@delegate).DoesNotThrow(type: typeof(MyException));
+				=> await That(@delegate).DoesNotThrow(typeof(MyException));
 
 			await That(Act).DoesNotThrow();
 		}
@@ -24,7 +24,7 @@ public sealed partial class ThatDelegateTests
 			Func<int> @delegate = () => 1;
 
 			async Task Act()
-				=> await That(@delegate).DoesNotThrow(type: typeof(MyException));
+				=> await That(@delegate).DoesNotThrow(typeof(MyException));
 
 			await That(Act).DoesNotThrow();
 		}
@@ -35,7 +35,7 @@ public sealed partial class ThatDelegateTests
 			Action @delegate = () => { };
 
 			async Task Act()
-				=> await That(@delegate).DoesNotThrowExactly(type: typeof(MyException));
+				=> await That(@delegate).DoesNotThrowExactly(typeof(MyException));
 
 			await That(Act).DoesNotThrow();
 		}
@@ -46,7 +46,7 @@ public sealed partial class ThatDelegateTests
 			Func<int> @delegate = () => 1;
 
 			async Task Act()
-				=> await That(@delegate).DoesNotThrowExactly(type: typeof(MyException));
+				=> await That(@delegate).DoesNotThrowExactly(typeof(MyException));
 
 			await That(Act).DoesNotThrow();
 		}
@@ -57,7 +57,7 @@ public sealed partial class ThatDelegateTests
 			Action @delegate = () => { };
 
 			async Task Act()
-				=> await That(@delegate).Throws<MyException>().OnlyIf(condition: false);
+				=> await That(@delegate).Throws<MyException>().OnlyIf(false);
 
 			await That(Act).DoesNotThrow();
 		}
@@ -68,7 +68,7 @@ public sealed partial class ThatDelegateTests
 			Action @delegate = () => throw new MyException();
 
 			async Task Act()
-				=> await That(@delegate).Throws(type: typeof(MyException));
+				=> await That(@delegate).Throws(typeof(MyException));
 
 			await That(Act).DoesNotThrow();
 		}
@@ -79,7 +79,7 @@ public sealed partial class ThatDelegateTests
 			Action @delegate = () => throw new MyException();
 
 			async Task Act()
-				=> await That(@delegate).ThrowsExactly(type: typeof(MyException));
+				=> await That(@delegate).ThrowsExactly(typeof(MyException));
 
 			await That(Act).DoesNotThrow();
 		}
@@ -90,7 +90,7 @@ public sealed partial class ThatDelegateTests
 			Action @delegate = () => throw new MyException(innerException: new MyException());
 
 			async Task Act()
-				=> await That(@delegate).Throws<MyException>().WithInner(type: typeof(MyException));
+				=> await That(@delegate).Throws<MyException>().WithInner(typeof(MyException));
 
 			await That(Act).DoesNotThrow();
 		}
@@ -102,7 +102,7 @@ public sealed partial class ThatDelegateTests
 
 			async Task Act()
 				=> await That(@delegate).Throws<MyException>()
-					.WithInner(type: typeof(MyException), expectations: it => it.Is<MyException>());
+					.WithInner(typeof(MyException), it => it.Is<MyException>());
 
 			await That(Act).DoesNotThrow();
 		}

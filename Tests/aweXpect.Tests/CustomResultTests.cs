@@ -56,7 +56,7 @@ public sealed class CustomResultTests
 	}
 }
 
-file static class CustomResultExtensions
+static file class CustomResultExtensions
 {
 	public static EitherResult IsEvenNumber(this IThat<int> subject)
 		=> new(((IExpectThat<int>)subject).ExpectationBuilder.AddConstraint((it, grammars)

@@ -309,7 +309,7 @@ public sealed partial class ThatNumber
 			];
 #endif
 		}
-		
+
 		public sealed class NegatedTests
 		{
 			[Test]
@@ -317,7 +317,7 @@ public sealed partial class ThatNumber
 			[Arguments(double.NegativeInfinity)]
 			public async Task ForDouble_WhenSubjectIsInfinity_ShouldFail(double subject)
 			{
-				async Task Act() => await That(subject).DoesNotComplyWith(it => 
+				async Task Act() => await That(subject).DoesNotComplyWith(it =>
 					it.IsInfinite());
 
 				await That(Act).Throws<FailException>()
@@ -339,7 +339,7 @@ public sealed partial class ThatNumber
 			public async Task ForDouble_WhenSubjectIsNormalOrNaNValue_ShouldSucceed(double subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => 
+					=> await That(subject).DoesNotComplyWith(it =>
 						it.IsInfinite());
 
 				await That(Act).DoesNotThrow();
@@ -350,7 +350,7 @@ public sealed partial class ThatNumber
 			[Arguments(double.NegativeInfinity)]
 			public async Task ForNullableDouble_WhenSubjectIsInfinity_ShouldFail(double? subject)
 			{
-				async Task Act() => await That(subject).DoesNotComplyWith(it => 
+				async Task Act() => await That(subject).DoesNotComplyWith(it =>
 					it.IsInfinite());
 
 				await That(Act).Throws<FailException>()
@@ -373,7 +373,7 @@ public sealed partial class ThatNumber
 				double? subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => 
+					=> await That(subject).DoesNotComplyWith(it =>
 						it.IsInfinite());
 
 				await That(Act).DoesNotThrow();

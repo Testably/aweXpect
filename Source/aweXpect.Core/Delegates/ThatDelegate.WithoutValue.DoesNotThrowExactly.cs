@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
 using aweXpect.Results;
@@ -28,7 +27,7 @@ public abstract partial class ThatDelegate
 		public ExpectationResult DoesNotThrowExactly(Type type)
 		{
 			type.ThrowIfNotAnExceptionType();
-			return new(_expectationBuilder.AddConstraint(type, static (exceptionType, it, grammars) =>
+			return new ExpectationResult(_expectationBuilder.AddConstraint(type, static (exceptionType, it, grammars) =>
 				new DoesNotThrowConstraint(it, grammars, exceptionType, true, null)));
 		}
 	}

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -89,6 +88,32 @@ public static partial class ThatGeneric
 		}
 
 		/// <remarks>
+		///     The expectation text of the expectations is not aware of the negation, so the negated result of the last
+		///     evaluation is rendered instead, which applies De Morgan to combinations.
+		/// </remarks>
+		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+		{
+			if (_negatedResult is not null)
+			{
+				_negatedResult.AppendExpectation(stringBuilder, indentation);
+			}
+			else
+			{
+				_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
+			}
+
+			_itemExpectationBuilder.AppendReasons(stringBuilder);
+		}
+
+		public async ValueTask<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+			CancellationToken cancellationToken)
+		{
+			RevertPreviousNegation();
+			return NegateIfNegated(await _itemExpectationBuilder.IsMetBy(default!, context, cancellationToken))
+				.AppendExpectationText(AppendSuffix);
+		}
+
+		/// <remarks>
 		///     The <paramref name="isMatch" /> is not negated yet, so a negated expectation is met when it is not met, unless
 		///     it could not be answered, which fails the negation as well.
 		/// </remarks>
@@ -122,32 +147,6 @@ public static partial class ThatGeneric
 			=> typeof(T).IsValueType
 				? EqualityComparer<T>.Default.Equals(value!, actual)
 				: ReferenceEquals(value, actual);
-
-		public async ValueTask<ConstraintResult> GetExpectationResult(IEvaluationContext context,
-			CancellationToken cancellationToken)
-		{
-			RevertPreviousNegation();
-			return NegateIfNegated(await _itemExpectationBuilder.IsMetBy(default!, context, cancellationToken))
-				.AppendExpectationText(AppendSuffix);
-		}
-
-		/// <remarks>
-		///     The expectation text of the expectations is not aware of the negation, so the negated result of the last
-		///     evaluation is rendered instead, which applies De Morgan to combinations.
-		/// </remarks>
-		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (_negatedResult is not null)
-			{
-				_negatedResult.AppendExpectation(stringBuilder, indentation);
-			}
-			else
-			{
-				_itemExpectationBuilder.AppendExpectation(stringBuilder, indentation);
-			}
-
-			_itemExpectationBuilder.AppendReasons(stringBuilder);
-		}
 
 		private ConstraintResult NegateIfNegated(ConstraintResult constraintResult)
 		{

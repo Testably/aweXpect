@@ -82,8 +82,6 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		private readonly bool _addsInAnyOrderHint;
 
-		private readonly EquivalenceRelations _equivalenceRelations;
-		private readonly T3[] _expectedItems;
 		private readonly bool _ignoreInterspersedItems;
 		private readonly List<T> _values;
 
@@ -92,13 +90,20 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		private Dictionary<int, T>? _additionalItems;
 
-		/// <inheritdoc cref="_additionalItems" />
-		private Dictionary<int, (T Item, T3 Expected)>? _incorrectItems;
-
 		/// <summary>
 		///     The lists of the run searches, which only the containment relations create.
 		/// </summary>
 		private List<int>? _candidateOffsets;
+
+		private BoundedEditDistance<T3>? _editDistance;
+
+		/// <inheritdoc cref="_additionalItems" />
+		private Dictionary<int, (T Item, T3 Expected)>? _incorrectItems;
+
+		private bool _isBroken;
+		private bool _isFound;
+		private int _lastMatchedExpectedIndex = -1;
+		private int _matchIndex;
 
 		/// <summary>
 		///     The list that the next item fills for <see cref="_candidateOffsets" /> or <see cref="_runLengths" />, so
@@ -106,15 +111,11 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		private List<int>? _nextOffsetsOrRunLengths;
 
+		private int _positionalDeviations;
+
 		/// <inheritdoc cref="_candidateOffsets" />
 		private List<int>? _runLengths;
 
-		private BoundedEditDistance<T3>? _editDistance;
-		private bool _isBroken;
-		private bool _isFound;
-		private int _lastMatchedExpectedIndex = -1;
-		private int _matchIndex;
-		private int _positionalDeviations;
 		private int _subjectItemsMatchingNothing;
 
 		protected SameOrderCollectionMatcherBase(EquivalenceRelations equivalenceRelation,
@@ -122,17 +123,17 @@ public partial class CollectionMatchOptions
 			bool ignoreInterspersedItems,
 			bool addsInAnyOrderHint)
 		{
-			_equivalenceRelations = equivalenceRelation;
+			EquivalenceRelation = equivalenceRelation;
 			_ignoreInterspersedItems = ignoreInterspersedItems;
 			_addsInAnyOrderHint = addsInAnyOrderHint;
-			_expectedItems = expected as T3[] ?? expected.ToArray();
-			_values = new List<T>(_expectedItems.Length);
-			_isFound = _expectedItems.Length == 0;
+			ExpectedItems = expected as T3[] ?? expected.ToArray();
+			_values = new List<T>(ExpectedItems.Length);
+			_isFound = ExpectedItems.Length == 0;
 		}
 
-		protected EquivalenceRelations EquivalenceRelation => _equivalenceRelations;
+		protected EquivalenceRelations EquivalenceRelation { get; }
 
-		protected T3[] ExpectedItems => _expectedItems;
+		protected T3[] ExpectedItems { get; }
 
 		/// <inheritdoc />
 		/// <remarks>
@@ -140,24 +141,43 @@ public partial class CollectionMatchOptions
 		///     also another item.
 		/// </remarks>
 		public bool IsDetermined
-			=> _equivalenceRelations.Includes(EquivalenceRelations.Contains) && _isFound &&
-			   (!_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) ||
-			    _values.Count > _expectedItems.Length);
+			=> EquivalenceRelation.Includes(EquivalenceRelations.Contains) && _isFound &&
+			   (!EquivalenceRelation.Includes(EquivalenceRelations.ContainsProperly) ||
+			    _values.Count > ExpectedItems.Length);
 
 		public ValueTask<(bool, string?)>
 			Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
-			if (_equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn))
+			if (EquivalenceRelation.Includes(EquivalenceRelations.IsContainedIn))
 			{
 				return VerifyTheCurrentValueIsContainedInTheExpectedItems(it, value, options, maximumNumber);
 			}
 
-			if (!_equivalenceRelations.Includes(EquivalenceRelations.Contains))
+			if (!EquivalenceRelation.Includes(EquivalenceRelations.Contains))
 			{
 				return VerifyTheCurrentValueMatchesTheItemAtItsPosition(it, value, options, maximumNumber);
 			}
 
 			return VerifyTheCurrentValueContainsTheExpectedItems(value, options);
+		}
+
+		/// <remarks>
+		///     The matcher that checks the items in any order for the hint is only created for a failure. Equality
+		///     without a deviation and with as many items as expected is met, which returns without a state machine.
+		/// </remarks>
+		public ValueTask<(bool, string?)>
+			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
+		{
+			if (_positionalDeviations == 0 && _values.Count == ExpectedItems.Length &&
+			    !EquivalenceRelation.Includes(EquivalenceRelations.Contains) &&
+			    !EquivalenceRelation.Includes(EquivalenceRelations.IsContainedIn))
+			{
+				return new ValueTask<(bool, string?)>((false, null));
+			}
+
+			return _addsInAnyOrderHint
+				? VerifyCompleteWithInAnyOrderHint(it, options, maximumNumber)
+				: VerifyCompleteInOrder(it, options, maximumNumber);
 		}
 
 		/// <remarks>
@@ -191,25 +211,6 @@ public partial class CollectionMatchOptions
 			return (false, null);
 		}
 
-		/// <remarks>
-		///     The matcher that checks the items in any order for the hint is only created for a failure. Equality
-		///     without a deviation and with as many items as expected is met, which returns without a state machine.
-		/// </remarks>
-		public ValueTask<(bool, string?)>
-			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
-		{
-			if (_positionalDeviations == 0 && _values.Count == _expectedItems.Length &&
-			    !_equivalenceRelations.Includes(EquivalenceRelations.Contains) &&
-			    !_equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn))
-			{
-				return new ValueTask<(bool, string?)>((false, null));
-			}
-
-			return _addsInAnyOrderHint
-				? VerifyCompleteWithInAnyOrderHint(it, options, maximumNumber)
-				: VerifyCompleteInOrder(it, options, maximumNumber);
-		}
-
 		private async ValueTask<(bool, string?)>
 			VerifyCompleteWithInAnyOrderHint(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
@@ -241,8 +242,8 @@ public partial class CollectionMatchOptions
 		private async ValueTask<(bool, string?)>
 			VerifyCompleteInOrder(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
-			if (!_equivalenceRelations.Includes(EquivalenceRelations.Contains) &&
-			    !_equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn))
+			if (!EquivalenceRelation.Includes(EquivalenceRelations.Contains) &&
+			    !EquivalenceRelation.Includes(EquivalenceRelations.IsContainedIn))
 			{
 				return await VerifyCompleteForPositionalMatch(it, options, maximumNumber);
 			}
@@ -252,8 +253,8 @@ public partial class CollectionMatchOptions
 				return (false, null);
 			}
 
-			string? error = (await FindTheDeviations(options)).GetError(it, _equivalenceRelations, false,
-				_expectedItems.Length, options, maximumNumber);
+			string? error = (await FindTheDeviations(options)).GetError(it, EquivalenceRelation, false,
+				ExpectedItems.Length, options, maximumNumber);
 			return (true, error);
 		}
 
@@ -261,9 +262,9 @@ public partial class CollectionMatchOptions
 		///     The proper containment needs an expected item that the subject does not use.
 		/// </summary>
 		private bool IsContainedInTheExpectedItems()
-			=> _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn) && !_isBroken &&
-			   (!_equivalenceRelations.Includes(EquivalenceRelations.IsContainedInProperly) ||
-			    _values.Count < _expectedItems.Length);
+			=> EquivalenceRelation.Includes(EquivalenceRelations.IsContainedIn) && !_isBroken &&
+			   (!EquivalenceRelation.Includes(EquivalenceRelations.IsContainedInProperly) ||
+			    _values.Count < ExpectedItems.Length);
 
 		/// <summary>
 		///     The containment searches the subject in the expected items, the other relations search the expected items
@@ -272,22 +273,22 @@ public partial class CollectionMatchOptions
 		private async ValueTask<InOrderDeviations<T, T3>> FindTheDeviations(IOptionsEquality<T2> options)
 		{
 			OrderMatch orderMatch = _ignoreInterspersedItems ? OrderMatch.Subsequence : OrderMatch.Contiguous;
-			if (_equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn))
+			if (EquivalenceRelation.Includes(EquivalenceRelations.IsContainedIn))
 			{
 				InOrderMismatch searchedInExpected = await InOrderMismatch.Explain(
-					Enumerable.Range(0, _expectedItems.Length).ToArray(), _expectedItems.Length, _values.Count,
-					(expectedIndex, index) => IsMatch(index, _expectedItems[expectedIndex], options),
+					Enumerable.Range(0, ExpectedItems.Length).ToArray(), ExpectedItems.Length, _values.Count,
+					(expectedIndex, index) => IsMatch(index, ExpectedItems[expectedIndex], options),
 					true, orderMatch);
 				return InOrderDeviations<T, T3>.From(searchedInExpected, true,
-					index => (index, _values[index]), expectedIndex => _expectedItems[expectedIndex]);
+					index => (index, _values[index]), expectedIndex => ExpectedItems[expectedIndex]);
 			}
 
 			InOrderMismatch searchedInSubject = await InOrderMismatch.Explain(
-				Enumerable.Range(0, _values.Count).ToArray(), _values.Count, _expectedItems.Length,
-				(index, expectedIndex) => IsMatch(index, _expectedItems[expectedIndex], options),
+				Enumerable.Range(0, _values.Count).ToArray(), _values.Count, ExpectedItems.Length,
+				(index, expectedIndex) => IsMatch(index, ExpectedItems[expectedIndex], options),
 				true, orderMatch);
 			return InOrderDeviations<T, T3>.From(searchedInSubject, false,
-				index => (index, _values[index]), expectedIndex => _expectedItems[expectedIndex]);
+				index => (index, _values[index]), expectedIndex => ExpectedItems[expectedIndex]);
 		}
 
 		/// <summary>
@@ -306,7 +307,7 @@ public partial class CollectionMatchOptions
 			for (int i = 0; i <= count; i++)
 			{
 				int runLength = RunLengthAt(i, count);
-				ValueTask<bool> isMatch = IsMatch(index, _expectedItems[runLength], options);
+				ValueTask<bool> isMatch = IsMatch(index, ExpectedItems[runLength], options);
 				if (!isMatch.IsCompletedSuccessfully)
 				{
 					return CompletesARunAsync(isMatch, index, i, count, runLengths, options);
@@ -336,7 +337,7 @@ public partial class CollectionMatchOptions
 					return KeepTheRunLengths(runLengths);
 				}
 
-				isMatch = IsMatch(index, _expectedItems[RunLengthAt(i, count)], options);
+				isMatch = IsMatch(index, ExpectedItems[RunLengthAt(i, count)], options);
 			}
 		}
 
@@ -347,7 +348,7 @@ public partial class CollectionMatchOptions
 		{
 			_nextOffsetsOrRunLengths = _runLengths;
 			_runLengths = runLengths;
-			return runLengths.Count > 0 && runLengths[0] == _expectedItems.Length;
+			return runLengths.Count > 0 && runLengths[0] == ExpectedItems.Length;
 		}
 
 		/// <summary>
@@ -356,7 +357,7 @@ public partial class CollectionMatchOptions
 		/// <returns><see langword="true" />, when all expected items are found.</returns>
 		private ValueTask<bool> ContinuesTheSubsequence(int index, IOptionsEquality<T2> options)
 		{
-			ValueTask<bool> isMatch = IsMatch(index, _expectedItems[_matchIndex], options);
+			ValueTask<bool> isMatch = IsMatch(index, ExpectedItems[_matchIndex], options);
 			if (!isMatch.IsCompletedSuccessfully)
 			{
 				return ContinuesTheSubsequenceAsync(isMatch);
@@ -375,7 +376,7 @@ public partial class CollectionMatchOptions
 				_matchIndex++;
 			}
 
-			return _matchIndex == _expectedItems.Length;
+			return _matchIndex == ExpectedItems.Length;
 		}
 
 		/// <summary>
@@ -440,10 +441,10 @@ public partial class CollectionMatchOptions
 
 			// One-to-one, the items beyond the number of expected items are unexpected as well.
 			long unexpectedItems = _subjectItemsMatchingNothing +
-			                       Math.Max(0, _values.Count - _subjectItemsMatchingNothing - _expectedItems.Length);
+			                       Math.Max(0, _values.Count - _subjectItemsMatchingNothing - ExpectedItems.Length);
 			return unexpectedItems > 2L * maximumNumber
 				? (true, TooManyDeviationsError(it, maximumNumber,
-					(await FindTheDeviations(options)).ListDeviations(_equivalenceRelations, options)))
+					(await FindTheDeviations(options)).ListDeviations(EquivalenceRelation, options)))
 				: (false, null);
 		}
 
@@ -454,13 +455,13 @@ public partial class CollectionMatchOptions
 		{
 			List<int> candidateOffsets = _nextOffsetsOrRunLengths ??= new List<int>();
 			candidateOffsets.Clear();
-			int count = index == 0 ? _expectedItems.Length : _candidateOffsets!.Count;
+			int count = index == 0 ? ExpectedItems.Length : _candidateOffsets!.Count;
 			for (int i = 0; i < count; i++)
 			{
 				int offset = OffsetAt(index, i);
-				if (offset + index < _expectedItems.Length)
+				if (offset + index < ExpectedItems.Length)
 				{
-					ValueTask<bool> isMatch = IsMatch(index, _expectedItems[offset + index], options);
+					ValueTask<bool> isMatch = IsMatch(index, ExpectedItems[offset + index], options);
 					if (!isMatch.IsCompletedSuccessfully)
 					{
 						return ContinuesTheRunInTheExpectedItemsAsync(isMatch, index, i, count, candidateOffsets,
@@ -488,8 +489,8 @@ public partial class CollectionMatchOptions
 			for (i++; i < count; i++)
 			{
 				int offset = OffsetAt(index, i);
-				if (offset + index < _expectedItems.Length &&
-				    await IsMatch(index, _expectedItems[offset + index], options))
+				if (offset + index < ExpectedItems.Length &&
+				    await IsMatch(index, ExpectedItems[offset + index], options))
 				{
 					candidateOffsets.Add(offset);
 				}
@@ -516,9 +517,9 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		private ValueTask<bool> ContinuesTheSubsequenceInTheExpectedItems(int index, IOptionsEquality<T2> options)
 		{
-			for (int i = _matchIndex; i < _expectedItems.Length; i++)
+			for (int i = _matchIndex; i < ExpectedItems.Length; i++)
 			{
-				ValueTask<bool> isMatch = IsMatch(index, _expectedItems[i], options);
+				ValueTask<bool> isMatch = IsMatch(index, ExpectedItems[i], options);
 				if (!isMatch.IsCompletedSuccessfully)
 				{
 					return ContinuesTheSubsequenceInTheExpectedItemsAsync(isMatch, index, i, options);
@@ -539,12 +540,12 @@ public partial class CollectionMatchOptions
 		{
 			while (!await isMatch)
 			{
-				if (++i >= _expectedItems.Length)
+				if (++i >= ExpectedItems.Length)
 				{
 					return false;
 				}
 
-				isMatch = IsMatch(index, _expectedItems[i], options);
+				isMatch = IsMatch(index, ExpectedItems[i], options);
 			}
 
 			_matchIndex = i + 1;
@@ -561,8 +562,8 @@ public partial class CollectionMatchOptions
 
 		private async ValueTask<bool> MatchesAnExpectedItem(int index, IOptionsEquality<T2> options)
 		{
-			int expectedIndex = await FindNear(_lastMatchedExpectedIndex, _expectedItems.Length,
-				candidate => IsMatch(index, _expectedItems[candidate], options));
+			int expectedIndex = await FindNear(_lastMatchedExpectedIndex, ExpectedItems.Length,
+				candidate => IsMatch(index, ExpectedItems[candidate], options));
 			if (expectedIndex < 0)
 			{
 				return false;
@@ -587,7 +588,7 @@ public partial class CollectionMatchOptions
 		private async ValueTask<(bool, string?)>
 			VerifyCompleteForPositionalMatch(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
-			int positionalDeviations = _positionalDeviations + Math.Max(0, _expectedItems.Length - _values.Count);
+			int positionalDeviations = _positionalDeviations + Math.Max(0, ExpectedItems.Length - _values.Count);
 			if (positionalDeviations == 0)
 			{
 				return (false, null);
@@ -595,20 +596,19 @@ public partial class CollectionMatchOptions
 
 			if (_editDistance is not null)
 			{
-				List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)>? edits = await _editDistance.GetEdits(
-					(index, expected) => IsMatch(index, expected, options));
+				List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)>? edits = await _editDistance.GetEdits((index, expected) => IsMatch(index, expected, options));
 				if (edits is not null && edits.Count < positionalDeviations)
 				{
 					return await ReturnEditsError(it, edits, options, maximumNumber);
 				}
 			}
 
-			List<T3> missingItems = _expectedItems.Skip(_values.Count).ToList();
+			List<T3> missingItems = ExpectedItems.Skip(_values.Count).ToList();
 			// Without a deviating item, all deviations are missing items, which are known completely here.
 			if (_positionalDeviations > 0 && positionalDeviations > 2L * maximumNumber)
 			{
 				return (true, TooManyDeviationsError(it, maximumNumber, GetDeviations(options),
-					MissingItemsError(_expectedItems.Length, missingItems, _equivalenceRelations, false,
+					MissingItemsError(ExpectedItems.Length, missingItems, EquivalenceRelation, false,
 						CreateItemFormatter(), options, maximumNumber)));
 			}
 
@@ -633,13 +633,13 @@ public partial class CollectionMatchOptions
 				switch (kind)
 				{
 					case EditKind.Incorrect:
-						incorrectItems.Add(subjectIndex, (_values[subjectIndex], _expectedItems[expectedIndex]));
+						incorrectItems.Add(subjectIndex, (_values[subjectIndex], ExpectedItems[expectedIndex]));
 						break;
 					case EditKind.Additional:
 						additionalItems.Add(subjectIndex, _values[subjectIndex]);
 						break;
 					default:
-						missingItems.Add(_expectedItems[expectedIndex]);
+						missingItems.Add(ExpectedItems[expectedIndex]);
 						break;
 				}
 			}
@@ -673,7 +673,7 @@ public partial class CollectionMatchOptions
 			errors.AddRange(IncorrectItemsError(incorrectItems, options));
 			errors.AddRange(OutOfOrderItemsError(outOfOrderItems));
 			errors.AddRange(AdditionalItemsError(additionalItems, formatItem));
-			errors.AddRange(MissingItemsError(_expectedItems.Length, missingItems, _equivalenceRelations, false,
+			errors.AddRange(MissingItemsError(ExpectedItems.Length, missingItems, EquivalenceRelation, false,
 				formatItem, options, maximumNumber));
 
 			string? error = ReturnErrorString(it, errors);
@@ -699,8 +699,8 @@ public partial class CollectionMatchOptions
 		{
 			int index = _values.Count;
 			_values.Add(value);
-			return index < _expectedItems.Length
-				? ContinueAfterTheComparison(IsMatch(index, _expectedItems[index], options), it, index, value, options,
+			return index < ExpectedItems.Length
+				? ContinueAfterTheComparison(IsMatch(index, ExpectedItems[index], options), it, index, value, options,
 					maximumNumber)
 				: ContinueAfterADeviation(it, index, value, options, maximumNumber);
 		}
@@ -744,18 +744,18 @@ public partial class CollectionMatchOptions
 		{
 			if (_positionalDeviations++ <= 2L * maximumNumber)
 			{
-				if (index >= _expectedItems.Length)
+				if (index >= ExpectedItems.Length)
 				{
 					(_additionalItems ??= new Dictionary<int, T>()).Add(index, value);
 				}
 				else
 				{
 					(_incorrectItems ??= new Dictionary<int, (T Item, T3 Expected)>()).Add(index,
-						(value, _expectedItems[index]));
+						(value, ExpectedItems[index]));
 				}
 			}
 
-			_editDistance ??= new BoundedEditDistance<T3>(_expectedItems,
+			_editDistance ??= new BoundedEditDistance<T3>(ExpectedItems,
 				(int)Math.Min(2L * maximumNumber, int.MaxValue), index);
 		}
 

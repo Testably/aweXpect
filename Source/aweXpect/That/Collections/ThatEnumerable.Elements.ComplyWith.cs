@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using aweXpect.Core;
 using aweXpect.Helpers;
@@ -20,7 +19,7 @@ public static partial class ThatEnumerable
 			ComplyWith(Action<IThatSubject<TItem>> expectations)
 		{
 			expectations.ThrowIfNull();
-			return new(
+			return new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
 				_subject.Get().ExpectationBuilder.AddConstraint((Quantifier: _quantifier, Expectations: expectations),
 					static (state, it, grammars)
 						=> new ComplyWithConstraint<IEnumerable<TItem>?, TItem>(it, grammars, state.Quantifier,
@@ -38,7 +37,7 @@ public static partial class ThatEnumerable
 			ComplyWith(Action<IThatSubject<string?>> expectations)
 		{
 			expectations.ThrowIfNull();
-			return new(
+			return new AndOrResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
 				_subject.Get().ExpectationBuilder.AddConstraint((Quantifier: _quantifier, Expectations: expectations),
 					static (state, it, grammars)
 						=> new ComplyWithConstraint<IEnumerable<string?>?, string?>(it, grammars, state.Quantifier,
@@ -56,7 +55,7 @@ public static partial class ThatEnumerable
 			ComplyWith(Action<IThatSubject<object?>> expectations)
 		{
 			expectations.ThrowIfNull();
-			return new(
+			return new AndOrResult<TEnumerable, IThat<TEnumerable?>>(
 				_subject.Get().ExpectationBuilder.AddConstraint((Quantifier: _quantifier, Expectations: expectations),
 					static (state, it, grammars)
 						=> new ComplyWithConstraint<TEnumerable?, object?>(it, grammars,
@@ -74,7 +73,7 @@ public static partial class ThatEnumerable
 			ComplyWith(Action<IThatSubject<TItem>> expectations)
 		{
 			expectations.ThrowIfNull();
-			return new(
+			return new AndOrResult<TEnumerable, IThat<TEnumerable>>(
 				_subject.Get().ExpectationBuilder.AddConstraint((Quantifier: _quantifier, Expectations: expectations),
 					static (state, it, grammars)
 						=> new ComplyWithConstraint<TEnumerable, TItem>(it,

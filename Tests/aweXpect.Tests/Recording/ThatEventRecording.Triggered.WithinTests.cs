@@ -447,7 +447,7 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording)
 						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
-						.Within(System.Threading.Timeout.InfiniteTimeSpan)
+						.Within(Timeout.InfiniteTimeSpan)
 						.WithCancellation(cts.Token);
 
 				await That(Act).Throws<InconclusiveTestException>()
@@ -472,7 +472,7 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording)
 						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
-						.Within(System.Threading.Timeout.InfiniteTimeSpan);
+						.Within(Timeout.InfiniteTimeSpan);
 
 				await That(Act).DoesNotThrow().WithTimeout(10.Seconds());
 			}

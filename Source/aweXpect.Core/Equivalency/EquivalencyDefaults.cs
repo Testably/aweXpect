@@ -4,11 +4,11 @@ using System.Globalization;
 using System.Net;
 using System.Numerics;
 using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 #if NET8_0_OR_GREATER
 using System.Runtime.InteropServices;
 #endif
-using System.Text;
-using System.Threading.Tasks;
 
 namespace aweXpect.Equivalency;
 

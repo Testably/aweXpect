@@ -218,7 +218,7 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenItemsAreTypedAsObjects_ShouldCompareThemOrdinally()
 			{
-				IEnumerable<object> subject = ToEnumerable<object>(["a", "B",]);
+				IEnumerable<object> subject = ToEnumerable<object>("a", "B");
 
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder();

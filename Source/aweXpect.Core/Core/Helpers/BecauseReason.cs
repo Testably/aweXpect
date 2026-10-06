@@ -16,6 +16,10 @@ internal sealed class BecauseReason(string reason) : IBecauseReason
 
 	private string Message => _message ??= CreateMessage(reason);
 
+	public ValueTask<ConstraintResult>
+		ApplyTo(ConstraintResult result)
+		=> new(result.AppendExpectationText(_appendMessage ??= stringBuilder => stringBuilder.Append(Message)));
+
 	private static string CreateMessage(string reason)
 	{
 		const string prefix = "because";
@@ -28,8 +32,4 @@ internal sealed class BecauseReason(string reason) : IBecauseReason
 
 	public override string ToString()
 		=> Message;
-
-	public ValueTask<ConstraintResult>
-		ApplyTo(ConstraintResult result)
-		=> new(result.AppendExpectationText(_appendMessage ??= stringBuilder => stringBuilder.Append(Message)));
 }

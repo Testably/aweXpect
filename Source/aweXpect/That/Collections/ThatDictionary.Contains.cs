@@ -106,13 +106,6 @@ public static partial class ThatDictionary
 		private TValue? _actualValue;
 		private bool _hasKey;
 
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			AddDictionaryContext(contexts, Actual);
-			contexts.AddOptionsContexts(options);
-		}
-
 		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual,
 			CancellationToken cancellationToken)
 		{
@@ -128,6 +121,13 @@ public static partial class ThatDictionary
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;
+		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			AddDictionaryContext(contexts, Actual);
+			contexts.AddOptionsContexts(options);
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

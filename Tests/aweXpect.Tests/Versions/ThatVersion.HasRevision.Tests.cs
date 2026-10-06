@@ -4,6 +4,17 @@ public sealed partial class ThatVersion
 {
 	public sealed class HasRevision
 	{
+		[Test]
+		public async Task WhenRevisionIsUnspecified_ShouldBeMinusOne()
+		{
+			Version subject = new(1, 2);
+
+			async Task Act()
+				=> await That(subject).HasRevision().EqualTo(-1);
+
+			await That(Act).DoesNotThrow();
+		}
+
 		public sealed class Tests
 		{
 			[Test]
@@ -466,17 +477,6 @@ public sealed partial class ThatVersion
 
 				await That(Act).DoesNotThrow();
 			}
-		}
-
-		[Test]
-		public async Task WhenRevisionIsUnspecified_ShouldBeMinusOne()
-		{
-			Version subject = new(1, 2);
-
-			async Task Act()
-				=> await That(subject).HasRevision().EqualTo(-1);
-
-			await That(Act).DoesNotThrow();
 		}
 
 		public sealed class NegatedTests

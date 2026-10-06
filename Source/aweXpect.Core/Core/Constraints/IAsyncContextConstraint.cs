@@ -12,6 +12,6 @@ public interface IAsyncContextConstraint<in TValue> : IConstraint
 	/// <summary>
 	///     Checks if the <paramref name="actual" /> value meets the expectation using the <see cref="IEvaluationContext" />.
 	/// </summary>
-	public ValueTask<ConstraintResult> IsMetBy(TValue actual, IEvaluationContext context,
+	ValueTask<ConstraintResult> IsMetBy(TValue actual, IEvaluationContext context,
 		CancellationToken cancellationToken);
 }

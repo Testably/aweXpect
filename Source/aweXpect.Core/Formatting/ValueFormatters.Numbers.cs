@@ -60,7 +60,7 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
-		return Format(formatter, value.Value, options);
+		return formatter.Format(value.Value, options);
 	}
 
 	/// <summary>
@@ -79,7 +79,7 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		Format(formatter, stringBuilder, value.Value, options);
+		formatter.Format(stringBuilder, value.Value, options);
 	}
 
 	/// <summary>
@@ -133,7 +133,7 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
-		return Format(formatter, value.Value, options);
+		return formatter.Format(value.Value, options);
 	}
 
 	/// <summary>
@@ -152,7 +152,7 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		Format(formatter, stringBuilder, value.Value, options);
+		formatter.Format(stringBuilder, value.Value, options);
 	}
 
 	/// <summary>
@@ -206,7 +206,7 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
-		return Format(formatter, value.Value, options);
+		return formatter.Format(value.Value, options);
 	}
 
 	/// <summary>
@@ -225,7 +225,7 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		Format(formatter, stringBuilder, value.Value, options);
+		formatter.Format(stringBuilder, value.Value, options);
 	}
 
 	/// <summary>
@@ -279,7 +279,7 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
-		return Format(formatter, value.Value, options);
+		return formatter.Format(value.Value, options);
 	}
 
 	/// <summary>
@@ -298,7 +298,7 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		Format(formatter, stringBuilder, value.Value, options);
+		formatter.Format(stringBuilder, value.Value, options);
 	}
 
 	/// <summary>
@@ -352,7 +352,7 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
-		return Format(formatter, value.Value, options);
+		return formatter.Format(value.Value, options);
 	}
 
 	/// <summary>
@@ -371,7 +371,7 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		Format(formatter, stringBuilder, value.Value, options);
+		formatter.Format(stringBuilder, value.Value, options);
 	}
 
 	/// <summary>
@@ -425,7 +425,7 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
-		return Format(formatter, value.Value, options);
+		return formatter.Format(value.Value, options);
 	}
 
 	/// <summary>
@@ -444,7 +444,7 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		Format(formatter, stringBuilder, value.Value, options);
+		formatter.Format(stringBuilder, value.Value, options);
 	}
 
 	/// <summary>
@@ -498,7 +498,7 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
-		return Format(formatter, value.Value, options);
+		return formatter.Format(value.Value, options);
 	}
 
 	/// <summary>
@@ -517,7 +517,7 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		Format(formatter, stringBuilder, value.Value, options);
+		formatter.Format(stringBuilder, value.Value, options);
 	}
 
 	/// <summary>
@@ -571,7 +571,7 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
-		return Format(formatter, value.Value, options);
+		return formatter.Format(value.Value, options);
 	}
 
 	/// <summary>
@@ -590,7 +590,7 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		Format(formatter, stringBuilder, value.Value, options);
+		formatter.Format(stringBuilder, value.Value, options);
 	}
 
 	/// <summary>
@@ -625,7 +625,7 @@ public static partial class ValueFormatters
 		StringBuilder stringBuilder,
 		float value,
 		FormattingOptions? options = null)
-		=> stringBuilder.Append(Format(formatter, value, options));
+		=> stringBuilder.Append(formatter.Format(value, options));
 
 	/// <summary>
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
@@ -640,7 +640,7 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
-		return Format(formatter, value.Value, options);
+		return formatter.Format(value.Value, options);
 	}
 
 	/// <summary>
@@ -659,7 +659,7 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		Format(formatter, stringBuilder, value.Value, options);
+		formatter.Format(stringBuilder, value.Value, options);
 	}
 
 	/// <summary>
@@ -694,7 +694,7 @@ public static partial class ValueFormatters
 		StringBuilder stringBuilder,
 		double value,
 		FormattingOptions? options = null)
-		=> stringBuilder.Append(Format(formatter, value, options));
+		=> stringBuilder.Append(formatter.Format(value, options));
 
 	/// <summary>
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
@@ -709,7 +709,7 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
-		return Format(formatter, value.Value, options);
+		return formatter.Format(value.Value, options);
 	}
 
 	/// <summary>
@@ -728,7 +728,7 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		Format(formatter, stringBuilder, value.Value, options);
+		formatter.Format(stringBuilder, value.Value, options);
 	}
 
 #if NET8_0_OR_GREATER
@@ -972,7 +972,7 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
-		return Format(formatter, value.Value, options);
+		return formatter.Format(value.Value, options);
 	}
 
 	/// <summary>
@@ -991,7 +991,7 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		Format(formatter, stringBuilder, value.Value, options);
+		formatter.Format(stringBuilder, value.Value, options);
 	}
 
 	/// <summary>
@@ -1045,7 +1045,7 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
-		return Format(formatter, value.Value, options);
+		return formatter.Format(value.Value, options);
 	}
 
 	/// <summary>
@@ -1064,7 +1064,7 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		Format(formatter, stringBuilder, value.Value, options);
+		formatter.Format(stringBuilder, value.Value, options);
 	}
 
 	/// <summary>
@@ -1118,7 +1118,7 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
-		return Format(formatter, value.Value, options);
+		return formatter.Format(value.Value, options);
 	}
 
 	/// <summary>
@@ -1137,7 +1137,7 @@ public static partial class ValueFormatters
 			return;
 		}
 
-		Format(formatter, stringBuilder, value.Value, options);
+		formatter.Format(stringBuilder, value.Value, options);
 	}
 
 	/// <summary>
@@ -1200,5 +1200,5 @@ public static partial class ValueFormatters
 	}
 
 	private static string WithDecimalDigit(string formattedValue)
-		=> formattedValue.IndexOfAny(['.', 'E']) < 0 ? formattedValue + ".0" : formattedValue;
+		=> formattedValue.IndexOfAny(['.', 'E',]) < 0 ? formattedValue + ".0" : formattedValue;
 }

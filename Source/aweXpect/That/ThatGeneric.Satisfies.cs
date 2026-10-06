@@ -21,8 +21,7 @@ public static partial class ThatGeneric
 	///     <c>Satisfies(x =&gt; x is null)</c> succeeds. A <paramref name="predicate" /> that throws fails the
 	///     expectation with the thrown exception as inner exception.
 	/// </remarks>
-	public static RepeatedCheckResult<T, IThat<T>> Satisfies<T>(this IThat<T> subject,
-		Func<T, bool> predicate,
+	public static RepeatedCheckResult<T, IThat<T>> Satisfies<T>(this IThat<T> subject, System.Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{
@@ -49,8 +48,7 @@ public static partial class ThatGeneric
 	///     <c>DoesNotSatisfy(x =&gt; x is not null)</c> succeeds. A <paramref name="predicate" /> that throws fails the
 	///     expectation with the thrown exception as inner exception.
 	/// </remarks>
-	public static RepeatedCheckResult<T, IThat<T>> DoesNotSatisfy<T>(this IThat<T> subject,
-		Func<T, bool> predicate,
+	public static RepeatedCheckResult<T, IThat<T>> DoesNotSatisfy<T>(this IThat<T> subject, System.Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
 	{

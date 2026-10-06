@@ -23,12 +23,9 @@ public sealed class RequiresMemberMetadataTests
 	}
 
 	[Test]
-	public async Task ShouldFindTheEquivalencyEntryPoints()
-	{
-		await That(EquivalencyEntryPoints().Select(method => method.Name).Distinct())
-			.IsEqualTo(["AreEquivalentTo", "Equivalent", "IsEquivalentTo", "IsNotEquivalentTo",]).InAnyOrder()
-			.Because("the reflection lookup must not silently degrade into an empty test set");
-	}
+	public async Task ShouldFindTheEquivalencyEntryPoints() => await That(EquivalencyEntryPoints().Select(method => method.Name).Distinct())
+		.IsEqualTo(["AreEquivalentTo", "Equivalent", "IsEquivalentTo", "IsNotEquivalentTo",]).InAnyOrder()
+		.Because("the reflection lookup must not silently degrade into an empty test set");
 
 	/// <remarks>
 	///     The Core assembly is checked by its own test project, because this one builds against the released Core

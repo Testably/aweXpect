@@ -61,10 +61,6 @@ public static partial class ThatNullableDateOnly
 		: ConstraintResult.WithValue<DateOnly?>(it, grammars),
 			IValueConstraint<DateOnly?>
 	{
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
-
 		public ConstraintResult IsMetBy(DateOnly? actual)
 		{
 			Actual = actual;
@@ -84,6 +80,10 @@ public static partial class ThatNullableDateOnly
 
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.TimeSystem;
 using aweXpect.Customization;
-using aweXpect.Core.Helpers;
 using aweXpect.Results;
 
 namespace aweXpect.Options;
@@ -154,7 +154,7 @@ public class RepeatedCheckOptions
 
 		using Polling polling =
 			Polling.Start(GetTimeSystem(context), startTimestamp, Timeout, Interval, context.Cancellation);
-		Core.EvaluationContext.EvaluationContext? checkContext = null;
+		EvaluationContext? checkContext = null;
 		while (true)
 		{
 			switch (await polling.WaitForNextCheck())
@@ -170,7 +170,7 @@ public class RepeatedCheckOptions
 					return Outcome.Undecided;
 			}
 
-			if (context is Core.EvaluationContext.EvaluationContext evaluationContext)
+			if (context is EvaluationContext evaluationContext)
 			{
 				checkContext = await evaluationContext.StartCheck(checkContext);
 			}
@@ -187,7 +187,7 @@ public class RepeatedCheckOptions
 	///     The time system of the evaluation, or the real one for a <paramref name="context" /> of another implementation.
 	/// </summary>
 	private static ITimeSystem GetTimeSystem(IEvaluationContext context)
-		=> context is Core.EvaluationContext.EvaluationContext evaluationContext
+		=> context is EvaluationContext evaluationContext
 			? evaluationContext.TimeSystem
 			: RealTimeSystem.Instance;
 

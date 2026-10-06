@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using aweXpect.Core;
-using aweXpect.Core.Helpers;
-#if NET8_0_OR_GREATER
+﻿#if NET8_0_OR_GREATER
 using System.Numerics;
 #else
 using System.Globalization;
 #endif
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using aweXpect.Core;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
@@ -246,12 +246,12 @@ internal static class ObjectEqualityOptions
 /// </summary>
 public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject>
 {
+	private string? _matchTypeOption;
+
 	/// <summary>
 	///     The match type.
 	/// </summary>
 	protected IObjectMatchType MatchType = ObjectEqualityOptions.EqualsMatch;
-
-	private string? _matchTypeOption;
 
 	/// <summary>
 	///     Whether the options compare by <see cref="object.Equals(object)" />.

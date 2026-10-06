@@ -37,6 +37,11 @@ internal abstract class PredicateCollectionConstraint<TValue, TItem>(
 	/// <inheritdoc />
 	protected override string Verb => verb;
 
+	/// <summary>
+	///     Whether the condition is synchronous, so that the items can be verified without awaiting it.
+	/// </summary>
+	protected bool IsSynchronous => _synchronousCondition is not null;
+
 	/// <inheritdoc />
 	protected override void AppendItemExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
 		string? indentation)
@@ -48,11 +53,6 @@ internal abstract class PredicateCollectionConstraint<TValue, TItem>(
 		base.AppendContexts(contexts);
 		condition.AppendContexts(contexts);
 	}
-
-	/// <summary>
-	///     Whether the condition is synchronous, so that the items can be verified without awaiting it.
-	/// </summary>
-	protected bool IsSynchronous => _synchronousCondition is not null;
 
 	/// <summary>
 	///     Whether the <paramref name="item" /> meets the synchronous condition.
@@ -88,13 +88,6 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>(
 	/// <inheritdoc />
 	protected override Type ItemType => _itemType ?? typeof(TItem);
 
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-	{
-		_collectionContext.AppendTo(contexts);
-		base.AppendContexts(contexts);
-	}
-
 	public ValueTask<ConstraintResult> IsMetBy(
 		TEnumerable actual,
 		IEvaluationContext context,
@@ -120,6 +113,13 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>(
 		return IsSynchronous
 			? new ValueTask<ConstraintResult>(Verify(materialized, cancelEarly, cancellationToken))
 			: VerifyAsync(materialized, cancelEarly, cancellationToken);
+	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		_collectionContext.AppendTo(contexts);
+		base.AppendContexts(contexts);
 	}
 
 	private CollectionConstraint<TEnumerable, TItem> Verify(CollectionItems<TItem> materialized, bool cancelEarly,
@@ -210,13 +210,6 @@ internal sealed class AsyncCollectionConstraint<TItem>(
 {
 	private CollectionContext _collectionContext;
 
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-	{
-		_collectionContext.AppendTo(contexts);
-		base.AppendContexts(contexts);
-	}
-
 	public async ValueTask<ConstraintResult> IsMetBy(
 		IAsyncEnumerable<TItem>? actual,
 		IEvaluationContext context,
@@ -257,6 +250,13 @@ internal sealed class AsyncCollectionConstraint<TItem>(
 		Complete();
 		_collectionContext.Set(items, totalCount: count);
 		return this;
+	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		_collectionContext.AppendTo(contexts);
+		base.AppendContexts(contexts);
 	}
 }
 #endif

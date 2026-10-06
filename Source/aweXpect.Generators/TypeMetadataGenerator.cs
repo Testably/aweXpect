@@ -57,6 +57,18 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		.WithMiscellaneousOptions(SymbolDisplayFormat.FullyQualifiedFormat.MiscellaneousOptions &
 		                          ~SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
 
+	/// <remarks>
+	///     Every seed walks with its own <see cref="MetadataWalker" />, but a compilation that imports every member
+	///     only needs to exist once per input compilation, so it is shared and dies with the compilation it was made for.
+	/// </remarks>
+	private static readonly ConditionalWeakTable<Compilation, AllImport> AllImports = new();
+
+	/// <remarks>
+	///     The registrations a seed yields do not depend on the call site that reaches it, so each seed is walked once
+	///     per input compilation, however many call sites share it.
+	/// </remarks>
+	private static readonly ConditionalWeakTable<Compilation, SeedWalks> Walks = new();
+
 	void IIncrementalGenerator.Initialize(IncrementalGeneratorInitializationContext context)
 	{
 		IncrementalValueProvider<bool> isSupported = context.CompilationProvider
@@ -384,10 +396,10 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	/// </remarks>
 	private static bool SupportsRegistration(Compilation compilation)
 		=> compilation
-			.GetTypeByMetadataName("aweXpect.Core.Metadata.TypeMetadataRegistry")
-			?.GetMembers("RegisterProperty")
-			.OfType<IMethodSymbol>()
-			.Any(x => x.IsStatic && x.DeclaredAccessibility == Accessibility.Public && x.Parameters.Length == 3) ==
+			   .GetTypeByMetadataName("aweXpect.Core.Metadata.TypeMetadataRegistry")
+			   ?.GetMembers("RegisterProperty")
+			   .OfType<IMethodSymbol>()
+			   .Any(x => x.IsStatic && x.DeclaredAccessibility == Accessibility.Public && x.Parameters.Length == 3) ==
 		   true;
 
 	/// <remarks>
@@ -395,10 +407,10 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	/// </remarks>
 	private static bool SupportsBatch(Compilation compilation)
 		=> compilation
-			.GetTypeByMetadataName("aweXpect.Core.Metadata.TypeMetadataRegistry")
-			?.GetMembers("RegisterBatch")
-			.OfType<IMethodSymbol>()
-			.Any(x => x.IsStatic && x.DeclaredAccessibility == Accessibility.Public && x.Parameters.Length == 1) ==
+			   .GetTypeByMetadataName("aweXpect.Core.Metadata.TypeMetadataRegistry")
+			   ?.GetMembers("RegisterBatch")
+			   .OfType<IMethodSymbol>()
+			   .Any(x => x.IsStatic && x.DeclaredAccessibility == Accessibility.Public && x.Parameters.Length == 1) ==
 		   true;
 
 	/// <remarks>
@@ -575,18 +587,6 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 	private readonly record struct Member(ISymbol Symbol, string Name, ITypeSymbol Type, bool IsField);
 
-	/// <remarks>
-	///     Every seed walks with its own <see cref="MetadataWalker" />, but a compilation that imports every member
-	///     only needs to exist once per input compilation, so it is shared and dies with the compilation it was made for.
-	/// </remarks>
-	private static readonly ConditionalWeakTable<Compilation, AllImport> AllImports = new();
-
-	/// <remarks>
-	///     The registrations a seed yields do not depend on the call site that reaches it, so each seed is walked once
-	///     per input compilation, however many call sites share it.
-	/// </remarks>
-	private static readonly ConditionalWeakTable<Compilation, SeedWalks> Walks = new();
-
 	private sealed class SeedWalks
 	{
 		public ConcurrentDictionary<ITypeSymbol, ImmutableArray<TypeRegistration>> Members { get; } =
@@ -647,6 +647,12 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 	/// </summary>
 	private sealed class MetadataWalker(Compilation compilation, CancellationToken cancellationToken)
 	{
+		private readonly Dictionary<IModuleSymbol, bool> _isExperimental = new(SymbolEqualityComparer.Default);
+
+		private readonly Dictionary<IAssemblySymbol, bool> _isGlobal = new(SymbolEqualityComparer.Default);
+
+		private readonly Dictionary<INamedTypeSymbol, bool> _isUnambiguous = new(SymbolEqualityComparer.Default);
+
 		private readonly ImmutableArray<TypeRegistration>.Builder _registrations =
 			ImmutableArray.CreateBuilder<TypeRegistration>();
 
@@ -654,19 +660,13 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 		private readonly HashSet<ITypeSymbol> _visitedEvents = new(SymbolEqualityComparer.Default);
 
-		private readonly Dictionary<IAssemblySymbol, bool> _isGlobal = new(SymbolEqualityComparer.Default);
-
-		private readonly Dictionary<INamedTypeSymbol, bool> _isUnambiguous = new(SymbolEqualityComparer.Default);
-
-		private readonly Dictionary<IModuleSymbol, bool> _isExperimental = new(SymbolEqualityComparer.Default);
-
 		private bool? _supportsDictionaryRegistration;
+
+		private bool? _supportsExplicitRegistration;
 
 		private bool? _supportsSetRegistration;
 
 		private bool? _supportsCollectionRegistration;
-
-		private bool? _supportsExplicitRegistration;
 
 		public ImmutableArray<TypeRegistration> Registrations => _registrations.ToImmutable();
 
@@ -747,8 +747,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			}
 
 			foreach (ImmutableArray<ITypeSymbol> typeArguments in type.AllInterfaces.Prepend(type).Where(x
-				         => x.OriginalDefinition.ToDisplayString() is "System.Collections.Generic.IDictionary<TKey, TValue>"
-					         or "System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>")
+					         => x.OriginalDefinition.ToDisplayString() is "System.Collections.Generic.IDictionary<TKey, TValue>"
+						         or "System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>")
 				         .Select(dictionary => dictionary.TypeArguments))
 			{
 				if (!typeArguments.All(x => IsNameable(x) && IsReferenceable(x)))
@@ -781,8 +781,8 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			}
 
 			foreach (ITypeSymbol itemType in type.AllInterfaces.Prepend(type).Where(x
-				         => x.OriginalDefinition.ToDisplayString() is "System.Collections.Generic.ISet<T>"
-					         or "System.Collections.Generic.IReadOnlySet<T>")
+					         => x.OriginalDefinition.ToDisplayString() is "System.Collections.Generic.ISet<T>"
+						         or "System.Collections.Generic.IReadOnlySet<T>")
 				         .Select(set => set.TypeArguments[0])
 				         .Where(x => IsNameable(x) && IsReferenceable(x)))
 			{
@@ -950,7 +950,10 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 
 			List<IEventSymbol> events = CollectEvents(named);
 			List<string> diagnosticIds = DiagnosticIds(events
-					.SelectMany(x => new ISymbol?[] { x, x.AddMethod, x.RemoveMethod, })
+					.SelectMany(x => new ISymbol?[]
+					{
+						x, x.AddMethod, x.RemoveMethod,
+					})
 					.Concat(events.SelectMany(x => TypeSymbols(x.Type)))
 					.Concat(events.SelectMany(x => TypeSymbols(x.ContainingType)))
 					.Concat(TypeSymbols(named)))
@@ -1133,7 +1136,10 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		private static IEnumerable<string> ExplicitDiagnosticIds(IPropertySymbol property)
 		{
 			IPropertySymbol implemented = property.ExplicitInterfaceImplementations[0];
-			return DiagnosticIds(new ISymbol?[] { implemented, implemented.GetMethod, }
+			return DiagnosticIds(new ISymbol?[]
+				{
+					implemented, implemented.GetMethod,
+				}
 				.Concat(TypeSymbols(property.Type))
 				.Concat(TypeSymbols(implemented.ContainingType)));
 		}
@@ -1441,42 +1447,42 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			switch (type)
 			{
 				case IArrayTypeSymbol { IsSZArray: true, } array:
-				{
-					string? element = ProbeExpression(array.ElementType, helpers);
-					return element is null ? null : $"new[] {{ {element}, }}";
-				}
-				case INamedTypeSymbol { IsAnonymousType: true, } anonymous:
-				{
-					StringBuilder sb = new("new { ");
-					foreach (IPropertySymbol property in anonymous.GetMembers().OfType<IPropertySymbol>())
 					{
-						string? value = ProbeExpression(property.Type, helpers);
-						if (value is null)
+						string? element = ProbeExpression(array.ElementType, helpers);
+						return element is null ? null : $"new[] {{ {element}, }}";
+					}
+				case INamedTypeSymbol { IsAnonymousType: true, } anonymous:
+					{
+						StringBuilder sb = new("new { ");
+						foreach (IPropertySymbol property in anonymous.GetMembers().OfType<IPropertySymbol>())
+						{
+							string? value = ProbeExpression(property.Type, helpers);
+							if (value is null)
+							{
+								return null;
+							}
+
+							sb.Append(Identifier(property.Name)).Append(" = ").Append(value).Append(", ");
+						}
+
+						return sb.Append('}').ToString();
+					}
+				default:
+					{
+						List<string> probes = [];
+						string? spelled = SpellWithTypeParameters(type, probes, helpers);
+						if (spelled is null || probes.Count == 0)
 						{
 							return null;
 						}
 
-						sb.Append(Identifier(property.Name)).Append(" = ").Append(value).Append(", ");
+						string name = "Probe" + helpers.Count;
+						string[] typeParameters = probes.Select((_, i) => "T" + i).ToArray();
+						helpers.Add($"static {spelled} {name}<{string.Join(", ", typeParameters)}>(" +
+						            string.Join(", ", typeParameters.Select((x, i) => $"{x} p{i}")) + ")" +
+						            string.Concat(typeParameters.Select(x => $" where {x} : class")) + " => default;");
+						return $"{name}({string.Join(", ", probes)})";
 					}
-
-					return sb.Append('}').ToString();
-				}
-				default:
-				{
-					List<string> probes = [];
-					string? spelled = SpellWithTypeParameters(type, probes, helpers);
-					if (spelled is null || probes.Count == 0)
-					{
-						return null;
-					}
-
-					string name = "Probe" + helpers.Count;
-					string[] typeParameters = probes.Select((_, i) => "T" + i).ToArray();
-					helpers.Add($"static {spelled} {name}<{string.Join(", ", typeParameters)}>(" +
-					            string.Join(", ", typeParameters.Select((x, i) => $"{x} p{i}")) + ")" +
-					            string.Concat(typeParameters.Select(x => $" where {x} : class")) + " => default;");
-					return $"{name}({string.Join(", ", probes)})";
-				}
 			}
 		}
 
@@ -1710,16 +1716,13 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				.Concat(members.SelectMany(member => TypeSymbols(member.Symbol.ContainingType)))
 				.Concat(TypeSymbols(type)));
 
-		private static IEnumerable<string> DiagnosticIds(IEnumerable<ISymbol?> symbols)
-		{
-			return symbols
-				.Where(symbol => symbol is not null)
-				.SelectMany(symbol => symbol!.GetAttributes())
-				.Where(attribute => attribute.AttributeClass?.ToDisplayString() == "System.ObsoleteAttribute")
-				.Select(attribute => attribute.NamedArguments
-					.FirstOrDefault(argument => argument.Key == "DiagnosticId").Value.Value as string)
-				.Where(id => !string.IsNullOrEmpty(id))!;
-		}
+		private static IEnumerable<string> DiagnosticIds(IEnumerable<ISymbol?> symbols) => symbols
+			.Where(symbol => symbol is not null)
+			.SelectMany(symbol => symbol!.GetAttributes())
+			.Where(attribute => attribute.AttributeClass?.ToDisplayString() == "System.ObsoleteAttribute")
+			.Select(attribute => attribute.NamedArguments
+				.FirstOrDefault(argument => argument.Key == "DiagnosticId").Value.Value as string)
+			.Where(id => !string.IsNullOrEmpty(id))!;
 
 		private static IEnumerable<INamedTypeSymbol> TypeSymbols(ITypeSymbol type)
 			=> type switch

@@ -81,7 +81,7 @@ public sealed partial class ThatEnum
 				EnumULong subject = EnumULong.UInt64LessOne;
 
 				async Task Act()
-					=> await That(subject).HasValue().Between(ulong.MaxValue).And((ulong)long.MaxValue);
+					=> await That(subject).HasValue().Between(ulong.MaxValue).And(long.MaxValue);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithParamName("maximum").And
@@ -397,7 +397,7 @@ public sealed partial class ThatEnum
 				EnumULong subject = EnumULong.UInt64LessOne;
 
 				async Task Act()
-					=> await That(subject).HasValue().NotBetween(ulong.MaxValue).And((ulong)long.MaxValue);
+					=> await That(subject).HasValue().NotBetween(ulong.MaxValue).And(long.MaxValue);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
 					.WithParamName("maximum").And

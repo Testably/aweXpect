@@ -96,7 +96,12 @@ public sealed partial class ThatReadOnlyDictionary
 			[Test]
 			public async Task WhenKeyExistsWithADifferentValue_ShouldFail()
 			{
-				ReadOnlyOnlyDictionary<string, int> subject = new(new Dictionary<string, int> { { "a", 1 }, });
+				ReadOnlyOnlyDictionary<string, int> subject = new(new Dictionary<string, int>
+				{
+					{
+						"a", 1
+					},
+				});
 
 				async Task Act()
 					=> await That(subject).Contains(new KeyValuePair<string, int>("a", 2));
@@ -116,7 +121,12 @@ public sealed partial class ThatReadOnlyDictionary
 			public async Task WhenSubjectUsesACaseInsensitiveComparer_ShouldLookTheKeyUpThroughIt()
 			{
 				ReadOnlyOnlyDictionary<string, int> subject =
-					new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, });
+					new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+					});
 
 				async Task Act()
 					=> await That(subject).Contains(new KeyValuePair<string, int>("A", 1));
@@ -131,7 +141,12 @@ public sealed partial class ThatReadOnlyDictionary
 			[Test]
 			public async Task WhenTheValueDiffersOnlyInCase_WithIgnoringCase_ShouldSucceed()
 			{
-				ReadOnlyOnlyDictionary<int, string> subject = new(new Dictionary<int, string> { { 1, "Let It Be" }, });
+				ReadOnlyOnlyDictionary<int, string> subject = new(new Dictionary<int, string>
+				{
+					{
+						1, "Let It Be"
+					},
+				});
 
 				async Task Act()
 					=> await That(subject).Contains(1, "let it be").IgnoringCase();
@@ -145,7 +160,12 @@ public sealed partial class ThatReadOnlyDictionary
 			[Test]
 			public async Task WhenTheValueLiesWithinTheTolerance_ShouldSucceed()
 			{
-				ReadOnlyOnlyDictionary<string, double> subject = new(new Dictionary<string, double> { { "a", 1.05 }, });
+				ReadOnlyOnlyDictionary<string, double> subject = new(new Dictionary<string, double>
+				{
+					{
+						"a", 1.05
+					},
+				});
 
 				async Task Act()
 					=> await That(subject).Contains("a", 1.0).Within(0.1);
@@ -159,7 +179,12 @@ public sealed partial class ThatReadOnlyDictionary
 			[Test]
 			public async Task ForAReadOnlyDictionary_WithKeyAndValue_ShouldKeepTheSubjectType()
 			{
-				ReadOnlyDictionary<string, int> subject = new(new Dictionary<string, int> { { "a", 1 }, });
+				ReadOnlyDictionary<string, int> subject = new(new Dictionary<string, int>
+				{
+					{
+						"a", 1
+					},
+				});
 
 				ReadOnlyDictionary<string, int> result = await That(subject).Contains("a", 1);
 
@@ -175,7 +200,11 @@ public sealed partial class ThatReadOnlyDictionary
 				InvalidOperationException exception = new("comparer failed");
 				ThrowingKeyComparer<string> comparer = new(exception);
 				IReadOnlyDictionary<string, int> subject = new ReadOnlyOnlyDictionary<string, int>(
-					new Dictionary<string, int>(comparer) { ["a"] = 1, ["b"] = 2, });
+					new Dictionary<string, int>(comparer)
+					{
+						["a"] = 1,
+						["b"] = 2,
+					});
 				comparer.IsArmed = true;
 
 				async Task Act()
@@ -199,7 +228,11 @@ public sealed partial class ThatReadOnlyDictionary
 			{
 				InvalidOperationException exception = new("lookup failed");
 				IReadOnlyDictionary<string, int> subject = new ReadOnlyOnlyDictionary<string, int>(
-					new ThrowingDictionary<string, int>(exception, ThrowingMembers.TryGetValue) { ["a"] = 1, ["b"] = 2, });
+					new ThrowingDictionary<string, int>(exception, ThrowingMembers.TryGetValue)
+					{
+						["a"] = 1,
+						["b"] = 2,
+					});
 
 				async Task Act()
 					=> await That(subject).Contains("a", 1);

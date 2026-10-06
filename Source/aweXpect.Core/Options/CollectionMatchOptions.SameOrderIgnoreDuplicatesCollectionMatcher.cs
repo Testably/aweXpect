@@ -76,11 +76,10 @@ public partial class CollectionMatchOptions
 	{
 		private readonly IEqualityComparer<T3>? _comparer;
 		private readonly EquivalenceRelations _equivalenceRelations;
-		private readonly T3[] _expectedItems;
 		private readonly List<int> _firstIndexOfSubjectItem = new();
 		private readonly bool _ignoreInterspersedItems;
-		private readonly ItemIds<T> _subjectIds = new(null);
 		private readonly List<int> _subjectIdAt = new();
+		private readonly ItemIds<T> _subjectIds = new(null);
 		private bool _areExpectedItemsUnique;
 		private T3[] _expectedDistinctItems = [];
 		private int[] _expectedIds = [];
@@ -101,11 +100,11 @@ public partial class CollectionMatchOptions
 		{
 			_equivalenceRelations = equivalenceRelation;
 			_ignoreInterspersedItems = ignoreInterspersedItems;
-			_expectedItems = expected as T3[] ?? expected.ToArray();
+			ExpectedItems = expected as T3[] ?? expected.ToArray();
 			_comparer = comparer;
 		}
 
-		protected T3[] ExpectedItems => _expectedItems;
+		protected T3[] ExpectedItems { get; }
 
 		/// <inheritdoc />
 		/// <remarks>
@@ -199,8 +198,8 @@ public partial class CollectionMatchOptions
 			_areExpectedItemsUnique = _comparer is not null;
 			if (_comparer is null)
 			{
-				_expectedIds = Enumerable.Range(0, _expectedItems.Length).ToArray();
-				_expectedDistinctItems = _expectedItems;
+				_expectedIds = Enumerable.Range(0, ExpectedItems.Length).ToArray();
+				_expectedDistinctItems = ExpectedItems;
 			}
 			else
 			{
@@ -217,10 +216,10 @@ public partial class CollectionMatchOptions
 		private void NumberTheExpectedValues(IEqualityComparer<T3> comparer, bool mergesEqualItems)
 		{
 			ItemIds<T3> expectedIds = new(comparer);
-			_expectedIds = new int[_expectedItems.Length];
-			for (int i = 0; i < _expectedItems.Length; i++)
+			_expectedIds = new int[ExpectedItems.Length];
+			for (int i = 0; i < ExpectedItems.Length; i++)
 			{
-				T3 value = _expectedItems[i];
+				T3 value = ExpectedItems[i];
 				_expectedIds[i] = expectedIds.GetOrAdd(value, out bool isNew);
 				if (!isNew && !mergesEqualItems && !IsIdenticalToEqualValues(value))
 				{
@@ -296,7 +295,7 @@ public partial class CollectionMatchOptions
 					(expectedId, subjectId) => IsMatch(subjectId, expectedId, options), false, GetOrderMatch());
 				return InOrderDeviations<T, T3>.From(searchedInExpected, true,
 					subjectId => (_firstIndexOfSubjectItem[subjectId], _subjectIds.Items[subjectId]),
-					position => _expectedItems[position]);
+					position => ExpectedItems[position]);
 			}
 
 			InOrderMismatch searchedInSubject = await InOrderMismatch.Explain(_subjectIdAt.ToArray(),

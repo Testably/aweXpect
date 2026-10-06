@@ -58,10 +58,6 @@ public static partial class ThatNullableChar
 		: ConstraintResult.WithValue<char?>(it, grammars),
 			IValueConstraint<char?>
 	{
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
-
 		public ConstraintResult IsMetBy(char? actual)
 		{
 			Actual = actual;
@@ -70,6 +66,10 @@ public static partial class ThatNullableChar
 				: Outcome.Failure;
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

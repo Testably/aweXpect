@@ -99,7 +99,7 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 		}
-		
+
 		public sealed class FuncValueGenericTests
 		{
 			[Test]

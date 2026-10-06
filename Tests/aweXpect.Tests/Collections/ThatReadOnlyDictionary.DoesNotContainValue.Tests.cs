@@ -93,7 +93,11 @@ public sealed partial class ThatReadOnlyDictionary
 			{
 				InvalidOperationException exception = new("enumeration failed");
 				IReadOnlyDictionary<string, int> subject = new ReadOnlyOnlyDictionary<string, int>(
-					new ThrowingDictionary<string, int>(exception, ThrowingMembers.Enumeration) { ["a"] = 1, ["b"] = 2, });
+					new ThrowingDictionary<string, int>(exception, ThrowingMembers.Enumeration)
+					{
+						["a"] = 1,
+						["b"] = 2,
+					});
 
 				async Task Act()
 					=> await That(subject).DoesNotContainValue(7);

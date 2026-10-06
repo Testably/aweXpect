@@ -304,7 +304,7 @@ public sealed partial class ThatNumber
 				sbyte expected = sbyte.MaxValue;
 
 				async Task Act()
-					=> await That(subject).IsGreaterThanOrEqualTo(expected).Within((sbyte)1);
+					=> await That(subject).IsGreaterThanOrEqualTo(expected).Within(1);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

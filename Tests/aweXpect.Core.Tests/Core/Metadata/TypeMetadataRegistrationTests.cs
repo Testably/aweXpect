@@ -15,39 +15,6 @@ namespace aweXpect.Core.Tests.Core.Metadata;
 
 public sealed class TypeMetadataRegistrationTests
 {
-#if DEBUG
-	[Test]
-	public async Task AnonymousTypeWithAGenericMemberOverAnAnonymousType_ShouldBeRegisteredByTheGenerator()
-	{
-		var items = new[] { 1, 2, }.Select(i => new
-		{
-			Id = i,
-		});
-		var subject = new
-		{
-			Items = items.ToList(),
-			Map = items.ToDictionary(x => x.Id),
-		};
-
-		await That(subject).IsEquivalentTo(subject);
-
-		await That(TypeMetadataRegistry.Instance.TryGet(subject.GetType(), out _)).IsTrue()
-			.Because("the generated probe has to unify with the anonymous type of the call site");
-	}
-
-	[Test]
-	public async Task GenerateMetadataAttribute_ShouldRegisterExplicitImplementations()
-	{
-		TypeMetadataRegistry.Instance.TryGet(typeof(ImplementingExplicitly),
-			out TypeMetadataRegistry.TypeMetadata? metadata);
-
-		await That(metadata!.Properties.Keys).IsEqualTo(["Own",]);
-		await That(metadata.ExplicitProperties.Keys)
-			.IsEqualTo(["aweXpect.Core.Tests.Core.Metadata.TypeMetadataRegistrationTests.IHasValue.Value",])
-			.Because("the generator registers the explicit implementation under the name reflection reports for it");
-	}
-#endif
-
 	[Test]
 	public async Task GenerateMetadataAttribute_ShouldRegisterTheTypeBeforeTheTestsRun()
 	{
@@ -76,6 +43,93 @@ public sealed class TypeMetadataRegistrationTests
 		await That(metadata.Properties["Name"].MemberType).IsEqualTo(typeof(string))
 			.Because("the declared member type feeds the type-based ignore rules");
 	}
+
+	public sealed class HidingWithNonPublicGetter : WithValue
+	{
+		public int Own { get; set; }
+		public new string Value { private get; set; } = "";
+
+		public override string ToString() => Value;
+	}
+
+	public interface IHasValue
+	{
+		int Value { get; }
+	}
+
+	public sealed class ImplementingExplicitly : IHasValue
+	{
+		public int Own { get; set; }
+		int IHasValue.Value => 5;
+	}
+
+	public sealed class OverridingOnlyTheSetter : WithVirtualValue
+	{
+		public int Own { get; set; }
+
+		public override int Value
+		{
+			set => base.Value = value;
+		}
+	}
+
+	public sealed class RegisteredByTheGenerator
+	{
+		public int Number;
+		public string Name { get; set; } = "";
+	}
+
+	public sealed class WithRefProperty(int value)
+	{
+		private int _value = value;
+		public string Own { get; set; } = "";
+		public ref int Value => ref _value;
+	}
+
+	public class WithValue
+	{
+		public int Value { get; set; }
+	}
+
+	public class WithVirtualValue
+	{
+		public virtual int Value { get; set; }
+	}
+#if DEBUG
+	[Test]
+	public async Task AnonymousTypeWithAGenericMemberOverAnAnonymousType_ShouldBeRegisteredByTheGenerator()
+	{
+		var items = new[]
+		{
+			1, 2,
+		}.Select(i => new
+		{
+			Id = i,
+		});
+		var subject = new
+		{
+			Items = items.ToList(),
+			Map = items.ToDictionary(x => x.Id),
+		};
+
+		await That(subject).IsEquivalentTo(subject);
+
+		await That(TypeMetadataRegistry.Instance.TryGet(subject.GetType(), out _)).IsTrue()
+			.Because("the generated probe has to unify with the anonymous type of the call site");
+	}
+
+	[Test]
+	public async Task GenerateMetadataAttribute_ShouldRegisterExplicitImplementations()
+	{
+		TypeMetadataRegistry.Instance.TryGet(typeof(ImplementingExplicitly),
+			out TypeMetadataRegistry.TypeMetadata? metadata);
+
+		await That(metadata!.Properties.Keys).IsEqualTo(["Own",]);
+		await That(metadata.ExplicitProperties.Keys)
+			.IsEqualTo(["aweXpect.Core.Tests.Core.Metadata.TypeMetadataRegistrationTests.IHasValue.Value",])
+			.Because("the generator registers the explicit implementation under the name reflection reports for it");
+	}
+#endif
 
 #if DEBUG
 	[Test]
@@ -189,57 +243,5 @@ public sealed class TypeMetadataRegistrationTests
 		return (viaRegistry, registered.ToString(), viaReflection, reflected.ToString());
 	}
 #endif
-
-	public sealed class HidingWithNonPublicGetter : WithValue
-	{
-		public int Own { get; set; }
-		public new string Value { private get; set; } = "";
-
-		public override string ToString() => Value;
-	}
-
-	public interface IHasValue
-	{
-		int Value { get; }
-	}
-
-	public sealed class ImplementingExplicitly : IHasValue
-	{
-		public int Own { get; set; }
-		int IHasValue.Value => 5;
-	}
-
-	public sealed class OverridingOnlyTheSetter : WithVirtualValue
-	{
-		public int Own { get; set; }
-
-		public override int Value
-		{
-			set => base.Value = value;
-		}
-	}
-
-	public sealed class RegisteredByTheGenerator
-	{
-		public int Number;
-		public string Name { get; set; } = "";
-	}
-
-	public sealed class WithRefProperty(int value)
-	{
-		private int _value = value;
-		public string Own { get; set; } = "";
-		public ref int Value => ref _value;
-	}
-
-	public class WithValue
-	{
-		public int Value { get; set; }
-	}
-
-	public class WithVirtualValue
-	{
-		public virtual int Value { get; set; }
-	}
 }
 #endif

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using aweXpect.Core;
 #if NET8_0_OR_GREATER
 using System.Collections;
 #endif
-using aweXpect.Core;
-using aweXpect.Equivalency;
 
 namespace aweXpect.Tests;
 
@@ -18,7 +17,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task Equivalent_ShouldIgnoreTheComparerOfTheSet()
 			{
-				HashSet<int> subject = new(new ModuloComparer(10)) { 1, };
+				HashSet<int> subject = new(new ModuloComparer(10))
+				{
+					1,
+				};
 
 #pragma warning disable aweXpect0006
 				async Task Act()
@@ -45,7 +47,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task ForADoubleSet_ShouldUseTheComparerOfTheSet()
 			{
-				HashSet<double> subject = new(new RoundingComparer()) { 1.0, 2.0, };
+				HashSet<double> subject = new(new RoundingComparer())
+				{
+					1.0,
+					2.0,
+				};
 
 #pragma warning disable aweXpect0006
 				async Task Act()
@@ -59,7 +65,12 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task ForASortedSet_InSameOrder_ShouldUseTheComparerOfTheSet()
 			{
-				SortedSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", "c", };
+				SortedSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+					"b",
+					"c",
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(["B", "C",]);
@@ -70,7 +81,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task InAnyOrder_ShouldUseTheComparerOfTheSet()
 			{
-				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+					"b",
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(["B", "A",]).InAnyOrder();
@@ -81,7 +96,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task Using_ShouldOverrideTheComparerOfTheSet()
 			{
-				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(["A",]).InAnyOrder().Using(new AllDifferentComparer());
@@ -107,7 +125,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenExpectedContainsTwoItemsThatTheSetUnifies_ShouldFail()
 			{
-				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(["a", "A",]).InAnyOrder();
@@ -135,7 +156,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenSetContainsTheItemsAccordingToItsComparer_ShouldSucceed()
 			{
-				HashSet<int> subject = new(new ModuloComparer(10)) { 1, 2, };
+				HashSet<int> subject = new(new ModuloComparer(10))
+				{
+					1,
+					2,
+				};
 
 				async Task Act()
 					=> await That(subject).Contains([12, 11,]).InAnyOrder();
@@ -160,7 +185,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task Within_ShouldIgnoreTheComparerOfTheSet()
 			{
-				HashSet<double> subject = new(new RoundingComparer()) { 1.0, 2.0, };
+				HashSet<double> subject = new(new RoundingComparer())
+				{
+					1.0,
+					2.0,
+				};
 
 #pragma warning disable aweXpect0006
 				async Task Act()
@@ -202,7 +231,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task Equivalent_ShouldIgnoreTheComparerOfTheSet()
 			{
-				HashSet<int> subject = new(new ModuloComparer(10)) { 1, };
+				HashSet<int> subject = new(new ModuloComparer(10))
+				{
+					1,
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(11).Equivalent();
@@ -224,7 +256,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task ForADoubleSet_ShouldUseTheComparerOfTheSet()
 			{
-				HashSet<double> subject = new(new RoundingComparer()) { 1.0, };
+				HashSet<double> subject = new(new RoundingComparer())
+				{
+					1.0,
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(1.2);
@@ -236,7 +271,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task ForAFrozenSet_ShouldUseTheComparerOfTheSet()
 			{
-				FrozenSet<string> subject = new[] { "a", }.ToFrozenSet(StringComparer.OrdinalIgnoreCase);
+				FrozenSet<string> subject = new[]
+				{
+					"a",
+				}.ToFrozenSet(StringComparer.OrdinalIgnoreCase);
 
 				async Task Act()
 					=> await That(subject).Contains("A");
@@ -290,7 +328,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task ForAnUntypedSetOfIntegers_ShouldUseTheDefaultEquality()
 			{
-				System.Collections.IEnumerable subject = new HashSet<int>(new ModuloComparer(10)) { 1, };
+				IEnumerable subject = new HashSet<int>(new ModuloComparer(10))
+				{
+					1,
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(11);
@@ -310,7 +351,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task ForAnUntypedStringSet_ShouldUseTheComparerOfTheSet()
 			{
-				System.Collections.IEnumerable subject = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "a", };
+				IEnumerable subject = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+				};
 
 				async Task Act()
 					=> await That(subject).Contains("A");
@@ -322,7 +366,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task ForASetWithoutAnExposedComparer_ShouldUseTheDefaultEquality()
 			{
-				ReadOnlySetWrapper<string> subject = new(new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "a", });
+				ReadOnlySetWrapper<string> subject = new(new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+				});
 
 				async Task Act()
 					=> await That(subject).Contains("A");
@@ -345,7 +392,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task ForASortedSet_ShouldUseTheComparerOfTheSet()
 			{
-				SortedSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
+				SortedSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+				};
 
 				async Task Act()
 					=> await That(subject).Contains("A");
@@ -356,7 +406,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task ShouldCountTheItemOnce()
 			{
-				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+					"b",
+				};
 
 				async Task Act()
 					=> await That(subject).Contains("A").AtLeast(2.Times());
@@ -379,7 +433,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task ShouldSupportExactlyOnce()
 			{
-				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+					"b",
+				};
 
 				async Task Act()
 					=> await That(subject).Contains("A").Exactly(1.Times());
@@ -390,7 +448,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task Using_ShouldOverrideTheComparerOfTheSet()
 			{
-				HashSet<int> subject = new(new ModuloComparer(10)) { 1, };
+				HashSet<int> subject = new(new ModuloComparer(10))
+				{
+					1,
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(11).Using(new AllDifferentComparer());
@@ -421,7 +482,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task UsingTheDefaultComparer_ShouldForceTheDefaultEquality()
 			{
-				HashSet<int> subject = new(new ModuloComparer(10)) { 1, };
+				HashSet<int> subject = new(new ModuloComparer(10))
+				{
+					1,
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(11).Using(EqualityComparer<int>.Default);
@@ -440,7 +504,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenExpectedIsNull_ShouldNotAskTheSet()
 			{
-				HashSet<string?> subject = new(new ThrowingForNullComparer()) { "a", };
+				HashSet<string?> subject = new(new ThrowingForNullComparer())
+				{
+					"a",
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(null);
@@ -462,7 +529,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenIgnoringCase_ShouldIgnoreTheComparerOfTheSet()
 			{
-				HashSet<string> subject = new(StringComparer.Ordinal) { "a", };
+				HashSet<string> subject = new(StringComparer.Ordinal)
+				{
+					"a",
+				};
 
 				async Task Act()
 					=> await That(subject).Contains("A").IgnoringCase();
@@ -473,7 +543,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenSetContainsItemAccordingToItsComparer_ShouldSucceed()
 			{
-				HashSet<int> subject = new(new ModuloComparer(10)) { 1, };
+				HashSet<int> subject = new(new ModuloComparer(10))
+				{
+					1,
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(11);
@@ -485,7 +558,10 @@ public sealed partial class ThatEnumerable
 			public async Task WhenSetComparerThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("comparer failed");
-				HashSet<string> subject = new(new ThrowingComparer(exception)) { "a", };
+				HashSet<string> subject = new(new ThrowingComparer(exception))
+				{
+					"a",
+				};
 
 				async Task Act()
 					=> await That(subject).Contains("b");
@@ -503,7 +579,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenSetDoesNotContainItemAccordingToItsComparer_ShouldFail()
 			{
-				HashSet<string> subject = new(StringComparer.Ordinal) { "a", };
+				HashSet<string> subject = new(StringComparer.Ordinal)
+				{
+					"a",
+				};
 
 				async Task Act()
 					=> await That(subject).Contains("A");
@@ -524,7 +603,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenStringSetContainsItemAccordingToItsComparer_ShouldSucceed()
 			{
-				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+				};
 
 				async Task Act()
 					=> await That(subject).Contains("A");
@@ -535,7 +617,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WithDefaultComparer_ForAFrozenSet_ShouldCompareNumbersOfDifferentTypesByValue()
 			{
-				FrozenSet<object> subject = new object[] { 1, }.ToFrozenSet();
+				FrozenSet<object> subject = new object[]
+				{
+					1,
+				}.ToFrozenSet();
 
 				async Task Act()
 					=> await That(subject).Contains(1L);
@@ -582,7 +667,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task Within_ShouldIgnoreTheComparerOfTheSet()
 			{
-				HashSet<double> subject = new(new RoundingComparer()) { 1.0, };
+				HashSet<double> subject = new(new RoundingComparer())
+				{
+					1.0,
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(1.25).Within(0.125);

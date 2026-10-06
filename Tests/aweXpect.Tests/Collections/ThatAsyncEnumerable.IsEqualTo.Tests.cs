@@ -188,7 +188,7 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in order,
 					             but it lacked all 3 expected items
-					             
+
 					             Collection:
 					             []
 
@@ -225,7 +225,7 @@ public sealed partial class ThatAsyncEnumerable
 					               contained item 8 at index 7 instead of 108 and
 					               contained item 9 at index 8 instead of 109 and
 					               contained item 10 at index 9 instead of 110
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -444,7 +444,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithDeviationFollowedByMatchingItems_ShouldOnlyReportTheDeviation()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 4, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 4, 3);
 				int[] expected = [1, 2, 3,];
 
 				async Task Act()
@@ -468,7 +468,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithDeviationFollowedByTheFirstExpectedItem_ShouldOnlyReportTheDeviation()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 4, 1,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 4, 1);
 				int[] expected = [1, 2, 1,];
 
 				async Task Act()
@@ -700,7 +700,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithMissingItemInTheMiddle_ShouldOnlyReportTheMissingItem()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 4, 5,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 4, 5);
 				int[] expected = [1, 2, 3, 4, 5,];
 
 				async Task Act()
@@ -759,7 +759,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithMovedItem_ShouldReportItInTheWrongOrder()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([2, 3, 1,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(2, 3, 1);
 				int[] expected = [1, 2, 3,];
 
 				async Task Act()
@@ -914,7 +914,7 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
 					             but it lacked all 3 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -941,7 +941,7 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
 					             but it lacked all 2 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -979,7 +979,7 @@ public sealed partial class ThatAsyncEnumerable
 					               contained item 9 at index 8 that was not expected and
 					               contained item 10 at index 9 that was not expected and
 					               lacked all 10 unique expected items
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -1156,7 +1156,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithDuplicateBeforeADeviation_ShouldReportTheIndexInTheSubject()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 1, 4, 2,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 4, 2);
 				int[] expected = [1, 2,];
 
 				async Task Act()
@@ -1437,7 +1437,7 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order,
 					             but it lacked all 3 expected items
-					             
+
 					             Collection:
 					             []
 
@@ -1475,7 +1475,7 @@ public sealed partial class ThatAsyncEnumerable
 					               contained item 9 at index 8 that was not expected and
 					               contained item 10 at index 9 that was not expected and
 					               lacked all 10 expected items
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -1989,7 +1989,7 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order ignoring duplicates,
 					             but it lacked all 3 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -2018,7 +2018,7 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order ignoring duplicates,
 					             but it lacked all 2 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -2056,7 +2056,7 @@ public sealed partial class ThatAsyncEnumerable
 					               contained item 9 at index 8 that was not expected and
 					               contained item 10 at index 9 that was not expected and
 					               lacked all 10 unique expected items
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -2213,7 +2213,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithDuplicateBeforeADeviation_ShouldReportTheIndexInTheSubject()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 1, 4, 2,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 4, 2);
 				int[] expected = [1, 2,];
 
 				async Task Act()
@@ -2233,6 +2233,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """)
 					.Because("the index counts the position in the subject, not the distinct items");
 			}
+
 			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldSucceed()
 			{

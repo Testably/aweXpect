@@ -124,7 +124,11 @@ public sealed partial class ThatEnumerable
 			public async Task WhenUnexpectedIsANonGenericCollection_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2, 3,]);
-				ArrayList unexpected = new() { 2, 3, };
+				ArrayList unexpected = new()
+				{
+					2,
+					3,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected);
@@ -151,7 +155,11 @@ public sealed partial class ThatEnumerable
 			public async Task WhenUnexpectedIsANonGenericCollectionInADifferentOrder_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable([1, 2, 3,]);
-				ArrayList unexpected = new() { 3, 2, };
+				ArrayList unexpected = new()
+				{
+					3,
+					2,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected);
@@ -163,7 +171,11 @@ public sealed partial class ThatEnumerable
 			public async Task WhenUnexpectedIsANonGenericCollectionInAnyOrder_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2, 3,]);
-				ArrayList unexpected = new() { 3, 2, };
+				ArrayList unexpected = new()
+				{
+					3,
+					2,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected).InAnyOrder();

@@ -10,8 +10,10 @@ namespace aweXpect.Docs.Tests;
 public sealed class DocsPagesTests
 {
 	private static readonly string ProjectDirectory = GetProjectDirectory();
+
 	private static readonly string PagesDirectory =
 		Path.GetFullPath(Path.Combine(ProjectDirectory, "..", "..", "Docs", "pages"));
+
 	private static readonly string ScaffoldDirectory = Path.Combine(ProjectDirectory, "Scaffold");
 
 	/// <summary>

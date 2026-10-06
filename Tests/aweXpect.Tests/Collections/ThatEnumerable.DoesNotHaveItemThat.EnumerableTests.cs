@@ -25,7 +25,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableContainsMatchingItemAtGivenIndex_ShouldFail()
 			{
-				IEnumerable subject = new[] { 0, 1, 2, };
+				IEnumerable subject = new[]
+				{
+					0, 1, 2,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotHaveItemThat(it => it.IsEqualTo(2)).AtIndex(2);
@@ -44,7 +47,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableContainsOtherItemAtGivenIndex_ShouldSucceed()
 			{
-				IEnumerable subject = new[] { 0, 1, 2, };
+				IEnumerable subject = new[]
+				{
+					0, 1, 2,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotHaveItemThat(it => it.IsEqualTo(1)).AtIndex(2);
@@ -55,7 +61,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableHasFewerItemsThanTheGivenIndex_ShouldSucceed()
 			{
-				IEnumerable subject = new[] { 0, 1, 2, };
+				IEnumerable subject = new[]
+				{
+					0, 1, 2,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotHaveItemThat(it => it.IsEqualTo(2)).AtIndex(3);
@@ -77,7 +86,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 			{
-				IEnumerable subject = new[] { 1, 2, 3, };
+				IEnumerable subject = new[]
+				{
+					1, 2, 3,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotHaveItemThat(null!);
@@ -106,7 +118,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WithAnyIndex_WhenAnItemMatches_ShouldFail()
 			{
-				IEnumerable subject = new[] { 0, 1, 2, };
+				IEnumerable subject = new[]
+				{
+					0, 1, 2,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotHaveItemThat(it => it.IsEqualTo(1));
@@ -128,7 +143,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableContainsMatchingItem_ShouldSucceed()
 			{
-				IEnumerable subject = new[] { 0, 1, 2, };
+				IEnumerable subject = new[]
+				{
+					0, 1, 2,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it

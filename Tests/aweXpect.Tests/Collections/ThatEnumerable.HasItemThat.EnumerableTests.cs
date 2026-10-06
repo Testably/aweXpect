@@ -36,7 +36,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 			{
-				IEnumerable subject = new[] { 0, 1, 2, };
+				IEnumerable subject = new[]
+				{
+					0, 1, 2,
+				};
 
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsEqualTo(1)).AtIndex(2);
@@ -55,7 +58,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldSucceed()
 			{
-				IEnumerable subject = new[] { 0, 1, 2, };
+				IEnumerable subject = new[]
+				{
+					0, 1, 2,
+				};
 
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsEqualTo(2)).AtIndex(2);
@@ -66,7 +72,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableContainsNoItemAtGivenIndex_ShouldFail()
 			{
-				IEnumerable subject = new[] { 0, 1, 2, };
+				IEnumerable subject = new[]
+				{
+					0, 1, 2,
+				};
 
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsEqualTo(3)).AtIndex(3);
@@ -85,7 +94,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableContainsNoMatchingItem_ShouldFail()
 			{
-				IEnumerable subject = new[] { 1, 2, 3, };
+				IEnumerable subject = new[]
+				{
+					1, 2, 3,
+				};
 
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsEqualTo(0));
@@ -104,7 +116,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableContainsNullItemAtGivenIndex_ShouldFail()
 			{
-				IEnumerable subject = new[] { "a", null, };
+				IEnumerable subject = new[]
+				{
+					"a", null,
+				};
 
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsNotNull()).AtIndex(1);
@@ -145,7 +160,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 			{
-				IEnumerable subject = new[] { 1, 2, 3, };
+				IEnumerable subject = new[]
+				{
+					1, 2, 3,
+				};
 
 				async Task Act()
 					=> await That(subject).HasItemThat(null!);
@@ -174,7 +192,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WithFromEnd_WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldSucceed()
 			{
-				IEnumerable subject = new[] { 0, 1, 2, };
+				IEnumerable subject = new[]
+				{
+					0, 1, 2,
+				};
 
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsEqualTo(1)).AtIndexFromEnd(1);
@@ -188,7 +209,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed()
 			{
-				IEnumerable subject = new[] { 0, 1, 2, };
+				IEnumerable subject = new[]
+				{
+					0, 1, 2,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it
@@ -200,7 +224,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldFail()
 			{
-				IEnumerable subject = new[] { 0, 1, 2, };
+				IEnumerable subject = new[]
+				{
+					0, 1, 2,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it

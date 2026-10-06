@@ -20,8 +20,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -39,8 +39,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -72,8 +72,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -95,8 +95,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -146,8 +146,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -165,8 +165,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -196,8 +196,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -215,8 +215,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -259,8 +259,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -278,8 +278,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -392,8 +392,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -411,8 +411,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -442,8 +442,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -461,8 +461,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -512,8 +512,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -535,8 +535,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -570,8 +570,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -589,8 +589,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -620,8 +620,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -639,8 +639,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -683,8 +683,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -702,8 +702,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -833,8 +833,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -852,8 +852,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -901,8 +901,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -920,8 +920,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -969,8 +969,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -988,8 +988,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -1037,8 +1037,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -1056,8 +1056,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -1105,8 +1105,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -1124,8 +1124,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -1173,8 +1173,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -1192,8 +1192,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -1241,8 +1241,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -1260,8 +1260,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -1291,8 +1291,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -1310,8 +1310,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -1341,8 +1341,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -1360,8 +1360,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -1391,8 +1391,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -1410,8 +1410,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -1441,8 +1441,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """)
 					.Because("nothing can be ordered against a null bound, so the negation fails as well");
 			}
@@ -1461,8 +1461,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is not between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}
+					              is not between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}
 					              """);
 			}
 
@@ -1496,8 +1496,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """);
 			}
 
@@ -1528,8 +1528,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}, which differs by {difference}
+					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}, which differs by {difference}
 					              """);
 			}
 
@@ -1548,8 +1548,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}{differenceSuffix}
+					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}{differenceSuffix}
 					              """);
 			}
 
@@ -1580,8 +1580,8 @@ public sealed partial class ThatNumber
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
-					              is between {ValueFormatters.Format(Formatter, minimum)} and {ValueFormatters.Format(Formatter, maximum)},
-					              but it was {ValueFormatters.Format(Formatter, subject)}, which differs by {difference}
+					              is between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+					              but it was {Formatter.Format(subject)}, which differs by {difference}
 					              """);
 			}
 		}

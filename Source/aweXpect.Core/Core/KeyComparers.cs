@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 #if NET8_0_OR_GREATER
 using System.Collections.Concurrent;
 using System.Collections.Frozen;
@@ -11,6 +8,9 @@ using System.Runtime.CompilerServices;
 #else
 using System.Reflection;
 #endif
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace aweXpect.Core;
 

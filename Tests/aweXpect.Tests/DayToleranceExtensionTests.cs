@@ -49,7 +49,7 @@ public sealed class DayToleranceExtensionTests
 	}
 }
 
-file static class DayToleranceExtensions
+static file class DayToleranceExtensions
 {
 	public static TimeToleranceResult<DateOnly, IThat<DateOnly>> IsOnSameDayAs(
 		this IThat<DateOnly> subject,

@@ -39,7 +39,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
 				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(4, 3);
 
 				async Task Act()

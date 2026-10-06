@@ -18,7 +18,7 @@ public partial class ThatDelegateThrows<TException>
 	{
 		memberAccessor.ThrowIfNull();
 		expectations.ThrowIfNull();
-		return new(ExpectationBuilder.ForMember(
+		return new AndOrResult<TException, IThatDelegateThrows<TException>>(ExpectationBuilder.ForMember(
 					MemberAccessor<TException, TMember?>.FromFuncAsMemberAccessor(memberAccessor,
 						doNotPopulateThisValue),
 					(member, expectation) => expectation.Append("whose ").Append(member))
@@ -37,7 +37,7 @@ public partial class ThatDelegateThrows<TException>
 	{
 		memberAccessor.ThrowIfNull();
 		expectations.ThrowIfNull();
-		return new(ExpectationBuilder.ForAsyncMember(
+		return new AndOrResult<TException, IThatDelegateThrows<TException>>(ExpectationBuilder.ForAsyncMember(
 					MemberAccessor<TException, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor,
 						doNotPopulateThisValue),
 					(member, expectation) => expectation.Append("whose ").Append(member))

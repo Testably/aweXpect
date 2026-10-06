@@ -95,7 +95,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task ShouldSupportAtMost_WhenTheFailureIsDecidedBeforeTheEnd_ShouldStopCounting()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 1, 1,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 1);
 
 				async Task Act()
 					=> await That(subject).Contains(1).AtMost(1);
@@ -202,8 +202,8 @@ public sealed partial class ThatAsyncEnumerable
 
 					              Collection:
 					              {(times == 1
-					              	? "[1, 1, (… and maybe more)]"
-					              	: Formatter.Format(Factory.GetFibonacciNumbers(20).ToArray(), FormattingOptions.MultipleLines))}
+						              ? "[1, 1, (… and maybe more)]"
+						              : Formatter.Format(Factory.GetFibonacciNumbers(20).ToArray(), FormattingOptions.MultipleLines))}
 					              """);
 			}
 
@@ -848,7 +848,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task ShouldSupportAtMost_WhenTheFailureIsDecidedBeforeTheEnd_ShouldStopCounting()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 1, 1,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 1);
 
 				async Task Act()
 					=> await That(subject).Contains(x => x == 1).AtMost(1);
@@ -918,8 +918,8 @@ public sealed partial class ThatAsyncEnumerable
 
 					              Collection:
 					              {(times == 1
-					              	? "[1, 1, (… and maybe more)]"
-					              	: Formatter.Format(Factory.GetFibonacciNumbers(20).ToArray(), FormattingOptions.MultipleLines))}
+						              ? "[1, 1, (… and maybe more)]"
+						              : Formatter.Format(Factory.GetFibonacciNumbers(20).ToArray(), FormattingOptions.MultipleLines))}
 					              """);
 			}
 
@@ -1074,7 +1074,7 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("predicate failed");
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
 
 				async Task Act()
 					=> await That(subject).Contains(x => x == 2 ? throw exception : false);

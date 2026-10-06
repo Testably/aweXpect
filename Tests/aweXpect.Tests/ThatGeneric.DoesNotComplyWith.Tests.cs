@@ -254,52 +254,14 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-#if NET8_0_OR_GREATER
-			[Test]
-			public async Task Contains_OnAsyncEnumerable_ShouldIncludeTheReceivedItems()
-			{
-				IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 2, 3,]);
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.Contains(1));
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             does not contain an item equal to 1,
-					             but it contained 1 at least once
-
-					             Collection:
-					             [1, (… and maybe more)]
-					             """);
-			}
-
-			[Test]
-			public async Task Contains_OnAsyncEnumerableWithPredicate_ShouldIncludeTheReceivedItems()
-			{
-				IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 2, 3,]);
-
-				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => it.Contains(x => x == 1));
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             does not contain an item matching x => x == 1,
-					             but it contained it at least once
-
-					             Collection:
-					             [1, (… and maybe more)]
-					             """);
-			}
-#endif
-
 			[Test]
 			public async Task ContainsKey_ShouldIncludeTheDictionaryContext()
 			{
 				Dictionary<int, int> subject = new()
 				{
-					{ 1, 1 },
+					{
+						1, 1
+					},
 				};
 
 				async Task Act()
@@ -321,7 +283,9 @@ public sealed partial class ThatGeneric
 			{
 				Dictionary<int, int> subject = new()
 				{
-					{ 1, 1 },
+					{
+						1, 1
+					},
 				};
 
 				async Task Act()
@@ -541,6 +505,46 @@ public sealed partial class ThatGeneric
 					             a subject with more than
 					             """);
 			}
+
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task Contains_OnAsyncEnumerable_ShouldIncludeTheReceivedItems()
+			{
+				IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable(1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Contains(1));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain an item equal to 1,
+					             but it contained 1 at least once
+
+					             Collection:
+					             [1, (… and maybe more)]
+					             """);
+			}
+
+			[Test]
+			public async Task Contains_OnAsyncEnumerableWithPredicate_ShouldIncludeTheReceivedItems()
+			{
+				IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable(1, 2, 3);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.Contains(x => x == 1));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not contain an item matching x => x == 1,
+					             but it contained it at least once
+
+					             Collection:
+					             [1, (… and maybe more)]
+					             """);
+			}
+#endif
 		}
 
 		public sealed class ExpectedValuesContextTests
@@ -695,6 +699,16 @@ public sealed partial class ThatGeneric
 					.WithMessage(Message(subject, unexpected));
 			}
 
+			private static string Message<T>(T subject, IEnumerable<T> unexpected)
+				=> $"""
+				    Expected that subject
+				    is not one of unexpected,
+				    but it was {Formatter.Format(subject)}
+
+				    Unexpected values:
+				    {Formatter.Format(unexpected)}
+				    """;
+
 #if NET8_0_OR_GREATER
 			[Test]
 			public async Task IsOneOf_ForDateOnly_ShouldTitleTheValuesAsUnexpected()
@@ -722,16 +736,6 @@ public sealed partial class ThatGeneric
 					.WithMessage(Message(subject, unexpected));
 			}
 #endif
-
-			private static string Message<T>(T subject, IEnumerable<T> unexpected)
-				=> $"""
-				    Expected that subject
-				    is not one of unexpected,
-				    but it was {Formatter.Format(subject)}
-
-				    Unexpected values:
-				    {Formatter.Format(unexpected)}
-				    """;
 		}
 
 		public sealed class UnansweredTests
@@ -743,6 +747,7 @@ public sealed partial class ThatGeneric
 				int[] expected = [1,];
 
 				async Task IsEqualToValue() => await That(subject).DoesNotComplyWith(x => x.IsEqualTo(expected));
+
 				async Task IsEqualToNull()
 					=> await That(subject).DoesNotComplyWith(x => x.IsEqualTo((IEnumerable<int>?)null));
 
@@ -975,7 +980,10 @@ public sealed partial class ThatGeneric
 				MyChangingClass subject = new(42);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(x => x.IsEquivalentTo(new { HasWaitedEnough = false, }))
+					=> await That(subject).DoesNotComplyWith(x => x.IsEquivalentTo(new
+						{
+							HasWaitedEnough = false,
+						}))
 						.Within(30.Seconds()).WithTimeout(50.Milliseconds());
 
 				await That(Act).Throws<FailException>()
@@ -1061,7 +1069,7 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(x => x.IsEqualTo(1))
-						.Within(System.Threading.Timeout.InfiniteTimeSpan)
+						.Within(Timeout.InfiniteTimeSpan)
 						.WithCancellation(cts.Token);
 
 				await That(Act).Throws<InconclusiveTestException>()
@@ -1082,7 +1090,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(x => x.IsEquivalentTo(new
 						{
 							HasWaitedEnough = false,
-						})).Within(System.Threading.Timeout.InfiniteTimeSpan)
+						})).Within(Timeout.InfiniteTimeSpan)
 						.CheckEvery(10.Milliseconds());
 
 				await That(Act).DoesNotThrow();
@@ -1112,7 +1120,10 @@ public sealed partial class ThatGeneric
 				MyChangingClass subject = new(42);
 
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(x => x.IsEquivalentTo(new { HasWaitedEnough = false, }))
+					=> await That(subject).DoesNotComplyWith(x => x.IsEquivalentTo(new
+						{
+							HasWaitedEnough = false,
+						}))
 						.Within(50.Milliseconds());
 
 				await That(Act).Throws<FailException>()
@@ -1122,7 +1133,7 @@ public sealed partial class ThatGeneric
 					             but it was ThatGeneric.DoesNotComplyWith.WithinTests.MyChangingClass {
 					                 HasWaitedEnough = False
 					               }, which is considered equivalent
-					             
+
 					             Equivalency options:
 					              - include public fields and properties
 					             """);

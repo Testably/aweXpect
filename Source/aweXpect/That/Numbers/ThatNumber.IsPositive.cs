@@ -2,9 +2,9 @@
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Results;
-using aweXpect.SourceGenerators;
 #if !NET8_0_OR_GREATER
 using System;
+using aweXpect.SourceGenerators;
 #endif
 
 namespace aweXpect;

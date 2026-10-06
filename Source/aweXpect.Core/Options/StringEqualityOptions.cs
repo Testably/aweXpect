@@ -375,8 +375,12 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     <paramref name="member" />.
 	/// </summary>
 	/// <remarks>
-	///     The match types phrase their failure with the member as the subject (<c>message was …</c>, <c>message did
-	///     not match…</c>), so it is rephrased here; a failure of a custom match type is kept as it is.
+	///     The match types phrase their failure with the member as the subject (<c>message was …</c>,
+	///     <c>
+	///         message did
+	///         not match…
+	///     </c>
+	///     ), so it is rephrased here; a failure of a custom match type is kept as it is.
 	/// </remarks>
 	internal string GetExtendedMemberFailure(string it, string member, ExpectationGrammars grammars,
 		string? actual, string? expected)

@@ -646,8 +646,8 @@ public partial class ValueFormatters
 		[Test]
 		public async Task WhenRecordHasOwnRendering_ShouldUseIt()
 		{
-			string toStringResult = Formatter.Format((object)new RecordWithToString(1.5));
-			string printMembersResult = Formatter.Format((object)new RecordWithPrintMembers("custom"));
+			string toStringResult = Formatter.Format(new RecordWithToString(1.5));
+			string printMembersResult = Formatter.Format(new RecordWithPrintMembers("custom"));
 
 			await That(toStringResult).IsEqualTo("custom")
 				.Because("only the compiler-generated rendering of a record is replaced");
@@ -733,18 +733,18 @@ public partial class ValueFormatters
 		{
 			using CultureOverride _ = new("de-DE");
 			StringBuilder sb = new();
-			Formatter.Format(sb, (object)(1.5, "a"));
+			Formatter.Format(sb, (1.5, "a"));
 
 			string[] results =
 			[
-				Formatter.Format((object)(1.5, "a")),
-				Formatter.Format((object)("a\"b", (string?)null)),
-				Formatter.Format((object)Tuple.Create(1.5, "a")),
-				Formatter.Format((object)((1, 2), 3)),
-				Formatter.Format((object)ValueTuple.Create(1)),
-				Formatter.Format((object)ValueTuple.Create()),
-				Formatter.Format((object)(1, 2, 3, 4, 5, 6, 7, 8, 9)),
-				Formatter.Format((object)Tuple.Create(1, 2, 3, 4, 5, 6, 7, 8)),
+				Formatter.Format((1.5, "a")),
+				Formatter.Format(("a\"b", (string?)null)),
+				Formatter.Format(Tuple.Create(1.5, "a")),
+				Formatter.Format(((1, 2), 3)),
+				Formatter.Format(ValueTuple.Create(1)),
+				Formatter.Format(ValueTuple.Create()),
+				Formatter.Format((1, 2, 3, 4, 5, 6, 7, 8, 9)),
+				Formatter.Format(Tuple.Create(1, 2, 3, 4, 5, 6, 7, 8)),
 			];
 
 			await That(string.Join(" | ", results)).IsEqualTo(
@@ -1024,28 +1024,6 @@ public partial class ValueFormatters
 				=> ToString(null, CultureInfo.CurrentCulture);
 		}
 
-#if NET8_0_OR_GREATER
-		private sealed record MyRecord(double X, string S);
-
-		private record struct MyRecordStruct(double X, string? S);
-
-		private sealed record RecordWithPrintMembers(string Text)
-		{
-			private bool PrintMembers(StringBuilder builder)
-			{
-				builder.Append(Text);
-				return true;
-			}
-		}
-
-		private sealed record RecordWithToString(double X)
-		{
-			/// <inheritdoc />
-			public override string ToString()
-				=> "custom";
-		}
-#endif
-
 		private sealed class RegisteredDummy
 		{
 			public int NotRegistered { get; set; }
@@ -1126,5 +1104,27 @@ public partial class ValueFormatters
 			// ReSharper disable once UnusedAutoPropertyAccessor.Local
 			public string? InnerValue { get; set; }
 		}
+
+#if NET8_0_OR_GREATER
+		private sealed record MyRecord(double X, string S);
+
+		private record struct MyRecordStruct(double X, string? S);
+
+		private sealed record RecordWithPrintMembers(string Text)
+		{
+			private bool PrintMembers(StringBuilder builder)
+			{
+				builder.Append(Text);
+				return true;
+			}
+		}
+
+		private sealed record RecordWithToString(double X)
+		{
+			/// <inheritdoc />
+			public override string ToString()
+				=> "custom";
+		}
+#endif
 	}
 }

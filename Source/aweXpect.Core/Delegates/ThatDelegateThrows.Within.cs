@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using aweXpect.Core.Helpers;
 using aweXpect.Options;
 
@@ -24,7 +25,7 @@ public partial class ThatDelegateThrows<TException>
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(ThrowOptions.IsWithinSpecified, nameof(Within));
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
 		ThrowOptions.IsWithinSpecified = true;
-		if (timeout == System.Threading.Timeout.InfiniteTimeSpan)
+		if (timeout == Timeout.InfiniteTimeSpan)
 		{
 			return this;
 		}

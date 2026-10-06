@@ -741,7 +741,7 @@ public sealed partial class ThatDelegate
 					Action action = () => throw new OuterException(innerException: new CustomException());
 
 					async Task Act()
-						=> await That(action).Throws().WithInner((Type)null!, x => x.HasMessage("foo"));
+						=> await That(action).Throws().WithInner(null!, x => x.HasMessage("foo"));
 
 					await That(Act).Throws<ArgumentNullException>()
 						.WithParamName("type").And

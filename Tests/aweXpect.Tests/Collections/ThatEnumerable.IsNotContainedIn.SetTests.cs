@@ -11,7 +11,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenSetIsContainedAccordingToItsComparer_ShouldFail()
 			{
-				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+					"b",
+				};
 
 				async Task Act()
 					=> await That(subject).IsNotContainedIn(["C", "B", "A",]).InAnyOrder();

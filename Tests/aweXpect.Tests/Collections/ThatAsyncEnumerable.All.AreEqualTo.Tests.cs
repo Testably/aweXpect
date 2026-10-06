@@ -416,7 +416,7 @@ public sealed partial class ThatAsyncEnumerable
 				[Test]
 				public async Task WhenAllItemsMatch_ShouldFail()
 				{
-					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 1, 1,]);
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 1);
 
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().AreEqualTo(1));
@@ -435,7 +435,7 @@ public sealed partial class ThatAsyncEnumerable
 				[Test]
 				public async Task WhenOneItemDoesNotMatch_ShouldSucceed()
 				{
-					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 1,]);
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 1);
 
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().AreEqualTo(1));

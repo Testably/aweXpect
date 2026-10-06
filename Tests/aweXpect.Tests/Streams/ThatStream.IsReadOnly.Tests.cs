@@ -11,7 +11,7 @@ public sealed partial class ThatStream
 			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
-				ChunkedStreamContainer subject = new(new ChunkedStream(canRead: true, canWrite: true));
+				ChunkedStreamContainer subject = new(new ChunkedStream(true, true));
 
 				async Task Act()
 					=> await That(subject).Whose(c => c.Chunks, chunks => chunks.IsReadOnly());
@@ -28,7 +28,7 @@ public sealed partial class ThatStream
 			[Test]
 			public async Task WhenSubjectIsABufferedStream_ShouldAllowChainingIntoBufferedStreamExpectations()
 			{
-				using BufferedStream subject = new(new MemoryStream(new byte[3], writable: false), 4096);
+				using BufferedStream subject = new(new MemoryStream(new byte[3], false), 4096);
 
 				async Task Act()
 					=> await That(subject).IsReadOnly().And.HasBufferSize(4096);

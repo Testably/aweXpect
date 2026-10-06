@@ -5,14 +5,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\Source\aweXpect\aweXpect.csproj" />
+		<ProjectReference Include="..\..\Source\aweXpect\aweXpect.csproj"/>
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" />
-		<PackageReference Include="NUnit" />
-		<PackageReference Include="NUnit.Analyzers" />
-		<PackageReference Include="NUnit3TestAdapter" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk"/>
+		<PackageReference Include="NUnit"/>
+		<PackageReference Include="NUnit.Analyzers"/>
+		<PackageReference Include="NUnit3TestAdapter"/>
 	</ItemGroup>
 
 </Project>

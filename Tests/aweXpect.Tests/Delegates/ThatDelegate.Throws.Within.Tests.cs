@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 
 namespace aweXpect.Tests;
 
@@ -62,7 +63,7 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenDelegateReturnsNullTask_ShouldFail()
 				{
-					Func<System.Threading.CancellationToken, Task> @delegate = _ => null!;
+					Func<CancellationToken, Task> @delegate = _ => null!;
 
 					async Task<Exception> Act()
 						=> await That(@delegate).Throws().Within(5.Seconds());
@@ -82,7 +83,7 @@ public sealed partial class ThatDelegate
 					Action action = () => { };
 
 					async Task<Exception> Act()
-						=> await That(action).Throws().Within(System.Threading.Timeout.InfiniteTimeSpan);
+						=> await That(action).Throws().Within(Timeout.InfiniteTimeSpan);
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
@@ -102,7 +103,7 @@ public sealed partial class ThatDelegate
 					};
 
 					async Task<Exception> Act()
-						=> await That(action).Throws().Within(System.Threading.Timeout.InfiniteTimeSpan);
+						=> await That(action).Throws().Within(Timeout.InfiniteTimeSpan);
 
 					await That(Act).DoesNotThrow()
 						.Because("an infinite duration imposes no limit");
@@ -273,7 +274,7 @@ public sealed partial class ThatDelegate
 				[Test]
 				public async Task WhenTimeoutIsLongerThanTheDuration_ShouldKeepTheDuration()
 				{
-					Func<System.Threading.CancellationToken, Task> @delegate = token => Task.Delay(60.Seconds(), token);
+					Func<CancellationToken, Task> @delegate = token => Task.Delay(60.Seconds(), token);
 
 					async Task<Exception> Act()
 						=> await That(@delegate).Throws().Within(50.Milliseconds()).WithTimeout(20.Seconds());
@@ -306,7 +307,7 @@ public sealed partial class ThatDelegate
 					Action action = () => throw new CustomException();
 
 					async Task<Exception> Act()
-						=> await That(action).Throws().Within(System.Threading.Timeout.InfiniteTimeSpan)
+						=> await That(action).Throws().Within(Timeout.InfiniteTimeSpan)
 							.Within(1.Seconds());
 
 					await That(Act).Throws<InvalidOperationException>()
@@ -332,7 +333,7 @@ public sealed partial class ThatDelegate
 				/// </remarks>
 				private static void Block(TimeSpan duration)
 				{
-					using System.Threading.ManualResetEventSlim neverSet = new();
+					using ManualResetEventSlim neverSet = new();
 					_ = neverSet.Wait(duration);
 				}
 			}
@@ -378,7 +379,7 @@ public sealed partial class ThatDelegate
 					Action action = () => { };
 
 					async Task<CustomException> Act()
-						=> await That(action).Throws<CustomException>().Within(System.Threading.Timeout.InfiniteTimeSpan);
+						=> await That(action).Throws<CustomException>().Within(Timeout.InfiniteTimeSpan);
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
@@ -398,7 +399,7 @@ public sealed partial class ThatDelegate
 					};
 
 					async Task<CustomException> Act()
-						=> await That(action).Throws<CustomException>().Within(System.Threading.Timeout.InfiniteTimeSpan);
+						=> await That(action).Throws<CustomException>().Within(Timeout.InfiniteTimeSpan);
 
 					await That(Act).DoesNotThrow()
 						.Because("an infinite duration imposes no limit");
@@ -611,7 +612,7 @@ public sealed partial class ThatDelegate
 
 					async Task<Exception> Act()
 						=> await That(action).Throws(typeof(CustomException))
-							.Within(System.Threading.Timeout.InfiniteTimeSpan);
+							.Within(Timeout.InfiniteTimeSpan);
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""
@@ -632,7 +633,7 @@ public sealed partial class ThatDelegate
 
 					async Task<Exception> Act()
 						=> await That(action).Throws(typeof(CustomException))
-							.Within(System.Threading.Timeout.InfiniteTimeSpan);
+							.Within(Timeout.InfiniteTimeSpan);
 
 					await That(Act).DoesNotThrow()
 						.Because("an infinite duration imposes no limit");

@@ -12,7 +12,6 @@ public class AndResult<TThat>(
 	TThat returnValue)
 	: ExpectationResult(expectationBuilder)
 {
-
 	/// <summary>
 	///     Combines the previous expectation with the next one; both must be met.
 	/// </summary>
@@ -49,7 +48,6 @@ public class AndResult<TType, TThat, TSelf>(
 	: ExpectationResult<TType, TSelf>(expectationBuilder)
 	where TSelf : AndResult<TType, TThat, TSelf>
 {
-
 	/// <summary>
 	///     Combines the previous expectation with the next one; both must be met.
 	/// </summary>

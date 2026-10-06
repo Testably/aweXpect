@@ -34,7 +34,6 @@ internal sealed class SubjectEqualityOptions<TItem, TMatch>
 	: IOptionsEquality<TMatch>, IOptionsProvider<IOptionsEquality<TMatch>>, ISubjectComparing
 {
 	private readonly bool _canUseSubjectComparer;
-	private readonly IOptionsEquality<TMatch> _options;
 
 	/// <summary>
 	///     Lets the comparer of the subject decide, when <paramref name="canUseSubjectComparer" /> and the comparison of
@@ -42,7 +41,7 @@ internal sealed class SubjectEqualityOptions<TItem, TMatch>
 	/// </summary>
 	public SubjectEqualityOptions(IOptionsEquality<TMatch> options, bool canUseSubjectComparer = true)
 	{
-		_options = options;
+		Options = options;
 		_canUseSubjectComparer = canUseSubjectComparer;
 	}
 
@@ -51,16 +50,9 @@ internal sealed class SubjectEqualityOptions<TItem, TMatch>
 	/// </summary>
 	public SubjectEqualityOptions(IOptionsEquality<TMatch> options, SubjectComparer<TItem> comparer)
 	{
-		_options = options;
+		Options = options;
 		Comparer = comparer;
 	}
-
-	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	/// <remarks>
-	///     Lets a failure message describe the expected items by the options that decide whenever the comparer of the
-	///     subject does not.
-	/// </remarks>
-	public IOptionsEquality<TMatch> Options => _options;
 
 	/// <summary>
 	///     The comparer of the subject that decides, or <see langword="null" /> when the options decide.
@@ -70,18 +62,25 @@ internal sealed class SubjectEqualityOptions<TItem, TMatch>
 	/// <inheritdoc cref="IOptionsEquality{TSubject}.AreConsideredEqual{TExpected}(TSubject, TExpected)" />
 	public ValueTask<bool> AreConsideredEqual<TExpected>(TMatch actual, TExpected expected)
 		=> Comparer is null
-			? _options.AreConsideredEqual(actual, expected)
+			? Options.AreConsideredEqual(actual, expected)
 			: new ValueTask<bool>(Comparer.AreEqual(actual, expected));
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	/// <remarks>
+	///     Lets a failure message describe the expected items by the options that decide whenever the comparer of the
+	///     subject does not.
+	/// </remarks>
+	public IOptionsEquality<TMatch> Options { get; }
 
 	/// <inheritdoc cref="ISubjectComparing.UseComparerOf(object?)" />
 	public bool UseComparerOf(object? subject)
 	{
-		Comparer = _canUseSubjectComparer && DefaultEquality.IsUsedBy(_options)
+		Comparer = _canUseSubjectComparer && DefaultEquality.IsUsedBy(Options)
 			? CollectionComparerHelpers.GetSubjectComparer<TItem>(subject)
 			: null;
 		return Comparer is not null;
 	}
 
 	/// <inheritdoc cref="object.ToString()" />
-	public override string ToString() => $"{_options}{Comparer}";
+	public override string ToString() => $"{Options}{Comparer}";
 }

@@ -72,8 +72,10 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenAllMembersAreDuplicated_ShouldSucceed()
 				{
-					ImmutableArray<MyClass> subject = [new MyClass(1), new MyClass(2), new MyClass(1),
-						new MyClass(2),
+					ImmutableArray<MyClass> subject =
+					[
+						new(1), new(2), new(1),
+						new(2),
 					];
 
 					async Task Act()
@@ -85,7 +87,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenAllStringMembersAreDuplicated_ShouldSucceed()
 				{
-					ImmutableArray<MyClass> subject = [new MyClass(1, "a"), new MyClass(2, "a"),];
+					ImmutableArray<MyClass> subject = [new(1, "a"), new(2, "a"),];
 
 					async Task Act()
 						=> await That(subject).All().AreNotUnique(x => x.StringValue);

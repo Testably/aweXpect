@@ -74,7 +74,7 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldFail()
 			{
-				IEnumerable<int> subject = ToEnumerable((int[]) []);
+				IEnumerable<int> subject = ToEnumerable((int[])[]);
 
 				async Task Act()
 					=> await That(subject).IsNotEmpty();

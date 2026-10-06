@@ -17,7 +17,7 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 	{
 		StringBuilder stringBuilder = new();
-		Format(formatter, stringBuilder, value, options);
+		formatter.Format(stringBuilder, value, options);
 		return stringBuilder.ToString();
 	}
 
@@ -38,7 +38,7 @@ public static partial class ValueFormatters
 
 		if (options?.IncludeType == true)
 		{
-			Format(formatter, stringBuilder, typeof(KeyValuePair<TKey, TValue>));
+			formatter.Format(stringBuilder, typeof(KeyValuePair<TKey, TValue>));
 			stringBuilder.Append(' ');
 			options = options with
 			{
@@ -58,9 +58,9 @@ public static partial class ValueFormatters
 		FormattingContext? context)
 	{
 		stringBuilder.Append('[');
-		Format(formatter, stringBuilder, key, WithoutLineBreaksForString(key, options), context);
+		formatter.Format(stringBuilder, key, WithoutLineBreaksForString(key, options), context);
 		stringBuilder.Append("] = ");
-		Format(formatter, stringBuilder, value, WithoutLineBreaksForString(value, options), context);
+		formatter.Format(stringBuilder, value, WithoutLineBreaksForString(value, options), context);
 	}
 
 	/// <remarks>

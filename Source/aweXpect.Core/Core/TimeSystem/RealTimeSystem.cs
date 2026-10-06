@@ -9,26 +9,6 @@ internal class RealTimeSystem : ITimeSystem
 {
 	public static ITimeSystem Instance { get; } = new RealTimeSystem();
 
-	#region ITimeSystem Members
-
-	/// <inheritdoc />
-	public IStopwatchFactory Stopwatch { get; } = new RealStopwatchFactory();
-
-	/// <inheritdoc />
-	public long GetTimestamp()
-		=> DiagnosticsStopwatch.GetTimestamp();
-
-	/// <inheritdoc />
-	public TimeSpan GetElapsedTime(long startTimestamp)
-		=> TimeSpan.FromTicks((long)((DiagnosticsStopwatch.GetTimestamp() - startTimestamp) *
-		                             ((double)TimeSpan.TicksPerSecond / DiagnosticsStopwatch.Frequency)));
-
-	/// <inheritdoc />
-	public Task Delay(TimeSpan delay, CancellationToken cancellationToken)
-		=> Task.Delay(delay, cancellationToken);
-
-	#endregion
-
 	private sealed class RealStopwatchFactory : IStopwatchFactory
 	{
 		#region IStopwatchFactory Members
@@ -94,4 +74,24 @@ internal class RealTimeSystem : ITimeSystem
 
 		#endregion
 	}
+
+	#region ITimeSystem Members
+
+	/// <inheritdoc />
+	public IStopwatchFactory Stopwatch { get; } = new RealStopwatchFactory();
+
+	/// <inheritdoc />
+	public long GetTimestamp()
+		=> DiagnosticsStopwatch.GetTimestamp();
+
+	/// <inheritdoc />
+	public TimeSpan GetElapsedTime(long startTimestamp)
+		=> TimeSpan.FromTicks((long)((DiagnosticsStopwatch.GetTimestamp() - startTimestamp) *
+		                             ((double)TimeSpan.TicksPerSecond / DiagnosticsStopwatch.Frequency)));
+
+	/// <inheritdoc />
+	public Task Delay(TimeSpan delay, CancellationToken cancellationToken)
+		=> Task.Delay(delay, cancellationToken);
+
+	#endregion
 }

@@ -102,6 +102,12 @@ public sealed partial class ThatEnumerable
 					              """).AsPrefix();
 			}
 
+			private sealed class Item(DateTime value)
+			{
+				public DateTime Value { get; } = value;
+				public DateTime? NullableValue { get; } = value;
+			}
+
 #if NET8_0_OR_GREATER
 			[Test]
 			public async Task WhenImmutableArrayKindsAreIncompatible_ShouldFail()
@@ -135,12 +141,6 @@ public sealed partial class ThatEnumerable
 					              """).AsPrefix();
 			}
 #endif
-
-			private sealed class Item(DateTime value)
-			{
-				public DateTime Value { get; } = value;
-				public DateTime? NullableValue { get; } = value;
-			}
 		}
 	}
 }

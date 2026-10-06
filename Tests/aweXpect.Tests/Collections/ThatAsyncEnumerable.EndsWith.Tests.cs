@@ -1,6 +1,5 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Collections.Generic;
-using aweXpect.Equivalency;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -178,7 +177,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WhenSubjectHasOnlyOneItemAndMissesOne_ShouldUseSingular()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([2,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(2);
 
 				async Task Act()
 					=> await That(subject).EndsWith(1, 2);
@@ -357,7 +356,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WhenExpectedContainsNull_ShouldMatchANullItem()
 			{
-				IAsyncEnumerable<string?> subject = ToAsyncEnumerable<string?>("b", "a", null);
+				IAsyncEnumerable<string?> subject = ToAsyncEnumerable("b", "a", null);
 
 				async Task Act()
 					=> await That(subject).EndsWith("a", null);

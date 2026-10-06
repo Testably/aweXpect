@@ -10,7 +10,8 @@ namespace aweXpect.Helpers;
 internal static class ExceptionHelpers
 {
 	public static void ThrowIfNull(this object? parameter,
-		[CallerArgumentExpression(nameof(parameter))] string? paramName = null)
+		[CallerArgumentExpression(nameof(parameter))]
+		string? paramName = null)
 		=> ThrowIfNullNamed(parameter, paramName);
 
 	/// <summary>
@@ -25,7 +26,8 @@ internal static class ExceptionHelpers
 	///     <c>ImmutableArray&lt;T&gt;</c> is as well.
 	/// </summary>
 	public static void ThrowIfNull<T>(this IEnumerable<T>? parameter,
-		[CallerArgumentExpression(nameof(parameter))] string? paramName = null)
+		[CallerArgumentExpression(nameof(parameter))]
+		string? paramName = null)
 		=> ThrowIfNullNamed(parameter.NullIfDefaultImmutableArray(), paramName);
 
 	/// <summary>
@@ -39,7 +41,8 @@ internal static class ExceptionHelpers
 	///     Throws when the <paramref name="type" /> is null or not an exception type, as no exception could ever match it.
 	/// </summary>
 	public static void ThrowIfNotAnExceptionType(this Type? type,
-		[CallerArgumentExpression(nameof(type))] string? paramName = null)
+		[CallerArgumentExpression(nameof(type))]
+		string? paramName = null)
 	{
 		ThrowIfNullNamed(type, paramName);
 		if (!typeof(Exception).IsAssignableFrom(type))
@@ -101,7 +104,8 @@ internal static class ExceptionHelpers
 	/// </remarks>
 	[return: NotNullIfNotNull(nameof(parameter))]
 	public static IEnumerable<T>? WithoutNullElements<T>(this IEnumerable<T>? parameter,
-		[CallerArgumentExpression(nameof(parameter))] string? paramName = null)
+		[CallerArgumentExpression(nameof(parameter))]
+		string? paramName = null)
 		where T : class
 		=> WithoutNullElementsNamed(parameter, paramName);
 
@@ -164,7 +168,7 @@ internal static class ExceptionHelpers
 					foreach (Exception innerException in aggregateException.InnerExceptions)
 					{
 						yield return innerException;
-						foreach (Exception inner in GetInnerExceptions(innerException))
+						foreach (Exception inner in innerException.GetInnerExceptions())
 						{
 							yield return inner;
 						}
@@ -177,7 +181,7 @@ internal static class ExceptionHelpers
 					if (actual?.InnerException is not null)
 					{
 						yield return actual.InnerException;
-						foreach (Exception inner in GetInnerExceptions(actual.InnerException))
+						foreach (Exception inner in actual.InnerException.GetInnerExceptions())
 						{
 							yield return inner;
 						}

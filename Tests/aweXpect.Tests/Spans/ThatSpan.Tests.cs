@@ -8,10 +8,11 @@ public sealed partial class ThatSpan
 		[Test]
 		public async Task ShouldSupportIsEmpty()
 		{
-			var subject = new[]
+			int[] subject = new[]
 			{
 				1, 2, 3,
 			};
+
 			async Task Act()
 				=> await That(subject.AsSpan()).IsEmpty();
 

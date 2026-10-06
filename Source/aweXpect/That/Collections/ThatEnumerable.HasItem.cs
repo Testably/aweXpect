@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using aweXpect.Core;
@@ -53,8 +52,7 @@ public static partial class ThatEnumerable
 		Summary = HasMatchingItem, NegatedSummary = DoesNotHaveMatchingItem)]
 	internal static HasItemResult<IEnumerable<TItem>>
 		HasMatchingItemCore<TItem>(
-			IThat<IEnumerable<TItem>?> subject,
-			Func<TItem, bool> predicate,
+			IThat<IEnumerable<TItem>?> subject, System.Func<TItem, bool> predicate,
 			string predicateExpression,
 			bool negated)
 	{
@@ -157,7 +155,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((Options: options, IndexOptions: indexOptions, Negated: negated),
 				static (state, it, grammars)
 					=> new HasItemConstraint<IEnumerable, object?>(it, grammars,
-						new ItemMatchingOptions<object?>(state.Options), state.IndexOptions)
+							new ItemMatchingOptions<object?>(state.Options), state.IndexOptions)
 						.InvertIf(state.Negated)),
 			subject,
 			indexOptions,
@@ -168,8 +166,7 @@ public static partial class ThatEnumerable
 		Summary = HasMatchingItem, NegatedSummary = DoesNotHaveMatchingItem)]
 	internal static HasItemResult<IEnumerable>
 		HasMatchingItemForEnumerableCore(
-			IThat<IEnumerable?> subject,
-			Func<object?, bool> predicate,
+			IThat<IEnumerable?> subject, System.Func<object?, bool> predicate,
 			string predicateExpression,
 			bool negated)
 	{
@@ -217,8 +214,7 @@ public static partial class ThatEnumerable
 		Summary = HasMatchingItem, NegatedSummary = DoesNotHaveMatchingItem)]
 	internal static HasItemResult<TCollection>
 		HasMatchingItemForCollectionCore<TCollection, TItem>(
-			IThat<TCollection> subject,
-			Func<TItem, bool> predicate,
+			IThat<TCollection> subject, System.Func<TItem, bool> predicate,
 			string predicateExpression,
 			bool negated)
 		where TCollection : IEnumerable
@@ -254,7 +250,7 @@ public static partial class ThatEnumerable
 			expectationBuilder.AddConstraint((Options: options, IndexOptions: indexOptions, Negated: negated),
 				static (state, it, grammars)
 					=> new HasItemConstraint<TCollection, TItem>(it, grammars,
-						new ItemMatchingOptions<TItem>(state.Options), state.IndexOptions)
+							new ItemMatchingOptions<TItem>(state.Options), state.IndexOptions)
 						.InvertIf(state.Negated)),
 			subject,
 			indexOptions,

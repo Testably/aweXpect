@@ -271,16 +271,16 @@ public class MaterializingEnumerableTests
 		await That(materialized1).IsSameAs(materialized2);
 	}
 
-	private sealed class UntypedEnumerable(IEnumerable inner) : IEnumerable
-	{
-		public IEnumerator GetEnumerator() => inner.GetEnumerator();
-	}
-
 	private static IEnumerable<T> ToEnumerable<T>(T[] items)
 	{
 		foreach (T item in items)
 		{
 			yield return item;
 		}
+	}
+
+	private sealed class UntypedEnumerable(IEnumerable inner) : IEnumerable
+	{
+		public IEnumerator GetEnumerator() => inner.GetEnumerator();
 	}
 }

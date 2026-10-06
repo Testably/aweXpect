@@ -27,9 +27,6 @@ public class EventTriggerResult<TSubject>(
 		IOptionsProvider<RepeatedCheckOptions>
 	where TSubject : notnull
 {
-	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
-
 	/// <inheritdoc cref="ICustomParameterFilter.WithParameter{TParameter}(string, int?, Func{TParameter, bool})" />
 	EventTriggerResult<TSubject> ICustomParameterFilter.WithParameter<TParameter>(
 		string expression,
@@ -46,6 +43,9 @@ public class EventTriggerResult<TSubject>(
 			expression);
 		return this;
 	}
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	RepeatedCheckOptions IOptionsProvider<RepeatedCheckOptions>.Options => options;

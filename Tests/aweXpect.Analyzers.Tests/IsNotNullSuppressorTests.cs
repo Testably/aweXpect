@@ -234,6 +234,7 @@ public class IsNotNullSuppressorTests
 			""",
 			SuppressedNullabilityWarning("CS8602")
 		);
+
 	[Test]
 	public async Task WhenExpectationIsDiscarded_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(

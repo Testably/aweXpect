@@ -19,7 +19,7 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 	{
 		StringBuilder stringBuilder = new();
-		Format(formatter, stringBuilder, value, options);
+		formatter.Format(stringBuilder, value, options);
 		return stringBuilder.ToString();
 	}
 

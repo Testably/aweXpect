@@ -1681,7 +1681,11 @@ public sealed partial class ThatObject
 				MyClass subject = new(1, 2, 3);
 
 				async Task Act()
-					=> await That(subject).IsEquivalentTo(new { MyProperty = false, PublicValue = 2, });
+					=> await That(subject).IsEquivalentTo(new
+					{
+						MyProperty = false,
+						PublicValue = 2,
+					});
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

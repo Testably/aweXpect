@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace aweXpect.Core.Helpers;
 
@@ -13,7 +14,8 @@ internal static class ThrowHelper
 	///     <c>minimum</c> or a <c>maximum</c>, but not for an <c>expected</c> count.
 	/// </remarks>
 	public static void ThrowIfCountIsNegative(int? count, string? description = null,
-		[CallerArgumentExpression(nameof(count))] string? paramName = null)
+		[CallerArgumentExpression(nameof(count))]
+		string? paramName = null)
 	{
 		if (count < 0)
 		{
@@ -97,7 +99,8 @@ internal static class ThrowHelper
 	///     <c>duration</c>, a <c>minimum</c> or a <c>maximum</c>, but not for every caller.
 	/// </remarks>
 	public static void ThrowIfDurationIsNegative(TimeSpan duration, string? description = null,
-		[CallerArgumentExpression(nameof(duration))] string? paramName = null)
+		[CallerArgumentExpression(nameof(duration))]
+		string? paramName = null)
 	{
 		if (duration < TimeSpan.Zero)
 		{
@@ -112,9 +115,10 @@ internal static class ThrowHelper
 	///     limit.
 	/// </summary>
 	public static void ThrowIfTimeoutIsNegative(TimeSpan timeout,
-		[CallerArgumentExpression(nameof(timeout))] string? paramName = null)
+		[CallerArgumentExpression(nameof(timeout))]
+		string? paramName = null)
 	{
-		if (timeout != System.Threading.Timeout.InfiniteTimeSpan)
+		if (timeout != Timeout.InfiniteTimeSpan)
 		{
 			ThrowIfDurationIsNegative(timeout, paramName: paramName);
 		}
@@ -125,7 +129,8 @@ internal static class ThrowHelper
 	///     <see langword="null" /> stands for the default timeout.
 	/// </summary>
 	public static void ThrowIfTimeoutIsNegative(TimeSpan? timeout,
-		[CallerArgumentExpression(nameof(timeout))] string? paramName = null)
+		[CallerArgumentExpression(nameof(timeout))]
+		string? paramName = null)
 	{
 		if (timeout is not null)
 		{

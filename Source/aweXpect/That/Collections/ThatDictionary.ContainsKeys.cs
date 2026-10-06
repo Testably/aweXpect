@@ -47,8 +47,8 @@ public static partial class ThatDictionary
 			expectationBuilder.AddConstraint((ExpectedExpression: expectedExpression, Keys: keys, Negated: negated),
 				static (state, it, grammars) =>
 					new ContainKeysConstraint<TCollection, TKey, TValue>(it, grammars,
-						state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.Keys), state.Keys,
-						state.Negated)
+							state.ExpectedExpression?.TrimCommonWhiteSpace() ?? Formatter.Format(state.Keys), state.Keys,
+							state.Negated)
 						.InvertIf(state.Negated)),
 			subject,
 			keys,
@@ -75,10 +75,6 @@ public static partial class ThatDictionary
 	{
 		private List<TKey>? _existingKeys;
 		private List<TKey>? _missingKeys;
-
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> AddDictionaryContext(contexts, Actual);
 
 		public ConstraintResult IsMetBy(TDictionary? actual)
 		{
@@ -110,13 +106,14 @@ public static partial class ThatDictionary
 			return this;
 		}
 
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(isAny
-					? Grammars.Verb("contains any of keys ", "contain any of keys ")
-					: Grammars.Verb("contains keys ", "contain keys "))
-				.Append(expectedExpression);
-		}
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> AddDictionaryContext(contexts, Actual);
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null) => stringBuilder.Append(isAny
+				? Grammars.Verb("contains any of keys ", "contain any of keys ")
+				: Grammars.Verb("contains keys ", "contain keys "))
+			.Append(expectedExpression);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -124,13 +121,10 @@ public static partial class ThatDictionary
 			Formatter.Format(stringBuilder, _missingKeys, FormattingOptions.MultipleLines);
 		}
 
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(isAny
-					? Grammars.Verb("does not contain keys ", "do not contain keys ")
-					: Grammars.Verb("does not contain all keys ", "do not contain all keys "))
-				.Append(expectedExpression);
-		}
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null) => stringBuilder.Append(isAny
+				? Grammars.Verb("does not contain keys ", "do not contain keys ")
+				: Grammars.Verb("does not contain all keys ", "do not contain all keys "))
+			.Append(expectedExpression);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{

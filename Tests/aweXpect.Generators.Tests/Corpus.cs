@@ -1,10 +1,22 @@
-using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Net;
+using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace aweXpect.Generators.Tests;
 
 public static class Corpus
 {
+	public delegate void Handler(int value);
+
+	public enum Level
+	{
+		Low,
+		High,
+	}
+
 	public interface IHasValue
 	{
 		int Value { get; }
@@ -108,7 +120,7 @@ public static class Corpus
 	public class HidingDynamic : WithDynamic
 	{
 		public int Own { get; set; }
-		private new object Value { get; set; } = 2;
+		private new object Value { get; } = 2;
 
 		public override string ToString() => $"{Value}";
 	}
@@ -118,7 +130,7 @@ public static class Corpus
 		public class Inner<TInner> : Generic<T>
 		{
 			public int Own { get; set; }
-			private new TInner Value { get; set; } = default!;
+			private new TInner Value { get; } = default!;
 
 			public override string ToString() => $"{Value}";
 		}
@@ -176,9 +188,9 @@ public static class Corpus
 	public class WithTwoExplicitInterfaces : IHasValue, IHasOtherValue, IHasGenericValue<string>
 	{
 		public int Own { get; set; }
-		int IHasValue.Value => 1;
-		int IHasOtherValue.Value => 2;
 		string IHasGenericValue<string>.Value => "";
+		int IHasOtherValue.Value => 2;
+		int IHasValue.Value => 1;
 	}
 
 	public class InheritingExplicitInterface : WithExplicitInterface
@@ -232,10 +244,10 @@ public static class Corpus
 	{
 		private readonly int _private = 1;
 		internal int Internal = 2;
-		protected int Protected = 3;
-		public int Public = 4;
-		protected internal int ProtectedInternal = 5;
 		private protected int PrivateProtected = 6;
+		protected int Protected = 3;
+		protected internal int ProtectedInternal = 5;
+		public int Public = 4;
 
 		public override string ToString()
 			=> $"{_private}{Internal}{Protected}{Public}{ProtectedInternal}{PrivateProtected}";
@@ -320,13 +332,13 @@ public static class Corpus
 
 	public class PublisherWithExplicitInterface : IHasEvent
 	{
-		public event Action? Own;
-
 		event EventHandler IHasEvent.Happened
 		{
 			add { }
 			remove { }
 		}
+
+		public event Action? Own;
 
 		public void RaiseOwn() => Own?.Invoke();
 	}
@@ -371,25 +383,17 @@ public static class Corpus
 		public void RaiseOwn() => Own?.Invoke();
 	}
 
-	public enum Level
-	{
-		Low,
-		High,
-	}
-
-	public delegate void Handler(int value);
-
-	public class DerivedType() : System.Reflection.TypeDelegator(typeof(int))
+	public class DerivedType() : TypeDelegator(typeof(int))
 	{
 		public Base? Own { get; set; }
 	}
 
-	public class DerivedAssembly : System.Reflection.Assembly
+	public class DerivedAssembly : Assembly
 	{
 		public Base? Own { get; set; }
 	}
 
-	public class DerivedModule : System.Reflection.Module
+	public class DerivedModule : Module
 	{
 		public Base? Own { get; set; }
 	}
@@ -399,32 +403,32 @@ public static class Corpus
 		public Base? Own { get; set; }
 	}
 
-	public class DerivedCulture() : System.Globalization.CultureInfo("en")
+	public class DerivedCulture() : CultureInfo("en")
 	{
 		public Base? Own { get; set; }
 	}
 
-	public class DerivedAddress() : System.Net.IPAddress(1L)
+	public class DerivedAddress() : IPAddress(1L)
 	{
 		public Base? Own { get; set; }
 	}
 
-	public class DerivedEncoding : System.Text.UTF8Encoding
+	public class DerivedEncoding : UTF8Encoding
 	{
 		public Base? Own { get; set; }
 	}
 
-	public class DerivedRegex() : System.Text.RegularExpressions.Regex("a")
+	public class DerivedRegex() : Regex("a")
 	{
 		public Base? Own { get; set; }
 	}
 
-	public class DerivedTask() : System.Threading.Tasks.Task(() => { })
+	public class DerivedTask() : Task(() => { })
 	{
 		public Base? Own { get; set; }
 	}
 
-	public class DerivedTask<T>() : System.Threading.Tasks.Task<T>(() => default!)
+	public class DerivedTask<T>() : Task<T>(() => default!)
 	{
 		public Base? Own { get; set; }
 	}

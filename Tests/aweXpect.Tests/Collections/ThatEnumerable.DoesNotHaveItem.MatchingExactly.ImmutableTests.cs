@@ -16,7 +16,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTypeIsSubtype_ShouldSucceed()
 				{
-					ImmutableArray<MyBaseClass> subject = [new MyBaseClass(0), new MyClass(1),];
+					ImmutableArray<MyBaseClass> subject = [new(), new MyClass(1),];
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyBaseClass>().AtIndex(1);
@@ -27,7 +27,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTypeMatchesExactlyAtGivenIndex_ShouldFail()
 				{
-					ImmutableArray<MyBaseClass> subject = [new MyBaseClass(0), new MyClass(1),];
+					ImmutableArray<MyBaseClass> subject = [new(), new MyClass(1),];
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyClass>().AtIndex(1);
@@ -60,7 +60,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenItemOfTypeMatchesAtGivenIndex_ShouldFail()
 				{
-					ImmutableArray<MyBaseClass> subject = [new MyBaseClass(0), new MyClass(1),];
+					ImmutableArray<MyBaseClass> subject = [new(), new MyClass(1),];
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyClass>(x => x.Value == 1).AtIndex(1);
@@ -90,7 +90,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenPredicateDoesNotMatch_ShouldSucceed()
 				{
-					ImmutableArray<MyBaseClass> subject = [new MyBaseClass(0), new MyClass(1),];
+					ImmutableArray<MyBaseClass> subject = [new(), new MyClass(1),];
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyClass>(x => x.Value == 2).AtIndex(1);

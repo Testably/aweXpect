@@ -96,7 +96,9 @@ public sealed partial class ThatEventRecording
 		public int Extra { get; set; }
 
 		public static explicit operator PropertyChangedConversionTarget(PropertyChangedBaseClass _)
-			=> new();
+		{
+			return new PropertyChangedConversionTarget();
+		}
 	}
 
 	private sealed class PropertyChangedClass : INotifyPropertyChanged
@@ -117,7 +119,7 @@ public sealed partial class ThatEventRecording
 	/// </remarks>
 	private sealed class PropertyChangedWithMembersClass : INotifyPropertyChanged
 	{
-		public int MyField = 1;
+		public readonly int MyField = 1;
 
 		public PropertyChangedWithMembersClass? Inner { get; set; }
 

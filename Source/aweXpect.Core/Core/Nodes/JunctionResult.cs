@@ -65,6 +65,9 @@ internal sealed class JunctionResult : CombinedResult
 	}
 
 	/// <inheritdoc />
+	internal override bool IsNegatedAnd => _isAnd && GetAndSeparator() != _separator;
+
+	/// <inheritdoc />
 	/// <remarks>
 	///     The right operand does not explain the outcome after a failed left operand which ignores the result of the
 	///     following ones, e.g. a failed null check.
@@ -75,9 +78,6 @@ internal sealed class JunctionResult : CombinedResult
 		return (explainsLeft, Right.ExplainsOutcomeOf(this) &&
 		                      (!explainsLeft || FurtherProcessingStrategy != FurtherProcessingStrategy.IgnoreResult));
 	}
-
-	/// <inheritdoc />
-	internal override bool IsNegatedAnd => _isAnd && GetAndSeparator() != _separator;
 
 	/// <inheritdoc />
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -111,13 +111,6 @@ internal sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
 	/// <inheritdoc />
 	protected override Type ItemType => _itemType ?? typeof(TItem);
 
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-	{
-		_collectionContext.AppendTo(contexts);
-		base.AppendContexts(contexts);
-	}
-
 	public async ValueTask<ConstraintResult> IsMetBy(
 		TEnumerable actual,
 		IEvaluationContext context,
@@ -182,6 +175,13 @@ internal sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
 		return this;
 	}
 
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		_collectionContext.AppendTo(contexts);
+		base.AppendContexts(contexts);
+	}
+
 	private void KeepItemType(TItem item, bool isUntyped)
 	{
 		if (isUntyped)
@@ -205,13 +205,6 @@ internal sealed class AsyncAreUniqueConstraint<TItem, TMember>(
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
 	private CollectionContext _collectionContext;
-
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-	{
-		_collectionContext.AppendTo(contexts);
-		base.AppendContexts(contexts);
-	}
 
 	public async ValueTask<ConstraintResult> IsMetBy(
 		IAsyncEnumerable<TItem>? actual,
@@ -255,6 +248,13 @@ internal sealed class AsyncAreUniqueConstraint<TItem, TMember>(
 		Complete();
 		_collectionContext.Set(collection);
 		return this;
+	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		_collectionContext.AppendTo(contexts);
+		base.AppendContexts(contexts);
 	}
 }
 #endif

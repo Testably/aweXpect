@@ -7,6 +7,42 @@ namespace aweXpect.Helpers;
 
 internal static class ObjectEqualityWithToleranceOptionsFactory
 {
+	private static readonly Dictionary<Type, Func<object>> TimeOptionsFactories = new()
+	{
+		{
+			typeof(DateTime), CreateDateTime
+		},
+		{
+			typeof(DateTime?), CreateNullableDateTime
+		},
+		{
+			typeof(DateTimeOffset), CreateDateTimeOffset
+		},
+		{
+			typeof(DateTimeOffset?), CreateNullableDateTimeOffset
+		},
+		{
+			typeof(TimeSpan), CreateTimeSpan
+		},
+		{
+			typeof(TimeSpan?), CreateNullableTimeSpan
+		},
+#if NET8_0_OR_GREATER
+		{
+			typeof(DateOnly), CreateDateOnly
+		},
+		{
+			typeof(DateOnly?), CreateNullableDateOnly
+		},
+		{
+			typeof(TimeOnly), CreateTimeOnly
+		},
+		{
+			typeof(TimeOnly?), CreateNullableTimeOnly
+		},
+#endif
+	};
+
 	public static ObjectEqualityWithToleranceOptions<double, double> CreateDouble() =>
 		new ItemEqualityWithToleranceOptions<double, double>((a, e, t) => a.IsConsideredEqualTo(e, t));
 
@@ -97,6 +133,22 @@ internal static class ObjectEqualityWithToleranceOptionsFactory
 		new ItemEqualityWithToleranceOptions<TimeSpan?, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
 			defaultTolerance: DefaultTimeTolerance);
 
+	/// <summary>
+	///     Returns the equality options for values of type <typeparamref name="TItem" />, which apply the default time
+	///     tolerance when <typeparamref name="TItem" /> is one of the time types.
+	/// </summary>
+	/// <remarks>
+	///     Serves the expectations whose value type is only a type parameter, so that none of the <c>Create…</c> methods
+	///     can be chosen at compile time. Its name must not start with <c>Create</c>, as the generator would pick it up.
+	/// </remarks>
+	public static ObjectEqualityOptions<TItem> ForValuesOf<TItem>()
+		=> TimeOptionsFactories.TryGetValue(typeof(TItem), out Func<object>? create)
+			? (ObjectEqualityOptions<TItem>)create()
+			: new ObjectEqualityOptions<TItem>();
+
+	private static TimeSpan DefaultTimeTolerance()
+		=> Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
+
 #if NET8_0_OR_GREATER
 	public static ObjectEqualityWithToleranceOptions<DateOnly, TimeSpan> CreateDateOnly() =>
 		new ItemEqualityWithToleranceOptions<DateOnly, TimeSpan>((a, e, t) => a.IsConsideredEqualTo(e, t),
@@ -128,36 +180,4 @@ internal static class ObjectEqualityWithToleranceOptionsFactory
 		return days == 1 ? " ± 1 day" : $" ± {days} days";
 	}
 #endif
-
-	/// <summary>
-	///     Returns the equality options for values of type <typeparamref name="TItem" />, which apply the default time
-	///     tolerance when <typeparamref name="TItem" /> is one of the time types.
-	/// </summary>
-	/// <remarks>
-	///     Serves the expectations whose value type is only a type parameter, so that none of the <c>Create…</c> methods
-	///     can be chosen at compile time. Its name must not start with <c>Create</c>, as the generator would pick it up.
-	/// </remarks>
-	public static ObjectEqualityOptions<TItem> ForValuesOf<TItem>()
-		=> TimeOptionsFactories.TryGetValue(typeof(TItem), out Func<object>? create)
-			? (ObjectEqualityOptions<TItem>)create()
-			: new ObjectEqualityOptions<TItem>();
-
-	private static readonly Dictionary<Type, Func<object>> TimeOptionsFactories = new()
-	{
-		{ typeof(DateTime), CreateDateTime },
-		{ typeof(DateTime?), CreateNullableDateTime },
-		{ typeof(DateTimeOffset), CreateDateTimeOffset },
-		{ typeof(DateTimeOffset?), CreateNullableDateTimeOffset },
-		{ typeof(TimeSpan), CreateTimeSpan },
-		{ typeof(TimeSpan?), CreateNullableTimeSpan },
-#if NET8_0_OR_GREATER
-		{ typeof(DateOnly), CreateDateOnly },
-		{ typeof(DateOnly?), CreateNullableDateOnly },
-		{ typeof(TimeOnly), CreateTimeOnly },
-		{ typeof(TimeOnly?), CreateNullableTimeOnly },
-#endif
-	};
-
-	private static TimeSpan DefaultTimeTolerance()
-		=> Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Get();
 }

@@ -11,13 +11,13 @@ namespace aweXpect.Core.Tests.TestHelpers;
 internal sealed class ExpectationTextConstraint<T>(string expectation, string negatedExpectation)
 	: IValueConstraint<T>, IExpectationTextConstraint
 {
-	public ConstraintResult IsMetBy(T actual)
-		=> throw new InvalidOperationException("The constraint must not be evaluated.");
-
 	public ValueTask<ConstraintResult> GetExpectationResult(IEvaluationContext context,
 		CancellationToken cancellationToken)
 		=> new(
 			new ConstraintResult.ExpectationOnly<T>(ExpectationGrammars.None, expectation, negatedExpectation));
+
+	public ConstraintResult IsMetBy(T actual)
+		=> throw new InvalidOperationException("The constraint must not be evaluated.");
 
 	public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append("the constraint itself");

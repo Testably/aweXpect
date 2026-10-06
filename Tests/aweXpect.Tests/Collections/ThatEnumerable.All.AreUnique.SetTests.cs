@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 
 namespace aweXpect.Tests;
@@ -13,7 +14,11 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task ForAnUntypedSetOfObjects_ShouldUseTheComparerOfTheSet()
 				{
-					System.Collections.IEnumerable subject = new HashSet<object>(new AllDifferentComparer()) { 1, 1, };
+					IEnumerable subject = new HashSet<object>(new AllDifferentComparer())
+					{
+						1,
+						1,
+					};
 
 					async Task Act()
 						=> await That(subject).All().AreUnique();
@@ -25,7 +30,11 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task ForAStringSet_ShouldUseTheComparerOfTheSet()
 				{
-					HashSet<string> subject = new(new AllDifferentComparer()) { "a", "a", };
+					HashSet<string> subject = new(new AllDifferentComparer())
+					{
+						"a",
+						"a",
+					};
 
 					async Task Act()
 						=> await That(subject).All().AreUnique();
@@ -37,7 +46,11 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task ShouldUseTheComparerOfTheSet()
 				{
-					HashSet<object> subject = new(new AllDifferentComparer()) { 1, 1, };
+					HashSet<object> subject = new(new AllDifferentComparer())
+					{
+						1,
+						1,
+					};
 
 					async Task Act()
 						=> await That(subject).All().AreUnique();
@@ -49,7 +62,11 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task Using_ShouldOverrideTheComparerOfTheSet()
 				{
-					HashSet<object> subject = new(new AllDifferentComparer()) { 1, 2, };
+					HashSet<object> subject = new(new AllDifferentComparer())
+					{
+						1,
+						2,
+					};
 
 					async Task Act()
 						=> await That(subject).All().AreUnique().Using(new AllEqualComparer());
@@ -77,7 +94,11 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenIgnoringCase_ShouldIgnoreTheComparerOfTheSet()
 				{
-					HashSet<string> subject = new(StringComparer.Ordinal) { "a", "A", };
+					HashSet<string> subject = new(StringComparer.Ordinal)
+					{
+						"a",
+						"A",
+					};
 
 					async Task Act()
 						=> await That(subject).All().AreUnique().IgnoringCase();

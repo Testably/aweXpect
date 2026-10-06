@@ -49,7 +49,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTypeIsSupertype_ShouldSucceed()
 				{
-					ImmutableArray<MyBaseClass> subject = [new MyBaseClass(0), new MyBaseClass(1),];
+					ImmutableArray<MyBaseClass> subject = [new(), new(1),];
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().Matching<MyClass>().AtIndex(1);
@@ -60,7 +60,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTypeMatchesAtGivenIndex_ShouldFail()
 				{
-					ImmutableArray<MyBaseClass> subject = [new MyBaseClass(0), new MyClass(1),];
+					ImmutableArray<MyBaseClass> subject = [new(), new MyClass(1),];
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().Matching<MyClass>().AtIndex(1);

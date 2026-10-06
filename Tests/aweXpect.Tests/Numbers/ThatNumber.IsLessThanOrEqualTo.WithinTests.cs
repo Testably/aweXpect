@@ -287,7 +287,7 @@ public sealed partial class ThatNumber
 				sbyte expected = sbyte.MinValue;
 
 				async Task Act()
-					=> await That(subject).IsLessThanOrEqualTo(expected).Within((sbyte)1);
+					=> await That(subject).IsLessThanOrEqualTo(expected).Within(1);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

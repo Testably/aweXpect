@@ -54,7 +54,7 @@ public class StringExtensionsTests
 		{
 			string input = "foo\r\n\r\nbar";
 
-			string result = input.Indent("  ");
+			string result = input.Indent();
 
 			await That(result).IsEqualTo("  foo\r\n  \r\n  bar")
 				.Because("the line endings must be kept and empty lines are indented as well");

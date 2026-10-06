@@ -15,7 +15,6 @@ namespace aweXpect.Core.Nodes;
 /// </remarks>
 internal sealed class MemberExceptionResult : ConstraintResult
 {
-	private readonly Exception _exception;
 	private readonly bool _explainsWithInner;
 	private readonly ConstraintResult _inner;
 	private readonly string _member;
@@ -30,7 +29,7 @@ internal sealed class MemberExceptionResult : ConstraintResult
 		_explainsWithInner = explainsWithInner;
 		_otherExceptions = otherExceptions;
 		_inner = inner;
-		_exception = exception;
+		FailureCause = exception;
 		_member = member;
 		_value = value;
 		_valueType = valueType;
@@ -39,7 +38,7 @@ internal sealed class MemberExceptionResult : ConstraintResult
 
 
 	/// <inheritdoc />
-	public override Exception FailureCause => _exception;
+	public override Exception FailureCause { get; }
 
 	/// <summary>
 	///     Creates a <see cref="MemberExceptionResult" /> which uses the <paramref name="inner" /> result for the
@@ -70,7 +69,7 @@ internal sealed class MemberExceptionResult : ConstraintResult
 	/// <inheritdoc />
 	public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(_member).Append(" did throw ")
-			.Append(ThatDelegate.FormatForMessage(_exception, indentation));
+			.Append(ThatDelegate.FormatForMessage(FailureCause, indentation));
 
 	/// <inheritdoc />
 	public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default

@@ -268,13 +268,15 @@ public sealed partial class ThatEnumerable
 			{
 				public List<TrackingEnumerator> Enumerators { get; } = [];
 
-				public int Count => items.Length;
-
-				public bool IsReadOnly => true;
-
 				public bool IsSynchronized => false;
 
 				public object SyncRoot => this;
+
+				public void CopyTo(Array array, int index) => items.CopyTo(array, index);
+
+				public int Count => items.Length;
+
+				public bool IsReadOnly => true;
 
 				public IEnumerator<int> GetEnumerator()
 				{
@@ -288,8 +290,6 @@ public sealed partial class ThatEnumerable
 				public bool Contains(int item) => items.Contains(item);
 
 				public void CopyTo(int[] array, int arrayIndex) => items.CopyTo(array, arrayIndex);
-
-				public void CopyTo(Array array, int index) => items.CopyTo(array, index);
 
 				public void Add(int item) => throw new NotSupportedException();
 

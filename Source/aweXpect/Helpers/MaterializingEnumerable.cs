@@ -37,6 +37,30 @@ internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable
 		return new MaterializingEnumerable<T>(enumerable);
 	}
 
+	/// <remarks>
+	///     A source that threw is not advanced again, but every further enumeration throws the same exception, so that
+	///     it cannot be mistaken for the end of the source. The source is disposed once it threw or is exhausted; a
+	///     source that is only read partially is not disposed, as a later enumeration continues it.
+	/// </remarks>
+	private bool MoveNext()
+	{
+		if (_sourceException is not null)
+		{
+			ExceptionDispatchInfo.Capture(_sourceException).Throw();
+		}
+
+		try
+		{
+			return _enumerator.MoveNext();
+		}
+		catch (Exception exception)
+		{
+			_sourceException = exception;
+			_enumerator.Dispose();
+			throw;
+		}
+	}
+
 	#region IEnumerable<T> Members
 
 	/// <inheritdoc />
@@ -70,28 +94,4 @@ internal sealed class MaterializingEnumerable<T> : IEnumerable<T>, ICountable
 	}
 
 	#endregion
-
-	/// <remarks>
-	///     A source that threw is not advanced again, but every further enumeration throws the same exception, so that
-	///     it cannot be mistaken for the end of the source. The source is disposed once it threw or is exhausted; a
-	///     source that is only read partially is not disposed, as a later enumeration continues it.
-	/// </remarks>
-	private bool MoveNext()
-	{
-		if (_sourceException is not null)
-		{
-			ExceptionDispatchInfo.Capture(_sourceException).Throw();
-		}
-
-		try
-		{
-			return _enumerator.MoveNext();
-		}
-		catch (Exception exception)
-		{
-			_sourceException = exception;
-			_enumerator.Dispose();
-			throw;
-		}
-	}
 }

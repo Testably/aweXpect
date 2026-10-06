@@ -44,7 +44,11 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenStringValueDiffersInMoreThanCase_WithIgnoringCase_ShouldFail()
 			{
-				Dictionary<int, string?> subject = new() { [1] = "foo", [2] = "bar", };
+				Dictionary<int, string?> subject = new()
+				{
+					[1] = "foo",
+					[2] = "bar",
+				};
 
 				async Task Act()
 					=> await That(subject).ContainsValue("BAZ").IgnoringCase();
@@ -66,7 +70,11 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenStringValueDiffersOnlyInCase_WithIgnoringCase_ShouldSucceed()
 			{
-				Dictionary<int, string?> subject = new() { [1] = "foo", [2] = "bar", };
+				Dictionary<int, string?> subject = new()
+				{
+					[1] = "foo",
+					[2] = "bar",
+				};
 
 				async Task Act()
 					=> await That(subject).ContainsValue("BAR").IgnoringCase();
@@ -94,7 +102,10 @@ public sealed partial class ThatDictionary
 			public async Task WhenTheDefaultTimeToleranceIsSet_ShouldApplyIt()
 			{
 				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
-				Dictionary<int, DateTime> subject = new() { [1] = value, };
+				Dictionary<int, DateTime> subject = new()
+				{
+					[1] = value,
+				};
 
 				async Task Act()
 				{
@@ -111,7 +122,10 @@ public sealed partial class ThatDictionary
 			public async Task WhenTheDefaultTimeToleranceIsSet_ShouldMentionIt()
 			{
 				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
-				Dictionary<int, DateTime> subject = new() { [1] = value, };
+				Dictionary<int, DateTime> subject = new()
+				{
+					[1] = value,
+				};
 				DateTime expected = value.AddSeconds(2);
 
 				async Task Act()
@@ -147,7 +161,10 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenValueIsANumberOfADifferentType_ShouldSucceed()
 			{
-				Dictionary<string, object> subject = new() { ["a"] = 1, };
+				Dictionary<string, object> subject = new()
+				{
+					["a"] = 1,
+				};
 
 				async Task Act()
 					=> await That(subject).ContainsValue(1L);
@@ -159,7 +176,11 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenValueIsEquivalent_WithEquivalent_ShouldSucceed()
 			{
-				Dictionary<int, MyClass> subject = new() { [1] = new MyClass(1), [2] = new MyClass(2), };
+				Dictionary<int, MyClass> subject = new()
+				{
+					[1] = new MyClass(1),
+					[2] = new MyClass(2),
+				};
 
 				async Task Act()
 					=> await That(subject).ContainsValue(new MyClass(2)).Equivalent();
@@ -229,7 +250,10 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenAnIntegerLiesWithinTheTolerance_ShouldSucceed()
 			{
-				Dictionary<string, int> subject = new() { ["a"] = 41, };
+				Dictionary<string, int> subject = new()
+				{
+					["a"] = 41,
+				};
 
 				async Task Act()
 					=> await That(subject).ContainsValue(42).Within(1);
@@ -256,7 +280,10 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenTheValueLiesOutsideTheTolerance_ShouldFail()
 			{
-				Dictionary<string, double> subject = new() { ["a"] = 1.2, };
+				Dictionary<string, double> subject = new()
+				{
+					["a"] = 1.2,
+				};
 
 				async Task Act()
 					=> await That(subject).ContainsValue(1.0).Within(0.1);
@@ -275,7 +302,11 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenTheValueLiesWithinTheTolerance_ShouldSucceed()
 			{
-				Dictionary<string, float?> subject = new() { ["a"] = null, ["b"] = 1.05F, };
+				Dictionary<string, float?> subject = new()
+				{
+					["a"] = null,
+					["b"] = 1.05F,
+				};
 
 				async Task Act()
 					=> await That(subject).ContainsValue(1.0F).Within(0.1F);
@@ -290,7 +321,12 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task ForADictionary_ShouldKeepTheSubjectType()
 			{
-				Dictionary<string, int> subject = new() { { "a", 1 }, };
+				Dictionary<string, int> subject = new()
+				{
+					{
+						"a", 1
+					},
+				};
 
 				Dictionary<string, int> result = await That(subject).ContainsValue(1);
 
@@ -300,7 +336,12 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task ForADictionaryOfStrings_ShouldKeepTheSubjectType()
 			{
-				Dictionary<string, string?> subject = new() { { "a", "foo" }, };
+				Dictionary<string, string?> subject = new()
+				{
+					{
+						"a", "foo"
+					},
+				};
 
 				Dictionary<string, string?> result = await That(subject).ContainsValue("FOO").IgnoringCase();
 
@@ -310,7 +351,12 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task ForASortedDictionary_ShouldBindToTheDictionaryOverload()
 			{
-				SortedDictionary<string, int> subject = new() { { "a", 1 }, };
+				SortedDictionary<string, int> subject = new()
+				{
+					{
+						"a", 1
+					},
+				};
 
 				async Task Act()
 					=> await (ObjectEqualityWithToleranceResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>, int, int>)
@@ -328,7 +374,11 @@ public sealed partial class ThatDictionary
 			{
 				InvalidOperationException exception = new("enumeration failed");
 				IDictionary<string, int> subject =
-					new ThrowingDictionary<string, int>(exception, ThrowingMembers.Enumeration) { ["a"] = 1, ["b"] = 2, };
+					new ThrowingDictionary<string, int>(exception, ThrowingMembers.Enumeration)
+					{
+						["a"] = 1,
+						["b"] = 2,
+					};
 
 				async Task Act()
 					=> await That(subject).ContainsValue(1);

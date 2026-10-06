@@ -265,7 +265,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in order,
 					             but it lacked all 3 expected items
-					             
+
 					             Collection:
 					             []
 
@@ -302,7 +302,7 @@ public sealed partial class ThatEnumerable
 					               contained item 8 at index 7 instead of 108 and
 					               contained item 9 at index 8 instead of 109 and
 					               contained item 10 at index 9 instead of 110
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -338,7 +338,12 @@ public sealed partial class ThatEnumerable
 			{
 				int calls = 0;
 				Func<HashSet<string>?> subject = ()
-					=> calls++ == 0 ? new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "a", } : null;
+					=> calls++ == 0
+						? new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+						{
+							"a",
+						}
+						: null;
 
 				async Task Act()
 					=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
@@ -471,7 +476,7 @@ public sealed partial class ThatEnumerable
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(["foo", "bar", "baz",]);
-				
+
 				await That(Act).DoesNotThrow();
 			}
 
@@ -502,7 +507,7 @@ public sealed partial class ThatEnumerable
 					             but it was <null>
 					             """);
 			}
-			
+
 			[Test]
 			public async Task WhenTypeDoesNotMatchNullabilityAndItemsDiffer_ShouldListTheExpectedItemsOnOneLine()
 			{
@@ -534,7 +539,7 @@ public sealed partial class ThatEnumerable
 
 				async Task Act()
 					=> await That(subject).IsEqualTo([1, 2, 3,]);
-				
+
 				await That(Act).DoesNotThrow();
 			}
 
@@ -1422,7 +1427,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
 					             but it lacked all 3 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -1449,7 +1454,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
 					             but it lacked all 2 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -1487,7 +1492,7 @@ public sealed partial class ThatEnumerable
 					               contained item 9 at index 8 that was not expected and
 					               contained item 10 at index 9 that was not expected and
 					               lacked all 10 unique expected items
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -2028,7 +2033,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order,
 					             but it lacked all 3 expected items
-					             
+
 					             Collection:
 					             []
 
@@ -2066,7 +2071,7 @@ public sealed partial class ThatEnumerable
 					               contained item 9 at index 8 that was not expected and
 					               contained item 10 at index 9 that was not expected and
 					               lacked all 10 expected items
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -2100,8 +2105,8 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEquivalentAndAnItemDiffers_ShouldFail()
 			{
-				IEnumerable<MyClass> subject = ToEnumerable([new MyClass(1), new MyClass(2), new MyClass(3),]);
-				MyClass[] expected = [new MyClass(3), new MyClass(1), new MyClass(4),];
+				IEnumerable<MyClass> subject = ToEnumerable(new MyClass(1), new MyClass(2), new MyClass(3));
+				MyClass[] expected = [new(3), new(1), new(4),];
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).InAnyOrder().Equivalent();
@@ -2803,7 +2808,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order ignoring duplicates,
 					             but it lacked all 3 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -2832,7 +2837,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order ignoring duplicates,
 					             but it lacked all 2 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -2870,7 +2875,7 @@ public sealed partial class ThatEnumerable
 					               contained item 9 at index 8 that was not expected and
 					               contained item 10 at index 9 that was not expected and
 					               lacked all 10 unique expected items
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -3047,6 +3052,7 @@ public sealed partial class ThatEnumerable
 					             """)
 					.Because("the index counts the position in the subject, not the distinct items");
 			}
+
 			[Test]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldSucceed()
 			{

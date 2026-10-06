@@ -146,8 +146,8 @@ public sealed partial class ThatException
 						new CustomException("inner"));
 
 					async Task Act()
-						=> await That(subject).HasInner(type: typeof(CustomException),
-							expectations: e => e.HasMessage("inner"));
+						=> await That(subject).HasInner(typeof(CustomException),
+							e => e.HasMessage("inner"));
 
 					await That(Act).DoesNotThrow();
 				}
@@ -172,7 +172,7 @@ public sealed partial class ThatException
 					Exception subject = new("outer", new CustomException("inner"));
 
 					async Task Act()
-						=> await That(subject).HasInner((System.Type)null!, e => e.HasMessage("inner"));
+						=> await That(subject).HasInner(null!, e => e.HasMessage("inner"));
 
 					await That(Act).Throws<ArgumentNullException>()
 						.WithParamName("type").And
@@ -264,7 +264,7 @@ public sealed partial class ThatException
 						new CustomException("inner"));
 
 					async Task Act()
-						=> await That(subject).HasInner(type: typeof(CustomException));
+						=> await That(subject).HasInner(typeof(CustomException));
 
 					await That(Act).DoesNotThrow();
 				}

@@ -8,7 +8,10 @@ public sealed class OptionOrderTests
 		double[] subject = [1.0, 2.0,];
 
 		async Task Act()
-			=> await That(subject).IsEqualTo(new[] { 2.05, 1.05, }).InAnyOrder().Within(0.1);
+			=> await That(subject).IsEqualTo(new[]
+			{
+				2.05, 1.05,
+			}).InAnyOrder().Within(0.1);
 
 		await That(Act).DoesNotThrow();
 	}
@@ -33,10 +36,16 @@ public sealed class OptionOrderTests
 		                         """;
 
 		async Task Act()
-			=> await That(subject).IsEqualTo(new[] { 2.05, 1.05, }).InAnyOrder().Within(0.01);
+			=> await That(subject).IsEqualTo(new[]
+			{
+				2.05, 1.05,
+			}).InAnyOrder().Within(0.01);
 
 		async Task ReversedAct()
-			=> await That(subject).IsEqualTo(new[] { 2.05, 1.05, }).Within(0.01).InAnyOrder();
+			=> await That(subject).IsEqualTo(new[]
+			{
+				2.05, 1.05,
+			}).Within(0.01).InAnyOrder();
 
 		await That(Act).Throws<FailException>().WithMessage(expectedMessage);
 		await That(ReversedAct).Throws<FailException>().WithMessage(expectedMessage);
@@ -74,7 +83,10 @@ public sealed class OptionOrderTests
 		string[] subject = ["a", "b",];
 
 		async Task Act()
-			=> await That(subject).IsEqualTo(new[] { "B", "A", }).IgnoringCase().InAnyOrder();
+			=> await That(subject).IsEqualTo(new[]
+			{
+				"B", "A",
+			}).IgnoringCase().InAnyOrder();
 
 		await That(Act).DoesNotThrow();
 	}
@@ -104,10 +116,16 @@ public sealed class OptionOrderTests
 		                         """;
 
 		async Task Act()
-			=> await That(subject).IsEqualTo(new[] { "B", "C", }).IgnoringCase().InAnyOrder();
+			=> await That(subject).IsEqualTo(new[]
+			{
+				"B", "C",
+			}).IgnoringCase().InAnyOrder();
 
 		async Task ReversedAct()
-			=> await That(subject).IsEqualTo(new[] { "B", "C", }).InAnyOrder().IgnoringCase();
+			=> await That(subject).IsEqualTo(new[]
+			{
+				"B", "C",
+			}).InAnyOrder().IgnoringCase();
 
 		await That(Act).Throws<FailException>().WithMessage(expectedMessage);
 		await That(ReversedAct).Throws<FailException>().WithMessage(expectedMessage);

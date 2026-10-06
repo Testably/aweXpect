@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -78,13 +77,6 @@ public static partial class ThatObject
 	{
 		private IObjectMatchResult? _matchResult;
 
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
-			options.AppendContexts(contexts);
-		}
-
 		/// <remarks>
 		///     Every candidate is compared with an explanation, as the failure message explains the comparison with a
 		///     single candidate, or with the matching one when negated.
@@ -104,6 +96,13 @@ public static partial class ThatObject
 
 			Outcome = Outcome.Failure;
 			return this;
+		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
+			options.AppendContexts(contexts);
 		}
 
 		/// <remarks>

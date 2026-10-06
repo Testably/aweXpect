@@ -22,14 +22,14 @@ public sealed partial class QuantifiedCollectionResult
 				             Expected that subject
 				             is of type QuantifiedCollectionResult.MyClass for all items,
 				             but only 2 of 3 were
-				             
+
 				             Not matching items:
 				             [
 				               QuantifiedCollectionResult.OtherClass {
 				                 Value = 1
 				               }
 				             ]
-				             
+
 				             Collection:
 				             [
 				               QuantifiedCollectionResult.MyClass {

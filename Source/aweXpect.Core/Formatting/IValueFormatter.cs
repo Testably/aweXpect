@@ -12,7 +12,7 @@ public interface IValueFormatter
 	///     if the <paramref name="value" /> can be formatted, otherwise leaves the <paramref name="stringBuilder" />
 	///     untouched and returns <see langword="false" />.
 	/// </summary>
-	public bool TryFormat(
+	bool TryFormat(
 		StringBuilder stringBuilder,
 		object value,
 		FormattingOptions? options);

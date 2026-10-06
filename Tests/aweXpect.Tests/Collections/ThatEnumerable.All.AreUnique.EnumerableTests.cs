@@ -372,7 +372,10 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenAllMembersAreUnique_ShouldSucceed()
 				{
-					IEnumerable subject = new[] { "a", "b", "c", };
+					IEnumerable subject = new[]
+					{
+						"a", "b", "c",
+					};
 
 					async Task Act()
 						=> await That(subject).All().AreUnique(x => (string)x!);
@@ -383,7 +386,10 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenMembersDifferInCasing_ShouldSucceed()
 				{
-					IEnumerable subject = new[] { "a", "A", };
+					IEnumerable subject = new[]
+					{
+						"a", "A",
+					};
 
 					async Task Act()
 						=> await That(subject).All().AreUnique(x => (string)x!);
@@ -394,7 +400,10 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenMembersDifferInCasingAndCasingIsIgnored_ShouldFail()
 				{
-					IEnumerable subject = new[] { "a", "b", "A", };
+					IEnumerable subject = new[]
+					{
+						"a", "b", "A",
+					};
 
 					async Task Act()
 						=> await That(subject).All().AreUnique(x => (string)x!).IgnoringCase();
@@ -442,7 +451,10 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenAllMembersAreUnique_ShouldFail()
 				{
-					IEnumerable subject = new[] { "a", "b", };
+					IEnumerable subject = new[]
+					{
+						"a", "b",
+					};
 
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().AreUnique(x => (string)x!));
@@ -464,7 +476,10 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenMembersDifferOnlyInCasingAndCasingIsIgnored_ShouldSucceed()
 				{
-					IEnumerable subject = new[] { "a", "A", };
+					IEnumerable subject = new[]
+					{
+						"a", "A",
+					};
 
 					async Task Act()
 						=> await That(subject)

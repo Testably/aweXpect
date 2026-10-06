@@ -248,7 +248,7 @@ public sealed partial class ThatException
 				Exception subject = new("outer", new CustomException("inner"));
 
 				async Task Act()
-					=> await That(subject).DoesNotHaveInner((Type)null!);
+					=> await That(subject).DoesNotHaveInner(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("type").And

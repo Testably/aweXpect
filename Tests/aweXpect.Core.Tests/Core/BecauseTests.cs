@@ -11,10 +11,7 @@ public class BecauseTests
 		Task<string?> becauseTask = Task.Delay(5).ContinueWith(_ => because)!;
 		Action subject = () => throw new MyException();
 
-		async Task Act()
-		{
-			await That(subject).DoesNotThrow().Because(becauseTask);
-		}
+		async Task Act() => await That(subject).DoesNotThrow().Because(becauseTask);
 
 		await That(Act).Throws().WithMessage($"*{because}*").AsWildcard();
 	}
@@ -25,10 +22,7 @@ public class BecauseTests
 		string because = "this is the reason";
 		Action subject = () => throw new MyException();
 
-		async Task Act()
-		{
-			await That(subject).DoesNotThrow().Because(because);
-		}
+		async Task Act() => await That(subject).DoesNotThrow().Because(because);
 
 		await That(Act).Throws().WithMessage($"*{because}*").AsWildcard();
 	}
@@ -42,10 +36,7 @@ public class BecauseTests
 		Task<string?> becauseTask = Task.FromResult(because);
 		Action subject = () => throw new MyException();
 
-		async Task Act()
-		{
-			await That(subject).DoesNotThrow().Because(becauseTask);
-		}
+		async Task Act() => await That(subject).DoesNotThrow().Because(becauseTask);
 
 		Exception exception = await That(Act).Throws();
 		await That(exception.Message).DoesNotContain("because");
@@ -59,10 +50,7 @@ public class BecauseTests
 	{
 		Action subject = () => throw new MyException();
 
-		async Task Act()
-		{
-			await That(subject).DoesNotThrow().Because(because);
-		}
+		async Task Act() => await That(subject).DoesNotThrow().Because(because);
 
 		Exception exception = await That(Act).Throws();
 		await That(exception.Message).DoesNotContain("because");
@@ -74,10 +62,7 @@ public class BecauseTests
 		Task<string?> becauseTask = Task.FromResult<string?>("I want to test an async 'because'");
 		bool subject = true;
 
-		async Task Act()
-		{
-			await That(subject).IsFalse().Because(becauseTask);
-		}
+		async Task Act() => await That(subject).IsFalse().Because(becauseTask);
 
 		await That(Act).Throws()
 			.WithMessage("""
@@ -93,10 +78,7 @@ public class BecauseTests
 		string because = "I want to test 'because'";
 		bool subject = true;
 
-		async Task Act()
-		{
-			await That(subject).IsFalse().Because(because);
-		}
+		async Task Act() => await That(subject).IsFalse().Because(because);
 
 		await That(Act).Throws().WithMessage($"*{because}*").AsWildcard();
 	}
@@ -108,10 +90,7 @@ public class BecauseTests
 		Task<string?> becauseTask = Task.Delay(5).ContinueWith(_ => because)!;
 		Func<int> subject = () => throw new MyException();
 
-		async Task Act()
-		{
-			await That(subject).DoesNotThrow().Because(becauseTask);
-		}
+		async Task Act() => await That(subject).DoesNotThrow().Because(becauseTask);
 
 		await That(Act).Throws().WithMessage($"*{because}*").AsWildcard();
 	}
@@ -122,10 +101,7 @@ public class BecauseTests
 		string because = "this is the reason";
 		Func<int> subject = () => throw new MyException();
 
-		async Task Act()
-		{
-			await That(subject).DoesNotThrow().Because(because);
-		}
+		async Task Act() => await That(subject).DoesNotThrow().Because(because);
 
 		await That(Act).Throws().WithMessage($"*{because}*").AsWildcard();
 	}
@@ -138,10 +114,7 @@ public class BecauseTests
 	{
 		bool subject = true;
 
-		async Task Act()
-		{
-			await That(subject).IsFalse().Because(because);
-		}
+		async Task Act() => await That(subject).IsFalse().Because(because);
 
 		await That(Act).Throws().WithMessage($"*{expectedWithPrefix}*")
 			.AsWildcard();
@@ -154,11 +127,8 @@ public class BecauseTests
 		string because2 = "this is the second reason";
 		bool subject = false;
 
-		async Task Act()
-		{
-			await That(subject).IsTrue().Because(because1)
-				.And.IsFalse().Because(because2);
-		}
+		async Task Act() => await That(subject).IsTrue().Because(because1)
+			.And.IsFalse().Because(because2);
 
 		await That(Act).Throws().WithMessage($"*{because1}*").AsWildcard();
 	}
@@ -170,10 +140,7 @@ public class BecauseTests
 		becauseSource.SetCanceled();
 		bool subject = true;
 
-		async Task Act()
-		{
-			await That(subject).IsFalse().Because(becauseSource.Task);
-		}
+		async Task Act() => await That(subject).IsFalse().Because(becauseSource.Task);
 
 		await That(Act).Throws()
 			.WithMessage("""
@@ -192,10 +159,7 @@ public class BecauseTests
 		Task<string?> becauseTask = Task.FromResult(because);
 		bool subject = true;
 
-		async Task Act()
-		{
-			await That(subject).IsFalse().Because(becauseTask);
-		}
+		async Task Act() => await That(subject).IsFalse().Because(becauseTask);
 
 		await That(Act).Throws()
 			.WithMessage("""
@@ -227,10 +191,7 @@ public class BecauseTests
 		Task<string?> becauseTask = Task.FromException<string?>(new MyException("the reason provider\nis broken"));
 		bool subject = true;
 
-		async Task Act()
-		{
-			await That(subject).IsFalse().Because(becauseTask);
-		}
+		async Task Act() => await That(subject).IsFalse().Because(becauseTask);
 
 		await That(Act).Throws()
 			.WithMessage("""
@@ -247,10 +208,7 @@ public class BecauseTests
 		Task<string?> becauseTask = Task.FromException<string?>(new MyException("the reason provider is broken"));
 		bool subject = true;
 
-		async Task Act()
-		{
-			await That(subject).IsFalse().Because(becauseTask);
-		}
+		async Task Act() => await That(subject).IsFalse().Because(becauseTask);
 
 		await That(Act).Throws()
 			.WithMessage("""
@@ -265,10 +223,7 @@ public class BecauseTests
 	{
 		Task<string?> becauseTask = Task.FromException<string?>(new MyException("the reason provider is broken"));
 
-		async Task Act()
-		{
-			await That(1).IsEqualTo(1).Because(becauseTask);
-		}
+		async Task Act() => await That(1).IsEqualTo(1).Because(becauseTask);
 
 		await That(Act).DoesNotThrow();
 	}
@@ -278,11 +233,8 @@ public class BecauseTests
 	{
 		Action subject = () => throw new MyException("foo");
 
-		async Task Act()
-		{
-			await That(subject).Throws<MyException>().Because("of reasons")
-				.WithMessage("bar");
-		}
+		async Task Act() => await That(subject).Throws<MyException>().Because("of reasons")
+			.WithMessage("bar");
 
 		await That(Act).Throws()
 			.WithMessage("""
@@ -305,11 +257,8 @@ public class BecauseTests
 		string because = "we append it after all constraints";
 		bool subject = true;
 
-		async Task Act()
-		{
-			await That(subject).IsTrue().Because(because)
-				.And.IsFalse();
-		}
+		async Task Act() => await That(subject).IsTrue().Because(because)
+			.And.IsFalse();
 
 		await That(Act).Throws()
 			.WithMessage("""
@@ -326,11 +275,8 @@ public class BecauseTests
 		string because2 = "this is the second reason";
 		bool subject = true;
 
-		async Task Act()
-		{
-			await That(subject).IsTrue().Because(because1)
-				.And.IsFalse().Because(because2);
-		}
+		async Task Act() => await That(subject).IsTrue().Because(because1)
+			.And.IsFalse().Because(because2);
 
 		await That(Act).Throws().WithMessage($"*{because2}*").AsWildcard();
 	}
@@ -340,11 +286,8 @@ public class BecauseTests
 	{
 		bool subject = true;
 
-		async Task Act()
-		{
-			await That(subject).IsTrue().Because("of the first reason")
-				.And.IsFalse().Because(Task.FromResult<string?>("of the second reason"));
-		}
+		async Task Act() => await That(subject).IsTrue().Because("of the first reason")
+			.And.IsFalse().Because(Task.FromResult<string?>("of the second reason"));
 
 		await That(Act).Throws()
 			.WithMessage("""
@@ -359,11 +302,8 @@ public class BecauseTests
 	{
 		bool subject = true;
 
-		async Task Act()
-		{
-			await That(subject).IsFalse().Because("of reasons")
-				.Or.IsFalse();
-		}
+		async Task Act() => await That(subject).IsFalse().Because("of reasons")
+			.Or.IsFalse();
 
 		await That(Act).Throws()
 			.WithMessage("""
@@ -380,11 +320,8 @@ public class BecauseTests
 		string because2 = "this is the second reason";
 		bool subject = true;
 
-		async Task Act()
-		{
-			await That(subject).IsFalse().Because(because1)
-				.Or.IsFalse().Because(because2);
-		}
+		async Task Act() => await That(subject).IsFalse().Because(because1)
+			.Or.IsFalse().Because(because2);
 
 		await That(Act).Throws().WithMessage($"*{because1}*{because2}*")
 			.AsWildcard();
@@ -395,10 +332,7 @@ public class BecauseTests
 	{
 		bool subject = true;
 
-		async Task Act()
-		{
-			await That(subject).IsFalse();
-		}
+		async Task Act() => await That(subject).IsFalse();
 
 		await That(Act).Throws()
 			.WithMessage("""
@@ -416,10 +350,7 @@ public class BecauseTests
 	{
 		bool subject = true;
 
-		async Task Act()
-		{
-			await That(subject).IsFalse().Because(because);
-		}
+		async Task Act() => await That(subject).IsFalse().Because(because);
 
 		await That(Act).Throws()
 			.WithMessage("""
@@ -435,10 +366,7 @@ public class BecauseTests
 		string because = "because we honor a leading 'because'";
 		bool subject = true;
 
-		async Task Act()
-		{
-			await That(subject).IsFalse().Because(because);
-		}
+		async Task Act() => await That(subject).IsFalse().Because(because);
 
 		Exception exception = await That(Act).Throws()
 			.WithMessage("*because*").AsWildcard();
@@ -448,12 +376,9 @@ public class BecauseTests
 	[Test]
 	public async Task WhenUsedInExpectThatAll_ShouldAppendReasonToEachExpectation()
 	{
-		async Task Act()
-		{
-			await ThatAll(
-				That(true).IsFalse().Because("of the first reason").And.IsTrue(),
-				That(1).IsEqualTo(2).Because("of the second reason"));
-		}
+		async Task Act() => await ThatAll(
+			That(true).IsFalse().Because("of the first reason").And.IsTrue(),
+			That(1).IsEqualTo(2).Because("of the second reason"));
 
 		await That(Act).Throws()
 			.WithMessage("""

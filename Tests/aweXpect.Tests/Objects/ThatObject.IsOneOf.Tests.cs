@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using aweXpect.Equivalency;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -99,7 +98,13 @@ public sealed partial class ThatObject
 				};
 
 				async Task Act()
-					=> await That(subject).IsOneOf(new MyClass { Value = 2, }, new MyClass { Value = 3, }).Equivalent();
+					=> await That(subject).IsOneOf(new MyClass
+					{
+						Value = 2,
+					}, new MyClass
+					{
+						Value = 3,
+					}).Equivalent();
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -153,7 +158,17 @@ public sealed partial class ThatObject
 			public async Task WhenExpectedIsAnEnumerable_ShouldNameItsExpression()
 			{
 				MyClass subject = new();
-				IEnumerable<MyClass> expected = [new MyClass { Value = 1, }, new MyClass { Value = 2, },];
+				IEnumerable<MyClass> expected =
+				[
+					new()
+					{
+						Value = 1,
+					},
+					new()
+					{
+						Value = 2,
+					},
+				];
 
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -219,7 +234,13 @@ public sealed partial class ThatObject
 				MyClass subject = new();
 
 				async Task Act()
-					=> await That(subject).IsOneOf(new MyClass { Value = 1, }, new MyClass { Value = 2, });
+					=> await That(subject).IsOneOf(new MyClass
+					{
+						Value = 1,
+					}, new MyClass
+					{
+						Value = 2,
+					});
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -317,7 +338,7 @@ public sealed partial class ThatObject
 			public async Task WhenSubjectIsAReferenceType_WithEnumerable_ShouldReturnTheTypedSubject()
 			{
 				MyClass subject = new();
-				IEnumerable<MyClass> expected = [new MyClass(), subject,];
+				IEnumerable<MyClass> expected = [new(), subject,];
 
 				MyClass result = await That(subject).IsOneOf(expected);
 

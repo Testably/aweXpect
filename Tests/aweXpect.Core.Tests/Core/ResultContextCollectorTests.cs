@@ -1,8 +1,7 @@
-﻿using System;
-using System.Text;
-using aweXpect.Results;
+﻿using System.Text;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
+using aweXpect.Results;
 
 namespace aweXpect.Core.Tests.Core;
 

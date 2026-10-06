@@ -76,7 +76,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in order and contiguous,
 					             but it lacked all 3 expected items
-					             
+
 					             Collection:
 					             []
 
@@ -103,7 +103,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in order and contiguous,
 					             but it lacked all 10 expected items
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -193,7 +193,7 @@ public sealed partial class ThatEnumerable
 					               "x",
 					               "y",
 					               "z"
-					             
+
 					             Collection:
 					             [
 					               "a",
@@ -231,7 +231,7 @@ public sealed partial class ThatEnumerable
 					             but it lacked 2 of 6 expected items:
 					               "a",
 					               "e"
-					             
+
 					             Collection:
 					             [
 					               "b",
@@ -575,7 +575,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
 					             but it lacked all 3 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -602,7 +602,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
 					             but it lacked all 2 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -629,7 +629,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in order and contiguous ignoring duplicates,
 					             but it lacked all 10 unique expected items
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -677,7 +677,7 @@ public sealed partial class ThatEnumerable
 					               "x",
 					               "y",
 					               "z"
-					             
+
 					             Collection:
 					             [
 					               "a",
@@ -715,7 +715,7 @@ public sealed partial class ThatEnumerable
 					             but it lacked 2 of 5 expected items:
 					               "a",
 					               "e"
-					             
+
 					             Collection:
 					             [
 					               "b",
@@ -994,7 +994,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in any order,
 					             but it lacked all 3 expected items
-					             
+
 					             Collection:
 					             []
 
@@ -1021,7 +1021,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in any order,
 					             but it lacked all 10 expected items
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -1408,7 +1408,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in any order ignoring duplicates,
 					             but it lacked all 3 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -1437,7 +1437,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in any order ignoring duplicates,
 					             but it lacked all 2 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -1464,7 +1464,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected in any order ignoring duplicates,
 					             but it lacked all 10 unique expected items
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -1812,7 +1812,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               did not contain any additional items and
 					               lacked all 3 expected items
-					             
+
 					             Collection:
 					             []
 
@@ -1839,7 +1839,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous,
 					             but it lacked all 10 expected items
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -1887,7 +1887,7 @@ public sealed partial class ThatEnumerable
 					               "x",
 					               "y",
 					               "z"
-					             
+
 					             Collection:
 					             [
 					               "a",
@@ -1928,7 +1928,7 @@ public sealed partial class ThatEnumerable
 					               lacked 2 of 6 expected items:
 					                 "a",
 					                 "e"
-					             
+
 					             Collection:
 					             [
 					               "b",
@@ -2280,7 +2280,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               did not contain any additional items and
 					               lacked all 3 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -2309,7 +2309,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               did not contain any additional items and
 					               lacked all 2 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -2336,7 +2336,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in order and contiguous ignoring duplicates,
 					             but it lacked all 10 unique expected items
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -2384,7 +2384,7 @@ public sealed partial class ThatEnumerable
 					               "x",
 					               "y",
 					               "z"
-					             
+
 					             Collection:
 					             [
 					               "a",
@@ -2425,7 +2425,7 @@ public sealed partial class ThatEnumerable
 					               lacked 2 of 5 expected items:
 					                 "a",
 					                 "e"
-					             
+
 					             Collection:
 					             [
 					               "b",
@@ -2832,7 +2832,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               did not contain any additional items and
 					               lacked all 3 expected items
-					             
+
 					             Collection:
 					             []
 
@@ -2859,7 +2859,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in any order,
 					             but it lacked all 10 expected items
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -3298,7 +3298,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               did not contain any additional items and
 					               lacked all 3 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -3329,7 +3329,7 @@ public sealed partial class ThatEnumerable
 					             but it
 					               did not contain any additional items and
 					               lacked all 2 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -3356,7 +3356,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             contains collection expected and at least one additional item in any order ignoring duplicates,
 					             but it lacked all 10 unique expected items
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -3798,23 +3798,23 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).Contains([regex,]).AsRegex();
 
 				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
-					.WithMessage($$"""
-					               Expected that subject
-					               contains collection [regex,] as regex in order and contiguous,
-					               but it lacked the one expected item
-					               
-					               Collection:
-					               [
-					                 "foo",
-					                 "bar",
-					                 "baz"
-					               ]
+					.WithMessage("""
+					             Expected that subject
+					             contains collection [regex,] as regex in order and contiguous,
+					             but it lacked the one expected item
 
-					               Expected:
-					               [
-					                 "[g-h]{1}[o]*"
-					               ]
-					               """);
+					             Collection:
+					             [
+					               "foo",
+					               "bar",
+					               "baz"
+					             ]
+
+					             Expected:
+					             [
+					               "[g-h]{1}[o]*"
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -3828,23 +3828,23 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).Contains([wildcard,]).AsWildcard();
 
 				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
-					.WithMessage($"""
-					              Expected that subject
-					              contains collection [wildcard,] as wildcard in order and contiguous,
-					              but it lacked the one expected item
-					              
-					              Collection:
-					              [
-					                "foo",
-					                "bar",
-					                "baz"
-					              ]
+					.WithMessage("""
+					             Expected that subject
+					             contains collection [wildcard,] as wildcard in order and contiguous,
+					             but it lacked the one expected item
 
-					              Expected:
-					              [
-					                "f??o"
-					              ]
-					              """);
+					             Collection:
+					             [
+					               "foo",
+					               "bar",
+					               "baz"
+					             ]
+
+					             Expected:
+					             [
+					               "f??o"
+					             ]
+					             """);
 			}
 
 			[Test]
@@ -3858,23 +3858,23 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).Contains([match,]).IgnoringCase();
 
 				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
-					.WithMessage($"""
-					              Expected that subject
-					              contains collection [match,] ignoring case in order and contiguous,
-					              but it lacked the one expected item
-					              
-					              Collection:
-					              [
-					                "foo",
-					                "bar",
-					                "baz"
-					              ]
+					.WithMessage("""
+					             Expected that subject
+					             contains collection [match,] ignoring case in order and contiguous,
+					             but it lacked the one expected item
 
-					              Expected:
-					              [
-					                "goo"
-					              ]
-					              """);
+					             Collection:
+					             [
+					               "foo",
+					               "bar",
+					               "baz"
+					             ]
+
+					             Expected:
+					             [
+					               "goo"
+					             ]
+					             """);
 			}
 		}
 

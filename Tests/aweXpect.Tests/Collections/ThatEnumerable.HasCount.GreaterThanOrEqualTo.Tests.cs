@@ -159,7 +159,7 @@ public sealed partial class ThatEnumerable
 					int[] subject = [1, 2, 3,];
 
 					async Task Act()
-						=> await That(subject).HasCount().GreaterThanOrEqualTo(expected: 3);
+						=> await That(subject).HasCount().GreaterThanOrEqualTo(3);
 
 					await That(Act).DoesNotThrow();
 				}

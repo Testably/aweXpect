@@ -36,6 +36,32 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 		_equivalencyOptions = equivalencyOptions;
 	}
 
+	/// <inheritdoc cref="IObjectMatchResult.IsMatch" />
+	bool IObjectMatchResult.IsMatch => _isMatch;
+
+	/// <inheritdoc cref="IObjectMatchResult.GetExtendedFailure(string, ExpectationGrammars, object?, object?)" />
+	string IObjectMatchResult.GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual,
+		object? expected)
+	{
+		if (grammars.IsNegated())
+		{
+			return $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented())}, which is considered equivalent";
+		}
+
+		if (actual is null != expected is null)
+		{
+			_failureBuilder.Clear();
+			_failureBuilder.Append(it);
+			_failureBuilder.Append(grammars.SubjectVerb(it, " was ", " were "));
+			Formatter.Format(_failureBuilder, actual, FormattingOptions.SingleLine);
+			_failureBuilder.Append(" instead of ");
+			Formatter.Format(_failureBuilder, expected, FormattingOptions.SingleLine);
+			return _failureBuilder.ToString();
+		}
+
+		return $"{it}{grammars.SubjectVerb(it, " was not:", " were not:")}{_failureBuilder}";
+	}
+
 	/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TActual, TExpected}(TActual, TExpected)" />
 	public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
 		=> EquivalencyComparison.IsEquivalent(actual, expected, _equivalencyOptions);
@@ -63,30 +89,4 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 
 	/// <inheritdoc />
 	public override string ToString() => " using equivalency";
-
-	/// <inheritdoc cref="IObjectMatchResult.IsMatch" />
-	bool IObjectMatchResult.IsMatch => _isMatch;
-
-	/// <inheritdoc cref="IObjectMatchResult.GetExtendedFailure(string, ExpectationGrammars, object?, object?)" />
-	string IObjectMatchResult.GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual,
-		object? expected)
-	{
-		if (grammars.IsNegated())
-		{
-			return $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented())}, which is considered equivalent";
-		}
-
-		if (actual is null != expected is null)
-		{
-			_failureBuilder.Clear();
-			_failureBuilder.Append(it);
-			_failureBuilder.Append(grammars.SubjectVerb(it, " was ", " were "));
-			Formatter.Format(_failureBuilder, actual, FormattingOptions.SingleLine);
-			_failureBuilder.Append(" instead of ");
-			Formatter.Format(_failureBuilder, expected, FormattingOptions.SingleLine);
-			return _failureBuilder.ToString();
-		}
-
-		return $"{it}{grammars.SubjectVerb(it, " was not:", " were not:")}{_failureBuilder}";
-	}
 }

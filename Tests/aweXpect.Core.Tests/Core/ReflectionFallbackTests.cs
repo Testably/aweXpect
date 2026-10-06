@@ -42,9 +42,6 @@ public sealed class ReflectionFallbackTests
 	}
 
 	[Test]
-	public async Task UnderTheTestHost_ShouldBeSupported()
-	{
-		await That(ReflectionFallback.IsSupported).IsTrue()
-			.Because("the tests run under the JIT without the switch, so every unregistered type is reflected over");
-	}
+	public async Task UnderTheTestHost_ShouldBeSupported() => await That(ReflectionFallback.IsSupported).IsTrue()
+		.Because("the tests run under the JIT without the switch, so every unregistered type is reflected over");
 }

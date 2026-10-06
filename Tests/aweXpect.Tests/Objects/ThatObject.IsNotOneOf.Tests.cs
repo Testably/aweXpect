@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using aweXpect.Equivalency;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -142,7 +141,7 @@ public sealed partial class ThatObject
 			public async Task WhenOnlyACombinedExpectationFails_ShouldNotListTheUnexpectedValues()
 			{
 				MyClass subject = new();
-				IEnumerable<MyClass> unexpected = [new MyClass(),];
+				IEnumerable<MyClass> unexpected = [new(),];
 
 				async Task Act()
 					=> await That(subject).IsNotOneOf(unexpected).And.IsNull();
@@ -172,7 +171,7 @@ public sealed partial class ThatObject
 			public async Task WhenSubjectIsAReferenceType_WithEnumerable_ShouldReturnTheTypedSubject()
 			{
 				MyClass subject = new();
-				IEnumerable<MyClass> unexpected = [new MyClass(), new MyClass(),];
+				IEnumerable<MyClass> unexpected = [new(), new(),];
 
 				MyClass result = await That(subject).IsNotOneOf(unexpected);
 
@@ -214,7 +213,14 @@ public sealed partial class ThatObject
 			public async Task WhenUnexpectedIsAnEnumerable_ShouldNameItsExpression()
 			{
 				MyClass subject = new();
-				IEnumerable<MyClass> unexpected = [new MyClass { Value = 1, }, subject,];
+				IEnumerable<MyClass> unexpected =
+				[
+					new()
+					{
+						Value = 1,
+					},
+					subject,
+				];
 
 				async Task Act()
 					=> await That(subject).IsNotOneOf(unexpected);
@@ -238,7 +244,10 @@ public sealed partial class ThatObject
 				MyClass subject = new();
 
 				async Task Act()
-					=> await That(subject).IsNotOneOf(new MyClass { Value = 1, }, subject);
+					=> await That(subject).IsNotOneOf(new MyClass
+					{
+						Value = 1,
+					}, subject);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

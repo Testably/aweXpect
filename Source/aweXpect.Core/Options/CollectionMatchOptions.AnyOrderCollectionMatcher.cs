@@ -121,6 +121,23 @@ public partial class CollectionMatchOptions
 				: MatchAfterTheFoundItems(expectedCounts, it, value, options, maximumNumber);
 		}
 
+		/// <remarks>
+		///     When every item was found among the counted expected items and none of them is left, the expectation is
+		///     met.
+		/// </remarks>
+		public ValueTask<(bool, string?)>
+			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
+		{
+			if (GetExpectedCounts(options) is not { } expectedCounts)
+			{
+				return CompleteTheMatching(it, options, maximumNumber);
+			}
+
+			return expectedCounts.HasFoundAll
+				? new ValueTask<(bool, string?)>((false, null))
+				: CompleteAfterTheFoundItems(expectedCounts, it, options, maximumNumber);
+		}
+
 		private async ValueTask<(bool, string?)> MatchAfterTheFoundItems(ExpectedItemCounts<T> expectedCounts,
 			string it, T value, IOptionsEquality<T2> options, int maximumNumber)
 		{
@@ -217,23 +234,6 @@ public partial class CollectionMatchOptions
 			}
 
 			return (false, null);
-		}
-
-		/// <remarks>
-		///     When every item was found among the counted expected items and none of them is left, the expectation is
-		///     met.
-		/// </remarks>
-		public ValueTask<(bool, string?)>
-			VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber)
-		{
-			if (GetExpectedCounts(options) is not { } expectedCounts)
-			{
-				return CompleteTheMatching(it, options, maximumNumber);
-			}
-
-			return expectedCounts.HasFoundAll
-				? new ValueTask<(bool, string?)>((false, null))
-				: CompleteAfterTheFoundItems(expectedCounts, it, options, maximumNumber);
 		}
 
 		private async ValueTask<(bool, string?)> CompleteAfterTheFoundItems(ExpectedItemCounts<T> expectedCounts,

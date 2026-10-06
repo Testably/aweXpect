@@ -49,7 +49,7 @@ public sealed partial class ThatChar
 				await That(Act).DoesNotThrow();
 			}
 		}
-		
+
 		public sealed class NegatedTests
 		{
 			[Test]

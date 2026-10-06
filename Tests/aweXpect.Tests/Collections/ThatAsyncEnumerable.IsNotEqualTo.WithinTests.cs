@@ -800,9 +800,9 @@ public sealed partial class ThatAsyncEnumerable
 				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldFail()
 				{
-					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					DateOnly[] values = [new(2024, 1, 1), new(2024, 1, 11), new(2024, 1, 21),];
 					IAsyncEnumerable<DateOnly> subject = ToAsyncEnumerable(values);
-					IEnumerable<DateOnly> unexpected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly> unexpected = [new(2024, 1, 1), new(2024, 1, 12), new(2024, 1, 21),];
 
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(unexpected).Within(1.Days());
@@ -824,9 +824,9 @@ public sealed partial class ThatAsyncEnumerable
 				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
 				{
-					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					DateOnly[] values = [new(2024, 1, 1), new(2024, 1, 11), new(2024, 1, 21),];
 					IAsyncEnumerable<DateOnly> subject = ToAsyncEnumerable(values);
-					IEnumerable<DateOnly> unexpected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 13), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly> unexpected = [new(2024, 1, 1), new(2024, 1, 13), new(2024, 1, 21),];
 
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(unexpected).Within(1.Days());
@@ -880,9 +880,9 @@ public sealed partial class ThatAsyncEnumerable
 				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldFail()
 				{
-					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					TimeOnly[] values = [new(13, 0), new(14, 0), new(15, 0),];
 					IAsyncEnumerable<TimeOnly> subject = ToAsyncEnumerable(values);
-					IEnumerable<TimeOnly> unexpected = [new TimeOnly(13, 0), new TimeOnly(14, 1), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly> unexpected = [new(13, 0), new(14, 1), new(15, 0),];
 
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(unexpected).Within(1.Minutes());
@@ -904,9 +904,9 @@ public sealed partial class ThatAsyncEnumerable
 				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldSucceed()
 				{
-					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					TimeOnly[] values = [new(13, 0), new(14, 0), new(15, 0),];
 					IAsyncEnumerable<TimeOnly> subject = ToAsyncEnumerable(values);
-					IEnumerable<TimeOnly> unexpected = [new TimeOnly(13, 0), new TimeOnly(14, 2), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly> unexpected = [new(13, 0), new(14, 2), new(15, 0),];
 
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(unexpected).Within(1.Minutes());

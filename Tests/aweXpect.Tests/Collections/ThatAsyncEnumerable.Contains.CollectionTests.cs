@@ -322,7 +322,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithDeviationFollowedByMatchingItems_ShouldOnlyReportTheMissingItem()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 4, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 4, 3);
 				int[] expected = [1, 2, 3,];
 
 				async Task Act()
@@ -513,7 +513,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithNonContiguousSubset_ShouldFail()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
 				int[] expected = [1, 3,];
 
 				async Task Act()
@@ -549,7 +549,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithSubsetAfterAbandonedPartialMatch_ShouldSucceed()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 4, 2, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 4, 2, 3);
 				int[] expected = [2, 3,];
 
 				async Task Act()
@@ -562,7 +562,10 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WithSubsetAfterMoreThan20ItemsThatBreakAPartialMatch_ShouldSucceed()
 			{
 				IAsyncEnumerable<int> subject =
-					ToAsyncEnumerable(new[] { 1, }.Concat(Enumerable.Repeat(0, 21)).Concat(Enumerable.Range(1, 30)).ToArray());
+					ToAsyncEnumerable(new[]
+					{
+						1,
+					}.Concat(Enumerable.Repeat(0, 21)).Concat(Enumerable.Range(1, 30)).ToArray());
 
 				async Task Act()
 					=> await That(subject).Contains(Enumerable.Range(1, 30));
@@ -574,7 +577,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithSubsetMissingAfterAbandonedPartialMatch_ShouldFail()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 4, 5,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 4, 5);
 				int[] expected = [2, 3,];
 
 				async Task Act()
@@ -597,7 +600,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithSubsetMissingInsideTheAbandonedPartialMatch_ShouldReportTheMissingItem()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 1, 1, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 1, 3);
 				int[] expected = [1, 1, 2,];
 
 				async Task Act()
@@ -621,7 +624,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithSubsetOverlappingTheAbandonedPartialMatch_ShouldSucceed()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 1, 2, 1, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 1, 2, 1, 3);
 				int[] expected = [1, 2, 1, 3,];
 
 				async Task Act()
@@ -634,7 +637,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithSubsetStartingInsideTheAbandonedPartialMatch_ShouldSucceed()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 1, 1, 2,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 1, 2);
 				int[] expected = [1, 1, 2,];
 
 				async Task Act()
@@ -967,7 +970,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithDuplicateBeforeADeviation_ShouldReportTheIndexInTheSubject()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 1, 4, 2,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 4, 2);
 				int[] expected = [1, 2,];
 
 				async Task Act()

@@ -75,7 +75,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTypeIsSupertype_ShouldSucceed()
 				{
-					IEnumerable<MyBaseClass> subject = [new MyBaseClass(0), new MyBaseClass(1),];
+					IEnumerable<MyBaseClass> subject = [new(), new(1),];
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().Matching<MyClass>().AtIndex(1);
@@ -86,7 +86,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTypeMatchesAtGivenIndex_ShouldFail()
 				{
-					IEnumerable<MyBaseClass> subject = [new MyBaseClass(0), new MyClass(1),];
+					IEnumerable<MyBaseClass> subject = [new(), new MyClass(1),];
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().Matching<MyClass>().AtIndex(1);
@@ -119,7 +119,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenItemOfTypeMatchesAtGivenIndex_ShouldFail()
 				{
-					IEnumerable<MyBaseClass> subject = [new MyBaseClass(0), new MyClass(1),];
+					IEnumerable<MyBaseClass> subject = [new(), new MyClass(1),];
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().Matching<MyClass>(x => x.Value == 1).AtIndex(1);
@@ -149,7 +149,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenPredicateDoesNotMatch_ShouldSucceed()
 				{
-					IEnumerable<MyBaseClass> subject = [new MyBaseClass(0), new MyClass(1),];
+					IEnumerable<MyBaseClass> subject = [new(), new MyClass(1),];
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().Matching<MyClass>(x => x.Value == 2).AtIndex(1);

@@ -669,14 +669,25 @@ public class AwaitExpectationCodeFixProviderTests
 			ReferenceAssemblies = ReferenceAssemblies.Net.Net90,
 			TestState =
 			{
-				Sources = { caller, method, },
+				Sources =
+				{
+					caller,
+					method,
+				},
 				AdditionalReferences =
 				{
 					typeof(Expect).Assembly.Location,
 					typeof(ThatBool).Assembly.Location,
 				},
 			},
-			FixedState = { Sources = { caller, method, }, },
+			FixedState =
+			{
+				Sources =
+				{
+					caller,
+					method,
+				},
+			},
 		};
 
 		await test.RunAsync(CancellationToken.None);
@@ -746,14 +757,25 @@ public class AwaitExpectationCodeFixProviderTests
 			ReferenceAssemblies = ReferenceAssemblies.Net.Net90,
 			TestState =
 			{
-				Sources = { source, derived, },
+				Sources =
+				{
+					source,
+					derived,
+				},
 				AdditionalReferences =
 				{
 					typeof(Expect).Assembly.Location,
 					typeof(ThatBool).Assembly.Location,
 				},
 			},
-			FixedState = { Sources = { source, derived, }, },
+			FixedState =
+			{
+				Sources =
+				{
+					source,
+					derived,
+				},
+			},
 		};
 
 		await test.RunAsync(CancellationToken.None);

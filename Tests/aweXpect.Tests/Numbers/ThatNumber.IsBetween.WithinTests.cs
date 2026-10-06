@@ -311,7 +311,7 @@ public sealed partial class ThatNumber
 				sbyte maximum = sbyte.MaxValue;
 
 				async Task Act()
-					=> await That(subject).IsBetween(minimum).And(maximum).Within((sbyte)1);
+					=> await That(subject).IsBetween(minimum).And(maximum).Within(1);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

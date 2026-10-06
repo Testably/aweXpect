@@ -402,7 +402,7 @@ public sealed partial class ThatDelegate
 				Action action = () => throw new CustomException();
 
 				async Task Act()
-					=> await That(action).ThrowsExactly((Type)null!);
+					=> await That(action).ThrowsExactly(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("type").And

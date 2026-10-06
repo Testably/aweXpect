@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -137,7 +136,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 
 	/// <inheritdoc />
 	internal override async Task<Result> GetResult(int index)
-		=> new(index + 1, ExpectationBuilder.Subject, await ExpectationBuilder.IsMet(endsWhenMet: false), true);
+		=> new(index + 1, ExpectationBuilder.Subject, await ExpectationBuilder.IsMet(false), true);
 
 	/// <inheritdoc />
 	internal override Task EndEvaluation()
@@ -355,7 +354,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 
 	/// <inheritdoc />
 	internal override async Task<Result> GetResult(int index)
-		=> new(index + 1, ExpectationBuilder.Subject, await ExpectationBuilder.IsMet(endsWhenMet: false), true);
+		=> new(index + 1, ExpectationBuilder.Subject, await ExpectationBuilder.IsMet(false), true);
 
 	/// <inheritdoc />
 	internal override Task EndEvaluation()

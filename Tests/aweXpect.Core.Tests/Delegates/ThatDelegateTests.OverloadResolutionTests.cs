@@ -123,11 +123,8 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Test]
-		public async Task ThrowLambda_Throws_ShouldSucceed()
-		{
-			await That(() => throw new MyException("throw lambda")).Throws<MyException>()
-				.WithMessage("throw lambda");
-		}
+		public async Task ThrowLambda_Throws_ShouldSucceed() => await That(() => throw new MyException("throw lambda")).Throws<MyException>()
+			.WithMessage("throw lambda");
 
 		[Test]
 		public async Task ThrowLambdaWithCancellationToken_DoesNotThrow_ShouldFail()
@@ -145,11 +142,8 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Test]
-		public async Task ThrowLambdaWithCancellationToken_Throws_ShouldSucceed()
-		{
-			await That(ct => throw new MyException("throw lambda with cancellation token")).Throws<MyException>()
-				.WithMessage("throw lambda with cancellation token");
-		}
+		public async Task ThrowLambdaWithCancellationToken_Throws_ShouldSucceed() => await That(ct => throw new MyException("throw lambda with cancellation token")).Throws<MyException>()
+			.WithMessage("throw lambda with cancellation token");
 
 #if NET8_0_OR_GREATER
 		[Test]

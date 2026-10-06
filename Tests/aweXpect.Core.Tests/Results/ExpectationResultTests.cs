@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Tests.TestHelpers;

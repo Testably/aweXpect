@@ -13,7 +13,11 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task ShouldUseTheComparerOfTheSet()
 				{
-					HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
+					HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+					{
+						"a",
+						"b",
+					};
 
 					async Task Act()
 						=> await That(subject).All().AreNotUnique();
@@ -42,7 +46,11 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task Using_ShouldOverrideTheComparerOfTheSet()
 				{
-					HashSet<object> subject = new(new AllDifferentComparer()) { 1, 2, };
+					HashSet<object> subject = new(new AllDifferentComparer())
+					{
+						1,
+						2,
+					};
 
 					async Task Act()
 						=> await That(subject).All().AreNotUnique().Using(new AllEqualComparer());

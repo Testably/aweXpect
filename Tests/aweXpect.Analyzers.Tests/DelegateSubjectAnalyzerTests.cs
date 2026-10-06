@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
-using Verifier =
-	aweXpect.Analyzers.Tests.Verifiers.CSharpAnalyzerVerifier<aweXpect.Analyzers.DelegateSubjectAnalyzer>;
+using Verifier = aweXpect.Analyzers.Tests.Verifiers.CSharpAnalyzerVerifier<aweXpect.Analyzers.DelegateSubjectAnalyzer>;
 
 namespace aweXpect.Analyzers.Tests;
 

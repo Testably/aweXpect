@@ -162,7 +162,10 @@ public sealed partial class ThatException
 
 					async Task Act()
 						=> await That(subject)
-							.HasInner<CustomException>(e => e.IsEquivalentTo(new { Message = "other", }));
+							.HasInner<CustomException>(e => e.IsEquivalentTo(new
+							{
+								Message = "other",
+							}));
 
 					await That(Act).Throws<FailException>()
 						.WithMessage("""

@@ -53,7 +53,7 @@ public class AwaitExpectationCodeFixProvider : CodeFixProvider
 			if (root.FindNode(diagnostic.Location.SourceSpan, getInnermostNodeForTie: true) is not ExpressionSyntax
 				    expectationStart ||
 			    await CreateFixAsync(GetExpectation(expectationStart), semanticModel, context.Document.Project.Solution,
-					    context.CancellationToken).ConfigureAwait(false) is not var (node, replacement))
+				    context.CancellationToken).ConfigureAwait(false) is not var (node, replacement))
 			{
 				continue;
 			}
@@ -138,9 +138,9 @@ public class AwaitExpectationCodeFixProvider : CodeFixProvider
 	private static ExpressionSyntax GetExpectation(ExpressionSyntax expression)
 	{
 		while (expression.Parent is ParenthesizedExpressionSyntax ||
-		       expression.Parent is MemberAccessExpressionSyntax memberAccess &&
-		       memberAccess.Expression == expression ||
-		       expression.Parent is InvocationExpressionSyntax invocation && invocation.Expression == expression)
+		       (expression.Parent is MemberAccessExpressionSyntax memberAccess &&
+		        memberAccess.Expression == expression) ||
+		       (expression.Parent is InvocationExpressionSyntax invocation && invocation.Expression == expression))
 		{
 			expression = (ExpressionSyntax)expression.Parent;
 		}
@@ -179,9 +179,9 @@ public class AwaitExpectationCodeFixProvider : CodeFixProvider
 			ExpressionStatementSyntax or ArrowExpressionClauseSyntax or AnonymousFunctionExpressionSyntax =>
 				(expectation, Await(expectation)),
 			AssignmentExpressionSyntax
-			{
-				Left: IdentifierNameSyntax { Identifier.ValueText: "_", }, Parent: ExpressionStatementSyntax,
-			} discard when discard.Right == expectation =>
+				{
+					Left: IdentifierNameSyntax { Identifier.ValueText: "_", }, Parent: ExpressionStatementSyntax,
+				} discard when discard.Right == expectation =>
 				(discard, Await(expectation).WithLeadingTrivia(discard.GetLeadingTrivia())),
 			EqualsValueClauseSyntax
 			{
@@ -228,7 +228,10 @@ public class AwaitExpectationCodeFixProvider : CodeFixProvider
 			return null;
 		}
 
-		Dictionary<SyntaxNode, SyntaxNode> replacements = new() { [target] = awaited, };
+		Dictionary<SyntaxNode, SyntaxNode> replacements = new()
+		{
+			[target] = awaited,
+		};
 		switch (GetTaskKind(symbol.ReturnType))
 		{
 			case TaskKind.NonGeneric

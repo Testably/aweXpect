@@ -346,11 +346,11 @@ public sealed partial class ThatString
 					=> await That(subject).Contains(expected).AsBlock();
 
 				await That(Act).Throws<FailException>()
-					.WithMessage($"""
-					              Expected that subject
-					              contains "a\nb" as block at least once,
-					              but it did not contain "a\nb" in "    a\nb"
-					              """);
+					.WithMessage("""
+					             Expected that subject
+					             contains "a\nb" as block at least once,
+					             but it did not contain "a\nb" in "    a\nb"
+					             """);
 			}
 
 			[Test]
@@ -375,11 +375,11 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotContain(expected).AsBlock();
 
 				await That(Act).Throws<FailException>()
-					.WithMessage($"""
-					              Expected that subject
-					              does not contain "a\nb" as block,
-					              but it contained "a\nb" once in "  a\n  b"
-					              """);
+					.WithMessage("""
+					             Expected that subject
+					             does not contain "a\nb" as block,
+					             but it contained "a\nb" once in "  a\n  b"
+					             """);
 			}
 		}
 

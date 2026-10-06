@@ -1280,7 +1280,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WithItemMatchingSeveralPredicates_ShouldSucceed()
 			{
-				IEnumerable<int> subject = ToEnumerable(new[] { 5, });
+				IEnumerable<int> subject = ToEnumerable(new[]
+				{
+					5,
+				});
 
 				async Task Act()
 					=> await That(subject).IsEqualTo([x => x > 0, x => x > 1,]).IgnoringDuplicates();
@@ -2476,7 +2479,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WithItemMatchingSeveralPredicates_ShouldSucceed()
 			{
-				IEnumerable<int> subject = ToEnumerable(new[] { 5, });
+				IEnumerable<int> subject = ToEnumerable(new[]
+				{
+					5,
+				});
 
 				async Task Act()
 					=> await That(subject).IsEqualTo([x => x > 0, x => x > 1,]).InAnyOrder().IgnoringDuplicates();

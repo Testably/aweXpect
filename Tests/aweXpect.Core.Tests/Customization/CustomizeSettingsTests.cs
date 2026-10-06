@@ -10,6 +10,14 @@ namespace aweXpect.Core.Tests.Customization;
 
 public sealed class CustomizeSettingsTests
 {
+	/// <summary>
+	///     The minimal timeout for tests, that have to await this long.
+	/// </summary>
+	/// <remarks>
+	///     It should be as low as possible to have fast tests.
+	/// </remarks>
+	private TimeSpan LowTimeout { get; } = TimeSpan.FromMilliseconds(100);
+
 	[Test]
 	public async Task DefaultCheckInterval_ShouldBeUsedInTimeComparisons()
 	{
@@ -408,12 +416,4 @@ public sealed class CustomizeSettingsTests
 
 		public TimeSpan Interval => _stopwatch.Elapsed;
 	}
-
-	/// <summary>
-	///     The minimal timeout for tests, that have to await this long.
-	/// </summary>
-	/// <remarks>
-	///     It should be as low as possible to have fast tests.
-	/// </remarks>
-	private TimeSpan LowTimeout { get; } = TimeSpan.FromMilliseconds(100);
 }

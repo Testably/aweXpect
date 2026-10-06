@@ -605,11 +605,11 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotContain(unexpected).MoreThan(2);
 
 				await That(Act).Throws<FailException>()
-					.WithMessage($"""
-					              Expected that subject
-					              contains "in" at most twice,
-					              but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
-					              """);
+					.WithMessage("""
+					             Expected that subject
+					             contains "in" at most twice,
+					             but it contained "in" 3 times in "In this text in between the word an investigator should find the word 'IN' multiple times."
+					             """);
 			}
 
 			[Test]

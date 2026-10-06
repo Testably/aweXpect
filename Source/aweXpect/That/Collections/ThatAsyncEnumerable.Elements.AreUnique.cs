@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Helpers;
-using aweXpect.Options;
 using aweXpect.Results;
+using StringEqualityOptions = aweXpect.Options.StringEqualityOptions;
 
 namespace aweXpect;
 
@@ -76,7 +76,7 @@ public static partial class ThatAsyncEnumerable
 							it, grammars,
 							state.Quantifier,
 							a => a,
-							memberAccessorExpression: null,
+							null,
 							state.Options,
 							state.ExpectUnique)),
 				_subject,
@@ -196,7 +196,7 @@ public static partial class ThatAsyncEnumerable
 							it, grammars,
 							state.Quantifier,
 							a => a,
-							memberAccessorExpression: null,
+							null,
 							state.Options,
 							state.ExpectUnique)),
 				_subject,

@@ -22,7 +22,7 @@ public static partial class ThatString
 		Action<IThatSubject<IEnumerable<string>>> expectations)
 	{
 		expectations.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder
+		return new AndOrResult<string, IThat<string?>>(subject.Get().ExpectationBuilder
 				.ForMember<string?, IEnumerable<string?>>(
 					s => s.GetLines(),
 					" that ",

@@ -14,7 +14,6 @@ public class IsParsableResult<TType>(
 	: AndOrResult<string?, IThat<string?>>(expectationBuilder, subject)
 	where TType : IParsable<TType>
 {
-
 	/// <summary>
 	///     Gives access to the parsed value.
 	/// </summary>

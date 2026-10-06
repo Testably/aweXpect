@@ -330,7 +330,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task Strings_WhenTheSetOfTheSubjectHasAComparer_ShouldCompareWithIt()
 			{
-				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "B", "a", };
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"B",
+					"a",
+				};
 				string[] expected = ["A", "b",];
 
 				async Task Act()

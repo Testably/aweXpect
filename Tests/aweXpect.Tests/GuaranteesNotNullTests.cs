@@ -15,6 +15,49 @@ using CoreGeneric = aweXpect.ThatGeneric;
 
 public sealed class GuaranteesNotNullTests
 {
+	private static readonly Type[] TypeArgumentCandidates =
+	[
+		typeof(object), typeof(string), typeof(Exception), typeof(ArgumentException), typeof(EquatableSubject),
+		typeof(NotifyingSubject), typeof(double), typeof(int), typeof(DayOfWeek), typeof(TimeSpan),
+		typeof(DateTime), typeof(EnumerableStruct<object>), typeof(EnumerableStruct<string?>), typeof(Stream),
+	];
+
+	/// <summary>
+	///     The rule: a null subject fails every expectation, except these. `IsEqualTo` and the other
+	///     comparisons may be handed a null of their own to compare against, and the negated tri-state
+	///     `bool?` expectations exist to cover the null case: making `IsNotTrue()` fail for it would
+	///     leave it identical to `IsFalse()`, with no null-tolerant twin. `Eventually` continues a
+	///     delegate expectation rather than taking a subject, so it has no null-subject behaviour of
+	///     its own. `Satisfies` and `CompliesWith` hand the subject to the caller's own predicate or
+	///     expectations, which state themselves how a null is to be treated, so their null-subject
+	///     behaviour is not theirs to decide.
+	/// </summary>
+	private static readonly HashSet<string> Exempt = new(StringComparer.Ordinal)
+	{
+		"CompliesWith",
+		"DoesNotComplyWith",
+		"DoesNotSatisfy",
+		"Satisfies",
+		"Eventually",
+		"IsEqualTo",
+		"IsEquivalentTo",
+		"IsNotEqualTo",
+		"IsNotEquivalentTo",
+		"IsNotOneOf",
+		"IsNotSameAs",
+		"IsOneOf",
+		"IsSameAs",
+		"IsNull",
+		"IsNullOrEmpty",
+		"IsNullOrWhiteSpace",
+		"IsNotFalse",
+		"IsNotTrue",
+	};
+
+	private static readonly Lazy<IReadOnlyList<Observation>> LazyObservations = new(Observe);
+
+	private static IReadOnlyList<Observation> Observations => LazyObservations.Value;
+
 	[Test]
 	[Explicit]
 	[TUnit.Core.Category(TestCategories.Slow)]
@@ -164,49 +207,6 @@ public sealed class GuaranteesNotNullTests
 			.Because("both assemblies declare expectations that are marked");
 	}
 
-	private static readonly Type[] TypeArgumentCandidates =
-	[
-		typeof(object), typeof(string), typeof(Exception), typeof(ArgumentException), typeof(EquatableSubject),
-		typeof(NotifyingSubject), typeof(double), typeof(int), typeof(DayOfWeek), typeof(TimeSpan),
-		typeof(DateTime), typeof(EnumerableStruct<object>), typeof(EnumerableStruct<string?>), typeof(Stream),
-	];
-
-	/// <summary>
-	///     The rule: a null subject fails every expectation, except these. `IsEqualTo` and the other
-	///     comparisons may be handed a null of their own to compare against, and the negated tri-state
-	///     `bool?` expectations exist to cover the null case: making `IsNotTrue()` fail for it would
-	///     leave it identical to `IsFalse()`, with no null-tolerant twin. `Eventually` continues a
-	///     delegate expectation rather than taking a subject, so it has no null-subject behaviour of
-	///     its own. `Satisfies` and `CompliesWith` hand the subject to the caller's own predicate or
-	///     expectations, which state themselves how a null is to be treated, so their null-subject
-	///     behaviour is not theirs to decide.
-	/// </summary>
-	private static readonly HashSet<string> Exempt = new(StringComparer.Ordinal)
-	{
-		"CompliesWith",
-		"DoesNotComplyWith",
-		"DoesNotSatisfy",
-		"Satisfies",
-		"Eventually",
-		"IsEqualTo",
-		"IsEquivalentTo",
-		"IsNotEqualTo",
-		"IsNotEquivalentTo",
-		"IsNotOneOf",
-		"IsNotSameAs",
-		"IsOneOf",
-		"IsSameAs",
-		"IsNull",
-		"IsNullOrEmpty",
-		"IsNullOrWhiteSpace",
-		"IsNotFalse",
-		"IsNotTrue",
-	};
-
-	private static readonly Lazy<IReadOnlyList<Observation>> LazyObservations = new(Observe);
-
-	private static IReadOnlyList<Observation> Observations => LazyObservations.Value;
-
 	private static bool IsExempt(string name) => Exempt.Contains(name);
 
 	/// <summary>
@@ -219,28 +219,6 @@ public sealed class GuaranteesNotNullTests
 	private static string Negate(string name)
 		=> name.StartsWith("IsNot", StringComparison.Ordinal) ? "Is" + name.Substring(5) :
 			name.StartsWith("Is", StringComparison.Ordinal) ? "IsNot" + name.Substring(2) : name;
-
-	private sealed class Observation(
-		string identifier,
-		string name,
-		bool fails,
-		bool? failsWhenNegated,
-		bool isMarked)
-	{
-		public string Identifier { get; } = identifier;
-
-		public string Name { get; } = name;
-
-		public bool Fails { get; } = fails;
-
-		/// <summary>
-		///     Whether the expectation also fails for a <see langword="null" /> subject when it is negated, or
-		///     <see langword="null" /> when it cannot be negated reflectively.
-		/// </summary>
-		public bool? FailsWhenNegated { get; } = failsWhenNegated;
-
-		public bool IsMarked { get; } = isMarked;
-	}
 
 	private static List<Observation> Observe()
 	{
@@ -674,7 +652,7 @@ public sealed class GuaranteesNotNullTests
 	/// </summary>
 	private static bool IsInputValue(Type type, Type parameter)
 		=> parameter.Name == "TValue" ||
-		   (type.GetGenericTypeDefinition() == typeof(Results.BetweenResult<,>) && parameter.GenericParameterPosition == 1);
+		   (type.GetGenericTypeDefinition() == typeof(BetweenResult<,>) && parameter.GenericParameterPosition == 1);
 
 	private static bool TakesASlot(Type type)
 		=> type.IsGenericParameter
@@ -1145,8 +1123,6 @@ public sealed class GuaranteesNotNullTests
 		}
 	}
 
-	private sealed class NotInvocableException(string message) : Exception(message);
-
 	private static AndOrResult<string, IThat<string?>> HandingOutANotNullableString(IThat<string?> subject)
 		=> throw new NotSupportedException();
 
@@ -1159,6 +1135,30 @@ public sealed class GuaranteesNotNullTests
 	private static NullableNumberToleranceResult<int, IThat<int?>> HandingOutANullableIntFromItsBase(
 		IThat<int?> subject)
 		=> throw new NotSupportedException();
+
+	private sealed class Observation(
+		string identifier,
+		string name,
+		bool fails,
+		bool? failsWhenNegated,
+		bool isMarked)
+	{
+		public string Identifier { get; } = identifier;
+
+		public string Name { get; } = name;
+
+		public bool Fails { get; } = fails;
+
+		/// <summary>
+		///     Whether the expectation also fails for a <see langword="null" /> subject when it is negated, or
+		///     <see langword="null" /> when it cannot be negated reflectively.
+		/// </summary>
+		public bool? FailsWhenNegated { get; } = failsWhenNegated;
+
+		public bool IsMarked { get; } = isMarked;
+	}
+
+	private sealed class NotInvocableException(string message) : Exception(message);
 
 	private sealed class NotifyingSubject : INotifyPropertyChanged
 	{

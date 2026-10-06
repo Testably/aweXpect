@@ -10,15 +10,15 @@ public sealed partial class ThatNumber
 	public sealed class FloatingPointTests
 	{
 		[Test]
-		[Arguments(nameof(global::aweXpect.ThatNumber.IsFinite))]
-		[Arguments(nameof(global::aweXpect.ThatNumber.IsInfinite))]
-		[Arguments(nameof(global::aweXpect.ThatNumber.IsNaN))]
-		[Arguments(nameof(global::aweXpect.ThatNumber.IsNotFinite))]
-		[Arguments(nameof(global::aweXpect.ThatNumber.IsNotInfinite))]
-		[Arguments(nameof(global::aweXpect.ThatNumber.IsNotNaN))]
+		[Arguments(nameof(aweXpect.ThatNumber.IsFinite))]
+		[Arguments(nameof(aweXpect.ThatNumber.IsInfinite))]
+		[Arguments(nameof(aweXpect.ThatNumber.IsNaN))]
+		[Arguments(nameof(aweXpect.ThatNumber.IsNotFinite))]
+		[Arguments(nameof(aweXpect.ThatNumber.IsNotInfinite))]
+		[Arguments(nameof(aweXpect.ThatNumber.IsNotNaN))]
 		public async Task ShouldOnlyAcceptIeee754FloatingPointNumbers(string methodName)
 		{
-			MethodInfo[] methods = typeof(global::aweXpect.ThatNumber).GetMethods()
+			MethodInfo[] methods = typeof(aweXpect.ThatNumber).GetMethods()
 				.Where(x => x.Name == methodName)
 				.ToArray();
 

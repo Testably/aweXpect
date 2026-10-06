@@ -16,13 +16,13 @@ public partial class HappyCaseBenchmarks
 	public async Task EventTriggered_aweXpect()
 	{
 		Player player = new();
-		Recording.IEventRecording<Player> recording = player.Record().Events();
+		IEventRecording<Player> recording = player.Record().Events();
 		player.Play();
 		await Expect.That(recording).Triggered(_eventName);
 	}
 
 	[Benchmark]
-	public FluentAssertions.Events.IEventRecording EventTriggered_FluentAssertions()
+	public IEventRecording EventTriggered_FluentAssertions()
 	{
 		Player player = new();
 		using IMonitor<Player> monitor = player.Monitor();

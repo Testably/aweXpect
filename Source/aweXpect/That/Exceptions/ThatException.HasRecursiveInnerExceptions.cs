@@ -28,7 +28,7 @@ public static partial class ThatException
 	{
 		expectations.ThrowIfNull();
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new(expectationBuilder
+		return new AndOrResult<TException, IThat<TException?>>(expectationBuilder
 				.ForMember<Exception?, IEnumerable<Exception?>>(
 					e => e.GetInnerExceptions(),
 					" that ",

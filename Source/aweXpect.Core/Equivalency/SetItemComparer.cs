@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Reflection;
+using aweXpect.Core;
+using aweXpect.Core.Metadata;
 #if NET8_0_OR_GREATER
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 #endif
-using System.Reflection;
-using aweXpect.Core;
-using aweXpect.Core.Metadata;
 
 namespace aweXpect.Equivalency;
 
@@ -17,6 +17,12 @@ namespace aweXpect.Equivalency;
 /// </summary>
 internal abstract class SetItemComparer
 {
+	/// <remarks>
+	///     A reader holds no state, so the one created by reflection is kept per set interface, as every compared set of
+	///     an unregistered type would otherwise create it again.
+	/// </remarks>
+	private static readonly ConcurrentDictionary<Type, SetItemComparer> CreatedReaders = new();
+
 	/// <summary>
 	///     Returns whether two items are the same for the comparer of the <paramref name="set" />, or
 	///     <see langword="null" /> when the set uses the default equality or its comparer cannot be read.
@@ -57,12 +63,6 @@ internal abstract class SetItemComparer
 		CreatedReaders.TryAdd(setInterface, created);
 		return created;
 	}
-
-	/// <remarks>
-	///     A reader holds no state, so the one created by reflection is kept per set interface, as every compared set of
-	///     an unregistered type would otherwise create it again.
-	/// </remarks>
-	private static readonly ConcurrentDictionary<Type, SetItemComparer> CreatedReaders = new();
 
 	/// <summary>
 	///     Creates the reader for sets with the given type argument.

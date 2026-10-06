@@ -22,7 +22,7 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 	{
 		StringBuilder stringBuilder = new();
-		Format(formatter, stringBuilder, value, options);
+		formatter.Format(stringBuilder, value, options);
 		return stringBuilder.ToString();
 	}
 
@@ -35,7 +35,7 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 	{
 		StringBuilder stringBuilder = new();
-		Format(formatter, stringBuilder, value, options);
+		formatter.Format(stringBuilder, value, options);
 		return stringBuilder.ToString();
 	}
 
@@ -62,7 +62,7 @@ public static partial class ValueFormatters
 	{
 		if (value is null or IDictionary)
 		{
-			Format(formatter, stringBuilder, (IEnumerable?)value, options);
+			formatter.Format(stringBuilder, (IEnumerable?)value, options);
 			return;
 		}
 
@@ -176,7 +176,7 @@ public static partial class ValueFormatters
 		object? item,
 		FormattingOptions options,
 		FormattingContext context)
-		=> Format(formatter, item, options with
+		=> formatter.Format(item, options with
 		{
 			IncludeType = false,
 			UseLineBreaks = options.UseLineBreaks && item?.GetType() != typeof(string),
@@ -241,7 +241,7 @@ public static partial class ValueFormatters
 		totalCount = options.TotalItemCount ?? totalCount;
 		if (options.IncludeType)
 		{
-			Format(Formatter, stringBuilder, value.GetType());
+			Formatter.Format(stringBuilder, value.GetType());
 			stringBuilder.Append(' ');
 		}
 
@@ -354,20 +354,6 @@ public static partial class ValueFormatters
 	}
 
 	/// <summary>
-	///     Formats a single item within the formatting context of its collection.
-	/// </summary>
-	private readonly struct ItemFormatter<T>(
-		ValueFormatter formatter,
-		FormattingContext context,
-		Func<ValueFormatter, T, FormattingOptions, FormattingContext, string> formatItem)
-	{
-		public FormattingContext Context { get; } = context;
-
-		public string FormatSingle(T item, FormattingOptions options)
-			=> formatItem(formatter, item, options, Context);
-	}
-
-	/// <summary>
 	///     Only reads a count the collection already knows, so that a lazy sequence is not enumerated twice.
 	/// </summary>
 	private static int? GetCount<T>(IEnumerable<T> value)
@@ -402,5 +388,19 @@ public static partial class ValueFormatters
 		{
 			(enumerator as IDisposable)?.Dispose();
 		}
+	}
+
+	/// <summary>
+	///     Formats a single item within the formatting context of its collection.
+	/// </summary>
+	private readonly struct ItemFormatter<T>(
+		ValueFormatter formatter,
+		FormattingContext context,
+		Func<ValueFormatter, T, FormattingOptions, FormattingContext, string> formatItem)
+	{
+		public FormattingContext Context { get; } = context;
+
+		public string FormatSingle(T item, FormattingOptions options)
+			=> formatItem(formatter, item, options, Context);
 	}
 }

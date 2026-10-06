@@ -23,12 +23,9 @@ public sealed class RequiresMemberMetadataTests
 	}
 
 	[Test]
-	public async Task ShouldFindTheEquivalencyEntryPoints()
-	{
-		await That(EquivalencyEntryPoints().Select(method => method.Name).Distinct())
-			.IsEqualTo(["Compare",])
-			.Because("the reflection lookup must not silently degrade into an empty test set");
-	}
+	public async Task ShouldFindTheEquivalencyEntryPoints() => await That(EquivalencyEntryPoints().Select(method => method.Name).Distinct())
+		.IsEqualTo(["Compare",])
+		.Because("the reflection lookup must not silently degrade into an empty test set");
 
 	/// <remarks>
 	///     The equality members of the options types, property accessors and the context of the

@@ -272,7 +272,10 @@ public sealed partial class ThatEnumerable
 			[Arguments(2, "exactly twice")]
 			public async Task ShouldSupportExactly_WhenNegated(int times, string expectedOccurrences)
 			{
-				IEnumerable<int> subject = new[] { 1, 2, 1, }.Take(times + 1);
+				IEnumerable<int> subject = new[]
+				{
+					1, 2, 1,
+				}.Take(times + 1);
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.Contains(1).Exactly(times));

@@ -15,7 +15,7 @@ public static partial class ValueFormatters
 		FormattingOptions? options = null)
 	{
 		StringBuilder stringBuilder = new();
-		Format(formatter, stringBuilder, value, options);
+		formatter.Format(stringBuilder, value, options);
 		return stringBuilder.ToString();
 	}
 
@@ -28,7 +28,7 @@ public static partial class ValueFormatters
 		StringBuilder stringBuilder,
 		TimeSpan value,
 		FormattingOptions? options = null)
-		=> Format(formatter, stringBuilder, (TimeSpan?)value, options);
+		=> formatter.Format(stringBuilder, (TimeSpan?)value, options);
 
 	/// <summary>
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
@@ -43,7 +43,7 @@ public static partial class ValueFormatters
 			return ValueFormatter.NullString;
 		}
 
-		return Format(formatter, value.Value, options);
+		return formatter.Format(value.Value, options);
 	}
 
 	/// <summary>

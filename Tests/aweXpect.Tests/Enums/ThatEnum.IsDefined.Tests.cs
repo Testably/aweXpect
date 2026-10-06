@@ -8,7 +8,7 @@ public sealed partial class ThatEnum
 		{
 			[Test]
 			[Arguments(1 << 4)]
-			[Arguments(1 << 4 | 1)]
+			[Arguments((1 << 4) | 1)]
 			public async Task WhenFlagsSubjectHasAnUndefinedBit_ShouldFail(int value)
 			{
 				MyColors subject = (MyColors)value;

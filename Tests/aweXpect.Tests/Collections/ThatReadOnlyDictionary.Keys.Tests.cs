@@ -147,7 +147,12 @@ public sealed partial class ThatReadOnlyDictionary
 			public async Task ForAReadOnlyDictionary_ShouldUseTheKeyComparerOfTheWrappedDictionary()
 			{
 				IReadOnlyDictionary<string, int> subject = new ReadOnlyDictionary<string, int>(
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, });
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+					});
 
 				async Task Act()
 					=> await That(subject).Keys.Contains("A");
@@ -161,8 +166,12 @@ public sealed partial class ThatReadOnlyDictionary
 			{
 				IReadOnlyDictionary<string, int> subject = new SortedDictionary<string, int>(new ReverseComparer())
 				{
-					{ "a", 1 },
-					{ "b", 2 },
+					{
+						"a", 1
+					},
+					{
+						"b", 2
+					},
 				};
 
 				async Task Act()
@@ -176,8 +185,12 @@ public sealed partial class ThatReadOnlyDictionary
 			{
 				IReadOnlyDictionary<string, int> subject = new SortedDictionary<string, int>
 				{
-					{ "a", 1 },
-					{ "B", 2 },
+					{
+						"a", 1
+					},
+					{
+						"B", 2
+					},
 				};
 
 				async Task Act()
@@ -191,7 +204,15 @@ public sealed partial class ThatReadOnlyDictionary
 			public async Task IsEqualTo_ShouldUseTheKeyComparer()
 			{
 				IReadOnlyDictionary<string, int> subject =
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 2 }, };
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+						{
+							"b", 2
+						},
+					};
 
 				async Task Act()
 					=> await That(subject).Keys.IsEqualTo(["A", "B",]);
@@ -204,7 +225,9 @@ public sealed partial class ThatReadOnlyDictionary
 			{
 				IReadOnlyDictionary<string, int> subject = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
 				{
-					{ "a", 1 },
+					{
+						"a", 1
+					},
 				};
 
 				async Task Act()
@@ -217,7 +240,12 @@ public sealed partial class ThatReadOnlyDictionary
 			public async Task Using_ShouldOverrideTheKeyComparer()
 			{
 				IReadOnlyDictionary<string, int> subject =
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, };
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+					};
 
 				async Task Act()
 					=> await That(subject).Keys.Contains("a").Using(new AllDifferentComparer());
@@ -239,7 +267,12 @@ public sealed partial class ThatReadOnlyDictionary
 			public async Task WhenKeysContainTheKeyAccordingToTheKeyComparer_NegatedShouldFail()
 			{
 				IReadOnlyDictionary<string, int> subject =
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, };
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+					};
 
 				async Task Act()
 					=> await That(subject).Keys.DoesNotContain("A");
@@ -261,7 +294,12 @@ public sealed partial class ThatReadOnlyDictionary
 			public async Task WhenKeysDoNotContainTheKeyAccordingToTheKeyComparer_ShouldNameTheComparer()
 			{
 				IReadOnlyDictionary<string, int> subject =
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, };
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+					};
 
 				async Task Act()
 					=> await That(subject).Keys.Contains("b");
@@ -282,7 +320,12 @@ public sealed partial class ThatReadOnlyDictionary
 			[Test]
 			public async Task WithTheDefaultKeyComparer_ShouldUseTheDefaultEquality()
 			{
-				IReadOnlyDictionary<string, int> subject = new Dictionary<string, int> { { "a", 1 }, };
+				IReadOnlyDictionary<string, int> subject = new Dictionary<string, int>
+				{
+					{
+						"a", 1
+					},
+				};
 
 				async Task Act()
 					=> await That(subject).Keys.Contains("A");
@@ -338,7 +381,10 @@ public sealed partial class ThatReadOnlyDictionary
 			public async Task WhenWrappedDictionaryUsesACaseInsensitiveComparer_ShouldUseIt()
 			{
 				ReadOnlyDictionary<string, int> subject = new(
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { ["a"] = 1, });
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						["a"] = 1,
+					});
 
 				async Task Act()
 					=> await That(subject).Keys.Contains("A");

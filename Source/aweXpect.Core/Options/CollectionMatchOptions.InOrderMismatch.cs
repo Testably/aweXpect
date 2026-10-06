@@ -8,6 +8,34 @@ namespace aweXpect.Options;
 public partial class CollectionMatchOptions
 {
 	/// <summary>
+	///     Searches the first index that matches, starting next to <paramref name="start" /> and moving away in both
+	///     directions, as items in or against the expected order find their match next to the previous one.
+	/// </summary>
+	/// <returns>The matching index, or <c>-1</c> when none matches.</returns>
+	private static async ValueTask<int> FindNear(int start, int count, Func<int, ValueTask<bool>> isMatch)
+	{
+		for (int distance = 0;; distance++)
+		{
+			int after = start + 1 + distance;
+			int before = start - distance;
+			if (after >= count && before < 0)
+			{
+				return -1;
+			}
+
+			if (after < count && await isMatch(after))
+			{
+				return after;
+			}
+
+			if (before >= 0 && before < count && await isMatch(before))
+			{
+				return before;
+			}
+		}
+	}
+
+	/// <summary>
 	///     Explains why the sought items do not appear in order among the searched items: the items that are left over
 	///     regardless of the order, the found items that are in the wrong order, and for a run the items that interrupt
 	///     it.
@@ -22,8 +50,8 @@ public partial class CollectionMatchOptions
 	{
 		private const int None = -1;
 		private readonly int[] _assignedSearchedId;
-		private readonly bool _isOneToOne;
 		private readonly Func<int, int, ValueTask<bool>> _isMatch;
+		private readonly bool _isOneToOne;
 		private readonly bool[] _isSearchedMatched;
 		private readonly List<int>[] _occurrences;
 		private readonly OrderMatch _orderMatch;
@@ -357,34 +385,6 @@ public partial class CollectionMatchOptions
 		{
 			List<int> occurrences = _occurrences[searchedId];
 			return occurrences[0] < start || occurrences[occurrences.Count - 1] > end;
-		}
-	}
-
-	/// <summary>
-	///     Searches the first index that matches, starting next to <paramref name="start" /> and moving away in both
-	///     directions, as items in or against the expected order find their match next to the previous one.
-	/// </summary>
-	/// <returns>The matching index, or <c>-1</c> when none matches.</returns>
-	private static async ValueTask<int> FindNear(int start, int count, Func<int, ValueTask<bool>> isMatch)
-	{
-		for (int distance = 0;; distance++)
-		{
-			int after = start + 1 + distance;
-			int before = start - distance;
-			if (after >= count && before < 0)
-			{
-				return -1;
-			}
-
-			if (after < count && await isMatch(after))
-			{
-				return after;
-			}
-
-			if (before >= 0 && before < count && await isMatch(before))
-			{
-				return before;
-			}
 		}
 	}
 }

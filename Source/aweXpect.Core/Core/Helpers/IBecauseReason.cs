@@ -5,7 +5,6 @@ namespace aweXpect.Core.Helpers;
 
 internal interface IBecauseReason
 {
-	
-	public ValueTask<ConstraintResult>
+	ValueTask<ConstraintResult>
 		ApplyTo(ConstraintResult result);
 }

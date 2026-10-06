@@ -1,8 +1,4 @@
-﻿using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Helpers;
-using aweXpect.Results;
-using aweXpect.SourceGenerators;
+﻿using aweXpect.SourceGenerators;
 
 namespace aweXpect;
 

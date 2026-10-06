@@ -135,7 +135,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in order,
 					             but it lacked all 3 expected items
-					             
+
 					             Collection:
 					             []
 
@@ -172,7 +172,7 @@ public sealed partial class ThatEnumerable
 					               contained item 8 at index 7 instead of 108 and
 					               contained item 9 at index 8 instead of 109 and
 					               contained item 10 at index 9 instead of 110
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -850,7 +850,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
 					             but it lacked all 3 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -877,7 +877,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
 					             but it lacked all 2 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -915,7 +915,7 @@ public sealed partial class ThatEnumerable
 					               contained item 9 at index 8 that was not expected and
 					               contained item 10 at index 9 that was not expected and
 					               lacked all 10 unique expected items
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -1337,7 +1337,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order,
 					             but it lacked all 3 expected items
-					             
+
 					             Collection:
 					             []
 
@@ -1375,7 +1375,7 @@ public sealed partial class ThatEnumerable
 					               contained item 9 at index 8 that was not expected and
 					               contained item 10 at index 9 that was not expected and
 					               lacked all 10 expected items
-					             
+
 					             Collection:
 					             [
 					               1,
@@ -1859,7 +1859,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order ignoring duplicates,
 					             but it lacked all 3 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -1888,7 +1888,7 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order ignoring duplicates,
 					             but it lacked all 2 unique expected items
-					             
+
 					             Collection:
 					             []
 
@@ -1926,7 +1926,7 @@ public sealed partial class ThatEnumerable
 					               contained item 9 at index 8 that was not expected and
 					               contained item 10 at index 9 that was not expected and
 					               lacked all 10 unique expected items
-					             
+
 					             Collection:
 					             [
 					               1,

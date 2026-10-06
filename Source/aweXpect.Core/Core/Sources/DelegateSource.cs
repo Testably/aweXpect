@@ -29,6 +29,17 @@ internal class DelegateSource : IValueSource<DelegateValue>
 		_action = action is null ? null : _ => action();
 	}
 
+	private static void ThrowIfAsyncVoid(MethodInfo? method, string replaceType)
+	{
+		if (method is not null && (bool)IsAsyncVoidMethod.GetValue(method,
+			    static method => Attribute.IsDefined(method, typeof(AsyncStateMachineAttribute), true)))
+		{
+			throw Tracing.WriteException(
+				new InvalidOperationException(
+					$"Cannot use aweXpect on an async void method: use {replaceType} instead."));
+		}
+	}
+
 	#region IValueSource<DelegateValue> Members
 
 	public bool IsNullTaskSubject => false;
@@ -58,15 +69,4 @@ internal class DelegateSource : IValueSource<DelegateValue>
 	public Exception[]? GetOtherExceptions(Exception exception) => null;
 
 	#endregion
-
-	private static void ThrowIfAsyncVoid(MethodInfo? method, string replaceType)
-	{
-		if (method is not null && (bool)IsAsyncVoidMethod.GetValue(method,
-			    static method => Attribute.IsDefined(method, typeof(AsyncStateMachineAttribute), true)))
-		{
-			throw Tracing.WriteException(
-				new InvalidOperationException(
-					$"Cannot use aweXpect on an async void method: use {replaceType} instead."));
-		}
-	}
 }

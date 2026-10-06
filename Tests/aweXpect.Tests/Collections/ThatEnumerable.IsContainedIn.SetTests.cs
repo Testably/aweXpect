@@ -11,7 +11,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task ForADoubleSet_ShouldUseTheComparerOfTheSet()
 			{
-				HashSet<double> subject = new(new RoundingComparer()) { 1.0, 2.0, };
+				HashSet<double> subject = new(new RoundingComparer())
+				{
+					1.0,
+					2.0,
+				};
 
 #pragma warning disable aweXpect0006
 				async Task Act()
@@ -25,7 +29,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task InAnyOrder_ShouldUseTheComparerOfTheSet()
 			{
-				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+					"b",
+				};
 
 				async Task Act()
 					=> await That(subject).IsContainedIn(["C", "B", "A",]).InAnyOrder();
@@ -36,7 +44,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task Using_ShouldOverrideTheComparerOfTheSet()
 			{
-				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+				};
 
 				async Task Act()
 					=> await That(subject).IsContainedIn(["A", "B",]).InAnyOrder().Using(new AllDifferentComparer());
@@ -64,7 +75,11 @@ public sealed partial class ThatEnumerable
 			public async Task WhenOnlyTheExpectedCollectionIsASetWithACustomComparer_ShouldUseTheDefaultEquality()
 			{
 				List<string> subject = ["a",];
-				HashSet<string> expected = new(StringComparer.OrdinalIgnoreCase) { "A", "B", };
+				HashSet<string> expected = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"A",
+					"B",
+				};
 
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).InAnyOrder();
@@ -92,7 +107,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task Within_ShouldIgnoreTheComparerOfTheSet()
 			{
-				HashSet<double> subject = new(new RoundingComparer()) { 1.0, 2.0, };
+				HashSet<double> subject = new(new RoundingComparer())
+				{
+					1.0,
+					2.0,
+				};
 
 #pragma warning disable aweXpect0006
 				async Task Act()

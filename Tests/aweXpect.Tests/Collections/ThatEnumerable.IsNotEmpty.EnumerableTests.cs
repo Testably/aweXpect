@@ -36,7 +36,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenArrayContainsValues_ShouldSucceed()
 			{
-				IEnumerable subject = new[] { "foo", };
+				IEnumerable subject = new[]
+				{
+					"foo",
+				};
 
 				async Task Act()
 					=> await That(subject).IsNotEmpty();
@@ -74,7 +77,7 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldFail()
 			{
-				IEnumerable subject = ToEnumerable((int[]) []);
+				IEnumerable subject = ToEnumerable((int[])[]);
 
 				async Task Act()
 					=> await That(subject).IsNotEmpty();
@@ -128,7 +131,7 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldSucceed()
 			{
-				IEnumerable subject = ToEnumerable((int[]) []);
+				IEnumerable subject = ToEnumerable((int[])[]);
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotEmpty());

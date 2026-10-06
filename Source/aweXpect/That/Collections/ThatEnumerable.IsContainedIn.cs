@@ -65,8 +65,8 @@ public static partial class ThatEnumerable
 					IsEqualToConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
-						failsForNullSubject: true,
-						canUseSubjectComparer: true);
+						true,
+						true);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -97,8 +97,8 @@ public static partial class ThatEnumerable
 					IsEqualToConstraint<IEnumerable<string?>, string?, string?> constraint = new(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
-						failsForNullSubject: true,
-						canUseSubjectComparer: true);
+						true,
+						true);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -132,8 +132,8 @@ public static partial class ThatEnumerable
 					IsEqualToConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
-						failsForNullSubject: true,
-						canUseSubjectComparer: true);
+						true,
+						true);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -165,8 +165,8 @@ public static partial class ThatEnumerable
 						it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
-						failsForNullSubject: true,
-						canUseSubjectComparer: true);
+						true,
+						true);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -225,7 +225,7 @@ public static partial class ThatEnumerable
 					IsEqualToFromPredicateConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(
 						it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.MatchOptions,
-						failsForNullSubject: true);
+						true);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -254,7 +254,7 @@ public static partial class ThatEnumerable
 					IsEqualToFromExpectationsConstraint<IEnumerable<TItem>, TItem, TItem> constraint = new(
 						it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.MatchOptions,
-						failsForNullSubject: true);
+						true);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -285,7 +285,7 @@ public static partial class ThatEnumerable
 						it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
-						failsForNullSubject: true);
+						true);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -317,7 +317,7 @@ public static partial class ThatEnumerable
 						it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
-						failsForNullSubject: true);
+						true);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -350,7 +350,7 @@ public static partial class ThatEnumerable
 						it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
-						failsForNullSubject: true);
+						true);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -382,7 +382,7 @@ public static partial class ThatEnumerable
 					IsEqualToFromPredicateConstraint<TCollection, TItem, TItem> constraint = new(
 						it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.MatchOptions,
-						failsForNullSubject: true);
+						true);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -413,7 +413,7 @@ public static partial class ThatEnumerable
 					IsEqualToFromExpectationsConstraint<TCollection, TItem, TItem> constraint = new(
 						it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.MatchOptions,
-						failsForNullSubject: true);
+						true);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,

@@ -14,7 +14,7 @@ public partial class ThatDelegateThrows<TException>
 		Action<IThatSubject<Exception?>> expectations)
 	{
 		expectations.ThrowIfNull();
-		return new(ExpectationBuilder
+		return new AndOrResult<TException, IThatDelegateThrows<TException>>(ExpectationBuilder
 				.ForMember(
 					MemberAccessor<Exception?, Exception?>.FromFunc(
 						e => e?.InnerException,
@@ -42,7 +42,7 @@ public partial class ThatDelegateThrows<TException>
 		where TInnerException : Exception
 	{
 		expectations.ThrowIfNull();
-		return new(ExpectationBuilder
+		return new AndOrResult<TException, IThatDelegateThrows<TException>>(ExpectationBuilder
 				.ForMember<Exception, Exception?>(e => e.InnerException,
 					" that ",
 					false)
@@ -69,7 +69,7 @@ public partial class ThatDelegateThrows<TException>
 	{
 		type.ThrowIfNotAnExceptionType();
 		expectations.ThrowIfNull();
-		return new(ExpectationBuilder
+		return new AndOrResult<TException, IThatDelegateThrows<TException>>(ExpectationBuilder
 				// An inner exception of another type is hidden like a missing one, as the type mismatch already fails.
 				.ForMember<Exception, Exception?>(
 					e => e.InnerException.IsOfType(type) ? e.InnerException : null,
@@ -87,7 +87,7 @@ public partial class ThatDelegateThrows<TException>
 		Type type)
 	{
 		type.ThrowIfNotAnExceptionType();
-		return new(ExpectationBuilder
+		return new AndOrResult<TException, IThatDelegateThrows<TException>>(ExpectationBuilder
 				.AddConstraint(type, static (innerExceptionType, it, grammars) =>
 					new HasInnerExceptionValueConstraint(innerExceptionType, it, grammars)),
 			this);
@@ -113,7 +113,7 @@ public partial class ThatDelegateThrows<TException>
 		Type type)
 	{
 		type.ThrowIfNotAnExceptionType();
-		return new(ExpectationBuilder
+		return new AndOrResult<TException, IThatDelegateThrows<TException>>(ExpectationBuilder
 				.AddConstraint(type, static (innerExceptionType, it, grammars) =>
 					new HasInnerExceptionValueConstraint(innerExceptionType, it, grammars).Invert()),
 			this);

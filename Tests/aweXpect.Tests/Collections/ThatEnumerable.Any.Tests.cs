@@ -193,7 +193,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenAtLeastOneItemMatches_ShouldSucceed()
 			{
-				IEnumerable subject = new object[] { "a", 1, "b", };
+				IEnumerable subject = new object[]
+				{
+					"a", 1, "b",
+				};
 
 				async Task Act()
 					=> await That(subject).Any().Satisfy(x => x is int);
@@ -204,7 +207,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenNoItemsMatch_ShouldFail()
 			{
-				IEnumerable subject = new object[] { "a", "b", "c", };
+				IEnumerable subject = new object[]
+				{
+					"a", "b", "c",
+				};
 
 				async Task Act()
 					=> await That(subject).Any().Satisfy(x => x is int);

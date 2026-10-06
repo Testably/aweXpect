@@ -258,7 +258,7 @@ public static partial class EquivalencyComparison
 			MemberType.Field => memberToIgnore is not MemberToIgnore.ByPropertyPredicate,
 			MemberType.Property => memberToIgnore is not MemberToIgnore.ByFieldPredicate,
 			_ => memberToIgnore is not MemberToIgnore.ByFieldPredicate and
-			     not MemberToIgnore.ByPropertyPredicate,
+				not MemberToIgnore.ByPropertyPredicate,
 		};
 
 	/// <remarks>
@@ -1308,15 +1308,6 @@ public static partial class EquivalencyComparison
 		private readonly object?[] _actualObjects;
 		private readonly EquivalencyContext _context;
 
-		/// <summary>
-		///     The number of differences of the pairs that were considered for the leftovers.
-		/// </summary>
-		/// <remarks>
-		///     Only the leftovers need the count, and counting the differences means writing them, so the search for
-		///     augmenting paths only decides the pairs it considers.
-		/// </remarks>
-		private int?[,]? _differenceCounts;
-
 		private readonly int[] _expectedIndices;
 		private readonly object?[] _expectedObjects;
 
@@ -1356,6 +1347,15 @@ public static partial class EquivalencyComparison
 		/// </summary>
 		private readonly int[] _visitedInSearch;
 
+		/// <summary>
+		///     The number of differences of the pairs that were considered for the leftovers.
+		/// </summary>
+		/// <remarks>
+		///     Only the leftovers need the count, and counting the differences means writing them, so the search for
+		///     augmenting paths only decides the pairs it considers.
+		/// </remarks>
+		private int?[,]? _differenceCounts;
+
 		private int _search;
 
 		public ElementMatcher(object?[] actualObjects, int[] actualIndices, object?[] expectedObjects,
@@ -1381,6 +1381,11 @@ public static partial class EquivalencyComparison
 		}
 
 		/// <summary>
+		///     Whether an actual or an expected element is left without a counterpart.
+		/// </summary>
+		public bool HasLeftovers => _unmatchedExpected.Count > 0 || Array.IndexOf(_matchedTo, -1) >= 0;
+
+		/// <summary>
 		///     Matches as many expected elements as possible.
 		/// </summary>
 		public async ValueTask
@@ -1402,11 +1407,6 @@ public static partial class EquivalencyComparison
 				}
 			}
 		}
-
-		/// <summary>
-		///     Whether an actual or an expected element is left without a counterpart.
-		/// </summary>
-		public bool HasLeftovers => _unmatchedExpected.Count > 0 || Array.IndexOf(_matchedTo, -1) >= 0;
 
 		/// <summary>
 		///     Returns the elements that were left over, as pairs of an actual and an expected index, where
@@ -1649,7 +1649,7 @@ public static partial class EquivalencyComparison
 			}
 
 			private long GetKey(int actualIndex, int expectedIndex)
-				=> (long)actualIndex * expectedCount + expectedIndex;
+				=> ((long)actualIndex * expectedCount) + expectedIndex;
 		}
 	}
 #pragma warning restore S107

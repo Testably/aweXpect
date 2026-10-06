@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -125,7 +124,10 @@ public class CollectionMatchOptionsTests
 			double[] subject = Enumerable.Range(0, 22).Select(k => (10 * k) + 0.5)
 				.Concat(Enumerable.Range(0, 22).Select(k => 10.0 * k))
 				.ToArray();
-			double[] expected = Enumerable.Range(0, 22).SelectMany(k => new[] { 10.0 * k, (10 * k) + 1.0, })
+			double[] expected = Enumerable.Range(0, 22).SelectMany(k => new[]
+				{
+					10.0 * k, (10 * k) + 1.0,
+				})
 				.ToArray();
 
 			async Task Act()
@@ -147,7 +149,7 @@ public class CollectionMatchOptionsTests
 		{
 			double[] values = [0.0, -0.0, double.NaN, 1.0,];
 
-			(int met, List<string> disagreements) = await Compare<double, double>(1811,
+			(int met, List<string> disagreements) = await Compare(1811,
 				random => values[random.Next(values.Length)], new ObjectEqualityOptions<double>());
 
 			await That(disagreements).IsEmpty();
@@ -157,7 +159,7 @@ public class CollectionMatchOptionsTests
 		[Test]
 		public async Task Numbers_ShouldAgreeWithUnrecognizedOptions()
 		{
-			(int met, List<string> disagreements) = await Compare<int, int>(1705,
+			(int met, List<string> disagreements) = await Compare(1705,
 				random => random.Next(4), new ObjectEqualityOptions<int>());
 
 			await That(disagreements).IsEmpty();
@@ -167,7 +169,7 @@ public class CollectionMatchOptionsTests
 		[Test]
 		public async Task NumbersComparedAsObjects_ShouldAgreeWithUnrecognizedOptions()
 		{
-			(int met, List<string> disagreements) = await Compare<int, object?>(1529,
+			(int met, List<string> disagreements) = await Compare(1529,
 				random => random.Next(4), new ObjectEqualityOptions<object?>());
 
 			await That(disagreements).IsEmpty();
@@ -192,7 +194,7 @@ public class CollectionMatchOptionsTests
 			StringEqualityOptions options = new("expected");
 			options.IgnoringCase();
 
-			string result = await Describe<string?, string?>(["a", "B", null,], [null, "b", "A",], options);
+			string result = await Describe(["a", "B", null,], [null, "b", "A",], options);
 
 			await That(result).IsEqualTo("False: ");
 		}
@@ -243,8 +245,8 @@ public class CollectionMatchOptionsTests
 					? subject.OrderBy(_ => random.Next()).ToArray()
 					: Enumerable.Range(0, random.Next(0, 6)).Select(_ => createItem(random)).ToArray();
 
-				string recognized = await Describe<T, T2>(expected, subject, options);
-				string unrecognized = await Describe<T, T2>(expected, subject, new ForwardingEquality<T2>(options));
+				string recognized = await Describe(expected, subject, options);
+				string unrecognized = await Describe(expected, subject, new ForwardingEquality<T2>(options));
 				if (recognized == "False: ")
 				{
 					met++;
@@ -293,7 +295,7 @@ public class CollectionMatchOptionsTests
 		{
 			void Act()
 				=> _ = new CollectionMatchOptions.ExpectationItem<int>(null!, ExpectationGrammars.None,
-					new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
+					new EvaluationContext.EvaluationContext(), CancellationToken.None);
 
 			await That(Act).Throws<ArgumentNullException>()
 				.WithParamName("expectation").And
@@ -1422,7 +1424,10 @@ public class CollectionMatchOptionsTests
 				{
 					foreach (string mode in modes.Split(','))
 					{
-						foreach (string kind in new[] { "values", "predicates", "expectations", })
+						foreach (string kind in new[]
+						         {
+							         "values", "predicates", "expectations",
+						         })
 						{
 							data.Add((relation, mode, kind, subject, expected, matching.Contains(relation)));
 						}
@@ -1441,7 +1446,7 @@ public class CollectionMatchOptionsTests
 		/// </remarks>
 		private static CollectionMatchOptions.ExpectationItem<int> IsNearExpectation(int value)
 			=> new(x => x.Satisfies(item => Math.Abs(item - value) <= 1), ExpectationGrammars.None,
-				new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
+				new EvaluationContext.EvaluationContext(), CancellationToken.None);
 
 		private sealed class IdOnlyEquality(int id, string name)
 		{
@@ -1625,7 +1630,7 @@ public class CollectionMatchOptionsTests
 			string mode, string equality, string subject, string expected, bool isMatch)
 		{
 			CollectionMatchOptions sut = new(relation);
-			if (mode is ['a', ..])
+			if (mode is ['a', ..,])
 			{
 				sut.InAnyOrder();
 			}
@@ -1725,7 +1730,12 @@ public class CollectionMatchOptionsTests
 				string equality = equalities[random.Next(equalities.Length)];
 				int[] subject = Enumerable.Range(0, random.Next(0, 6)).Select(_ => random.Next(4)).ToArray();
 				string[] expected = Enumerable.Range(0, random.Next(1, 5))
-					.Select(_ => (equality == "pred" ? new[] { "==", ">=", "<=", }[random.Next(3)] : "") + random.Next(4))
+					.Select(_ => (equality == "pred"
+						? new[]
+						{
+							"==", ">=", "<=",
+						}[random.Next(3)]
+						: "") + random.Next(4))
 					.ToArray();
 				CollectionMatchOptions sut = new(relation);
 				if (isInterspersed)
@@ -1783,6 +1793,7 @@ public class CollectionMatchOptionsTests
 			bool isContains = relation.HasFlag(CollectionMatchOptions.EquivalenceRelations.Contains);
 			int searchedCount = isContains ? subject.Length : expected.Length;
 			int soughtCount = isContains ? expected.Length : subject.Length;
+
 			bool Fits(int searched, int sought)
 				=> isContains ? isMatch(subject[searched], expected[sought]) : isMatch(subject[sought], expected[searched]);
 
@@ -1806,12 +1817,12 @@ public class CollectionMatchOptionsTests
 					.Any(offset => Enumerable.Range(0, soughtCount).All(sought => Fits(offset + sought, sought)));
 			}
 
-			return isFound && (relation switch
+			return isFound && relation switch
 			{
 				CollectionMatchOptions.EquivalenceRelations.ContainsProperly => subject.Length > expected.Length,
 				CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly => subject.Length < expected.Length,
 				_ => true,
-			});
+			};
 		}
 
 		internal static async Task<bool> Matches(ICollectionMatcher<int, int> matcher, IEnumerable<int> subject,

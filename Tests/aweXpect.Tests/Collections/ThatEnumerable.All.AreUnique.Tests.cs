@@ -88,7 +88,7 @@ public sealed partial class ThatEnumerable
 				{
 					DateTime local = new(2020, 1, 1, 0, 0, 0, DateTimeKind.Local);
 					DateTime utc = new(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-					IEnumerable<DateTime> subject = ToEnumerable([local, utc,]);
+					IEnumerable<DateTime> subject = ToEnumerable(local, utc);
 
 					async Task Act()
 						=> await That(subject).All().AreUnique();
@@ -122,7 +122,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenItContainsEquivalentDuplicates_ShouldFail()
 				{
-					IEnumerable<MyClass> subject = ToEnumerable([new MyClass(1), new MyClass(2), new MyClass(1),]);
+					IEnumerable<MyClass> subject = ToEnumerable(new MyClass(1), new MyClass(2), new MyClass(1));
 
 					async Task Act()
 						=> await That(subject).All().AreUnique().Equivalent();

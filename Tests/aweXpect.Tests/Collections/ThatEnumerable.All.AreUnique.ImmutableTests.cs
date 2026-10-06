@@ -286,7 +286,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task ShouldUseCustomComparer()
 				{
-					ImmutableArray<MyClass> subject = [new MyClass(1), new MyClass(1), new MyClass(1),];
+					ImmutableArray<MyClass> subject = [new(1), new(1), new(1),];
 
 					async Task Act()
 						=> await That(subject).All().AreUnique(x => x.Value).Using(new AllDifferentComparer());
@@ -297,7 +297,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenAllItemsAreUnique_ShouldSucceed()
 				{
-					ImmutableArray<MyClass> subject = [new MyClass(1), new MyClass(2), new MyClass(3),];
+					ImmutableArray<MyClass> subject = [new(1), new(2), new(3),];
 
 					async Task Act()
 						=> await That(subject).All().AreUnique(x => x.Value);
@@ -309,7 +309,7 @@ public sealed partial class ThatEnumerable
 				public async Task WhenItContainsDuplicates_ShouldFail()
 				{
 					ImmutableArray<MyClass> subject =
-						[new MyClass(1), new MyClass(2), new MyClass(3), new MyClass(1),];
+						[new(1), new(2), new(3), new(1),];
 
 					async Task Act()
 						=> await That(subject).All().AreUnique(x => x.Value);
@@ -359,7 +359,7 @@ public sealed partial class ThatEnumerable
 				{
 					ImmutableArray<MyClass> subject =
 					[
-						new MyClass(1), new MyClass(2), new MyClass(3), new MyClass(1), new MyClass(2), new MyClass(-1),
+						new(1), new(2), new(3), new(1), new(2), new(-1),
 					];
 
 					async Task Act()
@@ -420,7 +420,6 @@ public sealed partial class ThatEnumerable
 						             ]
 						             """);
 				}
-
 			}
 
 			public sealed class ImmutableArrayNegatedMemberTests
@@ -428,7 +427,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenAllItemsAreUnique_ShouldFail()
 				{
-					ImmutableArray<MyClass> subject = [new MyClass(1), new MyClass(2), new MyClass(3),];
+					ImmutableArray<MyClass> subject = [new(1), new(2), new(3),];
 
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().AreUnique(x => x.Value));
@@ -461,7 +460,7 @@ public sealed partial class ThatEnumerable
 				public async Task WhenItContainsDuplicates_ShouldSucceed()
 				{
 					ImmutableArray<MyClass> subject =
-						[new MyClass(1), new MyClass(2), new MyClass(3), new MyClass(1),];
+						[new(1), new(2), new(3), new(1),];
 
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().AreUnique(x => x.Value));
@@ -476,7 +475,7 @@ public sealed partial class ThatEnumerable
 				public async Task ShouldUseCustomComparer()
 				{
 					ImmutableArray<MyStringClass> subject =
-						[new MyStringClass("a"), new MyStringClass("a"), new MyStringClass("a"),];
+						[new("a"), new("a"), new("a"),];
 
 					async Task Act()
 						=> await That(subject).All().AreUnique(x => x.Value).Using(new AllDifferentComparer());
@@ -488,7 +487,7 @@ public sealed partial class ThatEnumerable
 				public async Task WhenAllItemsAreUnique_ShouldSucceed()
 				{
 					ImmutableArray<MyStringClass> subject =
-						[new MyStringClass("a"), new MyStringClass("b"), new MyStringClass("c"),];
+						[new("a"), new("b"), new("c"),];
 
 					async Task Act()
 						=> await That(subject).All().AreUnique(x => x.Value);
@@ -499,7 +498,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenDiffersInCasing_ShouldSucceed()
 				{
-					ImmutableArray<MyStringClass> subject = [new MyStringClass("a"), new MyStringClass("A"),];
+					ImmutableArray<MyStringClass> subject = [new("a"), new("A"),];
 
 					async Task Act()
 						=> await That(subject).All().AreUnique(x => x.Value);
@@ -510,7 +509,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenDiffersInCasingAndCasingIsIgnored_ShouldFail()
 				{
-					ImmutableArray<MyStringClass> subject = [new MyStringClass("a"), new MyStringClass("A"),];
+					ImmutableArray<MyStringClass> subject = [new("a"), new("A"),];
 
 					async Task Act()
 						=> await That(subject).All().AreUnique(x => x.Value).IgnoringCase();
@@ -548,7 +547,7 @@ public sealed partial class ThatEnumerable
 				{
 					ImmutableArray<MyStringClass> subject =
 					[
-						new MyStringClass("a"), new MyStringClass("b"), new MyStringClass("c"), new MyStringClass("a"),
+						new("a"), new("b"), new("c"), new("a"),
 					];
 
 					async Task Act()
@@ -593,8 +592,8 @@ public sealed partial class ThatEnumerable
 				{
 					ImmutableArray<MyStringClass> subject =
 					[
-						new MyStringClass("a"), new MyStringClass("b"), new MyStringClass("c"), new MyStringClass("a"),
-						new MyStringClass("b"), new MyStringClass("x"),
+						new("a"), new("b"), new("c"), new("a"),
+						new("b"), new("x"),
 					];
 
 					async Task Act()

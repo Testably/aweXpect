@@ -77,6 +77,17 @@ public partial class CollectionMatchOptions(
 	}
 
 	/// <summary>
+	///     Only equality guarantees that a successful any-order match means the same items in a different order; the
+	///     containment relations require the items to be contiguous, so their any-order match can succeed for other
+	///     reasons.
+	/// </summary>
+	/// <remarks>
+	///     Ignoring duplicates, the in-order matcher knows whether the items match in any order, so it adds the hint
+	///     itself.
+	/// </remarks>
+	private bool AddsInAnyOrderHint => _equivalenceRelations == EquivalenceRelations.Equivalent;
+
+	/// <summary>
 	///     Specifies the equivalence relation between subject and expected.
 	/// </summary>
 	public void SetEquivalenceRelation(EquivalenceRelations equivalenceRelation)
@@ -224,17 +235,6 @@ public partial class CollectionMatchOptions(
 
 		return elements;
 	}
-
-	/// <summary>
-	///     Only equality guarantees that a successful any-order match means the same items in a different order; the
-	///     containment relations require the items to be contiguous, so their any-order match can succeed for other
-	///     reasons.
-	/// </summary>
-	/// <remarks>
-	///     Ignoring duplicates, the in-order matcher knows whether the items match in any order, so it adds the hint
-	///     itself.
-	/// </remarks>
-	private bool AddsInAnyOrderHint => _equivalenceRelations == EquivalenceRelations.Equivalent;
 
 	/// <summary>
 	///     Specifies the expectation for the <paramref name="expectedExpression" /> using the provided

@@ -39,6 +39,14 @@ internal class LimitedCollection<T> : IEnumerable<T>
 	public IEnumerable<int> Indices
 		=> _indices;
 
+	/// <inheritdoc cref="ICollection{T}.Count" />
+	public int Count
+		=> _buffer.Count;
+
+	/// <inheritdoc cref="ICollection{T}.IsReadOnly" />
+	public bool IsReadOnly
+		=> _buffer.Count >= _limit;
+
 	/// <inheritdoc cref="IEnumerable{T}.GetEnumerator()" />
 	public IEnumerator<T> GetEnumerator()
 		=> _buffer.GetEnumerator();
@@ -58,12 +66,4 @@ internal class LimitedCollection<T> : IEnumerable<T>
 			_indices.Add(index);
 		}
 	}
-
-	/// <inheritdoc cref="ICollection{T}.Count" />
-	public int Count
-		=> _buffer.Count;
-
-	/// <inheritdoc cref="ICollection{T}.IsReadOnly" />
-	public bool IsReadOnly
-		=> _buffer.Count >= _limit;
 }

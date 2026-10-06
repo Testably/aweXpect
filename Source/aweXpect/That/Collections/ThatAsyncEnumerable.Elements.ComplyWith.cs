@@ -18,7 +18,7 @@ public static partial class ThatAsyncEnumerable
 			ComplyWith(Action<IThatSubject<TItem>> expectations)
 		{
 			expectations.ThrowIfNull();
-			return new(
+			return new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
 				_subject.Get().ExpectationBuilder.AddConstraint((Quantifier: _quantifier, Expectations: expectations),
 					static (state, it, grammars)
 						=> new AsyncComplyWithConstraint<TItem>(it, grammars, state.Quantifier, state.Expectations)),
@@ -35,7 +35,7 @@ public static partial class ThatAsyncEnumerable
 			ComplyWith(Action<IThatSubject<string?>> expectations)
 		{
 			expectations.ThrowIfNull();
-			return new(
+			return new AndOrResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
 				_subject.Get().ExpectationBuilder.AddConstraint((Quantifier: _quantifier, Expectations: expectations),
 					static (state, it, grammars)
 						=> new AsyncComplyWithConstraint<string?>(it, grammars, state.Quantifier, state.Expectations)),

@@ -10,5 +10,5 @@ public interface IContextConstraint<in TValue> : IConstraint
 	/// <summary>
 	///     Checks if the <paramref name="actual" /> value meets the expectation using the <see cref="IEvaluationContext" />.
 	/// </summary>
-	public ConstraintResult IsMetBy(TValue actual, IEvaluationContext context);
+	ConstraintResult IsMetBy(TValue actual, IEvaluationContext context);
 }

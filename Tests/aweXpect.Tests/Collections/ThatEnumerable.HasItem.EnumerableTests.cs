@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using aweXpect.Equivalency;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -39,7 +38,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 			{
-				IEnumerable subject = new []{0, 1, 2,};
+				IEnumerable subject = new[]
+				{
+					0, 1, 2,
+				};
 
 				async Task Act()
 					=> await That(subject).HasItem(_ => false).AtIndex(2);
@@ -58,7 +60,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldSucceed()
 			{
-				IEnumerable subject = new []{0, 1, 2,};
+				IEnumerable subject = new[]
+				{
+					0, 1, 2,
+				};
 
 				async Task Act()
 					=> await That(subject).HasItem(_ => true).AtIndex(2);
@@ -69,7 +74,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableContainsNoItemAtGivenIndex_ShouldFail()
 			{
-				IEnumerable subject = new []{0, 1, 2,};
+				IEnumerable subject = new[]
+				{
+					0, 1, 2,
+				};
 
 				async Task Act()
 					=> await That(subject).HasItem(_ => true).AtIndex(3);
@@ -88,7 +96,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableContainsNullItemAtGivenIndex_ShouldFail()
 			{
-				IEnumerable subject = new[] { null, "a", };
+				IEnumerable subject = new[]
+				{
+					null, "a",
+				};
 
 				async Task Act()
 					=> await That(subject).HasItem(x => "a".Equals(x)).AtIndex(0);
@@ -129,7 +140,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 			{
-				IEnumerable subject = new[] { 1, 2, 3, };
+				IEnumerable subject = new[]
+				{
+					1, 2, 3,
+				};
 
 				async Task Act()
 					=> await That(subject).HasItem(predicate: null!);
@@ -142,7 +156,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenPredicateIsNull_WhenNegated_ShouldThrowArgumentNullException()
 			{
-				IEnumerable subject = new[] { 1, 2, 3, };
+				IEnumerable subject = new[]
+				{
+					1, 2, 3,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotHaveItem(predicate: null!);
@@ -282,7 +299,10 @@ public sealed partial class ThatEnumerable
 			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldNotReadFurther()
 			{
 				int readItems = 0;
-				IEnumerable subject = new[] { 2, 3, 4, }.Select(x =>
+				IEnumerable subject = new[]
+				{
+					2, 3, 4,
+				}.Select(x =>
 				{
 					readItems++;
 					return x;
@@ -324,7 +344,10 @@ public sealed partial class ThatEnumerable
 			[AutoArguments]
 			public async Task WhenEnumerableContainsNoItemAtGivenIndex_ShouldFail(int expected)
 			{
-				IEnumerable subject = new []{0, 1, expected,};
+				IEnumerable subject = new[]
+				{
+					0, 1, expected,
+				};
 
 				async Task Act()
 					=> await That(subject).HasItem(expected).AtIndex(3);
@@ -343,7 +366,10 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenEnumerableContainsNullItemAtGivenIndex_ShouldFail()
 			{
-				IEnumerable subject = new[] { null, "a", };
+				IEnumerable subject = new[]
+				{
+					null, "a",
+				};
 
 				async Task Act()
 					=> await That(subject).HasItem("a").AtIndex(0);

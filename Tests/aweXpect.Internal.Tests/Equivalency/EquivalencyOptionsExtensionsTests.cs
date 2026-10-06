@@ -14,9 +14,9 @@ public sealed class EquivalencyOptionsExtensionsTests
 
 		await That(result.MembersToIgnore).IsEmpty();
 		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
-			{
-				MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
-			});
+		{
+			MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
+		});
 		await That(result.ToString()).IsEqualTo("""
 		                                         - include public fields and properties
 		                                         - for EquivalencyOptionsExtensionsTests.MyClass:
@@ -34,9 +34,9 @@ public sealed class EquivalencyOptionsExtensionsTests
 
 		await That(result.MembersToIgnore).IsEmpty();
 		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
-			{
-				MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
-			});
+		{
+			MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
+		});
 		await That(result.ToString()).IsEqualTo("""
 		                                         - include public fields and properties
 		                                         - for EquivalencyOptionsExtensionsTests.MyClass:
@@ -54,9 +54,9 @@ public sealed class EquivalencyOptionsExtensionsTests
 
 		await That(result.MembersToIgnore).IsEmpty();
 		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
-			{
-				MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
-			});
+		{
+			MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
+		});
 		await That(result.ToString()).IsEqualTo("""
 		                                         - include public fields and properties
 		                                         - for EquivalencyOptionsExtensionsTests.MyClass:
@@ -76,9 +76,9 @@ public sealed class EquivalencyOptionsExtensionsTests
 
 		await That(result.IgnoreCollectionOrder).IsFalse();
 		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
-			{
-				IgnoreCollectionOrder = ignoreCollectionOrder,
-			});
+		{
+			IgnoreCollectionOrder = ignoreCollectionOrder,
+		});
 
 		if (ignoreCollectionOrder)
 		{
@@ -101,9 +101,9 @@ public sealed class EquivalencyOptionsExtensionsTests
 
 		await That(result.MembersToIgnore).IsEmpty();
 		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
-			{
-				MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
-			});
+		{
+			MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
+		});
 		await That(result.ToString()).IsEqualTo("""
 		                                         - include public fields and properties
 		                                         - for EquivalencyOptionsExtensionsTests.MyClass:
@@ -123,9 +123,9 @@ public sealed class EquivalencyOptionsExtensionsTests
 
 		await That(result.MembersToIgnore).IsEmpty();
 		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
-			{
-				MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
-			});
+		{
+			MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
+		});
 		await That(result.ToString()).IsEqualTo($"""
 		                                          - include public fields and properties
 		                                          - for EquivalencyOptionsExtensionsTests.MyClass:
@@ -144,9 +144,9 @@ public sealed class EquivalencyOptionsExtensionsTests
 
 		await That(result.MembersToIgnore).IsEmpty();
 		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
-			{
-				MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
-			});
+		{
+			MembersToIgnore = It.Is<MemberToIgnore[]>().That.HasCount(1),
+		});
 		await That(result.ToString()).IsEqualTo("""
 		                                         - include public fields and properties
 		                                         - for EquivalencyOptionsExtensionsTests.MyClass:
@@ -173,9 +173,9 @@ public sealed class EquivalencyOptionsExtensionsTests
 
 		await That(result.Fields).IsEqualTo(IncludeMembers.Public);
 		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
-			{
-				Fields = fieldsToInclude,
-			});
+		{
+			Fields = fieldsToInclude,
+		});
 		await That(result.ToString()).IsEqualTo($"""
 		                                          - include public fields and properties
 		                                          - for EquivalencyOptionsExtensionsTests.MyClass:
@@ -200,9 +200,9 @@ public sealed class EquivalencyOptionsExtensionsTests
 
 		await That(result.Properties).IsEqualTo(IncludeMembers.Public);
 		await That(result.GetOptionsFor(typeof(MyClass))).IsEquivalentTo(new
-			{
-				Properties = propertiesToInclude,
-			});
+		{
+			Properties = propertiesToInclude,
+		});
 		await That(result.ToString()).IsEqualTo($"""
 		                                          - include public fields and properties
 		                                          - for EquivalencyOptionsExtensionsTests.MyClass:

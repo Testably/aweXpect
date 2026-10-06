@@ -288,6 +288,18 @@ public sealed partial class ThatObject
 			{
 				public int Value { get; set; }
 
+				public async Task<int> GetValueAsync()
+				{
+					await Task.Yield();
+					return Value;
+				}
+
+				public async ValueTask<int> GetValueAsValueTaskAsync()
+				{
+					await Task.Yield();
+					return Value;
+				}
+
 #pragma warning disable CA1822 // the tests access these members through the subject
 				public async Task<int> FaultedAsync()
 				{
@@ -301,18 +313,6 @@ public sealed partial class ThatObject
 					throw new InvalidOperationException("async member failed");
 				}
 #pragma warning restore CA1822
-
-				public async Task<int> GetValueAsync()
-				{
-					await Task.Yield();
-					return Value;
-				}
-
-				public async ValueTask<int> GetValueAsValueTaskAsync()
-				{
-					await Task.Yield();
-					return Value;
-				}
 			}
 		}
 

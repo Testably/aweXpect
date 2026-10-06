@@ -111,7 +111,7 @@ public sealed partial class ThatObject
 					                 },
 					                 Value = "Foo"
 					               }, which is considered equivalent
-					             
+
 					             Equivalency options:
 					              - include public fields and properties
 					              - ignore members: ["Inner.Inner.Collection[3]"]
@@ -513,7 +513,7 @@ public sealed partial class ThatObject
 
 				async Task Act()
 					=> await That(subject).IsNotEquivalentTo(unexpected);
-				
+
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
@@ -553,7 +553,7 @@ public sealed partial class ThatObject
 
 				async Task Act()
 					=> await That(subject).IsNotEquivalentTo(unexpected);
-				
+
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject

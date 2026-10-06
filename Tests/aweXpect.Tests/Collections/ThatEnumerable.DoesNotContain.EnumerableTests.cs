@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using aweXpect.Core;
 
@@ -358,7 +357,12 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenUnexpectedIsNullLiteral_ShouldMatchTheNullItem()
 			{
-				ArrayList subject = new() { 1, "a", null, };
+				ArrayList subject = new()
+				{
+					1,
+					"a",
+					null,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotContain(null);

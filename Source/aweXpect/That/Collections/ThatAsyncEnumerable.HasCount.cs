@@ -1,7 +1,6 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Collections.Generic;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -19,14 +18,13 @@ public static partial class ThatAsyncEnumerable
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		return new
-			CollectionCountResult<AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>>(
-				(quantifier, isNegated)
-					=> new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
-						expectationBuilder.AddConstraint((Quantifier: quantifier, IsNegated: isNegated),
-							static (state, it, grammars)
-								=> new AsyncCollectionCountConstraint<TItem>(it, grammars, state.Quantifier)
-									.InvertIf(state.IsNegated)),
-						subject));
+			CollectionCountResult<AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>>((quantifier, isNegated)
+				=> new AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>(
+					expectationBuilder.AddConstraint((Quantifier: quantifier, IsNegated: isNegated),
+						static (state, it, grammars)
+							=> new AsyncCollectionCountConstraint<TItem>(it, grammars, state.Quantifier)
+								.InvertIf(state.IsNegated)),
+					subject));
 	}
 
 	/// <summary>

@@ -34,13 +34,17 @@ internal readonly struct EquatableArray<T> : IEquatable<EquatableArray<T>>, IEnu
 	///     Checks whether two <see cref="EquatableArray{T}" /> values are the same.
 	/// </summary>
 	public static bool operator ==(EquatableArray<T> left, EquatableArray<T> right)
-		=> left.Equals(right);
+	{
+		return left.Equals(right);
+	}
 
 	/// <summary>
 	///     Checks whether two <see cref="EquatableArray{T}" /> values are not the same.
 	/// </summary>
 	public static bool operator !=(EquatableArray<T> left, EquatableArray<T> right)
-		=> !left.Equals(right);
+	{
+		return !left.Equals(right);
+	}
 
 	/// <inheritdoc />
 	public bool Equals(EquatableArray<T> array) => AsSpan().SequenceEqual(array.AsSpan());

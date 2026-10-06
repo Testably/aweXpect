@@ -9,14 +9,14 @@ public sealed partial class ThatAsyncEnumerable
 {
 	public sealed partial class All
 	{
-		public sealed partial class AreNotUnique
+		public sealed class AreNotUnique
 		{
 			public sealed class Tests
 			{
 				[Test]
 				public async Task WhenAllItemsAreDuplicated_ShouldSucceed()
 				{
-					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 1, 2,]);
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 1, 2);
 
 					async Task Act()
 						=> await That(subject).All().AreNotUnique();
@@ -49,7 +49,7 @@ public sealed partial class ThatAsyncEnumerable
 				[Test]
 				public async Task WhenSomeItemsAreUnique_ShouldFail()
 				{
-					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 1, 3,]);
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 1, 3);
 
 					async Task Act()
 						=> await That(subject).All().AreNotUnique();
