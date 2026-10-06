@@ -1243,26 +1243,9 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 		private static string? EmitRegistration(INamedTypeSymbol type, List<Member> members,
 			List<IPropertySymbol> explicitProperties)
 		{
-			StringBuilder sb = new();
 			if (IsNameable(type))
 			{
-				string typeName = type.ToDisplayString(TypeFormat);
-				foreach (Member member in members)
-				{
-					sb.Append("\t\t").Append(Registry).Append(member.IsField ? ".RegisterField<" : ".RegisterProperty<")
-						.Append(typeName).Append(", ").Append(member.Type.ToDisplayString(TypeFormat)).Append(">(\"")
-						.Append(member.Name).Append("\", o => ").Append(Receiver(type, member)).Append('.')
-						.Append(Identifier(member.Name)).AppendLine(");");
-				}
-
-				foreach (IPropertySymbol property in explicitProperties)
-				{
-					sb.Append("\t\t").Append(Registry).Append(".RegisterExplicitProperty<").Append(typeName)
-						.Append(", ").Append(property.Type.ToDisplayString(TypeFormat)).Append(">(")
-						.Append(ExplicitPropertyArguments(property)).AppendLine(");");
-				}
-
-				return sb.ToString();
+				return EmitNamedRegistration(type, members, explicitProperties);
 			}
 
 			List<string> helpers = [];
@@ -1273,6 +1256,7 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 				return null;
 			}
 
+			StringBuilder sb = new();
 			sb.Append("\t\tvar probe = ").Append(probe).AppendLine(";");
 			foreach (Member member in members)
 			{
@@ -1298,6 +1282,29 @@ public class TypeMetadataGenerator : IIncrementalGenerator
 			foreach (string helper in helpers)
 			{
 				sb.Append("\t\t").AppendLine(helper);
+			}
+
+			return sb.ToString();
+		}
+
+		private static string EmitNamedRegistration(INamedTypeSymbol type, List<Member> members,
+			List<IPropertySymbol> explicitProperties)
+		{
+			StringBuilder sb = new();
+			string typeName = type.ToDisplayString(TypeFormat);
+			foreach (Member member in members)
+			{
+				sb.Append("\t\t").Append(Registry).Append(member.IsField ? ".RegisterField<" : ".RegisterProperty<")
+					.Append(typeName).Append(", ").Append(member.Type.ToDisplayString(TypeFormat)).Append(">(\"")
+					.Append(member.Name).Append("\", o => ").Append(Receiver(type, member)).Append('.')
+					.Append(Identifier(member.Name)).AppendLine(");");
+			}
+
+			foreach (IPropertySymbol property in explicitProperties)
+			{
+				sb.Append("\t\t").Append(Registry).Append(".RegisterExplicitProperty<").Append(typeName)
+					.Append(", ").Append(property.Type.ToDisplayString(TypeFormat)).Append(">(")
+					.Append(ExplicitPropertyArguments(property)).AppendLine(");");
 			}
 
 			return sb.ToString();
