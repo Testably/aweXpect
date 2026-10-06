@@ -534,21 +534,23 @@ public sealed partial class ThatDictionary
 					             """);
 			}
 
-			public static TheoryData<IDictionary<string, int>> CaseInsensitiveDictionaries()
+			public static IEnumerable<Func<IDictionary<string, int>>> CaseInsensitiveDictionaries()
 			{
 				Dictionary<string, int> entries = new() { { "a", 1 }, { "b", 1 }, };
-				TheoryData<IDictionary<string, int>> dictionaries = new(
-					new Dictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase),
-					new SortedDictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase),
-					new SortedList<string, int>(entries, StringComparer.OrdinalIgnoreCase),
-					entries.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase),
-					entries.ToImmutableSortedDictionary(StringComparer.OrdinalIgnoreCase),
-					entries.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase),
-					new ReadOnlyDictionary<string, int>(new Dictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase)),
-					new ReadOnlyDictionary<string, int>(
-						new SortedDictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase)));
+				List<Func<IDictionary<string, int>>> dictionaries =
+				[
+					() => new Dictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase),
+					() => new SortedDictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase),
+					() => new SortedList<string, int>(entries, StringComparer.OrdinalIgnoreCase),
+					() => entries.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase),
+					() => entries.ToImmutableSortedDictionary(StringComparer.OrdinalIgnoreCase),
+					() => entries.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase),
+					() => new ReadOnlyDictionary<string, int>(new Dictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase)),
+					() => new ReadOnlyDictionary<string, int>(
+						new SortedDictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase)),
+				];
 #if NET8_0_OR_GREATER
-				dictionaries.Add(new ConcurrentDictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase));
+				dictionaries.Add(() => new ConcurrentDictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase));
 #endif
 				return dictionaries;
 			}

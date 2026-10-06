@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using System.Collections.Generic;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatNumber
 {
@@ -404,12 +406,14 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			public static TheoryData<Half> GetNormalHalfValues() => new(
+			public static IEnumerable<Half> GetNormalHalfValues() =>
+			[
 				(Half)0.0,
 				(Half)1.0,
 				Half.MinValue,
 				Half.MaxValue,
-				Half.Epsilon);
+				Half.Epsilon,
+			];
 #endif
 		}
 		

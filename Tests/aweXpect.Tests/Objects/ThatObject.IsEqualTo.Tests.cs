@@ -1,4 +1,5 @@
-﻿using aweXpect.Equivalency;
+﻿using System.Collections.Generic;
+using aweXpect.Equivalency;
 
 namespace aweXpect.Tests;
 
@@ -255,47 +256,47 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			public static TheoryData<object, object> GetValues() => new()
-			{
-				{
+			public static IEnumerable<(object, object)> GetValues() =>
+			[
+				(
 					1.0, 1
-				},
-				{
+				),
+				(
 					2, 2.0
-				},
-				{
+				),
+				(
 					3, (long)3
-				},
-				{
+				),
+				(
 					(sbyte)4, (ulong)4
-				},
-				{
+				),
+				(
 					(float)5.0, 5.0
-				},
-				{
+				),
+				(
 					(decimal)6.1, (float)6.1
-				},
-				{
+				),
+				(
 					(byte)7, (short)7
-				},
-				{
+				),
+				(
 					(ushort)8, (uint)8
-				},
+				),
 #if NET8_0_OR_GREATER
-				{
+				(
 					(Int128)9, (UInt128)9
-				},
-				{
+				),
+				(
 					(nint)10, 10
-				},
-				{
+				),
+				(
 					(nuint)11, 11.0
-				},
-				{
+				),
+				(
 					(Half)10, (float)10
-				},
+				),
 #endif
-			};
+			];
 		}
 
 		public sealed class NullableStructTests
