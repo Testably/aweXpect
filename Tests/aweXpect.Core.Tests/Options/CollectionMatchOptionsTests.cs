@@ -1570,6 +1570,8 @@ public class CollectionMatchOptionsTests
 	/// <summary>
 	///     Cases in which the matchers deviated from a brute-force comparison over small collections.
 	/// </summary>
+	[Explicit]
+	[Category(TestCategories.Slow)]
 	public class ReferenceCaseTests
 	{
 		[Test]

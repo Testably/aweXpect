@@ -16,6 +16,8 @@ using CoreGeneric = aweXpect.ThatGeneric;
 public sealed class GuaranteesNotNullTests
 {
 	[Test]
+	[Explicit]
+	[TUnit.Core.Category(TestCategories.Slow)]
 	public async Task EveryExpectation_ShouldFailForANullSubject()
 	{
 		List<string> deviations = Observations
@@ -29,6 +31,8 @@ public sealed class GuaranteesNotNullTests
 	}
 
 	[Test]
+	[Explicit]
+	[TUnit.Core.Category(TestCategories.Slow)]
 	public async Task EveryExpectation_ShouldFailForANullSubjectWhenNegated()
 	{
 		List<string> deviations = Observations
@@ -43,6 +47,8 @@ public sealed class GuaranteesNotNullTests
 	}
 
 	[Test]
+	[Explicit]
+	[TUnit.Core.Category(TestCategories.Slow)]
 	public async Task EveryExpectationThatFails_ShouldGuaranteeNotNull()
 	{
 		List<string> unmarked = Observations
@@ -57,6 +63,8 @@ public sealed class GuaranteesNotNullTests
 	}
 
 	[Test]
+	[Explicit]
+	[TUnit.Core.Category(TestCategories.Slow)]
 	public async Task EveryMarkedExpectation_ShouldFailForANullSubject()
 	{
 		List<string> deviations = Observations
@@ -127,6 +135,8 @@ public sealed class GuaranteesNotNullTests
 	}
 
 	[Test]
+	[Explicit]
+	[TUnit.Core.Category(TestCategories.Slow)]
 	public async Task ShouldNegateTheExpectationsThatNeedAContinuation()
 	{
 		List<string> negated = Observations

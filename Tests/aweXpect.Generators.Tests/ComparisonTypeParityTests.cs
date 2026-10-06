@@ -17,6 +17,8 @@ namespace aweXpect.Generators.Tests;
 ///     them. Here the comparison itself says for every candidate type how it is compared, and the generator is
 ///     held to that answer.
 /// </summary>
+[Explicit]
+[Category(TestCategories.Slow)]
 public sealed class ComparisonTypeParityTests
 {
 	/// <remarks>

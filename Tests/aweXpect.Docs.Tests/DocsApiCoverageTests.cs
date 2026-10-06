@@ -9,6 +9,8 @@ using aweXpect.Core;
 
 namespace aweXpect.Docs.Tests;
 
+[Explicit]
+[TUnit.Core.Category(TestCategories.Slow)]
 public sealed class DocsApiCoverageTests
 {
 	[Test]

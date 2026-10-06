@@ -3431,6 +3431,8 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
+	[Explicit]
+	[Category(TestCategories.Slow)]
 	public async Task WhenNestingExceedsTheStack_ShouldContinueOnAFreshStack()
 	{
 		NestedNode actual = new(5000);

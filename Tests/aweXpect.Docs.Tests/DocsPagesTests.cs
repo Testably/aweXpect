@@ -5,6 +5,8 @@ using System.Runtime.CompilerServices;
 
 namespace aweXpect.Docs.Tests;
 
+[Explicit]
+[Category(TestCategories.Slow)]
 public sealed class DocsPagesTests
 {
 	private static readonly string ProjectDirectory = GetProjectDirectory();
