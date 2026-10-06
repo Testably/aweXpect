@@ -1,7 +1,7 @@
-// The page adds the static using, and writes its tests with xUnit.
+// The page adds the static using, and marks its tests with the `[Test]` attribute of TUnit.
 global using static aweXpect.Expect;
 global using static Snippets.Prelude;
-global using Xunit;
+global using TUnit.Core;
 
 namespace Snippets;
 

@@ -29,7 +29,7 @@
 Every expectation starts with `Expect.That(subject)`, continues with what you expect and is awaited:
 
 ```csharp
-[Fact]
+[Test]
 public async Task IsInLibrary_WhenAlbumIsMissing_ShouldReturnFalse()
 {
   bool result = IsInLibrary("Unknown Album");
@@ -51,7 +51,7 @@ but it was True
 You can add a reason for all expectations that will be included in the exception message:
 
 ```csharp
-[Fact]
+[Test]
 public async Task IsInLibrary_WhenAlbumIsMissing_ShouldReturnFalse()
 {
   bool result = IsInLibrary("Unknown Album");
