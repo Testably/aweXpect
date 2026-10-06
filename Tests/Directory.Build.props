@@ -32,6 +32,8 @@
 	<PropertyGroup Condition="'$(UseTUnit)' == 'true'">
 		<OutputType>Exe</OutputType>
 		<EnableTUnitSourceGeneration>false</EnableTUnitSourceGeneration>
+		<!-- The implicit usings of TUnit import `HookType` statically, whose `Assembly` clashes with `System.Reflection`. -->
+		<TUnitImplicitUsings>false</TUnitImplicitUsings>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -61,6 +63,7 @@
 		<PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
 		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
 		<Compile Include="$(MSBuildThisFileDirectory)Shared/*.cs" Link="Shared/%(Filename)%(Extension)" />
+		<Using Include="TUnit.Core" />
 		<Using Include="aweXpect.TestHelpers" />
 	</ItemGroup>
 
