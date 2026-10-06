@@ -31,8 +31,8 @@ public sealed class DocsPagesTests
 #endif
 	}
 
-	[Theory]
-	[MemberData(nameof(Pages))]
+	[Test]
+	[MethodDataSource(nameof(Pages))]
 	public void CodeBlocks_ShouldCompile(string page)
 	{
 		List<string> errors = SnippetCompiler.GetErrors(ExtractCodeBlocks(page), ScaffoldFiles(page));
@@ -54,8 +54,8 @@ public sealed class DocsPagesTests
 		return pages;
 	}
 
-	[Theory]
-	[MemberData(nameof(ExtensionPages))]
+	[Test]
+	[MethodDataSource(nameof(ExtensionPages))]
 	public void ExtensionCode_ShouldCompileAgainstCoreOnly(string page)
 	{
 		List<string> errors = SnippetCompiler.GetErrors(ExtractCodeBlocks(page), ScaffoldFiles(page), true);
@@ -63,7 +63,7 @@ public sealed class DocsPagesTests
 		Fail.Unless(errors.Count == 0, string.Join(Environment.NewLine, errors));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Extract_ShouldFindTheCodeBlocksOfAllPages()
 	{
 		int count = AllPages().Sum(page => ExtractCodeBlocks(page).Count);
@@ -72,7 +72,7 @@ public sealed class DocsPagesTests
 			.Because("the check must not pass because it no longer finds the code blocks");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Extract_ShouldOnlyReturnCSharpBlocksWithoutNoCompileMarker()
 	{
 		string[] lines =
@@ -101,7 +101,7 @@ public sealed class DocsPagesTests
 		]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetErrors_ShouldReportThePageAndLineOfTheBlock()
 	{
 		CodeBlock block = new("Docs/pages/page.md", 10, "int value = 1;\nawait Expect.That(value).IsFoo();");
@@ -111,7 +111,7 @@ public sealed class DocsPagesTests
 		await That(errors).HasSingle().Which.StartsWith("Docs/pages/page.md(11,26): CS1061:");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetErrors_ShouldShareTypesAndUsingsBetweenTheBlocksOfAPage()
 	{
 		CodeBlock first = new("page.md", 1, """
