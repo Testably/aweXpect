@@ -47,18 +47,24 @@ internal sealed class EquivalencyMemberPlan
 	/// </remarks>
 	public PlannedMember[] Fields => _plannedFields ??= _fields == IncludeMembers.None
 		? []
-		: Array.ConvertAll(_ownMembersOnly
-				? EquivalencyMembers.GetOwnFields(_expectedType, _fields)
-				: EquivalencyMembers.GetFields(_expectedType, _fields),
+		: Array.ConvertAll(ExpectedFields(),
 			member => new PlannedMember(member, true, _actualType, _fields, _properties, _ownMembersOnly));
 
 	/// <inheritdoc cref="Fields" />
 	public PlannedMember[] Properties => _plannedProperties ??= _properties == IncludeMembers.None
 		? []
-		: Array.ConvertAll(_ownMembersOnly
-				? EquivalencyMembers.GetOwnProperties(_expectedType, _properties)
-				: EquivalencyMembers.GetProperties(_expectedType, _properties),
+		: Array.ConvertAll(ExpectedProperties(),
 			member => new PlannedMember(member, false, _actualType, _fields, _properties, _ownMembersOnly));
+
+	private EquivalencyMember[] ExpectedFields()
+		=> _ownMembersOnly
+			? EquivalencyMembers.GetOwnFields(_expectedType, _fields)
+			: EquivalencyMembers.GetFields(_expectedType, _fields);
+
+	private EquivalencyMember[] ExpectedProperties()
+		=> _ownMembersOnly
+			? EquivalencyMembers.GetOwnProperties(_expectedType, _properties)
+			: EquivalencyMembers.GetProperties(_expectedType, _properties);
 
 	/// <summary>
 	///     Returns the plan for comparing an object of the <paramref name="actualType" /> with one of the

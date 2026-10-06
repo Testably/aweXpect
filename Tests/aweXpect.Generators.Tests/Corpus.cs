@@ -542,7 +542,7 @@ public static class Corpus
 
 	public class Counted
 	{
-		public int Count => 0;
+		public int Count { get; }
 		public int Total { get; set; }
 	}
 
