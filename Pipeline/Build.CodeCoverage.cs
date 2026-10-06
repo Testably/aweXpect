@@ -19,7 +19,9 @@ partial class Build
 				.SetProcessToolPath(NuGetToolPathResolver.GetPackageExecutable("ReportGenerator", "ReportGenerator.dll",
 					framework: "net8.0"))
 				.SetTargetDirectory(TestResultsDirectory / "reports")
-				.AddReports(TestResultsDirectory / "**/coverage.cobertura.xml")
+				// The VSTest projects write `coverage.cobertura.xml` into a directory per run, the projects of the
+				// Microsoft.Testing.Platform a file per run into the results directory itself.
+				.AddReports(TestResultsDirectory / "**/coverage.cobertura.xml", TestResultsDirectory / "*.cobertura.xml")
 				.AddReportTypes(ReportTypes.OpenCover)
 				.AddFileFilters("-*.g.cs")
 				.SetAssemblyFilters("+aweXpect*"));
