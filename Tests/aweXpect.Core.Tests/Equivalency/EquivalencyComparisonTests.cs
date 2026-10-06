@@ -3228,10 +3228,10 @@ public sealed partial class EquivalencyComparisonTests
 		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
 
 		await That(result).IsFalse();
-		await That(failureBuilder.ToString()).IsEqualTo("""
+		await That(failureBuilder.ToString()).IsEqualTo($"""
 
 		                                                  Property Value differed:
-		                                                      Actual: aweXpect.Core.Tests.dll
+		                                                      Actual: {typeof(EquivalencyComparisonTests).Module.Name}
 		                                                    Expected: aweXpect.Core.dll
 		                                                """).IgnoringNewlineStyle()
 			.Because("a module describes an emitted file, so walking it reaches getters that throw instead of state that could be compared");
