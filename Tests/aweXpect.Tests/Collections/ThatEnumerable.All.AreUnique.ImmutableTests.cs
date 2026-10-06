@@ -11,7 +11,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class ImmutableArrayTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldUseCustomComparer()
 				{
 					ImmutableArray<int> subject = [1, 1, 1,];
@@ -22,7 +22,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsAreUnique_ShouldSucceed()
 				{
 					ImmutableArray<int> subject = [1, 2, 3,];
@@ -33,7 +33,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItContainsDuplicates_ShouldFail()
 				{
 					ImmutableArray<int> subject = [1, 2, 3, 1,];
@@ -41,7 +41,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique for all items,
@@ -55,7 +55,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItContainsMultipleDuplicates_ShouldFail()
 				{
 					ImmutableArray<int> subject = [1, 2, 3, 1, 2, -1,];
@@ -63,7 +63,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique for all items,
@@ -80,7 +80,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class ImmutableArrayNegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsAreUnique_ShouldFail()
 				{
 					ImmutableArray<int> subject = [1, 2, 3,];
@@ -88,7 +88,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().AreUnique());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique not for all items,
@@ -99,7 +99,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItContainsDuplicates_ShouldSucceed()
 				{
 					ImmutableArray<int> subject = [1, 2, 3, 1,];
@@ -113,7 +113,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class ImmutableArrayStringTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldUseCustomComparer()
 				{
 					ImmutableArray<string?> subject = ["a", "a", "a",];
@@ -124,7 +124,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsAreUnique_ShouldSucceed()
 				{
 					ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -135,7 +135,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDiffersInCasing_ShouldSucceed()
 				{
 					ImmutableArray<string?> subject = ["a", "A",];
@@ -146,7 +146,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDiffersInCasingAndCasingIsIgnored_ShouldFail()
 				{
 					ImmutableArray<string?> subject = ["a", "A",];
@@ -154,7 +154,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreUnique().IgnoringCase();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique ignoring case for all items,
@@ -174,7 +174,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItContainsDuplicates_ShouldFail()
 				{
 					ImmutableArray<string?> subject = ["a", "b", "c", "a",];
@@ -182,7 +182,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique for all items,
@@ -204,7 +204,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItContainsMultipleDuplicates_ShouldFail()
 				{
 					ImmutableArray<string?> subject = ["a", "b", "c", "a", "b", "x",];
@@ -212,7 +212,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique for all items,
@@ -241,7 +241,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class ImmutableArrayStringElementMemberTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenMembersAreUnique_ShouldSucceed()
 				{
 					ImmutableArray<string?> subject = ["a", "bb", "ccc",];
@@ -252,7 +252,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenStringMembersAreNotUnique_ShouldFail()
 				{
 					ImmutableArray<string?> subject = ["a", "A",];
@@ -260,7 +260,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreUnique(x => x!).IgnoringCase();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique by x => x! ignoring case for all items,
@@ -283,7 +283,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class ImmutableArrayMemberTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldUseCustomComparer()
 				{
 					ImmutableArray<MyClass> subject = [new MyClass(1), new MyClass(1), new MyClass(1),];
@@ -294,7 +294,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsAreUnique_ShouldSucceed()
 				{
 					ImmutableArray<MyClass> subject = [new MyClass(1), new MyClass(2), new MyClass(3),];
@@ -305,7 +305,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItContainsDuplicates_ShouldFail()
 				{
 					ImmutableArray<MyClass> subject =
@@ -314,7 +314,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreUnique(x => x.Value);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique by x => x.Value for all items,
@@ -354,7 +354,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItContainsMultipleDuplicates_ShouldFail()
 				{
 					ImmutableArray<MyClass> subject =
@@ -365,7 +365,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreUnique(x => x.Value);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique by x => x.Value for all items,
@@ -425,7 +425,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class ImmutableArrayNegatedMemberTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsAreUnique_ShouldFail()
 				{
 					ImmutableArray<MyClass> subject = [new MyClass(1), new MyClass(2), new MyClass(3),];
@@ -433,7 +433,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().AreUnique(x => x.Value));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique by x => x.Value not for all items,
@@ -457,7 +457,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItContainsDuplicates_ShouldSucceed()
 				{
 					ImmutableArray<MyClass> subject =
@@ -472,7 +472,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class ImmutableArrayStringMemberTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldUseCustomComparer()
 				{
 					ImmutableArray<MyStringClass> subject =
@@ -484,7 +484,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsAreUnique_ShouldSucceed()
 				{
 					ImmutableArray<MyStringClass> subject =
@@ -496,7 +496,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDiffersInCasing_ShouldSucceed()
 				{
 					ImmutableArray<MyStringClass> subject = [new MyStringClass("a"), new MyStringClass("A"),];
@@ -507,7 +507,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDiffersInCasingAndCasingIsIgnored_ShouldFail()
 				{
 					ImmutableArray<MyStringClass> subject = [new MyStringClass("a"), new MyStringClass("A"),];
@@ -515,7 +515,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreUnique(x => x.Value).IgnoringCase();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique by x => x.Value ignoring case for all items,
@@ -543,7 +543,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItContainsDuplicates_ShouldFail()
 				{
 					ImmutableArray<MyStringClass> subject =
@@ -554,7 +554,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreUnique(x => x.Value);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique by x => x.Value for all items,
@@ -588,7 +588,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItContainsMultipleDuplicates_ShouldFail()
 				{
 					ImmutableArray<MyStringClass> subject =
@@ -600,7 +600,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreUnique(x => x.Value);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is unique by x => x.Value for all items,

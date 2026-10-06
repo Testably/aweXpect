@@ -8,7 +8,7 @@ public sealed partial class ThatGuid
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsEmpty_ShouldFail()
 				{
 					Guid? subject = Guid.Empty;
@@ -16,7 +16,7 @@ public sealed partial class ThatGuid
 					async Task Act()
 						=> await That(subject).IsNull();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is null,
@@ -24,7 +24,7 @@ public sealed partial class ThatGuid
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNotNull_ShouldFail()
 				{
 					Guid? subject = OtherGuid();
@@ -32,7 +32,7 @@ public sealed partial class ThatGuid
 					async Task Act()
 						=> await That(subject).IsNull();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is null,
@@ -40,7 +40,7 @@ public sealed partial class ThatGuid
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldSucceed()
 				{
 					Guid? subject = null;

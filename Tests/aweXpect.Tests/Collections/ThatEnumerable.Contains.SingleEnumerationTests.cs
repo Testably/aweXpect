@@ -17,7 +17,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class SingleEnumerationTests
 		{
-			[Fact]
+			[Test]
 			public async Task Enumerable_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2, 3,]);
@@ -26,7 +26,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
@@ -41,7 +41,7 @@ public sealed partial class ThatEnumerable
 					.Because("the guard, the comparison and the message share one enumeration of the expected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task EnumerableWithUntypedExpected_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2, 3,]);
@@ -50,7 +50,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
@@ -68,7 +68,7 @@ public sealed partial class ThatEnumerable
 					.Because("the guard, the comparison and the message share one enumeration of the expected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Expectations_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				int[] subject = [1, 2, 3,];
@@ -78,7 +78,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
@@ -94,7 +94,7 @@ public sealed partial class ThatEnumerable
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task Immutable_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -103,7 +103,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
@@ -120,7 +120,7 @@ public sealed partial class ThatEnumerable
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ImmutableExpectations_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -130,7 +130,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
@@ -147,7 +147,7 @@ public sealed partial class ThatEnumerable
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ImmutablePredicates_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -157,7 +157,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
@@ -177,7 +177,7 @@ public sealed partial class ThatEnumerable
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ImmutableStrings_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -186,7 +186,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
@@ -210,7 +210,7 @@ public sealed partial class ThatEnumerable
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ImmutableWithin_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				ImmutableArray<double> subject = [1.0, 2.0, 3.0,];
@@ -219,7 +219,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected).Within(0.25);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected ± 0.25 in order and contiguous,
@@ -235,7 +235,7 @@ public sealed partial class ThatEnumerable
 			}
 #endif
 
-			[Fact]
+			[Test]
 			public async Task Predicates_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				int[] subject = [1, 2, 3,];
@@ -245,7 +245,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
@@ -263,7 +263,7 @@ public sealed partial class ThatEnumerable
 					.Because("the guard, the comparison and the message share one enumeration of the expected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task StringArray_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				string[] subject = ["a", "b", "c",];
@@ -272,7 +272,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
@@ -294,7 +294,7 @@ public sealed partial class ThatEnumerable
 					.Because("the guard, the comparison and the message share one enumeration of the expected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Strings_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
@@ -303,7 +303,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
@@ -325,7 +325,7 @@ public sealed partial class ThatEnumerable
 					.Because("the guard, the comparison and the message share one enumeration of the expected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationIsBuilt_ShouldOnlyReadTheFirstExpectedItem()
 			{
 				int readItems = 0;
@@ -349,7 +349,7 @@ public sealed partial class ThatEnumerable
 					.Because("the check for an empty sequence reads only the first item and the rest is read on evaluation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -358,7 +358,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
@@ -373,7 +373,7 @@ public sealed partial class ThatEnumerable
 					.Because("the guard, the comparison and the message share one enumeration of the expected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedHasSideEffects_ShouldEnumerateItOnlyOnce()
 			{
 				int enumerations = 0;
@@ -392,7 +392,7 @@ public sealed partial class ThatEnumerable
 					.Because("the guard must not consume the expected items that the comparison needs");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedThrows_ShouldThrowTheExceptionOfTheExpectedItems()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -411,7 +411,7 @@ public sealed partial class ThatEnumerable
 					.Because("an exception of the expected items is not reported as if the subject threw it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -420,7 +420,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain collection unexpected in order and contiguous,
@@ -435,7 +435,7 @@ public sealed partial class ThatEnumerable
 					.Because("the guard, the comparison and the message share one enumeration of the unexpected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IEnumerable<double> subject = ToEnumerable(1.0, 2.0, 3.0);
@@ -444,7 +444,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected).Within(0.25);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected ± 0.25 in order and contiguous,

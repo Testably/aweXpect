@@ -13,7 +13,7 @@ public sealed partial class ThatSignaler
 	{
 		public sealed class WithinTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggeredWithinTheGivenTimeout_ShouldFail()
 			{
 				Signaler signaler = new();
@@ -26,7 +26,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().Within(40.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:00.040,
@@ -35,7 +35,7 @@ public sealed partial class ThatSignaler
 				cts.Cancel();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggeredWithParameterWithinTheGivenTimeout_ShouldFail()
 			{
 				Signaler<string> signaler = new();
@@ -48,7 +48,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().Within(40.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:00.040,
@@ -57,7 +57,7 @@ public sealed partial class ThatSignaler
 				cts.Cancel();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheOuterTimeoutIsAsLong_ShouldDecideByTheSignalsWithinTheTimeout()
 			{
 				Signaler signaler = new();
@@ -71,7 +71,7 @@ public sealed partial class ThatSignaler
 					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheOuterTimeoutIsAsLong_WhenNotTriggered_ShouldFailWithTheSignalsWithinTheTimeout()
 			{
 				Signaler signaler = new();
@@ -79,7 +79,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().Within(200.Milliseconds()).WithTimeout(200.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:00.200,
@@ -88,7 +88,7 @@ public sealed partial class ThatSignaler
 					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheOuterTimeoutIsAsLong_WithParameter_ShouldDecideByTheSignalsWithinTheTimeout()
 			{
 				Signaler<string> signaler = new();
@@ -102,7 +102,7 @@ public sealed partial class ThatSignaler
 					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				WhenTheTestCancellationTimeoutIsShorterAndWithTimeoutIsLonger_ShouldFailWithTheTestCancellationTimeout()
 			{
@@ -114,10 +114,10 @@ public sealed partial class ThatSignaler
 					async Task Act() =>
 						await That(signaler).Signaled().Within(2.Seconds()).WithTimeout(10.Seconds());
 
-					exception = await Record.ExceptionAsync(Act);
+					exception = await Catch.ExceptionAsync(Act);
 				}
 
-				await That(exception).IsExactly<XunitException>().And
+				await That(exception).IsExactly<FailException>().And
 					.HasMessage("""
 					            Expected that signaler
 					            has recorded the callback at least once within 0:02,
@@ -127,7 +127,7 @@ public sealed partial class ThatSignaler
 					.Because("the effective timeout is the tighter of WithTimeout and TestCancellation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsInfinite_ShouldNotMentionTheTimeout()
 			{
 				Signaler signaler = new();
@@ -137,7 +137,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().Within(System.Threading.Timeout.InfiniteTimeSpan).WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once,
@@ -146,7 +146,7 @@ public sealed partial class ThatSignaler
 					.Because("an infinite timeout imposes no limit, so only the cancellation ends the wait");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsInfinite_WithParameter_ShouldNotMentionTheTimeout()
 			{
 				Signaler<string> signaler = new();
@@ -156,7 +156,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().Within(System.Threading.Timeout.InfiniteTimeSpan).WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once,
@@ -165,7 +165,7 @@ public sealed partial class ThatSignaler
 					.Because("an infinite timeout imposes no limit, so only the cancellation ends the wait");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Signaler signaler = new();
@@ -178,7 +178,7 @@ public sealed partial class ThatSignaler
 					.WithMessage("The timeout must not be negative.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsNegative_WithParameter_ShouldThrowArgumentOutOfRangeException()
 			{
 				Signaler<string> signaler = new();
@@ -191,7 +191,7 @@ public sealed partial class ThatSignaler
 					.WithMessage("The timeout must not be negative.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsSpecifiedTwice_ShouldThrowInvalidOperationException()
 			{
 				Signaler signaler = new();
@@ -204,7 +204,7 @@ public sealed partial class ThatSignaler
 					.Because("the second timeout would silently replace the first one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsSpecifiedTwice_WithParameter_ShouldThrowInvalidOperationException()
 			{
 				Signaler<string> signaler = new();
@@ -217,7 +217,7 @@ public sealed partial class ThatSignaler
 					.Because("the second timeout would silently replace the first one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggeredWithinTheGivenTimeout_ShouldSucceed()
 			{
 				Signaler signaler = new();
@@ -231,7 +231,7 @@ public sealed partial class ThatSignaler
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggeredWithParameterWithinTheGivenTimeout_ShouldSucceed()
 			{
 				Signaler<string> signaler = new();

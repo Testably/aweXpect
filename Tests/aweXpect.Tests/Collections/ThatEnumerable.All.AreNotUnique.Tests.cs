@@ -13,7 +13,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldUseCustomComparer()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 1, 1,]);
@@ -21,7 +21,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreNotUnique().Using(new AllDifferentComparer());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not unique using AllDifferentComparer for all items,
@@ -35,7 +35,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsAreDuplicated_ShouldSucceed()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 1, 2,]);
@@ -46,7 +46,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSomeItemsAreUnique_ShouldFail()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 1, 3,]);
@@ -54,7 +54,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreNotUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not unique for all items,
@@ -68,7 +68,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable<int>? subject = null;
@@ -76,7 +76,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreNotUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not unique for all items,
@@ -87,7 +87,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsAreDuplicated_ShouldFail()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 1, 2,]);
@@ -95,7 +95,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().AreNotUnique());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not unique not for all items,
@@ -106,7 +106,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSomeItemsAreUnique_ShouldSucceed()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 1, 3,]);
@@ -120,7 +120,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class StringTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenDiffersInCasing_ShouldFail()
 				{
 					IEnumerable<string> subject = ToEnumerable(["a", "A",]);
@@ -128,7 +128,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreNotUnique();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not unique for all items,
@@ -148,7 +148,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDiffersInCasingAndCasingIsIgnored_ShouldSucceed()
 				{
 					IEnumerable<string> subject = ToEnumerable(["a", "A",]);
@@ -162,7 +162,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class StringMemberTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllMembersAreDuplicated_ShouldSucceed()
 				{
 					IEnumerable<string> subject = ToEnumerable(["a", "b", "cc", "dd",]);
@@ -173,7 +173,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSomeStringMembersAreUnique_ShouldFail()
 				{
 					IEnumerable<string> subject = ToEnumerable(["a", "A", "b",]);
@@ -181,7 +181,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreNotUnique(x => x!).IgnoringCase();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not unique by x => x! ignoring case for all items,
@@ -204,7 +204,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class MemberTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllMembersAreDuplicated_ShouldSucceed()
 				{
 					IEnumerable<MyClass> subject = ToEnumerable([1, 2, 1, 2,]).Select(x => new MyClass(x));
@@ -215,7 +215,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAllStringMembersAreDuplicated_ShouldSucceed()
 				{
 					IEnumerable<MyClass> subject = ToEnumerable([1, 2,], x => new MyClass(x, "a"));
@@ -226,7 +226,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSomeMembersAreUnique_ShouldFail()
 				{
 					IEnumerable<MyClass> subject = ToEnumerable([1, 1, 2,]).Select(x => new MyClass(x));
@@ -234,7 +234,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreNotUnique(x => x.Value);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not unique by x => x.Value for all items,

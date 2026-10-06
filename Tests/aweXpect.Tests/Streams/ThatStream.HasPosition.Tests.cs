@@ -8,7 +8,7 @@ public sealed partial class ThatStream
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedPositionIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Stream subject = new MyStream();
@@ -22,8 +22,8 @@ public sealed partial class ThatStream
 					.WithParamName("expected");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasDifferentPosition_ShouldFail(long position)
 			{
 				long actualPosition = position > 10000 ? position - 1 : position + 1;
@@ -32,7 +32,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition(position);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has position equal to {position},
@@ -40,8 +40,8 @@ public sealed partial class ThatStream
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasSamePosition_ShouldSucceed(long position)
 			{
 				Stream subject = new MyStream(position: position);
@@ -53,7 +53,7 @@ public sealed partial class ThatStream
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsABufferedStream_ShouldAllowChainingIntoBufferedStreamExpectations()
 			{
 				using BufferedStream subject = new(new MemoryStream(new byte[3]), 4096);
@@ -65,7 +65,7 @@ public sealed partial class ThatStream
 			}
 #endif
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDisposed_ShouldFail()
 			{
 				Stream subject = new MemoryStream(new byte[3]);
@@ -74,7 +74,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has position equal to 0,
@@ -84,7 +84,7 @@ public sealed partial class ThatStream
 					.Because("the disposed stream is the production bug the test should report");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNonSeekable_ShouldFail()
 			{
 				Stream subject = new UnreadableStream(new NotSupportedException("Stream does not support seeking."));
@@ -92,7 +92,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has position equal to 0,
@@ -102,7 +102,7 @@ public sealed partial class ThatStream
 					.Because("a non-seekable stream does not have a position of 0");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Stream? subject = null;
@@ -110,7 +110,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has position equal to 0,
@@ -121,7 +121,7 @@ public sealed partial class ThatStream
 
 		public sealed class EqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedPositionIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Stream subject = new MyStream();
@@ -135,8 +135,8 @@ public sealed partial class ThatStream
 					.WithParamName("expected");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasDifferentPosition_ShouldFail(long position)
 			{
 				long actualPosition = position > 10000 ? position - 1 : position + 1;
@@ -145,7 +145,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition().EqualTo(position);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has position equal to {position},
@@ -153,8 +153,8 @@ public sealed partial class ThatStream
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasSamePosition_ShouldSucceed(long position)
 			{
 				Stream subject = new MyStream(position: position);
@@ -165,7 +165,7 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Stream? subject = null;
@@ -173,7 +173,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition().EqualTo(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has position equal to 0,
@@ -184,7 +184,7 @@ public sealed partial class ThatStream
 
 		public sealed class GreaterThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Stream subject = new MyStream(position: 2010);
@@ -193,7 +193,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition().GreaterThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has position greater than or equal to <null>,
@@ -201,7 +201,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedPositionIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Stream subject = new MyStream();
@@ -215,7 +215,7 @@ public sealed partial class ThatStream
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPositionOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
 				Stream subject = new MyStream(position: 2010);
@@ -227,7 +227,7 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPositionOfSubjectIsLessThanExpected_ShouldFail()
 			{
 				Stream subject = new MyStream(position: 2010);
@@ -236,7 +236,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition().GreaterThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has position greater than or equal to {Formatter.Format(expected)},
@@ -244,7 +244,7 @@ public sealed partial class ThatStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPositionOfSubjectIsTheSameAsExpected_ShouldSucceed()
 			{
 				Stream subject = new MyStream(position: 2010);
@@ -259,7 +259,7 @@ public sealed partial class ThatStream
 
 		public sealed class GreaterThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Stream subject = new MyStream(position: 2010);
@@ -268,7 +268,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has position greater than <null>,
@@ -276,7 +276,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedPositionIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Stream subject = new MyStream();
@@ -290,7 +290,7 @@ public sealed partial class ThatStream
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPositionOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
 				Stream subject = new MyStream(position: 2010);
@@ -302,7 +302,7 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPositionOfSubjectIsLessThanExpected_ShouldFail()
 			{
 				Stream subject = new MyStream(position: 2010);
@@ -311,7 +311,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has position greater than {Formatter.Format(expected)},
@@ -319,7 +319,7 @@ public sealed partial class ThatStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPositionOfSubjectIsTheSameAsExpected_ShouldFail()
 			{
 				Stream subject = new MyStream(position: 2010);
@@ -328,7 +328,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has position greater than {Formatter.Format(expected)},
@@ -336,7 +336,7 @@ public sealed partial class ThatStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDisposed_ShouldFail()
 			{
 				Stream subject = new MemoryStream(new byte[3]);
@@ -345,7 +345,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition().GreaterThan(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has position greater than 2,
@@ -358,7 +358,7 @@ public sealed partial class ThatStream
 
 		public sealed class LessThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Stream subject = new MyStream(position: 2010);
@@ -367,7 +367,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition().LessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has position less than or equal to <null>,
@@ -375,7 +375,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedPositionIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Stream subject = new MyStream();
@@ -389,7 +389,7 @@ public sealed partial class ThatStream
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPositionOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
 				Stream subject = new MyStream(position: 2010);
@@ -398,7 +398,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition().LessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has position less than or equal to {Formatter.Format(expected)},
@@ -406,7 +406,7 @@ public sealed partial class ThatStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPositionOfSubjectIsLessThanExpected_ShouldSucceed()
 			{
 				Stream subject = new MyStream(position: 2010);
@@ -418,7 +418,7 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPositionOfSubjectIsTheSameAsExpected_ShouldSucceed()
 			{
 				Stream subject = new MyStream(position: 2010);
@@ -433,7 +433,7 @@ public sealed partial class ThatStream
 
 		public sealed class LessThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Stream subject = new MyStream(position: 2010);
@@ -442,7 +442,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has position less than <null>,
@@ -450,7 +450,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedPositionIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Stream subject = new MyStream();
@@ -464,7 +464,7 @@ public sealed partial class ThatStream
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPositionOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
 				Stream subject = new MyStream(position: 2010);
@@ -473,7 +473,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has position less than {Formatter.Format(expected)},
@@ -481,7 +481,7 @@ public sealed partial class ThatStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPositionOfSubjectIsLessThanExpected_ShouldSucceed()
 			{
 				Stream subject = new MyStream(position: 2010);
@@ -493,7 +493,7 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPositionOfSubjectIsTheSameAsExpected_ShouldFail()
 			{
 				Stream subject = new MyStream(position: 2010);
@@ -502,7 +502,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has position less than {Formatter.Format(expected)},
@@ -513,8 +513,8 @@ public sealed partial class ThatStream
 
 		public sealed class NotEqualToTests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasDifferentPosition_ShouldSucceed(long position)
 			{
 				long actualPosition = position > 10000 ? position - 1 : position + 1;
@@ -526,8 +526,8 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasSamePosition_ShouldFail(long position)
 			{
 				Stream subject = new MyStream(position: position);
@@ -535,7 +535,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition().NotEqualTo(position);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have position equal to {position},
@@ -543,7 +543,7 @@ public sealed partial class ThatStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDisposed_ShouldFail()
 			{
 				Stream subject = new MemoryStream(new byte[3]);
@@ -552,7 +552,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition().NotEqualTo(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have position equal to 0,
@@ -562,7 +562,7 @@ public sealed partial class ThatStream
 					.Because("an unreadable position is no proof that the position differs");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Stream? subject = null;
@@ -570,7 +570,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasPosition().NotEqualTo(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have position equal to 1,
@@ -578,7 +578,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedPositionIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Stream subject = new MyStream();

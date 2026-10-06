@@ -6,7 +6,7 @@ public sealed partial class ThatVersion
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenChainedWithAnd_ShouldKeepTheVersionSubject()
 			{
 				Version? subject = new(1, 2);
@@ -14,7 +14,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsEqualTo(new Version(1, 2)).And.HasMinor(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1.2 and has minor equal to 3,
@@ -22,7 +22,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Version? subject = new(1, 2);
@@ -30,7 +30,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsEqualTo(null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to <null>,
@@ -38,7 +38,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedAreNull_ShouldSucceed()
 			{
 				Version? subject = null;
@@ -49,7 +49,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDifferent_ShouldFail()
 			{
 				Version? subject = new(1, 2);
@@ -59,7 +59,7 @@ public sealed partial class ThatVersion
 					=> await That(subject).IsEqualTo(expected)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1.3, because we want to test the failure,
@@ -67,7 +67,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -75,7 +75,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsEqualTo(new Version(1, 2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1.2,
@@ -83,7 +83,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsTheSame_ShouldSucceed()
 			{
 				Version? subject = new(1, 2, 3, 4);
@@ -95,7 +95,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectOmitsAComponentOfExpected_ShouldFail()
 			{
 				Version? subject = new(1, 2);
@@ -104,7 +104,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1.2.0,
@@ -116,7 +116,7 @@ public sealed partial class ThatVersion
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDifferent_ShouldSucceed()
 			{
 				Version? subject = new(1, 2);
@@ -128,7 +128,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsTheSame_ShouldFail()
 			{
 				Version? subject = new(1, 2);
@@ -137,7 +137,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsEqualTo(expected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 1.2,

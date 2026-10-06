@@ -4,7 +4,7 @@ public sealed partial class ThatEnumerable
 {
 	public sealed class ArrayArgumentTests
 	{
-		[Fact]
+		[Test]
 		public async Task Contains_WithIntArrays_ShouldFail()
 		{
 			int[] subject = [1, 2, 3,];
@@ -13,7 +13,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in order and contiguous,
@@ -28,7 +28,7 @@ public sealed partial class ThatEnumerable
 				.Because("an array converts implicitly to a span in C# 14, but must still bind to the collection overload");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Contains_WithStringArrays_IgnoringCase_ShouldSucceed()
 		{
 			string[] subject = ["a", "b", "c",];
@@ -40,7 +40,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotContain_WithIntArrays_ShouldFail()
 		{
 			int[] subject = [1, 2, 3,];
@@ -49,7 +49,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).DoesNotContain(unexpected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not contain collection unexpected in order and contiguous,
@@ -63,7 +63,7 @@ public sealed partial class ThatEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotContain_WithStringArrays_IgnoringCase_ShouldFail()
 		{
 			string[] subject = ["a", "b", "c",];
@@ -72,7 +72,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).DoesNotContain(unexpected).IgnoringCase();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not contain collection unexpected ignoring case in order and contiguous,
@@ -93,7 +93,7 @@ public sealed partial class ThatEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotEndWith_WithIntArrays_ShouldSucceed()
 		{
 			int[] subject = [1, 2, 3,];
@@ -105,7 +105,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotEndWith_WithStringArrays_IgnoringCase_ShouldSucceed()
 		{
 			string[] subject = ["a", "b", "c",];
@@ -117,7 +117,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotStartWith_WithIntArrays_ShouldSucceed()
 		{
 			int[] subject = [1, 2, 3,];
@@ -129,7 +129,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotStartWith_WithStringArrays_IgnoringCase_ShouldSucceed()
 		{
 			string[] subject = ["a", "b", "c",];
@@ -141,7 +141,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task EndsWith_WithIntArrays_ShouldFail()
 		{
 			int[] subject = [1, 2, 3,];
@@ -150,7 +150,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).EndsWith(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             ends with [1, 2],
@@ -161,7 +161,7 @@ public sealed partial class ThatEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task EndsWith_WithStringArrays_IgnoringCase_ShouldSucceed()
 		{
 			string[] subject = ["a", "b", "c",];
@@ -173,7 +173,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasCount_WithStringArray_ShouldFail()
 		{
 			string[] subject = ["a", "b", "c",];
@@ -181,7 +181,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).HasCount(2);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has exactly 2 items,
@@ -196,7 +196,7 @@ public sealed partial class ThatEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsContainedIn_WithIntArrays_ShouldFail()
 		{
 			int[] subject = [1, 2, 3,];
@@ -205,7 +205,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsContainedIn(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is contained in collection expected in order and contiguous,
@@ -219,7 +219,7 @@ public sealed partial class ThatEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsContainedIn_WithStringArrays_IgnoringCase_ShouldSucceed()
 		{
 			string[] subject = ["a", "b",];
@@ -231,7 +231,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_WithIntArrays_ShouldFail()
 		{
 			int[] subject = [1, 2, 3,];
@@ -240,7 +240,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -254,7 +254,7 @@ public sealed partial class ThatEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_WithNullableDoubleArray_Within_ShouldSucceed()
 		{
 			double?[] subject = [1.1, 2.1,];
@@ -266,7 +266,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_WithNullableStringArrays_IgnoringCase_ShouldSucceed()
 		{
 			string?[] subject = ["a", null, "c",];
@@ -278,7 +278,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_WithStringArrays_IgnoringCase_ShouldSucceed()
 		{
 			string[] subject = ["a", "b", "c",];
@@ -290,7 +290,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEquivalentTo_WithIntArrays_ShouldFail()
 		{
 			int[] subject = [1, 2, 3,];
@@ -299,7 +299,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsEquivalentTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equivalent to expected,
@@ -311,7 +311,7 @@ public sealed partial class ThatEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsNotContainedIn_WithIntArrays_ShouldFail()
 		{
 			int[] subject = [1, 2,];
@@ -320,7 +320,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsNotContainedIn(unexpected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is not contained in collection unexpected in order and contiguous,
@@ -334,7 +334,7 @@ public sealed partial class ThatEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsNotEqualTo_WithIntArrays_ShouldFail()
 		{
 			int[] subject = [1, 2, 3,];
@@ -343,7 +343,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsNotEqualTo(unexpected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is not equal to collection unexpected in order,
@@ -357,7 +357,7 @@ public sealed partial class ThatEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsNotEqualTo_WithStringArrays_IgnoringCase_ShouldFail()
 		{
 			string[] subject = ["a", "b",];
@@ -366,7 +366,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsNotEqualTo(unexpected).IgnoringCase();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is not equal to collection unexpected ignoring case in order,
@@ -386,7 +386,7 @@ public sealed partial class ThatEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task StartsWith_WithIntArrays_ShouldFail()
 		{
 			int[] subject = [1, 2, 3,];
@@ -395,7 +395,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).StartsWith(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             starts with [2, 3],
@@ -406,7 +406,7 @@ public sealed partial class ThatEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task StartsWith_WithStringArrays_IgnoringCase_ShouldSucceed()
 		{
 			string[] subject = ["a", "b", "c",];

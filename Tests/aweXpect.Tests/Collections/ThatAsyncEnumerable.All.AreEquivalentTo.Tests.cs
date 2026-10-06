@@ -14,7 +14,7 @@ public sealed partial class ThatAsyncEnumerable
 		{
 			public sealed class ItemTests
 			{
-				[Fact]
+				[Test]
 				public async Task DoesNotEnumerateTwice()
 				{
 					ThrowWhenIteratingTwiceAsyncEnumerable subject = new();
@@ -26,7 +26,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task DoesNotMaterializeAsyncEnumerable()
 				{
 					IAsyncEnumerable<int> subject = Factory.GetAsyncFibonacciNumbers();
@@ -34,7 +34,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEquivalentTo(1);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to 1 for all items,
@@ -51,7 +51,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldSupportNullableValues()
 				{
 					IAsyncEnumerable<int?> subject = Factory.GetConstantValueAsyncEnumerable<int?>(null, 20);
@@ -62,7 +62,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task Using_ShouldThrowInvalidOperationException()
 				{
 					IAsyncEnumerable<int> subject = Factory.GetAsyncFibonacciNumbers(20);
@@ -74,7 +74,7 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("Using cannot be combined with Equivalent.");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemsDiffer_ShouldFailAndDisplayNotMatchingItems()
 				{
 					IAsyncEnumerable<int> subject = Factory.GetAsyncFibonacciNumbers(20);
@@ -82,7 +82,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEquivalentTo(5, o => o.IncludingFields());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to 5 for all items,
@@ -99,7 +99,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoItemsDiffer_ShouldSucceed()
 				{
 					int constantValue = 42;
@@ -111,7 +111,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_NegatedShouldFail()
 				{
 					IAsyncEnumerable<int>? subject = null;
@@ -119,7 +119,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().AreEquivalentTo(42));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to 42 not for all items,
@@ -130,7 +130,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					int constantValue = 42;
@@ -139,7 +139,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEquivalentTo(constantValue);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to constantValue for all items,

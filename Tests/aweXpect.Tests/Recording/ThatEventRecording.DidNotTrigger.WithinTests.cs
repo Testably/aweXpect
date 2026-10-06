@@ -9,7 +9,7 @@ public sealed partial class ThatEventRecording
 	{
 		public sealed class WithinTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNotTriggeredWithinTimeout_ShouldSucceed()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -28,7 +28,7 @@ public sealed partial class ThatEventRecording
 				cts.Cancel();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsTriggeredWithinTimeout_ShouldFail()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -41,7 +41,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTrigger(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Within(5.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has never recorded the CustomEvent event on sut within 0:05,
@@ -51,7 +51,7 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheOuterTimeoutIsAsLong_ShouldSucceed()
 			{
 				CustomEventWithoutParametersClass sut = new();

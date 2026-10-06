@@ -8,7 +8,7 @@ public sealed partial class ThatChar
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
 					char? subject = 'v';
@@ -16,7 +16,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).IsEqualTo(null);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to <null>,
@@ -24,7 +24,7 @@ public sealed partial class ThatChar
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndExpectedAreNull_AndIgnoringCase_ShouldSucceed()
 				{
 					char? subject = null;
@@ -35,7 +35,7 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndExpectedAreNull_ShouldSucceed()
 				{
 					char? subject = null;
@@ -46,7 +46,7 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectDiffersOnlyInCase_AndIgnoringCase_ShouldSucceed()
 				{
 					char? subject = 'a';
@@ -57,7 +57,7 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsDifferent_AndIgnoringCase_ShouldFail()
 				{
 					char? subject = 'a';
@@ -65,7 +65,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).IsEqualTo('B').IgnoringCase();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 'B' ignoring case,
@@ -73,19 +73,19 @@ public sealed partial class ThatChar
 						             """);
 				}
 
-				[Theory]
-				[InlineData('a', 'b')]
-				[InlineData('a', null)]
-				[InlineData('B', 'b')]
-				[InlineData('B', null)]
-				[InlineData(null, 'a')]
-				[InlineData(null, 'B')]
+				[Test]
+				[Arguments('a', 'b')]
+				[Arguments('a', null)]
+				[Arguments('B', 'b')]
+				[Arguments('B', null)]
+				[Arguments(null, 'a')]
+				[Arguments(null, 'B')]
 				public async Task WhenSubjectIsDifferent_ShouldFail(char? subject, char? expected)
 				{
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to {Formatter.Format(expected)},
@@ -93,7 +93,7 @@ public sealed partial class ThatChar
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_AndIgnoringCase_ShouldFail()
 				{
 					char? subject = null;
@@ -101,7 +101,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).IsEqualTo('a').IgnoringCase();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 'a' ignoring case,
@@ -109,7 +109,7 @@ public sealed partial class ThatChar
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					char? subject = null;
@@ -117,7 +117,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).IsEqualTo('Z');
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 'Z',
@@ -125,11 +125,11 @@ public sealed partial class ThatChar
 						             """);
 				}
 
-				[Theory]
-				[InlineData('a')]
-				[InlineData('X')]
-				[InlineData('5')]
-				[InlineData('\t')]
+				[Test]
+				[Arguments('a')]
+				[Arguments('X')]
+				[Arguments('5')]
+				[Arguments('\t')]
 				public async Task WhenSubjectIsTheSame_ShouldSucceed(char? subject)
 				{
 					char? expected = subject;

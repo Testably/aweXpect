@@ -8,8 +8,8 @@ public sealed partial class ThatDelegate
 		{
 			public sealed class ContinuationTests
 			{
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task ShouldContinueOnTheDelegateChain(int hResult)
 				{
 					Exception exception = new HResultException(hResult, "foo");
@@ -19,7 +19,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws()
 							.WithHResult().GreaterThan(hResult - 1).And.WithMessage("bar");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws an exception with HResult greater than {hResult - 1} and with message equal to "bar",
@@ -34,8 +34,8 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task ShouldIncludeExceptionType(int hResult)
 				{
 					Exception exception = new HResultException(hResult);
@@ -44,7 +44,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(Delegate).Throws<HResultException>().WithHResult().LessThan(hResult);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws an HResultException with HResult less than {hResult},
@@ -52,8 +52,8 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task ShouldNameEachFailingMember(int hResult)
 				{
 					Exception exception = new HResultException(hResult, "foo");
@@ -63,7 +63,7 @@ public sealed partial class ThatDelegate
 						=> await That(Delegate).Throws()
 							.WithHResult().GreaterThan(hResult).And.WithMessage("bar");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws an exception with HResult greater than {hResult} and with message equal to "bar",
@@ -78,8 +78,8 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task ShouldSupportTheComparisonVocabulary(int hResult)
 				{
 					Exception exception = new HResultException(hResult);
@@ -91,8 +91,8 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenAwaited_ShouldReturnThrownException(int hResult)
 				{
 					Exception exception = new HResultException(hResult);
@@ -103,8 +103,8 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenHResultIsDifferent_ShouldRenderLikeTheShorthand(int hResult)
 				{
 					int expectedHResult = hResult + 1;
@@ -114,7 +114,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(Delegate).Throws().WithHResult().EqualTo(expectedHResult);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws an exception with HResult equal to {expectedHResult},
@@ -126,8 +126,8 @@ public sealed partial class ThatDelegate
 
 			public sealed class Tests
 			{
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenExpectedIsNull_ShouldFail(int hResult)
 				{
 					Exception exception = new HResultException(hResult);
@@ -136,7 +136,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(Delegate).Throws().WithHResult(null);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws an exception with HResult equal to <null>,
@@ -145,8 +145,8 @@ public sealed partial class ThatDelegate
 						.Because("an exception always has an HResult, like for HasHResult(null)");
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenHResultIsDifferent_ShouldFail(int hResult)
 				{
 					int expectedHResult = hResult + 1;
@@ -156,7 +156,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(Delegate).Throws().WithHResult(expectedHResult);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that Delegate
 						              throws an exception with HResult equal to {expectedHResult},
@@ -164,8 +164,8 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenHResultMatchesExpected_ShouldSucceed(int hResult)
 				{
 					Exception exception = new HResultException(hResult);
@@ -177,7 +177,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeDoesNotMatch_WithThrowsType_ShouldOnlyReportTheType()
 				{
 					Action action = () => throw new OtherException("bar");
@@ -185,7 +185,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws(typeof(CustomException)).WithHResult(42);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws a ThatDelegate.CustomException with HResult equal to 42,

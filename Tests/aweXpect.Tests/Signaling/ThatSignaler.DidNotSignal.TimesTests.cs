@@ -9,7 +9,7 @@ public sealed partial class ThatSignaler
 	{
 		public sealed class TimesTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggeredOftenEnough_ShouldSucceed()
 			{
 				Signaler signaler = new();
@@ -22,7 +22,7 @@ public sealed partial class ThatSignaler
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggeredWithParameter_ShouldSucceeded()
 			{
 				Signaler<int> signaler = new();
@@ -36,9 +36,9 @@ public sealed partial class ThatSignaler
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(0)]
-			[InlineData(-1)]
+			[Test]
+			[Arguments(0)]
+			[Arguments(-1)]
 			public async Task WhenTimesIsNotPositive_ShouldThrowArgumentOutOfRangeException(int times)
 			{
 				Signaler signaler = new();
@@ -52,9 +52,9 @@ public sealed partial class ThatSignaler
 					.Because("no signaler can be signaled fewer than zero times");
 			}
 
-			[Theory]
-			[InlineData(0)]
-			[InlineData(-1)]
+			[Test]
+			[Arguments(0)]
+			[Arguments(-1)]
 			public async Task WhenTimesWithParameterIsNotPositive_ShouldThrowArgumentOutOfRangeException(int times)
 			{
 				Signaler<int> signaler = new();
@@ -68,7 +68,7 @@ public sealed partial class ThatSignaler
 					.Because("no signaler can be signaled fewer than zero times");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggeredMoreOften_ShouldFail()
 			{
 				Signaler signaler = new();
@@ -85,7 +85,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).DidNotSignal(3.Times());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback fewer than 3 times within 0:30,
@@ -93,7 +93,7 @@ public sealed partial class ThatSignaler
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggeredOftenEnough_ShouldFail()
 			{
 				Signaler signaler = new();
@@ -108,7 +108,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).DidNotSignal(2.Times());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback fewer than twice within 0:30,
@@ -116,7 +116,7 @@ public sealed partial class ThatSignaler
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggeredWithParameterMoreOften_ShouldFail()
 			{
 				Signaler<int> signaler = new();
@@ -133,7 +133,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).DidNotSignal(3.Times());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback fewer than 3 times within 0:30,
@@ -145,7 +145,7 @@ public sealed partial class ThatSignaler
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggeredWithParameterOftenEnough_ShouldFail()
 			{
 				Signaler<int> signaler = new();
@@ -161,7 +161,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).DidNotSignal(3.Times());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback fewer than 3 times within 0:30,

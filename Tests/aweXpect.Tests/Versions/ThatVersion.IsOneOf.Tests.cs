@@ -10,7 +10,7 @@ public sealed partial class ThatVersion
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				Version? subject = new(1, 2);
@@ -25,7 +25,7 @@ public sealed partial class ThatVersion
 					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				Version? subject = new(1, 2);
@@ -39,7 +39,7 @@ public sealed partial class ThatVersion
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsContained_ShouldSucceed()
 			{
 				Version? subject = new(1, 2);
@@ -51,7 +51,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDifferent_ShouldFail()
 			{
 				Version? subject = new(1, 2);
@@ -59,7 +59,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsOneOf(new Version(1, 3), new Version(2, 0));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of [1.3, 2.0],
@@ -67,7 +67,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNullAndExpectedContainsNull_ShouldSucceed()
 			{
 				Version? subject = null;
@@ -79,7 +79,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNullAndExpectedDoesNotContainNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -88,7 +88,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -99,7 +99,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectOmitsAComponentOfExpected_ShouldFail()
 			{
 				Version? subject = new(1, 2);
@@ -108,7 +108,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -123,7 +123,7 @@ public sealed partial class ThatVersion
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsContained_ShouldFail()
 			{
 				Version? subject = new(1, 2);
@@ -132,7 +132,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(expected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not one of expected,
@@ -143,7 +143,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDifferent_ShouldSucceed()
 			{
 				Version? subject = new(1, 2);

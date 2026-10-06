@@ -9,7 +9,7 @@ public sealed partial class ThatReadOnlyDictionary
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenKeyIsMissing_ShouldFail()
 			{
 				IReadOnlyDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -17,7 +17,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).Contains(new KeyValuePair<string, int>("b", 1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains ["b"] = 1,
@@ -28,7 +28,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPairExists_ShouldSucceed()
 			{
 				IReadOnlyDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -40,7 +40,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.Because("the dictionary holds the key with that value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IReadOnlyDictionary<string, int>? subject = null;
@@ -48,7 +48,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).Contains(new KeyValuePair<string, int>("a", 1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains ["a"] = 1,
@@ -59,7 +59,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class KeyAndValueTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEntryExists_ShouldSucceed()
 			{
 				IReadOnlyDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -71,7 +71,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.Because("the key and value overload looks the entry up like the pair overload");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKeyExistsWithADifferentValue_ShouldFail()
 			{
 				IReadOnlyDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -79,7 +79,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).Contains("a", 2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains ["a"] = 2,
@@ -93,7 +93,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class ReadOnlyOnlyTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenKeyExistsWithADifferentValue_ShouldFail()
 			{
 				ReadOnlyOnlyDictionary<string, int> subject = new(new Dictionary<string, int> { { "a", 1 }, });
@@ -101,7 +101,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).Contains(new KeyValuePair<string, int>("a", 2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains ["a"] = 2,
@@ -112,7 +112,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectUsesACaseInsensitiveComparer_ShouldLookTheKeyUpThroughIt()
 			{
 				ReadOnlyOnlyDictionary<string, int> subject =
@@ -128,7 +128,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class StringTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheValueDiffersOnlyInCase_WithIgnoringCase_ShouldSucceed()
 			{
 				ReadOnlyOnlyDictionary<int, string> subject = new(new Dictionary<int, string> { { 1, "Let It Be" }, });
@@ -142,7 +142,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class WithinTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheValueLiesWithinTheTolerance_ShouldSucceed()
 			{
 				ReadOnlyOnlyDictionary<string, double> subject = new(new Dictionary<string, double> { { "a", 1.05 }, });
@@ -156,7 +156,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class OverloadTests
 		{
-			[Fact]
+			[Test]
 			public async Task ForAReadOnlyDictionary_WithKeyAndValue_ShouldKeepTheSubjectType()
 			{
 				ReadOnlyDictionary<string, int> subject = new(new Dictionary<string, int> { { "a", 1 }, });
@@ -169,7 +169,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class ThrowingSubjectTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheKeyComparerThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("comparer failed");
@@ -181,7 +181,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).Contains("a", 1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains ["a"] = 1,
@@ -194,7 +194,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheLookupThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("lookup failed");
@@ -204,7 +204,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).Contains("a", 1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains ["a"] = 1,

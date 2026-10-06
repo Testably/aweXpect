@@ -11,7 +11,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class ImmutableStringTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsMatchExpectation_ShouldSucceed()
 				{
 					ImmutableArray<string?> subject = ["apple", "ant", "avocado",];
@@ -22,7 +22,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExactlyOneItemMatchesExpectation_ShouldSucceed()
 				{
 					ImmutableArray<string?> subject = ["apple", "banana", "cherry",];
@@ -33,7 +33,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 				{
 					ImmutableArray<string?> subject = ["apple", "ant", "avocado",];
@@ -46,7 +46,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNotAllItemsMatch_ShouldFail()
 				{
 					ImmutableArray<string?> subject = ["apple", "banana", "avocado",];
@@ -54,7 +54,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().ComplyWith(it => it.StartsWith("a"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             starts with "a" for all items,
@@ -77,7 +77,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class ImmutableStringNegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsMatchExpectation_ShouldFail()
 				{
 					ImmutableArray<string?> subject = ["apple", "ant",];
@@ -85,7 +85,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().ComplyWith(x => x.DoesNotComplyWith(it => it.StartsWith("a")));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not start with "a" for all items,
@@ -105,7 +105,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 				{
 					ImmutableArray<string?> subject = ["apple", "ant",];

@@ -6,7 +6,7 @@ public sealed partial class ThatNumber
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ForDouble_ShouldSupportChaining()
 			{
 				double subject = double.PositiveInfinity;
@@ -18,10 +18,10 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(double.PositiveInfinity)]
-			[InlineData(double.NegativeInfinity)]
-			[InlineData(double.NaN)]
+			[Test]
+			[Arguments(double.PositiveInfinity)]
+			[Arguments(double.NegativeInfinity)]
+			[Arguments(double.NaN)]
 			public async Task ForDouble_WhenSubjectIsInfinityOrNaN_ShouldSucceed(double subject)
 			{
 				async Task Act() => await That(subject).IsNotFinite();
@@ -29,19 +29,19 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(-1d)]
-			[InlineData(0d)]
-			[InlineData(1d)]
-			[InlineData(double.MinValue)]
-			[InlineData(double.MaxValue)]
-			[InlineData(double.Epsilon)]
+			[Test]
+			[Arguments(-1d)]
+			[Arguments(0d)]
+			[Arguments(1d)]
+			[Arguments(double.MinValue)]
+			[Arguments(double.MaxValue)]
+			[Arguments(double.Epsilon)]
 			public async Task ForDouble_WhenSubjectIsNormalValue_ShouldFail(double subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNotFinite();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not finite,
@@ -49,7 +49,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForFloat_ShouldSupportChaining()
 			{
 				float subject = float.PositiveInfinity;
@@ -60,10 +60,10 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(float.PositiveInfinity)]
-			[InlineData(float.NegativeInfinity)]
-			[InlineData(float.NaN)]
+			[Test]
+			[Arguments(float.PositiveInfinity)]
+			[Arguments(float.NegativeInfinity)]
+			[Arguments(float.NaN)]
 			public async Task ForFloat_WhenSubjectIsInfinityOrNaN_ShouldSucceed(float subject)
 			{
 				async Task Act()
@@ -72,19 +72,19 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(-1f)]
-			[InlineData(0f)]
-			[InlineData(1f)]
-			[InlineData(float.MinValue)]
-			[InlineData(float.MaxValue)]
-			[InlineData(float.Epsilon)]
+			[Test]
+			[Arguments(-1f)]
+			[Arguments(0f)]
+			[Arguments(1f)]
+			[Arguments(float.MinValue)]
+			[Arguments(float.MaxValue)]
+			[Arguments(float.Epsilon)]
 			public async Task ForFloat_WhenSubjectIsNormalValue_ShouldFail(float subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNotFinite();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not finite,
@@ -93,7 +93,7 @@ public sealed partial class ThatNumber
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForHalf_ShouldSupportChaining()
 			{
 				Half subject = Half.PositiveInfinity;
@@ -107,8 +107,8 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Theory]
-			[MemberData(nameof(GetNaNOrInfinityHalfValues), DisableDiscoveryEnumeration = true)]
+			[Test]
+			[MethodDataSource(nameof(GetNaNOrInfinityHalfValues))]
 			public async Task ForHalf_WhenSubjectIsInfinityOrNaN_ShouldSucceed(Half subject)
 			{
 				async Task Act()
@@ -119,14 +119,14 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Theory]
-			[MemberData(nameof(GetNormalHalfValues), DisableDiscoveryEnumeration = true)]
+			[Test]
+			[MethodDataSource(nameof(GetNormalHalfValues))]
 			public async Task ForHalf_WhenSubjectIsNormalValue_ShouldFail(Half subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNotFinite();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not finite,
@@ -135,7 +135,7 @@ public sealed partial class ThatNumber
 			}
 #endif
 
-			[Fact]
+			[Test]
 			public async Task ForNullableDouble_ShouldSupportChaining()
 			{
 				double? subject = double.PositiveInfinity;
@@ -147,10 +147,10 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(double.PositiveInfinity)]
-			[InlineData(double.NegativeInfinity)]
-			[InlineData(double.NaN)]
+			[Test]
+			[Arguments(double.PositiveInfinity)]
+			[Arguments(double.NegativeInfinity)]
+			[Arguments(double.NaN)]
 			public async Task ForNullableDouble_WhenSubjectIsInfinityOrNaN_ShouldSucceed(
 				double? subject)
 			{
@@ -160,26 +160,26 @@ public sealed partial class ThatNumber
 			}
 
 
-			[Theory]
-			[InlineData(-1d)]
-			[InlineData(0d)]
-			[InlineData(1d)]
-			[InlineData(double.MinValue)]
-			[InlineData(double.MaxValue)]
-			[InlineData(double.Epsilon)]
+			[Test]
+			[Arguments(-1d)]
+			[Arguments(0d)]
+			[Arguments(1d)]
+			[Arguments(double.MinValue)]
+			[Arguments(double.MaxValue)]
+			[Arguments(double.Epsilon)]
 			public async Task ForNullableDouble_WhenSubjectIsNormalValue_ShouldFail(double? subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNotFinite();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not finite,
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
-			[Fact]
+			[Test]
 			public async Task ForNullableDouble_WhenSubjectIsNull_ShouldFail()
 			{
 				double? subject = null;
@@ -187,7 +187,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotFinite();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not finite,
@@ -195,7 +195,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableFloat_ShouldSupportChaining()
 			{
 				float? subject = float.PositiveInfinity;
@@ -206,10 +206,10 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(float.PositiveInfinity)]
-			[InlineData(float.NegativeInfinity)]
-			[InlineData(float.NaN)]
+			[Test]
+			[Arguments(float.PositiveInfinity)]
+			[Arguments(float.NegativeInfinity)]
+			[Arguments(float.NaN)]
 			public async Task ForNullableFloat_WhenSubjectIsInfinityOrNaN_ShouldSucceed(
 				float? subject)
 			{
@@ -220,26 +220,26 @@ public sealed partial class ThatNumber
 			}
 
 
-			[Theory]
-			[InlineData(-1f)]
-			[InlineData(0f)]
-			[InlineData(1f)]
-			[InlineData(float.MinValue)]
-			[InlineData(float.MaxValue)]
-			[InlineData(float.Epsilon)]
+			[Test]
+			[Arguments(-1f)]
+			[Arguments(0f)]
+			[Arguments(1f)]
+			[Arguments(float.MinValue)]
+			[Arguments(float.MaxValue)]
+			[Arguments(float.Epsilon)]
 			public async Task ForNullableFloat_WhenSubjectIsNormalValue_ShouldFail(float? subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNotFinite();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not finite,
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
-			[Fact]
+			[Test]
 			public async Task ForNullableFloat_WhenSubjectIsNull_ShouldFail()
 			{
 				float? subject = null;
@@ -247,7 +247,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotFinite();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not finite,
@@ -256,7 +256,7 @@ public sealed partial class ThatNumber
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForNullableHalf_ShouldSupportChaining()
 			{
 				Half? subject = Half.NegativeInfinity;
@@ -270,8 +270,8 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Theory]
-			[MemberData(nameof(GetNaNOrInfinityHalfValues), DisableDiscoveryEnumeration = true)]
+			[Test]
+			[MethodDataSource(nameof(GetNaNOrInfinityHalfValues))]
 			public async Task ForNullableHalf_WhenSubjectIsInfinityOrNaN_ShouldSucceed(
 				Half subjectValue)
 			{
@@ -284,8 +284,8 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Theory]
-			[MemberData(nameof(GetNormalHalfValues), DisableDiscoveryEnumeration = true)]
+			[Test]
+			[MethodDataSource(nameof(GetNormalHalfValues))]
 			public async Task ForNullableHalf_WhenSubjectIsNormalValue_ShouldFail(
 				Half subjectValue)
 			{
@@ -294,7 +294,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotFinite();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not finite,
@@ -304,7 +304,7 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForNullableHalf_WhenSubjectIsNull_ShouldFail()
 			{
 				Half? subject = null;
@@ -312,7 +312,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotFinite();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not finite,

@@ -16,7 +16,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class SingleEnumerationTests
 		{
-			[Fact]
+			[Test]
 			public async Task Collection_WhenEvaluatedForSeveralItems_ShouldEnumerateUnexpectedOnce()
 			{
 				int[][] subject = [[1, 2, 4,], [1, 2,], [3, 2, 1,],];
@@ -28,7 +28,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EnumerableWithUntypedUnexpected_WhenEvaluatedForSeveralItems_ShouldEnumerateUnexpectedOnce()
 			{
 				IEnumerable[] subject =
@@ -45,7 +45,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Enumerable_WhenEvaluatedForSeveralItems_ShouldEnumerateUnexpectedOnce()
 			{
 				IEnumerable[] subject =
@@ -62,7 +62,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Expectations_WhenEvaluatedForSeveralItems_ShouldEnumerateUnexpectedOnce()
 			{
 				IEnumerable<int>[] subject = [[1, 2, 4,], [1, 2,], [3, 2, 1,],];
@@ -77,7 +77,7 @@ public sealed partial class ThatEnumerable
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ImmutableExpectations_WhenEvaluatedForSeveralItems_ShouldEnumerateUnexpectedOnce()
 			{
 				ImmutableArray<int>[] subject = [[1, 2, 4,], [1, 2,], [3, 2, 1,],];
@@ -93,7 +93,7 @@ public sealed partial class ThatEnumerable
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ImmutablePredicates_WhenEvaluatedForSeveralItems_ShouldEnumerateUnexpectedOnce()
 			{
 				ImmutableArray<int>[] subject = [[1, 2, 4,], [1, 2,], [3, 2, 1,],];
@@ -108,7 +108,7 @@ public sealed partial class ThatEnumerable
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task Immutable_WhenEvaluatedForSeveralItems_ShouldEnumerateUnexpectedOnce()
 			{
 				ImmutableArray<int>[] subject = [[1, 2, 4,], [1, 2,], [3, 2, 1,],];
@@ -121,7 +121,7 @@ public sealed partial class ThatEnumerable
 			}
 #endif
 
-			[Fact]
+			[Test]
 			public async Task InAnyOrder_WhenEvaluatedForSeveralItems_ShouldEnumerateUnexpectedOnce()
 			{
 				IEnumerable<int>[] subject = [[1, 2, 4,], [1, 2,], [1, 2, 3, 4,],];
@@ -133,7 +133,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Predicates_WhenEvaluatedForSeveralItems_ShouldEnumerateUnexpectedOnce()
 			{
 				IEnumerable<int>[] subject = [[1, 2, 4,], [1, 2,], [3, 2, 1,],];
@@ -146,7 +146,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEvaluatedForSeveralItems_ShouldCompareEveryItemWithTheUnexpectedItems()
 			{
 				IEnumerable<int>[] subject = [[1, 2, 4,], [1, 2,], [1, 2, 3,],];
@@ -155,7 +155,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).All().ComplyWith(x => x.IsNotEqualTo(unexpected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order for all items,
@@ -201,7 +201,7 @@ public sealed partial class ThatEnumerable
 					.Because("every item is compared with the items of the one enumeration");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEvaluatedForSeveralItems_ShouldEnumerateUnexpectedOnce()
 			{
 				IEnumerable<int>[] subject = [[1, 2, 4,], [1, 2,], [3, 2, 1,],];
@@ -213,7 +213,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEvaluatedRepeatedly_ShouldEnumerateUnexpectedOnce()
 			{
 				int attempts = 0;
@@ -235,7 +235,7 @@ public sealed partial class ThatEnumerable
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegatedForSeveralItems_ShouldEnumerateUnexpectedOnce()
 			{
 				IEnumerable<int>[] subject = [[1, 2, 3,], [1, 2, 3,], [1, 2, 3,],];
@@ -247,7 +247,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsALazySequence_ShouldEnumerateItOnceForSeveralItems()
 			{
 				int enumerations = 0;
@@ -269,7 +269,7 @@ public sealed partial class ThatEnumerable
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsALazySequence_ShouldNotEnumerateItBeforeTheEvaluation()
 			{
 				int enumerations = 0;
@@ -291,7 +291,7 @@ public sealed partial class ThatEnumerable
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsAListThatChangesBetweenTheItems_ShouldCompareWithItsCurrentItems()
 			{
 				List<int> unexpected = [1, 2,];
@@ -311,7 +311,7 @@ public sealed partial class ThatEnumerable
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedThrowsWhileItIsEnumerated_ShouldThrowTheException()
 			{
 				int enumerations = 0;

@@ -13,7 +13,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class ImmutableItemTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsDifferentValues_ShouldFail()
 				{
 					ImmutableArray<int> subject = [1, 1, 1, 1, 2, 2, 3,];
@@ -21,7 +21,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().Satisfy(x => x == 1);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             satisfies x => x == 1 for all items,
@@ -35,7 +35,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableIsEmpty_ShouldSucceed()
 				{
 					ImmutableArray<int> subject = [];
@@ -46,7 +46,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableOnlyContainsEqualValues_ShouldSucceed()
 				{
 					ImmutableArray<int> subject = [1, 1, 1, 1, 1, 1, 1,];
@@ -57,7 +57,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemsAreOfAReferenceType_ShouldHandThemOutAsNotNullable()
 				{
 					ImmutableArray<Version> subject = [new Version(1, 2), new Version(1, 3),];
@@ -68,7 +68,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 				{
 					ImmutableArray<int> subject = [1, 1, 2, 3, 5, 8,];
@@ -84,7 +84,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class ImmutableStringTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsDifferentValues_ShouldFail()
 				{
 					ImmutableArray<string?> subject = ["foo", "bar", "baz",];
@@ -92,7 +92,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().Satisfy(x => x?.StartsWith("ba") == true);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             satisfies x => x?.StartsWith("ba") == true for all items,
@@ -112,7 +112,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableIsEmpty_ShouldSucceed()
 				{
 					ImmutableArray<string?> subject = [];
@@ -123,7 +123,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableOnlyContainsMatchingValues_ShouldSucceed()
 				{
 					ImmutableArray<string> subject = ["foo", "bar", "baz",];
@@ -134,7 +134,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 				{
 					ImmutableArray<string> subject = ["foo", "bar", "baz",];

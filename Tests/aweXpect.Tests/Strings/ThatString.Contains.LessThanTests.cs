@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class LessThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringDoesNotOccurAtAll_ShouldSucceed()
 			{
 				string subject =
@@ -19,7 +19,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursEqualTimes_ShouldFail()
 			{
 				string subject =
@@ -29,7 +29,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).LessThan(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "in" fewer than 3 times,
@@ -37,7 +37,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursMoreTimes_ShouldFail()
 			{
 				string subject =
@@ -47,7 +47,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).LessThan(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "in",
@@ -55,7 +55,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringSufficientlyFewTimes_ShouldSucceed()
 			{
 				string subject =
@@ -68,7 +68,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaximumIsLessThanZero_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject =

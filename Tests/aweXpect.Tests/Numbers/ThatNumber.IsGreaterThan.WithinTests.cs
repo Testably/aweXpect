@@ -10,9 +10,9 @@ public sealed partial class ThatNumber
 	{
 		public sealed class WithinTests
 		{
-			[Theory]
-			[InlineData((byte)5, (byte)5)]
-			[InlineData((byte)6, (byte)5)]
+			[Test]
+			[Arguments((byte)5, (byte)5)]
+			[Arguments((byte)6, (byte)5)]
 			public async Task ForByte_WhenInsideTolerance_ShouldSucceed(
 				byte subject, byte expected)
 			{
@@ -22,17 +22,17 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((byte)5, (byte)6, "-1")]
-			[InlineData((byte)5, (byte)7, "-2")]
-			[InlineData((byte)0, (byte)5, "-5")]
+			[Test]
+			[Arguments((byte)5, (byte)6, "-1")]
+			[Arguments((byte)5, (byte)7, "-2")]
+			[Arguments((byte)0, (byte)5, "-5")]
 			public async Task ForByte_WhenOutsideTolerance_ShouldFail(
 				byte subject, byte expected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than {Formatter.Format(expected)} ± 1,
@@ -40,9 +40,9 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData(12.5, 12.5)]
-			[InlineData(12.6, 12.5)]
+			[Test]
+			[Arguments(12.5, 12.5)]
+			[Arguments(12.6, 12.5)]
 			public async Task ForDecimal_WhenInsideTolerance_ShouldSucceed(
 				double subjectValue, double expectedValue)
 			{
@@ -55,9 +55,9 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(12.0, 12.5, "-0.5")]
-			[InlineData(12.5, 12.6, "-0.1")]
+			[Test]
+			[Arguments(12.0, 12.5, "-0.5")]
+			[Arguments(12.5, 12.6, "-0.1")]
 			public async Task ForDecimal_WhenOutsideTolerance_ShouldFail(
 				double subjectValue, double expectedValue, string expectedDifference)
 			{
@@ -67,7 +67,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(new decimal(0.1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than {Formatter.Format(expected)} ± 0.1,
@@ -75,8 +75,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task
 				ForDecimal_WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException(
 					decimal subject, decimal expected)
@@ -89,7 +89,7 @@ public sealed partial class ThatNumber
 					.WithParamName("tolerance");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldSucceed()
 			{
 				double subject = double.MinValue;
@@ -102,7 +102,7 @@ public sealed partial class ThatNumber
 					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldFail()
 			{
 				double subject = double.MinValue;
@@ -111,7 +111,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(double.MaxValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than double.MaxValue ± double.MaxValue,
@@ -120,7 +120,7 @@ public sealed partial class ThatNumber
 					.Because("a distance that is not representable exceeds every finite tolerance");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenExpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
 			{
 				double subject = 5.0;
@@ -135,10 +135,10 @@ public sealed partial class ThatNumber
 					.Because("no tolerance can bring a value within reach of NaN");
 			}
 
-			[Theory]
-			[InlineData(12.5, 12.5)]
-			[InlineData(12.5, 12.6)]
-			[InlineData(12.6, 12.5)]
+			[Test]
+			[Arguments(12.5, 12.5)]
+			[Arguments(12.5, 12.6)]
+			[Arguments(12.6, 12.5)]
 			public async Task ForDouble_WhenInsideTolerance_ShouldSucceed(
 				double subject, double expected)
 			{
@@ -148,15 +148,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(12.0, 12.5)]
+			[Test]
+			[Arguments(12.0, 12.5)]
 			public async Task ForDouble_WhenOutsideTolerance_ShouldFail(
 				double subject, double expected)
 			{
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(0.1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than {Formatter.Format(expected)} ± 0.1,
@@ -164,7 +164,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenSubjectAndExpectedArePositiveInfinity_ShouldFail()
 			{
 				double subject = double.PositiveInfinity;
@@ -173,7 +173,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(1.0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than +∞ ± 1.0,
@@ -182,7 +182,7 @@ public sealed partial class ThatNumber
 					.Because("subtracting a tolerance from infinity leaves infinity, which is not greater than itself");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenSubjectIsNaN_ShouldFail()
 			{
 				double subject = double.NaN;
@@ -191,7 +191,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(1.0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 5.0 ± 1.0,
@@ -199,7 +199,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
 			{
 				async Task Act()
@@ -211,7 +211,7 @@ public sealed partial class ThatNumber
 					.Because("NaN is not a negative tolerance, so it needs its own message");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForFloat_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldSucceed()
 			{
 				float subject = float.MinValue;
@@ -224,7 +224,7 @@ public sealed partial class ThatNumber
 					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForFloat_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldFail()
 			{
 				float subject = float.MinValue;
@@ -233,7 +233,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(float.MaxValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than float.MaxValue ± float.MaxValue,
@@ -242,10 +242,10 @@ public sealed partial class ThatNumber
 					.Because("a distance that is not representable exceeds every finite tolerance");
 			}
 
-			[Theory]
-			[InlineData(12.5f, 12.5f)]
-			[InlineData(12.5f, 12.6f)]
-			[InlineData(12.6f, 12.5f)]
+			[Test]
+			[Arguments(12.5f, 12.5f)]
+			[Arguments(12.5f, 12.6f)]
+			[Arguments(12.6f, 12.5f)]
 			public async Task ForFloat_WhenInsideTolerance_ShouldSucceed(
 				float subject, float expected)
 			{
@@ -255,15 +255,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(12.0f, 12.5f)]
+			[Test]
+			[Arguments(12.0f, 12.5f)]
 			public async Task ForFloat_WhenOutsideTolerance_ShouldFail(
 				float subject, float expected)
 			{
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(0.1f);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than {Formatter.Format(expected)} ± 0.1,
@@ -271,7 +271,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForFloat_WhenSubjectAndExpectedArePositiveInfinity_ShouldFail()
 			{
 				float subject = float.PositiveInfinity;
@@ -280,7 +280,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(1.0f);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than +∞ ± 1.0,
@@ -290,7 +290,7 @@ public sealed partial class ThatNumber
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForHalf_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldSucceed()
 			{
 				Half subject = Half.MinValue;
@@ -303,7 +303,7 @@ public sealed partial class ThatNumber
 					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForHalf_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldFail()
 			{
 				Half subject = Half.MinValue;
@@ -312,7 +312,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(Half.MaxValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than Half.MaxValue ± Half.MaxValue,
@@ -322,9 +322,9 @@ public sealed partial class ThatNumber
 			}
 #endif
 
-			[Theory]
-			[InlineData(5, 5)]
-			[InlineData(6, 5)]
+			[Test]
+			[Arguments(5, 5)]
+			[Arguments(6, 5)]
 			public async Task ForInt_WhenInsideTolerance_ShouldSucceed(int subject, int expected)
 			{
 				async Task Act()
@@ -333,7 +333,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForInt_WhenNegatedAndOnToleranceBoundary_ShouldSucceed()
 			{
 				int subject = 4;
@@ -346,16 +346,16 @@ public sealed partial class ThatNumber
 					.Because("the negation is the exact complement of the strict inequality");
 			}
 
-			[Theory]
-			[InlineData(3, 5, -2)]
-			[InlineData(0, 5, -5)]
-			[InlineData(4, 5, -1)]
+			[Test]
+			[Arguments(3, 5, -2)]
+			[Arguments(0, 5, -5)]
+			[Arguments(4, 5, -1)]
 			public async Task ForInt_WhenOutsideTolerance_ShouldFail(int subject, int expected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than {Formatter.Format(expected)} ± 1,
@@ -363,8 +363,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task
 				ForInt_WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException(
 					int subject, int expected)
@@ -377,9 +377,9 @@ public sealed partial class ThatNumber
 					.WithParamName("tolerance");
 			}
 
-			[Theory]
-			[InlineData(5L, 5L)]
-			[InlineData(6L, 5L)]
+			[Test]
+			[Arguments(5L, 5L)]
+			[Arguments(6L, 5L)]
 			public async Task ForLong_WhenInsideTolerance_ShouldSucceed(long subject, long expected)
 			{
 				async Task Act()
@@ -388,15 +388,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(3L, 5L, -2)]
-			[InlineData(5L, 6L, -1)]
+			[Test]
+			[Arguments(3L, 5L, -2)]
+			[Arguments(5L, 6L, -1)]
 			public async Task ForLong_WhenOutsideTolerance_ShouldFail(long subject, long expected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(1L);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is greater than {Formatter.Format(expected)} ± 1,
@@ -405,7 +405,7 @@ public sealed partial class ThatNumber
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForNFloat_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldSucceed()
 			{
 				NFloat subject = NFloat.MinValue;
@@ -418,7 +418,7 @@ public sealed partial class ThatNumber
 					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNFloat_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldFail()
 			{
 				NFloat subject = NFloat.MinValue;
@@ -427,7 +427,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(NFloat.MaxValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than NFloat.MaxValue ± NFloat.MaxValue,
@@ -437,9 +437,9 @@ public sealed partial class ThatNumber
 			}
 #endif
 
-			[Theory]
-			[InlineData(5, 5)]
-			[InlineData(6, 5)]
+			[Test]
+			[Arguments(5, 5)]
+			[Arguments(6, 5)]
 			public async Task ForNullableInt_WhenInsideTolerance_ShouldSucceed(
 				int? subject, int? expected)
 			{
@@ -449,7 +449,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableInt_WhenSubjectIsNull_ShouldFail()
 			{
 				int? subject = null;
@@ -458,7 +458,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 5 ± 1,
@@ -466,7 +466,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForSByte_WhenDifferenceWouldOverflow_ShouldFailWithoutThrowing()
 			{
 				sbyte subject = sbyte.MinValue;
@@ -475,7 +475,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within((sbyte)1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 127 ± 1,
@@ -484,7 +484,7 @@ public sealed partial class ThatNumber
 					.Because("the difference must not overflow the range of sbyte");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenToleranceIsNotSet_ShouldUseStrictInequality()
 			{
 				int subject = 5;
@@ -493,7 +493,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 5,
@@ -501,7 +501,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenToleranceIsZero_ShouldUseStrictInequality()
 			{
 				int subject = 5;
@@ -510,7 +510,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsGreaterThan(expected).Within(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 5 ± 0,

@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task IgnoringCase_WhenSubjectDoesEndWithExpected_ShouldFail()
 			{
 				string subject = "some text";
@@ -15,7 +15,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotEndWith(expected).IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not end with "TEXT" ignoring case,
@@ -23,7 +23,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringCase_WhenSubjectDoesNotEndWithWithExpected_ShouldSucceed()
 			{
 				string subject = "some text";
@@ -35,7 +35,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				Using_WhenSubjectDoesEndWithExpected_ShouldFail()
 			{
@@ -46,7 +46,7 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotEndWith(expected)
 						.Using(new IgnoreCaseForVocalsComparer());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not end with "tExt" using IgnoreCaseForVocalsComparer,
@@ -54,7 +54,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				Using_WhenSubjectDoesNotEndWithWithExpected_ShouldSucceed()
 			{
@@ -68,7 +68,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "text";
@@ -82,7 +82,7 @@ public sealed partial class ThatString
 					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsWhiteSpaceAndTrailingWhiteSpaceIsIgnored_ShouldThrowArgumentException()
 			{
 				string subject = "text ";
@@ -96,7 +96,7 @@ public sealed partial class ThatString
 					.Because("the suffix is empty once the trailing whitespace is ignored");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectDoesEndWithExpected_ShouldFail()
 			{
 				string subject = "some text";
@@ -105,7 +105,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotEndWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not end with "text",
@@ -113,7 +113,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectDoesNotEndWithWithExpected_ShouldSucceed()
 			{
 				string subject = "some text";
@@ -125,7 +125,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsEqualToExpected_ShouldFail()
 			{
 				string subject = "some text";
@@ -134,7 +134,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotEndWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not end with "some text",
@@ -142,7 +142,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -151,7 +151,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotEndWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not end with "text",

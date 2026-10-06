@@ -8,7 +8,7 @@ public sealed partial class ThatStream
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Stream subject = new MyStream(length: 3);
@@ -16,7 +16,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength(null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length equal to <null>,
@@ -24,7 +24,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Stream subject = new MyStream();
@@ -38,7 +38,7 @@ public sealed partial class ThatStream
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenReadingTheLengthThrowsAnIOException_ShouldFail()
 			{
 				Stream subject = new UnreadableStream(new IOException("The device is not ready."));
@@ -46,7 +46,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length equal to 3,
@@ -56,7 +56,7 @@ public sealed partial class ThatStream
 					.Because("a broken stream cannot answer what its length is");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenReadingTheLengthThrowsAnyOtherException_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("The stream is broken.");
@@ -65,7 +65,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length equal to 3,
@@ -76,8 +76,8 @@ public sealed partial class ThatStream
 					.Because("a stream cannot answer what its length is, whatever it throws");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasDifferentLength_ShouldFail(long length)
 			{
 				long actualLength = length > 10000 ? length - 1 : length + 1;
@@ -86,7 +86,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength(length);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has length equal to {length},
@@ -94,8 +94,8 @@ public sealed partial class ThatStream
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasSameLength_ShouldSucceed(long length)
 			{
 				Stream subject = new MyStream(length: length);
@@ -107,7 +107,7 @@ public sealed partial class ThatStream
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsABufferedStream_ShouldAllowChainingIntoBufferedStreamExpectations()
 			{
 				using BufferedStream subject = new(new MemoryStream(new byte[3]), 4096);
@@ -119,7 +119,7 @@ public sealed partial class ThatStream
 			}
 #endif
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDisposed_ShouldFail()
 			{
 				Stream subject = new MemoryStream(new byte[3]);
@@ -128,7 +128,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length equal to 3,
@@ -138,7 +138,7 @@ public sealed partial class ThatStream
 					.Because("the disposed stream is the production bug the test should report");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNonSeekable_ShouldFail()
 			{
 				Stream subject = new UnreadableStream(new NotSupportedException("Stream does not support seeking."));
@@ -146,7 +146,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length equal to 3,
@@ -156,7 +156,7 @@ public sealed partial class ThatStream
 					.Because("a non-seekable stream does not have a length of 3");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Stream? subject = null;
@@ -164,7 +164,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length equal to 0,
@@ -175,7 +175,7 @@ public sealed partial class ThatStream
 
 		public sealed class EqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Stream subject = new MyStream();
@@ -189,8 +189,8 @@ public sealed partial class ThatStream
 					.WithParamName("expected");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasDifferentLength_ShouldFail(long length)
 			{
 				long actualLength = length > 10000 ? length - 1 : length + 1;
@@ -199,7 +199,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength().EqualTo(length);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has length equal to {length},
@@ -207,8 +207,8 @@ public sealed partial class ThatStream
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasSameLength_ShouldSucceed(long length)
 			{
 				Stream subject = new MyStream(length: length);
@@ -219,7 +219,7 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Stream? subject = null;
@@ -227,7 +227,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength().EqualTo(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length equal to 0,
@@ -238,7 +238,7 @@ public sealed partial class ThatStream
 
 		public sealed class GreaterThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Stream subject = new MyStream(length: 2010);
@@ -247,7 +247,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength().GreaterThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length greater than or equal to <null>,
@@ -255,7 +255,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Stream subject = new MyStream();
@@ -269,7 +269,7 @@ public sealed partial class ThatStream
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
 				Stream subject = new MyStream(length: 2010);
@@ -281,7 +281,7 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsLessThanExpected_ShouldFail()
 			{
 				Stream subject = new MyStream(length: 2010);
@@ -290,7 +290,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength().GreaterThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has length greater than or equal to {Formatter.Format(expected)},
@@ -298,7 +298,7 @@ public sealed partial class ThatStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsTheSameAsExpected_ShouldSucceed()
 			{
 				Stream subject = new MyStream(length: 2010);
@@ -313,7 +313,7 @@ public sealed partial class ThatStream
 
 		public sealed class GreaterThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Stream subject = new MyStream(length: 2010);
@@ -322,7 +322,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length greater than <null>,
@@ -330,7 +330,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Stream subject = new MyStream();
@@ -344,7 +344,7 @@ public sealed partial class ThatStream
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
 				Stream subject = new MyStream(length: 2010);
@@ -356,7 +356,7 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsLessThanExpected_ShouldFail()
 			{
 				Stream subject = new MyStream(length: 2010);
@@ -365,7 +365,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has length greater than {Formatter.Format(expected)},
@@ -373,7 +373,7 @@ public sealed partial class ThatStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsTheSameAsExpected_ShouldFail()
 			{
 				Stream subject = new MyStream(length: 2010);
@@ -382,7 +382,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has length greater than {Formatter.Format(expected)},
@@ -390,7 +390,7 @@ public sealed partial class ThatStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDisposed_ShouldFail()
 			{
 				Stream subject = new MemoryStream(new byte[3]);
@@ -399,7 +399,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength().GreaterThan(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length greater than 2,
@@ -412,7 +412,7 @@ public sealed partial class ThatStream
 
 		public sealed class LessThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Stream subject = new MyStream(length: 2010);
@@ -421,7 +421,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength().LessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length less than or equal to <null>,
@@ -429,7 +429,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Stream subject = new MyStream();
@@ -443,7 +443,7 @@ public sealed partial class ThatStream
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
 				Stream subject = new MyStream(length: 2010);
@@ -452,7 +452,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength().LessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has length less than or equal to {Formatter.Format(expected)},
@@ -460,7 +460,7 @@ public sealed partial class ThatStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsLessThanExpected_ShouldSucceed()
 			{
 				Stream subject = new MyStream(length: 2010);
@@ -472,7 +472,7 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsTheSameAsExpected_ShouldSucceed()
 			{
 				Stream subject = new MyStream(length: 2010);
@@ -487,7 +487,7 @@ public sealed partial class ThatStream
 
 		public sealed class LessThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Stream subject = new MyStream(length: 2010);
@@ -496,7 +496,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length less than <null>,
@@ -504,7 +504,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Stream subject = new MyStream();
@@ -518,7 +518,7 @@ public sealed partial class ThatStream
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
 				Stream subject = new MyStream(length: 2010);
@@ -527,7 +527,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has length less than {Formatter.Format(expected)},
@@ -535,7 +535,7 @@ public sealed partial class ThatStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsLessThanExpected_ShouldSucceed()
 			{
 				Stream subject = new MyStream(length: 2010);
@@ -547,7 +547,7 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsTheSameAsExpected_ShouldFail()
 			{
 				Stream subject = new MyStream(length: 2010);
@@ -556,7 +556,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has length less than {Formatter.Format(expected)},
@@ -567,8 +567,8 @@ public sealed partial class ThatStream
 
 		public sealed class NotEqualToTests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasDifferentLength_ShouldSucceed(long length)
 			{
 				long actualLength = length > 10000 ? length - 1 : length + 1;
@@ -580,8 +580,8 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasSameLength_ShouldFail(long length)
 			{
 				Stream subject = new MyStream(length: length);
@@ -589,7 +589,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength().NotEqualTo(length);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have length equal to {length},
@@ -597,7 +597,7 @@ public sealed partial class ThatStream
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDisposed_ShouldFail()
 			{
 				Stream subject = new MemoryStream(new byte[3]);
@@ -606,7 +606,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength().NotEqualTo(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have length equal to 3,
@@ -616,7 +616,7 @@ public sealed partial class ThatStream
 					.Because("an unreadable length is no proof that the length differs");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Stream? subject = null;
@@ -624,7 +624,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).HasLength().NotEqualTo(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have length equal to 1,
@@ -632,7 +632,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				Stream subject = new MyStream();
@@ -649,7 +649,7 @@ public sealed partial class ThatStream
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldSucceed()
 			{
 				Stream subject = new MyStream(length: 3);
@@ -660,7 +660,7 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthDiffers_ShouldSucceed()
 			{
 				Stream subject = new MyStream(length: 3);
@@ -671,7 +671,7 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthMatches_ShouldFail()
 			{
 				Stream subject = new MyStream(length: 3);
@@ -679,7 +679,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasLength(3));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have length equal to 3,
@@ -687,7 +687,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenReadingTheLengthThrowsAnyOtherException_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("The stream is broken.");
@@ -696,7 +696,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasLength(3));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have length equal to 3,
@@ -707,7 +707,7 @@ public sealed partial class ThatStream
 					.Because("negating a question that cannot be answered does not make it true");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDisposed_ShouldFail()
 			{
 				Stream subject = new MemoryStream(new byte[3]);
@@ -716,7 +716,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasLength(3));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have length equal to 3,

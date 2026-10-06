@@ -9,7 +9,7 @@ public sealed partial class ThatDelegate
 	{
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDelegateDoesNotThrow_ShouldFail()
 			{
 				DelegateValue value = new(null, TimeSpan.Zero);
@@ -18,7 +18,7 @@ public sealed partial class ThatDelegate
 					=> await That(value).DoesNotComplyWith(it
 						=> WithoutValue(it).DoesNotThrowExactly<CustomException>());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that value
 					             throws exactly a ThatDelegate.CustomException,
@@ -26,8 +26,8 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsMatchingException_ShouldSucceed(string message)
 			{
 				DelegateValue value = new(new CustomException(message), TimeSpan.Zero);
@@ -39,8 +39,8 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsSubtypeOfException_ShouldFail(string message)
 			{
 				DelegateValue value = new(new SubCustomException(message), TimeSpan.Zero);
@@ -49,7 +49,7 @@ public sealed partial class ThatDelegate
 					=> await That(value).DoesNotComplyWith(it
 						=> WithoutValue(it).DoesNotThrowExactly<CustomException>());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that value
 					              throws exactly a ThatDelegate.CustomException,
@@ -58,7 +58,7 @@ public sealed partial class ThatDelegate
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithValue_WhenDelegateDoesNotThrow_ShouldFail()
 			{
 				DelegateValue<int> value = new(1, null, TimeSpan.Zero);
@@ -67,7 +67,7 @@ public sealed partial class ThatDelegate
 					=> await That(value).DoesNotComplyWith(it
 						=> WithValue(it).DoesNotThrowExactly<CustomException>());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that value
 					             throws exactly a ThatDelegate.CustomException,
@@ -75,8 +75,8 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WithValue_WhenDelegateThrowsMatchingException_ShouldSucceed(string message)
 			{
 				DelegateValue<int> value = new(0, new CustomException(message), TimeSpan.Zero);
@@ -88,8 +88,8 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WithValue_WhenDelegateThrowsSubtypeOfException_ShouldFail(string message)
 			{
 				DelegateValue<int> value = new(0, new SubCustomException(message), TimeSpan.Zero);
@@ -98,7 +98,7 @@ public sealed partial class ThatDelegate
 					=> await That(value).DoesNotComplyWith(it
 						=> WithValue(it).DoesNotThrowExactly<CustomException>());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that value
 					              throws exactly a ThatDelegate.CustomException,

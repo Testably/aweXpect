@@ -10,7 +10,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class EnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task DoesNotEnumerateTwice()
 			{
 				IEnumerable subject = new ThrowWhenIteratingTwiceEnumerable();
@@ -22,7 +22,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task DoesNotMaterializeEnumerable()
 			{
 				IEnumerable subject = Factory.GetFibonacciNumbers();
@@ -33,7 +33,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldFail()
 			{
 				IEnumerable subject = new[] { 0, 1, 2, };
@@ -41,7 +41,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsEqualTo(1)).AtIndex(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item that is equal to 1 at index 2,
@@ -52,7 +52,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldSucceed()
 			{
 				IEnumerable subject = new[] { 0, 1, 2, };
@@ -63,7 +63,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsNoItemAtGivenIndex_ShouldFail()
 			{
 				IEnumerable subject = new[] { 0, 1, 2, };
@@ -71,7 +71,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsEqualTo(3)).AtIndex(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item that is equal to 3 at index 3,
@@ -82,7 +82,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsNoMatchingItem_ShouldFail()
 			{
 				IEnumerable subject = new[] { 1, 2, 3, };
@@ -90,7 +90,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsEqualTo(0));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item that is equal to 0,
@@ -101,7 +101,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsNullItemAtGivenIndex_ShouldFail()
 			{
 				IEnumerable subject = new[] { "a", null, };
@@ -109,7 +109,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsNotNull()).AtIndex(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item that is not null at index 1,
@@ -123,7 +123,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldFail()
 			{
 				IEnumerable subject = Array.Empty<int>();
@@ -131,7 +131,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsNotEqualTo(0));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item that is not equal to 0,
@@ -142,7 +142,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 			{
 				IEnumerable subject = new[] { 1, 2, 3, };
@@ -155,7 +155,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable? subject = null;
@@ -163,7 +163,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).HasItemThat(it => it.IsNotEqualTo(0));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item that is not equal to 0,
@@ -171,7 +171,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithFromEnd_WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldSucceed()
 			{
 				IEnumerable subject = new[] { 0, 1, 2, };
@@ -185,7 +185,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class EnumerableNegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldSucceed()
 			{
 				IEnumerable subject = new[] { 0, 1, 2, };
@@ -197,7 +197,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsExpectedItemAtGivenIndex_ShouldFail()
 			{
 				IEnumerable subject = new[] { 0, 1, 2, };
@@ -206,7 +206,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).DoesNotComplyWith(it => it
 						.HasItemThat(x => x.IsEqualTo(2)).AtIndex(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have an item that is equal to 2 at index 2,
@@ -217,7 +217,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable? subject = null;
@@ -226,7 +226,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).DoesNotComplyWith(it => it
 						.HasItemThat(x => x.IsNotEqualTo(0)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have an item that is not equal to 0,

@@ -13,7 +13,7 @@ public sealed partial class ThatEnumerable
 {
 	public sealed class MaterializedEnumerableTests
 	{
-		[Fact]
+		[Test]
 		public async Task Contains_WhenStoppingEarly_ShouldDisposeTheEnumerator()
 		{
 			DisposeTracker tracker = new();
@@ -24,7 +24,7 @@ public sealed partial class ThatEnumerable
 				.Because("the source is released after the evaluation, although it was not read to its end");
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEmpty_WhenFailing_ShouldDisposeTheEnumeratorAfterListingTheItems()
 		{
 			DisposeTracker tracker = new();
@@ -32,7 +32,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(tracker.Items()).IsEmpty();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that tracker.Items()
 				             is empty,
@@ -54,7 +54,7 @@ public sealed partial class ThatEnumerable
 			await That(tracker.IsDisposed).IsTrue();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenExtensionIsChainedWithBuiltInExpectation_ShouldEnumerateTheSubjectOnlyOnce()
 		{
 			OneShotEnumerable subject = new(2, 4, 6);
@@ -67,7 +67,7 @@ public sealed partial class ThatEnumerable
 			await That(subject.Enumerations).IsEqualTo(1);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenExtensionIsChainedWithBuiltInExpectation_ShouldFailWithTheItemsOfTheSubject()
 		{
 			OneShotEnumerable subject = new(2, 3, 4);
@@ -75,7 +75,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains(2).And.HasEvenItems(3);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 2 at least once and has 3 even items,

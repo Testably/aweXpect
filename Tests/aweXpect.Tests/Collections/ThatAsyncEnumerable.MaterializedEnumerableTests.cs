@@ -8,7 +8,7 @@ public sealed partial class ThatAsyncEnumerable
 {
 	public sealed class MaterializedEnumerableTests
 	{
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_ShouldDisposeTheEnumerator()
 		{
 			DisposeCountingAsyncEnumerable subject = new(1, 2, 3);
@@ -18,7 +18,7 @@ public sealed partial class ThatAsyncEnumerable
 			await That(subject.DisposeCount).IsEqualTo(1);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsNotEmpty_WhenStoppingEarly_ShouldDisposeTheEnumerator()
 		{
 			DisposeCountingAsyncEnumerable subject = new(1, 2, 3);

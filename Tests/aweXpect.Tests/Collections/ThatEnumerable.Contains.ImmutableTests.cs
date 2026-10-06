@@ -14,7 +14,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class ImmutableItemTests
 		{
-			[Fact]
+			[Test]
 			public async Task Equivalent_InDifferentOrder_ShouldFail()
 			{
 				ImmutableArray<int[]> subject = [[1, 2,], [1, 3,],];
@@ -22,7 +22,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains([2, 1,]).AtLeast(1).Equivalent();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains an item equivalent to [2, 1] at least once,
@@ -45,7 +45,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Equivalent_InDifferentOrder_WhenIgnoringCollectionOrder_ShouldSucceed()
 			{
 				ImmutableArray<int[]> subject = [[1, 2,], [1, 3,],];
@@ -56,10 +56,10 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(1, true)]
-			[InlineData(2, true)]
-			[InlineData(3, false)]
+			[Test]
+			[Arguments(1, true)]
+			[Arguments(2, true)]
+			[Arguments(3, false)]
 			public async Task ShouldSupportAtLeast(int minimum, bool expectSuccess)
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -67,7 +67,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(1).AtLeast(minimum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item equal to 1 at least {minimum} times,
@@ -90,10 +90,10 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Theory]
-			[InlineData(1, false)]
-			[InlineData(2, true)]
-			[InlineData(3, true)]
+			[Test]
+			[Arguments(1, false)]
+			[Arguments(2, true)]
+			[Arguments(3, true)]
 			public async Task ShouldSupportAtMost(int maximum, bool expectSuccess)
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -101,7 +101,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(1).AtMost(maximum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
 					             contains an item equal to 1 at most once,
@@ -124,10 +124,10 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Theory]
-			[InlineData(1, 2, true)]
-			[InlineData(2, 3, true)]
-			[InlineData(3, 4, false)]
+			[Test]
+			[Arguments(1, 2, true)]
+			[Arguments(2, 3, true)]
+			[Arguments(3, 4, false)]
 			public async Task ShouldSupportBetween(int minimum, int maximum, bool expectSuccess)
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -135,7 +135,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(1).Between(minimum).And(maximum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item equal to 1 between {minimum} and {maximum} times,
@@ -158,7 +158,7 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportEquivalent()
 			{
 				ImmutableArray<MyClass> subject = [..Factory.GetFibonacciNumbers(20).Select(x => new MyClass(x)),];
@@ -170,10 +170,10 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(1, false)]
-			[InlineData(2, true)]
-			[InlineData(3, false)]
+			[Test]
+			[Arguments(1, false)]
+			[Arguments(2, true)]
+			[Arguments(3, false)]
 			public async Task ShouldSupportExactly(int times, bool expectSuccess)
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -181,7 +181,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(1).Exactly(times);
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item equal to 1 exactly {(times == 1 ? "once" : $"{times} times")},
@@ -204,9 +204,9 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Theory]
-			[InlineData(2, false)]
-			[InlineData(3, true)]
+			[Test]
+			[Arguments(2, false)]
+			[Arguments(3, true)]
 			public async Task ShouldSupportLessThan(int maximum, bool expectSuccess)
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -214,7 +214,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(1).LessThan(maximum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
 					             contains an item equal to 1 fewer than twice,
@@ -237,10 +237,10 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Theory]
-			[InlineData(1, true)]
-			[InlineData(2, false)]
-			[InlineData(3, false)]
+			[Test]
+			[Arguments(1, true)]
+			[Arguments(2, false)]
+			[Arguments(3, false)]
 			public async Task ShouldSupportMoreThan(int minimum, bool expectSuccess)
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -248,7 +248,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(1).MoreThan(minimum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item equal to 1 more than {minimum.ToTimesString()},
@@ -271,7 +271,7 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportNever()
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -279,7 +279,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(1).Never();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain an item equal to 1,
@@ -302,7 +302,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Using_WithAllDifferentComparer_ShouldFail()
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -310,7 +310,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(1).AtLeast(1).Using(new AllDifferentComparer());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains an item equal to 1 using AllDifferentComparer at least once,
@@ -333,7 +333,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Using_WithAllEqualComparer_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -344,7 +344,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsExpectedValue_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -356,7 +356,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableDoesNotContainsExpectedValue_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -365,7 +365,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item equal to {Formatter.Format(expected)} at least once,
@@ -376,7 +376,7 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNullLiteral_ShouldMatchTheNullItem()
 			{
 				ImmutableArray<int?> subject = [1, null, 3,];
@@ -388,7 +388,7 @@ public sealed partial class ThatEnumerable
 					.Because("a null item is an ordinary value for a nullable element type");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNullLiteral_WithoutANullItem_ShouldFail()
 			{
 				ImmutableArray<int?> subject = [1, 2, 3,];
@@ -396,7 +396,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains an item equal to <null> at least once,
@@ -407,7 +407,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMultipleFailures_ShouldIncludeCollectionOnlyOnce()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -415,7 +415,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains("d").And.Contains("e");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "d" at least once and contains "e" at least once,
@@ -433,9 +433,9 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableStringItemTests
 		{
-			[Theory]
-			[InlineData("[a-f]{1}[o]*", true)]
-			[InlineData("[g-h]{1}[o]*", false)]
+			[Test]
+			[Arguments("[a-f]{1}[o]*", true)]
+			[Arguments("[g-h]{1}[o]*", false)]
 			public async Task AsRegex_ShouldUseRegex(string regex, bool expectSuccess)
 			{
 				ImmutableArray<string?> subject = ["foo", "bar", "baz",];
@@ -443,7 +443,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(regex).AsRegex();
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item matching regex "{regex}" at least once,
@@ -458,9 +458,9 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Theory]
-			[InlineData("?oo", true)]
-			[InlineData("f??o", false)]
+			[Test]
+			[Arguments("?oo", true)]
+			[Arguments("f??o", false)]
 			public async Task AsWildcard_ShouldUseWildcard(string wildcard, bool expectSuccess)
 			{
 				ImmutableArray<string?> subject = ["foo", "bar", "baz",];
@@ -468,7 +468,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(wildcard).AsWildcard();
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item matching "{wildcard}" at least once,
@@ -483,7 +483,7 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldCompareCaseSensitive()
 			{
 				string[] sut = ["green", "blue", "yellow",];
@@ -491,7 +491,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(sut).Contains("GREEN");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that sut
 					             contains "GREEN" at least once,
@@ -506,10 +506,10 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Theory]
-			[InlineData(1, true)]
-			[InlineData(2, true)]
-			[InlineData(3, false)]
+			[Test]
+			[Arguments(1, true)]
+			[Arguments(2, true)]
+			[Arguments(3, false)]
 			public async Task ShouldSupportAtLeast(int minimum, bool expectSuccess)
 			{
 				ImmutableArray<string?> subject = ["green", "blue", "blue", "yellow",];
@@ -517,7 +517,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains("blue").AtLeast(minimum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains "blue" at least {minimum} times,
@@ -533,10 +533,10 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Theory]
-			[InlineData(1, false)]
-			[InlineData(2, true)]
-			[InlineData(3, true)]
+			[Test]
+			[Arguments(1, false)]
+			[Arguments(2, true)]
+			[Arguments(3, true)]
 			public async Task ShouldSupportAtMost(int maximum, bool expectSuccess)
 			{
 				ImmutableArray<string?> subject = ["green", "blue", "blue", "yellow",];
@@ -544,7 +544,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains("blue").AtMost(maximum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
 					             contains "blue" at most once,
@@ -560,10 +560,10 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Theory]
-			[InlineData(1, 2, true)]
-			[InlineData(2, 3, true)]
-			[InlineData(3, 4, false)]
+			[Test]
+			[Arguments(1, 2, true)]
+			[Arguments(2, 3, true)]
+			[Arguments(3, 4, false)]
 			public async Task ShouldSupportBetween(int minimum, int maximum, bool expectSuccess)
 			{
 				ImmutableArray<string?> subject = ["green", "blue", "blue", "yellow",];
@@ -571,7 +571,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains("blue").Between(minimum).And(maximum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains "blue" between {minimum} and {maximum} times,
@@ -587,10 +587,10 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Theory]
-			[InlineData(1, true)]
-			[InlineData(2, false)]
-			[InlineData(3, false)]
+			[Test]
+			[Arguments(1, true)]
+			[Arguments(2, false)]
+			[Arguments(3, false)]
 			public async Task ShouldSupportExactly(int times, bool expectSuccess)
 			{
 				ImmutableArray<string?> subject = ["green", "blue", "blue", "yellow",];
@@ -598,7 +598,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains("yellow").Exactly(times);
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains "yellow" exactly {times.ToTimesString()},
@@ -614,9 +614,9 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Theory]
-			[InlineData(2, false)]
-			[InlineData(3, true)]
+			[Test]
+			[Arguments(2, false)]
+			[Arguments(3, true)]
 			public async Task ShouldSupportLessThan(int maximum, bool expectSuccess)
 			{
 				ImmutableArray<string?> subject = ["green", "blue", "blue", "yellow",];
@@ -624,7 +624,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains("blue").LessThan(maximum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
 					             contains "blue" fewer than twice,
@@ -640,10 +640,10 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Theory]
-			[InlineData(1, true)]
-			[InlineData(2, false)]
-			[InlineData(3, false)]
+			[Test]
+			[Arguments(1, true)]
+			[Arguments(2, false)]
+			[Arguments(3, false)]
 			public async Task ShouldSupportMoreThan(int minimum, bool expectSuccess)
 			{
 				ImmutableArray<string?> subject = ["green", "blue", "blue", "yellow",];
@@ -651,7 +651,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains("blue").MoreThan(minimum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains "blue" more than {minimum.ToTimesString()},
@@ -667,7 +667,7 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportNever()
 			{
 				ImmutableArray<string?> subject = ["green", "blue", "blue", "yellow",];
@@ -675,7 +675,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains("blue").Never();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "blue",
@@ -691,7 +691,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNotPartOfStringEnumerable_ShouldFail()
 			{
 				string[] sut = ["green", "blue", "yellow",];
@@ -699,7 +699,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(sut).Contains("red");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that sut
 					             contains "red" at least once,
@@ -714,7 +714,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNullLiteral_ShouldMatchTheNullItem()
 			{
 				ImmutableArray<string?> subject = ["green", null,];
@@ -726,7 +726,7 @@ public sealed partial class ThatEnumerable
 					.Because("a null item is an ordinary value for a nullable element type");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNullLiteral_WithoutANullItem_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["green", "blue",];
@@ -734,7 +734,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains((string?)null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains <null> at least once,
@@ -748,7 +748,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsPartOfStringEnumerable_ShouldSucceed()
 			{
 				string[] sut = ["green", "blue", "yellow",];
@@ -759,9 +759,9 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("FOO", true)]
-			[InlineData("goo", false)]
+			[Test]
+			[Arguments("FOO", true)]
+			[Arguments("goo", false)]
 			public async Task WhenIgnoringCase_ShouldUseCaseInsensitiveMatch(string match, bool expectSuccess)
 			{
 				ImmutableArray<string?> subject = ["foo", "bar", "baz",];
@@ -769,7 +769,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(match).IgnoringCase();
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains {Formatter.Format(match)} ignoring case at least once,
@@ -784,9 +784,9 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Theory]
-			[InlineData("fo\ro", true)]
-			[InlineData("go\ro", false)]
+			[Test]
+			[Arguments("fo\ro", true)]
+			[Arguments("go\ro", false)]
 			public async Task WhenIgnoringNewlineStyle_ShouldIgnoreNewlineStyle(string match, bool expectSuccess)
 			{
 				string nl = Environment.NewLine;
@@ -795,7 +795,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(match).IgnoringNewlineStyle();
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains {Formatter.Format(match)} ignoring newline style at least once,
@@ -813,10 +813,10 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutablePredicateTests
 		{
-			[Theory]
-			[InlineData(1, true)]
-			[InlineData(2, true)]
-			[InlineData(3, false)]
+			[Test]
+			[Arguments(1, true)]
+			[Arguments(2, true)]
+			[Arguments(3, false)]
 			public async Task ShouldSupportAtLeast(int minimum, bool expectSuccess)
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -824,7 +824,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(x => x == 1).AtLeast(minimum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item matching x => x == 1 at least {minimum} times,
@@ -847,10 +847,10 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Theory]
-			[InlineData(1, false)]
-			[InlineData(2, true)]
-			[InlineData(3, true)]
+			[Test]
+			[Arguments(1, false)]
+			[Arguments(2, true)]
+			[Arguments(3, true)]
 			public async Task ShouldSupportAtMost(int maximum, bool expectSuccess)
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -858,7 +858,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(x => x == 1).AtMost(maximum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
 					             contains an item matching x => x == 1 at most once,
@@ -881,10 +881,10 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Theory]
-			[InlineData(1, 2, true)]
-			[InlineData(2, 3, true)]
-			[InlineData(3, 4, false)]
+			[Test]
+			[Arguments(1, 2, true)]
+			[Arguments(2, 3, true)]
+			[Arguments(3, 4, false)]
 			public async Task ShouldSupportBetween(int minimum, int maximum, bool expectSuccess)
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -892,7 +892,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(x => x == 1).Between(minimum).And(maximum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item matching x => x == 1 between {minimum} and {maximum} times,
@@ -915,10 +915,10 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Theory]
-			[InlineData(1, false)]
-			[InlineData(2, true)]
-			[InlineData(3, false)]
+			[Test]
+			[Arguments(1, false)]
+			[Arguments(2, true)]
+			[Arguments(3, false)]
 			public async Task ShouldSupportExactly(int times, bool expectSuccess)
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -926,7 +926,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(x => x == 1).Exactly(times);
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item matching x => x == 1 exactly {(times == 1 ? "once" : $"{times} times")},
@@ -949,9 +949,9 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Theory]
-			[InlineData(2, false)]
-			[InlineData(3, true)]
+			[Test]
+			[Arguments(2, false)]
+			[Arguments(3, true)]
 			public async Task ShouldSupportLessThan(int maximum, bool expectSuccess)
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -959,7 +959,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(x => x == 1).LessThan(maximum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
 					             contains an item matching x => x == 1 fewer than twice,
@@ -982,10 +982,10 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Theory]
-			[InlineData(1, true)]
-			[InlineData(2, false)]
-			[InlineData(3, false)]
+			[Test]
+			[Arguments(1, true)]
+			[Arguments(2, false)]
+			[Arguments(3, false)]
 			public async Task ShouldSupportMoreThan(int minimum, bool expectSuccess)
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -993,7 +993,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(x => x == 1).MoreThan(minimum.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item matching x => x == 1 more than {minimum.ToTimesString()},
@@ -1016,7 +1016,7 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportNever()
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -1024,7 +1024,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(x => x == 1).Never();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain an item matching x => x == 1,
@@ -1047,7 +1047,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsExpectedValue_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -1059,7 +1059,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableDoesNotContainsExpectedValue_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -1068,7 +1068,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(x => x == expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              contains an item matching x => x == expected at least once,
@@ -1079,7 +1079,7 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 			{
 				ImmutableArray<int> subject = [1, 2,];
@@ -1092,7 +1092,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("predicate failed");
@@ -1101,7 +1101,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Contains(x => x == 2 ? throw exception : false);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains an item matching x => x == 2 ? throw exception : false at least once,

@@ -8,7 +8,7 @@ public sealed partial class ThatDelegate
 		{
 			public sealed class GenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenDelegateThrowsExpectedException_ShouldFail()
 				{
 					Func<int> @delegate = () => throw new CustomException();
@@ -16,7 +16,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(@delegate).DoesNotThrowExactly<CustomException>().WhoseResult.IsEqualTo(5);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that @delegate
 						             does not throw exactly a ThatDelegate.CustomException and its result is equal to 5,
@@ -25,7 +25,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDelegateThrowsOtherException_ShouldFail()
 				{
 					Func<int> @delegate = () => throw new CustomException();
@@ -33,7 +33,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(@delegate).DoesNotThrowExactly<OtherException>().WhoseResult.IsEqualTo(5);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that @delegate
 						             does not throw exactly a ThatDelegate.OtherException and its result is equal to 5,
@@ -42,8 +42,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenReturnValueDoesNotMatch_ShouldFail(int value)
 				{
 					Func<int> @delegate = () => value;
@@ -51,7 +51,7 @@ public sealed partial class ThatDelegate
 					async Task Act() => await That(@delegate).DoesNotThrowExactly<CustomException>().WhoseResult
 						.IsEqualTo(value + 1);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that @delegate
 						              does not throw exactly a ThatDelegate.CustomException and its result is equal to {value + 1},
@@ -59,8 +59,8 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenReturnValueMatches_ShouldSucceed(int value)
 				{
 					Func<int> @delegate = () => value;
@@ -72,7 +72,7 @@ public sealed partial class ThatDelegate
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 			public sealed class TypeTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenDelegateThrowsExpectedException_ShouldFail()
 				{
 					Func<int> @delegate = () => throw new CustomException();
@@ -80,7 +80,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(@delegate).DoesNotThrowExactly(typeof(CustomException)).WhoseResult.IsEqualTo(5);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that @delegate
 						             does not throw exactly a ThatDelegate.CustomException and its result is equal to 5,
@@ -89,7 +89,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDelegateThrowsOtherException_ShouldFail()
 				{
 					Func<int> @delegate = () => throw new CustomException();
@@ -97,7 +97,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(@delegate).DoesNotThrowExactly(typeof(OtherException)).WhoseResult.IsEqualTo(5);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that @delegate
 						             does not throw exactly a ThatDelegate.OtherException and its result is equal to 5,
@@ -106,8 +106,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenReturnValueDoesNotMatch_ShouldFail(int value)
 				{
 					Func<int> @delegate = () => value;
@@ -115,7 +115,7 @@ public sealed partial class ThatDelegate
 					async Task Act() => await That(@delegate).DoesNotThrowExactly(typeof(CustomException)).WhoseResult
 						.IsEqualTo(value + 1);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that @delegate
 						              does not throw exactly a ThatDelegate.CustomException and its result is equal to {value + 1},
@@ -123,8 +123,8 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenReturnValueMatches_ShouldSucceed(int value)
 				{
 					Func<int> @delegate = () => value;

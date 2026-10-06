@@ -6,7 +6,7 @@ public sealed partial class ThatObject
 	{
 		public sealed class TaskTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTasksAreDifferentInstances_ShouldFail()
 			{
 				var subject = new
@@ -21,7 +21,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -36,7 +36,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheSameTaskIsPending_ShouldSucceedWithoutWaiting()
 			{
 				TaskCompletionSource<int> tcs = new();

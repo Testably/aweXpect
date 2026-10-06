@@ -6,7 +6,7 @@ public sealed partial class ThatEnum
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFlagsSubjectHasAnUndefinedBit_ShouldSucceed()
 			{
 				MyColors subject = (MyColors)(1 << 4 | 1);
@@ -17,15 +17,15 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(MyColors.Blue | MyColors.Green)]
-			[InlineData(MyColors.Yellow | MyColors.Red)]
+			[Test]
+			[Arguments(MyColors.Blue | MyColors.Green)]
+			[Arguments(MyColors.Yellow | MyColors.Red)]
 			public async Task WhenFlagsSubjectIsACombinationOfFlags_ShouldFail(MyColors subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNotDefined();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not defined,
@@ -33,7 +33,7 @@ public sealed partial class ThatEnum
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFlagsSubjectIsZeroWithoutAZeroMember_ShouldSucceed()
 			{
 				MyColors subject = 0;
@@ -44,15 +44,15 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(MyColors.Blue)]
-			[InlineData(MyColors.Green)]
+			[Test]
+			[Arguments(MyColors.Blue)]
+			[Arguments(MyColors.Green)]
 			public async Task WhenSubjectIsDefined_ShouldFail(MyColors subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNotDefined();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not defined,
@@ -60,7 +60,7 @@ public sealed partial class ThatEnum
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNotDefined_ShouldSucceed()
 			{
 				MyColors subject = (MyColors)42;
@@ -71,7 +71,7 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectWithoutFlagsAttributeConsistsOfBitsOfAMember_ShouldSucceed()
 			{
 				EnumByte subject = (EnumByte)1;

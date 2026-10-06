@@ -8,7 +8,7 @@ public sealed partial class ThatDateTime
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndExpectedAreMaxValue_ShouldFail()
 				{
 					DateTime? subject = DateTime.MaxValue;
@@ -18,7 +18,7 @@ public sealed partial class ThatDateTime
 						=> await That(subject).IsNotEqualTo(unexpected)
 							.Because("we want to test the failure");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to 9999-12-31T23:59:59.9999999, because we want to test the failure,
@@ -26,7 +26,7 @@ public sealed partial class ThatDateTime
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndExpectedAreMinValue_ShouldFail()
 				{
 					DateTime? subject = DateTime.MinValue;
@@ -36,7 +36,7 @@ public sealed partial class ThatDateTime
 						=> await That(subject).IsNotEqualTo(unexpected)
 							.Because("we want to test the failure");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to 0001-01-01T00:00:00.0000000, because we want to test the failure,
@@ -44,7 +44,7 @@ public sealed partial class ThatDateTime
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndUnexpectedAreNull_ShouldFail()
 				{
 					DateTime? subject = null;
@@ -53,7 +53,7 @@ public sealed partial class ThatDateTime
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to <null>,
@@ -61,7 +61,7 @@ public sealed partial class ThatDateTime
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsDifferent_ShouldSucceed()
 				{
 					DateTime? subject = CurrentTime();
@@ -73,7 +73,7 @@ public sealed partial class ThatDateTime
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsTheSame_ShouldFail()
 				{
 					DateTime? subject = CurrentTime();
@@ -83,7 +83,7 @@ public sealed partial class ThatDateTime
 						=> await That(subject).IsNotEqualTo(unexpected)
 							.Because("we want to test the failure");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not equal to {Formatter.Format(unexpected)}, because we want to test the failure,
@@ -91,7 +91,7 @@ public sealed partial class ThatDateTime
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectOnlyDiffersInKind_ShouldSucceed()
 				{
 					DateTime? subject = new(2024, 11, 1, 14, 15, 0, DateTimeKind.Utc);
@@ -104,7 +104,7 @@ public sealed partial class ThatDateTime
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task Within_NegativeTolerance_ShouldThrowArgumentOutOfRangeException()
 				{
 					DateTime? subject = CurrentTime();
@@ -118,7 +118,7 @@ public sealed partial class ThatDateTime
 						.WithParamName("tolerance");
 				}
 
-				[Fact]
+				[Test]
 				public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldSucceed()
 				{
 					DateTime? subject = CurrentTime();
@@ -131,7 +131,7 @@ public sealed partial class ThatDateTime
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task Within_WhenValuesAreWithinTheTolerance_ShouldFail()
 				{
 					DateTime? subject = CurrentTime();
@@ -141,7 +141,7 @@ public sealed partial class ThatDateTime
 						=> await That(subject).IsNotEqualTo(expected).Within(3.Seconds())
 							.Because("we want to test the failure");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not equal to {Formatter.Format(expected)} ± 0:03, because we want to test the failure,

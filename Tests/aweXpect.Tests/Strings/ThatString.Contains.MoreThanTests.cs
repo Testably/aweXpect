@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class MoreThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringDoesNotOccurAtAll_ShouldFail()
 			{
 				string subject =
@@ -16,7 +16,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).MoreThan().Once();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "text that does not occur" more than once,
@@ -24,7 +24,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursEnoughTimes_ShouldSucceed()
 			{
 				string subject =
@@ -37,9 +37,9 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(3)]
-			[InlineData(5)]
+			[Test]
+			[Arguments(3)]
+			[Arguments(5)]
 			public async Task WhenExpectedStringOccursFewerTimes_ShouldFail(int minimum)
 			{
 				string subject =
@@ -49,7 +49,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).MoreThan(minimum);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              contains "in" more than {minimum} times,
@@ -57,7 +57,7 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumIsLessThanZero_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject =

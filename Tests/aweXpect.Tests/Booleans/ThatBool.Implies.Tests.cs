@@ -6,7 +6,7 @@ public sealed partial class ThatBool
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAntecedentDoesNotImplyConsequent_ShouldFail()
 			{
 				bool antecedent = true;
@@ -16,7 +16,7 @@ public sealed partial class ThatBool
 					=> await That(antecedent).Implies(consequent)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that antecedent
 					              implies {Formatter.Format(consequent)}, because we want to test the failure,
@@ -24,10 +24,10 @@ public sealed partial class ThatBool
 					              """);
 			}
 
-			[Theory]
-			[InlineData(false, false)]
-			[InlineData(false, true)]
-			[InlineData(true, true)]
+			[Test]
+			[Arguments(false, false)]
+			[Arguments(false, true)]
+			[Arguments(true, true)]
 			public async Task WhenAntecedentImpliesConsequent_ShouldSucceed(bool antecedent,
 				bool consequent)
 			{
@@ -40,7 +40,7 @@ public sealed partial class ThatBool
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldUseCorrectExpectation()
 			{
 				bool antecedent = false;
@@ -50,7 +50,7 @@ public sealed partial class ThatBool
 					=> await That(antecedent).DoesNotComplyWith(b => b.Implies(consequent))
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that antecedent
 					             does not imply True, because we want to test the failure,

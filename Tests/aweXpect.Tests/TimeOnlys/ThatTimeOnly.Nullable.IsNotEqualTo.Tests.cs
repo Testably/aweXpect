@@ -9,7 +9,7 @@ public sealed partial class ThatTimeOnly
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenOnlySubjectIsNull_ShouldSucceed()
 				{
 					TimeOnly? subject = null;
@@ -21,7 +21,7 @@ public sealed partial class ThatTimeOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOnlyUnexpectedIsNull_ShouldSucceed()
 				{
 					TimeOnly? subject = CurrentTime();
@@ -33,7 +33,7 @@ public sealed partial class ThatTimeOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndUnexpectedAreNull_ShouldFail()
 				{
 					TimeOnly? subject = null;
@@ -42,7 +42,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to <null>,
@@ -50,7 +50,7 @@ public sealed partial class ThatTimeOnly
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsDifferent_ShouldSucceed()
 				{
 					TimeOnly? subject = CurrentTime();
@@ -62,7 +62,7 @@ public sealed partial class ThatTimeOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldSucceed()
 				{
 					TimeOnly? unexpected = CurrentTime();
@@ -74,7 +74,7 @@ public sealed partial class ThatTimeOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsTheSame_ShouldFail()
 				{
 					TimeOnly? subject = CurrentTime();
@@ -83,7 +83,7 @@ public sealed partial class ThatTimeOnly
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not equal to {Formatter.Format(unexpected)},
@@ -91,11 +91,11 @@ public sealed partial class ThatTimeOnly
 						              """);
 				}
 
-				[Theory]
-				[InlineData(3, 2, false)]
-				[InlineData(5, 3, false)]
-				[InlineData(2, 2, true)]
-				[InlineData(0, 2, true)]
+				[Test]
+				[Arguments(3, 2, false)]
+				[Arguments(5, 3, false)]
+				[Arguments(2, 2, true)]
+				[Arguments(0, 2, true)]
 				public async Task Within_WhenValuesAreInsideTheTolerance_ShouldFail(
 					int actualDifference, int toleranceSeconds, bool expectToThrow)
 				{
@@ -112,7 +112,7 @@ public sealed partial class ThatTimeOnly
 						? ""
 						: $", which differs by -0:0{actualDifference}";
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.OnlyIf(expectToThrow)
 						.WithMessage($"""
 						              Expected that subject
@@ -121,7 +121,7 @@ public sealed partial class ThatTimeOnly
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Within_WhenValuesWrapAroundMidnight_ShouldFail()
 				{
 					TimeOnly? subject = TimeOnly.MinValue;
@@ -131,7 +131,7 @@ public sealed partial class ThatTimeOnly
 						=> await That(subject).IsNotEqualTo(unexpected)
 							.Within(1.Minutes());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to 23:59:00.0000000 ± 1:00,

@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenActualIsEmpty_ShouldSucceed()
 			{
 				string subject = "";
@@ -17,14 +17,14 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenActualIsNotEmpty_ShouldFail(string? subject)
 			{
 				async Task Act()
 					=> await That(subject).IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is empty,
@@ -32,7 +32,7 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNotEmpty_ShouldLimitDisplayedStringTo100Characters()
 			{
 				string subject = StringWithMoreThan100Characters;
@@ -40,7 +40,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is empty,
@@ -48,7 +48,7 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -56,7 +56,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is empty,
@@ -64,7 +64,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsWhitespace_ShouldFail()
 			{
 				string subject = " \t ";
@@ -72,7 +72,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is empty,

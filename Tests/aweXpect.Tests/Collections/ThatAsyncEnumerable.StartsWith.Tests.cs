@@ -12,7 +12,7 @@ public sealed partial class ThatAsyncEnumerable
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task DoesNotEnumerateTwice()
 			{
 				ThrowWhenIteratingTwiceAsyncEnumerable subject = new();
@@ -24,7 +24,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task DoesNotMaterializeEnumerable()
 			{
 				IAsyncEnumerable<int> subject = Factory.GetAsyncFibonacciNumbers();
@@ -35,7 +35,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportEquivalent()
 			{
 				IAsyncEnumerable<MyClass> subject = Factory.GetAsyncFibonacciNumbers(x => new MyClass(x), 20);
@@ -50,7 +50,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCollectionsAreIdentical_ShouldSucceed()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -61,7 +61,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableHasDifferentStartingElements_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -70,7 +70,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with expected,
@@ -81,7 +81,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEvaluatedForSeveralItems_ShouldStartEachEvaluationAtTheFirstItem()
 			{
 				IAsyncEnumerable<int>[] subject = [ToAsyncEnumerable(1, 2), ToAsyncEnumerable(1, 3),];
@@ -93,7 +93,7 @@ public sealed partial class ThatAsyncEnumerable
 					.Because("both items start with 1");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEvaluatedForSeveralItemsAfterAMismatch_ShouldStartAtTheFirstExpectedItem()
 			{
 				IAsyncEnumerable<int>[] subject = [ToAsyncEnumerable(3), ToAsyncEnumerable(1, 2),];
@@ -105,7 +105,7 @@ public sealed partial class ThatAsyncEnumerable
 					.Because("the second item starts with [1, 2]");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedContainsAdditionalElements_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -113,7 +113,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith(1, 2, 3, 4);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with [1, 2, 3, 4],
@@ -126,7 +126,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1);
@@ -139,7 +139,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("The 'expected' collection cannot be empty.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1);
@@ -152,7 +152,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenRetriedAfterAMismatch_ShouldDescribeTheLastAttempt()
 			{
 				int attempts = 0;
@@ -164,7 +164,7 @@ public sealed partial class ThatAsyncEnumerable
 					=> await That(GetSubject).Eventually().WithinTwoAttempts(5.Seconds())
 						.StartsWith(1, 2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that GetSubject
 					             eventually starts with [1, 2] within 0:05,
@@ -178,7 +178,7 @@ public sealed partial class ThatAsyncEnumerable
 					.Because("the mismatch of the first attempt does not apply to the later ones");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasOnlyOneItemAndMissesOne_ShouldUseSingular()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1,]);
@@ -186,7 +186,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith(1, 2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with [1, 2],
@@ -199,7 +199,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IAsyncEnumerable<int>? subject = null;
@@ -207,7 +207,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with [1],
@@ -218,7 +218,7 @@ public sealed partial class ThatAsyncEnumerable
 
 		public sealed class StringTests
 		{
-			[Fact]
+			[Test]
 			public async Task AsPrefix_WhenAnItemDoesNotMatchItsPattern_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["# Title", "## Intro", "text",]);
@@ -226,7 +226,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith("# ", "### ").AsPrefix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with ["# ", "### "] as prefix,
@@ -241,7 +241,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsRegex_WhenAnItemDoesNotMatchItsPattern_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["# Title", "## Intro", "text",]);
@@ -249,7 +249,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith("^# ", "^### ").AsRegex();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with ["^# ", "^### "] as regex,
@@ -264,7 +264,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsRegex_WhenExpectedContainsAnEmptyPattern_ShouldThrowArgumentException()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["foo",]);
@@ -277,7 +277,7 @@ public sealed partial class ThatAsyncEnumerable
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsSuffix_WhenAnItemDoesNotMatchItsPattern_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["# Title", "## Intro", "text",]);
@@ -285,7 +285,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith("Title", "Outro").AsSuffix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with ["Title", "Outro"] as suffix,
@@ -300,7 +300,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsWildcard_WhenAnItemDoesNotMatchItsPattern_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["# Title", "## Intro", "text",]);
@@ -308,7 +308,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith("# *", "### *").AsWildcard();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with ["# *", "### *"] as wildcard,
@@ -323,7 +323,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeOptionsInFailureMessage()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);
@@ -331,7 +331,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith("FOO", "BAZ").IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with ["FOO", "BAZ"] ignoring case,
@@ -346,7 +346,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);
@@ -357,7 +357,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedContainsNull_ShouldMatchANullItem()
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable<string?>("a", null, "b");
@@ -368,7 +368,7 @@ public sealed partial class ThatAsyncEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedContainsNull_WhenTheItemIsNotNull_ShouldFail()
 			{
 				IAsyncEnumerable<string?> subject = ToAsyncEnumerable<string?>("a", "b");
@@ -376,7 +376,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith("a", null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with ["a", <null>],
@@ -391,7 +391,7 @@ public sealed partial class ThatAsyncEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectStartsWithExpectedValues_ShouldSucceed()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["foo", "bar", "baz",]);

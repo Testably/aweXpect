@@ -9,7 +9,7 @@ public sealed partial class ThatEventRecording
 	{
 		public sealed class WithSenderTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsTriggeredBySomethingElse_ShouldFail()
 			{
 				PropertyChangedClass sender = new()
@@ -28,7 +28,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).Triggered(nameof(INotifyPropertyChanged.PropertyChanged))
 						.WithSender(s => s == sender);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut with sender s => s == sender at least once,
@@ -42,7 +42,7 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsTriggeredByTheExpectedSender_ShouldSucceed()
 			{
 				PropertyChangedClass sender = new()
@@ -64,7 +64,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("predicate failed");
@@ -77,7 +77,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).Triggered(nameof(INotifyPropertyChanged.PropertyChanged))
 						.WithSender(_ => throw exception);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut with sender _ => throw exception at least once,
@@ -87,7 +87,7 @@ public sealed partial class ThatEventRecording
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_WhenNegated_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("predicate failed");
@@ -100,7 +100,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTrigger(nameof(INotifyPropertyChanged.PropertyChanged))
 						.WithSender(_ => throw exception);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has never recorded the PropertyChanged event on sut with sender _ => throw exception,
@@ -111,7 +111,7 @@ public sealed partial class ThatEventRecording
 					.Because("a predicate that threw answered nothing, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCustomEvent_WhenSenderIsTheOnlyParameter_ShouldSucceed()
 			{
 				CustomEventWithParametersClass<EventArgs> sut = new();

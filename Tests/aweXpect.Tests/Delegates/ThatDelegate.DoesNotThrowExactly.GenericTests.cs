@@ -8,7 +8,7 @@ public sealed partial class ThatDelegate
 	{
 		public sealed class ActionGenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDelegateDoesNotThrow_ShouldSucceed()
 			{
 				Action @delegate = () => { };
@@ -19,7 +19,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateReturnsNullTask_ShouldFail()
 			{
 				Func<Task> @delegate = () => null!;
@@ -27,7 +27,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).DoesNotThrowExactly<NullReferenceException>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             does not throw exactly a NullReferenceException,
@@ -36,8 +36,8 @@ public sealed partial class ThatDelegate
 					.Because("a null task is not an exception thrown by the delegate");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsMatchingException_ShouldFail(string message)
 			{
 				Exception exception = new CustomException(message);
@@ -55,8 +55,8 @@ public sealed partial class ThatDelegate
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsMatchingException_ShouldForwardExceptionAsInnerException(string message)
 			{
 				Exception exception = new CustomException(message);
@@ -69,8 +69,8 @@ public sealed partial class ThatDelegate
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsOtherException_ShouldSucceed(string message)
 			{
 				Exception exception = new OtherException(message);
@@ -82,8 +82,8 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsSubtypeOfException_ShouldSucceed(string message)
 			{
 				Exception exception = new SubCustomException(message);
@@ -95,8 +95,8 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsSuperTypeOfException_ShouldSucceed(string message)
 			{
 				Exception exception = new CustomException(message);
@@ -108,7 +108,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Action? subject = null;
@@ -116,7 +116,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(subject!).DoesNotThrowExactly<CustomException>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not throw exactly a ThatDelegate.CustomException,
@@ -127,7 +127,7 @@ public sealed partial class ThatDelegate
 		
 		public sealed class FuncValueGenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAwaited_ShouldNotReturnAValue()
 			{
 				Func<int> @delegate = () => throw new OtherException();
@@ -138,7 +138,7 @@ public sealed partial class ThatDelegate
 					.Because("the delegate may throw another exception instead of returning a value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateDoesNotThrow_ShouldSucceed()
 			{
 				Func<int> @delegate = () => 1;
@@ -149,7 +149,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateReturnsNullTask_ShouldFail()
 			{
 				Func<System.Threading.CancellationToken, Task<int>> @delegate = _ => null!;
@@ -157,7 +157,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).DoesNotThrowExactly<NullReferenceException>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             does not throw exactly a NullReferenceException,
@@ -166,8 +166,8 @@ public sealed partial class ThatDelegate
 					.Because("a null task is not an exception thrown by the delegate");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsMatchingException_ShouldFail(string message)
 			{
 				Exception exception = new CustomException(message);
@@ -185,8 +185,8 @@ public sealed partial class ThatDelegate
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsOtherException_ShouldSucceed(string message)
 			{
 				Exception exception = new OtherException(message);
@@ -198,8 +198,8 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsSubtypeOfException_ShouldSucceed(string message)
 			{
 				Exception exception = new SubCustomException(message);
@@ -211,8 +211,8 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenDelegateThrowsSuperTypeOfException_ShouldSucceed(string message)
 			{
 				Exception exception = new CustomException(message);
@@ -224,7 +224,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Func<int>? subject = null;
@@ -232,7 +232,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(subject!).DoesNotThrowExactly<CustomException>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not throw exactly a ThatDelegate.CustomException,

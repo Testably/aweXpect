@@ -6,8 +6,8 @@ public sealed partial class ThatObject
 	{
 		public sealed class GenericTests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenAwaited_ShouldReturnObjectResult(int value)
 			{
 				object subject = new MyClass
@@ -20,13 +20,13 @@ public sealed partial class ThatObject
 				await That(result).IsSameAs(subject);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCalledFromGenericMethodWithUnconstrainedT_AndTypeMatches_ShouldFail()
 			{
 				async Task Act()
 					=> await AssertIsNotExactlyString("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that value
 					             is not exactly of type string,
@@ -40,7 +40,7 @@ public sealed partial class ThatObject
 					=> await That(value).IsNotExactly<string>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCalledFromGenericMethodWithUnconstrainedT_AndTypeMismatch_ShouldResolve()
 			{
 				async Task Act()
@@ -52,7 +52,7 @@ public sealed partial class ThatObject
 					=> await That(value).IsNotExactly<string>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				object? subject = null;
@@ -60,7 +60,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotExactly<MyClass>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not exactly of type ThatObject.MyClass,
@@ -68,7 +68,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotMatch_ShouldSucceed()
 			{
 				object subject = new MyClass();
@@ -79,7 +79,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsSubtype_ShouldSucceed()
 			{
 				object subject = new MyClass();
@@ -90,7 +90,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsSupertype_ShouldSucceed()
 			{
 				object subject = new MyBaseClass();
@@ -101,8 +101,8 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenTypeMatches_ShouldFail(int value, string reason)
 			{
 				object subject = new MyClass
@@ -114,7 +114,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsNotExactly<MyClass>()
 						.Because(reason);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that subject
 					               is not exactly of type ThatObject.MyClass, because {{reason}},
@@ -130,8 +130,8 @@ public sealed partial class ThatObject
 
 		public sealed class TypeTests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenAwaited_ShouldReturnTypedResult(int value)
 			{
 				object subject = new MyClass
@@ -144,7 +144,7 @@ public sealed partial class ThatObject
 				await That(result).IsSameAs(subject);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				object? subject = null;
@@ -152,7 +152,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotExactly(typeof(MyClass));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not exactly of type ThatObject.MyClass,
@@ -160,7 +160,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNullableValueType_ShouldFailForTheUnderlyingType()
 			{
 				int? subject = 5;
@@ -168,7 +168,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotExactly(typeof(int));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not exactly of type int,
@@ -179,8 +179,8 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectIsTyped_ShouldAllowChainingOnTheSubjectType(int value)
 			{
 				MyClass subject = new()
@@ -196,8 +196,8 @@ public sealed partial class ThatObject
 					.Because("the chain must continue with the subject type instead of widening it to object");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectIsTyped_ShouldReturnTheSubjectType(int value)
 			{
 				MyClass subject = new()
@@ -211,7 +211,7 @@ public sealed partial class ThatObject
 					.Because("the awaited result must keep the subject type instead of widening it to object");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeDoesNotMatch_ShouldSucceed()
 			{
 				object subject = new MyClass();
@@ -222,7 +222,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
 			{
 				object subject = new MyClass();
@@ -235,7 +235,7 @@ public sealed partial class ThatObject
 					.WithMessage("The 'type' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNullableAndSubjectHasAValue_ShouldFail()
 			{
 				int? value = 5;
@@ -244,7 +244,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotExactly(typeof(int?));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not exactly of type int?,
@@ -255,7 +255,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsSubtype_ShouldSucceed()
 			{
 				object subject = new MyClass();
@@ -266,7 +266,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsSupertype_ShouldSucceed()
 			{
 				object subject = new MyBaseClass();
@@ -277,8 +277,8 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenTypeMatches_ShouldFail(int value, string reason)
 			{
 				object subject = new MyClass
@@ -290,7 +290,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsNotExactly(typeof(MyClass))
 						.Because(reason);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that subject
 					               is not exactly of type ThatObject.MyClass, because {{reason}},

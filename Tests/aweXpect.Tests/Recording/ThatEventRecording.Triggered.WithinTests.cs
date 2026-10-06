@@ -10,7 +10,7 @@ public sealed partial class ThatEventRecording
 	{
 		public sealed class WithinTests
 		{
-			[Fact]
+			[Test]
 			public async Task AtMost_WhenEventIsTriggeredFewEnoughTimesWithinTimeout_ShouldSucceed()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -28,7 +28,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AtMost_WhenEventIsTriggeredTooOftenWithinTimeout_ShouldFail()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -44,7 +44,7 @@ public sealed partial class ThatEventRecording
 						.Within(5.Seconds())
 						.AtMost(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at most once within 0:05,
@@ -55,7 +55,7 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Filter_WhenSpecifiedAfterTheOccurrenceConstraint_ShouldStillApply()
 			{
 				CustomEventWithParametersClass<string> sut = new();
@@ -74,7 +74,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Never_WhenEventIsNotTriggeredWithinTimeout_ShouldSucceed()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -96,7 +96,7 @@ public sealed partial class ThatEventRecording
 				cts.Cancel();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Never_WhenEventIsTriggeredWithinTimeout_ShouldFail()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -112,7 +112,7 @@ public sealed partial class ThatEventRecording
 						.Within(5.Seconds())
 						.Never();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has never recorded the CustomEvent event on sut within 0:05,
@@ -122,7 +122,7 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Never_WhenSpecifiedAfterTheOccurrenceConstraint_ShouldStillApplyTheTimeout()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -138,7 +138,7 @@ public sealed partial class ThatEventRecording
 						.Never()
 						.Within(5.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has never recorded the CustomEvent event on sut within 0:05,
@@ -148,7 +148,7 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventWith1ParameterIsNotTriggeredWithinTimeout_ShouldFail()
 			{
 				CustomEventWithParametersClass<string> sut = new();
@@ -165,7 +165,7 @@ public sealed partial class ThatEventRecording
 						.Triggered(nameof(CustomEventWithParametersClass<string>.CustomEvent))
 						.Within(10.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
@@ -174,7 +174,7 @@ public sealed partial class ThatEventRecording
 				cts.Cancel();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventWith1ParameterIsTriggeredWithinTimeout_ShouldSucceed()
 			{
 				CustomEventWithParametersClass<string> sut = new();
@@ -192,7 +192,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventWith2ParametersIsNotTriggeredWithinTimeout_ShouldFail()
 			{
 				CustomEventWithParametersClass<string, int> sut = new();
@@ -209,7 +209,7 @@ public sealed partial class ThatEventRecording
 						.Triggered(nameof(CustomEventWithParametersClass<string, int>.CustomEvent))
 						.Within(10.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
@@ -218,7 +218,7 @@ public sealed partial class ThatEventRecording
 				cts.Cancel();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventWith2ParametersIsTriggeredWithinTimeout_ShouldSucceed()
 			{
 				CustomEventWithParametersClass<string, int> sut = new();
@@ -236,7 +236,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventWith3ParametersIsNotTriggeredWithinTimeout_ShouldFail()
 			{
 				CustomEventWithParametersClass<string, int, bool> sut = new();
@@ -253,7 +253,7 @@ public sealed partial class ThatEventRecording
 						.Triggered(nameof(CustomEventWithParametersClass<string, int, bool>.CustomEvent))
 						.Within(10.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
@@ -262,7 +262,7 @@ public sealed partial class ThatEventRecording
 				cts.Cancel();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventWith3ParametersIsTriggeredWithinTimeout_ShouldSucceed()
 			{
 				CustomEventWithParametersClass<string, int, bool> sut = new();
@@ -280,7 +280,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventWith4ParametersIsNotTriggeredWithinTimeout_ShouldFail()
 			{
 				CustomEventWithParametersClass<string, int, bool, DateTime> sut = new();
@@ -297,7 +297,7 @@ public sealed partial class ThatEventRecording
 						.Triggered(nameof(CustomEventWithParametersClass<string, int, bool, DateTime>.CustomEvent))
 						.Within(10.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
@@ -306,7 +306,7 @@ public sealed partial class ThatEventRecording
 				cts.Cancel();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventWith4ParametersIsTriggeredWithinTimeout_ShouldSucceed()
 			{
 				CustomEventWithParametersClass<string, int, bool, DateTime> sut = new();
@@ -324,7 +324,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventWithoutParametersIsNotTriggeredWithinTimeout_ShouldFail()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -341,7 +341,7 @@ public sealed partial class ThatEventRecording
 						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Within(10.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
@@ -350,7 +350,7 @@ public sealed partial class ThatEventRecording
 				cts.Cancel();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventWithoutParametersIsTriggeredWithinTimeout_ShouldSucceed()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -368,7 +368,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEventRecording<CustomEventWithoutParametersClass>? subject = null;
@@ -377,7 +377,7 @@ public sealed partial class ThatEventRecording
 					=> await That(subject!).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Within(4.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has recorded the CustomEvent event at least once within 0:04,
@@ -385,7 +385,7 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheOuterTimeoutIsAsLong_WhenNotTriggered_ShouldFailWithTheEventsWithinTheTimeout()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -397,7 +397,7 @@ public sealed partial class ThatEventRecording
 						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Within(200.Milliseconds()).WithTimeout(200.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.200,
@@ -406,7 +406,7 @@ public sealed partial class ThatEventRecording
 					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				WhenTheTestCancellationTimeoutIsShorterAndWithTimeoutIsLonger_ShouldFailWithTheTestCancellationTimeout()
 			{
@@ -422,10 +422,10 @@ public sealed partial class ThatEventRecording
 							.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
 							.Within(2.Seconds()).WithTimeout(10.Seconds());
 
-					exception = await Record.ExceptionAsync(Act);
+					exception = await Catch.ExceptionAsync(Act);
 				}
 
-				await That(exception).IsExactly<XunitException>().And
+				await That(exception).IsExactly<FailException>().And
 					.HasMessage("""
 					            Expected that recording
 					            has recorded the CustomEvent event on sut at least once within 0:02,
@@ -435,7 +435,7 @@ public sealed partial class ThatEventRecording
 					.Because("the effective timeout is the tighter of WithTimeout and TestCancellation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsInfinite_ShouldNotMentionTheTimeout()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -450,7 +450,7 @@ public sealed partial class ThatEventRecording
 						.Within(System.Threading.Timeout.InfiniteTimeSpan)
 						.WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once,
@@ -459,7 +459,7 @@ public sealed partial class ThatEventRecording
 					.Because("an infinite timeout imposes no limit, so only the cancellation ends the wait");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsInfinite_ShouldWaitUntilTheEventIsTriggered()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -477,7 +477,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow().WithTimeout(10.Seconds());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -494,9 +494,9 @@ public sealed partial class ThatEventRecording
 					.WithMessage("The timeout must not be negative.").AsPrefix();
 			}
 
-			[Theory]
-			[InlineData(false)]
-			[InlineData(true)]
+			[Test]
+			[Arguments(false)]
+			[Arguments(true)]
 			public async Task WhenTimeoutIsSpecifiedTwice_ShouldThrowInvalidOperationException(bool never)
 			{
 				CustomEventWithoutParametersClass sut = new();
@@ -522,7 +522,7 @@ public sealed partial class ThatEventRecording
 					.Because("the second timeout would silently replace the first one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsZero_ShouldMentionTheTimeout()
 			{
 				IEventRecording<CustomEventWithoutParametersClass>? subject = null;
@@ -531,7 +531,7 @@ public sealed partial class ThatEventRecording
 					=> await That(subject!).Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Within(TimeSpan.Zero);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has recorded the CustomEvent event at least once within 0:00,

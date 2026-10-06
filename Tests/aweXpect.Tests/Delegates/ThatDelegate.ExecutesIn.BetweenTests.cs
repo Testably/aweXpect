@@ -6,7 +6,7 @@ public sealed partial class ThatDelegate
 	{
 		public sealed class BetweenTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDelegateIsTooFast_ShouldFail()
 			{
 				Action @delegate = () => Task.Delay(5.Milliseconds()).Wait();
@@ -14,7 +14,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().Between(5123.Milliseconds()).And(6000.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in between 0:05.123 and 0:06,
@@ -22,7 +22,7 @@ public sealed partial class ThatDelegate
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateTakesLongEnough_ShouldSucceed()
 			{
 				Action @delegate = () => Task.Delay(50.Milliseconds()).Wait();
@@ -33,7 +33,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateTakesTooLong_ShouldFail()
 			{
 				Action @delegate = () => Task.Delay(50.Milliseconds()).Wait();
@@ -41,7 +41,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().Between(5.Milliseconds()).And(10.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in between 0:00.005 and 0:00.010,
@@ -49,7 +49,7 @@ public sealed partial class ThatDelegate
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateThrowsAnException_ShouldFail()
 			{
 				Action @delegate = () =>
@@ -61,7 +61,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(@delegate).ExecutesIn().Between(5.Milliseconds()).And(50.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that @delegate
 					              executes in between 0:00.005 and 0:50,

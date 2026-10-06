@@ -8,18 +8,18 @@ public sealed partial class ThatChar
 		{
 			public sealed class Tests
 			{
-				[Theory]
-				[InlineData('a')]
-				[InlineData('m')]
-				[InlineData('z')]
-				[InlineData('\u00E4')]
-				[InlineData('\u03C9')]
+				[Test]
+				[Arguments('a')]
+				[Arguments('m')]
+				[Arguments('z')]
+				[Arguments('\u00E4')]
+				[Arguments('\u03C9')]
 				public async Task WhenSubjectIsLowerCased_ShouldFail(char? subject)
 				{
 					async Task Act()
 						=> await That(subject).IsNotLowerCased();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not lower-cased,
@@ -27,14 +27,14 @@ public sealed partial class ThatChar
 						              """);
 				}
 
-				[Theory]
-				[InlineData('A')]
-				[InlineData('Z')]
-				[InlineData('\u00C4')]
-				[InlineData('1')]
-				[InlineData(' ')]
-				[InlineData('@')]
-				[InlineData('\u4E50')]
+				[Test]
+				[Arguments('A')]
+				[Arguments('Z')]
+				[Arguments('\u00C4')]
+				[Arguments('1')]
+				[Arguments(' ')]
+				[Arguments('@')]
+				[Arguments('\u4E50')]
 				public async Task WhenSubjectIsNotLowerCased_ShouldSucceed(char? subject)
 				{
 					async Task Act()
@@ -43,7 +43,7 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					char? subject = null;
@@ -51,7 +51,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).IsNotLowerCased();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not lower-cased,
@@ -62,12 +62,12 @@ public sealed partial class ThatChar
 
 			public sealed class NegatedTests
 			{
-				[Theory]
-				[InlineData('a')]
-				[InlineData('m')]
-				[InlineData('z')]
-				[InlineData('\u00E4')]
-				[InlineData('\u03C9')]
+				[Test]
+				[Arguments('a')]
+				[Arguments('m')]
+				[Arguments('z')]
+				[Arguments('\u00E4')]
+				[Arguments('\u03C9')]
 				public async Task WhenSubjectIsLowerCased_ShouldSucceed(char? subject)
 				{
 					async Task Act()
@@ -76,20 +76,20 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData('A')]
-				[InlineData('Z')]
-				[InlineData('\u00C4')]
-				[InlineData('1')]
-				[InlineData(' ')]
-				[InlineData('@')]
-				[InlineData('\u4E50')]
+				[Test]
+				[Arguments('A')]
+				[Arguments('Z')]
+				[Arguments('\u00C4')]
+				[Arguments('1')]
+				[Arguments(' ')]
+				[Arguments('@')]
+				[Arguments('\u4E50')]
 				public async Task WhenSubjectIsNotLowerCased_ShouldFail(char? subject)
 				{
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.IsNotLowerCased());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is lower-cased,
@@ -97,7 +97,7 @@ public sealed partial class ThatChar
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					char? subject = null;
@@ -105,7 +105,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.IsNotLowerCased());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is lower-cased,

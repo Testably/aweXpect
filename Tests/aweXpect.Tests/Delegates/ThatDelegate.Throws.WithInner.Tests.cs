@@ -8,7 +8,7 @@ public sealed partial class ThatDelegate
 		{
 			public sealed class GenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAwaited_WithoutExpectations_ShouldReturnThrownException()
 				{
 					Exception exception = new OuterException(innerException: new CustomException());
@@ -20,8 +20,8 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenInnerExceptionHasSuperType_ShouldFail(string message)
 				{
 					Action action = ()
@@ -30,7 +30,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithInner<SubCustomException>();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that action
 						              throws an exception with an inner ThatDelegate.SubCustomException,
@@ -39,8 +39,8 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenInnerExceptionHasWrongType_ShouldFail(string message)
 				{
 					Action action = ()
@@ -49,7 +49,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithInner<CustomException>();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that action
 						              throws an exception with an inner ThatDelegate.CustomException,
@@ -58,7 +58,7 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionIsNotPresent_ShouldFail()
 				{
 					Action action = () => throw new OuterException();
@@ -66,7 +66,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithInner<Exception>();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner exception,
@@ -74,7 +74,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionIsPresent_ShouldSucceed()
 				{
 					Action action = () => throw new OuterException(innerException: new CustomException());
@@ -85,7 +85,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionIsSubType_ShouldSucceed()
 				{
 					Action action = ()
@@ -97,7 +97,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoInnerExceptionIsPresent_ShouldFail()
 				{
 					Action action = () => throw new OuterException();
@@ -105,7 +105,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithInner<CustomException>();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner ThatDelegate.CustomException,
@@ -116,7 +116,7 @@ public sealed partial class ThatDelegate
 
 			public sealed class GenericWithExpectationTests
 			{
-				[Fact]
+				[Test]
 				public async Task CustomException_WhenInnerExceptionDoesNotMatchCriteria_ShouldFail()
 				{
 					string message = "bar";
@@ -126,7 +126,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithInner<CustomException>(x => x.HasMessage("foo"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner ThatDelegate.CustomException whose message is equal to "foo",
@@ -141,7 +141,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Exception_WhenInnerExceptionDoesNotMatchCriteria_ShouldFail()
 				{
 					string message = "bar";
@@ -151,7 +151,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithInner<Exception>(x => x.HasMessage("foo"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner exception whose message is equal to "foo",
@@ -166,8 +166,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenAwaited_WithExpectations_ShouldReturnThrownException(
 					string message)
 				{
@@ -180,7 +180,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectationsAreCombinedWithAnd_ShouldApplyAllOfThem()
 				{
 					Action action = ()
@@ -190,7 +190,7 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws()
 							.WithInner<CustomException>(x => x.HasMessage("bar").And.HasMessage("foo"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner ThatDelegate.CustomException whose message is equal to "bar" and whose message is equal to "foo",
@@ -206,7 +206,7 @@ public sealed partial class ThatDelegate
 						.Because("both expectations inspect the same Message, which is only appended once");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectationsAreCombinedWithOr_ShouldApplyEitherOfThem()
 				{
 					Action action = ()
@@ -219,7 +219,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectationsAreTypedAtTheInnerExceptionType_ShouldSucceed()
 				{
 					Action action = ()
@@ -235,7 +235,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionDoesNotMatchType_ShouldFail()
 				{
 					Action action = ()
@@ -245,7 +245,7 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws()
 							.WithInner<MyException>(x => x.HasMessage("foo"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner MyException whose message is equal to "foo",
@@ -254,7 +254,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task
 					WhenInnerExceptionHasUnexpectedTypeAndExpectationsAreTypedAtTheInnerExceptionType_ShouldFail()
 				{
@@ -265,7 +265,7 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws()
 							.WithInner<CustomException>(x => x.Satisfies(e => e?.Value == "bar"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner ThatDelegate.CustomException that satisfies e => e?.Value == "bar",
@@ -274,7 +274,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionIsNotPresent_ShouldFail()
 				{
 					Action action = () => throw new OuterException();
@@ -283,7 +283,7 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws()
 							.WithInner<Exception>(x => x.HasMessage("foo"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner exception whose message is equal to "foo",
@@ -291,7 +291,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoExceptionIsThrown_ShouldFail()
 				{
 					Action action = () => { };
@@ -300,7 +300,7 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws()
 							.WithInner<CustomException>(x => x.HasMessage("foo"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner ThatDelegate.CustomException whose message is equal to "foo",
@@ -311,7 +311,7 @@ public sealed partial class ThatDelegate
 
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAwaited_WithExpectations_ShouldReturnThrownException()
 				{
 					Exception exception = new OuterException(innerException: new Exception("inner"));
@@ -323,7 +323,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAwaited_WithoutExpectations_ShouldReturnThrownException()
 				{
 					Exception exception = new OuterException(innerException: new Exception("inner"));
@@ -335,7 +335,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionDoesNotMatchCriteria_ShouldFail()
 				{
 					string message = "bar";
@@ -345,7 +345,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithInner(x => x.HasMessage("foo"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner exception whose message is equal to "foo",
@@ -360,7 +360,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionIsNotPresent_ShouldFail()
 				{
 					Action action = () => throw new OuterException();
@@ -368,7 +368,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithInner();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner exception,
@@ -376,7 +376,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionIsNotPresent_WithExpectations_ShouldFail()
 				{
 					Action action = () => throw new OuterException();
@@ -384,7 +384,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithInner(x => x.HasMessage("foo"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner exception whose message is equal to "foo",
@@ -392,7 +392,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionIsPresent_ShouldSucceed()
 				{
 					Action action = () => throw new OuterException(innerException: new Exception());
@@ -403,7 +403,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeDoesNotMatch_WithThrowsType_ShouldOnlyReportTheType()
 				{
 					Action action = () => throw new OtherException("bar");
@@ -411,7 +411,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws(typeof(CustomException)).WithInner();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws a ThatDelegate.CustomException with an inner exception,
@@ -425,8 +425,8 @@ public sealed partial class ThatDelegate
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 			public sealed class TypeTests
 			{
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenAwaited_WithExpectations_ShouldReturnThrownException(
 					string message)
 				{
@@ -440,7 +440,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAwaited_WithoutExpectations_ShouldReturnThrownException()
 				{
 					Exception exception = new OuterException(innerException: new CustomException());
@@ -452,8 +452,8 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenInnerExceptionHasSuperType_ShouldFail(string message)
 				{
 					Action action = ()
@@ -463,7 +463,7 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws()
 							.WithInner(typeof(SubCustomException));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that action
 						              throws an exception with an inner ThatDelegate.SubCustomException,
@@ -472,8 +472,8 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenInnerExceptionHasWrongType_ShouldFail(string message)
 				{
 					Action action = ()
@@ -482,7 +482,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithInner(typeof(CustomException));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that action
 						              throws an exception with an inner ThatDelegate.CustomException,
@@ -491,7 +491,7 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionIsNotOfTheOpenGenericType_ShouldFail()
 				{
 					Action action = () => throw new OuterException(innerException: new OtherException("foo"));
@@ -499,7 +499,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithInner(typeof(GenericException<>));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner ThatDelegate.GenericException<>,
@@ -508,7 +508,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionIsNotPresent_ShouldFail()
 				{
 					Action action = () => throw new OuterException();
@@ -516,7 +516,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithInner(typeof(Exception));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner exception,
@@ -524,7 +524,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionIsOfAnOpenGenericType_ShouldSucceed()
 				{
 					Action action = () => throw new OuterException(innerException: new SubGenericException());
@@ -535,7 +535,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionIsPresent_ShouldSucceed()
 				{
 					Action action = () => throw new OuterException(innerException: new CustomException());
@@ -546,7 +546,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionIsSubType_ShouldSucceed()
 				{
 					Action action = ()
@@ -558,7 +558,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoInnerExceptionIsPresent_ShouldFail()
 				{
 					Action action = () => throw new OuterException();
@@ -566,7 +566,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(action).Throws().WithInner(typeof(CustomException));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner ThatDelegate.CustomException,
@@ -574,7 +574,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeIsNotAnException_ShouldThrowArgumentException()
 				{
 					Action action = () => throw new OuterException(innerException: new CustomException());
@@ -588,7 +588,7 @@ public sealed partial class ThatDelegate
 						.Because("no exception could ever be a string");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
 				{
 					Action action = () => throw new OuterException(innerException: new CustomException());
@@ -604,7 +604,7 @@ public sealed partial class ThatDelegate
 
 			public sealed class TypeWithExpectationTests
 			{
-				[Fact]
+				[Test]
 				public async Task CustomException_WhenInnerExceptionDoesNotMatchCriteria_ShouldFail()
 				{
 					string message = "bar";
@@ -615,7 +615,7 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws()
 							.WithInner(typeof(CustomException), x => x.HasMessage("foo"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner ThatDelegate.CustomException whose message is equal to "foo",
@@ -630,7 +630,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Exception_WhenInnerExceptionDoesNotMatchCriteria_ShouldFail()
 				{
 					string message = "bar";
@@ -641,7 +641,7 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws()
 							.WithInner(typeof(Exception), x => x.HasMessage("foo"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner exception whose message is equal to "foo",
@@ -656,7 +656,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionDoesNotMatchType_ShouldFail()
 				{
 					Action action = ()
@@ -666,7 +666,7 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws()
 							.WithInner(typeof(MyException), x => x.HasMessage("foo"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner MyException whose message is equal to "foo",
@@ -675,7 +675,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionIsNotPresent_ShouldFail()
 				{
 					Action action = () => throw new OuterException();
@@ -684,7 +684,7 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws()
 							.WithInner(typeof(Exception), x => x.HasMessage("foo"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner exception whose message is equal to "foo",
@@ -692,7 +692,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenInnerExceptionIsOfAnOpenGenericType_ShouldApplyTheExpectations()
 				{
 					Action action = () => throw new OuterException(innerException: new GenericException<int>("foo"));
@@ -704,7 +704,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoExceptionIsThrown_ShouldFail()
 				{
 					Action action = () => { };
@@ -713,7 +713,7 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws()
 							.WithInner(typeof(CustomException), x => x.HasMessage("foo"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception with an inner ThatDelegate.CustomException whose message is equal to "foo",
@@ -721,7 +721,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeIsNotAnException_ShouldThrowArgumentException()
 				{
 					Action action = () => throw new OuterException(innerException: new CustomException());
@@ -735,7 +735,7 @@ public sealed partial class ThatDelegate
 						.Because("no exception could ever be a string");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
 				{
 					Action action = () => throw new OuterException(innerException: new CustomException());

@@ -13,7 +13,7 @@ public sealed partial class ThatAsyncEnumerable
 	{
 		public sealed class SingleEnumerationTests
 		{
-			[Fact]
+			[Test]
 			public async Task Expectations_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
@@ -23,7 +23,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
@@ -38,7 +38,7 @@ public sealed partial class ThatAsyncEnumerable
 					.Because("the guard, the comparison and the message share one enumeration of the expected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Predicates_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
@@ -48,7 +48,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
@@ -66,7 +66,7 @@ public sealed partial class ThatAsyncEnumerable
 					.Because("the guard, the comparison and the message share one enumeration of the expected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Strings_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);
@@ -75,7 +75,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
@@ -97,7 +97,7 @@ public sealed partial class ThatAsyncEnumerable
 					.Because("the guard, the comparison and the message share one enumeration of the expected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
@@ -106,7 +106,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected in order and contiguous,
@@ -121,7 +121,7 @@ public sealed partial class ThatAsyncEnumerable
 					.Because("the guard, the comparison and the message share one enumeration of the expected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
@@ -130,7 +130,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain collection unexpected in order and contiguous,
@@ -145,7 +145,7 @@ public sealed partial class ThatAsyncEnumerable
 					.Because("the guard, the comparison and the message share one enumeration of the unexpected items");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				IAsyncEnumerable<double> subject = ToAsyncEnumerable(1.0, 2.0, 3.0);
@@ -154,7 +154,7 @@ public sealed partial class ThatAsyncEnumerable
 				async Task Act()
 					=> await That(subject).Contains(expected).Within(0.25);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains collection expected ± 0.25 in order and contiguous,

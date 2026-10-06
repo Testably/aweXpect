@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -14,7 +14,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLineCount(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has line count equal to 0,
@@ -22,7 +22,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedLineCountIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject = "";
@@ -36,15 +36,15 @@ public sealed partial class ThatString
 					.WithParamName("expected");
 			}
 
-			[Theory]
-			[InlineData("a\nb", 3)]
-			[InlineData("a\nb\n", 3)]
+			[Test]
+			[Arguments("a\nb", 3)]
+			[Arguments("a\nb\n", 3)]
 			public async Task WhenLineCountDiffers_ShouldFail(string subject, int lineCount)
 			{
 				async Task Act()
 					=> await That(subject).HasLineCount(lineCount);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has line count equal to {lineCount},
@@ -52,18 +52,18 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Theory]
-			[InlineData("", 0)]
-			[InlineData("a", 1)]
-			[InlineData("a\nb", 2)]
-			[InlineData("a\nb\n", 2)]
-			[InlineData("a\nb\n\n", 3)]
-			[InlineData("\n", 1)]
-			[InlineData("a\r\n", 1)]
-			[InlineData("a\r\nb\r\n", 2)]
-			[InlineData("\r\n", 1)]
-			[InlineData("\r", 1)]
-			[InlineData("one\r\ntwo\nthree\rfour", 4)]
+			[Test]
+			[Arguments("", 0)]
+			[Arguments("a", 1)]
+			[Arguments("a\nb", 2)]
+			[Arguments("a\nb\n", 2)]
+			[Arguments("a\nb\n\n", 3)]
+			[Arguments("\n", 1)]
+			[Arguments("a\r\n", 1)]
+			[Arguments("a\r\nb\r\n", 2)]
+			[Arguments("\r\n", 1)]
+			[Arguments("\r", 1)]
+			[Arguments("one\r\ntwo\nthree\rfour", 4)]
 			public async Task WhenLineCountMatches_ShouldSucceed(string subject, int lineCount)
 			{
 				async Task Act()
@@ -75,7 +75,7 @@ public sealed partial class ThatString
 
 		public sealed class EqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -83,7 +83,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLineCount().EqualTo(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has line count equal to 0,
@@ -91,7 +91,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedLineCountIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject = "";
@@ -105,15 +105,15 @@ public sealed partial class ThatString
 					.WithParamName("expected");
 			}
 
-			[Theory]
-			[InlineData("a\nb", 3)]
-			[InlineData("a\nb\n", 3)]
+			[Test]
+			[Arguments("a\nb", 3)]
+			[Arguments("a\nb\n", 3)]
 			public async Task WhenLineCountDiffers_ShouldFail(string subject, int lineCount)
 			{
 				async Task Act()
 					=> await That(subject).HasLineCount().EqualTo(lineCount);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has line count equal to {lineCount},
@@ -121,18 +121,18 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Theory]
-			[InlineData("", 0)]
-			[InlineData("a", 1)]
-			[InlineData("a\nb", 2)]
-			[InlineData("a\nb\n", 2)]
-			[InlineData("a\nb\n\n", 3)]
-			[InlineData("\n", 1)]
-			[InlineData("a\r\n", 1)]
-			[InlineData("a\r\nb\r\n", 2)]
-			[InlineData("\r\n", 1)]
-			[InlineData("\r", 1)]
-			[InlineData("one\r\ntwo\nthree\rfour", 4)]
+			[Test]
+			[Arguments("", 0)]
+			[Arguments("a", 1)]
+			[Arguments("a\nb", 2)]
+			[Arguments("a\nb\n", 2)]
+			[Arguments("a\nb\n\n", 3)]
+			[Arguments("\n", 1)]
+			[Arguments("a\r\n", 1)]
+			[Arguments("a\r\nb\r\n", 2)]
+			[Arguments("\r\n", 1)]
+			[Arguments("\r", 1)]
+			[Arguments("one\r\ntwo\nthree\rfour", 4)]
 			public async Task WhenLineCountMatches_ShouldSucceed(string subject, int lineCount)
 			{
 				async Task Act()
@@ -144,7 +144,7 @@ public sealed partial class ThatString
 
 		public sealed class GreaterThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenLineCountIsGreaterOrEqual_ShouldSucceed()
 			{
 				string subject = "a\nb\nc";
@@ -155,7 +155,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLineCountIsSmaller_ShouldFail()
 			{
 				string subject = "a\nb";
@@ -163,7 +163,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLineCount().GreaterThanOrEqualTo(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has line count greater than or equal to 3,
@@ -174,7 +174,7 @@ public sealed partial class ThatString
 
 		public sealed class GreaterThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenLineCountIsGreater_ShouldSucceed()
 			{
 				string subject = "a\nb\nc";
@@ -185,7 +185,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLineCountIsNotGreater_ShouldFail()
 			{
 				string subject = "a\nb\n";
@@ -193,7 +193,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLineCount().GreaterThan(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has line count greater than 2,
@@ -204,7 +204,7 @@ public sealed partial class ThatString
 
 		public sealed class LessThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenLineCountIsGreater_ShouldFail()
 			{
 				string subject = "a\nb\nc";
@@ -212,7 +212,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLineCount().LessThanOrEqualTo(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has line count less than or equal to 2,
@@ -220,7 +220,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLineCountIsSmallerOrEqual_ShouldSucceed()
 			{
 				string subject = "a\nb";
@@ -234,7 +234,7 @@ public sealed partial class ThatString
 
 		public sealed class LessThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenLineCountIsNotSmaller_ShouldFail()
 			{
 				string subject = "a\nb";
@@ -242,7 +242,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLineCount().LessThan(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has line count less than 2,
@@ -250,7 +250,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLineCountIsSmaller_ShouldSucceed()
 			{
 				string subject = "a";
@@ -264,7 +264,7 @@ public sealed partial class ThatString
 
 		public sealed class NotEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenLineCountDiffers_ShouldSucceed()
 			{
 				string subject = "a\nb\n";
@@ -275,7 +275,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLineCountMatches_ShouldFail()
 			{
 				string subject = "a\nb\n";
@@ -283,7 +283,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLineCount().NotEqualTo(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have line count equal to 2,

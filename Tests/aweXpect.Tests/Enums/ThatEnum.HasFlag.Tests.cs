@@ -6,7 +6,7 @@ public sealed partial class ThatEnum
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsANamedArgument_ShouldSucceed()
 			{
 				MyColors subject = MyColors.Yellow | MyColors.Red;
@@ -17,15 +17,15 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(MyColors.Blue | MyColors.Red, MyColors.Green)]
-			[InlineData(MyColors.Green | MyColors.Yellow, MyColors.Blue)]
+			[Test]
+			[Arguments(MyColors.Blue | MyColors.Red, MyColors.Green)]
+			[Arguments(MyColors.Green | MyColors.Yellow, MyColors.Blue)]
 			public async Task WhenSubjectDoesNotHaveFlag_ShouldFail(MyColors subject, MyColors expected)
 			{
 				async Task Act()
 					=> await That(subject).HasFlag(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has flag {Formatter.Format(expected)},
@@ -33,9 +33,9 @@ public sealed partial class ThatEnum
 					              """);
 			}
 
-			[Theory]
-			[InlineData(MyColors.Blue)]
-			[InlineData(MyColors.Green)]
+			[Test]
+			[Arguments(MyColors.Blue)]
+			[Arguments(MyColors.Green)]
 			public async Task WhenSubjectHasFlag_ShouldSucceed(MyColors expected)
 			{
 				MyColors subject = MyColors.Yellow | MyColors.Red | expected;
@@ -46,9 +46,9 @@ public sealed partial class ThatEnum
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(MyColors.Blue)]
-			[InlineData(MyColors.Green)]
+			[Test]
+			[Arguments(MyColors.Blue)]
+			[Arguments(MyColors.Green)]
 			public async Task WhenSubjectIsTheSame_ShouldSucceed(MyColors subject)
 			{
 				MyColors expected = subject;

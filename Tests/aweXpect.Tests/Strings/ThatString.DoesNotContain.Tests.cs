@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task IgnoringCase_ShouldIncludeSettingInExpectationText()
 			{
 				string subject =
@@ -16,7 +16,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected).IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "INVESTIGATOR" ignoring case,
@@ -24,7 +24,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Using_ShouldIncludeComparerInExpectationText()
 			{
 				string subject =
@@ -35,7 +35,7 @@ public sealed partial class ThatString
 					=> await That(subject).DoesNotContain(unexpected)
 						.Using(new IgnoreCaseForVocalsComparer());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "InvEstIgAtOr" using IgnoreCaseForVocalsComparer,
@@ -43,7 +43,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEvaluatedForSeveralItems_ShouldNotShareTheNegation()
 			{
 				string[] subject = ["b", "a",];
@@ -51,7 +51,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).All().ComplyWith(it => it.DoesNotContain("a"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "a" for all items,
@@ -71,7 +71,7 @@ public sealed partial class ThatString
 					.Because("the items share one quantifier, so the negation of one item must not leak into the next");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternIsEmptyAfterTheIndentationIsIgnored_ShouldThrowArgumentException()
 			{
 				string subject = "some text";
@@ -86,7 +86,7 @@ public sealed partial class ThatString
 					.Because("the negated expectation receives the pattern as 'unexpected'");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -94,7 +94,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain("p").AsWildcard();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "p" as wildcard,
@@ -102,7 +102,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "some text";
@@ -116,7 +116,7 @@ public sealed partial class ThatString
 					.WithParamName("unexpected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "some text";
@@ -130,16 +130,16 @@ public sealed partial class ThatString
 					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
-			[Theory]
-			[InlineData("ab ", true)]
-			[InlineData("a b", false)]
+			[Test]
+			[Arguments("ab ", true)]
+			[Arguments("a b", false)]
 			public async Task WhenUnexpectedIsWhiteSpaceAndTrailingWhiteSpaceIsIgnored_ShouldOnlyFindItInsideTheSubject(
 				string subject, bool expectSuccess)
 			{
 				async Task Act()
 					=> await That(subject).DoesNotContain(" ").IgnoringTrailingWhiteSpace();
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              does not contain " " ignoring trailing whitespace,
@@ -148,7 +148,7 @@ public sealed partial class ThatString
 					.Because("the whitespace at the end of the subject is ignored, but not the one inside it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedStringIsContained_ShouldFail()
 			{
 				string subject = "some text";
@@ -157,7 +157,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "me",
@@ -165,7 +165,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedStringIsNotContained_ShouldSucceed()
 			{
 				string subject = "some text";
@@ -177,9 +177,9 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("ab ", true)]
-			[InlineData("a b", false)]
+			[Test]
+			[Arguments("ab ", true)]
+			[Arguments("a b", false)]
 			public async Task
 				WhenUnexpectedWildcardIsWhiteSpaceAndTrailingWhiteSpaceIsIgnored_ShouldOnlyFindItInsideTheSubject(
 					string subject, bool expectSuccess)
@@ -187,7 +187,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(" ").AsWildcard().IgnoringTrailingWhiteSpace();
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              does not contain " " as wildcard ignoring trailing whitespace,
@@ -199,7 +199,7 @@ public sealed partial class ThatString
 
 		public sealed class AtLeastTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursEnoughTimes_ShouldFail()
 			{
 				string subject =
@@ -209,7 +209,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected).AtLeast(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "in" fewer than 3 times,
@@ -217,7 +217,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursFewerTimes_ShouldSucceed()
 			{
 				string subject =
@@ -230,7 +230,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursShouldSucceed()
 			{
 				string subject =
@@ -243,7 +243,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumIsLessThanZero_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject =
@@ -261,7 +261,7 @@ public sealed partial class ThatString
 
 		public sealed class AtMostTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursMoreTimes_ShouldSucceed()
 			{
 				string subject =
@@ -274,7 +274,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursShouldFail()
 			{
 				string subject =
@@ -284,7 +284,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected).AtMost(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "text that does not occur" more than once,
@@ -292,7 +292,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringSufficientlyFewTimes_ShouldFail()
 			{
 				string subject =
@@ -302,7 +302,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected).AtMost(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "in" more than 3 times,
@@ -310,7 +310,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaximumIsLessThanZero_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject =
@@ -328,7 +328,7 @@ public sealed partial class ThatString
 
 		public sealed class BetweenTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursFewerTimes_ShouldSucceed()
 			{
 				string subject =
@@ -341,7 +341,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursMoreTimes_ShouldSucceed()
 			{
 				string subject =
@@ -354,7 +354,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursSufficientTimes_ShouldFail()
 			{
 				string subject =
@@ -364,7 +364,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected).Between(1).And(4);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "in" between 1 and 4 times,
@@ -372,7 +372,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaximumIsLessThanZero_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject =
@@ -387,7 +387,7 @@ public sealed partial class ThatString
 					.WithParamName("maximum");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumEqualsMaximum_ShouldBehaveLikeExactly()
 			{
 				string subject =
@@ -397,7 +397,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected).Between(3).And(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "in" exactly 3 times,
@@ -405,7 +405,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumIsGreaterThanMaximum_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject =
@@ -420,7 +420,7 @@ public sealed partial class ThatString
 					.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumIsLessThanZero_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject =
@@ -438,7 +438,7 @@ public sealed partial class ThatString
 
 		public sealed class ExactlyTests
 		{
-			[Fact]
+			[Test]
 			public async Task
 				WhenExpectedIsLessThanZero_ShouldThrowArgumentOutOfRangeException()
 			{
@@ -454,7 +454,7 @@ public sealed partial class ThatString
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursCorrectlyOften_ShouldFail()
 			{
 				string subject =
@@ -464,7 +464,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected).Exactly(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "in" exactly 3 times,
@@ -472,7 +472,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursFewerTimes_ShouldSucceed()
 			{
 				string subject =
@@ -485,7 +485,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursMoreTimes_ShouldSucceed()
 			{
 				string subject =
@@ -501,7 +501,7 @@ public sealed partial class ThatString
 
 		public sealed class LessThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringDoesNotOccurAtAll_ShouldFail()
 			{
 				string subject =
@@ -511,7 +511,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected).LessThan(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "text that does not occur" at least once,
@@ -519,7 +519,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursEqualTimes_ShouldSucceed()
 			{
 				string subject =
@@ -532,7 +532,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursMoreTimes_ShouldSucceed()
 			{
 				string subject =
@@ -545,7 +545,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringSufficientlyFewTimes_ShouldFail()
 			{
 				string subject =
@@ -555,7 +555,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected).LessThan(4);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "in" at least 4 times,
@@ -563,7 +563,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMaximumIsLessThanZero_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject =
@@ -581,7 +581,7 @@ public sealed partial class ThatString
 
 		public sealed class MoreThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringDoesNotOccurAtAll_ShouldSucceed()
 			{
 				string subject =
@@ -594,7 +594,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursEnoughTimes_ShouldFail()
 			{
 				string subject =
@@ -604,7 +604,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected).MoreThan(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              contains "in" at most twice,
@@ -612,9 +612,9 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Theory]
-			[InlineData(3)]
-			[InlineData(5)]
+			[Test]
+			[Arguments(3)]
+			[Arguments(5)]
 			public async Task WhenExpectedStringOccursFewerTimes_ShouldSucceed(int minimum)
 			{
 				string subject =
@@ -627,7 +627,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumIsLessThanZero_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject =
@@ -642,7 +642,7 @@ public sealed partial class ThatString
 					.WithParamName("minimum");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMinimumIsZero_ShouldReadLikeWithoutQuantifier()
 			{
 				string subject = "some text";
@@ -651,7 +651,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected).MoreThan(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "me",
@@ -663,7 +663,7 @@ public sealed partial class ThatString
 
 		public sealed class OnceTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursExactly1Times_ShouldFail()
 			{
 				string subject =
@@ -673,7 +673,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotContain(unexpected).Once();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "investigator" exactly once,
@@ -681,7 +681,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursFewerTimes_ShouldSucceed()
 			{
 				string subject =
@@ -694,7 +694,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursMoreTimes_ShouldSucceed()
 			{
 				string subject =
@@ -710,7 +710,7 @@ public sealed partial class ThatString
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedStringIsMissing_ShouldFailWithThePositiveExpectation()
 			{
 				string subject = "some text";
@@ -718,7 +718,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.DoesNotContain("foo"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "foo" at least once,

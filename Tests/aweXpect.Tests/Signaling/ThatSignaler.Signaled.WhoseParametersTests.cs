@@ -10,7 +10,7 @@ public sealed partial class ThatSignaler
 	{
 		public sealed class WhoseParametersTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenFilteredWith_ShouldOnlyContainTheMatchingParameters()
 			{
 				Signaler<int> signaler = new();
@@ -26,7 +26,7 @@ public sealed partial class ThatSignaler
 					.Because("the parameters continue the signals that were counted, which excludes the filtered ones");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggered_ShouldFail()
 			{
 				Signaler<int> signaler = new();
@@ -35,7 +35,7 @@ public sealed partial class ThatSignaler
 					await That(signaler).Signaled().AtLeast(2.Times()).With(x => x > 0).Within(50.Milliseconds())
 						.WhoseParameters.All().AreUnique();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least twice with x => x > 0 within 0:00.050 with parameters of which all are unique,
@@ -44,7 +44,7 @@ public sealed partial class ThatSignaler
 					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Signaler<int>? subject = null;
@@ -52,7 +52,7 @@ public sealed partial class ThatSignaler
 				async Task Act()
 					=> await That(subject!).Signaled().WhoseParameters.HasCount().EqualTo(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has recorded the callback at least once with parameters that have exactly 0 items,
@@ -60,7 +60,7 @@ public sealed partial class ThatSignaler
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggered_AndMemberOfParametersDoesNotMatch_ShouldFail()
 			{
 				Signaler<int> signaler = new();
@@ -71,7 +71,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().WhoseParameters.Whose(p => p.Count(), c => c.IsEqualTo(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:30 with parameters that have Count() that is equal to 2,
@@ -79,7 +79,7 @@ public sealed partial class ThatSignaler
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggered_AndParametersDoNotMatch_ShouldFail()
 			{
 				Signaler<int> signaler = new();
@@ -90,7 +90,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().WhoseParameters.All().Satisfy(x => x < 1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:30 with parameters of which all satisfy x => x < 1,
@@ -104,7 +104,7 @@ public sealed partial class ThatSignaler
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggered_AndParametersMatch_ShouldSucceed()
 			{
 				Signaler<int> signaler = new();

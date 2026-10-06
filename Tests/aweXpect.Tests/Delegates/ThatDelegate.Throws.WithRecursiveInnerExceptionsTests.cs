@@ -6,7 +6,7 @@ public sealed partial class ThatDelegate
 	{
 		public sealed class WithRecursiveInnerExceptionsTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAnyInnerExceptionDoesMatch_ShouldSucceed()
 			{
 				Action action = () => throw new OuterException(
@@ -22,7 +22,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAwaited_WithExpectations_ShouldReturnThrownException()
 			{
 				Exception exception = new OuterException(innerException: new CustomException());
@@ -34,7 +34,7 @@ public sealed partial class ThatDelegate
 				await That(result).IsSameAs(exception);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsAreEmpty_ShouldThrowArgumentException()
 			{
 				Action action = () => throw new OuterException(innerException: new CustomException());
@@ -47,7 +47,7 @@ public sealed partial class ThatDelegate
 					.And.WithParamName("expectations");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 			{
 				Action action = () => throw new OuterException(innerException: new CustomException());
@@ -60,7 +60,7 @@ public sealed partial class ThatDelegate
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectingInnerExceptionsToBeEmpty_ShouldFail()
 			{
 				Action action = () => throw new OuterException(innerException: new CustomException());
@@ -68,7 +68,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(action).Throws().WithRecursiveInnerExceptions(innerExceptions => innerExceptions.IsEmpty());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that action
 					             throws an exception with recursive inner exceptions that are empty,
@@ -78,7 +78,7 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenFewerInnerExceptionsMatchThanRequired_ShouldFail()
 			{
 				Action action = () => throw new OuterException(
@@ -91,7 +91,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.AtLeast(2).Are<CustomException>());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that action
 					             throws an exception with recursive inner exceptions of which at least 2 are of type ThatDelegate.CustomException,
@@ -116,7 +116,7 @@ public sealed partial class ThatDelegate
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInnerExceptionDoesNotMatch_ShouldFail()
 			{
 				Action action = () => throw new OuterException(innerException: new CustomException());
@@ -124,7 +124,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.All().Satisfy(_ => false));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that action
 					             throws an exception with recursive inner exceptions of which all satisfy _ => false,
@@ -144,7 +144,7 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoInnerExceptionIsPresent_ForAll_ShouldFail()
 			{
 				Action action = () => throw new OuterException();
@@ -152,7 +152,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.All().Satisfy(_ => true));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that action
 					             throws an exception with recursive inner exceptions of which all satisfy _ => true,
@@ -161,7 +161,7 @@ public sealed partial class ThatDelegate
 					.Because("an expectation on the inner exceptions requires at least one of them");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoInnerExceptionIsPresent_ForAtMost_ShouldFail()
 			{
 				Action action = () => throw new OuterException();
@@ -169,7 +169,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.AtMost(2).Satisfy(_ => true));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that action
 					             throws an exception with recursive inner exceptions of which at most 2 satisfy _ => true,
@@ -178,7 +178,7 @@ public sealed partial class ThatDelegate
 					.Because("the existence of an inner exception is required before any quantifier applies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoInnerExceptionIsPresent_ForNone_ShouldFail()
 			{
 				Action action = () => throw new OuterException();
@@ -186,7 +186,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.None().Satisfy(_ => true));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that action
 					             throws an exception with recursive inner exceptions of which none satisfy _ => true,
@@ -195,7 +195,7 @@ public sealed partial class ThatDelegate
 					.Because("the existence of an inner exception is required before any quantifier applies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoInnerExceptionIsPresent_WhenExpectingInnerExceptionsToBeEmpty_ShouldFail()
 			{
 				Action action = () => throw new OuterException();
@@ -204,7 +204,7 @@ public sealed partial class ThatDelegate
 					=> await That(action).Throws()
 						.WithRecursiveInnerExceptions(innerExceptions => innerExceptions.IsEmpty());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that action
 					             throws an exception with recursive inner exceptions that are empty,
@@ -213,7 +213,7 @@ public sealed partial class ThatDelegate
 					.Because("the existence of an inner exception is required before the inner exceptions are inspected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenThrownAggregateExceptionHasNoInnerExceptions_ForAll_ShouldFail()
 			{
 				Action action = () => throw new AggregateException();
@@ -221,7 +221,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.All().Satisfy(_ => true));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that action
 					             throws an exception with recursive inner exceptions of which all satisfy _ => true,
@@ -230,7 +230,7 @@ public sealed partial class ThatDelegate
 					.Because("an AggregateException without inner exceptions is empty just like any other exception");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenThrownAggregateExceptionHasNoInnerExceptions_ForNone_ShouldFail()
 			{
 				Action action = () => throw new AggregateException();
@@ -238,7 +238,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(action).Throws().WithRecursiveInnerExceptions(e => e.None().Satisfy(_ => true));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that action
 					             throws an exception with recursive inner exceptions of which none satisfy _ => true,

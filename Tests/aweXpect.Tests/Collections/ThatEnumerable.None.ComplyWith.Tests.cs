@@ -6,7 +6,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class ComplyWithTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenItemsUseWhose_ShouldIncludeMemberInExpectation()
 			{
 				MyClass[] subject = [new(1), new(2),];
@@ -14,7 +14,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).None().ComplyWith(x => x.Whose(o => o.Value, v => v.IsEqualTo(1)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Value is equal to 1 for no items,
@@ -43,7 +43,7 @@ public sealed partial class ThatEnumerable
 					.Because("the member text must survive the node tree rendering");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				int[]? subject = null;
@@ -51,7 +51,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).None().ComplyWith(it => it.IsEqualTo(3));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 3 for no items,
@@ -62,7 +62,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class NegatedComplyWithTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNoItemComplies_ShouldFail()
 			{
 				int[] subject = [1, 2, 3, 4, 5,];
@@ -71,7 +71,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.None().ComplyWith(x => x.IsGreaterThan(5)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 5 for at least one item,

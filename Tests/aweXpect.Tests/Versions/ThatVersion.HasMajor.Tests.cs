@@ -6,7 +6,7 @@ public sealed partial class ThatVersion
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -14,7 +14,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor(null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has major equal to <null>,
@@ -22,7 +22,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsDifferent_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -31,7 +31,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has major equal to {Formatter.Format(expected)},
@@ -39,7 +39,7 @@ public sealed partial class ThatVersion
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsTheSame_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -51,7 +51,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -60,7 +60,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has major equal to 1,
@@ -71,7 +71,7 @@ public sealed partial class ThatVersion
 
 		public sealed class EqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -80,7 +80,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().EqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has major equal to <null>,
@@ -88,7 +88,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsDifferent_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -97,7 +97,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().EqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has major equal to {Formatter.Format(expected)},
@@ -105,7 +105,7 @@ public sealed partial class ThatVersion
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsTheSame_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -117,7 +117,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -126,7 +126,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().EqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has major equal to <null>,
@@ -134,7 +134,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -143,7 +143,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().EqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has major equal to 1,
@@ -154,7 +154,7 @@ public sealed partial class ThatVersion
 
 		public sealed class GreaterThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -163,7 +163,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().GreaterThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has major greater than or equal to <null>,
@@ -171,7 +171,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -183,7 +183,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsLessThanExpected_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -192,7 +192,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().GreaterThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has major greater than or equal to {Formatter.Format(expected)},
@@ -200,7 +200,7 @@ public sealed partial class ThatVersion
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsTheSameAsExpected_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -215,7 +215,7 @@ public sealed partial class ThatVersion
 
 		public sealed class GreaterThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -224,7 +224,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has major greater than <null>,
@@ -232,7 +232,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -244,7 +244,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsLessThanExpected_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -253,7 +253,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has major greater than {Formatter.Format(expected)},
@@ -261,7 +261,7 @@ public sealed partial class ThatVersion
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsTheSameAsExpected_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -270,7 +270,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has major greater than {Formatter.Format(expected)},
@@ -281,7 +281,7 @@ public sealed partial class ThatVersion
 
 		public sealed class LessThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -290,7 +290,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().LessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has major less than or equal to <null>,
@@ -298,7 +298,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -307,7 +307,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().LessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has major less than or equal to {Formatter.Format(expected)},
@@ -315,7 +315,7 @@ public sealed partial class ThatVersion
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsLessThanExpected_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -327,7 +327,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsTheSameAsExpected_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -342,7 +342,7 @@ public sealed partial class ThatVersion
 
 		public sealed class LessThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -351,7 +351,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has major less than <null>,
@@ -359,7 +359,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -368,7 +368,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has major less than {Formatter.Format(expected)},
@@ -376,7 +376,7 @@ public sealed partial class ThatVersion
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsLessThanExpected_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -388,7 +388,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsTheSameAsExpected_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -397,7 +397,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has major less than {Formatter.Format(expected)},
@@ -408,7 +408,7 @@ public sealed partial class ThatVersion
 
 		public sealed class NotEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsDifferent_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -420,7 +420,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorOfSubjectIsTheSame_ShouldFail()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -429,7 +429,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().NotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have major equal to {Formatter.Format(unexpected)},
@@ -437,7 +437,7 @@ public sealed partial class ThatVersion
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndUnexpectedIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -446,7 +446,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().NotEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have major equal to <null>,
@@ -454,7 +454,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -463,7 +463,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).HasMajor().NotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have major equal to {unexpected},
@@ -471,7 +471,7 @@ public sealed partial class ThatVersion
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsNull_ShouldSucceed()
 			{
 				Version? subject = new(2010, 11, 12, 13);
@@ -486,7 +486,7 @@ public sealed partial class ThatVersion
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldSucceed()
 			{
 				Version subject = new(1, 2, 3);
@@ -497,7 +497,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorDiffers_ShouldSucceed()
 			{
 				Version subject = new(1, 2, 3);
@@ -508,7 +508,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMajorMatches_ShouldFail()
 			{
 				Version subject = new(1, 2, 3);
@@ -516,7 +516,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasMajor(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have major equal to 1,

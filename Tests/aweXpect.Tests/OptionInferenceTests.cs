@@ -4,7 +4,7 @@ namespace aweXpect.Tests;
 
 public sealed class OptionInferenceTests
 {
-	[Fact]
+	[Test]
 	public async Task Equivalent_OnAClass_ShouldCompareTheMembers()
 	{
 		Album subject = new("Abbey Road", [new Song("Come Together"),]);
@@ -15,7 +15,7 @@ public sealed class OptionInferenceTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Using_WithAComparerForABaseTypeOfTheItems_ShouldUseIt()
 	{
 		Derived[] subject = [new("a"),];
@@ -27,7 +27,7 @@ public sealed class OptionInferenceTests
 			.Because("the comparer of a base type applies to the items through contravariance");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_OnAByteCollection_ShouldConvertAnIntLiteral()
 	{
 		byte[] subject = [5,];
@@ -39,7 +39,7 @@ public sealed class OptionInferenceTests
 			.Because("an int literal converts to a byte only as a constant, so a dedicated overload takes it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_OnADateTime_ShouldTakeATimeSpan()
 	{
 		DateTime subject = new(2024, 1, 1, 12, 0, 0);
@@ -50,7 +50,7 @@ public sealed class OptionInferenceTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_OnADecimal_ShouldConvertAnIntLiteral()
 	{
 		decimal subject = 1m;
@@ -61,7 +61,7 @@ public sealed class OptionInferenceTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_OnADouble_ShouldConvertAnIntLiteral()
 	{
 		double subject = 1.0;
@@ -72,7 +72,7 @@ public sealed class OptionInferenceTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_OnADoubleCollection_ShouldConvertAnIntLiteral()
 	{
 		double[] subject = [1.0,];
@@ -83,7 +83,7 @@ public sealed class OptionInferenceTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_OnAFloat_ShouldTakeAFloat()
 	{
 		float subject = 1.0f;
@@ -94,7 +94,7 @@ public sealed class OptionInferenceTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Within_OnAnUlong_ShouldConvertAnIntLiteral()
 	{
 		ulong subject = 5;

@@ -8,9 +8,9 @@ public sealed partial class ThatGeneric
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task ShouldFailWhenPredicateResultIsTrue(bool predicateResult)
 			{
 				Other subject = new();
@@ -18,7 +18,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotSatisfy(_ => predicateResult);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.OnlyIf(predicateResult)
 					.WithMessage("""
 					             Expected that subject
@@ -29,7 +29,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableValueTypeSubjectIsNull_ShouldUsePredicateResult()
 			{
 				int? subject = null;
@@ -41,7 +41,7 @@ public sealed partial class ThatGeneric
 					.Because("the predicate decides about a null subject as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateDereferencesANullSubject_ShouldFail()
 			{
 				string? subject = null;
@@ -49,7 +49,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotSatisfy(x => x!.Length > 5);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not satisfy x => x!.Length > 5,
@@ -58,7 +58,7 @@ public sealed partial class ThatGeneric
 					.Whose(e => e.InnerException, i => i.Is<NullReferenceException>());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateGuardsAgainstNull_ShouldSucceedForANullSubject()
 			{
 				string? subject = null;
@@ -70,7 +70,7 @@ public sealed partial class ThatGeneric
 					.Because("a null-safe predicate answers false for a null subject, which is exactly what the expectation asks for");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateIsNull_ShouldThrowArgumentNullException()
 			{
 				Other subject = new();
@@ -83,9 +83,9 @@ public sealed partial class ThatGeneric
 					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 			}
 
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task WhenSubjectIsNull_ShouldUsePredicateResult(bool predicateResult)
 			{
 				Other? subject = null;
@@ -93,7 +93,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotSatisfy(_ => predicateResult);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.OnlyIf(predicateResult)
 					.WithMessage("""
 					             Expected that subject
@@ -103,7 +103,7 @@ public sealed partial class ThatGeneric
 					.Because("the predicate decides about a null subject as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNullAndPredicateExpectsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -111,7 +111,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotSatisfy(x => x is null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not satisfy x => x is null,
@@ -122,7 +122,7 @@ public sealed partial class ThatGeneric
 
 		public sealed class WithinTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenCancellationIsRequestedWhileRetrying_ShouldBeInconclusive()
 			{
 				Other subject = new();
@@ -133,7 +133,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotSatisfy(_ => true).Within(30.Seconds())
 						.WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not satisfy _ => true within 0:30,
@@ -141,7 +141,7 @@ public sealed partial class ThatGeneric
 					             """).WithTimeout(10.Seconds());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalTimeoutIsApplied_ShouldFail()
 			{
 				int count = 0;
@@ -151,7 +151,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotSatisfy(_ => ++count <= 42).Within(30.Seconds())
 						.WithTimeout(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not satisfy _ => ++count <= 42 within 0:30,
@@ -160,10 +160,10 @@ public sealed partial class ThatGeneric
 					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
 			}
 
-			[Theory]
-			[InlineData(1, false)]
-			[InlineData(0, true)]
-			[InlineData(-1, true)]
+			[Test]
+			[Arguments(1, false)]
+			[Arguments(0, true)]
+			[Arguments(-1, true)]
 			public async Task WhenIntervalIsNotPositive_ShouldThrowArgumentOutOfRangeException(int intervalSeconds,
 				bool shouldThrow)
 			{
@@ -179,7 +179,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("The interval must be positive*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateResultIsFalseInitially_ShouldSucceedWithoutRetrying()
 			{
 				int count = 0;
@@ -192,7 +192,7 @@ public sealed partial class ThatGeneric
 				await That(count).IsEqualTo(1);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateResultTurnsFalseLaterOn_ShouldSucceed()
 			{
 				int count = 0;
@@ -204,7 +204,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsInfinite_ShouldNotMentionTheTimeout()
 			{
 				Other subject = new();
@@ -215,7 +215,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotSatisfy(_ => true).Within(System.Threading.Timeout.InfiniteTimeSpan)
 						.WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not satisfy _ => true,
@@ -224,7 +224,7 @@ public sealed partial class ThatGeneric
 					.Because("an infinite timeout imposes no limit, so only the cancellation ends the retries");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsInfinite_ShouldRetryUntilThePredicateIsNoLongerSatisfied()
 			{
 				int count = 0;
@@ -239,10 +239,10 @@ public sealed partial class ThatGeneric
 				await That(count).IsEqualTo(3);
 			}
 
-			[Theory]
-			[InlineData(1, false)]
-			[InlineData(0, false)]
-			[InlineData(-1, true)]
+			[Test]
+			[Arguments(1, false)]
+			[Arguments(0, false)]
+			[Arguments(-1, true)]
 			public async Task WhenTimeoutIsNegative_ShouldThrowArgumentOutOfRangeException(int timeoutSeconds,
 				bool shouldThrow)
 			{
@@ -257,7 +257,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("The timeout must not be negative*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsTooShort_ShouldFail()
 			{
 				int count = 0;
@@ -266,7 +266,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotSatisfy(_ => ++count <= 42).Within(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not satisfy _ => ++count <= 42 within 0:00.050,
@@ -279,7 +279,7 @@ public sealed partial class ThatGeneric
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenPredicateIsNotSatisfied_ShouldFail()
 			{
 				int subject = 1;
@@ -287,7 +287,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.DoesNotSatisfy(x => x == 2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             satisfies x => x == 2,
@@ -295,7 +295,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateIsSatisfied_ShouldSucceed()
 			{
 				int subject = 1;

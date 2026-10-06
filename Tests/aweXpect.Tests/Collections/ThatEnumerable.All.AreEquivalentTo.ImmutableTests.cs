@@ -13,7 +13,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class ImmutableTests
 			{
-				[Fact]
+				[Test]
 				public async Task Using_ShouldThrowInvalidOperationException()
 				{
 					ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -25,7 +25,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("Using cannot be combined with Equivalent.");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemsDiffer_ShouldFailAndDisplayNotMatchingItems()
 				{
 					ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -33,7 +33,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEquivalentTo(5);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equivalent to 5 for all items,
@@ -74,7 +74,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoItemsDiffer_ShouldSucceed()
 				{
 					int constantValue = 42;

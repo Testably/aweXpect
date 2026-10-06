@@ -6,7 +6,7 @@ public sealed partial class ThatChar
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectDiffersOnlyInCase_AndIgnoringCase_ShouldFail()
 			{
 				char subject = 'a';
@@ -14,7 +14,7 @@ public sealed partial class ThatChar
 				async Task Act()
 					=> await That(subject).IsNotEqualTo('A').IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 'A' ignoring case,
@@ -22,7 +22,7 @@ public sealed partial class ThatChar
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDifferent_AndIgnoringCase_ShouldSucceed()
 			{
 				char subject = 'a';
@@ -33,9 +33,9 @@ public sealed partial class ThatChar
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData('a', 'b')]
-			[InlineData('B', 'b')]
+			[Test]
+			[Arguments('a', 'b')]
+			[Arguments('B', 'b')]
 			public async Task WhenSubjectIsDifferent_ShouldSucceed(char subject, char unexpected)
 			{
 				async Task Act()
@@ -44,11 +44,11 @@ public sealed partial class ThatChar
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData('a')]
-			[InlineData('X')]
-			[InlineData('5')]
-			[InlineData('\t')]
+			[Test]
+			[Arguments('a')]
+			[Arguments('X')]
+			[Arguments('5')]
+			[Arguments('\t')]
 			public async Task WhenSubjectIsTheSame_ShouldFail(char subject)
 			{
 				char unexpected = subject;
@@ -56,7 +56,7 @@ public sealed partial class ThatChar
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to {Formatter.Format(unexpected)},
@@ -64,7 +64,7 @@ public sealed partial class ThatChar
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsNull_ShouldSucceed()
 			{
 				char subject = 'X';

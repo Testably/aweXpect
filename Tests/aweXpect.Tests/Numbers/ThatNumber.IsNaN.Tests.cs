@@ -6,7 +6,7 @@ public sealed partial class ThatNumber
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ForDouble_ShouldSupportChaining()
 			{
 				double subject = double.NaN;
@@ -18,15 +18,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(double.PositiveInfinity)]
-			[InlineData(double.NegativeInfinity)]
+			[Test]
+			[Arguments(double.PositiveInfinity)]
+			[Arguments(double.NegativeInfinity)]
 			public async Task ForDouble_WhenSubjectIsInfinity_ShouldFail(double subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNaN();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is NaN,
@@ -34,7 +34,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenSubjectIsNaN_ShouldSucceed()
 			{
 				double subject = double.NaN;
@@ -44,19 +44,19 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(-1.0)]
-			[InlineData(0.0)]
-			[InlineData(1.0)]
-			[InlineData(double.MinValue)]
-			[InlineData(double.MaxValue)]
-			[InlineData(double.Epsilon)]
+			[Test]
+			[Arguments(-1.0)]
+			[Arguments(0.0)]
+			[Arguments(1.0)]
+			[Arguments(double.MinValue)]
+			[Arguments(double.MaxValue)]
+			[Arguments(double.Epsilon)]
 			public async Task ForDouble_WhenSubjectIsNormalValue_ShouldFail(double subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNaN();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is NaN,
@@ -64,7 +64,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForFloat_ShouldSupportChaining()
 			{
 				float subject = float.NaN;
@@ -75,15 +75,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(float.PositiveInfinity)]
-			[InlineData(float.NegativeInfinity)]
+			[Test]
+			[Arguments(float.PositiveInfinity)]
+			[Arguments(float.NegativeInfinity)]
 			public async Task ForFloat_WhenSubjectIsInfinity_ShouldFail(float subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNaN();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is NaN,
@@ -91,7 +91,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForFloat_WhenSubjectIsNaN_ShouldSucceed()
 			{
 				float subject = float.NaN;
@@ -102,19 +102,19 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(-1f)]
-			[InlineData(0f)]
-			[InlineData(1f)]
-			[InlineData(float.MinValue)]
-			[InlineData(float.MaxValue)]
-			[InlineData(float.Epsilon)]
+			[Test]
+			[Arguments(-1f)]
+			[Arguments(0f)]
+			[Arguments(1f)]
+			[Arguments(float.MinValue)]
+			[Arguments(float.MaxValue)]
+			[Arguments(float.Epsilon)]
 			public async Task ForFloat_WhenSubjectIsNormalValue_ShouldFail(float subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNaN();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is NaN,
@@ -123,7 +123,7 @@ public sealed partial class ThatNumber
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForHalf_ShouldSupportChaining()
 			{
 				Half subject = Half.NaN;
@@ -137,7 +137,7 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForHalf_WhenSubjectIsNaN_ShouldSucceed()
 			{
 				Half subject = Half.NaN;
@@ -149,7 +149,7 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForHalf_WhenSubjectIsNegativeInfinity_ShouldFail()
 			{
 				Half subject = Half.NegativeInfinity;
@@ -157,7 +157,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNaN();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is NaN,
@@ -167,14 +167,14 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Theory]
-			[MemberData(nameof(GetNormalHalfValues), DisableDiscoveryEnumeration = true)]
+			[Test]
+			[MethodDataSource(nameof(GetNormalHalfValues))]
 			public async Task ForHalf_WhenSubjectIsNormalValue_ShouldFail(Half subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNaN();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is NaN,
@@ -184,7 +184,7 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForHalf_WhenSubjectIsPositiveInfinity_ShouldFail()
 			{
 				Half subject = Half.PositiveInfinity;
@@ -192,7 +192,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNaN();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is NaN,
@@ -201,7 +201,7 @@ public sealed partial class ThatNumber
 			}
 #endif
 
-			[Fact]
+			[Test]
 			public async Task ForNullableDouble_ShouldSupportChaining()
 			{
 				double? subject = double.NaN;
@@ -213,17 +213,17 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(double.PositiveInfinity)]
-			[InlineData(double.NegativeInfinity)]
-			[InlineData(null)]
+			[Test]
+			[Arguments(double.PositiveInfinity)]
+			[Arguments(double.NegativeInfinity)]
+			[Arguments(null)]
 			public async Task ForNullableDouble_WhenSubjectIsInfinityOrNull_ShouldFail(
 				double? subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNaN();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is NaN,
@@ -231,7 +231,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableDouble_WhenSubjectIsNaN_ShouldSucceed()
 			{
 				double? subject = double.NaN;
@@ -241,20 +241,20 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(-1.0)]
-			[InlineData(0.0)]
-			[InlineData(1.0)]
-			[InlineData(double.MinValue)]
-			[InlineData(double.MaxValue)]
-			[InlineData(double.Epsilon)]
+			[Test]
+			[Arguments(-1.0)]
+			[Arguments(0.0)]
+			[Arguments(1.0)]
+			[Arguments(double.MinValue)]
+			[Arguments(double.MaxValue)]
+			[Arguments(double.Epsilon)]
 			public async Task ForNullableDouble_WhenSubjectIsNormalValue_ShouldFail(
 				double? subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNaN();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is NaN,
@@ -262,7 +262,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableFloat_ShouldSupportChaining()
 			{
 				float? subject = float.NaN;
@@ -273,16 +273,16 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(float.PositiveInfinity)]
-			[InlineData(float.NegativeInfinity)]
+			[Test]
+			[Arguments(float.PositiveInfinity)]
+			[Arguments(float.NegativeInfinity)]
 			public async Task ForNullableFloat_WhenSubjectIsInfinity_ShouldFail(
 				float? subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNaN();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is NaN,
@@ -290,7 +290,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableFloat_WhenSubjectIsNaN_ShouldSucceed()
 			{
 				float? subject = float.NaN;
@@ -301,19 +301,19 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(-1f)]
-			[InlineData(0f)]
-			[InlineData(1f)]
-			[InlineData(float.MinValue)]
-			[InlineData(float.MaxValue)]
-			[InlineData(float.Epsilon)]
+			[Test]
+			[Arguments(-1f)]
+			[Arguments(0f)]
+			[Arguments(1f)]
+			[Arguments(float.MinValue)]
+			[Arguments(float.MaxValue)]
+			[Arguments(float.Epsilon)]
 			public async Task ForNullableFloat_WhenSubjectIsNormalValue_ShouldFail(float? subject)
 			{
 				async Task Act()
 					=> await That(subject).IsNaN();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is NaN,
@@ -322,7 +322,7 @@ public sealed partial class ThatNumber
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForNullableHalf_ShouldSupportChaining()
 			{
 				Half? subject = Half.NaN;
@@ -336,7 +336,7 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForNullableHalf_WhenSubjectIsNaN_ShouldSucceed()
 			{
 				Half? subject = Half.NaN;
@@ -348,7 +348,7 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForNullableHalf_WhenSubjectIsNegativeInfinity_ShouldFail()
 			{
 				Half? subject = Half.NegativeInfinity;
@@ -356,7 +356,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNaN();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is NaN,
@@ -366,8 +366,8 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Theory]
-			[MemberData(nameof(GetNormalHalfValues), DisableDiscoveryEnumeration = true)]
+			[Test]
+			[MethodDataSource(nameof(GetNormalHalfValues))]
 			public async Task ForNullableHalf_WhenSubjectIsNormalValue_ShouldFail(
 				Half subjectValue)
 			{
@@ -376,7 +376,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNaN();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is NaN,
@@ -386,7 +386,7 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForNullableHalf_WhenSubjectIsPositiveInfinity_ShouldFail()
 			{
 				Half? subject = Half.PositiveInfinity;
@@ -394,7 +394,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNaN();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is NaN,
@@ -415,9 +415,9 @@ public sealed partial class ThatNumber
 		
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData(double.PositiveInfinity)]
-			[InlineData(double.NegativeInfinity)]
+			[Test]
+			[Arguments(double.PositiveInfinity)]
+			[Arguments(double.NegativeInfinity)]
 			public async Task ForDouble_WhenSubjectIsInfinity_ShouldSucceed(double subject)
 			{
 				async Task Act()
@@ -427,7 +427,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenSubjectIsNaN_ShouldFail()
 			{
 				double subject = double.NaN;
@@ -435,7 +435,7 @@ public sealed partial class ThatNumber
 				async Task Act() => await That(subject).DoesNotComplyWith(it => 
 					it.IsNaN());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not NaN,
@@ -443,13 +443,13 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData(-1.0)]
-			[InlineData(0.0)]
-			[InlineData(1.0)]
-			[InlineData(double.MinValue)]
-			[InlineData(double.MaxValue)]
-			[InlineData(double.Epsilon)]
+			[Test]
+			[Arguments(-1.0)]
+			[Arguments(0.0)]
+			[Arguments(1.0)]
+			[Arguments(double.MinValue)]
+			[Arguments(double.MaxValue)]
+			[Arguments(double.Epsilon)]
 			public async Task ForDouble_WhenSubjectIsNormalValue_ShouldSucceed(double subject)
 			{
 				async Task Act()
@@ -459,9 +459,9 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 			
-			[Theory]
-			[InlineData(double.PositiveInfinity)]
-			[InlineData(double.NegativeInfinity)]
+			[Test]
+			[Arguments(double.PositiveInfinity)]
+			[Arguments(double.NegativeInfinity)]
 			public async Task ForNullableDouble_WhenSubjectIsInfinity_ShouldSucceed(
 				double? subject)
 			{
@@ -473,7 +473,7 @@ public sealed partial class ThatNumber
 			}
 
 
-			[Fact]
+			[Test]
 			public async Task ForNullableDouble_WhenSubjectIsNaN_ShouldFail()
 			{
 				double? subject = double.NaN;
@@ -481,20 +481,20 @@ public sealed partial class ThatNumber
 				async Task Act() => await That(subject).DoesNotComplyWith(it => 
 					it.IsNaN());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not NaN,
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
-			[Theory]
-			[InlineData(-1.0)]
-			[InlineData(0.0)]
-			[InlineData(1.0)]
-			[InlineData(double.MinValue)]
-			[InlineData(double.MaxValue)]
-			[InlineData(double.Epsilon)]
+			[Test]
+			[Arguments(-1.0)]
+			[Arguments(0.0)]
+			[Arguments(1.0)]
+			[Arguments(double.MinValue)]
+			[Arguments(double.MaxValue)]
+			[Arguments(double.Epsilon)]
 			public async Task ForNullableDouble_WhenSubjectIsNormalValue_ShouldSucceed(
 				double? subject)
 			{
@@ -505,7 +505,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableDouble_WhenSubjectIsNull_ShouldFail()
 			{
 				double? subject = null;
@@ -513,7 +513,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNaN());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not NaN,

@@ -12,7 +12,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenNoItemIsOfType_ShouldSucceed()
 				{
 					IEnumerable<object> subject = ToEnumerable<object>("a", "b");
@@ -23,7 +23,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSomeItemsAreOfType_ShouldFail()
 				{
 					IEnumerable<object> subject = ToEnumerable<object>(1, "a", 2);
@@ -31,7 +31,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).None().Are<int>();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is of type int for no items,
@@ -51,7 +51,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable<object>? subject = null;
@@ -59,7 +59,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).None().Are<int>();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is of type int for no items,
@@ -70,7 +70,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenNoItemIsOfType_ShouldFail()
 				{
 					IEnumerable<object> subject = ToEnumerable<object>("a", "b");
@@ -78,7 +78,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.None().Are<int>());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is of type int for at least one item,
@@ -92,7 +92,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSomeItemsAreOfType_ShouldSucceed()
 				{
 					IEnumerable<object> subject = ToEnumerable<object>(1, "a", 2);

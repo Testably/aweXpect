@@ -11,7 +11,7 @@ public sealed partial class ThatNumber
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task ForByte_ShouldSupportEnumerable()
 			{
 				byte subject = 1;
@@ -20,7 +20,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -31,16 +31,16 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-1", (byte)1, (byte)2, (byte)3)]
-			[InlineData("1", (byte)1, (byte)0, (byte)3)]
+			[Test]
+			[Arguments("-1", (byte)1, (byte)2, (byte)3)]
+			[Arguments("1", (byte)1, (byte)0, (byte)3)]
 			public async Task ForByte_WhenValueIsDifferentToAllExpected_ShouldFail(string differsBy, byte subject,
 				params byte?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -48,8 +48,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((byte)1, (byte)0, (byte)1, (byte)3)]
+			[Test]
+			[Arguments((byte)1, (byte)0, (byte)1, (byte)3)]
 			public async Task ForByte_WhenValueIsEqualToAnyExpected_ShouldSucceed(byte subject,
 				params byte?[] expected)
 			{
@@ -59,7 +59,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForByte_WithNullableEnumerable_WhenValueIsDifferentToAllExpected_ShouldFail()
 			{
 				byte subject = 1;
@@ -68,7 +68,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -79,7 +79,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForByte_WithNullableEnumerable_WhenValueIsEqualToAnyExpected_ShouldSucceed()
 			{
 				byte subject = 1;
@@ -91,7 +91,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDecimal_ShouldSupportEnumerable()
 			{
 				decimal subject = 1;
@@ -100,7 +100,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -111,9 +111,9 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-1.0", 1.1, 2.1, 3.1)]
-			[InlineData("1.0", 1.1, 0.1, 3.1)]
+			[Test]
+			[Arguments("-1.0", 1.1, 2.1, 3.1)]
+			[Arguments("1.0", 1.1, 0.1, 3.1)]
 			public async Task ForDecimal_WhenValueIsDifferentToAllExpected_ShouldFail(
 				string differsBy, double subjectValue, params double[] expectedValues)
 			{
@@ -125,7 +125,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of expected,
@@ -136,8 +136,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData(1.1, 0.1, 1.1, 3.1)]
+			[Test]
+			[Arguments(1.1, 0.1, 1.1, 3.1)]
 			public async Task ForDecimal_WhenValueIsEqualToAnyExpected_ShouldSucceed(
 				double subjectValue, params double[] expectedValues)
 			{
@@ -152,7 +152,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDecimal_WithNullableEnumerable_WhenValueIsDifferentToAllExpected_ShouldFail()
 			{
 				decimal subject = 1;
@@ -161,7 +161,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -172,7 +172,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDecimal_WithNullableEnumerable_WhenValueIsEqualToAnyExpected_ShouldSucceed()
 			{
 				decimal subject = 1;
@@ -184,7 +184,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_ShouldSupportEnumerable()
 			{
 				double subject = 1.1;
@@ -193,7 +193,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -204,8 +204,8 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData(2.0, 2.0F)]
+			[Test]
+			[Arguments(2.0, 2.0F)]
 			public async Task ForDouble_WhenExpectedIsEqualFloat_ShouldSucceed(
 				double subject, float expected)
 			{
@@ -215,7 +215,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenSubjectAndExpectedAreNaN_ShouldSucceed()
 			{
 				double subject = double.NaN;
@@ -226,15 +226,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("", double.NaN, 0.0, 1.0)]
-			[InlineData(", which differs by -1.0 from the closest value", 0.0, 1.0, double.NaN)]
+			[Test]
+			[Arguments("", double.NaN, 0.0, 1.0)]
+			[Arguments(", which differs by -1.0 from the closest value", 0.0, 1.0, double.NaN)]
 			public async Task ForDouble_WhenSubjectOrExpectedIsNaN_ShouldFail(string difference, double subject,
 				params double[] expected)
 			{
 				async Task Act() => await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of expected,
@@ -245,16 +245,16 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData("-1.0", 1.1, 2.1, 3.1)]
-			[InlineData("1.0", 1.1, 0.1, 3.1)]
+			[Test]
+			[Arguments("-1.0", 1.1, 2.1, 3.1)]
+			[Arguments("1.0", 1.1, 0.1, 3.1)]
 			public async Task ForDouble_WhenValueIsDifferentToAllExpected_ShouldFail(
 				string differsBy, double subject, params double[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of expected,
@@ -265,8 +265,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData(1.1, 0.1, 1.1, 3.1)]
+			[Test]
+			[Arguments(1.1, 0.1, 1.1, 3.1)]
 			public async Task ForDouble_WhenValueIsEqualToAnyExpected_ShouldSucceed(
 				double subject, params double?[] expected)
 			{
@@ -276,7 +276,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WithNullableEnumerable_WhenValueIsDifferentToAllExpected_ShouldFail()
 			{
 				double subject = 1.1;
@@ -285,7 +285,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -296,7 +296,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WithNullableEnumerable_WhenValueIsEqualToAnyExpected_ShouldSucceed()
 			{
 				double subject = 1.1;
@@ -308,7 +308,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForFloat_ShouldSupportEnumerable()
 			{
 				float subject = 1.1F;
@@ -317,7 +317,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -328,7 +328,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForFloat_WhenSubjectAndExpectedAreNaN_ShouldSucceed()
 			{
 				float subject = float.NaN;
@@ -339,15 +339,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("", float.NaN, 0.0F, 1.0F)]
-			[InlineData(", which differs by -1.0 from the closest value", 0.0F, 1.0F, float.NaN)]
+			[Test]
+			[Arguments("", float.NaN, 0.0F, 1.0F)]
+			[Arguments(", which differs by -1.0 from the closest value", 0.0F, 1.0F, float.NaN)]
 			public async Task ForFloat_WhenSubjectOrExpectedIsNaN_ShouldFail(string difference, float subject,
 				params float[] expected)
 			{
 				async Task Act() => await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of expected,
@@ -358,16 +358,16 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData("-0.9999999", (float)1.1, (float)2.1, (float)3.1)]
-			[InlineData("1.0", (float)1.1, (float)0.1, (float)3.1)]
+			[Test]
+			[Arguments("-0.9999999", (float)1.1, (float)2.1, (float)3.1)]
+			[Arguments("1.0", (float)1.1, (float)0.1, (float)3.1)]
 			public async Task ForFloat_WhenValueIsDifferentToAllExpected_ShouldFail(
 				string differsBy, float subject, params float[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of expected,
@@ -378,8 +378,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((float)1.1, (float)0.1, (float)1.1, (float)3.1)]
+			[Test]
+			[Arguments((float)1.1, (float)0.1, (float)1.1, (float)3.1)]
 			public async Task ForFloat_WhenValueIsEqualToAnyExpected_ShouldSucceed(
 				float subject, params float?[] expected)
 			{
@@ -389,7 +389,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForFloat_WithNullableEnumerable_WhenValueIsDifferentToAllExpected_ShouldFail()
 			{
 				float subject = 1.1F;
@@ -398,7 +398,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -409,7 +409,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForFloat_WithNullableEnumerable_WhenValueIsEqualToAnyExpected_ShouldSucceed()
 			{
 				float subject = 1.1F;
@@ -421,7 +421,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForInt_ShouldSupportEnumerable()
 			{
 				int subject = 1;
@@ -430,7 +430,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -441,7 +441,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForInt_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
 				int subject = 1;
@@ -450,7 +450,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -462,7 +462,7 @@ public sealed partial class ThatNumber
 					.Because("the values are cached while they are enumerated, so the comparison and the message share one enumeration");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForInt_WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				int subject = 1;
@@ -477,7 +477,7 @@ public sealed partial class ThatNumber
 					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForInt_WhenExpectedIsInfiniteAndContainsTheSubject_ShouldSucceed()
 			{
 				int subject = 8;
@@ -490,7 +490,7 @@ public sealed partial class ThatNumber
 					.Because("the values are only enumerated until the subject is found");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForInt_WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				int subject = 1;
@@ -504,7 +504,7 @@ public sealed partial class ThatNumber
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForInt_WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				int subject = 1;
@@ -519,7 +519,7 @@ public sealed partial class ThatNumber
 					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForInt_WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				int subject = 1;
@@ -533,7 +533,7 @@ public sealed partial class ThatNumber
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForInt_WhenTheDistanceToAnExpectedValueOverflows_ShouldMeasureFromTheOtherValues()
 			{
 				int subject = int.MinValue + 1;
@@ -541,7 +541,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(int.MaxValue, 0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of [2147483647, 0],
@@ -550,16 +550,16 @@ public sealed partial class ThatNumber
 					.Because("a distance that overflows the number type cannot be the smallest one");
 			}
 
-			[Theory]
-			[InlineData("-1", 1, 2, 3)]
-			[InlineData("1", 2, 1, 3)]
+			[Test]
+			[Arguments("-1", 1, 2, 3)]
+			[Arguments("1", 2, 1, 3)]
 			public async Task ForInt_WhenValueIsDifferentToAllExpected_ShouldFail(string differsBy, int subject,
 				params int?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -567,8 +567,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData(1, 0, 1, 3)]
+			[Test]
+			[Arguments(1, 0, 1, 3)]
 			public async Task ForInt_WhenValueIsEqualToAnyExpected_ShouldSucceed(int subject,
 				params int?[] expected)
 			{
@@ -578,7 +578,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForInt_WithNullableEnumerable_WhenValueIsDifferentToAllExpected_ShouldFail()
 			{
 				int subject = 1;
@@ -587,7 +587,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -598,7 +598,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForInt_WithNullableEnumerable_WhenValueIsEqualToAnyExpected_ShouldSucceed()
 			{
 				int subject = 1;
@@ -610,7 +610,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForLong_ShouldSupportEnumerable()
 			{
 				long subject = 1;
@@ -619,7 +619,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -630,8 +630,8 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData(1L, 1)]
+			[Test]
+			[Arguments(1L, 1)]
 			public async Task ForLong_WhenExpectedIsEqualInt_ShouldSucceed(long subject, int expected)
 			{
 				async Task Act()
@@ -640,16 +640,16 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("-1", (long)1, (long)2, (long)3)]
-			[InlineData("1", (long)1, (long)0, (long)3)]
+			[Test]
+			[Arguments("-1", (long)1, (long)2, (long)3)]
+			[Arguments("1", (long)1, (long)0, (long)3)]
 			public async Task ForLong_WhenValueIsDifferentToAllExpected_ShouldFail(string differsBy, long subject,
 				params long?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -657,8 +657,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((long)1, (long)0, (long)1, (long)3)]
+			[Test]
+			[Arguments((long)1, (long)0, (long)1, (long)3)]
 			public async Task ForLong_WhenValueIsEqualToAnyExpected_ShouldSucceed(long subject,
 				params long?[] expected)
 			{
@@ -668,7 +668,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForLong_WithNullableEnumerable_WhenValueIsDifferentToAllExpected_ShouldFail()
 			{
 				long subject = 1;
@@ -677,7 +677,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -688,7 +688,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForLong_WithNullableEnumerable_WhenValueIsEqualToAnyExpected_ShouldSucceed()
 			{
 				long subject = 1;
@@ -700,7 +700,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableByte_ShouldSupportEnumerable()
 			{
 				byte? subject = 1;
@@ -709,7 +709,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -720,16 +720,16 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-1", (byte)1, (byte)2, (byte)3)]
-			[InlineData("1", (byte)1, (byte)0, (byte)3)]
+			[Test]
+			[Arguments("-1", (byte)1, (byte)2, (byte)3)]
+			[Arguments("1", (byte)1, (byte)0, (byte)3)]
 			public async Task ForNullableByte_WhenValueIsDifferentToAllExpected_ShouldFail(
 				string differsBy, byte? subject, params byte?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -737,8 +737,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((byte)1, (byte)0, (byte)1, (byte)3)]
+			[Test]
+			[Arguments((byte)1, (byte)0, (byte)1, (byte)3)]
 			public async Task ForNullableByte_WhenValueIsEqualToAnyExpected_ShouldSucceed(
 				byte? subject, params byte?[] expected)
 			{
@@ -748,8 +748,8 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableByte_WhenValueIsNull_ShouldFail(
 				params byte?[] expected)
 			{
@@ -758,7 +758,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -766,7 +766,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableDecimal_ShouldSupportEnumerable()
 			{
 				decimal? subject = 1;
@@ -775,7 +775,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -786,9 +786,9 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-1.0", 1.1, 2.1, 3.1)]
-			[InlineData("1.0", 1.1, 0.1, 3.1)]
+			[Test]
+			[Arguments("-1.0", 1.1, 2.1, 3.1)]
+			[Arguments("1.0", 1.1, 0.1, 3.1)]
 			public async Task ForNullableDecimal_WhenValueIsDifferentToAllExpected_ShouldFail(
 				string differsBy, double? subjectValue, params double?[] expectedValues)
 			{
@@ -802,7 +802,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -810,8 +810,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData(1.1, 0.1, 1.1, 3.1)]
+			[Test]
+			[Arguments(1.1, 0.1, 1.1, 3.1)]
 			public async Task ForNullableDecimal_WhenValueIsEqualToAnyExpected_ShouldSucceed(
 				double? subjectValue, params double?[] expectedValues)
 			{
@@ -828,7 +828,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableDouble_ShouldSupportEnumerable()
 			{
 				double? subject = 1;
@@ -837,7 +837,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -848,16 +848,16 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-1.0", 1.1, 2.1, 3.1)]
-			[InlineData("1.0", 1.1, 0.1, 3.1)]
+			[Test]
+			[Arguments("-1.0", 1.1, 2.1, 3.1)]
+			[Arguments("1.0", 1.1, 0.1, 3.1)]
 			public async Task ForNullableDouble_WhenValueIsDifferentToAllExpected_ShouldFail(
 				string differsBy, double? subject, params double?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -865,8 +865,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData(1.1, 0.1, 1.1, 3.1)]
+			[Test]
+			[Arguments(1.1, 0.1, 1.1, 3.1)]
 			public async Task ForNullableDouble_WhenValueIsEqualToAnyExpected_ShouldSucceed(
 				double? subject, params double?[] expected)
 			{
@@ -876,7 +876,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableFloat_ShouldSupportEnumerable()
 			{
 				float? subject = 1;
@@ -885,7 +885,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -896,16 +896,16 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-0.9999999", (float)1.1, (float)2.1, (float)3.1)]
-			[InlineData("1.0", (float)1.1, (float)0.1, (float)3.1)]
+			[Test]
+			[Arguments("-0.9999999", (float)1.1, (float)2.1, (float)3.1)]
+			[Arguments("1.0", (float)1.1, (float)0.1, (float)3.1)]
 			public async Task ForNullableFloat_WhenValueIsDifferentToAllExpected_ShouldFail(
 				string differsBy, float? subject, params float?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -913,8 +913,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((float)1.1, (float)0.1, (float)1.1, (float)3.1)]
+			[Test]
+			[Arguments((float)1.1, (float)0.1, (float)1.1, (float)3.1)]
 			public async Task ForNullableFloat_WhenValueIsEqualToAnyExpected_ShouldSucceed(
 				float? subject, params float?[] expected)
 			{
@@ -924,7 +924,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableInt_ShouldSupportEnumerable()
 			{
 				int? subject = 1;
@@ -933,7 +933,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -944,7 +944,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableInt_WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				int? subject = 1;
@@ -959,7 +959,7 @@ public sealed partial class ThatNumber
 					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableInt_WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				int? subject = 1;
@@ -973,7 +973,7 @@ public sealed partial class ThatNumber
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableInt_WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				int? subject = 1;
@@ -988,7 +988,7 @@ public sealed partial class ThatNumber
 					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableInt_WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				int? subject = 1;
@@ -1002,16 +1002,16 @@ public sealed partial class ThatNumber
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
-			[Theory]
-			[InlineData("-1", 1, 2, 3)]
-			[InlineData("1", 1, 0, 3)]
+			[Test]
+			[Arguments("-1", 1, 2, 3)]
+			[Arguments("1", 1, 0, 3)]
 			public async Task ForNullableInt_WhenValueIsDifferentToAllExpected_ShouldFail(
 				string differsBy, int? subject, params int?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1019,8 +1019,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData(1, 0, 1, 3)]
+			[Test]
+			[Arguments(1, 0, 1, 3)]
 			public async Task ForNullableInt_WhenValueIsEqualToAnyExpected_ShouldSucceed(
 				int? subject, params int?[] expected)
 			{
@@ -1030,8 +1030,8 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableInt_WhenValueIsNull_ShouldFail(
 				params int?[] expected)
 			{
@@ -1040,7 +1040,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1048,7 +1048,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableLong_ShouldSupportEnumerable()
 			{
 				long? subject = 1;
@@ -1057,7 +1057,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -1068,16 +1068,16 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-1", (long)1, (long)2, (long)3)]
-			[InlineData("1", (long)1, (long)0, (long)3)]
+			[Test]
+			[Arguments("-1", (long)1, (long)2, (long)3)]
+			[Arguments("1", (long)1, (long)0, (long)3)]
 			public async Task ForNullableLong_WhenValueIsDifferentToAllExpected_ShouldFail(
 				string differsBy, long? subject, params long?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1085,8 +1085,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((long)1, (long)0, (long)1, (long)3)]
+			[Test]
+			[Arguments((long)1, (long)0, (long)1, (long)3)]
 			public async Task ForNullableLong_WhenValueIsEqualToAnyExpected_ShouldSucceed(
 				long? subject, params long?[] expected)
 			{
@@ -1096,8 +1096,8 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableLong_WhenValueIsNull_ShouldFail(
 				params long?[] expected)
 			{
@@ -1106,7 +1106,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1114,7 +1114,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableSbyte_ShouldSupportEnumerable()
 			{
 				sbyte? subject = 1;
@@ -1123,7 +1123,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -1134,16 +1134,16 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-1", (sbyte)1, (sbyte)2, (sbyte)3)]
-			[InlineData("1", (sbyte)1, (sbyte)0, (sbyte)3)]
+			[Test]
+			[Arguments("-1", (sbyte)1, (sbyte)2, (sbyte)3)]
+			[Arguments("1", (sbyte)1, (sbyte)0, (sbyte)3)]
 			public async Task ForNullableSbyte_WhenValueIsDifferentToAllExpected_ShouldFail(
 				string differsBy, sbyte? subject, params sbyte?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1151,8 +1151,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((sbyte)1, (sbyte)0, (sbyte)1, (sbyte)3)]
+			[Test]
+			[Arguments((sbyte)1, (sbyte)0, (sbyte)1, (sbyte)3)]
 			public async Task ForNullableSbyte_WhenValueIsEqualToAnyExpected_ShouldSucceed(
 				sbyte? subject, params sbyte?[] expected)
 			{
@@ -1162,8 +1162,8 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableSbyte_WhenValueIsNull_ShouldFail(
 				params sbyte?[] expected)
 			{
@@ -1172,7 +1172,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1180,7 +1180,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableShort_ShouldSupportEnumerable()
 			{
 				short? subject = 1;
@@ -1189,7 +1189,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -1200,16 +1200,16 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-1", (short)1, (short)2, (short)3)]
-			[InlineData("1", (short)1, (short)0, (short)3)]
+			[Test]
+			[Arguments("-1", (short)1, (short)2, (short)3)]
+			[Arguments("1", (short)1, (short)0, (short)3)]
 			public async Task ForNullableShort_WhenValueIsDifferentToAllExpected_ShouldFail(
 				string differsBy, short? subject, params short?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1217,8 +1217,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((short)1, (short)0, (short)1, (short)3)]
+			[Test]
+			[Arguments((short)1, (short)0, (short)1, (short)3)]
 			public async Task ForNullableShort_WhenValueIsEqualToAnyExpected_ShouldSucceed(
 				short? subject, params short?[] expected)
 			{
@@ -1228,8 +1228,8 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableShort_WhenValueIsNull_ShouldFail(
 				params short?[] expected)
 			{
@@ -1238,7 +1238,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1246,7 +1246,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableUint_ShouldSupportEnumerable()
 			{
 				uint? subject = 1;
@@ -1255,7 +1255,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -1266,16 +1266,16 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-1", (uint)1, (uint)2, (uint)3)]
-			[InlineData("1", (uint)1, (uint)0, (uint)3)]
+			[Test]
+			[Arguments("-1", (uint)1, (uint)2, (uint)3)]
+			[Arguments("1", (uint)1, (uint)0, (uint)3)]
 			public async Task ForNullableUint_WhenValueIsDifferentToAllExpected_ShouldFail(
 				string differsBy, uint? subject, params uint?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1283,8 +1283,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((uint)1, (uint)0, (uint)1, (uint)3)]
+			[Test]
+			[Arguments((uint)1, (uint)0, (uint)1, (uint)3)]
 			public async Task ForNullableUint_WhenValueIsEqualToAnyExpected_ShouldSucceed(
 				uint? subject, params uint?[] expected)
 			{
@@ -1294,8 +1294,8 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableUint_WhenValueIsNull_ShouldFail(
 				params uint?[] expected)
 			{
@@ -1304,7 +1304,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1312,7 +1312,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableUlong_ShouldSupportEnumerable()
 			{
 				ulong? subject = 1;
@@ -1321,7 +1321,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -1332,16 +1332,16 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-1", (ulong)1, (ulong)2, (ulong)3)]
-			[InlineData("1", (ulong)1, (ulong)0, (ulong)3)]
+			[Test]
+			[Arguments("-1", (ulong)1, (ulong)2, (ulong)3)]
+			[Arguments("1", (ulong)1, (ulong)0, (ulong)3)]
 			public async Task ForNullableUlong_WhenValueIsDifferentToAllExpected_ShouldFail(
 				string differsBy, ulong? subject, params ulong?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1349,8 +1349,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((ulong)1, (ulong)0, (ulong)1, (ulong)3)]
+			[Test]
+			[Arguments((ulong)1, (ulong)0, (ulong)1, (ulong)3)]
 			public async Task ForNullableUlong_WhenValueIsEqualToAnyExpected_ShouldSucceed(
 				ulong? subject, params ulong?[] expected)
 			{
@@ -1360,8 +1360,8 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableUlong_WhenValueIsNull_ShouldFail(
 				params ulong?[] expected)
 			{
@@ -1370,7 +1370,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1378,7 +1378,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableUshort_ShouldSupportEnumerable()
 			{
 				ushort? subject = 1;
@@ -1387,7 +1387,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -1398,16 +1398,16 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-1", (ushort)1, (ushort)2, (ushort)3)]
-			[InlineData("1", (ushort)1, (ushort)0, (ushort)3)]
+			[Test]
+			[Arguments("-1", (ushort)1, (ushort)2, (ushort)3)]
+			[Arguments("1", (ushort)1, (ushort)0, (ushort)3)]
 			public async Task ForNullableUshort_WhenValueIsDifferentToAllExpected_ShouldFail(
 				string differsBy, ushort? subject, params ushort?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1415,8 +1415,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((ushort)1, (ushort)0, (ushort)1, (ushort)3)]
+			[Test]
+			[Arguments((ushort)1, (ushort)0, (ushort)1, (ushort)3)]
 			public async Task ForNullableUshort_WhenValueIsEqualToAnyExpected_ShouldSucceed(
 				ushort? subject, params ushort?[] expected)
 			{
@@ -1426,8 +1426,8 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableUshort_WhenValueIsNull_ShouldFail(
 				params ushort?[] expected)
 			{
@@ -1436,7 +1436,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1444,7 +1444,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForSbyte_ShouldSupportEnumerable()
 			{
 				sbyte subject = 1;
@@ -1453,7 +1453,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -1464,7 +1464,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForSbyte_WhenDifferenceOverflows_ShouldFail()
 			{
 				sbyte subject = sbyte.MaxValue;
@@ -1473,7 +1473,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of [-128],
@@ -1481,16 +1481,16 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-1", (sbyte)1, (sbyte)2, (sbyte)3)]
-			[InlineData("1", (sbyte)1, (sbyte)0, (sbyte)3)]
+			[Test]
+			[Arguments("-1", (sbyte)1, (sbyte)2, (sbyte)3)]
+			[Arguments("1", (sbyte)1, (sbyte)0, (sbyte)3)]
 			public async Task ForSbyte_WhenValueIsDifferentToAllExpected_ShouldFail(string differsBy, sbyte subject,
 				params sbyte?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1498,8 +1498,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((sbyte)1, (sbyte)0, (sbyte)1, (sbyte)3)]
+			[Test]
+			[Arguments((sbyte)1, (sbyte)0, (sbyte)1, (sbyte)3)]
 			public async Task ForSbyte_WhenValueIsEqualToAnyExpected_ShouldSucceed(sbyte subject,
 				params sbyte?[] expected)
 			{
@@ -1509,7 +1509,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForSbyte_WithNullableEnumerable_WhenValueIsDifferentToAllExpected_ShouldFail()
 			{
 				sbyte subject = 1;
@@ -1518,7 +1518,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -1529,7 +1529,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForSbyte_WithNullableEnumerable_WhenValueIsEqualToAnyExpected_ShouldSucceed()
 			{
 				sbyte subject = 1;
@@ -1541,7 +1541,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForShort_ShouldSupportEnumerable()
 			{
 				short subject = 1;
@@ -1550,7 +1550,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -1561,7 +1561,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForShort_WhenDifferenceOverflows_ShouldFail()
 			{
 				short subject = short.MaxValue;
@@ -1570,7 +1570,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of [-32768],
@@ -1578,16 +1578,16 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-1", (short)1, (short)2, (short)3)]
-			[InlineData("1", (short)1, (short)0, (short)3)]
+			[Test]
+			[Arguments("-1", (short)1, (short)2, (short)3)]
+			[Arguments("1", (short)1, (short)0, (short)3)]
 			public async Task ForShort_WhenValueIsDifferentToAllExpected_ShouldFail(string differsBy, short subject,
 				params short?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1595,8 +1595,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((short)1, (short)0, (short)1, (short)3)]
+			[Test]
+			[Arguments((short)1, (short)0, (short)1, (short)3)]
 			public async Task ForShort_WhenValueIsEqualToAnyExpected_ShouldSucceed(short subject,
 				params short?[] expected)
 			{
@@ -1606,7 +1606,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForShort_WithNullableEnumerable_WhenValueIsDifferentToAllExpected_ShouldFail()
 			{
 				short subject = 1;
@@ -1615,7 +1615,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -1626,7 +1626,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForShort_WithNullableEnumerable_WhenValueIsEqualToAnyExpected_ShouldSucceed()
 			{
 				short subject = 1;
@@ -1638,7 +1638,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForUint_ShouldSupportEnumerable()
 			{
 				uint subject = 1;
@@ -1647,7 +1647,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -1658,16 +1658,16 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-1", (uint)1, (uint)2, (uint)3)]
-			[InlineData("1", (uint)1, (uint)0, (uint)3)]
+			[Test]
+			[Arguments("-1", (uint)1, (uint)2, (uint)3)]
+			[Arguments("1", (uint)1, (uint)0, (uint)3)]
 			public async Task ForUint_WhenValueIsDifferentToAllExpected_ShouldFail(string differsBy, uint subject,
 				params uint?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1675,8 +1675,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((uint)1, (uint)0, (uint)1, (uint)3)]
+			[Test]
+			[Arguments((uint)1, (uint)0, (uint)1, (uint)3)]
 			public async Task ForUint_WhenValueIsEqualToAnyExpected_ShouldSucceed(uint subject,
 				params uint?[] expected)
 			{
@@ -1686,7 +1686,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForUint_WithNullableEnumerable_WhenValueIsDifferentToAllExpected_ShouldFail()
 			{
 				uint subject = 1;
@@ -1695,7 +1695,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -1706,7 +1706,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForUint_WithNullableEnumerable_WhenValueIsEqualToAnyExpected_ShouldSucceed()
 			{
 				uint subject = 1;
@@ -1718,7 +1718,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForUlong_ShouldSupportEnumerable()
 			{
 				ulong subject = 1;
@@ -1727,7 +1727,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -1738,16 +1738,16 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-1", (ulong)1, (ulong)2, (ulong)3)]
-			[InlineData("1", (ulong)1, (ulong)0, (ulong)3)]
+			[Test]
+			[Arguments("-1", (ulong)1, (ulong)2, (ulong)3)]
+			[Arguments("1", (ulong)1, (ulong)0, (ulong)3)]
 			public async Task ForUlong_WhenValueIsDifferentToAllExpected_ShouldFail(string differsBy, ulong subject,
 				params ulong?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1755,8 +1755,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((ulong)1, (ulong)0, (ulong)1, (ulong)3)]
+			[Test]
+			[Arguments((ulong)1, (ulong)0, (ulong)1, (ulong)3)]
 			public async Task ForUlong_WhenValueIsEqualToAnyExpected_ShouldSucceed(ulong subject,
 				params ulong?[] expected)
 			{
@@ -1766,7 +1766,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForUlong_WithNullableEnumerable_WhenValueIsDifferentToAllExpected_ShouldFail()
 			{
 				ulong subject = 1;
@@ -1775,7 +1775,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -1786,7 +1786,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForUlong_WithNullableEnumerable_WhenValueIsEqualToAnyExpected_ShouldSucceed()
 			{
 				ulong subject = 1;
@@ -1798,7 +1798,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForUshort_ShouldSupportEnumerable()
 			{
 				ushort subject = 1;
@@ -1807,7 +1807,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -1818,16 +1818,16 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Theory]
-			[InlineData("-1", (ushort)1, (ushort)2, (ushort)3)]
-			[InlineData("1", (ushort)1, (ushort)0, (ushort)3)]
+			[Test]
+			[Arguments("-1", (ushort)1, (ushort)2, (ushort)3)]
+			[Arguments("1", (ushort)1, (ushort)0, (ushort)3)]
 			public async Task ForUshort_WhenValueIsDifferentToAllExpected_ShouldFail(string differsBy, ushort subject,
 				params ushort?[] expected)
 			{
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is one of {Formatter.Format(expected)},
@@ -1835,8 +1835,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((ushort)1, (ushort)0, (ushort)1, (ushort)3)]
+			[Test]
+			[Arguments((ushort)1, (ushort)0, (ushort)1, (ushort)3)]
 			public async Task ForUshort_WhenValueIsEqualToAnyExpected_ShouldSucceed(ushort subject,
 				params ushort?[] expected)
 			{
@@ -1846,7 +1846,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForUshort_WithNullableEnumerable_WhenValueIsDifferentToAllExpected_ShouldFail()
 			{
 				ushort subject = 1;
@@ -1855,7 +1855,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -1866,7 +1866,7 @@ public sealed partial class ThatNumber
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForUshort_WithNullableEnumerable_WhenValueIsEqualToAnyExpected_ShouldSucceed()
 			{
 				ushort subject = 1;
@@ -1878,7 +1878,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNullAndExpectedContainsNull_ShouldSucceed()
 			{
 				int? subject = null;

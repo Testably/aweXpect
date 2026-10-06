@@ -10,7 +10,7 @@ public sealed partial class ThatEventRecording
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBothAllPropertiesAndNamedEventAreRecorded_ShouldCountBothForThatProperty()
 			{
 				PropertyChangedClass sut = new();
@@ -27,7 +27,7 @@ public sealed partial class ThatEventRecording
 					.Because("the notification for all properties changed MyValue, too");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBothAllPropertiesAndNamedEventAreRecorded_ShouldCountOnlyAllPropertiesForOtherProperty()
 			{
 				PropertyChangedClass sut = new();
@@ -43,7 +43,7 @@ public sealed partial class ThatEventRecording
 					.Because("only the notification for all properties changed the other property");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEmptyPropertyNameIsExpected_ShouldMatchNullPropertyName()
 			{
 				PropertyChangedClass sut = new();
@@ -58,7 +58,7 @@ public sealed partial class ThatEventRecording
 					.Because("the contract makes no difference between the two spellings of the all-properties notification");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsRecordedWithEmptyPropertyName_ShouldMatchExpressionForAnyProperty()
 			{
 				PropertyChangedClass sut = new();
@@ -73,7 +73,7 @@ public sealed partial class ThatEventRecording
 					.Because("an empty property name notifies that all properties changed");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsRecordedWithEmptyPropertyName_ShouldMatchStringNameOfAnyProperty()
 			{
 				PropertyChangedClass sut = new();
@@ -88,7 +88,7 @@ public sealed partial class ThatEventRecording
 					.Because("an empty property name notifies that all properties changed");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsRecordedWithNullPropertyName_ShouldMatchExpressionForAnyProperty()
 			{
 				PropertyChangedClass sut = new();
@@ -103,7 +103,7 @@ public sealed partial class ThatEventRecording
 					.Because("a null property name notifies that all properties changed");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsRecordedWithNullPropertyName_ShouldMatchStringNameOfAnyProperty()
 			{
 				PropertyChangedClass sut = new();
@@ -118,7 +118,7 @@ public sealed partial class ThatEventRecording
 					.Because("a null property name notifies that all properties changed");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsRecordedWithWhitespacePropertyName_ShouldNotMatchOtherProperty()
 			{
 				PropertyChangedClass sut = new()
@@ -132,7 +132,7 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording).TriggeredPropertyChangedFor(x => x.MyValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut for property MyValue at least once,
@@ -147,7 +147,7 @@ public sealed partial class ThatEventRecording
 					.Because("only a null or empty name notifies that all properties changed");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsAsCastOfPropertyAccess_ShouldUsePropertyName()
 			{
 				PropertyChangedBaseClass sut = new();
@@ -162,7 +162,7 @@ public sealed partial class ThatEventRecording
 					.Because("a cast of the property value still names the property");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsCheckedConversionOfPropertyAccess_ShouldUsePropertyName()
 			{
 				PropertyChangedWithMembersClass sut = new();
@@ -177,7 +177,7 @@ public sealed partial class ThatEventRecording
 					.Because("a conversion in a checked context still wraps a property access");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsConvertedPropertyAccess_ShouldUsePropertyName()
 			{
 				PropertyChangedWithMembersClass sut = new();
@@ -192,7 +192,7 @@ public sealed partial class ThatEventRecording
 					.Because("the compiler-inserted conversion still wraps a property access");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsDowncastOfParameter_ShouldUsePropertyName()
 			{
 				PropertyChangedBaseClass sut = new PropertyChangedDerivedClass();
@@ -207,7 +207,7 @@ public sealed partial class ThatEventRecording
 					.Because("a cast of the subject is still the subject");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsFieldAccess_ShouldThrowArgumentException()
 			{
 				PropertyChangedWithMembersClass sut = new();
@@ -224,7 +224,7 @@ public sealed partial class ThatEventRecording
 					.Because("a field is no property and must not silently become the null property name");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsForeignPropertyAccess_ShouldThrowArgumentException()
 			{
 				PropertyChangedWithMembersClass sut = new();
@@ -243,7 +243,7 @@ public sealed partial class ThatEventRecording
 					.Because("a property of another object is no property of the subject");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsImplicitlyBoxedPropertyAccess_ShouldUsePropertyName()
 			{
 				PropertyChangedWithMembersClass sut = new();
@@ -259,7 +259,7 @@ public sealed partial class ThatEventRecording
 					.Because("the compiler-inserted boxing still wraps a property access");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsImplicitlyConvertedPropertyAccess_ShouldUsePropertyName()
 			{
 				PropertyChangedWithMembersClass sut = new();
@@ -275,7 +275,7 @@ public sealed partial class ThatEventRecording
 					.Because("the compiler-inserted conversion operator still wraps a property access");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsIndexerAccess_ShouldThrowArgumentException()
 			{
 				PropertyChangedWithMembersClass sut = new();
@@ -293,7 +293,7 @@ public sealed partial class ThatEventRecording
 					.Because("an indexer access does not name a property that the PropertyChanged event could report");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsInheritedPropertyAccess_ShouldUsePropertyName()
 			{
 				PropertyChangedDerivedClass sut = new();
@@ -308,7 +308,7 @@ public sealed partial class ThatEventRecording
 					.Because("a property of a base class is a property of the subject");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsMethodCall_ShouldThrowArgumentException()
 			{
 				PropertyChangedWithMembersClass sut = new();
@@ -326,7 +326,7 @@ public sealed partial class ThatEventRecording
 					.Because("a method call is no property and must not silently become the null property name");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsNegatedPropertyAccess_ShouldThrowArgumentException()
 			{
 				PropertyChangedBaseClass sut = new();
@@ -344,7 +344,7 @@ public sealed partial class ThatEventRecording
 					.Because("an operator computes a new value and does not name a property");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsNestedPropertyAccess_ShouldThrowArgumentException()
 			{
 				PropertyChangedWithMembersClass sut = new();
@@ -362,7 +362,7 @@ public sealed partial class ThatEventRecording
 					.Because("the subject does not report the changes of a property of another object");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsNull_ShouldThrowArgumentNullException()
 			{
 				PropertyChangedWithMembersClass sut = new();
@@ -378,7 +378,7 @@ public sealed partial class ThatEventRecording
 					.Because("a missing expression names no property and is rejected like any other null argument");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsParameterItself_ShouldThrowArgumentException()
 			{
 				PropertyChangedWithMembersClass sut = new();
@@ -395,7 +395,7 @@ public sealed partial class ThatEventRecording
 					.Because("it would otherwise match the event that was raised without a property name");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsStaticPropertyAccess_ShouldThrowArgumentException()
 			{
 				PropertyChangedWithMembersClass sut = new();
@@ -413,7 +413,7 @@ public sealed partial class ThatEventRecording
 					.Because("a static property is no property of the subject");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpressionIsUserDefinedConversionOfParameter_ShouldThrowArgumentException()
 			{
 				PropertyChangedBaseClass sut = new();
@@ -431,7 +431,7 @@ public sealed partial class ThatEventRecording
 					.Because("a conversion operator creates another object than the subject");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyNameDoesNotMatch_ShouldFail()
 			{
 				PropertyChangedClass sut = new()
@@ -445,7 +445,7 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording).TriggeredPropertyChangedFor(x => x.MyValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut for property MyValue at least once,
@@ -459,7 +459,7 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyNameIsNull_ShouldMatchEventWithEmptyPropertyName()
 			{
 				PropertyChangedClass sut = new();
@@ -474,7 +474,7 @@ public sealed partial class ThatEventRecording
 					.Because("the contract makes no difference between the two spellings of the all-properties notification");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyNameIsNull_ShouldMatchEventWithoutPropertyName()
 			{
 				PropertyChangedClass sut = new();
@@ -489,7 +489,7 @@ public sealed partial class ThatEventRecording
 					.Because("the explicit string overload remains the way to assert the null property name");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyNameIsNull_ShouldNotMatchNamedEvent()
 			{
 				PropertyChangedClass sut = new()
@@ -503,7 +503,7 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording).TriggeredPropertyChangedFor((string?)null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut for all properties at least once,
@@ -518,7 +518,7 @@ public sealed partial class ThatEventRecording
 					.Because("a notification for a single property is no notification for all properties");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyNameMatches_ShouldSucceed()
 			{
 				PropertyChangedClass sut = new()
@@ -535,7 +535,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsGenericTypeParameter_ShouldUsePropertyName()
 			{
 				PropertyChangedBaseClass sut = new();
@@ -550,7 +550,7 @@ public sealed partial class ThatEventRecording
 					.Because("the compiler-inserted cast to the constraint is still the subject");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsInterface_ShouldUsePropertyName()
 			{
 				IPropertyChangedWithName sut = new PropertyChangedBaseClass();
@@ -565,7 +565,7 @@ public sealed partial class ThatEventRecording
 					.Because("a property of the interface is a property of the subject");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEventRecording<PropertyChangedClass>? subject = null;
@@ -573,7 +573,7 @@ public sealed partial class ThatEventRecording
 				async Task Act()
 					=> await That(subject!).TriggeredPropertyChangedFor(x => x.MyValue);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has recorded the PropertyChanged event for property MyValue at least once,
@@ -588,7 +588,7 @@ public sealed partial class ThatEventRecording
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNotTriggered_ShouldSucceed()
 			{
 				PropertyChangedClass sut = new();
@@ -600,7 +600,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsTriggered_ShouldFail()
 			{
 				PropertyChangedClass sut = new()
@@ -614,7 +614,7 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording).DoesNotComplyWith(n => n.TriggeredPropertyChangedFor(x => x.MyValue));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has never recorded the PropertyChanged event on sut for property MyValue,
@@ -628,7 +628,7 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsTriggeredForAllProperties_ShouldFail()
 			{
 				PropertyChangedClass sut = new()
@@ -642,7 +642,7 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording).DoesNotComplyWith(n => n.TriggeredPropertyChangedFor(x => x.MyValue));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has never recorded the PropertyChanged event on sut for property MyValue,
@@ -657,7 +657,7 @@ public sealed partial class ThatEventRecording
 					.Because("the negation has to be the exact complement of the positive expectation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsTriggeredForOtherProperty_ShouldSucceed()
 			{
 				PropertyChangedClass sut = new();

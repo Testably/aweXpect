@@ -8,9 +8,9 @@ public sealed partial class ThatString
 	{
 		public sealed class AsRegexTests
 		{
-			[Theory]
-			[InlineData("some message", ".*me me.*", true)]
-			[InlineData("some message", ".*ME ME.*", false)]
+			[Test]
+			[Arguments("some message", ".*me me.*", true)]
+			[Arguments("some message", ".*ME ME.*", false)]
 			public async Task ShouldDefaultToCaseSensitiveMatch(
 				string subject, string pattern, bool expectMatch)
 			{
@@ -29,13 +29,13 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Theory]
-			[InlineData("b", "^b$", true)]
-			[InlineData("a\nb", "^b$", false)]
-			[InlineData("a\nb", "^a", true)]
-			[InlineData("a\nb", "b$", true)]
-			[InlineData("b\n", "^b$", true)]
-			[InlineData("b\n", @"^b\z", false)]
+			[Test]
+			[Arguments("b", "^b$", true)]
+			[Arguments("a\nb", "^b$", false)]
+			[Arguments("a\nb", "^a", true)]
+			[Arguments("a\nb", "b$", true)]
+			[Arguments("b\n", "^b$", true)]
+			[Arguments("b\n", @"^b\z", false)]
 			public async Task ShouldNotBindTheAnchorsToLineBoundaries(
 				string subject, string pattern, bool expectMatch)
 			{
@@ -56,7 +56,7 @@ public sealed partial class ThatString
 					         + "trailing newline, but never at an inner line boundary");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenACustomComparerIsUsed_ShouldThrowInvalidOperationException()
 			{
 				string subject = "some message";
@@ -69,9 +69,9 @@ public sealed partial class ThatString
 					.Because("the regex engine cannot consult a comparer, so it used to be ignored silently");
 			}
 
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task WhenIgnoringCase_ShouldIgnoreCase(
 				bool ignoreCase)
 			{
@@ -94,13 +94,13 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Theory]
-			[InlineData("tr-TR", "I", "i", true)]
-			[InlineData("tr-TR", "İ", "i", false)]
-			[InlineData("tr-TR", "ı", "I", false)]
-			[InlineData("", "I", "i", true)]
-			[InlineData("", "İ", "i", false)]
-			[InlineData("", "ı", "I", false)]
+			[Test]
+			[Arguments("tr-TR", "I", "i", true)]
+			[Arguments("tr-TR", "İ", "i", false)]
+			[Arguments("tr-TR", "ı", "I", false)]
+			[Arguments("", "I", "i", true)]
+			[Arguments("", "İ", "i", false)]
+			[Arguments("", "ı", "I", false)]
 			public async Task WhenIgnoringCase_ShouldIgnoreCaseIndependentOfTheCurrentCulture(
 				string cultureName, string subject, string pattern, bool expectMatch)
 			{
@@ -122,17 +122,17 @@ public sealed partial class ThatString
 					.Because("the dotted and dotless Turkish 'I' must not change which characters are considered equal");
 			}
 
-			[Theory]
-			[InlineData("forget", false)]
-			[InlineData("get it", true)]
-			[InlineData("for get", true)]
+			[Test]
+			[Arguments("forget", false)]
+			[Arguments("get it", true)]
+			[Arguments("for get", true)]
 			public async Task WhenIgnoringLeadingWhiteSpace_ShouldOnlyIgnoreTheWhiteSpaceOfThePatternAtTheStartOfTheSubject(
 				string subject, bool expectMatch)
 			{
 				async Task Act()
 					=> await That(subject).IsEqualTo(" g.t").AsRegex().IgnoringLeadingWhiteSpace();
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectMatch)
+				await That(Act).Throws<FailException>().OnlyIf(!expectMatch)
 					.WithMessage($"""
 					              Expected that subject
 					              matches regex " g.t" ignoring leading whitespace,
@@ -145,7 +145,7 @@ public sealed partial class ThatString
 					.Because("the regex may match any part of the subject, so its space is only optional at the start of the subject");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotIgnoringCase_ShouldMatchCaseSensitiveIndependentOfTheCurrentCulture()
 			{
 				string subject = "I";
@@ -155,7 +155,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo("i").AsRegex();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches regex "i",
@@ -168,7 +168,7 @@ public sealed partial class ThatString
 					.Because("a case-sensitive match never looked at the culture");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOptionsAreCombinedWithIgnoringCase_ShouldApplyBoth()
 			{
 				string subject = "a\nB";
@@ -180,9 +180,9 @@ public sealed partial class ThatString
 					.Because("the given options are combined with the ignored casing");
 			}
 
-			[Theory]
-			[InlineData((RegexOptions)0x4000_0000)]
-			[InlineData(RegexOptions.ECMAScript | RegexOptions.Singleline)]
+			[Test]
+			[Arguments((RegexOptions)0x4000_0000)]
+			[Arguments(RegexOptions.ECMAScript | RegexOptions.Singleline)]
 			public async Task WhenOptionsAreInvalid_ShouldThrowArgumentOutOfRangeException(
 				RegexOptions regexOptions)
 			{
@@ -195,7 +195,7 @@ public sealed partial class ThatString
 					.Because("invalid options used to name an internal parameter of the regex engine");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOptionsContainIgnoreCase_ShouldIgnoreCaseAlthoughIgnoringCaseIsDisabled()
 			{
 				string subject = "SOME";
@@ -207,7 +207,7 @@ public sealed partial class ThatString
 					.Because("an explicitly given option is never taken away again");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOptionsContainIgnoreCase_ShouldIgnoreTheCultureWhenIgnoringCaseIsEnabled()
 			{
 				string subject = "İ";
@@ -217,7 +217,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo("i").AsRegex(RegexOptions.IgnoreCase).IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              matches regex "i" ignoring case,
@@ -230,9 +230,9 @@ public sealed partial class ThatString
 					.Because("asking for the casing to be ignored adds the culture independence to the given options");
 			}
 
-			[Theory]
-			[InlineData("I", "i", false)]
-			[InlineData("İ", "i", true)]
+			[Test]
+			[Arguments("I", "i", false)]
+			[Arguments("İ", "i", true)]
 			public async Task WhenOptionsContainIgnoreCase_ShouldUseTheCurrentCulture(
 				string subject, string pattern, bool expectMatch)
 			{
@@ -254,7 +254,7 @@ public sealed partial class ThatString
 					.Because("an explicitly given option keeps the behaviour of Regex.IsMatch, which is culture-dependent");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOptionsContainMultiline_ShouldBindTheAnchorsToLineBoundaries()
 			{
 				string subject = "a\nb";
@@ -266,7 +266,7 @@ public sealed partial class ThatString
 					.Because("the line anchors are opt-in via the explicit options");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
 			{
 				string subject = new('a', 30);
@@ -282,7 +282,7 @@ public sealed partial class ThatString
 					.Because("the timeout used to escape as a generic evaluation error without naming the pattern");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternEnablesMultilineInline_ShouldBindTheAnchorsToLineBoundaries()
 			{
 				string subject = "a\nb";
@@ -294,7 +294,7 @@ public sealed partial class ThatString
 					.Because("the line anchors are also available via the inline construct");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternIsEmpty_ShouldThrowArgumentException()
 			{
 				string subject = "some message";
@@ -308,7 +308,7 @@ public sealed partial class ThatString
 					.Because("an empty pattern matches every subject, so the expectation could never fail");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "some message";
@@ -322,7 +322,7 @@ public sealed partial class ThatString
 					.Because("a missing pattern cannot express any expectation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternIsProvidedAsNullVariable_ShouldThrowArgumentNullException()
 			{
 				string subject = "some message";
@@ -337,7 +337,7 @@ public sealed partial class ThatString
 					.Because("a pattern that only becomes null at runtime must be rejected just as a literal one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -345,7 +345,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsEqualTo(".*").AsRegex();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             matches regex ".*",

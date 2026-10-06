@@ -15,7 +15,7 @@ public sealed partial class ThatEnumerable
 			{
 				public sealed class DoubleTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						ImmutableArray<double> subject = [1.0, 1.3, 0.9,];
@@ -23,7 +23,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(1.0).Within(0.2);
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage("""
 							             Expected that subject
 							             is equal to 1.0 ± 0.2 for all items,
@@ -37,7 +37,7 @@ public sealed partial class ThatEnumerable
 							             """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						ImmutableArray<double> subject = [1.0, 1.1, 0.9,];
@@ -51,7 +51,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class NullableDoubleTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						ImmutableArray<double?> subject = [1.0, 1.3, 0.9,];
@@ -59,7 +59,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(1.0).Within(0.2);
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage("""
 							             Expected that subject
 							             is equal to 1.0 ± 0.2 for all items,
@@ -73,7 +73,7 @@ public sealed partial class ThatEnumerable
 							             """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						ImmutableArray<double?> subject = [1.0, 1.1, 0.9,];
@@ -87,7 +87,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class FloatTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						ImmutableArray<float> subject = [1.0F, 1.3F, 0.9F,];
@@ -95,7 +95,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(1.0F).Within(0.2F);
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage("""
 							             Expected that subject
 							             is equal to 1.0 ± 0.2 for all items,
@@ -109,7 +109,7 @@ public sealed partial class ThatEnumerable
 							             """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						ImmutableArray<float> subject = [1.0F, 1.1F, 0.9F,];
@@ -123,7 +123,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class NullableFloatTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						ImmutableArray<float?> subject = [1.0F, 1.3F, 0.9F,];
@@ -131,7 +131,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(1.0F).Within(0.2F);
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage("""
 							             Expected that subject
 							             is equal to 1.0 ± 0.2 for all items,
@@ -145,7 +145,7 @@ public sealed partial class ThatEnumerable
 							             """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						ImmutableArray<float?> subject = [1.0F, 1.1F, 0.9F,];
@@ -159,7 +159,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class DecimalTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						ImmutableArray<decimal> subject = [1.0m, 1.3m, 0.9m,];
@@ -167,7 +167,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(1.0m).Within(0.2m);
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage("""
 							             Expected that subject
 							             is equal to 1.0 ± 0.2 for all items,
@@ -181,7 +181,7 @@ public sealed partial class ThatEnumerable
 							             """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						ImmutableArray<decimal> subject = [1.0m, 1.1m, 0.9m,];
@@ -195,7 +195,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class NullableDecimalTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						ImmutableArray<decimal?> subject = [1.0m, 1.3m, 0.9m,];
@@ -203,7 +203,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(1.0m).Within(0.2m);
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage("""
 							             Expected that subject
 							             is equal to 1.0 ± 0.2 for all items,
@@ -217,7 +217,7 @@ public sealed partial class ThatEnumerable
 							             """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						ImmutableArray<decimal?> subject = [1.0m, 1.1m, 0.9m,];
@@ -231,7 +231,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class DateTimeTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						DateTime now = DateTime.Now;
@@ -240,7 +240,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(now).Within(1.Minutes());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(now)} ± 1:00 for all items,
@@ -260,7 +260,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						DateTime now = DateTime.Now;
@@ -275,7 +275,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class NullableDateTimeTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						DateTime now = DateTime.Now;
@@ -284,7 +284,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(now).Within(1.Minutes());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(now)} ± 1:00 for all items,
@@ -306,7 +306,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						DateTime now = DateTime.Now;
@@ -321,7 +321,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class DateTimeOffsetTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						DateTimeOffset now = DateTimeOffset.Now;
@@ -330,7 +330,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(now).Within(1.Minutes());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(now)} ± 1:00 for all items,
@@ -350,7 +350,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						DateTimeOffset now = DateTimeOffset.Now;
@@ -365,7 +365,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class NullableDateTimeOffsetTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						DateTimeOffset now = DateTimeOffset.Now;
@@ -374,7 +374,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(now).Within(1.Minutes());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(now)} ± 1:00 for all items,
@@ -396,7 +396,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						DateTimeOffset now = DateTimeOffset.Now;
@@ -411,7 +411,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class TimeSpanTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						ImmutableArray<TimeSpan> subject = [61.Minutes(), 1.Hours(), 58.Minutes(),];
@@ -419,7 +419,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(1.Hours()).Within(1.Minutes());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage("""
 							             Expected that subject
 							             is equal to 1:00:00 ± 1:00 for all items,
@@ -439,7 +439,7 @@ public sealed partial class ThatEnumerable
 							             """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						ImmutableArray<TimeSpan> subject = [61.Minutes(), 1.Hours(), 59.Minutes(),];
@@ -453,7 +453,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class NullableTimeSpanTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						ImmutableArray<TimeSpan?> subject = [61.Minutes(), 1.Hours(), null, 58.Minutes(),];
@@ -461,7 +461,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(1.Hours()).Within(1.Minutes());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage("""
 							             Expected that subject
 							             is equal to 1:00:00 ± 1:00 for all items,
@@ -483,7 +483,7 @@ public sealed partial class ThatEnumerable
 							             """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						ImmutableArray<TimeSpan?> subject = [61.Minutes(), 1.Hours(), 59.Minutes(),];
@@ -497,7 +497,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class DateOnlyTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
 					{
 						DateOnly[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 12),];
@@ -512,7 +512,7 @@ public sealed partial class ThatEnumerable
 							.Because("a date has no time of day, so the remainder is rejected as soon as it is specified");
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						DateOnly[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 13),];
@@ -522,7 +522,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(expected).Within(1.Days());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(expected)} ± 1 day for all items,
@@ -536,7 +536,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						DateOnly[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 12),];
@@ -551,7 +551,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class NullableDateOnlyTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
 					{
 						DateOnly?[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 12),];
@@ -566,7 +566,7 @@ public sealed partial class ThatEnumerable
 							.Because("a date has no time of day, so the remainder is rejected as soon as it is specified");
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						DateOnly?[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 13),];
@@ -576,7 +576,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(expected).Within(1.Days());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(expected)} ± 1 day for all items,
@@ -590,7 +590,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						DateOnly?[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 12),];
@@ -605,7 +605,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class TimeOnlyTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
 					{
 						TimeOnly[] values = [new TimeOnly(23, 59, 30), new TimeOnly(0, 0, 30),];
@@ -618,7 +618,7 @@ public sealed partial class ThatEnumerable
 							.Because("the times are compared on the clock face, where 23:59:30 and 00:00:30 are one minute apart");
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						TimeOnly[] values = [new TimeOnly(14, 0), new TimeOnly(14, 2),];
@@ -628,7 +628,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(expected).Within(1.Minutes());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(expected)} ± 1:00 for all items,
@@ -642,7 +642,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						TimeOnly[] values = [new TimeOnly(14, 0), new TimeOnly(14, 1),];
@@ -657,7 +657,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class NullableTimeOnlyTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
 					{
 						TimeOnly?[] values = [new TimeOnly(23, 59, 30), new TimeOnly(0, 0, 30),];
@@ -670,7 +670,7 @@ public sealed partial class ThatEnumerable
 							.Because("the times are compared on the clock face, where 23:59:30 and 00:00:30 are one minute apart");
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						TimeOnly?[] values = [new TimeOnly(14, 0), new TimeOnly(14, 2),];
@@ -680,7 +680,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(expected).Within(1.Minutes());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(expected)} ± 1:00 for all items,
@@ -694,7 +694,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						TimeOnly?[] values = [new TimeOnly(14, 0), new TimeOnly(14, 1),];

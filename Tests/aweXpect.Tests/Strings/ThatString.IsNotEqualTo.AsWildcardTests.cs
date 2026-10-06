@@ -6,9 +6,9 @@ public sealed partial class ThatString
 	{
 		public sealed class AsWildcardTests
 		{
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task WhenIgnoringCase_ShouldIgnoreCase(
 				bool ignoreCase)
 			{
@@ -27,10 +27,10 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Theory]
-			[InlineData("", false)]
-			[InlineData("a", true)]
-			[InlineData("\n", true)]
+			[Test]
+			[Arguments("", false)]
+			[Arguments("a", true)]
+			[Arguments("\n", true)]
 			public async Task WhenPatternIsEmpty_ShouldOnlyFailForTheEmptySubject(
 				string subject, bool expectSuccess)
 			{
@@ -46,7 +46,7 @@ public sealed partial class ThatString
 					.Because("an empty wildcard pattern has the well-defined meaning of the empty string");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "some message";
@@ -60,7 +60,7 @@ public sealed partial class ThatString
 					.Because("a missing pattern matches no subject, so the negated expectation could never fail");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternIsNullAndSubjectIsNull_ShouldThrowArgumentNullException()
 			{
 				string? subject = null;
@@ -74,7 +74,7 @@ public sealed partial class ThatString
 					.Because("the missing pattern is a setup error that outranks the null subject");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternMatchesOnlyOneLineOfTheSubject_ShouldSucceed()
 			{
 				string subject = "xyz\nabc";
@@ -86,7 +86,7 @@ public sealed partial class ThatString
 					.Because("the pattern has to cover the complete subject, not one of its lines");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -94,7 +94,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotEqualTo("p").AsWildcard();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not match "p",

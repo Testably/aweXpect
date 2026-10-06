@@ -15,7 +15,7 @@ public sealed partial class ThatEnumerable
 			{
 				public sealed class DoubleTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenCombinedWithUsing_ShouldThrowInvalidOperationException()
 					{
 						IEnumerable<double> subject = [1.0, 1.1, 0.9,];
@@ -28,10 +28,10 @@ public sealed partial class ThatEnumerable
 							.Because("the comparer would silently replace the tolerance");
 					}
 
-					[Theory]
-					[InlineData(double.PositiveInfinity, 1.0)]
-					[InlineData(double.NegativeInfinity, 1.0)]
-					[InlineData(double.PositiveInfinity, double.PositiveInfinity)]
+					[Test]
+					[Arguments(double.PositiveInfinity, 1.0)]
+					[Arguments(double.NegativeInfinity, 1.0)]
+					[Arguments(double.PositiveInfinity, double.PositiveInfinity)]
 					public async Task WhenNonFiniteValuesAreEqual_ShouldSucceed(double value, double tolerance)
 					{
 						IEnumerable<double> subject = [value,];
@@ -42,12 +42,12 @@ public sealed partial class ThatEnumerable
 						await That(Act).DoesNotThrow();
 					}
 
-					[Theory]
-					[InlineData(double.PositiveInfinity, double.NegativeInfinity, 1.0)]
-					[InlineData(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity)]
-					[InlineData(12.5, double.PositiveInfinity, double.PositiveInfinity)]
-					[InlineData(double.PositiveInfinity, 12.5, double.PositiveInfinity)]
-					[InlineData(double.NaN, double.PositiveInfinity, double.PositiveInfinity)]
+					[Test]
+					[Arguments(double.PositiveInfinity, double.NegativeInfinity, 1.0)]
+					[Arguments(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity)]
+					[Arguments(12.5, double.PositiveInfinity, double.PositiveInfinity)]
+					[Arguments(double.PositiveInfinity, 12.5, double.PositiveInfinity)]
+					[Arguments(double.NaN, double.PositiveInfinity, double.PositiveInfinity)]
 					public async Task WhenNonFiniteValuesDiffer_ShouldFail(double value, double expected, double tolerance)
 					{
 						IEnumerable<double> subject = [value,];
@@ -55,7 +55,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(expected).Within(tolerance);
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(expected)} ± {Formatter.Format(tolerance)} for all items,
@@ -69,7 +69,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenUsingAComparerInsteadOfATolerance_ShouldApplyIt()
 					{
 						IEnumerable<double> subject = [1.0, 1.3, 0.9,];
@@ -81,7 +81,7 @@ public sealed partial class ThatEnumerable
 							.Because("the items with a tolerance type accept a comparer like the other item types");
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						IEnumerable<double> subject = [1.0, 1.3, 0.9,];
@@ -89,7 +89,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(1.0).Within(0.2);
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage("""
 							             Expected that subject
 							             is equal to 1.0 ± 0.2 for all items,
@@ -103,7 +103,7 @@ public sealed partial class ThatEnumerable
 							             """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						IEnumerable<double> subject = [1.0, 1.1, 0.9,];
@@ -117,10 +117,10 @@ public sealed partial class ThatEnumerable
 
 				public sealed class NullableDoubleTests
 				{
-					[Theory]
-					[InlineData(double.PositiveInfinity, 1.0)]
-					[InlineData(double.NegativeInfinity, 1.0)]
-					[InlineData(double.PositiveInfinity, double.PositiveInfinity)]
+					[Test]
+					[Arguments(double.PositiveInfinity, 1.0)]
+					[Arguments(double.NegativeInfinity, 1.0)]
+					[Arguments(double.PositiveInfinity, double.PositiveInfinity)]
 					public async Task WhenNonFiniteValuesAreEqual_ShouldSucceed(double value, double tolerance)
 					{
 						IEnumerable<double?> subject = [value,];
@@ -131,12 +131,12 @@ public sealed partial class ThatEnumerable
 						await That(Act).DoesNotThrow();
 					}
 
-					[Theory]
-					[InlineData(double.PositiveInfinity, double.NegativeInfinity, 1.0)]
-					[InlineData(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity)]
-					[InlineData(12.5, double.PositiveInfinity, double.PositiveInfinity)]
-					[InlineData(double.PositiveInfinity, 12.5, double.PositiveInfinity)]
-					[InlineData(double.NaN, double.PositiveInfinity, double.PositiveInfinity)]
+					[Test]
+					[Arguments(double.PositiveInfinity, double.NegativeInfinity, 1.0)]
+					[Arguments(double.PositiveInfinity, double.NegativeInfinity, double.PositiveInfinity)]
+					[Arguments(12.5, double.PositiveInfinity, double.PositiveInfinity)]
+					[Arguments(double.PositiveInfinity, 12.5, double.PositiveInfinity)]
+					[Arguments(double.NaN, double.PositiveInfinity, double.PositiveInfinity)]
 					public async Task WhenNonFiniteValuesDiffer_ShouldFail(double value, double expected, double tolerance)
 					{
 						IEnumerable<double?> subject = [value,];
@@ -144,7 +144,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(expected).Within(tolerance);
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(expected)} ± {Formatter.Format(tolerance)} for all items,
@@ -158,7 +158,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						IEnumerable<double?> subject = [1.0, 1.3, 0.9,];
@@ -166,7 +166,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(1.0).Within(0.2);
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage("""
 							             Expected that subject
 							             is equal to 1.0 ± 0.2 for all items,
@@ -180,7 +180,7 @@ public sealed partial class ThatEnumerable
 							             """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						IEnumerable<double?> subject = [1.0, 1.1, 0.9,];
@@ -194,10 +194,10 @@ public sealed partial class ThatEnumerable
 
 				public sealed class FloatTests
 				{
-					[Theory]
-					[InlineData(float.PositiveInfinity, 1.0F)]
-					[InlineData(float.NegativeInfinity, 1.0F)]
-					[InlineData(float.PositiveInfinity, float.PositiveInfinity)]
+					[Test]
+					[Arguments(float.PositiveInfinity, 1.0F)]
+					[Arguments(float.NegativeInfinity, 1.0F)]
+					[Arguments(float.PositiveInfinity, float.PositiveInfinity)]
 					public async Task WhenNonFiniteValuesAreEqual_ShouldSucceed(float value, float tolerance)
 					{
 						IEnumerable<float> subject = [value,];
@@ -208,12 +208,12 @@ public sealed partial class ThatEnumerable
 						await That(Act).DoesNotThrow();
 					}
 
-					[Theory]
-					[InlineData(float.PositiveInfinity, float.NegativeInfinity, 1.0F)]
-					[InlineData(float.PositiveInfinity, float.NegativeInfinity, float.PositiveInfinity)]
-					[InlineData(12.5F, float.PositiveInfinity, float.PositiveInfinity)]
-					[InlineData(float.PositiveInfinity, 12.5F, float.PositiveInfinity)]
-					[InlineData(float.NaN, float.PositiveInfinity, float.PositiveInfinity)]
+					[Test]
+					[Arguments(float.PositiveInfinity, float.NegativeInfinity, 1.0F)]
+					[Arguments(float.PositiveInfinity, float.NegativeInfinity, float.PositiveInfinity)]
+					[Arguments(12.5F, float.PositiveInfinity, float.PositiveInfinity)]
+					[Arguments(float.PositiveInfinity, 12.5F, float.PositiveInfinity)]
+					[Arguments(float.NaN, float.PositiveInfinity, float.PositiveInfinity)]
 					public async Task WhenNonFiniteValuesDiffer_ShouldFail(float value, float expected, float tolerance)
 					{
 						IEnumerable<float> subject = [value,];
@@ -221,7 +221,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(expected).Within(tolerance);
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(expected)} ± {Formatter.Format(tolerance)} for all items,
@@ -235,7 +235,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						IEnumerable<float> subject = [1.0F, 1.3F, 0.9F,];
@@ -243,7 +243,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(1.0F).Within(0.2F);
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage("""
 							             Expected that subject
 							             is equal to 1.0 ± 0.2 for all items,
@@ -257,7 +257,7 @@ public sealed partial class ThatEnumerable
 							             """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						IEnumerable<float> subject = [1.0F, 1.1F, 0.9F,];
@@ -271,10 +271,10 @@ public sealed partial class ThatEnumerable
 
 				public sealed class NullableFloatTests
 				{
-					[Theory]
-					[InlineData(float.PositiveInfinity, 1.0F)]
-					[InlineData(float.NegativeInfinity, 1.0F)]
-					[InlineData(float.PositiveInfinity, float.PositiveInfinity)]
+					[Test]
+					[Arguments(float.PositiveInfinity, 1.0F)]
+					[Arguments(float.NegativeInfinity, 1.0F)]
+					[Arguments(float.PositiveInfinity, float.PositiveInfinity)]
 					public async Task WhenNonFiniteValuesAreEqual_ShouldSucceed(float value, float tolerance)
 					{
 						IEnumerable<float?> subject = [value,];
@@ -285,12 +285,12 @@ public sealed partial class ThatEnumerable
 						await That(Act).DoesNotThrow();
 					}
 
-					[Theory]
-					[InlineData(float.PositiveInfinity, float.NegativeInfinity, 1.0F)]
-					[InlineData(float.PositiveInfinity, float.NegativeInfinity, float.PositiveInfinity)]
-					[InlineData(12.5F, float.PositiveInfinity, float.PositiveInfinity)]
-					[InlineData(float.PositiveInfinity, 12.5F, float.PositiveInfinity)]
-					[InlineData(float.NaN, float.PositiveInfinity, float.PositiveInfinity)]
+					[Test]
+					[Arguments(float.PositiveInfinity, float.NegativeInfinity, 1.0F)]
+					[Arguments(float.PositiveInfinity, float.NegativeInfinity, float.PositiveInfinity)]
+					[Arguments(12.5F, float.PositiveInfinity, float.PositiveInfinity)]
+					[Arguments(float.PositiveInfinity, 12.5F, float.PositiveInfinity)]
+					[Arguments(float.NaN, float.PositiveInfinity, float.PositiveInfinity)]
 					public async Task WhenNonFiniteValuesDiffer_ShouldFail(float value, float expected, float tolerance)
 					{
 						IEnumerable<float?> subject = [value,];
@@ -298,7 +298,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(expected).Within(tolerance);
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(expected)} ± {Formatter.Format(tolerance)} for all items,
@@ -312,7 +312,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						IEnumerable<float?> subject = [1.0F, 1.3F, 0.9F,];
@@ -320,7 +320,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(1.0F).Within(0.2F);
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage("""
 							             Expected that subject
 							             is equal to 1.0 ± 0.2 for all items,
@@ -334,7 +334,7 @@ public sealed partial class ThatEnumerable
 							             """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						IEnumerable<float?> subject = [1.0F, 1.1F, 0.9F,];
@@ -348,7 +348,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class DecimalTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						IEnumerable<decimal> subject = [1.0m, 1.3m, 0.9m,];
@@ -356,7 +356,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(1.0m).Within(0.2m);
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage("""
 							             Expected that subject
 							             is equal to 1.0 ± 0.2 for all items,
@@ -370,7 +370,7 @@ public sealed partial class ThatEnumerable
 							             """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						IEnumerable<decimal> subject = [1.0m, 1.1m, 0.9m,];
@@ -384,7 +384,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class NullableDecimalTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						IEnumerable<decimal?> subject = [1.0m, 1.3m, 0.9m,];
@@ -392,7 +392,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(1.0m).Within(0.2m);
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage("""
 							             Expected that subject
 							             is equal to 1.0 ± 0.2 for all items,
@@ -406,7 +406,7 @@ public sealed partial class ThatEnumerable
 							             """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						IEnumerable<decimal?> subject = [1.0m, 1.1m, 0.9m,];
@@ -420,7 +420,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class DateTimeTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						DateTime now = DateTime.Now;
@@ -429,7 +429,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(now).Within(1.Minutes());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(now)} ± 1:00 for all items,
@@ -449,7 +449,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						DateTime now = DateTime.Now;
@@ -464,7 +464,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class NullableDateTimeTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						DateTime now = DateTime.Now;
@@ -473,7 +473,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(now).Within(1.Minutes());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(now)} ± 1:00 for all items,
@@ -495,7 +495,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						DateTime now = DateTime.Now;
@@ -510,7 +510,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class DateTimeOffsetTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenTheDefaultToleranceIsSet_ShouldApplyIt()
 					{
 						DateTimeOffset now = DateTimeOffset.Now;
@@ -528,7 +528,7 @@ public sealed partial class ThatEnumerable
 							.Because("the items of a collection fall back to the default tolerance, as a single value does");
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
 					{
 						DateTimeOffset now = DateTimeOffset.Now;
@@ -541,7 +541,7 @@ public sealed partial class ThatEnumerable
 							await That(subject).All().AreEqualTo(now);
 						}
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(now)} ± 1:00 for all items,
@@ -562,7 +562,7 @@ public sealed partial class ThatEnumerable
 							.Because("the applied default tolerance is part of the expectation");
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						DateTimeOffset now = DateTimeOffset.Now;
@@ -571,7 +571,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(now).Within(1.Minutes());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(now)} ± 1:00 for all items,
@@ -591,7 +591,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						DateTimeOffset now = DateTimeOffset.Now;
@@ -607,7 +607,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class NullableDateTimeOffsetTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						DateTimeOffset now = DateTimeOffset.Now;
@@ -616,7 +616,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(now).Within(1.Minutes());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(now)} ± 1:00 for all items,
@@ -638,7 +638,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						DateTimeOffset now = DateTimeOffset.Now;
@@ -653,7 +653,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class TimeSpanTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						IEnumerable<TimeSpan> subject = [61.Minutes(), 1.Hours(), 58.Minutes(),];
@@ -661,7 +661,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(1.Hours()).Within(1.Minutes());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage("""
 							             Expected that subject
 							             is equal to 1:00:00 ± 1:00 for all items,
@@ -681,7 +681,7 @@ public sealed partial class ThatEnumerable
 							             """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						IEnumerable<TimeSpan> subject = [61.Minutes(), 1.Hours(), 59.Minutes(),];
@@ -695,7 +695,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class NullableTimeSpanTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						IEnumerable<TimeSpan?> subject = [61.Minutes(), 1.Hours(), null, 58.Minutes(),];
@@ -703,7 +703,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(1.Hours()).Within(1.Minutes());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage("""
 							             Expected that subject
 							             is equal to 1:00:00 ± 1:00 for all items,
@@ -725,7 +725,7 @@ public sealed partial class ThatEnumerable
 							             """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						IEnumerable<TimeSpan?> subject = [61.Minutes(), 1.Hours(), 59.Minutes(),];
@@ -740,7 +740,7 @@ public sealed partial class ThatEnumerable
 #if NET8_0_OR_GREATER
 				public sealed class DateOnlyTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
 					{
 						DateOnly[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 12),];
@@ -755,7 +755,7 @@ public sealed partial class ThatEnumerable
 							.Because("a date has no time of day, so the remainder is rejected as soon as it is specified");
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						DateOnly[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 13),];
@@ -765,7 +765,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(expected).Within(1.Days());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(expected)} ± 1 day for all items,
@@ -779,7 +779,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						DateOnly[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 12),];
@@ -794,7 +794,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class NullableDateOnlyTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
 					{
 						DateOnly?[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 12),];
@@ -809,7 +809,7 @@ public sealed partial class ThatEnumerable
 							.Because("a date has no time of day, so the remainder is rejected as soon as it is specified");
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						DateOnly?[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 13),];
@@ -819,7 +819,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(expected).Within(1.Days());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(expected)} ± 1 day for all items,
@@ -833,7 +833,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						DateOnly?[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 12),];
@@ -848,7 +848,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class TimeOnlyTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
 					{
 						TimeOnly[] values = [new TimeOnly(23, 59, 30), new TimeOnly(0, 0, 30),];
@@ -861,7 +861,7 @@ public sealed partial class ThatEnumerable
 							.Because("the times are compared on the clock face, where 23:59:30 and 00:00:30 are one minute apart");
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						TimeOnly[] values = [new TimeOnly(14, 0), new TimeOnly(14, 2),];
@@ -871,7 +871,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(expected).Within(1.Minutes());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(expected)} ± 1:00 for all items,
@@ -885,7 +885,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						TimeOnly[] values = [new TimeOnly(14, 0), new TimeOnly(14, 1),];
@@ -900,7 +900,7 @@ public sealed partial class ThatEnumerable
 
 				public sealed class NullableTimeOnlyTests
 				{
-					[Fact]
+					[Test]
 					public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
 					{
 						TimeOnly?[] values = [new TimeOnly(23, 59, 30), new TimeOnly(0, 0, 30),];
@@ -913,7 +913,7 @@ public sealed partial class ThatEnumerable
 							.Because("the times are compared on the clock face, where 23:59:30 and 00:00:30 are one minute apart");
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
 						TimeOnly?[] values = [new TimeOnly(14, 0), new TimeOnly(14, 2),];
@@ -923,7 +923,7 @@ public sealed partial class ThatEnumerable
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(expected).Within(1.Minutes());
 
-						await That(Act).Throws<XunitException>()
+						await That(Act).Throws<FailException>()
 							.WithMessage($"""
 							              Expected that subject
 							              is equal to {Formatter.Format(expected)} ± 1:00 for all items,
@@ -937,7 +937,7 @@ public sealed partial class ThatEnumerable
 							              """);
 					}
 
-					[Fact]
+					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
 						TimeOnly?[] values = [new TimeOnly(14, 0), new TimeOnly(14, 1),];

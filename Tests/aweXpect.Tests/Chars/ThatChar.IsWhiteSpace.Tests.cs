@@ -6,29 +6,29 @@ public sealed partial class ThatChar
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData('0')]
-			[InlineData('1')]
-			[InlineData('4')]
-			[InlineData('9')]
-			[InlineData('a')]
-			[InlineData('d')]
-			[InlineData('z')]
-			[InlineData('A')]
-			[InlineData('M')]
-			[InlineData('Z')]
-			[InlineData('\u4E50')]
-			[InlineData('@')]
-			[InlineData('[')]
-			[InlineData(']')]
-			[InlineData('{')]
-			[InlineData('}')]
+			[Test]
+			[Arguments('0')]
+			[Arguments('1')]
+			[Arguments('4')]
+			[Arguments('9')]
+			[Arguments('a')]
+			[Arguments('d')]
+			[Arguments('z')]
+			[Arguments('A')]
+			[Arguments('M')]
+			[Arguments('Z')]
+			[Arguments('\u4E50')]
+			[Arguments('@')]
+			[Arguments('[')]
+			[Arguments(']')]
+			[Arguments('{')]
+			[Arguments('}')]
 			public async Task WhenSubjectIsNotWhiteSpace_ShouldFail(char subject)
 			{
 				async Task Act()
 					=> await That(subject).IsWhiteSpace();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is whitespace,
@@ -36,11 +36,11 @@ public sealed partial class ThatChar
 					              """);
 			}
 
-			[Theory]
-			[InlineData(' ')]
-			[InlineData('\t')]
-			[InlineData('\r')]
-			[InlineData('\n')]
+			[Test]
+			[Arguments(' ')]
+			[Arguments('\t')]
+			[Arguments('\r')]
+			[Arguments('\n')]
 			public async Task WhenSubjectIsWhiteSpace_ShouldSucceed(char subject)
 			{
 				async Task Act()
@@ -52,23 +52,23 @@ public sealed partial class ThatChar
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[InlineData('0')]
-			[InlineData('1')]
-			[InlineData('4')]
-			[InlineData('9')]
-			[InlineData('a')]
-			[InlineData('d')]
-			[InlineData('z')]
-			[InlineData('A')]
-			[InlineData('M')]
-			[InlineData('Z')]
-			[InlineData('\u4E50')]
-			[InlineData('@')]
-			[InlineData('[')]
-			[InlineData(']')]
-			[InlineData('{')]
-			[InlineData('}')]
+			[Test]
+			[Arguments('0')]
+			[Arguments('1')]
+			[Arguments('4')]
+			[Arguments('9')]
+			[Arguments('a')]
+			[Arguments('d')]
+			[Arguments('z')]
+			[Arguments('A')]
+			[Arguments('M')]
+			[Arguments('Z')]
+			[Arguments('\u4E50')]
+			[Arguments('@')]
+			[Arguments('[')]
+			[Arguments(']')]
+			[Arguments('{')]
+			[Arguments('}')]
 			public async Task WhenSubjectIsNotWhiteSpace_ShouldSucceed(char subject)
 			{
 				async Task Act()
@@ -77,17 +77,17 @@ public sealed partial class ThatChar
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(' ')]
-			[InlineData('\t')]
-			[InlineData('\r')]
-			[InlineData('\n')]
+			[Test]
+			[Arguments(' ')]
+			[Arguments('\t')]
+			[Arguments('\r')]
+			[Arguments('\n')]
 			public async Task WhenSubjectIsWhiteSpace_ShouldFail(char subject)
 			{
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsWhiteSpace());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not whitespace,

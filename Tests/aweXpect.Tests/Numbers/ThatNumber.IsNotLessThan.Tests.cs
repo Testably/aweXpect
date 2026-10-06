@@ -10,8 +10,8 @@ public sealed partial class ThatNumber
 	{
 		public sealed class Tests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForByte_WhenUnexpectedIsNull_ShouldFail(
 				byte subject)
 			{
@@ -20,7 +20,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than <null>,
@@ -28,9 +28,9 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((byte)2, (byte)1)]
-			[InlineData((byte)0, (byte)0)]
+			[Test]
+			[Arguments((byte)2, (byte)1)]
+			[Arguments((byte)0, (byte)0)]
 			public async Task ForByte_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(byte subject,
 				byte? unexpected)
 			{
@@ -40,15 +40,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((byte)1, (byte)2, -1)]
+			[Test]
+			[Arguments((byte)1, (byte)2, -1)]
 			public async Task ForByte_WhenValueIsLessThanUnexpected_ShouldFail(byte subject,
 				byte? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -56,8 +56,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForDecimal_WhenUnexpectedIsNull_ShouldFail(decimal subject)
 			{
 				decimal? unexpected = null;
@@ -65,7 +65,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than <null>,
@@ -73,10 +73,10 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData(2.0, 1.1)]
-			[InlineData(3.03, -5.8)]
-			[InlineData(0.0, 0.0)]
+			[Test]
+			[Arguments(2.0, 1.1)]
+			[Arguments(3.03, -5.8)]
+			[Arguments(0.0, 0.0)]
 			public async Task ForDecimal_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				double subjectValue, double unexpectedValue)
 			{
@@ -89,8 +89,8 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(1.1, 2.1, "-1.0")]
+			[Test]
+			[Arguments(1.1, 2.1, "-1.0")]
 			public async Task ForDecimal_WhenValueIsLessThanUnexpected_ShouldFail(
 				double subjectValue, double unexpectedValue, string expectedDifference)
 			{
@@ -100,7 +100,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -108,7 +108,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenSubjectIsNaN_ShouldSucceed()
 			{
 				double subject = double.NaN;
@@ -120,15 +120,15 @@ public sealed partial class ThatNumber
 					.Because("NaN is not less than any value");
 			}
 
-			[Theory]
-			[InlineData(1.0, 2.0F, "-1.0")]
+			[Test]
+			[Arguments(1.0, 2.0F, "-1.0")]
 			public async Task ForDouble_WhenUnexpectedIsLargerFloat_ShouldFail(double subject,
 				float unexpected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -136,7 +136,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenUnexpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
 			{
 				double subject = 2.0;
@@ -151,8 +151,8 @@ public sealed partial class ThatNumber
 					.Because("an ordering comparison against NaN can never pass, so it is a programming mistake");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForDouble_WhenUnexpectedIsNull_ShouldFail(double subject)
 			{
 				double? unexpected = null;
@@ -160,7 +160,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than <null>,
@@ -168,10 +168,10 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData(2.0, 1.1)]
-			[InlineData(3.03, -5.8)]
-			[InlineData(0.0, 0.0)]
+			[Test]
+			[Arguments(2.0, 1.1)]
+			[Arguments(3.03, -5.8)]
+			[Arguments(0.0, 0.0)]
 			public async Task ForDouble_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				double subject, double? unexpected)
 			{
@@ -181,15 +181,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(1.1, 2.1, "-1.0")]
+			[Test]
+			[Arguments(1.1, 2.1, "-1.0")]
 			public async Task ForDouble_WhenValueIsLessThanUnexpected_ShouldFail(
 				double subject, double? unexpected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -197,7 +197,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForFloat_WhenSubjectIsNaN_ShouldSucceed()
 			{
 				float subject = float.NaN;
@@ -209,7 +209,7 @@ public sealed partial class ThatNumber
 					.Because("NaN is not less than any value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForFloat_WhenUnexpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
 			{
 				float subject = 2.0f;
@@ -224,8 +224,8 @@ public sealed partial class ThatNumber
 					.Because("an ordering comparison against NaN can never pass, so it is a programming mistake");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForFloat_WhenUnexpectedIsNull_ShouldFail(float subject)
 			{
 				float? unexpected = null;
@@ -233,7 +233,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than <null>,
@@ -241,10 +241,10 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((float)2.0, (float)1.1)]
-			[InlineData((float)3.03, (float)-5.8)]
-			[InlineData((float)0.0, (float)0.0)]
+			[Test]
+			[Arguments((float)2.0, (float)1.1)]
+			[Arguments((float)3.03, (float)-5.8)]
+			[Arguments((float)0.0, (float)0.0)]
 			public async Task ForFloat_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				float subject, float? unexpected)
 			{
@@ -254,15 +254,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((float)1.1, (float)2.1, "-0.9999999")]
+			[Test]
+			[Arguments((float)1.1, (float)2.1, "-0.9999999")]
 			public async Task ForFloat_WhenValueIsLessThanUnexpected_ShouldFail(
 				float subject, float? unexpected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -271,7 +271,7 @@ public sealed partial class ThatNumber
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForHalf_WhenSubjectIsNaN_ShouldSucceed()
 			{
 				Half subject = Half.NaN;
@@ -286,7 +286,7 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForHalf_WhenUnexpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
 			{
 				Half subject = (Half)2.0f;
@@ -302,8 +302,8 @@ public sealed partial class ThatNumber
 			}
 #endif
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForInt_WhenUnexpectedIsNull_ShouldFail(
 				int subject)
 			{
@@ -312,7 +312,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than <null>,
@@ -320,9 +320,9 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData(-1, -2)]
-			[InlineData(0, 0)]
+			[Test]
+			[Arguments(-1, -2)]
+			[Arguments(0, 0)]
 			public async Task ForInt_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(int subject,
 				int? unexpected)
 			{
@@ -332,15 +332,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(1, 2, -1)]
+			[Test]
+			[Arguments(1, 2, -1)]
 			public async Task ForInt_WhenValueIsLessThanUnexpected_ShouldFail(int subject,
 				int? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -349,8 +349,8 @@ public sealed partial class ThatNumber
 			}
 
 #if NET8_0_OR_GREATER
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForInt128_WhenUnexpectedIsNull_ShouldFail(int subjectValue)
 			{
 				Int128 subject = subjectValue;
@@ -359,7 +359,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than <null>,
@@ -369,9 +369,9 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Theory]
-			[InlineData(2, 1)]
-			[InlineData(0, 0)]
+			[Test]
+			[Arguments(2, 1)]
+			[Arguments(0, 0)]
 			public async Task ForInt128_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				int subjectValue, int unexpectedValue)
 			{
@@ -386,8 +386,8 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Theory]
-			[InlineData(1, 2, -1)]
+			[Test]
+			[Arguments(1, 2, -1)]
 			public async Task ForInt128_WhenValueIsLessThanUnexpected_ShouldFail(
 				int subjectValue, int unexpectedValue, int expectedDifference)
 			{
@@ -397,7 +397,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -406,15 +406,15 @@ public sealed partial class ThatNumber
 			}
 #endif
 
-			[Theory]
-			[InlineData(1L, 2, -1)]
+			[Test]
+			[Arguments(1L, 2, -1)]
 			public async Task ForLong_WhenUnexpectedIsLargerInt_ShouldFail(long subject, int unexpected,
 				int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -422,8 +422,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForLong_WhenUnexpectedIsNull_ShouldFail(
 				long subject)
 			{
@@ -432,7 +432,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than <null>,
@@ -440,9 +440,9 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((long)-1, (long)-2)]
-			[InlineData((long)0, (long)0)]
+			[Test]
+			[Arguments((long)-1, (long)-2)]
+			[Arguments((long)0, (long)0)]
 			public async Task ForLong_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(long subject,
 				long? unexpected)
 			{
@@ -452,15 +452,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((long)1, (long)2, -1)]
+			[Test]
+			[Arguments((long)1, (long)2, -1)]
 			public async Task ForLong_WhenValueIsLessThanUnexpected_ShouldFail(long subject,
 				long? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -468,9 +468,9 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((byte)2, (byte)1)]
-			[InlineData((byte)0, (byte)0)]
+			[Test]
+			[Arguments((byte)2, (byte)1)]
+			[Arguments((byte)0, (byte)0)]
 			public async Task ForNullableByte_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				byte? subject, byte? unexpected)
 			{
@@ -480,15 +480,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((byte)1, (byte)2, -1)]
+			[Test]
+			[Arguments((byte)1, (byte)2, -1)]
 			public async Task ForNullableByte_WhenValueIsLessThanUnexpected_ShouldFail(
 				byte? subject, byte? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -496,8 +496,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableByte_WhenValueIsNull_ShouldFail(
 				byte? unexpected)
 			{
@@ -506,7 +506,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -514,8 +514,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableDecimal_WhenUnexpectedIsNull_ShouldFail(decimal? subject)
 			{
 				decimal? unexpected = null;
@@ -523,7 +523,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than <null>,
@@ -531,10 +531,10 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData(2.1, 1.1)]
-			[InlineData(3.03, -5.8)]
-			[InlineData(0.0, 0.0)]
+			[Test]
+			[Arguments(2.1, 1.1)]
+			[Arguments(3.03, -5.8)]
+			[Arguments(0.0, 0.0)]
 			public async Task ForNullableDecimal_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				double? subjectValue, double? unexpectedValue)
 			{
@@ -547,8 +547,8 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(1.1, 2.1, "-1.0")]
+			[Test]
+			[Arguments(1.1, 2.1, "-1.0")]
 			public async Task ForNullableDecimal_WhenValueIsLessThanUnexpected_ShouldFail(
 				double? subjectValue, double? unexpectedValue, string expectedDifference)
 			{
@@ -558,7 +558,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -566,7 +566,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableDouble_WhenSubjectIsNaN_ShouldSucceed()
 			{
 				double? subject = double.NaN;
@@ -579,7 +579,7 @@ public sealed partial class ThatNumber
 					.Because("NaN is not less than any value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableDouble_WhenSubjectIsNullAndUnexpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
 			{
 				double? subject = null;
@@ -594,7 +594,7 @@ public sealed partial class ThatNumber
 					.Because("the NaN unexpected value is rejected before the subject is considered");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableDouble_WhenUnexpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
 			{
 				double? subject = 2.0;
@@ -609,8 +609,8 @@ public sealed partial class ThatNumber
 					.Because("an ordering comparison against NaN can never pass, so it is a programming mistake");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableDouble_WhenUnexpectedIsNull_ShouldFail(double? subject)
 			{
 				double? unexpected = null;
@@ -618,7 +618,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than <null>,
@@ -626,10 +626,10 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData(2.1, 1.1)]
-			[InlineData(3.03, -5.8)]
-			[InlineData(0.0, 0.0)]
+			[Test]
+			[Arguments(2.1, 1.1)]
+			[Arguments(3.03, -5.8)]
+			[Arguments(0.0, 0.0)]
 			public async Task ForNullableDouble_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				double? subject, double? unexpected)
 			{
@@ -639,15 +639,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(1.1, 2.1, "-1.0")]
+			[Test]
+			[Arguments(1.1, 2.1, "-1.0")]
 			public async Task ForNullableDouble_WhenValueIsLessThanUnexpected_ShouldFail(
 				double? subject, double? unexpected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -655,7 +655,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableFloat_WhenUnexpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
 			{
 				float? subject = 2.0f;
@@ -670,8 +670,8 @@ public sealed partial class ThatNumber
 					.Because("an ordering comparison against NaN can never pass, so it is a programming mistake");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableFloat_WhenUnexpectedIsNull_ShouldFail(float? subject)
 			{
 				float? unexpected = null;
@@ -679,7 +679,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than <null>,
@@ -687,10 +687,10 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((float)2.1, (float)1.1)]
-			[InlineData((float)3.03, (float)-5.8)]
-			[InlineData((float)0.0, (float)0.0)]
+			[Test]
+			[Arguments((float)2.1, (float)1.1)]
+			[Arguments((float)3.03, (float)-5.8)]
+			[Arguments((float)0.0, (float)0.0)]
 			public async Task ForNullableFloat_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				float? subject, float? unexpected)
 			{
@@ -700,15 +700,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((float)1.1, (float)2.1, "-0.9999999")]
+			[Test]
+			[Arguments((float)1.1, (float)2.1, "-0.9999999")]
 			public async Task ForNullableFloat_WhenValueIsLessThanUnexpected_ShouldFail(
 				float? subject, float? unexpected, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -717,7 +717,7 @@ public sealed partial class ThatNumber
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForNullableHalf_WhenUnexpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
 			{
 				Half? subject = (Half)2.0f;
@@ -733,9 +733,9 @@ public sealed partial class ThatNumber
 			}
 #endif
 
-			[Theory]
-			[InlineData(-1, -2)]
-			[InlineData(0, 0)]
+			[Test]
+			[Arguments(-1, -2)]
+			[Arguments(0, 0)]
 			public async Task ForNullableInt_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				int? subject, int? unexpected)
 			{
@@ -745,15 +745,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(1, 2, -1)]
+			[Test]
+			[Arguments(1, 2, -1)]
 			public async Task ForNullableInt_WhenValueIsLessThanUnexpected_ShouldFail(
 				int? subject, int? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -761,8 +761,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableInt_WhenValueIsNull_ShouldFail(
 				int? unexpected)
 			{
@@ -771,7 +771,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -779,8 +779,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 #if NET8_0_OR_GREATER
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableInt128_WhenExpectedIsNull_ShouldFail(int subjectValue)
 			{
 				Int128? subject = subjectValue;
@@ -789,7 +789,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than <null>,
@@ -799,9 +799,9 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Theory]
-			[InlineData(2, 1)]
-			[InlineData(0, 0)]
+			[Test]
+			[Arguments(2, 1)]
+			[Arguments(0, 0)]
 			public async Task ForNullableInt128_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				int subjectValue, int unexpectedValue)
 			{
@@ -816,8 +816,8 @@ public sealed partial class ThatNumber
 #endif
 
 #if NET8_0_OR_GREATER
-			[Theory]
-			[InlineData(1, 2, -1)]
+			[Test]
+			[Arguments(1, 2, -1)]
 			public async Task ForNullableInt128_WhenValueIsLessThanUnexpected_ShouldFail(
 				int subjectValue, int unexpectedValue, int expectedDifference)
 			{
@@ -827,7 +827,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -836,9 +836,9 @@ public sealed partial class ThatNumber
 			}
 #endif
 
-			[Theory]
-			[InlineData((long)-1, (long)-2)]
-			[InlineData((long)0, (long)0)]
+			[Test]
+			[Arguments((long)-1, (long)-2)]
+			[Arguments((long)0, (long)0)]
 			public async Task ForNullableLong_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				long? subject, long? unexpected)
 			{
@@ -848,15 +848,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((long)1, (long)2, -1)]
+			[Test]
+			[Arguments((long)1, (long)2, -1)]
 			public async Task ForNullableLong_WhenValueIsLessThanUnexpected_ShouldFail(
 				long? subject, long? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -864,8 +864,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableLong_WhenValueIsNull_ShouldFail(
 				long? unexpected)
 			{
@@ -874,7 +874,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -882,9 +882,9 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((sbyte)-1, (sbyte)-2)]
-			[InlineData((sbyte)0, (sbyte)0)]
+			[Test]
+			[Arguments((sbyte)-1, (sbyte)-2)]
+			[Arguments((sbyte)0, (sbyte)0)]
 			public async Task ForNullableSbyte_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				sbyte? subject, sbyte? unexpected)
 			{
@@ -894,15 +894,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((sbyte)1, (sbyte)2, -1)]
+			[Test]
+			[Arguments((sbyte)1, (sbyte)2, -1)]
 			public async Task ForNullableSbyte_WhenValueIsLessThanUnexpected_ShouldFail(
 				sbyte? subject, sbyte? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -910,8 +910,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableSbyte_WhenValueIsNull_ShouldFail(
 				sbyte? unexpected)
 			{
@@ -920,7 +920,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -928,9 +928,9 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((short)-1, (short)-2)]
-			[InlineData((short)0, (short)0)]
+			[Test]
+			[Arguments((short)-1, (short)-2)]
+			[Arguments((short)0, (short)0)]
 			public async Task ForNullableShort_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				short? subject, short? unexpected)
 			{
@@ -940,15 +940,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((short)1, (short)2, -1)]
+			[Test]
+			[Arguments((short)1, (short)2, -1)]
 			public async Task ForNullableShort_WhenValueIsLessThanUnexpected_ShouldFail(
 				short? subject, short? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -956,8 +956,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableShort_WhenValueIsNull_ShouldFail(
 				short? unexpected)
 			{
@@ -966,7 +966,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -974,9 +974,9 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((uint)2, (uint)1)]
-			[InlineData((uint)0, (uint)0)]
+			[Test]
+			[Arguments((uint)2, (uint)1)]
+			[Arguments((uint)0, (uint)0)]
 			public async Task ForNullableUint_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				uint? subject, uint? unexpected)
 			{
@@ -986,15 +986,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((uint)1, (uint)2, -1)]
+			[Test]
+			[Arguments((uint)1, (uint)2, -1)]
 			public async Task ForNullableUint_WhenValueIsLessThanUnexpected_ShouldFail(
 				uint? subject, uint? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -1002,8 +1002,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableUint_WhenValueIsNull_ShouldFail(
 				uint? unexpected)
 			{
@@ -1012,7 +1012,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -1020,9 +1020,9 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((ulong)2, (ulong)1)]
-			[InlineData((ulong)0, (ulong)0)]
+			[Test]
+			[Arguments((ulong)2, (ulong)1)]
+			[Arguments((ulong)0, (ulong)0)]
 			public async Task ForNullableUlong_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				ulong? subject, ulong? unexpected)
 			{
@@ -1032,15 +1032,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((ulong)1, (ulong)2, -1)]
+			[Test]
+			[Arguments((ulong)1, (ulong)2, -1)]
 			public async Task ForNullableUlong_WhenValueIsLessThanUnexpected_ShouldFail(
 				ulong? subject, ulong? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -1048,8 +1048,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableUlong_WhenValueIsNull_ShouldFail(
 				ulong? unexpected)
 			{
@@ -1058,7 +1058,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -1066,9 +1066,9 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((ushort)2, (ushort)1)]
-			[InlineData((ushort)0, (ushort)0)]
+			[Test]
+			[Arguments((ushort)2, (ushort)1)]
+			[Arguments((ushort)0, (ushort)0)]
 			public async Task ForNullableUshort_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				ushort? subject, ushort? unexpected)
 			{
@@ -1078,15 +1078,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((ushort)1, (ushort)2, -1)]
+			[Test]
+			[Arguments((ushort)1, (ushort)2, -1)]
 			public async Task ForNullableUshort_WhenValueIsLessThanUnexpected_ShouldFail(
 				ushort? subject, ushort? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -1094,8 +1094,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForNullableUshort_WhenValueIsNull_ShouldFail(
 				ushort? unexpected)
 			{
@@ -1104,7 +1104,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -1112,8 +1112,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForSbyte_WhenUnexpectedIsNull_ShouldFail(
 				sbyte subject)
 			{
@@ -1122,7 +1122,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than <null>,
@@ -1130,9 +1130,9 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((sbyte)-1, (sbyte)-2)]
-			[InlineData((sbyte)0, (sbyte)0)]
+			[Test]
+			[Arguments((sbyte)-1, (sbyte)-2)]
+			[Arguments((sbyte)0, (sbyte)0)]
 			public async Task ForSbyte_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(sbyte subject,
 				sbyte? unexpected)
 			{
@@ -1142,15 +1142,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((sbyte)1, (sbyte)2, -1)]
+			[Test]
+			[Arguments((sbyte)1, (sbyte)2, -1)]
 			public async Task ForSbyte_WhenValueIsLessThanUnexpected_ShouldFail(sbyte subject,
 				sbyte? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -1158,8 +1158,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForShort_WhenUnexpectedIsNull_ShouldFail(
 				short subject)
 			{
@@ -1168,7 +1168,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than <null>,
@@ -1176,9 +1176,9 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((short)-1, (short)-2)]
-			[InlineData((short)0, (short)0)]
+			[Test]
+			[Arguments((short)-1, (short)-2)]
+			[Arguments((short)0, (short)0)]
 			public async Task ForShort_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(short subject,
 				short? unexpected)
 			{
@@ -1188,15 +1188,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((short)1, (short)2, -1)]
+			[Test]
+			[Arguments((short)1, (short)2, -1)]
 			public async Task ForShort_WhenValueIsLessThanUnexpected_ShouldFail(short subject,
 				short? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -1204,8 +1204,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForUint_WhenUnexpectedIsNull_ShouldFail(
 				uint subject)
 			{
@@ -1214,7 +1214,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than <null>,
@@ -1222,9 +1222,9 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((uint)2, (uint)1)]
-			[InlineData((uint)0, (uint)0)]
+			[Test]
+			[Arguments((uint)2, (uint)1)]
+			[Arguments((uint)0, (uint)0)]
 			public async Task ForUint_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(uint subject,
 				uint? unexpected)
 			{
@@ -1234,15 +1234,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((uint)1, (uint)2, -1)]
+			[Test]
+			[Arguments((uint)1, (uint)2, -1)]
 			public async Task ForUint_WhenValueIsLessThanUnexpected_ShouldFail(uint subject,
 				uint? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -1250,8 +1250,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForUlong_WhenUnexpectedIsNull_ShouldFail(
 				ulong subject)
 			{
@@ -1260,7 +1260,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than <null>,
@@ -1268,9 +1268,9 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((ulong)2, (ulong)1)]
-			[InlineData((ulong)0, (ulong)0)]
+			[Test]
+			[Arguments((ulong)2, (ulong)1)]
+			[Arguments((ulong)0, (ulong)0)]
 			public async Task ForUlong_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(ulong subject,
 				ulong? unexpected)
 			{
@@ -1280,15 +1280,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((ulong)1, (ulong)2, -1)]
+			[Test]
+			[Arguments((ulong)1, (ulong)2, -1)]
 			public async Task ForUlong_WhenValueIsLessThanUnexpected_ShouldFail(ulong subject,
 				ulong? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -1296,8 +1296,8 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task ForUshort_WhenUnexpectedIsNull_ShouldFail(
 				ushort subject)
 			{
@@ -1306,7 +1306,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than <null>,
@@ -1314,9 +1314,9 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Theory]
-			[InlineData((ushort)2, (ushort)1)]
-			[InlineData((ushort)0, (ushort)0)]
+			[Test]
+			[Arguments((ushort)2, (ushort)1)]
+			[Arguments((ushort)0, (ushort)0)]
 			public async Task ForUshort_WhenValueIsGreaterThanOrEqualToUnexpected_ShouldSucceed(
 				ushort subject,
 				ushort? unexpected)
@@ -1327,15 +1327,15 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData((ushort)1, (ushort)2, -1)]
+			[Test]
+			[Arguments((ushort)1, (ushort)2, -1)]
 			public async Task ForUshort_WhenValueIsLessThanUnexpected_ShouldFail(ushort subject,
 				ushort? unexpected, int expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than {Formatter.Format(unexpected)},
@@ -1346,7 +1346,7 @@ public sealed partial class ThatNumber
 
 		public sealed class WithinTests
 		{
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldFail()
 			{
 				double subject = double.MaxValue;
@@ -1355,7 +1355,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected).Within(double.PositiveInfinity);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not less than double.MinValue ± +∞,
@@ -1364,7 +1364,7 @@ public sealed partial class ThatNumber
 					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldSucceed()
 			{
 				double subject = double.MaxValue;
@@ -1377,15 +1377,15 @@ public sealed partial class ThatNumber
 					.Because("a distance that is not representable exceeds every finite tolerance");
 			}
 
-			[Theory]
-			[InlineData(10.25, ", which differs by 0.25")]
-			[InlineData(10.0, "")]
+			[Test]
+			[Arguments(10.25, ", which differs by 0.25")]
+			[Arguments(10.0, "")]
 			public async Task ForDouble_WhenInsideTolerance_ShouldFail(double subject, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(10.0).Within(0.5);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than 10.0 ± 0.5,
@@ -1393,7 +1393,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenOnTheShiftedBound_ShouldSucceed()
 			{
 				double subject = 10.5;
@@ -1405,8 +1405,8 @@ public sealed partial class ThatNumber
 					.Because("adding the tolerance moves the strict bound of IsLessThan to 10.5, which is not less than itself");
 			}
 
-			[Theory]
-			[InlineData(10.75)]
+			[Test]
+			[Arguments(10.75)]
 			public async Task ForDouble_WhenOutsideTolerance_ShouldSucceed(double subject)
 			{
 				async Task Act()
@@ -1415,7 +1415,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenSubjectAndUnexpectedArePositiveInfinity_ShouldSucceed()
 			{
 				double subject = double.PositiveInfinity;
@@ -1428,7 +1428,7 @@ public sealed partial class ThatNumber
 					.Because("a tolerance does not move an infinite bound, and infinity is not less than itself");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenSubjectIsNaN_ShouldSucceed()
 			{
 				async Task Act()
@@ -1438,7 +1438,7 @@ public sealed partial class ThatNumber
 					.Because("no tolerance brings NaN within reach of a value");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
 			{
 				async Task Act()
@@ -1449,7 +1449,7 @@ public sealed partial class ThatNumber
 					.WithParamName("tolerance");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForDouble_WhenUnexpectedIsNaN_ShouldThrowArgumentOutOfRangeException()
 			{
 				async Task Act()
@@ -1461,7 +1461,7 @@ public sealed partial class ThatNumber
 					.Because("no tolerance can bring a value within reach of NaN");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForFloat_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldFail()
 			{
 				float subject = float.MaxValue;
@@ -1470,7 +1470,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected).Within(float.PositiveInfinity);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not less than float.MinValue ± +∞,
@@ -1479,7 +1479,7 @@ public sealed partial class ThatNumber
 					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForFloat_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldSucceed()
 			{
 				float subject = float.MaxValue;
@@ -1493,7 +1493,7 @@ public sealed partial class ThatNumber
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForHalf_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldFail()
 			{
 				Half subject = Half.MaxValue;
@@ -1502,7 +1502,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected).Within(Half.PositiveInfinity);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not less than Half.MinValue ± +∞,
@@ -1511,7 +1511,7 @@ public sealed partial class ThatNumber
 					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForHalf_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldSucceed()
 			{
 				Half subject = Half.MaxValue;
@@ -1525,39 +1525,39 @@ public sealed partial class ThatNumber
 			}
 #endif
 
-			[Theory]
-			[InlineData(5)]
-			[InlineData(6)]
-			[InlineData(7)]
-			[InlineData(8)]
-			[InlineData(9)]
-			[InlineData(10)]
-			[InlineData(11)]
-			[InlineData(12)]
-			[InlineData(13)]
-			[InlineData(14)]
-			[InlineData(15)]
+			[Test]
+			[Arguments(5)]
+			[Arguments(6)]
+			[Arguments(7)]
+			[Arguments(8)]
+			[Arguments(9)]
+			[Arguments(10)]
+			[Arguments(11)]
+			[Arguments(12)]
+			[Arguments(13)]
+			[Arguments(14)]
+			[Arguments(15)]
 			public async Task ForInt_ShouldBeTheExactInverseOfTheExpectation(int subject)
 			{
-				Exception? negation = await Record.ExceptionAsync(async ()
+				Exception? negation = await Catch.ExceptionAsync(async ()
 					=> await That(subject).IsNotLessThan(10).Within(2));
-				Exception? inverse = await Record.ExceptionAsync(async ()
+				Exception? inverse = await Catch.ExceptionAsync(async ()
 					=> await That(subject).DoesNotComplyWith(it => it.IsLessThan(10).Within(2)));
 
 				await That(negation?.Message).IsEqualTo(inverse?.Message)
 					.Because("the tolerance widens the unnegated expectation and so narrows its negation");
 			}
 
-			[Theory]
-			[InlineData(11, ", which differs by 1")]
-			[InlineData(10, "")]
-			[InlineData(5, ", which differs by -5")]
+			[Test]
+			[Arguments(11, ", which differs by 1")]
+			[Arguments(10, "")]
+			[Arguments(5, ", which differs by -5")]
 			public async Task ForInt_WhenInsideTolerance_ShouldFail(int subject, string expectedDifference)
 			{
 				async Task Act()
 					=> await That(subject).IsNotLessThan(10).Within(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not less than 10 ± 2,
@@ -1565,7 +1565,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForInt_WhenOneStepPastTheShiftedBound_ShouldFail()
 			{
 				int subject = 11;
@@ -1573,7 +1573,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(10).Within(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not less than 10 ± 2,
@@ -1582,7 +1582,7 @@ public sealed partial class ThatNumber
 					.Because("11 is less than the shifted bound 12, so IsLessThan(10).Within(2) holds");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForInt_WhenOnTheShiftedBound_ShouldSucceed()
 			{
 				int subject = 12;
@@ -1594,9 +1594,9 @@ public sealed partial class ThatNumber
 					.Because("adding the tolerance moves the strict bound of IsLessThan to 12, which is not less than itself");
 			}
 
-			[Theory]
-			[InlineData(13)]
-			[InlineData(20)]
+			[Test]
+			[Arguments(13)]
+			[Arguments(20)]
 			public async Task ForInt_WhenOutsideTolerance_ShouldSucceed(int subject)
 			{
 				async Task Act()
@@ -1605,7 +1605,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForInt_WhenToleranceIsZeroAndValuesAreEqual_ShouldSucceed()
 			{
 				int subject = 10;
@@ -1617,7 +1617,7 @@ public sealed partial class ThatNumber
 					.Because("a zero tolerance keeps the strict inequality, like the form without a tolerance");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForInt_WhenUnexpectedIsNull_ShouldFail()
 			{
 				int? unexpected = null;
@@ -1625,7 +1625,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(5).IsNotLessThan(unexpected).Within(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that 5
 					             is not less than <null> ± 2,
@@ -1635,7 +1635,7 @@ public sealed partial class ThatNumber
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task ForNFloat_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldFail()
 			{
 				NFloat subject = NFloat.MaxValue;
@@ -1644,7 +1644,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(unexpected).Within(NFloat.PositiveInfinity);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not less than NFloat.MinValue ± +∞,
@@ -1653,7 +1653,7 @@ public sealed partial class ThatNumber
 					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNFloat_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldSucceed()
 			{
 				NFloat subject = NFloat.MaxValue;
@@ -1667,8 +1667,8 @@ public sealed partial class ThatNumber
 			}
 #endif
 
-			[Theory]
-			[InlineData(10.75)]
+			[Test]
+			[Arguments(10.75)]
 			public async Task ForNullableDouble_WhenOutsideTolerance_ShouldSucceed(double? subject)
 			{
 				async Task Act()
@@ -1677,7 +1677,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableInt_WhenOnTheShiftedBound_ShouldSucceed()
 			{
 				int? subject = 12;
@@ -1689,7 +1689,7 @@ public sealed partial class ThatNumber
 					.Because("adding the tolerance moves the strict bound of IsLessThan to 12, which is not less than itself");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForNullableInt_WhenSubjectIsNull_ShouldFail()
 			{
 				int? subject = null;
@@ -1697,7 +1697,7 @@ public sealed partial class ThatNumber
 				async Task Act()
 					=> await That(subject).IsNotLessThan(10).Within(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not less than 10 ± 2,

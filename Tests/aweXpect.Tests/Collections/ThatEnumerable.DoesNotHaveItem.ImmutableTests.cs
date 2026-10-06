@@ -13,7 +13,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class ImmutablePredicateTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsMatchingItemAtGivenIndex_ShouldFail()
 			{
 				ImmutableArray<int> subject = [0, 1, 2,];
@@ -21,7 +21,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotHaveItem(_ => true).AtIndex(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have an item matching _ => true at index 2,
@@ -32,7 +32,7 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableHasFewerItemsThanTheGivenIndex_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [0, 1, 2,];
@@ -46,7 +46,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableItemTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsOtherItemAtGivenIndex_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [0, 1, 2,];
@@ -57,7 +57,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsUnexpectedItemAtGivenIndex_ShouldFail()
 			{
 				ImmutableArray<int> subject = [0, 1, 2,];
@@ -65,7 +65,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotHaveItem(2).AtIndex(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have an item equal to 2 at index 2,
@@ -76,7 +76,7 @@ public sealed partial class ThatEnumerable
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableHasFewerItemsThanTheGivenIndex_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [0, 1, 2,];
@@ -90,9 +90,9 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableStringItemTests
 		{
-			[Theory]
-			[InlineData(true)]
-			[InlineData(false)]
+			[Test]
+			[Arguments(true)]
+			[Arguments(false)]
 			public async Task ShouldSupportIgnoringCase(bool ignoreCase)
 			{
 				ImmutableArray<string?> subject = ["foo", "bar",];
@@ -100,7 +100,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotHaveItem("BAR").IgnoringCase(ignoreCase).AtIndex(1);
 
-				await That(Act).Throws<XunitException>().OnlyIf(ignoreCase)
+				await That(Act).Throws<FailException>().OnlyIf(ignoreCase)
 					.WithMessage("""
 					             Expected that subject
 					             does not have an item equal to "BAR" ignoring case at index 1,
@@ -114,7 +114,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsOtherItemAtGivenIndex_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["foo", "bar",];
@@ -125,7 +125,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsUnexpectedItemAtGivenIndex_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["foo", "bar",];
@@ -133,7 +133,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotHaveItem("bar").AtIndex(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have an item equal to "bar" at index 1,
@@ -150,7 +150,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableEquivalentTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEquivalentItemIsFound_ShouldFail()
 			{
 				ImmutableArray<MyClass> subject =
@@ -162,7 +162,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotHaveItem(unexpected).Equivalent().AtIndex(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have an item equivalent to MyClass {
@@ -195,7 +195,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEquivalentItemIsNotFound_ShouldSucceed()
 			{
 				ImmutableArray<MyClass> subject =
@@ -213,7 +213,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableUsingTests
 		{
-			[Fact]
+			[Test]
 			public async Task WithAllDifferentComparer_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [..Factory.GetFibonacciNumbers(20),];
@@ -224,7 +224,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAllEqualComparer_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -232,7 +232,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotHaveItem(4).Using(new AllEqualComparer()).AtIndex(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have an item equal to 4 using AllEqualComparer at index 1,

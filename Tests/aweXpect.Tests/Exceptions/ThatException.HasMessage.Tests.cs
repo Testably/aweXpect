@@ -6,7 +6,7 @@ public sealed partial class ThatException
 	{
 		public sealed class ContainingTests
 		{
-			[Fact]
+			[Test]
 			public async Task CanCompareCaseInsensitive()
 			{
 				string message = "_FOO_BAR";
@@ -18,7 +18,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldCompareCaseSensitive()
 			{
 				string message = "FOO";
@@ -27,7 +27,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(exception).HasMessage().Containing("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that exception
 					             has message containing "foo",
@@ -38,7 +38,7 @@ public sealed partial class ThatException
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldIgnorePrecedingText()
 			{
 				string message = "some text before foo";
@@ -50,7 +50,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldIgnoreSucceedingText()
 			{
 				string message = "foo and some other text";
@@ -62,7 +62,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				MyException exception = new("foo and some other text");
@@ -75,7 +75,7 @@ public sealed partial class ThatException
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				MyException exception = new("foo and some other text");
@@ -88,7 +88,7 @@ public sealed partial class ThatException
 					.WithMessage("The 'expected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Exception? subject = null;
@@ -96,7 +96,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasMessage().Containing("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has message containing "foo",
@@ -107,7 +107,7 @@ public sealed partial class ThatException
 
 		public sealed class EndingWithTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMessageDoesNotEndWithExpected_ShouldFail()
 			{
 				MyException exception = new("foo and some other text");
@@ -115,7 +115,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(exception).HasMessage().EndingWith("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that exception
 					             has message ending with "foo",
@@ -126,7 +126,7 @@ public sealed partial class ThatException
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMessageEndsWithExpected_ShouldSucceed()
 			{
 				MyException exception = new("some text before foo");
@@ -140,7 +140,7 @@ public sealed partial class ThatException
 
 		public sealed class EqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task AsRegex_WhenExpectedIsAnEmptyPattern_ShouldThrowArgumentException()
 			{
 				Exception subject = new("foo");
@@ -153,7 +153,7 @@ public sealed partial class ThatException
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task CanUseWildcardCheck()
 			{
 				Exception subject = new("foo-bar");
@@ -164,8 +164,8 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenStringsAreEqual_ShouldSucceed(string actual)
 			{
 				Exception subject = new(actual);
@@ -176,7 +176,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringsDiffer_ShouldFail()
 			{
 				string actual = "actual text";
@@ -186,7 +186,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasMessage().EqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has message equal to "expected other text",
@@ -205,7 +205,7 @@ public sealed partial class ThatException
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenContainingIsNegated_ShouldReadAsNotContaining()
 			{
 				Exception subject = new("foo and bar");
@@ -213,7 +213,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(e => e.HasMessage().Containing("foo"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have message containing "foo",
@@ -225,7 +225,7 @@ public sealed partial class ThatException
 					.Because("the negation of the continuation reads like NotContaining spelled out");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldSucceed()
 			{
 				Exception subject = new("foo");
@@ -236,7 +236,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotContainingIsNegated_ShouldReadAsContaining()
 			{
 				Exception subject = new("actual text");
@@ -244,7 +244,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(e => e.HasMessage().NotContaining("foo"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has message containing "foo",
@@ -256,7 +256,7 @@ public sealed partial class ThatException
 					.Because("negating an inverted constraint restores the positive expectation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenReadingTheMessageThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("message failed");
@@ -265,7 +265,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(e => e.HasMessage("foo"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have message equal to "foo",
@@ -276,7 +276,7 @@ public sealed partial class ThatException
 					.Because("a message that was never read cannot prove inequality either");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringsAreEqual_ShouldFail()
 			{
 				string actual = "my text";
@@ -285,7 +285,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(e => e.HasMessage(actual));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have message equal to "my text",
@@ -296,7 +296,7 @@ public sealed partial class ThatException
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringsDiffer_ShouldSucceed()
 			{
 				string actual = "actual text";
@@ -312,7 +312,7 @@ public sealed partial class ThatException
 
 		public sealed class NotContainingTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldCompareCaseSensitive()
 			{
 				string message = "FOO";
@@ -324,7 +324,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringsDiffer_ShouldSucceed()
 			{
 				string actual = "actual text";
@@ -337,7 +337,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Exception? subject = null;
@@ -345,7 +345,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasMessage().NotContaining("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have message containing "foo",
@@ -353,7 +353,7 @@ public sealed partial class ThatException
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTextIsFollowedByOtherText_ShouldFail()
 			{
 				string message = "foo and some other text";
@@ -362,7 +362,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(exception).HasMessage().NotContaining("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that exception
 					             does not have message containing "foo",
@@ -373,7 +373,7 @@ public sealed partial class ThatException
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTextIsPrecededByOtherText_ShouldFail()
 			{
 				string message = "some text before foo";
@@ -382,7 +382,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(exception).HasMessage().NotContaining("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that exception
 					             does not have message containing "foo",
@@ -393,7 +393,7 @@ public sealed partial class ThatException
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				MyException exception = new("foo and some other text");
@@ -406,7 +406,7 @@ public sealed partial class ThatException
 					.WithParamName("unexpected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				MyException exception = new("foo and some other text");
@@ -422,7 +422,7 @@ public sealed partial class ThatException
 
 		public sealed class NotEndingWithTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMessageDoesNotEndWithUnexpected_ShouldSucceed()
 			{
 				MyException exception = new("foo and some other text");
@@ -433,7 +433,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMessageEndsWithUnexpected_ShouldFail()
 			{
 				MyException exception = new("some text before foo");
@@ -441,7 +441,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(exception).HasMessage().NotEndingWith("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that exception
 					             does not have message ending with "foo",
@@ -455,7 +455,7 @@ public sealed partial class ThatException
 
 		public sealed class NotEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenStringsAreEqual_ShouldFail()
 			{
 				string actual = "my text";
@@ -464,7 +464,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasMessage().NotEqualTo(actual);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have message equal to "my text",
@@ -475,7 +475,7 @@ public sealed partial class ThatException
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringsDiffer_ShouldSucceed()
 			{
 				string actual = "actual text";
@@ -488,7 +488,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Exception? subject = null;
@@ -496,7 +496,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasMessage().NotEqualTo("expected text");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have message equal to "expected text",
@@ -507,7 +507,7 @@ public sealed partial class ThatException
 
 		public sealed class NotStartingWithTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMessageDoesNotStartWithUnexpected_ShouldSucceed()
 			{
 				MyException exception = new("some text before foo");
@@ -518,7 +518,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMessageStartsWithUnexpected_ShouldFail()
 			{
 				MyException exception = new("foo and some other text");
@@ -526,7 +526,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(exception).HasMessage().NotStartingWith("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that exception
 					             does not have message starting with "foo",
@@ -540,7 +540,7 @@ public sealed partial class ThatException
 
 		public sealed class StartingWithTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMessageDoesNotStartWithExpected_ShouldFail()
 			{
 				MyException exception = new("some text before foo");
@@ -548,7 +548,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(exception).HasMessage().StartingWith("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that exception
 					             has message starting with "foo",
@@ -559,7 +559,7 @@ public sealed partial class ThatException
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMessageStartsWithExpected_ShouldSucceed()
 			{
 				MyException exception = new("foo and some other text");
@@ -573,7 +573,7 @@ public sealed partial class ThatException
 
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenChainedWithHasParamName_ShouldApplyBoth()
 			{
 				ArgumentException subject = new("outer", "paramName");
@@ -584,7 +584,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Exception subject = new("foo");
@@ -592,7 +592,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasMessage(null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has message equal to <null>,
@@ -603,7 +603,7 @@ public sealed partial class ThatException
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenParamNameDiffersInAChainWithHasParamName_ShouldFail()
 			{
 				ArgumentException subject = new("outer", "paramName");
@@ -611,7 +611,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasMessage().StartingWith("outer").And.HasParamName("other");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has message starting with "outer" and has param name equal to "other",
@@ -627,7 +627,7 @@ public sealed partial class ThatException
 					.Because("the message was met, so it does not explain the failure");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenReadingTheMessageThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("message failed");
@@ -636,7 +636,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasMessage("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has message equal to "foo",
@@ -647,8 +647,8 @@ public sealed partial class ThatException
 					.Because("a message that cannot be read fails the expectation instead of aborting its evaluation");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenStringsAreEqual_ShouldSucceed(string actual)
 			{
 				Exception subject = new(actual);
@@ -659,7 +659,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringsDiffer_ShouldFail()
 			{
 				string actual = "actual text";
@@ -669,7 +669,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasMessage(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has message equal to "expected other text",
@@ -684,7 +684,7 @@ public sealed partial class ThatException
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Exception? subject = null;
@@ -692,7 +692,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasMessage("expected text");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has message equal to "expected text",

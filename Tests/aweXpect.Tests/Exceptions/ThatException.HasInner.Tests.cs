@@ -8,7 +8,7 @@ public sealed partial class ThatException
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task AllowsNestedIs()
 			{
 				Exception subject = new InvalidOperationException(
@@ -22,7 +22,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 			{
 				Exception subject = new("outer", new CustomException("inner"));
@@ -35,7 +35,7 @@ public sealed partial class ThatException
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInnerExceptionHasCorrectMessage_ShouldSucceed()
 			{
 				Exception subject = new("outer",
@@ -47,7 +47,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInnerExceptionHasUnexpectedMessage_ShouldFail()
 			{
 				Exception subject = new("outer",
@@ -56,7 +56,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasInner(e => e.HasMessage("some other message"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an inner exception whose message is equal to "some other message",
@@ -71,7 +71,7 @@ public sealed partial class ThatException
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInnerExceptionIsNotSet_ShouldFail()
 			{
 				Exception subject = new("outer");
@@ -79,7 +79,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasInner();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an inner exception,
@@ -87,7 +87,7 @@ public sealed partial class ThatException
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInnerExceptionIsSet_ShouldSucceed()
 			{
 				Exception subject = new("outer",
@@ -99,7 +99,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Exception? subject = null;
@@ -107,7 +107,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasInner();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an inner exception,
@@ -118,7 +118,7 @@ public sealed partial class ThatException
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenInnerExceptionIsNotSet_ShouldSucceed()
 			{
 				Exception subject = new("outer");
@@ -129,7 +129,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInnerExceptionIsSet_ShouldFail()
 			{
 				Exception subject = new("outer",
@@ -138,7 +138,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasInner());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have an inner exception,
@@ -147,7 +147,7 @@ public sealed partial class ThatException
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInnerExceptionMeetsExpectations_ShouldFail()
 			{
 				Exception subject = new("outer",
@@ -156,7 +156,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasInner(e => e.HasMessage("inner")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have an inner exception whose message is equal to "inner",

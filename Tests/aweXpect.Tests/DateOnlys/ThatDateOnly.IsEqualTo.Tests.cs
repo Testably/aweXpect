@@ -9,7 +9,7 @@ public sealed partial class ThatDateOnly
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateOnly subject = CurrentTime();
@@ -18,7 +18,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to <null>,
@@ -26,7 +26,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDifferent_ShouldFail()
 			{
 				DateOnly subject = CurrentTime();
@@ -35,7 +35,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
@@ -43,7 +43,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsTheSame_ShouldSucceed()
 			{
 				DateOnly subject = CurrentTime();
@@ -55,7 +55,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheCurrentCultureHasAnotherNegativeSign_ShouldUseTheInvariantOne()
 			{
 				using CultureOverride _ = new("sv-SE");
@@ -65,7 +65,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 2024-01-03,
@@ -73,7 +73,7 @@ public sealed partial class ThatDateOnly
 					             """).Because("the day difference must not depend on the current culture");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheDefaultToleranceIsAtLeastOneDay_ShouldMentionItsWholeDays()
 			{
 				DateOnly subject = EarlierTime(2);
@@ -86,7 +86,7 @@ public sealed partial class ThatDateOnly
 					await That(subject).IsEqualTo(expected);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1 day,
@@ -95,7 +95,7 @@ public sealed partial class ThatDateOnly
 					.Because("the default is truncated to whole days and the applied part is named in the expectation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheDefaultToleranceIsBelowOneDay_ShouldNotMentionTheTolerance()
 			{
 				DateOnly subject = EarlierTime(2);
@@ -108,7 +108,7 @@ public sealed partial class ThatDateOnly
 					await That(subject).IsEqualTo(expected);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
@@ -117,7 +117,7 @@ public sealed partial class ThatDateOnly
 					.Because("a default below one day is truncated to zero days and must not read as ± 0 days");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheDefaultToleranceIsNotWholeDays_ShouldStillTruncateIt()
 			{
 				DateOnly subject = LaterTime();
@@ -135,10 +135,10 @@ public sealed partial class ThatDateOnly
 					         + "date expectation into an error");
 			}
 
-			[Theory]
-			[InlineData(0)]
-			[InlineData(24)]
-			[InlineData(48)]
+			[Test]
+			[Arguments(0)]
+			[Arguments(24)]
+			[Arguments(48)]
 			public async Task Within_WhenToleranceIsAWholeNumberOfDays_ShouldBeAccepted(int hours)
 			{
 				DateOnly subject = LaterTime(hours / 24);
@@ -152,12 +152,12 @@ public sealed partial class ThatDateOnly
 					.Because("a tolerance that divides into whole days is one a date can honour exactly");
 			}
 
-			[Theory]
-			[InlineData(23, 0)]
-			[InlineData(36, 0)]
-			[InlineData(47, 0)]
-			[InlineData(0, 30)]
-			[InlineData(24, 1)]
+			[Test]
+			[Arguments(23, 0)]
+			[Arguments(36, 0)]
+			[Arguments(47, 0)]
+			[Arguments(0, 30)]
+			[Arguments(24, 1)]
 			public async Task Within_WhenToleranceIsNotWholeDays_ShouldThrowArgumentOutOfRangeException(
 				int hours, int minutes)
 			{
@@ -174,7 +174,7 @@ public sealed partial class ThatDateOnly
 					.Because("a date has no time of day, so the remainder is rejected as soon as it is specified instead of when the expectation is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenToleranceIsOneDay_ShouldUseTheSingular()
 			{
 				DateOnly subject = EarlierTime(3);
@@ -183,7 +183,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).Within(1.Days());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)} ± 1 day,
@@ -191,11 +191,11 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Theory]
-			[InlineData(3, 2, true)]
-			[InlineData(5, 3, true)]
-			[InlineData(2, 2, false)]
-			[InlineData(0, 2, false)]
+			[Test]
+			[Arguments(3, 2, true)]
+			[Arguments(5, 3, true)]
+			[Arguments(2, 2, false)]
+			[Arguments(0, 2, false)]
 			public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail(
 				int actualDifference, int tolerance, bool expectToThrow)
 			{
@@ -207,7 +207,7 @@ public sealed partial class ThatDateOnly
 						.Within(tolerance.Days())
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.OnlyIf(expectToThrow)
 					.WithMessage($"""
 					              Expected that subject
@@ -219,7 +219,7 @@ public sealed partial class ThatDateOnly
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDifferent_ShouldSucceed()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -230,7 +230,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsTheSame_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -238,7 +238,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsEqualTo(new DateOnly(2010, 11, 12)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 2010-11-12,

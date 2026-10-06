@@ -8,7 +8,7 @@ public sealed partial class ThatStream
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				ChunkedStreamContainer subject = new(new ChunkedStream(canSeek: true));
@@ -16,7 +16,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).Whose(c => c.Chunks, chunks => chunks.IsNotSeekable());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Chunks are not seekable,
@@ -24,7 +24,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNotSeekable_ShouldSucceed()
 			{
 				Stream subject = new MyStream(canSeek: false);
@@ -35,7 +35,7 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Stream? subject = null;
@@ -43,7 +43,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).IsNotSeekable();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not seekable,
@@ -51,7 +51,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsSeekable_ShouldFail()
 			{
 				Stream subject = new MyStream(canSeek: true);
@@ -59,7 +59,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).IsNotSeekable();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not seekable,

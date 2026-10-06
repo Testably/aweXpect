@@ -8,7 +8,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class SetTests
 		{
-			[Fact]
+			[Test]
 			public async Task ForADoubleSet_WhenSetHasTheItemAccordingToItsComparer_ShouldFail()
 			{
 				HashSet<double> subject = new(new RoundingComparer()) { 1.0, };
@@ -16,7 +16,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotHaveItem(1.2).AtIndex(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have an item equal to 1.2 using the subject's ThatEnumerable.DoesNotHaveItem.SetTests.RoundingComparer at index 0,
@@ -27,7 +27,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Using_ShouldOverrideTheComparerOfTheSet()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
@@ -38,7 +38,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSetDoesNotHaveTheItemAccordingToItsComparer_ShouldSucceed()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
@@ -49,7 +49,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSetHasTheItemAccordingToItsComparer_ShouldFail()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
@@ -57,7 +57,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotHaveItem("A").AtIndex(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have an item equal to "A" using the subject's StringComparer.OrdinalIgnoreCase at index 0,

@@ -20,9 +20,9 @@ public sealed partial class ThatEnumerable
 		/// </summary>
 		public sealed class ItemVerificationTests
 		{
-			[Theory]
-			[InlineData(false)]
-			[InlineData(true)]
+			[Test]
+			[Arguments(false)]
+			[Arguments(true)]
 			public async Task WhenAListIsModifiedDuringTheEnumeration_ShouldThrow(bool isFirstItemAwaited)
 			{
 				List<int> subject = [1, 2, 3,];
@@ -39,9 +39,9 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<InvalidOperationException>();
 			}
 
-			[Theory]
-			[InlineData(false)]
-			[InlineData(true)]
+			[Test]
+			[Arguments(false)]
+			[Arguments(true)]
 			public async Task WhenAllItemsMatch_ShouldSucceedAndDisposeTheEnumeratorOnce(bool isFirstItemAwaited)
 			{
 				TrackingCollection subject = new([1, 2, 3,]);
@@ -60,9 +60,9 @@ public sealed partial class ThatEnumerable
 				await That(subject.Enumerators[0].DisposeCount).IsEqualTo(1);
 			}
 
-			[Theory]
-			[InlineData(false)]
-			[InlineData(true)]
+			[Test]
+			[Arguments(false)]
+			[Arguments(true)]
 			public async Task WhenAnItemDiffers_ShouldFailAndDisposeTheEnumeratorOnce(bool isFirstItemAwaited)
 			{
 				TrackingCollection subject = new([1, 2, 3,]);
@@ -76,15 +76,15 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it contained item 3 at index 2 instead of an item that is equal to 4*")
 					.AsWildcard();
 				await That(subject.Enumerators[0].DisposeCount).IsEqualTo(1);
 			}
 
-			[Theory]
-			[InlineData(false)]
-			[InlineData(true)]
+			[Test]
+			[Arguments(false)]
+			[Arguments(true)]
 			public async Task WhenAnItemExpectationThrows_ShouldFailWithTheExceptionAndDisposeTheEnumeratorOnce(
 				bool isFirstItemAwaited)
 			{
@@ -100,13 +100,13 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				XunitException failure = await That(Act).Throws<XunitException>()
+				FailException failure = await That(Act).Throws<FailException>()
 					.WithMessage("*thrown by the predicate*").AsWildcard();
 				await That(failure.InnerException).IsSameAs(exception);
 				await That(subject.Enumerators[0].DisposeCount).IsEqualTo(1);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAnItemThrowsInEquals_ShouldFailWithTheExceptionAsInnerException()
 			{
 				Exception exception = new NotSupportedException("thrown by Equals");
@@ -116,14 +116,14 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				XunitException failure = await That(Act).Throws<XunitException>()
+				FailException failure = await That(Act).Throws<FailException>()
 					.WithMessage("*thrown by Equals*").AsWildcard();
 				await That(failure.InnerException).IsSameAs(exception);
 			}
 
-			[Theory]
-			[InlineData(false)]
-			[InlineData(true)]
+			[Test]
+			[Arguments(false)]
+			[Arguments(true)]
 			public async Task WhenCanceledBeforeTheEnd_ShouldBeInconclusive(bool isFirstItemAwaited)
 			{
 				using CancellationTokenSource cts = new();
@@ -135,7 +135,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             *
 					             but it could not be verified, because the evaluation was already canceled
@@ -146,9 +146,9 @@ public sealed partial class ThatEnumerable
 					             """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(false)]
-			[InlineData(true)]
+			[Test]
+			[Arguments(false)]
+			[Arguments(true)]
 			public async Task WhenContainedItemsAreFound_ShouldStopAndDisposeTheEnumeratorOnce(bool isFirstItemAwaited)
 			{
 				TrackingCollection subject = new(Enumerable.Range(1, 100).ToArray());
@@ -166,9 +166,9 @@ public sealed partial class ThatEnumerable
 				await That(subject.Enumerators[0].DisposeCount).IsEqualTo(1);
 			}
 
-			[Theory]
-			[InlineData(false)]
-			[InlineData(true)]
+			[Test]
+			[Arguments(false)]
+			[Arguments(true)]
 			public async Task WhenTheEnumerationThrows_ShouldThrowAndDisposeTheEnumeratorOnce(bool isFirstItemAwaited)
 			{
 				Exception exception = new NotSupportedException("thrown by the enumeration");
@@ -188,9 +188,9 @@ public sealed partial class ThatEnumerable
 				await That(subject.Enumerators[0].DisposeCount).IsEqualTo(1);
 			}
 
-			[Theory]
-			[InlineData(false)]
-			[InlineData(true)]
+			[Test]
+			[Arguments(false)]
+			[Arguments(true)]
 			public async Task WhenThereAreTooManyDeviations_ShouldStopAndDisposeTheEnumeratorOnce(
 				bool isFirstItemAwaited)
 			{
@@ -200,7 +200,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*but it had more than 20 deviations:*").AsWildcard();
 				await That(subject.Enumerators[0].ReadItems).IsLessThan(100);
 				await That(subject.Enumerators[0].DisposeCount).IsEqualTo(1);

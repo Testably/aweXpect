@@ -9,7 +9,7 @@ public sealed partial class ThatSignaler
 	{
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggered_ShouldFail()
 			{
 				Signaler signaler = new();
@@ -17,7 +17,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).DoesNotComplyWith(it => it.DidNotSignal().Within(50.Milliseconds()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:00.050,
@@ -25,7 +25,7 @@ public sealed partial class ThatSignaler
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggeredOftenEnough_ShouldFail()
 			{
 				Signaler signaler = new();
@@ -35,7 +35,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).DoesNotComplyWith(it => it.DidNotSignal(2.Times()).Within(50.Milliseconds()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least twice within 0:00.050,
@@ -43,7 +43,7 @@ public sealed partial class ThatSignaler
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithParameter_WhenTriggeredWithOtherParameter_ShouldFail()
 			{
 				Signaler<int> signaler = new();
@@ -54,7 +54,7 @@ public sealed partial class ThatSignaler
 					await That(signaler).DoesNotComplyWith(it
 						=> it.DidNotSignal().With(p => p == 42).Within(50.Milliseconds()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once with p => p == 42 within 0:00.050,

@@ -9,7 +9,7 @@ public sealed partial class ThatDateOnly
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenOnlyExpectedIsNull_ShouldFail()
 				{
 					DateOnly? subject = CurrentTime();
@@ -18,7 +18,7 @@ public sealed partial class ThatDateOnly
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to <null>,
@@ -26,7 +26,7 @@ public sealed partial class ThatDateOnly
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOnlySubjectIsNull_ShouldFail()
 				{
 					DateOnly? subject = null;
@@ -35,7 +35,7 @@ public sealed partial class ThatDateOnly
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to {Formatter.Format(expected)},
@@ -43,7 +43,7 @@ public sealed partial class ThatDateOnly
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndExpectedAreNull_ShouldSucceed()
 				{
 					DateOnly? subject = null;
@@ -55,7 +55,7 @@ public sealed partial class ThatDateOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsDifferent_ShouldFail()
 				{
 					DateOnly? subject = CurrentTime();
@@ -64,7 +64,7 @@ public sealed partial class ThatDateOnly
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to {Formatter.Format(expected)},
@@ -72,7 +72,7 @@ public sealed partial class ThatDateOnly
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsTheSame_ShouldSucceed()
 				{
 					DateOnly? subject = CurrentTime();
@@ -84,7 +84,7 @@ public sealed partial class ThatDateOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task Within_WhenToleranceIsNotWholeDays_ShouldThrowArgumentOutOfRangeException()
 				{
 					DateOnly? subject = null;
@@ -100,11 +100,11 @@ public sealed partial class ThatDateOnly
 						.Because("the expectation is malformed no matter which values it is applied to");
 				}
 
-				[Theory]
-				[InlineData(3, 2, true)]
-				[InlineData(5, 3, true)]
-				[InlineData(2, 2, false)]
-				[InlineData(0, 2, false)]
+				[Test]
+				[Arguments(3, 2, true)]
+				[Arguments(5, 3, true)]
+				[Arguments(2, 2, false)]
+				[Arguments(0, 2, false)]
 				public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail(
 					int actualDifference, int tolerance, bool expectToThrow)
 				{
@@ -116,7 +116,7 @@ public sealed partial class ThatDateOnly
 							.Within(tolerance.Days())
 							.Because("we want to test the failure");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.OnlyIf(expectToThrow)
 						.WithMessage($"""
 						              Expected that subject
@@ -128,7 +128,7 @@ public sealed partial class ThatDateOnly
 
 			public sealed class NegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsDifferent_ShouldSucceed()
 				{
 					DateOnly? subject = new(2010, 11, 12);
@@ -139,7 +139,7 @@ public sealed partial class ThatDateOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsTheSame_ShouldFail()
 				{
 					DateOnly? subject = new(2010, 11, 12);
@@ -147,7 +147,7 @@ public sealed partial class ThatDateOnly
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.IsEqualTo(new DateOnly(2010, 11, 12)));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to 2010-11-12,

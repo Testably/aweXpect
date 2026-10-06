@@ -11,7 +11,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class ImmutableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenArrayContainsValues_ShouldFail()
 			{
 				ImmutableArray<string> subject = ["foo",];
@@ -19,7 +19,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is empty,
@@ -29,7 +29,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenArrayIsEmpty_ShouldSucceed()
 			{
 				ImmutableArray<string> subject = [];
@@ -40,7 +40,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsValues_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 1, 2,];
@@ -48,7 +48,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is empty,
@@ -60,7 +60,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableIsEmpty_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [];

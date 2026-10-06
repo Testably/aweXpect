@@ -7,7 +7,7 @@ namespace aweXpect.Tests;
 public sealed class TestFrameworkRegistrationTests
 {
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task ShouldRegisterTheDetectedAdapterFromAModuleInitializer()
 	{
 		MethodInfo[] registrations = GetRegistrationMethods();
@@ -18,7 +18,7 @@ public sealed class TestFrameworkRegistrationTests
 			.Because("the adapter has to be registered before any other code of this assembly runs");
 	}
 #else
-	[Fact]
+	[Test]
 	public async Task ShouldNotRegisterTheDetectedAdapter()
 	{
 		await That(GetRegistrationMethods()).IsEmpty()

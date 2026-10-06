@@ -11,7 +11,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class EnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task ConsidersCancellationToken()
 			{
 				using CancellationTokenSource cts = new();
@@ -23,7 +23,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).Exactly(6).Satisfy(y => (int?)y < 6)
 						.WithCancellation(token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that subject
 					             satisfies y => (int?)y < 6 for exactly 6 items,
@@ -34,7 +34,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task DoesNotEnumerateTwice()
 			{
 				IEnumerable subject = new ThrowWhenIteratingTwiceEnumerable();
@@ -46,7 +46,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task DoesNotMaterializeEnumerable()
 			{
 				IEnumerable subject = Factory.GetFibonacciNumbers();
@@ -54,7 +54,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Exactly(1).AreEqualTo(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for exactly one item,
@@ -65,7 +65,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsExpectedNumberOfEqualItems_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable([1, 1, 1, 1, 2, 2, 3,]);
@@ -76,7 +76,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsTooFewEqualItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 1, 1, 1, 2, 2, 3,]);
@@ -84,7 +84,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Exactly(4).AreEqualTo(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 2 for exactly 4 items,
@@ -95,7 +95,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsTooManyEqualItems_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 1, 1, 1, 2, 2, 3,]);
@@ -103,7 +103,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Exactly(3).AreEqualTo(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for exactly 3 items,
@@ -114,7 +114,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable? subject = null;
@@ -122,7 +122,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject)!.Exactly(1).AreEqualTo(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 0 for exactly one item,

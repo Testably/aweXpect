@@ -6,7 +6,7 @@ public sealed partial class ThatDelegate
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAwaited_ShouldReturnThrownException()
 			{
 				Exception exception = new CustomException();
@@ -17,7 +17,7 @@ public sealed partial class ThatDelegate
 				await That(result).IsSameAs(exception);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenChained_ShouldOnlyDisplayInformationAboutNotThrownException()
 			{
 				Action action = () => { };
@@ -33,7 +33,7 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateReturnsNullTask_ShouldFail()
 			{
 				Func<Task> @delegate = () => null!;
@@ -41,7 +41,7 @@ public sealed partial class ThatDelegate
 				async Task<Exception> Act()
 					=> await That(@delegate).Throws();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             throws an exception,
@@ -51,7 +51,7 @@ public sealed partial class ThatDelegate
 					.Because("a null task is not an exception thrown by the delegate");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExceptionIsThrown_ShouldSucceed()
 			{
 				Exception exception = new CustomException();
@@ -63,7 +63,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoExceptionIsThrown_ShouldFail()
 			{
 				Action action = () => { };
@@ -79,7 +79,7 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoExceptionIsThrown_WithOr_ShouldFail()
 			{
 				Action action = () => { };
@@ -87,7 +87,7 @@ public sealed partial class ThatDelegate
 				async Task<Exception> Act()
 					=> await That(action).Throws().WithMessage("x").Or.WithMessage("y");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that action
 					             throws an exception with message equal to "x" or with message equal to "y",
@@ -95,7 +95,7 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Action? subject = null;
@@ -103,7 +103,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(subject!).Throws();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             throws an exception,
@@ -114,7 +114,7 @@ public sealed partial class ThatDelegate
 
 		public sealed class GenericTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldSupportChainedConstraints()
 			{
 				Action action = () => { };
@@ -130,8 +130,8 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenAwaited_ShouldReturnThrownException(string value)
 			{
 				Exception exception = new CustomException
@@ -147,7 +147,7 @@ public sealed partial class ThatDelegate
 				await That(result).IsSameAs(exception);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDelegateReturnsNullTask_ShouldFail()
 			{
 				Func<System.Threading.CancellationToken, Task<int>> @delegate = _ => null!;
@@ -155,7 +155,7 @@ public sealed partial class ThatDelegate
 				async Task<NullReferenceException> Act()
 					=> await That(@delegate).Throws<NullReferenceException>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             throws a NullReferenceException,
@@ -164,7 +164,7 @@ public sealed partial class ThatDelegate
 					.Because("a null task is not an exception thrown by the delegate");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExactExceptionTypeIsThrown_ShouldSucceed()
 			{
 				Exception exception = new CustomException();
@@ -176,7 +176,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoExceptionIsThrown_ShouldFail()
 			{
 				Action action = () => { };
@@ -192,8 +192,8 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenOtherExceptionIsThrown_ShouldFail(string message)
 			{
 				Exception exception = new OtherException(message);
@@ -211,8 +211,8 @@ public sealed partial class ThatDelegate
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenOtherExceptionIsThrown_ShouldForwardExceptionAsInnerException(string message)
 			{
 				Exception exception = new OtherException(message);
@@ -225,7 +225,7 @@ public sealed partial class ThatDelegate
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOtherExceptionIsThrown_WithOr_ShouldFail()
 			{
 				Exception exception = new OtherException("y");
@@ -234,7 +234,7 @@ public sealed partial class ThatDelegate
 				async Task<CustomException> Act()
 					=> await That(action).Throws<CustomException>().WithMessage("x").Or.WithMessage("y");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that action
 					             throws a ThatDelegate.CustomException with message equal to "x" or with message equal to "y",
@@ -244,7 +244,7 @@ public sealed partial class ThatDelegate
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOtherExceptionIsThrown_WithWhichAndOr_ShouldFail()
 			{
 				Exception exception = new OtherException("y");
@@ -253,7 +253,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(action).Throws<CustomException>().Which.HasMessage("x").Or.HasMessage("y");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that action
 					             throws a ThatDelegate.CustomException that has message equal to "x" or has message equal to "y",
@@ -263,7 +263,7 @@ public sealed partial class ThatDelegate
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubCustomExceptionIsThrown_ShouldSucceed()
 			{
 				Exception exception = new SubCustomException();
@@ -275,7 +275,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Action? subject = null;
@@ -283,7 +283,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(subject!).Throws<CustomException>();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             throws a ThatDelegate.CustomException,
@@ -291,8 +291,8 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSupertypeExceptionIsThrown_ShouldFail(string message)
 			{
 				Exception exception = new CustomException(message);
@@ -314,7 +314,7 @@ public sealed partial class ThatDelegate
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 		public sealed class TypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldSupportChainedConstraints()
 			{
 				Action action = () => { };
@@ -330,8 +330,8 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenAwaited_ShouldReturnThrownException(string value)
 			{
 				Exception exception = new CustomException
@@ -346,7 +346,7 @@ public sealed partial class ThatDelegate
 				await That(result).IsSameAs(exception);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExactExceptionTypeIsThrown_ShouldSucceed()
 			{
 				Exception exception = new CustomException();
@@ -358,7 +358,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoExceptionIsThrown_ShouldFail()
 			{
 				Action action = () => { };
@@ -374,7 +374,7 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOpenGenericTypeDoesNotMatch_ShouldFail()
 			{
 				Action action = () => throw new OtherException("foo");
@@ -382,7 +382,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(action).Throws(typeof(GenericException<>));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that action
 					             throws a ThatDelegate.GenericException<>,
@@ -391,7 +391,7 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOpenGenericTypeIsABaseType_ShouldSucceed()
 			{
 				Action action = () => throw new SubGenericException();
@@ -403,7 +403,7 @@ public sealed partial class ThatDelegate
 					.Because("the base type GenericException<int> is constructed from the open generic type");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOpenGenericTypeIsTheDefinition_ShouldSucceed()
 			{
 				Action action = () => throw new GenericException<int>();
@@ -414,8 +414,8 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenOtherExceptionIsThrown_ShouldFail(string message)
 			{
 				Exception exception = new OtherException(message);
@@ -433,7 +433,7 @@ public sealed partial class ThatDelegate
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOtherExceptionIsThrown_WithOr_ShouldFail()
 			{
 				Exception exception = new OtherException("y");
@@ -442,7 +442,7 @@ public sealed partial class ThatDelegate
 				async Task<Exception> Act()
 					=> await That(action).Throws(typeof(CustomException)).WithMessage("x").Or.WithMessage("y");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that action
 					             throws a ThatDelegate.CustomException with message equal to "x" or with message equal to "y",
@@ -452,7 +452,7 @@ public sealed partial class ThatDelegate
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOtherExceptionIsThrown_WithWhichAndOr_ShouldFail()
 			{
 				Exception exception = new OtherException("y");
@@ -461,7 +461,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(action).Throws(typeof(CustomException)).Which.HasMessage("x").Or.HasMessage("y");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that action
 					             throws a ThatDelegate.CustomException that has message equal to "x" or has message equal to "y",
@@ -471,7 +471,7 @@ public sealed partial class ThatDelegate
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubCustomExceptionIsThrown_ShouldSucceed()
 			{
 				Exception exception = new SubCustomException();
@@ -483,7 +483,7 @@ public sealed partial class ThatDelegate
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Action? subject = null;
@@ -491,7 +491,7 @@ public sealed partial class ThatDelegate
 				async Task Act()
 					=> await That(subject!).Throws(typeof(CustomException));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             throws a ThatDelegate.CustomException,
@@ -499,8 +499,8 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSupertypeExceptionIsThrown_ShouldFail(string message)
 			{
 				Exception exception = new CustomException(message);
@@ -518,7 +518,7 @@ public sealed partial class ThatDelegate
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotAnException_ShouldThrowArgumentException()
 			{
 				Action action = () => throw new CustomException();
@@ -532,7 +532,7 @@ public sealed partial class ThatDelegate
 					.Because("no exception could ever be a string");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNull_ShouldThrowArgumentNullException()
 			{
 				Action action = () => throw new CustomException();

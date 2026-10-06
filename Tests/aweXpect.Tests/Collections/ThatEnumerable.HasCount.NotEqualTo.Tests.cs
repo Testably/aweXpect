@@ -13,7 +13,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task ConsidersCancellationToken()
 				{
 					using CancellationTokenSource cts = new();
@@ -24,7 +24,7 @@ public sealed partial class ThatEnumerable
 						=> await That(subject).HasCount().NotEqualTo(6)
 							.WithCancellation(token);
 
-					await That(Act).Throws<InconclusiveException>()
+					await That(Act).Throws<InconclusiveTestException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have exactly 6 items,
@@ -35,7 +35,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenArrayContainsMatchingItems_ShouldFail()
 				{
 					int[] subject = [1, 2,];
@@ -43,7 +43,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).HasCount().NotEqualTo(2);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have exactly 2 items,
@@ -54,7 +54,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenArrayContainsTooFewItems_ShouldSucceed()
 				{
 					int[] subject = [1, 2, 3,];
@@ -65,7 +65,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenArrayContainsTooManyItems_ShouldSucceed()
 				{
 					int[] subject = [1, 2, 3,];
@@ -76,7 +76,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsMatchingItems_ShouldFail()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -84,7 +84,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).HasCount().NotEqualTo(3);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have exactly 3 items,
@@ -95,7 +95,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsTooFewItems_ShouldSucceed()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -106,7 +106,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsTooManyItems_ShouldSucceed()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -117,7 +117,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable<int>? subject = null;
@@ -125,7 +125,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).HasCount().NotEqualTo(2);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have exactly 2 items,
@@ -133,7 +133,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenUnexpectedIsNull_ShouldSucceed()
 				{
 					int[] subject = [1, 2, 3,];
@@ -148,7 +148,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class NegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenArrayContainsMatchingItems_ShouldSucceed()
 				{
 					int[] subject = [1, 2, 3,];
@@ -160,7 +160,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenArrayContainsTooFewItems_ShouldFail()
 				{
 					int[] subject = [1, 2, 3,];
@@ -169,7 +169,7 @@ public sealed partial class ThatEnumerable
 						=> await That(subject).DoesNotComplyWith(it =>
 							it.HasCount().NotEqualTo(4));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has exactly 4 items,
@@ -180,7 +180,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsMatchingItems_ShouldSucceed()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -192,7 +192,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsTooManyItems_ShouldFail()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
@@ -201,7 +201,7 @@ public sealed partial class ThatEnumerable
 						=> await That(subject).DoesNotComplyWith(it =>
 							it.HasCount().NotEqualTo(2));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has exactly 2 items,
@@ -212,7 +212,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenUnexpectedIsNull_ShouldFail()
 				{
 					int[] subject = [1, 2, 3,];
@@ -221,7 +221,7 @@ public sealed partial class ThatEnumerable
 						=> await That(subject).DoesNotComplyWith(it =>
 							it.HasCount().NotEqualTo(null));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has exactly <null> items,

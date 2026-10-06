@@ -6,17 +6,17 @@ public sealed partial class ThatString
 	{
 		public sealed class IncludingUncasedLettersTests
 		{
-			[Theory]
-			[InlineData("STRAßE")]
-			[InlineData("ı")]
-			[InlineData("ﬁ")]
-			[InlineData("𝐚")]
+			[Test]
+			[Arguments("STRAßE")]
+			[Arguments("ı")]
+			[Arguments("ﬁ")]
+			[Arguments("𝐚")]
 			public async Task WhenActualContainsLowerCaseLetterWithoutUpperCaseForm_ShouldFail(string subject)
 			{
 				async Task Act()
 					=> await That(subject).IsUpperCased().IncludingUncasedLetters();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is upper-cased including uncased letters,
@@ -24,15 +24,15 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Theory]
-			[InlineData("ǅ")]
-			[InlineData("ᾈ")]
+			[Test]
+			[Arguments("ǅ")]
+			[Arguments("ᾈ")]
 			public async Task WhenActualContainsTitlecaseLetter_ShouldFail(string subject)
 			{
 				async Task Act()
 					=> await That(subject).IsUpperCased().IncludingUncasedLetters();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is upper-cased including uncased letters,
@@ -41,7 +41,7 @@ public sealed partial class ThatString
 					.Because("a titlecase letter is not upper-cased, even where the runtime has no upper-case mapping for it");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsDigitsAndPunctuation_ShouldSucceed()
 			{
 				string subject = "1-2, 3!";
@@ -52,7 +52,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsEmpty_ShouldSucceed()
 			{
 				string subject = "";
@@ -63,7 +63,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsLowerCased_ShouldFail()
 			{
 				string subject = "abc";
@@ -71,7 +71,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsUpperCased().IncludingUncasedLetters();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is upper-cased including uncased letters,
@@ -79,7 +79,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -87,7 +87,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsUpperCased().IncludingUncasedLetters();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is upper-cased including uncased letters,
@@ -95,7 +95,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsSurrogatePairLowerCased_ShouldFail()
 			{
 				string subject = "𐐨";
@@ -103,7 +103,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsUpperCased().IncludingUncasedLetters();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is upper-cased including uncased letters,
@@ -111,7 +111,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsSurrogatePairUpperCased_ShouldSucceed()
 			{
 				string subject = "𐐀";
@@ -122,7 +122,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsUpperCased_ShouldSucceed()
 			{
 				string subject = "ABC";
@@ -133,7 +133,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsUpperCasedOrCaseless_ShouldSucceed()
 			{
 				string subject = "A漢字B";
@@ -147,11 +147,11 @@ public sealed partial class ThatString
 
 		public sealed class Tests
 		{
-			[Theory]
-			[InlineData("STRAßE")]
-			[InlineData("ı")]
-			[InlineData("ﬁ")]
-			[InlineData("𝐚")]
+			[Test]
+			[Arguments("STRAßE")]
+			[Arguments("ı")]
+			[Arguments("ﬁ")]
+			[Arguments("𝐚")]
 			public async Task WhenActualContainsLowerCaseLetterWithoutUpperCaseForm_ShouldSucceed(string subject)
 			{
 				async Task Act()
@@ -161,7 +161,7 @@ public sealed partial class ThatString
 					.Because("without IncludingUncasedLetters a letter without an upper-case form counts as upper-cased");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualContainsTitlecaseLetter_ShouldFollowTheRuntimeCaseMapping()
 			{
 				string subject = "ǅ";
@@ -173,7 +173,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow()
 					.Because("the invariant culture of .NET Framework has no upper-case mapping for ǅ");
 #else
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is upper-cased,
@@ -183,7 +183,7 @@ public sealed partial class ThatString
 #endif
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsEmpty_ShouldSucceed()
 			{
 				string subject = "";
@@ -194,7 +194,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsLowerCased_ShouldFail()
 			{
 				string subject = "abc";
@@ -202,7 +202,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsUpperCased();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is upper-cased,
@@ -210,7 +210,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsMixedCased_ShouldFail()
 			{
 				string subject = "AbC";
@@ -218,7 +218,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsUpperCased();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is upper-cased,
@@ -226,7 +226,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNotUpperCased_ShouldLimitDisplayedStringTo100Characters()
 			{
 				string subject = StringWithMoreThan100Characters;
@@ -234,7 +234,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsUpperCased();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is upper-cased,
@@ -242,7 +242,7 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -250,7 +250,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsUpperCased();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is upper-cased,
@@ -258,7 +258,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsSurrogatePairLowerCased_ShouldFail()
 			{
 				string subject = "𐐨";
@@ -266,7 +266,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsUpperCased();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is upper-cased,
@@ -274,7 +274,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsSurrogatePairUpperCased_ShouldSucceed()
 			{
 				string subject = "𐐀";
@@ -285,7 +285,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsUpperCased_ShouldSucceed()
 			{
 				string subject = "ABC";
@@ -296,7 +296,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsUpperCasedOrCaseless_ShouldSucceed()
 			{
 				string subject = "A漢字B";
@@ -307,7 +307,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsUpperCasedOrSpecialCharacters_ShouldSucceed()
 			{
 				string subject = "A-B-C!";
@@ -318,7 +318,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsWhitespace_ShouldSucceed()
 			{
 				string subject = " \t\r\n";

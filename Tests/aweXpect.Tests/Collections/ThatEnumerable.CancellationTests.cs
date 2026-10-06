@@ -14,7 +14,7 @@ public sealed partial class ThatEnumerable
 {
 	public sealed class CancellationTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequestedDuringTheFinalCheck_ShouldAbortContainsExpectationsInAnyOrder()
 		{
 			using CancellationTokenSource cts = new();
@@ -29,7 +29,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains(expected).InAnyOrder().WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in any order,
@@ -62,7 +62,7 @@ public sealed partial class ThatEnumerable
 				.Because("the first item is only compared with the second expectation when the items are reassigned at the end, where its cancellation must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortAllComplyWithWithinAnItem()
 		{
 			using CancellationTokenSource cts = new();
@@ -71,7 +71,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).All().ComplyWith(x => x.DoesNotContain(-1)).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not contain an item equal to -1 for all items,
@@ -98,7 +98,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation within an item must not be reported as a not matching item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortANegatedContains()
 		{
 			using CancellationTokenSource cts = new();
@@ -107,7 +107,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).DoesNotContain(-1).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not contain an item equal to -1,
@@ -119,7 +119,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortContains()
 		{
 			using CancellationTokenSource cts = new();
@@ -128,7 +128,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains(-1).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to -1 at least once,
@@ -140,7 +140,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortContainsACollection()
 		{
 			using CancellationTokenSource cts = new();
@@ -149,7 +149,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains([-1, -2]).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection [-1, -2] in order and contiguous,
@@ -164,7 +164,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as missing items");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortContainsACollectionForAnUntypedEnumerable()
 		{
 			using CancellationTokenSource cts = new();
@@ -173,7 +173,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains([-1, -2]).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection [-1, -2] in order and contiguous,
@@ -188,7 +188,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as missing items");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortContainsAPredicate()
 		{
 			using CancellationTokenSource cts = new();
@@ -197,7 +197,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains(x => x < 0).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item matching x => x < 0 at least once,
@@ -209,7 +209,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortContainsAPredicateForAnUntypedEnumerable()
 		{
 			using CancellationTokenSource cts = new();
@@ -218,7 +218,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains(x => x is < 0).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item matching x => x is < 0 at least once,
@@ -230,7 +230,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortContainsExpectations()
 		{
 			using CancellationTokenSource cts = new();
@@ -240,7 +240,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains(expected).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in order and contiguous,
@@ -255,7 +255,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as missing items");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortContainsExpectationsWithinAnItem()
 		{
 			using CancellationTokenSource cts = new();
@@ -273,7 +273,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains(expected).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in order and contiguous,
@@ -306,7 +306,7 @@ public sealed partial class ThatEnumerable
 				.Because("the item expectation must stop at the cancellation instead of enumerating the whole item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortContainsForAnUntypedEnumerable()
 		{
 			using CancellationTokenSource cts = new();
@@ -315,7 +315,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains(-1).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to -1 at least once,
@@ -327,7 +327,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortContainsForAnUntypedEnumerableOfNullItems()
 		{
 			using CancellationTokenSource cts = new();
@@ -341,7 +341,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains(1).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 1 at least once,
@@ -363,7 +363,7 @@ public sealed partial class ThatEnumerable
 				.Because("the collection context must not search the whole source for an item that is not null");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortContainsPredicates()
 		{
 			using CancellationTokenSource cts = new();
@@ -373,7 +373,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains(expected).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in order and contiguous,
@@ -390,7 +390,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as missing items");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortDoesNotEndWith()
 		{
 			using CancellationTokenSource cts = new();
@@ -399,7 +399,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).DoesNotEndWith([-1]).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not end with [-1],
@@ -411,7 +411,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortDoesNotHaveItem()
 		{
 			using CancellationTokenSource cts = new();
@@ -420,7 +420,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).DoesNotHaveItem(x => x < 0).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have an item matching x => x < 0,
@@ -432,7 +432,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortDoesNotHaveItemThat()
 		{
 			using CancellationTokenSource cts = new();
@@ -441,7 +441,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).DoesNotHaveItemThat(it => it.IsNegative()).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have an item that is negative,
@@ -453,7 +453,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortEndsWith()
 		{
 			using CancellationTokenSource cts = new();
@@ -462,7 +462,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).EndsWith([-1]).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             ends with [-1],
@@ -474,7 +474,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortEndsWithForAnUntypedEnumerable()
 		{
 			using CancellationTokenSource cts = new();
@@ -483,7 +483,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).EndsWith([-1]).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             ends with [-1],
@@ -495,7 +495,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortHasItem()
 		{
 			using CancellationTokenSource cts = new();
@@ -504,7 +504,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).HasItem(-1).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item equal to -1,
@@ -516,7 +516,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortHasItemAtAnIndexFromEnd()
 		{
 			using CancellationTokenSource cts = new();
@@ -530,7 +530,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).HasItem(-1).AtIndexFromEnd(2).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item equal to -1 at index 2 from end,
@@ -544,7 +544,7 @@ public sealed partial class ThatEnumerable
 				.Because("counting the items must stop at the cancellation as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortHasItemForAnUntypedEnumerable()
 		{
 			using CancellationTokenSource cts = new();
@@ -553,7 +553,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).HasItem(-1).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item equal to -1,
@@ -565,7 +565,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortHasItemMatchingAPredicate()
 		{
 			using CancellationTokenSource cts = new();
@@ -574,7 +574,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).HasItem(x => x < 0).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item matching x => x < 0,
@@ -586,7 +586,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortHasItemMatchingAPredicateAtAnIndexFromEnd()
 		{
 			using CancellationTokenSource cts = new();
@@ -600,7 +600,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).HasItem(x => x < 0).AtIndexFromEnd(2).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item matching x => x < 0 at index 2 from end,
@@ -614,7 +614,7 @@ public sealed partial class ThatEnumerable
 				.Because("counting the items must stop at the cancellation as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortHasItemMatchingAPredicateForAnUntypedEnumerable()
 		{
 			using CancellationTokenSource cts = new();
@@ -623,7 +623,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).HasItem(x => x is < 0).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item matching x => x is < 0,
@@ -635,7 +635,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortHasItemThat()
 		{
 			using CancellationTokenSource cts = new();
@@ -644,7 +644,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).HasItemThat(it => it.IsNegative()).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item that is negative,
@@ -656,7 +656,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortHasItemThatAtAnIndexFromEnd()
 		{
 			using CancellationTokenSource cts = new();
@@ -670,7 +670,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).HasItemThat(it => it.IsNegative()).AtIndexFromEnd(2).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item that is negative at index 2 from end,
@@ -684,7 +684,7 @@ public sealed partial class ThatEnumerable
 				.Because("counting the items must stop at the cancellation as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortHasItemThatForAnUntypedEnumerable()
 		{
 			using CancellationTokenSource cts = new();
@@ -693,7 +693,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).HasItemThat(it => it.IsEqualTo(-1)).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item that is equal to -1,
@@ -705,7 +705,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortHasSingle()
 		{
 			using CancellationTokenSource cts = new();
@@ -714,7 +714,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).HasSingle().Matching(x => x < 0).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has a single item matching x => x < 0,
@@ -726,7 +726,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortHasSingleForAnUntypedEnumerable()
 		{
 			using CancellationTokenSource cts = new();
@@ -735,7 +735,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).HasSingle().Matching(x => x is < 0).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             has a single item matching x => x is < 0,
@@ -747,7 +747,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortIsEqualTo()
 		{
 			using CancellationTokenSource cts = new();
@@ -756,7 +756,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsEqualTo([0, 1, 2, 3, 4, 5, 6, 7]).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [0, 1, 2, 3, 4, 5, 6, 7] in order,
@@ -771,7 +771,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be reported as additional items");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortIsEqualToExpectationsWithinAnItem()
 		{
 			using CancellationTokenSource cts = new();
@@ -783,7 +783,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -822,7 +822,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation within an item must not be reported as a deviation");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortIsInAscendingOrder()
 		{
 			using CancellationTokenSource cts = new();
@@ -831,7 +831,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsInAscendingOrder().WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             is in ascending order,
@@ -843,7 +843,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortIsInAscendingOrderForAnUntypedEnumerable()
 		{
 			using CancellationTokenSource cts = new();
@@ -852,7 +852,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsInAscendingOrder().WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             is in ascending order,
@@ -864,7 +864,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldAbortIsNotInAscendingOrder()
 		{
 			using CancellationTokenSource cts = new();
@@ -873,7 +873,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsNotInAscendingOrder().WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             is not in ascending order,
@@ -885,7 +885,7 @@ public sealed partial class ThatEnumerable
 				.Because("a cancellation must not be mistaken for the end of the source");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationIsRequested_ShouldReportTheChainedExpectationAsNotVerified()
 		{
 			using CancellationTokenSource cts = new();
@@ -894,7 +894,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains(1).And.Contains(-1).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 1 at least once and contains an item equal to -1 at least once,
@@ -906,7 +906,7 @@ public sealed partial class ThatEnumerable
 				.Because("the met expectation cannot explain why the combination could not be verified");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenInMemoryCollectionIsCanceled_ShouldBeJudgedCompletely()
 		{
 			using CancellationTokenSource cts = new();
@@ -919,7 +919,7 @@ public sealed partial class ThatEnumerable
 				.Because("a collection that is already complete in memory is judged like any other value");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenInMemoryCollectionIsCanceled_ShouldStillReportAMismatchedItemExpectation()
 		{
 			using CancellationTokenSource cts = new();
@@ -929,7 +929,7 @@ public sealed partial class ThatEnumerable
 				=> await That(subject).IsEqualTo([x => x.Satisfies(v => Cancel(cts, v == 1)), x => x.IsEqualTo(3),])
 					.WithCancellation(cts.Token);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [x => x.Satisfies(v => Cancel(cts, v == 1)), x => x.IsEqualTo(3),] in order,
@@ -944,7 +944,7 @@ public sealed partial class ThatEnumerable
 				.Because("only an item expectation that was not decided may be ignored, not a decided mismatch");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenInMemoryUntypedSetIsCanceled_ShouldBeJudgedCompletely()
 		{
 			using CancellationTokenSource cts = new();
@@ -963,7 +963,7 @@ public sealed partial class ThatEnumerable
 				.Because("a set is complete in memory, also when it is read as a non-generic enumerable");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenInMemoryUntypedSetIsCanceled_ShouldJudgeHasItemAtAnIndexFromEnd()
 		{
 			using CancellationTokenSource cts = new();
@@ -978,7 +978,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).HasItem(1).AtIndexFromEnd(0).WithCancellation(cts.Token);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item equal to 1 at index 0 from end,
@@ -990,7 +990,7 @@ public sealed partial class ThatEnumerable
 				.Because("the count of a set is known without reading its items, so the cancellation does not matter");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSourceEndedBeforeTheCancellation_ShouldJudgeTheCollection()
 		{
 			using CancellationTokenSource cts = new();
@@ -1004,7 +1004,7 @@ public sealed partial class ThatEnumerable
 				.Because("the source was read to its end before the cancellation, so all items are known");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutElapsedBeforeAnInMemoryCollectionIsEvaluated_ShouldJudgeItLikeAScalar()
 		{
 			async Task Collection()
@@ -1020,14 +1020,14 @@ public sealed partial class ThatEnumerable
 				.Because("the array is complete when the constraint runs, like the scalar");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutElapsedBeforeAnInMemoryCollectionIsEvaluated_ShouldReportItsMismatch()
 		{
 			async Task Act()
 				=> await That(new[] { 1, 2, })
 					.Satisfies(_ => OutlastTheTimeout()).And.IsEqualTo([1, 3,]).WithTimeout(50.Milliseconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that new[] { 1, 2, }
 				             satisfies _ => OutlastTheTimeout() and is equal to collection [1, 3,] in order,
@@ -1042,7 +1042,7 @@ public sealed partial class ThatEnumerable
 				.Because("a complete array is judged normally instead of reporting that it did not finish");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutElapses_ShouldFailANegatedContains()
 		{
 			IEnumerable<int> subject = SlowNumbers();
@@ -1050,7 +1050,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).DoesNotContain(-1).WithTimeout(50.Milliseconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not contain an item equal to -1,
@@ -1063,7 +1063,7 @@ public sealed partial class ThatEnumerable
 				.Because("a timeout must not be mistaken for the end of the source");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutElapses_ShouldFailContainsACollection()
 		{
 			IEnumerable<int> subject = SlowNumbers();
@@ -1071,7 +1071,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains([-1]).WithTimeout(50.Milliseconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection [-1] in order and contiguous,
@@ -1086,7 +1086,7 @@ public sealed partial class ThatEnumerable
 				.Because("a timeout must not be reported as missing items");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutElapses_ShouldFailEndsWith()
 		{
 			IEnumerable<int> subject = SlowNumbers();
@@ -1094,7 +1094,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).EndsWith([-1]).WithTimeout(50.Milliseconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             ends with [-1],
@@ -1106,7 +1106,7 @@ public sealed partial class ThatEnumerable
 				.Because("a timeout must not be mistaken for the end of the source");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutElapses_ShouldFailHasItem()
 		{
 			IEnumerable<int> subject = SlowNumbers();
@@ -1114,7 +1114,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).HasItem(x => x < 0).WithTimeout(50.Milliseconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has an item matching x => x < 0,
@@ -1126,7 +1126,7 @@ public sealed partial class ThatEnumerable
 				.Because("a timeout must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutElapses_ShouldFailHasSingle()
 		{
 			IEnumerable<int> subject = SlowNumbers();
@@ -1134,7 +1134,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).HasSingle().Matching(x => x < 0).WithTimeout(50.Milliseconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has a single item matching x => x < 0,
@@ -1146,7 +1146,7 @@ public sealed partial class ThatEnumerable
 				.Because("a timeout must not be reported as a missing item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutElapses_ShouldFailIsInAscendingOrder()
 		{
 			IEnumerable<int> subject = SlowNumbers();
@@ -1154,7 +1154,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsInAscendingOrder().WithTimeout(50.Milliseconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is in ascending order,
@@ -1166,7 +1166,7 @@ public sealed partial class ThatEnumerable
 				.Because("a timeout must not be mistaken for the end of the source");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutElapses_ShouldFailStartsWith()
 		{
 			IEnumerable<int> subject = SlowNumbers();
@@ -1176,7 +1176,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).StartsWith(expected).WithTimeout(50.Milliseconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             starts with [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, (… and 99990 more)],

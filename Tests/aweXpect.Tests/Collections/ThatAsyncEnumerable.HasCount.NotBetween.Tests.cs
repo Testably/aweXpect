@@ -13,7 +13,7 @@ public sealed partial class ThatAsyncEnumerable
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsMatchingItems_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -21,7 +21,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasCount().NotBetween(3).And(6);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have between 3 and 6 items,
@@ -32,7 +32,7 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsTooFewItems_ShouldSucceed()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2);
@@ -43,7 +43,7 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsTooManyItems_ShouldSucceed()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3, 4, 5, 6, 7);
@@ -54,9 +54,9 @@ public sealed partial class ThatAsyncEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(null, 3)]
-				[InlineData(1, null)]
+				[Test]
+				[Arguments(null, 3)]
+				[Arguments(1, null)]
 				public async Task WhenMinimumOrMaximumIsNull_ShouldFail(int? minimum, int? maximum)
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -64,7 +64,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasCount().NotBetween(minimum).And(maximum);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              does not have between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} items,
@@ -76,7 +76,7 @@ public sealed partial class ThatAsyncEnumerable
 						.Because("nothing can be ordered against a null bound");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IAsyncEnumerable<int>? subject = null;
@@ -84,7 +84,7 @@ public sealed partial class ThatAsyncEnumerable
 					async Task Act()
 						=> await That(subject).HasCount().NotBetween(2).And(4);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have between 2 and 4 items,
@@ -95,7 +95,7 @@ public sealed partial class ThatAsyncEnumerable
 
 			public sealed class NegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenEnumerableContainsTooFewItems_ShouldFail()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2);
@@ -104,7 +104,7 @@ public sealed partial class ThatAsyncEnumerable
 						=> await That(subject).DoesNotComplyWith(it =>
 							it.HasCount().NotBetween(3).And(6));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has between 3 and 6 items,
@@ -115,9 +115,9 @@ public sealed partial class ThatAsyncEnumerable
 						             """);
 				}
 
-				[Theory]
-				[InlineData(null, 3)]
-				[InlineData(1, null)]
+				[Test]
+				[Arguments(null, 3)]
+				[Arguments(1, null)]
 				public async Task WhenMinimumOrMaximumIsNull_ShouldFail(int? minimum, int? maximum)
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
@@ -126,7 +126,7 @@ public sealed partial class ThatAsyncEnumerable
 						=> await That(subject).DoesNotComplyWith(it =>
 							it.HasCount().NotBetween(minimum).And(maximum));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has between {Formatter.Format(minimum)} and {Formatter.Format(maximum)} items,

@@ -8,7 +8,7 @@ public sealed partial class ThatDateTimeOffset
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndExpectedAreNull_ShouldSucceed()
 				{
 					DateTimeOffset? subject = null;
@@ -20,7 +20,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsDifferent_ShouldFail()
 				{
 					DateTimeOffset? subject = CurrentTime();
@@ -29,7 +29,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to {Formatter.Format(expected)},
@@ -37,7 +37,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsTheSame_ShouldSucceed()
 				{
 					DateTimeOffset? subject = CurrentTime();
@@ -49,7 +49,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task Within_NegativeTolerance_ShouldThrowArgumentOutOfRangeException()
 				{
 					DateTimeOffset? subject = CurrentTime();
@@ -63,7 +63,7 @@ public sealed partial class ThatDateTimeOffset
 						.WithParamName("tolerance");
 				}
 
-				[Fact]
+				[Test]
 				public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail()
 				{
 					DateTimeOffset? subject = CurrentTime();
@@ -73,7 +73,7 @@ public sealed partial class ThatDateTimeOffset
 						=> await That(subject).IsEqualTo(expected).Within(3.Seconds())
 							.Because("we want to test the failure");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to {Formatter.Format(expected)} ± 0:03, because we want to test the failure,
@@ -81,7 +81,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Within_WhenValuesAreWithinTheTolerance_ShouldSucceed()
 				{
 					DateTimeOffset? subject = CurrentTime();

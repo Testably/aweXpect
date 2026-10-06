@@ -9,7 +9,7 @@ public sealed partial class ThatDateOnly
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenOnlySubjectIsNull_ShouldSucceed()
 				{
 					DateOnly? subject = null;
@@ -21,7 +21,7 @@ public sealed partial class ThatDateOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenOnlyUnexpectedIsNull_ShouldSucceed()
 				{
 					DateOnly? subject = CurrentTime();
@@ -33,7 +33,7 @@ public sealed partial class ThatDateOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndUnexpectedAreNull_ShouldFail()
 				{
 					DateOnly? subject = null;
@@ -42,7 +42,7 @@ public sealed partial class ThatDateOnly
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not equal to <null>,
@@ -50,7 +50,7 @@ public sealed partial class ThatDateOnly
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsDifferent_ShouldSucceed()
 				{
 					DateOnly? subject = CurrentTime();
@@ -62,7 +62,7 @@ public sealed partial class ThatDateOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldSucceed()
 				{
 					DateOnly? unexpected = CurrentTime();
@@ -74,7 +74,7 @@ public sealed partial class ThatDateOnly
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsTheSame_ShouldFail()
 				{
 					DateOnly? subject = CurrentTime();
@@ -83,7 +83,7 @@ public sealed partial class ThatDateOnly
 					async Task Act()
 						=> await That(subject).IsNotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not equal to {Formatter.Format(unexpected)},
@@ -91,7 +91,7 @@ public sealed partial class ThatDateOnly
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Within_WhenToleranceIsNotWholeDays_ShouldThrowArgumentOutOfRangeException()
 				{
 					DateOnly? subject = CurrentTime();
@@ -106,11 +106,11 @@ public sealed partial class ThatDateOnly
 						.Because("a date has no time of day, so the remainder is rejected as soon as it is specified instead of when the expectation is awaited");
 				}
 
-				[Theory]
-				[InlineData(3, 2, false)]
-				[InlineData(5, 3, false)]
-				[InlineData(2, 2, true)]
-				[InlineData(0, 2, true)]
+				[Test]
+				[Arguments(3, 2, false)]
+				[Arguments(5, 3, false)]
+				[Arguments(2, 2, true)]
+				[Arguments(0, 2, true)]
 				public async Task Within_WhenValuesAreInsideTheTolerance_ShouldFail(
 					int actualDifference, int tolerance, bool expectToThrow)
 				{
@@ -126,7 +126,7 @@ public sealed partial class ThatDateOnly
 						? ""
 						: $", which differs by -{actualDifference} days";
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.OnlyIf(expectToThrow)
 						.WithMessage($"""
 						              Expected that subject
@@ -138,7 +138,7 @@ public sealed partial class ThatDateOnly
 
 			public sealed class NegatedTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsDifferent_ShouldFail()
 				{
 					DateOnly? subject = new(2010, 11, 12);
@@ -146,7 +146,7 @@ public sealed partial class ThatDateOnly
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.IsNotEqualTo(new DateOnly(2010, 11, 13)));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 2010-11-13,
@@ -154,7 +154,7 @@ public sealed partial class ThatDateOnly
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsTheSame_ShouldSucceed()
 				{
 					DateOnly? subject = new(2010, 11, 12);

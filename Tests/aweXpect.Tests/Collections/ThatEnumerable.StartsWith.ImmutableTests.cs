@@ -13,7 +13,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class ImmutableTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldSupportEquivalent()
 			{
 				ImmutableArray<MyClass> subject = [..Factory.GetFibonacciNumbers(x => new MyClass(x), 20),];
@@ -24,7 +24,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCollectionsAreIdentical_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -35,7 +35,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableHasDifferentStartingElements_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -44,7 +44,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with expected,
@@ -55,7 +55,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedContainsAdditionalElements_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -64,7 +64,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with expected,
@@ -77,7 +77,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				ImmutableArray<int> subject = [1,];
@@ -93,7 +93,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableStringTests
 		{
-			[Fact]
+			[Test]
 			public async Task AsPrefix_WhenAnItemDoesNotMatchItsPattern_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["# Title", "## Intro", "text",];
@@ -101,7 +101,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith("# ", "### ").AsPrefix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with ["# ", "### "] as prefix,
@@ -116,7 +116,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsRegex_WhenAnItemDoesNotMatchItsPattern_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["# Title", "## Intro", "text",];
@@ -124,7 +124,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith("^# ", "^### ").AsRegex();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with ["^# ", "^### "] as regex,
@@ -139,7 +139,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsRegex_WhenExpectedContainsAnEmptyPattern_ShouldThrowArgumentException()
 			{
 				ImmutableArray<string?> subject = ["foo",];
@@ -152,7 +152,7 @@ public sealed partial class ThatEnumerable
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsSuffix_WhenAnItemDoesNotMatchItsPattern_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["# Title", "## Intro", "text",];
@@ -160,7 +160,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith("Title", "Outro").AsSuffix();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with ["Title", "Outro"] as suffix,
@@ -175,7 +175,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AsWildcard_WhenAnItemDoesNotMatchItsPattern_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["# Title", "## Intro", "text",];
@@ -183,7 +183,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith("# *", "### *").AsWildcard();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with ["# *", "### *"] as wildcard,
@@ -198,7 +198,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldIncludeOptionsInFailureMessage()
 			{
 				ImmutableArray<string?> subject = ["foo", "bar", "baz",];
@@ -206,7 +206,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).StartsWith("FOO", "BAZ").IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with ["FOO", "BAZ"] ignoring case,
@@ -221,7 +221,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				ImmutableArray<string> subject = ["foo", "bar", "baz",];
@@ -232,7 +232,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsAnEnumerable_ShouldNameItsExpression()
 			{
 				ImmutableArray<string> subject = ["foo", "bar", "baz",];
@@ -241,7 +241,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject)!.StartsWith(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with expected,
@@ -256,7 +256,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectStartsWithExpectedValues_ShouldSucceed()
 			{
 				ImmutableArray<string> subject = ["foo", "bar", "baz",];

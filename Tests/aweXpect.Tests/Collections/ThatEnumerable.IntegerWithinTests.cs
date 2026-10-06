@@ -6,7 +6,7 @@ public sealed partial class ThatEnumerable
 {
 	public sealed class IntegerWithinTests
 	{
-		[Fact]
+		[Test]
 		public async Task AllAreEqualTo_WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 		{
 			int[] subject = [9, 20, 31,];
@@ -17,7 +17,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Contains_ForBytes_WhenTheItemLiesWithinTheTolerance_ShouldSucceed()
 		{
 			byte[] subject = [1, 200,];
@@ -28,7 +28,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Contains_ForLongs_WhenTheDistanceExceedsTheRangeOfTheType_ShouldFail()
 		{
 			long[] subject = [long.MinValue,];
@@ -36,7 +36,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains(long.MaxValue).Within(long.MaxValue);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that subject
 				              contains an item equal to {Formatter.Format(long.MaxValue)} ± {Formatter.Format(long.MaxValue)} at least once,
@@ -48,7 +48,7 @@ public sealed partial class ThatEnumerable
 				.Because("the distance between the extremes is computed without overflow");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Contains_ForNullableInts_WhenTheItemLiesWithinTheTolerance_ShouldSucceed()
 		{
 			int?[] subject = [null, 9,];
@@ -59,7 +59,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Contains_ForShorts_WhenTheDistanceExceedsTheRangeOfTheType_ShouldFail()
 		{
 			short[] subject = [short.MinValue,];
@@ -67,7 +67,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains(short.MaxValue).Within(short.MaxValue);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 32767 ± 32767 at least once,
@@ -79,7 +79,7 @@ public sealed partial class ThatEnumerable
 				.Because("the distance of a short is computed in a wider type");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Contains_ForULongs_WhenTheItemLiesAtTheEdgeOfTheTolerance_ShouldSucceed()
 		{
 			ulong[] subject = [ulong.MaxValue,];
@@ -90,7 +90,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Contains_WhenTheItemLiesOutsideTheTolerance_ShouldFail()
 		{
 			int[] subject = [8, 20, 32,];
@@ -98,7 +98,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).Contains(10).Within(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains an item equal to 10 ± 1 at least once,
@@ -109,7 +109,7 @@ public sealed partial class ThatEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Contains_WhenTheItemLiesWithinTheTolerance_ShouldSucceed()
 		{
 			int[] subject = [9, 20, 31,];
@@ -121,7 +121,7 @@ public sealed partial class ThatEnumerable
 				.Because("the items of a collection have the same tolerance as a single number");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Contains_WhenTheToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			int[] subject = [9, 20, 31,];
@@ -134,7 +134,7 @@ public sealed partial class ThatEnumerable
 				.WithMessage("The tolerance must not be negative.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotContain_WhenTheItemLiesWithinTheTolerance_ShouldFail()
 		{
 			IEnumerable<long> subject = [9, 20, 31,];
@@ -142,7 +142,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).DoesNotContain(10).Within(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not contain an item equal to 10 ± 1,
@@ -153,7 +153,7 @@ public sealed partial class ThatEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task EndsWith_WhenTheItemsLieWithinTheTolerance_ShouldSucceed()
 		{
 			uint[] subject = [9, 20, 31,];
@@ -164,7 +164,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task HasItem_WhenTheItemLiesWithinTheTolerance_ShouldSucceed()
 		{
 			sbyte[] subject = [9, 20, 31,];
@@ -175,7 +175,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsContainedIn_WhenTheItemsLieWithinTheTolerance_ShouldSucceed()
 		{
 			ushort[] subject = [9, 20,];
@@ -186,7 +186,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_WhenAnItemLiesOutsideTheTolerance_ShouldFail()
 		{
 			int[] subject = [9, 20, 32,];
@@ -194,7 +194,7 @@ public sealed partial class ThatEnumerable
 			async Task Act()
 				=> await That(subject).IsEqualTo([10, 20, 30,]).Within(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [10, 20, 30,] ± 1 in order,
@@ -208,7 +208,7 @@ public sealed partial class ThatEnumerable
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_WhenEachItemLiesWithinTheTolerance_ShouldSucceed()
 		{
 			int[] subject = [9, 20, 31,];
@@ -219,7 +219,7 @@ public sealed partial class ThatEnumerable
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task StartsWith_WhenTheItemsLieWithinTheTolerance_ShouldSucceed()
 		{
 			IEnumerable<int?> subject = [9, null, 31,];

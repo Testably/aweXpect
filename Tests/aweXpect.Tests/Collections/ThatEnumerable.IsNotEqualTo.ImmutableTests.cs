@@ -16,7 +16,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class ImmutableInSameOrderTests
 		{
-			[Fact]
+			[Test]
 			public async Task CollectionWithMoreThan20Deviations_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [..Enumerable.Range(1, 21),];
@@ -27,7 +27,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task CompletelyDifferentCollections_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [..Enumerable.Range(1, 11),];
@@ -39,7 +39,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollection_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = [];
@@ -51,7 +51,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task VeryDifferentCollections_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [..Enumerable.Range(1, 10),];
@@ -63,7 +63,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [..Enumerable.Range(1, 11),];
@@ -75,7 +75,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedExpectationsContainNull_ShouldThrowArgumentException()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -89,7 +89,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("The 'unexpected' collection cannot contain <null>.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedPredicatesContainNull_ShouldThrowArgumentException()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -103,7 +103,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage("The 'unexpected' collection cannot contain <null>.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalAndMissingItems_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "d", "e",];
@@ -115,7 +115,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItem_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "d",];
@@ -127,7 +127,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItems_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "d", "e",];
@@ -139,7 +139,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCollectionExpression_WithSameItems_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -147,7 +147,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo([1, 2, 3,]);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection [1, 2, 3,] in order,
@@ -162,7 +162,7 @@ public sealed partial class ThatEnumerable
 					.Because("a collection expression must compare the items and not the immutable arrays");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCollectionInDifferentOrder_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "c", "b",];
@@ -174,7 +174,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["c", "a", "b", "c",];
@@ -186,7 +186,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -198,7 +198,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfSubject_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "c",];
@@ -210,7 +210,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInExpected_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -222,7 +222,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithImmutableArrayOfTimes_WhenTheDefaultTimeToleranceIsSet_ShouldApplyIt()
 			{
 				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
@@ -236,7 +236,7 @@ public sealed partial class ThatEnumerable
 					await That(subject).IsNotEqualTo(unexpected);
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not equal to collection unexpected ± 0:01 in order,
@@ -251,7 +251,7 @@ public sealed partial class ThatEnumerable
 					.Because("an unexpected immutable array falls back to the default tolerance, as any other unexpected collection does");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithImmutableArrayWithSameItems_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -260,7 +260,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order,
@@ -275,7 +275,7 @@ public sealed partial class ThatEnumerable
 					.Because("the items are compared, although the backing arrays are different instances");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItem_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -287,7 +287,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItems_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -299,7 +299,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithSameCollection_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -308,7 +308,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order,
@@ -333,7 +333,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableInSameOrderIgnoringDuplicatesTests
 		{
-			[Fact]
+			[Test]
 			public async Task CollectionWithMoreThan20Deviations_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [..Enumerable.Range(1, 21),];
@@ -344,7 +344,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task CompletelyDifferentCollections_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [..Enumerable.Range(1, 11),];
@@ -356,7 +356,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollection_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = [];
@@ -368,7 +368,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollectionWithDuplicatesInExpected_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = [];
@@ -380,7 +380,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task VeryDifferentCollections_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [..Enumerable.Range(1, 10),];
@@ -392,7 +392,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalAndMissingItems_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "d", "e",];
@@ -404,7 +404,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItem_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "d",];
@@ -416,7 +416,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItems_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "d", "e",];
@@ -428,7 +428,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCollectionInDifferentOrder_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "c", "b",];
@@ -440,7 +440,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["c", "a", "b", "c",];
@@ -449,7 +449,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
@@ -472,7 +472,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -481,7 +481,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
@@ -504,7 +504,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfSubject_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "c",];
@@ -513,7 +513,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
@@ -536,7 +536,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInExpected_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -545,7 +545,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
@@ -568,7 +568,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInSubject_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "a", "b", "c",];
@@ -577,7 +577,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
@@ -600,7 +600,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItem_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -612,7 +612,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItems_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -624,7 +624,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithSameCollection_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -633,7 +633,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order ignoring duplicates,
@@ -658,7 +658,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableInAnyOrderTests
 		{
-			[Fact]
+			[Test]
 			public async Task CollectionWithMoreThan20Deviations_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [..Enumerable.Range(1, 21),];
@@ -669,7 +669,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task CompletelyDifferentCollections_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [..Enumerable.Range(1, 11),];
@@ -681,7 +681,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollection_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = [];
@@ -693,7 +693,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task VeryDifferentCollections_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [..Enumerable.Range(1, 10),];
@@ -705,7 +705,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalAndMissingItems_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "d", "e",];
@@ -717,7 +717,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItem_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "d",];
@@ -729,7 +729,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItems_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "d", "e",];
@@ -741,7 +741,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCollectionInDifferentOrder_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "c", "b",];
@@ -750,7 +750,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order,
@@ -772,7 +772,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["c", "a", "b", "c",];
@@ -784,7 +784,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -796,7 +796,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfSubject_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "c",];
@@ -808,7 +808,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInExpected_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -820,7 +820,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInSubject_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "a", "b", "c",];
@@ -832,7 +832,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItem_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -844,7 +844,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItems_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -856,7 +856,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithSameCollection_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -865,7 +865,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order,
@@ -890,7 +890,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableInAnyOrderIgnoringDuplicatesTests
 		{
-			[Fact]
+			[Test]
 			public async Task CollectionWithMoreThan20Deviations_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [..Enumerable.Range(1, 21),];
@@ -901,7 +901,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task CompletelyDifferentCollections_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [..Enumerable.Range(1, 11),];
@@ -913,7 +913,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollection_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = [];
@@ -925,7 +925,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task EmptyCollectionWithDuplicatesInExpected_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = [];
@@ -937,7 +937,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task VeryDifferentCollections_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [..Enumerable.Range(1, 10),];
@@ -949,7 +949,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalAndMissingItems_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "d", "e",];
@@ -961,7 +961,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItem_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "d",];
@@ -973,7 +973,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithAdditionalItems_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "d", "e",];
@@ -985,7 +985,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithCollectionInDifferentOrder_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "c", "b",];
@@ -994,7 +994,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).InAnyOrder().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
@@ -1016,7 +1016,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["c", "a", "b", "c",];
@@ -1025,7 +1025,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).InAnyOrder().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
@@ -1048,7 +1048,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfExpected_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -1057,7 +1057,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).InAnyOrder().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
@@ -1080,7 +1080,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesAtEndOfSubject_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c", "c",];
@@ -1089,7 +1089,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).InAnyOrder().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
@@ -1112,7 +1112,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInExpected_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -1121,7 +1121,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).InAnyOrder().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
@@ -1144,7 +1144,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDuplicatesInSubject_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "a", "b", "c",];
@@ -1153,7 +1153,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).InAnyOrder().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
@@ -1176,7 +1176,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItem_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -1188,7 +1188,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMissingItems_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -1200,7 +1200,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithSameCollection_ShouldFail()
 			{
 				ImmutableArray<string?> subject = ["a", "b", "c",];
@@ -1209,7 +1209,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).InAnyOrder().IgnoringDuplicates();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order ignoring duplicates,
@@ -1234,7 +1234,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableStringsTests
 		{
-			[Fact]
+			[Test]
 			public async Task AsWildcard_ShouldThrowWhenMatchingWildcard()
 			{
 				ImmutableArray<string?> subject = ["foo", "bar", "baz",];
@@ -1243,7 +1243,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).AsWildcard();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected as wildcard in order,
@@ -1265,7 +1265,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				IgnoringLeadingWhiteSpace_ShouldThrowWhenOnlyDifferenceIsInLeadingWhiteSpace()
 			{
@@ -1275,7 +1275,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).IgnoringLeadingWhiteSpace();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected ignoring leading whitespace in order,
@@ -1297,7 +1297,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				IgnoringTrailingWhiteSpace_ShouldThrowWhenOnlyDifferenceIsInTrailingWhiteSpace()
 			{
@@ -1307,7 +1307,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).IgnoringTrailingWhiteSpace();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected ignoring trailing whitespace in order,
@@ -1332,7 +1332,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableWithExpectationsTests
 		{
-			[Fact]
+			[Test]
 			public async Task InAnyOrder_WithItemsInDifferentOrder_ShouldFail()
 			{
 				ImmutableArray<int> subject = [3, 1, 2,];
@@ -1346,7 +1346,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in any order,
@@ -1360,7 +1360,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDifferentItems_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -1375,7 +1375,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMatchingItems_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -1389,7 +1389,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order,
@@ -1406,7 +1406,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableWithPredicatesTests
 		{
-			[Fact]
+			[Test]
 			public async Task InAnyOrder_WithItemsInDifferentOrder_ShouldFail()
 			{
 				ImmutableArray<int> subject = [3, 1, 2,];
@@ -1414,7 +1414,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo([x => x == 1, x => x == 2, x => x == 3,]).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection [x => x == 1, x => x == 2, x => x == 3,] in any order,
@@ -1432,7 +1432,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDifferentItems_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -1443,7 +1443,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithMatchingItems_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -1452,7 +1452,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection unexpected in order,

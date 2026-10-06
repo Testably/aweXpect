@@ -8,7 +8,7 @@ public sealed partial class ThatDateTimeOffset
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndExpectedAreMaxValue_ShouldFail()
 				{
 					DateTimeOffset? subject = DateTimeOffset.MaxValue;
@@ -17,7 +17,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).IsNotOnOrBefore(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not on or before 9999-12-31T23:59:59.9999999+00:00,
@@ -25,7 +25,7 @@ public sealed partial class ThatDateTimeOffset
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndExpectedAreMinValue_ShouldFail()
 				{
 					DateTimeOffset? subject = DateTimeOffset.MinValue;
@@ -34,7 +34,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).IsNotOnOrBefore(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not on or before 0001-01-01T00:00:00.0000000+00:00,
@@ -42,7 +42,7 @@ public sealed partial class ThatDateTimeOffset
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsEarlier_ShouldFail()
 				{
 					DateTimeOffset? subject = EarlierTime();
@@ -51,7 +51,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).IsNotOnOrBefore(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not on or before {Formatter.Format(unexpected)},
@@ -59,7 +59,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					DateTimeOffset? subject = null;
@@ -68,7 +68,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).IsNotOnOrBefore(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not on or before {Formatter.Format(expected)},
@@ -76,7 +76,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsSame_ShouldFail()
 				{
 					DateTimeOffset? subject = CurrentTime();
@@ -85,7 +85,7 @@ public sealed partial class ThatDateTimeOffset
 					async Task Act()
 						=> await That(subject).IsNotOnOrBefore(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not on or before {Formatter.Format(unexpected)},
@@ -93,7 +93,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectsIsLater_ShouldSucceed()
 				{
 					DateTimeOffset? subject = LaterTime();
@@ -105,7 +105,7 @@ public sealed partial class ThatDateTimeOffset
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenUnexpectedIsNull_ShouldFail()
 				{
 					DateTimeOffset? subject = CurrentTime();
@@ -115,7 +115,7 @@ public sealed partial class ThatDateTimeOffset
 						=> await That(subject).IsNotOnOrBefore(unexpected)
 							.Because("we want to test the failure");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not on or before <null>, because we want to test the failure,
@@ -123,7 +123,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Within_WhenSubjectIsMaxValue_ShouldNotOverflow()
 				{
 					DateTimeOffset? subject = DateTimeOffset.MaxValue;
@@ -137,7 +137,7 @@ public sealed partial class ThatDateTimeOffset
 						.Because("a widening tolerance must not make the assertion throw at the type limits");
 				}
 
-				[Fact]
+				[Test]
 				public async Task Within_WhenUnexpectedValueIsOutsideTheTolerance_ShouldFail()
 				{
 					DateTimeOffset? subject = CurrentTime();
@@ -148,7 +148,7 @@ public sealed partial class ThatDateTimeOffset
 							.Within(3.Seconds())
 							.Because("we want to test the failure");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not on or before {Formatter.Format(unexpected)} ± 0:03, because we want to test the failure,
@@ -156,7 +156,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail()
 				{
 					DateTimeOffset? subject = EarlierTime(3);
@@ -166,7 +166,7 @@ public sealed partial class ThatDateTimeOffset
 						=> await That(subject).IsNotOnOrBefore(unexpected)
 							.Within(3.Seconds());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not on or before {Formatter.Format(unexpected)} ± 0:03,
@@ -174,7 +174,7 @@ public sealed partial class ThatDateTimeOffset
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task Within_WhenValuesAreWithinTheTolerance_ShouldFail()
 				{
 					DateTimeOffset? subject = LaterTime(2);
@@ -184,7 +184,7 @@ public sealed partial class ThatDateTimeOffset
 						=> await That(subject).IsNotOnOrBefore(unexpected)
 							.Within(3.Seconds());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not on or before {Formatter.Format(unexpected)} ± 0:03,

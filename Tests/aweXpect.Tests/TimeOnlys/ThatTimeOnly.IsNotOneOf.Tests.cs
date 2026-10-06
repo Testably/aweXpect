@@ -11,7 +11,7 @@ public sealed partial class ThatTimeOnly
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				TimeOnly subject = CurrentTime();
@@ -26,7 +26,7 @@ public sealed partial class ThatTimeOnly
 					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				TimeOnly subject = CurrentTime();
@@ -40,7 +40,7 @@ public sealed partial class ThatTimeOnly
 					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedOnlyContainsNull_ShouldSucceed()
 			{
 				TimeOnly subject = CurrentTime();
@@ -52,7 +52,7 @@ public sealed partial class ThatTimeOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				TimeOnly subject = CurrentTime();
@@ -67,7 +67,7 @@ public sealed partial class ThatTimeOnly
 					.Because("an empty set is rejected when the expectation is built, before it is awaited");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				TimeOnly subject = CurrentTime();
@@ -81,7 +81,7 @@ public sealed partial class ThatTimeOnly
 					.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsContained_ShouldFail()
 			{
 				TimeOnly subject = CurrentTime();
@@ -90,7 +90,7 @@ public sealed partial class ThatTimeOnly
 				async Task Act()
 					=> await That(subject).IsNotOneOf(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is not one of expected,
@@ -101,7 +101,7 @@ public sealed partial class ThatTimeOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDifferent_ShouldSucceed()
 			{
 				TimeOnly subject = CurrentTime();
@@ -113,11 +113,11 @@ public sealed partial class ThatTimeOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(3, 2, false)]
-			[InlineData(5, 3, false)]
-			[InlineData(2, 2, true)]
-			[InlineData(0, 2, true)]
+			[Test]
+			[Arguments(3, 2, false)]
+			[Arguments(5, 3, false)]
+			[Arguments(2, 2, true)]
+			[Arguments(0, 2, true)]
 			public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail(
 				int actualDifference, int tolerance, bool expectToThrow)
 			{
@@ -133,7 +133,7 @@ public sealed partial class ThatTimeOnly
 					? ""
 					: $", which differs by -0:0{actualDifference} from the closest value";
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.OnlyIf(expectToThrow)
 					.WithMessage($"""
 					              Expected that subject
@@ -145,7 +145,7 @@ public sealed partial class ThatTimeOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenValuesWrapAroundMidnight_ShouldFail()
 			{
 				TimeOnly subject = TimeOnly.MinValue;
@@ -155,7 +155,7 @@ public sealed partial class ThatTimeOnly
 					=> await That(subject).IsNotOneOf(unexpected)
 						.Within(1.Minutes());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not one of unexpected ± 1:00,

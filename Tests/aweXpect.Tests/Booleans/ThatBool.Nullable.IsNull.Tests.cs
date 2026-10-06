@@ -8,7 +8,7 @@ public sealed partial class ThatBool
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenNull_ShouldSucceed()
 				{
 					bool? subject = null;
@@ -19,15 +19,15 @@ public sealed partial class ThatBool
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(true)]
-				[InlineData(false)]
+				[Test]
+				[Arguments(true)]
+				[Arguments(false)]
 				public async Task WhenTrueOrFalse_ShouldFail(bool? subject)
 				{
 					async Task Act()
 						=> await That(subject).IsNull().Because("we want to test the failure");
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is null, because we want to test the failure,

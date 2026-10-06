@@ -10,7 +10,7 @@ public sealed partial class ThatObject
 			private static readonly DateTime Unspecified = new(2026, 1, 1, 0, 0, 0, DateTimeKind.Unspecified);
 			private static readonly DateTime Utc = new(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-			[Fact]
+			[Test]
 			public async Task WhenKindsAreIncompatible_ShouldFail()
 			{
 				Reading subject = new(Utc);
@@ -19,7 +19,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($$"""
 					               Expected that subject
 					               is equivalent to expected,
@@ -34,7 +34,7 @@ public sealed partial class ThatObject
 					.Because("a Utc and a Local value with the same ticks denote different instants");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKindsAreTheSame_ShouldSucceed()
 			{
 				Reading subject = new(Utc);
@@ -46,7 +46,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOneKindIsUnspecified_ShouldSucceed()
 			{
 				Reading subject = new(Unspecified);

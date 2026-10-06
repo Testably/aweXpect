@@ -12,7 +12,7 @@ public sealed partial class ThatObject
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task BasicObjects_ShouldBeEquivalent()
 			{
 				OuterClass subject = new()
@@ -30,7 +30,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ChainedWithAnd_WhenOnlyTheOtherPartFails_ShouldNotShowTheEquivalencyOptions()
 			{
 				OuterClass subject = new()
@@ -45,7 +45,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected).And.Whose(x => x.Value, value => value.IsEqualTo("Bar"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected and whose Value is equal to "Bar",
@@ -57,7 +57,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ChainedWithAnd_WhenBothFail_ShouldIncludeEachFailureOnce()
 			{
 				OuterClass subject = new();
@@ -73,7 +73,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected1).And.IsEquivalentTo(expected2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected1 and is equivalent to expected2,
@@ -91,7 +91,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForType_WhenBothTypesAreRegistered_ShouldUseTheOptionsOfTheExpectedType()
 			{
 				Dto subject = new()
@@ -110,12 +110,12 @@ public sealed partial class ThatObject
 						.For<Dto>(x => x.IgnoringMember("Id"))
 						.For<Entity>(x => x.IgnoringMember("Secret")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*Property Id differed:*").AsWildcard()
 					.Because("the compared members come from the expected object, so its registration applies");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForType_WhenMemberIsIgnoredAfterwards_ShouldIgnoreItInTheType()
 			{
 				OuterClass subject = new()
@@ -141,7 +141,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForType_WhenOnlyTheExpectedTypeIsRegistered_ShouldApplyItsOptions()
 			{
 				Dto subject = new()
@@ -162,7 +162,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ForType_WhenOptionIsSetAfterwards_ShouldApplyItToTheType()
 			{
 				OuterClass subject = new()
@@ -190,7 +190,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMismatchingProperties_ShouldBeEquivalent()
 			{
 				OuterClass subject = new()
@@ -217,7 +217,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMismatchingPropertiesByPathAndTypePredicate_ShouldBeEquivalent()
 			{
 				OuterClass subject = new()
@@ -245,7 +245,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMismatchingPropertiesByPathPredicate_ShouldBeEquivalent()
 			{
 				OuterClass subject = new()
@@ -272,7 +272,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMismatchingPropertiesByPropertyPredicate_ShouldBeEquivalent()
 			{
 				OuterClass subject = new()
@@ -299,7 +299,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task IgnoringMismatchingPropertiesByTypePredicate_ShouldBeEquivalent()
 			{
 				OuterClass subject = new()
@@ -326,7 +326,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MismatchedObjects_ShouldNotBeEquivalent()
 			{
 				OuterClass subject = new();
@@ -338,7 +338,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -352,7 +352,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task MissingMember_ShouldNotBeEquivalent()
 			{
 				var subject = new
@@ -368,7 +368,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -381,7 +381,7 @@ public sealed partial class ThatObject
 					.Because("a member the actual object does not have cannot be equivalent to <null>");
 			}
 
-			[Fact]
+			[Test]
 			public async Task MissingMember_WithIgnoreRule_ShouldBeEquivalent()
 			{
 				var subject = new
@@ -400,7 +400,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task MissingMembers_ShouldJoinThemWithATrailingAnd()
 			{
 				var subject = new
@@ -417,7 +417,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -431,7 +431,7 @@ public sealed partial class ThatObject
 					.Because("single-line findings only put the \"and\" on its own line when another finding spans several lines");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ObjectsWithNestedEnumerableMatches_ShouldBeEquivalent()
 			{
 				OuterClass subject = new()
@@ -467,7 +467,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ObjectsWithNestedEnumerableMismatch_ShouldNotBeEquivalent()
 			{
 				OuterClass subject = new()
@@ -513,7 +513,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				ObjectsWithNestedEnumerableMismatch_WithIgnoreRule_ShouldBeEquivalent()
 			{
@@ -551,7 +551,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				ObjectsWithNestedEnumerableMismatch_WithIncorrectIgnoreRule_ShouldFail()
 			{
@@ -604,7 +604,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ObjectsWithNestedMatches_ShouldBeEquivalent()
 			{
 				OuterClass subject = new()
@@ -638,7 +638,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ObjectsWithNestedMismatch_ShouldNotBeEquivalent()
 			{
 				OuterClass subject = new()
@@ -666,7 +666,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -680,7 +680,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualImplementsIEqualityComparer_ShouldCompareByMembers()
 			{
 				EqualToEverythingComparer subject = new("Foo");
@@ -692,7 +692,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -706,7 +706,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsGenericOverAnAnonymousType_AndImplementsAPropertyExplicitly_ShouldCompareIt()
 			{
 				var subject = BoxOf(new
@@ -731,7 +731,7 @@ public sealed partial class ThatObject
 				static Box<T> BoxOf<T>(T value) => new(value);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedImplementsIEqualityComparer_ShouldCompareByMembers()
 			{
 				var subject = new
@@ -743,7 +743,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -757,7 +757,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNumericMembersOnlyDifferInTheirType_ShouldReportTheRuntimeTypes()
 			{
 				var subject = new
@@ -772,7 +772,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -787,7 +787,7 @@ public sealed partial class ThatObject
 					.Because("equivalency stays strict about the member type, so the failure has to show which types it compared");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlyTheExpectedMemberIsAString_ShouldCompareByValue()
 			{
 				var subject = new
@@ -805,7 +805,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -820,7 +820,7 @@ public sealed partial class ThatObject
 					.Because("a string is compared by value on either side, instead of being reduced to its Length");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeMembersDiffer_ShouldNotBeEquivalent()
 			{
 				var subject = new
@@ -835,7 +835,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -853,7 +853,7 @@ public sealed partial class ThatObject
 
 		public sealed class CollectionTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDifferentValues_ShouldFail()
 			{
 				int[] subject = [1, 2, 3,];
@@ -862,7 +862,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected, o => o.IgnoringCollectionOrder());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -878,7 +878,7 @@ public sealed partial class ThatObject
 					.Because("3 and 2 are matched in any order, so only the element that has no counterpart is reported");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInDifferentOrder_ShouldFail()
 			{
 				int[] subject = [1, 2, 3,];
@@ -887,7 +887,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -905,7 +905,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInDifferentOrder_WhenIgnoringCollectionOrder_ShouldSucceed()
 			{
 				int[] subject = [1, 2, 3,];
@@ -917,7 +917,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInSameOrder_ShouldSucceed()
 			{
 				int[] subject = [1, 2, 3,];
@@ -929,7 +929,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSetSubjectUsesACaseInsensitiveComparer_ShouldSucceed()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
@@ -945,7 +945,7 @@ public sealed partial class ThatObject
 					.Because("the comparer of the subject decides which items are the same");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSetSubjectUsesACaseInsensitiveComparer_WhenNegated_ShouldFail()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
@@ -957,7 +957,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equivalent to expected,
@@ -965,7 +965,7 @@ public sealed partial class ThatObject
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSetSubjectUsesACaseInsensitiveComparer_WithAnItemThatItDoesNotFind_ShouldFail()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
@@ -978,7 +978,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -992,7 +992,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSetSubjectUsesAComparerThatThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("comparer failed");
@@ -1005,7 +1005,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -1031,7 +1031,7 @@ public sealed partial class ThatObject
 
 		public sealed class DictionaryTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDifferentKeys_ShouldFail()
 			{
 				Dictionary<int, int> subject = new()
@@ -1062,7 +1062,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected, o => o.IgnoringCollectionOrder());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -1081,7 +1081,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDifferentValues_ShouldFail()
 			{
 				Dictionary<int, int> subject = new()
@@ -1112,7 +1112,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected, o => o.IgnoringCollectionOrder());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -1131,7 +1131,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedHasAdditionalNullValues_ShouldFail()
 			{
 				Dictionary<string, string?> subject = new(StringComparer.OrdinalIgnoreCase)
@@ -1154,7 +1154,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -1166,7 +1166,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSameEntries_ShouldSucceed()
 			{
 				Dictionary<int, int> subject = new()
@@ -1195,7 +1195,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSameEntriesInDifferentOrder_ShouldSucceed()
 			{
 				Dictionary<string, string> subject = new(StringComparer.OrdinalIgnoreCase)
@@ -1224,7 +1224,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasAdditionalNullValues_ShouldFail()
 			{
 				Dictionary<string, string?> subject = new(StringComparer.OrdinalIgnoreCase)
@@ -1247,7 +1247,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -1262,7 +1262,7 @@ public sealed partial class ThatObject
 
 		public sealed class EqualsOverrideTests
 		{
-			[Fact]
+			[Test]
 			public async Task NestedMemberOverridingEquals_WhenItsMembersDiffer_ShouldFail()
 			{
 				ContainerClass subject = new()
@@ -1285,7 +1285,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -1300,7 +1300,7 @@ public sealed partial class ThatObject
 					.Because("a nested member is compared by its members too");
 			}
 
-			[Fact]
+			[Test]
 			public async Task SelfReferencingGraph_WhenMembersDiffer_ShouldFailWithoutInfiniteRecursion()
 			{
 				SelfReferencingClass subject = new()
@@ -1317,7 +1317,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -1332,7 +1332,7 @@ public sealed partial class ThatObject
 					.Because("the cycle detection still terminates the walk without help from the equals method");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparedByValueGlobally_AndEqualsReturnsFalse_ShouldFail()
 			{
 				NeverEqualClass subject = new()
@@ -1350,7 +1350,7 @@ public sealed partial class ThatObject
 						DefaultComparisonTypeSelector = _ => EquivalencyComparisonType.ByValue,
 					});
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -1365,7 +1365,7 @@ public sealed partial class ThatObject
 					.Because("by value the equals method decides, so a type that never equals is rejected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparedWithItself_ShouldSucceed()
 			{
 				NeverEqualClass subject = new()
@@ -1380,7 +1380,7 @@ public sealed partial class ThatObject
 					.Because("every member of an instance equals itself, whatever its equals method claims");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEqualsAlwaysReturnsFalse_AndMembersAreEqual_ShouldSucceed()
 			{
 				NeverEqualClass subject = new()
@@ -1399,7 +1399,7 @@ public sealed partial class ThatObject
 					.Because("the equals method is ignored when the type is compared by members");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEqualsAlwaysReturnsTrue_AndMembersDiffer_ShouldFail()
 			{
 				AlwaysEqualClass subject = new()
@@ -1414,7 +1414,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -1429,7 +1429,7 @@ public sealed partial class ThatObject
 					.Because("a type that claims to be always equal must not overrule its differing members");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEqualsComparesTheIdOnly_AndOtherMembersDiffer_ShouldFail()
 			{
 				IdOnlyEqualClass subject = new()
@@ -1446,7 +1446,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -1461,7 +1461,7 @@ public sealed partial class ThatObject
 					.Because("an identity based equals method no longer hides the differing members");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEqualsComparesTheIdOnly_AndTypeIsComparedByValue_ShouldSucceed()
 			{
 				IdOnlyEqualClass subject = new()
@@ -1486,7 +1486,7 @@ public sealed partial class ThatObject
 					.Because("comparing the type by value is the explicit way to ask for its equals semantics");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEqualsThrows_AndTypeIsComparedByMembers_ShouldCompareTheMembers()
 			{
 				ThrowingOnEqualsClass subject = new()
@@ -1501,7 +1501,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -1516,7 +1516,7 @@ public sealed partial class ThatObject
 					.Because("the equals method is never called when the type is compared by members");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEqualsThrows_AndTypeIsComparedByValue_ShouldFailWithTheException()
 			{
 				ThrowingOnEqualsClass subject = new()
@@ -1535,7 +1535,7 @@ public sealed partial class ThatObject
 							ComparisonType = EquivalencyComparisonType.ByValue,
 						}));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -1607,15 +1607,15 @@ public sealed partial class ThatObject
 
 		public sealed class FieldTests
 		{
-			[Theory]
-			[InlineData(0, 0, 0, true)]
-			[InlineData(0, 0, 1, true)]
-			[InlineData(0, 1, 0, true)]
-			[InlineData(1, 0, 0, false)]
-			[InlineData(0, 1, 1, true)]
-			[InlineData(1, 0, 1, false)]
-			[InlineData(1, 1, 0, false)]
-			[InlineData(1, 1, 1, false)]
+			[Test]
+			[Arguments(0, 0, 0, true)]
+			[Arguments(0, 0, 1, true)]
+			[Arguments(0, 1, 0, true)]
+			[Arguments(1, 0, 0, false)]
+			[Arguments(0, 1, 1, true)]
+			[Arguments(1, 0, 1, false)]
+			[Arguments(1, 1, 0, false)]
+			[Arguments(1, 1, 1, false)]
 			public async Task ShouldIgnoreInternalAndPrivateFields(int publicDifference, int internalDifference,
 				int privateDifference, bool expectSuccess)
 			{
@@ -1628,7 +1628,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($$"""
 					               Expected that subject
 					               is equivalent to expected,
@@ -1642,7 +1642,7 @@ public sealed partial class ThatObject
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsAnAnonymousObject_ShouldMatchItsPropertyAgainstTheExpectedField()
 			{
 				var subject = new
@@ -1659,7 +1659,7 @@ public sealed partial class ThatObject
 					.Because("an anonymous object can only have properties, so the expected field has to match the property of that name");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsAnAnonymousObject_ShouldMatchItsPropertyAgainstTheActualField()
 			{
 				MyClass subject = new(1, 2, 3);
@@ -1675,7 +1675,7 @@ public sealed partial class ThatObject
 					.Because("comparing a class with public fields against an anonymous object is a common pattern that must not depend on how the class stores its state");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsAnAnonymousObject_WhenTheFieldDiffers_ShouldReportItAsAProperty()
 			{
 				MyClass subject = new(1, 2, 3);
@@ -1683,7 +1683,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(new { MyProperty = false, PublicValue = 2, });
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to new { MyProperty = false, PublicValue = 2, },
@@ -1698,15 +1698,15 @@ public sealed partial class ThatObject
 					.Because("the compared members come from the expected object, so its kind names the difference");
 			}
 
-			[Theory]
-			[InlineData(0, 0, 0, true)]
-			[InlineData(0, 0, 1, true)]
-			[InlineData(0, 1, 0, false)]
-			[InlineData(1, 0, 0, true)]
-			[InlineData(0, 1, 1, false)]
-			[InlineData(1, 0, 1, true)]
-			[InlineData(1, 1, 0, false)]
-			[InlineData(1, 1, 1, false)]
+			[Test]
+			[Arguments(0, 0, 0, true)]
+			[Arguments(0, 0, 1, true)]
+			[Arguments(0, 1, 0, false)]
+			[Arguments(1, 0, 0, true)]
+			[Arguments(0, 1, 1, false)]
+			[Arguments(1, 0, 1, true)]
+			[Arguments(1, 1, 0, false)]
+			[Arguments(1, 1, 1, false)]
 			public async Task WithInternalFields_ShouldFailWhenInternalFieldIsDifferent(int publicDifference,
 				int internalDifference, int privateDifference,
 				bool expectSuccess)
@@ -1720,7 +1720,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected, o => o.IncludingFields(IncludeMembers.Internal));
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($$"""
 					               Expected that subject
 					               is equivalent to expected,
@@ -1734,7 +1734,7 @@ public sealed partial class ThatObject
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithNoFields_ShouldConsiderProperties()
 			{
 				MyClass subject = new(1, 2, 3);
@@ -1745,7 +1745,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected, o => o.IncludingFields(IncludeMembers.None));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -1759,7 +1759,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithNoFields_ShouldSucceed()
 			{
 				MyClass subject = new(1, 2, 3);
@@ -1771,7 +1771,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPublicAndInternalFields_ShouldIgnorePrivateFields()
 			{
 				MyClass subject = new(1, 2, 3);
@@ -1796,15 +1796,15 @@ public sealed partial class ThatObject
 
 		public sealed class PropertyTests
 		{
-			[Theory]
-			[InlineData(0, 0, 0, true)]
-			[InlineData(0, 0, 1, true)]
-			[InlineData(0, 1, 0, true)]
-			[InlineData(1, 0, 0, false)]
-			[InlineData(0, 1, 1, true)]
-			[InlineData(1, 0, 1, false)]
-			[InlineData(1, 1, 0, false)]
-			[InlineData(1, 1, 1, false)]
+			[Test]
+			[Arguments(0, 0, 0, true)]
+			[Arguments(0, 0, 1, true)]
+			[Arguments(0, 1, 0, true)]
+			[Arguments(1, 0, 0, false)]
+			[Arguments(0, 1, 1, true)]
+			[Arguments(1, 0, 1, false)]
+			[Arguments(1, 1, 0, false)]
+			[Arguments(1, 1, 1, false)]
 			public async Task ShouldIgnoreInternalAndPrivateProperties(int publicDifference, int internalDifference,
 				int privateDifference, bool expectSuccess)
 			{
@@ -1817,7 +1817,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($$"""
 					               Expected that subject
 					               is equivalent to expected,
@@ -1831,15 +1831,15 @@ public sealed partial class ThatObject
 					               """);
 			}
 
-			[Theory]
-			[InlineData(0, 0, 0, true)]
-			[InlineData(0, 0, 1, true)]
-			[InlineData(0, 1, 0, false)]
-			[InlineData(1, 0, 0, true)]
-			[InlineData(0, 1, 1, false)]
-			[InlineData(1, 0, 1, true)]
-			[InlineData(1, 1, 0, false)]
-			[InlineData(1, 1, 1, false)]
+			[Test]
+			[Arguments(0, 0, 0, true)]
+			[Arguments(0, 0, 1, true)]
+			[Arguments(0, 1, 0, false)]
+			[Arguments(1, 0, 0, true)]
+			[Arguments(0, 1, 1, false)]
+			[Arguments(1, 0, 1, true)]
+			[Arguments(1, 1, 0, false)]
+			[Arguments(1, 1, 1, false)]
 			public async Task WithInternalProperties_ShouldFailWhenInternalPropertyIsDifferent(int publicDifference,
 				int internalDifference, int privateDifference,
 				bool expectSuccess)
@@ -1854,7 +1854,7 @@ public sealed partial class ThatObject
 					=> await That(subject)
 						.IsEquivalentTo(expected, o => o.IncludingProperties(IncludeMembers.Internal));
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($$"""
 					               Expected that subject
 					               is equivalent to expected,
@@ -1868,7 +1868,7 @@ public sealed partial class ThatObject
 					               """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithNoProperties_ShouldConsiderFields()
 			{
 				MyClass subject = new(1, 2, 3);
@@ -1879,7 +1879,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected, o => o.IncludingProperties(IncludeMembers.None));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -1893,7 +1893,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithNoProperties_ShouldSucceed()
 			{
 				MyClass subject = new(1, 2, 3);
@@ -1905,7 +1905,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithPublicAndInternalProperties_ShouldIgnorePrivateProperties()
 			{
 				MyClass subject = new(1, 2, 3);
@@ -1930,7 +1930,7 @@ public sealed partial class ThatObject
 
 		public sealed class RecursionTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenCollectionContainsSameInstanceTwice_ShouldCompareBothElements()
 			{
 				InnerClass shared = new()
@@ -1953,7 +1953,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -1968,7 +1968,7 @@ public sealed partial class ThatObject
 					.Because("the shared instance must be compared against both of its counterparts");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGraphIsDeeperThanTheDefaultLimit_ShouldFail()
 			{
 				ChainClass subject = ChainClass.WithDepth(150);
@@ -1977,12 +1977,12 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("*exceeded the maximum recursion depth of 100*").AsWildcard()
 					.Because("without an explicit limit the default of 100 turns the stack overflow into a failure");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGraphReferencesItself_ShouldNotRecurseInfinitely()
 			{
 				InnerClass subject = new()
@@ -2002,7 +2002,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLimitingRecursionDepth_AndGraphIsDeeper_ShouldReportTheMemberPath()
 			{
 				ChainClass subject = ChainClass.WithDepth(4);
@@ -2011,7 +2011,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected, o => o.LimitingRecursionDepth(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             *but it was not:
 					               Property Next.Next exceeded the maximum recursion depth of 2
@@ -2022,7 +2022,7 @@ public sealed partial class ThatObject
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLimitingRecursionDepth_AndGraphIsWithinTheLimit_ShouldSucceed()
 			{
 				ChainClass subject = ChainClass.WithDepth(3);
@@ -2034,7 +2034,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLimitingRecursionDepth_ChainedWithOtherOptions_ShouldKeepAllOptions()
 			{
 				ChainClass subject = ChainClass.WithDepth(4);
@@ -2050,7 +2050,7 @@ public sealed partial class ThatObject
 						.IgnoringCollectionOrder()
 						.LimitingRecursionDepth(2));
 
-				await That(ActBefore).Throws<XunitException>()
+				await That(ActBefore).Throws<FailException>()
 					.WithMessage("""
 					             *Equivalency options:
 					              - include public fields and properties
@@ -2058,7 +2058,7 @@ public sealed partial class ThatObject
 					              - limit the recursion depth to 2
 					             """).AsWildcard()
 					.Because("the options have to compose in any order");
-				await That(ActAfter).Throws<XunitException>()
+				await That(ActAfter).Throws<FailException>()
 					.WithMessage("""
 					             *Equivalency options:
 					              - include public fields and properties
@@ -2068,9 +2068,9 @@ public sealed partial class ThatObject
 					.Because("the options have to compose in any order");
 			}
 
-			[Theory]
-			[InlineData(0)]
-			[InlineData(-1)]
+			[Test]
+			[Arguments(0)]
+			[Arguments(-1)]
 			public async Task WhenLimitingRecursionDepth_ToANonPositiveValue_ShouldThrowArgumentOutOfRangeException(
 				int maximumRecursionDepth)
 			{
@@ -2087,7 +2087,7 @@ public sealed partial class ThatObject
 					.Because("a depth below one could not even compare the root and is rejected at the call site");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSameInstanceIsReferencedTwice_ShouldCompareBothReferences()
 			{
 				InnerClass shared = new()
@@ -2114,7 +2114,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsEquivalentTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equivalent to expected,
@@ -2129,7 +2129,7 @@ public sealed partial class ThatObject
 					.Because("the shared instance must be compared against both of its counterparts");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSameInstanceIsReferencedTwice_ShouldSucceedWhenBothCounterpartsMatch()
 			{
 				InnerClass shared = new()
@@ -2159,7 +2159,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSameInstancesAreReferencedTwiceOnEveryLevel_ShouldNotCompareThemOncePerPath()
 			{
 				int[] reads = [0,];
@@ -2238,7 +2238,7 @@ public sealed partial class ThatObject
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task EquivalentObjects_ShouldFail()
 			{
 				OuterClass subject = new()
@@ -2255,7 +2255,7 @@ public sealed partial class ThatObject
 					=> await That(subject).DoesNotComplyWith(it =>
 						it.IsEquivalentTo(expected, o => o.IgnoringMember("Inner")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equivalent to expected,
@@ -2275,7 +2275,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task MismatchedObjects_ShouldSucceed()
 			{
 				OuterClass subject = new();

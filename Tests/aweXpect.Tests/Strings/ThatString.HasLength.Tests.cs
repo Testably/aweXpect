@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -14,7 +14,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLength(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length equal to 0,
@@ -22,7 +22,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				string subject = "abc";
@@ -30,7 +30,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLength(null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length equal to <null>,
@@ -38,7 +38,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject = "";
@@ -52,16 +52,16 @@ public sealed partial class ThatString
 					.WithParamName("expected");
 			}
 
-			[Theory]
-			[InlineData("", 1)]
-			[InlineData("abc", 4)]
-			[InlineData(" a b c ", 6)]
+			[Test]
+			[Arguments("", 1)]
+			[Arguments("abc", 4)]
+			[Arguments(" a b c ", 6)]
 			public async Task WhenLengthDiffers_ShouldFail(string subject, int length)
 			{
 				async Task Act()
 					=> await That(subject).HasLength(length);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has length equal to {length},
@@ -69,10 +69,10 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Theory]
-			[InlineData("", 0)]
-			[InlineData("abc", 3)]
-			[InlineData(" a b c ", 7)]
+			[Test]
+			[Arguments("", 0)]
+			[Arguments("abc", 3)]
+			[Arguments(" a b c ", 7)]
 			public async Task WhenLengthMatches_ShouldSucceed(string subject, int length)
 			{
 				async Task Act()
@@ -84,7 +84,7 @@ public sealed partial class ThatString
 
 		public sealed class EqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -92,7 +92,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLength().EqualTo(0);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length equal to 0,
@@ -100,7 +100,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject = "";
@@ -114,16 +114,16 @@ public sealed partial class ThatString
 					.WithParamName("expected");
 			}
 
-			[Theory]
-			[InlineData("", 1)]
-			[InlineData("abc", 4)]
-			[InlineData(" a b c ", 6)]
+			[Test]
+			[Arguments("", 1)]
+			[Arguments("abc", 4)]
+			[Arguments(" a b c ", 6)]
 			public async Task WhenLengthDiffers_ShouldFail(string subject, int length)
 			{
 				async Task Act()
 					=> await That(subject).HasLength().EqualTo(length);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has length equal to {length},
@@ -131,10 +131,10 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Theory]
-			[InlineData("", 0)]
-			[InlineData("abc", 3)]
-			[InlineData(" a b c ", 7)]
+			[Test]
+			[Arguments("", 0)]
+			[Arguments("abc", 3)]
+			[Arguments(" a b c ", 7)]
 			public async Task WhenLengthMatches_ShouldSucceed(string subject, int length)
 			{
 				async Task Act()
@@ -146,7 +146,7 @@ public sealed partial class ThatString
 
 		public sealed class GreaterThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				string subject = "foo";
@@ -155,7 +155,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLength().GreaterThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length greater than or equal to <null>,
@@ -163,7 +163,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
 				string subject = "foo";
@@ -175,7 +175,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsLessThanExpected_ShouldFail()
 			{
 				string subject = "foo";
@@ -184,7 +184,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLength().GreaterThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has length greater than or equal to {Formatter.Format(expected)},
@@ -192,7 +192,7 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsTheSameAsExpected_ShouldSucceed()
 			{
 				string subject = "foo";
@@ -207,7 +207,7 @@ public sealed partial class ThatString
 
 		public sealed class GreaterThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				string subject = "foo";
@@ -216,7 +216,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLength().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length greater than <null>,
@@ -224,7 +224,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
 				string subject = "foo";
@@ -236,7 +236,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsLessThanExpected_ShouldFail()
 			{
 				string subject = "foo";
@@ -245,7 +245,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLength().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has length greater than {Formatter.Format(expected)},
@@ -253,7 +253,7 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsTheSameAsExpected_ShouldFail()
 			{
 				string subject = "foo";
@@ -262,7 +262,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLength().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has length greater than {Formatter.Format(expected)},
@@ -273,7 +273,7 @@ public sealed partial class ThatString
 
 		public sealed class LessThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				string subject = "foo";
@@ -282,7 +282,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLength().LessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length less than or equal to <null>,
@@ -290,7 +290,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
 				string subject = "foo";
@@ -299,7 +299,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLength().LessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has length less than or equal to {Formatter.Format(expected)},
@@ -307,7 +307,7 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsLessThanExpected_ShouldSucceed()
 			{
 				string subject = "foo";
@@ -319,7 +319,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsTheSameAsExpected_ShouldSucceed()
 			{
 				string subject = "foo";
@@ -334,7 +334,7 @@ public sealed partial class ThatString
 
 		public sealed class LessThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				string subject = "foo";
@@ -343,7 +343,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLength().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has length less than <null>,
@@ -351,7 +351,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
 				string subject = "foo";
@@ -360,7 +360,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLength().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has length less than {Formatter.Format(expected)},
@@ -368,7 +368,7 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsLessThanExpected_ShouldSucceed()
 			{
 				string subject = "foo";
@@ -380,7 +380,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthOfSubjectIsTheSameAsExpected_ShouldFail()
 			{
 				string subject = "foo";
@@ -389,7 +389,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLength().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has length less than {Formatter.Format(expected)},
@@ -400,7 +400,7 @@ public sealed partial class ThatString
 
 		public sealed class NotEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -408,7 +408,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLength().NotEqualTo(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have length equal to 1,
@@ -416,10 +416,10 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Theory]
-			[InlineData("", 1)]
-			[InlineData("abc", 4)]
-			[InlineData(" a b c ", 6)]
+			[Test]
+			[Arguments("", 1)]
+			[Arguments("abc", 4)]
+			[Arguments(" a b c ", 6)]
 			public async Task WhenLengthDiffers_ShouldSucceed(string subject, int length)
 			{
 				async Task Act()
@@ -428,16 +428,16 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData("", 0)]
-			[InlineData("abc", 3)]
-			[InlineData(" a b c ", 7)]
+			[Test]
+			[Arguments("", 0)]
+			[Arguments("abc", 3)]
+			[Arguments(" a b c ", 7)]
 			public async Task WhenLengthMatches_ShouldFail(string subject, int length)
 			{
 				async Task Act()
 					=> await That(subject).HasLength().NotEqualTo(length);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have length equal to {length},
@@ -445,7 +445,7 @@ public sealed partial class ThatString
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject = "";
@@ -462,7 +462,7 @@ public sealed partial class ThatString
 
 		public sealed class NotGreaterThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenCombinedWithAnd_ShouldNameBothComparisons()
 			{
 				string subject = "abcde";
@@ -470,7 +470,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLength().NotGreaterThan(3).And.HasLength().NotLessThan(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have length greater than 3 and does not have length less than 1,
@@ -478,7 +478,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCombinedWithOr_AndOnlyTheSecondHolds_ShouldSucceed()
 			{
 				string subject = "abcde";
@@ -489,7 +489,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject = "";
@@ -503,7 +503,7 @@ public sealed partial class ThatString
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthIsGreater_ShouldFail()
 			{
 				string subject = "abcde";
@@ -511,7 +511,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).HasLength().NotGreaterThan(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have length greater than 3,
@@ -519,7 +519,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthIsNotGreater_ShouldSucceed()
 			{
 				string subject = "abc";
@@ -533,7 +533,7 @@ public sealed partial class ThatString
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldSucceed()
 			{
 				string subject = "abc";
@@ -544,7 +544,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthDiffers_ShouldSucceed()
 			{
 				string subject = "abc";
@@ -555,7 +555,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthMatches_ShouldFail()
 			{
 				string subject = "abc";
@@ -563,7 +563,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasLength(3));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have length equal to 3,
@@ -571,7 +571,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenLengthMatchesContinuation_ShouldFail()
 			{
 				string subject = "abc";
@@ -579,7 +579,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasLength().GreaterThan(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have length greater than 2,

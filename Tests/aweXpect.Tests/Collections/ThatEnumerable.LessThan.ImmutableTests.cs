@@ -11,7 +11,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class ImmutableItemsTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenArrayContainsSufficientlyFewEqualItems_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [1, 1, 1, 1, 2, 2, 3,];
@@ -22,7 +22,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenArrayContainsTooManyEqualItems_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 1, 1, 1, 2, 2, 3,];
@@ -30,7 +30,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).LessThan(3).AreEqualTo(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for fewer than 3 items,
@@ -44,7 +44,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsSufficientlyFewEqualItems_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [1, 1, 1, 1, 2, 2, 3,];
@@ -55,7 +55,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsTooManyEqualItems_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 1, 1, 1, 2, 2, 3,];
@@ -63,7 +63,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).LessThan(4).AreEqualTo(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for fewer than 4 items,
@@ -80,7 +80,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class ImmutableStringTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldSupportIgnoringCase()
 			{
 				ImmutableArray<string?> subject = ["foo", "FOO", "bar",];
@@ -88,7 +88,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).LessThan(2).AreEqualTo("foo").IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "foo" ignoring case for fewer than 2 items,
@@ -109,7 +109,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsExpectedNumberOfEqualItems_ShouldFail()
 			{
 				ImmutableArray<string> subject = ["foo", "foo", "bar",];
@@ -117,7 +117,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject)!.LessThan(2).AreEqualTo("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "foo" for fewer than 2 items,
@@ -138,7 +138,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumerableContainsTooManyEqualItems_ShouldFail()
 			{
 				ImmutableArray<string> subject = ["foo", "foo", "bar",];
@@ -146,7 +146,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject)!.LessThan(1).AreEqualTo("foo");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "foo" for fewer than one item,

@@ -9,11 +9,11 @@ public sealed partial class ThatEventRecording
 	{
 		public sealed class WithParameterTests
 		{
-			[Theory]
-			[InlineData(0, false)]
-			[InlineData(1, true)]
-			[InlineData(2, false)]
-			[InlineData(3, false)]
+			[Test]
+			[Arguments(0, false)]
+			[Arguments(1, true)]
+			[Arguments(2, false)]
+			[Arguments(3, false)]
 			public async Task ShouldSupportPositionalParameterFilters(int position, bool expectSuccess)
 			{
 				CustomEventWithParametersClass<string, string, string> sut = new();
@@ -29,7 +29,7 @@ public sealed partial class ThatEventRecording
 						.WithParameter<string>(position, s => s == "p1")
 						.AtLeast(2.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that recording
 					              has recorded the CustomEvent event on sut with string parameter [{position}] s => s == "p1" at least twice,
@@ -40,7 +40,7 @@ public sealed partial class ThatEventRecording
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCustomEventWithParameters_WhenFilterResultsInTooFewRecordings_ShouldFail()
 			{
 				CustomEventWithParametersClass<string> sut = new();
@@ -54,7 +54,7 @@ public sealed partial class ThatEventRecording
 						.WithParameter<string>(s => s == "foo")
 						.AtLeast(2.Times());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut with string parameter s => s == "foo" at least twice,
@@ -66,7 +66,7 @@ public sealed partial class ThatEventRecording
 					.Because("too few recordings are phrased like too few signals");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCustomEventWithParametersIsTriggeredOftenEnough_ShouldSucceed()
 			{
 				CustomEventWithParametersClass<string> sut = new();
@@ -84,7 +84,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMultipleFiltersAreSpecified_ShouldVerifyAllFilters_ShouldFail()
 			{
 				CustomEventWithParametersClass<string, int> sut = new();
@@ -99,7 +99,7 @@ public sealed partial class ThatEventRecording
 						.WithParameter<int>(i => i > 1)
 						.AtLeast(1.Times());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut with string parameter s => s == "foo" and with int parameter i => i > 1 at least once,
@@ -110,7 +110,7 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMultiplePositionFiltersAreSpecified_ShouldVerifyAllFilters_ShouldFail()
 			{
 				CustomEventWithParametersClass<string, string> sut = new();
@@ -124,7 +124,7 @@ public sealed partial class ThatEventRecording
 						.WithParameter<string>(0, s => s == "foo1")
 						.WithParameter<string>(1, s => s == "foo2");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut with string parameter [0] s => s == "foo1" and with string parameter [1] s => s == "foo2" at least once,
@@ -135,7 +135,7 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPositionIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				CustomEventWithParametersClass<string> sut = new();
@@ -152,7 +152,7 @@ public sealed partial class ThatEventRecording
 					.WithMessage("The position must not be negative.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("predicate failed");
@@ -165,7 +165,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).Triggered(nameof(CustomEventWithParametersClass<string>.CustomEvent))
 						.WithParameter<string>(_ => throw exception);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut with string parameter _ => throw exception at least once,
@@ -175,7 +175,7 @@ public sealed partial class ThatEventRecording
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateThrows_WhenNegated_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("predicate failed");
@@ -188,7 +188,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTrigger(nameof(CustomEventWithParametersClass<string>.CustomEvent))
 						.WithParameter<string>(_ => throw exception);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has never recorded the CustomEvent event on sut with string parameter _ => throw exception,
@@ -199,7 +199,7 @@ public sealed partial class ThatEventRecording
 					.Because("a predicate that threw answered nothing, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateWithPositionThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("predicate failed");
@@ -213,7 +213,7 @@ public sealed partial class ThatEventRecording
 						.WithParameter<string>(0, _ => throw exception)
 						.Within(10.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut with string parameter [0] _ => throw exception at least once within 0:10,
@@ -223,7 +223,7 @@ public sealed partial class ThatEventRecording
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateWithPositionThrows_WhenNegated_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("predicate failed");
@@ -237,7 +237,7 @@ public sealed partial class ThatEventRecording
 						.Triggered(nameof(CustomEventWithParametersClass<string>.CustomEvent))
 						.WithParameter<string>(0, _ => throw exception));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has never recorded the CustomEvent event on sut with string parameter [0] _ => throw exception,
@@ -248,7 +248,7 @@ public sealed partial class ThatEventRecording
 					.Because("a predicate that threw answered nothing, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeIsNotUnique_ShouldCheckAllMatchingParameters()
 			{
 				CustomEventWithParametersClass<string, string> sut = new();

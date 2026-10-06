@@ -6,7 +6,7 @@ public sealed partial class ThatObject
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task SubjectToItself_ShouldFail()
 			{
 				object subject = new MyClass();
@@ -15,7 +15,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsNotEqualTo(subject)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to ThatObject.MyClass {
@@ -27,7 +27,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task SubjectToSomeOtherValue_ShouldSucceed()
 			{
 				object subject = new MyClass();
@@ -39,7 +39,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEqualsThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("equals failed");
@@ -49,7 +49,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to ThatObject.ThrowingEqualsClass { },
@@ -60,7 +60,7 @@ public sealed partial class ThatObject
 					.Because("an Equals that threw answered nothing, so the negation fails as well");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedIsNull_ShouldFail()
 			{
 				MyClass? subject = null;
@@ -69,7 +69,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to <null>,
@@ -77,7 +77,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndUnexpectedAreDifferentNumericsWithDifferentValues_ShouldSucceed()
 			{
 				object subject = -1;
@@ -89,7 +89,7 @@ public sealed partial class ThatObject
 					.Because("-1 does not fit into a uint and must not wrap around to uint.MaxValue");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndUnexpectedAreNull_ShouldFail()
 			{
 				MyClass? subject = null;
@@ -98,7 +98,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to <null>,
@@ -106,7 +106,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
 				MyClass? subject = null;
@@ -120,7 +120,7 @@ public sealed partial class ThatObject
 
 		public sealed class StructTests
 		{
-			[Fact]
+			[Test]
 			public async Task SubjectToItself_ShouldFail()
 			{
 				MyStruct subject = new()
@@ -136,7 +136,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsNotEqualTo(unexpected)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to ThatObject.MyStruct {
@@ -148,7 +148,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task SubjectToSomeOtherValue_ShouldSucceed()
 			{
 				MyStruct subject = new()
@@ -169,7 +169,7 @@ public sealed partial class ThatObject
 
 		public sealed class NullableStructTests
 		{
-			[Fact]
+			[Test]
 			public async Task SubjectToItself_ShouldFail()
 			{
 				MyStruct? subject = new()
@@ -185,7 +185,7 @@ public sealed partial class ThatObject
 					=> await That(subject).IsNotEqualTo(unexpected)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to ThatObject.MyStruct {
@@ -197,7 +197,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task SubjectToSomeOtherValue_ShouldSucceed()
 			{
 				MyStruct? subject = new()
@@ -215,7 +215,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedIsNull_ShouldFail()
 			{
 				MyStruct? subject = null;
@@ -224,7 +224,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to <null>,
@@ -232,7 +232,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
 				MyStruct? subject = null;
@@ -246,7 +246,7 @@ public sealed partial class ThatObject
 
 		public sealed class TypeEqualsTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenValuesAreDifferent_ShouldSucceed()
 			{
 				Type sut = typeof(long);
@@ -257,7 +257,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValuesAreSame_ShouldFail()
 			{
 				Type sut = typeof(float);
@@ -265,7 +265,7 @@ public sealed partial class ThatObject
 
 				async Task Act() => await That(sut).IsNotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that sut
 					             is not equal to float,

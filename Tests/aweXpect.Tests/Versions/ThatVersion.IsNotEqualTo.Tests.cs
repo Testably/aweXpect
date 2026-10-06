@@ -6,7 +6,7 @@ public sealed partial class ThatVersion
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenChainedWithAnd_ShouldKeepTheVersionSubject()
 			{
 				Version? subject = new(1, 2);
@@ -14,7 +14,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(new Version(1, 3)).And.HasMinor(3);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 1.3 and has minor equal to 3,
@@ -22,7 +22,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndUnexpectedAreNull_ShouldFail()
 			{
 				Version? subject = null;
@@ -30,7 +30,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to <null>,
@@ -38,7 +38,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDifferent_ShouldSucceed()
 			{
 				Version? subject = new(1, 2);
@@ -50,7 +50,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldSucceed()
 			{
 				Version? subject = null;
@@ -61,7 +61,7 @@ public sealed partial class ThatVersion
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsTheSame_ShouldFail()
 			{
 				Version? subject = new(1, 2, 3, 4);
@@ -71,7 +71,7 @@ public sealed partial class ThatVersion
 					=> await That(subject).IsNotEqualTo(unexpected)
 						.Because("we want to test the failure");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 1.2.3.4, because we want to test the failure,
@@ -79,7 +79,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectOmitsAComponentOfUnexpected_ShouldSucceed()
 			{
 				Version? subject = new(1, 2);
@@ -92,7 +92,7 @@ public sealed partial class ThatVersion
 					.Because("an unset component is not treated as 0");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsNull_ShouldSucceed()
 			{
 				Version? subject = new(1, 2);
@@ -106,7 +106,7 @@ public sealed partial class ThatVersion
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDifferent_ShouldFail()
 			{
 				Version? subject = new(1, 2);
@@ -115,7 +115,7 @@ public sealed partial class ThatVersion
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotEqualTo(unexpected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1.3,
@@ -123,7 +123,7 @@ public sealed partial class ThatVersion
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsTheSame_ShouldSucceed()
 			{
 				Version? subject = new(1, 2);

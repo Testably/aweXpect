@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class ExactlyTests
 		{
-			[Fact]
+			[Test]
 			public async Task
 				WhenExpectedIsLessThanZero_ShouldThrowArgumentOutOfRangeException()
 			{
@@ -22,7 +22,7 @@ public sealed partial class ThatString
 					.WithParamName("expected");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursCorrectlyOften_ShouldSucceed()
 			{
 				string subject =
@@ -35,7 +35,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursFewerTimes_ShouldFail()
 			{
 				string subject =
@@ -45,7 +45,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).Exactly(4);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "in" exactly 4 times,
@@ -53,7 +53,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursMoreTimes_ShouldFail()
 			{
 				string subject =
@@ -63,7 +63,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).Exactly(2);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "in" exactly twice,

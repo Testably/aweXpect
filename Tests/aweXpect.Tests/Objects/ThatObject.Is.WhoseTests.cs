@@ -8,7 +8,7 @@ public sealed partial class ThatObject
 	{
 		public sealed class WhoseTests
 		{
-			[Fact]
+			[Test]
 			public async Task AllowsNestedIs()
 			{
 				Outer subject = new()
@@ -27,7 +27,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberDoesNotMatch_ShouldFail()
 			{
 				object subject = new AsyncClass
@@ -39,7 +39,7 @@ public sealed partial class ThatObject
 					=> await That(subject).Is<AsyncClass>()
 						.Whose(it => it.GetValueAsync(), value => value.IsLessThan(42));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type ThatObject.Is.WhoseTests.AsyncClass whose GetValueAsync() is less than 42,
@@ -47,7 +47,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberFaults_AndMemberExpectationThrowsOnDefault_ShouldFail()
 			{
 				object subject = new AsyncClass();
@@ -56,7 +56,7 @@ public sealed partial class ThatObject
 					=> await That(subject).Is<AsyncClass>()
 						.Whose(it => it.FaultedAsync(), value => value.Satisfies(x => 10 / x > 1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type ThatObject.Is.WhoseTests.AsyncClass whose FaultedAsync() satisfies x => 10 / x > 1,
@@ -66,7 +66,7 @@ public sealed partial class ThatObject
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberFaults_ShouldFail()
 			{
 				object subject = new AsyncClass();
@@ -75,7 +75,7 @@ public sealed partial class ThatObject
 					=> await That(subject).Is<AsyncClass>()
 						.Whose(it => it.FaultedAsync(), value => value.IsEqualTo(42));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type ThatObject.Is.WhoseTests.AsyncClass whose FaultedAsync() is equal to 42,
@@ -85,7 +85,7 @@ public sealed partial class ThatObject
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberInAndWhoseFaults_ShouldFail()
 			{
 				object subject = new AsyncClass();
@@ -95,7 +95,7 @@ public sealed partial class ThatObject
 						.Whose(it => it.Value, value => value.IsEqualTo(0))
 						.AndWhose(it => it.FaultedAsync(), value => value.IsEqualTo(42));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 0 and whose FaultedAsync() is equal to 42,
@@ -105,7 +105,7 @@ public sealed partial class ThatObject
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberIsCombinedWithAndWhose_ShouldVerifyBoth()
 			{
 				object subject = new AsyncClass
@@ -118,7 +118,7 @@ public sealed partial class ThatObject
 						.Whose(it => it.Value, value => value.IsEqualTo(42))
 						.AndWhose(it => it.GetValueAsync(), value => value.IsLessThan(42));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 42 and whose GetValueAsync() is less than 42,
@@ -126,7 +126,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberIsCombinedWithNegatedAndWhose_ShouldUseOrInExpectation()
 			{
 				object subject = new AsyncClass
@@ -139,7 +139,7 @@ public sealed partial class ThatObject
 						.Whose(o => o.Value, value => value.IsEqualTo(42))
 						.AndWhose(o => o.GetValueAsync(), value => value.IsEqualTo(42)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not of type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 42 or whose GetValueAsync() is not equal to 42,
@@ -152,7 +152,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberMatches_ShouldSucceed()
 			{
 				object subject = new AsyncClass
@@ -167,7 +167,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyDoesNotMatch_ShouldFail()
 			{
 				object subject = new MyClass
@@ -179,7 +179,7 @@ public sealed partial class ThatObject
 					=> await That(subject).Is<MyClass>()
 						.Whose(it => it.Value, value => value.IsLessThan(42));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type ThatObject.MyClass whose Value is less than 42,
@@ -187,7 +187,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyMatches_ShouldSucceed()
 			{
 				object subject = new MyClass
@@ -201,7 +201,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueTaskMemberDoesNotMatch_ShouldFail()
 			{
 				object subject = new AsyncClass
@@ -213,7 +213,7 @@ public sealed partial class ThatObject
 					=> await That(subject).Is<AsyncClass>()
 						.Whose(it => it.GetValueAsValueTaskAsync(), value => value.IsLessThan(42));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type ThatObject.Is.WhoseTests.AsyncClass whose GetValueAsValueTaskAsync() is less than 42,
@@ -221,7 +221,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueTaskMemberFaults_ShouldFail()
 			{
 				object subject = new AsyncClass();
@@ -230,7 +230,7 @@ public sealed partial class ThatObject
 					=> await That(subject).Is<AsyncClass>()
 						.Whose(it => it.FaultedValueTaskAsync(), value => value.IsEqualTo(42));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type ThatObject.Is.WhoseTests.AsyncClass whose FaultedValueTaskAsync() is equal to 42,
@@ -240,7 +240,7 @@ public sealed partial class ThatObject
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueTaskMemberIsCombinedWithAndWhose_ShouldVerifyBoth()
 			{
 				object subject = new AsyncClass
@@ -253,7 +253,7 @@ public sealed partial class ThatObject
 						.Whose(it => it.Value, value => value.IsEqualTo(42))
 						.AndWhose(it => it.GetValueAsValueTaskAsync(), value => value.IsLessThan(42));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type ThatObject.Is.WhoseTests.AsyncClass whose Value is equal to 42 and whose GetValueAsValueTaskAsync() is less than 42,
@@ -261,7 +261,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Whose_AllowsNestedIs_FailsWhenInnerTypeMismatches()
 			{
 				Outer subject = new()
@@ -273,7 +273,7 @@ public sealed partial class ThatObject
 					=> await That(subject).Is<Outer>()
 						.Whose(o => o.Item, it => it.Is<Derived>());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type Outer whose Item is of type Derived,
@@ -318,7 +318,7 @@ public sealed partial class ThatObject
 
 		public sealed class AndWhoseTests
 		{
-			[Fact]
+			[Test]
 			public async Task AndWhose_AllowsNestedIs()
 			{
 				Outer subject = new()
@@ -341,7 +341,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AndWhose_WhenBothMembersAreCollections_ShouldVerifyEachMember()
 			{
 				TwoCollections subject = new()
@@ -355,7 +355,7 @@ public sealed partial class ThatObject
 						.Whose(o => o.First, it => it.IsEqualTo([1, 2,]))
 						.AndWhose(o => o.Second, it => it.IsEqualTo([1, 2,]));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is of type ThatObject.Is.AndWhoseTests.TwoCollections whose First are equal to collection [1, 2,] in order and whose Second are equal to collection [1, 2,] in order,
@@ -364,7 +364,7 @@ public sealed partial class ThatObject
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AndWhose_WhenNegated_ShouldUseOrInExpectation()
 			{
 				object subject = new TwoValues
@@ -378,7 +378,7 @@ public sealed partial class ThatObject
 						.Whose(o => o.First, f => f.IsEqualTo(1))
 						.AndWhose(o => o.Second, s => s.IsEqualTo(2)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not of type ThatObject.Is.AndWhoseTests.TwoValues whose First is equal to 1 or whose Second is not equal to 2,

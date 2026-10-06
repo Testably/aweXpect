@@ -10,7 +10,7 @@ public sealed partial class ThatReadOnlyDictionary
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedContainsADuplicateKeyWithADifferentValue_ShouldThrowArgumentException()
 			{
 				IReadOnlyDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -25,7 +25,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.Because("a dictionary holds one value per key, so no subject could ever satisfy both entries");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedContainsADuplicateKeyWithTheSameValue_ShouldThrowArgumentException()
 			{
 				IReadOnlyDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -40,7 +40,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.Because("repeating an entry says nothing that the first one did not already say");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasTheSamePairsInADifferentOrder_ShouldSucceed()
 			{
 				IReadOnlyDictionary<string, int> subject = ToDictionary(["a", "b",], [1, 2,]);
@@ -53,7 +53,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.Because("a dictionary is a keyed lookup without a contractual enumeration order");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IReadOnlyDictionary<string, int>? subject = null;
@@ -62,7 +62,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to dictionary expected,
@@ -70,7 +70,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectUsesACaseInsensitiveComparer_WithTwoExpectedKeysForOneEntry_ShouldFail()
 			{
 				IReadOnlyDictionary<string, int> subject =
@@ -80,7 +80,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to dictionary expected,
@@ -92,7 +92,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.Because("both expected keys are matched by the key \"a\" of the subject");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheValueForAKeyDiffers_ShouldFail()
 			{
 				IReadOnlyDictionary<string, int> subject = ToDictionary(["a",], [1,]);
@@ -101,7 +101,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to dictionary expected,
@@ -115,7 +115,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class ReadOnlyOnlyTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectHasAnAdditionalKey_ShouldFail()
 			{
 				ReadOnlyOnlyDictionary<string, int> subject =
@@ -125,7 +125,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to dictionary expected,
@@ -136,7 +136,7 @@ public sealed partial class ThatReadOnlyDictionary
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectUsesACaseInsensitiveComparer_ShouldLookTheKeysUpThroughIt()
 			{
 				ReadOnlyOnlyDictionary<string, int> subject =
@@ -147,7 +147,7 @@ public sealed partial class ThatReadOnlyDictionary
 					=> await (ObjectEqualityWithToleranceResult<IReadOnlyDictionary<string, int>?,
 						IThat<IReadOnlyDictionary<string, int>?>, int, int>)That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to dictionary expected,
@@ -159,7 +159,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.Because("the expected key \"A\" is found through its own TryGetValue, but without its comparer the key \"a\" cannot be told apart from an additional key");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheComparerCannotBeRead_WithAnAdditionalKey_ShouldNotNameIt()
 			{
 				ReadOnlyOnlyDictionary<string, int> subject =
@@ -169,7 +169,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to dictionary expected,
@@ -181,7 +181,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.Because("without the comparer of the subject, naming the additional keys would overshoot");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheComparerCannotBeRead_WithTwoExpectedKeysForOneEntry_ShouldFail()
 			{
 				ReadOnlyOnlyDictionary<string, int> subject =
@@ -191,7 +191,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to dictionary expected,
@@ -206,7 +206,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class StringTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheValuesDifferOnlyInCase_WithIgnoringCase_ShouldSucceed()
 			{
 				ReadOnlyOnlyDictionary<int, string> subject = new(new Dictionary<int, string> { { 1, "Let It Be" }, });
@@ -221,7 +221,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class WithinTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheValuesLieWithinTheTolerance_ShouldSucceed()
 			{
 				ReadOnlyOnlyDictionary<string, double> subject = new(new Dictionary<string, double> { { "a", 1.05 }, });
@@ -236,7 +236,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 		public sealed class ThrowingSubjectTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheEnumerationThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("enumeration failed");
@@ -247,7 +247,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to dictionary expected,
@@ -260,7 +260,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheKeyComparerThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("comparer failed");
@@ -273,7 +273,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to dictionary expected,
@@ -286,7 +286,7 @@ public sealed partial class ThatReadOnlyDictionary
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheLookupThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("lookup failed");
@@ -297,7 +297,7 @@ public sealed partial class ThatReadOnlyDictionary
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to dictionary expected,

@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class OnceTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursExactly1Times_ShouldSucceed()
 			{
 				string subject =
@@ -19,7 +19,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursFewerTimes_ShouldFail()
 			{
 				string subject =
@@ -29,7 +29,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).Once();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "detective" exactly once,
@@ -37,7 +37,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedStringOccursMoreTimes_ShouldFail()
 			{
 				string subject =
@@ -47,7 +47,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).Contains(expected).Once();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains "word" exactly once,
@@ -55,7 +55,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
 			{
 				string subject = new('a', 30);

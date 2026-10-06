@@ -9,7 +9,7 @@ public sealed partial class ThatObject
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task BasicEquivalentObjects_ShouldFail()
 			{
 				OuterClass subject = new()
@@ -24,7 +24,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotEquivalentTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equivalent to unexpected,
@@ -38,7 +38,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task MismatchedObjects_ShouldSucceed()
 			{
 				OuterClass subject = new();
@@ -53,7 +53,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				ObjectsWithNestedEnumerableMismatch_WithIgnoreRule_ShouldFail()
 			{
@@ -118,7 +118,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task
 				ObjectsWithNestedEnumerableMismatch_WithIncorrectIgnoreRule_ShouldSucceed()
 			{
@@ -157,7 +157,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ObjectsWithNestedMatches_ShouldFail()
 			{
 				OuterClass subject = new()
@@ -188,7 +188,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotEquivalentTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equivalent to unexpected,
@@ -212,7 +212,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ObjectsWithNestedMatchingEnumerable_ShouldFail()
 			{
 				OuterClass subject = new()
@@ -245,7 +245,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotEquivalentTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equivalent to unexpected,
@@ -273,7 +273,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task ObjectsWithNestedMismatch_ShouldSucceed()
 			{
 				OuterClass subject = new()
@@ -304,7 +304,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task ObjectsWithNestedMismatchingEnumerable_ShouldSucceed()
 			{
 				OuterClass subject = new()
@@ -344,7 +344,7 @@ public sealed partial class ThatObject
 
 		public sealed class CollectionTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDifferentValues_ShouldSucceed()
 			{
 				int[] subject = [1, 2, 3,];
@@ -356,7 +356,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInDifferentOrder_ShouldSucceed()
 			{
 				int[] subject = [1, 2, 3,];
@@ -368,7 +368,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInDifferentOrder_WhenIgnoringCollectionOrder_ShouldFail()
 			{
 				int[] subject = [1, 2, 3,];
@@ -377,7 +377,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotEquivalentTo(unexpected, o => o.IgnoringCollectionOrder());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equivalent to unexpected,
@@ -393,7 +393,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInSameOrder_ShouldFail()
 			{
 				int[] subject = [1, 2, 3,];
@@ -402,7 +402,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotEquivalentTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equivalent to unexpected,
@@ -420,7 +420,7 @@ public sealed partial class ThatObject
 
 		public sealed class DictionaryTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDifferentKeys_ShouldSucceed()
 			{
 				Dictionary<int, int> subject = new()
@@ -454,7 +454,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDifferentValues_ShouldSucceed()
 			{
 				Dictionary<int, int> subject = new()
@@ -488,7 +488,7 @@ public sealed partial class ThatObject
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSameEntries_ShouldFail()
 			{
 				Dictionary<int, int> subject = new()
@@ -514,7 +514,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotEquivalentTo(unexpected);
 				
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equivalent to unexpected,
@@ -528,7 +528,7 @@ public sealed partial class ThatObject
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSameEntriesInDifferentOrder_ShouldFail()
 			{
 				Dictionary<string, string> subject = new(StringComparer.OrdinalIgnoreCase)
@@ -554,7 +554,7 @@ public sealed partial class ThatObject
 				async Task Act()
 					=> await That(subject).IsNotEquivalentTo(unexpected);
 				
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equivalent to unexpected,

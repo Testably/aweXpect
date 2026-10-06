@@ -6,8 +6,8 @@ public sealed partial class ThatException
 	{
 		public sealed class ContainingTests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenParamNameContainsExpected_ShouldSucceed(string message)
 			{
 				ArgumentException subject = new(message, nameof(message));
@@ -18,8 +18,8 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenParamNameDoesNotContainExpected_ShouldFail(string message)
 			{
 				ArgumentException subject = new(message, nameof(message));
@@ -27,7 +27,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasParamName().Containing("somethingElse");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has param name containing "somethingElse",
@@ -41,8 +41,8 @@ public sealed partial class ThatException
 
 		public sealed class EqualToTests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenParamNameIsDifferent_ShouldFail(string message)
 			{
 				ArgumentException subject = new(message, nameof(message));
@@ -50,7 +50,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasParamName().EqualTo("somethingElse");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has param name equal to "somethingElse",
@@ -65,8 +65,8 @@ public sealed partial class ThatException
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenParamNameMatchesExpected_ShouldSucceed(string message)
 			{
 				ArgumentException subject = new(message, nameof(message));
@@ -77,8 +77,8 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenParamNameMatchesPrefix_ShouldSucceed(string message)
 			{
 				ArgumentException subject = new(message, nameof(message));
@@ -90,8 +90,8 @@ public sealed partial class ThatException
 					.Because("the continuation exposes the As… family of StringEqualityTypeResult");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenSubjectHasNoParamName_ShouldFail(string message)
 			{
 				ArgumentException subject = new(message);
@@ -99,7 +99,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasParamName().EqualTo("message");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has param name equal to "message",
@@ -107,7 +107,7 @@ public sealed partial class ThatException
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				ArgumentException? subject = null;
@@ -115,7 +115,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasParamName().EqualTo("message");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has param name equal to "message",
@@ -126,8 +126,8 @@ public sealed partial class ThatException
 
 		public sealed class NegatedTests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenExpectedIsNull_AndParamNameIsNull_ShouldFail(string message)
 			{
 				ArgumentException subject = new(message);
@@ -136,7 +136,7 @@ public sealed partial class ThatException
 					=> await That(subject).DoesNotComplyWith(it =>
 						it.HasParamName(null));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have param name equal to <null>,
@@ -144,8 +144,8 @@ public sealed partial class ThatException
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenExpectedIsNull_AndParamNameIsSet_ShouldSucceed(string message)
 			{
 				ArgumentException subject = new(message, nameof(message));
@@ -158,8 +158,8 @@ public sealed partial class ThatException
 					.Because("the shorthand compares a null argument as null instead of skipping the check");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenParamNameIsDifferent_ShouldSucceed(string message)
 			{
 				ArgumentException subject = new(message, nameof(message));
@@ -171,8 +171,8 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenParamNameMatchesExpected_ShouldFail(string message)
 			{
 				ArgumentException subject = new(message, nameof(message));
@@ -181,7 +181,7 @@ public sealed partial class ThatException
 					=> await That(subject).DoesNotComplyWith(it =>
 						it.HasParamName("message"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have param name equal to "message",
@@ -192,7 +192,7 @@ public sealed partial class ThatException
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				ArgumentException? subject = null;
@@ -201,7 +201,7 @@ public sealed partial class ThatException
 					=> await That(subject).DoesNotComplyWith(it =>
 						it.HasParamName("message"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have param name equal to "message",
@@ -212,8 +212,8 @@ public sealed partial class ThatException
 
 		public sealed class NotContainingTests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenParamNameContainsUnexpected_ShouldFail(string message)
 			{
 				ArgumentException subject = new(message, nameof(message));
@@ -221,7 +221,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasParamName().NotContaining("essag");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have param name containing "essag",
@@ -232,8 +232,8 @@ public sealed partial class ThatException
 					             """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenParamNameDoesNotContainUnexpected_ShouldSucceed(string message)
 			{
 				ArgumentException subject = new(message, nameof(message));
@@ -247,8 +247,8 @@ public sealed partial class ThatException
 
 		public sealed class NotEqualToTests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenParamNameIsDifferent_ShouldSucceed(string message)
 			{
 				ArgumentException subject = new(message, nameof(message));
@@ -259,8 +259,8 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenParamNameMatchesUnexpected_ShouldFail(string message)
 			{
 				ArgumentException subject = new(message, nameof(message));
@@ -268,7 +268,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasParamName().NotEqualTo("message");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have param name equal to "message",
@@ -282,8 +282,8 @@ public sealed partial class ThatException
 
 		public sealed class Tests
 		{
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenExpectedIsNull_AndParamNameIsNull_ShouldSucceed(string message)
 			{
 				ArgumentException subject = new(message);
@@ -295,8 +295,8 @@ public sealed partial class ThatException
 					.Because("the shorthand compares a null argument as null instead of skipping the check");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenExpectedIsNull_AndParamNameIsSet_ShouldFail(string message)
 			{
 				ArgumentException subject = new(message, nameof(message));
@@ -304,7 +304,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasParamName(null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has param name equal to <null>,
@@ -316,8 +316,8 @@ public sealed partial class ThatException
 					.Because("the shorthand compares a null argument as null instead of skipping the check");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenParamNameIsDifferent_ShouldFail(string message)
 			{
 				ArgumentException subject = new(message, nameof(message));
@@ -325,7 +325,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasParamName("somethingElse");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has param name equal to "somethingElse",
@@ -341,8 +341,8 @@ public sealed partial class ThatException
 					.Because("the shorthand renders exactly like the HasParamName().EqualTo(expected) continuation");
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenParamNameMatchesExpected_ShouldSucceed(string message)
 			{
 				ArgumentException subject = new(message, nameof(message));
@@ -353,7 +353,7 @@ public sealed partial class ThatException
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				ArgumentException? subject = null;
@@ -361,7 +361,7 @@ public sealed partial class ThatException
 				async Task Act()
 					=> await That(subject).HasParamName("message");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has param name equal to "message",

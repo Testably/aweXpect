@@ -10,7 +10,7 @@ public sealed partial class ThatEventRecording
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task TriggersPropertyChangedFor_WhenEventIsTriggeredOftenEnough_ShouldSucceed()
 			{
 				PropertyChangedClass sut = new();
@@ -28,7 +28,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task TriggersPropertyChangedFor_WhenEventIsTriggeredTooFewTimes_ShouldFail()
 			{
 				PropertyChangedClass sut = new()
@@ -43,7 +43,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).TriggeredPropertyChanged()
 						.AtLeast(2.Times());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut at least twice,
@@ -57,7 +57,7 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyChangedEventIsTriggeredOftenEnough_ShouldSucceed()
 			{
 				PropertyChangedClass sut = new();
@@ -75,7 +75,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPropertyChangedEventIsTriggeredTooFewTimes_ShouldFail()
 			{
 				PropertyChangedClass sut = new();
@@ -89,7 +89,7 @@ public sealed partial class ThatEventRecording
 						.With<PropertyChangedEventArgs>(e => e.PropertyName == "foo")
 						.AtLeast(2.Times());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut with PropertyChangedEventArgs e => e.PropertyName == "foo" at least twice,
@@ -108,7 +108,7 @@ public sealed partial class ThatEventRecording
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEventRecording<PropertyChangedClass>? subject = null;
@@ -116,7 +116,7 @@ public sealed partial class ThatEventRecording
 				async Task Act()
 					=> await That(subject!).TriggeredPropertyChanged();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has recorded the PropertyChanged event at least once,
@@ -127,7 +127,7 @@ public sealed partial class ThatEventRecording
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenEventIsNotTriggered_ShouldSucceed()
 			{
 				PropertyChangedClass sut = new();
@@ -139,7 +139,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEventIsTriggered_ShouldFail()
 			{
 				PropertyChangedClass sut = new()
@@ -153,7 +153,7 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording).DoesNotComplyWith(n => n.TriggeredPropertyChanged());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has never recorded the PropertyChanged event on sut,

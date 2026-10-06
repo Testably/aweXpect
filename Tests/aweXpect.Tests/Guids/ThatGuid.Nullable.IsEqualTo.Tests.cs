@@ -8,7 +8,7 @@ public sealed partial class ThatGuid
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenSubjectAndExpectedAreNull_ShouldSucceed()
 				{
 					Guid? subject = null;
@@ -20,7 +20,7 @@ public sealed partial class ThatGuid
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsDifferent_ShouldFail()
 				{
 					Guid? subject = FixedGuid();
@@ -29,7 +29,7 @@ public sealed partial class ThatGuid
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to {Formatter.Format(expected)},
@@ -37,7 +37,7 @@ public sealed partial class ThatGuid
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					Guid? subject = null;
@@ -45,7 +45,7 @@ public sealed partial class ThatGuid
 					async Task Act()
 						=> await That(subject).IsEqualTo(FixedGuid());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is equal to {FixedGuid()},
@@ -53,7 +53,7 @@ public sealed partial class ThatGuid
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsTheSame_ShouldSucceed()
 				{
 					Guid? subject = FixedGuid();

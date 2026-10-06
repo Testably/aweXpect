@@ -6,7 +6,7 @@ public sealed partial class ThatChar
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				char subject = 'a';
@@ -14,7 +14,7 @@ public sealed partial class ThatChar
 				async Task Act()
 					=> await That(subject).IsEqualTo(null);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to <null>,
@@ -22,10 +22,10 @@ public sealed partial class ThatChar
 					             """);
 			}
 
-			[Theory]
-			[InlineData('a', 'A')]
-			[InlineData('B', 'b')]
-			[InlineData('ä', 'Ä')]
+			[Test]
+			[Arguments('a', 'A')]
+			[Arguments('B', 'b')]
+			[Arguments('ä', 'Ä')]
 			public async Task WhenSubjectDiffersOnlyInCase_AndIgnoringCase_ShouldSucceed(char subject, char expected)
 			{
 				async Task Act()
@@ -34,7 +34,7 @@ public sealed partial class ThatChar
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectDiffersOnlyInCase_AndNotIgnoringCase_ShouldFail()
 			{
 				char subject = 'a';
@@ -42,7 +42,7 @@ public sealed partial class ThatChar
 				async Task Act()
 					=> await That(subject).IsEqualTo('A').IgnoringCase(false);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 'A',
@@ -50,7 +50,7 @@ public sealed partial class ThatChar
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsADottedCapitalI_AndIgnoringCase_ShouldFail()
 			{
 				char subject = 'İ';
@@ -58,7 +58,7 @@ public sealed partial class ThatChar
 				async Task Act()
 					=> await That(subject).IsEqualTo('i').IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 'i' ignoring case,
@@ -67,7 +67,7 @@ public sealed partial class ThatChar
 					.Because("the comparison does not depend on a culture like Turkish");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsDifferent_AndIgnoringCase_ShouldFail()
 			{
 				char subject = 'a';
@@ -75,7 +75,7 @@ public sealed partial class ThatChar
 				async Task Act()
 					=> await That(subject).IsEqualTo('B').IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 'B' ignoring case,
@@ -83,15 +83,15 @@ public sealed partial class ThatChar
 					             """);
 			}
 
-			[Theory]
-			[InlineData('a', 'b')]
-			[InlineData('B', 'b')]
+			[Test]
+			[Arguments('a', 'b')]
+			[Arguments('B', 'b')]
 			public async Task WhenSubjectIsDifferent_ShouldFail(char subject, char expected)
 			{
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to {Formatter.Format(expected)},
@@ -99,11 +99,11 @@ public sealed partial class ThatChar
 					              """);
 			}
 
-			[Theory]
-			[InlineData('a')]
-			[InlineData('X')]
-			[InlineData('5')]
-			[InlineData('\t')]
+			[Test]
+			[Arguments('a')]
+			[Arguments('X')]
+			[Arguments('5')]
+			[Arguments('\t')]
 			public async Task WhenSubjectIsTheSame_ShouldSucceed(char subject)
 			{
 				char expected = subject;

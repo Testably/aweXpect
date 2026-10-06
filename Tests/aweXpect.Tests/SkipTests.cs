@@ -2,8 +2,8 @@
 
 public class SkipTests
 {
-	[Theory]
-	[AutoData]
+	[Test]
+	[AutoArguments]
 	public async Task ThrownException_ShouldContainReason(string message)
 	{
 		void Act()
@@ -13,9 +13,9 @@ public class SkipTests
 			.WithMessage($"*{message}*").AsWildcard();
 	}
 
-	[Theory]
-	[InlineAutoData(true)]
-	[InlineAutoData(false)]
+	[Test]
+	[AutoArguments(true)]
+	[AutoArguments(false)]
 	public async Task Unless_ShouldThrowExceptionWhenTrue(bool condition, string message)
 	{
 		void Act()
@@ -25,9 +25,9 @@ public class SkipTests
 			.WithMessage($"*{message}*").AsWildcard();
 	}
 
-	[Theory]
-	[InlineAutoData(true)]
-	[InlineAutoData(false)]
+	[Test]
+	[AutoArguments(true)]
+	[AutoArguments(false)]
 	public async Task When_ShouldThrowExceptionWhenTrue(bool condition, string message)
 	{
 		void Act()

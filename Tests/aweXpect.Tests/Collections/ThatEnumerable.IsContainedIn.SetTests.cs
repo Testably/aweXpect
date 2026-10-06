@@ -8,7 +8,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class SetTests
 		{
-			[Fact]
+			[Test]
 			public async Task ForADoubleSet_ShouldUseTheComparerOfTheSet()
 			{
 				HashSet<double> subject = new(new RoundingComparer()) { 1.0, 2.0, };
@@ -22,7 +22,7 @@ public sealed partial class ThatEnumerable
 					.Because("an element type that allows a tolerance keeps the comparer of the set until one is specified");
 			}
 
-			[Fact]
+			[Test]
 			public async Task InAnyOrder_ShouldUseTheComparerOfTheSet()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
@@ -33,7 +33,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Using_ShouldOverrideTheComparerOfTheSet()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
@@ -41,7 +41,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(["A", "B",]).InAnyOrder().Using(new AllDifferentComparer());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection ["A", "B",] using AllDifferentComparer in any order,
@@ -60,7 +60,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOnlyTheExpectedCollectionIsASetWithACustomComparer_ShouldUseTheDefaultEquality()
 			{
 				List<string> subject = ["a",];
@@ -69,7 +69,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection expected in any order,
@@ -89,7 +89,7 @@ public sealed partial class ThatEnumerable
 					.Because("only the comparer of the subject decides which items are the same");
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_ShouldIgnoreTheComparerOfTheSet()
 			{
 				HashSet<double> subject = new(new RoundingComparer()) { 1.0, 2.0, };
@@ -99,7 +99,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsContainedIn([1.25, 1.75, 3.0,]).Within(0.125);
 #pragma warning restore aweXpect0006
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is contained in collection [1.25, 1.75, 3.0,] ± 0.125 in order and contiguous,

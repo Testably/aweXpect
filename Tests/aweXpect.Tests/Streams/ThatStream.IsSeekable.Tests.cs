@@ -8,7 +8,7 @@ public sealed partial class ThatStream
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				ChunkedStreamContainer subject = new(new ChunkedStream(canSeek: false));
@@ -16,7 +16,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).Whose(c => c.Chunks, chunks => chunks.IsSeekable());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Chunks are seekable,
@@ -25,7 +25,7 @@ public sealed partial class ThatStream
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsABufferedStream_ShouldAllowChainingIntoBufferedStreamExpectations()
 			{
 				using BufferedStream subject = new(new MemoryStream(new byte[3]), 4096);
@@ -37,7 +37,7 @@ public sealed partial class ThatStream
 			}
 #endif
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNotSeekable_ShouldFail()
 			{
 				Stream subject = new MyStream(canSeek: false);
@@ -45,7 +45,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).IsSeekable();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is seekable,
@@ -53,7 +53,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Stream? subject = null;
@@ -61,7 +61,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).IsSeekable();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is seekable,
@@ -69,7 +69,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsSeekable_ShouldSucceed()
 			{
 				Stream subject = new MyStream(canSeek: true);

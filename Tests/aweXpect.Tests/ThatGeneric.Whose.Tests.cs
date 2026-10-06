@@ -13,7 +13,7 @@ public sealed partial class ThatGeneric
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task AllowsNestedIs()
 			{
 				Outer subject = new()
@@ -31,7 +31,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task AllowsNestedIs_WhenTypeDoesNotMatch_ShouldFail()
 			{
 				Outer subject = new()
@@ -43,7 +43,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).Whose(o => o.Item, it => it.Is<Derived>()
 						.Whose(d => d.Name, it => it.IsEqualTo("foo")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Item is of type Derived whose Name is equal to "foo",
@@ -54,7 +54,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task AllowsNestedIs_WithAsyncMember_WhenTypeDoesNotMatch_ShouldFail()
 			{
 				Outer subject = new()
@@ -66,7 +66,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).Whose(o => o.Item, it => it.Is<Derived>()
 						.Whose(d => Task.FromResult(d.Name), it => it.IsEqualTo("foo")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Item is of type Derived whose Task.FromResult(d.Name) is equal to "foo",
@@ -77,11 +77,11 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Theory]
-			[InlineData(true, true, true)]
-			[InlineData(true, false, false)]
-			[InlineData(false, true, false)]
-			[InlineData(false, false, false)]
+			[Test]
+			[Arguments(true, true, true)]
+			[Arguments(true, false, false)]
+			[Arguments(false, true, false)]
+			[Arguments(false, false, false)]
 			public async Task AndCombination_ShouldVerifyAllExpectations(bool a, bool b, bool expectSuccess)
 			{
 				MyCombinationClass subject = new()
@@ -95,7 +95,7 @@ public sealed partial class ThatGeneric
 						.Whose(o => o.A, v => v.IsTrue()).And
 						.Whose(o => o.B, v => v.IsTrue());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage($"""
 					              Expected that subject
 					              whose A is True and whose B is True,
@@ -103,11 +103,11 @@ public sealed partial class ThatGeneric
 					              """);
 			}
 
-			[Theory]
-			[InlineData(true, true, true)]
-			[InlineData(true, false, true)]
-			[InlineData(false, true, true)]
-			[InlineData(false, false, false)]
+			[Test]
+			[Arguments(true, true, true)]
+			[Arguments(true, false, true)]
+			[Arguments(false, true, true)]
+			[Arguments(false, false, false)]
 			public async Task OrCombination_ShouldVerifyAnyExpectations(bool a, bool b, bool expectSuccess)
 			{
 				MyCombinationClass subject = new()
@@ -121,7 +121,7 @@ public sealed partial class ThatGeneric
 						.Whose(o => o.A, v => v.IsTrue()).Or
 						.Whose(o => o.B, v => v.IsTrue());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that subject
 					             whose A is True or whose B is True,
@@ -129,7 +129,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncLambdaIsNoMemberPath_ShouldRenderExpression()
 			{
 				MyClass subject = new()
@@ -140,7 +140,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(async o => await Task.FromResult(o.Value + 1), v => v.IsEqualTo(3));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose async o => await Task.FromResult(o.Value + 1) is equal to 3,
@@ -149,7 +149,7 @@ public sealed partial class ThatGeneric
 					.Because("an expression that is not a member path must not be shortened");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncLambdaIsUsed_ShouldVerifyAwaitedValue()
 			{
 				MyClass subject = new()
@@ -160,7 +160,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(async o => await o.GetValueAsync(), v => v.IsEqualTo(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose GetValueAsync() is equal to 2,
@@ -169,7 +169,7 @@ public sealed partial class ThatGeneric
 					.Because("an async lambda that awaits a member is rendered as that member path");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncLambdaWithTypedParameterIsUsed_ShouldRenderMemberPath()
 			{
 				MyClass subject = new()
@@ -180,7 +180,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(async (MyClass o) => await o.GetValueAsync(), v => v.IsEqualTo(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose GetValueAsync() is equal to 2,
@@ -188,7 +188,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberAccessorIsNull_ShouldThrowArgumentNullException()
 			{
 				MyClass subject = new()
@@ -204,7 +204,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberConditionIsNotSatisfied_ShouldFail()
 			{
 				MyClass subject = new()
@@ -215,7 +215,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.GetValueAsync(), v => v.IsEqualTo(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose GetValueAsync() is equal to 2,
@@ -223,7 +223,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberConditionIsSatisfied_ShouldSucceed()
 			{
 				MyClass subject = new()
@@ -237,7 +237,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberExpectationsIsNull_ShouldThrowArgumentNullException()
 			{
 				MyClass subject = new()
@@ -253,7 +253,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberFaults_AndExpectationIsNegated_ShouldStillFail()
 			{
 				ThrowingClass subject = new();
@@ -262,7 +262,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject)
 						.DoesNotComplyWith(it => it.Whose(o => o.FaultedAsync(), v => v.IsEqualTo(1)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose FaultedAsync() is not equal to 1,
@@ -272,7 +272,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberFaults_AndMemberExpectationIsRepeated_ShouldFailWithoutRetrying()
 			{
 				ThrowingClass subject = new();
@@ -290,7 +290,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).Whose(o => o.FaultedAsync(),
 						v => v.Satisfies(IsOne).Within(retryWindow));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose FaultedAsync() satisfies IsOne within 0:30,
@@ -304,7 +304,7 @@ public sealed partial class ThatGeneric
 					.Because("the member must not be read again for the 30 s window either");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberFaults_AndMemberExpectationThrowsOnDefault_ShouldFail()
 			{
 				ThrowingClass subject = new();
@@ -312,7 +312,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.FaultedAsync(), v => v.Satisfies(x => 10 / x > 1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose FaultedAsync() satisfies x => 10 / x > 1,
@@ -322,7 +322,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberFaults_AndMemberExpectationThrowsOnDefault_WhenNegated_ShouldStillFail()
 			{
 				ThrowingClass subject = new();
@@ -331,7 +331,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject)
 						.DoesNotComplyWith(it => it.Whose(o => o.FaultedAsync(), v => v.Satisfies(x => 10 / x > 1)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose FaultedAsync() does not satisfy x => 10 / x > 1,
@@ -341,7 +341,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberFaults_AndNegatedAnd_ShouldStillFail()
 			{
 				ThrowingClass subject = new();
@@ -352,7 +352,7 @@ public sealed partial class ThatGeneric
 							.Whose(o => o.FaultedAsync(), v => v.IsEqualTo(1)).And
 							.Whose(o => o.Value, v => v.IsEqualTo(0)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose FaultedAsync() is not equal to 1 or whose Value is not equal to 0,
@@ -363,7 +363,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberFaults_AndNegatedOrWithOtherBranchFailing_ShouldStillFail()
 			{
 				ThrowingClass subject = new();
@@ -374,7 +374,7 @@ public sealed partial class ThatGeneric
 							.Whose(o => o.FaultedAsync(), v => v.IsEqualTo(1)).Or
 							.Whose(o => o.Value, v => v.IsEqualTo(1)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose FaultedAsync() is not equal to 1 and whose Value is not equal to 1,
@@ -384,7 +384,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberFaults_AndOtherBranchFails_ShouldFailWithBothReasons()
 			{
 				ThrowingClass subject = new();
@@ -394,7 +394,7 @@ public sealed partial class ThatGeneric
 						.Whose(o => o.FaultedAsync(), v => v.IsEqualTo(1)).Or
 						.Whose(o => o.Value, v => v.IsEqualTo(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose FaultedAsync() is equal to 1 or whose Value is equal to 1,
@@ -405,7 +405,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberFaults_AndOtherBranchSucceeds_ShouldSucceed()
 			{
 				ThrowingClass subject = new();
@@ -418,7 +418,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberFaults_ShouldFail()
 			{
 				ThrowingClass subject = new();
@@ -426,7 +426,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.FaultedAsync(), v => v.IsEqualTo(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose FaultedAsync() is equal to 1,
@@ -436,7 +436,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberIsCanceled_ShouldFail()
 			{
 				ThrowingClass subject = new();
@@ -444,7 +444,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.CanceledAsync(), v => v.IsEqualTo(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose CanceledAsync() is equal to 1,
@@ -454,7 +454,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<TaskCanceledException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberIsChainedAfterDelegateResult_ShouldVerifyAwaitedValue()
 			{
 				MyClass subject = new()
@@ -468,7 +468,7 @@ public sealed partial class ThatGeneric
 						.WhoseResult.IsNotNull()
 						.And.Whose(o => o.GetValueAsync(), v => v.IsEqualTo(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that () => subject
 					             does not throw any exception and its result is not null and whose GetValueAsync() is equal to 2,
@@ -476,7 +476,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberNeverCompletes_ShouldAbortOnCancellation()
 			{
 				ThrowingClass subject = new();
@@ -486,7 +486,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).Whose(o => o.HangAsync(), v => v.IsEqualTo(1))
 						.WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose HangAsync() is equal to 1,
@@ -494,7 +494,7 @@ public sealed partial class ThatGeneric
 					             """).WithTimeout(10.Seconds());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberNeverCompletes_ShouldFailAfterTheTimeout()
 			{
 				ThrowingClass subject = new();
@@ -503,7 +503,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).Whose(o => o.HangAsync(), v => v.IsEqualTo(1))
 						.WithTimeout(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose HangAsync() is equal to 1,
@@ -513,7 +513,7 @@ public sealed partial class ThatGeneric
 					.WithTimeout(10.Seconds());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberNeverCompletes_WhenNegated_ShouldBeInconclusiveOnCancellation()
 			{
 				ThrowingClass subject = new();
@@ -523,7 +523,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(it => it.Whose(o => o.HangAsync(), v => v.IsEqualTo(1)))
 						.WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose HangAsync() is not equal to 1,
@@ -532,7 +532,7 @@ public sealed partial class ThatGeneric
 					.Because("a cancellation must not be inverted into a success by the negation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncMemberThrowsBeforeReturningTask_ShouldFail()
 			{
 				ThrowingClass subject = new();
@@ -540,7 +540,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.ThrowsBeforeReturningTask(), v => v.IsEqualTo(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose ThrowsBeforeReturningTask() is equal to 1,
@@ -550,8 +550,8 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("thrown before returning the task"));
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenConditionIsNotSatisfied_ShouldFail(int value)
 			{
 				int expectedValue = value + 1;
@@ -564,7 +564,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject)
 						.Whose(o => o.Value, v => v.IsEqualTo(expectedValue));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              whose Value is equal to {Formatter.Format(expectedValue)},
@@ -572,8 +572,8 @@ public sealed partial class ThatGeneric
 					              """);
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenConditionIsSatisfied_ShouldSucceed(int value)
 			{
 				MyClass subject = new()
@@ -587,7 +587,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEvaluationIsCanceledWhileAccessingMember_ShouldBeInconclusive()
 			{
 				using CancellationTokenSource cts = new();
@@ -597,7 +597,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).Whose(o => o.CancelAsync(), v => v.IsEqualTo(1))
 						.WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose CancelAsync() is equal to 1,
@@ -605,7 +605,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsAreEmpty_ShouldThrowArgumentException()
 			{
 				MyClass subject = new()
@@ -621,7 +621,7 @@ public sealed partial class ThatGeneric
 					.And.WithParamName("expectations");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 			{
 				MyClass subject = new()
@@ -637,7 +637,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberAccessorIsNull_ShouldThrowArgumentNullException()
 			{
 				MyClass subject = new()
@@ -653,7 +653,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberExpectationHasAsyncReason_AndAnotherMemberFails_ShouldFollowTheMember()
 			{
 				MyCombinationClass subject = new()
@@ -666,7 +666,7 @@ public sealed partial class ThatGeneric
 						.Whose(o => o.A, v => v.IsTrue().Because(Task.FromResult<string?>("of a"))).And
 						.Whose(o => o.B, v => v.IsTrue());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose A is True, because of a and whose B is True,
@@ -675,7 +675,7 @@ public sealed partial class ThatGeneric
 					.Because("a reason that must be awaited is shown like a string reason, although its member is met");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberExpectationHasAsyncReason_InASkippedOrOperand_ShouldNotAwaitTheReason()
 			{
 				bool reasonWasResolved = false;
@@ -695,7 +695,7 @@ public sealed partial class ThatGeneric
 					.Because("a met expectation never builds a failure message, so it must not wait for the reason");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberExpectationHasAsyncReason_InASkippedOrOperand_WhenNegated_ShouldFollowTheMember()
 			{
 				Task<string?> becauseTask = Task.Delay(TimeSpan.FromMilliseconds(50))
@@ -710,7 +710,7 @@ public sealed partial class ThatGeneric
 						.Whose(o => o.A, v => v.IsTrue()).Or
 						.Whose(o => o.B, v => v.IsTrue().Because(becauseTask)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose A is not True and whose B is not True, because of b,
@@ -719,7 +719,7 @@ public sealed partial class ThatGeneric
 					.Because("the text of the skipped operand is shown, so its reason is awaited for the failure");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberExpectationHasAsyncReason_WhenMet_ShouldNotAwaitTheReason()
 			{
 				bool reasonWasResolved = false;
@@ -739,7 +739,7 @@ public sealed partial class ThatGeneric
 					.Because("a met expectation never builds a failure message, so it must not wait for the reason");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberExpectationHasAsyncReason_WhenNegated_ShouldFollowTheMember()
 			{
 				MyCombinationClass subject = new()
@@ -753,7 +753,7 @@ public sealed partial class ThatGeneric
 						.Whose(o => o.A, v => v.IsTrue().Because(Task.FromResult<string?>("of a"))).And
 						.Whose(o => o.B, v => v.IsTrue()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose A is not True, because of a or whose B is not True,
@@ -762,7 +762,7 @@ public sealed partial class ThatGeneric
 					.Because("a reason that must be awaited is shown like a string reason, although its member is met");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberExpectationHasReason_InsideCompliesWith_ShouldFollowTheMember()
 			{
 				MyCombinationClass subject = new();
@@ -772,7 +772,7 @@ public sealed partial class ThatGeneric
 						.Whose(o => o.A, v => v.IsTrue().Because("of a")).And
 						.Whose(o => o.B, v => v.IsTrue()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose A is True, because of a and whose B is True,
@@ -780,7 +780,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberExpectationHasReason_ShouldFollowTheMember()
 			{
 				MyCombinationClass subject = new();
@@ -791,7 +791,7 @@ public sealed partial class ThatGeneric
 						.Whose(o => o.B, v => v.IsTrue())
 						.Because("of all");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose A is True, because of a and whose B is True, because of all,
@@ -799,7 +799,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberExpectationHasReason_WhenNegated_ShouldFollowTheMember()
 			{
 				MyCombinationClass subject = new()
@@ -813,7 +813,7 @@ public sealed partial class ThatGeneric
 						.Whose(o => o.A, v => v.IsTrue().Because("of a")).And
 						.Whose(o => o.B, v => v.IsTrue()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose A is not True, because of a or whose B is not True,
@@ -821,7 +821,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberExpectationUsesWhich_AndItIsNotSatisfied_ShouldFail()
 			{
 				ItemsClass subject = new(1);
@@ -829,7 +829,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.Items, v => v.HasSingle().Which.IsEqualTo(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Items have a single item that is equal to 2,
@@ -838,7 +838,7 @@ public sealed partial class ThatGeneric
 					.Because("the single item, not the member Items, is the subject of the continued expectation");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberExpectationUsesWhich_AndItIsSatisfied_ShouldSucceed()
 			{
 				ItemsClass subject = new(2);
@@ -849,7 +849,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberExpectationUsesWhich_WithinAnOuterWhich_ShouldApplyBothToTheirOwnSubject()
 			{
 				ItemsClass[] subject = [new(1),];
@@ -858,7 +858,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).HasSingle()
 						.Which.Whose(o => o.Items, v => v.HasSingle().Which.IsEqualTo(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a single item whose Items have a single item that is equal to 2,
@@ -866,7 +866,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsNested_AndIsNegated_ShouldNotRepeatWhose()
 			{
 				MyClass subject = new()
@@ -878,7 +878,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.Whose(o => o.Value, v => v.Whose(i => i.ToString(), s => s.IsEqualTo("1"))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Value has ToString() that is not equal to "1",
@@ -887,7 +887,7 @@ public sealed partial class ThatGeneric
 					.Because("the negation reaches the innermost expectation and leaves the member text alone");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsNested_AndOuterMemberExpectationFollows_ShouldNameTheOuterMember()
 			{
 				MyClass subject = new()
@@ -899,7 +899,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).Whose(o => o.Value,
 						v => v.Whose(i => i.ToString(), s => s.IsEqualTo("1")).And.IsEqualTo(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Value has ToString() that is equal to "1" and is equal to 2,
@@ -908,7 +908,7 @@ public sealed partial class ThatGeneric
 					.Because("the expectation after the nested member is on the outer member again");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsNested_AndOuterMemberExpectationPrecedes_ShouldNameTheOuterMember()
 			{
 				MyClass subject = new()
@@ -920,7 +920,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).Whose(o => o.Value,
 						v => v.IsEqualTo(2).And.Whose(i => i.ToString(), s => s.IsEqualTo("1")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Value is equal to 2 and has ToString() that is equal to "1",
@@ -928,7 +928,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsNested_ShouldNotRepeatWhose()
 			{
 				MyClass subject = new()
@@ -939,7 +939,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.Value, v => v.Whose(i => i.ToString(), s => s.IsEqualTo("2")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Value has ToString() that is equal to "2",
@@ -952,7 +952,7 @@ public sealed partial class ThatGeneric
 					.Because("the outer member already introduced the subject of the inner one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsNestedTwice_ShouldAlternateBetweenTheForms()
 			{
 				MyClass subject = new()
@@ -964,7 +964,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).Whose(o => o.Value,
 						v => v.Whose(i => i.ToString(), s => s.Whose(t => t!.Length, l => l.IsEqualTo(2))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Value has ToString() whose t!.Length is equal to 2,
@@ -973,7 +973,7 @@ public sealed partial class ThatGeneric
 					.Because("each member introduces its own subject again for the next one");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberThrows_AndAnotherOperandIsMet_ShouldNotAwaitTheAsyncReason()
 			{
 				bool reasonWasResolved = false;
@@ -990,7 +990,7 @@ public sealed partial class ThatGeneric
 					.Because("a met expectation never builds a failure message, so it must not wait for the reason");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberThrows_AndMemberExpectationHasAsyncReason_ShouldFollowTheMember()
 			{
 				Task<string?> becauseTask = Task.Delay(TimeSpan.FromMilliseconds(50))
@@ -1000,7 +1000,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.Throwing, v => v.IsEqualTo(1).Because(becauseTask));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Throwing is equal to 1, because of reasons,
@@ -1010,7 +1010,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberThrows_AndMemberExpectationIsNegatedComplyWith_ShouldRenderNegatedExpectation()
 			{
 				ThrowingClass subject = new();
@@ -1018,7 +1018,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.Throwing, v => v.DoesNotComplyWith(x => x.IsEqualTo(1)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Throwing is not equal to 1,
@@ -1028,7 +1028,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberThrows_AndMemberExpectationIsRepeated_ShouldFailWithoutRetrying()
 			{
 				ThrowingClass subject = new();
@@ -1046,7 +1046,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).Whose(o => o.Throwing,
 						v => v.Satisfies(IsOne).Within(retryWindow));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Throwing satisfies IsOne within 0:30,
@@ -1060,7 +1060,7 @@ public sealed partial class ThatGeneric
 					.Because("the member must not be read again for the 30 s window either");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberThrows_AndMemberExpectationThrowsOnDefault_ShouldFail()
 			{
 				ThrowingClass subject = new();
@@ -1068,7 +1068,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.Throwing, v => v.Satisfies(x => 10 / x > 1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Throwing satisfies x => 10 / x > 1,
@@ -1078,7 +1078,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberThrows_AndMemberExpectationThrowsOnDefault_WhenNegated_ShouldStillFail()
 			{
 				ThrowingClass subject = new();
@@ -1087,7 +1087,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject)
 						.DoesNotComplyWith(it => it.Whose(o => o.Throwing, v => v.Satisfies(x => 10 / x > 1)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Throwing does not satisfy x => 10 / x > 1,
@@ -1097,7 +1097,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberThrows_ShouldFail()
 			{
 				ThrowingClass subject = new();
@@ -1105,7 +1105,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.Throwing, v => v.IsEqualTo(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Throwing is equal to 1,
@@ -1115,7 +1115,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringMemberThrows_AndMemberExpectationIsNegatedComplyWith_ShouldRenderNegatedExpectation()
 			{
 				ThrowingClass subject = new();
@@ -1123,7 +1123,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.Name, n => n.DoesNotComplyWith(x => x.StartsWith("a")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Name does not start with "a",
@@ -1133,7 +1133,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<NotSupportedException>(inner => inner.HasMessage("name failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringMemberThrows_AndMemberExpectationThrowsOnDefault_ShouldFail()
 			{
 				ThrowingClass subject = new();
@@ -1141,7 +1141,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.Name, n => n.Satisfies(s => s!.Length > 3));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Name satisfies s => s!.Length > 3,
@@ -1151,7 +1151,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<NotSupportedException>(inner => inner.HasMessage("name failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_AndAsyncMemberExpectationThrowsOnDefault_ShouldFail()
 			{
 				ThrowingClass? subject = null;
@@ -1159,7 +1159,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.FaultedAsync(), v => v.Satisfies(x => 10 / x > 1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose FaultedAsync() satisfies x => 10 / x > 1,
@@ -1167,7 +1167,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_AndMemberExpectationIsNegatedComplyWith_ShouldRenderNegatedExpectation()
 			{
 				ThrowingClass? subject = null;
@@ -1175,7 +1175,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.Value, v => v.DoesNotComplyWith(x => x.IsEqualTo(1)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Value is not equal to 1,
@@ -1183,7 +1183,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_AndMemberExpectationThrowsOnDefault_ShouldFail()
 			{
 				ThrowingClass? subject = null;
@@ -1191,7 +1191,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.Value, v => v.Satisfies(x => 10 / x > 1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Value satisfies x => 10 / x > 1,
@@ -1199,7 +1199,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_AndMemberExpectationThrowsOnDefault_WhenNegated_ShouldStillFail()
 			{
 				ThrowingClass? subject = null;
@@ -1208,7 +1208,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject)
 						.DoesNotComplyWith(it => it.Whose(o => o.Value, v => v.Satisfies(x => 10 / x > 1)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Value does not satisfy x => 10 / x > 1,
@@ -1216,7 +1216,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldNotInvokeAsyncMemberSelector()
 			{
 				MyClass? subject = null;
@@ -1224,7 +1224,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.GetValueAsync(), v => v.IsEqualTo(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose GetValueAsync() is equal to 1,
@@ -1232,7 +1232,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueTaskMemberAccessorIsNull_ShouldThrowArgumentNullException()
 			{
 				MyClass subject = new()
@@ -1248,7 +1248,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueTaskMemberConditionIsNotSatisfied_ShouldFail()
 			{
 				MyClass subject = new()
@@ -1259,7 +1259,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.GetValueAsValueTaskAsync(), v => v.IsEqualTo(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose GetValueAsValueTaskAsync() is equal to 2,
@@ -1267,7 +1267,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueTaskMemberConditionIsSatisfied_ShouldSucceed()
 			{
 				MyClass subject = new()
@@ -1281,7 +1281,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueTaskMemberFaults_AndMemberExpectationThrowsOnDefault_ShouldFail()
 			{
 				ThrowingClass subject = new();
@@ -1289,7 +1289,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.FaultedValueTaskAsync(), v => v.Satisfies(x => 10 / x > 1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose FaultedValueTaskAsync() satisfies x => 10 / x > 1,
@@ -1299,7 +1299,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueTaskMemberFaults_ShouldFail()
 			{
 				ThrowingClass subject = new();
@@ -1307,7 +1307,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).Whose(o => o.FaultedValueTaskAsync(), v => v.IsEqualTo(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose FaultedValueTaskAsync() is equal to 1,
@@ -1317,7 +1317,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueTaskMemberNeverCompletes_ShouldAbortOnCancellation()
 			{
 				ThrowingClass subject = new();
@@ -1327,7 +1327,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).Whose(o => o.HangValueTaskAsync(), v => v.IsEqualTo(1))
 						.WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose HangValueTaskAsync() is equal to 1,
@@ -1410,7 +1410,7 @@ public sealed partial class ThatGeneric
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNestedMemberAfterIsIsNull_ShouldFail()
 			{
 				Container subject = new()
@@ -1422,7 +1422,7 @@ public sealed partial class ThatGeneric
 					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Container>()
 						.Whose(x => x.In, i => i.Whose(y => y.Name, n => n.IsEqualTo("i"))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Container whose In has Name that is equal to "i",
@@ -1436,7 +1436,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNestedMemberIsNull_ShouldFail()
 			{
 				Container subject = new()
@@ -1448,7 +1448,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(it =>
 						it.Whose(x => x.In, i => i.Whose(y => y.Name, n => n.IsEqualTo("i"))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose In has Name that is not equal to "i",
@@ -1456,7 +1456,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNestedMemberAfterIsThrows_ShouldFail()
 			{
 				Container subject = new()
@@ -1468,7 +1468,7 @@ public sealed partial class ThatGeneric
 					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Container>()
 						.Whose(x => x.In, i => i.Whose(y => y.Next!.Name, n => n.IsEqualTo("i"))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Container whose In has Next!.Name that is equal to "i",
@@ -1488,7 +1488,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("next failed"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNestedAsyncMemberAfterIsIsNull_ShouldFail()
 			{
 				Container subject = new()
@@ -1500,7 +1500,7 @@ public sealed partial class ThatGeneric
 					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Container>()
 						.Whose(x => Task.FromResult(x.In), i => i.Whose(y => y.Name, n => n.IsEqualTo("i"))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Container whose Task.FromResult(x.In) has Name that is equal to "i",
@@ -1514,7 +1514,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMemberAfterIsHasNullValue_ShouldFail()
 			{
 				Container subject = new();
@@ -1523,7 +1523,7 @@ public sealed partial class ThatGeneric
 					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Container>()
 						.Whose(x => x.Name, n => n.StartsWith("a")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Container whose Name starts with "a",
@@ -1537,7 +1537,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNestedMemberInAndAfterIsIsNull_ShouldFail()
 			{
 				Container subject = new()
@@ -1554,7 +1554,7 @@ public sealed partial class ThatGeneric
 							.Whose(y => y.Other, o => o.Whose(z => z.Name, n => n.IsEqualTo("x")))
 							.And.Whose(y => y.Name, n => n.IsEqualTo("i"))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Container whose In has Other whose Name is equal to "x" and has Name that is equal to "i",
@@ -1572,7 +1572,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSingleItemIsNull_ShouldFail()
 			{
 				Container?[] subject = [null,];
@@ -1581,7 +1581,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(it =>
 						it.HasSingle().Which.Whose(y => y!.Name, n => n.IsEqualTo("i")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a single item whose y!.Name is equal to "i",
@@ -1589,7 +1589,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNestedMemberOfSingleItemIsNull_ShouldFail()
 			{
 				Container[] subject = [new Container(),];
@@ -1598,7 +1598,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(it =>
 						it.HasSingle().Which.Whose(x => x.In, i => i.Whose(y => y.Name, n => n.IsEqualTo("i"))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a single item whose In has Name that is equal to "i",
@@ -1606,7 +1606,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNestedMemberOfSingleItemAfterAndIsNull_ShouldFail()
 			{
 				Container[] subject = [new Container(),];
@@ -1615,7 +1615,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotEmpty().And.HasSingle().Which
 						.Whose(x => x.In, i => i.Whose(y => y.Name, n => n.IsEqualTo("i"))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is empty or does not have a single item whose In has Name that is equal to "i",
@@ -1629,7 +1629,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNestedMemberOfSingleItemAfterOrIsNull_ShouldFail()
 			{
 				Container[] subject = [new Container(),];
@@ -1638,7 +1638,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(it => it.IsEmpty().Or.HasSingle().Which
 						.Whose(x => x.In, i => i.Whose(y => y.Name, n => n.IsEqualTo("i"))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not empty and does not have a single item whose In has Name that is equal to "i",
@@ -1646,7 +1646,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeAfterIsDoesNotMatch_ShouldSucceed()
 			{
 				async Task Act()
@@ -1656,7 +1656,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTypeAfterIsDoesNotMatch_WithAndWhose_ShouldSucceed()
 			{
 				async Task Act()
@@ -1667,7 +1667,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNestedTypeAfterIsDoesNotMatch_ShouldSucceed()
 			{
 				Outer subject = new()
@@ -1682,7 +1682,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNestedMemberAfterIsIsNull_AndNegatedTwice_ShouldFail()
 			{
 				Container subject = new();
@@ -1691,7 +1691,7 @@ public sealed partial class ThatGeneric
 					=> await That((object)subject).DoesNotComplyWith(x => x.DoesNotComplyWith(it => it.Is<Container>()
 						.Whose(c => c.In, i => i.Whose(y => y.Name, n => n.IsEqualTo("i")))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that (object)subject
 					             is of type ThatGeneric.Whose.NegatedTests.Container whose In has Name that is equal to "i",
@@ -1699,7 +1699,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCollectionMemberAfterIsIsNull_ShouldFail()
 			{
 				Lists subject = new();
@@ -1708,7 +1708,7 @@ public sealed partial class ThatGeneric
 					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Lists>()
 						.Whose(x => x.Items, i => i.Contains(1)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Items contain an item equal to 1 at least once,
@@ -1719,7 +1719,7 @@ public sealed partial class ThatGeneric
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenCollectionMemberAfterIsIsNull_WithPredicate_ShouldFail()
 			{
 				Lists subject = new();
@@ -1728,7 +1728,7 @@ public sealed partial class ThatGeneric
 					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Lists>()
 						.Whose(x => x.Items, i => i.Contains(item => item > 0)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Items contain an item matching item => item > 0 at least once,
@@ -1740,7 +1740,7 @@ public sealed partial class ThatGeneric
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task WhenImmutableArrayMemberAfterIsIsDefault_ShouldFail()
 			{
 				Lists subject = new();
@@ -1749,7 +1749,7 @@ public sealed partial class ThatGeneric
 					=> await That((object)subject).DoesNotComplyWith(it => it.Is<Lists>()
 						.Whose(x => x.Array, a => a.Contains(1)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that (object)subject
 					             is not of type ThatGeneric.Whose.NegatedTests.Lists whose Array contain an item equal to 1 at least once,
@@ -1763,7 +1763,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenImmutableArrayMemberAfterIsIsDefault_WithIsEqualTo_ShouldSucceed()
 			{
 				Lists subject = new();

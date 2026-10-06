@@ -8,20 +8,20 @@ public sealed partial class ThatChar
 		{
 			public sealed class Tests
 			{
-				[Theory]
-				[InlineData('0')]
-				[InlineData('1')]
-				[InlineData('4')]
-				[InlineData('9')]
-				[InlineData('\u00BD')]
-				[InlineData('\u2163')]
-				[InlineData('\u00B2')]
+				[Test]
+				[Arguments('0')]
+				[Arguments('1')]
+				[Arguments('4')]
+				[Arguments('9')]
+				[Arguments('\u00BD')]
+				[Arguments('\u2163')]
+				[Arguments('\u00B2')]
 				public async Task WhenSubjectIsANumber_ShouldFail(char? subject)
 				{
 					async Task Act()
 						=> await That(subject).IsNotANumber();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not a number,
@@ -29,20 +29,20 @@ public sealed partial class ThatChar
 						              """);
 				}
 
-				[Theory]
-				[InlineData('a')]
-				[InlineData('d')]
-				[InlineData('z')]
-				[InlineData('A')]
-				[InlineData('M')]
-				[InlineData('Z')]
-				[InlineData('\u4E50')]
-				[InlineData('\t')]
-				[InlineData('@')]
-				[InlineData('[')]
-				[InlineData(']')]
-				[InlineData('{')]
-				[InlineData('}')]
+				[Test]
+				[Arguments('a')]
+				[Arguments('d')]
+				[Arguments('z')]
+				[Arguments('A')]
+				[Arguments('M')]
+				[Arguments('Z')]
+				[Arguments('\u4E50')]
+				[Arguments('\t')]
+				[Arguments('@')]
+				[Arguments('[')]
+				[Arguments(']')]
+				[Arguments('{')]
+				[Arguments('}')]
 				public async Task WhenSubjectIsNotANumber_ShouldSucceed(char? subject)
 				{
 					async Task Act()
@@ -51,7 +51,7 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					char? subject = null;
@@ -59,7 +59,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).IsNotANumber();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not a number,
@@ -70,14 +70,14 @@ public sealed partial class ThatChar
 
 			public sealed class NegatedTests
 			{
-				[Theory]
-				[InlineData('0')]
-				[InlineData('1')]
-				[InlineData('4')]
-				[InlineData('9')]
-				[InlineData('\u00BD')]
-				[InlineData('\u2163')]
-				[InlineData('\u00B2')]
+				[Test]
+				[Arguments('0')]
+				[Arguments('1')]
+				[Arguments('4')]
+				[Arguments('9')]
+				[Arguments('\u00BD')]
+				[Arguments('\u2163')]
+				[Arguments('\u00B2')]
 				public async Task WhenSubjectIsANumber_ShouldSucceed(char? subject)
 				{
 					async Task Act()
@@ -86,26 +86,26 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData('a')]
-				[InlineData('d')]
-				[InlineData('z')]
-				[InlineData('A')]
-				[InlineData('M')]
-				[InlineData('Z')]
-				[InlineData('\u4E50')]
-				[InlineData('\t')]
-				[InlineData('@')]
-				[InlineData('[')]
-				[InlineData(']')]
-				[InlineData('{')]
-				[InlineData('}')]
+				[Test]
+				[Arguments('a')]
+				[Arguments('d')]
+				[Arguments('z')]
+				[Arguments('A')]
+				[Arguments('M')]
+				[Arguments('Z')]
+				[Arguments('\u4E50')]
+				[Arguments('\t')]
+				[Arguments('@')]
+				[Arguments('[')]
+				[Arguments(']')]
+				[Arguments('{')]
+				[Arguments('}')]
 				public async Task WhenSubjectIsNotANumber_ShouldFail(char? subject)
 				{
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.IsNotANumber());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is a number,
@@ -113,7 +113,7 @@ public sealed partial class ThatChar
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					char? subject = null;
@@ -121,7 +121,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.IsNotANumber());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is a number,

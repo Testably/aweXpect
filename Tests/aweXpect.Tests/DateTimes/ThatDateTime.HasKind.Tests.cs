@@ -6,7 +6,7 @@ public sealed partial class ThatDateTime
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateTime subject = new(2010, 11, 12, 13, 14, 15, 167, DateTimeKind.Utc);
@@ -15,7 +15,7 @@ public sealed partial class ThatDateTime
 				async Task Act()
 					=> await That(subject).HasKind(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has kind equal to <null>,
@@ -23,7 +23,7 @@ public sealed partial class ThatDateTime
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNullableAndTheSame_ShouldSucceed()
 			{
 				DateTime subject = new(2010, 11, 12, 13, 14, 15, 167, DateTimeKind.Utc);
@@ -35,7 +35,7 @@ public sealed partial class ThatDateTime
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKindOfSubjectIsDifferent_ShouldFail()
 			{
 				DateTime subject = new(2010, 11, 12, 13, 14, 15, 167, DateTimeKind.Utc);
@@ -44,7 +44,7 @@ public sealed partial class ThatDateTime
 				async Task Act()
 					=> await That(subject).HasKind(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has kind equal to {Formatter.Format(expected)},
@@ -52,7 +52,7 @@ public sealed partial class ThatDateTime
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKindOfSubjectIsTheSame_ShouldSucceed()
 			{
 				DateTime subject = new(2010, 11, 12, 13, 14, 15, 167, DateTimeKind.Utc);
@@ -67,7 +67,7 @@ public sealed partial class ThatDateTime
 
 		public sealed class EqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenKindOfSubjectIsDifferent_ShouldFail()
 			{
 				DateTime subject = new(2010, 11, 12, 13, 14, 15, 167, DateTimeKind.Utc);
@@ -76,7 +76,7 @@ public sealed partial class ThatDateTime
 				async Task Act()
 					=> await That(subject).HasKind().EqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has kind equal to {Formatter.Format(expected)},
@@ -84,7 +84,7 @@ public sealed partial class ThatDateTime
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKindOfSubjectIsTheSame_ShouldSucceed()
 			{
 				DateTime subject = new(2010, 11, 12, 13, 14, 15, 167, DateTimeKind.Utc);
@@ -99,7 +99,7 @@ public sealed partial class ThatDateTime
 
 		public sealed class NotEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenKindOfSubjectIsDifferent_ShouldSucceed()
 			{
 				DateTime subject = new(2010, 11, 12, 13, 14, 15, 167, DateTimeKind.Utc);
@@ -111,7 +111,7 @@ public sealed partial class ThatDateTime
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKindOfSubjectIsTheSame_ShouldFail()
 			{
 				DateTime subject = new(2010, 11, 12, 13, 14, 15, 167, DateTimeKind.Utc);
@@ -120,7 +120,7 @@ public sealed partial class ThatDateTime
 				async Task Act()
 					=> await That(subject).HasKind().NotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have kind equal to {Formatter.Format(unexpected)},
@@ -128,7 +128,7 @@ public sealed partial class ThatDateTime
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsNull_ShouldSucceed()
 			{
 				DateTime subject = new(2010, 11, 12, 13, 14, 15, 167, DateTimeKind.Utc);
@@ -143,7 +143,7 @@ public sealed partial class ThatDateTime
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenKindDiffers_ShouldSucceed()
 			{
 				DateTime subject = new(2010, 11, 12, 0, 0, 0, DateTimeKind.Utc);
@@ -154,7 +154,7 @@ public sealed partial class ThatDateTime
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenKindMatches_ShouldFail()
 			{
 				DateTime subject = new(2010, 11, 12, 0, 0, 0, DateTimeKind.Utc);
@@ -162,7 +162,7 @@ public sealed partial class ThatDateTime
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasKind(DateTimeKind.Utc));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have kind equal to Utc,

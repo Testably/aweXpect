@@ -9,9 +9,9 @@ public sealed partial class ThatEventRecording
 	{
 		public sealed class CountTests
 		{
-			[Theory]
-			[InlineData(1, true)]
-			[InlineData(2, false)]
+			[Test]
+			[Arguments(1, true)]
+			[Arguments(2, false)]
 			public async Task ShouldSupportAtLeast(int count, bool expectSuccess)
 			{
 				PropertyChangedClass sut = new();
@@ -23,7 +23,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTriggerPropertyChangedFor(x => x.MyValue)
 						.AtLeast(2.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut for property MyValue fewer than twice,
@@ -31,9 +31,9 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(1, false)]
-			[InlineData(2, true)]
+			[Test]
+			[Arguments(1, false)]
+			[Arguments(2, true)]
 			public async Task ShouldSupportAtMost(int count, bool expectSuccess)
 			{
 				PropertyChangedClass sut = new();
@@ -45,7 +45,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTriggerPropertyChangedFor(x => x.MyValue)
 						.AtMost(1.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut for property MyValue more than once,
@@ -53,10 +53,10 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(1, true)]
-			[InlineData(2, false)]
-			[InlineData(4, true)]
+			[Test]
+			[Arguments(1, true)]
+			[Arguments(2, false)]
+			[Arguments(4, true)]
 			public async Task ShouldSupportBetween(int count, bool expectSuccess)
 			{
 				PropertyChangedClass sut = new();
@@ -68,7 +68,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTriggerPropertyChangedFor(x => x.MyValue)
 						.Between(2).And(3.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut for property MyValue not between 2 and 3 times,
@@ -76,10 +76,10 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(2, true)]
-			[InlineData(3, false)]
-			[InlineData(4, true)]
+			[Test]
+			[Arguments(2, true)]
+			[Arguments(3, false)]
+			[Arguments(4, true)]
 			public async Task ShouldSupportExactly(int count, bool expectSuccess)
 			{
 				PropertyChangedClass sut = new();
@@ -91,7 +91,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTriggerPropertyChangedFor(x => x.MyValue)
 						.Exactly(3.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut for property MyValue not exactly 3 times,
@@ -99,9 +99,9 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(1, false)]
-			[InlineData(2, true)]
+			[Test]
+			[Arguments(1, false)]
+			[Arguments(2, true)]
 			public async Task ShouldSupportLessThan(int count, bool expectSuccess)
 			{
 				PropertyChangedClass sut = new();
@@ -113,7 +113,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTriggerPropertyChangedFor(x => x.MyValue)
 						.LessThan(2.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut for property MyValue at least twice,
@@ -121,9 +121,9 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(1, true)]
-			[InlineData(2, false)]
+			[Test]
+			[Arguments(1, true)]
+			[Arguments(2, false)]
 			public async Task ShouldSupportMoreThan(int count, bool expectSuccess)
 			{
 				PropertyChangedClass sut = new();
@@ -135,7 +135,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTriggerPropertyChangedFor(x => x.MyValue)
 						.MoreThan(1.Times());
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut for property MyValue at most once,
@@ -143,9 +143,9 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(0, false)]
-			[InlineData(1, true)]
+			[Test]
+			[Arguments(0, false)]
+			[Arguments(1, true)]
 			public async Task ShouldSupportNever(int count, bool expectSuccess)
 			{
 				PropertyChangedClass sut = new();
@@ -157,7 +157,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTriggerPropertyChangedFor(x => x.MyValue)
 						.Never();
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut for property MyValue at least once,
@@ -165,10 +165,10 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(0, true)]
-			[InlineData(1, false)]
-			[InlineData(2, true)]
+			[Test]
+			[Arguments(0, true)]
+			[Arguments(1, false)]
+			[Arguments(2, true)]
 			public async Task ShouldSupportOnce(int count, bool expectSuccess)
 			{
 				PropertyChangedClass sut = new();
@@ -180,7 +180,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTriggerPropertyChangedFor(x => x.MyValue)
 						.Once();
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut for property MyValue not exactly once,
@@ -188,10 +188,10 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Theory]
-			[InlineData(1, true)]
-			[InlineData(2, false)]
-			[InlineData(3, true)]
+			[Test]
+			[Arguments(1, true)]
+			[Arguments(2, false)]
+			[Arguments(3, true)]
 			public async Task ShouldSupportTwice(int count, bool expectSuccess)
 			{
 				PropertyChangedClass sut = new();
@@ -203,7 +203,7 @@ public sealed partial class ThatEventRecording
 					await That(recording).DidNotTriggerPropertyChangedFor(x => x.MyValue)
 						.Twice();
 
-				await That(Act).Throws<XunitException>().OnlyIf(!expectSuccess)
+				await That(Act).Throws<FailException>().OnlyIf(!expectSuccess)
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut for property MyValue not exactly twice,
@@ -211,7 +211,7 @@ public sealed partial class ThatEventRecording
 					             """).AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenCountIsNotReachedWithinTimeout_ShouldSucceed()
 			{
 				PropertyChangedClass sut = new();
@@ -227,7 +227,7 @@ public sealed partial class ThatEventRecording
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Within_WhenCountIsReachedWithinTimeout_ShouldFail()
 			{
 				PropertyChangedClass sut = new();
@@ -241,7 +241,7 @@ public sealed partial class ThatEventRecording
 						.AtLeast(2.Times())
 						.Within(5.Seconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut for property MyValue fewer than twice within 0:05,

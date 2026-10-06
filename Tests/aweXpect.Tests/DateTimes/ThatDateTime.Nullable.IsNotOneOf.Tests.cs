@@ -12,7 +12,7 @@ public sealed partial class ThatDateTime
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 				{
 					DateTime? subject = CurrentTime();
@@ -22,7 +22,7 @@ public sealed partial class ThatDateTime
 					async Task Act()
 						=> await That(subject).IsNotOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not one of expected,
@@ -34,7 +34,7 @@ public sealed partial class ThatDateTime
 						.Because("the empty check must not consume the values needed for the comparison and the message");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					DateTime? subject = CurrentTime();
@@ -49,7 +49,7 @@ public sealed partial class ThatDateTime
 						.Because("an empty set is rejected when the expectation is built, before it is awaited");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					DateTime? subject = CurrentTime();
@@ -63,7 +63,7 @@ public sealed partial class ThatDateTime
 						.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedOnlyContainsNull_ShouldSucceed()
 				{
 					DateTime? subject = CurrentTime();
@@ -75,9 +75,9 @@ public sealed partial class ThatDateTime
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(DateTimeKind.Utc, DateTimeKind.Local)]
-				[InlineData(DateTimeKind.Local, DateTimeKind.Utc)]
+				[Test]
+				[Arguments(DateTimeKind.Utc, DateTimeKind.Local)]
+				[Arguments(DateTimeKind.Local, DateTimeKind.Utc)]
 				public async Task WhenKindIsIncompatible_ShouldSucceed(
 					DateTimeKind subjectKind, DateTimeKind unexpectedKind)
 				{
@@ -90,7 +90,7 @@ public sealed partial class ThatDateTime
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenKindIsIncompatibleButAnotherValueMatches_ShouldFail()
 				{
 					DateTime? subject = DateTime.SpecifyKind(CurrentTime()!.Value, DateTimeKind.Utc);
@@ -103,7 +103,7 @@ public sealed partial class ThatDateTime
 					async Task Act()
 						=> await That(subject).IsNotOneOf(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not one of {Formatter.Format(unexpected)},
@@ -111,11 +111,11 @@ public sealed partial class ThatDateTime
 						              """);
 				}
 
-				[Theory]
-				[InlineData(DateTimeKind.Utc, DateTimeKind.Unspecified)]
-				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Utc)]
-				[InlineData(DateTimeKind.Local, DateTimeKind.Unspecified)]
-				[InlineData(DateTimeKind.Unspecified, DateTimeKind.Local)]
+				[Test]
+				[Arguments(DateTimeKind.Utc, DateTimeKind.Unspecified)]
+				[Arguments(DateTimeKind.Unspecified, DateTimeKind.Utc)]
+				[Arguments(DateTimeKind.Local, DateTimeKind.Unspecified)]
+				[Arguments(DateTimeKind.Unspecified, DateTimeKind.Local)]
 				public async Task WhenKindIsUnspecified_ShouldFail(
 					DateTimeKind subjectKind, DateTimeKind unexpectedKind)
 				{
@@ -125,7 +125,7 @@ public sealed partial class ThatDateTime
 					async Task Act()
 						=> await That(subject).IsNotOneOf(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not one of {Formatter.Format(unexpected)},
@@ -133,7 +133,7 @@ public sealed partial class ThatDateTime
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					DateTime? subject = CurrentTime();
@@ -148,7 +148,7 @@ public sealed partial class ThatDateTime
 						.Because("an empty set is rejected when the expectation is built, before it is awaited");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					DateTime? subject = CurrentTime();
@@ -162,7 +162,7 @@ public sealed partial class ThatDateTime
 						.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsContained_ShouldFail()
 				{
 					DateTime? subject = CurrentTime();
@@ -171,7 +171,7 @@ public sealed partial class ThatDateTime
 					async Task Act()
 						=> await That(subject).IsNotOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not one of expected,
@@ -182,7 +182,7 @@ public sealed partial class ThatDateTime
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsDifferent_ShouldSucceed()
 				{
 					DateTime? subject = CurrentTime();
@@ -194,7 +194,7 @@ public sealed partial class ThatDateTime
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldSucceed()
 				{
 					DateTime? subject = null;
@@ -205,7 +205,7 @@ public sealed partial class ThatDateTime
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					DateTime? subject = null;
@@ -220,7 +220,7 @@ public sealed partial class ThatDateTime
 						.Because("missing expected values are an argument error, independent of the subject");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					DateTime? subject = null;
@@ -235,7 +235,7 @@ public sealed partial class ThatDateTime
 						.Because("a null list of expected values is an argument error, independent of the subject");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndNullableExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					DateTime? subject = null;
@@ -250,7 +250,7 @@ public sealed partial class ThatDateTime
 						.Because("missing expected values are an argument error, independent of the subject");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndNullableExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					DateTime? subject = null;
@@ -265,7 +265,7 @@ public sealed partial class ThatDateTime
 						.Because("a null list of expected values is an argument error, independent of the subject");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndUnexpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 				{
 					DateTime? subject = null;
@@ -275,7 +275,7 @@ public sealed partial class ThatDateTime
 					async Task Act()
 						=> await That(subject).IsNotOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not one of expected,
@@ -287,7 +287,7 @@ public sealed partial class ThatDateTime
 						.Because("the empty check must not consume the values needed for the comparison and the message");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndUnexpectedContainsNull_ShouldFail()
 				{
 					DateTime? subject = null;
@@ -296,7 +296,7 @@ public sealed partial class ThatDateTime
 					async Task Act()
 						=> await That(subject).IsNotOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not one of expected,
@@ -307,7 +307,7 @@ public sealed partial class ThatDateTime
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectOnlyDiffersInKindFromAllValues_ShouldSucceed()
 				{
 					DateTime? subject = CurrentTime(DateTimeKind.Utc);
@@ -320,7 +320,7 @@ public sealed partial class ThatDateTime
 						.Because("a subject that cannot be compared to any alternative is not one of them");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectOnlyDiffersInKindFromTheMatchingValue_ShouldSucceed()
 				{
 					DateTime? subject = CurrentTime(DateTimeKind.Utc);
@@ -333,11 +333,11 @@ public sealed partial class ThatDateTime
 						.Because("the only alternative with the same ticks has an incompatible Kind");
 				}
 
-				[Theory]
-				[InlineData(3, 2, false)]
-				[InlineData(5, 3, false)]
-				[InlineData(2, 2, true)]
-				[InlineData(0, 2, true)]
+				[Test]
+				[Arguments(3, 2, false)]
+				[Arguments(5, 3, false)]
+				[Arguments(2, 2, true)]
+				[Arguments(0, 2, true)]
 				public async Task Within_WhenValuesAreOutsideTheTolerance_ShouldFail(
 					int actualDifference, int tolerance, bool expectToThrow)
 				{
@@ -353,7 +353,7 @@ public sealed partial class ThatDateTime
 						? ""
 						: $", which differs by -0:0{actualDifference} from the closest value";
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.OnlyIf(expectToThrow)
 						.WithMessage($"""
 						              Expected that subject

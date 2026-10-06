@@ -8,7 +8,7 @@ public sealed partial class ThatSignaler
 	{
 		public sealed class SignalerReuseTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAwaitingASignalWithParameterAfterAnUnmetExpectation_ShouldSucceed()
 			{
 				Signaler<int> signaler = new();
@@ -22,7 +22,7 @@ public sealed partial class ThatSignaler
 					.Because("the unmet expectation must not leave a disposed event behind for the next wait");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSignalingAfterAnAwaitedExpectation_ShouldNotThrow()
 			{
 				Signaler signaler = new();
@@ -38,7 +38,7 @@ public sealed partial class ThatSignaler
 					.Because("the expectation must not leave the signaler in a state where signaling fails");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSignalingAfterAnAwaitedExpectationWithParameter_ShouldNotThrow()
 			{
 				Signaler<int> signaler = new();
@@ -54,7 +54,7 @@ public sealed partial class ThatSignaler
 					.Because("the expectation must not leave the signaler in a state where signaling fails");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSignalingAfterAnExpectationThatNeverWaited_ShouldNotThrow()
 			{
 				Signaler signaler = new();
@@ -68,7 +68,7 @@ public sealed partial class ThatSignaler
 					.Because("the expectation must not leave the signaler in a state where signaling fails");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSignalingAfterAnUnmetExpectation_ShouldNotThrow()
 			{
 				Signaler signaler = new();
@@ -81,7 +81,7 @@ public sealed partial class ThatSignaler
 					.Because("the expectation must not leave the signaler in a state where signaling fails");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSignalingAfterAnUnmetExpectationWithParameter_ShouldNotThrow()
 			{
 				Signaler<int> signaler = new();

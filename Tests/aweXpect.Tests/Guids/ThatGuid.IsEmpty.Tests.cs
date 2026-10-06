@@ -6,7 +6,7 @@ public sealed partial class ThatGuid
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsEmpty_ShouldSucceed()
 			{
 				Guid subject = Guid.Empty;
@@ -17,7 +17,7 @@ public sealed partial class ThatGuid
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNotEmpty_ShouldFail()
 			{
 				Guid subject = OtherGuid();
@@ -25,7 +25,7 @@ public sealed partial class ThatGuid
 				async Task Act()
 					=> await That(subject).IsEmpty();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              is empty,

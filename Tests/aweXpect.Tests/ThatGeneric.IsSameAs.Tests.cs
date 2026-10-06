@@ -6,7 +6,7 @@ public sealed partial class ThatGeneric
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenComparingTheSameObjectReference_ShouldSucceed()
 			{
 				Other subject = new()
@@ -21,7 +21,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparingTwoIndividualObjectsWithSameValues_ShouldFail()
 			{
 				Other subject = new()
@@ -36,7 +36,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).IsSameAs(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             refers to ThatGeneric.Other {
@@ -48,7 +48,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparingTwoIndividualStringsWithSameValue_ShouldEscapeThem()
 			{
 				string subject = "say \"hi\"\nbye";
@@ -57,7 +57,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).IsSameAs(other);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             refers to "say \"hi\"\nbye",
@@ -66,7 +66,7 @@ public sealed partial class ThatGeneric
 					.Because("a raw quote or line break would break the layout of the message");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparingTwoIndividualStringsWithSameValue_ShouldTruncateLongOnes()
 			{
 				string subject = new('a', 150);
@@ -75,7 +75,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).IsSameAs(other);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              refers to "{new string('a', 100)}…",
@@ -84,7 +84,7 @@ public sealed partial class ThatGeneric
 					.Because("the maximum string length also applies to the string of a generic subject");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				Other subject = new()
@@ -96,7 +96,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).IsSameAs(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             refers to <null>,
@@ -106,7 +106,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectAndExpectedIsNull_ShouldSucceed()
 			{
 				Other? subject = null;
@@ -119,7 +119,7 @@ public sealed partial class ThatGeneric
 					.Because("both refer to the same nothing");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Other? subject = null;
@@ -131,7 +131,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).IsSameAs(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             refers to ThatGeneric.Other {
@@ -144,7 +144,7 @@ public sealed partial class ThatGeneric
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task ShouldHaveCorrectResultString()
 			{
 				Other subject = new()
@@ -156,7 +156,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsSameAs(expected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not refer to ThatGeneric.Other {

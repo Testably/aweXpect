@@ -14,7 +14,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAtLeastOneItemMatches_ShouldSucceed()
 			{
 				int[] subject = [1, 2, 3, 4, 5,];
@@ -25,7 +25,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBoolItemsDoNotMatch_ShouldRenderThemOnOneLine()
 			{
 				bool[] subject = [false, false,];
@@ -33,7 +33,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Any().ComplyWith(it => it.IsEqualTo(true));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is True for at least one item,
@@ -44,7 +44,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenEnumItemsDoNotMatch_ShouldRenderThemOnOneLine()
 			{
 				DayOfWeek[] subject = [DayOfWeek.Monday, DayOfWeek.Tuesday,];
@@ -52,7 +52,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Any().ComplyWith(it => it.IsEqualTo(DayOfWeek.Sunday));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to Sunday for at least one item,
@@ -63,7 +63,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenItemsDoNotComplyWithAndSubjectIsEmpty_ShouldNegateExpectation()
 			{
 				IEnumerable<int> subject = [];
@@ -72,7 +72,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).Any()
 						.ComplyWith(it => it.DoesNotComplyWith(x => x.IsEqualTo(1).Or.IsEqualTo(2)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 1 and is not equal to 2 for at least one item,
@@ -83,7 +83,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMultipleItemsMatch_ShouldSucceed()
 			{
 				int[] subject = [1, 2, 2, 3, 2,];
@@ -94,7 +94,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNestedItemsDoNotComplyWithAndSubjectIsEmpty_ShouldNegateExpectation()
 			{
 				IEnumerable<int[]> subject = [];
@@ -103,7 +103,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).Any()
 						.ComplyWith(it => it.HasItemThat(x => x.DoesNotComplyWith(y => y.IsEqualTo(1).Or.IsEqualTo(2))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has an item that is not equal to 1 and is not equal to 2 for at least one item,
@@ -114,7 +114,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoItemsMatch_ShouldFail()
 			{
 				int[] subject = [1, 2, 3, 4, 5,];
@@ -122,7 +122,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Any().ComplyWith(it => it.IsEqualTo(99));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 99 for at least one item,
@@ -133,7 +133,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNullableEnumItemsDoNotMatch_ShouldRenderThemOnOneLine()
 			{
 				DayOfWeek?[] subject = [DayOfWeek.Monday, null,];
@@ -141,7 +141,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Any().ComplyWith(it => it.IsEqualTo(DayOfWeek.Sunday));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to Sunday for at least one item,
@@ -152,7 +152,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsEmpty_ShouldFail()
 			{
 				IEnumerable<int> subject = [];
@@ -160,7 +160,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Any().ComplyWith(it => it.IsEqualTo(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for at least one item,
@@ -171,7 +171,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable<int>? subject = null;
@@ -179,7 +179,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Any().ComplyWith(it => it.IsEqualTo(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 1 for at least one item,
@@ -190,7 +190,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class EnumerableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAtLeastOneItemMatches_ShouldSucceed()
 			{
 				IEnumerable subject = new object[] { "a", 1, "b", };
@@ -201,7 +201,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoItemsMatch_ShouldFail()
 			{
 				IEnumerable subject = new object[] { "a", "b", "c", };
@@ -209,7 +209,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Any().Satisfy(x => x is int);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             satisfies x => x is int for at least one item,
@@ -227,7 +227,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class StringTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAtLeastOneItemMatches_ShouldSucceed()
 			{
 				IEnumerable<string?> subject = ["apple", "banana", "cherry",];
@@ -238,7 +238,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoItemsMatch_ShouldFail()
 			{
 				IEnumerable<string?> subject = ["apple", "cherry",];
@@ -246,7 +246,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Any().ComplyWith(it => it.StartsWith("b"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             starts with "b" for at least one item,
@@ -264,7 +264,7 @@ public sealed partial class ThatEnumerable
 #if NET8_0_OR_GREATER
 		public sealed class ImmutableTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAtLeastOneItemMatches_ShouldSucceed()
 			{
 				ImmutableArray<int> subject = [1, 2, 3, 4, 5,];
@@ -275,7 +275,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNoItemsMatch_ShouldFail()
 			{
 				ImmutableArray<int> subject = [1, 2, 3,];
@@ -283,7 +283,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).Any().ComplyWith(it => it.IsEqualTo(99));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 99 for at least one item,
@@ -294,7 +294,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsImmutableArrayOfStrings_ShouldSucceed()
 			{
 				ImmutableArray<string?> subject = ["apple", "banana",];
@@ -309,7 +309,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAnyItemComplies_ShouldFail()
 			{
 				int[] subject = [1, 2, 3, 4, 5,];
@@ -318,7 +318,7 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.Any().ComplyWith(x => x.IsGreaterThan(2)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is greater than 2 for no items,

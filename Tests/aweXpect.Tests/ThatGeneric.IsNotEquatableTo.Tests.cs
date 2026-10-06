@@ -6,7 +6,7 @@ public sealed partial class ThatGeneric
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenComparingToMatchingLong_ShouldFail()
 			{
 				Wrapper subject = new(1);
@@ -14,7 +14,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).IsNotEquatableTo(1L);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equatable to 1,
@@ -24,7 +24,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparingToMatchingWrapper_ShouldFail()
 			{
 				Wrapper subject = new(1);
@@ -33,7 +33,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).IsNotEquatableTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equatable to ThatGeneric.IsNotEquatableTo.Wrapper {
@@ -45,7 +45,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparingToNotMatchingLong_ShouldSucceed()
 			{
 				Wrapper subject = new(1);
@@ -56,7 +56,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparingToNotMatchingWrapper_ShouldSucceed()
 			{
 				Wrapper subject = new(1);
@@ -68,7 +68,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				NullableWrapper subject = null!;
@@ -76,7 +76,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).IsNotEquatableTo(1L);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equatable to 1,
@@ -87,7 +87,7 @@ public sealed partial class ThatGeneric
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenComparingToMatchingLong_ShouldSucceed()
 			{
 				Wrapper subject = new(1);
@@ -98,7 +98,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparingToMatchingWrapper_ShouldSucceed()
 			{
 				Wrapper subject = new(1);
@@ -110,7 +110,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparingToNotMatchingLong_ShouldFail()
 			{
 				Wrapper subject = new(1);
@@ -118,7 +118,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotEquatableTo(2L));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equatable to 2,
@@ -128,7 +128,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenComparingToNotMatchingWrapper_ShouldFail()
 			{
 				Wrapper subject = new(1);
@@ -137,7 +137,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotEquatableTo(expected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equatable to ThatGeneric.IsNotEquatableTo.Wrapper {
@@ -149,7 +149,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				NullableWrapper subject = null!;
@@ -157,7 +157,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotEquatableTo(1L));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equatable to 1,

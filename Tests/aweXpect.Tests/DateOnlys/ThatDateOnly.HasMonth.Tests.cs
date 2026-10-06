@@ -7,7 +7,7 @@ public sealed partial class ThatDateOnly
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsDifferent_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -16,7 +16,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).HasMonth(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has month equal to {Formatter.Format(expected)},
@@ -24,7 +24,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsTheSame_ShouldSucceed()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -39,7 +39,7 @@ public sealed partial class ThatDateOnly
 
 		public sealed class EqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -48,7 +48,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).HasMonth().EqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has month equal to <null>,
@@ -56,7 +56,7 @@ public sealed partial class ThatDateOnly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsDifferent_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -65,7 +65,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).HasMonth().EqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has month equal to {Formatter.Format(expected)},
@@ -73,7 +73,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsTheSame_ShouldSucceed()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -88,7 +88,7 @@ public sealed partial class ThatDateOnly
 
 		public sealed class GreaterThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -97,7 +97,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).HasMonth().GreaterThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has month greater than or equal to <null>,
@@ -105,7 +105,7 @@ public sealed partial class ThatDateOnly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -117,7 +117,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsLessThanExpected_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -126,7 +126,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).HasMonth().GreaterThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has month greater than or equal to {Formatter.Format(expected)},
@@ -134,7 +134,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsTheSameAsExpected_ShouldSucceed()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -149,7 +149,7 @@ public sealed partial class ThatDateOnly
 
 		public sealed class GreaterThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -158,7 +158,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).HasMonth().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has month greater than <null>,
@@ -166,7 +166,7 @@ public sealed partial class ThatDateOnly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -178,7 +178,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsLessThanExpected_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -187,7 +187,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).HasMonth().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has month greater than {Formatter.Format(expected)},
@@ -195,7 +195,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsTheSameAsExpected_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -204,7 +204,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).HasMonth().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has month greater than {Formatter.Format(expected)},
@@ -215,7 +215,7 @@ public sealed partial class ThatDateOnly
 
 		public sealed class LessThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -224,7 +224,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).HasMonth().LessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has month less than or equal to <null>,
@@ -232,7 +232,7 @@ public sealed partial class ThatDateOnly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -241,7 +241,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).HasMonth().LessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has month less than or equal to {Formatter.Format(expected)},
@@ -249,7 +249,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsLessThanExpected_ShouldSucceed()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -261,7 +261,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsTheSameAsExpected_ShouldSucceed()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -276,7 +276,7 @@ public sealed partial class ThatDateOnly
 
 		public sealed class LessThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -285,7 +285,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).HasMonth().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has month less than <null>,
@@ -293,7 +293,7 @@ public sealed partial class ThatDateOnly
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -302,7 +302,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).HasMonth().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has month less than {Formatter.Format(expected)},
@@ -310,7 +310,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsLessThanExpected_ShouldSucceed()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -322,7 +322,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsTheSameAsExpected_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -331,7 +331,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).HasMonth().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has month less than {Formatter.Format(expected)},
@@ -342,7 +342,7 @@ public sealed partial class ThatDateOnly
 
 		public sealed class NotEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsDifferent_ShouldSucceed()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -354,7 +354,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthOfSubjectIsTheSame_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -363,7 +363,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).HasMonth().NotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have month equal to {Formatter.Format(unexpected)},
@@ -371,7 +371,7 @@ public sealed partial class ThatDateOnly
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsNull_ShouldSucceed()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -386,7 +386,7 @@ public sealed partial class ThatDateOnly
 
 		public sealed class NegatedTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMonthDiffers_ShouldSucceed()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -397,7 +397,7 @@ public sealed partial class ThatDateOnly
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMonthMatches_ShouldFail()
 			{
 				DateOnly subject = new(2010, 11, 12);
@@ -405,7 +405,7 @@ public sealed partial class ThatDateOnly
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.HasMonth(11));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have month equal to 11,

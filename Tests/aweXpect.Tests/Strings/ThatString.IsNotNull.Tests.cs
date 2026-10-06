@@ -6,7 +6,7 @@ public sealed partial class ThatString
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenActualIsEmpty_ShouldSucceed()
 			{
 				string subject = "";
@@ -17,8 +17,8 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[AutoData]
+			[Test]
+			[AutoArguments]
 			public async Task WhenActualIsNotNull_ShouldSucceed(string? subject)
 			{
 				async Task Act()
@@ -27,7 +27,7 @@ public sealed partial class ThatString
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_AndChainedWithAnd_ShouldReportNullOnce()
 			{
 				string? subject = null;
@@ -35,7 +35,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotNull().And.StartsWith("a");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not null and starts with "a",
@@ -43,7 +43,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_AndChainedWithOr_ShouldReportNullOnce()
 			{
 				string? subject = null;
@@ -51,7 +51,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotNull().Or.IsEqualTo("a");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not null or is equal to "a",
@@ -59,7 +59,7 @@ public sealed partial class ThatString
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActualIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -67,7 +67,7 @@ public sealed partial class ThatString
 				async Task Act()
 					=> await That(subject).IsNotNull();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not null,

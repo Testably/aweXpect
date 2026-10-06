@@ -12,7 +12,7 @@ public sealed partial class ThatGeneric
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "foo";
@@ -25,7 +25,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenInnerExpectationHasValueOfTheSubjectType_ShouldReturnTheSubject()
 			{
 				object[] inner = [1,];
@@ -37,7 +37,7 @@ public sealed partial class ThatGeneric
 					.Because("the single item has the subject's type, but the result of DoesNotComplyWith is the subject");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueIsDifferent_ShouldSucceed()
 			{
 				string subject = "foo";
@@ -48,7 +48,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenValueIsEqual_ShouldFail()
 			{
 				string subject = "foo";
@@ -56,7 +56,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(x => x.IsEqualTo("foo"));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to "foo",
@@ -67,7 +67,7 @@ public sealed partial class ThatGeneric
 
 		public sealed class BecauseTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenAsyncReasonIsGivenForAMember_InOrCombination_ShouldIncludeTheReason()
 			{
 				Pair subject = new()
@@ -80,7 +80,7 @@ public sealed partial class ThatGeneric
 						.Whose(p => p.A, a => a.IsTrue().Because(Task.FromResult<string?>("of a"))).Or
 						.Whose(p => p.B, b => b.IsTrue()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose A is not True, because of a and whose B is not True,
@@ -88,7 +88,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncReasonIsGivenForTheExpectations_ShouldIncludeTheReason()
 			{
 				int subject = 5;
@@ -97,7 +97,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(it => it.IsEqualTo(5)
 						.Because(Task.FromResult<string?>("of x")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 5, because of x,
@@ -106,7 +106,7 @@ public sealed partial class ThatGeneric
 					.Because("a reason that must be awaited is shown like a string reason, although the negated expectation is met");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncReasonIsGivenInNestedCompliesWith_ShouldIncludeTheReason()
 			{
 				int subject = 5;
@@ -115,7 +115,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(it => it.CompliesWith(x => x.IsEqualTo(5)
 						.Because(Task.FromResult<string?>("of x"))));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 5, because of x,
@@ -123,7 +123,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenAsyncReasonIsGivenUnderDoubleNegation_ShouldIncludeTheReason()
 			{
 				int subject = 5;
@@ -132,7 +132,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(it => it.DoesNotComplyWith(x => x.IsEqualTo(6))
 						.Because(Task.FromResult<string?>("of x")));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to 6, because of x,
@@ -149,7 +149,7 @@ public sealed partial class ThatGeneric
 
 		public sealed class CombinationTests
 		{
-			[Fact]
+			[Test]
 			public async Task NotAAndB_ShouldTranslateToNotAOrNotB()
 			{
 				bool subject = true;
@@ -157,7 +157,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(x => x.IsTrue().And.IsTrue());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not True or is not True,
@@ -165,7 +165,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotAAndBAndC_ShouldTranslateToNotAOrNotBOrNotC()
 			{
 				bool? subject = false;
@@ -173,7 +173,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(x => x.IsFalse().And.IsNotNull().And.IsNotTrue());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not False or is null or is True,
@@ -181,7 +181,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotAOrB_ShouldTranslateToNotAAndNotB()
 			{
 				bool subject = true;
@@ -189,7 +189,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(x => x.IsTrue().Or.IsTrue());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not True and is not True,
@@ -197,7 +197,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NotAOrB_WhenOnlyOneBranchFails_ShouldRenderTheResultOfTheFailingBranch()
 			{
 				bool subject = true;
@@ -205,7 +205,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(x => x.IsTrue().Or.IsFalse());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not True and is not False,
@@ -216,7 +216,7 @@ public sealed partial class ThatGeneric
 
 		public sealed class ContextTests
 		{
-			[Fact]
+			[Test]
 			public async Task Contains_ShouldIncludeTheCollectionContext()
 			{
 				int[] subject = [1, 2, 3,];
@@ -224,7 +224,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.Contains(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain an item equal to 1,
@@ -235,7 +235,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Contains_WithPredicate_ShouldIncludeTheCollectionContext()
 			{
 				int[] subject = [1, 2, 3,];
@@ -243,7 +243,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.Contains(x => x == 1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain an item matching x => x == 1,
@@ -255,7 +255,7 @@ public sealed partial class ThatGeneric
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task Contains_OnAsyncEnumerable_ShouldIncludeTheReceivedItems()
 			{
 				IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 2, 3,]);
@@ -263,7 +263,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.Contains(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain an item equal to 1,
@@ -274,7 +274,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Contains_OnAsyncEnumerableWithPredicate_ShouldIncludeTheReceivedItems()
 			{
 				IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 2, 3,]);
@@ -282,7 +282,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.Contains(x => x == 1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain an item matching x => x == 1,
@@ -294,7 +294,7 @@ public sealed partial class ThatGeneric
 			}
 #endif
 
-			[Fact]
+			[Test]
 			public async Task ContainsKey_ShouldIncludeTheDictionaryContext()
 			{
 				Dictionary<int, int> subject = new()
@@ -305,7 +305,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.ContainsKey(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain key 1,
@@ -316,7 +316,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task DoesNotContainKey_ShouldIncludeTheDictionaryContext()
 			{
 				Dictionary<int, int> subject = new()
@@ -327,7 +327,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.DoesNotContainKey(2));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             contains key 2,
@@ -338,7 +338,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task HasRecursiveInnerExceptions_ShouldIncludeTheInnerExceptions()
 			{
 				Exception subject = new("outer", new Exception("inner"));
@@ -347,7 +347,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(it
 						=> it.HasRecursiveInnerExceptions(e => e.IsNotEmpty()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have recursive inner exceptions that are not empty,
@@ -360,7 +360,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Is_ShouldIncludeTheActualContext()
 			{
 				object subject = "s";
@@ -368,7 +368,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.Is<string>());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not of type string,
@@ -379,7 +379,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task Is_WithType_ShouldIncludeTheActualContext()
 			{
 				object subject = "s";
@@ -387,7 +387,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.Is(typeof(string)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not of type string,
@@ -398,7 +398,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsExactly_ShouldIncludeTheActualContext()
 			{
 				object subject = "s";
@@ -406,7 +406,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsExactly<string>());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not exactly of type string,
@@ -417,7 +417,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsExactly_WithType_ShouldIncludeTheActualContext()
 			{
 				object subject = "s";
@@ -425,7 +425,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsExactly(typeof(string)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not exactly of type string,
@@ -436,7 +436,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task StringContains_ShouldIncludeTheActualContext()
 			{
 				string subject = "a subject with more than twenty characters";
@@ -449,7 +449,7 @@ public sealed partial class ThatGeneric
 					}
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "more",
@@ -460,7 +460,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task StringEndsWith_ShouldIncludeTheExpectedContext()
 			{
 				string subject = "a subject with more than twenty characters";
@@ -473,7 +473,7 @@ public sealed partial class ThatGeneric
 					}
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not end with "with more than twent…",
@@ -487,7 +487,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task StringIsEqualTo_ShouldIncludeTheExpectedContext()
 			{
 				string subject = "a subject with more than twenty characters";
@@ -501,7 +501,7 @@ public sealed partial class ThatGeneric
 					}
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to "a subject with more …",
@@ -515,7 +515,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task StringStartsWith_ShouldIncludeTheExpectedContext()
 			{
 				string subject = "a subject with more than twenty characters";
@@ -528,7 +528,7 @@ public sealed partial class ThatGeneric
 					}
 				}
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not start with "a subject with more …",
@@ -545,7 +545,7 @@ public sealed partial class ThatGeneric
 
 		public sealed class ExpectedValuesContextTests
 		{
-			[Fact]
+			[Test]
 			public async Task IsNotOneOf_ShouldTitleTheValuesAsExpected()
 			{
 				char subject = 'a';
@@ -554,7 +554,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotOneOf(expected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is one of expected,
@@ -565,7 +565,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsOneOf_ForChar_ShouldTitleTheValuesAsUnexpected()
 			{
 				char subject = 'a';
@@ -574,11 +574,11 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(unexpected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(Message(subject, unexpected));
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsOneOf_ForDateTime_ShouldTitleTheValuesAsUnexpected()
 			{
 				DateTime subject = new(2024, 1, 1);
@@ -587,11 +587,11 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(unexpected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(Message(subject, unexpected));
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsOneOf_ForDateTimeOffset_ShouldTitleTheValuesAsUnexpected()
 			{
 				DateTimeOffset subject = new(2024, 1, 1, 0, 0, 0, TimeSpan.Zero);
@@ -600,11 +600,11 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(unexpected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(Message(subject, unexpected));
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsOneOf_ForEnum_ShouldTitleTheValuesAsUnexpected()
 			{
 				DayOfWeek subject = DayOfWeek.Monday;
@@ -613,11 +613,11 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(unexpected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(Message(subject, unexpected));
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsOneOf_ForGuid_ShouldTitleTheValuesAsUnexpected()
 			{
 				Guid subject = Guid.NewGuid();
@@ -626,11 +626,11 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(unexpected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(Message(subject, unexpected));
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsOneOf_ForNumber_ShouldTitleTheValuesAsUnexpected()
 			{
 				int subject = 1;
@@ -639,11 +639,11 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(unexpected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(Message(subject, unexpected));
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsOneOf_ForObject_ShouldTitleTheValuesAsUnexpected()
 			{
 				object subject = 1;
@@ -652,11 +652,11 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(unexpected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(Message(subject, unexpected));
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsOneOf_ForString_ShouldTitleTheValuesAsUnexpected()
 			{
 				string subject = "a";
@@ -665,11 +665,11 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(unexpected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(Message(subject, unexpected));
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsOneOf_ForTimeSpan_ShouldTitleTheValuesAsUnexpected()
 			{
 				TimeSpan subject = 1.Seconds();
@@ -678,11 +678,11 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(unexpected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(Message(subject, unexpected));
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsOneOf_ForVersion_ShouldTitleTheValuesAsUnexpected()
 			{
 				Version subject = new(1, 2);
@@ -691,12 +691,12 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(unexpected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(Message(subject, unexpected));
 			}
 
 #if NET8_0_OR_GREATER
-			[Fact]
+			[Test]
 			public async Task IsOneOf_ForDateOnly_ShouldTitleTheValuesAsUnexpected()
 			{
 				DateOnly subject = new(2024, 1, 1);
@@ -705,11 +705,11 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(unexpected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(Message(subject, unexpected));
 			}
 
-			[Fact]
+			[Test]
 			public async Task IsOneOf_ForTimeOnly_ShouldTitleTheValuesAsUnexpected()
 			{
 				TimeOnly subject = new(1, 2);
@@ -718,7 +718,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(unexpected));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage(Message(subject, unexpected));
 			}
 #endif
@@ -736,7 +736,7 @@ public sealed partial class ThatGeneric
 
 		public sealed class UnansweredTests
 		{
-			[Fact]
+			[Test]
 			public async Task CollectionIsEqualTo_WhenSubjectIsNull_ShouldFailOnlyWhenNullIsNotTheAnswer()
 			{
 				int[]? subject = null;
@@ -753,13 +753,13 @@ public sealed partial class ThatGeneric
 
 				await That(IsEqualToValue).DoesNotThrow()
 					.Because("a null subject is not equal to [1]");
-				await That(IsEqualToNull).Throws<XunitException>()
+				await That(IsEqualToNull).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to collection (IEnumerable<int>?)null in order,
 					             but it was <null>
 					             """);
-				await That(IsNotEqualToValue).Throws<XunitException>()
+				await That(IsNotEqualToValue).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to collection expected in order,
@@ -769,7 +769,7 @@ public sealed partial class ThatGeneric
 					.Because("a null subject is equal to null");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ItemExpectationThatThrows_InAndCombination_ShouldFailWithTheException()
 			{
 				int[] subject = [1,];
@@ -778,7 +778,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).All().ComplyWith(x => x
 						.Satisfies(_ => throw new InvalidOperationException("x")).And.IsGreaterThan(0));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             satisfies _ => throw new InvalidOperationException("x") and is greater than 0 for all items,
@@ -791,7 +791,7 @@ public sealed partial class ThatGeneric
 					.WithInner<InvalidOperationException>(inner => inner.HasMessage("x"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task ItemExpectationThatThrows_InNegatedAndCombination_ShouldSucceedThroughTheOtherPart()
 			{
 				int[] subject = [1,];
@@ -804,7 +804,7 @@ public sealed partial class ThatGeneric
 					.Because("the negation is met by the item that is not greater than 5, so the item is answered");
 			}
 
-			[Fact]
+			[Test]
 			public async Task ItemExpectationThatThrows_InNegatedOrCombination_ShouldFailWithTheException()
 			{
 				int[] subject = [1,];
@@ -813,7 +813,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).All().ComplyWith(x => x.DoesNotComplyWith(y => y
 						.Satisfies(_ => throw new InvalidOperationException("x")).Or.IsGreaterThan(5)));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not satisfy _ => throw new InvalidOperationException("x") and is not greater than 5 for all items,
@@ -826,7 +826,7 @@ public sealed partial class ThatGeneric
 					.WithInner<InvalidOperationException>(inner => inner.HasMessage("x"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task ItemExpectationThatThrows_InOrCombination_ShouldFailWithTheException()
 			{
 				int[] subject = [1,];
@@ -835,7 +835,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).All().ComplyWith(x => x
 						.Satisfies(_ => throw new InvalidOperationException("x")).Or.IsGreaterThan(5));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             satisfies _ => throw new InvalidOperationException("x") or is greater than 5 for all items,
@@ -849,7 +849,7 @@ public sealed partial class ThatGeneric
 					.WithInner<InvalidOperationException>(inner => inner.HasMessage("x"));
 			}
 
-			[Fact]
+			[Test]
 			public async Task MemberThatIsNull_InWhich_ShouldFailUnderNegation()
 			{
 				Holder[] subject = [new(null),];
@@ -858,7 +858,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(c => c.HasSingle().Which
 						.Whose(h => h.Items, i => i.HasSingle()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a single item whose Items have a single item,
@@ -866,7 +866,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task MemberThatIsNull_InWhose_ShouldFailUnderNegation()
 			{
 				Holder subject = new(null);
@@ -874,7 +874,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(h => h.Whose(x => x.Items, i => i.HasSingle()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Items do not have a single item,
@@ -882,7 +882,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NullSubject_UnderDoubleNegation_ShouldFail()
 			{
 				int[]? subject = null;
@@ -890,7 +890,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(x => x.DoesNotComplyWith(y => y.HasSingle()));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has a single item,
@@ -898,7 +898,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task NullSubject_UnderNegation_ShouldFail()
 			{
 				int[]? subject = null;
@@ -906,7 +906,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(x => x.HasSingle());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have a single item,
@@ -914,7 +914,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task StringIsEqualTo_WhenSubjectIsNull_ShouldFailOnlyWhenNullIsNotTheAnswer()
 			{
 				string? subject = null;
@@ -926,13 +926,13 @@ public sealed partial class ThatGeneric
 
 				await That(IsEqualToValue).DoesNotThrow()
 					.Because("a null subject is not equal to \"foo\"");
-				await That(IsEqualToNull).Throws<XunitException>()
+				await That(IsEqualToNull).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to <null>,
 					             but it was <null>
 					             """);
-				await That(IsNotEqualToValue).Throws<XunitException>()
+				await That(IsNotEqualToValue).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is equal to "foo",
@@ -950,7 +950,7 @@ public sealed partial class ThatGeneric
 
 		public sealed class WithinTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenCancellationIsRequestedWhileRetrying_ShouldBeInconclusive()
 			{
 				int subject = 1;
@@ -961,7 +961,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(x => x.IsEqualTo(1)).Within(30.Seconds())
 						.WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 1 within 0:30,
@@ -969,7 +969,7 @@ public sealed partial class ThatGeneric
 					             """).WithTimeout(10.Seconds());
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenGlobalTimeoutIsApplied_ShouldFail()
 			{
 				MyChangingClass subject = new(42);
@@ -978,7 +978,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(x => x.IsEquivalentTo(new { HasWaitedEnough = false, }))
 						.Within(30.Seconds()).WithTimeout(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equivalent to new { HasWaitedEnough = false, } within 0:30,
@@ -987,10 +987,10 @@ public sealed partial class ThatGeneric
 					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
 			}
 
-			[Theory]
-			[InlineData(1, false)]
-			[InlineData(0, true)]
-			[InlineData(-1, true)]
+			[Test]
+			[Arguments(1, false)]
+			[Arguments(0, true)]
+			[Arguments(-1, true)]
 			public async Task WhenIntervalIsNotPositive_ShouldThrowArgumentOutOfRangeException(int intervalSeconds,
 				bool shouldThrow)
 			{
@@ -1006,7 +1006,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("The interval must be positive*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateKeepsThrowing_ShouldFailWithTheException()
 			{
 				MyNullUntilChangedClass subject = new(int.MaxValue);
@@ -1015,7 +1015,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(x => x.Satisfies(s => s.Value!.Length > 5))
 						.Within(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not satisfy s => s.Value!.Length > 5 within 0:00.050,
@@ -1025,7 +1025,7 @@ public sealed partial class ThatGeneric
 					.WithInner<NullReferenceException>();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateResultTurnsTrueLaterOn_ShouldSucceed()
 			{
 				MyChangingClass subject = new(2);
@@ -1039,7 +1039,7 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPredicateStopsThrowing_ShouldKeepRetrying()
 			{
 				MyNullUntilChangedClass subject = new(2);
@@ -1052,7 +1052,7 @@ public sealed partial class ThatGeneric
 					.Because("the value becomes \"b\" on the third check, which does not satisfy the predicate");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsInfinite_ShouldNotMentionTheTimeout()
 			{
 				int subject = 1;
@@ -1064,7 +1064,7 @@ public sealed partial class ThatGeneric
 						.Within(System.Threading.Timeout.InfiniteTimeSpan)
 						.WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 1,
@@ -1073,7 +1073,7 @@ public sealed partial class ThatGeneric
 					.Because("an infinite timeout imposes no limit, so only the cancellation ends the retries");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsInfinite_ShouldRetryUntilTheExpectationsAreNoLongerMet()
 			{
 				MyChangingClass subject = new(2);
@@ -1088,10 +1088,10 @@ public sealed partial class ThatGeneric
 				await That(Act).DoesNotThrow();
 			}
 
-			[Theory]
-			[InlineData(1, false)]
-			[InlineData(0, false)]
-			[InlineData(-1, true)]
+			[Test]
+			[Arguments(1, false)]
+			[Arguments(0, false)]
+			[Arguments(-1, true)]
 			public async Task WhenTimeoutIsNegative_ShouldThrowArgumentOutOfRangeException(int timeoutSeconds,
 				bool shouldThrow)
 			{
@@ -1106,7 +1106,7 @@ public sealed partial class ThatGeneric
 					.WithMessage("The timeout must not be negative*").AsWildcard();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsTooShort_ShouldFail()
 			{
 				MyChangingClass subject = new(42);
@@ -1115,7 +1115,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).DoesNotComplyWith(x => x.IsEquivalentTo(new { HasWaitedEnough = false, }))
 						.Within(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equivalent to new { HasWaitedEnough = false, } within 0:00.050,
@@ -1128,7 +1128,7 @@ public sealed partial class ThatGeneric
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutIsZero_ShouldMentionTheTimeout()
 			{
 				int subject = 1;
@@ -1136,7 +1136,7 @@ public sealed partial class ThatGeneric
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(x => x.IsEqualTo(1)).Within(TimeSpan.Zero);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not equal to 1 within 0:00,

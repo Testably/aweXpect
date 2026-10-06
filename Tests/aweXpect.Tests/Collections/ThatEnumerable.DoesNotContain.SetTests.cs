@@ -8,7 +8,7 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class SetCollectionTests
 		{
-			[Fact]
+			[Test]
 			public async Task Using_ShouldOverrideTheComparerOfTheSet()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
@@ -19,7 +19,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSetContainsTheItemsAccordingToItsComparer_ShouldFail()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
@@ -27,7 +27,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotContain(["B", "A",]).InAnyOrder();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain collection ["B", "A",] using the subject's StringComparer.OrdinalIgnoreCase in any order,
@@ -50,7 +50,7 @@ public sealed partial class ThatEnumerable
 
 		public sealed class SetItemTests
 		{
-			[Fact]
+			[Test]
 			public async Task Using_ShouldOverrideTheComparerOfTheSet()
 			{
 				HashSet<int> subject = new(new ModuloComparer(10)) { 1, };
@@ -61,7 +61,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task Using_WithStringComparer_ShouldOverrideTheComparerOfTheSet()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
@@ -72,7 +72,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenIgnoringCase_ShouldIgnoreTheComparerOfTheSet()
 			{
 				HashSet<string> subject = new(StringComparer.Ordinal) { "a", };
@@ -80,7 +80,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotContain("A").IgnoringCase();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "A" ignoring case,
@@ -93,7 +93,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSetContainsItemAccordingToItsComparer_ShouldFail()
 			{
 				HashSet<int> subject = new(new ModuloComparer(10)) { 1, };
@@ -101,7 +101,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotContain(11);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain an item equal to 11 using the subject's ThatEnumerable.DoesNotContain.SetItemTests.ModuloComparer,
@@ -113,7 +113,7 @@ public sealed partial class ThatEnumerable
 					.Because("the result names the item that the set holds");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSetDoesNotContainItemAccordingToItsComparer_ShouldSucceed()
 			{
 				HashSet<string> subject = new(StringComparer.Ordinal) { "a", };
@@ -124,7 +124,7 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenStringSetContainsItemAccordingToItsComparer_ShouldFail()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", };
@@ -132,7 +132,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotContain("A");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain "A" using the subject's StringComparer.OrdinalIgnoreCase,
@@ -145,7 +145,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUntypedStringSetContainsItemAccordingToItsComparer_ShouldFail()
 			{
 				System.Collections.IEnumerable subject = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "a", };
@@ -153,7 +153,7 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).DoesNotContain("A");
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not contain an item equal to "A" using the subject's StringComparer.OrdinalIgnoreCase,
@@ -167,7 +167,7 @@ public sealed partial class ThatEnumerable
 					.Because("the set is asked for the expected item, as for a typed set");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WithDefaultComparer_ShouldNotMatchDateTimesOfIncompatibleKind()
 			{
 				DateTime utc = new(2026, 9, 24, 12, 0, 0, DateTimeKind.Utc);

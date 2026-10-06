@@ -8,7 +8,7 @@ public sealed partial class ThatEnum
 		{
 			public sealed class ContinuationTests
 			{
-				[Fact]
+				[Test]
 				public async Task GreaterThan_WhenTheValueExceedsInt64MaxValue_ShouldSucceed()
 				{
 					EnumULong? subject = EnumULong.UInt64Max;
@@ -21,7 +21,7 @@ public sealed partial class ThatEnum
 							"a ulong-backed member above long.MaxValue is a legal enum value and must not overflow");
 				}
 
-				[Fact]
+				[Test]
 				public async Task NotBetween_WhenSubjectIsNull_ShouldFail()
 				{
 					MyNumbers? subject = null;
@@ -29,7 +29,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).HasValue().NotBetween(1L).And(3L);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have value between 1 and 3,
@@ -37,10 +37,10 @@ public sealed partial class ThatEnum
 						             """);
 				}
 
-				[Theory]
-				[InlineData(MyNumbers.One, 2L)]
-				[InlineData(MyNumbers.Two, -7L)]
-				[InlineData(MyNumbers.Three, 0L)]
+				[Test]
+				[Arguments(MyNumbers.One, 2L)]
+				[Arguments(MyNumbers.Two, -7L)]
+				[Arguments(MyNumbers.Three, 0L)]
 				public async Task NotEqualTo_WhenSubjectDoesNotHaveUnexpectedValue_ShouldSucceed(MyNumbers? subject,
 					long? unexpected)
 				{
@@ -50,17 +50,17 @@ public sealed partial class ThatEnum
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(MyNumbers.One, 1L)]
-				[InlineData(MyNumbers.Two, 2L)]
-				[InlineData(MyNumbers.Three, 3L)]
+				[Test]
+				[Arguments(MyNumbers.One, 1L)]
+				[Arguments(MyNumbers.Two, 2L)]
+				[Arguments(MyNumbers.Three, 3L)]
 				public async Task NotEqualTo_WhenSubjectHasUnexpectedValue_ShouldFail(MyNumbers? subject,
 					long? unexpected)
 				{
 					async Task Act()
 						=> await That(subject).HasValue().NotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              does not have value equal to {Formatter.Format(unexpected)},
@@ -68,10 +68,10 @@ public sealed partial class ThatEnum
 						              """);
 				}
 
-				[Theory]
-				[InlineData(null)]
-				[InlineData(0L)]
-				[InlineData(2L)]
+				[Test]
+				[Arguments(null)]
+				[Arguments(0L)]
+				[Arguments(2L)]
 				public async Task NotEqualTo_WhenSubjectIsNull_ShouldFail(long? unexpected)
 				{
 					MyColors? subject = null;
@@ -79,7 +79,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).HasValue().NotEqualTo(unexpected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              does not have value equal to {Formatter.Format(unexpected)},
@@ -87,7 +87,7 @@ public sealed partial class ThatEnum
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task NotEqualTo_WhenUnexpectedIsNull_ShouldSucceed()
 				{
 					MyColors? subject = MyColors.Yellow;
@@ -98,7 +98,7 @@ public sealed partial class ThatEnum
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task NotGreaterThan_WhenSubjectIsNull_ShouldFail()
 				{
 					MyNumbers? subject = null;
@@ -106,7 +106,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).HasValue().NotGreaterThan(2L);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have value greater than 2,
@@ -114,7 +114,7 @@ public sealed partial class ThatEnum
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task NotGreaterThanOrEqualTo_WhenSubjectIsNull_ShouldFail()
 				{
 					MyNumbers? subject = null;
@@ -122,7 +122,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).HasValue().NotGreaterThanOrEqualTo(2L);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have value greater than or equal to 2,
@@ -130,7 +130,7 @@ public sealed partial class ThatEnum
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task NotLessThan_WhenSubjectIsNull_ShouldFail()
 				{
 					MyNumbers? subject = null;
@@ -138,7 +138,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).HasValue().NotLessThan(2L);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have value less than 2,
@@ -146,7 +146,7 @@ public sealed partial class ThatEnum
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task NotLessThanOrEqualTo_WhenSubjectIsNull_ShouldFail()
 				{
 					MyNumbers? subject = null;
@@ -154,7 +154,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).HasValue().NotLessThanOrEqualTo(2L);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             does not have value less than or equal to 2,
@@ -162,7 +162,7 @@ public sealed partial class ThatEnum
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectDoesNotHaveExpectedValue_ShouldRenderLikeTheShorthand()
 				{
 					MyNumbers? subject = MyNumbers.One;
@@ -170,7 +170,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).HasValue().EqualTo(2L);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has value equal to 2,
@@ -179,7 +179,7 @@ public sealed partial class ThatEnum
 						.Because("the continuation renders exactly like the HasValue(expected) shorthand");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					MyNumbers? subject = null;
@@ -187,7 +187,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).HasValue().GreaterThan(0L);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             has value greater than 0,
@@ -198,7 +198,7 @@ public sealed partial class ThatEnum
 
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldFail()
 				{
 					MyColors? subject = MyColors.Yellow;
@@ -206,7 +206,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).HasValue(null);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has value equal to <null>,
@@ -214,17 +214,17 @@ public sealed partial class ThatEnum
 						              """);
 				}
 
-				[Theory]
-				[InlineData(MyNumbers.One, 2L)]
-				[InlineData(MyNumbers.Two, -7L)]
-				[InlineData(MyNumbers.Three, 0L)]
+				[Test]
+				[Arguments(MyNumbers.One, 2L)]
+				[Arguments(MyNumbers.Two, -7L)]
+				[Arguments(MyNumbers.Three, 0L)]
 				public async Task WhenSubjectDoesNotHaveExpectedValue_ShouldFail(MyNumbers? subject,
 					long? expected)
 				{
 					async Task Act()
 						=> await That(subject).HasValue(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has value equal to {Formatter.Format(expected)},
@@ -232,7 +232,7 @@ public sealed partial class ThatEnum
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectExceedsInt64MaxValue_ShouldSucceed()
 				{
 					EnumULong? subject = EnumULong.UInt64Max;
@@ -244,10 +244,10 @@ public sealed partial class ThatEnum
 						.Because("the nullable overload reads the underlying value through the same conversion");
 				}
 
-				[Theory]
-				[InlineData(MyNumbers.One, 1L)]
-				[InlineData(MyNumbers.Two, 2L)]
-				[InlineData(MyNumbers.Three, 3L)]
+				[Test]
+				[Arguments(MyNumbers.One, 1L)]
+				[Arguments(MyNumbers.Two, 2L)]
+				[Arguments(MyNumbers.Three, 3L)]
 				public async Task WhenSubjectHasExpectedValue_ShouldSucceed(MyNumbers? subject,
 					long? expected)
 				{
@@ -257,10 +257,10 @@ public sealed partial class ThatEnum
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(null)]
-				[InlineData(0UL)]
-				[InlineData(ulong.MaxValue)]
+				[Test]
+				[Arguments(null)]
+				[Arguments(0UL)]
+				[Arguments(ulong.MaxValue)]
 				public async Task WhenSubjectIsNull_AndExpectedIsUnsigned_ShouldFail(ulong? expected)
 				{
 					EnumULong? subject = null;
@@ -268,7 +268,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).HasValue(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has value equal to {Formatter.Format(expected)},
@@ -276,10 +276,10 @@ public sealed partial class ThatEnum
 						              """);
 				}
 
-				[Theory]
-				[InlineData(null)]
-				[InlineData(0L)]
-				[InlineData(1L)]
+				[Test]
+				[Arguments(null)]
+				[Arguments(0L)]
+				[Arguments(1L)]
 				public async Task WhenSubjectIsNull_ShouldFail(long? expected)
 				{
 					MyNumbers? subject = null;
@@ -287,7 +287,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).HasValue(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              has value equal to {Formatter.Format(expected)},

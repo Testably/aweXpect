@@ -10,7 +10,7 @@ public sealed partial class ThatSignaler
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenCanceled_ShouldBeInconclusive()
 			{
 				Signaler signaler = new();
@@ -21,7 +21,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().WithCancellation(token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:30,
@@ -29,7 +29,7 @@ public sealed partial class ThatSignaler
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDefaultTimeoutElapses_ShouldNameTheDefaultTimeout()
 			{
 				Signaler signaler = new();
@@ -39,7 +39,7 @@ public sealed partial class ThatSignaler
 					async Task Act() =>
 						await That(signaler).Signaled();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that signaler
 						             has recorded the callback at least once within 0:00.050,
@@ -49,7 +49,7 @@ public sealed partial class ThatSignaler
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenDefaultTimeoutIsInfinite_ShouldNotNameIt()
 			{
 				Signaler signaler = new();
@@ -62,7 +62,7 @@ public sealed partial class ThatSignaler
 					async Task Act() =>
 						await That(signaler).Signaled().WithCancellation(token);
 
-					await That(Act).Throws<InconclusiveException>()
+					await That(Act).Throws<InconclusiveTestException>()
 						.WithMessage("""
 						             Expected that signaler
 						             has recorded the callback at least once,
@@ -72,7 +72,7 @@ public sealed partial class ThatSignaler
 				}
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggered_ShouldFail()
 			{
 				Signaler signaler = new();
@@ -80,7 +80,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().Within(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:00.050,
@@ -89,7 +89,7 @@ public sealed partial class ThatSignaler
 					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Signaler? subject = null;
@@ -97,7 +97,7 @@ public sealed partial class ThatSignaler
 				async Task Act()
 					=> await That(subject!).Signaled();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has recorded the callback at least once,
@@ -105,7 +105,7 @@ public sealed partial class ThatSignaler
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTimeoutElapses_ShouldFail()
 			{
 				Signaler signaler = new();
@@ -113,7 +113,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().WithTimeout(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:30,
@@ -122,7 +122,7 @@ public sealed partial class ThatSignaler
 					.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggered_ShouldSucceed()
 			{
 				Signaler signaler = new();
@@ -139,7 +139,7 @@ public sealed partial class ThatSignaler
 
 		public sealed class WithParameterTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenCanceled_ShouldBeInconclusive()
 			{
 				Signaler<int> signaler = new();
@@ -149,7 +149,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().WithCancellation(token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:30,
@@ -157,7 +157,7 @@ public sealed partial class ThatSignaler
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggered_ShouldFail()
 			{
 				Signaler<int> signaler = new();
@@ -165,7 +165,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().Within(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least once within 0:00.050,
@@ -174,7 +174,7 @@ public sealed partial class ThatSignaler
 					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Signaler<int>? subject = null;
@@ -182,7 +182,7 @@ public sealed partial class ThatSignaler
 				async Task Act()
 					=> await That(subject!).Signaled();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has recorded the callback at least once,
@@ -190,7 +190,7 @@ public sealed partial class ThatSignaler
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggered_ShouldSucceed()
 			{
 				Signaler<int> signaler = new();

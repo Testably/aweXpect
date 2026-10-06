@@ -6,7 +6,7 @@ public sealed partial class ThatDateTimeOffset
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsDifferent_ShouldFail()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -15,7 +15,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).HasMillisecond(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has millisecond equal to {Formatter.Format(expected)},
@@ -23,7 +23,7 @@ public sealed partial class ThatDateTimeOffset
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsTheSame_ShouldSucceed()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -38,7 +38,7 @@ public sealed partial class ThatDateTimeOffset
 
 		public sealed class EqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -47,7 +47,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).HasMillisecond().EqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has millisecond equal to <null>,
@@ -55,7 +55,7 @@ public sealed partial class ThatDateTimeOffset
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsDifferent_ShouldFail()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -64,7 +64,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).HasMillisecond().EqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has millisecond equal to {Formatter.Format(expected)},
@@ -72,7 +72,7 @@ public sealed partial class ThatDateTimeOffset
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsTheSame_ShouldSucceed()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -87,7 +87,7 @@ public sealed partial class ThatDateTimeOffset
 
 		public sealed class GreaterThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -96,7 +96,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).HasMillisecond().GreaterThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has millisecond greater than or equal to <null>,
@@ -104,7 +104,7 @@ public sealed partial class ThatDateTimeOffset
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -116,7 +116,7 @@ public sealed partial class ThatDateTimeOffset
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsLessThanExpected_ShouldFail()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -125,7 +125,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).HasMillisecond().GreaterThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has millisecond greater than or equal to {Formatter.Format(expected)},
@@ -133,7 +133,7 @@ public sealed partial class ThatDateTimeOffset
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsTheSameAsExpected_ShouldSucceed()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -148,7 +148,7 @@ public sealed partial class ThatDateTimeOffset
 
 		public sealed class GreaterThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -157,7 +157,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).HasMillisecond().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has millisecond greater than <null>,
@@ -165,7 +165,7 @@ public sealed partial class ThatDateTimeOffset
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsGreaterThanExpected_ShouldSucceed()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -177,7 +177,7 @@ public sealed partial class ThatDateTimeOffset
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsLessThanExpected_ShouldFail()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -186,7 +186,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).HasMillisecond().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has millisecond greater than {Formatter.Format(expected)},
@@ -194,7 +194,7 @@ public sealed partial class ThatDateTimeOffset
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsTheSameAsExpected_ShouldFail()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -203,7 +203,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).HasMillisecond().GreaterThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has millisecond greater than {Formatter.Format(expected)},
@@ -214,7 +214,7 @@ public sealed partial class ThatDateTimeOffset
 
 		public sealed class LessThanOrEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -223,7 +223,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).HasMillisecond().LessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has millisecond less than or equal to <null>,
@@ -231,7 +231,7 @@ public sealed partial class ThatDateTimeOffset
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -240,7 +240,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).HasMillisecond().LessThanOrEqualTo(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has millisecond less than or equal to {Formatter.Format(expected)},
@@ -248,7 +248,7 @@ public sealed partial class ThatDateTimeOffset
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsLessThanExpected_ShouldSucceed()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -260,7 +260,7 @@ public sealed partial class ThatDateTimeOffset
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsTheSameAsExpected_ShouldSucceed()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -275,7 +275,7 @@ public sealed partial class ThatDateTimeOffset
 
 		public sealed class LessThanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -284,7 +284,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).HasMillisecond().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has millisecond less than <null>,
@@ -292,7 +292,7 @@ public sealed partial class ThatDateTimeOffset
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsGreaterThanExpected_ShouldFail()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -301,7 +301,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).HasMillisecond().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has millisecond less than {Formatter.Format(expected)},
@@ -309,7 +309,7 @@ public sealed partial class ThatDateTimeOffset
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsLessThanExpected_ShouldSucceed()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -321,7 +321,7 @@ public sealed partial class ThatDateTimeOffset
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsTheSameAsExpected_ShouldFail()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -330,7 +330,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).HasMillisecond().LessThan(expected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              has millisecond less than {Formatter.Format(expected)},
@@ -341,7 +341,7 @@ public sealed partial class ThatDateTimeOffset
 
 		public sealed class NotEqualToTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsDifferent_ShouldSucceed()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -353,7 +353,7 @@ public sealed partial class ThatDateTimeOffset
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenMillisecondOfSubjectIsTheSame_ShouldFail()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());
@@ -362,7 +362,7 @@ public sealed partial class ThatDateTimeOffset
 				async Task Act()
 					=> await That(subject).HasMillisecond().NotEqualTo(unexpected);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage($"""
 					              Expected that subject
 					              does not have millisecond equal to {Formatter.Format(unexpected)},
@@ -370,7 +370,7 @@ public sealed partial class ThatDateTimeOffset
 					              """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenUnexpectedIsNull_ShouldSucceed()
 			{
 				DateTimeOffset subject = 12.November(2010).At(13, 14, 15, 167).WithOffset(2.Hours());

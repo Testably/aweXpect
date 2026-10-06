@@ -12,7 +12,7 @@ public sealed partial class ThatChar
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					char? subject = 'a';
@@ -27,7 +27,7 @@ public sealed partial class ThatChar
 						.Because("an empty set is rejected when the expectation is built, before it is awaited");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					char? subject = 'a';
@@ -41,11 +41,11 @@ public sealed partial class ThatChar
 						.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 				}
 
-				[Theory]
-				[InlineData('a')]
-				[InlineData('X')]
-				[InlineData('5')]
-				[InlineData('\t')]
+				[Test]
+				[Arguments('a')]
+				[Arguments('X')]
+				[Arguments('5')]
+				[Arguments('\t')]
 				public async Task WhenExpectedOnlyContainsNull_ShouldSucceed(char? subject)
 				{
 					IEnumerable<char?> expected = [null,];
@@ -56,7 +56,7 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					char? subject = 'a';
@@ -71,7 +71,7 @@ public sealed partial class ThatChar
 						.Because("an empty set is rejected when the expectation is built, before it is awaited");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					char? subject = 'a';
@@ -85,7 +85,7 @@ public sealed partial class ThatChar
 						.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectDiffersOnlyInCase_AndIgnoringCase_ShouldFail()
 				{
 					char? subject = 'a';
@@ -93,7 +93,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).IsNotOneOf('X', 'A').IgnoringCase();
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not one of ['X', 'A'] ignoring case,
@@ -101,9 +101,9 @@ public sealed partial class ThatChar
 						             """);
 				}
 
-				[Theory]
-				[InlineData('a')]
-				[InlineData('B', 'b', 'A')]
+				[Test]
+				[Arguments('a')]
+				[Arguments('B', 'b', 'A')]
 				public async Task WhenSubjectIsContained_ShouldFail(char? subject,
 					params char[] otherValues)
 				{
@@ -112,7 +112,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).IsNotOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not one of expected,
@@ -123,8 +123,8 @@ public sealed partial class ThatChar
 						              """);
 				}
 
-				[Theory]
-				[InlineData('B', 'b', 'A')]
+				[Test]
+				[Arguments('B', 'b', 'A')]
 				public async Task WhenSubjectIsDifferent_ShouldSucceed(char? subject,
 					params char[] expected)
 				{
@@ -134,7 +134,7 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndIgnoringCase_ShouldSucceed()
 				{
 					char? subject = null;
@@ -145,7 +145,7 @@ public sealed partial class ThatChar
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndUnexpectedContainsNull_ShouldFail()
 				{
 					char? subject = null;
@@ -154,7 +154,7 @@ public sealed partial class ThatChar
 					async Task Act()
 						=> await That(subject).IsNotOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not one of expected,

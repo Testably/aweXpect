@@ -10,7 +10,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class StringTests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsComplyUnderNegation_ShouldFail()
 				{
 					IEnumerable<string?> subject = ["apple", "ant", "avocado",];
@@ -19,7 +19,7 @@ public sealed partial class ThatEnumerable
 						=> await That(subject).DoesNotComplyWith(it
 							=> it.All().ComplyWith(x => x.StartsWith("a")));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             starts with "a" not for all items,
@@ -34,7 +34,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenAllItemsMatchExpectation_ShouldSucceed()
 				{
 					IEnumerable<string?> subject = ["apple", "ant", "avocado",];
@@ -45,7 +45,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExactlyOneItemMatchesExpectation_ShouldSucceed()
 				{
 					IEnumerable<string?> subject = ["apple", "banana", "cherry",];
@@ -56,7 +56,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 				{
 					IEnumerable<string?> subject = ["apple", "ant", "avocado",];
@@ -69,7 +69,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectationsIsNull_WhenNegated_ShouldThrowArgumentNullException()
 				{
 					IEnumerable<string?> subject = ["apple", "ant", "avocado",];
@@ -82,7 +82,7 @@ public sealed partial class ThatEnumerable
 						.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNotAllItemsMatch_ShouldFail()
 				{
 					IEnumerable<string?> subject = ["apple", "banana", "avocado",];
@@ -90,7 +90,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().ComplyWith(it => it.StartsWith("a"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             starts with "a" for all items,
@@ -98,7 +98,7 @@ public sealed partial class ThatEnumerable
 						             """).AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					IEnumerable<string?>? subject = null;
@@ -106,7 +106,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().ComplyWith(it => it.StartsWith("a"));
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             starts with "a" for all items,

@@ -10,7 +10,7 @@ public sealed partial class ThatDelegate
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldSupportChainedConstraints()
 				{
 					Action action = () => { };
@@ -26,8 +26,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenAwaited_ShouldReturnThrownException(string value)
 				{
 					Exception exception = new CustomException
@@ -42,7 +42,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenContinuingWithAndOrOr_ShouldNotBeOffered()
 				{
 					Type[] continuations = typeof(ThatDelegateThrows).GetMethods()
@@ -59,7 +59,7 @@ public sealed partial class ThatDelegate
 						.Because("Within limits the whole Throws expectation and must not read like a further condition");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDelegateReturnsNullTask_ShouldFail()
 				{
 					Func<System.Threading.CancellationToken, Task> @delegate = _ => null!;
@@ -67,7 +67,7 @@ public sealed partial class ThatDelegate
 					async Task<Exception> Act()
 						=> await That(@delegate).Throws().Within(5.Seconds());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that @delegate
 						             throws an exception within 0:05,
@@ -76,7 +76,7 @@ public sealed partial class ThatDelegate
 						.Because("a null task is not an exception thrown by the delegate");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDurationIsInfinite_AndNoExceptionIsThrown_ShouldNotMentionTheDuration()
 				{
 					Action action = () => { };
@@ -84,7 +84,7 @@ public sealed partial class ThatDelegate
 					async Task<Exception> Act()
 						=> await That(action).Throws().Within(System.Threading.Timeout.InfiniteTimeSpan);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception,
@@ -92,7 +92,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDurationIsInfinite_ShouldNotLimitTheDuration()
 				{
 					Action action = () =>
@@ -108,7 +108,7 @@ public sealed partial class ThatDelegate
 						.Because("an infinite duration imposes no limit");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDurationIsNegative_ShouldThrowArgumentOutOfRangeException()
 				{
 					Action? subject = null;
@@ -121,7 +121,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("The timeout must not be negative").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExceptionIsThrownTooLate_ShouldFail()
 				{
 					Exception exception = new CustomException();
@@ -142,7 +142,7 @@ public sealed partial class ThatDelegate
 						             """).AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExceptionTypeIsThrownInTime_ShouldSucceed()
 				{
 					Exception exception = new CustomException();
@@ -154,7 +154,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoExceptionIsThrownAndExecutionTimeIsTooLarge_ShouldFail()
 				{
 					Action action = () =>
@@ -173,7 +173,7 @@ public sealed partial class ThatDelegate
 						             """).AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoExceptionIsThrownInTime_ShouldFail()
 				{
 					Action action = () => { };
@@ -189,7 +189,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					Action? subject = null;
@@ -197,7 +197,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(subject!).Throws().Within(0.Seconds());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             throws an exception within 0:00,
@@ -205,7 +205,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSyncDelegateExceedsTheTimeoutAndTheDuration_ShouldReportTheDuration()
 				{
 					Action action = () =>
@@ -217,7 +217,7 @@ public sealed partial class ThatDelegate
 					async Task<Exception> Act()
 						=> await That(action).Throws().Within(100.Milliseconds()).WithTimeout(50.Milliseconds());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception within 0:00.100,
@@ -226,7 +226,7 @@ public sealed partial class ThatDelegate
 						.Because("the delegate violates the duration on its own, which the measured duration shows best");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSyncDelegateExceedsTheTimeoutButNotTheDuration_ShouldFailWithTheTimeout()
 				{
 					Action action = () =>
@@ -238,7 +238,7 @@ public sealed partial class ThatDelegate
 					async Task<Exception> Act()
 						=> await That(action).Throws().Within(5.Seconds()).WithTimeout(50.Milliseconds());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception within 0:05,
@@ -248,7 +248,7 @@ public sealed partial class ThatDelegate
 						.Because("the tighter timeout wins over the duration");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSyncDelegateWithValueExceedsTheTimeoutButNotTheDuration_ShouldFailWithTheTimeout()
 				{
 					Func<int> action = () =>
@@ -260,7 +260,7 @@ public sealed partial class ThatDelegate
 					async Task<Exception> Act()
 						=> await That(action).Throws().Within(5.Seconds()).WithTimeout(50.Milliseconds());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws an exception within 0:05,
@@ -270,7 +270,7 @@ public sealed partial class ThatDelegate
 						.Because("the tighter timeout wins over the duration");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenTimeoutIsLongerThanTheDuration_ShouldKeepTheDuration()
 				{
 					Func<System.Threading.CancellationToken, Task> @delegate = token => Task.Delay(60.Seconds(), token);
@@ -278,7 +278,7 @@ public sealed partial class ThatDelegate
 					async Task<Exception> Act()
 						=> await That(@delegate).Throws().Within(50.Milliseconds()).WithTimeout(20.Seconds());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that @delegate
 						             throws an exception within 0:00.050,
@@ -287,7 +287,7 @@ public sealed partial class ThatDelegate
 						.Because("the tighter limit wins, so a longer timeout must not loosen the duration");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenWithinIsSpecifiedTwice_ShouldThrowInvalidOperationException()
 				{
 					Action action = () => throw new CustomException();
@@ -300,7 +300,7 @@ public sealed partial class ThatDelegate
 						.Because("a second duration would silently disagree with the timeout of the first one");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenWithinIsSpecifiedTwice_WithInfiniteDuration_ShouldThrowInvalidOperationException()
 				{
 					Action action = () => throw new CustomException();
@@ -314,7 +314,7 @@ public sealed partial class ThatDelegate
 						.Because("an infinite duration is specified as well, even though it imposes no limit");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenWithinIsSpecifiedTwice_WithOnlyIfInBetween_ShouldThrowInvalidOperationException()
 				{
 					Action action = () => throw new CustomException();
@@ -339,7 +339,7 @@ public sealed partial class ThatDelegate
 
 			public sealed class GenericTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldSupportChainedConstraints()
 				{
 					Action action = () => { };
@@ -355,8 +355,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenAwaited_ShouldReturnThrownException(string value)
 				{
 					Exception exception = new CustomException
@@ -372,7 +372,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDurationIsInfinite_AndNoExceptionIsThrown_ShouldNotMentionTheDuration()
 				{
 					Action action = () => { };
@@ -380,7 +380,7 @@ public sealed partial class ThatDelegate
 					async Task<CustomException> Act()
 						=> await That(action).Throws<CustomException>().Within(System.Threading.Timeout.InfiniteTimeSpan);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws a ThatDelegate.CustomException,
@@ -388,7 +388,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDurationIsInfinite_ShouldNotLimitTheDuration()
 				{
 					Action action = () =>
@@ -404,7 +404,7 @@ public sealed partial class ThatDelegate
 						.Because("an infinite duration imposes no limit");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDurationIsNegative_ShouldThrowArgumentOutOfRangeException()
 				{
 					Action? subject = null;
@@ -417,7 +417,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("The timeout must not be negative").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExactExceptionTypeIsThrownInTime_ShouldSucceed()
 				{
 					Exception exception = new CustomException();
@@ -429,7 +429,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExactExceptionTypeIsThrownTooLate_ShouldFail()
 				{
 					Exception exception = new CustomException();
@@ -450,7 +450,7 @@ public sealed partial class ThatDelegate
 						             """).AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExactExceptionTypeIsThrownTooLate_ShouldNotForwardExceptionAsInnerException()
 				{
 					Exception exception = new CustomException();
@@ -467,7 +467,7 @@ public sealed partial class ThatDelegate
 						.Whose(e => e.InnerException, i => i.IsNull());
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoExceptionIsThrownAndExecutionTimeIsTooLarge_ShouldFail()
 				{
 					Action action = () =>
@@ -486,7 +486,7 @@ public sealed partial class ThatDelegate
 						             """).AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoExceptionIsThrownInTime_ShouldFail()
 				{
 					Action action = () => { };
@@ -502,8 +502,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenOtherExceptionIsThrown_ShouldFail(string message)
 				{
 					Exception exception = new OtherException(message);
@@ -521,7 +521,7 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubCustomExceptionIsThrown_ShouldSucceed()
 				{
 					Exception exception = new SubCustomException();
@@ -533,7 +533,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					Action? subject = null;
@@ -541,7 +541,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(subject!).Throws<CustomException>().Within(0.Seconds());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             throws a ThatDelegate.CustomException within 0:00,
@@ -549,8 +549,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenSupertypeExceptionIsThrown_ShouldFail(string message)
 				{
 					Exception exception = new CustomException(message);
@@ -572,7 +572,7 @@ public sealed partial class ThatDelegate
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 			public sealed class TypeTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldSupportChainedConstraints()
 				{
 					Action action = () => { };
@@ -588,8 +588,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenAwaited_ShouldReturnThrownException(string value)
 				{
 					Exception exception = new CustomException
@@ -604,7 +604,7 @@ public sealed partial class ThatDelegate
 					await That(result).IsSameAs(exception);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDurationIsInfinite_AndNoExceptionIsThrown_ShouldNotMentionTheDuration()
 				{
 					Action action = () => { };
@@ -613,7 +613,7 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws(typeof(CustomException))
 							.Within(System.Threading.Timeout.InfiniteTimeSpan);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that action
 						             throws a ThatDelegate.CustomException,
@@ -621,7 +621,7 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDurationIsInfinite_ShouldNotLimitTheDuration()
 				{
 					Action action = () =>
@@ -638,7 +638,7 @@ public sealed partial class ThatDelegate
 						.Because("an infinite duration imposes no limit");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenDurationIsNegative_ShouldThrowArgumentOutOfRangeException()
 				{
 					Action? subject = null;
@@ -651,7 +651,7 @@ public sealed partial class ThatDelegate
 						.WithMessage("The timeout must not be negative").AsPrefix();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExactExceptionTypeIsThrownInTime_ShouldSucceed()
 				{
 					Exception exception = new CustomException();
@@ -663,7 +663,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExactExceptionTypeIsThrownTooLate_ShouldFail()
 				{
 					Exception exception = new CustomException();
@@ -684,7 +684,7 @@ public sealed partial class ThatDelegate
 						             """).AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoExceptionIsThrownAndExecutionTimeIsTooLarge_ShouldFail()
 				{
 					Action action = () =>
@@ -703,7 +703,7 @@ public sealed partial class ThatDelegate
 						             """).AsWildcard();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoExceptionIsThrownInTime_ShouldFail()
 				{
 					Action action = () => { };
@@ -719,8 +719,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenOtherExceptionIsThrown_ShouldFail(string message)
 				{
 					Exception exception = new OtherException(message);
@@ -738,7 +738,7 @@ public sealed partial class ThatDelegate
 						              """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubCustomExceptionIsThrown_ShouldSucceed()
 				{
 					Exception exception = new SubCustomException();
@@ -750,7 +750,7 @@ public sealed partial class ThatDelegate
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					Action? subject = null;
@@ -758,7 +758,7 @@ public sealed partial class ThatDelegate
 					async Task Act()
 						=> await That(subject!).Throws(typeof(CustomException)).Within(0.Seconds());
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             throws a ThatDelegate.CustomException within 0:00,
@@ -766,8 +766,8 @@ public sealed partial class ThatDelegate
 						             """);
 				}
 
-				[Theory]
-				[AutoData]
+				[Test]
+				[AutoArguments]
 				public async Task WhenSupertypeExceptionIsThrown_ShouldFail(string message)
 				{
 					Exception exception = new CustomException(message);

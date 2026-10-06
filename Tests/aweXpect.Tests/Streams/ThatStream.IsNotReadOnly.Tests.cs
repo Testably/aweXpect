@@ -8,7 +8,7 @@ public sealed partial class ThatStream
 	{
 		public sealed class Tests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
 				ChunkedStreamContainer subject = new(new ChunkedStream(canRead: true, canWrite: false));
@@ -16,7 +16,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).Whose(c => c.Chunks, chunks => chunks.IsNotReadOnly());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose Chunks are not read-only,
@@ -24,10 +24,10 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Theory]
-			[InlineData(false, false)]
-			[InlineData(false, true)]
-			[InlineData(true, true)]
+			[Test]
+			[Arguments(false, false)]
+			[Arguments(false, true)]
+			[Arguments(true, true)]
 			public async Task WhenSubjectIsNotReadOnly_ShouldSucceed(bool canRead, bool canWrite)
 			{
 				Stream subject = new MyStream(canRead: canRead, canWrite: canWrite);
@@ -38,7 +38,7 @@ public sealed partial class ThatStream
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				Stream? subject = null;
@@ -46,7 +46,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).IsNotReadOnly();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not read-only,
@@ -54,7 +54,7 @@ public sealed partial class ThatStream
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsReadOnly_ShouldFail()
 			{
 				Stream subject = new MyStream(canRead: true, canWrite: false);
@@ -62,7 +62,7 @@ public sealed partial class ThatStream
 				async Task Act()
 					=> await That(subject).IsNotReadOnly();
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             is not read-only,

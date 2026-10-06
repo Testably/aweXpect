@@ -7,7 +7,7 @@ public sealed partial class ThatSignaler
 {
 	public sealed class CompliesWithTests
 	{
-		[Fact]
+		[Test]
 		public async Task CompliesWith_DidNotSignal_WhenNotSignaled_ShouldReturnTheSignaler()
 		{
 			Signaler signaler = new();
@@ -17,7 +17,7 @@ public sealed partial class ThatSignaler
 			await That(result).IsSameAs(signaler);
 		}
 
-		[Fact]
+		[Test]
 		public async Task CompliesWith_Signaled_WhenSignaled_ShouldReturnTheSignaler()
 		{
 			Signaler signaler = new();
@@ -28,7 +28,7 @@ public sealed partial class ThatSignaler
 			await That(result).IsSameAs(signaler);
 		}
 
-		[Fact]
+		[Test]
 		public async Task CompliesWith_SignaledWithParameter_WhenSignaledWithMatchingParameter_ShouldReturnTheSignaler()
 		{
 			Signaler<int> signaler = new();
@@ -39,7 +39,7 @@ public sealed partial class ThatSignaler
 			await That(result).IsSameAs(signaler);
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotComplyWith_DidNotSignal_WhenSignaled_ShouldReturnTheSignaler()
 		{
 			Signaler signaler = new();
@@ -50,7 +50,7 @@ public sealed partial class ThatSignaler
 			await That(result).IsSameAs(signaler);
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotComplyWith_DidNotSignalTimes_WhenSignaledOftenEnough_ShouldReturnTheSignaler()
 		{
 			Signaler signaler = new();
@@ -62,7 +62,7 @@ public sealed partial class ThatSignaler
 			await That(result).IsSameAs(signaler);
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotComplyWith_DidNotSignalWithParameter_WhenSignaledWithMatchingParameter_ShouldReturnTheSignaler()
 		{
 			Signaler<int> signaler = new();
@@ -74,7 +74,7 @@ public sealed partial class ThatSignaler
 			await That(result).IsSameAs(signaler);
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotComplyWith_Signaled_WhenNotSignaled_ShouldReturnTheSignaler()
 		{
 			Signaler signaler = new();
@@ -85,7 +85,7 @@ public sealed partial class ThatSignaler
 			await That(result).IsSameAs(signaler);
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotComplyWith_SignaledWithParameter_WhenNotSignaledWithMatchingParameter_ShouldReturnTheSignaler()
 		{
 			Signaler<int> signaler = new();

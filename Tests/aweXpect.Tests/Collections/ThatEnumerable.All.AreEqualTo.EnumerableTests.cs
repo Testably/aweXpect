@@ -13,7 +13,7 @@ public sealed partial class ThatEnumerable
 		{
 			public sealed class EnumerableTests
 			{
-				[Fact]
+				[Test]
 				public async Task DoesNotEnumerateTwice()
 				{
 					IEnumerable subject = new ThrowWhenIteratingTwiceEnumerable();
@@ -25,7 +25,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task DoesNotMaterializeEnumerable()
 				{
 					IEnumerable subject = Factory.GetFibonacciNumbers();
@@ -33,7 +33,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo(1);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 1 for all items,
@@ -47,9 +47,9 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Theory]
-				[InlineData(double.NaN, false)]
-				[InlineData(1.0, true)]
+				[Test]
+				[Arguments(double.NaN, false)]
+				[Arguments(1.0, true)]
 				public async Task DoubleNaNValues_ShouldBeConsideredEqual(double additionalValue, bool expectFailure)
 				{
 					IEnumerable subject = new[]
@@ -60,7 +60,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo(double.NaN);
 
-					await That(Act).Throws<XunitException>().OnlyIf(expectFailure)
+					await That(Act).Throws<FailException>().OnlyIf(expectFailure)
 						.WithMessage("""
 						             Expected that subject
 						             is equal to NaN for all items,
@@ -74,9 +74,9 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Theory]
-				[InlineData(float.NaN, false)]
-				[InlineData(1.0F, true)]
+				[Test]
+				[Arguments(float.NaN, false)]
+				[Arguments(1.0F, true)]
 				public async Task FloatNaNValues_ShouldBeConsideredEqual(float additionalValue, bool expectFailure)
 				{
 					IEnumerable subject = new[]
@@ -87,7 +87,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo(float.NaN);
 
-					await That(Act).Throws<XunitException>().OnlyIf(expectFailure)
+					await That(Act).Throws<FailException>().OnlyIf(expectFailure)
 						.WithMessage("""
 						             Expected that subject
 						             is equal to NaN for all items,
@@ -104,7 +104,7 @@ public sealed partial class ThatEnumerable
 
 			public sealed class EnumerableItemTests
 			{
-				[Fact]
+				[Test]
 				public async Task ShouldSupportNullableValues()
 				{
 					IEnumerable subject = Factory.GetConstantValueEnumerable<int?>(null, 20);
@@ -115,7 +115,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task ShouldUseCustomComparer()
 				{
 					IEnumerable subject = Factory.GetFibonacciNumbers(20).ToArray();
@@ -126,7 +126,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenItemsDiffer_ShouldFailAndDisplayNotMatchingItems()
 				{
 					IEnumerable subject = Factory.GetFibonacciNumbers(20).ToArray();
@@ -134,7 +134,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo(5);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 5 for all items,
@@ -172,7 +172,7 @@ public sealed partial class ThatEnumerable
 						             """);
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNoItemsDiffer_ShouldSucceed()
 				{
 					int constantValue = 42;
@@ -184,7 +184,7 @@ public sealed partial class ThatEnumerable
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldFail()
 				{
 					int constantValue = 42;
@@ -193,7 +193,7 @@ public sealed partial class ThatEnumerable
 					async Task Act()
 						=> await That(subject).All().AreEqualTo(constantValue);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is equal to 42 for all items,

@@ -12,7 +12,7 @@ public sealed partial class ThatEnum
 		{
 			public sealed class Tests
 			{
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					MyColors? subject = MyColors.Blue;
@@ -27,7 +27,7 @@ public sealed partial class ThatEnum
 						.Because("an empty set is rejected when the expectation is built, before it is awaited");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					MyColors? subject = MyColors.Blue;
@@ -41,9 +41,9 @@ public sealed partial class ThatEnum
 						.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 				}
 
-				[Theory]
-				[InlineData(MyColors.Blue)]
-				[InlineData(MyColors.Green)]
+				[Test]
+				[Arguments(MyColors.Blue)]
+				[Arguments(MyColors.Green)]
 				public async Task WhenExpectedOnlyContainsNull_ShouldSucceed(MyColors? subject)
 				{
 					IEnumerable<MyColors?> expected = [null,];
@@ -54,7 +54,7 @@ public sealed partial class ThatEnum
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNullableExpectedIsEmpty_ShouldThrowArgumentException()
 				{
 					MyColors? subject = MyColors.Blue;
@@ -69,7 +69,7 @@ public sealed partial class ThatEnum
 						.Because("an empty set is rejected when the expectation is built, before it is awaited");
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenNullableExpectedIsNull_ShouldThrowArgumentNullException()
 				{
 					MyColors? subject = MyColors.Blue;
@@ -83,9 +83,9 @@ public sealed partial class ThatEnum
 						.WithMessage("The 'unexpected' value cannot be null.").AsPrefix();
 				}
 
-				[Theory]
-				[InlineData(MyColors.Blue)]
-				[InlineData(MyColors.Green, MyColors.Blue, MyColors.Yellow)]
+				[Test]
+				[Arguments(MyColors.Blue)]
+				[Arguments(MyColors.Green, MyColors.Blue, MyColors.Yellow)]
 				public async Task WhenSubjectIsContained_ShouldFail(MyColors? subject,
 					params MyColors[] otherValues)
 				{
@@ -94,7 +94,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).IsNotOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not one of expected,
@@ -105,8 +105,8 @@ public sealed partial class ThatEnum
 						              """);
 				}
 
-				[Theory]
-				[InlineData(MyColors.Blue, MyColors.Green, MyColors.Red)]
+				[Test]
+				[Arguments(MyColors.Blue, MyColors.Green, MyColors.Red)]
 				public async Task WhenSubjectIsDifferent_ShouldSucceed(MyColors? subject,
 					params MyColors[] expected)
 				{
@@ -116,7 +116,7 @@ public sealed partial class ThatEnum
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNull_ShouldSucceed()
 				{
 					MyColors? subject = null;
@@ -127,7 +127,7 @@ public sealed partial class ThatEnum
 					await That(Act).DoesNotThrow();
 				}
 
-				[Fact]
+				[Test]
 				public async Task WhenSubjectIsNullAndUnexpectedContainsNull_ShouldFail()
 				{
 					MyColors? subject = null;
@@ -136,7 +136,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).IsNotOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage("""
 						             Expected that subject
 						             is not one of expected,
@@ -150,9 +150,9 @@ public sealed partial class ThatEnum
 
 			public sealed class LongTests
 			{
-				[Theory]
-				[InlineData(EnumLong.Int64Max)]
-				[InlineData(EnumLong.Int64LessOne)]
+				[Test]
+				[Arguments(EnumLong.Int64Max)]
+				[Arguments(EnumLong.Int64LessOne)]
 				public async Task WhenExpectedOnlyContainsNull_ShouldSucceed(EnumLong? subject)
 				{
 					IEnumerable<EnumLong?> expected = [null,];
@@ -163,9 +163,9 @@ public sealed partial class ThatEnum
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(EnumLong.Int64Max)]
-				[InlineData(EnumLong.Int64LessOne, EnumLong.Int64LessTwo)]
+				[Test]
+				[Arguments(EnumLong.Int64Max)]
+				[Arguments(EnumLong.Int64LessOne, EnumLong.Int64LessTwo)]
 				public async Task WhenSubjectIsContained_ShouldFail(EnumLong? subject,
 					params EnumLong[] otherValues)
 				{
@@ -174,7 +174,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).IsNotOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not one of expected,
@@ -185,8 +185,8 @@ public sealed partial class ThatEnum
 						              """);
 				}
 
-				[Theory]
-				[InlineData(EnumLong.Int64Max, EnumLong.Int64LessOne, EnumLong.Int64LessTwo)]
+				[Test]
+				[Arguments(EnumLong.Int64Max, EnumLong.Int64LessOne, EnumLong.Int64LessTwo)]
 				public async Task WhenSubjectIsDifferent_ShouldSucceed(EnumLong? subject,
 					params EnumLong[] expected)
 				{
@@ -199,9 +199,9 @@ public sealed partial class ThatEnum
 
 			public sealed class UlongTests
 			{
-				[Theory]
-				[InlineData(EnumULong.Int64Max)]
-				[InlineData(EnumULong.UInt64LessOne)]
+				[Test]
+				[Arguments(EnumULong.Int64Max)]
+				[Arguments(EnumULong.UInt64LessOne)]
 				public async Task WhenExpectedOnlyContainsNull_ShouldSucceed(EnumULong? subject)
 				{
 					IEnumerable<EnumULong?> expected = [null,];
@@ -212,9 +212,9 @@ public sealed partial class ThatEnum
 					await That(Act).DoesNotThrow();
 				}
 
-				[Theory]
-				[InlineData(EnumULong.Int64Max)]
-				[InlineData(EnumULong.UInt64LessOne, EnumULong.UInt64Max, EnumULong.Int64Max)]
+				[Test]
+				[Arguments(EnumULong.Int64Max)]
+				[Arguments(EnumULong.UInt64LessOne, EnumULong.UInt64Max, EnumULong.Int64Max)]
 				public async Task WhenSubjectIsContained_ShouldFail(EnumULong? subject,
 					params EnumULong[] otherValues)
 				{
@@ -223,7 +223,7 @@ public sealed partial class ThatEnum
 					async Task Act()
 						=> await That(subject).IsNotOneOf(expected);
 
-					await That(Act).Throws<XunitException>()
+					await That(Act).Throws<FailException>()
 						.WithMessage($"""
 						              Expected that subject
 						              is not one of expected,
@@ -234,8 +234,8 @@ public sealed partial class ThatEnum
 						              """);
 				}
 
-				[Theory]
-				[InlineData(EnumULong.UInt64Max, EnumULong.UInt64LessOne, EnumULong.Int64Max)]
+				[Test]
+				[Arguments(EnumULong.UInt64Max, EnumULong.UInt64LessOne, EnumULong.Int64Max)]
 				public async Task WhenSubjectIsDifferent_ShouldSucceed(EnumULong? subject,
 					params EnumULong[] expected)
 				{

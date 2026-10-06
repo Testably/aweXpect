@@ -9,7 +9,7 @@ public sealed partial class ThatSignaler
 	{
 		public sealed class AtLeastTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggeredOftenEnough_ShouldFail()
 			{
 				Signaler signaler = new();
@@ -20,7 +20,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().AtLeast(3.Times()).Within(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least 3 times within 0:00.050,
@@ -29,7 +29,7 @@ public sealed partial class ThatSignaler
 					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNotTriggeredWithParameter_ShouldFail()
 			{
 				Signaler<int> signaler = new();
@@ -40,7 +40,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().AtLeast(3.Times()).Within(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least 3 times within 0:00.050,
@@ -52,7 +52,7 @@ public sealed partial class ThatSignaler
 					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggeredMoreOften_ShouldSucceed()
 			{
 				Signaler signaler = new();
@@ -71,7 +71,7 @@ public sealed partial class ThatSignaler
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggeredOftenEnough_ShouldSucceed()
 			{
 				Signaler signaler = new();
@@ -89,7 +89,7 @@ public sealed partial class ThatSignaler
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggeredOnlyOnce_ShouldFail()
 			{
 				Signaler signaler = new();
@@ -99,7 +99,7 @@ public sealed partial class ThatSignaler
 				async Task Act() =>
 					await That(signaler).Signaled().AtLeast(2.Times()).Within(50.Milliseconds());
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that signaler
 					             has recorded the callback at least twice within 0:00.050,
@@ -108,7 +108,7 @@ public sealed partial class ThatSignaler
 					.Because("the waited time is wall-clock time, which a busy machine can stretch beyond a second");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggeredWithParameterMoreOften_ShouldSucceed()
 			{
 				Signaler<int> signaler = new();
@@ -128,7 +128,7 @@ public sealed partial class ThatSignaler
 				await That(Act).DoesNotThrow();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTriggeredWithParameterOftenEnough_ShouldSucceed()
 			{
 				Signaler<int> signaler = new();
