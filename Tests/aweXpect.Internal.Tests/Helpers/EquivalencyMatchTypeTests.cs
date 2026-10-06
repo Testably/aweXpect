@@ -9,7 +9,7 @@ public sealed partial class EquivalencyMatchTypeTests
 {
 	public sealed class Tests
 	{
-		[Fact]
+		[Test]
 		public async Task ShouldBeEquivalentToSelf()
 		{
 			MyClass actual = new()
@@ -23,7 +23,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			await That(result).IsTrue();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldPreventCyclicReferences()
 		{
 			MyClass actual = new()
@@ -55,7 +55,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			                              """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenActualAndExpectedAreNull_ShouldBeConsideredEqual()
 		{
 			MyClass? actual = null;
@@ -67,7 +67,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			await That(result).IsTrue();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenOnlyActualIsNull_ShouldNotBeConsideredEqual()
 		{
 			MyClass? actual = null;
@@ -84,7 +84,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			                              """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenOnlyExpectedIsNull_ShouldNotBeConsideredEqual()
 		{
 			MyClass actual = new();

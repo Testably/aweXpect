@@ -7,7 +7,7 @@ namespace aweXpect.Internal.Tests.Results;
 
 public sealed class AsyncSingleItemResultTests
 {
-	[Fact]
+	[Test]
 	public async Task ShouldBeOptionsProvider_ForPredicateOptions()
 	{
 		PredicateOptions<int> options = new();

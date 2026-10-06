@@ -7,9 +7,9 @@ public sealed class StringExtensionMethodsTests
 {
 	public sealed class ContainsCharTests
 	{
-		[Theory]
-		[InlineData(StringComparison.Ordinal, false)]
-		[InlineData(StringComparison.OrdinalIgnoreCase, true)]
+		[Test]
+		[Arguments(StringComparison.Ordinal, false)]
+		[Arguments(StringComparison.OrdinalIgnoreCase, true)]
 		public async Task ShouldHonourComparisonType(StringComparison comparisonType, bool expected)
 		{
 			bool result = StringExtensionMethods.Contains("aBc", 'b', comparisonType);
@@ -20,9 +20,9 @@ public sealed class StringExtensionMethodsTests
 
 	public sealed class ContainsStringTests
 	{
-		[Theory]
-		[InlineData(StringComparison.Ordinal, false)]
-		[InlineData(StringComparison.OrdinalIgnoreCase, true)]
+		[Test]
+		[Arguments(StringComparison.Ordinal, false)]
+		[Arguments(StringComparison.OrdinalIgnoreCase, true)]
 		public async Task ShouldHonourComparisonType(StringComparison comparisonType, bool expected)
 		{
 			bool result = StringExtensionMethods.Contains("aBc", "bC", comparisonType);
@@ -33,7 +33,7 @@ public sealed class StringExtensionMethodsTests
 
 	public sealed class EndsWithTests
 	{
-		[Fact]
+		[Test]
 		public async Task ShouldCompareOrdinally()
 		{
 			bool result = StringExtensionMethods.EndsWith("abc", '­');
@@ -41,7 +41,7 @@ public sealed class StringExtensionMethodsTests
 			await That(result).IsFalse().Because("a culture-sensitive comparison ignores the soft hyphen");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenLastCharacterMatches_ShouldReturnTrue()
 		{
 			bool result = StringExtensionMethods.EndsWith("abc", 'c');
@@ -52,9 +52,9 @@ public sealed class StringExtensionMethodsTests
 
 	public sealed class ReplaceTests
 	{
-		[Theory]
-		[InlineData(StringComparison.Ordinal, "aBcx")]
-		[InlineData(StringComparison.OrdinalIgnoreCase, "axcx")]
+		[Test]
+		[Arguments(StringComparison.Ordinal, "aBcx")]
+		[Arguments(StringComparison.OrdinalIgnoreCase, "axcx")]
 		public async Task ShouldHonourComparisonType(StringComparison comparisonType, string expected)
 		{
 			string result = StringExtensionMethods.Replace("aBcb", "b", "x", comparisonType);
@@ -62,7 +62,7 @@ public sealed class StringExtensionMethodsTests
 			await That(result).IsEqualTo(expected);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNewValueIsNull_ShouldRemoveOccurrences()
 		{
 			string result = StringExtensionMethods.Replace("aBcb", "b", null, StringComparison.OrdinalIgnoreCase);
@@ -73,7 +73,7 @@ public sealed class StringExtensionMethodsTests
 
 	public sealed class StartsWithTests
 	{
-		[Fact]
+		[Test]
 		public async Task ShouldCompareOrdinally()
 		{
 			bool result = StringExtensionMethods.StartsWith("abc", '­');
@@ -81,7 +81,7 @@ public sealed class StringExtensionMethodsTests
 			await That(result).IsFalse().Because("a culture-sensitive comparison ignores the soft hyphen");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenFirstCharacterMatches_ShouldReturnTrue()
 		{
 			bool result = StringExtensionMethods.StartsWith("abc", 'a');

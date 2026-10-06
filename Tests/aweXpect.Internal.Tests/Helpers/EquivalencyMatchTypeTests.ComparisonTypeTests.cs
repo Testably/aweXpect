@@ -9,7 +9,7 @@ public sealed partial class EquivalencyMatchTypeTests
 {
 	public sealed class ComparisonTypeTests
 	{
-		[Fact]
+		[Test]
 		public async Task CanSpecifyComparisonTypeForSpecificTypes()
 		{
 			MyClassWithDifferentProperties actual = new()
@@ -53,7 +53,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			                              """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenComparingByValue_ShouldUseObjectEqualsForClasses()
 		{
 			MyClass actual = new()

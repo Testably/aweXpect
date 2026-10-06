@@ -7,7 +7,7 @@ namespace aweXpect.Internal.Tests.Results;
 
 public sealed class StringCollectionMatchResultTests
 {
-	[Fact]
+	[Test]
 	public async Task ShouldBeOptionsProvider_ForCollectionMatchOptions()
 	{
 		StringEqualityOptions options = new("expected");
@@ -19,7 +19,7 @@ public sealed class StringCollectionMatchResultTests
 			.Whose(x => x.Options, it => it.IsSameAs(collectionMatchOptions));
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldBeOptionsProvider_ForStringEqualityOptions()
 	{
 		StringEqualityOptions options = new("expected");

@@ -8,7 +8,7 @@ public sealed partial class EquivalencyMatchTypeTests
 {
 	public sealed class CollectionInAnyOrderTests
 	{
-		[Fact]
+		[Test]
 		public async Task ArrayAndListWithSameValues_ShouldBeConsideredEqual()
 		{
 			int[] actual = [3, 2, 4, 1, 5,];
@@ -20,7 +20,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			await That(result).IsTrue();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ListAndArrayWithSameValues_ShouldBeConsideredEqual()
 		{
 			List<int> actual = [1, 5, 3, 4, 2,];
@@ -32,7 +32,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			await That(result).IsTrue();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenActualHasFewerValues_ShouldNotBeConsideredEqual()
 		{
 			int[] actual = [1, 4, 3, 2,];
@@ -51,7 +51,7 @@ public sealed partial class EquivalencyMatchTypeTests
 				.Because("the index is the position of the missing value in the expected collection");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenActualHasMoreValues_ShouldNotBeConsideredEqual()
 		{
 			int[] actual = [1, 5, 4, 3, 2,];
@@ -69,9 +69,9 @@ public sealed partial class EquivalencyMatchTypeTests
 			                              """);
 		}
 
-		[Theory]
-		[InlineData(true)]
-		[InlineData(false)]
+		[Test]
+		[Arguments(true)]
+		[Arguments(false)]
 		public async Task WhenCollectionsDifferInOrder_ShouldBeConsideredEqualWhenCollectionOrderIsIgnored(
 			bool ignoreCollectionOrder)
 		{

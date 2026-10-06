@@ -4,7 +4,7 @@ public sealed partial class QuantifiableCollectionItems
 {
 	public sealed class AreEquivalentTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenCollectionContainsOtherValues_ShouldFail()
 		{
 			MyClass[] subject =
@@ -35,7 +35,7 @@ public sealed partial class QuantifiableCollectionItems
 			async Task Act()
 				=> await That(subject).All().ComplyWith(item => item.IsEquivalentTo(expected));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equivalent to expected for all items,
@@ -74,7 +74,7 @@ public sealed partial class QuantifiableCollectionItems
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCollectionOnlyContainsEqualValues_ShouldSucceed()
 		{
 			MyClass[] subject =

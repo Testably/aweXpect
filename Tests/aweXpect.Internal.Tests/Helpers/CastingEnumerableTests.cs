@@ -7,7 +7,7 @@ namespace aweXpect.Internal.Tests.Helpers;
 
 public class CastingEnumerableTests
 {
-	[Fact]
+	[Test]
 	public async Task Count_WhenSourceIsACollection_ShouldBeItsCount()
 	{
 		CastingEnumerable<int, int?> enumerable = new(new List<int> { 1, 2, 3, });
@@ -15,7 +15,7 @@ public class CastingEnumerableTests
 		await That(enumerable.Count).IsEqualTo(3);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Count_WhenSourceIsAReadOnlyCollection_ShouldBeItsCount()
 	{
 		CastingEnumerable<int, int?> enumerable = new(new ReadOnlyItems(1, 2));
@@ -23,7 +23,7 @@ public class CastingEnumerableTests
 		await That(enumerable.Count).IsEqualTo(2);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Count_WhenSourceIsCountable_ShouldFollowItsCount()
 	{
 		IEnumerable<int> source = MaterializingEnumerable<int>.WrapParameter(ToEnumerable([1, 2,]));
@@ -38,7 +38,7 @@ public class CastingEnumerableTests
 			.Because("the count is read from the source each time");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Count_WhenSourceIsNotCountable_ShouldBeNull()
 	{
 		CastingEnumerable<int, int?> enumerable = new(ToEnumerable([1, 2,]));
@@ -47,7 +47,7 @@ public class CastingEnumerableTests
 			.Because("finding the count would enumerate the source");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEnumerated_ShouldCastEachItemOfTheSourceOnEveryEnumeration()
 	{
 		int readCount = 0;
@@ -73,7 +73,7 @@ public class CastingEnumerableTests
 		await That(second).IsEqualTo([1, 2,]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSourceIsNull_ShouldThrowArgumentNullException()
 	{
 		void Act() => _ = new CastingEnumerable<int, int?>(null!);

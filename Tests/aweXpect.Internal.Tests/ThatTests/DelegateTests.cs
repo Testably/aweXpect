@@ -5,7 +5,7 @@ namespace aweXpect.Internal.Tests.ThatTests;
 
 public sealed class DelegateTests
 {
-	[Fact]
+	[Test]
 	public async Task ForAsyncVoidAction_WhenVerifyingDoesNotThrow_ShouldThrowInvalidOperationException()
 	{
 		Task incompleteTask = new TaskCompletionSource<bool>().Task;
@@ -19,7 +19,7 @@ public sealed class DelegateTests
 			.WithMessage("Cannot use aweXpect on an async void method: use Func<Task> instead.");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForAsyncVoidAction_WhenVerifyingDoesThrow_ShouldThrowInvalidOperationException()
 	{
 		Task incompleteTask = new TaskCompletionSource<bool>().Task;
@@ -33,7 +33,7 @@ public sealed class DelegateTests
 			.WithMessage("Cannot use aweXpect on an async void method: use Func<Task> instead.");
 	}
 
-	[Fact]
+	[Test]
 	public async Task
 		ForAsyncVoidAction_WithCancellationToken_WhenVerifyingDoesNotThrow_ShouldThrowInvalidOperationException()
 	{
@@ -48,7 +48,7 @@ public sealed class DelegateTests
 			.WithMessage("Cannot use aweXpect on an async void method: use Func<CancellationToken, Task> instead.");
 	}
 
-	[Fact]
+	[Test]
 	public async Task
 		ForAsyncVoidAction_WithCancellationToken_WhenVerifyingDoesThrow_ShouldThrowInvalidOperationException()
 	{
@@ -63,8 +63,8 @@ public sealed class DelegateTests
 			.WithMessage("Cannot use aweXpect on an async void method: use Func<CancellationToken, Task> instead.");
 	}
 
-	[Theory]
-	[AutoData]
+	[Test]
+	[AutoArguments]
 	public async Task ShouldReturnValue_FuncTaskValue(int value)
 	{
 		Task<int> Delegate() => Task.FromResult(value);
@@ -74,8 +74,8 @@ public sealed class DelegateTests
 		await That(result).IsEqualTo(value);
 	}
 
-	[Theory]
-	[AutoData]
+	[Test]
+	[AutoArguments]
 	public async Task ShouldReturnValue_FuncValue(int value)
 	{
 		int Delegate() => value;
@@ -86,8 +86,8 @@ public sealed class DelegateTests
 	}
 
 #if NET8_0_OR_GREATER
-	[Theory]
-	[AutoData]
+	[Test]
+	[AutoArguments]
 	public async Task ShouldReturnValue_FuncValueTaskValue(int value)
 	{
 		ValueTask<int> Delegate() => ValueTask.FromResult(value);
@@ -99,8 +99,8 @@ public sealed class DelegateTests
 #endif
 
 #if NET8_0_OR_GREATER
-	[Theory]
-	[AutoData]
+	[Test]
+	[AutoArguments]
 	public async Task ShouldReturnValue_FuncValueTaskValue_WithCancellationToken(int value)
 	{
 		ValueTask<int> Delegate(CancellationToken _) => ValueTask.FromResult(value);
@@ -111,7 +111,7 @@ public sealed class DelegateTests
 	}
 #endif
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_Action_WhenSuccess()
 	{
 		Action @delegate = () => { };
@@ -127,7 +127,7 @@ public sealed class DelegateTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_Action_WhenThrown()
 	{
 		Action @delegate = () => throw new MyException();
@@ -135,7 +135,7 @@ public sealed class DelegateTests
 		async Task Act()
 			=> await That(@delegate).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that @delegate
 			              does not throw any exception,
@@ -144,7 +144,7 @@ public sealed class DelegateTests
 			              """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_Action_WithCancellationToken_Cancelled()
 	{
 		using CancellationTokenSource cts = new();
@@ -159,7 +159,7 @@ public sealed class DelegateTests
 			=> await That(Delegate).Throws<OperationCanceledException>()
 				.WithCancellation(token);
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected that Delegate
 			             throws an OperationCanceledException,
@@ -168,7 +168,7 @@ public sealed class DelegateTests
 			.Because("the cancellation of the evaluation reaches the delegate and leaves the expectation unverified");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_Action_WithCancellationToken_WhenSuccess()
 	{
 		Action<CancellationToken> @delegate = _ => { };
@@ -184,7 +184,7 @@ public sealed class DelegateTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_Action_WithCancellationToken_WhenThrown()
 	{
 		Action<CancellationToken> @delegate = _ => throw new MyException();
@@ -192,7 +192,7 @@ public sealed class DelegateTests
 		async Task Act()
 			=> await That(@delegate).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that @delegate
 			              does not throw any exception,
@@ -201,7 +201,7 @@ public sealed class DelegateTests
 			              """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncTask_WhenSuccess()
 	{
 		Func<Task> @delegate = () => Task.CompletedTask;
@@ -209,7 +209,7 @@ public sealed class DelegateTests
 		async Task Act()
 			=> await That(@delegate).Throws();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             throws an exception,
@@ -217,7 +217,7 @@ public sealed class DelegateTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncTask_WhenThrown()
 	{
 		Func<Task> @delegate = () => Task.FromException(new MyException());
@@ -225,7 +225,7 @@ public sealed class DelegateTests
 		async Task Act()
 			=> await That(@delegate).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that @delegate
 			              does not throw any exception,
@@ -234,7 +234,7 @@ public sealed class DelegateTests
 			              """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncTask_WithCancellationToken_Cancelled()
 	{
 		using CancellationTokenSource cts = new();
@@ -249,7 +249,7 @@ public sealed class DelegateTests
 			=> await That(Delegate).Throws<OperationCanceledException>()
 				.WithCancellation(token);
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected that Delegate
 			             throws an OperationCanceledException,
@@ -258,7 +258,7 @@ public sealed class DelegateTests
 			.Because("the cancellation of the evaluation reaches the delegate and leaves the expectation unverified");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncTask_WithCancellationToken_WhenSuccess()
 	{
 		Func<CancellationToken, Task> @delegate = _ => Task.CompletedTask;
@@ -266,7 +266,7 @@ public sealed class DelegateTests
 		async Task Act()
 			=> await That(@delegate).Throws();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             throws an exception,
@@ -274,7 +274,7 @@ public sealed class DelegateTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncTask_WithCancellationToken_WhenThrown()
 	{
 		Func<CancellationToken, Task> @delegate = _ => Task.FromException(new MyException());
@@ -282,7 +282,7 @@ public sealed class DelegateTests
 		async Task Act()
 			=> await That(@delegate).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that @delegate
 			              does not throw any exception,
@@ -291,7 +291,7 @@ public sealed class DelegateTests
 			              """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncTaskValue_WhenSuccess()
 	{
 		Func<Task<int>> @delegate = () => Task.FromResult(1);
@@ -307,7 +307,7 @@ public sealed class DelegateTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncTaskValue_WhenThrown()
 	{
 		Func<Task<int>> @delegate = () => Task.FromException<int>(new MyException());
@@ -315,7 +315,7 @@ public sealed class DelegateTests
 		async Task Act()
 			=> await That(@delegate).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that @delegate
 			              does not throw any exception,
@@ -324,7 +324,7 @@ public sealed class DelegateTests
 			              """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncTaskValue_WithCancellationToken_Cancelled()
 	{
 		using CancellationTokenSource cts = new();
@@ -339,7 +339,7 @@ public sealed class DelegateTests
 			=> await That(Delegate).Throws<OperationCanceledException>()
 				.WithCancellation(token);
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected that Delegate
 			             throws an OperationCanceledException,
@@ -348,7 +348,7 @@ public sealed class DelegateTests
 			.Because("the cancellation of the evaluation reaches the delegate and leaves the expectation unverified");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncTaskValue_WithCancellationToken_WhenSuccess()
 	{
 		Func<CancellationToken, Task<int>> @delegate = _ => Task.FromResult(1);
@@ -364,7 +364,7 @@ public sealed class DelegateTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncTaskValue_WithCancellationToken_WhenThrown()
 	{
 		Func<CancellationToken, Task<int>> @delegate = _
@@ -373,7 +373,7 @@ public sealed class DelegateTests
 		async Task Act()
 			=> await That(@delegate).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that @delegate
 			              does not throw any exception,
@@ -382,7 +382,7 @@ public sealed class DelegateTests
 			              """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncValue_WhenSuccess()
 	{
 		Func<int> @delegate = () => 1;
@@ -390,7 +390,7 @@ public sealed class DelegateTests
 		async Task Act()
 			=> await That(@delegate).Throws();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             throws an exception,
@@ -398,7 +398,7 @@ public sealed class DelegateTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncValue_WhenThrown()
 	{
 		Func<int> @delegate = () => throw new MyException();
@@ -406,7 +406,7 @@ public sealed class DelegateTests
 		async Task Act()
 			=> await That(@delegate).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that @delegate
 			              does not throw any exception,
@@ -415,7 +415,7 @@ public sealed class DelegateTests
 			              """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncValue_WithCancellationToken_Cancelled()
 	{
 		using CancellationTokenSource cts = new();
@@ -433,7 +433,7 @@ public sealed class DelegateTests
 			=> await That(Delegate).Throws<OperationCanceledException>()
 				.WithCancellation(token);
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected that Delegate
 			             throws an OperationCanceledException,
@@ -442,7 +442,7 @@ public sealed class DelegateTests
 			.Because("the cancellation of the evaluation reaches the delegate and leaves the expectation unverified");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncValue_WithCancellationToken_WhenSuccess()
 	{
 		Func<CancellationToken, int> @delegate = _ => 1;
@@ -450,7 +450,7 @@ public sealed class DelegateTests
 		async Task Act()
 			=> await That(@delegate).Throws();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             throws an exception,
@@ -458,7 +458,7 @@ public sealed class DelegateTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncValue_WithCancellationToken_WhenThrown()
 	{
 		Func<CancellationToken, int> @delegate = _ => throw new MyException();
@@ -466,7 +466,7 @@ public sealed class DelegateTests
 		async Task Act()
 			=> await That(@delegate).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that @delegate
 			              does not throw any exception,
@@ -476,7 +476,7 @@ public sealed class DelegateTests
 	}
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncValueTask_WhenSuccess()
 	{
 		ValueTask Delegate() => ValueTask.CompletedTask;
@@ -495,7 +495,7 @@ public sealed class DelegateTests
 
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_FuncValueTask_WithCancellationToken_WhenSuccess()
 	{
 		ValueTask Delegate(CancellationToken _) => ValueTask.CompletedTask;
@@ -513,7 +513,7 @@ public sealed class DelegateTests
 #endif
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_ValueTask_WhenThrown()
 	{
 		ValueTask Delegate() => ValueTask.FromException(new MyException());
@@ -521,7 +521,7 @@ public sealed class DelegateTests
 		async Task Act()
 			=> await That(Delegate).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that Delegate
 			              does not throw any exception,
@@ -532,7 +532,7 @@ public sealed class DelegateTests
 #endif
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_ValueTask_WithCancellationToken_WhenThrown()
 	{
 		ValueTask Delegate(CancellationToken _) => ValueTask.FromException(new MyException());
@@ -540,7 +540,7 @@ public sealed class DelegateTests
 		async Task Act()
 			=> await That(Delegate).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that Delegate
 			              does not throw any exception,
@@ -551,7 +551,7 @@ public sealed class DelegateTests
 #endif
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_ValueTaskValue_WhenSuccess()
 	{
 		ValueTask<int> Delegate() => ValueTask.FromResult(1);
@@ -569,7 +569,7 @@ public sealed class DelegateTests
 #endif
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_ValueTaskValue_WhenThrown()
 	{
 		ValueTask<int> Delegate() => ValueTask.FromException<int>(new MyException());
@@ -577,7 +577,7 @@ public sealed class DelegateTests
 		async Task Act()
 			=> await That(Delegate).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that Delegate
 			              does not throw any exception,
@@ -588,7 +588,7 @@ public sealed class DelegateTests
 #endif
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_ValueTaskValue_WithCancellationToken_WhenSuccess()
 	{
 		ValueTask<int> Delegate(CancellationToken _) => ValueTask.FromResult(1);
@@ -606,7 +606,7 @@ public sealed class DelegateTests
 #endif
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task ShouldSupportDelegate_ValueTaskValue_WithCancellationToken_WhenThrown()
 	{
 		ValueTask<int> Delegate(CancellationToken _) => ValueTask.FromException<int>(new MyException());
@@ -614,7 +614,7 @@ public sealed class DelegateTests
 		async Task Act()
 			=> await That(Delegate).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage($"""
 			              Expected that Delegate
 			              does not throw any exception,
@@ -623,8 +623,8 @@ public sealed class DelegateTests
 			              """);
 	}
 #endif
-	[Theory]
-	[AutoData]
+	[Test]
+	[AutoArguments]
 	public async Task ShouldSupportNestedChecks(
 		string innermostMessage, string innerMessage, string outerMessage)
 	{

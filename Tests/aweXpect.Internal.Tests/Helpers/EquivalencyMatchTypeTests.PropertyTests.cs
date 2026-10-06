@@ -7,7 +7,7 @@ public sealed partial class EquivalencyMatchTypeTests
 {
 	public sealed class PropertyTests
 	{
-		[Fact]
+		[Test]
 		public async Task ShouldBeEquivalentToClassWithSameProperties()
 		{
 			MyClass actual = new()
@@ -25,7 +25,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			await That(result).IsTrue();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldBeEquivalentToDynamicWithProperties()
 		{
 			MyClass actual = new()
@@ -42,9 +42,9 @@ public sealed partial class EquivalencyMatchTypeTests
 			await That(result).IsTrue();
 		}
 
-		[Theory]
-		[InlineData("foo", null)]
-		[InlineData(null, "bar")]
+		[Test]
+		[Arguments("foo", null)]
+		[Arguments(null, "bar")]
 		public async Task ShouldNotBeEquivalentToClassWhenOnePropertyIsNull(
 			string? actualValue, string? expectedValue)
 		{
@@ -71,7 +71,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			                               """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldNotBeEquivalentToClassWithDifferentProperties()
 		{
 			MyClass actual = new()
@@ -97,7 +97,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			                              """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenIncludingInternalMembers_ShouldConsiderProtectedInternalProperties()
 		{
 			MyClassWithProtectedProperties actual = new(1, 3);
@@ -121,9 +121,9 @@ public sealed partial class EquivalencyMatchTypeTests
 				           """);
 		}
 
-		[Theory]
-		[InlineData(5, 5, true)]
-		[InlineData(5, 6, false)]
+		[Test]
+		[Arguments(5, 5, true)]
+		[Arguments(5, 6, false)]
 		public async Task WhenIncludingInternalMembers_ShouldConsiderPublicAndInternalProperties(
 			int actualInternalValue, int expectedInternalValue, bool expectedResult)
 		{
@@ -150,7 +150,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			}
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenIncludingInternalMembers_ShouldNotConsiderPrivateProtectedProperties()
 		{
 			MyClassWithProtectedProperties actual = new(1, 3);
@@ -166,10 +166,10 @@ public sealed partial class EquivalencyMatchTypeTests
 				.Because("a private protected property is only visible to derived types within the assembly");
 		}
 
-		[Theory]
-		[InlineData(1, 2, 1, 2, true)]
-		[InlineData(1, 2, 1, 3, false)]
-		[InlineData(1, 2, 3, 2, false)]
+		[Test]
+		[Arguments(1, 2, 1, 2, true)]
+		[Arguments(1, 2, 1, 3, false)]
+		[Arguments(1, 2, 3, 2, false)]
 		public async Task WhenIncludingPublicAndInternalMembers_ShouldConsiderPublicAndInternalProperties(
 			int actualPublicValue, int actualInternalValue, int expectedPublicValue, int expectedInternalValue,
 			bool expectedResult)
@@ -187,9 +187,9 @@ public sealed partial class EquivalencyMatchTypeTests
 				.Because("a property has to satisfy one of the requested visibilities, not all of them at once");
 		}
 
-		[Theory]
-		[InlineData(5, 5, true)]
-		[InlineData(5, 6, false)]
+		[Test]
+		[Arguments(5, 5, true)]
+		[Arguments(5, 6, false)]
 		public async Task WhenIncludingPublicMembers_ShouldConsiderPublicAndInternalProperties(
 			int actualPublicValue, int expectedPublicValue, bool expectedResult)
 		{

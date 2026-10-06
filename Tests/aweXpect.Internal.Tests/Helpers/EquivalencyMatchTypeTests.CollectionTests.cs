@@ -8,7 +8,7 @@ public sealed partial class EquivalencyMatchTypeTests
 {
 	public sealed class CollectionTests
 	{
-		[Fact]
+		[Test]
 		public async Task ArrayAndListWithSameValues_ShouldBeConsideredEqual()
 		{
 			int[] actual = [1, 2, 3, 4, 5,];
@@ -20,7 +20,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			await That(result).IsTrue();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ListAndArrayWithSameValues_ShouldBeConsideredEqual()
 		{
 			List<int> actual = [1, 2, 3, 4, 5,];
@@ -32,7 +32,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			await That(result).IsTrue();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenActualHasFewerValues_ShouldNotBeConsideredEqual()
 		{
 			int[] actual = [1, 2, 3, 4,];
@@ -50,7 +50,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			                              """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenActualHasMoreValues_ShouldNotBeConsideredEqual()
 		{
 			int[] actual = [1, 2, 3, 4, 5,];
@@ -68,7 +68,7 @@ public sealed partial class EquivalencyMatchTypeTests
 			                              """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCollectionsDifferInOrder_ShouldNotBeConsideredEqual()
 		{
 			int[] actual = [1, 2, 3, 4, 5,];

@@ -7,25 +7,25 @@ public sealed class StringExtensionsTests
 {
 	public sealed class GetLineCountTests
 	{
-		[Theory]
-		[InlineData(null, 0)]
-		[InlineData("", 0)]
-		[InlineData("a", 1)]
-		[InlineData("\n", 1)]
-		[InlineData("\r", 1)]
-		[InlineData("\r\n", 1)]
-		[InlineData("a\n", 1)]
-		[InlineData("a\r", 1)]
-		[InlineData("a\r\n", 1)]
-		[InlineData("a\nb", 2)]
-		[InlineData("a\rb", 2)]
-		[InlineData("a\r\nb", 2)]
-		[InlineData("a\n\n", 2)]
-		[InlineData("a\n\r", 2)]
-		[InlineData("\r\n\r\n", 2)]
-		[InlineData("a\nb\n", 2)]
-		[InlineData("a\r\nb\r\n", 2)]
-		[InlineData("a\nb\rc\r\nd", 4)]
+		[Test]
+		[Arguments(null, 0)]
+		[Arguments("", 0)]
+		[Arguments("a", 1)]
+		[Arguments("\n", 1)]
+		[Arguments("\r", 1)]
+		[Arguments("\r\n", 1)]
+		[Arguments("a\n", 1)]
+		[Arguments("a\r", 1)]
+		[Arguments("a\r\n", 1)]
+		[Arguments("a\nb", 2)]
+		[Arguments("a\rb", 2)]
+		[Arguments("a\r\nb", 2)]
+		[Arguments("a\n\n", 2)]
+		[Arguments("a\n\r", 2)]
+		[Arguments("\r\n\r\n", 2)]
+		[Arguments("a\nb\n", 2)]
+		[Arguments("a\r\nb\r\n", 2)]
+		[Arguments("a\nb\rc\r\nd", 4)]
 		public async Task ShouldReturnExpectedLineCount(string? value, int expected)
 		{
 			int result = value.GetLineCount();
@@ -38,7 +38,7 @@ public sealed class StringExtensionsTests
 
 	public sealed class IndentTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenIndentationIsNotEmpty_ShouldReturnIndentedInput()
 		{
 			string input = "foo\nbar";
@@ -49,9 +49,9 @@ public sealed class StringExtensionsTests
 			await That(result).IsEqualTo(expected);
 		}
 
-		[Theory]
-		[InlineData("")]
-		[InlineData(null)]
+		[Test]
+		[Arguments("")]
+		[Arguments(null)]
 		public async Task WhenIndentationIsNullOrEmpty_ShouldReturnInput(string? indentation)
 		{
 			string input = "foo\nbar";
@@ -61,7 +61,7 @@ public sealed class StringExtensionsTests
 			await That(result).IsEqualTo(input);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenIndentFirstLineIsFalse_ShouldOnlyIndentSubsequentLines()
 		{
 			string input = "foo\nbar";
@@ -72,7 +72,7 @@ public sealed class StringExtensionsTests
 			await That(result).IsEqualTo(expected);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenInputIsNull_ShouldReturnNull()
 		{
 			string? input = null;
@@ -85,27 +85,27 @@ public sealed class StringExtensionsTests
 
 	public sealed class PrependAOrAnTests
 	{
-		[Theory]
-		[InlineData("", "a ")]
-		[InlineData("apple", "an apple")]
-		[InlineData("bee", "a bee")]
-		[InlineData("Exception", "an Exception")]
-		[InlineData("NotSupportedException", "a NotSupportedException")]
-		[InlineData("ArgumentException", "an ArgumentException")]
-		[InlineData("HashSet<int>", "a HashSet<int>")]
-		[InlineData("Hero", "a Hero")]
-		[InlineData("HResultException", "an HResultException")]
-		[InlineData("IOException", "an IOException")]
-		[InlineData("SMTPException", "an SMTPException")]
-		[InlineData("X509Exception", "an X509Exception")]
-		[InlineData("TException", "a TException")]
-		[InlineData("UInt32", "a UInt32")]
-		[InlineData("User", "a User")]
-		[InlineData("UriFormatException", "a UriFormatException")]
-		[InlineData("UnauthorizedAccessException", "an UnauthorizedAccessException")]
-		[InlineData("Update", "an Update")]
-		[InlineData("H", "an H")]
-		[InlineData("U", "a U")]
+		[Test]
+		[Arguments("", "a ")]
+		[Arguments("apple", "an apple")]
+		[Arguments("bee", "a bee")]
+		[Arguments("Exception", "an Exception")]
+		[Arguments("NotSupportedException", "a NotSupportedException")]
+		[Arguments("ArgumentException", "an ArgumentException")]
+		[Arguments("HashSet<int>", "a HashSet<int>")]
+		[Arguments("Hero", "a Hero")]
+		[Arguments("HResultException", "an HResultException")]
+		[Arguments("IOException", "an IOException")]
+		[Arguments("SMTPException", "an SMTPException")]
+		[Arguments("X509Exception", "an X509Exception")]
+		[Arguments("TException", "a TException")]
+		[Arguments("UInt32", "a UInt32")]
+		[Arguments("User", "a User")]
+		[Arguments("UriFormatException", "a UriFormatException")]
+		[Arguments("UnauthorizedAccessException", "an UnauthorizedAccessException")]
+		[Arguments("Update", "an Update")]
+		[Arguments("H", "an H")]
+		[Arguments("U", "a U")]
 		public async Task ShouldReturnExpectedValue(string input, string expected)
 		{
 			string result = input.PrependAOrAn();
@@ -116,7 +116,7 @@ public sealed class StringExtensionsTests
 
 	public sealed class TrimCommonWhiteSpace
 	{
-		[Fact]
+		[Test]
 		public async Task WhenAnyLaterLineHasNoWhiteSpace_ShouldReturnUnchangedInput()
 		{
 			string input = """
@@ -131,9 +131,9 @@ public sealed class StringExtensionsTests
 			await That(result).IsEqualTo(input);
 		}
 
-		[Theory]
-		[InlineData("\n")]
-		[InlineData("\r\n")]
+		[Test]
+		[Arguments("\n")]
+		[Arguments("\r\n")]
 		public async Task WhenBlankLinesAreShorterThanCommonWhiteSpace_ShouldIgnoreThem(string newLine)
 		{
 			string input = $"foo{newLine}{newLine}    bar{newLine}  {newLine}      baz";
@@ -144,7 +144,7 @@ public sealed class StringExtensionsTests
 				.Because("blank lines must neither limit the common whitespace nor break the trimming");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenEmpty_ShouldReturnEmptyString()
 		{
 			string input = string.Empty;
@@ -154,9 +154,9 @@ public sealed class StringExtensionsTests
 			await That(result).IsEmpty();
 		}
 
-		[Theory]
-		[InlineData("\n")]
-		[InlineData("\r\n")]
+		[Test]
+		[Arguments("\n")]
+		[Arguments("\r\n")]
 		public async Task WhenLinesAreSeparatedBy_ShouldTrimAndKeepLineEndings(string newLine)
 		{
 			string input = $"foo{newLine}    bar{newLine}      baz";
@@ -167,7 +167,7 @@ public sealed class StringExtensionsTests
 				.Because("the trimming must not depend on the line endings of the source or the operating system");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenLinesHaveDifferentWhiteSpace_ShouldKeepAllWhiteSpace()
 		{
 			string input = """
@@ -185,7 +185,7 @@ public sealed class StringExtensionsTests
 			                             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenLinesHaveSomeCommonWhiteSpace1_ShouldTrim()
 		{
 			string input = """
@@ -205,7 +205,7 @@ public sealed class StringExtensionsTests
 			                             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenLinesHaveSomeCommonWhiteSpace2_ShouldTrim()
 		{
 			string input = """
@@ -227,7 +227,7 @@ public sealed class StringExtensionsTests
 			                             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenOnlyHasOneLine_ShouldReturnLine()
 		{
 			string input = "foo";
@@ -237,7 +237,7 @@ public sealed class StringExtensionsTests
 			await That(result).IsEqualTo(input);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTwoLines_ShouldTrimSecondLine()
 		{
 			string input = """

@@ -5,9 +5,9 @@ namespace aweXpect.Internal.Tests.Helpers;
 
 public class ObjectEqualityOptionsTests
 {
-	[Theory]
-	[InlineData(true)]
-	[InlineData(false)]
+	[Test]
+	[Arguments(true)]
+	[Arguments(false)]
 	public async Task WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException(bool isEqual)
 	{
 		ObjectEqualityOptions<object?> sut = new ObjectEqualityOptions<object?>().Equivalent(new EquivalencyOptions());

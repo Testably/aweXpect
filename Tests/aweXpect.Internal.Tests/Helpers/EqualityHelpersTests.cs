@@ -9,7 +9,7 @@ public sealed class EqualityHelpersTests
 	{
 		public sealed class DoubleTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBothAreNaN_ShouldReturnTrue()
 			{
 				double value = double.NaN;
@@ -20,9 +20,9 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Theory]
-			[InlineData(0.1, 0.0, 0.1)]
-			[InlineData(0.0, 0.1, 0.1)]
+			[Test]
+			[Arguments(0.1, 0.0, 0.1)]
+			[Arguments(0.0, 0.1, 0.1)]
 			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue(
 				double value, double expected, double tolerance)
 			{
@@ -31,7 +31,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNaN_ShouldReturnFalse()
 			{
 				double value = 0.1;
@@ -42,7 +42,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldReturnFalse()
 			{
 				double value = double.NaN;
@@ -53,7 +53,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNaN_ShouldReturnFalse()
 			{
 				double value = double.NaN;
@@ -67,7 +67,7 @@ public sealed class EqualityHelpersTests
 
 		public sealed class NullableDoubleTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBothAreNaN_ShouldReturnTrue()
 			{
 				double? value = double.NaN;
@@ -78,7 +78,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBothAreNull_ShouldReturnTrue()
 			{
 				double? value = null;
@@ -89,9 +89,9 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Theory]
-			[InlineData(0.1, 0.0, 0.1)]
-			[InlineData(0.0, 0.1, 0.1)]
+			[Test]
+			[Arguments(0.1, 0.0, 0.1)]
+			[Arguments(0.0, 0.1, 0.1)]
 			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue(
 				double? value, double expected, double tolerance)
 			{
@@ -100,7 +100,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNaN_ShouldReturnFalse()
 			{
 				double? value = 0.1;
@@ -111,7 +111,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldReturnFalse()
 			{
 				double? value = double.NaN;
@@ -122,7 +122,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNaN_ShouldReturnFalse()
 			{
 				double? value = double.NaN;
@@ -133,7 +133,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldReturnFalse()
 			{
 				double? value = null;
@@ -147,7 +147,7 @@ public sealed class EqualityHelpersTests
 
 		public sealed class FloatTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBothAreNaN_ShouldReturnTrue()
 			{
 				float value = float.NaN;
@@ -158,9 +158,9 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Theory]
-			[InlineData(0.1F, 0.0F, 0.1F)]
-			[InlineData(0.0F, 0.1F, 0.1F)]
+			[Test]
+			[Arguments(0.1F, 0.0F, 0.1F)]
+			[Arguments(0.0F, 0.1F, 0.1F)]
 			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue(
 				float value, float expected, float tolerance)
 			{
@@ -169,7 +169,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNaN_ShouldReturnFalse()
 			{
 				float value = 0.1F;
@@ -180,7 +180,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldReturnFalse()
 			{
 				float value = float.NaN;
@@ -191,7 +191,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNaN_ShouldReturnFalse()
 			{
 				float value = float.NaN;
@@ -205,7 +205,7 @@ public sealed class EqualityHelpersTests
 
 		public sealed class NullableFloatTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBothAreNaN_ShouldReturnTrue()
 			{
 				float? value = float.NaN;
@@ -216,7 +216,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenBothAreNull_ShouldReturnTrue()
 			{
 				float? value = null;
@@ -227,9 +227,9 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Theory]
-			[InlineData(0.1F, 0.0F, 0.1F)]
-			[InlineData(0.0F, 0.1F, 0.1F)]
+			[Test]
+			[Arguments(0.1F, 0.0F, 0.1F)]
+			[Arguments(0.0F, 0.1F, 0.1F)]
 			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue(
 				float? value, float expected, float tolerance)
 			{
@@ -238,7 +238,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNaN_ShouldReturnFalse()
 			{
 				float? value = 0.1F;
@@ -249,7 +249,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldReturnFalse()
 			{
 				float? value = float.NaN;
@@ -260,7 +260,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNaN_ShouldReturnFalse()
 			{
 				float? value = float.NaN;
@@ -271,7 +271,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldReturnFalse()
 			{
 				float? value = null;
@@ -285,9 +285,9 @@ public sealed class EqualityHelpersTests
 
 		public sealed class DecimalTests
 		{
-			[Theory]
-			[InlineData("0.1", "0.0", "0.1")]
-			[InlineData("0.0", "0.1", "0.1")]
+			[Test]
+			[Arguments("0.1", "0.0", "0.1")]
+			[Arguments("0.0", "0.1", "0.1")]
 			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue(
 				string valueString, string expectedString, string toleranceString)
 			{
@@ -300,7 +300,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldReturnFalse()
 			{
 				decimal value = decimal.MinValue;
@@ -314,7 +314,7 @@ public sealed class EqualityHelpersTests
 
 		public sealed class NullableDecimalTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBothAreNull_ShouldReturnTrue()
 			{
 				decimal? value = null;
@@ -325,9 +325,9 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Theory]
-			[InlineData("0.1", "0.0", "0.1")]
-			[InlineData("0.0", "0.1", "0.1")]
+			[Test]
+			[Arguments("0.1", "0.0", "0.1")]
+			[Arguments("0.0", "0.1", "0.1")]
 			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue(
 				string valueString, string expectedString, string toleranceString)
 			{
@@ -340,7 +340,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldReturnFalse()
 			{
 				decimal? value = decimal.MinValue;
@@ -351,7 +351,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldReturnFalse()
 			{
 				decimal? value = null;
@@ -365,7 +365,7 @@ public sealed class EqualityHelpersTests
 
 		public sealed class NullableDateTimeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBothAreNull_ShouldReturnTrue()
 			{
 				DateTime? value = null;
@@ -377,7 +377,7 @@ public sealed class EqualityHelpersTests
 				await That(hasKindDifference).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldReturnFalse()
 			{
 				DateTime? value = DateTime.Now;
@@ -389,7 +389,7 @@ public sealed class EqualityHelpersTests
 				await That(hasKindDifference).IsTrue();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldReturnFalse()
 			{
 				DateTime? value = null;
@@ -404,7 +404,7 @@ public sealed class EqualityHelpersTests
 
 		public sealed class DateTimeOffsetTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDifferenceExceedsTolerance_ShouldReturnFalse()
 			{
 				DateTimeOffset value = new(2026, 1, 1, 12, 0, 0, TimeSpan.Zero);
@@ -415,9 +415,9 @@ public sealed class EqualityHelpersTests
 				await That(result).IsFalse();
 			}
 
-			[Theory]
-			[InlineData(1)]
-			[InlineData(-1)]
+			[Test]
+			[Arguments(1)]
+			[Arguments(-1)]
 			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue(int seconds)
 			{
 				DateTimeOffset value = new(2026, 1, 1, 12, 0, 0, TimeSpan.Zero);
@@ -428,7 +428,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldReturnFalse()
 			{
 				DateTimeOffset value = DateTimeOffset.MinValue;
@@ -439,7 +439,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenOffsetsDiffer_ShouldCompareTheInstants()
 			{
 				DateTimeOffset value = new(2026, 1, 1, 12, 0, 0, TimeSpan.Zero);
@@ -454,7 +454,7 @@ public sealed class EqualityHelpersTests
 
 		public sealed class NullableDateTimeOffsetTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBothAreNull_ShouldReturnTrue()
 			{
 				DateTimeOffset? value = null;
@@ -465,9 +465,9 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Theory]
-			[InlineData(1)]
-			[InlineData(-1)]
+			[Test]
+			[Arguments(1)]
+			[Arguments(-1)]
 			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue(int seconds)
 			{
 				DateTimeOffset? value = new DateTimeOffset(2026, 1, 1, 12, 0, 0, TimeSpan.Zero);
@@ -478,7 +478,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldReturnFalse()
 			{
 				DateTimeOffset? value = DateTimeOffset.MinValue;
@@ -489,7 +489,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldReturnFalse()
 			{
 				DateTimeOffset? value = null;
@@ -503,7 +503,7 @@ public sealed class EqualityHelpersTests
 
 		public sealed class TimeSpanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenDifferenceIsOutsideTheRangeOfATimeSpan_ShouldReturnFalse()
 			{
 				TimeSpan value = TimeSpan.MinValue;
@@ -515,9 +515,9 @@ public sealed class EqualityHelpersTests
 					.Because("the difference exceeds even the largest tolerance, without overflowing");
 			}
 
-			[Theory]
-			[InlineData(1)]
-			[InlineData(-1)]
+			[Test]
+			[Arguments(1)]
+			[Arguments(-1)]
 			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue(int seconds)
 			{
 				TimeSpan value = TimeSpan.FromMinutes(1);
@@ -528,7 +528,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldReturnFalse()
 			{
 				TimeSpan value = TimeSpan.Zero;
@@ -542,7 +542,7 @@ public sealed class EqualityHelpersTests
 
 		public sealed class NullableTimeSpanTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenBothAreNull_ShouldReturnTrue()
 			{
 				TimeSpan? value = null;
@@ -553,9 +553,9 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Theory]
-			[InlineData(1)]
-			[InlineData(-1)]
+			[Test]
+			[Arguments(1)]
+			[Arguments(-1)]
 			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue(int seconds)
 			{
 				TimeSpan? value = TimeSpan.FromMinutes(1);
@@ -566,7 +566,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsTrue();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldReturnFalse()
 			{
 				TimeSpan? value = TimeSpan.Zero;
@@ -577,7 +577,7 @@ public sealed class EqualityHelpersTests
 				await That(result).IsFalse();
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldReturnFalse()
 			{
 				TimeSpan? value = null;
