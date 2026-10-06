@@ -193,9 +193,9 @@ public sealed class GuaranteesNotNullTests
 		"IsNotTrue",
 	};
 
-	private static IReadOnlyList<Observation>? _observations;
+	private static readonly Lazy<IReadOnlyList<Observation>> LazyObservations = new(Observe);
 
-	private static IReadOnlyList<Observation> Observations => _observations ??= Observe();
+	private static IReadOnlyList<Observation> Observations => LazyObservations.Value;
 
 	private static bool IsExempt(string name) => Exempt.Contains(name);
 
