@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
-        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
-      },
-      {
         "sha": "7148a396703ce432455213e259a5bdc89e5ee4e6",
         "author": "Valentin Breu\u00DF",
         "date": "Wed Sep 23 23:01:09 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 6 08:34:19 2026 \u002B0200",
         "message": "refactor: reduce the cognitive complexity of \u0060EmitRegistration\u0060 in the \u0060TypeMetadataGenerator\u0060 (#1671)"
+      },
+      {
+        "sha": "0d6d920b6328f9cb9a22fe6e17b1c17be8dd5cfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 18:34:38 2026 \u002B0200",
+        "message": "test: migrate the unit tests from xUnit v2 to TUnit (#1672)"
       }
     ],
     "labels": [
-      "7ff3e590",
       "7148a396",
       "11ae0085",
       "d9d72aca",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "168dc965",
       "f21e6eab",
       "d98a48a7",
-      "0c874997"
+      "0c874997",
+      "0d6d920b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          227.43967040947504,
           368.76065781911217,
           246.31336043431207,
           366.88434807459515,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           140.55406246185302,
           62.91932999236243,
           61.340656868049074,
-          128.28232489029565
+          128.28232489029565,
+          121.58482841082981
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -424,7 +424,6 @@ window.BENCHMARK_DATA = {
           936,
           936,
           936,
-          936,
           912,
           912,
           912,
@@ -460,6 +459,7 @@ window.BENCHMARK_DATA = {
           368,
           384,
           384,
+          408,
           408,
           408,
           408,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          195.0926110426585,
           247.28855617841086,
           191.5841211716334,
           247.6801100730896,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           260.9352035181863,
           140.27738031319208,
           129.84236729939778,
-          251.46556717554728
+          251.46556717554728,
+          234.66731909605173
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -619,7 +619,8 @@ window.BENCHMARK_DATA = {
           211.94355142911274,
           101.46569071497235,
           106.80773875543049,
-          220.66658164773668
+          220.66658164773668,
+          202.08744321550643
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -631,6 +632,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -656,12 +658,6 @@ window.BENCHMARK_DATA = {
   },
   "Equivalency": {
     "commits": [
-      {
-        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
-        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
-      },
       {
         "sha": "7148a396703ce432455213e259a5bdc89e5ee4e6",
         "author": "Valentin Breu\u00DF",
@@ -955,10 +951,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 6 08:34:19 2026 \u002B0200",
         "message": "refactor: reduce the cognitive complexity of \u0060EmitRegistration\u0060 in the \u0060TypeMetadataGenerator\u0060 (#1671)"
+      },
+      {
+        "sha": "0d6d920b6328f9cb9a22fe6e17b1c17be8dd5cfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 18:34:38 2026 \u002B0200",
+        "message": "test: migrate the unit tests from xUnit v2 to TUnit (#1672)"
       }
     ],
     "labels": [
-      "7ff3e590",
       "7148a396",
       "11ae0085",
       "d9d72aca",
@@ -1007,14 +1008,14 @@ window.BENCHMARK_DATA = {
       "168dc965",
       "f21e6eab",
       "d98a48a7",
-      "0c874997"
+      "0c874997",
+      "0d6d920b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          280274.5925455729,
           432805.6280273438,
           309114.3339518229,
           402744.52099609375,
@@ -1063,7 +1064,8 @@ window.BENCHMARK_DATA = {
           108458.70014299665,
           57545.92333984375,
           56382.93774820964,
-          109018.22732309195
+          109018.22732309195,
+          111007.1862548828
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1075,7 +1077,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          628408,
           628408,
           628408,
           628408,
@@ -1124,6 +1125,7 @@ window.BENCHMARK_DATA = {
           16288,
           16288,
           16288,
+          16288,
           16288
         ],
         "borderColor": "#63A2AC",
@@ -1139,7 +1141,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1498728.9471354166,
           2588505.1143229166,
           1767930.7940848214,
           2575607.152604167,
@@ -1188,7 +1189,8 @@ window.BENCHMARK_DATA = {
           2709357.916015625,
           1297571.1384114583,
           1268723.9576822917,
-          2702084.5614583334
+          2702084.5614583334,
+          2611354.097395833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1200,7 +1202,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841611,
           4841651,
           4841648,
           4841651,
@@ -1249,6 +1250,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841647,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1274,7 +1276,8 @@ window.BENCHMARK_DATA = {
           203526.44366924578,
           106430.36687011718,
           103924.31419959434,
-          209126.07451171876
+          209126.07451171876,
+          216446.14325358073
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1286,6 +1289,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -1311,12 +1315,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
-        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
-      },
       {
         "sha": "7148a396703ce432455213e259a5bdc89e5ee4e6",
         "author": "Valentin Breu\u00DF",
@@ -1610,10 +1608,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 6 08:34:19 2026 \u002B0200",
         "message": "refactor: reduce the cognitive complexity of \u0060EmitRegistration\u0060 in the \u0060TypeMetadataGenerator\u0060 (#1671)"
+      },
+      {
+        "sha": "0d6d920b6328f9cb9a22fe6e17b1c17be8dd5cfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 18:34:38 2026 \u002B0200",
+        "message": "test: migrate the unit tests from xUnit v2 to TUnit (#1672)"
       }
     ],
     "labels": [
-      "7ff3e590",
       "7148a396",
       "11ae0085",
       "d9d72aca",
@@ -1662,14 +1665,14 @@ window.BENCHMARK_DATA = {
       "168dc965",
       "f21e6eab",
       "d98a48a7",
-      "0c874997"
+      "0c874997",
+      "0d6d920b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          373.4577563285828,
           616.9647481918335,
           418.5804012005146,
           614.0945189339774,
@@ -1718,7 +1721,8 @@ window.BENCHMARK_DATA = {
           302.95488141133234,
           124.45837073666709,
           129.4725998878479,
-          297.2087939807347
+          297.2087939807347,
+          268.26614558696747
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1734,7 +1738,6 @@ window.BENCHMARK_DATA = {
           1616,
           1616,
           1616,
-          1616,
           1592,
           1592,
           1592,
@@ -1770,6 +1773,7 @@ window.BENCHMARK_DATA = {
           560,
           576,
           576,
+          600,
           600,
           600,
           600,
@@ -1794,7 +1798,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          361.0428803648268,
           515.2972635269165,
           368.9387762387594,
           498.2847960472107,
@@ -1843,7 +1846,8 @@ window.BENCHMARK_DATA = {
           527.3515004430499,
           242.61213794121375,
           240.38030180564294,
-          537.5275234222412
+          537.5275234222412,
+          471.8293621381124
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1929,7 +1933,8 @@ window.BENCHMARK_DATA = {
           433.6949016366686,
           198.50514896099384,
           188.058620764659,
-          402.64622151056926
+          402.64622151056926,
+          383.92930589403426
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1941,6 +1946,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -1966,12 +1972,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
-        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
-      },
       {
         "sha": "7148a396703ce432455213e259a5bdc89e5ee4e6",
         "author": "Valentin Breu\u00DF",
@@ -2265,10 +2265,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 6 08:34:19 2026 \u002B0200",
         "message": "refactor: reduce the cognitive complexity of \u0060EmitRegistration\u0060 in the \u0060TypeMetadataGenerator\u0060 (#1671)"
+      },
+      {
+        "sha": "0d6d920b6328f9cb9a22fe6e17b1c17be8dd5cfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 18:34:38 2026 \u002B0200",
+        "message": "test: migrate the unit tests from xUnit v2 to TUnit (#1672)"
       }
     ],
     "labels": [
-      "7ff3e590",
       "7148a396",
       "11ae0085",
       "d9d72aca",
@@ -2317,14 +2322,14 @@ window.BENCHMARK_DATA = {
       "168dc965",
       "f21e6eab",
       "d98a48a7",
-      "0c874997"
+      "0c874997",
+      "0d6d920b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          260.18825085957843,
           371.57226079305013,
           281.1937019983927,
           344.52720368703206,
@@ -2373,7 +2378,8 @@ window.BENCHMARK_DATA = {
           146.34538300832114,
           75.11130221400943,
           75.87682268449238,
-          148.91186265945436
+          148.91186265945436,
+          144.04427870114645
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2389,7 +2395,6 @@ window.BENCHMARK_DATA = {
           1104,
           1104,
           1104,
-          1104,
           1080,
           1080,
           1080,
@@ -2425,6 +2430,7 @@ window.BENCHMARK_DATA = {
           472,
           488,
           488,
+          512,
           512,
           512,
           512,
@@ -2449,7 +2455,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          197.37258693377177,
           250.52697706222534,
           189.36316787401836,
           243.47133977596576,
@@ -2498,7 +2503,8 @@ window.BENCHMARK_DATA = {
           263.06252940495807,
           126.30781677563985,
           133.5051192442576,
-          260.5635449545724
+          260.5635449545724,
+          238.43588604245866
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2584,7 +2590,8 @@ window.BENCHMARK_DATA = {
           257.78513463338214,
           118.24768235133244,
           123.74599652630943,
-          245.37986879348756
+          245.37986879348756,
+          232.59543402989706
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2596,6 +2603,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -2621,12 +2629,6 @@ window.BENCHMARK_DATA = {
   },
   "String": {
     "commits": [
-      {
-        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
-        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
-      },
       {
         "sha": "7148a396703ce432455213e259a5bdc89e5ee4e6",
         "author": "Valentin Breu\u00DF",
@@ -2920,10 +2922,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 6 08:34:19 2026 \u002B0200",
         "message": "refactor: reduce the cognitive complexity of \u0060EmitRegistration\u0060 in the \u0060TypeMetadataGenerator\u0060 (#1671)"
+      },
+      {
+        "sha": "0d6d920b6328f9cb9a22fe6e17b1c17be8dd5cfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 18:34:38 2026 \u002B0200",
+        "message": "test: migrate the unit tests from xUnit v2 to TUnit (#1672)"
       }
     ],
     "labels": [
-      "7ff3e590",
       "7148a396",
       "11ae0085",
       "d9d72aca",
@@ -2972,14 +2979,14 @@ window.BENCHMARK_DATA = {
       "168dc965",
       "f21e6eab",
       "d98a48a7",
-      "0c874997"
+      "0c874997",
+      "0d6d920b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          402.196131669558,
           669.1177337646484,
           480.31194613530084,
           625.3137149175008,
@@ -3028,7 +3035,8 @@ window.BENCHMARK_DATA = {
           249.79837773396417,
           122.4727239449819,
           124.7457462310791,
-          260.6718131701152
+          260.6718131701152,
+          239.73423732121785
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3044,7 +3052,6 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
           1576,
           1576,
           1576,
@@ -3080,6 +3087,7 @@ window.BENCHMARK_DATA = {
           536,
           552,
           552,
+          576,
           576,
           576,
           576,
@@ -3104,7 +3112,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          834.4202824274699,
           1305.3931626637777,
           874.4405344009399,
           1179.566806411743,
@@ -3153,7 +3160,8 @@ window.BENCHMARK_DATA = {
           1232.3798981984457,
           607.3268871307373,
           591.2784699122111,
-          1221.933433151245
+          1221.933433151245,
+          1245.8991654713948
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3239,7 +3247,8 @@ window.BENCHMARK_DATA = {
           358.300580739975,
           171.57039361733658,
           161.33901645739874,
-          331.2323572476705
+          331.2323572476705,
+          325.4316096305847
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3251,6 +3260,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -3276,12 +3286,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
-        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
-      },
       {
         "sha": "7148a396703ce432455213e259a5bdc89e5ee4e6",
         "author": "Valentin Breu\u00DF",
@@ -3575,10 +3579,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 6 08:34:19 2026 \u002B0200",
         "message": "refactor: reduce the cognitive complexity of \u0060EmitRegistration\u0060 in the \u0060TypeMetadataGenerator\u0060 (#1671)"
+      },
+      {
+        "sha": "0d6d920b6328f9cb9a22fe6e17b1c17be8dd5cfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 18:34:38 2026 \u002B0200",
+        "message": "test: migrate the unit tests from xUnit v2 to TUnit (#1672)"
       }
     ],
     "labels": [
-      "7ff3e590",
       "7148a396",
       "11ae0085",
       "d9d72aca",
@@ -3627,14 +3636,14 @@ window.BENCHMARK_DATA = {
       "168dc965",
       "f21e6eab",
       "d98a48a7",
-      "0c874997"
+      "0c874997",
+      "0d6d920b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1321.011224610465,
           2742.400967915853,
           1970.5652867635092,
           2681.35092976888,
@@ -3683,7 +3692,8 @@ window.BENCHMARK_DATA = {
           612.2908625284831,
           303.5208943230765,
           296.8572865486145,
-          640.9725953420003
+          640.9725953420003,
+          594.1570999962943
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3695,7 +3705,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3808,
           3808,
           3808,
           3808,
@@ -3744,6 +3753,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          840,
           840
         ],
         "borderColor": "#63A2AC",
@@ -3759,7 +3769,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          915.1889366422381,
           1425.9506351470948,
           970.213997777303,
           1318.2128634134929,
@@ -3808,7 +3817,8 @@ window.BENCHMARK_DATA = {
           1351.6633270263671,
           640.0229090963091,
           609.1682336330414,
-          1371.2204779307046
+          1371.2204779307046,
+          1255.9418339362512
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3894,7 +3904,8 @@ window.BENCHMARK_DATA = {
           655.5329192968516,
           352.2561849753062,
           306.9008693013872,
-          646.291883913676
+          646.291883913676,
+          606.9482201848712
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3906,6 +3917,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -3931,12 +3943,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "7ff3e590c7081f530f0f1f81567654f7baafc2ed",
-        "author": "Valentin Breu\u00DF",
-        "date": "Wed Sep 23 22:48:13 2026 \u002B0200",
-        "message": "feat: close the ImmutableArray and time tolerance gaps in the collection expectations (#1333)"
-      },
       {
         "sha": "7148a396703ce432455213e259a5bdc89e5ee4e6",
         "author": "Valentin Breu\u00DF",
@@ -4230,10 +4236,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 6 08:34:19 2026 \u002B0200",
         "message": "refactor: reduce the cognitive complexity of \u0060EmitRegistration\u0060 in the \u0060TypeMetadataGenerator\u0060 (#1671)"
+      },
+      {
+        "sha": "0d6d920b6328f9cb9a22fe6e17b1c17be8dd5cfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 18:34:38 2026 \u002B0200",
+        "message": "test: migrate the unit tests from xUnit v2 to TUnit (#1672)"
       }
     ],
     "labels": [
-      "7ff3e590",
       "7148a396",
       "11ae0085",
       "d9d72aca",
@@ -4282,14 +4293,14 @@ window.BENCHMARK_DATA = {
       "168dc965",
       "f21e6eab",
       "d98a48a7",
-      "0c874997"
+      "0c874997",
+      "0d6d920b"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1616.4755638667516,
           3235.9760614122665,
           2304.881059374128,
           3153.5936186654226,
@@ -4338,7 +4349,8 @@ window.BENCHMARK_DATA = {
           972.0514018195016,
           507.56434903826033,
           502.9044852623573,
-          969.7287312825521
+          969.7287312825521,
+          943.9315375010173
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4350,7 +4362,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3808,
           3808,
           3808,
           3808,
@@ -4399,6 +4410,7 @@ window.BENCHMARK_DATA = {
           1248,
           1248,
           1248,
+          1248,
           1248
         ],
         "borderColor": "#63A2AC",
@@ -4414,7 +4426,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          12074.787969316754,
           27407.378987630207,
           14889.59039415632,
           26510.617586263023,
@@ -4463,7 +4474,8 @@ window.BENCHMARK_DATA = {
           27497.089080810547,
           10018.345930916923,
           9443.415021623883,
-          27719.161811241738
+          27719.161811241738,
+          26995.21945659931
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4475,7 +4487,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33465,
           33471,
           33471,
           33471,
@@ -4517,6 +4528,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
@@ -4549,7 +4561,8 @@ window.BENCHMARK_DATA = {
           808.3331483840942,
           427.1614917755127,
           374.5448865890503,
-          808.6336347579957
+          808.6336347579957,
+          757.7921792439053
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4561,6 +4574,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -4735,6 +4749,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 6 08:34:19 2026 \u002B0200",
         "message": "refactor: reduce the cognitive complexity of \u0060EmitRegistration\u0060 in the \u0060TypeMetadataGenerator\u0060 (#1671)"
+      },
+      {
+        "sha": "0d6d920b6328f9cb9a22fe6e17b1c17be8dd5cfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 18:34:38 2026 \u002B0200",
+        "message": "test: migrate the unit tests from xUnit v2 to TUnit (#1672)"
       }
     ],
     "labels": [
@@ -4762,7 +4782,8 @@ window.BENCHMARK_DATA = {
       "168dc965",
       "f21e6eab",
       "d98a48a7",
-      "0c874997"
+      "0c874997",
+      "0d6d920b"
     ],
     "datasets": [
       {
@@ -4793,7 +4814,8 @@ window.BENCHMARK_DATA = {
           774.0639625276838,
           365.76004629135133,
           355.55527383940563,
-          744.1354974110922
+          744.1354974110922,
+          765.0326632772174
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4820,6 +4842,7 @@ window.BENCHMARK_DATA = {
           6912,
           1784,
           1784,
+          1808,
           1808,
           1808,
           1808,
@@ -4868,7 +4891,8 @@ window.BENCHMARK_DATA = {
           84826.06088867187,
           28388.506831577844,
           28697.135393415178,
-          81594.28129069011
+          81594.28129069011,
+          81419.26825823102
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4904,6 +4928,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -5068,6 +5093,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Tue Oct 6 08:34:19 2026 \u002B0200",
         "message": "refactor: reduce the cognitive complexity of \u0060EmitRegistration\u0060 in the \u0060TypeMetadataGenerator\u0060 (#1671)"
+      },
+      {
+        "sha": "0d6d920b6328f9cb9a22fe6e17b1c17be8dd5cfa",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 18:34:38 2026 \u002B0200",
+        "message": "test: migrate the unit tests from xUnit v2 to TUnit (#1672)"
       }
     ],
     "labels": [
@@ -5095,7 +5126,8 @@ window.BENCHMARK_DATA = {
       "168dc965",
       "f21e6eab",
       "d98a48a7",
-      "0c874997"
+      "0c874997",
+      "0d6d920b"
     ],
     "datasets": [
       {
@@ -5126,7 +5158,8 @@ window.BENCHMARK_DATA = {
           303.956152788798,
           135.53794468366183,
           136.48703560462366,
-          283.5047616958618
+          283.5047616958618,
+          291.08639560426985
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5153,6 +5186,7 @@ window.BENCHMARK_DATA = {
           616,
           632,
           632,
+          656,
           656,
           656,
           656,
@@ -5201,7 +5235,8 @@ window.BENCHMARK_DATA = {
           30786.992837088448,
           9273.870933532715,
           9122.359176635742,
-          30918.375451660155
+          30918.375451660155,
+          30489.133728027344
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5237,6 +5272,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -5262,7 +5298,8 @@ window.BENCHMARK_DATA = {
           259.8181400934855,
           119.45650717417399,
           124.34598207473755,
-          249.06301546096802
+          249.06301546096802,
+          239.74138558705647
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5274,6 +5311,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
