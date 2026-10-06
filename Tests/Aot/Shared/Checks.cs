@@ -80,6 +80,38 @@ internal static class Checks
 					"a",
 				});
 			})),
+		// The members that a collection declares itself are read from its registration, so a comparison that
+		// silently degrades into one of the items alone is only visible from its result.
+		new("a collection is compared by the members it declares itself as well",
+			() => ShouldFail(async () =>
+			{
+				Playlist actual = new()
+				{
+					Name = "a",
+				};
+				actual.Add("x");
+				Playlist expected = new()
+				{
+					Name = "b",
+				};
+				expected.Add("x");
+				await That(actual).IsEquivalentTo(expected);
+			}, "Property Name differed")),
+		new("a collection with equal items and members passes",
+			() => ShouldPass(async () =>
+			{
+				Playlist actual = new()
+				{
+					Name = "a",
+				};
+				actual.Add("x");
+				Playlist expected = new()
+				{
+					Name = "a",
+				};
+				expected.Add("x");
+				await That(actual).IsEquivalentTo(expected);
+			})),
 		new("a read-only dictionary is compared with the key comparer of the dictionary it wraps",
 			() => ShouldPass(async () =>
 			{

@@ -474,4 +474,118 @@ public static class Corpus
 			public int Own { get; set; }
 		}
 	}
+
+	public interface IHasName
+	{
+		string Name { get; }
+	}
+
+	public class PlainList : List<int>;
+
+	public class NamedList : List<int>, IHasName
+	{
+		public string Tag = "";
+		public static string Shared { get; set; } = "";
+		internal int Revision { get; set; }
+		public string this[string key] => key + Revision;
+		public string Name { get; set; } = "";
+	}
+
+	public class DescribedList : NamedList
+	{
+		public string Description { get; set; } = "";
+	}
+
+	public class RecountingList : List<int>
+	{
+		public new int Count { get; set; }
+	}
+
+	public class MiscountingQueue : System.Collections.Queue
+	{
+		public int Offset { get; set; }
+		public override int Count => base.Count + Offset;
+	}
+
+	public class NamedLookup : Dictionary<string, int>
+	{
+		public string Name { get; set; } = "";
+	}
+
+	public class Page<T> : IReadOnlyCollection<T>
+	{
+		public string Name { get; set; } = "";
+		public int Count => 0;
+
+		public IEnumerator<T> GetEnumerator() => ((IEnumerable<T>)[]).GetEnumerator();
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+
+	public class SelfMadeLookup : IReadOnlyDictionary<string, int>
+	{
+		private readonly Dictionary<string, int> _entries = [];
+		public string Name { get; set; } = "";
+		public int this[string key] => _entries[key];
+		public IEnumerable<string> Keys => _entries.Keys;
+		public IEnumerable<int> Values => _entries.Values;
+		public int Count => _entries.Count;
+
+		public bool ContainsKey(string key) => _entries.ContainsKey(key);
+
+		public bool TryGetValue(string key, out int value) => _entries.TryGetValue(key, out value);
+
+		public IEnumerator<KeyValuePair<string, int>> GetEnumerator() => _entries.GetEnumerator();
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+
+	public class Counted
+	{
+		public int Count { get; }
+		public int Total { get; set; }
+	}
+
+	public class ImplementingThroughItsBase : Counted, IReadOnlyCollection<int>
+	{
+		public IEnumerator<int> GetEnumerator() => ((IEnumerable<int>)[]).GetEnumerator();
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+
+	public class VirtualPage : IReadOnlyCollection<int>
+	{
+		public virtual int Count => 0;
+		public virtual string Title { get; set; } = "";
+
+		public IEnumerator<int> GetEnumerator() => ((IEnumerable<int>)[]).GetEnumerator();
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+
+	public class OverridingPage : VirtualPage
+	{
+		public int Extra { get; set; }
+		public override int Count => 1;
+		public override string Title { get; set; } = "";
+	}
+
+	public struct LabeledPair : IEnumerable<int>
+	{
+		public string Label;
+		public int Sum { get; set; }
+
+		public readonly IEnumerator<int> GetEnumerator() => ((IEnumerable<int>)[]).GetEnumerator();
+
+		readonly System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+
+	public record TitledSequence : IEnumerable<int>
+	{
+		public string Title { get; init; } = "";
+
+		public IEnumerator<int> GetEnumerator() => ((IEnumerable<int>)[]).GetEnumerator();
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => GetEnumerator();
+	}
 }

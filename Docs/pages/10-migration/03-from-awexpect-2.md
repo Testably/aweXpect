@@ -334,6 +334,14 @@ and `IReadOnlySet<T>`, and to `IDictionary<TKey, TValue>` and `IReadOnlyDictiona
 recognized the non-generic `IDictionary`, so a `HashSet<T>` or a type that only implements
 `IReadOnlyDictionary<TKey, TValue>` failed when both sides held the same content in a different order. Every other
 collection still compares by position.
+
+A collection or dictionary type that declares members itself, such as a `PagedResult<T>` with a `TotalCount` or a
+class derived from `List<T>` with a `Name`, is compared by these members in addition to its items. v2 only compared
+the items when both sides were collections, so two instances with the same items passed although such a member
+differed. The members that describe the collection, like `Count` or `Capacity`, are still left out; to leave out one
+of your own, ignore it: see
+[Collections and dictionaries](../04-values/13-equivalency.md#collections-and-dictionaries).
+
 `IsEquivalentTo` stops at 100 nested objects on a single path and fails naming that path instead of recursing until
 the stack overflows, so a graph that is legitimately deeper needs the limit raised: see
 [Limiting the recursion depth](../04-values/13-equivalency.md#limiting-the-recursion-depth).

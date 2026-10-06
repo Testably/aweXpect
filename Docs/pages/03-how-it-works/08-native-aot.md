@@ -21,6 +21,12 @@ object is rendered from its registered members, so the message keeps listing the
 unregistered object is rendered as `{ *unregistered* }` where reflection is switched off. Either way the message lists
 public instance members only, without static members, indexers or properties that lack a public getter.
 
+For a collection type, the generator registers the members that the type declares itself, which are
+[compared in addition to its items](../04-values/13-equivalency.md#collections-and-dictionaries). Where reflection is
+switched off, a collection type without such a registration is compared by its items alone, because an iterator or
+another collection that only exists as a runtime type cannot be registered. Name a collection type the generator did
+not see in `GenerateMetadata`, as described below, to compare its own members as well.
+
 <details>
 <summary>Types the generator cannot see, and how reflection is switched off</summary>
 

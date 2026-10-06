@@ -163,6 +163,30 @@ public sealed class TypeMetadataRegistryTests
 	}
 
 	[Test]
+	public async Task RegisterCollection_ShouldKeepTheMarkWhenAMemberIsRegisteredLater()
+	{
+		TypeMetadataRegistry.Registration registration = new();
+
+		registration.AddCollection(typeof(Dummy));
+		registration.AddProperty(typeof(Dummy), "Value", typeof(int), _ => 1);
+
+		registration.TryGet(typeof(Dummy), out TypeMetadataRegistry.TypeMetadata? metadata);
+		await That(metadata!.IsCollection).IsTrue()
+			.Because("a later registration is merged into the published one");
+		await That(metadata.Properties.Keys).IsEqualTo(["Value",]);
+	}
+
+	[Test]
+	public async Task RegisterCollection_ShouldMarkTheTypeAsACollection()
+	{
+		TypeMetadataRegistry.RegisterCollection<Marked>();
+
+		TypeMetadataRegistry.Instance.TryGet(typeof(Marked), out TypeMetadataRegistry.TypeMetadata? metadata);
+		await That(metadata?.IsCollection).IsTrue()
+			.Because("the comparison takes the members registered for a collection as the ones it declares itself");
+	}
+
+	[Test]
 	public async Task RegisterSet_ShouldRegisterAReaderOfTheItemComparer()
 	{
 		HashSet<Batched> set = new(new SameValueComparer());
@@ -198,6 +222,8 @@ public sealed class TypeMetadataRegistryTests
 	}
 
 	private sealed class Dummy;
+
+	private sealed class Marked : List<int>;
 
 	private sealed class SameValueComparer : IEqualityComparer<Batched>
 	{

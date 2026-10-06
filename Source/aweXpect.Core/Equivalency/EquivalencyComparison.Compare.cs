@@ -600,7 +600,9 @@ public static partial class EquivalencyComparison
 	}
 
 	/// <summary>
-	///     Compares two objects that are compared by their members, as dictionaries or as sequences.
+	///     Compares two objects that are compared by their members, as dictionaries or as sequences. Two dictionaries
+	///     or sequences are compared by their entries or items and by the members that the expected type declares
+	///     itself.
 	/// </summary>
 	private static async ValueTask<bool>
 		CompareNested<TActual, TExpected>(
@@ -646,19 +648,23 @@ public static partial class EquivalencyComparison
 				    out object? actualKeyComparer) &&
 			    TryGetDictionary(expected, path, out IDictionary? expectedDictionary, out _))
 			{
-				isEquivalent = await CompareDictionaries(actualDictionary, actualKeyComparer, expectedDictionary,
-					failureBuilder, memberType, path, equivalencyOptions, typeOptions, context);
+				bool hasEquivalentEntries = await CompareDictionaries(actualDictionary, actualKeyComparer,
+					expectedDictionary, failureBuilder, memberType, path, equivalencyOptions, typeOptions, context);
+				isEquivalent = await CompareOwnMembers(actual, expected, failureBuilder, memberType, path,
+					equivalencyOptions, typeOptions, context) && hasEquivalentEntries;
 			}
 			else if (TryGetEnumerable(actual, out IEnumerable? actualEnumerable) &&
 			         TryGetEnumerable(expected, out IEnumerable? expectedEnumerable))
 			{
-				isEquivalent = await CompareEnumerables(actualEnumerable, expectedEnumerable, failureBuilder, path,
-					equivalencyOptions, typeOptions, context);
+				bool hasEquivalentItems = await CompareEnumerables(actualEnumerable, expectedEnumerable,
+					failureBuilder, path, equivalencyOptions, typeOptions, context);
+				isEquivalent = await CompareOwnMembers(actual, expected, failureBuilder, memberType, path,
+					equivalencyOptions, typeOptions, context) && hasEquivalentItems;
 			}
 			else
 			{
 				isEquivalent = await CompareObjects(actual, expected, failureBuilder, memberType, path,
-					equivalencyOptions, typeOptions, context);
+					equivalencyOptions, typeOptions, context, false);
 			}
 
 			if (!HasSufficientStack())
@@ -683,17 +689,22 @@ public static partial class EquivalencyComparison
 	///     excluded is never reached through the other one, and the failure keeps the kind of the expected member,
 	///     which is also the kind a scoped ignore rule applies to. Only when neither kind exists does a property the
 	///     actual type implements explicitly for an interface match by its short name.
+	///     <para />
+	///     With <paramref name="ownMembersOnly" />, the objects are collections, the items of which are compared
+	///     separately, so only the members that the expected type declares itself are compared, and a type without
+	///     any has nothing left to verify.
 	/// </remarks>
 	private static async ValueTask<bool>
 		CompareObjects<TActual, TExpected>([DisallowNull] TActual actual,
 			[DisallowNull] TExpected expected,
 			StringBuilder failureBuilder, MemberType memberType, string memberPath,
-			EquivalencyOptions options, EquivalencyTypeOptions typeOptions, EquivalencyContext context)
+			EquivalencyOptions options, EquivalencyTypeOptions typeOptions, EquivalencyContext context,
+			bool ownMembersOnly)
 	{
 		bool result = true;
 		int memberCount = 0;
 		EquivalencyMemberPlan plan = EquivalencyMemberPlan.For(expected.GetType(), actual.GetType(),
-			typeOptions.Fields, typeOptions.Properties);
+			typeOptions.Fields, typeOptions.Properties, ownMembersOnly);
 		foreach (EquivalencyMemberPlan.PlannedMember field in plan.Fields)
 		{
 			memberCount++;
@@ -734,7 +745,7 @@ public static partial class EquivalencyComparison
 			}
 		}
 
-		if (memberCount == 0)
+		if (memberCount == 0 && !ownMembersOnly)
 		{
 			if (actual.GetType() != expected.GetType())
 			{
@@ -751,6 +762,24 @@ public static partial class EquivalencyComparison
 
 		return result;
 	}
+
+	/// <summary>
+	///     Compares the members that the type of the <paramref name="expected" /> collection declares itself, which
+	///     the comparison of its items does not cover.
+	/// </summary>
+	/// <remarks>
+	///     Not <see langword="async" />, because most collections are of a type of the framework, which has no such
+	///     members.
+	/// </remarks>
+	private static ValueTask<bool>
+		CompareOwnMembers<TActual, TExpected>([DisallowNull] TActual actual,
+			[DisallowNull] TExpected expected,
+			StringBuilder failureBuilder, MemberType memberType, string memberPath,
+			EquivalencyOptions options, EquivalencyTypeOptions typeOptions, EquivalencyContext context)
+		=> GetTypeShape(expected.GetType()).CanHaveOwnMembers
+			? CompareObjects(actual, expected, failureBuilder, memberType, memberPath, options, typeOptions,
+				context, true)
+			: new ValueTask<bool>(true);
 
 	/// <remarks>
 	///     A dictionary is a keyed lookup and not a sequence, so it is compared by key, whatever order it enumerates
@@ -872,19 +901,26 @@ public static partial class EquivalencyComparison
 	private static TypeShape GetTypeShape(Type type)
 		=> TypeShapes.GetOrAdd(type, static key => new TypeShape(
 			key.FindGenericInterface(IsDictionaryDefinition),
-			key.FindGenericInterface(IsSetInterface)));
+			key.FindGenericInterface(IsSetInterface),
+			!ReflectionFallback.IsSupported || EquivalencyMembers.CanDeclareOwnMembers(key)));
 
 	/// <summary>
-	///     The generic dictionary interface and the generic set interface that a type implements first.
+	///     The generic dictionary interface and the generic set interface that a type implements first, and whether
+	///     it can have members of its own when it is a collection.
 	/// </summary>
 	/// <remarks>
-	///     Cached, because the interfaces of a type never change, while every object that is compared by its members is
-	///     checked for a dictionary, and every sequence for a set.
+	///     Cached, because the interfaces and base types of a type never change, while every object that is compared
+	///     by its members is checked for a dictionary, every sequence for a set, and every collection for members of
+	///     its own.
+	///     <para />
+	///     Only a type that is no type of the framework, or derives from one that is not, can declare such members.
+	///     Without the reflection fallback, the registrations alone decide, so that no type is ruled out here.
 	/// </remarks>
-	private sealed class TypeShape(Type? dictionaryInterface, Type? setInterface)
+	private sealed class TypeShape(Type? dictionaryInterface, Type? setInterface, bool canHaveOwnMembers)
 	{
 		public Type? DictionaryInterface { get; } = dictionaryInterface;
 		public Type? SetInterface { get; } = setInterface;
+		public bool CanHaveOwnMembers { get; } = canHaveOwnMembers;
 	}
 
 	/// <remarks>
