@@ -8,7 +8,7 @@ namespace aweXpect.Core.Tests.Core.Nodes;
 
 public sealed class OrNodeTests
 {
-	[Fact]
+	[Test]
 	public async Task AddAsyncMapping_ShouldUseCurrentNode()
 	{
 		MemberAccessor<string, Task<int>> memberAccessor =
@@ -24,7 +24,7 @@ public sealed class OrNodeTests
 		await That(second.MappingMemberAccessor).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddAsyncMapping_ShouldUseSecondNode()
 	{
 		MemberAccessor<string, Task<int>> memberAccessor =
@@ -40,7 +40,7 @@ public sealed class OrNodeTests
 		await That(second.MappingMemberAccessor).IsSameAs(memberAccessor);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddMapping_ShouldUseCurrentNode()
 	{
 		MemberAccessor<string, int> memberAccessor = MemberAccessor<string, int>.FromExpression(x => x.Length);
@@ -55,7 +55,7 @@ public sealed class OrNodeTests
 		await That(second.MappingMemberAccessor).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddMapping_ShouldUseSecondNode()
 	{
 		MemberAccessor<string, int> memberAccessor = MemberAccessor<string, int>.FromExpression(x => x.Length);
@@ -70,7 +70,7 @@ public sealed class OrNodeTests
 		await That(second.MappingMemberAccessor).IsSameAs(memberAccessor);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendExpectation_WithAdditionalNodes_ShouldUseAllNodes()
 	{
 		OrNode node = new(new DummyNode("foo"));
@@ -83,7 +83,7 @@ public sealed class OrNodeTests
 		await That(sb.ToString()).IsEqualTo("foo or bar or baz");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendExpectation_WithCustomSeparators_ShouldUseThem()
 	{
 		OrNode node = new(new DummyNode("foo"));
@@ -96,7 +96,7 @@ public sealed class OrNodeTests
 		await That(sb.ToString()).IsEqualTo("foo my bar is baz");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendExpectation_WithoutAdditionalNodes_ShouldUseFirstNode()
 	{
 		OrNode node = new(new DummyNode("foo"));
@@ -107,7 +107,7 @@ public sealed class OrNodeTests
 		await That(sb.ToString()).IsEqualTo("foo");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfCurrentNodeIsDifferent_ShouldBeFalse()
 	{
 		DummyNode innerNode1 = new("1", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
@@ -121,7 +121,7 @@ public sealed class OrNodeTests
 		await That(node1.GetHashCode()).IsNotEqualTo(node2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfCurrentNodeIsTheSame_ShouldBeTrue()
 	{
 		DummyNode innerNode1 = new("1", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
@@ -135,7 +135,7 @@ public sealed class OrNodeTests
 		await That(node1.GetHashCode()).IsEqualTo(node2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfInnerNodesAreDifferent_ShouldBeFalse()
 	{
 		DummyNode innerNode0 = new("0", () => new DummyConstraintResult<string?>(Outcome.Success, "0", ""));
@@ -155,7 +155,7 @@ public sealed class OrNodeTests
 		await That(node1.GetHashCode()).IsNotEqualTo(node2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfInnerNodesAreSame_ShouldBeTrue()
 	{
 		DummyNode innerNode1 = new("1", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
@@ -176,7 +176,7 @@ public sealed class OrNodeTests
 		await That(node1.GetHashCode()).IsEqualTo(node2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_WhenOtherIsDifferentNode_ShouldBeFalse()
 	{
 		DummyNode inner = new("foo");
@@ -188,7 +188,7 @@ public sealed class OrNodeTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_WhenOtherIsNull_ShouldBeFalse()
 	{
 		OrNode node = new(new DummyNode("foo"));
@@ -198,7 +198,7 @@ public sealed class OrNodeTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task FailureCause_WhenBothFailedButOnlyRightDueToException_ShouldForwardException()
 	{
 		Exception exception = new("foo");
@@ -211,7 +211,7 @@ public sealed class OrNodeTests
 		await That(result.FailureCause).IsSameAs(exception);
 	}
 
-	[Fact]
+	[Test]
 	public async Task FailureCause_WhenLeftFailedDueToException_ShouldForwardException()
 	{
 		Exception exception = new("foo");
@@ -224,7 +224,7 @@ public sealed class OrNodeTests
 		await That(result.FailureCause).IsSameAs(exception);
 	}
 
-	[Fact]
+	[Test]
 	public async Task FailureCause_WhenSuccessful_ShouldBeNull()
 	{
 		OrNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success, "left")));
@@ -235,7 +235,7 @@ public sealed class OrNodeTests
 		await That(result.FailureCause).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task NegatedExpectation_WhenFirstNodeSucceeds_ShouldIncludeAllExpectationsInMessage()
 	{
 		async Task Act()
@@ -249,7 +249,7 @@ public sealed class OrNodeTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task NegatedExpectation_WhenFirstNodeSucceeds_ShouldNotEvaluateSecondNode()
 	{
 		bool isEvaluated = false;
@@ -267,7 +267,7 @@ public sealed class OrNodeTests
 			.Because("the negation of a succeeded branch already fails the combination");
 	}
 
-	[Fact]
+	[Test]
 	public async Task NegatedExpectation_WhenFirstNodeSucceeds_ShouldOnlyIncludeItsResult()
 	{
 		async Task Act()
@@ -282,16 +282,16 @@ public sealed class OrNodeTests
 			.Because("the second node was not evaluated, so it has no result");
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Success)]
-	[InlineData(Outcome.Success, Outcome.Undecided, Outcome.Failure)]
-	[InlineData(Outcome.Undecided, Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Undecided)]
-	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Undecided)]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Success, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Failure, Outcome.Success)]
+	[Arguments(Outcome.Success, Outcome.Undecided, Outcome.Failure)]
+	[Arguments(Outcome.Undecided, Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.Undecided, Outcome.Undecided)]
+	[Arguments(Outcome.Undecided, Outcome.Failure, Outcome.Undecided)]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task NegatedOutcome_ShouldBeExpected(Outcome node1, Outcome node2, Outcome expectedOutcome)
 	{
 		OrNode node = new(new DummyNode("", () => new DummyConstraintResult(node1)));
@@ -303,9 +303,9 @@ public sealed class OrNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Failure)]
-	[InlineData(Outcome.Failure, Outcome.FailureBothWays)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Failure)]
+	[Arguments(Outcome.Failure, Outcome.FailureBothWays)]
 	public async Task NegatedOutcome_WhenOperandStaysFailedUnderNegation_ShouldFail(Outcome other,
 		Outcome expectedOutcome)
 	{
@@ -320,7 +320,7 @@ public sealed class OrNodeTests
 			.Because("the negated other operand decides whether the negation could be answered");
 	}
 
-	[Fact]
+	[Test]
 	public async Task NegatedResult_ShouldUseAndAsSeparator()
 	{
 		OrNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success, "foo")));
@@ -338,15 +338,15 @@ public sealed class OrNodeTests
 		await That(sb2.ToString()).IsEqualTo("foo and bar");
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Success, "l")]
-	[InlineData(Outcome.Failure, Outcome.Success, "r")]
-	[InlineData(Outcome.Success, Outcome.Failure, "l")]
-	[InlineData(Outcome.Success, Outcome.Undecided, "l")]
-	[InlineData(Outcome.Undecided, Outcome.Success, "r")]
-	[InlineData(Outcome.Failure, Outcome.Undecided, "r")]
-	[InlineData(Outcome.Undecided, Outcome.Failure, "l")]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, "l and r")]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Success, "l")]
+	[Arguments(Outcome.Failure, Outcome.Success, "r")]
+	[Arguments(Outcome.Success, Outcome.Failure, "l")]
+	[Arguments(Outcome.Success, Outcome.Undecided, "l")]
+	[Arguments(Outcome.Undecided, Outcome.Success, "r")]
+	[Arguments(Outcome.Failure, Outcome.Undecided, "r")]
+	[Arguments(Outcome.Undecided, Outcome.Failure, "l")]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, "l and r")]
 	public async Task NegatedResultText_ShouldBeExpected(Outcome node1, Outcome node2, string expectedResultText)
 	{
 		OrNode node = new(new DummyNode("", () => new DummyConstraintResult(node1, "left", "l")));
@@ -359,11 +359,11 @@ public sealed class OrNodeTests
 			.Because("an undecided operand only explains the combination when no operand failed");
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, FurtherProcessingStrategy.Continue)]
-	[InlineData(Outcome.Success, FurtherProcessingStrategy.IgnoreResult)]
-	[InlineData(Outcome.Undecided, FurtherProcessingStrategy.Continue)]
-	[InlineData(Outcome.Undecided, FurtherProcessingStrategy.IgnoreResult)]
+	[Test]
+	[Arguments(Outcome.Success, FurtherProcessingStrategy.Continue)]
+	[Arguments(Outcome.Success, FurtherProcessingStrategy.IgnoreResult)]
+	[Arguments(Outcome.Undecided, FurtherProcessingStrategy.Continue)]
+	[Arguments(Outcome.Undecided, FurtherProcessingStrategy.IgnoreResult)]
 	public async Task NegatedResultText_WhenLeftSucceedsUnderNegation_ShouldIncludeRightResultText(
 		Outcome right, FurtherProcessingStrategy leftStrategy)
 	{
@@ -378,16 +378,16 @@ public sealed class OrNodeTests
 			.Because("the strategy of the left operand only suppresses the right result after the left result");
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.Success, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Success, Outcome.Success)]
-	[InlineData(Outcome.Success, Outcome.Failure, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
-	[InlineData(Outcome.Success, Outcome.Undecided, Outcome.Success)]
-	[InlineData(Outcome.Undecided, Outcome.Success, Outcome.Success)]
-	[InlineData(Outcome.Failure, Outcome.Undecided, Outcome.Undecided)]
-	[InlineData(Outcome.Undecided, Outcome.Failure, Outcome.Undecided)]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.Success, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Success, Outcome.Success)]
+	[Arguments(Outcome.Success, Outcome.Failure, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Failure, Outcome.Failure)]
+	[Arguments(Outcome.Success, Outcome.Undecided, Outcome.Success)]
+	[Arguments(Outcome.Undecided, Outcome.Success, Outcome.Success)]
+	[Arguments(Outcome.Failure, Outcome.Undecided, Outcome.Undecided)]
+	[Arguments(Outcome.Undecided, Outcome.Failure, Outcome.Undecided)]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, Outcome.Undecided)]
 	public async Task Outcome_ShouldBeExpected(Outcome node1, Outcome node2, Outcome expectedOutcome)
 	{
 		OrNode node = new(new DummyNode("", () => new DummyConstraintResult(node1)));
@@ -398,11 +398,11 @@ public sealed class OrNodeTests
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
 	}
 
-	[Theory]
-	[InlineData(Outcome.Failure, Outcome.Failure, "l and r")]
-	[InlineData(Outcome.Failure, Outcome.Undecided, "l and r")]
-	[InlineData(Outcome.Undecided, Outcome.Failure, "l and r")]
-	[InlineData(Outcome.Undecided, Outcome.Undecided, "l and r")]
+	[Test]
+	[Arguments(Outcome.Failure, Outcome.Failure, "l and r")]
+	[Arguments(Outcome.Failure, Outcome.Undecided, "l and r")]
+	[Arguments(Outcome.Undecided, Outcome.Failure, "l and r")]
+	[Arguments(Outcome.Undecided, Outcome.Undecided, "l and r")]
 	public async Task ResultText_ShouldBeExpected(Outcome node1, Outcome node2, string expectedResultText)
 	{
 		OrNode node = new(new DummyNode("", () => new DummyConstraintResult(node1, "left", "l")));
@@ -414,7 +414,7 @@ public sealed class OrNodeTests
 			.Because("an undecided operand explains why the combination is undecided");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ResultText_WhenLeftSpansMultipleLines_ShouldStartRightOnItsOwnLine()
 	{
 		OrNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "left", "l1\nl2")));
@@ -432,7 +432,7 @@ public sealed class OrNodeTests
 			.Because("the right result must not be glued onto the last line of the left result");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldConsiderFurtherProcessingStrategy()
 	{
 		OrNode node = new(new DummyNode("",
@@ -451,7 +451,7 @@ public sealed class OrNodeTests
 		await That(sb.ToString()).IsEqualTo("foo my bar");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldEvaluateSecondNodeWhenFirstNodeFails()
 	{
 		bool isEvaluated = false;
@@ -464,7 +464,7 @@ public sealed class OrNodeTests
 			.Because("the result is still undecided after the first branch failed");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotAccessMemberOfSecondNodeWhenFirstNodeSucceeds()
 	{
 		int accessCount = 0;
@@ -481,7 +481,7 @@ public sealed class OrNodeTests
 			.Because("a branch after a successful one must not access its member");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldNotEvaluateSecondNodeWhenFirstNodeSucceeds()
 	{
 		async Task Act()
@@ -490,7 +490,7 @@ public sealed class OrNodeTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetValue_WhenLeftHasValue_ShouldReturnLeftValue()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult<int>(Outcome.Success, 1, ""));
@@ -505,7 +505,7 @@ public sealed class OrNodeTests
 		await That(value).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetValue_WhenNoneHasValue_ShouldReturnFalse()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult(Outcome.Success, ""));
@@ -520,7 +520,7 @@ public sealed class OrNodeTests
 		await That(value).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetValue_WhenOnlyRightHasValue_ShouldReturnRightValue()
 	{
 		DummyNode node1 = new("", () => new DummyConstraintResult(Outcome.Success, ""));
@@ -535,7 +535,7 @@ public sealed class OrNodeTests
 		await That(value).IsEqualTo(2);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenBothAreSuccess_ShouldHaveEmptyResultText()
 	{
 		OrNode node = new(new DummyNode("",
@@ -548,7 +548,7 @@ public sealed class OrNodeTests
 		await That(result.GetResultText()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenLeftIsFailureAndHasIgnoreResultFurtherProcessingStrategy_ShouldExcludeRightResultText()
 	{
 		OrNode node = new(new DummyNode("",
@@ -561,7 +561,7 @@ public sealed class OrNodeTests
 		await That(result.GetResultText()).IsEqualTo("r1");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenLeftIsSuccess_ShouldOnlyUseTheExpectationOfTheRightOperand()
 	{
 		OrNode node = new(new DummyNode("",
@@ -579,7 +579,7 @@ public sealed class OrNodeTests
 		await That(result.FailureCause).IsNull();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithCustomSeparator_ShouldUseItInsteadOfOr()
 	{
 		OrNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "foo", "-")));
@@ -592,7 +592,7 @@ public sealed class OrNodeTests
 		await That(sb.ToString()).IsEqualTo("foo my bar");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithCustomSeparators_ShouldUseItInsteadOfOr()
 	{
 		OrNode node = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Failure, "foo", "-")));
@@ -606,7 +606,7 @@ public sealed class OrNodeTests
 		await That(sb.ToString()).IsEqualTo("foo my bar is baz");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithFirstFailedTests_ShouldNotThrow()
 	{
 		async Task Act()
@@ -615,7 +615,7 @@ public sealed class OrNodeTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithMultiLineFailures_ShouldStartTheSecondResultOnItsOwnLine()
 	{
 		async Task Act()
@@ -638,7 +638,7 @@ public sealed class OrNodeTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithMultipleFailedTests_ShouldIncludeAllFailuresInMessage()
 	{
 		async Task Act()
@@ -652,7 +652,7 @@ public sealed class OrNodeTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithProcessingStrategy_ShouldConsiderIgnoreCompletely()
 	{
 		OrNode node = new(new DummyNode("",
@@ -671,7 +671,7 @@ public sealed class OrNodeTests
 		await That(result.Outcome).IsEqualTo(Outcome.Failure);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithSecondFailedTests_ShouldNotThrow()
 	{
 		async Task Act()
@@ -680,7 +680,7 @@ public sealed class OrNodeTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithTwoSuccessfulTests_ShouldNotThrow()
 	{
 		async Task Act()

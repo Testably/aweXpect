@@ -6,7 +6,7 @@ public partial class ValueFormatters
 {
 	public sealed class DateOnlyTests
 	{
-		[Fact]
+		[Test]
 		public async Task Nullable_ShouldUseRoundtripFormat()
 		{
 			DateOnly? value = new(2024, 11, 2);
@@ -22,7 +22,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Nullable_WithType_ShouldUseRoundtripFormat()
 		{
 			DateOnly? value = new(2024, 11, 2);
@@ -38,7 +38,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldUseRoundtripFormat()
 		{
 			DateOnly value = new(2024, 11, 2);
@@ -54,7 +54,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			DateOnly? value = null;
@@ -69,7 +69,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithType_ShouldUseRoundtripFormat()
 		{
 			DateOnly value = new(2024, 11, 2);

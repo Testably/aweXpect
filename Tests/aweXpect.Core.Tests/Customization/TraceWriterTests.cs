@@ -6,7 +6,7 @@ namespace aweXpect.Core.Tests.Customization;
 
 public class TraceWriterTests
 {
-	[Fact]
+	[Test]
 	public async Task EnableTracing_DisposedOutOfOrder_ShouldKeepTheRemainingTraceWriter()
 	{
 		AwexpectCustomization customization = new();
@@ -26,7 +26,7 @@ public class TraceWriterTests
 			.Because("disposing the last lifetime must not restore a trace writer whose lifetime was already disposed");
 	}
 
-	[Fact]
+	[Test]
 	public async Task EnableTracing_DoubleDispose_ShouldNotDisableLaterTraceWriter()
 	{
 		TestTraceWriter firstTraceWriter = new();
@@ -43,7 +43,7 @@ public class TraceWriterTests
 			.Because("disposing a lifetime a second time must not disable a trace writer that was enabled afterwards");
 	}
 
-	[Fact]
+	[Test]
 	public async Task EnableTracing_Global_DoubleDispose_ShouldNotDisableLaterTraceWriter()
 	{
 		AwexpectCustomization customization = new();
@@ -64,7 +64,7 @@ public class TraceWriterTests
 			.Because("disposing the global lifetime disables the global trace writer again");
 	}
 
-	[Fact]
+	[Test]
 	public async Task EnableTracing_Global_ShouldBeUsedWhenTheCurrentFlowHasNoTraceWriter()
 	{
 		AwexpectCustomization customization = new();
@@ -84,7 +84,7 @@ public class TraceWriterTests
 		await That(traceWriterWithFlowTraceWriter).IsSameAs(flowTraceWriter)
 			.Because("a trace writer enabled in the current flow takes precedence over the global one");
 	}
-	[Fact]
+	[Test]
 	public async Task FailTest_ShouldBeLogged()
 	{
 		TestTraceWriter traceWriter = new();
@@ -100,10 +100,10 @@ public class TraceWriterTests
 			}
 		}
 
-		await That(traceWriter.Exceptions).Contains(e => e is XunitException && e.Message == "foo");
+		await That(traceWriter.Exceptions).Contains(e => e is FailException && e.Message == "foo");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForBooleanExpectations_ShouldTraceSuccessfulVerificationDetails()
 	{
 		bool subject = true;
@@ -123,7 +123,7 @@ public class TraceWriterTests
 		]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForFailedDelegateWithoutReturnValue_ShouldTraceSuccessfulVerificationDetails()
 	{
 		Action callback = () => throw new Exception("foo");
@@ -141,7 +141,7 @@ public class TraceWriterTests
 			.IsEqualTo("  Successfully verified that callback throws an exception with message equal to \"foo\"");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForFailedDelegateWithReturnValue_ShouldTraceSuccessfulVerificationDetails()
 	{
 		Func<int> callback = () => throw new Exception("foo");
@@ -159,7 +159,7 @@ public class TraceWriterTests
 			.IsEqualTo("  Successfully verified that callback throws an exception with message equal to \"foo\"");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForSuccessfulDelegateWithoutReturnValue_ShouldTraceSuccessfulVerificationDetails()
 	{
 		Action callback = () => { };
@@ -175,7 +175,7 @@ public class TraceWriterTests
 		]).AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ForSuccessfulDelegateWithReturnValue_ShouldTraceSuccessfulVerificationDetails()
 	{
 		Func<int> callback = () => 4;
@@ -192,7 +192,7 @@ public class TraceWriterTests
 		await That(traceWriter.Messages[1]).IsEqualTo("  Successfully verified that callback executes in at most 0:00.500");
 	}
 
-	[Fact]
+	[Test]
 	public async Task SkipTest_ShouldBeLogged()
 	{
 		TestTraceWriter traceWriter = new();

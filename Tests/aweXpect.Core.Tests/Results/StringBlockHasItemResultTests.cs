@@ -8,7 +8,7 @@ namespace aweXpect.Core.Tests.Results;
 
 public sealed class StringBlockHasItemResultTests
 {
-	[Fact]
+	[Test]
 	public async Task AsBlock_ShouldInterpretExpectedAsBlock()
 	{
 		StringEqualityOptions options = new("expected");
@@ -21,7 +21,7 @@ public sealed class StringBlockHasItemResultTests
 			.Because("a block compares the lines on its own, so it offers only the casing and a comparer");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AsBlock_WhenTheItemAtTheIndexIsTheBlockIndentedAsAWhole_ShouldSucceed()
 	{
 		string[] subject = ["a", "  a\n  b",];
@@ -33,7 +33,7 @@ public sealed class StringBlockHasItemResultTests
 			.Because("the index can still be specified after the block");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AsBlock_WhenTheItemAtTheIndexIsNoBlockMatch_ShouldFail()
 	{
 		string[] subject = ["  a\n  b", "a",];
@@ -41,7 +41,7 @@ public sealed class StringBlockHasItemResultTests
 		async Task Act()
 			=> await That(subject).HasItem("a\nb").AsBlock().AtIndex(1);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             has an item matching "a\nb" as block at index 1,
@@ -55,7 +55,7 @@ public sealed class StringBlockHasItemResultTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task IgnoringCase_ShouldSetOption()
 	{
 		StringEqualityOptions options = new("expected");
@@ -67,7 +67,7 @@ public sealed class StringBlockHasItemResultTests
 		await That(options.ToString()).IsEqualTo(" as block ignoring case");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Using_ShouldSetComparer()
 	{
 		StringEqualityOptions options = new("expected");

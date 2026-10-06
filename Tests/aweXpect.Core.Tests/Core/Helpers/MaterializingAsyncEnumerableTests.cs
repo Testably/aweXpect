@@ -8,7 +8,7 @@ namespace aweXpect.Core.Tests.Core.Helpers;
 
 public class MaterializingAsyncEnumerableTests
 {
-	[Fact]
+	[Test]
 	public async Task ReleaseSource_ShouldOnlyReplayTheItemsReadSoFar()
 	{
 		MaterializingAsyncEnumerable<int> materialized = (MaterializingAsyncEnumerable<int>)
@@ -28,7 +28,7 @@ public class MaterializingAsyncEnumerableTests
 			.Because("it is unknown how many items the released source has");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ReleaseSource_WhenDisposingTheSourceThrows_ShouldNotThrow()
 	{
 		DisposeTrackingAsyncEnumerable source = new(1, 2)
@@ -46,7 +46,7 @@ public class MaterializingAsyncEnumerableTests
 		await That(source.DisposeCount).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ReleaseSource_WhenMoveNextWasAbandoned_ShouldDisposeTheSourceOnceItCompleted()
 	{
 		using CancellationTokenSource cts = new();
@@ -71,7 +71,7 @@ public class MaterializingAsyncEnumerableTests
 		await That(source.DisposeCount).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ReleaseSource_WhenPartiallyRead_ShouldDisposeTheSourceOnce()
 	{
 		DisposeTrackingAsyncEnumerable source = new(1, 2);
@@ -85,7 +85,7 @@ public class MaterializingAsyncEnumerableTests
 		await That(source.DisposeCount).IsEqualTo(1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCancelledBetweenItems_ShouldNotSetTheCount()
 	{
 		using CancellationTokenSource cts = new();
@@ -103,7 +103,7 @@ public class MaterializingAsyncEnumerableTests
 			.Because("a cancelled enumeration does not know how many items the source has");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEnumeratedAfterCancellation_ShouldReplayTheMaterializedItemsAndThrow()
 	{
 		using CancellationTokenSource cts = new();
@@ -131,7 +131,7 @@ public class MaterializingAsyncEnumerableTests
 			.Because("the source must not be advanced once the evaluation is cancelled");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEnumeratedAfterCancellationOfAnExhaustedSource_ShouldReplayAllItems()
 	{
 		using CancellationTokenSource cts = new();
@@ -151,7 +151,7 @@ public class MaterializingAsyncEnumerableTests
 			.Because("the end of the source was reached before the cancellation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEnumeratedWhileEnumerating_ShouldYieldAllItemsToBoth()
 	{
 		IAsyncEnumerable<int> materialized = MaterializingAsyncEnumerable<int>.Wrap(ToAsyncEnumerable([1, 1, 2]), CancellationToken.None);
@@ -175,7 +175,7 @@ public class MaterializingAsyncEnumerableTests
 		await That(inner).IsEqualTo([1, 1, 2]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenIterating_ShouldReturnAllValues()
 	{
 		IAsyncEnumerable<int> enumerable = ToAsyncEnumerable([1, 2, 3]);
@@ -185,7 +185,7 @@ public class MaterializingAsyncEnumerableTests
 		await That(materialized).IsEqualTo([1, 2, 3]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSourceIsEnumerated_ShouldReceiveTheTokenOfTheEvaluation()
 	{
 		using CancellationTokenSource cts = new();
@@ -208,7 +208,7 @@ public class MaterializingAsyncEnumerableTests
 			.Because("all enumerations share the source enumerator, which is governed by the evaluation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Wrap_Twice_ShouldUseSameInstance()
 	{
 		IAsyncEnumerable<int> enumerable = ToAsyncEnumerable([1, 2, 3]);

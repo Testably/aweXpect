@@ -13,7 +13,7 @@ namespace aweXpect.Core.Tests.Equivalency;
 
 public sealed class EquivalencyMatchTypeTests
 {
-	[Fact]
+	[Test]
 	public async Task AreConsideredEqualWithExplanation_ShouldReturnTheMatchTypeItself()
 	{
 		EquivalencyMatchType sut = new(new EquivalencyOptions());
@@ -33,9 +33,9 @@ public sealed class EquivalencyMatchTypeTests
 			           """);
 	}
 
-	[Theory]
-	[InlineData(1, true)]
-	[InlineData(2, false)]
+	[Test]
+	[Arguments(1, true)]
+	[Arguments(2, false)]
 	public async Task AreConsideredEqual_ShouldDecideWhetherTheObjectsAreEquivalent(int expectedValue,
 		bool expectMatch)
 	{
@@ -46,7 +46,7 @@ public sealed class EquivalencyMatchTypeTests
 		await That(result).IsEqualTo(expectMatch);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Constructor_WhenOptionsAreNull_ShouldThrowArgumentNullException()
 	{
 		void Act()
@@ -57,7 +57,7 @@ public sealed class EquivalencyMatchTypeTests
 			.WithMessage("The 'equivalencyOptions' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task PrependItemAndComparison_ShouldPrependTheItemNoun()
 	{
 		EquivalencyMatchType sut = new(new EquivalencyOptions());
@@ -68,7 +68,7 @@ public sealed class EquivalencyMatchTypeTests
 			.Because("the comparison is replaced by the equivalency");
 	}
 
-	[Fact]
+	[Test]
 	public async Task PrependItemAndComparison_WithoutItemNoun_ShouldOnlyNameTheEquivalency()
 	{
 		EquivalencyMatchType sut = new(new EquivalencyOptions());
@@ -78,7 +78,7 @@ public sealed class EquivalencyMatchTypeTests
 		await That(result).IsEqualTo("equivalent to expected");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToString_ShouldDescribeTheEquivalency()
 	{
 		ObjectEqualityOptions<int> options = new();
@@ -89,7 +89,7 @@ public sealed class EquivalencyMatchTypeTests
 		await That(result).IsEqualTo(" using equivalency");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenEquivalent_ShouldSucceed()
 	{
 		Dummy subject = new()
@@ -106,7 +106,7 @@ public sealed class EquivalencyMatchTypeTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenExpectedIsNull_ShouldFailLikeIsEquivalentTo()
 	{
 		Dummy subject = new()
@@ -118,7 +118,7 @@ public sealed class EquivalencyMatchTypeTests
 		async Task Act()
 			=> await That(subject).IsEquivalentToUsingMatchType(expected);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is equivalent to <null>,
@@ -132,7 +132,7 @@ public sealed class EquivalencyMatchTypeTests
 			.Because("the failure is the same as the one of the built-in expectation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNegatedAndEquivalent_ShouldFailLikeIsNotEquivalentTo()
 	{
 		Dummy subject = new()
@@ -147,7 +147,7 @@ public sealed class EquivalencyMatchTypeTests
 		async Task Act()
 			=> await That(subject).IsNotEquivalentToUsingMatchType(unexpected);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is not equivalent to unexpected,
@@ -163,7 +163,7 @@ public sealed class EquivalencyMatchTypeTests
 			.Because("the failure is the same as the one of the built-in expectation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenNotEquivalent_ShouldFailLikeIsEquivalentTo()
 	{
 		Dummy subject = new()
@@ -178,7 +178,7 @@ public sealed class EquivalencyMatchTypeTests
 		async Task Act()
 			=> await That(subject).IsEquivalentToUsingMatchType(expected);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is equivalent to expected,
@@ -201,7 +201,7 @@ public sealed class EquivalencyMatchTypeTests
 		{
 			await act();
 		}
-		catch (XunitException exception)
+		catch (FailException exception)
 		{
 			return exception.Message;
 		}

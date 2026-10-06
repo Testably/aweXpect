@@ -6,7 +6,7 @@ public sealed partial class ThatDelegateTests
 {
 	public sealed class WhichTests
 	{
-		[Fact]
+		[Test]
 		public async Task Throws_Which_WithChainedWhose_ShouldNotRepeatConnector()
 		{
 			void Delegate() => throw new MyException();
@@ -16,7 +16,7 @@ public sealed partial class ThatDelegateTests
 					.Which.Whose(e => e.HResult, h => h.IsEqualTo(5))
 					.And.Whose(e => e.InnerException, i => i.IsNull());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that Delegate
 				             throws a MyException whose HResult is equal to 5 and whose InnerException is null,
@@ -24,7 +24,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_Which_WithOtherExpectationBeforeWhose_ShouldKeepWhich()
 		{
 			void Delegate() => throw new MyException();
@@ -34,7 +34,7 @@ public sealed partial class ThatDelegateTests
 					.Which.HasHResult(5)
 					.And.Whose(e => e.InnerException, i => i.IsNull());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that Delegate
 				             throws a MyException that has HResult equal to 5 and whose InnerException is null,
@@ -42,7 +42,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_Which_WithWhose_ShouldNotRepeatConnector()
 		{
 			void Delegate() => throw new MyException();
@@ -51,7 +51,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(Delegate).Throws<MyException>()
 					.Which.Whose(e => e.HResult, h => h.IsEqualTo(5));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that Delegate
 				             throws a MyException whose HResult is equal to 5,
@@ -59,7 +59,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ThrowsException_Which_WithWhose_ShouldNotRepeatConnector()
 		{
 			void Delegate() => throw new MyException();
@@ -68,7 +68,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(Delegate).Throws()
 					.Which.Whose(e => e.HResult, h => h.IsEqualTo(5));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that Delegate
 				             throws an exception whose HResult is equal to 5,

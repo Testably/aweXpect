@@ -7,7 +7,7 @@ namespace aweXpect.Core.Tests.Results;
 
 public sealed class StringCountResultTests
 {
-	[Fact]
+	[Test]
 	public async Task ShouldBeOptionsProvider_ForQuantifier()
 	{
 		Quantifier quantifier = new();
@@ -18,7 +18,7 @@ public sealed class StringCountResultTests
 			.Whose(x => x.Options, it => it.IsSameAs(quantifier));
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldBeOptionsProvider_ForStringEqualityOptions()
 	{
 		Quantifier quantifier = new();

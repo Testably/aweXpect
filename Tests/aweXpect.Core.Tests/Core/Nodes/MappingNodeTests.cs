@@ -10,7 +10,7 @@ namespace aweXpect.Core.Tests.Core.Nodes;
 
 public class MappingNodeTests
 {
-	[Fact]
+	[Test]
 	public async Task Equals_IfMemberAccessorsAreDifferent_ShouldBeFalse()
 	{
 		MappingNode<string, int, int> node1 = new(
@@ -24,7 +24,7 @@ public class MappingNodeTests
 		await That(node1.GetHashCode()).IsNotEqualTo(node2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_IfMemberAccessorsAreSame_ShouldBeTrue()
 	{
 		MappingNode<string, int, int> node1 = new(
@@ -38,7 +38,7 @@ public class MappingNodeTests
 		await That(node1.GetHashCode()).IsEqualTo(node2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_WhenOtherIsDifferentNode_ShouldBeFalse()
 	{
 		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
@@ -49,7 +49,7 @@ public class MappingNodeTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_WhenOtherIsNull_ShouldBeFalse()
 	{
 		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
@@ -59,7 +59,7 @@ public class MappingNodeTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_ShouldUseInnerConstraintWithOuterValue()
 	{
 		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
@@ -76,7 +76,7 @@ public class MappingNodeTests
 		await That(value).IsEqualTo("foobar");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenMemberThrows_ShouldFailWithoutEvaluatingMemberConstraints()
 	{
 		NotSupportedException exception = new("foo");
@@ -92,7 +92,7 @@ public class MappingNodeTests
 		await That(sb.ToString()).IsEqualTo("yeah!");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenMemberThrows_ShouldUseTheExpectationResultOfExpectationTextConstraints()
 	{
 		MappingNode<string, int, int> node = new(
@@ -108,7 +108,7 @@ public class MappingNodeTests
 		await That(sb.ToString()).IsEqualTo("not yeah!");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenMemberThrows_WhenNegated_ShouldNegateExpectationAndStillFail()
 	{
 		MappingNode<string, int, int> node = new(
@@ -124,7 +124,7 @@ public class MappingNodeTests
 		await That(sb.ToString()).IsEqualTo("not yeah!");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithInvalidType_ShouldNotApplyTheMemberExpectations()
 	{
 		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
@@ -137,7 +137,7 @@ public class MappingNodeTests
 		await That(result.GetResultText()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithNullDelegate_ShouldReturnNullFailure()
 	{
 		DelegateValue<string?> value = new("foo", null, 10.Milliseconds(), true);
@@ -153,7 +153,7 @@ public class MappingNodeTests
 		await That(result.GetResultText()).IsEqualTo("it was <null>");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithNullValue_ShouldReturnNullFailure()
 	{
 		MappingNode<string?, int?, int?> node = new(MemberAccessor<string?, int?>.FromFunc(s => s?.Length, " length "));
@@ -168,7 +168,7 @@ public class MappingNodeTests
 		await That(result.GetResultText()).IsEqualTo("it was <null>");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithNullValue_WhenNegated_ShouldNegateExpectationAndStillFail()
 	{
 		MappingNode<string?, int?, int?> node = new(MemberAccessor<string?, int?>.FromFunc(s => s?.Length, " length "));

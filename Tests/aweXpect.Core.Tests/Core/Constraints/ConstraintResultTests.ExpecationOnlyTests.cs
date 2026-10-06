@@ -9,7 +9,7 @@ public partial class ConstraintResultTests
 {
 	public sealed class ExpectationOnlyTests
 	{
-		[Fact]
+		[Test]
 		public async Task NormalCase_ShouldNotHaveNegatedGrammarsFlagAndSuccessOutcome()
 		{
 			ConstraintResult sut = new ConstraintResult.ExpectationOnly<int>(ExpectationGrammars.Plural);
@@ -20,7 +20,7 @@ public partial class ConstraintResultTests
 		}
 
 
-		[Fact]
+		[Test]
 		public async Task SetOutcome_AfterInvert_ShouldBeInverted()
 		{
 			MyExpectationOnlyConstraintResult<int> sut = new(
@@ -33,10 +33,10 @@ public partial class ConstraintResultTests
 				.Because("the outcome is set for the expectation that is not negated, like for ConstraintResult.WithValue<T>");
 		}
 
-		[Theory]
-		[InlineData(Outcome.Success)]
-		[InlineData(Outcome.Failure)]
-		[InlineData(Outcome.Undecided)]
+		[Test]
+		[Arguments(Outcome.Success)]
+		[Arguments(Outcome.Failure)]
+		[Arguments(Outcome.Undecided)]
 		public async Task SetOutcome_ShouldBeForwardedToInner(Outcome outcome)
 		{
 			MyExpectationOnlyConstraintResult<int> sut = new(
@@ -47,11 +47,11 @@ public partial class ConstraintResultTests
 			await That(sut.Outcome).IsEqualTo(outcome);
 		}
 
-		[Theory]
-		[InlineData(Outcome.Success, Outcome.Failure)]
-		[InlineData(Outcome.Failure, Outcome.Success)]
-		[InlineData(Outcome.FailureBothWays, Outcome.FailureBothWays)]
-		[InlineData(Outcome.Undecided, Outcome.Undecided)]
+		[Test]
+		[Arguments(Outcome.Success, Outcome.Failure)]
+		[Arguments(Outcome.Failure, Outcome.Success)]
+		[Arguments(Outcome.FailureBothWays, Outcome.FailureBothWays)]
+		[Arguments(Outcome.Undecided, Outcome.Undecided)]
 		public async Task SetOutcome_WhenInverted_ShouldInvertSuccessAndFailure(Outcome outcome, Outcome expected)
 		{
 			MyExpectationOnlyConstraintResult<int> sut = new(
@@ -64,7 +64,7 @@ public partial class ConstraintResultTests
 				.Because("the negated text is rendered, so the verdict must be negated as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task TryGetValue_ShouldReturnFalse()
 		{
 			ConstraintResult sut = new ConstraintResult.ExpectationOnly<int>(ExpectationGrammars.None);
@@ -75,7 +75,7 @@ public partial class ConstraintResultTests
 			await That(value).IsEqualTo(0);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenInverted_ShouldHaveNegatedGrammarsFlagAndSuccessOutcome()
 		{
 			ConstraintResult sut = new ConstraintResult.ExpectationOnly<int>(ExpectationGrammars.Nested);
@@ -87,7 +87,7 @@ public partial class ConstraintResultTests
 			await That(sut.Outcome).IsEqualTo(Outcome.Success);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenInverted_WithExpectationText_ShouldAppendNegatedExpectationText()
 		{
 			ConstraintResult sut = new ConstraintResult.ExpectationOnly<int>(
@@ -100,7 +100,7 @@ public partial class ConstraintResultTests
 			await That(resultText).IsEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenInverted_WithNullAsExpectationText_ShouldAppendNegatedExpectationText()
 		{
 			ConstraintResult sut = new ConstraintResult.ExpectationOnly<int>(
@@ -113,7 +113,7 @@ public partial class ConstraintResultTests
 			await That(resultText).IsEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithExpectationText_ShouldAppendExpectationText()
 		{
 			ConstraintResult sut = new ConstraintResult.ExpectationOnly<int>(
@@ -126,7 +126,7 @@ public partial class ConstraintResultTests
 			await That(resultText).IsEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithNullAsExpectationText_ShouldKeepEmptyExpectationText()
 		{
 			ConstraintResult sut = new ConstraintResult.ExpectationOnly<int>(
@@ -139,7 +139,7 @@ public partial class ConstraintResultTests
 			await That(resultText).IsEmpty();
 		}
 
-		[Fact]
+		[Test]
 		public async Task InAnd_WhenNegatedAndOtherExpectationIsMet_ShouldFail()
 		{
 			async Task Act()
@@ -149,7 +149,7 @@ public partial class ConstraintResultTests
 					AddNote(((IExpectThat<int>)it).ExpectationBuilder.And(" "));
 				});
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that 1
 				             is not equal to 1 (negated note),
@@ -157,7 +157,7 @@ public partial class ConstraintResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task InAnd_WhenOtherExpectationIsNotMet_ShouldFail()
 		{
 			async Task Act()
@@ -167,7 +167,7 @@ public partial class ConstraintResultTests
 					AddNote(((IExpectThat<int>)it).ExpectationBuilder.And(" "));
 				});
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that 1
 				             is equal to 2 (note),
@@ -175,7 +175,7 @@ public partial class ConstraintResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task InAnd_WithOutcomeSetByDerivedClass_ShouldTakePartInTheCombination()
 		{
 			MyExpectationOnlyConstraintResult<int> derived = new(ExpectationGrammars.None, "(note)");
@@ -188,7 +188,7 @@ public partial class ConstraintResultTests
 			await That(result.Outcome).IsEqualTo(Outcome.Failure);
 		}
 
-		[Fact]
+		[Test]
 		public async Task InAnd_WhenNegated_WithOutcomeSetByDerivedClass_ShouldTakePartInTheCombination()
 		{
 			MyExpectationOnlyConstraintResult<int> derived = new(ExpectationGrammars.None, "(note)", "(not note)");
@@ -203,7 +203,7 @@ public partial class ConstraintResultTests
 				.Because("the negation of a failed operand is met");
 		}
 
-		[Fact]
+		[Test]
 		public async Task InAnd_WhenNegated_WithSuccessSetByDerivedClass_ShouldFail()
 		{
 			async Task Act()
@@ -218,7 +218,7 @@ public partial class ConstraintResultTests
 					});
 				});
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that 1
 				             is not equal to 1 (not note),
@@ -227,7 +227,7 @@ public partial class ConstraintResultTests
 				.Because("both operands are met, so their negation fails");
 		}
 
-		[Fact]
+		[Test]
 		public async Task InOr_WhenNegatedAndOtherExpectationIsNotMet_ShouldSucceed()
 		{
 			async Task Act()
@@ -242,7 +242,7 @@ public partial class ConstraintResultTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task InOr_WhenOtherExpectationIsNotMet_ShouldFail()
 		{
 			async Task Act()
@@ -254,7 +254,7 @@ public partial class ConstraintResultTests
 					AddNote(expectationBuilder);
 				});
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that 1
 				             is equal to 2 or (note),

@@ -5,7 +5,7 @@ namespace aweXpect.Core.Tests.Options;
 
 public class ObjectEqualityOptionsTests
 {
-	[Fact]
+	[Test]
 	public async Task AreConsideredEqualWithExplanation_WhenEqual_ShouldReturnAMatch()
 	{
 		ObjectEqualityOptions<int> sut = new();
@@ -15,7 +15,7 @@ public class ObjectEqualityOptionsTests
 		await That(result.IsMatch).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task AreConsideredEqualWithExplanation_WhenNotEqual_ShouldExplainWithTheActualValue()
 	{
 		ObjectEqualityOptions<int> sut = new();
@@ -26,9 +26,9 @@ public class ObjectEqualityOptionsTests
 		await That(result.GetExtendedFailure("it", ExpectationGrammars.None, 1, 2)).IsEqualTo("it was 1");
 	}
 
-	[Theory]
-	[InlineData(11, true)]
-	[InlineData(12, false)]
+	[Test]
+	[Arguments(11, true)]
+	[Arguments(12, false)]
 	public async Task AreConsideredEqualWithExplanation_WithATypedComparer_ShouldDecideWithIt(int expected,
 		bool expectMatch)
 	{
@@ -41,7 +41,7 @@ public class ObjectEqualityOptionsTests
 		await That(result.GetExtendedFailure("it", ExpectationGrammars.None, 1, expected)).IsEqualTo("it was 1");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AreConsideredEqualWithExplanation_WithAnUntypedComparer_ShouldDecideWithIt()
 	{
 		ObjectEqualityOptions<object> sut = new();
@@ -52,8 +52,8 @@ public class ObjectEqualityOptionsTests
 		await That(result.IsMatch).IsTrue();
 	}
 
-	[Theory]
-	[MemberData(nameof(DifferentNumbers), DisableDiscoveryEnumeration = true)]
+	[Test]
+	[MethodDataSource(nameof(DifferentNumbers))]
 	public async Task AreConsideredEqual_WhenNumbersHaveDifferentValues_ShouldReturnFalse(
 		object actual, object expected)
 	{
@@ -65,8 +65,8 @@ public class ObjectEqualityOptionsTests
 			.Because("a value that does not fit into the other type must neither wrap around nor lose precision to an equal value");
 	}
 
-	[Theory]
-	[MemberData(nameof(EqualNumbers), DisableDiscoveryEnumeration = true)]
+	[Test]
+	[MethodDataSource(nameof(EqualNumbers))]
 	public async Task AreConsideredEqual_WhenNumbersHaveSameValue_ShouldReturnTrue(
 		object actual, object expected)
 	{
@@ -77,7 +77,7 @@ public class ObjectEqualityOptionsTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task SetMatchType_WithOptionName_WhenAnotherOptionIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		ObjectEqualityOptions<object> sut = new();
@@ -90,7 +90,7 @@ public class ObjectEqualityOptionsTests
 			.Because("the match type would silently replace the comparer");
 	}
 
-	[Fact]
+	[Test]
 	public async Task SetMatchType_WithOptionName_WhenTheSameOptionIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		ObjectEqualityOptions<object> sut = new();
@@ -103,7 +103,7 @@ public class ObjectEqualityOptionsTests
 			.Because("the second match type would silently replace the first one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task SetMatchType_WithoutOptionName_ShouldReplaceTheMatchType()
 	{
 		ObjectEqualityOptions<object> sut = new();
@@ -115,7 +115,7 @@ public class ObjectEqualityOptionsTests
 			.Because("without an option name the match type is set as is, e.g. to resolve a default");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Using_WhenAComparerIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		ObjectEqualityOptions<object> sut = new();
@@ -128,7 +128,7 @@ public class ObjectEqualityOptionsTests
 			.Because("the second comparer would silently replace the first one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Using_WhenAnotherOptionIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		ObjectEqualityOptions<object> sut = new();
@@ -141,7 +141,7 @@ public class ObjectEqualityOptionsTests
 			.Because("the comparer would silently replace the match type");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Using_WithATypedComparer_ShouldCompareWithIt()
 	{
 		ObjectEqualityOptions<int> sut = new();
@@ -152,7 +152,7 @@ public class ObjectEqualityOptionsTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Using_WithATypedComparer_ShouldNameItsType()
 	{
 		ObjectEqualityOptions<int> sut = new();
@@ -163,7 +163,7 @@ public class ObjectEqualityOptionsTests
 		await That(result).IsEqualTo(" using ObjectEqualityOptionsTests.ModuloComparer");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Using_WithATypedComparer_WhenAComparerIsSpecified_ShouldThrowInvalidOperationException()
 	{
 		ObjectEqualityOptions<int> sut = new();
@@ -176,7 +176,7 @@ public class ObjectEqualityOptionsTests
 			.Because("the second comparer would silently replace the first one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Using_WithATypedComparer_WhenTheExpectedValueHasAnotherType_ShouldReturnFalse()
 	{
 		ObjectEqualityOptions<int> sut = new();
@@ -188,7 +188,7 @@ public class ObjectEqualityOptionsTests
 			.Because("the comparer can only compare values of its own type");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Using_WithATypedComparer_WithNull_ShouldThrowArgumentNullException()
 	{
 		ObjectEqualityOptions<int> sut = new();
@@ -200,7 +200,7 @@ public class ObjectEqualityOptionsTests
 			.WithMessage("The 'comparer' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Using_WithNull_ShouldThrowArgumentNullException()
 	{
 		ObjectEqualityOptions<object> sut = new();

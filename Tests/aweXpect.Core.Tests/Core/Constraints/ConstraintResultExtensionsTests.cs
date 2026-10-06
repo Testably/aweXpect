@@ -7,7 +7,7 @@ public sealed class ConstraintResultExtensionsTests
 {
 	public sealed class FailTests
 	{
-		[Fact]
+		[Test]
 		public async Task Failure_TryGetStoredValue_WithNullValue_ShouldReturnTrue()
 		{
 			ConstraintResult sut = new DummyConstraintResult<string>(Outcome.Success, "value", "foo");
@@ -20,7 +20,7 @@ public sealed class ConstraintResultExtensionsTests
 			await That(value).IsNull();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Failure_TryGetValue_WhenTypeDoesNotMatch_ShouldReturnFalse()
 		{
 			ConstraintResult sut = new DummyConstraintResult<string>(Outcome.Success, "value", "foo");
@@ -33,7 +33,7 @@ public sealed class ConstraintResultExtensionsTests
 			await That(value).IsNull();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Failure_TryGetValue_WhenTypeMatches_ShouldReturnTrue()
 		{
 			ConstraintResult sut = new DummyConstraintResult<string>(Outcome.Success, "value", "foo");
@@ -46,7 +46,7 @@ public sealed class ConstraintResultExtensionsTests
 			await That(value).IsEqualTo(1);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Failure_TryGetValue_WithNullValue_ShouldReturnFalse()
 		{
 			ConstraintResult sut = new DummyConstraintResult<string>(Outcome.Success, "value", "foo");
@@ -59,7 +59,7 @@ public sealed class ConstraintResultExtensionsTests
 			await That(value).IsNull();
 		}
 
-		[Fact]
+		[Test]
 		public async Task FailureCause_ShouldBeForwardedFromInner()
 		{
 			Exception exception = new("foo");
@@ -70,7 +70,7 @@ public sealed class ConstraintResultExtensionsTests
 			await That(sut.FailureCause).IsSameAs(exception);
 		}
 
-		[Fact]
+		[Test]
 		public async Task FailureCause_WhenInnerHasNoFailureCause_ShouldBeNull()
 		{
 			ConstraintResult inner = new DummyConstraintResult(Outcome.Failure, "foo");
@@ -79,10 +79,10 @@ public sealed class ConstraintResultExtensionsTests
 			await That(sut.FailureCause).IsNull();
 		}
 
-		[Theory]
-		[InlineData(Outcome.Failure, Outcome.Success)]
-		[InlineData(Outcome.Success, Outcome.Failure)]
-		[InlineData(Outcome.Undecided, Outcome.Undecided)]
+		[Test]
+		[Arguments(Outcome.Failure, Outcome.Success)]
+		[Arguments(Outcome.Success, Outcome.Failure)]
+		[Arguments(Outcome.Undecided, Outcome.Undecided)]
 		public async Task Negate_ShouldForwardToInnerResult(Outcome innerOutcome, Outcome expectedAfterNegation)
 		{
 			ConstraintResult inner = new DummyConstraintResult<string>(innerOutcome, "value", "foo");
@@ -94,13 +94,13 @@ public sealed class ConstraintResultExtensionsTests
 			await That(sut.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		}
 
-		[Theory]
-		[InlineData(Outcome.Failure, false)]
-		[InlineData(Outcome.Failure, true)]
-		[InlineData(Outcome.Success, false)]
-		[InlineData(Outcome.Success, true)]
-		[InlineData(Outcome.Undecided, false)]
-		[InlineData(Outcome.Undecided, true)]
+		[Test]
+		[Arguments(Outcome.Failure, false)]
+		[Arguments(Outcome.Failure, true)]
+		[Arguments(Outcome.Success, false)]
+		[Arguments(Outcome.Success, true)]
+		[Arguments(Outcome.Undecided, false)]
+		[Arguments(Outcome.Undecided, true)]
 		public async Task Negate_ShouldReturnTheFailure(Outcome innerOutcome, bool invert)
 		{
 			ConstraintResult inner = new DummyConstraintResult<string>(innerOutcome, "value", "foo", "baz");
@@ -117,7 +117,7 @@ public sealed class ConstraintResultExtensionsTests
 
 	public sealed class UseValueTests
 	{
-		[Fact]
+		[Test]
 		public async Task Failure_TryGetStoredValue_WithNullValue_ShouldReturnTrue()
 		{
 			ConstraintResult sut = new DummyConstraintResult<string>(Outcome.Failure, "value", "foo", "bar");
@@ -130,7 +130,7 @@ public sealed class ConstraintResultExtensionsTests
 			await That(value).IsNull();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Failure_TryGetValue_WhenTypeDoesNotMatch_ShouldReturnFalse()
 		{
 			ConstraintResult sut = new DummyConstraintResult<string>(Outcome.Failure, "value", "foo", "bar");
@@ -142,7 +142,7 @@ public sealed class ConstraintResultExtensionsTests
 			await That(value).IsNull();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Failure_TryGetValue_WhenTypeMatches_ShouldReturnTrue()
 		{
 			ConstraintResult sut = new DummyConstraintResult<string>(Outcome.Failure, "value", "foo", "bar");
@@ -154,7 +154,7 @@ public sealed class ConstraintResultExtensionsTests
 			await That(value).IsEqualTo(1);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Failure_TryGetValue_WithNullValue_ShouldReturnFalse()
 		{
 			ConstraintResult sut = new DummyConstraintResult<string>(Outcome.Failure, "value", "foo", "bar");
@@ -166,7 +166,7 @@ public sealed class ConstraintResultExtensionsTests
 			await That(value).IsNull();
 		}
 
-		[Fact]
+		[Test]
 		public async Task FailureCause_ShouldBeForwardedFromInner()
 		{
 			Exception exception = new("foo");
@@ -177,10 +177,10 @@ public sealed class ConstraintResultExtensionsTests
 			await That(sut.FailureCause).IsSameAs(exception);
 		}
 
-		[Theory]
-		[InlineData(Outcome.Failure, Outcome.Success)]
-		[InlineData(Outcome.Success, Outcome.Failure)]
-		[InlineData(Outcome.Undecided, Outcome.Undecided)]
+		[Test]
+		[Arguments(Outcome.Failure, Outcome.Success)]
+		[Arguments(Outcome.Success, Outcome.Failure)]
+		[Arguments(Outcome.Undecided, Outcome.Undecided)]
 		public async Task Negate_ShouldForwardToInnerResult(Outcome innerOutcome, Outcome expectedAfterNegation)
 		{
 			ConstraintResult inner = new DummyConstraintResult<string>(innerOutcome, "value", "foo");
@@ -195,7 +195,7 @@ public sealed class ConstraintResultExtensionsTests
 
 	public sealed class AppendExpectationTextTests
 	{
-		[Fact]
+		[Test]
 		public async Task FailureCause_ShouldBeForwardedFromInner()
 		{
 			Exception exception = new("foo");
@@ -206,10 +206,10 @@ public sealed class ConstraintResultExtensionsTests
 			await That(sut.FailureCause).IsSameAs(exception);
 		}
 
-		[Theory]
-		[InlineData(Outcome.Failure, Outcome.Success)]
-		[InlineData(Outcome.Success, Outcome.Failure)]
-		[InlineData(Outcome.Undecided, Outcome.Undecided)]
+		[Test]
+		[Arguments(Outcome.Failure, Outcome.Success)]
+		[Arguments(Outcome.Success, Outcome.Failure)]
+		[Arguments(Outcome.Undecided, Outcome.Undecided)]
 		public async Task Negate_ShouldForwardToInnerResult(Outcome innerOutcome, Outcome expectedAfterNegation)
 		{
 			ConstraintResult inner = new DummyConstraintResult<string>(innerOutcome, "value", "foo");
@@ -221,7 +221,7 @@ public sealed class ConstraintResultExtensionsTests
 			await That(sut.Outcome).IsEqualTo(expectedAfterNegation);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldAppendAfterExpectationText()
 		{
 			ConstraintResult sut = new DummyConstraintResult(Outcome.Success, "foo");
@@ -232,7 +232,7 @@ public sealed class ConstraintResultExtensionsTests
 			await That(result.GetExpectationText()).IsEqualTo("foo\nsuffix-foo");
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldKeepResultTextUnchanged()
 		{
 			ConstraintResult sut = new DummyConstraintResult(Outcome.Failure, "foo", "bar");
@@ -247,10 +247,10 @@ public sealed class ConstraintResultExtensionsTests
 
 	public sealed class PrependExpectationTextTests
 	{
-		[Theory]
-		[InlineData(Outcome.Failure, Outcome.Success)]
-		[InlineData(Outcome.Success, Outcome.Failure)]
-		[InlineData(Outcome.Undecided, Outcome.Undecided)]
+		[Test]
+		[Arguments(Outcome.Failure, Outcome.Success)]
+		[Arguments(Outcome.Success, Outcome.Failure)]
+		[Arguments(Outcome.Undecided, Outcome.Undecided)]
 		public async Task Negate_ShouldForwardToInnerResult(Outcome innerOutcome, Outcome expectedAfterNegation)
 		{
 			ConstraintResult inner = new DummyConstraintResult<string>(innerOutcome, "value", "foo");
@@ -262,7 +262,7 @@ public sealed class ConstraintResultExtensionsTests
 			await That(sut.Outcome).IsEqualTo(expectedAfterNegation);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldAppendAfterExpectationText()
 		{
 			ConstraintResult sut = new DummyConstraintResult(Outcome.Success, "foo");
@@ -273,7 +273,7 @@ public sealed class ConstraintResultExtensionsTests
 			await That(result.GetExpectationText()).IsEqualTo("prefix-foo\nfoo");
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldKeepResultTextUnchanged()
 		{
 			ConstraintResult sut = new DummyConstraintResult(Outcome.Failure, "foo", "bar");

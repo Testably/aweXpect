@@ -7,7 +7,7 @@ public sealed partial class ThatDelegateTests
 {
 	public sealed class WithTimeoutTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenAsyncDelegateReturnsAfterTheTimeout_ShouldFail()
 		{
 			Func<Task> @delegate = () => Task.Delay(100.Milliseconds());
@@ -15,7 +15,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that @delegate
 				             does not throw any exception,
@@ -25,7 +25,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the task is abandoned once the timeout elapsed");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSyncDelegateReturnsAfterTheTimeout_ShouldFail()
 		{
 			Action @delegate = () => Block(100.Milliseconds());
@@ -33,7 +33,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that @delegate
 				             does not throw any exception,
@@ -43,7 +43,7 @@ public sealed partial class ThatDelegateTests
 				.Because("a synchronous delegate that overran the timeout must fail like an asynchronous one");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSyncDelegateWithValueReturnsAfterTheTimeout_ShouldFail()
 		{
 			Func<int> @delegate = () =>
@@ -55,7 +55,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that @delegate
 				             does not throw any exception,

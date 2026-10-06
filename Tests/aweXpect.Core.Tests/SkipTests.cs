@@ -2,8 +2,8 @@
 
 public sealed class SkipTests
 {
-	[Theory]
-	[AutoData]
+	[Test]
+	[AutoArguments]
 	public async Task Test_ShouldThrowException(string reason)
 	{
 		void Act() => Skip.Test(reason);
@@ -12,9 +12,9 @@ public sealed class SkipTests
 			.WithMessage($"*{reason}*").AsWildcard();
 	}
 
-	[Theory]
-	[InlineAutoData(true)]
-	[InlineAutoData(false)]
+	[Test]
+	[AutoArguments(true)]
+	[AutoArguments(false)]
 	public async Task Unless_ShouldThrowException(bool condition, string reason)
 	{
 		void Act() => Skip.Unless(condition, reason);
@@ -23,9 +23,9 @@ public sealed class SkipTests
 			.WithMessage($"*{reason}*").AsWildcard();
 	}
 
-	[Theory]
-	[InlineAutoData(true)]
-	[InlineAutoData(false)]
+	[Test]
+	[AutoArguments(true)]
+	[AutoArguments(false)]
 	public async Task When_ShouldThrowException(bool condition, string reason)
 	{
 		void Act() => Skip.When(condition, reason);

@@ -6,7 +6,7 @@ public partial class ValueFormatters
 {
 	public sealed class TimeOnlyTests
 	{
-		[Fact]
+		[Test]
 		public async Task Nullable_ShouldUseRoundtripFormat()
 		{
 			TimeOnly? value = new(15, 42, 15, 234);
@@ -22,7 +22,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Nullable_WithType_ShouldUseRoundtripFormat()
 		{
 			TimeOnly? value = new(15, 42, 15, 234);
@@ -38,7 +38,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldUseRoundtripFormat()
 		{
 			TimeOnly value = new(15, 42, 15, 234);
@@ -54,7 +54,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			TimeOnly? value = null;
@@ -69,7 +69,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithType_ShouldUseRoundtripFormat()
 		{
 			TimeOnly value = new(15, 42, 15, 234);

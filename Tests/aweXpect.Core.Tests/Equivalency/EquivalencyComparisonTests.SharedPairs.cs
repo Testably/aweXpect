@@ -7,7 +7,7 @@ namespace aweXpect.Core.Tests.Equivalency;
 
 public sealed partial class EquivalencyComparisonTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenSharedPairDiffers_ShouldReportItForEveryPath()
 	{
 		ReadBudget budget = new(1_000);
@@ -39,7 +39,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSharedPairHasAMemberToIgnoreOnOnePath_ShouldReportTheOtherPath()
 	{
 		Heavy actualShared = new()
@@ -78,7 +78,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSharedPairHasANestedMemberToIgnoreOnOnePath_ShouldReportTheOtherPath()
 	{
 		Heavy actualShared = new()
@@ -117,7 +117,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSharedPairIsComparedAgainAfterItChanged_ShouldCompareItAgain()
 	{
 		Heavy actualShared = new();
@@ -154,7 +154,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSharedPairIsComparedInOrderAfterItWasComparedInAnyOrder_ShouldCompareItAgain()
 	{
 		Heavy[] actualShared =
@@ -211,7 +211,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSharedPairIsComparedWithMoreMembers_ShouldCompareItAgain()
 	{
 		Heavy actualShared = new()
@@ -259,7 +259,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSharedPairIsNestedDeeper_ShouldStillExceedTheRecursionLimit()
 	{
 		Heavy actualShared = new()
@@ -302,7 +302,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSharedPairIsNestedLessDeep_ShouldSucceed()
 	{
 		Heavy actualShared = new()
@@ -341,7 +341,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSharedPairIsSharedAtDifferentDepths_ShouldNotCompareItOncePerPath()
 	{
 		ReadBudget budget = new(1_000_000);
@@ -356,12 +356,12 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Theory]
-	[InlineData(SharedShape.Members, false)]
-	[InlineData(SharedShape.Members, true)]
-	[InlineData(SharedShape.List, false)]
-	[InlineData(SharedShape.List, true)]
-	[InlineData(SharedShape.Dictionary, false)]
+	[Test]
+	[Arguments(SharedShape.Members, false)]
+	[Arguments(SharedShape.Members, true)]
+	[Arguments(SharedShape.List, false)]
+	[Arguments(SharedShape.List, true)]
+	[Arguments(SharedShape.Dictionary, false)]
 	public async Task WhenSharedPairIsSharedOnEveryLevel_ShouldNotCompareItOncePerPath(SharedShape shape,
 		bool ignoreCollectionOrder)
 	{
@@ -383,7 +383,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSharedPairOnlyRecursesIntoItself_ShouldNotCompareItOncePerPath()
 	{
 		ReadBudget budget = new(100_000);
@@ -398,7 +398,7 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSharedPairRecursesIntoADifferingPair_ShouldReportItForEveryPath()
 	{
 		Heavy actualOuter = new()
@@ -441,7 +441,7 @@ public sealed partial class EquivalencyComparisonTests
 			.Because("the inner pair only had no difference of its own while the outer pair was compared, as its reference to that pair was skipped as a recursion");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSharedPairRecursesIntoAnElementThatIsNotMatched_ShouldNotBeEquivalentForAnotherElement()
 	{
 		Heavy actualOne = new()
@@ -490,7 +490,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSharedPairsReferenceTheRoot_ShouldSucceed()
 	{
 		ReadBudget budget = new(10_000_000);
@@ -508,9 +508,9 @@ public sealed partial class EquivalencyComparisonTests
 		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
-	[Theory]
-	[InlineData(false)]
-	[InlineData(true)]
+	[Test]
+	[Arguments(false)]
+	[Arguments(true)]
 	public async Task WhenSharedPairsShareTheActualElementOnly_ShouldCompareBothExpectedElements(
 		bool ignoreCollectionOrder)
 	{
@@ -548,7 +548,7 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenSharedPairsShareTheExpectedInstanceOnly_ShouldCompareBothActualInstances()
 	{
 		Heavy expectedShared = new()

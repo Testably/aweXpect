@@ -12,7 +12,7 @@ public partial class ValueFormatters
 {
 	public sealed class NumberTests
 	{
-		[Fact]
+		[Test]
 		public async Task Numbers_Byte_ShouldReturnExpectedValue()
 		{
 			byte value = 3;
@@ -28,12 +28,12 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(2, "2.0")]
-		[InlineData(1.1, "1.1")]
-		[InlineData(1.12, "1.12")]
-		[InlineData(1.123, "1.123")]
-		[InlineData(1.12345678910111, "1.12345678910111")]
+		[Test]
+		[Arguments(2, "2.0")]
+		[Arguments(1.1, "1.1")]
+		[Arguments(1.12, "1.12")]
+		[Arguments(1.123, "1.123")]
+		[Arguments(1.12345678910111, "1.12345678910111")]
 		public async Task Numbers_Decimal_ShouldHaveAtLeastOneDecimalDigit(double doubleValue, string expectedResult)
 		{
 			decimal value = new(doubleValue);
@@ -48,7 +48,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_Decimal_ShouldReturnExpectedValue()
 		{
 			decimal value = new(11.3);
@@ -64,7 +64,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_Double_NegativeZero_ShouldKeepTheSign()
 		{
 			double value = -0.0;
@@ -79,14 +79,14 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo("-0.0");
 		}
 
-		[Theory]
-		[InlineData(0.1 + 0.2, "0.30000000000000004")]
-		[InlineData(1e-30, "1E-30")]
-		[InlineData(double.Epsilon, "4.94065645841247E-324")]
-		[InlineData(1e300, "1E+300")]
-		[InlineData(-2.5e-7, "-2.5E-07")]
-		[InlineData(123456789012.345, "123456789012.345")]
-		[InlineData(0.1 + 0.7, "0.7999999999999999")]
+		[Test]
+		[Arguments(0.1 + 0.2, "0.30000000000000004")]
+		[Arguments(1e-30, "1E-30")]
+		[Arguments(double.Epsilon, "4.94065645841247E-324")]
+		[Arguments(1e300, "1E+300")]
+		[Arguments(-2.5e-7, "-2.5E-07")]
+		[Arguments(123456789012.345, "123456789012.345")]
+		[Arguments(0.1 + 0.7, "0.7999999999999999")]
 		public async Task Numbers_Double_ShouldBeRoundTrippable(double value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -101,12 +101,12 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(2, "2.0")]
-		[InlineData(1.1, "1.1")]
-		[InlineData(1.12, "1.12")]
-		[InlineData(1.123, "1.123")]
-		[InlineData(1.12345678910111, "1.12345678910111")]
+		[Test]
+		[Arguments(2, "2.0")]
+		[Arguments(1.1, "1.1")]
+		[Arguments(1.12, "1.12")]
+		[Arguments(1.123, "1.123")]
+		[Arguments(1.12345678910111, "1.12345678910111")]
 		public async Task Numbers_Double_ShouldHaveAtLeastOneDecimalDigit(double value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -120,7 +120,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_Double_ShouldReturnExpectedValue()
 		{
 			double value = 10.2;
@@ -136,7 +136,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_Float_NegativeZero_ShouldKeepTheSign()
 		{
 			float value = -0.0F;
@@ -151,12 +151,12 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo("-0.0");
 		}
 
-		[Theory]
-		[InlineData(1.0000001F, "1.0000001")]
-		[InlineData(1e-30F, "1E-30")]
-		[InlineData(float.Epsilon, "1.401298E-45")]
-		[InlineData(1e30F, "1E+30")]
-		[InlineData(16777215F, "16777215.0")]
+		[Test]
+		[Arguments(1.0000001F, "1.0000001")]
+		[Arguments(1e-30F, "1E-30")]
+		[Arguments(float.Epsilon, "1.401298E-45")]
+		[Arguments(1e30F, "1E+30")]
+		[Arguments(16777215F, "16777215.0")]
 		public async Task Numbers_Float_ShouldBeRoundTrippable(float value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -171,12 +171,12 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(2F, "2.0")]
-		[InlineData(1.1F, "1.1")]
-		[InlineData(1.12F, "1.12")]
-		[InlineData(1.123F, "1.123")]
-		[InlineData(1.123456, "1.123456")]
+		[Test]
+		[Arguments(2F, "2.0")]
+		[Arguments(1.1F, "1.1")]
+		[Arguments(1.12F, "1.12")]
+		[Arguments(1.123F, "1.123")]
+		[Arguments(1.123456, "1.123456")]
 		public async Task Numbers_Float_ShouldHaveAtLeastOneDecimalDigit(float value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -191,7 +191,7 @@ public partial class ValueFormatters
 		}
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task Numbers_Half_MinAndMaxValue_ShouldUseCSharpSyntax()
 		{
 			string maxValueResult = Formatter.Format(Half.MaxValue);
@@ -206,10 +206,10 @@ public partial class ValueFormatters
 		}
 #endif
 
-		[Theory]
-		[InlineData(2, "2.0")]
-		[InlineData(1.5, "1.5")]
-		[InlineData(11.3, "11.3")]
+		[Test]
+		[Arguments(2, "2.0")]
+		[Arguments(1.5, "1.5")]
+		[Arguments(11.3, "11.3")]
 		public async Task Numbers_Half_ShouldHaveAtLeastOneDecimalDigit(double doubleValue, string expectedResult)
 		{
 			Half value = (Half)doubleValue;
@@ -225,7 +225,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_Half_ShouldReturnExpectedValue()
 		{
 			Half value = (Half)11.3;
@@ -242,7 +242,7 @@ public partial class ValueFormatters
 		}
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task Numbers_Int128AndBigInteger_ShouldUseInvariantCulture()
 		{
 			using CultureOverride _ = new("sv-SE");
@@ -267,7 +267,7 @@ public partial class ValueFormatters
 		}
 #endif
 
-		[Fact]
+		[Test]
 		public async Task Numbers_Int16_ShouldReturnExpectedValue()
 		{
 			short value = -5;
@@ -283,7 +283,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_Int32_ShouldReturnExpectedValue()
 		{
 			int value = -1;
@@ -299,7 +299,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_Int64_ShouldReturnExpectedValue()
 		{
 			long value = -7;
@@ -315,7 +315,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_Integers_MinAndMaxValue_ShouldUsePlainValue()
 		{
 			string intResult = Formatter.Format(int.MaxValue);
@@ -328,7 +328,7 @@ public partial class ValueFormatters
 		}
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task Numbers_Integers_ShouldUseInvariantCulture()
 		{
 			using CultureOverride _ = new("sv-SE");
@@ -358,7 +358,7 @@ public partial class ValueFormatters
 #endif
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task Numbers_NFloat_MinAndMaxValue_ShouldUseCSharpSyntax()
 		{
 			string maxValueResult = Formatter.Format(NFloat.MaxValue);
@@ -374,11 +374,11 @@ public partial class ValueFormatters
 #endif
 
 #if NET8_0_OR_GREATER
-		[Theory]
-		[InlineData(2, "2.0")]
-		[InlineData(-0.0, "-0.0")]
-		[InlineData(0.1 + 0.2, "0.30000000000000004")]
-		[InlineData(1e-30, "1E-30")]
+		[Test]
+		[Arguments(2, "2.0")]
+		[Arguments(-0.0, "-0.0")]
+		[Arguments(0.1 + 0.2, "0.30000000000000004")]
+		[Arguments(1e-30, "1E-30")]
 		public async Task Numbers_NFloat_ShouldBeFormattedLikeDouble(double doubleValue, string expectedResult)
 		{
 			NFloat value = (NFloat)doubleValue;
@@ -394,11 +394,11 @@ public partial class ValueFormatters
 		}
 #endif
 
-		[Theory]
-		[InlineData(2, "2.0")]
-		[InlineData(11.3, "11.3")]
-		[InlineData(double.NegativeInfinity, "-∞")]
-		[InlineData(double.PositiveInfinity, "+∞")]
+		[Test]
+		[Arguments(2, "2.0")]
+		[Arguments(11.3, "11.3")]
+		[Arguments(double.NegativeInfinity, "-∞")]
+		[Arguments(double.PositiveInfinity, "+∞")]
 		public async Task Numbers_NFloat_ShouldReturnExpectedValue(double doubleValue, string expectedResult)
 		{
 			NFloat value = (NFloat)doubleValue;
@@ -414,7 +414,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_Nint_ShouldReturnExpectedValue()
 		{
 			nint value = -123;
@@ -430,7 +430,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_Nuint_ShouldReturnExpectedValue()
 		{
 			nuint value = 123;
@@ -446,7 +446,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableByte_ShouldReturnExpectedValue()
 		{
 			byte? value = 30;
@@ -462,7 +462,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableByte_WhenNull_ShouldUseDefaultNullString()
 		{
 			byte? value = null;
@@ -477,7 +477,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableDecimal_ShouldReturnExpectedValue()
 		{
 			decimal? value = new(11.03);
@@ -493,7 +493,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableDecimal_WhenNull_ShouldUseDefaultNullString()
 		{
 			decimal? value = null;
@@ -508,7 +508,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableDouble_ShouldReturnExpectedValue()
 		{
 			double? value = 10.02;
@@ -524,7 +524,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableDouble_WhenNull_ShouldUseDefaultNullString()
 		{
 			double? value = null;
@@ -539,7 +539,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableHalf_ShouldReturnExpectedValue()
 		{
 			Half? value = (Half)11.03;
@@ -555,7 +555,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableHalf_WhenNull_ShouldUseDefaultNullString()
 		{
 			Half? value = null;
@@ -570,7 +570,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableInt16_ShouldReturnExpectedValue()
 		{
 			short? value = -50;
@@ -586,7 +586,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableInt16_WhenNull_ShouldUseDefaultNullString()
 		{
 			short? value = null;
@@ -601,7 +601,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableInt32_ShouldReturnExpectedValue()
 		{
 			int? value = -10;
@@ -618,7 +618,7 @@ public partial class ValueFormatters
 		}
 
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableInt32_WhenNull_ShouldUseDefaultNullString()
 		{
 			int? value = null;
@@ -633,7 +633,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableInt64_ShouldReturnExpectedValue()
 		{
 			long? value = -70;
@@ -649,7 +649,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableInt64_WhenNull_ShouldUseDefaultNullString()
 		{
 			long? value = null;
@@ -664,7 +664,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableNFloat_ShouldReturnExpectedValue()
 		{
 			NFloat? value = (NFloat)11.03;
@@ -680,7 +680,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableNFloat_WhenNull_ShouldUseDefaultNullString()
 		{
 			NFloat? value = null;
@@ -695,7 +695,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableNint_ShouldReturnExpectedValue()
 		{
 			nint? value = -123;
@@ -711,7 +711,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableNint_WhenNull_ShouldUseDefaultNullString()
 		{
 			nint? value = null;
@@ -726,7 +726,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableNuint_ShouldReturnExpectedValue()
 		{
 			nuint? value = 123;
@@ -742,7 +742,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableNuint_WhenNull_ShouldUseDefaultNullString()
 		{
 			nuint? value = null;
@@ -757,7 +757,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableSByte_ShouldReturnExpectedValue()
 		{
 			sbyte? value = -40;
@@ -773,7 +773,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableSByte_WhenNull_ShouldUseDefaultNullString()
 		{
 			sbyte? value = null;
@@ -788,7 +788,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableSingle_ShouldReturnExpectedValue()
 		{
 			float? value = 9.01F;
@@ -804,7 +804,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableSingle_WhenNull_ShouldUseDefaultNullString()
 		{
 			float? value = null;
@@ -819,7 +819,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableUInt16_ShouldReturnExpectedValue()
 		{
 			ushort? value = 60;
@@ -835,7 +835,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableUInt16_WhenNull_ShouldUseDefaultNullString()
 		{
 			ushort? value = null;
@@ -850,7 +850,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableUInt32_ShouldReturnExpectedValue()
 		{
 			uint? value = 20;
@@ -866,7 +866,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableUInt32_WhenNull_ShouldUseDefaultNullString()
 		{
 			uint? value = null;
@@ -881,7 +881,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableUInt64_ShouldReturnExpectedValue()
 		{
 			ulong? value = 80;
@@ -897,7 +897,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_NullableUInt64_WhenNull_ShouldUseDefaultNullString()
 		{
 			ulong? value = null;
@@ -912,7 +912,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_SByte_ShouldReturnExpectedValue()
 		{
 			sbyte value = -4;
@@ -928,7 +928,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_Single_ShouldReturnExpectedValue()
 		{
 			float value = 9.1F;
@@ -944,7 +944,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_UInt16_ShouldReturnExpectedValue()
 		{
 			ushort value = 6;
@@ -960,7 +960,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_UInt32_ShouldReturnExpectedValue()
 		{
 			uint value = 2;
@@ -976,7 +976,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_UInt64_ShouldReturnExpectedValue()
 		{
 			ulong value = 8;
@@ -992,7 +992,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_Byte_ShouldReturnExpectedValue()
 		{
 			byte value = 3;
@@ -1008,9 +1008,9 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(2, "decimal 2.0")]
-		[InlineData(1.12, "decimal 1.12")]
+		[Test]
+		[Arguments(2, "decimal 2.0")]
+		[Arguments(1.12, "decimal 1.12")]
 		public async Task Numbers_WithType_Decimal_ShouldHaveAtLeastOneDecimalDigit(double doubleValue,
 			string expectedResult)
 		{
@@ -1026,7 +1026,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_Decimal_ShouldReturnExpectedValue()
 		{
 			decimal value = new(11.3);
@@ -1042,9 +1042,9 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(2, "double 2.0")]
-		[InlineData(0.1 + 0.2, "double 0.30000000000000004")]
+		[Test]
+		[Arguments(2, "double 2.0")]
+		[Arguments(0.1 + 0.2, "double 0.30000000000000004")]
 		public async Task Numbers_WithType_Double_ShouldHaveAtLeastOneDecimalDigit(double value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -1059,7 +1059,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_Double_ShouldReturnExpectedValue()
 		{
 			double value = 10.2;
@@ -1075,9 +1075,9 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(2, "Half 2.0")]
-		[InlineData(1.5, "Half 1.5")]
+		[Test]
+		[Arguments(2, "Half 2.0")]
+		[Arguments(1.5, "Half 1.5")]
 		public async Task Numbers_WithType_Half_ShouldHaveAtLeastOneDecimalDigit(double doubleValue,
 			string expectedResult)
 		{
@@ -1093,7 +1093,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_Half_ShouldReturnExpectedValue()
 		{
 			Half value = (Half)11.3;
@@ -1109,7 +1109,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_Int16_ShouldReturnExpectedValue()
 		{
 			short value = -5;
@@ -1125,7 +1125,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_Int32_ShouldReturnExpectedValue()
 		{
 			int value = -1;
@@ -1141,7 +1141,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_Int64_ShouldReturnExpectedValue()
 		{
 			long value = -7;
@@ -1157,10 +1157,10 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(11.3, "NFloat 11.3")]
-		[InlineData(double.NegativeInfinity, "NFloat -∞")]
-		[InlineData(double.PositiveInfinity, "NFloat +∞")]
+		[Test]
+		[Arguments(11.3, "NFloat 11.3")]
+		[Arguments(double.NegativeInfinity, "NFloat -∞")]
+		[Arguments(double.PositiveInfinity, "NFloat +∞")]
 		public async Task Numbers_WithType_NFloat_ShouldReturnExpectedValue(double doubleValue,
 			string expectedResult)
 		{
@@ -1176,7 +1176,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_Nint_ShouldReturnExpectedValue()
 		{
 			nint value = -123;
@@ -1192,7 +1192,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_Nuint_ShouldReturnExpectedValue()
 		{
 			nuint value = 123;
@@ -1208,7 +1208,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_NullableByte_ShouldReturnExpectedValue()
 		{
 			byte? value = 30;
@@ -1224,7 +1224,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_NullableDecimal_ShouldReturnExpectedValue()
 		{
 			decimal? value = new(11.03);
@@ -1240,7 +1240,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_NullableDouble_ShouldReturnExpectedValue()
 		{
 			double? value = 10.02;
@@ -1256,7 +1256,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_NullableHalf_ShouldReturnExpectedValue()
 		{
 			Half? value = (Half)11.03;
@@ -1272,7 +1272,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_NullableInt16_ShouldReturnExpectedValue()
 		{
 			short? value = -50;
@@ -1288,7 +1288,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_NullableInt32_ShouldReturnExpectedValue()
 		{
 			int? value = -10;
@@ -1304,7 +1304,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_NullableInt64_ShouldReturnExpectedValue()
 		{
 			long? value = -70;
@@ -1320,7 +1320,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_NullableNint_ShouldReturnExpectedValue()
 		{
 			nint? value = -123;
@@ -1336,7 +1336,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_NullableNuint_ShouldReturnExpectedValue()
 		{
 			nuint? value = 123;
@@ -1352,7 +1352,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_NullableSByte_ShouldReturnExpectedValue()
 		{
 			sbyte? value = -40;
@@ -1368,7 +1368,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_NullableSingle_ShouldReturnExpectedValue()
 		{
 			float? value = 9.01F;
@@ -1384,7 +1384,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_NullableUInt16_ShouldReturnExpectedValue()
 		{
 			ushort? value = 60;
@@ -1400,7 +1400,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_NullableUInt32_ShouldReturnExpectedValue()
 		{
 			uint? value = 20;
@@ -1416,7 +1416,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_NullableUInt64_ShouldReturnExpectedValue()
 		{
 			ulong? value = 80;
@@ -1432,7 +1432,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_SByte_ShouldReturnExpectedValue()
 		{
 			sbyte value = -4;
@@ -1448,9 +1448,9 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(2F, "float 2.0")]
-		[InlineData(1.12F, "float 1.12")]
+		[Test]
+		[Arguments(2F, "float 2.0")]
+		[Arguments(1.12F, "float 1.12")]
 		public async Task Numbers_WithType_Single_ShouldHaveAtLeastOneDecimalDigit(float value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -1464,7 +1464,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_Single_ShouldReturnExpectedValue()
 		{
 			float value = 9.1F;
@@ -1480,7 +1480,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_UInt16_ShouldReturnExpectedValue()
 		{
 			ushort value = 6;
@@ -1496,7 +1496,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_UInt32_ShouldReturnExpectedValue()
 		{
 			uint value = 2;
@@ -1512,7 +1512,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_WithType_UInt64_ShouldReturnExpectedValue()
 		{
 			ulong value = 8;

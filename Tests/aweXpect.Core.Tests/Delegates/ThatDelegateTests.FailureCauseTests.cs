@@ -7,7 +7,7 @@ public sealed partial class ThatDelegateTests
 {
 	public sealed class FailureCauseTests
 	{
-		[Fact]
+		[Test]
 		public async Task DoesNotThrow_WhenDelegateThrows_ShouldForwardExceptionAsInnerException()
 		{
 			Exception exception = new MyException();
@@ -16,7 +16,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).DoesNotThrow();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that @delegate
 				              does not throw any exception,
@@ -26,7 +26,7 @@ public sealed partial class ThatDelegateTests
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotThrow_WhoseResult_WhenDelegateThrows_ShouldForwardExceptionAsInnerException()
 		{
 			Exception exception = new MyException();
@@ -35,7 +35,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).DoesNotThrow().WhoseResult.IsEqualTo(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that @delegate
 				              does not throw any exception and its result is equal to 1,
@@ -45,7 +45,7 @@ public sealed partial class ThatDelegateTests
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotThrow_WithValue_WhenDelegateThrows_ShouldForwardExceptionAsInnerException()
 		{
 			Exception exception = new MyException();
@@ -54,7 +54,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).DoesNotThrow();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that @delegate
 				              does not throw any exception,
@@ -64,7 +64,7 @@ public sealed partial class ThatDelegateTests
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotThrowExactly_WhenMatchingExceptionIsThrown_ShouldForwardExceptionAsInnerException()
 		{
 			Exception exception = new MyException();
@@ -73,7 +73,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).DoesNotThrowExactly<MyException>();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that @delegate
 				              does not throw exactly a MyException,
@@ -83,7 +83,7 @@ public sealed partial class ThatDelegateTests
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task
 			DoesNotThrowExactly_WithValue_WhenMatchingExceptionIsThrown_ShouldForwardExceptionAsInnerException()
 		{
@@ -93,7 +93,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).DoesNotThrowExactly<MyException>();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that @delegate
 				              does not throw exactly a MyException,
@@ -103,7 +103,7 @@ public sealed partial class ThatDelegateTests
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task ExecutesIn_WhenDelegateThrows_ShouldForwardExceptionAsInnerException()
 		{
 			Exception exception = new MyException();
@@ -112,7 +112,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).ExecutesIn().AtMost(5.Seconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that @delegate
 				              executes in at most 0:05,
@@ -122,7 +122,7 @@ public sealed partial class ThatDelegateTests
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task ExecutesIn_WithValue_WhenDelegateThrows_ShouldForwardExceptionAsInnerException()
 		{
 			Exception exception = new MyException();
@@ -131,7 +131,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).ExecutesIn().AtMost(5.Seconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that @delegate
 				              executes in at most 0:05,
@@ -141,7 +141,7 @@ public sealed partial class ThatDelegateTests
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_WhenExpectedExceptionIsThrownTooLate_ShouldNotForwardExceptionAsInnerException()
 		{
 			Exception exception = new MyException();
@@ -154,7 +154,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).Throws<MyException>().Within(5.Milliseconds());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that @delegate
 				             throws a MyException within 0:00.005,
@@ -163,7 +163,7 @@ public sealed partial class ThatDelegateTests
 				.Whose(e => e.InnerException, i => i.IsNull());
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_WhenOtherExceptionIsThrown_ShouldForwardExceptionAsInnerException()
 		{
 			Exception exception = new MyException();
@@ -172,7 +172,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).Throws<InvalidOperationException>();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that @delegate
 				              throws an InvalidOperationException,
@@ -182,7 +182,7 @@ public sealed partial class ThatDelegateTests
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task ThrowsExactly_WhenOtherExceptionIsThrown_ShouldForwardExceptionAsInnerException()
 		{
 			Exception exception = new MyException();
@@ -191,7 +191,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).ThrowsExactly<InvalidOperationException>();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that @delegate
 				              throws exactly an InvalidOperationException,

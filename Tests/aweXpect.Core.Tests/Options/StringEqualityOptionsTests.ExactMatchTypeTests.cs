@@ -7,7 +7,7 @@ public sealed partial class StringEqualityOptionsTests
 {
 	public sealed class ExactMatchTypeTests
 	{
-		[Fact]
+		[Test]
 		public async Task GetExpectation_WhenExpectedIsTruncated_ShouldNotSplitAnEscapeSequence()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -24,7 +24,7 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("the limit applies to the characters of the expected value, not to their escaped form");
 		}
 
-		[Fact]
+		[Test]
 		public async Task GetExtendedFailure_WhenWhitespaceIsTruncated_ShouldNotSplitAnEscapeSequence()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -41,9 +41,9 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("the limit applies to the whitespace characters, not to their escaped form");
 		}
 
-		[Theory]
-		[InlineData(false)]
-		[InlineData(true)]
+		[Test]
+		[Arguments(false)]
+		[Arguments(true)]
 		public async Task ShouldCompareCaseSensitive(bool ignoreCase)
 		{
 			string sut = "foo\nbar";
@@ -51,7 +51,7 @@ public sealed partial class StringEqualityOptionsTests
 			async Task Act()
 				=> await That(sut).IsEqualTo("FOO\nBAR").IgnoringCase(ignoreCase);
 
-			await That(Act).Throws<XunitException>().OnlyIf(!ignoreCase)
+			await That(Act).Throws<FailException>().OnlyIf(!ignoreCase)
 				.WithMessage("""
 				             Expected that sut
 				             is equal to "FOO\nBAR",
@@ -63,7 +63,7 @@ public sealed partial class StringEqualityOptionsTests
 				             """).IgnoringNewlineStyle();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldDisplayActualAndPatternUnderneathEachOther()
 		{
 			string sut = "foo";
@@ -71,7 +71,7 @@ public sealed partial class StringEqualityOptionsTests
 			async Task Act()
 				=> await That(sut).IsEqualTo("bar");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             is equal to "bar",
@@ -83,7 +83,7 @@ public sealed partial class StringEqualityOptionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldReplaceNewlines()
 		{
 			string sut = "foo\nbar";
@@ -91,7 +91,7 @@ public sealed partial class StringEqualityOptionsTests
 			async Task Act()
 				=> await That(sut).IsEqualTo("\tsomething\r\nelse");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             is equal to "\tsomething\r\nelse",
@@ -103,7 +103,7 @@ public sealed partial class StringEqualityOptionsTests
 				             """).IgnoringNewlineStyle();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportPassiveGrammaticalVoice()
 		{
 			Exception exception = new("foo");
@@ -111,7 +111,7 @@ public sealed partial class StringEqualityOptionsTests
 			async Task Act()
 				=> await That(() => Task.FromException(exception)).Throws().WithMessage("bar");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => Task.FromException(exception)
 				             throws an exception with message equal to "bar",
@@ -126,7 +126,7 @@ public sealed partial class StringEqualityOptionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenExpectedIsNull_ShouldFail()
 		{
 			string sut = "foo";
@@ -134,7 +134,7 @@ public sealed partial class StringEqualityOptionsTests
 			async Task Act()
 				=> await That(sut).IsEqualTo(null);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             is equal to <null>,
@@ -142,7 +142,7 @@ public sealed partial class StringEqualityOptionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenIgnoringCase_ShouldCompareCaseInsensitive()
 		{
 			string sut = "foo";
@@ -153,7 +153,7 @@ public sealed partial class StringEqualityOptionsTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSubjectAndExpectedAreNull_ShouldSucceed()
 		{
 			string? sut = null;
@@ -164,7 +164,7 @@ public sealed partial class StringEqualityOptionsTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSubjectIsLonger_ShouldEscapeTheSuperfluousText()
 		{
 			string sut = "foo\r\nbar";
@@ -172,7 +172,7 @@ public sealed partial class StringEqualityOptionsTests
 			async Task Act()
 				=> await That(sut).IsEqualTo("foo");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             is equal to "foo",
@@ -182,7 +182,7 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("the superfluous text is escaped like the other values in the message");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSubjectIsNull_ShouldFail()
 		{
 			string? sut = null;
@@ -190,7 +190,7 @@ public sealed partial class StringEqualityOptionsTests
 			async Task Act()
 				=> await That(sut).IsEqualTo("");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             is equal to "",
@@ -198,7 +198,7 @@ public sealed partial class StringEqualityOptionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSubjectIsShorter_ShouldEscapeTheMissingText()
 		{
 			string sut = "foo";
@@ -206,7 +206,7 @@ public sealed partial class StringEqualityOptionsTests
 			async Task Act()
 				=> await That(sut).IsEqualTo("foo\n\"bar\"");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             is equal to "foo\n\"bar\"",

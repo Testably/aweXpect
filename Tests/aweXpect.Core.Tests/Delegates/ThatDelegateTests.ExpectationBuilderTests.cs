@@ -10,7 +10,7 @@ public sealed partial class ThatDelegateTests
 {
 	public sealed class ExpectationBuilderTests
 	{
-		[Fact]
+		[Test]
 		public async Task Eventually_ShouldExposeTheExpectationBuilderThroughIExpectThat()
 		{
 			EventuallySubject<int> subject = That(() => 0).Eventually().Within(TimeSpan.Zero);
@@ -19,7 +19,7 @@ public sealed partial class ThatDelegateTests
 				=> await new ExpectationResult(((IExpectThat<int>)subject).ExpectationBuilder
 					.AddConstraint((_, _) => FailingConstraint<int>()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => 0
 				             eventually is reached through IExpectThat within 0:00,
@@ -28,7 +28,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the builder is no longer public on the subject, but still reachable for extension authors");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithoutValue_ShouldExposeTheExpectationBuilderThroughIExpectThat()
 		{
 			ThatDelegate.WithoutValue subject = That(() => { });
@@ -37,7 +37,7 @@ public sealed partial class ThatDelegateTests
 				=> await new ExpectationResult(((IExpectThat<ThatDelegate.WithoutValue>)subject).ExpectationBuilder
 					.AddConstraint((_, _) => FailingConstraint<DelegateValue>()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => { }
 				             is reached through IExpectThat,
@@ -46,7 +46,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the builder is no longer public on the subject, but still reachable for extension authors");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithValue_ShouldExposeTheExpectationBuilderThroughIExpectThat()
 		{
 			ThatDelegate.WithValue<int> subject = That(() => 0);
@@ -55,7 +55,7 @@ public sealed partial class ThatDelegateTests
 				=> await new ExpectationResult(((IExpectThat<ThatDelegate.WithValue<int>>)subject).ExpectationBuilder
 					.AddConstraint((_, _) => FailingConstraint<DelegateValue<int>>()));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => 0
 				             is reached through IExpectThat,

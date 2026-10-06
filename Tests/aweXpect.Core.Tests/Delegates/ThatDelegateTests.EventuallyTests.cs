@@ -12,7 +12,7 @@ public sealed partial class ThatDelegateTests
 {
 	public sealed class EventuallyTests
 	{
-		[Fact]
+		[Test]
 		public async Task Because_ShouldBeIncludedInTheMessage()
 		{
 			Counter counter = new();
@@ -21,7 +21,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(() => counter.Value).Eventually().OnVirtualTime().Within(VeryLowTimeout)
 					.IsEqualTo(1).Because("of reasons");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             eventually is equal to 1 within 0:00.050, because of reasons,
@@ -29,7 +29,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Because_WhenCombinedWithOr_ShouldBeAppendedAfterTheTimeout()
 		{
 			Counter counter = new();
@@ -39,7 +39,7 @@ public sealed partial class ThatDelegateTests
 					.IsEqualTo(1).Because("of reasons")
 					.Or.IsEqualTo(2);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             eventually is equal to 1 or is equal to 2 within 0:00.050, because of reasons,
@@ -47,7 +47,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task CheckEvery_ShouldOverrideTheDefaultCheckInterval()
 		{
 			Counter counter = new(2);
@@ -66,10 +66,10 @@ public sealed partial class ThatDelegateTests
 			await That(counter.EvaluationCount).IsEqualTo(4);
 		}
 
-		[Theory]
-		[InlineData(0)]
-		[InlineData(-1)]
-		[InlineData(-500)]
+		[Test]
+		[Arguments(0)]
+		[Arguments(-1)]
+		[Arguments(-500)]
 		public async Task CheckEvery_WhenNotPositive_ShouldThrowArgumentOutOfRangeException(int milliseconds)
 		{
 			Counter counter = new();
@@ -84,7 +84,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the interval is validated when the expectation is built");
 		}
 
-		[Fact]
+		[Test]
 		public async Task CheckEvery_WhenSetTwice_ShouldThrowInvalidOperationException()
 		{
 			Counter counter = new();
@@ -100,7 +100,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the interval is validated when the expectation is built");
 		}
 
-		[Fact]
+		[Test]
 		public async Task DefaultCheckInterval_ShouldDetermineTheNumberOfEvaluations()
 		{
 			Counter counter = new();
@@ -110,7 +110,7 @@ public sealed partial class ThatDelegateTests
 				async Task Act() => await That(() => counter.Value).Eventually().OnVirtualTime()
 					.Within(1.Seconds()).IsEqualTo(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that () => counter.Value
 					             eventually is equal to 1 within 0:01,
@@ -123,7 +123,7 @@ public sealed partial class ThatDelegateTests
 				         "the last wait is shortened to the remaining budget - at 1000ms");
 		}
 
-		[Fact]
+		[Test]
 		public async Task DefaultEventuallyTimeout_ShouldBeUsedWhenNoTimeoutIsSpecified()
 		{
 			Counter counter = new();
@@ -133,7 +133,7 @@ public sealed partial class ThatDelegateTests
 			{
 				async Task Act() => await That(() => counter.Value).Eventually().OnVirtualTime(time).IsEqualTo(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that () => counter.Value
 					             eventually is equal to 1 within 0:00.050,
@@ -144,7 +144,7 @@ public sealed partial class ThatDelegateTests
 			await That(time.Now).IsEqualTo(VeryLowTimeout);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldForwardTheCancellationTokenToTheSubject()
 		{
 			using CancellationTokenSource cts = new();
@@ -160,7 +160,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(Subject).Eventually().Within(VeryLowTimeout).IsEqualTo(1).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that Subject
 				             eventually is equal to 1 within 0:00.050,
@@ -170,7 +170,7 @@ public sealed partial class ThatDelegateTests
 		}
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task ShouldForwardTheCancellationTokenToTheValueTaskSubject()
 		{
 			using CancellationTokenSource cts = new();
@@ -186,7 +186,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(Subject).Eventually().Within(VeryLowTimeout).IsEqualTo(1).WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that Subject
 				             eventually is equal to 1 within 0:00.050,
@@ -196,7 +196,7 @@ public sealed partial class ThatDelegateTests
 		}
 #endif
 
-		[Fact]
+		[Test]
 		public async Task ShouldReturnTheLastEvaluatedValue()
 		{
 			Counter counter = new(2);
@@ -207,7 +207,7 @@ public sealed partial class ThatDelegateTests
 			await That(result).IsEqualTo(4);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportAndChain()
 		{
 			Counter counter = new(2);
@@ -219,7 +219,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportAsyncSubject()
 		{
 			Counter counter = new(2);
@@ -236,7 +236,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportCancellationTokenSubject()
 		{
 			Counter counter = new(2);
@@ -248,7 +248,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportCancellationTokenTaskSubject()
 		{
 			Counter counter = new(2);
@@ -266,7 +266,7 @@ public sealed partial class ThatDelegateTests
 		}
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task ShouldSupportCancellationTokenValueTaskSubject()
 		{
 			Counter counter = new(2);
@@ -279,7 +279,7 @@ public sealed partial class ThatDelegateTests
 		}
 #endif
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportOrChain()
 		{
 			Counter counter = new();
@@ -288,7 +288,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(() => counter.Value).Eventually().OnVirtualTime().Within(VeryLowTimeout)
 					.IsEqualTo(1).Or.IsEqualTo(2);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             eventually is equal to 1 or is equal to 2 within 0:00.050,
@@ -297,7 +297,7 @@ public sealed partial class ThatDelegateTests
 		}
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task ShouldSupportValueTaskSubject()
 		{
 			Counter counter = new(2);
@@ -310,7 +310,7 @@ public sealed partial class ThatDelegateTests
 		}
 #endif
 
-		[Fact]
+		[Test]
 		public async Task WhenAnAttemptDoesNotFinishWithinTheTimeout_AndExpectationIsNegated_ShouldFail()
 		{
 			Func<Task<int>> subject = () => new TaskCompletionSource<int>().Task;
@@ -318,7 +318,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(subject).Eventually().Within(VeryLowTimeout).DoesNotComplyWith(it => it.IsEqualTo(1));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             eventually is not equal to 1 within 0:00.050,
@@ -329,7 +329,7 @@ public sealed partial class ThatDelegateTests
 				.Because("a negation must not turn an attempt that never finished into a success");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAnAttemptDoesNotFinishWithinTheTimeout_ShouldCancelItsToken()
 		{
 			CancellationToken? attemptToken = null;
@@ -343,7 +343,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(Subject).Eventually().Within(VeryLowTimeout).IsEqualTo(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that Subject
 				             eventually is equal to 1 within 0:00.050,
@@ -354,7 +354,7 @@ public sealed partial class ThatDelegateTests
 				.Because("an attempt that is abandoned must also be told to stop");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAnAttemptDoesNotFinishWithinTheTimeout_ShouldFail()
 		{
 			Func<Task<int>> subject = () => new TaskCompletionSource<int>().Task;
@@ -364,7 +364,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(subject).Eventually().Within(VeryLowTimeout).IsEqualTo(1);
 
 			stopwatch.Start();
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             eventually is equal to 1 within 0:00.050,
@@ -378,7 +378,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the timeout must abandon an attempt that never finishes instead of awaiting it");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAnAttemptDoesNotFinishWithinTheTimeout_WithCancellation_ShouldFail()
 		{
 			using CancellationTokenSource cts = new(30.Seconds());
@@ -388,7 +388,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(subject).Eventually().Within(VeryLowTimeout).IsEqualTo(1)
 					.WithCancellation(cts.Token);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             eventually is equal to 1 within 0:00.050,
@@ -399,7 +399,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the timeout must still bound an attempt when a cancellation token is also given");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAndChainFails_ShouldNotRepeatTheExpectationPerAttempt()
 		{
 			Counter counter = new();
@@ -408,7 +408,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(() => counter.Value).Eventually().OnVirtualTime().Within(LowTimeout)
 					.IsGreaterThan(1).And.IsLessThan(0);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             eventually is greater than 1 and is less than 0 within 0:00.500,
@@ -417,7 +417,7 @@ public sealed partial class ThatDelegateTests
 			await That(counter.EvaluationCount).IsGreaterThan(1);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAnEarlierAttemptIsSlowButFinishesWithinTheTimeout_ShouldSucceed()
 		{
 			Counter counter = new(2);
@@ -440,7 +440,7 @@ public sealed partial class ThatDelegateTests
 			await That(counter.EvaluationCount).IsEqualTo(3);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAnAttemptTakesAlmostTheTimeout_ShouldEvaluateIt()
 		{
 			VirtualTimeSystem time = new();
@@ -456,7 +456,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAnAttemptTakesAsLongAsTheTimeout_ShouldFail()
 		{
 			VirtualTimeSystem time = new();
@@ -469,7 +469,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(subject).Eventually().OnVirtualTime(time).Within(VeryLowTimeout).IsEqualTo(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             eventually is equal to 1 within 0:00.050,
@@ -478,7 +478,7 @@ public sealed partial class ThatDelegateTests
 				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAsyncSubjectBlocksBeyondTheTimeout_ShouldFail()
 		{
 			Func<Task<int>> subject = () =>
@@ -490,7 +490,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(subject).Eventually().Within(VeryLowTimeout).IsEqualTo(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             eventually is equal to 1 within 0:00.050,
@@ -500,7 +500,7 @@ public sealed partial class ThatDelegateTests
 				.Because("an attempt that returns after the timeout must fail like one that is abandoned");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAsyncSubjectBlocksBeyondWithTimeout_ShouldFail()
 		{
 			Func<Task<int>> subject = () =>
@@ -512,7 +512,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(subject).Eventually().IsEqualTo(1).WithTimeout(VeryLowTimeout);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             eventually is equal to 1 within 0:30,
@@ -522,7 +522,7 @@ public sealed partial class ThatDelegateTests
 				.Because("an attempt that returns after the timeout must fail like one that is abandoned");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancellationTokenIsCancelled_ShouldBeInconclusiveWithoutWaitingForTheTimeout()
 		{
 			using CancellationTokenSource cts = new();
@@ -534,7 +534,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(() => counter.Value).Eventually().OnVirtualTime(time).Within(30.Seconds()).IsEqualTo(1)
 					.WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             eventually is equal to 1 within 0:30,
@@ -545,7 +545,7 @@ public sealed partial class ThatDelegateTests
 			await That(time.Now).IsEqualTo(TimeSpan.Zero);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancelledDuringTheWaitThatConsumesTheTimeout_ShouldBeInconclusive()
 		{
 			VirtualTimeSystem time = new();
@@ -559,7 +559,7 @@ public sealed partial class ThatDelegateTests
 					=> await That(() => counter.Value).Eventually().OnVirtualTime(time).Within(SuccessTimeout)
 						.IsEqualTo(1).WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that () => counter.Value
 					             eventually is equal to 1 within 0:05,
@@ -571,7 +571,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the cancellation ends the wait at once");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCancelledWhileTheSubjectIsPending_ShouldBeInconclusive()
 		{
 			using CancellationTokenSource cts = new();
@@ -584,7 +584,7 @@ public sealed partial class ThatDelegateTests
 					.WithCancellation(cts.Token);
 
 			stopwatch.Start();
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             eventually is equal to 1 within 1:00,
@@ -596,7 +596,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the cancellation must stop waiting for a subject that does not observe it");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCreatedWithANullDelegate_ShouldThrowArgumentNullException()
 		{
 			ExpectationBuilder expectationBuilder =
@@ -610,7 +610,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("The 'subject' cannot be null.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCreatedWithTheConstructor_ShouldReinvokeTheDelegate()
 		{
 			Counter counter = new(2);
@@ -626,7 +626,7 @@ public sealed partial class ThatDelegateTests
 				.Because("Eventually() invokes the delegate passed to the constructor on every attempt");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenIntervalExceedsTheMaximumDelay_ShouldStillBeCancellable()
 		{
 			using CancellationTokenSource cts = new(VeryLowTimeout);
@@ -639,7 +639,7 @@ public sealed partial class ThatDelegateTests
 						.Within(System.Threading.Timeout.InfiniteTimeSpan).IsEqualTo(1)
 						.WithCancellation(cts.Token);
 
-				await That(Act).Throws<InconclusiveException>()
+				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
 					             Expected that () => counter.Value
 					             eventually is equal to 1,
@@ -650,7 +650,7 @@ public sealed partial class ThatDelegateTests
 			}
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenIntervalIsLongerThanTheTimeout_ShouldEvaluateTwice()
 		{
 			VirtualTimeSystem time = new();
@@ -661,7 +661,7 @@ public sealed partial class ThatDelegateTests
 				async Task Act()
 					=> await That(() => counter.Value).Eventually().OnVirtualTime(time).Within(LowTimeout).IsEqualTo(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that () => counter.Value
 					             eventually is equal to 1 within 0:00.500,
@@ -675,7 +675,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the last wait must not last the whole interval");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenRetrying_ShouldReleaseTheMaterializedSourceOfEachAttempt()
 		{
 			List<DisposeTrackingEnumerable> sources = [];
@@ -690,7 +690,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(Subject).Eventually().OnVirtualTime().Within(LowTimeout).IsEmpty();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that Subject
 				             eventually is empty within 0:00.500,
@@ -713,7 +713,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the source of each attempt is released, also the one of the last attempt");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSubjectAlwaysThrows_AndExpectationIsNegated_ShouldRenderTheNegatedExpectation()
 		{
 			static int AlwaysThrows() => throw new MyException("always broken");
@@ -722,7 +722,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(() => AlwaysThrows()).Eventually().OnVirtualTime().Within(VeryLowTimeout)
 					.DoesNotComplyWith(it => it.IsEqualTo(1));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => AlwaysThrows()
 				             eventually is not equal to 1 within 0:00.050,
@@ -732,7 +732,7 @@ public sealed partial class ThatDelegateTests
 				.And.WithInner<MyException>(inner => inner.HasMessage("always broken"));
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSubjectAlwaysThrows_AndExpectationThrowsOnDefault_ShouldFailWithTheExceptionAsCause()
 		{
 			static int AlwaysThrows() => throw new MyException("always broken");
@@ -741,7 +741,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(() => AlwaysThrows()).Eventually().OnVirtualTime().Within(VeryLowTimeout)
 					.Satisfies(x => 10 / x > 1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => AlwaysThrows()
 				             eventually satisfies x => 10 / x > 1 within 0:00.050,
@@ -751,7 +751,7 @@ public sealed partial class ThatDelegateTests
 				.And.WithInner<MyException>(inner => inner.HasMessage("always broken"));
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSubjectAlwaysThrows_ShouldFailWithTheExceptionAsCause()
 		{
 			static int AlwaysThrows() => throw new MyException("always broken");
@@ -759,7 +759,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(() => AlwaysThrows()).Eventually().OnVirtualTime().Within(VeryLowTimeout).IsEqualTo(1);
 
-			XunitException exception = await That(Act).Throws<XunitException>()
+			FailException exception = await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => AlwaysThrows()
 				             eventually is equal to 1 within 0:00.050,
@@ -770,7 +770,7 @@ public sealed partial class ThatDelegateTests
 				.Whose(e => e.Message, m => m.IsEqualTo("always broken"));
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSubjectBecomesValid_ShouldSucceed()
 		{
 			Counter counter = new(2);
@@ -782,14 +782,14 @@ public sealed partial class ThatDelegateTests
 			await That(counter.EvaluationCount).IsEqualTo(4);
 		}
 
-		[Theory]
-		[InlineData("Func<TValue>")]
-		[InlineData("Func<CancellationToken, TValue>")]
-		[InlineData("Func<Task<TValue>>")]
-		[InlineData("Func<CancellationToken, Task<TValue>>")]
+		[Test]
+		[Arguments("Func<TValue>")]
+		[Arguments("Func<CancellationToken, TValue>")]
+		[Arguments("Func<Task<TValue>>")]
+		[Arguments("Func<CancellationToken, Task<TValue>>")]
 #if NET8_0_OR_GREATER
-		[InlineData("Func<ValueTask<TValue>>")]
-		[InlineData("Func<CancellationToken, ValueTask<TValue>>")]
+		[Arguments("Func<ValueTask<TValue>>")]
+		[Arguments("Func<CancellationToken, ValueTask<TValue>>")]
 #endif
 		public async Task WhenSubjectIsNull_ShouldFail(string overload)
 		{
@@ -822,7 +822,7 @@ public sealed partial class ThatDelegateTests
 				}
 			}
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that *
 				             eventually is equal to 1,
@@ -830,7 +830,7 @@ public sealed partial class ThatDelegateTests
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSubjectReturnsNullTask_ShouldFail()
 		{
 			Func<CancellationToken, Task<int>> subject = _ => null!;
@@ -838,7 +838,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(subject).Eventually().OnVirtualTime().Within(VeryLowTimeout).IsEqualTo(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             eventually is equal to 1 within 0:00.050,
@@ -848,7 +848,7 @@ public sealed partial class ThatDelegateTests
 				.Because("a null task is not an exception thrown by the subject");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSubjectThrowsOnlyAtFirst_ShouldSucceed()
 		{
 			Counter counter = new(2);
@@ -861,7 +861,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSyncSubjectReturnsAfterTheTimeout_ShouldFail()
 		{
 			Func<int> subject = () =>
@@ -873,7 +873,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(subject).Eventually().Within(VeryLowTimeout).IsEqualTo(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             eventually is equal to 1 within 0:00.050,
@@ -883,7 +883,7 @@ public sealed partial class ThatDelegateTests
 				.Because("a synchronous delegate that returns after the timeout must fail like an asynchronous one");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSyncSubjectReturnsAfterWithTimeout_ShouldFail()
 		{
 			Func<int> subject = () =>
@@ -895,7 +895,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(subject).Eventually().IsEqualTo(1).WithTimeout(VeryLowTimeout);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             eventually is equal to 1 within 0:30,
@@ -905,7 +905,7 @@ public sealed partial class ThatDelegateTests
 				.Because("a synchronous delegate that returns after the timeout must fail like an asynchronous one");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSyncSubjectThrowsAfterTheTimeout_ShouldFail()
 		{
 			Func<int> subject = () =>
@@ -917,7 +917,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(subject).Eventually().Within(VeryLowTimeout).IsEqualTo(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             eventually is equal to 1 within 0:00.050,
@@ -928,7 +928,7 @@ public sealed partial class ThatDelegateTests
 				.Because("an exception thrown after the timeout must not decide, like the exception of an abandoned attempt");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTestCancellationExpiresWithTheTimeout_ShouldFailAndNotBeInconclusive()
 		{
 			Counter counter = new();
@@ -940,10 +940,10 @@ public sealed partial class ThatDelegateTests
 			{
 				async Task Act() => await That(() => counter.Value).Eventually().OnVirtualTime().IsEqualTo(1);
 
-				exception = await Record.ExceptionAsync(Act);
+				exception = await Catch.ExceptionAsync(Act);
 			}
 
-			await That(exception).IsExactly<XunitException>().And
+			await That(exception).IsExactly<FailException>().And
 				.HasMessage("""
 				            Expected that () => counter.Value
 				            eventually is equal to 1 within 0:00.050,
@@ -951,7 +951,7 @@ public sealed partial class ThatDelegateTests
 				            """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTestCancellationTimeoutExceedsTheTimerRange_ShouldKeepRetrying()
 		{
 			Counter counter = new(2);
@@ -968,7 +968,7 @@ public sealed partial class ThatDelegateTests
 			}
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTestCancellationTimeoutExpires_ShouldFail()
 		{
 			Counter counter = new();
@@ -981,11 +981,11 @@ public sealed partial class ThatDelegateTests
 				async Task Act() => await That(() => counter.Value).Eventually().IsEqualTo(1);
 
 				stopwatch.Start();
-				exception = await Record.ExceptionAsync(Act);
+				exception = await Catch.ExceptionAsync(Act);
 				stopwatch.Stop();
 			}
 
-			await That(exception).IsExactly<XunitException>().And
+			await That(exception).IsExactly<FailException>().And
 				.HasMessage("""
 				            Expected that () => counter.Value
 				            eventually is equal to 1 within *,
@@ -995,7 +995,7 @@ public sealed partial class ThatDelegateTests
 			await That(stopwatch.Elapsed).IsLessThan(30.Seconds());
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTestCancellationTimeoutIsShorterThanTheTimeoutAndWithTimeoutIsLonger_ShouldFail()
 		{
 			Counter counter = new();
@@ -1008,10 +1008,10 @@ public sealed partial class ThatDelegateTests
 					=> await That(() => counter.Value).Eventually().Within(SuccessTimeout).IsEqualTo(1)
 						.WithTimeout(10.Seconds());
 
-				exception = await Record.ExceptionAsync(Act);
+				exception = await Catch.ExceptionAsync(Act);
 			}
 
-			await That(exception).IsExactly<XunitException>().And
+			await That(exception).IsExactly<FailException>().And
 				.HasMessage("""
 				            Expected that () => counter.Value
 				            eventually is equal to 1 within 0:05,
@@ -1021,7 +1021,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the effective timeout is the tighter of WithTimeout and TestCancellation");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTestCancellationTimeoutIsShorterThanTheTimeout_ShouldFail()
 		{
 			Counter counter = new();
@@ -1033,10 +1033,10 @@ public sealed partial class ThatDelegateTests
 				async Task Act()
 					=> await That(() => counter.Value).Eventually().Within(SuccessTimeout).IsEqualTo(1);
 
-				exception = await Record.ExceptionAsync(Act);
+				exception = await Catch.ExceptionAsync(Act);
 			}
 
-			await That(exception).IsExactly<XunitException>().And
+			await That(exception).IsExactly<FailException>().And
 				.HasMessage("""
 				            Expected that () => counter.Value
 				            eventually is equal to 1 within 0:05,
@@ -1046,7 +1046,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the tighter limit wins, so the test cancellation also bounds an explicit timeout");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTheConstraintAddsAContext_ShouldNotDuplicateItPerAttempt()
 		{
 			Counter counter = new();
@@ -1061,7 +1061,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(Subject).Eventually().OnVirtualTime().Within(LowTimeout).IsEqualTo([3, 4,]);
 
-			XunitException exception = await That(Act).Throws<XunitException>()
+			FailException exception = await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that Subject
 				             eventually is equal to collection [3, 4,] in order within 0:00.500,
@@ -1072,7 +1072,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the context must be added once, and not once per attempt");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTheLastAttemptIsAsynchronous_ShouldStillEvaluateIt()
 		{
 			Counter counter = new();
@@ -1089,7 +1089,7 @@ public sealed partial class ThatDelegateTests
 				async Task Act()
 					=> await That(Subject).Eventually().OnVirtualTime().Within(SuccessTimeout).IsEqualTo(1);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that Subject
 					             eventually is equal to 1 within 0:05,
@@ -1101,7 +1101,7 @@ public sealed partial class ThatDelegateTests
 			await That(counter.EvaluationCount).IsEqualTo(2);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTheLastAttemptThrows_ShouldNotShowTheContextsOfAnEarlierAttempt()
 		{
 			int calls = 0;
@@ -1113,7 +1113,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(Subject).Eventually().OnVirtualTime().Within(VeryLowTimeout)
 					.CheckEvery(10.Milliseconds()).IsEqualTo([3, 4,]);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that Subject
 				             eventually is equal to collection [3, 4,] in order within 0:00.050,
@@ -1123,7 +1123,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the constraints still hold what the first attempt saw, which the last attempt did not see");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTheSubjectContentChanges_ShouldNotReuseTheCachedEnumerable()
 		{
 			List<int> subject = [];
@@ -1146,7 +1146,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutExceedsTheTimerRange_ShouldKeepRetrying()
 		{
 			Counter counter = new(2);
@@ -1159,7 +1159,7 @@ public sealed partial class ThatDelegateTests
 			await That(counter.EvaluationCount).IsEqualTo(4);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutExpires_ShouldFailWithTheLastObservedValue()
 		{
 			int observed = 0;
@@ -1168,7 +1168,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(() => observed = Math.Min(observed + 1, 2)).Eventually()
 					.OnVirtualTime().Within(LowTimeout).IsEqualTo(0);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => observed = Math.Min(observed + 1, 2)
 				             eventually is equal to 0 within 0:00.500,
@@ -1177,7 +1177,7 @@ public sealed partial class ThatDelegateTests
 				.Because("a second evaluation always follows the first wait, while a busy machine can stretch that wait over the whole timeout");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutIsInfinite_ShouldKeepRetrying()
 		{
 			Counter counter = new(2);
@@ -1192,7 +1192,7 @@ public sealed partial class ThatDelegateTests
 			await That(counter.EvaluationCount).IsEqualTo(4);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutIsInfinite_ShouldOnlyBoundAnAttemptByTheCancellation()
 		{
 			using CancellationTokenSource cts = new(VeryLowTimeout);
@@ -1202,7 +1202,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(subject).Eventually().Within(System.Threading.Timeout.InfiniteTimeSpan).IsEqualTo(1)
 					.WithCancellation(cts.Token);
 
-			await That(Act).Throws<InconclusiveException>()
+			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             eventually is equal to 1,
@@ -1211,7 +1211,7 @@ public sealed partial class ThatDelegateTests
 				.WithTimeout(30.Seconds());
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			Counter counter = new();
@@ -1226,7 +1226,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the timeout is validated when the expectation is built");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutIsSetTwice_ShouldThrowInvalidOperationException()
 		{
 			Counter counter = new();
@@ -1241,7 +1241,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the timeout is validated when the expectation is built");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutIsZero_AndSubjectIsAsynchronous_ShouldNotBoundTheEvaluation()
 		{
 			Func<Task<int>> subject = async () =>
@@ -1257,7 +1257,7 @@ public sealed partial class ThatDelegateTests
 				.Because("a zero timeout makes a single evaluation that it does not bound, like for a synchronous subject");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutIsZero_AndSubjectObservesTheToken_ShouldNotCancelIt()
 		{
 			CancellationToken? attemptToken = null;
@@ -1277,7 +1277,7 @@ public sealed partial class ThatDelegateTests
 				.Because("a zero timeout must not cancel the single evaluation");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutIsZero_AndSyncSubjectReturnsAfterWithTimeout_ShouldFail()
 		{
 			Func<int> subject = () =>
@@ -1289,7 +1289,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(subject).Eventually().Within(TimeSpan.Zero).IsEqualTo(1).WithTimeout(VeryLowTimeout);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             eventually is equal to 1 within 0:00,
@@ -1298,7 +1298,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the single evaluation is still bounded by a tighter timeout");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutIsZero_AndWithTimeoutIsShorterThanTheSubject_ShouldFail()
 		{
 			Func<Task<int>> subject = () => new TaskCompletionSource<int>().Task;
@@ -1306,7 +1306,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(subject).Eventually().Within(TimeSpan.Zero).IsEqualTo(1).WithTimeout(VeryLowTimeout);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             eventually is equal to 1 within 0:00,
@@ -1316,7 +1316,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the evaluation is still bounded by a tighter timeout");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTimeoutIsZero_ShouldOnlyEvaluateOnce()
 		{
 			Counter counter = new();
@@ -1324,7 +1324,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(() => counter.Value).Eventually().Within(TimeSpan.Zero).IsEqualTo(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             eventually is equal to 1 within 0:00,
@@ -1333,9 +1333,9 @@ public sealed partial class ThatDelegateTests
 			await That(counter.EvaluationCount).IsEqualTo(1);
 		}
 
-		[Theory]
-		[InlineData(true)]
-		[InlineData(false)]
+		[Test]
+		[Arguments(true)]
+		[Arguments(false)]
 		public async Task WithinAndCheckEvery_ShouldBeCombinableInEitherOrder(bool withinFirst)
 		{
 			Counter counter = new();
@@ -1348,7 +1348,7 @@ public sealed partial class ThatDelegateTests
 							.CheckEvery(30.Seconds()).Within(LowTimeout))
 					.IsEqualTo(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             eventually is equal to 1 within 0:00.500,
@@ -1358,7 +1358,7 @@ public sealed partial class ThatDelegateTests
 				.Because("an interval that is longer than the timeout results in exactly two evaluations");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithTimeout_ShouldCancelTheRetries()
 		{
 			Counter counter = new();
@@ -1368,7 +1368,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(() => counter.Value).Eventually().IsEqualTo(1).WithTimeout(VeryLowTimeout);
 
 			stopwatch.Start();
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             eventually is equal to 1 within 0:30,
@@ -1381,7 +1381,7 @@ public sealed partial class ThatDelegateTests
 				.Because("WithTimeout cancels the evaluation like everywhere else, instead of setting the retry budget");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithTimeout_WhenLongerThanWithin_ShouldNotExtendTheRetries()
 		{
 			Counter counter = new();
@@ -1390,7 +1390,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(() => counter.Value).Eventually().OnVirtualTime().Within(VeryLowTimeout).IsEqualTo(1)
 					.WithTimeout(SuccessTimeout);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
 				             eventually is equal to 1 within 0:00.050,

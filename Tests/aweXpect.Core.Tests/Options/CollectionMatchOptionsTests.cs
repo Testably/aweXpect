@@ -11,7 +11,7 @@ public class CollectionMatchOptionsTests
 {
 	public class AnyOrderTests
 	{
-		[Fact]
+		[Test]
 		public async Task Contains_PredicatesInAnyOrder_WhenAnItemOnlyMatchesAnAssignedPredicate_ShouldStopOnceDecided()
 		{
 			int readItems = 0;
@@ -35,7 +35,7 @@ public class CollectionMatchOptionsTests
 				.Because("6 and 3 already satisfy both predicates, when 6 moves from x > 0 to x > 5");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Contains_WithinInAnyOrder_WhenAnItemOnlyMatchesAnAssignedValue_ShouldStopOnceDecided()
 		{
 			int readItems = 0;
@@ -57,7 +57,7 @@ public class CollectionMatchOptionsTests
 				.Because("1.1 and 0.95 already match both values, when 1.1 moves from 1.0 to 1.2");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Contains_WithinInAnyOrder_WhenAValidAssignmentExists_ShouldSucceed()
 		{
 			double[] subject = [1.1, 1.0, 5.0,];
@@ -69,7 +69,7 @@ public class CollectionMatchOptionsTests
 				.Because("1.1 matches 1.2 and 1.0 matches 1.0");
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_PredicatesInAnyOrder_WhenAValidAssignmentExists_ShouldSucceed()
 		{
 			int[] subject = [1, 2,];
@@ -82,7 +82,7 @@ public class CollectionMatchOptionsTests
 				.Because("2 matches x > 0 and 1 matches x == 1");
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_WithinInAnyOrder_WhenAValidAssignmentExists_ShouldSucceed()
 		{
 			double[] subject = [1.1, 1.0,];
@@ -94,7 +94,7 @@ public class CollectionMatchOptionsTests
 				.Because("1.1 matches 1.2 and 1.0 matches 1.0");
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_WithinInAnyOrder_WhenNoValidAssignmentExists_ShouldReportTheUnassignedItems()
 		{
 			double[] subject = [1.1, 1.0, 1.15,];
@@ -102,7 +102,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo([1.0, 1.2, 3.0,]).Within(0.15).InAnyOrder();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [1.0, 1.2, 3.0,] ± 0.15 in any order,
@@ -118,7 +118,7 @@ public class CollectionMatchOptionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task IsEqualTo_WithinInAnyOrder_WhenMoreItemsThanDeviationsAllowedAreReassigned_ShouldSucceed()
 		{
 			// Each 10k + 0.5 takes 10k, the first expected item it matches, so each later 10k has to move it to 10k + 1.
@@ -142,7 +142,7 @@ public class CollectionMatchOptionsTests
 	/// </summary>
 	public class DefaultEqualityInAnyOrderTests
 	{
-		[Fact]
+		[Test]
 		public async Task FloatingPointNumbers_ShouldAgreeWithUnrecognizedOptions()
 		{
 			double[] values = [0.0, -0.0, double.NaN, 1.0,];
@@ -154,7 +154,7 @@ public class CollectionMatchOptionsTests
 			await That(met).IsGreaterThan(100);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Numbers_ShouldAgreeWithUnrecognizedOptions()
 		{
 			(int met, List<string> disagreements) = await Compare<int, int>(1705,
@@ -164,7 +164,7 @@ public class CollectionMatchOptionsTests
 			await That(met).IsGreaterThan(100);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NumbersComparedAsObjects_ShouldAgreeWithUnrecognizedOptions()
 		{
 			(int met, List<string> disagreements) = await Compare<int, object?>(1529,
@@ -174,7 +174,7 @@ public class CollectionMatchOptionsTests
 			await That(met).IsGreaterThan(100);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_ShouldAgreeWithUnrecognizedOptions()
 		{
 			string?[] values = ["a", "b", "c", null,];
@@ -186,7 +186,7 @@ public class CollectionMatchOptionsTests
 			await That(met).IsGreaterThan(100);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_WhenCaseIsIgnored_ShouldMatchItemsThatDifferInCase()
 		{
 			StringEqualityOptions options = new("expected");
@@ -197,7 +197,7 @@ public class CollectionMatchOptionsTests
 			await That(result).IsEqualTo("False: ");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_WhenTheFirstItemIsNotExpected_ShouldReportTheIndexOfEachItem()
 		{
 			StringEqualityOptions options = new("expected");
@@ -211,7 +211,7 @@ public class CollectionMatchOptionsTests
 			                             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_WhenTheLastItemIsNotExpected_ShouldReportItsIndex()
 		{
 			StringEqualityOptions options = new("expected");
@@ -288,7 +288,7 @@ public class CollectionMatchOptionsTests
 
 	public class ExpectationItemTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenExpectationIsNull_ShouldThrowArgumentNullException()
 		{
 			void Act()
@@ -303,7 +303,7 @@ public class CollectionMatchOptionsTests
 
 	public class FailureMessageTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenAllOfManyExpectedItemsAreMissingInAnyOrder_ShouldCountThem()
 		{
 			int[] subject = Enumerable.Range(1, 5).ToArray();
@@ -312,7 +312,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).Contains(expected).InAnyOrder();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in any order,
@@ -339,7 +339,7 @@ public class CollectionMatchOptionsTests
 				.Because("the missing items are known completely, so they are listed like fewer missing items");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAllOfOneExpectedItemIsMissing_ShouldUseSingular()
 		{
 			int[] subject = [1, 2,];
@@ -347,7 +347,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).Contains([3,]);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection [3,] in order and contiguous,
@@ -361,7 +361,7 @@ public class CollectionMatchOptionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAllOfOneUniqueExpectedItemIsMissing_ShouldUseSingular()
 		{
 			int[] subject = [1, 2,];
@@ -369,7 +369,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).Contains([3, 3,]).IgnoringDuplicates();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection [3, 3,] in order and contiguous ignoring duplicates,
@@ -383,7 +383,7 @@ public class CollectionMatchOptionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAllOfTwoExpectedItemsAreMissing_ShouldUsePlural()
 		{
 			int[] subject = [1, 2,];
@@ -391,7 +391,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).Contains([3, 4,]);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection [3, 4,] in order and contiguous,
@@ -405,7 +405,7 @@ public class CollectionMatchOptionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenExpectationItemIsNotMet_ShouldDescribeItAsAnItem()
 		{
 			string[] subject = ["a", "b",];
@@ -418,7 +418,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).Contains(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in order and contiguous,
@@ -438,7 +438,7 @@ public class CollectionMatchOptionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenExpectationItemThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -452,7 +452,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -463,7 +463,7 @@ public class CollectionMatchOptionsTests
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenExpectationItemThrowsUnderNegation_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("boom");
@@ -477,7 +477,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsNotEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is not equal to collection expected in order,
@@ -489,7 +489,7 @@ public class CollectionMatchOptionsTests
 				.Because("an item that the expectation did not answer fails the negation as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenExpectationItemThrowsForAnItemThatMatchesAnotherExpectedItemInAnyOrder_ShouldSucceed()
 		{
 			string[] subject = ["b", "a",];
@@ -505,7 +505,7 @@ public class CollectionMatchOptionsTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenIncorrectItemFormatsLikeTheExpectedItem_ShouldIncludeTheRuntimeType()
 		{
 			object[] subject = [0, 1,];
@@ -514,7 +514,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected).Equivalent();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected using equivalency in order,
@@ -538,7 +538,7 @@ public class CollectionMatchOptionsTests
 				.Because("an item and the expected item that format identically are only told apart by their type");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenIncorrectItemIsALongStringThatDiffersAfterTheMaximumStringLength_ShouldShowTheDifference()
 		{
 			string common = new('a', 120);
@@ -548,7 +548,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -558,7 +558,7 @@ public class CollectionMatchOptionsTests
 				.Because("both truncated texts would be identical, so the strings are shown from shortly before their first difference");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenManyExpectedItemsAreMissing_ShouldListTheFirstOfThem()
 		{
 			int[] subject = Enumerable.Range(1, 5).ToArray();
@@ -567,7 +567,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).Contains(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in order and contiguous,
@@ -605,7 +605,7 @@ public class CollectionMatchOptionsTests
 				.Because("the missing items are known completely, so they are listed like fewer missing items");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenManyExpectedItemsAreMissingIgnoringDuplicates_ShouldListTheFirstOfThem()
 		{
 			int[] subject = Enumerable.Range(1, 5).ToArray();
@@ -614,7 +614,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).Contains(expected).IgnoringDuplicates();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in order and contiguous ignoring duplicates,
@@ -652,7 +652,7 @@ public class CollectionMatchOptionsTests
 				.Because("the missing items are known completely, so they are listed like fewer missing items");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenManyExpectedItemsAreMissingInAnyOrder_ShouldListTheFirstOfThem()
 		{
 			int[] subject = Enumerable.Range(1, 5).ToArray();
@@ -661,7 +661,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).Contains(expected).InAnyOrder();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in any order,
@@ -699,7 +699,7 @@ public class CollectionMatchOptionsTests
 				.Because("the missing items are known completely, so they are listed like fewer missing items");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenManyExpectedItemsAreMissingInAnyOrderIgnoringDuplicates_ShouldListTheFirstOfThem()
 		{
 			int[] subject = Enumerable.Range(1, 5).ToArray();
@@ -708,7 +708,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).Contains(expected).InAnyOrder().IgnoringDuplicates();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection expected in any order ignoring duplicates,
@@ -746,7 +746,7 @@ public class CollectionMatchOptionsTests
 				.Because("the missing items are known completely, so they are listed like fewer missing items");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenPredicateThrowsInAnyOrder_AndTheItemIsAtAnotherPosition_ShouldNameTheIndexOfTheItem()
 		{
 			string[] subject = ["c", "b",];
@@ -754,7 +754,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo([x => x == "b", x => x == "c" && Throw(x),]).InAnyOrder();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [x => x == "b", x => x == "c" && Throw(x),] in any order,
@@ -765,7 +765,7 @@ public class CollectionMatchOptionsTests
 				.Because("the index names the subject item, not the position of the predicate that threw");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenPredicateThrowsInAnyOrder_ShouldNameTheItemByItsIndex()
 		{
 			string[] subject = ["b", "c",];
@@ -773,7 +773,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo([x => x == "b", x => x == "c" && Throw(x),]).InAnyOrder();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [x => x == "b", x => x == "c" && Throw(x),] in any order,
@@ -784,7 +784,7 @@ public class CollectionMatchOptionsTests
 				.Because("the item that the predicate did not answer is named like in the other collection expectations");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenPredicateThrowsInAnyOrderIgnoringDuplicates_ShouldNameTheItemByItsIndex()
 		{
 			string[] subject = ["b", "b", "c",];
@@ -792,7 +792,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo([x => x == "b", x => x == "c" && Throw(x),]).InAnyOrder().IgnoringDuplicates();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [x => x == "b", x => x == "c" && Throw(x),] in any order ignoring duplicates,
@@ -802,7 +802,7 @@ public class CollectionMatchOptionsTests
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenPredicateThrowsInOrder_ShouldNameTheItemByItsIndex()
 		{
 			string[] subject = ["b", "c",];
@@ -810,7 +810,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo([x => x == "b", x => x == "c" && Throw(x),]);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [x => x == "b", x => x == "c" && Throw(x),] in order,
@@ -820,7 +820,7 @@ public class CollectionMatchOptionsTests
 				             """).AsWildcard();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenPredicateThrowsInOrderIgnoringDuplicates_ShouldNameTheItemByItsIndex()
 		{
 			string[] subject = ["b", "b", "c",];
@@ -828,7 +828,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo([x => x == "b", x => x == "c" && Throw(x),]).IgnoringDuplicates();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [x => x == "b", x => x == "c" && Throw(x),] in order ignoring duplicates,
@@ -845,7 +845,7 @@ public class CollectionMatchOptionsTests
 
 	public class GetCollectionMatcherTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenAnExpectationIsNull_ShouldThrowArgumentException()
 		{
 			CollectionMatchOptions sut = new();
@@ -859,11 +859,11 @@ public class CollectionMatchOptionsTests
 				.WithMessage("The 'expected' collection cannot contain <null>.").AsPrefix();
 		}
 
-		[Theory]
-		[InlineData(false, false)]
-		[InlineData(false, true)]
-		[InlineData(true, false)]
-		[InlineData(true, true)]
+		[Test]
+		[Arguments(false, false)]
+		[Arguments(false, true)]
+		[Arguments(true, false)]
+		[Arguments(true, true)]
 		public async Task WhenAPredicateIsNull_ShouldThrowArgumentException(bool inAnyOrder, bool ignoringDuplicates)
 		{
 			CollectionMatchOptions sut = new();
@@ -887,7 +887,7 @@ public class CollectionMatchOptionsTests
 				.WithMessage("The 'expected' collection cannot contain <null>.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAValueIsNull_ShouldNotThrow()
 		{
 			CollectionMatchOptions sut = new();
@@ -899,7 +899,7 @@ public class CollectionMatchOptionsTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenThePredicatesAreNotMaterialized_ShouldEnumerateThemOnce()
 		{
 			int enumerations = 0;
@@ -921,27 +921,27 @@ public class CollectionMatchOptionsTests
 
 	public class GetExpectationTests
 	{
-		[Theory]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent,
+		[Test]
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Equivalent,
 			ExpectationGrammars.None, "is equal to collection [1] in order")]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent,
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Equivalent,
 			ExpectationGrammars.Plural, "are equal to collection [1] in order")]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent,
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Equivalent,
 			ExpectationGrammars.Negated, "is not equal to collection [1] in order")]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent,
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Equivalent,
 			ExpectationGrammars.Plural | ExpectationGrammars.Negated, "are not equal to collection [1] in order")]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains,
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains,
 			ExpectationGrammars.None, "contains collection [1] in order and contiguous")]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains,
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains,
 			ExpectationGrammars.Plural, "contain collection [1] in order and contiguous")]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains,
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains,
 			ExpectationGrammars.Plural | ExpectationGrammars.Negated,
 			"do not contain collection [1] in order and contiguous")]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
 			ExpectationGrammars.None, "is contained in collection [1] in order and contiguous")]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
 			ExpectationGrammars.Plural, "are contained in collection [1] in order and contiguous")]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
 			ExpectationGrammars.Plural | ExpectationGrammars.Negated,
 			"are not contained in collection [1] in order and contiguous")]
 		public async Task ShouldAgreeWithTheNumberOfTheSubject(
@@ -956,13 +956,13 @@ public class CollectionMatchOptionsTests
 			await That(result).IsEqualTo(expected);
 		}
 
-		[Theory]
-		[InlineData(false, false, false, "contains collection [1] in order and contiguous")]
-		[InlineData(false, false, true, "contains collection [1] in order ignoring interspersed items")]
-		[InlineData(false, true, false, "contains collection [1] in order and contiguous ignoring duplicates")]
-		[InlineData(false, true, true, "contains collection [1] in order ignoring duplicates and interspersed items")]
-		[InlineData(true, false, false, "contains collection [1] in any order")]
-		[InlineData(true, true, false, "contains collection [1] in any order ignoring duplicates")]
+		[Test]
+		[Arguments(false, false, false, "contains collection [1] in order and contiguous")]
+		[Arguments(false, false, true, "contains collection [1] in order ignoring interspersed items")]
+		[Arguments(false, true, false, "contains collection [1] in order and contiguous ignoring duplicates")]
+		[Arguments(false, true, true, "contains collection [1] in order ignoring duplicates and interspersed items")]
+		[Arguments(true, false, false, "contains collection [1] in any order")]
+		[Arguments(true, true, false, "contains collection [1] in any order ignoring duplicates")]
 		public async Task ShouldClaimContiguityDependingOnTheOptions(
 			bool inAnyOrder,
 			bool ignoringDuplicates,
@@ -991,16 +991,16 @@ public class CollectionMatchOptionsTests
 				.Because("contiguity may only be claimed while interspersed items are not ignored");
 		}
 
-		[Theory]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent,
+		[Test]
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Equivalent,
 			"is equal to collection [1] in order")]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains,
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains,
 			"contains collection [1] in order and contiguous")]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.ContainsProperly,
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.ContainsProperly,
 			"contains collection [1] and at least one additional item in order and contiguous")]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
 			"is contained in collection [1] in order and contiguous")]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly,
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly,
 			"is contained in collection [1] that has at least one additional item in order and contiguous")]
 		public async Task ShouldOnlyClaimContiguityForTheContainmentRelations(
 			CollectionMatchOptions.EquivalenceRelations equivalenceRelations,
@@ -1017,7 +1017,7 @@ public class CollectionMatchOptionsTests
 
 	public class IgnoringDuplicatesTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenAnItemDiffersFromAnEarlierItemOnlyByCasing_ShouldBeADuplicateInAnyOrder()
 		{
 			string[] subject = ["a", "A", "b",];
@@ -1029,7 +1029,7 @@ public class CollectionMatchOptionsTests
 				.Because("an item that matches an already matched expected value repeats it");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAnItemDiffersFromAnEarlierItemOnlyByCasing_ShouldBeADuplicateInSameOrder()
 		{
 			string[] subject = ["a", "A", "b",];
@@ -1041,7 +1041,7 @@ public class CollectionMatchOptionsTests
 				.Because("an item that matches an already matched expected value repeats it");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAnItemDiffersFromAnEarlierItemOnlyByCasing_ShouldBeADuplicateWhenContained()
 		{
 			string[] subject = ["a", "A", "b",];
@@ -1053,7 +1053,7 @@ public class CollectionMatchOptionsTests
 				.Because("an item that matches an already matched expected value repeats it");
 		}
 
-		[Fact]
+		[Test]
 		public async Task
 			WhenAnItemDiffersFromAnEarlierItemOnlyByCasing_ShouldBeADuplicateWhenContainedWithInterspersedItems()
 		{
@@ -1067,7 +1067,7 @@ public class CollectionMatchOptionsTests
 				.Because("an item that matches an already matched expected value repeats it");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAnItemDiffersFromAnEarlierItemOnlyByCasing_ShouldBeADuplicateWhenContaining()
 		{
 			string[] subject = ["x", "a", "A", "b",];
@@ -1079,7 +1079,7 @@ public class CollectionMatchOptionsTests
 				.Because("an item that matches an already matched expected value repeats it");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAnItemDiffersFromAnEarlierItemOnlyByCasingWithoutIgnoringCase_ShouldNotBeADuplicate()
 		{
 			string[] subject = ["a", "A", "b",];
@@ -1087,7 +1087,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo(["b", "a",]).InAnyOrder().IgnoringDuplicates();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection ["b", "a",] in any order ignoring duplicates,
@@ -1108,7 +1108,7 @@ public class CollectionMatchOptionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAnItemMatchesAnExpectedItemAndTheNextOneInAnyOrder_ShouldStopReadingWhenContained()
 		{
 			int readItems = 0;
@@ -1130,7 +1130,7 @@ public class CollectionMatchOptionsTests
 				.Because("the first item already matches both predicates, which decides the containment");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAnItemMatchesExpectedItemsApartFromEachOtherInAnyOrder_ShouldStopReadingWhenContained()
 		{
 			int readItems = 0;
@@ -1153,7 +1153,7 @@ public class CollectionMatchOptionsTests
 				.Because("6 matches x > 0 and x > 5, and 3 matches x == 3");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAnItemMatchesTwoExpectedValuesInAnyOrder_ShouldMatchBoth()
 		{
 			double[] subject = [1.1,];
@@ -1165,7 +1165,7 @@ public class CollectionMatchOptionsTests
 				.Because("each expected value is matched by an item, as in the same order");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAnItemOnlyMatchesAnAlreadyMatchedExpectedValue_ShouldBeNoAdditionalItem()
 		{
 			string[] subject = ["a", "A",];
@@ -1173,7 +1173,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).Contains(["a",]).Properly().InAnyOrder().IgnoringDuplicates().IgnoringCase();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection ["a",] ignoring case and at least one additional item in any order ignoring duplicates,
@@ -1192,7 +1192,7 @@ public class CollectionMatchOptionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenEqualExpectedItemsDifferForTheComparerInAnyOrder_ShouldNotBeDuplicates()
 		{
 			IdOnlyEquality[] subject = [new(1, "a"),];
@@ -1202,7 +1202,7 @@ public class CollectionMatchOptionsTests
 				=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates()
 					.Using(new ByNameComparer());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected * in any order ignoring duplicates,
@@ -1211,7 +1211,7 @@ public class CollectionMatchOptionsTests
 				.Because("the comparer tells the expected items apart, although they are equal");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenEqualItemsDifferForTheComparerInAnyOrder_ShouldNotBeDuplicates()
 		{
 			IdOnlyEquality[] subject = [new(1, "a"), new(1, "b"),];
@@ -1221,7 +1221,7 @@ public class CollectionMatchOptionsTests
 				=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates()
 					.Using(new ByNameComparer());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected * in any order ignoring duplicates,
@@ -1231,7 +1231,7 @@ public class CollectionMatchOptionsTests
 				.Because("the comparer tells the items apart, although they are equal");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenEqualItemsDifferForTheComparerInSameOrder_ShouldNotBeDuplicates()
 		{
 			IdOnlyEquality[] subject = [new(1, "a"), new(1, "b"),];
@@ -1240,7 +1240,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected).IgnoringDuplicates().Using(new ByNameComparer());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected * in order ignoring duplicates,
@@ -1250,7 +1250,7 @@ public class CollectionMatchOptionsTests
 				.Because("the comparer tells the items apart, although they are equal");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenEqualObjectsDifferInTheirDateTimeKindInAnyOrder_ShouldNotBeDuplicates()
 		{
 			DateTime local = new(2026, 1, 1, 0, 0, 0, DateTimeKind.Local);
@@ -1261,7 +1261,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that subject
 				              is equal to collection expected in any order ignoring duplicates,
@@ -1271,7 +1271,7 @@ public class CollectionMatchOptionsTests
 				.Because("a Utc and a Local value with the same ticks denote different instants");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenExpectedValuesDifferOnlyByCasing_ShouldBeDuplicatesInAnyOrder()
 		{
 			string[] subject = ["a",];
@@ -1283,7 +1283,7 @@ public class CollectionMatchOptionsTests
 				.Because("\"a\" and \"A\" are duplicates when case is ignored");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenOneItemMatchesTwoPredicatesInSameOrder_ShouldSucceed()
 		{
 			int[] subject = [1,];
@@ -1295,7 +1295,7 @@ public class CollectionMatchOptionsTests
 				.Because("only which items occur matters, so the one item may match both predicates, as in any order");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTheRunIsInterruptedInSameOrder_ShouldReportTheInterruptingItem()
 		{
 			int[] subject = [3, 0, 2, 2,];
@@ -1303,7 +1303,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).Contains([x => x >= 3, x => x == 2,]).IgnoringDuplicates();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             contains collection [x => x >= 3, x => x == 2,] in order and contiguous ignoring duplicates,
@@ -1320,7 +1320,7 @@ public class CollectionMatchOptionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTheRepeatedItemFitsAPredicateInSameOrder_ShouldChooseIt()
 		{
 			int[] subject = [3, 3, 2,];
@@ -1332,7 +1332,7 @@ public class CollectionMatchOptionsTests
 				.Because("3 matches x <= 3 and 2 matches x >= 0");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTwoItemsMatchTheSameExpectedValue_ShouldBeDuplicates()
 		{
 			string[] subject = ["abc", "axe",];
@@ -1344,7 +1344,7 @@ public class CollectionMatchOptionsTests
 				.Because("an item that matches an already matched expected value repeats it");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTwoItemsMatchTheSamePredicate_ShouldBeDuplicates()
 		{
 			int[] subject = [1, 4, 2,];
@@ -1356,8 +1356,8 @@ public class CollectionMatchOptionsTests
 				.Because("only which items occur matters, so 1 and 4 both count for x > 0, like for expected values");
 		}
 
-		[Theory]
-		[MemberData(nameof(MatchedOnBothSidesCases))]
+		[Test]
+		[MethodDataSource(nameof(MatchedOnBothSidesCases))]
 		public async Task WithAnyKindOfExpectedItems_ShouldOnlyRequireEachSideToBeMatched(
 			CollectionMatchOptions.EquivalenceRelations relation, string mode, string kind, string subject,
 			string expected, bool isMatch)
@@ -1463,7 +1463,7 @@ public class CollectionMatchOptionsTests
 
 	public class IgnoringInterspersedItemsTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenInAnyOrderIsSpecified_ShouldThrowInvalidOperationException()
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
@@ -1476,7 +1476,7 @@ public class CollectionMatchOptionsTests
 				.Because("the any-order match never requires contiguous items, so the option would silently be dropped");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenInAnyOrderIsSpecifiedAfterwards_ShouldThrowInvalidOperationException()
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
@@ -1489,7 +1489,7 @@ public class CollectionMatchOptionsTests
 				.Because("the any-order match never requires contiguous items, so the option would silently be dropped");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
@@ -1504,7 +1504,7 @@ public class CollectionMatchOptionsTests
 
 	public class OptionTests
 	{
-		[Fact]
+		[Test]
 		public async Task IgnoringDuplicates_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
 		{
 			CollectionMatchOptions sut = new();
@@ -1516,7 +1516,7 @@ public class CollectionMatchOptionsTests
 				.WithMessage("IgnoringDuplicates cannot be specified more than once.");
 		}
 
-		[Fact]
+		[Test]
 		public async Task InAnyOrder_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
 		{
 			CollectionMatchOptions sut = new();
@@ -1528,10 +1528,10 @@ public class CollectionMatchOptionsTests
 				.WithMessage("InAnyOrder cannot be specified more than once.");
 		}
 
-		[Theory]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains,
+		[Test]
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains,
 			"contains collection [1] and at least one additional item")]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.IsContainedIn,
 			"is contained in collection [1] that has at least one additional item")]
 		public async Task Properly_ShouldTurnTheRelationIntoItsProperForm(
 			CollectionMatchOptions.EquivalenceRelations relation, string expectedPrefix)
@@ -1543,7 +1543,7 @@ public class CollectionMatchOptionsTests
 			await That(sut.GetExpectation("[1]", ExpectationGrammars.None)).StartsWith(expectedPrefix);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Properly_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
 		{
 			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
@@ -1555,7 +1555,7 @@ public class CollectionMatchOptionsTests
 				.WithMessage("Properly cannot be specified more than once.");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Properly_WhenTheRelationIsEquivalent_ShouldThrowInvalidOperationException()
 		{
 			CollectionMatchOptions sut = new();
@@ -1572,52 +1572,52 @@ public class CollectionMatchOptionsTests
 	/// </summary>
 	public class ReferenceCaseTests
 	{
-		[Theory]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent, "any", "near", "1,3,3,0", "2,3,0,1", true)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn, "any", "near", "1,3,3,0", "2,3,0,1",
+		[Test]
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Equivalent, "any", "near", "1,3,3,0", "2,3,0,1", true)]
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.IsContainedIn, "any", "near", "1,3,3,0", "2,3,0,1",
 			true)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.ContainsProperly, "any", "near", "2,0,0,0", "1,2",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.ContainsProperly, "any", "near", "2,0,0,0", "1,2",
 			true)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent, "any", "pred", "0,2,1", ">=0,<=2,<=0",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Equivalent, "any", "pred", "0,2,1", ">=0,<=2,<=0",
 			true)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn, "any", "pred", "1,2", ">=3,<=3,<=1",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.IsContainedIn, "any", "pred", "1,2", ">=3,<=3,<=1",
 			true)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains, "any-dup", "pred", "0,2,3,1", "<=3,==2,<=0",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains, "any-dup", "pred", "0,2,3,1", "<=3,==2,<=0",
 			true)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains, "any-dup", "div2", "1,3,3,0", "2,3,0,1",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains, "any-dup", "div2", "1,3,3,0", "2,3,0,1",
 			true)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.ContainsProperly, "any-dup", "near", "1,2", "1",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.ContainsProperly, "any-dup", "near", "1,2", "1",
 			false)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly, "any-dup", "div2", "1,3,3,0",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly, "any-dup", "div2", "1,3,3,0",
 			"2,3,0,1", false)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains, "same", "eq", "0,1", "1,0", false)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains, "same-interspersed", "eq", "0,2,3,3",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains, "same", "eq", "0,1", "1,0", false)]
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains, "same-interspersed", "eq", "0,2,3,3",
 			"2,3,0", false)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains, "same-dup", "eq", "0,2,3,3", "2,3,0",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains, "same-dup", "eq", "0,2,3,3", "2,3,0",
 			false)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains, "same-dup", "eq", "1,2,0,2", "1,1,0,0",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains, "same-dup", "eq", "1,2,0,2", "1,1,0,0",
 			true)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn, "same-dup", "eq", "2,0", "2,3,0,3",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.IsContainedIn, "same-dup", "eq", "2,0", "2,3,0,3",
 			true)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent, "same-dup", "div2", "2,0,3,1", "1,0,2",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Equivalent, "same-dup", "div2", "2,0,3,1", "1,0,2",
 			true)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains, "same-dup", "div2", "2,0,3,1", "1,0,2",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains, "same-dup", "div2", "2,0,3,1", "1,0,2",
 			true)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.ContainsProperly, "same-dup", "div2", "0,2,1", "0,3",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.ContainsProperly, "same-dup", "div2", "0,2,1", "0,3",
 			false)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly, "same-dup", "div2", "0",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.IsContainedInProperly, "same-dup", "div2", "0",
 			"1,0", false)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent, "same-dup", "pred", "0", "<=2,==0",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Equivalent, "same-dup", "pred", "0", "<=2,==0",
 			true)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Equivalent, "same-dup", "pred", "3,3,2", "<=3,>=0",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Equivalent, "same-dup", "pred", "3,3,2", "<=3,>=0",
 			true)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains, "same-dup", "pred", "0,0,1,3",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains, "same-dup", "pred", "0,0,1,3",
 			"==3,<=2,<=2", false)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains, "same-dup", "pred", "3,0,2,2", ">=1,==2",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains, "same-dup", "pred", "3,0,2,2", ">=1,==2",
 			true)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.Contains, "same-dup-interspersed", "pred", "2,0,3,1",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.Contains, "same-dup-interspersed", "pred", "2,0,3,1",
 			"==0,>=2,>=3", true)]
-		[InlineData(CollectionMatchOptions.EquivalenceRelations.IsContainedIn, "same-dup", "pred", "1,3,2,2",
+		[Arguments(CollectionMatchOptions.EquivalenceRelations.IsContainedIn, "same-dup", "pred", "1,3,2,2",
 			">=1,<=3,<=3", true)]
 		public async Task ShouldAgreeWithTheReference(CollectionMatchOptions.EquivalenceRelations relation,
 			string mode, string equality, string subject, string expected, bool isMatch)
@@ -1647,7 +1647,7 @@ public class CollectionMatchOptionsTests
 			await That(result).IsEqualTo(isMatch);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ComparisonsCompletingAsynchronously_ShouldAgreeWithSynchronousComparisons()
 		{
 			CollectionMatchOptions.EquivalenceRelations[] relations =
@@ -1703,7 +1703,7 @@ public class CollectionMatchOptionsTests
 				.Because("the matchers continue where a comparison did not complete synchronously");
 		}
 
-		[Fact]
+		[Test]
 		public async Task ContainmentInOrder_ShouldAgreeWithABruteForceSearch()
 		{
 			CollectionMatchOptions.EquivalenceRelations[] relations =
@@ -1884,7 +1884,7 @@ public class CollectionMatchOptionsTests
 
 	public class RestartedMatchTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenTheMatchRestartsAfterAnInterruptedPartialMatch_ShouldBeContained()
 		{
 			int[] subject = [1, 2, 4, 2, 3,];
@@ -1895,7 +1895,7 @@ public class CollectionMatchOptionsTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTheMatchRestartsAfterAnInterruptedPartialMatch_ShouldReportTheItemsBeforeTheMatchAsAdditional()
 		{
 			int[] subject = [1, 2, 5, 2, 2, 3,];
@@ -1903,7 +1903,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo([2, 3,]);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [2, 3,] in order,
@@ -1922,7 +1922,7 @@ public class CollectionMatchOptionsTests
 				.Because("leaving out the items before the match is the alignment with the fewest deviations");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTheMatchRestartsAfterAnInterruptedPartialMatchIgnoringDuplicates_ShouldBeContained()
 		{
 			int[] subject = [1, 2, 4, 2, 3,];
@@ -1933,7 +1933,7 @@ public class CollectionMatchOptionsTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTheMatchRestartsAfterAPartialMatch_ShouldBeContained()
 		{
 			int[] subject = [1, 2, 2, 3,];
@@ -1944,7 +1944,7 @@ public class CollectionMatchOptionsTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTheMatchRestartsAfterAPartialMatch_ShouldNotBeContainedIn()
 		{
 			int[] subject = [1, 2, 2, 3,];
@@ -1952,7 +1952,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsContainedIn([2, 3,]);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is contained in collection [2, 3,] in order and contiguous,
@@ -1968,7 +1968,7 @@ public class CollectionMatchOptionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTheMatchRestartsAfterAPartialMatch_ShouldNotBeEqual()
 		{
 			int[] subject = [1, 2, 2, 3,];
@@ -1979,7 +1979,7 @@ public class CollectionMatchOptionsTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTheMatchRestartsAfterAPartialMatch_ShouldReportTheItemsBeforeTheMatchAsAdditional()
 		{
 			int[] subject = [1, 2, 2, 3,];
@@ -1987,7 +1987,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo([2, 3,]);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection [2, 3,] in order,
@@ -2004,7 +2004,7 @@ public class CollectionMatchOptionsTests
 				.Because("leaving out the items before the match is the alignment with the fewest deviations");
 		}
 
-		[Fact]
+		[Test]
 		public async Task
 			WhenTheMatchWouldRestartAtARepeatedItemIgnoringDuplicates_ShouldSkipTheRepeatedItem()
 		{
@@ -2013,7 +2013,7 @@ public class CollectionMatchOptionsTests
 			async Task Act()
 				=> await That(subject).IsEqualTo(["a", "b",]).IgnoringDuplicates().IgnoringCase();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection ["a", "b",] ignoring case in order ignoring duplicates,
@@ -2040,7 +2040,7 @@ public class CollectionMatchOptionsTests
 
 	public class EquivalenceRelationsTests
 	{
-		[Fact]
+		[Test]
 		public async Task Equivalent_ShouldNotHaveSubsetOrSupersetFlag()
 		{
 			CollectionMatchOptions.EquivalenceRelations subject
@@ -2050,7 +2050,7 @@ public class CollectionMatchOptionsTests
 			await That(subject).DoesNotHaveFlag(CollectionMatchOptions.EquivalenceRelations.Contains);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ProperSubset_ShouldHaveSubsetFlag()
 		{
 			CollectionMatchOptions.EquivalenceRelations subject
@@ -2059,7 +2059,7 @@ public class CollectionMatchOptionsTests
 			await That(subject).HasFlag(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ProperSuperset_ShouldHaveSupersetFlag()
 		{
 			CollectionMatchOptions.EquivalenceRelations subject

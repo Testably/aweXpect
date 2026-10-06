@@ -7,7 +7,7 @@ public sealed partial class ThatDelegateTests
 {
 	public sealed class OverloadResolutionTests
 	{
-		[Fact]
+		[Test]
 		public async Task AsyncBlockLambda_DoesNotThrow_ShouldAwaitTheDelegate()
 		{
 			Sut sut = new();
@@ -18,7 +18,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the async lambda must be awaited");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsyncBlockLambda_Throws_ShouldAwaitTheDelegate()
 		{
 			Sut sut = new(new MyException("async block lambda"));
@@ -27,7 +27,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("async block lambda");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsyncLambda_DoesNotThrow_ShouldAwaitTheDelegate()
 		{
 			Sut sut = new();
@@ -38,7 +38,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the async lambda must be awaited");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsyncLambda_Throws_ShouldAwaitTheDelegate()
 		{
 			Sut sut = new(new MyException("async lambda"));
@@ -47,7 +47,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("async lambda");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsyncLambdaWithCancellationToken_DoesNotThrow_ShouldAwaitTheDelegate()
 		{
 			Sut sut = new();
@@ -58,7 +58,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the async lambda must be awaited");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsyncLambdaWithCancellationToken_Throws_ShouldAwaitTheDelegate()
 		{
 			Sut sut = new(new MyException("async lambda with cancellation token"));
@@ -67,7 +67,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("async lambda with cancellation token");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsyncLambdaWithCancellationTokenAndValue_DoesNotThrow_ShouldAwaitTheDelegate()
 		{
 			Sut sut = new();
@@ -78,7 +78,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the async lambda must be awaited and its result must become the result");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsyncLambdaWithCancellationTokenAndValue_Throws_ShouldAwaitTheDelegate()
 		{
 			Sut sut = new(new MyException("async lambda with cancellation token and value"));
@@ -87,7 +87,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("async lambda with cancellation token and value");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsyncLambdaWithValue_DoesNotThrow_ShouldAwaitTheDelegate()
 		{
 			Sut sut = new();
@@ -98,7 +98,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the async lambda must be awaited and its result must become the result");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsyncLambdaWithValue_Throws_ShouldAwaitTheDelegate()
 		{
 			Sut sut = new(new MyException("async lambda with value"));
@@ -107,13 +107,13 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("async lambda with value");
 		}
 
-		[Fact]
+		[Test]
 		public async Task ThrowLambda_DoesNotThrow_ShouldFail()
 		{
 			async Task Act()
 				=> await That(() => throw new MyException("throw lambda")).DoesNotThrow();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => throw new MyException("throw lambda")
 				             does not throw any exception,
@@ -122,20 +122,20 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ThrowLambda_Throws_ShouldSucceed()
 		{
 			await That(() => throw new MyException("throw lambda")).Throws<MyException>()
 				.WithMessage("throw lambda");
 		}
 
-		[Fact]
+		[Test]
 		public async Task ThrowLambdaWithCancellationToken_DoesNotThrow_ShouldFail()
 		{
 			async Task Act()
 				=> await That(ct => throw new MyException("throw lambda with cancellation token")).DoesNotThrow();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that ct => throw new MyException("throw lambda with cancellation token")
 				             does not throw any exception,
@@ -144,7 +144,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ThrowLambdaWithCancellationToken_Throws_ShouldSucceed()
 		{
 			await That(ct => throw new MyException("throw lambda with cancellation token")).Throws<MyException>()
@@ -152,7 +152,7 @@ public sealed partial class ThatDelegateTests
 		}
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task ValueTaskLambda_ShouldBeAwaited()
 		{
 			Sut sut = new();
@@ -165,7 +165,7 @@ public sealed partial class ThatDelegateTests
 #endif
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task ValueTaskLambdaWithCancellationToken_ShouldBeAwaited()
 		{
 			Sut sut = new();
@@ -178,7 +178,7 @@ public sealed partial class ThatDelegateTests
 #endif
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task ValueTaskLambdaWithCancellationTokenAndValue_ShouldBeAwaited()
 		{
 			Sut sut = new();
@@ -191,7 +191,7 @@ public sealed partial class ThatDelegateTests
 #endif
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task ValueTaskLambdaWithValue_ShouldBeAwaited()
 		{
 			Sut sut = new();
@@ -204,7 +204,7 @@ public sealed partial class ThatDelegateTests
 #endif
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task ValueTaskMethodGroup_ShouldBeAwaited()
 		{
 			Sut sut = new();
@@ -217,7 +217,7 @@ public sealed partial class ThatDelegateTests
 #endif
 
 #if NET8_0_OR_GREATER
-		[Fact]
+		[Test]
 		public async Task ValueTaskMethodGroupWithValue_ShouldBeAwaited()
 		{
 			Sut sut = new();

@@ -6,7 +6,7 @@ namespace aweXpect.Core.Tests.Core.Sources;
 
 public class DelegateAsyncValueSourceTests
 {
-	[Fact]
+	[Test]
 	public async Task ForExecutionTime_ShouldUseElapsedFromTimeSystem()
 	{
 		TimeSystemMock timeSystem = new TimeSystemMock().SetElapsed(1100.Milliseconds());
@@ -18,7 +18,7 @@ public class DelegateAsyncValueSourceTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegateCompletesWithinTheTimeout_ShouldSucceed()
 	{
 		Func<Task<int>> @delegate = () => Task.Delay(50.Milliseconds()).ContinueWith(_ => 1);
@@ -29,7 +29,7 @@ public class DelegateAsyncValueSourceTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegateDoesNotCompleteWithinTheTimeout_ShouldFail()
 	{
 		Func<Task<int>> @delegate = () => PendingTask.Of<int>();
@@ -37,7 +37,7 @@ public class DelegateAsyncValueSourceTests
 		async Task Act()
 			=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             does not throw any exception,
@@ -47,7 +47,7 @@ public class DelegateAsyncValueSourceTests
 			.Because("the timeout must abandon the task instead of awaiting it to completion");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegateDoesNotCompleteWithinTheTimeout_WhoseResult_ShouldFail()
 	{
 		Func<Task<int>> @delegate = () => PendingTask.Of<int>();
@@ -55,7 +55,7 @@ public class DelegateAsyncValueSourceTests
 		async Task Act()
 			=> await That(@delegate).DoesNotThrow().WhoseResult.IsEqualTo(1).WithTimeout(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             does not throw any exception and its result is equal to 1,
@@ -65,7 +65,7 @@ public class DelegateAsyncValueSourceTests
 			.Because("the timeout is reported once, and not also as a thrown exception");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegateIgnoresTheCancellationToken_ShouldFail()
 	{
 		Func<CancellationToken, Task<int>> @delegate = _ => PendingTask.Of<int>();
@@ -73,7 +73,7 @@ public class DelegateAsyncValueSourceTests
 		async Task Act()
 			=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             executes in at most 0:00.050,

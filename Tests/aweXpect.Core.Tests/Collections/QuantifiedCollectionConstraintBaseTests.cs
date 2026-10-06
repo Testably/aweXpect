@@ -10,7 +10,7 @@ namespace aweXpect.Core.Tests.Collections;
 
 public sealed class QuantifiedCollectionConstraintBaseTests
 {
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenTheEvaluationIsNotCompleted_ShouldFail()
 	{
 		int[] subject = [2, 4,];
@@ -22,7 +22,7 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 					=> new DoesNotCompleteConstraint(it, grammars, elements.Quantifier)),
 				elements.Subject);
 
-		await That(Act).ThrowsExactly<XunitException>()
+		await That(Act).ThrowsExactly<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is even for all items,
@@ -31,7 +31,7 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 			.Because("a constraint that forgets to complete the evaluation must not pass as inconclusive");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Record_WhenItemIsUnansweredAfterTheOutcomeIsDetermined_ShouldNotCountTheRemainingItems()
 	{
 		InvalidOperationException exception = new("boom");
@@ -41,7 +41,7 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 			=> await That(subject).AtMost(1)
 				.AreVerifiedBy(x => x.Satisfies(y => y == 1 ? true : throw exception), false);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             satisfies y => y == 1 ? true : throw exception for at most one item,
@@ -53,9 +53,9 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 			.Because("the evaluation stops at the unanswered item, so the number of items is not known");
 	}
 
-	[Theory]
-	[InlineData(true)]
-	[InlineData(false)]
+	[Test]
+	[Arguments(true)]
+	[Arguments(false)]
 	public async Task Record_WhenItemIsUnansweredAfterTheOutcomeIsDetermined_ShouldNotDecideIt(bool completesEarly)
 	{
 		InvalidOperationException exception = new("boom");
@@ -69,7 +69,7 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 			.Because("the first item already determines the outcome, whether the remaining items are read or not");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Record_WhenItemIsUnansweredForAll_ShouldFailWithTheItemResult()
 	{
 		InvalidOperationException exception = new("boom");
@@ -78,7 +78,7 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 		async Task Act()
 			=> await That(subject).All().AreVerifiedBy(x => x.Satisfies(y => y < 2 ? true : throw exception));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             satisfies y => y < 2 ? true : throw exception for all items,
@@ -89,7 +89,7 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 			.Because("an item that the nested expectations did not answer is neither matching nor not matching");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Record_WhenItemIsUnansweredForNone_ShouldFailWithTheItemResult()
 	{
 		InvalidOperationException exception = new("boom");
@@ -98,7 +98,7 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 		async Task Act()
 			=> await That(subject).None().AreVerifiedBy(x => x.Satisfies(_ => throw exception));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             satisfies _ => throw exception for no items,
@@ -109,7 +109,7 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 			.Because("an item that the nested expectations did not answer must not count as not matching");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Record_WhenItemIsUnansweredUnderNegation_ShouldFailWithTheItemResult()
 	{
 		InvalidOperationException exception = new("boom");
@@ -119,7 +119,7 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 			=> await That(subject)
 				.DoesNotComplyWith(it => it.All().AreVerifiedBy(x => x.Satisfies(_ => throw exception)));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             satisfies _ => throw exception not for all items,
@@ -130,7 +130,7 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 			.Because("an item that the nested expectations did not answer fails the negation as well");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Record_WhenItemIsUndecided_ShouldNotDecideTheOutcome()
 	{
 		int[] subject = [1, 2,];
@@ -141,7 +141,7 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 			=> await That(subject).None().AreVerifiedBy(x => x.IsEqualTo(3), undecidedItem: 2)
 				.WithCancellation(cts.Token);
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected that subject
 			             is equal to 3 for no items,
@@ -150,7 +150,7 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 			.Because("a canceled item must not count as not matching, which would let the expectation succeed");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Record_WhenUnansweredItemHasContexts_ShouldShowThemForTheItem()
 	{
 		InvalidOperationException exception = new("boom");
@@ -160,7 +160,7 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 			=> await That(subject).All()
 				.AreVerifiedBy(x => x.None().ComplyWith(y => y.Satisfies(z => z < 3 ? false : throw exception)));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             satisfies z => z < 3 ? false : throw exception for no items for all items,
@@ -173,7 +173,7 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 			.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 	}
 
-	[Fact]
+	[Test]
 	public async Task StartEvaluation_AfterACompletedEvaluation_ShouldNotShowItsItems()
 	{
 		AreEvenConstraint sut = new(EnumerableQuantifier.All());
@@ -185,7 +185,7 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 			.Because("the items of the earlier evaluation do not describe the null subject");
 	}
 
-	[Fact]
+	[Test]
 	public async Task StartEvaluation_AfterAnEvaluationThatStoppedEarly_ShouldNotCountItsItems()
 	{
 		AreEvenConstraint sut = new(EnumerableQuantifier.Exactly(2));

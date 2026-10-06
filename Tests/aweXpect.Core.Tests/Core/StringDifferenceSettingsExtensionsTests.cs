@@ -2,7 +2,7 @@
 
 public class StringDifferenceSettingsExtensionTests
 {
-	[Fact]
+	[Test]
 	public async Task ShouldInitializeToEqualityMatchType()
 	{
 		StringDifferenceSettings settings = new(2, 3);
@@ -12,9 +12,9 @@ public class StringDifferenceSettingsExtensionTests
 		await That(settings.IgnoredTrailingColumns).IsEqualTo(3);
 	}
 
-	[Theory]
-	[InlineData(StringDifference.MatchType.Wildcard)]
-	[InlineData(StringDifference.MatchType.Regex)]
+	[Test]
+	[Arguments(StringDifference.MatchType.Wildcard)]
+	[Arguments(StringDifference.MatchType.Regex)]
 	public async Task WithMatchType_ShouldSetMatchTypeAndKeepOtherValues(StringDifference.MatchType matchType)
 	{
 		StringDifferenceSettings settings = new(2, 3);

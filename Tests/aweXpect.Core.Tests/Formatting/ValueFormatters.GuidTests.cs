@@ -6,7 +6,7 @@ public partial class ValueFormatters
 {
 	public sealed class GuidTests
 	{
-		[Fact]
+		[Test]
 		public async Task Empty_ShouldUseDefaultFormat()
 		{
 			Guid value = Guid.Empty;
@@ -22,7 +22,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Nullable_Empty_ShouldUseDefaultFormat()
 		{
 			Guid? value = Guid.Empty;
@@ -38,7 +38,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Nullable_ShouldUseRoundtripFormat()
 		{
 			Guid? value = Guid.NewGuid();
@@ -54,7 +54,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Nullable_WithType_ShouldUseRoundtripFormat()
 		{
 			Guid? value = Guid.NewGuid();
@@ -70,7 +70,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldUseRoundtripFormat()
 		{
 			Guid value = Guid.NewGuid();
@@ -86,7 +86,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			Guid? value = null;
@@ -101,7 +101,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithType_ShouldUseRoundtripFormat()
 		{
 			Guid value = Guid.NewGuid();

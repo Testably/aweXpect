@@ -10,7 +10,7 @@ namespace aweXpect.Core.Tests.Results;
 
 public class AndOrWhoseResultTests
 {
-	[Fact]
+	[Test]
 	public async Task AndWhose_AfterAConvertingConstraint_ShouldVerifyTheConvertedValue()
 	{
 		string sut = "10";
@@ -20,7 +20,7 @@ public class AndOrWhoseResultTests
 				.Whose(x => x + 1, x => x.IsEqualTo(11))
 				.AndWhose(x => x * 2, x => x.IsEqualTo(40));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             is numeric whose x + 1 is equal to 11 and whose x * 2 is equal to 40,
@@ -29,7 +29,7 @@ public class AndOrWhoseResultTests
 			.Because("every member continues from the value that the converting constraint stores");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AndWhose_WhenAsyncMemberAccessorIsNull_ShouldThrowArgumentNullException()
 	{
 		MyClass sut = new();
@@ -44,7 +44,7 @@ public class AndOrWhoseResultTests
 			.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task AndWhose_WhenAsyncMemberExpectationsIsNull_ShouldThrowArgumentNullException()
 	{
 		MyClass sut = new();
@@ -59,7 +59,7 @@ public class AndOrWhoseResultTests
 			.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task AndWhose_WhenAsyncMemberFaults_ShouldFail()
 	{
 		ThrowingClass sut = new("async member failed");
@@ -79,7 +79,7 @@ public class AndOrWhoseResultTests
 			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 	}
 
-	[Fact]
+	[Test]
 	public async Task AndWhose_WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 	{
 		MyClass sut = new();
@@ -94,7 +94,7 @@ public class AndOrWhoseResultTests
 			.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task AndWhose_WhenMemberAccessorIsNull_ShouldThrowArgumentNullException()
 	{
 		MyClass sut = new();
@@ -109,7 +109,7 @@ public class AndOrWhoseResultTests
 			.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task AndWhose_WhenTheMemberIsACollection_ShouldUseThePluralForm()
 	{
 		ListClass sut = new();
@@ -130,7 +130,7 @@ public class AndOrWhoseResultTests
 			.Because("the number of the member follows its type, like in the other Whose overloads");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AndWhose_WhenValueTaskMemberAccessorIsNull_ShouldThrowArgumentNullException()
 	{
 		MyClass sut = new();
@@ -145,7 +145,7 @@ public class AndOrWhoseResultTests
 			.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task AndWhose_WithAsyncMember_ShouldVerifyAwaitedValue()
 	{
 		MyClass sut = new();
@@ -163,7 +163,7 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AndWhose_WithBecause_ShouldIncludeTheReason()
 	{
 		MyClass sut = new();
@@ -174,7 +174,7 @@ public class AndOrWhoseResultTests
 				.AndWhose(f => f.Value1, f => f.IsTrue())
 				.Because("we want to test the reason");
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             is of type AndOrWhoseResultTests.MyClass whose Value2 is False and whose Value1 is True, because we want to test the reason,
@@ -182,7 +182,7 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task MultipleWhose_ShouldAllowChaining()
 	{
 		MyClass sut = new();
@@ -204,11 +204,11 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
-	[Theory]
-	[InlineData(true, true, true)]
-	[InlineData(true, false, false)]
-	[InlineData(false, true, false)]
-	[InlineData(false, false, false)]
+	[Test]
+	[Arguments(true, true, true)]
+	[Arguments(true, false, false)]
+	[Arguments(false, true, false)]
+	[Arguments(false, false, false)]
 	public async Task MultipleWhose_ShouldVerifyAll(bool value1, bool value2, bool expectSuccess)
 	{
 		MyClass sut = new()
@@ -230,7 +230,7 @@ public class AndOrWhoseResultTests
 			              """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task MultipleWhose_WithNamedMemberAccessor_ShouldSucceed()
 	{
 		MyClass sut = new();
@@ -243,7 +243,7 @@ public class AndOrWhoseResultTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_AfterAConvertingConstraint_ShouldVerifyTheConvertedValue()
 	{
 		string sut = "10";
@@ -251,7 +251,7 @@ public class AndOrWhoseResultTests
 		async Task Act()
 			=> await IsNumeric(That(sut)).Whose(x => x * 2, x => x.IsEqualTo(40));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             is numeric whose x * 2 is equal to 40,
@@ -260,7 +260,7 @@ public class AndOrWhoseResultTests
 			.Because("the member continues from the value that the converting constraint stores");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_AfterAConvertingConstraint_WhenMet_ShouldReturnTheConvertedValue()
 	{
 		string sut = "20";
@@ -270,7 +270,7 @@ public class AndOrWhoseResultTests
 		await That(result).IsEqualTo(20);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_AfterAConvertingConstraint_WhenNegated_ShouldVerifyTheConvertedValue()
 	{
 		string sut = "20";
@@ -278,7 +278,7 @@ public class AndOrWhoseResultTests
 		async Task Act()
 			=> await That(sut).DoesNotComplyWith(it => IsNumeric(it).Whose(x => x * 2, x => x.IsEqualTo(40)));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             is not numeric whose x * 2 is equal to 40,
@@ -287,7 +287,7 @@ public class AndOrWhoseResultTests
 			.Because("the negation is met only when the converted value does not meet the member expectation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_AfterAConvertingConstraint_WhenTheConversionFails_ShouldOnlyRenderTheMember()
 	{
 		string sut = "ten";
@@ -295,7 +295,7 @@ public class AndOrWhoseResultTests
 		async Task Act()
 			=> await IsNumeric(That(sut)).Whose(x => x * 2, x => x.IsEqualTo(40));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             is numeric whose x * 2 is equal to 40,
@@ -304,7 +304,7 @@ public class AndOrWhoseResultTests
 			.Because("without a converted value there is no member to verify");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_AfterAConvertingConstraint_WithAsyncMember_ShouldVerifyTheConvertedValue()
 	{
 		string sut = "10";
@@ -312,7 +312,7 @@ public class AndOrWhoseResultTests
 		async Task Act()
 			=> await IsNumeric(That(sut)).Whose(x => Task.FromResult(x * 2), x => x.IsEqualTo(40));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             is numeric whose Task.FromResult(x * 2) is equal to 40,
@@ -321,7 +321,7 @@ public class AndOrWhoseResultTests
 			.Because("the awaited member continues from the value that the converting constraint stores");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WhenAsyncMemberAccessorIsNull_ShouldThrowArgumentNullException()
 	{
 		MyClass sut = new();
@@ -335,7 +335,7 @@ public class AndOrWhoseResultTests
 			.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WhenAsyncMemberExpectationsIsNull_ShouldThrowArgumentNullException()
 	{
 		MyClass sut = new();
@@ -349,7 +349,7 @@ public class AndOrWhoseResultTests
 			.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WhenAsyncMemberFaults_ShouldFail()
 	{
 		ThrowingClass sut = new("async member failed");
@@ -368,7 +368,7 @@ public class AndOrWhoseResultTests
 			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WhenExpectationsIsNull_ShouldThrowArgumentNullException()
 	{
 		MyClass sut = new();
@@ -382,7 +382,7 @@ public class AndOrWhoseResultTests
 			.WithMessage("The 'expectations' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WhenMemberAccessorIsNull_ShouldThrowArgumentNullException()
 	{
 		MyClass sut = new();
@@ -396,7 +396,7 @@ public class AndOrWhoseResultTests
 			.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WhenMemberThrows_ShouldFail()
 	{
 		ThrowingClass sut = new("member failed");
@@ -415,7 +415,7 @@ public class AndOrWhoseResultTests
 			.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WhenTheAsyncMemberIsACollection_ShouldUseThePluralForm()
 	{
 		ListClass sut = new();
@@ -433,7 +433,7 @@ public class AndOrWhoseResultTests
 			             """).AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WhenTheMemberIsACollection_ShouldUseThePluralForm()
 	{
 		ListClass sut = new();
@@ -452,7 +452,7 @@ public class AndOrWhoseResultTests
 			.Because("the number of the member follows its type, like in the other Whose overloads");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WhenValueTaskMemberAccessorIsNull_ShouldThrowArgumentNullException()
 	{
 		MyClass sut = new();
@@ -466,7 +466,7 @@ public class AndOrWhoseResultTests
 			.WithMessage("The 'memberAccessor' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WithAsyncMember_ShouldVerifyAwaitedValue()
 	{
 		MyClass sut = new();
@@ -483,7 +483,7 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WithBecause_ShouldAllowAndWhoseAndKeepTheReasonLast()
 	{
 		MyClass sut = new();
@@ -494,7 +494,7 @@ public class AndOrWhoseResultTests
 				.Because("we want to test the reason")
 				.AndWhose(f => f.Value1, f => f.IsTrue());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             is of type AndOrWhoseResultTests.MyClass whose Value2 is False and whose Value1 is True, because we want to test the reason,
@@ -502,7 +502,7 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WithBecause_ShouldIncludeTheReason()
 	{
 		MyClass sut = new();
@@ -512,7 +512,7 @@ public class AndOrWhoseResultTests
 				.Whose(f => f.Value1, f => f.IsTrue())
 				.Because("we want to test the reason");
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             is of type AndOrWhoseResultTests.MyClass whose Value1 is True, because we want to test the reason,
@@ -520,7 +520,7 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WithBecauseTask_ShouldIncludeTheReason()
 	{
 		MyClass sut = new();
@@ -530,7 +530,7 @@ public class AndOrWhoseResultTests
 				.Whose(f => f.Value1, f => f.IsTrue())
 				.Because(Task.FromResult<string?>("we want to test the reason"));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             is of type AndOrWhoseResultTests.MyClass whose Value1 is True, because we want to test the reason,
@@ -538,7 +538,7 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WithCancellation_WhenMet_ShouldReturnTheValue()
 	{
 		MyClass sut = new();
@@ -551,7 +551,7 @@ public class AndOrWhoseResultTests
 		await That(result).IsSameAs(sut);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WithCast_ShouldKeepWholeSelectorBody()
 	{
 		MyClass sut = new();
@@ -568,7 +568,7 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WithCastParameter_ShouldKeepWholeSelectorBody()
 	{
 		MyClass sut = new();
@@ -585,7 +585,7 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WithIdentity_ShouldRenderIt()
 	{
 		MyClass sut = new();
@@ -605,7 +605,7 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WithNestedMemberPath_ShouldOmitLeadingDot()
 	{
 		MyClass sut = new();
@@ -622,7 +622,7 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WithNullConditional_ShouldOmitParameter()
 	{
 		MyClass sut = new();
@@ -639,7 +639,7 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WithParenthesizedParameter_ShouldOmitParameter()
 	{
 		MyClass sut = new();
@@ -656,7 +656,7 @@ public class AndOrWhoseResultTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Whose_WithTimeout_WhenAsyncMemberDoesNotFinish_ShouldFail()
 	{
 		MyClass sut = new();
@@ -666,7 +666,7 @@ public class AndOrWhoseResultTests
 				.Whose(f => f.NeverCompletesAsync(), f => f.IsTrue())
 				.WithTimeout(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that sut
 			             is of type AndOrWhoseResultTests.MyClass whose NeverCompletesAsync() is True,

@@ -7,7 +7,7 @@ public partial class ValueFormatters
 {
 	public sealed class StringTests
 	{
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenStringsDifferByACombiningMark_ShouldShowTheDifference()
 		{
 			string subject = "e\u0301x";
@@ -15,7 +15,7 @@ public partial class ValueFormatters
 			async Task Act()
 				=> await That(subject).IsEqualTo("\u00E9x");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to "éx",
@@ -27,7 +27,7 @@ public partial class ValueFormatters
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenStringContainsAnUnpairedSurrogate_ShouldEscapeIt()
 		{
 			string subject = "\uD83D";
@@ -35,7 +35,7 @@ public partial class ValueFormatters
 			async Task Act()
 				=> await That(subject).IsEqualTo("x");
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to "x",
@@ -48,7 +48,7 @@ public partial class ValueFormatters
 				.Because("an unpaired surrogate is no valid text and cannot be written by a strict encoder");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_InCollection_ShouldKeepItemsApart()
 		{
 			string[] value = ["a\", \"b",];
@@ -61,7 +61,7 @@ public partial class ValueFormatters
 				.Because("a single item with quotes must not read like two items");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_ShouldDefaultToSingleLine()
 		{
 			string value = "a\nb";
@@ -79,13 +79,13 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData("a\\nb", "\"a\\\\nb\"")]
-		[InlineData("a\0b", "\"a\\0b\"")]
-		[InlineData("a\u00A0b", "\"a\\u00A0b\"")]
-		[InlineData("a\u200Bb", "\"a\\u200Bb\"")]
-		[InlineData("e\u0301", "\"e\\u0301\"")]
-		[InlineData("\u0301e", "\"\\u0301e\"")]
+		[Test]
+		[Arguments("a\\nb", "\"a\\\\nb\"")]
+		[Arguments("a\0b", "\"a\\0b\"")]
+		[Arguments("a\u00A0b", "\"a\\u00A0b\"")]
+		[Arguments("a\u200Bb", "\"a\\u200Bb\"")]
+		[Arguments("e\u0301", "\"e\\u0301\"")]
+		[Arguments("\u0301e", "\"\\u0301e\"")]
 		public async Task Strings_ShouldEscapeBackslashesAndInvisibleCharacters(string value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -102,7 +102,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_ShouldEscapeDoubleQuotationMarks()
 		{
 			string value = "a\"b'c";
@@ -121,7 +121,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_ShouldEscapeUnpairedSurrogatesButKeepSurrogatePairs()
 		{
 			string value = "a\uD83Db\uDE00c\uD83D\uDE00d\uD83D";
@@ -138,7 +138,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_ShouldUseDoubleQuotationMarks()
 		{
 			string value = "foo";
@@ -156,9 +156,9 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData("\u0928\u092E\u0938\u094D\u0924\u0947")]
-		[InlineData("\u2764\uFE0F")]
+		[Test]
+		[Arguments("\u0928\u092E\u0938\u094D\u0924\u0947")]
+		[Arguments("\u2764\uFE0F")]
 		public async Task Strings_WhenNormalized_ShouldKeepCombiningMarks(string value)
 		{
 			string result = Formatter.Format(value);
@@ -167,7 +167,7 @@ public partial class ValueFormatters
 				.Because("a combining mark in normalized text cannot be confused with a precomposed character");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_WhenTruncated_ShouldNotSplitEscapedWhitespace()
 		{
 			string value = "abcd\nefgh";
@@ -194,7 +194,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_WhenTruncated_ShouldNotSplitSurrogatePairs()
 		{
 			string value = "abcd\U0001F600efgh";
@@ -215,7 +215,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_WhenUsingMultipleLines_ShouldStillEscapeThemOnASingleLine()
 		{
 			string value = "say \"hi\"\r\nbye";
@@ -239,7 +239,7 @@ public partial class ValueFormatters
 			await That(typeSb.ToString()).IsEqualTo($"string {expectedResult}");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_WhenUsingMultipleLines_ShouldTruncateThem()
 		{
 			string value = "abcdefgh";
@@ -261,7 +261,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Strings_WithType_ShouldIncludeTypeInformation()
 		{
 			string value = "foo";
@@ -277,7 +277,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			string? value = null;

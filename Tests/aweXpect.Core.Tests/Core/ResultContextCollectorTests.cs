@@ -8,7 +8,7 @@ namespace aweXpect.Core.Tests.Core;
 
 public sealed class ResultContextCollectorTests
 {
-	[Fact]
+	[Test]
 	public async Task And_ShouldOnlyShowTheContextOfTheFailingPart()
 	{
 		Pair subject = new(1, 2);
@@ -17,7 +17,7 @@ public sealed class ResultContextCollectorTests
 			=> await That(subject).Whose(x => x.First, first => first.MatchesValue("Value", 1))
 				.And.Whose(x => x.Second, second => second.MatchesValue("Value", 3));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             whose First matches Value 1 and whose Second matches Value 3,
@@ -28,7 +28,7 @@ public sealed class ResultContextCollectorTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendContexts_WhenTheExpectationIsMet_ShouldNotBeCalled()
 	{
 		CallCounter counter = new();
@@ -40,7 +40,7 @@ public sealed class ResultContextCollectorTests
 		await That(counter.Calls).IsEqualTo(0);
 	}
 
-	[Fact]
+	[Test]
 	public async Task DoesNotComplyWith_ShouldShowTheContextOfTheNegatedPartThatFails()
 	{
 		Pair subject = new(1, 2);
@@ -50,7 +50,7 @@ public sealed class ResultContextCollectorTests
 				.Whose(x => x.First, first => first.MatchesValue("Value", 3))
 				.Or.Whose(x => x.Second, second => second.MatchesValue("Value", 2)));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             whose First does not match Value 3 and whose Second does not match Value 2,
@@ -61,7 +61,7 @@ public sealed class ResultContextCollectorTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task DoublyNegated_ShouldShowTheContextOfThePartThatFailsAgain()
 	{
 		Pair subject = new(1, 2);
@@ -71,7 +71,7 @@ public sealed class ResultContextCollectorTests
 				.Whose(x => x.First, first => first.MatchesValue("Value", 1))
 				.And.Whose(x => x.Second, second => second.MatchesValue("Value", 3))));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             whose First matches Value 1 and whose Second matches Value 3,
@@ -82,7 +82,7 @@ public sealed class ResultContextCollectorTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ExpectThatAll_ShouldPrefixTheContextsWithTheNumberOfTheExpectation()
 	{
 		Pair subject = new(1, 2);
@@ -92,7 +92,7 @@ public sealed class ResultContextCollectorTests
 				That(subject.First).MatchesValue("Value", 1),
 				That(subject.Second).MatchesValue("Value", 3));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			              [01] Expected that subject.First matches Value 1
@@ -105,7 +105,7 @@ public sealed class ResultContextCollectorTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ItemExpectations_ForAll_ShouldShowTheContextsOfTheFirstNotMatchingItem()
 	{
 		int[] subject = [1, 2, 3,];
@@ -113,7 +113,7 @@ public sealed class ResultContextCollectorTests
 		async Task Act()
 			=> await That(subject).All().ComplyWith(item => item.MatchesValue("Value", 1));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             matches Value 1 for all items,
@@ -130,7 +130,7 @@ public sealed class ResultContextCollectorTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ItemExpectations_ForNone_ShouldShowTheContextsOfTheFirstMatchingItem()
 	{
 		int[] subject = [1, 2, 3,];
@@ -138,7 +138,7 @@ public sealed class ResultContextCollectorTests
 		async Task Act()
 			=> await That(subject).None().ComplyWith(item => item.MatchesValue("Value", 3));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             matches Value 3 for no items,
@@ -155,7 +155,7 @@ public sealed class ResultContextCollectorTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task NestedMember_ShouldLabelTheContextWithTheMemberPath()
 	{
 		Outer subject = new(new Pair(1, 2));
@@ -164,11 +164,11 @@ public sealed class ResultContextCollectorTests
 			=> await That(subject).Whose(x => x.Inner, inner => inner
 				.Whose(x => x.Second, second => second.MatchesValue("Value", 3)));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("*Value (Inner.Second):*2").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Or_WhenBothPartsFail_ShouldShowBothContexts()
 	{
 		Pair subject = new(1, 2);
@@ -177,7 +177,7 @@ public sealed class ResultContextCollectorTests
 			=> await That(subject).Whose(x => x.First, first => first.MatchesValue("Value", 3))
 				.Or.Whose(x => x.Second, second => second.MatchesValue("Value", 3));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             whose First matches Value 3 or whose Second matches Value 3,
@@ -191,13 +191,13 @@ public sealed class ResultContextCollectorTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Priority_ShouldOrderTheContexts()
 	{
 		async Task Act()
 			=> await That(1).MatchesValue("Low", 2, priority: -1).And.MatchesValue("High", 2, priority: 1);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that 1
 			             matches Low 2 and matches High 2,
@@ -211,13 +211,13 @@ public sealed class ResultContextCollectorTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task SameTitleAndSubject_WithDifferentContent_ShouldNumberThem()
 	{
 		async Task Act()
 			=> await That(1).MatchesValue("Value", 2, content: _ => "a").And.MatchesValue("Value", 3, content: _ => "b");
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that 1
 			             matches Value 2 and matches Value 3,
@@ -231,13 +231,13 @@ public sealed class ResultContextCollectorTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task SameTitleAndSubject_WithSameContent_ShouldShowItOnce()
 	{
 		async Task Act()
 			=> await That(1).MatchesValue("Value", 2).And.MatchesValue("Value", 3);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that 1
 			             matches Value 2 and matches Value 3,
@@ -248,7 +248,7 @@ public sealed class ResultContextCollectorTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task VisitItem_ShouldLabelTheContextsWithTheItemAfterThoseOfTheCollection()
 	{
 		int[] subject = [1, 2,];
@@ -256,7 +256,7 @@ public sealed class ResultContextCollectorTests
 		async Task Act()
 			=> await That(subject).HasItemThat(x => x.MatchesValue("Value", 3, priority: 1)).AtIndex(1);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             has an item that matches Value 3 at index 1,

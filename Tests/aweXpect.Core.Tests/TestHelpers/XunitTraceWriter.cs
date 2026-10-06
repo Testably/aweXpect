@@ -1,5 +1,4 @@
 using aweXpect.Customization;
-using Xunit.Abstractions;
 
 namespace aweXpect.Core.Tests.TestHelpers;
 

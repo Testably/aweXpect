@@ -8,7 +8,7 @@ namespace aweXpect.Core.Tests.Core.Nodes;
 
 public sealed class CombinedResultTests
 {
-	[Fact]
+	[Test]
 	public async Task FailureCause_ShouldIgnoreTheCauseOfAPartThatIsMet()
 	{
 		ConstraintResult sut = new JunctionResult(new FailureCauseResult(Success, new MyException()),
@@ -18,15 +18,15 @@ public sealed class CombinedResultTests
 			.Because("only the failed right part explains why the combination failed");
 	}
 
-	[Theory]
-	[InlineData(true, FailureBothWays, Success, FailureBothWays, FailureBothWays)]
-	[InlineData(true, FailureBothWays, Failure, Failure, Success)]
-	[InlineData(true, FailureBothWays, Undecided, Failure, Undecided)]
-	[InlineData(true, FailureBothWays, FailureBothWays, FailureBothWays, FailureBothWays)]
-	[InlineData(false, FailureBothWays, Failure, FailureBothWays, FailureBothWays)]
-	[InlineData(false, FailureBothWays, Success, Success, Failure)]
-	[InlineData(false, FailureBothWays, Undecided, Undecided, Failure)]
-	[InlineData(false, FailureBothWays, FailureBothWays, FailureBothWays, FailureBothWays)]
+	[Test]
+	[Arguments(true, FailureBothWays, Success, FailureBothWays, FailureBothWays)]
+	[Arguments(true, FailureBothWays, Failure, Failure, Success)]
+	[Arguments(true, FailureBothWays, Undecided, Failure, Undecided)]
+	[Arguments(true, FailureBothWays, FailureBothWays, FailureBothWays, FailureBothWays)]
+	[Arguments(false, FailureBothWays, Failure, FailureBothWays, FailureBothWays)]
+	[Arguments(false, FailureBothWays, Success, Success, Failure)]
+	[Arguments(false, FailureBothWays, Undecided, Undecided, Failure)]
+	[Arguments(false, FailureBothWays, FailureBothWays, FailureBothWays, FailureBothWays)]
 	public async Task Outcome_WithFailureBothWaysPart_ShouldStayFailureBothWaysOnlyWhenTheNegationFailsAsWell(
 		bool isAnd, Outcome left, Outcome right, Outcome expected, Outcome expectedWhenNegated)
 	{
@@ -40,9 +40,9 @@ public sealed class CombinedResultTests
 		await That(sut.Outcome).IsEqualTo(expectedWhenNegated);
 	}
 
-	[Theory]
-	[InlineData(Outcome.Success, Outcome.FailureBothWays)]
-	[InlineData(Outcome.Failure, Outcome.Success)]
+	[Test]
+	[Arguments(Outcome.Success, Outcome.FailureBothWays)]
+	[Arguments(Outcome.Failure, Outcome.Success)]
 	public async Task Outcome_WhenMemberFailsBothWays_ShouldDependOnTheParentUnderNegation(Outcome parentOutcome,
 		Outcome expectedWhenNegated)
 	{
@@ -55,7 +55,7 @@ public sealed class CombinedResultTests
 			.Because("a failed parent meets the negation of the mapping, even when the member could not be answered");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetStoredValue_WhenBothOperandsStoreAValue_ShouldReturnTheValueOfTheRightOperand()
 	{
 		object left = new();
@@ -70,7 +70,7 @@ public sealed class CombinedResultTests
 			.Because("the right-most expectation determines the type of the result");
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetStoredValue_WhenOnlyTheLeftOperandStoresAValue_ShouldReturnIt()
 	{
 		object left = new();
@@ -83,7 +83,7 @@ public sealed class CombinedResultTests
 		await That(value).IsSameAs(left);
 	}
 
-	[Fact]
+	[Test]
 	public async Task TryGetStoredValue_WhenTheRightOperandWasSkipped_ShouldReturnTheValueOfTheLeftOperand()
 	{
 		object left = new();

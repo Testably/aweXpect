@@ -5,7 +5,7 @@ namespace aweXpect.Core.Tests.Results;
 
 public sealed class ExecutesInResultTests
 {
-	[Fact]
+	[Test]
 	public async Task ShouldBeOptionsProvider_ForExecutionTimeOptions()
 	{
 		ExecutionTimeOptions options = new();

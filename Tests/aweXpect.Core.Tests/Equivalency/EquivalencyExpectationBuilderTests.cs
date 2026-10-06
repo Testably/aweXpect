@@ -7,7 +7,7 @@ namespace aweXpect.Core.Tests.Equivalency;
 
 public sealed class EquivalencyExpectationBuilderTests
 {
-	[Fact]
+	[Test]
 	public async Task IsMet_ShouldThrowNotSupportedException()
 	{
 		EquivalencyExpectationBuilder<int> sut = new();

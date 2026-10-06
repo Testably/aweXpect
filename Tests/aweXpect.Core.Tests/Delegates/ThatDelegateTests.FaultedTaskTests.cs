@@ -7,7 +7,7 @@ public sealed partial class ThatDelegateTests
 {
 	public sealed class FaultedTaskTests
 	{
-		[Fact]
+		[Test]
 		public async Task DoesNotThrow_WhenTaskFaultsWithSeveralExceptions_ShouldListTheOtherExceptions()
 		{
 			Task sut = FaultWithSeveralExceptions();
@@ -15,7 +15,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(sut).DoesNotThrow();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             does not throw any exception,
@@ -30,7 +30,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task DoesNotThrow_WithValue_WhenTaskFaultsWithSeveralExceptions_ShouldListTheOtherExceptions()
 		{
 			Func<Task<int>> sut = FaultWithSeveralExceptions;
@@ -38,7 +38,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(sut).DoesNotThrow();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             does not throw any exception,
@@ -53,7 +53,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Eventually_WhenTaskFaultsWithSeveralExceptions_ShouldListTheOtherExceptions()
 		{
 			Func<Task<int>> sut = FaultWithSeveralExceptions;
@@ -61,7 +61,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(sut).Eventually().OnVirtualTime().Within(50.Milliseconds()).IsEqualTo(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             eventually is equal to 1 within 0:00.050,
@@ -76,7 +76,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_WhenTaskFaultsWithSeveralExceptions_ShouldCheckTheFirstException()
 		{
 			Task sut = FaultWithSeveralExceptions();
@@ -88,7 +88,7 @@ public sealed partial class ThatDelegateTests
 				.Because("awaiting a faulted task throws its first exception");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_WhenTaskFaultsWithSeveralExceptions_ShouldListTheOtherExceptions()
 		{
 			Task sut = FaultWithSeveralExceptions();
@@ -96,7 +96,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(sut).Throws<NotSupportedException>();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             throws a NotSupportedException,
@@ -111,7 +111,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTaskSubjectFaultsWithSeveralExceptions_ShouldListTheOtherExceptions()
 		{
 			Task<int> sut = FaultWithSeveralExceptions();
@@ -119,7 +119,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(sut).IsEqualTo(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             is equal to 1,
@@ -134,7 +134,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenValueTaskSubjectFaultsWithSeveralExceptions_ShouldListTheOtherExceptions()
 		{
 			ValueTask<int> sut = new(FaultWithSeveralExceptions());
@@ -142,7 +142,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(sut).IsEqualTo(1);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             is equal to 1,

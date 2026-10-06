@@ -4,7 +4,7 @@ namespace aweXpect.Core.Tests.Equivalency;
 
 public sealed class EquivalencyOptionsInternalExtensionsTests
 {
-	[Fact]
+	[Test]
 	public async Task GetInheritedOptions_ShouldKeepTheComparisonTypeOfTheOptions()
 	{
 		EquivalencyTypeOptions defaultValue = new()
@@ -22,7 +22,7 @@ public sealed class EquivalencyOptionsInternalExtensionsTests
 			.Because("the comparison type of the top-level options applies to the whole graph");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetInheritedOptions_ShouldNotInheritTheComparisonTypeOfTheDefaultValue()
 	{
 		EquivalencyTypeOptions defaultValue = new()
@@ -40,7 +40,7 @@ public sealed class EquivalencyOptionsInternalExtensionsTests
 			.Because("the other options of the enclosing type still apply to its members");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetOptionsFor_ForARuntimeType_ShouldUseTheOptionsRegisteredForType()
 	{
 		EquivalencyTypeOptions typeOptions = new();
@@ -52,7 +52,7 @@ public sealed class EquivalencyOptionsInternalExtensionsTests
 			.Because("the runtime type of a Type member is RuntimeType, which is the only type a user cannot name");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetOptionsFor_ShouldApplyTheRegistrationToTheFinalOptions()
 	{
 		EquivalencyOptions options = new EquivalencyOptions().For<MyBaseClass>(o => o with
@@ -70,7 +70,7 @@ public sealed class EquivalencyOptionsInternalExtensionsTests
 			.Because("an option set after the registration has to apply to the registered type as well");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetOptionsFor_WhenBothTheTypeAndItsBaseTypeAreRegistered_ShouldUseTheOptionsOfTheType()
 	{
 		EquivalencyTypeOptions baseTypeOptions = new();
@@ -85,7 +85,7 @@ public sealed class EquivalencyOptionsInternalExtensionsTests
 			.Because("the more specific registration has to win over the one for the base type");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetOptionsFor_WhenOnlyTheBaseTypeIsRegistered_ShouldUseTheOptionsOfTheBaseType()
 	{
 		EquivalencyTypeOptions baseTypeOptions = new();
@@ -97,7 +97,7 @@ public sealed class EquivalencyOptionsInternalExtensionsTests
 			.Because("a member of an abstract type is always an instance of a derived type");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetOptionsFor_WhenTypeIsNotRegistered_ShouldUseTheOptionsThemselves()
 	{
 		EquivalencyOptions options = new EquivalencyOptions().For<MyDerivedClass>(_ => new EquivalencyTypeOptions());

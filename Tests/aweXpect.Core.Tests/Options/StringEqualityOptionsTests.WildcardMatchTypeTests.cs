@@ -12,7 +12,7 @@ public sealed partial class StringEqualityOptionsTests
 		/// </remarks>
 		private const string CatastrophicPattern = "*a*a*a*a*a*a*a*a*a*ab";
 
-		[Fact]
+		[Test]
 		public async Task AreConsideredEqual_WhenExpectedIsNotAString_ShouldThrowArgumentNullException()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -26,7 +26,7 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("a value that is not a string cannot be a pattern, so it is rejected like a missing one");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AreConsideredEqual_WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -42,9 +42,9 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("the timeout must name the wildcard pattern the user wrote, not the translated regex");
 		}
 
-		[Theory]
-		[InlineData("", true)]
-		[InlineData("foo", false)]
+		[Test]
+		[Arguments("", true)]
+		[Arguments("foo", false)]
 		public async Task AreConsideredEqual_WhenPatternIsEmpty_ShouldMatchOnlyTheEmptyValue(string actual,
 			bool expectMatch)
 		{
@@ -57,7 +57,7 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("an empty wildcard pattern has the well-defined meaning of the empty string");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AreConsideredEqual_WhenPatternIsNull_ShouldThrowArgumentNullException()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -71,7 +71,7 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("the pattern is also rejected when the match type was set before it");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AreConsideredEqual_WhenPatternIsNull_ShouldThrowBeforeTheTaskIsAwaited()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -89,7 +89,7 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("an unusable pattern must throw at the call instead of inside the returned task");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AreConsideredEqual_WhenSubjectContainsALoneSurrogate_ShouldMatchItWithOneQuestionMark()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -101,12 +101,12 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("a surrogate without its pair is still one character");
 		}
 
-		[Theory]
-		[InlineData("\U0001F600", "?", true)]
-		[InlineData("\U0001F600", "??", false)]
-		[InlineData("a\U0001F600b", "a?b", true)]
-		[InlineData("\U0001F600\U0001F601", "??", true)]
-		[InlineData("\U0001F600\U0001F601", "?", false)]
+		[Test]
+		[Arguments("\U0001F600", "?", true)]
+		[Arguments("\U0001F600", "??", false)]
+		[Arguments("a\U0001F600b", "a?b", true)]
+		[Arguments("\U0001F600\U0001F601", "??", true)]
+		[Arguments("\U0001F600\U0001F601", "?", false)]
 		public async Task AreConsideredEqual_WhenSubjectContainsASurrogatePair_ShouldMatchItWithOneQuestionMark(
 			string actual, string expected, bool expectMatch)
 		{
@@ -119,7 +119,7 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("a character outside the Basic Multilingual Plane is one character, although it consists of two UTF-16 code units");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AreConsideredEqual_WithParameterName_WhenPatternIsNull_ShouldNameIt()
 		{
 			StringEqualityOptions sut = new("unexpected");
@@ -133,7 +133,7 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("a negated expectation receives the pattern as 'unexpected'");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AsWildcard_ShouldReturnSameInstance()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -143,11 +143,11 @@ public sealed partial class StringEqualityOptionsTests
 			await That(result).IsSameAs(sut);
 		}
 
-		[Theory]
-		[InlineData("axxb", "a*b", 1)]
-		[InlineData("axb ayb", "a?b", 2)]
-		[InlineData("axxb ayb", "a*b", 1)]
-		[InlineData("a\nxb", "a*b", 1)]
+		[Test]
+		[Arguments("axxb", "a*b", 1)]
+		[Arguments("axb ayb", "a?b", 2)]
+		[Arguments("axxb ayb", "a*b", 1)]
+		[Arguments("a\nxb", "a*b", 1)]
 		public async Task CountOccurrences_ShouldCountTheMatchesOfThePattern(string actual, string expected,
 			int expectedCount)
 		{
@@ -160,11 +160,11 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("the match can be longer or shorter than the pattern and '*' is matched greedily");
 		}
 
-		[Theory]
-		[InlineData("a\nb a\nb", "a?b", 2)]
-		[InlineData("a\r\nb", "a??b", 1)]
-		[InlineData("a\r\nb", "a?b", 0)]
-		[InlineData("a\nxb\nayb", "a*b", 1)]
+		[Test]
+		[Arguments("a\nb a\nb", "a?b", 2)]
+		[Arguments("a\r\nb", "a??b", 1)]
+		[Arguments("a\r\nb", "a?b", 0)]
+		[Arguments("a\nxb\nayb", "a*b", 1)]
 		public async Task CountOccurrences_ShouldTreatNewlinesLikeAnyOtherCharacter(string actual, string expected,
 			int expectedCount)
 		{
@@ -177,7 +177,7 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("a newline is a character, so both '*' and '?' have to match it");
 		}
 
-		[Fact]
+		[Test]
 		public async Task CountOccurrences_WhenCaseIsIgnored_ShouldIgnoreCase()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -188,7 +188,7 @@ public sealed partial class StringEqualityOptionsTests
 			await That(result).IsEqualTo(2);
 		}
 
-		[Fact]
+		[Test]
 		public async Task CountOccurrences_WhenPatternDoesNotCompleteInTime_ShouldThrowArgumentException()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -204,7 +204,7 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("counting the occurrences runs the same pattern and must fail the same way");
 		}
 
-		[Fact]
+		[Test]
 		public async Task CountOccurrences_WhenPatternIsEmpty_ShouldThrowArgumentException()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -218,7 +218,7 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("an empty pattern never occurs, so a negated expectation could never fail");
 		}
 
-		[Fact]
+		[Test]
 		public async Task CountOccurrences_WhenPatternIsNull_ShouldThrowArgumentNullException()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -232,9 +232,9 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("a missing pattern is also meaningless when the occurrences are counted");
 		}
 
-		[Theory]
-		[InlineData("abc", 1)]
-		[InlineData("", 0)]
+		[Test]
+		[Arguments("abc", 1)]
+		[Arguments("", 0)]
 		public async Task CountOccurrences_WhenPatternMatchesTheEmptyString_ShouldIgnoreEmptyMatches(string actual,
 			int expectedCount)
 		{
@@ -247,9 +247,9 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("an empty match does not cover any occurrence, just as an empty expected value never occurs");
 		}
 
-		[Theory]
-		[InlineData("\U0001F600\U0001F601", "?", 2)]
-		[InlineData("x\U0001F600y x\U0001F600\U0001F601y", "x?y", 1)]
+		[Test]
+		[Arguments("\U0001F600\U0001F601", "?", 2)]
+		[Arguments("x\U0001F600y x\U0001F600\U0001F601y", "x?y", 1)]
 		public async Task CountOccurrences_WhenSubjectContainsSurrogatePairs_ShouldMatchEachWithOneQuestionMark(
 			string actual, string expected, int expectedCount)
 		{
@@ -262,9 +262,9 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("a character outside the Basic Multilingual Plane is one character, although it consists of two UTF-16 code units");
 		}
 
-		[Theory]
-		[InlineData(false, "matches \"foo\"")]
-		[InlineData(true, "matches \"foo\" ignoring case")]
+		[Test]
+		[Arguments(false, "matches \"foo\"")]
+		[Arguments(true, "matches \"foo\" ignoring case")]
 		public async Task GetExpectation_ShouldRenderTheIgnoreCaseOption(bool ignoreCase, string expected)
 		{
 			StringEqualityOptions sut = new("expected");
@@ -276,9 +276,9 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("an option that decides the outcome must not be invisible in the expectation");
 		}
 
-		[Theory]
-		[InlineData(false)]
-		[InlineData(true)]
+		[Test]
+		[Arguments(false)]
+		[Arguments(true)]
 		public async Task ShouldCompareCaseSensitive(bool ignoreCase)
 		{
 			string sut = "foo\nbar";
@@ -286,7 +286,7 @@ public sealed partial class StringEqualityOptionsTests
 			async Task Act()
 				=> await That(sut).IsEqualTo("FOO\nBAR").AsWildcard().IgnoringCase(ignoreCase);
 
-			await That(Act).Throws<XunitException>().OnlyIf(!ignoreCase)
+			await That(Act).Throws<FailException>().OnlyIf(!ignoreCase)
 				.WithMessage("""
 				             Expected that sut
 				             matches "FOO\nBAR",
@@ -298,7 +298,7 @@ public sealed partial class StringEqualityOptionsTests
 				             """).IgnoringNewlineStyle();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldDisplayActualAndPatternUnderneathEachOther()
 		{
 			string sut = "foo";
@@ -306,7 +306,7 @@ public sealed partial class StringEqualityOptionsTests
 			async Task Act()
 				=> await That(sut).IsEqualTo("bar").AsWildcard();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             matches "bar",
@@ -318,7 +318,7 @@ public sealed partial class StringEqualityOptionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldReplaceNewlines()
 		{
 			string sut = "foo\nbar";
@@ -326,7 +326,7 @@ public sealed partial class StringEqualityOptionsTests
 			async Task Act()
 				=> await That(sut).IsEqualTo("\tsomething\r\nelse").AsWildcard();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             matches "\tsomething\r\nelse",
@@ -338,7 +338,7 @@ public sealed partial class StringEqualityOptionsTests
 				             """).IgnoringNewlineStyle();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportPassiveGrammaticalVoice()
 		{
 			Exception exception = new("foo");
@@ -347,7 +347,7 @@ public sealed partial class StringEqualityOptionsTests
 				=> await That(() => Task.FromException(exception)).Throws().WithMessage("bar")
 					.AsWildcard();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => Task.FromException(exception)
 				             throws an exception with message matching "bar",
@@ -362,7 +362,7 @@ public sealed partial class StringEqualityOptionsTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenPatternIsNull_ShouldThrowArgumentNullException()
 		{
 			string sut = "foo";
@@ -376,7 +376,7 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("a missing pattern cannot express any expectation");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSubjectAndPatternAreNull_ShouldThrowArgumentNullException()
 		{
 			string? sut = null;
@@ -391,7 +391,7 @@ public sealed partial class StringEqualityOptionsTests
 				         + "'is null' is never expressed through a pattern");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSubjectIsNull_ShouldFail()
 		{
 			string? sut = null;
@@ -399,7 +399,7 @@ public sealed partial class StringEqualityOptionsTests
 			async Task Act()
 				=> await That(sut).IsEqualTo("*").AsWildcard();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that sut
 				             matches "*",

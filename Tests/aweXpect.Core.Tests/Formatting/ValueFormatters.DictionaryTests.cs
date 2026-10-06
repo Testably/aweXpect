@@ -12,7 +12,7 @@ public partial class ValueFormatters
 {
 	public sealed class DictionaryTests
 	{
-		[Fact]
+		[Test]
 		public async Task ShouldFormatItems()
 		{
 			string expectedResult = "{[\"1\"] = 1, [\"2\"] = 2, [\"3\"] = 3, [\"4\"] = 4}";
@@ -28,7 +28,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldFormatNestedGenericValues()
 		{
 			string expectedResult = "{[\"a\"] = [1, 2], [\"b\"] = [3]}";
@@ -48,7 +48,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldFormatValueTypeKeysAndValues()
 		{
 			string expectedResult = "{[1] = True, [2] = False}";
@@ -68,7 +68,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldNameTheNumberOfRemainingEntries()
 		{
 			string expectedResult =
@@ -85,7 +85,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenAKeyValuePairFormatterIsRegistered_ShouldUseItAlsoWhenBoxed()
 		{
 			using IDisposable _ = ValueFormatter.Register(new PairKeyFormatter());
@@ -111,7 +111,7 @@ public partial class ValueFormatters
 			await That(nonGenericResult).IsEqualTo("{[\"1\"] = 1}");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenDictionaryContainsItself_ShouldDetectTheRecursion()
 		{
 			string expectedResult = "{[\"self\"] = ValueFormatters.DictionaryTests.Holder { Value = { *recursive* } }}";
@@ -128,7 +128,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNestedDeeperThanTheMaximumDepth_ShouldLeaveOutTheEntriesOfTheDeepestDictionary()
 		{
 			Dictionary<string, object> value = new();
@@ -148,7 +148,7 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNonGeneric_ShouldFormatEntries()
 		{
 			string expectedResult = "{[\"1\"] = 1}";
@@ -167,7 +167,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNotADictionary_ShouldStillFormatKeyValuePairs()
 		{
 			string expectedResult = "[[\"1\"] = 1, [\"2\"] = 2]";
@@ -184,7 +184,7 @@ public partial class ValueFormatters
 				.Because("the square brackets indicate that the sequence is no dictionary");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNotADictionaryAndBoxed_ShouldStillFormatKeyValuePairs()
 		{
 			string expectedResult = "[[\"1\"] = 1, [\"2\"] = 2]";
@@ -200,7 +200,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			Dictionary<int, object>? value = null;
@@ -215,7 +215,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenOnlyAGenericReadOnlyDictionary_ShouldUseBraces()
 		{
 			string expectedResult = "{[\"a\"] = 1}";
@@ -235,7 +235,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenOnlyAGenericReadOnlyDictionaryContainsItself_ShouldDetectTheRecursionInBraces()
 		{
 			Dictionary<string, object> inner = new();
@@ -248,7 +248,7 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithLineBreaks_ShouldEscapeStringKeys()
 		{
 			string expectedResult = """
@@ -272,7 +272,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithLineBreaks_ShouldEscapeStringValues()
 		{
 			string expectedResult = """
@@ -298,7 +298,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithLineBreaks_ShouldKeepNonStringValuesOnMultipleLines()
 		{
 			string expectedResult = """
@@ -325,7 +325,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithLineBreaks_ShouldTruncateLongStringValues()
 		{
 			string expectedResult = """
@@ -354,7 +354,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithType_ShouldIncludeTypeInformation()
 		{
 			string expectedResult = "Dictionary<string, int> {[\"1\"] = 1, [\"2\"] = 2, [\"3\"] = 3}";

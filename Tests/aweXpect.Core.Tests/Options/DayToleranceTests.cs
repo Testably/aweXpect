@@ -6,7 +6,7 @@ namespace aweXpect.Core.Tests.Options;
 
 public class DayToleranceTests
 {
-	[Fact]
+	[Test]
 	public async Task GetToleranceOrDefault_WhenToleranceIsNotSet_ShouldReturnTheWholeDaysOfTheDefault()
 	{
 		DayTolerance sut = new();
@@ -18,7 +18,7 @@ public class DayToleranceTests
 			.Because("only the whole days of the default tolerance apply to a date");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetToleranceOrDefault_WhenToleranceIsSet_ShouldReturnTheTolerance()
 	{
 		DayTolerance sut = new();
@@ -30,7 +30,7 @@ public class DayToleranceTests
 		await That(result).IsEqualTo(2.Days());
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToString_WhenDefaultToleranceHasWholeDays_ShouldShowThem()
 	{
 		TimeTolerance sut = new DayTolerance();
@@ -41,7 +41,7 @@ public class DayToleranceTests
 		await That(result).IsEqualTo(" ± 2 days");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToString_WhenDefaultToleranceIsBelowOneDay_ShouldBeEmpty()
 	{
 		TimeTolerance sut = new DayTolerance();
@@ -53,7 +53,7 @@ public class DayToleranceTests
 			.Because("only the whole days of the default tolerance apply to a date");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToString_WhenToleranceIsOneDay_ShouldShowTheDay()
 	{
 		TimeTolerance sut = new DayTolerance();
@@ -64,7 +64,7 @@ public class DayToleranceTests
 		await That(result).IsEqualTo(" ± 1 day");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToString_WhenToleranceIsNotSet_ShouldBeEmpty()
 	{
 		TimeTolerance sut = new DayTolerance();
@@ -75,7 +75,7 @@ public class DayToleranceTests
 		await That(result).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenToleranceIsBelowZeroAndNotWholeDays_ShouldReportTheNegativeTolerance()
 	{
 		DayTolerance sut = new();
@@ -88,7 +88,7 @@ public class DayToleranceTests
 			.Because("a negative tolerance is rejected before the whole days are checked");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		DayTolerance sut = new();
@@ -101,11 +101,11 @@ public class DayToleranceTests
 			.Because("a negative tolerance is rejected before the whole days are checked");
 	}
 
-	[Theory]
-	[InlineData(12, 0)]
-	[InlineData(36, 0)]
-	[InlineData(0, 1)]
-	[InlineData(24, 1)]
+	[Test]
+	[Arguments(12, 0)]
+	[Arguments(36, 0)]
+	[Arguments(0, 1)]
+	[Arguments(24, 1)]
 	public async Task WhenToleranceIsNotWholeDays_ShouldThrowArgumentOutOfRangeException(int hours, int minutes)
 	{
 		DayTolerance sut = new();
@@ -118,7 +118,7 @@ public class DayToleranceTests
 			.Because("a date has no time of day, so the remainder would otherwise be dropped silently");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenToleranceIsNotWholeDays_ShouldNotStoreIt()
 	{
 		DayTolerance sut = new();
@@ -132,7 +132,7 @@ public class DayToleranceTests
 		await That(sut.Tolerance).IsEqualTo(1.Days());
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenToleranceIsSetTwice_ShouldThrowInvalidOperationException()
 	{
 		DayTolerance sut = new();
@@ -145,7 +145,7 @@ public class DayToleranceTests
 			.Because("the second tolerance would silently replace the first one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenToleranceIsSetTwice_WithNotWholeDays_ShouldThrowInvalidOperationException()
 	{
 		DayTolerance sut = new();
@@ -158,10 +158,10 @@ public class DayToleranceTests
 			.Because("the repetition is the misuse, whatever the second tolerance is");
 	}
 
-	[Theory]
-	[InlineData(0)]
-	[InlineData(1)]
-	[InlineData(3)]
+	[Test]
+	[Arguments(0)]
+	[Arguments(1)]
+	[Arguments(3)]
 	public async Task WhenToleranceIsWholeDays_ShouldSetIt(int days)
 	{
 		DayTolerance sut = new();

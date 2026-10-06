@@ -4,7 +4,7 @@ public sealed partial class ThatDelegateTests
 {
 	public sealed class ArticleTests
 	{
-		[Fact]
+		[Test]
 		public async Task DoesNotThrow_WhenInitialismWithVowelSoundIsThrown_ShouldUseAn()
 		{
 			Action @delegate = () => throw new HResultException("foo");
@@ -12,7 +12,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).DoesNotThrow();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that @delegate
 				             does not throw any exception,
@@ -21,7 +21,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_WhenInitialismWithVowelSoundIsExpected_ShouldUseAn()
 		{
 			Action @delegate = () => { };
@@ -29,7 +29,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).Throws<HResultException>();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that @delegate
 				             throws an HResultException,
@@ -37,7 +37,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_WhenUIsReadAsYou_ShouldUseA()
 		{
 			Action @delegate = () => { };
@@ -45,7 +45,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).Throws<UserException>();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that @delegate
 				             throws a UserException,

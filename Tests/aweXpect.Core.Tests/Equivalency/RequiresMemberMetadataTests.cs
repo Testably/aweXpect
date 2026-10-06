@@ -8,7 +8,7 @@ namespace aweXpect.Core.Tests.Equivalency;
 
 public sealed class RequiresMemberMetadataTests
 {
-	[Fact]
+	[Test]
 	public async Task EveryEquivalencyEntryPoint_ShouldCarryTheMarker()
 	{
 		List<string> unmarked = EquivalencyEntryPoints()
@@ -22,7 +22,7 @@ public sealed class RequiresMemberMetadataTests
 				"the generator only registers the types passed to a marked parameter or type parameter, so an unmarked entry point silently falls back to reflection under trimming");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldFindTheEquivalencyEntryPoints()
 	{
 		await That(EquivalencyEntryPoints().Select(method => method.Name).Distinct())

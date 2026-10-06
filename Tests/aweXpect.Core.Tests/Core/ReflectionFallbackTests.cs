@@ -4,7 +4,7 @@ namespace aweXpect.Core.Tests.Core;
 
 public sealed class ReflectionFallbackTests
 {
-	[Fact]
+	[Test]
 	public async Task NotSupported_ForACompilerGeneratedType_ShouldAskForAMarkedCallSite()
 	{
 		var anonymous = new
@@ -21,7 +21,7 @@ public sealed class ReflectionFallbackTests
 		await That(exception.Message).DoesNotContain("GenerateMetadata");
 	}
 
-	[Fact]
+	[Test]
 	public async Task NotSupported_ForAGenericType_ShouldNameTheTypeAsWrittenInSource()
 	{
 		NotSupportedException exception =
@@ -32,7 +32,7 @@ public sealed class ReflectionFallbackTests
 			.Because("the suggested attribute has to compile, so the type is spelled the way source spells it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task NotSupported_WithRemedy_ShouldNameTheSwitch()
 	{
 		NotSupportedException exception = ReflectionFallback.NotSupported("The interfaces of Foo", "Do this.");
@@ -41,7 +41,7 @@ public sealed class ReflectionFallbackTests
 			"The interfaces of Foo cannot be found by reflection, which is switched off when publishing with trimming or Native AOT enabled. Do this. Alternatively, set the runtime switch 'aweXpect.ReflectionFallback.IsSupported' to true to reflect anyway.");
 	}
 
-	[Fact]
+	[Test]
 	public async Task UnderTheTestHost_ShouldBeSupported()
 	{
 		await That(ReflectionFallback.IsSupported).IsTrue()

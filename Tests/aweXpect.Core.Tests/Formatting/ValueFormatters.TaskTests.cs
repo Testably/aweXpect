@@ -6,9 +6,9 @@ public partial class ValueFormatters
 {
 	public sealed class TaskTests
 	{
-		[Theory]
-		[InlineData(true, "CancellationToken (canceled)")]
-		[InlineData(false, "CancellationToken (not canceled)")]
+		[Test]
+		[Arguments(true, "CancellationToken (canceled)")]
+		[Arguments(false, "CancellationToken (not canceled)")]
 		public async Task CancellationToken_ShouldFormatItsState(bool isCanceled, string expectedResult)
 		{
 			CancellationToken value = new(isCanceled);
@@ -18,7 +18,7 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenCollectionContainsAPendingTask_ShouldFailWithoutWaiting()
 		{
 			TaskCompletionSource<int> tcs = new();
@@ -31,7 +31,7 @@ public partial class ValueFormatters
 					return 0;
 				});
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is empty,
@@ -41,7 +41,7 @@ public partial class ValueFormatters
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenMemberIsAPendingTask_ShouldFormatItsStatusWithoutWaiting()
 		{
 			TaskCompletionSource<int> tcs = new();
@@ -56,7 +56,7 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo("{ P = Task<int> (WaitingForActivation) }");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenResultIsAString_ShouldQuoteTheResult()
 		{
 			Task<string> value = Task.FromResult("foo");
@@ -66,7 +66,7 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo("Task<string> (RanToCompletion, \"foo\")");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenResultIsTheTaskItself_ShouldStopAtTheRecursion()
 		{
 			TaskCompletionSource<object> tcs = new();
@@ -77,7 +77,7 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo("Task<object> (RanToCompletion, Task<object> (RanToCompletion, *recursive*))");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTaskIsCanceled_ShouldFormatTheStatus()
 		{
 			Task value = Task.FromCanceled(new CancellationToken(true));
@@ -90,7 +90,7 @@ public partial class ValueFormatters
 			await That(genericResult).IsEqualTo("Task<int> (Canceled)");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTaskIsFaulted_ShouldFormatTheStatusAndTheException()
 		{
 			Task value = Task.FromException(new InvalidOperationException("message"));
@@ -103,7 +103,7 @@ public partial class ValueFormatters
 			await That(genericResult).IsEqualTo("Task<int> (Faulted, InvalidOperationException: message)");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTaskIsPending_ShouldFormatTheStatusWithoutWaiting()
 		{
 			TaskCompletionSource<int> tcs = new();
@@ -118,7 +118,7 @@ public partial class ValueFormatters
 				.Because("the task of an async method without a result is not named after its internal result type");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTaskRanToCompletion_ShouldFormatTheStatusAndTheResult()
 		{
 			Task value = Task.CompletedTask;
@@ -131,7 +131,7 @@ public partial class ValueFormatters
 			await That(genericResult).IsEqualTo("Task<int> (RanToCompletion, 42)");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenValueTaskIsCanceled_ShouldFormatTheStatus()
 		{
 			ValueTask value = new(Task.FromCanceled(new CancellationToken(true)));
@@ -144,7 +144,7 @@ public partial class ValueFormatters
 			await That(genericResult).IsEqualTo("ValueTask<int> (Canceled)");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenValueTaskIsFaulted_ShouldFormatTheStatus()
 		{
 			ValueTask value = new(Task.FromException(new InvalidOperationException("message")));
@@ -157,7 +157,7 @@ public partial class ValueFormatters
 			await That(genericResult).IsEqualTo("ValueTask<int> (Faulted)");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenValueTaskIsPending_ShouldFormatTheStatusWithoutWaiting()
 		{
 			TaskCompletionSource<int> tcs = new();
@@ -171,7 +171,7 @@ public partial class ValueFormatters
 			await That(genericResult).IsEqualTo("ValueTask<int> (Pending)");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenValueTaskRanToCompletion_ShouldFormatTheStatusAndTheResult()
 		{
 			ValueTask value = new();

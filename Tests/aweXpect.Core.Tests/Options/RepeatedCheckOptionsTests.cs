@@ -16,7 +16,7 @@ namespace aweXpect.Core.Tests.Options;
 
 public sealed class RepeatedCheckOptionsTests
 {
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WhenNotRepeatedAndUserCodeThrows_ShouldFailWithTheException()
 	{
 		int checks = 0;
@@ -29,7 +29,7 @@ public sealed class RepeatedCheckOptionsTests
 				throw new MyException("not yet");
 			});
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             has a matching item,
@@ -40,7 +40,7 @@ public sealed class RepeatedCheckOptionsTests
 			.Because("without a timeout the check is not repeated");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WhenACheckTakesLongerThanTheTimeout_ShouldNotCheckAgain()
 	{
 		VirtualTimeSystem time = new();
@@ -55,7 +55,7 @@ public sealed class RepeatedCheckOptionsTests
 				})
 				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).UseTimeSystem(time);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             has a matching item within 0:00.500,
@@ -66,7 +66,7 @@ public sealed class RepeatedCheckOptionsTests
 		await That(time.Now).IsEqualTo(600.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WhenRetrying_ShouldReleaseTheMaterializedSourceOfEachCheck()
 	{
 		VirtualTimeSystem time = new();
@@ -77,7 +77,7 @@ public sealed class RepeatedCheckOptionsTests
 			=> await HasMatchingItem(That<IEnumerable<int>>(subject), _ => false, () => checks++)
 				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).UseTimeSystem(time);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             has a matching item within 0:00.500,
@@ -90,7 +90,7 @@ public sealed class RepeatedCheckOptionsTests
 			.Because("every check reads the subject again, and the source of each check is released exactly once");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WhenTheContextIsOfAnotherImplementation_ShouldUseTheRealTimeSystem()
 	{
 		RepeatedCheckOptions sut = new();
@@ -111,7 +111,7 @@ public sealed class RepeatedCheckOptionsTests
 			.Because("the checks wait in real time, and a timer can complete a few milliseconds before the stopwatch agrees");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WhenTheIntervalExceedsTheTimeout_ShouldCheckAtTheTimeoutAndNotAfterIt()
 	{
 		VirtualTimeSystem time = new();
@@ -122,7 +122,7 @@ public sealed class RepeatedCheckOptionsTests
 			=> await HasMatchingItem(That(subject), _ => checks.Count > 2, () => checks.Add(time.Now))
 				.Within(100.Milliseconds()).CheckEvery(6.Seconds()).UseTimeSystem(time);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             has a matching item within 0:00.100,
@@ -134,7 +134,7 @@ public sealed class RepeatedCheckOptionsTests
 		await That(time.Now).IsEqualTo(100.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WhenTheSourceThrowsAtFirst_ShouldReadItAgain()
 	{
 		int enumerations = 0;
@@ -160,7 +160,7 @@ public sealed class RepeatedCheckOptionsTests
 		await That(enumerations).IsEqualTo(2);
 	}
 
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WhenTheSubjectGrows_ShouldSeeTheNewItems()
 	{
 		ConcurrentQueue<int> received = new();
@@ -182,7 +182,7 @@ public sealed class RepeatedCheckOptionsTests
 		await That(checks).IsEqualTo(3);
 	}
 
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WhenUserCodeAlwaysThrows_ShouldKeepCheckingAndFailWithTheLastException()
 	{
 		VirtualTimeSystem time = new();
@@ -199,9 +199,9 @@ public sealed class RepeatedCheckOptionsTests
 					() => checks++)
 				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).UseTimeSystem(time);
 
-		Exception? exception = await Record.ExceptionAsync(Act);
+		Exception? exception = await Catch.ExceptionAsync(Act);
 
-		await That(exception).IsExactly<XunitException>().And
+		await That(exception).IsExactly<FailException>().And
 			.HasMessage("""
 			            Expected that subject
 			            has a matching item within 0:00.500,
@@ -214,7 +214,7 @@ public sealed class RepeatedCheckOptionsTests
 			.Because("an exception of the code of the caller must not end the repeated check early");
 	}
 
-	[Fact]
+	[Test]
 	public async Task CheckRepeatedly_WhenUserCodeThrowsAtFirst_ShouldKeepChecking()
 	{
 		int checks = 0;

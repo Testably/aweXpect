@@ -4,7 +4,7 @@ namespace aweXpect.Core.Tests.Options;
 
 public class NumberToleranceTests
 {
-	[Fact]
+	[Test]
 	public async Task IsWithinTolerance_WhenBothAreNull_ShouldReturnTrue()
 	{
 		NumberTolerance<int> sut = new((a, b) => Math.Abs(a - b));
@@ -14,9 +14,9 @@ public class NumberToleranceTests
 		await That(result).IsTrue();
 	}
 
-	[Theory]
-	[InlineData(null, 1)]
-	[InlineData(-3, null)]
+	[Test]
+	[Arguments(null, 1)]
+	[Arguments(-3, null)]
 	public async Task IsWithinTolerance_WhenOneIsNull_ShouldReturnFalse(int? actual, int? expected)
 	{
 		NumberTolerance<int> sut = new((a, b) => Math.Abs(a - b));
@@ -26,9 +26,9 @@ public class NumberToleranceTests
 		await That(result).IsFalse();
 	}
 
-	[Theory]
-	[InlineData(1, 2, 1, true)]
-	[InlineData(1, 3, 1, false)]
+	[Test]
+	[Arguments(1, 2, 1, true)]
+	[Arguments(1, 3, 1, false)]
 	public async Task IsWithinTolerance_WhenValuesAreNotNull_ShouldApplyTolerance(
 		int actual, int expected, int tolerance, bool expectedResult)
 	{
@@ -40,7 +40,7 @@ public class NumberToleranceTests
 		await That(result).IsEqualTo(expectedResult);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ToString_WhenToleranceIsAChar_ShouldFormatItAsNumber()
 	{
 		NumberTolerance<char> sut = new((_, _) => null);
@@ -52,7 +52,7 @@ public class NumberToleranceTests
 			.Because("a tolerance formatted as char would be an unreadable character");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDoubleToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
 	{
 		NumberTolerance<double> sut = new((_, _) => null);
@@ -65,7 +65,7 @@ public class NumberToleranceTests
 			.Because("NaN is neither negative nor a usable tolerance");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDoubleToleranceIsPositive_ShouldNotThrow()
 	{
 		NumberTolerance<double> sut = new((_, _) => null);
@@ -76,7 +76,7 @@ public class NumberToleranceTests
 		await That(sut.Tolerance).IsEqualTo(0.1);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenFloatToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
 	{
 		NumberTolerance<float> sut = new((_, _) => null);
@@ -90,7 +90,7 @@ public class NumberToleranceTests
 	}
 
 #if NET8_0_OR_GREATER
-	[Fact]
+	[Test]
 	public async Task WhenHalfToleranceIsNaN_ShouldThrowArgumentOutOfRangeException()
 	{
 		NumberTolerance<Half> sut = new((_, _) => null);
@@ -104,7 +104,7 @@ public class NumberToleranceTests
 	}
 #endif
 
-	[Fact]
+	[Test]
 	public async Task WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		NumberTolerance<int> sut = new((_, _) => null);
@@ -115,7 +115,7 @@ public class NumberToleranceTests
 			.WithMessage("*The tolerance must not be negative.*").AsWildcard();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenToleranceIsSetTwice_ShouldThrowInvalidOperationException()
 	{
 		NumberTolerance<int> sut = new((_, _) => null);
@@ -128,7 +128,7 @@ public class NumberToleranceTests
 			.Because("the second tolerance would silently replace the first one");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenToleranceIsZero_ShouldNotThrow()
 	{
 		NumberTolerance<int> sut = new((_, _) => null);

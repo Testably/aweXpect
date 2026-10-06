@@ -7,7 +7,7 @@ namespace aweXpect.Core.Tests.Results;
 
 public class AndResultTests
 {
-	[Fact]
+	[Test]
 	public async Task And_ShouldReturnSubject()
 	{
 		int subject = 1;
@@ -22,7 +22,7 @@ public class AndResultTests
 		await That(result.Get().ExpectationBuilder.GetRootNode()).Is<AndNode>();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Generic_And_ShouldReturnSubject()
 	{
 		int subject = 1;
@@ -37,7 +37,7 @@ public class AndResultTests
 		await That(result.Get().ExpectationBuilder.GetRootNode()).Is<AndNode>();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Generic_ShouldBeAwaitable()
 	{
 		int subject = 1;
@@ -48,7 +48,7 @@ public class AndResultTests
 		await That(result).IsEqualTo(subject);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ShouldBeAwaitable()
 	{
 		int subject = 1;

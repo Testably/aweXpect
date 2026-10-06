@@ -6,7 +6,7 @@ public sealed class CustomizationValueTests
 {
 	private static readonly string Key = $"aweXpect.Core.Tests.{Guid.NewGuid()}";
 
-	[Fact]
+	[Test]
 	public async Task Constructor_WhenCustomizationIsNull_ShouldThrowArgumentNullException()
 	{
 		void Act() => _ = new CustomizationValue<int>(null!, Key, 42);
@@ -16,7 +16,7 @@ public sealed class CustomizationValueTests
 			.WithMessage("The 'customization' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Constructor_WhenKeyIsNull_ShouldThrowArgumentNullException()
 	{
 		void Act() => _ = new CustomizationValue<int>(new AwexpectCustomization(), null!, 42);
@@ -26,7 +26,7 @@ public sealed class CustomizationValueTests
 			.WithMessage("The 'key' cannot be null.").AsPrefix();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Get_WhenNotSet_ShouldReturnDefaultValue()
 	{
 		CustomizationValue<int> sut = new(new AwexpectCustomization(), Key, 42);
@@ -36,7 +36,7 @@ public sealed class CustomizationValueTests
 		await That(result).IsEqualTo(42);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Set_OnGlobal_ShouldApplyToTheCurrentAsyncFlow()
 	{
 		AwexpectCustomization customization = new();
@@ -52,7 +52,7 @@ public sealed class CustomizationValueTests
 		await That(other.Get()).IsEqualTo(42);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Set_ShouldStoreValueUntilLifetimeIsDisposed()
 	{
 		CustomizationValue<int> sut = new(new AwexpectCustomization(), Key, 42);
@@ -66,7 +66,7 @@ public sealed class CustomizationValueTests
 			.Because("disposing the lifetime restores the previous value");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Set_WhenValidationFails_ShouldThrowAndKeepValue()
 	{
 		CustomizationValue<int> sut = new(new AwexpectCustomization(), Key, 42, value =>
@@ -85,7 +85,7 @@ public sealed class CustomizationValueTests
 			.Because("an invalid value must not be stored");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Set_WhenValidationPasses_ShouldStoreValue()
 	{
 		int? validatedValue = null;

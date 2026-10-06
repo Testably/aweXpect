@@ -2,7 +2,7 @@
 
 public class FormattingOptionsTests
 {
-	[Fact]
+	[Test]
 	public async Task Indented_ShouldDefaultToTwoSpaces()
 	{
 		FormattingOptions options = FormattingOptions.Indented();
@@ -11,7 +11,7 @@ public class FormattingOptionsTests
 		await That(options.Indentation).IsEqualTo("  ");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Indented_ShouldUseLineBreaks()
 	{
 		FormattingOptions options = FormattingOptions.Indented("    ");
@@ -20,7 +20,7 @@ public class FormattingOptionsTests
 		await That(options.Indentation).IsEqualTo("    ");
 	}
 
-	[Fact]
+	[Test]
 	public async Task MultipleLines_ShouldUseLineBreaks()
 	{
 		FormattingOptions options = FormattingOptions.MultipleLines;
@@ -29,7 +29,7 @@ public class FormattingOptionsTests
 		await That(options.Indentation).IsEmpty();
 	}
 
-	[Fact]
+	[Test]
 	public async Task SingleLine_ShouldNotUseLineBreaks()
 	{
 		FormattingOptions options = FormattingOptions.SingleLine;

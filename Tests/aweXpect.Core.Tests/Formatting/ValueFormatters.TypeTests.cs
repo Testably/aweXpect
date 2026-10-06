@@ -10,7 +10,7 @@ public partial class ValueFormatters
 {
 	public sealed class TypeTests
 	{
-		[Fact]
+		[Test]
 		public async Task NestedGenericTypeInGenericTypes_ShouldIncludeTheDeclaringTypeAndName()
 		{
 			Type value = typeof(NestedGenericType<TypeTests>.InnerClass<int, string>);
@@ -27,7 +27,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NestedGenericTypeInNonGenericNestedType_ShouldKeepTheTypeArgumentOfTheOuterType()
 		{
 			Type value = typeof(NestedGenericType<TypeTests>.InnerRegularClass.InnerGenericClass<string>);
@@ -45,7 +45,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NestedGenericTypes_ShouldIncludeTheDeclaringTypeAndName()
 		{
 			Type value = typeof(NestedGenericType<TypeTests>);
@@ -61,7 +61,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NestedTypeInGenericTypes_ShouldIncludeTheDeclaringTypeAndName()
 		{
 			Type value = typeof(NestedGenericType<TypeTests>.InnerRegularClass);
@@ -78,7 +78,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NestedTypes_ShouldIncludeTheDeclaringTypeAndName()
 		{
 			Type value = typeof(TypeTests);
@@ -94,7 +94,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportArraySyntax()
 		{
 			Type value = typeof(int[]);
@@ -110,7 +110,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportArraySyntaxWithComplexObjects()
 		{
 			Type value = typeof(TypeTests[]);
@@ -126,7 +126,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportGenericTypeDefinitions()
 		{
 			Type value = typeof(IEnumerable<int>);
@@ -142,11 +142,11 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(typeof(int[,]), "int[,]")]
-		[InlineData(typeof(int[,,]), "int[,,]")]
-		[InlineData(typeof(int[][,]), "int[][,]")]
-		[InlineData(typeof(int[,][]), "int[,][]")]
+		[Test]
+		[Arguments(typeof(int[,]), "int[,]")]
+		[Arguments(typeof(int[,,]), "int[,,]")]
+		[Arguments(typeof(int[][,]), "int[][,]")]
+		[Arguments(typeof(int[,][]), "int[,][]")]
 		public async Task ShouldSupportMultiDimensionalArraySyntax(Type value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -161,7 +161,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportNestedGenericTypeDefinitions()
 		{
 			Type value = typeof(Expression<Func<TypeTests[], bool>>);
@@ -177,10 +177,10 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(typeof(NestedGenericType<>), "ValueFormatters.TypeTests.NestedGenericType<>")]
-		[InlineData(typeof(NestedGenericType<>.InnerClass<,>), "ValueFormatters.TypeTests.NestedGenericType<>.InnerClass<,>")]
-		[InlineData(typeof(NestedGenericType<>.InnerRegularClass),
+		[Test]
+		[Arguments(typeof(NestedGenericType<>), "ValueFormatters.TypeTests.NestedGenericType<>")]
+		[Arguments(typeof(NestedGenericType<>.InnerClass<,>), "ValueFormatters.TypeTests.NestedGenericType<>.InnerClass<,>")]
+		[Arguments(typeof(NestedGenericType<>.InnerRegularClass),
 			"ValueFormatters.TypeTests.NestedGenericType<>.InnerRegularClass")]
 		public async Task ShouldSupportNestedOpenGenericTypeDefinitions(Type value, string expectedResult)
 		{
@@ -195,10 +195,10 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(typeof(IDictionary<,>), 0, "TKey")]
-		[InlineData(typeof(IDictionary<,>), 1, "TValue")]
-		[InlineData(typeof(IEnumerable<>), 0, "T")]
+		[Test]
+		[Arguments(typeof(IDictionary<,>), 0, "TKey")]
+		[Arguments(typeof(IDictionary<,>), 1, "TValue")]
+		[Arguments(typeof(IEnumerable<>), 0, "T")]
 		public async Task ShouldSupportOpenGenericParametersOfIDictionary(
 			Type genericType, int argumentIndex, string expectedResult)
 		{
@@ -214,7 +214,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldSupportOpenGenericTypeDefinitions()
 		{
 			Type value = typeof(IEnumerable<>);
@@ -230,9 +230,9 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(typeof(IDictionary<,>), "IDictionary<,>")]
-		[InlineData(typeof(Func<,,>), "Func<,,>")]
+		[Test]
+		[Arguments(typeof(IDictionary<,>), "IDictionary<,>")]
+		[Arguments(typeof(Func<,,>), "Func<,,>")]
 		public async Task ShouldSupportOpenGenericTypeWithMultipleParametersDefinitions(
 			Type value, string expectedResult)
 		{
@@ -247,8 +247,8 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[MemberData(nameof(SimpleTypes))]
+		[Test]
+		[MethodDataSource(nameof(SimpleTypes))]
 		public async Task SimpleTypes_ShouldUseSimpleNames(Type value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -263,7 +263,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Types_ShouldOnlyIncludeTheName()
 		{
 			Type value = typeof(ValueFormatter);
@@ -279,7 +279,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenGenericParameter_ShouldUseOnlyName()
 		{
 			MethodInfo method = GetType()
@@ -298,7 +298,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			Type? value = null;
@@ -313,7 +313,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNullable_ShouldUseQuestionMarkSyntax()
 		{
 			string expectedResult = "DateTime?";
@@ -329,7 +329,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenVoid_ShouldUseSimpleName()
 		{
 			MethodInfo method = GetType()

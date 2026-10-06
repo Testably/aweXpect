@@ -2,7 +2,7 @@
 
 public sealed class ThatBoolSubjectTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenAwaitedWithoutExpectation_AndFalse_ShouldFail()
 	{
 		bool subject = false;
@@ -15,7 +15,7 @@ public sealed class ThatBoolSubjectTests
 			await sut;
 		}
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is True,
@@ -23,7 +23,7 @@ public sealed class ThatBoolSubjectTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenAwaitedWithoutExpectation_AndTrue_ShouldSucceed()
 	{
 		bool subject = true;

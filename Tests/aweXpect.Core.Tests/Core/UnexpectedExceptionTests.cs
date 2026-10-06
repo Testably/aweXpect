@@ -4,7 +4,7 @@ namespace aweXpect.Core.Tests.Core;
 
 public sealed class UnexpectedExceptionTests
 {
-	[Fact]
+	[Test]
 	public async Task AsyncDelegate_DoesNotThrow_ShouldRenderTypeAndIndentedMessage()
 	{
 		Func<Task> subject = () => Task.FromException(new MyException($"first line{Environment.NewLine}second line"));
@@ -12,7 +12,7 @@ public sealed class UnexpectedExceptionTests
 		async Task Act()
 			=> await That(subject).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             does not throw any exception,
@@ -22,7 +22,7 @@ public sealed class UnexpectedExceptionTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Delegate_DoesNotThrow_WhenMessageIsEmpty_ShouldOnlyRenderType()
 	{
 		Action subject = () => throw new MyException("");
@@ -30,7 +30,7 @@ public sealed class UnexpectedExceptionTests
 		async Task Act()
 			=> await That(subject).DoesNotThrow();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             does not throw any exception,
@@ -38,7 +38,7 @@ public sealed class UnexpectedExceptionTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Delegate_WithInner_ShouldNameTheInnerRelation()
 	{
 		Action subject = () => throw new MyException("outer", new ArgumentException("inner"));
@@ -46,7 +46,7 @@ public sealed class UnexpectedExceptionTests
 		async Task Act()
 			=> await That(subject).Throws<MyException>().WithInner<InvalidOperationException>();
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             throws a MyException with an inner InvalidOperationException,
@@ -55,7 +55,7 @@ public sealed class UnexpectedExceptionTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Task_WhenFailed_AndExpectationIsNegated_ShouldRenderTheNegatedExpectation()
 	{
 		Task<int> subject = Task.FromException<int>(new MyException("failure"));
@@ -63,7 +63,7 @@ public sealed class UnexpectedExceptionTests
 		async Task Act()
 			=> await That(subject).DoesNotComplyWith(it => it.IsEqualTo(1));
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is not equal to 1,
@@ -73,7 +73,7 @@ public sealed class UnexpectedExceptionTests
 			.And.WithInner<MyException>(inner => inner.HasMessage("failure"));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Task_WhenFailed_AndExpectationIsRepeated_ShouldFailWithoutRetrying()
 	{
 		Task<int> subject = Task.FromException<int>(new MyException("failure"));
@@ -82,7 +82,7 @@ public sealed class UnexpectedExceptionTests
 		async Task Act()
 			=> await That(subject).Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(30)).UseTimeSystem(time);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             satisfies x => x == 1 within 0:30,
@@ -94,7 +94,7 @@ public sealed class UnexpectedExceptionTests
 			.Because("a faulted task must fail at once instead of being retried for the 30 s window");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Task_WhenFailed_AndExpectationThrowsOnDefault_ShouldFailWithTheException()
 	{
 		Task<int> subject = Task.FromException<int>(new MyException("failure"));
@@ -102,7 +102,7 @@ public sealed class UnexpectedExceptionTests
 		async Task Act()
 			=> await That(subject).Satisfies(x => 10 / x > 1);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             satisfies x => 10 / x > 1,
@@ -112,7 +112,7 @@ public sealed class UnexpectedExceptionTests
 			.And.WithInner<MyException>(inner => inner.HasMessage("failure"));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Task_WhenFailed_ShouldForwardExceptionAsInnerException()
 	{
 		MyException exception = new("failure");
@@ -121,11 +121,11 @@ public sealed class UnexpectedExceptionTests
 		async Task Act()
 			=> await That(subject).IsEqualTo(1);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 	}
 
-	[Fact]
+	[Test]
 	public async Task Task_WhenFailed_ShouldRenderTypeAndIndentedMessage()
 	{
 		Task<int> subject = Task.FromException<int>(new MyException($"first line{Environment.NewLine}second line"));
@@ -133,7 +133,7 @@ public sealed class UnexpectedExceptionTests
 		async Task Act()
 			=> await That(subject).IsEqualTo(1).Because("the value is required");
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is equal to 1, because the value is required,
@@ -143,7 +143,7 @@ public sealed class UnexpectedExceptionTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Task_WhenFailedWithPlainException_ShouldRenderTypeAndMessage()
 	{
 		Task<int> subject = Task.FromException<int>(new Exception("failure"));
@@ -151,7 +151,7 @@ public sealed class UnexpectedExceptionTests
 		async Task Act()
 			=> await That(subject).IsEqualTo(1);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is equal to 1,
@@ -160,7 +160,7 @@ public sealed class UnexpectedExceptionTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ThatAll_WhenTaskAndDelegateFail_ShouldIndentTheMessages()
 	{
 		Task<int> task = Task.FromException<int>(new MyException($"task line 1{Environment.NewLine}task line 2"));
@@ -171,7 +171,7 @@ public sealed class UnexpectedExceptionTests
 				That(task).IsEqualTo(1),
 				That(action).DoesNotThrow());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected all of the following to succeed:
 			              [01] Expected that task is equal to 1
@@ -186,7 +186,7 @@ public sealed class UnexpectedExceptionTests
 			             """);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ValueTask_WhenFailed_ShouldRenderTypeAndIndentedMessage()
 	{
 		ValueTask<int> subject = new(Task.FromException<int>(new MyException("failure")));
@@ -194,7 +194,7 @@ public sealed class UnexpectedExceptionTests
 		async Task Act()
 			=> await That(subject).IsEqualTo(1);
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             is equal to 1,

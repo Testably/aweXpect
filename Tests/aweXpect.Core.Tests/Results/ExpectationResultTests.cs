@@ -10,7 +10,7 @@ namespace aweXpect.Core.Tests.Results;
 
 public class ExpectationResultTests
 {
-	[Fact]
+	[Test]
 	public async Task GetResult_ShouldIncrementIndexAndHaveCorrectSubjectLine()
 	{
 		ExpectationResult sut = new(new MyExpectationBuilder("my-subject"));
@@ -21,7 +21,7 @@ public class ExpectationResultTests
 		await That(result.SubjectLine).IsEqualTo(" [04] Expected that my-subject");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMet_InvalidType_ShouldReturnDefault()
 	{
 		MyExpectationBuilder myBuilder =
@@ -34,7 +34,7 @@ public class ExpectationResultTests
 			.Because("a met expectation never throws, also without a value of the expected type");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMet_InvalidType_WhenTracing_ShouldReturnDefault()
 	{
 		MyExpectationBuilder myBuilder =
@@ -52,7 +52,7 @@ public class ExpectationResultTests
 		await That(traceWriter.Messages).IsEqualTo(["  Successfully verified that my-subject SUCCESS",]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMet_WhenTheStoredValueIsNull_ShouldReturnNull()
 	{
 		MyExpectationBuilder myBuilder =
@@ -65,7 +65,7 @@ public class ExpectationResultTests
 			.Because("a stored null value of the expected type is a valid result, not a type mismatch");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WithCancellation_ShouldForwardTokenToExpectationBuilder()
 	{
 		MyExpectationBuilder myBuilder = new("my-subject");

@@ -8,7 +8,7 @@ namespace aweXpect.Core.Tests.Synchronous;
 
 public class SynchronouslyExtensionsTests
 {
-	[Fact]
+	[Test]
 	public void WhenActionDoesNotThrow_ShouldSucceed()
 	{
 		Foo subject = new()
@@ -20,7 +20,7 @@ public class SynchronouslyExtensionsTests
 		That(() => ThrowIf(value != 3)).DoesNotThrow().VerifySynchronously();
 	}
 
-	[Fact]
+	[Test]
 	public void WhenActionThrows_ShouldFail()
 	{
 		Foo subject = new()
@@ -30,7 +30,7 @@ public class SynchronouslyExtensionsTests
 		int value = subject.Bar;
 		void Act() => That(() => ThrowIf(value == 3)).DoesNotThrow().VerifySynchronously();
 
-		That(Act).Throws<XunitException>()
+		That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that () => ThrowIf(value == 3)
 			             does not throw any exception,
@@ -39,7 +39,7 @@ public class SynchronouslyExtensionsTests
 			             """).VerifySynchronously();
 	}
 
-	[Fact]
+	[Test]
 	public void WhenEvaluationYieldsOnABlockedSynchronizationContext_ShouldNotDeadlock()
 	{
 		bool completed = BlockedSynchronizationContext.Run(()
@@ -50,7 +50,7 @@ public class SynchronouslyExtensionsTests
 			.VerifySynchronously();
 	}
 
-	[Fact]
+	[Test]
 	public void WhenEvaluationYieldsOnABlockedSynchronizationContext_WithValue_ShouldNotDeadlock()
 	{
 		int value = 0;
@@ -67,7 +67,7 @@ public class SynchronouslyExtensionsTests
 		That(value).IsEqualTo(42).VerifySynchronously();
 	}
 
-	[Fact]
+	[Test]
 	public void WhenPropertyValuesDiffer_ShouldFail()
 	{
 		Foo subject = new()
@@ -77,7 +77,7 @@ public class SynchronouslyExtensionsTests
 		int value = subject.Bar;
 		void Act() => That(value).IsEqualTo(2).VerifySynchronously();
 
-		That(Act).Throws<XunitException>()
+		That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that value
 			             is equal to 2,
@@ -85,7 +85,7 @@ public class SynchronouslyExtensionsTests
 			             """).VerifySynchronously();
 	}
 
-	[Fact]
+	[Test]
 	public void WhenPropertyValuesMatch_ShouldSucceed()
 	{
 		Foo subject = new()

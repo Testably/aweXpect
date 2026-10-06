@@ -7,7 +7,7 @@ public sealed partial class PropertyResultTests
 {
 	public sealed class IntTests
 	{
-		[Fact]
+		[Test]
 		public async Task Between_ShouldTriggerValidationForMaximum()
 		{
 			Signaler<int?> signal = new();
@@ -21,7 +21,7 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == 43);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_ShouldTriggerValidationForMinimum()
 		{
 			Signaler<int?> signal = new();
@@ -35,7 +35,7 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == 42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_ShouldVerifyThatActualIsBetweenMinimumAndMaximum()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -45,7 +45,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.IntValue).IsEqualTo(42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_WhenActualIsOutsideTheRange_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -53,7 +53,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.Between(43).And(44);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has int value between 43 and 44,
@@ -61,7 +61,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_WhenMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -74,9 +74,9 @@ public sealed partial class PropertyResultTests
 				.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
 		}
 
-		[Theory]
-		[InlineData(null, 1)]
-		[InlineData(1, null)]
+		[Test]
+		[Arguments(null, 1)]
+		[Arguments(1, null)]
 		public async Task Between_WhenMinimumOrMaximumIsNull_AndNegated_ShouldFail(int? minimum, int? maximum)
 		{
 			MyClass subject = new();
@@ -85,7 +85,7 @@ public sealed partial class PropertyResultTests
 				=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 					.Between(minimum).And(maximum));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that subject
 				              does not have int value between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
@@ -94,7 +94,7 @@ public sealed partial class PropertyResultTests
 				.Because("nothing can be ordered against a null bound, so the negation fails as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_WhenSubjectIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValueOfNullSubject();
@@ -102,7 +102,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.Between(41).And(43);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has int value between 41 and 43,
@@ -110,7 +110,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task EqualTo_ShouldTriggerValidation()
 		{
 			Signaler<int?> signal = new();
@@ -124,7 +124,7 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == 42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task EqualTo_ShouldVerifyThatActualIsEqualToExpected()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -134,7 +134,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.IntValue).IsEqualTo(42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task EqualTo_WhenSubjectIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValueOfNullSubject();
@@ -142,7 +142,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.EqualTo(42);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has int value equal to 42,
@@ -150,7 +150,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task EqualTo_WhenSubjectIsNullAndExpectedIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValueOfNullSubject();
@@ -158,7 +158,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.EqualTo(null);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has int value equal to <null>,
@@ -167,7 +167,7 @@ public sealed partial class PropertyResultTests
 				.Because("a null subject has no int value to compare, whatever the expected value is");
 		}
 
-		[Fact]
+		[Test]
 		public async Task EqualTo_WhenValueIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasNullIntValue();
@@ -175,7 +175,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.EqualTo(42);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has int value equal to 42,
@@ -183,7 +183,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task EqualTo_WhenValueIsNullAndExpectedIsNull_ShouldSucceed()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasNullIntValue();
@@ -195,7 +195,7 @@ public sealed partial class PropertyResultTests
 				.Because("null is equal to null");
 		}
 
-		[Fact]
+		[Test]
 		public async Task GreaterThan_ShouldTriggerValidation()
 		{
 			Signaler<int?> signal = new();
@@ -209,7 +209,7 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == 42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task GreaterThan_ShouldVerifyThatActualIsGreaterThanExpected()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -219,7 +219,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.IntValue).IsEqualTo(42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task GreaterThan_WhenExpectedIsNull_AndNegated_ShouldFail()
 		{
 			MyClass subject = new();
@@ -228,7 +228,7 @@ public sealed partial class PropertyResultTests
 				=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 					.GreaterThan(null));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value greater than <null>,
@@ -237,7 +237,7 @@ public sealed partial class PropertyResultTests
 				.Because("nothing can be ordered against null, so the negation fails as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task GreaterThanOrEqualTo_ShouldTriggerValidation()
 		{
 			Signaler<int?> signal = new();
@@ -251,7 +251,7 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == 42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task GreaterThanOrEqualTo_ShouldVerifyThatActualIsGreaterThanOrEqualToExpected()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -261,7 +261,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.IntValue).IsEqualTo(42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task GreaterThanOrEqualTo_WhenExpectedIsNull_AndNegated_ShouldFail()
 		{
 			MyClass subject = new();
@@ -270,7 +270,7 @@ public sealed partial class PropertyResultTests
 				=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 					.GreaterThanOrEqualTo(null));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value greater than or equal to <null>,
@@ -279,7 +279,7 @@ public sealed partial class PropertyResultTests
 				.Because("nothing can be ordered against null, so the negation fails as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task LessThan_ShouldTriggerValidation()
 		{
 			Signaler<int?> signal = new();
@@ -293,7 +293,7 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == 42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task LessThan_ShouldVerifyThatActualIsLessThanExpected()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -303,7 +303,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.IntValue).IsEqualTo(42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task LessThan_WhenExpectedIsNull_AndNegated_ShouldFail()
 		{
 			MyClass subject = new();
@@ -312,7 +312,7 @@ public sealed partial class PropertyResultTests
 				=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 					.LessThan(null));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value less than <null>,
@@ -321,7 +321,7 @@ public sealed partial class PropertyResultTests
 				.Because("nothing can be ordered against null, so the negation fails as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task LessThanOrEqualTo_ShouldTriggerValidation()
 		{
 			Signaler<int?> signal = new();
@@ -335,7 +335,7 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == 42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task LessThanOrEqualTo_ShouldVerifyThatActualIsLessThanOrEqualToExpected()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -345,7 +345,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.IntValue).IsEqualTo(42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task LessThanOrEqualTo_WhenExpectedIsNull_AndNegated_ShouldFail()
 		{
 			MyClass subject = new();
@@ -354,7 +354,7 @@ public sealed partial class PropertyResultTests
 				=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 					.LessThanOrEqualTo(null));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value less than or equal to <null>,
@@ -363,7 +363,7 @@ public sealed partial class PropertyResultTests
 				.Because("nothing can be ordered against null, so the negation fails as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotBetween_ShouldTriggerValidationForMaximum()
 		{
 			Signaler<int?> signal = new();
@@ -377,7 +377,7 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == 43);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotBetween_ShouldTriggerValidationForMinimum()
 		{
 			Signaler<int?> signal = new();
@@ -391,7 +391,7 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == 42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotBetween_ShouldVerifyThatActualIsNotBetweenMinimumAndMaximum()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -401,7 +401,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.IntValue).IsEqualTo(42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotBetween_WhenActualIsInsideTheRange_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -409,7 +409,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotBetween(42).And(43);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value between 42 and 43,
@@ -417,7 +417,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotBetween_WhenMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -430,9 +430,9 @@ public sealed partial class PropertyResultTests
 				.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
 		}
 
-		[Theory]
-		[InlineData(null, 1)]
-		[InlineData(1, null)]
+		[Test]
+		[Arguments(null, 1)]
+		[Arguments(1, null)]
 		public async Task NotBetween_WhenMinimumOrMaximumIsNull_AndNegated_ShouldFail(int? minimum, int? maximum)
 		{
 			MyClass subject = new();
@@ -441,7 +441,7 @@ public sealed partial class PropertyResultTests
 				=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 					.NotBetween(minimum).And(maximum));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that subject
 				              has int value between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
@@ -450,9 +450,9 @@ public sealed partial class PropertyResultTests
 				.Because("nothing can be ordered against a null bound, so the negation fails as well");
 		}
 
-		[Theory]
-		[InlineData(null, 1)]
-		[InlineData(1, null)]
+		[Test]
+		[Arguments(null, 1)]
+		[Arguments(1, null)]
 		public async Task NotBetween_WhenMinimumOrMaximumIsNull_ShouldFail(int? minimum, int? maximum)
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -460,7 +460,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotBetween(minimum).And(maximum);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage($"""
 				              Expected that subject
 				              does not have int value between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
@@ -469,7 +469,7 @@ public sealed partial class PropertyResultTests
 				.Because("nothing can be ordered against a null bound");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotBetween_WhenNegated_ShouldExpectTheRange()
 		{
 			MyClass subject = new();
@@ -478,7 +478,7 @@ public sealed partial class PropertyResultTests
 				=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 					.NotBetween(1).And(2));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has int value between 1 and 2,
@@ -486,7 +486,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotBetween_WhenSubjectIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValueOfNullSubject();
@@ -494,7 +494,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotBetween(41).And(43);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value between 41 and 43,
@@ -502,7 +502,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_ShouldTriggerValidation()
 		{
 			Signaler<int?> signal = new();
@@ -516,7 +516,7 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == 42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_ShouldVerifyThatActualIsNotEqualToExpected()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -526,7 +526,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.IntValue).IsEqualTo(42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_WhenSubjectIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValueOfNullSubject();
@@ -534,7 +534,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotEqualTo(42);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value equal to 42,
@@ -542,7 +542,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_WhenSubjectIsNullAndUnexpectedIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValueOfNullSubject();
@@ -550,7 +550,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotEqualTo(null);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value equal to <null>,
@@ -559,7 +559,7 @@ public sealed partial class PropertyResultTests
 				.Because("a null subject has no int value to compare, whatever the unexpected value is");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_WhenValueIsNull_ShouldSucceed()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasNullIntValue();
@@ -570,7 +570,7 @@ public sealed partial class PropertyResultTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_WhenValueIsNullAndUnexpectedIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasNullIntValue();
@@ -578,7 +578,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotEqualTo(null);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value equal to <null>,
@@ -587,7 +587,7 @@ public sealed partial class PropertyResultTests
 				.Because("null is equal to null");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotGreaterThan_ShouldTriggerValidation()
 		{
 			Signaler<int?> signal = new();
@@ -601,7 +601,7 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == 42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotGreaterThan_ShouldVerifyThatActualIsNotGreaterThanExpected()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -611,7 +611,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.IntValue).IsEqualTo(42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotGreaterThan_WhenActualIsGreaterThanExpected_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -619,7 +619,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotGreaterThan(41);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value greater than 41,
@@ -627,7 +627,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotGreaterThan_WhenExpectedIsNull_AndNegated_ShouldFail()
 		{
 			MyClass subject = new();
@@ -636,7 +636,7 @@ public sealed partial class PropertyResultTests
 				=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 					.NotGreaterThan(null));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has int value greater than <null>,
@@ -645,7 +645,7 @@ public sealed partial class PropertyResultTests
 				.Because("nothing can be ordered against null, so the negation fails as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotGreaterThan_WhenExpectedIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -653,7 +653,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotGreaterThan(null);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value greater than <null>,
@@ -662,7 +662,7 @@ public sealed partial class PropertyResultTests
 				.Because("nothing can be ordered against null");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotGreaterThan_WhenNegated_ShouldExpectTheComparison()
 		{
 			MyClass subject = new();
@@ -671,7 +671,7 @@ public sealed partial class PropertyResultTests
 				=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 					.NotGreaterThan(1));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has int value greater than 1,
@@ -679,7 +679,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotGreaterThan_WhenSubjectIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValueOfNullSubject();
@@ -687,7 +687,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotGreaterThan(42);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value greater than 42,
@@ -695,7 +695,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotGreaterThanOrEqualTo_ShouldTriggerValidation()
 		{
 			Signaler<int?> signal = new();
@@ -709,7 +709,7 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == 42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotGreaterThanOrEqualTo_ShouldVerifyThatActualIsNotGreaterThanOrEqualToExpected()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -719,7 +719,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.IntValue).IsEqualTo(42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotGreaterThanOrEqualTo_WhenActualIsEqualToExpected_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -727,7 +727,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotGreaterThanOrEqualTo(42);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value greater than or equal to 42,
@@ -735,7 +735,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotGreaterThanOrEqualTo_WhenExpectedIsNull_AndNegated_ShouldFail()
 		{
 			MyClass subject = new();
@@ -744,7 +744,7 @@ public sealed partial class PropertyResultTests
 				=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 					.NotGreaterThanOrEqualTo(null));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has int value greater than or equal to <null>,
@@ -753,7 +753,7 @@ public sealed partial class PropertyResultTests
 				.Because("nothing can be ordered against null, so the negation fails as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotGreaterThanOrEqualTo_WhenExpectedIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -761,7 +761,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotGreaterThanOrEqualTo(null);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value greater than or equal to <null>,
@@ -770,7 +770,7 @@ public sealed partial class PropertyResultTests
 				.Because("nothing can be ordered against null");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotGreaterThanOrEqualTo_WhenNegated_ShouldExpectTheComparison()
 		{
 			MyClass subject = new();
@@ -779,7 +779,7 @@ public sealed partial class PropertyResultTests
 				=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 					.NotGreaterThanOrEqualTo(1));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has int value greater than or equal to 1,
@@ -787,7 +787,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotGreaterThanOrEqualTo_WhenSubjectIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValueOfNullSubject();
@@ -795,7 +795,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotGreaterThanOrEqualTo(42);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value greater than or equal to 42,
@@ -803,7 +803,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotLessThan_ShouldTriggerValidation()
 		{
 			Signaler<int?> signal = new();
@@ -817,7 +817,7 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == 42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotLessThan_ShouldVerifyThatActualIsNotLessThanExpected()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -827,7 +827,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.IntValue).IsEqualTo(42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotLessThan_WhenActualIsLessThanExpected_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -835,7 +835,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotLessThan(43);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value less than 43,
@@ -843,7 +843,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotLessThan_WhenExpectedIsNull_AndNegated_ShouldFail()
 		{
 			MyClass subject = new();
@@ -852,7 +852,7 @@ public sealed partial class PropertyResultTests
 				=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 					.NotLessThan(null));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has int value less than <null>,
@@ -861,7 +861,7 @@ public sealed partial class PropertyResultTests
 				.Because("nothing can be ordered against null, so the negation fails as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotLessThan_WhenExpectedIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -869,7 +869,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotLessThan(null);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value less than <null>,
@@ -878,7 +878,7 @@ public sealed partial class PropertyResultTests
 				.Because("nothing can be ordered against null");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotLessThan_WhenNegated_ShouldExpectTheComparison()
 		{
 			MyClass subject = new();
@@ -887,7 +887,7 @@ public sealed partial class PropertyResultTests
 				=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 					.NotLessThan(-1));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has int value less than -1,
@@ -895,7 +895,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotLessThan_WhenSubjectIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValueOfNullSubject();
@@ -903,7 +903,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotLessThan(42);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value less than 42,
@@ -911,7 +911,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotLessThanOrEqualTo_ShouldTriggerValidation()
 		{
 			Signaler<int?> signal = new();
@@ -925,7 +925,7 @@ public sealed partial class PropertyResultTests
 			await That(signal).Signaled().With(e => e == 42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotLessThanOrEqualTo_ShouldVerifyThatActualIsNotLessThanOrEqualToExpected()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -935,7 +935,7 @@ public sealed partial class PropertyResultTests
 			await That(result?.IntValue).IsEqualTo(42);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotLessThanOrEqualTo_WhenActualIsEqualToExpected_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -943,7 +943,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotLessThanOrEqualTo(42);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value less than or equal to 42,
@@ -951,7 +951,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotLessThanOrEqualTo_WhenExpectedIsNull_AndNegated_ShouldFail()
 		{
 			MyClass subject = new();
@@ -960,7 +960,7 @@ public sealed partial class PropertyResultTests
 				=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 					.NotLessThanOrEqualTo(null));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has int value less than or equal to <null>,
@@ -969,7 +969,7 @@ public sealed partial class PropertyResultTests
 				.Because("nothing can be ordered against null, so the negation fails as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotLessThanOrEqualTo_WhenExpectedIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -977,7 +977,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotLessThanOrEqualTo(null);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value less than or equal to <null>,
@@ -986,7 +986,7 @@ public sealed partial class PropertyResultTests
 				.Because("nothing can be ordered against null");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotLessThanOrEqualTo_WhenNegated_ShouldExpectTheComparison()
 		{
 			MyClass subject = new();
@@ -995,7 +995,7 @@ public sealed partial class PropertyResultTests
 				=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 					.NotLessThanOrEqualTo(-1));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has int value less than or equal to -1,
@@ -1003,7 +1003,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotLessThanOrEqualTo_WhenSubjectIsNull_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValueOfNullSubject();
@@ -1011,7 +1011,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotLessThanOrEqualTo(42);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have int value less than or equal to 42,
@@ -1021,7 +1021,7 @@ public sealed partial class PropertyResultTests
 
 		public sealed class GrammarTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenActive_ShouldUseTheActiveVoice()
 			{
 				PropertyResult.Int<MyClass?, MyClass?, IThat<MyClass?>> sut =
@@ -1030,7 +1030,7 @@ public sealed partial class PropertyResultTests
 				async Task Act()
 					=> await sut.GreaterThan(43);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             with int value greater than 43,
@@ -1038,7 +1038,7 @@ public sealed partial class PropertyResultTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActiveAndNegated_ShouldNegateTheComparison()
 			{
 				MyClass subject = new();
@@ -1047,7 +1047,7 @@ public sealed partial class PropertyResultTests
 					=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.Active)
 						.EqualTo(0));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             with int value not equal to 0,
@@ -1055,7 +1055,7 @@ public sealed partial class PropertyResultTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenActiveAndNegated_WithNotEqualTo_ShouldExpectEquality()
 			{
 				MyClass subject = new();
@@ -1064,7 +1064,7 @@ public sealed partial class PropertyResultTests
 					=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.Active)
 						.NotEqualTo(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             with int value equal to 1,
@@ -1072,7 +1072,7 @@ public sealed partial class PropertyResultTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_ShouldUseDoesNotHave()
 			{
 				MyClass subject = new();
@@ -1081,7 +1081,7 @@ public sealed partial class PropertyResultTests
 					=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 						.EqualTo(0));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have int value equal to 0,
@@ -1089,7 +1089,7 @@ public sealed partial class PropertyResultTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_WithNotEqualTo_ShouldExpectEquality()
 			{
 				MyClass subject = new();
@@ -1098,7 +1098,7 @@ public sealed partial class PropertyResultTests
 					=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.None)
 						.NotEqualTo(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has int value equal to 1,
@@ -1106,7 +1106,7 @@ public sealed partial class PropertyResultTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNested_ShouldReadAsAStatementAboutTheProperty()
 			{
 				PropertyResult.Int<MyClass?, MyClass?, IThat<MyClass?>> sut =
@@ -1115,7 +1115,7 @@ public sealed partial class PropertyResultTests
 				async Task Act()
 					=> await sut.GreaterThan(43);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose int value is greater than 43,
@@ -1124,7 +1124,7 @@ public sealed partial class PropertyResultTests
 					.Because("the whose clause makes the property the subject, as for a string property");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNestedAndNegated_ShouldNegateTheComparison()
 			{
 				MyClass subject = new();
@@ -1133,7 +1133,7 @@ public sealed partial class PropertyResultTests
 					=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.Nested)
 						.EqualTo(0));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose int value is not equal to 0,
@@ -1141,7 +1141,7 @@ public sealed partial class PropertyResultTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNestedAndNegated_WithNotEqualTo_ShouldExpectEquality()
 			{
 				MyClass subject = new();
@@ -1150,7 +1150,7 @@ public sealed partial class PropertyResultTests
 					=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.Nested)
 						.NotEqualTo(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose int value is equal to 1,
@@ -1158,7 +1158,7 @@ public sealed partial class PropertyResultTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPlural_ShouldUseThePluralVerb()
 			{
 				PropertyResult.Int<MyClass?, MyClass?, IThat<MyClass?>> sut =
@@ -1167,7 +1167,7 @@ public sealed partial class PropertyResultTests
 				async Task Act()
 					=> await sut.GreaterThan(43);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             have int value greater than 43,
@@ -1175,7 +1175,7 @@ public sealed partial class PropertyResultTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPluralAndNegated_ShouldUseThePluralVerb()
 			{
 				MyClass subject = new();
@@ -1184,7 +1184,7 @@ public sealed partial class PropertyResultTests
 					=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.Plural)
 						.EqualTo(0));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             do not have int value equal to 0,
@@ -1192,7 +1192,7 @@ public sealed partial class PropertyResultTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPluralAndNegated_WithNotEqualTo_ShouldExpectEquality()
 			{
 				MyClass subject = new();
@@ -1201,7 +1201,7 @@ public sealed partial class PropertyResultTests
 					=> await That(subject).DoesNotComplyWith(s => MyClass.IntValueOf(s, ExpectationGrammars.Plural)
 						.NotEqualTo(1));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             have int value equal to 1,
@@ -1212,13 +1212,13 @@ public sealed partial class PropertyResultTests
 
 		public sealed class NarrowedTypeTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenTheMapperIsTypedAtTheBaseType_ShouldFailForAMismatch()
 			{
 				async Task Act()
 					=> await MyClass.HasIntValueOfNarrowedSubject(42).EqualTo(43);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has int value equal to 43,
@@ -1227,7 +1227,7 @@ public sealed partial class PropertyResultTests
 					.Because("a constraint typed at the narrowed type would silently never be matched");
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenTheMapperIsTypedAtTheBaseType_ShouldReturnTheNarrowedType()
 			{
 				MyDerivedClass? result = await MyClass.HasIntValueOfNarrowedSubject(42).EqualTo(42);

@@ -7,7 +7,7 @@ namespace aweXpect.Core.Tests.Core.Metadata;
 
 public sealed class TypeMetadataRegistryTests
 {
-	[Fact]
+	[Test]
 	public async Task RegisterBatch_ShouldNotDelayARegistrationOnAnotherThread()
 	{
 		TypeMetadataRegistry.Registration registration = new();
@@ -23,7 +23,7 @@ public sealed class TypeMetadataRegistryTests
 			.Because("only the registrations of the thread that runs the batch are published together");
 	}
 
-	[Fact]
+	[Test]
 	public async Task RegisterBatch_ShouldPublishTheEventsTogetherWithTheMembers()
 	{
 		TypeMetadataRegistry.Registration registration = new();
@@ -44,7 +44,7 @@ public sealed class TypeMetadataRegistryTests
 		await That(metadata.Properties.Keys).IsEqualTo(["Value",]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task RegisterBatch_ShouldPublishTheTypeOnlyOnceTheCallbackReturns()
 	{
 		TypeMetadataRegistry.Registration registration = new();
@@ -66,7 +66,7 @@ public sealed class TypeMetadataRegistryTests
 			.Because("the members keep the order in which they were registered");
 	}
 
-	[Fact]
+	[Test]
 	public async Task RegisterBatch_WhenNested_ShouldPublishOnceTheOutermostCallbackReturns()
 	{
 		TypeMetadataRegistry.Registration registration = new();
@@ -85,7 +85,7 @@ public sealed class TypeMetadataRegistryTests
 		await That(metadata!.Properties.Keys).IsEqualTo(["First", "Second",]).InAnyOrder();
 	}
 
-	[Fact]
+	[Test]
 	public async Task RegisterBatch_WhenTheCallbackThrows_ShouldPublishNothing()
 	{
 		TypeMetadataRegistry.Registration registration = new();
@@ -105,7 +105,7 @@ public sealed class TypeMetadataRegistryTests
 			.Because("a registration after the failed batch is no longer part of it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task RegisterBatch_WhenTheTypeIsAlreadyRegistered_ShouldKeepThePublishedMembersUntilItReturns()
 	{
 		TypeMetadataRegistry.Registration registration = new();
@@ -134,7 +134,7 @@ public sealed class TypeMetadataRegistryTests
 			.Because("the last registration of a member wins");
 	}
 
-	[Fact]
+	[Test]
 	public async Task RegisterBatch_WithTheLiveRegistry_ShouldPublishTheRegistrations()
 	{
 		TypeMetadataRegistry.RegisterBatch(() =>
@@ -147,9 +147,9 @@ public sealed class TypeMetadataRegistryTests
 		await That(metadata!.Properties.Keys).IsEqualTo([nameof(Batched.Value),]);
 	}
 
-	[Theory]
-	[InlineData(typeof(IDictionary<string, Batched>))]
-	[InlineData(typeof(IReadOnlyDictionary<string, Batched>))]
+	[Test]
+	[Arguments(typeof(IDictionary<string, Batched>))]
+	[Arguments(typeof(IReadOnlyDictionary<string, Batched>))]
 	public async Task RegisterDictionary_ShouldRegisterAReaderOfTheKeyComparer(Type dictionaryInterface)
 	{
 		Dictionary<string, Batched> dictionary = new(StringComparer.OrdinalIgnoreCase);
@@ -162,7 +162,7 @@ public sealed class TypeMetadataRegistryTests
 			.Because("the comparison finds the reader through the dictionary interface the runtime type implements");
 	}
 
-	[Fact]
+	[Test]
 	public async Task RegisterSet_ShouldRegisterAReaderOfTheItemComparer()
 	{
 		HashSet<Batched> set = new(new SameValueComparer());

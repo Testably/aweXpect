@@ -9,7 +9,7 @@ public sealed partial class ThatDelegateTests
 #pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 	public sealed class NegatedThrowsTests
 	{
-		[Fact]
+		[Test]
 		public async Task Throws_Generic_OnlyIfFalse_WhenDelegateDoesNotThrow_ShouldFail()
 		{
 			DelegateValue value = new(null, TimeSpan.Zero);
@@ -17,7 +17,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(value).DoesNotComplyWith(it => WithoutValue(it).Throws<MyException>().OnlyIf(false));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that value
 				             throws an exception,
@@ -25,7 +25,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_Generic_OnlyIfFalse_WhenDelegateThrows_ShouldSucceed()
 		{
 			DelegateValue value = new(new MyException("foo"), TimeSpan.Zero);
@@ -36,7 +36,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_Generic_WhenDelegateDoesNotThrow_ShouldSucceed()
 		{
 			DelegateValue value = new(null, TimeSpan.Zero);
@@ -47,7 +47,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_Generic_WhenDelegateThrowsMatchingException_ShouldFail()
 		{
 			MyException exception = new("foo");
@@ -56,7 +56,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(value).DoesNotComplyWith(it => WithoutValue(it).Throws<MyException>());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that value
 				             does not throw a MyException,
@@ -66,7 +66,7 @@ public sealed partial class ThatDelegateTests
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_Generic_WhenDelegateThrowsOtherException_ShouldSucceed()
 		{
 			DelegateValue value = new(new ArgumentException("foo"), TimeSpan.Zero);
@@ -77,7 +77,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_Generic_Within_WhenDelegateThrowsMatchingException_ShouldFail()
 		{
 			DelegateValue value = new(new MyException("foo"), TimeSpan.Zero);
@@ -86,7 +86,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(value).DoesNotComplyWith(it
 					=> WithoutValue(it).Throws<MyException>().Within(TimeSpan.FromSeconds(1)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that value
 				             does not throw a MyException within 0:01,
@@ -95,7 +95,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_Generic_WithMessage_WhenDelegateThrowsMatchingException_ShouldFail()
 		{
 			DelegateValue value = new(new MyException("foo"), TimeSpan.Zero);
@@ -103,7 +103,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(value).DoesNotComplyWith(it => WithoutValue(it).Throws<MyException>().WithMessage("foo"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that value
 				             does not throw a MyException with message equal to "foo",
@@ -112,7 +112,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_Generic_WithMessage_WhenMessageDiffers_ShouldSucceed()
 		{
 			DelegateValue value = new(new MyException("foo"), TimeSpan.Zero);
@@ -123,7 +123,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_Type_OnlyIfFalse_WhenDelegateDoesNotThrow_ShouldFail()
 		{
 			DelegateValue value = new(null, TimeSpan.Zero);
@@ -132,7 +132,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(value).DoesNotComplyWith(it
 					=> WithoutValue(it).Throws(typeof(MyException)).OnlyIf(false));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that value
 				             throws an exception,
@@ -140,7 +140,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_Type_WhenDelegateThrowsMatchingException_ShouldFail()
 		{
 			MyException exception = new("foo");
@@ -149,7 +149,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(value).DoesNotComplyWith(it => WithoutValue(it).Throws(typeof(MyException)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that value
 				             does not throw a MyException,
@@ -159,7 +159,7 @@ public sealed partial class ThatDelegateTests
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_Type_WhenDelegateThrowsOtherException_ShouldSucceed()
 		{
 			DelegateValue value = new(new ArgumentException("foo"), TimeSpan.Zero);
@@ -170,7 +170,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_Type_Within_WhenDelegateThrowsMatchingException_ShouldFail()
 		{
 			DelegateValue value = new(new MyException("foo"), TimeSpan.Zero);
@@ -179,7 +179,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(value).DoesNotComplyWith(it
 					=> WithoutValue(it).Throws(typeof(MyException)).Within(TimeSpan.FromSeconds(1)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that value
 				             does not throw a MyException within 0:01,
@@ -188,7 +188,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_Type_WithMessage_WhenDelegateThrowsMatchingException_ShouldFail()
 		{
 			DelegateValue value = new(new MyException("foo"), TimeSpan.Zero);
@@ -197,7 +197,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(value).DoesNotComplyWith(it
 					=> WithoutValue(it).Throws(typeof(MyException)).WithMessage("foo"));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that value
 				             does not throw a MyException with message equal to "foo",
@@ -206,7 +206,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_Type_WithOr_WhenDelegateThrowsOtherException_ShouldSucceed()
 		{
 			DelegateValue value = new(new ArgumentException("foo"), TimeSpan.Zero);
@@ -218,7 +218,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Throws_WhenDelegateThrows_ShouldFail()
 		{
 			MyException exception = new("foo");
@@ -227,7 +227,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(value).DoesNotComplyWith(it => WithoutValue(it).Throws());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that value
 				             does not throw any exception,
@@ -237,7 +237,7 @@ public sealed partial class ThatDelegateTests
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task ThrowsExactly_Generic_OnlyIfFalse_WhenDelegateDoesNotThrow_ShouldFail()
 		{
 			DelegateValue value = new(null, TimeSpan.Zero);
@@ -246,7 +246,7 @@ public sealed partial class ThatDelegateTests
 				=> await That(value).DoesNotComplyWith(it
 					=> WithoutValue(it).ThrowsExactly<MyException>().OnlyIf(false));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that value
 				             throws an exception,
@@ -254,7 +254,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ThrowsExactly_Generic_WhenDelegateThrowsMatchingException_ShouldFail()
 		{
 			MyException exception = new("foo");
@@ -263,7 +263,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(value).DoesNotComplyWith(it => WithoutValue(it).ThrowsExactly<MyException>());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that value
 				             does not throw exactly a MyException,
@@ -273,7 +273,7 @@ public sealed partial class ThatDelegateTests
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task ThrowsExactly_Generic_WhenDelegateThrowsSubtype_ShouldSucceed()
 		{
 			DelegateValue value = new(new MyException("foo"), TimeSpan.Zero);
@@ -284,7 +284,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ThrowsExactly_Generic_WithOr_WhenDelegateThrowsSubtype_ShouldSucceed()
 		{
 			DelegateValue value = new(new MyException("foo"), TimeSpan.Zero);
@@ -296,7 +296,7 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ThrowsExactly_Type_WhenDelegateThrowsMatchingException_ShouldFail()
 		{
 			MyException exception = new("foo");
@@ -305,7 +305,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(value).DoesNotComplyWith(it => WithoutValue(it).ThrowsExactly(typeof(MyException)));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that value
 				             does not throw exactly a MyException,
@@ -315,7 +315,7 @@ public sealed partial class ThatDelegateTests
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 		}
 
-		[Fact]
+		[Test]
 		public async Task ThrowsExactly_Type_WithOr_WhenDelegateThrowsSubtype_ShouldSucceed()
 		{
 			DelegateValue value = new(new MyException("foo"), TimeSpan.Zero);

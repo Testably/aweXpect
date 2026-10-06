@@ -7,7 +7,7 @@ public sealed partial class ThatDelegateTests
 {
 	public sealed class OnlyIfTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenContinuingWithAndOrOr_ShouldNotBeOffered()
 		{
 			Type[] continuations = typeof(ThatDelegateThrows<Exception>).GetMethods()

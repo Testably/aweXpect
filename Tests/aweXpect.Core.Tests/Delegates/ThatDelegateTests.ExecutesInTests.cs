@@ -6,7 +6,7 @@ public sealed partial class ThatDelegateTests
 {
 	public sealed class ExecutesInTests
 	{
-		[Fact]
+		[Test]
 		public async Task AtLeast_WhenMinimumIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			Action @delegate = () => { };
@@ -20,7 +20,7 @@ public sealed partial class ThatDelegateTests
 				.Because("an execution can never take less than no time at all");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AtMost_WhenMaximumExceedsTheTimerRange_ShouldSucceed()
 		{
 			Action @delegate = () => { };
@@ -32,7 +32,7 @@ public sealed partial class ThatDelegateTests
 				.Because("a duration beyond the range of the cancellation timer is still a valid upper bound");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AtMost_WhenMaximumIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			Action @delegate = () => { };
@@ -46,7 +46,7 @@ public sealed partial class ThatDelegateTests
 				.Because("an execution can never take less than no time at all");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_WhenMaximumExceedsTheTimerRange_ShouldFailWithTheGivenDurations()
 		{
 			Action @delegate = () => { };
@@ -54,7 +54,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).ExecutesIn().Between(60.Days()).And(61.Days());
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that @delegate
 				             executes in between 60.00:00:00 and 61.00:00:00,
@@ -63,7 +63,7 @@ public sealed partial class ThatDelegateTests
 				.Because("only the cancellation timer is limited, not the durations that are compared and reported");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_WhenMaximumIsBelowMinimum_ShouldThrowArgumentOutOfRangeException()
 		{
 			Action @delegate = () => { };
@@ -76,7 +76,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("The maximum must be greater than or equal to the minimum.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_WhenMaximumIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			Action @delegate = () => { };
@@ -89,7 +89,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("The maximum must not be negative.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Between_WhenMinimumIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			Action @delegate = () => { };
@@ -102,7 +102,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("The minimum must not be negative.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithExpected_WhenExpectedIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			Action @delegate = () => { };
@@ -115,7 +115,7 @@ public sealed partial class ThatDelegateTests
 				.WithMessage("The expected duration must not be negative.").AsPrefix();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Within_WhenExpectedIsMaxValue_ShouldFailWithoutOverflow()
 		{
 			Action @delegate = () => { };
@@ -123,7 +123,7 @@ public sealed partial class ThatDelegateTests
 			async Task Act()
 				=> await That(@delegate).ExecutesIn(TimeSpan.MaxValue).Within(TimeSpan.FromTicks(1));
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that @delegate
 				             executes in approximately TimeSpan.MaxValue ± 0:00.0000001,
@@ -132,7 +132,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the upper bound saturates at the maximum duration instead of overflowing");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Within_WhenToleranceIsMaxValue_ShouldSucceed()
 		{
 			Action @delegate = () => { };
@@ -144,7 +144,7 @@ public sealed partial class ThatDelegateTests
 				.Because("any execution time is within an unlimited tolerance");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Within_WhenToleranceIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
 			Action @delegate = () => { };
@@ -159,7 +159,7 @@ public sealed partial class ThatDelegateTests
 				.Because("the tolerance is rejected like every other tolerance");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Within_WithValue_WhenToleranceIsMaxValue_ShouldSucceed()
 		{
 			Func<int> @delegate = () => 1;

@@ -13,17 +13,17 @@ public sealed class SignalerTests
 
 	public sealed class Tests
 	{
-		[Theory]
-		[InlineData(0, 0, true)]
-		[InlineData(0, 1, false)]
-		[InlineData(2, 0, true)]
-		[InlineData(2, 1, true)]
-		[InlineData(2, 2, true)]
-		[InlineData(2, 3, false)]
-		[InlineData(2, 5, false)]
-		[InlineData(0, null, false)]
-		[InlineData(1, null, true)]
-		[InlineData(2, null, true)]
+		[Test]
+		[Arguments(0, 0, true)]
+		[Arguments(0, 1, false)]
+		[Arguments(2, 0, true)]
+		[Arguments(2, 1, true)]
+		[Arguments(2, 2, true)]
+		[Arguments(2, 3, false)]
+		[Arguments(2, 5, false)]
+		[Arguments(0, null, false)]
+		[Arguments(1, null, true)]
+		[Arguments(2, null, true)]
 		public async Task IsSignaled_ShouldCompareToSignalCount(int signalCount, int? amount, bool expectedResult)
 		{
 			Signaler signaler = new();
@@ -38,7 +38,7 @@ public sealed class SignalerTests
 			await That(result).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Signal_AfterASuccessfulWait_ShouldNotThrow()
 		{
 			Signaler signaler = new();
@@ -59,7 +59,7 @@ public sealed class SignalerTests
 			await That(signaler.IsSignaled(3.Times())).IsTrue();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Signal_AfterATimedOutWait_ShouldNotThrow()
 		{
 			Signaler signaler = new();
@@ -72,7 +72,7 @@ public sealed class SignalerTests
 				.Because("nobody waits anymore, so the signal must not fail on the event of the ended wait");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WaitAsync_InfiniteTimeout_ShouldWaitForTheSignal()
 		{
 			Signaler signaler = new();
@@ -84,9 +84,9 @@ public sealed class SignalerTests
 			await That(result.IsSuccess).IsTrue();
 		}
 
-		[Theory]
-		[InlineData(false)]
-		[InlineData(true)]
+		[Test]
+		[Arguments(false)]
+		[Arguments(true)]
 		public async Task WaitAsync_NegativeTimeout_ShouldThrowArgumentOutOfRangeException(bool isAlreadySignaled)
 		{
 			Signaler signaler = new();
@@ -112,7 +112,7 @@ public sealed class SignalerTests
 				.Because("the timeout is validated before the wait starts, also when the signals were already received");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WaitAsync_ShouldCompleteAsSoonAsEnoughSignalsWereRecorded()
 		{
 			Signaler signaler = new();
@@ -129,7 +129,7 @@ public sealed class SignalerTests
 				.Because("the signal before the wait counts as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WaitAsync_ShouldNotContinueOnTheThreadThatSignals()
 		{
 			Signaler signaler = new();
@@ -151,7 +151,7 @@ public sealed class SignalerTests
 				.Because("the code under test that signals must not run the continuation of the waiting expectation");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WaitAsync_ShouldReturnAtTheCancellationWithoutThrowing()
 		{
 			Signaler signaler = new();
@@ -165,7 +165,7 @@ public sealed class SignalerTests
 				.Because("the signals received until the cancellation are returned");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WaitAsync_ShouldUseTimeout()
 		{
 			Signaler signaler = new();
@@ -179,9 +179,9 @@ public sealed class SignalerTests
 				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
 		}
 
-		[Theory]
-		[InlineData(0)]
-		[InlineData(-1)]
+		[Test]
+		[Arguments(0)]
+		[Arguments(-1)]
 		public async Task WaitAsync_ZeroOrNegativeAmount_ShouldThrowArgumentOutOfRangeException(int amount)
 		{
 			Signaler signaler = new();
@@ -194,9 +194,9 @@ public sealed class SignalerTests
 				.WithParamName("amount");
 		}
 
-		[Theory]
-		[InlineData(2)]
-		[InlineData(3)]
+		[Test]
+		[Arguments(2)]
+		[Arguments(3)]
 		public async Task Wait_EnoughSignals_ShouldSucceed(int amount)
 		{
 			Signaler signaler = new();
@@ -210,7 +210,7 @@ public sealed class SignalerTests
 			await That(result.IsSuccess).IsTrue();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_InfiniteTimeout_ShouldWaitForTheSignal()
 		{
 			Signaler signaler = new();
@@ -225,9 +225,9 @@ public sealed class SignalerTests
 			await That(result.IsSuccess).IsTrue();
 		}
 
-		[Theory]
-		[InlineData(false)]
-		[InlineData(true)]
+		[Test]
+		[Arguments(false)]
+		[Arguments(true)]
 		public async Task Wait_NegativeTimeout_ShouldThrowArgumentOutOfRangeException(bool isAlreadySignaled)
 		{
 			Signaler signaler = new();
@@ -253,7 +253,7 @@ public sealed class SignalerTests
 				.Because("the timeout is validated before the wait starts, also when the signals were already received");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_ShouldCatchOperationCanceledException()
 		{
 			Signaler signaler = new();
@@ -275,7 +275,7 @@ public sealed class SignalerTests
 			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_ShouldReturnAsSoonAsEnoughSignalsWereRecorded()
 		{
 			Signaler signaler = new();
@@ -295,7 +295,7 @@ public sealed class SignalerTests
 			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_ShouldUseTimeout()
 		{
 			Signaler signaler = new();
@@ -313,7 +313,7 @@ public sealed class SignalerTests
 				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_Single_AlreadySignaled_ShouldSucceed()
 		{
 			Signaler signaler = new();
@@ -326,7 +326,7 @@ public sealed class SignalerTests
 			await That(result.IsSuccess).IsTrue();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_Single_ShouldCatchOperationCanceledException()
 		{
 			Signaler signaler = new();
@@ -343,7 +343,7 @@ public sealed class SignalerTests
 			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_Single_ShouldReturnAsSoonAsSignalWasRecorded()
 		{
 			Signaler signaler = new();
@@ -375,7 +375,7 @@ public sealed class SignalerTests
 			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_Single_ShouldUseTimeout()
 		{
 			Signaler signaler = new();
@@ -391,7 +391,7 @@ public sealed class SignalerTests
 				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_Single_WhenTimeoutExceedsTheTimerRange_ShouldWaitForTheSignal()
 		{
 			Signaler signaler = new();
@@ -409,7 +409,7 @@ public sealed class SignalerTests
 				.Because("a timeout beyond the range of the wait handle must not throw");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_WhenAnotherWaitIsPending_ShouldNotInterfereWithIt()
 		{
 			Signaler signaler = new();
@@ -432,7 +432,7 @@ public sealed class SignalerTests
 			await That(pendingResult?.Count).IsEqualTo(2);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_WhenTimeoutExceedsTheTimerRange_ShouldWaitForTheSignals()
 		{
 			Signaler signaler = new();
@@ -452,9 +452,9 @@ public sealed class SignalerTests
 			await That(result.Count).IsEqualTo(2);
 		}
 
-		[Theory]
-		[InlineData(0)]
-		[InlineData(-1)]
+		[Test]
+		[Arguments(0)]
+		[Arguments(-1)]
 		public async Task Wait_ZeroOrNegativeAmount_ShouldThrowArgumentOutOfRangeException(int amount)
 		{
 			Signaler signaler = new();
@@ -470,17 +470,17 @@ public sealed class SignalerTests
 
 	public sealed class WithParameterTests
 	{
-		[Theory]
-		[InlineData(0, 0, true)]
-		[InlineData(0, 1, false)]
-		[InlineData(2, 0, true)]
-		[InlineData(2, 1, true)]
-		[InlineData(2, 2, true)]
-		[InlineData(2, 3, false)]
-		[InlineData(2, 5, false)]
-		[InlineData(0, null, false)]
-		[InlineData(1, null, true)]
-		[InlineData(2, null, true)]
+		[Test]
+		[Arguments(0, 0, true)]
+		[Arguments(0, 1, false)]
+		[Arguments(2, 0, true)]
+		[Arguments(2, 1, true)]
+		[Arguments(2, 2, true)]
+		[Arguments(2, 3, false)]
+		[Arguments(2, 5, false)]
+		[Arguments(0, null, false)]
+		[Arguments(1, null, true)]
+		[Arguments(2, null, true)]
 		public async Task IsSignaled_ShouldCompareToSignalCount(int signalCount, int? amount, bool expectedResult)
 		{
 			Signaler<int> signaler = new();
@@ -495,7 +495,7 @@ public sealed class SignalerTests
 			await That(result).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Signal_AfterASuccessfulWait_ShouldNotThrow()
 		{
 			Signaler<int> signaler = new();
@@ -516,7 +516,7 @@ public sealed class SignalerTests
 			await That(signaler.IsSignaled(3.Times())).IsTrue();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Signal_AfterATimedOutWait_ShouldNotThrow()
 		{
 			Signaler<int> signaler = new();
@@ -529,7 +529,7 @@ public sealed class SignalerTests
 				.Because("nobody waits anymore, so the signal must not fail on the event of the ended wait");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Signal_AfterATimedOutWait_WhenThePredicateOfTheWaitThrows_ShouldNotThrow()
 		{
 			Signaler<int> signaler = new();
@@ -543,7 +543,7 @@ public sealed class SignalerTests
 				.Because("nobody waits anymore, so the signal must not fail on the event of the ended wait");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Signal_AfterAWaitEnded_ShouldNotInvokeItsPredicate()
 		{
 			Signaler<int> signaler = new();
@@ -560,7 +560,7 @@ public sealed class SignalerTests
 				.Because("the predicate belongs to a wait that already ended");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Signal_WhenThePredicateOfTheWaitThrows_ShouldNotThrow()
 		{
 			Signaler<int> signaler = new();
@@ -574,7 +574,7 @@ public sealed class SignalerTests
 			await That(signaler.IsSignaled()).IsTrue();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WaitAsync_InfiniteTimeout_ShouldWaitForTheSignal()
 		{
 			Signaler<int> signaler = new();
@@ -586,9 +586,9 @@ public sealed class SignalerTests
 			await That(result.IsSuccess).IsTrue();
 		}
 
-		[Theory]
-		[InlineData(false)]
-		[InlineData(true)]
+		[Test]
+		[Arguments(false)]
+		[Arguments(true)]
 		public async Task WaitAsync_NegativeTimeout_ShouldThrowArgumentOutOfRangeException(bool isAlreadySignaled)
 		{
 			Signaler<int> signaler = new();
@@ -614,7 +614,7 @@ public sealed class SignalerTests
 				.Because("the timeout is validated before the wait starts, also when the signals were already received");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WaitAsync_ShouldCompleteAsSoonAsEnoughSignalsWereRecorded()
 		{
 			Signaler<int> signaler = new();
@@ -631,7 +631,7 @@ public sealed class SignalerTests
 				.Because("the signal before the wait counts as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WaitAsync_ShouldReturnAtTheCancellationWithoutThrowing()
 		{
 			Signaler<int> signaler = new();
@@ -646,7 +646,7 @@ public sealed class SignalerTests
 				.Because("the signals received until the cancellation are returned");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WaitAsync_WithPredicate_ShouldOnlyCountMatchingSignals()
 		{
 			Signaler<int> signaler = new();
@@ -663,7 +663,7 @@ public sealed class SignalerTests
 			await That(result.IsSuccess).IsTrue();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WaitAsync_WithPredicate_WhenThePredicateThrowsWhileSignaling_ShouldThrowItWithoutWaiting()
 		{
 			Signaler<int> signaler = new();
@@ -686,9 +686,9 @@ public sealed class SignalerTests
 				.Because("the exception ends the wait instead of letting it run into the timeout");
 		}
 
-		[Theory]
-		[InlineData(2)]
-		[InlineData(3)]
+		[Test]
+		[Arguments(2)]
+		[Arguments(3)]
 		public async Task Wait_EnoughSignals_ShouldSucceed(int amount)
 		{
 			Signaler<int> signaler = new();
@@ -703,7 +703,7 @@ public sealed class SignalerTests
 			await That(result.Parameters).IsEqualTo([4, 5, 6,]).InAnyOrder();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_InfiniteTimeout_ShouldWaitForTheSignal()
 		{
 			Signaler<int> signaler = new();
@@ -718,9 +718,9 @@ public sealed class SignalerTests
 			await That(result.IsSuccess).IsTrue();
 		}
 
-		[Theory]
-		[InlineData(false)]
-		[InlineData(true)]
+		[Test]
+		[Arguments(false)]
+		[Arguments(true)]
 		public async Task Wait_NegativeTimeout_ShouldThrowArgumentOutOfRangeException(bool isAlreadySignaled)
 		{
 			Signaler<int> signaler = new();
@@ -746,7 +746,7 @@ public sealed class SignalerTests
 				.Because("the timeout is validated before the wait starts, also when the signals were already received");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_ShouldCatchOperationCanceledException()
 		{
 			Signaler<int> signaler = new();
@@ -769,7 +769,7 @@ public sealed class SignalerTests
 			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_ShouldReturnAsSoonAsEnoughSignalsWereRecorded()
 		{
 			Signaler<int> signaler = new();
@@ -791,7 +791,7 @@ public sealed class SignalerTests
 			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_ShouldUseTimeout()
 		{
 			Signaler<int> signaler = new();
@@ -809,7 +809,7 @@ public sealed class SignalerTests
 				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_Single_AfterATimedOutWait_ShouldSucceedWithTheNewSignal()
 		{
 			Signaler<int> signaler = new();
@@ -823,7 +823,7 @@ public sealed class SignalerTests
 			await That(result.Parameters).IsEqualTo([1,]);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_Single_AlreadySignaled_ShouldSucceed()
 		{
 			Signaler<int> signaler = new();
@@ -838,7 +838,7 @@ public sealed class SignalerTests
 			await That(result.Parameters).IsEqualTo([4, 5, 6,]).InAnyOrder();
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_Single_ShouldCatchOperationCanceledException()
 		{
 			Signaler<int> signaler = new();
@@ -855,7 +855,7 @@ public sealed class SignalerTests
 			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_Single_ShouldReturnAsSoonAsSignalWasRecorded()
 		{
 			Signaler<int> signaler = new();
@@ -888,7 +888,7 @@ public sealed class SignalerTests
 			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_Single_ShouldUseTimeout()
 		{
 			Signaler<int> signaler = new();
@@ -904,7 +904,7 @@ public sealed class SignalerTests
 				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_Single_WhenTimeoutExceedsTheTimerRange_ShouldWaitForTheSignal()
 		{
 			Signaler<int> signaler = new();
@@ -923,7 +923,7 @@ public sealed class SignalerTests
 			await That(result.Parameters).IsEqualTo([1,]);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_WhenTimeoutExceedsTheTimerRange_ShouldWaitForTheSignals()
 		{
 			Signaler<int> signaler = new();
@@ -943,7 +943,7 @@ public sealed class SignalerTests
 			await That(result.Parameters).IsEqualTo([1, 2,]);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_WithPredicate_ShouldCatchOperationCanceledException()
 		{
 			Signaler<int> signaler = new();
@@ -966,7 +966,7 @@ public sealed class SignalerTests
 			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_WithPredicate_ShouldReturnAsSoonAsEnoughSignalsWereRecorded()
 		{
 			Signaler<int> signaler = new();
@@ -988,7 +988,7 @@ public sealed class SignalerTests
 			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_WithPredicate_Single_ShouldCatchOperationCanceledException()
 		{
 			Signaler<int> signaler = new();
@@ -1007,7 +1007,7 @@ public sealed class SignalerTests
 			await That(sw.Elapsed).IsLessThan(timeout);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_WithPredicate_Single_ShouldReturnAsSoonAsSignalWasRecorded()
 		{
 			Signaler<int> signaler = new();
@@ -1041,7 +1041,7 @@ public sealed class SignalerTests
 				.And.IsGreaterThanOrEqualTo(10.Milliseconds());
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_WithPredicate_Single_WhenThePredicateSignals_ShouldCountTheNewSignal()
 		{
 			Signaler<int> signaler = new();
@@ -1062,7 +1062,7 @@ public sealed class SignalerTests
 			await That(result.Parameters).IsEqualTo([1, 2,]);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_WithPredicate_Single_WhenThePredicateThrowsWhileSignaling_ShouldThrowItWithoutWaiting()
 		{
 			Signaler<int> signaler = new();
@@ -1087,7 +1087,7 @@ public sealed class SignalerTests
 				.Because("the exception ends the wait instead of letting it run into the timeout");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_WithPredicate_WhenAnotherWaitIsPending_ShouldKeepItsOwnPredicate()
 		{
 			Signaler<int> signaler = new();
@@ -1111,7 +1111,7 @@ public sealed class SignalerTests
 			await That(pendingResult.Parameters).IsEqualTo([0, 1,]);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Wait_WithPredicate_WhenThePredicateThrowsWhileSignaling_ShouldThrowItWithoutWaiting()
 		{
 			Signaler<int> signaler = new();
@@ -1136,9 +1136,9 @@ public sealed class SignalerTests
 				.Because("the exception ends the wait instead of letting it run into the timeout");
 		}
 
-		[Theory]
-		[InlineData(0)]
-		[InlineData(-1)]
+		[Test]
+		[Arguments(0)]
+		[Arguments(-1)]
 		public async Task Wait_ZeroOrNegativeAmount_ShouldThrowArgumentOutOfRangeException(int amount)
 		{
 			Signaler<int> signaler = new();

@@ -16,7 +16,7 @@ namespace aweXpect.Core.Tests.Core.Metadata;
 public sealed class TypeMetadataRegistrationTests
 {
 #if DEBUG
-	[Fact]
+	[Test]
 	public async Task AnonymousTypeWithAGenericMemberOverAnAnonymousType_ShouldBeRegisteredByTheGenerator()
 	{
 		var items = new[] { 1, 2, }.Select(i => new
@@ -35,7 +35,7 @@ public sealed class TypeMetadataRegistrationTests
 			.Because("the generated probe has to unify with the anonymous type of the call site");
 	}
 
-	[Fact]
+	[Test]
 	public async Task GenerateMetadataAttribute_ShouldRegisterExplicitImplementations()
 	{
 		TypeMetadataRegistry.Instance.TryGet(typeof(ImplementingExplicitly),
@@ -48,7 +48,7 @@ public sealed class TypeMetadataRegistrationTests
 	}
 #endif
 
-	[Fact]
+	[Test]
 	public async Task GenerateMetadataAttribute_ShouldRegisterTheTypeBeforeTheTestsRun()
 	{
 		bool isRegistered = TypeMetadataRegistry.Instance.TryGet(typeof(RegisteredByTheGenerator),
@@ -60,7 +60,7 @@ public sealed class TypeMetadataRegistrationTests
 		await That(metadata.Properties.Keys).IsEqualTo(["Name",]);
 	}
 
-	[Fact]
+	[Test]
 	public async Task RegisteredAccessor_ShouldReadTheMember()
 	{
 		TypeMetadataRegistry.Instance.TryGet(typeof(RegisteredByTheGenerator),
@@ -78,7 +78,7 @@ public sealed class TypeMetadataRegistrationTests
 	}
 
 #if DEBUG
-	[Fact]
+	[Test]
 	public async Task RegisteredExplicitImplementation_ShouldCompareLikeReflection()
 	{
 		ImplementingExplicitly subject = new()
@@ -107,7 +107,7 @@ public sealed class TypeMetadataRegistrationTests
 		await That(registered.ToString()).Contains("Property Value differed");
 	}
 
-	[Fact]
+	[Test]
 	public async Task RegisteredHidingPropertyWithNonPublicGetter_ShouldCompareLikeReflection()
 	{
 		HidingWithNonPublicGetter subject = new()
@@ -130,7 +130,7 @@ public sealed class TypeMetadataRegistrationTests
 			.Because("the public setter makes the hiding declaration visible, and it hides the base property, which is not compared");
 	}
 
-	[Fact]
+	[Test]
 	public async Task RegisteredRefProperty_ShouldCompareLikeReflection()
 	{
 		WithRefProperty subject = new(1);
@@ -149,7 +149,7 @@ public sealed class TypeMetadataRegistrationTests
 			.Because("both paths declare a ref-returning property with the type it refers to, so ignoring that type ignores it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task RegisteredSetterOnlyOverride_ShouldCompareLikeReflection()
 	{
 		OverridingOnlyTheSetter subject = new()

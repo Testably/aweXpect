@@ -11,7 +11,7 @@ public partial class ValueFormatters
 {
 	public sealed class CollectionTests
 	{
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenCountIsKnown_ShouldNameTheNumberOfRemainingItems()
 		{
 			int[] subject = Enumerable.Range(1, 25).ToArray();
@@ -20,7 +20,7 @@ public partial class ValueFormatters
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -58,7 +58,7 @@ public partial class ValueFormatters
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenEnumerationThrows_ShouldEscapeLineBreaksInTheMessage()
 		{
 			object subject = Throwing(new InvalidOperationException("enumeration\nfailed"));
@@ -66,7 +66,7 @@ public partial class ValueFormatters
 			async Task Act()
 				=> await That(subject).IsNull();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is null,
@@ -74,7 +74,7 @@ public partial class ValueFormatters
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenEnumerationThrows_ShouldRenderAPlaceholder()
 		{
 			object subject = Throwing(new InvalidOperationException("enumeration failed"));
@@ -82,7 +82,7 @@ public partial class ValueFormatters
 			async Task Act()
 				=> await That(subject).IsNull();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is null,
@@ -90,7 +90,7 @@ public partial class ValueFormatters
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenEnumerationThrowsAfterTheFirstItem_ShouldEscapeLineBreaksInTheMessage()
 		{
 			object subject = Throwing(new InvalidOperationException("enumeration\nfailed"), 1);
@@ -98,7 +98,7 @@ public partial class ValueFormatters
 			async Task Act()
 				=> await That(subject).IsNull();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is null,
@@ -110,7 +110,7 @@ public partial class ValueFormatters
 				.Because("the placeholder must stay on the line of an item");
 		}
 
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenEnumerationThrowsAfterTheFirstItem_ShouldRenderAPlaceholderAfterTheItems()
 		{
 			object subject = Throwing(new InvalidOperationException("enumeration failed"), 1, 2);
@@ -118,7 +118,7 @@ public partial class ValueFormatters
 			async Task Act()
 				=> await That(subject).IsNull();
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is null,
@@ -131,7 +131,7 @@ public partial class ValueFormatters
 				.Because("the items that were read before the exception are listed as well");
 		}
 
-		[Fact]
+		[Test]
 		public async Task InFailureMessage_WhenLazySequenceWasFullyEnumerated_ShouldNameTheNumberOfRemainingItems()
 		{
 			IEnumerable<int> subject = Lazy(Enumerable.Range(1, 25));
@@ -140,7 +140,7 @@ public partial class ValueFormatters
 			async Task Act()
 				=> await That(subject).IsEqualTo(expected);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             is equal to collection expected in order,
@@ -178,7 +178,7 @@ public partial class ValueFormatters
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldFormatItems()
 		{
 			string expectedResult = "[\"1\", \"2\", \"3\", \"4\"]";
@@ -194,7 +194,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldLimitTo10Items()
 		{
 			string expectedResult = "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and maybe more)]";
@@ -210,7 +210,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCollectionContainsItself_ShouldDetectTheRecursion()
 		{
 			string expectedResult = "[[ *recursive* ]]";
@@ -226,10 +226,10 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Theory]
-		[InlineData(10, "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]")]
-		[InlineData(11, "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 1 more)]")]
-		[InlineData(25, "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 15 more)]")]
+		[Test]
+		[Arguments(10, "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]")]
+		[Arguments(11, "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 1 more)]")]
+		[Arguments(25, "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 15 more)]")]
 		public async Task WhenCountIsKnown_ShouldNameTheNumberOfRemainingItems(int count, string expectedResult)
 		{
 			int[] value = Enumerable.Range(1, count).ToArray();
@@ -244,7 +244,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCountIsKnown_WithLineBreaks_ShouldNameTheNumberOfRemainingItemsOnTheLastLine()
 		{
 			List<string> value = Enumerable.Range(1, 12).Select(x => x.ToString()).ToList();
@@ -268,7 +268,7 @@ public partial class ValueFormatters
 			                             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCountIsKnown_WithType_ShouldNameTheNumberOfRemainingItems()
 		{
 			int[] value = Enumerable.Range(1, 12).ToArray();
@@ -278,7 +278,7 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo("int[] [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 2 more)]");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCountIsNotKnown_ShouldNotEnumerateFurtherThanNeeded()
 		{
 			int enumeratedItems = 0;
@@ -294,7 +294,7 @@ public partial class ValueFormatters
 			await That(enumeratedItems).IsEqualTo(11);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenCountIsNotKnown_WithLineBreaks_ShouldSayOnTheLastLineThatMoreItemsMayFollow()
 		{
 			IEnumerable<int> value = Lazy(Enumerable.Range(1, 12));
@@ -318,7 +318,7 @@ public partial class ValueFormatters
 			                             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenGenericCollection_ShouldNameTheNumberOfRemainingItems()
 		{
 			HashSet<int> value = [..Enumerable.Range(1, 12),];
@@ -328,7 +328,7 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 2 more)]");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNested_ShouldNameTheNumberOfRemainingItemsPerCollection()
 		{
 			int[][] value = Enumerable.Range(1, 12).Select(x => Enumerable.Range(x, 11).ToArray()).ToArray();
@@ -339,7 +339,7 @@ public partial class ValueFormatters
 				.And.EndsWith("[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, (… and 1 more)], (… and 2 more)]");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNestedDeeperThanTheMaximumDepth_ShouldLeaveOutTheItemsOfTheDeepestCollection()
 		{
 			List<object> value = [];
@@ -363,7 +363,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			IEnumerable<int>? value = null;
@@ -378,7 +378,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenReadOnlyCollection_ShouldNameTheNumberOfRemainingItems()
 		{
 			IEnumerable<int> value = new ReadOnlyCollection(Enumerable.Range(1, 13).ToArray());
@@ -388,7 +388,7 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 3 more)]");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenSameInstanceIsContainedTwice_ShouldFormatBoth()
 		{
 			string expectedResult = "[[1, 2], [1, 2]]";
@@ -406,7 +406,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithType_Array_ShouldIncludeTypeInformation()
 		{
 			string expectedResult = "int[] [1, 2, 3, 4]";
@@ -422,7 +422,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithType_EnumerableShouldIncludeTypeInformation()
 		{
 			string expectedResult = "List<int> [1, 2, 3, 4, 5]";
@@ -438,7 +438,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithIndentation_ShouldIndentTheItemsAndTheClosingBracket()
 		{
 			int[] value = [1, 2,];
@@ -458,7 +458,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithIndentation_WhenItemIsAnObject_ShouldIndentItsMembersOnce()
 		{
 			Item[] value = [new() { Value = 1, },];

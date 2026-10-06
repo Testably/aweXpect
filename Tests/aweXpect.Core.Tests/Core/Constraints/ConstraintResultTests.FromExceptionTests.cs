@@ -8,7 +8,7 @@ public partial class ConstraintResultTests
 {
 	public sealed class FromExceptionTests
 	{
-		[Fact]
+		[Test]
 		public async Task AppendExpectation_ShouldUseInnerExpectation()
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
@@ -21,7 +21,7 @@ public partial class ConstraintResultTests
 			await That(sb.ToString()).IsEqualTo("foo");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AppendResult_ExceededTimeout_ShouldNameTheSubject()
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
@@ -35,7 +35,7 @@ public partial class ConstraintResultTests
 			await That(sb.ToString()).IsEqualTo("the subject did not finish within 0:02");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AppendResult_Exception_ShouldAppendExpectedValue()
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
@@ -48,7 +48,7 @@ public partial class ConstraintResultTests
 			await That(sb.ToString()).IsEqualTo($"it did throw an Exception:{Environment.NewLine}  bar");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AppendResult_Exception_ShouldNameTheSubject()
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
@@ -61,7 +61,7 @@ public partial class ConstraintResultTests
 			await That(sb.ToString()).IsEqualTo($"the subject did throw an Exception:{Environment.NewLine}  bar");
 		}
 
-		[Fact]
+		[Test]
 		public async Task AppendResult_SpecificException_ShouldAppendExpectedValue()
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
@@ -74,7 +74,7 @@ public partial class ConstraintResultTests
 			await That(sb.ToString()).IsEqualTo($"it did throw an ArgumentException:{Environment.NewLine}  bar");
 		}
 
-		[Fact]
+		[Test]
 		public async Task FailureCause_ShouldBeTheException()
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
@@ -84,10 +84,10 @@ public partial class ConstraintResultTests
 			await That(sut.FailureCause).IsSameAs(exception);
 		}
 
-		[Theory]
-		[InlineData(Outcome.Failure, Outcome.Success)]
-		[InlineData(Outcome.Success, Outcome.Failure)]
-		[InlineData(Outcome.Undecided, Outcome.Undecided)]
+		[Test]
+		[Arguments(Outcome.Failure, Outcome.Success)]
+		[Arguments(Outcome.Success, Outcome.Failure)]
+		[Arguments(Outcome.Undecided, Outcome.Undecided)]
 		public async Task Negate_ShouldNegateInnerOutcome(Outcome innerOutcome, Outcome expectedAfterNegation)
 		{
 			DummyConstraintResult inner = new(innerOutcome, "foo");
@@ -100,13 +100,13 @@ public partial class ConstraintResultTests
 			await That(inner.Outcome).IsEqualTo(expectedAfterNegation);
 		}
 
-		[Theory]
-		[InlineData(Outcome.Failure, false)]
-		[InlineData(Outcome.Failure, true)]
-		[InlineData(Outcome.Success, false)]
-		[InlineData(Outcome.Success, true)]
-		[InlineData(Outcome.Undecided, false)]
-		[InlineData(Outcome.Undecided, true)]
+		[Test]
+		[Arguments(Outcome.Failure, false)]
+		[Arguments(Outcome.Failure, true)]
+		[Arguments(Outcome.Success, false)]
+		[Arguments(Outcome.Success, true)]
+		[Arguments(Outcome.Undecided, false)]
+		[Arguments(Outcome.Undecided, true)]
 		public async Task Negate_ShouldReturnTheFailure(Outcome innerOutcome, bool invert)
 		{
 			DummyConstraintResult inner = new(innerOutcome, "foo", "baz");
@@ -122,7 +122,7 @@ public partial class ConstraintResultTests
 			await That(negated.GetResultText()).IsEqualTo($"it did throw an Exception:{Environment.NewLine}  bar");
 		}
 
-		[Fact]
+		[Test]
 		public async Task Outcome_ShouldBeFailureBothWays()
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");
@@ -132,7 +132,7 @@ public partial class ConstraintResultTests
 			await That(sut.Outcome).IsEqualTo(Outcome.FailureBothWays);
 		}
 
-		[Fact]
+		[Test]
 		public async Task SetOutcome_ShouldBeForwardedToInner()
 		{
 			DummyConstraintResult inner = new(Outcome.Success, "foo");

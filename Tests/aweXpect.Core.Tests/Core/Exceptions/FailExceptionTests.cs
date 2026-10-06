@@ -2,8 +2,8 @@
 
 public sealed class FailExceptionTests
 {
-	[Theory]
-	[AutoData]
+	[Test]
+	[AutoArguments]
 	public async Task InnerException_ShouldBeSet(string message)
 	{
 		Exception innerException = new InvalidOperationException("my inner exception");
@@ -14,8 +14,8 @@ public sealed class FailExceptionTests
 		await That(subject.InnerException).IsSameAs(innerException);
 	}
 
-	[Theory]
-	[AutoData]
+	[Test]
+	[AutoArguments]
 	public async Task Message_ShouldBeSet(string message)
 	{
 		FailException subject = new(message);

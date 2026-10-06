@@ -8,7 +8,7 @@ namespace aweXpect.Core.Tests.Core;
 
 public sealed class SpanWrapperTests
 {
-	[Fact]
+	[Test]
 	public void Add_ShouldThrowNotSupportedException()
 	{
 		SpanWrapper<char> sut = new("foo".AsSpan());
@@ -20,7 +20,7 @@ public sealed class SpanWrapperTests
 			.WithMessage("You may not change a SpanWrapper."));
 	}
 
-	[Fact]
+	[Test]
 	public void Clear_ShouldThrowNotSupportedException()
 	{
 		SpanWrapper<char> sut = new("foo".AsSpan());
@@ -32,9 +32,9 @@ public sealed class SpanWrapperTests
 			.WithMessage("You may not change a SpanWrapper."));
 	}
 
-	[Theory]
-	[InlineData('o', true)]
-	[InlineData('x', false)]
+	[Test]
+	[Arguments('o', true)]
+	[Arguments('x', false)]
 	public void Contains_ShouldReturnExpectedResult(char character, bool expectedResult)
 	{
 		SpanWrapper<char> sut = new("foo".AsSpan());
@@ -44,7 +44,7 @@ public sealed class SpanWrapperTests
 		Synchronously.Verify(That(result).IsEqualTo(expectedResult));
 	}
 
-	[Fact]
+	[Test]
 	public void CopyTo_ShouldCopyValuesToArray()
 	{
 		char[] buffer = "some-prefilled-buffer".ToCharArray();
@@ -55,9 +55,9 @@ public sealed class SpanWrapperTests
 		Synchronously.Verify(That(new string(buffer)).IsEqualTo("sfoo-prefilled-buffer"));
 	}
 
-	[Theory]
-	[InlineData("foo", 3)]
-	[InlineData("foobar", 6)]
+	[Test]
+	[Arguments("foo", 3)]
+	[Arguments("foobar", 6)]
 	public void Count_ShouldReturnExpectedLength(string subject, int expectedLength)
 	{
 		SpanWrapper<char> sut = new(subject.AsSpan());
@@ -65,7 +65,7 @@ public sealed class SpanWrapperTests
 		Synchronously.Verify(That(sut.Count).IsEqualTo(expectedLength));
 	}
 
-	[Fact]
+	[Test]
 	public void IsReadOnly_ShouldBeTrue()
 	{
 		Span<int> span = [1, 2, 3,];
@@ -74,7 +74,7 @@ public sealed class SpanWrapperTests
 		Synchronously.Verify(That(sut.IsReadOnly).IsTrue());
 	}
 
-	[Fact]
+	[Test]
 	public void Remove_ShouldThrowNotSupportedException()
 	{
 		SpanWrapper<char> sut = new("foo".AsSpan());

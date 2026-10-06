@@ -6,7 +6,7 @@ namespace aweXpect.Core.Tests.Core.TimeSystem;
 
 public sealed class RealTimeSystemTests
 {
-	[Fact]
+	[Test]
 	public async Task Delay_ShouldUseRealValues()
 	{
 		ITimeSystem timeSystem = RealTimeSystem.Instance;
@@ -17,7 +17,7 @@ public sealed class RealTimeSystemTests
 		await That(timeSystem.GetElapsedTime(timestamp)).IsGreaterThan(10.Milliseconds());
 	}
 
-	[Fact]
+	[Test]
 	public async Task Delay_WhenCanceled_ShouldBeCanceled()
 	{
 		ITimeSystem timeSystem = RealTimeSystem.Instance;
@@ -29,7 +29,7 @@ public sealed class RealTimeSystemTests
 		await That(Act).Throws<OperationCanceledException>();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Stopwatch_New_ShouldReturnDifferentStopwatches()
 	{
 		ITimeSystem timeSystem = RealTimeSystem.Instance;
@@ -42,7 +42,7 @@ public sealed class RealTimeSystemTests
 		await That(stopwatch2.IsRunning).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Stopwatch_ShouldUseRealValues()
 	{
 		ITimeSystem timeSystem = RealTimeSystem.Instance;

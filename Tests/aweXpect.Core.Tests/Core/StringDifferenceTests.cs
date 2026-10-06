@@ -6,12 +6,12 @@ namespace aweXpect.Core.Tests.Core;
 
 public class StringDifferenceTests
 {
-	[Theory]
-	[InlineData(StringDifference.MatchType.Wildcard, 0)]
-	[InlineData(StringDifference.MatchType.Regex, 0)]
-	[InlineData(StringDifference.MatchType.Prefix, -1)]
-	[InlineData(StringDifference.MatchType.Suffix, -1)]
-	[InlineData(StringDifference.MatchType.Equality, -1)]
+	[Test]
+	[Arguments(StringDifference.MatchType.Wildcard, 0)]
+	[Arguments(StringDifference.MatchType.Regex, 0)]
+	[Arguments(StringDifference.MatchType.Prefix, -1)]
+	[Arguments(StringDifference.MatchType.Suffix, -1)]
+	[Arguments(StringDifference.MatchType.Equality, -1)]
 	public async Task ShouldCacheIndexOfFirstMismatch(StringDifference.MatchType matchType, int expectedIndex)
 	{
 		const string actual = "Foo";
@@ -26,9 +26,9 @@ public class StringDifferenceTests
 
 	public sealed class WildcardOrRegexTests
 	{
-		[Theory]
-		[InlineData(StringDifference.MatchType.Wildcard, "wildcard pattern")]
-		[InlineData(StringDifference.MatchType.Regex, "regex pattern")]
+		[Test]
+		[Arguments(StringDifference.MatchType.Wildcard, "wildcard pattern")]
+		[Arguments(StringDifference.MatchType.Regex, "regex pattern")]
 		public async Task WhenActualValueIsNull_ShouldUsePatternName(StringDifference.MatchType matchType,
 			string patternName)
 		{
@@ -48,9 +48,9 @@ public class StringDifferenceTests
 				 """);
 		}
 
-		[Theory]
-		[InlineData(StringDifference.MatchType.Wildcard, "wildcard pattern")]
-		[InlineData(StringDifference.MatchType.Regex, "regex pattern")]
+		[Test]
+		[Arguments(StringDifference.MatchType.Wildcard, "wildcard pattern")]
+		[Arguments(StringDifference.MatchType.Regex, "regex pattern")]
 		public async Task WhenExpectedValueIsNull_ShouldUsePatternName(StringDifference.MatchType matchType,
 			string patternName)
 		{
@@ -70,9 +70,9 @@ public class StringDifferenceTests
 				 """);
 		}
 
-		[Theory]
-		[InlineData(StringDifference.MatchType.Wildcard, "wildcard pattern")]
-		[InlineData(StringDifference.MatchType.Regex, "regex pattern")]
+		[Test]
+		[Arguments(StringDifference.MatchType.Wildcard, "wildcard pattern")]
+		[Arguments(StringDifference.MatchType.Regex, "regex pattern")]
 		public async Task WhenMaximumStringLengthIsIncreased_ShouldShowLongerValues(
 			StringDifference.MatchType matchType, string patternName)
 		{
@@ -101,7 +101,7 @@ public class StringDifferenceTests
 
 	public sealed class EqualityTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenActualValueIsLongerThanExpected_ShouldDifferAtIndexActualLength()
 		{
 			const string actual = "A text that is longer";
@@ -120,7 +120,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenActualValueIsNull_ShouldDifferAtIndex0()
 		{
 			const string? actual = null;
@@ -139,7 +139,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenActualValueIsShorterThanExpected_ShouldDifferAtIndexExpectedLength()
 		{
 			const string actual = "A text";
@@ -158,7 +158,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenExpectedValueIsNull_ShouldDifferAtIndex0()
 		{
 			const string actual = "This is a text";
@@ -177,7 +177,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenFirstMismatchIsBelow11Characters_ShouldIncludeCompleteTextBeforeFirstMismatch()
 		{
 			const string actual = "This is a long text";
@@ -196,7 +196,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenIgnoringTrailingColumns_ShouldOnlyShiftTheFirstComparedLine()
 		{
 			StringDifference firstLine = new("abc\nd", "aXc\nd", null, new StringDifferenceSettings(0, 2));
@@ -220,7 +220,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenLongTextDiffers_ShouldCalculateIndexOfFirstMismatch()
 		{
 			const string actual = "this is a long text that differs in between two words";
@@ -239,7 +239,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenMinimumNumberOfCharactersAfterStringDifferenceIsSmall_ShouldStillShowTheMismatch()
 		{
 			StringDifference sut = new("abcdefghijklmnopqrstuvwxyzX", "abcdefghijklmnopqrstuvwxyzY");
@@ -261,7 +261,7 @@ public class StringDifferenceTests
 				.Because("the arrows must point at a visible mismatching character");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenMismatchIsFarFromTheStart_ShouldShowTheMinimumNumberOfCharactersAfterTheMismatch()
 		{
 			StringDifference sut = new(
@@ -281,7 +281,7 @@ public class StringDifferenceTests
 				.Because("at least 45 characters must follow the mismatch by default");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNoLeadingWordBoundaryExistsBetween5And15Characters_ShouldFallbackTo10Characters()
 		{
 			const string actual =
@@ -302,7 +302,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNoTrailingWordBoundaryExistsBetween45And60CharactersAfterTheMismatch_ShouldFallbackTo50Characters()
 		{
 			const string actual = "This text contains lot of words and is used for testing the WordBoundaryAlgorithm";
@@ -322,7 +322,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenStringContainsEscapedCharacters_ShouldPositionArrowsCorrectly()
 		{
 			const string actual = "a\\b\"c\u00A0dX";
@@ -341,7 +341,7 @@ public class StringDifferenceTests
 				""").Because("the arrows must point at the mismatch in the escaped text");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenStringContainsWhitespace_ShouldPositionArrowsCorrectly()
 		{
 			const string actual = "foo\r\tbar\nBAZ";
@@ -360,7 +360,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenStringsDifferInCaseOnly_ShouldDefaultToCaseSensitiveComparison()
 		{
 			const string actual = "this IS a text that only differs in casing";
@@ -379,7 +379,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenStringsDifferInCaseOnly_WhenUsingAComparer_ShouldCompareSubstringsWithComparer()
 		{
 			const string actual = "this IS a text that only differs in casing";
@@ -392,11 +392,11 @@ public class StringDifferenceTests
 			await That(sut.ToString()).IsEqualTo("differs");
 		}
 
-		[Theory]
-		[InlineData("foo", "bar", 0)]
-		[InlineData("foo", "false", 1)]
-		[InlineData("bar", "ban", 2)]
-		[InlineData("foobar", "foo-", 3)]
+		[Test]
+		[Arguments("foo", "bar", 0)]
+		[Arguments("foo", "false", 1)]
+		[Arguments("bar", "ban", 2)]
+		[Arguments("foobar", "foo-", 3)]
 		public async Task WhenTextDiffers_ShouldCalculateIndexOfFirstMismatch(
 			string actual, string expected, int expectedIndex)
 		{
@@ -405,7 +405,7 @@ public class StringDifferenceTests
 			await That(sut.IndexOfFirstMismatch(StringDifference.MatchType.Equality)).IsEqualTo(expectedIndex);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTextHasLineFeedsOnly_ShouldIncludeLineAndColumnNumbers()
 		{
 			StringDifference sut = new(
@@ -422,7 +422,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTextHasMultipleLines_ShouldIncludeLineAndColumnNumbers()
 		{
 			int expectedIndex = 100 + (3 * Environment.NewLine.Length);
@@ -459,7 +459,7 @@ public class StringDifferenceTests
 				 """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTextIsSame_ShouldSetIndexOfFirstMismatchToNegativeOne()
 		{
 			const string actual = "this is a text that does not differ";
@@ -470,7 +470,7 @@ public class StringDifferenceTests
 			await That(sut.ToString()).IsEqualTo("differs");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenUsingACultureAwareComparer_ShouldCompareWithTheCulture()
 		{
 			StringDifference sut = new(
@@ -488,7 +488,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenUsingACustomComparer_ShouldCompareWithTheComparer()
 		{
 			StringDifference sut = new(
@@ -506,7 +506,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenUsingTheCurrentCultureComparer_ShouldCompareWithTheCurrentCulture()
 		{
 			StringDifference sut = new(
@@ -524,7 +524,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenWindowContainsADecomposedCharacter_ShouldEscapeTheCombiningMark()
 		{
 			StringDifference sut = new(
@@ -541,7 +541,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenWindowEndsInsideLineBreak_ShouldIncludeTheWholeLineBreak()
 		{
 			StringDifference sut = new(
@@ -559,7 +559,7 @@ public class StringDifferenceTests
 				.Because("the window must not end between the \\r and the \\n of a line break");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenWindowEndsInsideSurrogatePair_ShouldIncludeTheWholePair()
 		{
 			StringDifference sut = new(
@@ -577,7 +577,7 @@ public class StringDifferenceTests
 				.Because("the window must not end between the two halves of a surrogate pair");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenWindowStartsInsideLineBreak_ShouldIncludeTheWholeLineBreak()
 		{
 			StringDifference sut = new(
@@ -595,7 +595,7 @@ public class StringDifferenceTests
 				.Because("the window must not start between the \\r and the \\n of a line break");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenWindowStartsInsideSurrogatePair_ShouldIncludeTheWholePair()
 		{
 			StringDifference sut = new(
@@ -616,7 +616,7 @@ public class StringDifferenceTests
 
 	public sealed class SuffixTests
 	{
-		[Fact]
+		[Test]
 		public async Task WhenActualValueIsNull_ShouldDifferAtIndex0()
 		{
 			const string? actual = null;
@@ -635,7 +635,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenActualValueIsShorterThanExpected_ShouldDifferAtIndexMinusOne()
 		{
 			const string actual = "that is longer";
@@ -651,7 +651,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenActualValueIsShorterThanExpected_ShouldEscapeAndTruncateTheMissingPrefix()
 		{
 			const string actual = "tail";
@@ -670,7 +670,7 @@ public class StringDifferenceTests
 			}
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenExpectedValueIsNull_ShouldDifferAtIndex0()
 		{
 			const string actual = "This is a text";
@@ -689,7 +689,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenFirstMismatchIsBelow14Characters_ShouldIncludeCompleteTextBeforeFirstMismatch()
 		{
 			const string actual = "This is a long text";
@@ -708,7 +708,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenLongTextDiffers_ShouldCalculateIndexOfFirstMismatch()
 		{
 			const string actual = "this is a long text that differs in between two words";
@@ -727,7 +727,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenMinimumNumberOfCharactersAfterStringDifferenceIsSmall_ShouldShowTheDifference()
 		{
 			const string actual = "abcdefghijkX";
@@ -750,7 +750,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNoLeadingWordBoundaryExistsBetween45And60Characters_ShouldFallbackTo50Characters()
 		{
 			const string actual = "This text contains lot of words and is used for testing the WordBoundaryAlgorithm";
@@ -770,7 +770,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNoTrailingWordBoundaryExistsBetween5And15Characters_ShouldFallbackTo14Characters()
 		{
 			const string actual =
@@ -791,7 +791,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenStringContainsEscapedCharacters_ShouldPositionArrowsCorrectly()
 		{
 			const string actual = "a\\b\"c\u00A0dXe";
@@ -810,7 +810,7 @@ public class StringDifferenceTests
 				""").Because("the arrows must point at the mismatch in the escaped text");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenStringContainsWhitespace_ShouldPositionArrowsCorrectly()
 		{
 			const string actual = "foo\rbAr\nbaz";
@@ -829,7 +829,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenStringsDifferInCaseOnly_ShouldDefaultToCaseSensitiveComparison()
 		{
 			const string actual = "this IS a text that only differs in casing";
@@ -848,7 +848,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenStringsDifferInCaseOnly_WhenUsingAComparer_ShouldCompareSubstringsWithComparer()
 		{
 			const string actual = "this IS a text that only differs in casing";
@@ -861,11 +861,11 @@ public class StringDifferenceTests
 			await That(sut.ToString()).IsEqualTo("differs");
 		}
 
-		[Theory]
-		[InlineData("foo", "bar", 2)]
-		[InlineData("foo", "bro", 1)]
-		[InlineData("bar", "var", 0)]
-		[InlineData("foobar", "bazbar", 2)]
+		[Test]
+		[Arguments("foo", "bar", 2)]
+		[Arguments("foo", "bro", 1)]
+		[Arguments("bar", "var", 0)]
+		[Arguments("foobar", "bazbar", 2)]
 		public async Task WhenTextDiffers_ShouldCalculateIndexOfFirstMismatch(
 			string actual, string expected, int expectedIndex)
 		{
@@ -874,7 +874,7 @@ public class StringDifferenceTests
 			await That(sut.IndexOfFirstMismatch(StringDifference.MatchType.Suffix)).IsEqualTo(expectedIndex);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTextHasMultipleLines_ShouldIncludeLineAndColumnNumbers()
 		{
 			int expectedIndex = 106 + (3 * Environment.NewLine.Length);
@@ -912,7 +912,7 @@ public class StringDifferenceTests
 				 """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenTextIsSame_ShouldSetIndexOfFirstMismatchToNegativeOne()
 		{
 			const string actual = "this is a text that does not differ";
@@ -923,7 +923,7 @@ public class StringDifferenceTests
 			await That(sut.ToString()).IsEqualTo("differs");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenUsingACultureAwareComparer_ShouldCompareWithTheCulture()
 		{
 			StringDifference sut = new(
@@ -942,7 +942,7 @@ public class StringDifferenceTests
 				""");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenWindowEndsInsideLineBreak_ShouldIncludeTheWholeLineBreak()
 		{
 			StringDifference sut = new("abXccccccccccccc\r\ndd", "abYccccccccccccc\r\ndd", null, Settings);
@@ -958,7 +958,7 @@ public class StringDifferenceTests
 				.Because("the window must not end between the \\r and the \\n of a line break");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenWindowEndsInsideSurrogatePair_ShouldIncludeTheWholePair()
 		{
 			StringDifference sut = new("abXccccccccccccc😀dd", "abYccccccccccccc😀dd", null, Settings);
@@ -974,7 +974,7 @@ public class StringDifferenceTests
 				.Because("the window must not end between the two halves of a surrogate pair");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenWindowStartsInsideLineBreak_ShouldIncludeTheWholeLineBreak()
 		{
 			StringDifference sut = new("x\r\naaaaaaaaaXtail", "x\r\naaaaaaaaaYtail", null, Settings);
@@ -996,7 +996,7 @@ public class StringDifferenceTests
 				.Because("the window must not start between the \\r and the \\n of a line break");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenWindowStartsInsideSurrogatePair_ShouldIncludeTheWholePair()
 		{
 			StringDifference sut = new("x😀aaaaaaaaaXtail", "x😀aaaaaaaaaYtail", null, Settings);

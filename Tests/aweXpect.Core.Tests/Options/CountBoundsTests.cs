@@ -22,9 +22,9 @@ public class CountBoundsTests
 			{ "MoreThan", 2 },
 		};
 
-	[Theory]
-	[InlineData(1, "exactly one")]
-	[InlineData(2, "exactly 2")]
+	[Test]
+	[Arguments(1, "exactly one")]
+	[Arguments(2, "exactly 2")]
 	public async Task AppendItems_Exactly_ShouldUseNumeralsExceptForOne(int count, string expected)
 	{
 		CountBounds sut = CountBounds.Exactly(count);
@@ -35,11 +35,11 @@ public class CountBoundsTests
 		await That(sb.ToString()).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[InlineData(0, "never")]
-	[InlineData(1, "exactly once")]
-	[InlineData(2, "exactly twice")]
-	[InlineData(3, "exactly 3 times")]
+	[Test]
+	[Arguments(0, "never")]
+	[Arguments(1, "exactly once")]
+	[Arguments(2, "exactly twice")]
+	[Arguments(3, "exactly 3 times")]
 	public async Task AppendTimes_Exactly_ShouldUseWordsForOnceAndTwice(int count, string expected)
 	{
 		CountBounds sut = CountBounds.Exactly(count);
@@ -50,8 +50,8 @@ public class CountBoundsTests
 		await That(sb.ToString()).IsEqualTo(expected);
 	}
 
-	[Theory]
-	[MemberData(nameof(Bounds))]
+	[Test]
+	[MethodDataSource(nameof(Bounds))]
 	public async Task Complement_ShouldBeMetExactlyWhenTheBoundsAreNot(string method, int value)
 	{
 		CountBounds sut = Create(method, value);
@@ -67,8 +67,8 @@ public class CountBoundsTests
 		}
 	}
 
-	[Theory]
-	[MemberData(nameof(Bounds))]
+	[Test]
+	[MethodDataSource(nameof(Bounds))]
 	public async Task EnumerableQuantifier_ShouldDecideLikeQuantifier(string method, int value)
 	{
 		Quantifier quantifier = new();
@@ -101,9 +101,9 @@ public class CountBoundsTests
 		}
 	}
 
-	[Theory]
-	[InlineData("LessThan", 0, "maximum", "The maximum must be greater than zero.")]
-	[InlineData("MoreThan", int.MaxValue, "minimum", "The minimum must be less than 2147483647.")]
+	[Test]
+	[Arguments("LessThan", 0, "maximum", "The maximum must be greater than zero.")]
+	[Arguments("MoreThan", int.MaxValue, "minimum", "The minimum must be less than 2147483647.")]
 	public async Task EnumerableQuantifier_WhenNoCountCanMeetTheBounds_ShouldThrowArgumentOutOfRangeException(
 		string method, int value, string paramName, string expectedMessage)
 	{

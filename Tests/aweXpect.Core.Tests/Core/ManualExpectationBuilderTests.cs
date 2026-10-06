@@ -11,7 +11,7 @@ namespace aweXpect.Core.Tests.Core;
 
 public class ManualExpectationBuilderTests
 {
-	[Fact]
+	[Test]
 	public async Task AddAsyncContextValueConstraint_ShouldAllowGettingExpectationBuilder()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -28,7 +28,7 @@ public class ManualExpectationBuilderTests
 		await That(expectationBuilder).IsSameAs(sut);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddAsyncValueConstraint_ShouldAllowGettingExpectationBuilder()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -45,7 +45,7 @@ public class ManualExpectationBuilderTests
 		await That(expectationBuilder).IsSameAs(sut);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddContextValueConstraint_ShouldAllowGettingExpectationBuilder()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -61,7 +61,7 @@ public class ManualExpectationBuilderTests
 		await That(expectationBuilder).IsSameAs(sut);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AddValueConstraint_ShouldAllowGettingExpectationBuilder()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -77,7 +77,7 @@ public class ManualExpectationBuilderTests
 		await That(expectationBuilder).IsSameAs(sut);
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendExpectation_ShouldNotAppendReasons()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -91,7 +91,7 @@ public class ManualExpectationBuilderTests
 			.Because("the reasons follow the whole expectation that the expectations are nested in");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendReasons_ShouldAppendAllReasons()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -105,7 +105,7 @@ public class ManualExpectationBuilderTests
 		await That(sb.ToString()).IsEqualTo(", because of a, because of b");
 	}
 
-	[Fact]
+	[Test]
 	public async Task AppendReasons_ShouldOmitReasonsThatMustBeAwaited()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -119,7 +119,7 @@ public class ManualExpectationBuilderTests
 			.Because("an asynchronous reason is only included once it is resolved");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_BothNull_ShouldBeTrue()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -129,7 +129,7 @@ public class ManualExpectationBuilderTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_FirstNull_ShouldBeFalse()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -139,7 +139,7 @@ public class ManualExpectationBuilderTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_ObjectNull_ShouldBeFalse()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -149,7 +149,7 @@ public class ManualExpectationBuilderTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_SecondNull_ShouldBeFalse()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -159,7 +159,7 @@ public class ManualExpectationBuilderTests
 		await That(result).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task Equals_WithSelf_ShouldBeTrue()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -169,7 +169,7 @@ public class ManualExpectationBuilderTests
 		await That(result).IsTrue();
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetHashCode_DifferentConstraint_ShouldNotBeEqual()
 	{
 		ManualExpectationBuilder<int> sut1 = new();
@@ -181,7 +181,7 @@ public class ManualExpectationBuilderTests
 		await That(sut1.GetHashCode()).IsNotEqualTo(sut2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetHashCode_SameConstraint_ShouldBeEqual()
 	{
 		ManualExpectationBuilder<int> sut1 = new();
@@ -192,7 +192,7 @@ public class ManualExpectationBuilderTests
 		await That(sut1.GetHashCode()).IsEqualTo(sut2.GetHashCode());
 	}
 
-	[Fact]
+	[Test]
 	public async Task GetHashCode_WithParameter_ShouldUseHashCodeFromParameter()
 	{
 		ManualExpectationBuilder<int> sut1 = new();
@@ -204,14 +204,14 @@ public class ManualExpectationBuilderTests
 		await That(sut1.GetHashCode()).IsEqualTo(sut2.GetHashCode(sut1));
 	}
 
-	[Theory]
-	[InlineData("is equal to 1", "were")]
-	[InlineData("are equal to 1", "were")]
-	[InlineData("was equal to 1", "were")]
-	[InlineData("were equal to 1", "were")]
-	[InlineData("starts with \"a\"", "did")]
-	[InlineData("has length 3", "did")]
-	[InlineData("", "were")]
+	[Test]
+	[Arguments("is equal to 1", "were")]
+	[Arguments("are equal to 1", "were")]
+	[Arguments("was equal to 1", "were")]
+	[Arguments("were equal to 1", "were")]
+	[Arguments("starts with \"a\"", "did")]
+	[Arguments("has length 3", "did")]
+	[Arguments("", "were")]
 	public async Task GetResultVerb_ShouldUseDoSupportForEveryVerbButBe(string expectationText, string expected)
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -221,7 +221,7 @@ public class ManualExpectationBuilderTests
 			.Because("the result refers back to the expectation with a pro-verb that has to match its head verb");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMet_ShouldThrowNotSupportedException()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -234,7 +234,7 @@ public class ManualExpectationBuilderTests
 			.WithMessage("Use IsMetBy for ManualExpectationBuilder.");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_FailingConstraint_ShouldReturnFailure()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -245,7 +245,7 @@ public class ManualExpectationBuilderTests
 		await That(result.Outcome).IsEqualTo(Outcome.Failure);
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_SucceedingConstraint_ShouldReturnSuccess()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -256,7 +256,7 @@ public class ManualExpectationBuilderTests
 		await That(result.Outcome).IsEqualTo(Outcome.Success);
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenConstraintFails_ShouldNotApplyReasonButResolveIt()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -274,7 +274,7 @@ public class ManualExpectationBuilderTests
 		await That(reasons.ToString()).IsEqualTo(", because of a");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenConstraintSucceeds_ShouldResolveReasonOnlyWhenTheEvaluationFails()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -295,7 +295,7 @@ public class ManualExpectationBuilderTests
 			.Because("an outer negation can still fail the evaluation, whose failure message then shows the reason");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WhenReasonIsResolvedAndConstraintSucceeds_ShouldNotApplyReason()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -310,7 +310,7 @@ public class ManualExpectationBuilderTests
 		await That(sb.ToString()).IsEqualTo("is foo");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithoutContext_ShouldPassTheCancellationToken()
 	{
 		using CancellationTokenSource cts = new();
@@ -335,7 +335,7 @@ public class ManualExpectationBuilderTests
 			.Because("no expectation timeout applies to a manual evaluation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithoutContext_ShouldReleaseMaterializedSourcesAfterTheEvaluation()
 	{
 		DisposeTrackingEnumerable source = new(null, 1, 2, 3);
@@ -356,7 +356,7 @@ public class ManualExpectationBuilderTests
 			.Because("the evaluation context of its own is released once the evaluation is completed");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithoutContext_WhenConstraintThrows_ShouldReleaseMaterializedSources()
 	{
 		DisposeTrackingEnumerable source = new(null, 1, 2, 3);
@@ -374,7 +374,7 @@ public class ManualExpectationBuilderTests
 			.Because("the evaluation context of its own is also released when the evaluation throws");
 	}
 
-	[Fact]
+	[Test]
 	public async Task IsMetBy_WithoutContext_WhenMetMemberHasAsyncReason_AndEvaluationFails_ShouldAppendTheReason()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -394,7 +394,7 @@ public class ManualExpectationBuilderTests
 			.Because("the reason of the met member is shown like a string reason in the failure message");
 	}
 
-	[Fact]
+	[Test]
 	public async Task PrepareExpectation_ShouldNotEvaluateTheConstraints()
 	{
 		bool isEvaluated = false;
@@ -410,7 +410,7 @@ public class ManualExpectationBuilderTests
 		await That(isEvaluated).IsFalse();
 	}
 
-	[Fact]
+	[Test]
 	public async Task PrepareExpectation_ShouldResolveReasonsThatMustBeAwaited()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -424,7 +424,7 @@ public class ManualExpectationBuilderTests
 		await That(sb.ToString()).IsEqualTo(", because of a");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Subject_ShouldBeEmpty()
 	{
 		ManualExpectationBuilder<int> sut = new();

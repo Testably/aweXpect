@@ -4,7 +4,7 @@ namespace aweXpect.Core.Tests.Customization;
 
 public sealed class CustomizeReflectionTests
 {
-	[Fact]
+	[Test]
 	public async Task ExcludeAssemblies_ShouldChangeTheExcludedAssemblyPrefixes()
 	{
 		string additionalExcludedAssemblyNamespace = "foo";
@@ -25,7 +25,7 @@ public sealed class CustomizeReflectionTests
 			.DoesNotContain(additionalExcludedAssemblyNamespace);
 	}
 
-	[Fact]
+	[Test]
 	public async Task ExcludedAssemblyPrefixes_ChangingTheReturnedArray_ShouldNotChangeTheSetting()
 	{
 		string[] prefixes = Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get();
@@ -36,7 +36,7 @@ public sealed class CustomizeReflectionTests
 			.Because("a change of the returned array would bypass the scoping of the setting");
 	}
 
-	[Fact]
+	[Test]
 	public async Task ExcludedAssemblyPrefixes_ShouldBeInitializedCorrectly()
 	{
 		AwexpectCustomization.ReflectionCustomization reflection = Customize.aweXpect.Reflection();
@@ -54,7 +54,7 @@ public sealed class CustomizeReflectionTests
 		]).InAnyOrder();
 	}
 
-	[Fact]
+	[Test]
 	public async Task ExcludedAssemblyPrefixes_WhenNull_ShouldThrowArgumentNullException()
 	{
 		void Act() => Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Set(null!);
@@ -65,7 +65,7 @@ public sealed class CustomizeReflectionTests
 			.Because("a stored null would be returned as null instead of the default prefixes");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Reflection_ShouldReturnSameInstance()
 	{
 		AwexpectCustomization.ReflectionCustomization reflection1 = Customize.aweXpect.Reflection();

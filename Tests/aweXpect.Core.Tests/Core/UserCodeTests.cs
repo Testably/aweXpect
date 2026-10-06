@@ -6,7 +6,7 @@ namespace aweXpect.Core.Tests.Core;
 
 public sealed class UserCodeTests
 {
-	[Fact]
+	[Test]
 	public async Task Invoke_ShouldReturnTheResultOfTheCallback()
 	{
 		int result = UserCode.Invoke(() => 42);
@@ -14,7 +14,7 @@ public sealed class UserCodeTests
 		await That(result).IsEqualTo(42);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Invoke_WhenCallbackThrows_ShouldCarryTheException()
 	{
 		MyException exception = new();
@@ -28,7 +28,7 @@ public sealed class UserCodeTests
 			.Because("the evaluation reports the exception of the caller as its failure");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Invoke_WhenCallbackThrowsForNestedCode_ShouldNotWrapItAgain()
 	{
 		MyException exception = new();
@@ -42,7 +42,7 @@ public sealed class UserCodeTests
 			.Because("only the innermost call knows the exception of the caller");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Invoke_WithArgument_ShouldPassTheArgument()
 	{
 		int result = UserCode.Invoke(value => value * 2, 21);
@@ -50,7 +50,7 @@ public sealed class UserCodeTests
 		await That(result).IsEqualTo(42);
 	}
 
-	[Fact]
+	[Test]
 	public async Task Invoke_WithArgument_WhenCallbackThrows_ShouldCarryTheException()
 	{
 		MyException exception = new();
@@ -64,7 +64,7 @@ public sealed class UserCodeTests
 			.Because("the evaluation reports the exception of the caller as its failure");
 	}
 
-	[Fact]
+	[Test]
 	public async Task InvokeAsync_ShouldReturnTheResultOfTheCallback()
 	{
 		int result = await UserCode.InvokeAsync(() => new ValueTask<int>(42));
@@ -72,7 +72,7 @@ public sealed class UserCodeTests
 		await That(result).IsEqualTo(42);
 	}
 
-	[Fact]
+	[Test]
 	public async Task InvokeAsync_WhenCallbackIsCancelledWithTheToken_ShouldThrowTheCancellation()
 	{
 		using CancellationTokenSource cts = new();
@@ -87,7 +87,7 @@ public sealed class UserCodeTests
 			.Because("the caller can react to a requested cancellation before it aborts the evaluation");
 	}
 
-	[Fact]
+	[Test]
 	public async Task InvokeAsync_WhenCallbackThrows_ShouldCarryTheException()
 	{
 		MyException exception = new();
@@ -101,7 +101,7 @@ public sealed class UserCodeTests
 			.Because("the evaluation reports the exception of the caller as its failure");
 	}
 
-	[Fact]
+	[Test]
 	public async Task InvokeAsync_WhenCallbackThrowsOperationCanceledExceptionWithoutCancellation_ShouldCarryIt()
 	{
 		OperationCanceledException exception = new("nothing was canceled");

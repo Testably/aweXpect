@@ -6,7 +6,7 @@ public sealed partial class PropertyResultTests
 {
 	public sealed class DateTimeKindTests
 	{
-		[Fact]
+		[Test]
 		public async Task EqualTo_WhenValueIsNull_ShouldFail()
 		{
 			PropertyResult.DateTimeKind<MyClass?> sut = MyClass.HasNullDateTimeKindValue();
@@ -14,7 +14,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.EqualTo(DateTimeKind.Utc);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             has kind value equal to Utc,
@@ -22,7 +22,7 @@ public sealed partial class PropertyResultTests
 				             """);
 		}
 
-		[Fact]
+		[Test]
 		public async Task EqualTo_WhenValueIsNullAndExpectedIsNull_ShouldSucceed()
 		{
 			PropertyResult.DateTimeKind<MyClass?> sut = MyClass.HasNullDateTimeKindValue();
@@ -34,7 +34,7 @@ public sealed partial class PropertyResultTests
 				.Because("null is equal to null");
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_WhenValueIsNull_ShouldSucceed()
 		{
 			PropertyResult.DateTimeKind<MyClass?> sut = MyClass.HasNullDateTimeKindValue();
@@ -45,7 +45,7 @@ public sealed partial class PropertyResultTests
 			await That(Act).DoesNotThrow();
 		}
 
-		[Fact]
+		[Test]
 		public async Task NotEqualTo_WhenValueIsNullAndUnexpectedIsNull_ShouldFail()
 		{
 			PropertyResult.DateTimeKind<MyClass?> sut = MyClass.HasNullDateTimeKindValue();
@@ -53,7 +53,7 @@ public sealed partial class PropertyResultTests
 			async Task Act()
 				=> await sut.NotEqualTo(null);
 
-			await That(Act).Throws<XunitException>()
+			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that subject
 				             does not have kind value equal to <null>,
@@ -64,7 +64,7 @@ public sealed partial class PropertyResultTests
 
 		public sealed class GrammarTests
 		{
-			[Fact]
+			[Test]
 			public async Task WhenActive_ShouldUseTheActiveVoice()
 			{
 				PropertyResult.DateTimeKind<MyClass?, MyClass?, IThat<MyClass?>> sut =
@@ -73,7 +73,7 @@ public sealed partial class PropertyResultTests
 				async Task Act()
 					=> await sut.EqualTo(DateTimeKind.Local);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             with kind value equal to Local,
@@ -81,7 +81,7 @@ public sealed partial class PropertyResultTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_ShouldUseDoesNotHave()
 			{
 				MyClass subject = new();
@@ -90,7 +90,7 @@ public sealed partial class PropertyResultTests
 					=> await That(subject).DoesNotComplyWith(s => MyClass.DateTimeKindValueOf(s, ExpectationGrammars.None)
 						.EqualTo(DateTimeKind.Unspecified));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             does not have kind value equal to Unspecified,
@@ -98,7 +98,7 @@ public sealed partial class PropertyResultTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNegated_WithNotEqualTo_ShouldExpectEquality()
 			{
 				MyClass subject = new();
@@ -107,7 +107,7 @@ public sealed partial class PropertyResultTests
 					=> await That(subject).DoesNotComplyWith(s => MyClass.DateTimeKindValueOf(s, ExpectationGrammars.None)
 						.NotEqualTo(DateTimeKind.Utc));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has kind value equal to Utc,
@@ -115,7 +115,7 @@ public sealed partial class PropertyResultTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenNested_ShouldNameTheProperty()
 			{
 				PropertyResult.DateTimeKind<MyClass?, MyClass?, IThat<MyClass?>> sut =
@@ -124,7 +124,7 @@ public sealed partial class PropertyResultTests
 				async Task Act()
 					=> await sut.EqualTo(DateTimeKind.Local);
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             whose kind value is equal to Local,
@@ -132,7 +132,7 @@ public sealed partial class PropertyResultTests
 					             """);
 			}
 
-			[Fact]
+			[Test]
 			public async Task WhenPluralAndNegated_ShouldUseThePluralVerb()
 			{
 				MyClass subject = new();
@@ -141,7 +141,7 @@ public sealed partial class PropertyResultTests
 					=> await That(subject).DoesNotComplyWith(s => MyClass.DateTimeKindValueOf(s, ExpectationGrammars.Plural)
 						.EqualTo(DateTimeKind.Unspecified));
 
-				await That(Act).Throws<XunitException>()
+				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             do not have kind value equal to Unspecified,

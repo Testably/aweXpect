@@ -9,7 +9,7 @@ namespace aweXpect.Core.Tests.Synchronous;
 
 public class SynchronouslyTests
 {
-	[Fact]
+	[Test]
 	public void WhenActionDoesNotThrow_ShouldSucceed()
 	{
 		Foo subject = new()
@@ -21,7 +21,7 @@ public class SynchronouslyTests
 		Verify(That(() => ThrowIf(value != 3)).DoesNotThrow());
 	}
 
-	[Fact]
+	[Test]
 	public void WhenActionThrows_ShouldFail()
 	{
 		Foo subject = new()
@@ -31,7 +31,7 @@ public class SynchronouslyTests
 		int value = subject.Bar;
 		void Act() => Verify(That(() => ThrowIf(value == 3)).DoesNotThrow());
 
-		Verify(That(Act).Throws<XunitException>()
+		Verify(That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that () => ThrowIf(value == 3)
 			             does not throw any exception,
@@ -40,7 +40,7 @@ public class SynchronouslyTests
 			             """));
 	}
 
-	[Fact]
+	[Test]
 	public void WhenEvaluationYieldsOnABlockedSynchronizationContext_ShouldNotDeadlock()
 	{
 		bool completed = BlockedSynchronizationContext.Run(()
@@ -50,7 +50,7 @@ public class SynchronouslyTests
 			.Because("the continuation must not wait for the thread that is blocked by the synchronous verification"));
 	}
 
-	[Fact]
+	[Test]
 	public void WhenEvaluationYieldsOnABlockedSynchronizationContext_ShouldRestoreIt()
 	{
 		SynchronizationContext? contextAfterwards = null;
@@ -67,7 +67,7 @@ public class SynchronouslyTests
 			.Because("the caller keeps running on its synchronization context after the verification"));
 	}
 
-	[Fact]
+	[Test]
 	public void WhenEvaluationYieldsOnABlockedSynchronizationContext_WithValue_ShouldNotDeadlock()
 	{
 		int value = 0;
@@ -83,7 +83,7 @@ public class SynchronouslyTests
 		Verify(That(value).IsEqualTo(42));
 	}
 
-	[Fact]
+	[Test]
 	public void WhenEvaluationYieldsOnABlockedTaskScheduler_ShouldNotDeadlock()
 	{
 		bool completed = BlockedTaskScheduler.Run(()
@@ -93,7 +93,7 @@ public class SynchronouslyTests
 			.Because("the continuation must not wait for the scheduler that is blocked by the synchronous verification"));
 	}
 
-	[Fact]
+	[Test]
 	public void WhenEvaluationYieldsOnABlockedTaskScheduler_WithValue_ShouldNotDeadlock()
 	{
 		int value = 0;
@@ -109,7 +109,7 @@ public class SynchronouslyTests
 		Verify(That(value).IsEqualTo(42));
 	}
 
-	[Fact]
+	[Test]
 	public void WhenPropertyValuesMatch_ShouldFail()
 	{
 		Foo subject = new()
@@ -119,7 +119,7 @@ public class SynchronouslyTests
 		int value = subject.Bar;
 		void Act() => Verify(That(value).IsEqualTo(2));
 
-		Verify(That(Act).Throws<XunitException>()
+		Verify(That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that value
 			             is equal to 2,
@@ -127,7 +127,7 @@ public class SynchronouslyTests
 			             """));
 	}
 
-	[Fact]
+	[Test]
 	public void WhenPropertyValuesMatch_ShouldSucceed()
 	{
 		Foo subject = new()

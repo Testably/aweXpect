@@ -7,7 +7,7 @@ public partial class ValueFormatters
 {
 	public sealed class ExceptionTests
 	{
-		[Fact]
+		[Test]
 		public async Task AggregateException_ShouldNotBeFormattedAsCollection()
 		{
 			Exception value = new AggregateException("outer", new CustomException("inner"));
@@ -27,7 +27,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task GenericException_ShouldUseFormattedTypeName()
 		{
 			Exception value = new GenericException<int>("foo");
@@ -43,7 +43,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task InCollection_ShouldFormatEachExceptionWithTypeAndMessage()
 		{
 			List<Exception> value = [new CustomException("foo"), new ArgumentException("bar"),];
@@ -59,7 +59,7 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(expectedResult).IgnoringNewlineStyle();
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldDefaultToSingleLine()
 		{
 			Exception value = new CustomException("a\nb");
@@ -75,7 +75,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldIncludeTypeNameAndMessage()
 		{
 			Exception value = new CustomException("foo");
@@ -91,7 +91,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldNotIncludeInnerExceptionOrStackTrace()
 		{
 			Exception value;
@@ -113,7 +113,7 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenMessageIsEmpty_ShouldOnlyIncludeTypeName()
 		{
 			Exception value = new CustomException("");
@@ -129,7 +129,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenMessageIsTooLong_ShouldNotSplitEscapedWhitespace()
 		{
 			Exception value = new CustomException($"{new string('a', 99)}\nb");
@@ -141,7 +141,7 @@ public partial class ValueFormatters
 				.Because("the limit applies to the characters of the message, not to their escaped form");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenMessageIsTooLong_ShouldTruncateMessage()
 		{
 			Exception value = new CustomException(new string('a', 101));
@@ -152,7 +152,7 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			Exception? value = null;
@@ -165,7 +165,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo("<null>");
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenUsingMultipleLines_ShouldIndentFollowingLinesOfTheMessage()
 		{
 			Exception value = new CustomException("a\nb");
@@ -184,7 +184,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult).IgnoringNewlineStyle();
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithIndentation_ShouldIndentFollowingLinesOfTheMessageLikeMembers()
 		{
 			Exception value = new CustomException("a\nb");

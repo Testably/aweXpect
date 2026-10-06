@@ -6,7 +6,7 @@ public partial class ValueFormatters
 {
 	public sealed class DateTimeTests
 	{
-		[Fact]
+		[Test]
 		public async Task Nullable_ShouldUseRoundtripFormat()
 		{
 			DateTime? value = new(2024, 11, 2, 15, 42, 08, 123);
@@ -22,7 +22,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task Nullable_WithType_ShouldUseRoundtripFormat()
 		{
 			DateTime? value = new(2024, 11, 2, 15, 42, 08, 123);
@@ -38,7 +38,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task ShouldUseRoundtripFormat()
 		{
 			DateTime value = new(2024, 11, 2, 15, 42, 08, 123);
@@ -54,7 +54,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			DateTime? value = null;
@@ -69,7 +69,7 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
 		}
 
-		[Fact]
+		[Test]
 		public async Task WithType_ShouldUseRoundtripFormat()
 		{
 			DateTime value = new(2024, 11, 2, 15, 42, 08, 123);

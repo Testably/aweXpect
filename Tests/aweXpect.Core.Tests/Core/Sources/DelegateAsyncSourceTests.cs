@@ -6,7 +6,7 @@ namespace aweXpect.Core.Tests.Core.Sources;
 
 public class DelegateAsyncSourceTests
 {
-	[Fact]
+	[Test]
 	public async Task ForExecutionTime_ShouldUseElapsedFromTimeSystem()
 	{
 		TimeSystemMock timeSystem = new TimeSystemMock().SetElapsed(1100.Milliseconds());
@@ -18,7 +18,7 @@ public class DelegateAsyncSourceTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenCancellationIsRequestedBeforeTheDelegateCompletes_ShouldBeInconclusive()
 	{
 		Func<Task> @delegate = () => PendingTask.Of<int>();
@@ -28,7 +28,7 @@ public class DelegateAsyncSourceTests
 		async Task Act()
 			=> await That(@delegate).DoesNotThrow().WithCancellation(cts.Token);
 
-		await That(Act).Throws<InconclusiveException>()
+		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             does not throw any exception,
@@ -37,7 +37,7 @@ public class DelegateAsyncSourceTests
 			.Because("the cancellation must stop waiting for a delegate that does not observe it");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegateCompletesWithinTheTimeout_ShouldSucceed()
 	{
 		Func<Task> @delegate = () => Task.Delay(50.Milliseconds());
@@ -48,7 +48,7 @@ public class DelegateAsyncSourceTests
 		await That(Act).DoesNotThrow();
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegateDoesNotCompleteWithinTheTimeout_ShouldFail()
 	{
 		Func<Task> @delegate = () => PendingTask.Of<int>();
@@ -56,7 +56,7 @@ public class DelegateAsyncSourceTests
 		async Task Act()
 			=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             does not throw any exception,
@@ -66,7 +66,7 @@ public class DelegateAsyncSourceTests
 			.Because("the timeout must abandon the task instead of awaiting it to completion");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegateDoesNotCompleteWithinTheTimeout_Throws_ShouldFail()
 	{
 		Func<Task> @delegate = () => PendingTask.Of<int>();
@@ -74,7 +74,7 @@ public class DelegateAsyncSourceTests
 		async Task Act()
 			=> await That(@delegate).Throws().WithTimeout(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             throws an exception,
@@ -84,7 +84,7 @@ public class DelegateAsyncSourceTests
 			.Because("the timeout must not count as the expected exception");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegateExceedsTheDurationOfThrowsWithin_ShouldFail()
 	{
 		Func<Task> @delegate = () => PendingTask.Of<int>();
@@ -92,7 +92,7 @@ public class DelegateAsyncSourceTests
 		async Task Act()
 			=> await That(@delegate).Throws<ArgumentException>().Within(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             throws an ArgumentException within 0:00.050,
@@ -102,7 +102,7 @@ public class DelegateAsyncSourceTests
 			.Because("the duration must abandon the task instead of awaiting it to completion");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegateExceedsTheUpperBoundOfExecutesIn_ShouldFail()
 	{
 		Func<Task> @delegate = () => PendingTask.Of<int>();
@@ -110,7 +110,7 @@ public class DelegateAsyncSourceTests
 		async Task Act()
 			=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             executes in at most 0:00.050,
@@ -119,7 +119,7 @@ public class DelegateAsyncSourceTests
 			.Because("the upper bound must abandon the task instead of awaiting it to completion");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegateIgnoresTheCancellationToken_ShouldFail()
 	{
 		Func<CancellationToken, Task> @delegate = _ => PendingTask.Of<int>();
@@ -127,7 +127,7 @@ public class DelegateAsyncSourceTests
 		async Task Act()
 			=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             executes in at most 0:00.050,
@@ -136,7 +136,7 @@ public class DelegateAsyncSourceTests
 			.Because("a delegate that ignores the cancelled token must be abandoned as well");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegateIsCanceledByTheTimeout_ShouldReportThatItDidNotFinish()
 	{
 		Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
@@ -144,7 +144,7 @@ public class DelegateAsyncSourceTests
 		async Task Act()
 			=> await That(@delegate).Throws<TaskCanceledException>().WithTimeout(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             throws a TaskCanceledException,
@@ -154,7 +154,7 @@ public class DelegateAsyncSourceTests
 			.Because("a cancellation by the timeout is reported the same way, whether the delegate or the timeout won");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegateThrowsItsOwnCancellationOnTimeout_ShouldReportThatItDidNotFinish()
 	{
 		Func<CancellationToken, Task> @delegate = async token =>
@@ -172,7 +172,7 @@ public class DelegateAsyncSourceTests
 		async Task Act()
 			=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             does not throw any exception,
@@ -182,7 +182,7 @@ public class DelegateAsyncSourceTests
 			.Because("a cancellation by the timeout is reported the same way, whether the delegate or the timeout won");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegateThrowsItsOwnOperationCanceledException_ShouldFail()
 	{
 		OperationCanceledException exception = new("my own reason");
@@ -195,7 +195,7 @@ public class DelegateAsyncSourceTests
 		async Task Act()
 			=> await That(@delegate).DoesNotThrow().WithTimeout(30.Seconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that @delegate
 			             does not throw any exception,
@@ -206,7 +206,7 @@ public class DelegateAsyncSourceTests
 			.Because("a cancellation that neither the timeout nor the caller requested is an ordinary exception");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenDelegateThrowsItsOwnOperationCanceledException_Throws_ShouldSucceed()
 	{
 		Func<CancellationToken, Task> @delegate = async _ =>
@@ -222,7 +222,7 @@ public class DelegateAsyncSourceTests
 			.Because("a cancellation that neither the timeout nor the caller requested is an ordinary exception");
 	}
 
-	[Fact]
+	[Test]
 	public async Task WhenTaskSubjectDoesNotCompleteWithinTheTimeout_ShouldFail()
 	{
 		Task subject = PendingTask.Of<int>();
@@ -230,7 +230,7 @@ public class DelegateAsyncSourceTests
 		async Task Act()
 			=> await That(subject).DoesNotThrow().WithTimeout(50.Milliseconds());
 
-		await That(Act).Throws<XunitException>()
+		await That(Act).Throws<FailException>()
 			.WithMessage("""
 			             Expected that subject
 			             does not throw any exception,
