@@ -6,13 +6,12 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Xunit;
 
 namespace aweXpect.Analyzers.Tests;
 
 public class RulesTests
 {
-	[Fact]
+	[Test]
 	public async Task AnalyzersPage_ShouldHaveASectionForEachRule()
 	{
 		string[] headings = File.ReadAllLines(Path.Combine(GetRepositoryDirectory(), "Docs", "pages", "07-analyzers.md"))
@@ -24,7 +23,7 @@ public class RulesTests
 			.Because("the help link of each rule points to the section with the rule ID as heading");
 	}
 
-	[Fact]
+	[Test]
 	public async Task Descriptors_ShouldLinkToTheirSectionOnTheAnalyzersPage()
 	{
 		foreach (DiagnosticDescriptor descriptor in Descriptors())

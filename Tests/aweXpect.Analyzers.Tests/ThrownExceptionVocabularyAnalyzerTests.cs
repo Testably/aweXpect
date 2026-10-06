@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Xunit;
 using Verifier =
 	aweXpect.Analyzers.Tests.Verifiers.CSharpAnalyzerVerifier<aweXpect.Analyzers.ThrownExceptionVocabularyAnalyzer>;
 
@@ -7,7 +6,7 @@ namespace aweXpect.Analyzers.Tests;
 
 public class ThrownExceptionVocabularyAnalyzerTests
 {
-	[Fact]
+	[Test]
 	public async Task WhenCalledAsStaticMethod_ShouldBeFlaggedOnTheWholeInvocation() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -30,7 +29,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 				.WithArguments("HasMessage", "WithMessage")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingDoesNotHaveInnerAfterWhich_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -50,7 +49,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingDoesNotHaveInnerOnThrows_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -73,7 +72,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 				.WithArguments("DoesNotHaveInner", "WithoutInner")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingDoesNotHaveInnerOnThrows_ShouldBeFlaggedOnTheGenericName() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -96,7 +95,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 				.WithArguments("DoesNotHaveInner", "WithoutInner")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingHasHResultWithArgumentOnThrows_ShouldBeFlaggedWithTwin() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -119,7 +118,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 				.WithArguments("HasHResult", "WithHResult")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingHasHResultWithoutArgumentOnThrows_ShouldBeFlaggedWithTwin() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -142,7 +141,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 				.WithArguments("HasHResult", "WithHResult")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingHasInnerOnThrows_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -165,7 +164,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 				.WithArguments("HasInner", "WithInner")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingHasInnerOnThrows_ShouldBeFlaggedOnTheGenericName() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -188,7 +187,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 				.WithArguments("HasInner", "WithInner")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingHasMessageAfterWhich_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -208,7 +207,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingHasMessageInsideWithInner_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -229,7 +228,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingHasMessageOnExceptionSubject_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -249,7 +248,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 			"""
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingHasMessageOnThrows_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -272,7 +271,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 				.WithArguments("HasMessage", "WithMessage")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingHasMessageOnThrowsExactly_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -295,7 +294,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 				.WithArguments("HasMessage", "WithMessage")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingHasParamNameAfterAnd_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -320,7 +319,7 @@ public class ThrownExceptionVocabularyAnalyzerTests
 				.WithArguments("HasParamName", "WithParamName")
 		);
 
-	[Fact]
+	[Test]
 	public async Task WhenUsingWithMessageOnThrows_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
