@@ -4362,6 +4362,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 22:13:55 2026 \u002B0200",
         "message": "fix!: reject a property expression of \u0060TriggeredPropertyChangedFor\u0060 that is no property of the subject (#1665)"
+      },
+      {
+        "sha": "f21e6eaba602e779f0efe0ae83e392121e673f0e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 06:36:57 2026 \u002B0200",
+        "message": "refactor: make the timeout and retry tests independent of the machine speed (#1658)"
       }
     ],
     "labels": [
@@ -5091,7 +5097,8 @@ window.BENCHMARK_DATA = {
       "272bbb23",
       "23b6cd56",
       "a1b234c6",
-      "168dc965"
+      "168dc965",
+      "f21e6eab"
     ],
     "datasets": [
       {
@@ -5824,7 +5831,8 @@ window.BENCHMARK_DATA = {
           126.17584438323975,
           142.2467122475306,
           104.71999336991992,
-          140.55406246185302
+          140.55406246185302,
+          62.91932999236243
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6556,6 +6564,7 @@ window.BENCHMARK_DATA = {
           368,
           384,
           384,
+          408,
           408,
           408,
           408,
@@ -7303,7 +7312,8 @@ window.BENCHMARK_DATA = {
           235.69773082733155,
           244.19921568461828,
           203.3300039427621,
-          260.9352035181863
+          260.9352035181863,
+          140.27738031319208
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8041,6 +8051,7 @@ window.BENCHMARK_DATA = {
           952,
           952,
           952,
+          952,
           952
         ],
         "borderColor": "#FF671B",
@@ -8063,7 +8074,8 @@ window.BENCHMARK_DATA = {
           192.71065312165481,
           205.74376247610365,
           159.11692692552293,
-          211.94355142911274
+          211.94355142911274,
+          101.46569071497235
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8075,6 +8087,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -11996,6 +12009,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 22:13:55 2026 \u002B0200",
         "message": "fix!: reject a property expression of \u0060TriggeredPropertyChangedFor\u0060 that is no property of the subject (#1665)"
+      },
+      {
+        "sha": "f21e6eaba602e779f0efe0ae83e392121e673f0e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 06:36:57 2026 \u002B0200",
+        "message": "refactor: make the timeout and retry tests independent of the machine speed (#1658)"
       }
     ],
     "labels": [
@@ -12648,7 +12667,8 @@ window.BENCHMARK_DATA = {
       "272bbb23",
       "23b6cd56",
       "a1b234c6",
-      "168dc965"
+      "168dc965",
+      "f21e6eab"
     ],
     "datasets": [
       {
@@ -13304,7 +13324,8 @@ window.BENCHMARK_DATA = {
           111758.13438197544,
           113322.75891113281,
           83027.45593261719,
-          108458.70014299665
+          108458.70014299665,
+          57545.92333984375
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -13959,6 +13980,7 @@ window.BENCHMARK_DATA = {
           29344,
           15392,
           15392,
+          16288,
           16288,
           16288,
           16288,
@@ -14629,7 +14651,8 @@ window.BENCHMARK_DATA = {
           2716606.77578125,
           2573557.840104167,
           1977074.4537760417,
-          2709357.916015625
+          2709357.916015625,
+          1297571.1384114583
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15290,7 +15313,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841647,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15312,7 +15336,8 @@ window.BENCHMARK_DATA = {
           207843.27697753906,
           198888.61542154948,
           154575.36821637835,
-          203526.44366924578
+          203526.44366924578,
+          106430.36687011718
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -15324,6 +15349,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -19707,6 +19733,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 22:13:55 2026 \u002B0200",
         "message": "fix!: reject a property expression of \u0060TriggeredPropertyChangedFor\u0060 that is no property of the subject (#1665)"
+      },
+      {
+        "sha": "f21e6eaba602e779f0efe0ae83e392121e673f0e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 06:36:57 2026 \u002B0200",
+        "message": "refactor: make the timeout and retry tests independent of the machine speed (#1658)"
       }
     ],
     "labels": [
@@ -20436,7 +20468,8 @@ window.BENCHMARK_DATA = {
       "272bbb23",
       "23b6cd56",
       "a1b234c6",
-      "168dc965"
+      "168dc965",
+      "f21e6eab"
     ],
     "datasets": [
       {
@@ -21169,7 +21202,8 @@ window.BENCHMARK_DATA = {
           264.6428901468004,
           267.4091243426005,
           224.60066855748494,
-          302.95488141133234
+          302.95488141133234,
+          124.45837073666709
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -21901,6 +21935,7 @@ window.BENCHMARK_DATA = {
           560,
           576,
           576,
+          600,
           600,
           600,
           600,
@@ -22648,7 +22683,8 @@ window.BENCHMARK_DATA = {
           456.7539663632711,
           494.3642583993765,
           425.3413618527926,
-          527.3515004430499
+          527.3515004430499,
+          242.61213794121375
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23386,6 +23422,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          2008,
           2008
         ],
         "borderColor": "#FF671B",
@@ -23408,7 +23445,8 @@ window.BENCHMARK_DATA = {
           391.5603183678218,
           387.75927158991493,
           326.2710212389628,
-          433.6949016366686
+          433.6949016366686,
+          198.50514896099384
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -23420,6 +23458,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -27803,6 +27842,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 22:13:55 2026 \u002B0200",
         "message": "fix!: reject a property expression of \u0060TriggeredPropertyChangedFor\u0060 that is no property of the subject (#1665)"
+      },
+      {
+        "sha": "f21e6eaba602e779f0efe0ae83e392121e673f0e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 06:36:57 2026 \u002B0200",
+        "message": "refactor: make the timeout and retry tests independent of the machine speed (#1658)"
       }
     ],
     "labels": [
@@ -28532,7 +28577,8 @@ window.BENCHMARK_DATA = {
       "272bbb23",
       "23b6cd56",
       "a1b234c6",
-      "168dc965"
+      "168dc965",
+      "f21e6eab"
     ],
     "datasets": [
       {
@@ -29265,7 +29311,8 @@ window.BENCHMARK_DATA = {
           141.3437429024623,
           142.3776572863261,
           121.97559043566386,
-          146.34538300832114
+          146.34538300832114,
+          75.11130221400943
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -29997,6 +30044,7 @@ window.BENCHMARK_DATA = {
           472,
           488,
           488,
+          512,
           512,
           512,
           512,
@@ -30744,7 +30792,8 @@ window.BENCHMARK_DATA = {
           235.86193222658974,
           244.92914561430612,
           206.36891317367554,
-          263.06252940495807
+          263.06252940495807,
+          126.30781677563985
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31482,6 +31531,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1224,
           1224
         ],
         "borderColor": "#FF671B",
@@ -31504,7 +31554,8 @@ window.BENCHMARK_DATA = {
           230.35924092928568,
           245.47175674438478,
           200.6444193805967,
-          257.78513463338214
+          257.78513463338214,
+          118.24768235133244
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31516,6 +31567,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -35899,6 +35951,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 22:13:55 2026 \u002B0200",
         "message": "fix!: reject a property expression of \u0060TriggeredPropertyChangedFor\u0060 that is no property of the subject (#1665)"
+      },
+      {
+        "sha": "f21e6eaba602e779f0efe0ae83e392121e673f0e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 06:36:57 2026 \u002B0200",
+        "message": "refactor: make the timeout and retry tests independent of the machine speed (#1658)"
       }
     ],
     "labels": [
@@ -36628,7 +36686,8 @@ window.BENCHMARK_DATA = {
       "272bbb23",
       "23b6cd56",
       "a1b234c6",
-      "168dc965"
+      "168dc965",
+      "f21e6eab"
     ],
     "datasets": [
       {
@@ -37361,7 +37420,8 @@ window.BENCHMARK_DATA = {
           239.0947183095492,
           234.67671629360743,
           186.7636607090632,
-          249.79837773396417
+          249.79837773396417,
+          122.4727239449819
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38093,6 +38153,7 @@ window.BENCHMARK_DATA = {
           536,
           552,
           552,
+          576,
           576,
           576,
           576,
@@ -38840,7 +38901,8 @@ window.BENCHMARK_DATA = {
           1226.340755902804,
           1192.5403798421223,
           988.6992311477661,
-          1232.3798981984457
+          1232.3798981984457,
+          607.3268871307373
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39578,6 +39640,7 @@ window.BENCHMARK_DATA = {
           3944,
           3944,
           3944,
+          3944,
           3944
         ],
         "borderColor": "#FF671B",
@@ -39600,7 +39663,8 @@ window.BENCHMARK_DATA = {
           317.6704689172598,
           316.41618009408313,
           256.5353639125824,
-          358.300580739975
+          358.300580739975,
+          171.57039361733658
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -39612,6 +39676,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -43995,6 +44060,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 22:13:55 2026 \u002B0200",
         "message": "fix!: reject a property expression of \u0060TriggeredPropertyChangedFor\u0060 that is no property of the subject (#1665)"
+      },
+      {
+        "sha": "f21e6eaba602e779f0efe0ae83e392121e673f0e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 06:36:57 2026 \u002B0200",
+        "message": "refactor: make the timeout and retry tests independent of the machine speed (#1658)"
       }
     ],
     "labels": [
@@ -44724,7 +44795,8 @@ window.BENCHMARK_DATA = {
       "272bbb23",
       "23b6cd56",
       "a1b234c6",
-      "168dc965"
+      "168dc965",
+      "f21e6eab"
     ],
     "datasets": [
       {
@@ -45457,7 +45529,8 @@ window.BENCHMARK_DATA = {
           593.7735684076945,
           611.4669560750325,
           477.85231691996256,
-          612.2908625284831
+          612.2908625284831,
+          303.5208943230765
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46191,6 +46264,7 @@ window.BENCHMARK_DATA = {
           840,
           832,
           832,
+          840,
           840,
           840,
           840,
@@ -46936,7 +47010,8 @@ window.BENCHMARK_DATA = {
           1326.0671399434407,
           1364.6358740488688,
           1118.0606801350912,
-          1351.6633270263671
+          1351.6633270263671,
+          640.0229090963091
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -47674,6 +47749,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -47696,7 +47772,8 @@ window.BENCHMARK_DATA = {
           610.7512573401133,
           633.0534842173258,
           532.8129401524861,
-          655.5329192968516
+          655.5329192968516,
+          352.2561849753062
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -47708,6 +47785,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -52091,6 +52169,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 22:13:55 2026 \u002B0200",
         "message": "fix!: reject a property expression of \u0060TriggeredPropertyChangedFor\u0060 that is no property of the subject (#1665)"
+      },
+      {
+        "sha": "f21e6eaba602e779f0efe0ae83e392121e673f0e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 06:36:57 2026 \u002B0200",
+        "message": "refactor: make the timeout and retry tests independent of the machine speed (#1658)"
       }
     ],
     "labels": [
@@ -52820,7 +52904,8 @@ window.BENCHMARK_DATA = {
       "272bbb23",
       "23b6cd56",
       "a1b234c6",
-      "168dc965"
+      "168dc965",
+      "f21e6eab"
     ],
     "datasets": [
       {
@@ -53553,7 +53638,8 @@ window.BENCHMARK_DATA = {
           975.4341665903727,
           973.5896180959849,
           812.7235339028495,
-          972.0514018195016
+          972.0514018195016,
+          507.56434903826033
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54287,6 +54373,7 @@ window.BENCHMARK_DATA = {
           1776,
           1240,
           1240,
+          1248,
           1248,
           1248,
           1248,
@@ -55032,7 +55119,8 @@ window.BENCHMARK_DATA = {
           26816.98806966146,
           27361.74025065104,
           16816.55473429362,
-          27497.089080810547
+          27497.089080810547,
+          10018.345930916923
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -55770,6 +55858,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -55792,7 +55881,8 @@ window.BENCHMARK_DATA = {
           780.9781115849813,
           774.389230455671,
           621.0810632024493,
-          808.3331483840942
+          808.3331483840942,
+          427.1614917755127
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -55804,6 +55894,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -55957,6 +56048,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 22:13:55 2026 \u002B0200",
         "message": "fix!: reject a property expression of \u0060TriggeredPropertyChangedFor\u0060 that is no property of the subject (#1665)"
+      },
+      {
+        "sha": "f21e6eaba602e779f0efe0ae83e392121e673f0e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 06:36:57 2026 \u002B0200",
+        "message": "refactor: make the timeout and retry tests independent of the machine speed (#1658)"
       }
     ],
     "labels": [
@@ -55981,7 +56078,8 @@ window.BENCHMARK_DATA = {
       "272bbb23",
       "23b6cd56",
       "a1b234c6",
-      "168dc965"
+      "168dc965",
+      "f21e6eab"
     ],
     "datasets": [
       {
@@ -56009,7 +56107,8 @@ window.BENCHMARK_DATA = {
           716.2311901728312,
           746.4471676690238,
           586.6084758894784,
-          774.0639625276838
+          774.0639625276838,
+          365.76004629135133
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56036,6 +56135,7 @@ window.BENCHMARK_DATA = {
           6912,
           1784,
           1784,
+          1808,
           1808,
           1808,
           1808,
@@ -56078,7 +56178,8 @@ window.BENCHMARK_DATA = {
           81844.91207682292,
           82125.86353410993,
           53291.844130452475,
-          84826.06088867187
+          84826.06088867187,
+          28388.506831577844
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56111,7 +56212,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5256,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56257,6 +56359,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Mon Oct 5 22:13:55 2026 \u002B0200",
         "message": "fix!: reject a property expression of \u0060TriggeredPropertyChangedFor\u0060 that is no property of the subject (#1665)"
+      },
+      {
+        "sha": "f21e6eaba602e779f0efe0ae83e392121e673f0e",
+        "author": "Valentin Breu\u00DF",
+        "date": "Tue Oct 6 06:36:57 2026 \u002B0200",
+        "message": "refactor: make the timeout and retry tests independent of the machine speed (#1658)"
       }
     ],
     "labels": [
@@ -56281,7 +56389,8 @@ window.BENCHMARK_DATA = {
       "272bbb23",
       "23b6cd56",
       "a1b234c6",
-      "168dc965"
+      "168dc965",
+      "f21e6eab"
     ],
     "datasets": [
       {
@@ -56309,7 +56418,8 @@ window.BENCHMARK_DATA = {
           262.4779659679958,
           303.72475092751637,
           225.3275263150533,
-          303.956152788798
+          303.956152788798,
+          135.53794468366183
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56336,6 +56446,7 @@ window.BENCHMARK_DATA = {
           616,
           632,
           632,
+          656,
           656,
           656,
           656,
@@ -56378,7 +56489,8 @@ window.BENCHMARK_DATA = {
           31673.233797200523,
           32372.2741007487,
           15254.764650785006,
-          30786.992837088448
+          30786.992837088448,
+          9273.870933532715
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56411,7 +56523,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56433,7 +56546,8 @@ window.BENCHMARK_DATA = {
           236.24986244837444,
           249.67201636632282,
           197.15859258969624,
-          259.8181400934855
+          259.8181400934855,
+          119.45650717417399
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -56445,6 +56559,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
