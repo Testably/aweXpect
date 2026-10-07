@@ -34,6 +34,20 @@ public class CollectionOrderOptionsTests
 	}
 
 	[Test]
+	public async Task SetComparer_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+	{
+		CollectionOrderOptions<int> sut = new();
+		sut.SetComparer(new ReverseComparer<int>());
+
+		void Act() => sut.SetComparer(Comparer<int>.Default);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("Using cannot be specified more than once.")
+			.Because("the second comparer would silently replace the first one");
+		await That(sut.GetComparer()).Is<ReverseComparer<int>>();
+	}
+
+	[Test]
 	public async Task SetComparer_WithNull_ShouldThrowArgumentNullException()
 	{
 		CollectionOrderOptions<int> sut = new();
