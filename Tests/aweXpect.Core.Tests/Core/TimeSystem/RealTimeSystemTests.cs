@@ -7,6 +7,34 @@ namespace aweXpect.Core.Tests.Core.TimeSystem;
 public sealed class RealTimeSystemTests
 {
 	[Test]
+	public async Task CancelAfter_ShouldCancelTheSourceAfterTheDelay()
+	{
+		ITimeSystem timeSystem = RealTimeSystem.Instance;
+		using CancellationTokenSource cts = new();
+		TaskCompletionSource<bool> canceled = new(TaskCreationOptions.RunContinuationsAsynchronously);
+		using CancellationTokenRegistration _ = cts.Token.Register(() => canceled.TrySetResult(true));
+
+		timeSystem.CancelAfter(cts, 10.Milliseconds());
+		bool isCanceledAtOnce = cts.IsCancellationRequested;
+		await Task.WhenAny(canceled.Task, Task.Delay(30.Seconds()));
+
+		await That(isCanceledAtOnce).IsFalse();
+		await That(canceled.Task.IsCompleted).IsTrue()
+			.Because("the real timer cancels the source after 10 ms, long before the half minute the test waits");
+	}
+
+	[Test]
+	public async Task CancelAfter_WithInfiniteDelay_ShouldNotCancelTheSource()
+	{
+		ITimeSystem timeSystem = RealTimeSystem.Instance;
+		using CancellationTokenSource cts = new();
+
+		timeSystem.CancelAfter(cts, Timeout.InfiniteTimeSpan);
+
+		await That(cts.IsCancellationRequested).IsFalse();
+	}
+
+	[Test]
 	public async Task Delay_ShouldUseRealValues()
 	{
 		ITimeSystem timeSystem = RealTimeSystem.Instance;

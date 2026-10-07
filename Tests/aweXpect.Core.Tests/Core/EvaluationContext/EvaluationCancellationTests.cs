@@ -63,6 +63,27 @@ public class EvaluationCancellationTests
 	}
 
 	[Test]
+	public async Task ForRemainingTimeout_ShouldMeasureAndElapseOnTheTimeSystem()
+	{
+		VirtualTimeSystem timeSystem = new();
+		EvaluationCancellation sut = EvaluationCancellation.Create(10.Seconds(), CancellationToken.None, timeSystem);
+		timeSystem.Advance(4.Seconds());
+		sut.Release();
+
+		EvaluationCancellation result = sut.ForRemainingTimeout();
+		timeSystem.Advance(5.Seconds());
+		bool isCanceledBeforeTheTimeout = result.Token.IsCancellationRequested;
+		timeSystem.Advance(1.Seconds());
+
+		await That(result.Timeout).IsEqualTo(6.Seconds())
+			.Because("the timeout is measured from the start of the evaluation on its time system");
+		await That(isCanceledBeforeTheTimeout).IsFalse();
+		await That(result.Reason).IsEqualTo(CancellationReason.Timeout)
+			.Because("the rest of the timeout elapses on the time system of the evaluation as well");
+		result.Release();
+	}
+
+	[Test]
 	public async Task ForRemainingTimeout_WithOuterTimeout_ShouldHaveTheRestOfTheOuterTimeout()
 	{
 		EvaluationCancellation sut = new(null, CancellationToken.None, 30.Seconds());
@@ -293,12 +314,45 @@ public class EvaluationCancellationTests
 	}
 
 	[Test]
+	public async Task Reason_WhenTheTimeoutElapsedOnTheTimeSystem_ShouldBeTimeout()
+	{
+		VirtualTimeSystem timeSystem = new();
+		EvaluationCancellation sut = EvaluationCancellation.Create(1.Hours(), CancellationToken.None, timeSystem);
+
+		timeSystem.Advance(1.Hours() - 1.Milliseconds());
+		CancellationReason reasonBeforeTheTimeout = sut.Reason;
+		timeSystem.Advance(1.Milliseconds());
+
+		await That(reasonBeforeTheTimeout).IsEqualTo(CancellationReason.None);
+		await That(sut.Reason).IsEqualTo(CancellationReason.Timeout)
+			.Because("the timeout elapses when the clock of the time system reaches it");
+		await That(sut.Token.IsCancellationRequested).IsTrue();
+		sut.Release();
+	}
+
+	[Test]
 	public async Task Reason_WithoutCancellation_ShouldBeNone()
 	{
 		EvaluationCancellation sut = new(10.Seconds(), CancellationToken.None);
 
 		await That(sut.Reason).IsEqualTo(CancellationReason.None);
 		sut.Release();
+	}
+
+	[Test]
+	public async Task Release_ShouldReleaseTheTimeoutOnTheTimeSystem()
+	{
+		VirtualTimeSystem timeSystem = new();
+		EvaluationCancellation sut = EvaluationCancellation.Create(1.Hours(), CancellationToken.None, timeSystem);
+		CancellationToken token = sut.Token;
+		sut.Release();
+
+		void Act()
+			=> timeSystem.Advance(2.Hours());
+
+		await That(Act).DoesNotThrow()
+			.Because("a released timeout is not due anymore when the clock reaches it");
+		await That(token.IsCancellationRequested).IsFalse();
 	}
 
 	[Test]

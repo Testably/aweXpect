@@ -9,6 +9,7 @@ using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Equivalency;
 using aweXpect.Options;
 using aweXpect.Results;
+using aweXpect.Signaling;
 using Context = aweXpect.Core.EvaluationContext.EvaluationContext;
 
 namespace aweXpect.Core.Tests.Equivalency;
@@ -235,6 +236,61 @@ public sealed class NestedExpectationEvaluationTests
 		await That(result).IsTrue();
 		await That(constraint.Context?.Cancellation).IsSameAs(EvaluationCancellation.None);
 		await That(constraint.CancellationToken).IsEqualTo(CancellationToken.None);
+	}
+
+	[Test]
+	public async Task NestedWait_ShouldWaitOnTheTimeSystemOfTheEvaluation()
+	{
+		VirtualTimeSystem timeSystem = new();
+		MyClass subject = new()
+		{
+			Value = new Signaler(),
+		};
+		var expected = new
+		{
+			Value = It.Is<Signaler>().That.Signaled().Within(30.Seconds()),
+		};
+
+		async Task Act()
+			=> await That(subject).IsEquivalentTo(expected).UseTimeSystem(timeSystem);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equivalent to expected,
+			             but it was not:
+			               Property Value differed:
+			                   Actual: Signaler { }
+			                 Expected: is Signaler that has recorded the callback at least once within 0:30
+
+			             Equivalency options:
+			              - include public fields and properties
+			             """);
+		await That(timeSystem.Now).IsEqualTo(30.Seconds())
+			.Because("the nested expectation waited on the virtual clock of the evaluation");
+	}
+
+	[Test]
+	public async Task NestedWait_WhenTheTimeoutIsShorter_ShouldFailWithTheTimeoutOnTheTimeSystemOfTheEvaluation()
+	{
+		VirtualTimeSystem timeSystem = new();
+		MyClass subject = new()
+		{
+			Value = new Signaler(),
+		};
+		var expected = new
+		{
+			Value = It.Is<Signaler>().That.Signaled().Within(30.Seconds()),
+		};
+
+		async Task Act()
+			=> await That(subject).IsEquivalentTo(expected).WithTimeout(10.Seconds()).UseTimeSystem(timeSystem);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("*but it did not finish within 0:10*").AsWildcard().And
+			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:10."));
+		await That(timeSystem.Now).IsEqualTo(10.Seconds())
+			.Because("the timeout cuts the wait of the nested expectation short on the virtual clock");
 	}
 
 	[Test]

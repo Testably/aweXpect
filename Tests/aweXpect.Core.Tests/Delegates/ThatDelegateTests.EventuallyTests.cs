@@ -446,6 +446,33 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Test]
+		public async Task WhenAnAttemptDoesNotFinishWithinTheTimeout_OnTheVirtualClock_ShouldAbandonIt()
+		{
+			VirtualTimeSystem timeSystem = new();
+			Task<int>? attempt = null;
+
+			Task<int> Subject(CancellationToken token)
+			{
+				timeSystem.Advance(2.Hours());
+				attempt = PendingTask.Of<int>();
+				return attempt;
+			}
+
+			async Task Act()
+				=> await That(Subject).Eventually().OnVirtualTime(timeSystem).Within(1.Hours()).IsEqualTo(1);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that Subject
+				             eventually is equal to 1 within 1:00:00,
+				             but it did not finish within 1:00:00
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 1:00:00."));
+			await That(attempt?.IsCompleted).IsFalse()
+				.Because("the limit of the attempt elapsed on the virtual clock, so the pending attempt was abandoned");
+		}
+
+		[Test]
 		public async Task WhenAnAttemptDoesNotFinishWithinTheTimeout_ShouldFail()
 		{
 			Func<Task<int>> subject = () => new TaskCompletionSource<int>().Task;
@@ -1157,6 +1184,29 @@ public sealed partial class ThatDelegateTests
 				            """).And
 				.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
 				.Because("the tighter limit wins, so the test cancellation also bounds an explicit timeout");
+		}
+
+		[Test]
+		public async Task WhenTheCheckDoesNotFinishWithinTheTimeout_OnTheVirtualClock_ShouldFail()
+		{
+			VirtualTimeSystem timeSystem = new();
+			Func<int> subject = () => 1;
+
+			async Task Act()
+				=> await Awaits(That(subject).Eventually().OnVirtualTime(timeSystem).Within(1.Hours()), (_, token) =>
+				{
+					timeSystem.Advance(2.Hours());
+					return UntilCanceled(token);
+				});
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually awaits within 1:00:00,
+				             but it did not finish within 1:00:00
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 1:00:00."))
+				.Because("the limit of the check elapsed on the virtual clock");
 		}
 
 		[Test]

@@ -22,6 +22,60 @@ public sealed class VirtualTimeSystemTests
 	}
 
 	[Test]
+	public async Task CancelAfter_ShouldCancelWhenTheClockReachesTheEndOfTheDelay()
+	{
+		VirtualTimeSystem sut = new();
+		using CancellationTokenSource cts = new();
+		sut.Advance(10.Milliseconds());
+
+		sut.CancelAfter(cts, 40.Milliseconds());
+		sut.Advance(39.Milliseconds());
+		bool isCanceledBeforeTheEnd = cts.IsCancellationRequested;
+		sut.Advance(1.Milliseconds());
+
+		await That(isCanceledBeforeTheEnd).IsFalse();
+		await That(cts.IsCancellationRequested).IsTrue();
+	}
+
+	[Test]
+	public async Task CancelAfter_WhenTheSourceIsDisposed_ShouldNotCutAWaitShort()
+	{
+		VirtualTimeSystem sut = new();
+		CancellationTokenSource cts = new();
+		sut.CancelAfter(cts, 40.Milliseconds());
+		cts.Dispose();
+
+		await sut.Delay(100.Milliseconds(), CancellationToken.None);
+
+		await That(sut.Now).IsEqualTo(100.Milliseconds())
+			.Because("the timeout of a disposed source was released, like the timer of a real one");
+	}
+
+	[Test]
+	public async Task CancelAfter_WithInfiniteDelay_ShouldNotCancel()
+	{
+		VirtualTimeSystem sut = new();
+		using CancellationTokenSource cts = new();
+
+		sut.CancelAfter(cts, Timeout.InfiniteTimeSpan);
+		sut.Advance(100.Days());
+
+		await That(cts.IsCancellationRequested).IsFalse();
+	}
+
+	[Test]
+	public async Task CancelAfter_WithoutDelay_ShouldCancelAtOnce()
+	{
+		VirtualTimeSystem sut = new();
+		using CancellationTokenSource cts = new();
+
+		sut.CancelAfter(cts, TimeSpan.Zero);
+
+		await That(cts.IsCancellationRequested).IsTrue();
+		await That(sut.Now).IsEqualTo(TimeSpan.Zero);
+	}
+
+	[Test]
 	public async Task Delay_ShouldAdvanceTheClockByItsDuration()
 	{
 		VirtualTimeSystem sut = new();
@@ -79,6 +133,20 @@ public sealed class VirtualTimeSystemTests
 
 		await That(Act).Throws<OperationCanceledException>();
 		await That(sut.Now).IsEqualTo(TimeSpan.Zero);
+	}
+
+	[Test]
+	public async Task Delay_WithoutLimit_ShouldMoveTheClockToTheNextCancellationAndWaitForItsOwn()
+	{
+		VirtualTimeSystem sut = new();
+		using CancellationTokenSource cts = new();
+		sut.CancelAfter(cts, 40.Milliseconds());
+
+		Task delay = sut.Delay(Timeout.InfiniteTimeSpan, cts.Token);
+
+		await That(() => delay).Throws<OperationCanceledException>()
+			.Because("only a cancellation ends a wait without a limit");
+		await That(sut.Now).IsEqualTo(40.Milliseconds());
 	}
 
 	[Test]

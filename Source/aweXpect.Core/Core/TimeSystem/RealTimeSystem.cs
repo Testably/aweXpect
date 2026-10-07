@@ -93,5 +93,9 @@ internal class RealTimeSystem : ITimeSystem
 	public Task Delay(TimeSpan delay, CancellationToken cancellationToken)
 		=> Task.Delay(delay, cancellationToken);
 
+	/// <inheritdoc />
+	public void CancelAfter(CancellationTokenSource cancellationTokenSource, TimeSpan delay)
+		=> cancellationTokenSource.CancelAfter(delay);
+
 	#endregion
 }

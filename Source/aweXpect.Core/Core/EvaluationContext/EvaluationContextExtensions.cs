@@ -105,6 +105,26 @@ public static class EvaluationContextExtensions
 	}
 #endif
 
+	/// <summary>
+	///     Gets the current timestamp on the clock of the evaluation, from which
+	///     <see cref="GetElapsedTime(IEvaluationContext, long)" /> measures.
+	/// </summary>
+	/// <remarks>
+	///     A constraint that waits measures how long it waited on this clock, on which the timeout of the evaluation
+	///     elapses as well, e.g. for <see cref="EvaluationCancellation.HasWaitElapsed(TimeSpan, TimeSpan)" />. The
+	///     timestamp is only meaningful for <see cref="GetElapsedTime(IEvaluationContext, long)" /> of the same
+	///     <paramref name="evaluationContext" />.
+	/// </remarks>
+	public static long GetTimestamp(this IEvaluationContext evaluationContext)
+		=> EvaluationContext.GetTimeSystem(evaluationContext).GetTimestamp();
+
+	/// <summary>
+	///     Gets the time elapsed on the clock of the evaluation since the <paramref name="startTimestamp" /> from
+	///     <see cref="GetTimestamp(IEvaluationContext)" />.
+	/// </summary>
+	public static TimeSpan GetElapsedTime(this IEvaluationContext evaluationContext, long startTimestamp)
+		=> EvaluationContext.GetTimeSystem(evaluationContext).GetElapsedTime(startTimestamp);
+
 	private static readonly string[] MaterializationKeys =
 	[
 		MaterializedEnumerableKey,

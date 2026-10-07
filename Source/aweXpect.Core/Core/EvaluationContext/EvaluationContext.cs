@@ -49,10 +49,17 @@ internal class EvaluationContext : IEvaluationContext
 			: new EvaluationContext
 			{
 				Cancellation = context.Cancellation,
-				TimeSystem = context is EvaluationContext evaluationContext
-					? evaluationContext.TimeSystem
-					: RealTimeSystem.Instance,
+				TimeSystem = GetTimeSystem(context),
 			};
+
+	/// <summary>
+	///     The time system of the evaluation in the <paramref name="context" />, or the real one outside an evaluation
+	///     and for a <paramref name="context" /> of another implementation.
+	/// </summary>
+	public static ITimeSystem GetTimeSystem(IEvaluationContext? context)
+		=> context is EvaluationContext evaluationContext
+			? evaluationContext.TimeSystem
+			: RealTimeSystem.Instance;
 
 	private bool IsNested(string key)
 		=> _nestingDepth > 0 && !EvaluationContextExtensions.IsMaterializationKey(key);

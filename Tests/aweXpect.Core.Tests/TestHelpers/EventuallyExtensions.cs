@@ -9,7 +9,7 @@ internal static class EventuallyExtensions
 	///     of a new one.
 	/// </summary>
 	/// <remarks>
-	///     See <see cref="VirtualTimeSystem" /> for the subjects that still depend on real time.
+	///     See <see cref="VirtualTimeSystem" /> for what moves its clock.
 	/// </remarks>
 	public static EventuallySubject<T> OnVirtualTime<T>(this EventuallySubject<T> subject,
 		VirtualTimeSystem? timeSystem = null)

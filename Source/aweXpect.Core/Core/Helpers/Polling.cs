@@ -184,4 +184,8 @@ internal sealed class Polling : IDisposable
 
 	/// <inheritdoc cref="ITimeSystem.GetElapsedTime(long)" />
 	public TimeSpan GetElapsedTime(long startTimestamp) => _timeSystem.GetElapsedTime(startTimestamp);
+
+	/// <inheritdoc cref="ITimeSystem.CancelAfter(CancellationTokenSource, TimeSpan)" />
+	public void CancelAfter(CancellationTokenSource cancellationTokenSource, TimeSpan delay)
+		=> _timeSystem.CancelAfter(cancellationTokenSource, delay);
 }

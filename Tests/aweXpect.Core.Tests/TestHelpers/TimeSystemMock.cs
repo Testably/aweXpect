@@ -15,6 +15,9 @@ internal class TimeSystemMock : ITimeSystem
 	public Task Delay(TimeSpan delay, CancellationToken cancellationToken)
 		=> RealTimeSystem.Instance.Delay(delay, cancellationToken);
 
+	public void CancelAfter(CancellationTokenSource cancellationTokenSource, TimeSpan delay)
+		=> RealTimeSystem.Instance.CancelAfter(cancellationTokenSource, delay);
+
 	public TimeSystemMock SetElapsed(TimeSpan elapsed)
 	{
 		_stopwatchFactory.SetElapsed(elapsed);

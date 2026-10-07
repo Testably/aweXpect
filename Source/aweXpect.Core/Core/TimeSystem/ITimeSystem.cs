@@ -27,4 +27,11 @@ internal interface ITimeSystem
 	/// </summary>
 	/// <remarks>Wrapper around <see cref="Task.Delay(TimeSpan, CancellationToken)" /></remarks>
 	Task Delay(TimeSpan delay, CancellationToken cancellationToken);
+
+	/// <summary>
+	///     Cancels the <paramref name="cancellationTokenSource" /> after the <paramref name="delay" />, unless it is
+	///     disposed before; <see cref="Timeout.InfiniteTimeSpan" /> never cancels it.
+	/// </summary>
+	/// <remarks>Wrapper around <see cref="CancellationTokenSource.CancelAfter(TimeSpan)" /></remarks>
+	void CancelAfter(CancellationTokenSource cancellationTokenSource, TimeSpan delay);
 }

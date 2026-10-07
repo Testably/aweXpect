@@ -6,31 +6,22 @@ using aweXpect.Core.TimeSystem;
 namespace aweXpect.Core.Tests.TestHelpers;
 
 /// <summary>
-///     A time system with a virtual clock for the checks of a repeated check (<c>Eventually()</c> and
-///     <c>Within(…)</c>), so that a test neither waits nor depends on the speed of the machine.
+///     A time system with a virtual clock for the waits and the timeouts of an evaluation (<c>Eventually()</c>,
+///     <c>Within(…)</c>, <c>WithTimeout(…)</c>), so that a test neither waits nor depends on the speed of the machine.
 /// </summary>
 /// <remarks>
-///     The clock only moves through the waits between the checks, each of which advances it by exactly its duration
+///     The clock only moves through the waits of the evaluation, each of which advances it by exactly its duration
 ///     and completes at once, and through <see cref="Advance(TimeSpan)" />, with which e.g. a subject states how long
 ///     its attempt took. As a wait is the only thing that moves the clock on its own, a repeated check with a limited
 ///     budget and a positive interval always ends.
 ///     <para />
-///     The timers that cancel stay real, so a test on the virtual clock has to keep them out of its way:
-///     <list type="bullet">
-///         <item>
-///             The timeout of the evaluation (<c>WithTimeout(…)</c> and the test cancellation) and a
-///             <see cref="CancellationTokenSource" /> with a delay cancel after real time. A test that needs a
-///             timeout which is shorter than the budget stays on the real time system, and a cancellation is
-///             scheduled with <see cref="CancelAt(TimeSpan, CancellationTokenSource)" />.
-///         </item>
-///         <item>
-///             The limit of an attempt of <c>Eventually()</c> cancels the token of the attempt after the remaining
-///             budget in real time, and abandons a subject that is still running then. A subject that completes
-///             synchronously, ignores its token and throws no <see cref="OperationCanceledException" /> is not
-///             affected, because only the measured, i.e. virtual, time judges it. Any other subject needs a budget
-///             that real time does not reach, and a subject that never completes stays on the real time system.
-///         </item>
-///     </list>
+///     The timeouts that cancel are scheduled on the virtual clock as well: the timeout of the evaluation
+///     (<c>WithTimeout(…)</c> and the test cancellation) and the limit of an attempt and of a check of
+///     <c>Eventually()</c>. They cancel when a wait or <see cref="Advance(TimeSpan)" /> moves the clock to their
+///     time, so code that waits for a cancellation without moving the clock, e.g. a subject that never completes,
+///     has to call <see cref="Advance(TimeSpan)" /> first. A <see cref="CancellationTokenSource" /> with a delay of
+///     its own cancels after real time; a cancellation by the caller is scheduled with
+///     <see cref="CancelAt(TimeSpan, CancellationTokenSource)" />.
 /// </remarks>
 internal sealed class VirtualTimeSystem : ITimeSystem, IStopwatchFactory
 {
@@ -77,11 +68,35 @@ internal sealed class VirtualTimeSystem : ITimeSystem, IStopwatchFactory
 	///     the wait short: the clock stops at the time of the cancellation and the wait does not complete, but is
 	///     canceled by the <paramref name="cancellationToken" />, as the repeated check does when it notices the
 	///     cancellation. Completing it would race with that notice, which is delivered asynchronously.
+	///     <para />
+	///     A wait without a limit (<see cref="Timeout.InfiniteTimeSpan" />) moves the clock to the next scheduled
+	///     cancellation, as only a cancellation ends it.
 	/// </remarks>
 	public Task Delay(TimeSpan delay, CancellationToken cancellationToken)
-		=> Task.Run(() => Advance(delay, true)
+		=> Task.Run(() => IsCutShort(delay)
 			? Task.Delay(SafetyNet, cancellationToken)
 			: Task.CompletedTask, cancellationToken);
+
+	/// <inheritdoc />
+	/// <remarks>
+	///     The <paramref name="cancellationTokenSource" /> is canceled when the clock reaches the end of the
+	///     <paramref name="delay" />, like with <see cref="CancelAt(TimeSpan, CancellationTokenSource)" />.
+	/// </remarks>
+	public void CancelAfter(CancellationTokenSource cancellationTokenSource, TimeSpan delay)
+	{
+		if (delay == Timeout.InfiniteTimeSpan)
+		{
+			return;
+		}
+
+		if (delay <= TimeSpan.Zero)
+		{
+			cancellationTokenSource.Cancel();
+			return;
+		}
+
+		CancelAt(Now + delay, cancellationTokenSource);
+	}
 
 	/// <summary>
 	///     Advances the clock by the <paramref name="duration" />, e.g. from inside a subject for the time its attempt
@@ -110,8 +125,7 @@ internal sealed class VirtualTimeSystem : ITimeSystem, IStopwatchFactory
 		TimeSpan end = Now + duration;
 		while (TakeNextCancellation(end) is { } source)
 		{
-			source.Cancel();
-			if (isWait)
+			if (TryCancel(source) && isWait)
 			{
 				return true;
 			}
@@ -119,6 +133,43 @@ internal sealed class VirtualTimeSystem : ITimeSystem, IStopwatchFactory
 
 		MoveTo(end);
 		return false;
+	}
+
+	/// <summary>
+	///     Advances the clock by the <paramref name="delay" /> of a wait and returns whether the wait does not complete,
+	///     because a cancellation cut it short or it has no limit.
+	/// </summary>
+	private bool IsCutShort(TimeSpan delay)
+	{
+		if (delay != Timeout.InfiniteTimeSpan)
+		{
+			return Advance(delay, true);
+		}
+
+		bool isCanceled = false;
+		while (!isCanceled && TakeNextCancellation(TimeSpan.MaxValue) is { } source)
+		{
+			isCanceled = TryCancel(source);
+		}
+
+		return true;
+	}
+
+	/// <summary>
+	///     Cancels the <paramref name="source" />, unless it is already disposed: its timeout was released, like the
+	///     timer of a real one.
+	/// </summary>
+	private static bool TryCancel(CancellationTokenSource source)
+	{
+		try
+		{
+			source.Cancel();
+			return true;
+		}
+		catch (ObjectDisposedException)
+		{
+			return false;
+		}
 	}
 
 	/// <summary>

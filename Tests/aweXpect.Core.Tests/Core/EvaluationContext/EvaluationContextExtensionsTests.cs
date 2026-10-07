@@ -3,14 +3,50 @@ using System.Threading;
 #endif
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using aweXpect.Chronology;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Core.TimeSystem;
 using Context = aweXpect.Core.EvaluationContext.EvaluationContext;
 
 namespace aweXpect.Core.Tests.Core.EvaluationContext;
 
 public class EvaluationContextExtensionsTests
 {
+	[Test]
+	public async Task GetElapsedTime_ShouldMeasureOnTheTimeSystemOfTheEvaluation()
+	{
+		VirtualTimeSystem timeSystem = new();
+		IEvaluationContext context = new Context
+		{
+			TimeSystem = timeSystem,
+		};
+		timeSystem.Advance(10.Seconds());
+
+		long timestamp = context.GetTimestamp();
+		timeSystem.Advance(30.Seconds());
+		TimeSpan result = context.GetElapsedTime(timestamp);
+
+		await That(result).IsEqualTo(30.Seconds());
+	}
+
+	[Test]
+	public async Task GetTimestamp_ForAContextOfAnotherImplementation_ShouldBeOfTheRealTimeSystem()
+	{
+		IEvaluationContext context = new ForeignEvaluationContext();
+		long before = RealTimeSystem.Instance.GetTimestamp();
+
+		long timestamp = context.GetTimestamp();
+		TimeSpan elapsed = context.GetElapsedTime(timestamp);
+
+		await That(timestamp).IsGreaterThanOrEqualTo(before).And
+			.IsLessThanOrEqualTo(RealTimeSystem.Instance.GetTimestamp())
+			.Because("only an evaluation of this library has a time system of its own");
+		await That(elapsed).IsGreaterThanOrEqualTo(TimeSpan.Zero);
+	}
+
 #if NET8_0_OR_GREATER
 	[Test]
 	public async Task UseMaterializedAsyncEnumerable_ForDifferentSources_ShouldReturnDifferentInstances()
@@ -330,5 +366,18 @@ public class EvaluationContextExtensionsTests
 	private sealed class UntypedEnumerable(IEnumerable inner) : IEnumerable
 	{
 		public IEnumerator GetEnumerator() => inner.GetEnumerator();
+	}
+
+	private sealed class ForeignEvaluationContext : IEvaluationContext
+	{
+		public EvaluationCancellation Cancellation => EvaluationCancellation.None;
+
+		public void Store<T>(string key, T value) { }
+
+		public bool TryReceive<T>(string key, [NotNullWhen(true)] out T? value)
+		{
+			value = default;
+			return false;
+		}
 	}
 }

@@ -7,6 +7,7 @@ using aweXpect.Core;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Metadata;
+using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Recording;
 
@@ -104,7 +105,7 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 		{
 			if (timeout > TimeSpan.Zero || timeout == Timeout.InfiniteTimeSpan)
 			{
-				await WaitUntil(areFound, timeout, cancellationToken);
+				await WaitUntil(areFound, timeout, EvaluationContext.GetTimeSystem(context), cancellationToken);
 			}
 		}
 		catch
@@ -224,10 +225,10 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 	}
 
 	private async Task WaitUntil(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
-		CancellationToken cancellationToken)
+		ITimeSystem timeSystem, CancellationToken cancellationToken)
 	{
 		using CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-		Task timeoutOrCancellation = Task.Delay(timeout.ToTimerTimeout(), cts.Token);
+		Task timeoutOrCancellation = timeSystem.Delay(timeout.ToTimerTimeout(), cts.Token);
 		try
 		{
 			while (true)
