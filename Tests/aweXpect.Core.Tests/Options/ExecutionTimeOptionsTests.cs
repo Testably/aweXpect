@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using aweXpect.Chronology;
 using aweXpect.Options;
 
@@ -6,6 +7,87 @@ namespace aweXpect.Core.Tests.Options;
 
 public class ExecutionTimeOptionsTests
 {
+	[Test]
+	public async Task AllowingExceptions_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+	{
+		ExecutionTimeOptions sut = new();
+		sut.AllowingExceptions(true);
+
+		void Act() => sut.AllowingExceptions(false);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("AllowingExceptions cannot be specified more than once.");
+		await That(sut.AllowsException(new InvalidOperationException())).IsTrue()
+			.Because("the rejected second call must keep the first setting");
+	}
+
+	[Test]
+	public async Task AppendFailureResult_WhenAtLeastIsSpecified_ShouldSayOnly()
+	{
+		ExecutionTimeOptions sut = new();
+		sut.AtLeast(2.Seconds());
+		StringBuilder sb = new();
+
+		sut.AppendFailureResult(sb, 1.Seconds());
+
+		await That(sb.ToString()).IsEqualTo("only 0:01");
+	}
+
+	[Test]
+	public async Task AppendFailureResult_WhenNoLimitIsSpecified_ShouldAppendNothing()
+	{
+		ExecutionTimeOptions sut = new();
+		StringBuilder sb = new();
+
+		sut.AppendFailureResult(sb, 1.Seconds());
+
+		await That(sb.ToString()).IsEmpty();
+	}
+
+	[Test]
+	public async Task AppendTo_WhenAtLeastIsSpecified_ShouldDescribeTheMinimum()
+	{
+		ExecutionTimeOptions sut = new();
+		sut.AtLeast(2.Seconds());
+		StringBuilder sb = new();
+
+		sut.AppendTo(sb, "in ");
+
+		await That(sb.ToString()).IsEqualTo("in at least 0:02");
+	}
+
+	[Test]
+	public async Task AppendTo_WhenNoLimitIsSpecified_ShouldAppendNothing()
+	{
+		ExecutionTimeOptions sut = new();
+		StringBuilder sb = new();
+
+		sut.AppendTo(sb, "in ");
+
+		await That(sb.ToString()).IsEmpty();
+	}
+
+	[Test]
+	public async Task IsWithinLimit_WhenActualIsNull_ShouldReturnFalse()
+	{
+		ExecutionTimeOptions sut = new();
+		sut.AtMost(1.Seconds());
+
+		bool result = sut.IsWithinLimit(null);
+
+		await That(result).IsFalse();
+	}
+
+	[Test]
+	public async Task IsWithinLimit_WhenNoLimitIsSpecified_ShouldReturnFalse()
+	{
+		ExecutionTimeOptions sut = new();
+
+		bool result = sut.IsWithinLimit(1.Seconds());
+
+		await That(result).IsFalse();
+	}
+
 	[Test]
 	[Arguments("AtLeast")]
 	[Arguments("AtMost")]

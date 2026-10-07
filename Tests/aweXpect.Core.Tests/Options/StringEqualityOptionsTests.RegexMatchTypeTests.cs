@@ -374,6 +374,28 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		public async Task GetExpectation_WhenNegatedAndPassive_ShouldSayNotMatching()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsRegex();
+
+			string result = sut.GetExpectation("foo", ExpectationGrammars.Negated);
+
+			await That(result).IsEqualTo("not matching regex \"foo\"");
+		}
+
+		[Test]
+		public async Task GetExtendedFailure_WhenPatternIsNull_ShouldStateThatItCouldNotCompare()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsRegex();
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo", null);
+
+			await That(result).IsEqualTo("could not compare the <null> regex with \"foo\"");
+		}
+
+		[Test]
 		[Arguments(false)]
 		[Arguments(true)]
 		public async Task ShouldCompareCaseSensitive(bool ignoreCase)
@@ -457,6 +479,17 @@ public sealed partial class StringEqualityOptionsTests
 				             Message:
 				             foo
 				             """);
+		}
+
+		[Test]
+		public async Task ToString_ShouldNameTheMatchType()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsRegex();
+
+			string result = sut.ToString();
+
+			await That(result).IsEqualTo(" as regex");
 		}
 
 		[Test]

@@ -5,6 +5,18 @@ namespace aweXpect.Core.Tests.Options;
 public class NumberToleranceTests
 {
 	[Test]
+	[Arguments(null, 1)]
+	[Arguments(1, null)]
+	public async Task CalculateDifference_WhenOneIsNull_ShouldReturnNull(int? actual, int? expected)
+	{
+		NumberTolerance<int> sut = new((a, b) => Math.Abs(a - b));
+
+		int? result = sut.CalculateDifference(actual, expected);
+
+		await That(result).IsNull();
+	}
+
+	[Test]
 	public async Task IsWithinTolerance_WhenBothAreNull_ShouldReturnTrue()
 	{
 		NumberTolerance<int> sut = new((a, b) => Math.Abs(a - b));
@@ -24,6 +36,18 @@ public class NumberToleranceTests
 		bool result = sut.IsWithinTolerance(actual, expected);
 
 		await That(result).IsFalse();
+	}
+
+	[Test]
+	public async Task IsWithinTolerance_WhenTheDifferenceOverflows_ShouldReturnFalse()
+	{
+		NumberTolerance<int> sut = new((a, b) => checked(a - b));
+		sut.SetTolerance(1);
+
+		bool result = sut.IsWithinTolerance(int.MinValue, int.MaxValue);
+
+		await That(result).IsFalse()
+			.Because("a difference that does not fit into the type is larger than any tolerance");
 	}
 
 	[Test]

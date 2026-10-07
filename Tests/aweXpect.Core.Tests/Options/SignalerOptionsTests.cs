@@ -1,4 +1,5 @@
-﻿using aweXpect.Chronology;
+﻿using System.Threading;
+using aweXpect.Chronology;
 using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
@@ -15,6 +16,18 @@ public sealed class SignalerOptionsTests
 			string result = sut.ToString();
 
 			await That(result).IsEmpty();
+		}
+
+		[Test]
+		public async Task ToString_WithInfiniteTimeout_ShouldReturnEmptyString()
+		{
+			SignalerOptions sut = new();
+			sut.Timeout = Timeout.InfiniteTimeSpan;
+
+			string result = sut.ToString();
+
+			await That(result).IsEmpty()
+				.Because("an infinite timeout adds no information to the expectation");
 		}
 
 		[Test]

@@ -18,6 +18,20 @@ namespace aweXpect.Core.Tests.Options;
 public sealed class RepeatedCheckOptionsTests
 {
 	[Test]
+	[Arguments(0)]
+	[Arguments(-1)]
+	public async Task CheckEvery_WhenIntervalIsNotPositive_ShouldThrowArgumentOutOfRangeException(int milliseconds)
+	{
+		RepeatedCheckOptions sut = new();
+
+		void Act() => sut.CheckEvery(milliseconds.Milliseconds());
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("interval").And
+			.WithMessage("The interval must be positive.").AsPrefix();
+	}
+
+	[Test]
 	public async Task CheckRepeatedly_WhenNotRepeatedAndUserCodeThrows_ShouldFailWithTheException()
 	{
 		int checks = 0;
@@ -107,6 +121,42 @@ public sealed class RepeatedCheckOptionsTests
 			.Because("the second check is met long before the budget ends, however late the first one starts");
 		await That(stopwatch.Elapsed).IsGreaterThanOrEqualTo(40.Milliseconds())
 			.Because("the checks wait in real time, and a timer can complete a few milliseconds before the stopwatch agrees");
+	}
+
+	[Test]
+	public async Task CheckRepeatedly_WhenTheEvaluationIsCanceled_ShouldBeUndecided()
+	{
+		RepeatedCheckOptions sut = new();
+		sut.Within(30.Seconds());
+		int checks = 0;
+		EvaluationCancellation cancellation = EvaluationCancellation.Create(null, new CancellationToken(true));
+
+		Outcome outcome = await sut.CheckRepeatedly(_ =>
+		{
+			checks++;
+			return new ValueTask<bool>(false);
+		}, new ForeignEvaluationContext(cancellation));
+
+		await That(outcome).IsEqualTo(Outcome.Undecided)
+			.Because("a cancellation by the caller does not count as the timeout having elapsed");
+		await That(checks).IsEqualTo(1);
+	}
+
+	[Test]
+	public async Task CheckRepeatedly_WhenTheFirstCheckIsMet_ShouldNotCheckAgain()
+	{
+		RepeatedCheckOptions sut = new();
+		sut.Within(30.Seconds());
+		int checks = 0;
+
+		Outcome outcome = await sut.CheckRepeatedly(_ =>
+		{
+			checks++;
+			return new ValueTask<bool>(true);
+		}, new ForeignEvaluationContext());
+
+		await That(outcome).IsEqualTo(Outcome.Success);
+		await That(checks).IsEqualTo(1);
 	}
 
 	[Test]
@@ -246,9 +296,9 @@ public sealed class RepeatedCheckOptionsTests
 			options);
 	}
 
-	private sealed class ForeignEvaluationContext : IEvaluationContext
+	private sealed class ForeignEvaluationContext(EvaluationCancellation? cancellation = null) : IEvaluationContext
 	{
-		public EvaluationCancellation Cancellation => EvaluationCancellation.None;
+		public EvaluationCancellation Cancellation => cancellation ?? EvaluationCancellation.None;
 
 		public void Store<T>(string key, T value) { }
 

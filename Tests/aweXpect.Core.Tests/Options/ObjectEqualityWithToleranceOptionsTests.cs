@@ -8,6 +8,30 @@ namespace aweXpect.Core.Tests.Options;
 public class ObjectEqualityWithToleranceOptionsTests
 {
 	[Test]
+	public async Task AreConsideredEqual_WhenBothAreNull_ShouldReturnTrue()
+	{
+		ObjectEqualityWithToleranceOptions<int?, int> sut =
+			new((a, e, t) => Math.Abs(a!.Value - e!.Value) <= t);
+		sut.Within(1);
+
+		bool result = await sut.AreConsideredEqual(null, (int?)null);
+
+		await That(result).IsTrue();
+	}
+
+	[Test]
+	public async Task AreConsideredEqual_WhenExpectedHasAnotherType_ShouldReturnFalse()
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new((a, e, t) => Math.Abs(a - e) <= t);
+		sut.Within(1);
+
+		bool result = await sut.AreConsideredEqual(1, "1");
+
+		await That(result).IsFalse();
+	}
+
+	[Test]
 	[Arguments(3, true)]
 	[Arguments(4, false)]
 	public async Task AreConsideredEqualWithExplanation_ShouldDecideWithTheTolerance(int expected, bool expectMatch)
@@ -52,6 +76,47 @@ public class ObjectEqualityWithToleranceOptionsTests
 
 		await That(evaluation).IsSameAs(sut)
 			.Because("an explicit tolerance does not depend on a setting");
+	}
+
+	[Test]
+	[Arguments(false, "is equal to 3 ± 2")]
+	[Arguments(true, "is not equal to 3 ± 2")]
+	public async Task GetExpectation_ShouldNameTheTolerance(bool isNegated, string expected)
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new((a, e, t) => Math.Abs(a - e) <= t);
+		sut.Within(2);
+
+		string result = sut.GetExpectation("3", isNegated ? ExpectationGrammars.Negated : ExpectationGrammars.None);
+
+		await That(result).IsEqualTo(expected);
+	}
+
+	[Test]
+	public async Task GetItemExpectation_ShouldNameTheTolerance()
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new((a, e, t) => Math.Abs(a - e) <= t);
+		sut.Within(2);
+
+		string result = sut.GetItemExpectation("3", "an item", "equal to");
+
+		await That(result).IsEqualTo("an item equal to 3 ± 2");
+	}
+
+	[Test]
+	[Arguments(0, "")]
+	[Arguments(5, " ± 5")]
+	public async Task ToString_WithDefaultTolerance_ShouldOnlyNameAToleranceOtherThanZero(int defaultTolerance,
+		string expected)
+	{
+		ObjectEqualityWithToleranceOptions<int, int> sut =
+			new ObjectEqualityWithToleranceOptions<int, int>((a, e, t) => Math.Abs(a - e) <= t)
+				.WithDefaultTolerance(() => defaultTolerance);
+
+		string? result = sut.ToString();
+
+		await That(result).IsEqualTo(expected);
 	}
 
 	[Test]
