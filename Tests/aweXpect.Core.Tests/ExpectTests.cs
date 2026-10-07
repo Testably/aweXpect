@@ -489,6 +489,35 @@ public class ExpectTests
 	}
 
 	[Test]
+	public async Task ThatAll_WhenASubjectIsDescribable_ShouldDescribeItLikeASingleExpectation()
+	{
+		MyDescribableSubject subject = new("my described subject");
+		MyDescribableSubject? nullSubject = null;
+
+		async Task Act()
+			=> await ThatAll(
+				That(subject).IsNull(),
+				That(nullSubject).IsNotNull(),
+				ThatAny(That(subject).IsNotNull(), That(subject).IsNull()),
+				That(subject).IsNotNull());
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that my described subject is null
+			              [02] Expected that nullSubject is not null
+			               Expected any of the following to succeed:
+			                [03] Expected that my described subject is not null
+			                [04] Expected that my described subject is null
+			              [05] Expected that my described subject is not null
+			             but
+			              [01] it was ExpectTests.MyDescribableSubject { }
+			              [02] it was <null>
+			             """)
+			.Because("a null subject cannot describe itself, so the subject expression is used instead");
+	}
+
+	[Test]
 	public async Task ThatAll_WhenAWhichExpectationWithAMultiLineValueFails_ShouldIndentTheValueLikeTheEntry()
 	{
 		MyClass expected = new()
@@ -814,6 +843,12 @@ public class ExpectTests
 	private sealed class MyClass
 	{
 		public int Value { get; set; }
+	}
+
+	private sealed class MyDescribableSubject(string description) : IDescribableSubject
+	{
+		public string GetDescription()
+			=> description;
 	}
 
 	private sealed class MyHolder(MyClass inner)
