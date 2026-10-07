@@ -9,6 +9,7 @@ namespace aweXpect.Options;
 /// </summary>
 public class ExecutionTimeOptions
 {
+	private bool _isAllowingExceptionsSpecified;
 	private Limit? _limit;
 	private Action<TimeSpan>? _onUpperBound;
 	private TimeSpan? _upperBound;
@@ -28,9 +29,16 @@ public class ExecutionTimeOptions
 	internal void OnUpperBound(Action<TimeSpan> callback) => _onUpperBound = callback;
 
 	/// <summary>
-	///     Allows the delegate to throw an exception without failing the expectation.
+	///     Allows the delegate to throw an exception without failing the expectation,
+	///     according to the <paramref name="allowExceptions" /> parameter.
 	/// </summary>
-	internal void AllowExceptions() => AreExceptionsAllowed = true;
+	/// <exception cref="InvalidOperationException">The exceptions are already specified.</exception>
+	internal void AllowingExceptions(bool allowExceptions)
+	{
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isAllowingExceptionsSpecified, nameof(AllowingExceptions));
+		_isAllowingExceptionsSpecified = true;
+		AreExceptionsAllowed = allowExceptions;
+	}
 
 	/// <summary>
 	///     Checks if the <paramref name="exception" /> leaves the outcome to the measured duration.

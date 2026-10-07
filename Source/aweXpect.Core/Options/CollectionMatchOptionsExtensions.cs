@@ -23,30 +23,34 @@ public static class CollectionMatchOptionsExtensions
 	}
 
 	/// <summary>
-	///     Ignores duplicates in both collections.
+	///     Ignores duplicates in both collections,
+	///     according to the <paramref name="ignoreDuplicates" /> parameter.
 	/// </summary>
 	/// <remarks>
 	///     Only which items occur matters, not how often: every expected item has to be matched by an item, and every
 	///     item has to match an expected item, as far as the relation requires it, so <c>[1, 1, 2]</c> matches
 	///     <c>[1, 2]</c>.
 	/// </remarks>
-	public static TResult IgnoringDuplicates<TResult>(this TResult result)
+	/// <exception cref="System.InvalidOperationException">The duplicates are already specified.</exception>
+	public static TResult IgnoringDuplicates<TResult>(this TResult result, bool ignoreDuplicates = true)
 		where TResult : IOptionsProvider<CollectionMatchOptions>
 	{
-		result.Options.IgnoringDuplicates();
+		result.Options.IgnoringDuplicates(ignoreDuplicates);
 		return result;
 	}
 
 	/// <summary>
-	///     Ignores items that appear in between the matched items.
+	///     Ignores items that appear in between the matched items,
+	///     according to the <paramref name="ignoreInterspersedItems" /> parameter.
 	/// </summary>
 	/// <exception cref="System.InvalidOperationException">
-	///     The order is already ignored via <c>InAnyOrder()</c>.
+	///     The interspersed items are already specified, or the order is already ignored via <c>InAnyOrder()</c>.
 	/// </exception>
-	public static TResult IgnoringInterspersedItems<TResult>(this TResult result)
+	public static TResult IgnoringInterspersedItems<TResult>(this TResult result,
+		bool ignoreInterspersedItems = true)
 		where TResult : IOptionsProvider<CollectionMatchOptions>, ICollectionContainmentOptions
 	{
-		result.Options.IgnoringInterspersedItems();
+		result.Options.IgnoringInterspersedItems(ignoreInterspersedItems);
 		return result;
 	}
 

@@ -134,6 +134,10 @@ parameter, e.g. `CountResult<TType, TThat, TSelf>`, are gone. A result of your o
 `AndOrResult<TType, TThat, TSelf>` and implements `IOptionsProvider<TOptions>` for the options it offers, see
 [Options](../11-extending/02-constraints-and-results.md#options).
 
+`AllowingExceptions`, `IncludingUncasedLetters`, `IgnoringDuplicates` and `IgnoringInterspersedItems` take an optional
+`bool` like `IgnoringCase`: with `false` they behave as if the option was not specified, but a second call still
+throws. Only `IgnoringInterspersedItems(true)` conflicts with `InAnyOrder()`.
+
 ## String patterns
 
 A wildcard pattern has to match the complete subject. v2 anchored it to a single line, so

@@ -335,7 +335,8 @@ await Expect.That(() => retryPolicy.Execute(alwaysFailing)).ExecutesIn().Allowin
 The duration is measured up to the throw, and the exception is still shown in the failure message when the delegate
 misses the expected time. A timeout from `WithTimeout` or from the upper bound still fails the expectation with "did
 not finish within …", and a canceled `WithCancellation` token leaves it inconclusive. An `OperationCanceledException`
-that the delegate throws for its own reasons is allowed like any other exception.
+that the delegate throws for its own reasons is allowed like any other exception. `AllowingExceptions(false)` behaves
+as if the option was not specified.
 
 :::warning[`AllowingExceptions()` with `AtMost(…)` accepts an immediate crash]
 A delegate that throws in microseconds satisfies an upper bound, which is the point of the option, but it means the

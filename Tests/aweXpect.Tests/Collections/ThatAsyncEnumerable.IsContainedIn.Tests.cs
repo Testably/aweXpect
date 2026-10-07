@@ -4115,6 +4115,93 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Test]
+			[Arguments(false)]
+			[Arguments(true)]
+			public async Task WhenFalseIsCombinedWithInAnyOrder_ShouldMatchInAnyOrder(bool inAnyOrderFirst)
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([3, 1,]);
+				int[] expected = [1, 2, 3,];
+
+				async Task Act()
+				{
+					if (inAnyOrderFirst)
+					{
+						await That(subject).IsContainedIn(expected).InAnyOrder().IgnoringInterspersedItems(false);
+					}
+					else
+					{
+						await That(subject).IsContainedIn(expected).IgnoringInterspersedItems(false).InAnyOrder();
+					}
+				}
+
+				await That(Act).DoesNotThrow()
+					.Because("not ignoring interspersed items states the default, which does not compete with the order");
+			}
+
+			[Test]
+			public async Task WhenFalseIsSpecified_ShouldFailForInterspersedItems()
+			{
+				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "c",]);
+				string[] expected = ["a", "b", "c",];
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected).IgnoringInterspersedItems(false);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is contained in collection expected in order and contiguous,
+					             but it contained item "c" at index 1 instead of "b"
+
+					             Collection:
+					             [
+					               "a",
+					               "c"
+					             ]
+
+					             Expected:
+					             [
+					               "a",
+					               "b",
+					               "c"
+					             ]
+					             """)
+					.Because("the items are required to be contiguous, as without the option");
+			}
+
+			[Test]
+			public async Task WhenFalseIsSpecified_ShouldSucceedForTheNegationWithInterspersedItems()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 3,]);
+				int[] expected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn(expected).IgnoringInterspersedItems(false);
+
+				await That(Act).DoesNotThrow()
+					.Because("the items are required to be contiguous, as without the option");
+			}
+
+			[Test]
+			[Arguments(true, true)]
+			[Arguments(true, false)]
+			[Arguments(false, true)]
+			[Arguments(false, false)]
+			public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException(bool first, bool second)
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 3,]);
+				int[] expected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected)
+						.IgnoringInterspersedItems(first).IgnoringInterspersedItems(second);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("IgnoringInterspersedItems cannot be specified more than once.")
+					.Because("the second value would silently replace the first one");
+			}
+
+			[Test]
 			public async Task WithEmptySubjectAndManyExpectedItems_ShouldSucceed()
 			{
 				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());

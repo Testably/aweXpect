@@ -149,6 +149,23 @@ public sealed partial class ThatString
 					             but it was "A漢字B"
 					             """);
 			}
+
+			[Test]
+			public async Task WhenFalseIsSpecified_ShouldFailForLowerCaseLetterWithoutUpperCaseForm()
+			{
+				string subject = "STRAßE";
+
+				async Task Act()
+					=> await That(subject).IsNotUpperCased().IncludingUncasedLetters(false);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not upper-cased,
+					             but it was "STRAßE"
+					             """)
+					.Because("a letter without an upper-case form counts as upper-cased, as without the option");
+			}
 		}
 
 		public sealed class Tests

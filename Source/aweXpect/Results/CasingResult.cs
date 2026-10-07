@@ -24,15 +24,16 @@ public class CasingResult<TType, TThat> : AndOrResult<TType, TThat>
 
 	/// <summary>
 	///     Also rejects letters without an upper-case (lower-case) form and titlecase letters, instead of counting them
-	///     as upper-cased (lower-cased).
+	///     as upper-cased (lower-cased), according to the <paramref name="includeUncasedLetters" /> parameter.
 	/// </summary>
 	/// <remarks>
 	///     For example, the lower-case letter <c>ß</c> has no single upper-case form, so <c>"STRAßE"</c> is then no
 	///     longer upper-cased, and a titlecase letter like <c>ǅ</c> is then neither upper-cased nor lower-cased.
 	/// </remarks>
-	public AndOrResult<TType, TThat> IncludingUncasedLetters()
+	/// <exception cref="System.InvalidOperationException">The uncased letters are already specified.</exception>
+	public AndOrResult<TType, TThat> IncludingUncasedLetters(bool includeUncasedLetters = true)
 	{
-		_options.IncludesUncasedLetters = true;
+		_options.IncludingUncasedLetters(includeUncasedLetters);
 		return this;
 	}
 }

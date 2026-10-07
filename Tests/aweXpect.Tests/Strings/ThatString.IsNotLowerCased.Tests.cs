@@ -149,6 +149,23 @@ public sealed partial class ThatString
 
 				await That(Act).DoesNotThrow();
 			}
+
+			[Test]
+			public async Task WhenFalseIsSpecified_ShouldFailForUpperCaseLetterWithoutLowerCaseForm()
+			{
+				string subject = "𝐀";
+
+				async Task Act()
+					=> await That(subject).IsNotLowerCased().IncludingUncasedLetters(false);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not lower-cased,
+					             but it was "𝐀"
+					             """)
+					.Because("a letter without a lower-case form counts as lower-cased, as without the option");
+			}
 		}
 
 		public sealed class Tests

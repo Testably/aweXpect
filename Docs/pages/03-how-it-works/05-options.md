@@ -99,6 +99,9 @@ await Expect.That(songs).Contains(["Two of Us", "Let It Be"]).IgnoringInterspers
 await Expect.That(songs).IsContainedIn(["Two of Us", "Dig a Pony", "Let It Be", "Get Back"]).Properly();
 ```
 
+`IgnoringDuplicates` and `IgnoringInterspersedItems` take an optional `bool`; with `false` they behave as if the option
+was not specified.
+
 ## Time
 
 `Within(timeout)` limits how long an expectation waits, e.g. for a condition, an event or a callback, and

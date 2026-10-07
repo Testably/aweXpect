@@ -58,6 +58,8 @@ public partial class CollectionMatchOptions(
 	private bool _ignoringDuplicates;
 	private bool _ignoringInterspersedItems;
 	private bool _inAnyOrder;
+	private bool _isIgnoringDuplicatesSpecified;
+	private bool _isIgnoringInterspersedItemsSpecified;
 	private bool _isProperlySpecified;
 
 	/// <summary>
@@ -98,7 +100,7 @@ public partial class CollectionMatchOptions(
 	/// </summary>
 	/// <exception cref="InvalidOperationException">
 	///     The order is already specified, e.g. interspersed items are already ignored via
-	///     <see cref="IgnoringInterspersedItems()" />.
+	///     <see cref="IgnoringInterspersedItems(bool)" />.
 	/// </exception>
 	public void InAnyOrder()
 	{
@@ -107,18 +109,20 @@ public partial class CollectionMatchOptions(
 	}
 
 	/// <summary>
-	///     Ignores duplicates in both collections.
+	///     Ignores duplicates in both collections,
+	///     according to the <paramref name="ignoreDuplicates" /> parameter.
 	/// </summary>
 	/// <remarks>
 	///     Only which items occur matters, not how often: every expected item has to be matched by an item, and every
 	///     item has to match an expected item, as far as the relation requires it, so <c>[1, 1, 2]</c> matches
 	///     <c>[1, 2]</c>.
 	/// </remarks>
-	/// <exception cref="InvalidOperationException">Duplicates are already ignored.</exception>
-	public void IgnoringDuplicates()
+	/// <exception cref="InvalidOperationException">The duplicates are already specified.</exception>
+	public void IgnoringDuplicates(bool ignoreDuplicates = true)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_ignoringDuplicates, nameof(IgnoringDuplicates));
-		_ignoringDuplicates = true;
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isIgnoringDuplicatesSpecified, nameof(IgnoringDuplicates));
+		_isIgnoringDuplicatesSpecified = true;
+		_ignoringDuplicates = ignoreDuplicates;
 	}
 
 	/// <summary>
@@ -148,15 +152,24 @@ public partial class CollectionMatchOptions(
 	}
 
 	/// <summary>
-	///     Ignores items that appear in between the matched items.
+	///     Ignores items that appear in between the matched items,
+	///     according to the <paramref name="ignoreInterspersedItems" /> parameter.
 	/// </summary>
 	/// <exception cref="InvalidOperationException">
-	///     The order is already specified, e.g. ignored via <see cref="InAnyOrder()" />.
+	///     The interspersed items are already specified, or the order is already ignored via
+	///     <see cref="InAnyOrder()" />.
 	/// </exception>
-	public void IgnoringInterspersedItems()
+	public void IgnoringInterspersedItems(bool ignoreInterspersedItems = true)
 	{
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(OrderOption, nameof(IgnoringInterspersedItems));
-		_ignoringInterspersedItems = true;
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_isIgnoringInterspersedItemsSpecified,
+			nameof(IgnoringInterspersedItems));
+		if (ignoreInterspersedItems)
+		{
+			ThrowHelper.ThrowIfOptionIsAlreadySpecified(OrderOption, nameof(IgnoringInterspersedItems));
+		}
+
+		_isIgnoringInterspersedItemsSpecified = true;
+		_ignoringInterspersedItems = ignoreInterspersedItems;
 	}
 
 	/// <summary>

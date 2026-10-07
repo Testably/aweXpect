@@ -398,6 +398,8 @@ await Expect.That("STRAßE").IsNotUpperCased().IncludingUncasedLetters()
   .Because("ß is a lowercase letter without an uppercase form");
 ```
 
+`IncludingUncasedLetters(false)` behaves as if the option was not specified.
+
 ## Parsing
 
 :::note[.NET 8 or later]
