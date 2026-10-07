@@ -129,7 +129,11 @@ internal class EvaluationContext : IEvaluationContext
 	{
 		foreach (IMaterialization materialization in this.GetMaterializations())
 		{
-			await materialization.ReleaseSource();
+			Task release = materialization.ReleaseSource();
+			if (!release.IsCompleted)
+			{
+				await AwaitOrAbandon(release);
+			}
 		}
 
 		if (_releases is not null)
@@ -155,6 +159,28 @@ internal class EvaluationContext : IEvaluationContext
 			{
 				await check.ReleaseMaterializations();
 			}
+		}
+	}
+
+	/// <summary>
+	///     Awaits the <paramref name="release" /> of a source until the timeout of the evaluation elapses or the
+	///     evaluation is canceled, and abandons it then.
+	/// </summary>
+	/// <remarks>
+	///     The outcome is already decided when a source is released, so a source that does not finish disposing must
+	///     neither change it nor keep the evaluation from ending.
+	/// </remarks>
+	private async Task AwaitOrAbandon(Task release)
+	{
+		EvaluationCancellation cancellation = Cancellation.ForRemainingTimeout();
+		using EvaluationCancellation.ReleaseScope _ = cancellation.ReleaseAtTheEnd();
+		try
+		{
+			await release.AbandonOnCancellation(cancellation.Token);
+		}
+		catch (OperationCanceledException) when (cancellation.Token.IsCancellationRequested)
+		{
+			// The source keeps disposing on its own.
 		}
 	}
 

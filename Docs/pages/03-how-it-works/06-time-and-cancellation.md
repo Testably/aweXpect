@@ -305,6 +305,10 @@ An expectation that needs an item after the cancellation never reads the cancell
 regardless of whether it occurs while waiting for an item or between two items. Expectations like `HasCount` or
 `IsEmpty` list the items received so far.
 
+The enumerator is disposed when the expectation ends. A timeout or a cancellation also stops waiting for a
+`DisposeAsync` that does not complete. The outcome is already decided at that point and does not change: a met
+expectation stays met, and a failure is reported as it is.
+
 ## Complete collections
 
 A timeout or a cancellation only stops reading the items that still have to come from a collection, e.g. from a lazily
