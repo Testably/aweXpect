@@ -11,6 +11,22 @@ public sealed partial class ThatString
 		public sealed class Tests
 		{
 			[Test]
+			[Arguments("foo")]
+			[Arguments("baz")]
+			public async Task AsPrefix_WhenSeveralUnexpectedValuesAreUnusable_ShouldThrowForTheFirstOne(string subject)
+			{
+				string?[] unexpected = ["foo", "", null,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected).AsPrefix();
+
+				await That(Act).ThrowsExactly<ArgumentException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' prefix cannot be empty.").AsPrefix()
+					.Because("the values are validated in their order");
+			}
+
+			[Test]
 			public async Task AsPrefix_WhenSubjectIsNull_ShouldFail()
 			{
 				string? subject = null;
@@ -32,6 +48,52 @@ public sealed partial class ThatString
 			}
 
 			[Test]
+			[Arguments("foo", true)]
+			[Arguments("foo", false)]
+			[Arguments("bar", true)]
+			[Arguments("bar", false)]
+			[Arguments("baz", true)]
+			[Arguments("baz", false)]
+			[Arguments(null, true)]
+			[Arguments(null, false)]
+			public async Task AsPrefix_WhenUnexpectedContainsAnEmptyString_ShouldThrowArgumentException(
+				string? subject, bool isFirst)
+			{
+				string?[] unexpected = isFirst ? ["", "foo", "bar",] : ["foo", "bar", "",];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected).AsPrefix();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' prefix cannot be empty.").AsPrefix()
+					.Because("an empty prefix is rejected whichever value the subject matches");
+			}
+
+			[Test]
+			[Arguments("foo", true)]
+			[Arguments("foo", false)]
+			[Arguments("bar", true)]
+			[Arguments("bar", false)]
+			[Arguments("baz", true)]
+			[Arguments("baz", false)]
+			[Arguments(null, true)]
+			[Arguments(null, false)]
+			public async Task AsPrefix_WhenUnexpectedContainsNull_ForEverySubjectAndPosition_ShouldThrowArgumentNullException(
+				string? subject, bool isFirst)
+			{
+				string?[] unexpected = isFirst ? [null, "foo", "bar",] : ["foo", "bar", null,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected).AsPrefix();
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' prefix cannot be null.").AsPrefix()
+					.Because("a missing prefix is rejected whichever value the subject matches");
+			}
+
+			[Test]
 			public async Task AsPrefix_WhenUnexpectedContainsNull_ShouldThrowArgumentNullException()
 			{
 				string? subject = null;
@@ -47,6 +109,96 @@ public sealed partial class ThatString
 			}
 
 			[Test]
+			public async Task AsPrefix_WhenUnexpectedIsInfiniteAndContainsAPrefixOfTheSubject_ShouldFail()
+			{
+				string subject = "item-8 and more";
+				IEnumerable<string> unexpected = Factory.GetFibonacciNumbers(i => $"item-{i}");
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected).AsPrefix();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of unexpected as prefix,
+					             but it was "item-8 and more"
+
+					             Unexpected values:
+					             ["item-1", "item-1", "item-2", "item-3", "item-5", "item-8", "item-13", "item-21", "item-34", "item-55", (… and maybe more)]
+					             """)
+					.Because("a sequence that is not a collection is only enumerated until the subject is found");
+			}
+
+			[Test]
+			[Arguments("foo", true)]
+			[Arguments("foo", false)]
+			[Arguments("bar", true)]
+			[Arguments("bar", false)]
+			[Arguments("baz", true)]
+			[Arguments("baz", false)]
+			[Arguments(null, true)]
+			[Arguments(null, false)]
+			public async Task AsRegex_WhenUnexpectedContainsAnEmptyString_ShouldThrowArgumentException(
+				string? subject, bool isFirst)
+			{
+				string?[] unexpected = isFirst ? ["", "foo", "bar",] : ["foo", "bar", "",];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected).AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' regex pattern cannot be empty.").AsPrefix()
+					.Because("an empty pattern is rejected whichever value the subject matches");
+			}
+
+			[Test]
+			[Arguments("foo", true)]
+			[Arguments("foo", false)]
+			[Arguments("bar", true)]
+			[Arguments("bar", false)]
+			[Arguments("baz", true)]
+			[Arguments("baz", false)]
+			[Arguments(null, true)]
+			[Arguments(null, false)]
+			public async Task AsRegex_WhenUnexpectedContainsAnInvalidPattern_ShouldThrowArgumentException(
+				string? subject, bool isFirst)
+			{
+				string?[] unexpected = isFirst ? ["[", "foo", "bar",] : ["foo", "bar", "[",];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected).AsRegex();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' regex pattern is invalid: ").AsPrefix()
+					.Because("an invalid pattern is rejected whichever value the subject matches");
+			}
+
+			[Test]
+			[Arguments("foo", true)]
+			[Arguments("foo", false)]
+			[Arguments("bar", true)]
+			[Arguments("bar", false)]
+			[Arguments("baz", true)]
+			[Arguments("baz", false)]
+			[Arguments(null, true)]
+			[Arguments(null, false)]
+			public async Task AsRegex_WhenUnexpectedContainsNull_ForEverySubjectAndPosition_ShouldThrowArgumentNullException(
+				string? subject, bool isFirst)
+			{
+				string?[] unexpected = isFirst ? [null, "foo", "bar",] : ["foo", "bar", null,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected).AsRegex();
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' regex pattern cannot be null.").AsPrefix()
+					.Because("a missing pattern is rejected whichever value the subject matches");
+			}
+
+			[Test]
 			public async Task AsRegex_WhenUnexpectedContainsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "bar";
@@ -59,6 +211,52 @@ public sealed partial class ThatString
 					.WithParamName("unexpected").And
 					.WithMessage("The 'unexpected' regex pattern cannot be null.").AsPrefix()
 					.Because("the negated expectation receives the patterns as 'unexpected'");
+			}
+
+			[Test]
+			[Arguments("foo", true)]
+			[Arguments("foo", false)]
+			[Arguments("bar", true)]
+			[Arguments("bar", false)]
+			[Arguments("baz", true)]
+			[Arguments("baz", false)]
+			[Arguments(null, true)]
+			[Arguments(null, false)]
+			public async Task AsSuffix_WhenUnexpectedContainsAnEmptyString_ShouldThrowArgumentException(
+				string? subject, bool isFirst)
+			{
+				string?[] unexpected = isFirst ? ["", "foo", "bar",] : ["foo", "bar", "",];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected).AsSuffix();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' suffix cannot be empty.").AsPrefix()
+					.Because("an empty suffix is rejected whichever value the subject matches");
+			}
+
+			[Test]
+			[Arguments("foo", true)]
+			[Arguments("foo", false)]
+			[Arguments("bar", true)]
+			[Arguments("bar", false)]
+			[Arguments("baz", true)]
+			[Arguments("baz", false)]
+			[Arguments(null, true)]
+			[Arguments(null, false)]
+			public async Task AsSuffix_WhenUnexpectedContainsNull_ShouldThrowArgumentNullException(
+				string? subject, bool isFirst)
+			{
+				string?[] unexpected = isFirst ? [null, "foo", "bar",] : ["foo", "bar", null,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected).AsSuffix();
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' suffix cannot be null.").AsPrefix()
+					.Because("a missing suffix is rejected whichever value the subject matches");
 			}
 
 			[Test]
@@ -80,6 +278,29 @@ public sealed partial class ThatString
 					             ["fo*", "ba*"]
 					             """)
 					.Because("a null has no content to match the pattern against");
+			}
+
+			[Test]
+			[Arguments("foo", true)]
+			[Arguments("foo", false)]
+			[Arguments("bar", true)]
+			[Arguments("bar", false)]
+			[Arguments("baz", true)]
+			[Arguments("baz", false)]
+			[Arguments(null, true)]
+			[Arguments(null, false)]
+			public async Task AsWildcard_WhenUnexpectedContainsNull_ShouldThrowArgumentNullException(
+				string? subject, bool isFirst)
+			{
+				string?[] unexpected = isFirst ? [null, "foo", "bar",] : ["foo", "bar", null,];
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(unexpected).AsWildcard();
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' wildcard pattern cannot be null.").AsPrefix()
+					.Because("a missing pattern is rejected whichever value the subject matches");
 			}
 
 			[Test]

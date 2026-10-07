@@ -199,6 +199,9 @@ await Expect.That(title).IsOneOf("HELP!", "ABBEY ROAD", "REVOLVER").IgnoringCase
 await Expect.That(title).IsNotOneOf("Help!", "Revolver");
 ```
 
+With a [match type](#match-types), an unusable pattern is rejected whichever alternative the subject matches; only a
+lazily evaluated sequence is validated just as far as it is enumerated, i.e. up to the first match.
+
 ## Null, empty or whitespace
 
 You can verify that the `string` is `null`, empty or contains only whitespace:

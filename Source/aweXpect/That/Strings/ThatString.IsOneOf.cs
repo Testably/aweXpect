@@ -53,22 +53,39 @@ public static partial class ThatString
 		/// <remarks>
 		///     A match type that inspects the content of the subject, e.g. a prefix or a pattern, cannot answer for a
 		///     <see langword="null" /> subject, because it has no content.
+		///     <para />
+		///     Such a match type validates its pattern while it is compared, so a collection of patterns is compared
+		///     completely, which rejects an unusable pattern whichever value the subject matches. Any other sequence is
+		///     only enumerated up to the first match, as it may be infinite.
 		/// </remarks>
 		public async ValueTask<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			StringEqualityOptions stringEqualityOptions = options;
+			bool comparesAllValues = options.InspectsSubject && expectedValues is ICollection<string?>;
+			bool isOneOf = false;
 			foreach (string? value in expectedValues)
 			{
 				if (await stringEqualityOptions
 					    .AreConsideredEqual(actual, value))
 				{
-					Outcome = Outcome.Success;
-					return this;
+					isOneOf = true;
+					if (!comparesAllValues)
+					{
+						break;
+					}
 				}
 			}
 
-			Outcome = actual is null && options.InspectsSubject ? Outcome.FailureBothWays : Outcome.Failure;
+			if (isOneOf)
+			{
+				Outcome = Outcome.Success;
+			}
+			else
+			{
+				Outcome = actual is null && options.InspectsSubject ? Outcome.FailureBothWays : Outcome.Failure;
+			}
+
 			return this;
 		}
 
