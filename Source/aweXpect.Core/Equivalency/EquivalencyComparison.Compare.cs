@@ -1450,15 +1450,6 @@ public static partial class EquivalencyComparison
 		/// </summary>
 		private readonly int[] _visitedInSearch;
 
-		/// <summary>
-		///     The number of differences of the pairs that were considered for the leftovers.
-		/// </summary>
-		/// <remarks>
-		///     Only the leftovers need the count, and counting the differences means writing them, so the search for
-		///     augmenting paths only decides the pairs it considers.
-		/// </remarks>
-		private int?[,]? _differenceCounts;
-
 		private int _search;
 
 		public ElementMatcher(object?[] actualObjects, int[] actualIndices, object?[] expectedObjects,
@@ -1676,12 +1667,6 @@ public static partial class EquivalencyComparison
 		private async ValueTask<int>
 			GetDifferenceCount(int actualIndex, int expectedIndex)
 		{
-			_differenceCounts ??= new int?[_actualIndices.Length, _expectedIndices.Length];
-			if (_differenceCounts[actualIndex, expectedIndex] is { } cachedCount)
-			{
-				return cachedCount;
-			}
-
 			int differenceCount = _context.DifferenceCount;
 			bool wasCountingOnly = _context.IsCountingOnly;
 			_context.IsCountingOnly = true;
@@ -1698,7 +1683,6 @@ public static partial class EquivalencyComparison
 
 			int count = _context.DifferenceCount - differenceCount;
 			_context.DifferenceCount = differenceCount;
-			_differenceCounts[actualIndex, expectedIndex] = count;
 			return count;
 		}
 

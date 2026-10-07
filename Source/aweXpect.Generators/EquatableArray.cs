@@ -13,7 +13,7 @@ namespace aweXpect.Generators;
 internal readonly struct EquatableArray<T>(ImmutableArray<T> values) : IEquatable<EquatableArray<T>>
 	where T : IEquatable<T>
 {
-	public ImmutableArray<T> Values { get; } = values.IsDefault ? ImmutableArray<T>.Empty : values;
+	public ImmutableArray<T> Values { get; } = values;
 
 	public bool Equals(EquatableArray<T> other) => Values.SequenceEqual(other.Values);
 

@@ -16,11 +16,7 @@ public abstract partial class ConstraintResult
 		: ConstraintResult(inner.FurtherProcessingStrategy)
 	{
 		/// <inheritdoc cref="ConstraintResult.Outcome" />
-		public override Outcome Outcome
-		{
-			get => inner.Outcome;
-			protected set => inner.Outcome = value;
-		}
+		public override Outcome Outcome => inner.Outcome;
 
 		/// <inheritdoc cref="ConstraintResult.FailureCause" />
 		public override Exception? FailureCause => inner.FailureCause;

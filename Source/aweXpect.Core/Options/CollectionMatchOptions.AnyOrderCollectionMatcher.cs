@@ -253,24 +253,11 @@ public partial class CollectionMatchOptions
 		}
 
 		/// <remarks>
-		///     Without pending items that have to be awaited, it returns without a state machine.
+		///     Every item resolves the pending items right away, so none is left to resolve here.
 		/// </remarks>
 		private ValueTask<(bool, string?)>
 			CompleteTheMatching(string it, IOptionsEquality<T2> options, int maximumNumber)
-		{
-			ItemMatching<T, T3> matching = GetMatching(options);
-			ValueTask resolved = matching.ResolvePendingItems();
-			return resolved.IsCompletedSuccessfully
-				? new ValueTask<(bool, string?)>(Complete(it, matching, options, maximumNumber))
-				: CompleteAsync(resolved, it, matching, options, maximumNumber);
-		}
-
-		private async ValueTask<(bool, string?)> CompleteAsync(ValueTask resolved, string it,
-			ItemMatching<T, T3> matching, IOptionsEquality<T2> options, int maximumNumber)
-		{
-			await resolved;
-			return Complete(it, matching, options, maximumNumber);
-		}
+			=> new(Complete(it, GetMatching(options), options, maximumNumber));
 
 		private (bool, string?) Complete(string it, ItemMatching<T, T3> matching, IOptionsEquality<T2> options,
 			int maximumNumber)

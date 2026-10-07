@@ -50,7 +50,7 @@ public static partial class ThatException
 	{
 		expectations.ThrowIfNull();
 		return new AndOrResult<Exception, IThat<Exception?>>(subject.Get().ExpectationBuilder
-				.ForMember<Exception?, Exception?>(e => e?.InnerException,
+				.ForMember<Exception, Exception?>(e => e.InnerException,
 					" that ",
 					false)
 				.Validate((it, grammars)
@@ -85,8 +85,8 @@ public static partial class ThatException
 		expectations.ThrowIfNull();
 		return new AndOrResult<Exception, IThat<Exception?>>(subject.Get().ExpectationBuilder
 				// An inner exception of another type is hidden like a missing one, as the type mismatch already fails.
-				.ForMember<Exception?, Exception?>(
-					e => e?.InnerException is { } inner && type.IsOrImplements(inner) ? inner : null,
+				.ForMember<Exception, Exception?>(
+					e => e.InnerException is { } inner && type.IsOrImplements(inner) ? inner : null,
 					" that ",
 					false)
 				.Validate((it, grammars)

@@ -37,11 +37,6 @@ internal static class IncludeMembersExtensions
 
 	public static IEnumerable<FieldInfo> GetFields(this Type type, IncludeMembers includeMembers)
 	{
-		if (includeMembers == IncludeMembers.None)
-		{
-			return Enumerable.Empty<FieldInfo>();
-		}
-
 		return Fields.GetOrAdd((type, includeMembers), static key
 			=> GetAllFields(key.Item1, key.Item2)
 				.Where(field => Includes(key.Item2, field.IsPublic, field.IsAssembly || field.IsFamilyOrAssembly))
@@ -50,11 +45,6 @@ internal static class IncludeMembersExtensions
 
 	public static IEnumerable<PropertyInfo> GetProperties(this Type type, IncludeMembers includeMembers)
 	{
-		if (includeMembers == IncludeMembers.None)
-		{
-			return Enumerable.Empty<PropertyInfo>();
-		}
-
 		return Properties.GetOrAdd((type, includeMembers), static key
 			=> GetAllProperties(key.Item1, key.Item2)
 				.Where(property =>

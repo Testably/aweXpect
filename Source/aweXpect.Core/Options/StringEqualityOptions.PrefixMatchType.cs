@@ -96,11 +96,6 @@ public partial class StringEqualityOptions
 			AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
 				IEqualityComparer<string>? comparer)
 		{
-			if (actual is null && expected is null)
-			{
-				return new ValueTask<bool>(true);
-			}
-
 			if (actual is null || expected is null)
 			{
 				return new ValueTask<bool>(false);

@@ -271,7 +271,6 @@ public static class ConstraintResultExtensions
 
 	private sealed class ConstraintResultExpectationWrapper : ConstraintResult
 	{
-		private readonly bool _includeInnerExpectation;
 		private readonly ConstraintResult _inner;
 		private readonly string? _member;
 		private readonly Action<StringBuilder>? _prefix;
@@ -280,7 +279,6 @@ public static class ConstraintResultExtensions
 		public ConstraintResultExpectationWrapper(ConstraintResult inner,
 			Action<StringBuilder>? prefix = null,
 			Action<StringBuilder>? suffix = null,
-			bool includeInnerExpectation = true,
 			string? member = null) : base(inner.FurtherProcessingStrategy)
 		{
 			_member = member;
@@ -288,7 +286,6 @@ public static class ConstraintResultExtensions
 			Outcome = _inner.Outcome;
 			_prefix = prefix;
 			_suffix = suffix;
-			_includeInnerExpectation = includeInnerExpectation;
 		}
 
 		public override Exception? FailureCause => _inner.FailureCause;
@@ -313,16 +310,8 @@ public static class ConstraintResultExtensions
 		{
 			StringBuilder prefix = new();
 			_prefix?.Invoke(prefix);
-			if (_includeInnerExpectation)
-			{
-				stringBuilder.AppendSeparatedExpectation(prefix.ToString(),
-					sb => _inner.AppendExpectation(sb, indentation));
-			}
-			else
-			{
-				stringBuilder.Append(prefix);
-			}
-
+			stringBuilder.AppendSeparatedExpectation(prefix.ToString(),
+				sb => _inner.AppendExpectation(sb, indentation));
 			_suffix?.Invoke(stringBuilder);
 		}
 

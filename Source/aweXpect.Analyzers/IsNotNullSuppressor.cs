@@ -209,8 +209,7 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 			if (semanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol is not IMethodSymbol methodSymbol ||
 			    !GuaranteesNotNull(methodSymbol, semanticModel.Compilation) ||
 			    IsCombinedWithOr(invocation) ||
-			    IsConditionallyEvaluated(invocation, statement, semanticModel, cancellationToken) ||
-			    IsInsideThatAny(invocation, statement, semanticModel, cancellationToken))
+			    IsConditionallyEvaluated(invocation, statement, semanticModel, cancellationToken))
 			{
 				continue;
 			}
@@ -303,27 +302,6 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 		   (methodSymbol.MatchesFullName("aweXpect", "Synchronous", "SynchronouslyExtensions", "VerifySynchronously") ||
 		    methodSymbol.MatchesFullName("aweXpect", "Synchronous", "Synchronously", "Verify")) &&
 		   IsAweXpectAssembly(methodSymbol.ContainingAssembly, semanticModel.Compilation);
-
-	/// <summary>
-	///     Checks if the <paramref name="node" /> is nested inside an <c>Expect.ThatAny</c> combination within the
-	///     <paramref name="statement" />, which only requires any of its expectations to be met.
-	/// </summary>
-	private static bool IsInsideThatAny(SyntaxNode node, StatementSyntax statement, SemanticModel semanticModel,
-		CancellationToken cancellationToken)
-	{
-		for (SyntaxNode? current = node; current is not null && current != statement; current = current.Parent)
-		{
-			if (current is InvocationExpressionSyntax invocation &&
-			    semanticModel.GetSymbolInfo(invocation, cancellationToken).Symbol is IMethodSymbol methodSymbol &&
-			    methodSymbol.MatchesFullName("aweXpect", "Expect", "ThatAny") &&
-			    IsAweXpectAssembly(methodSymbol.ContainingAssembly, semanticModel.Compilation))
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
 
 	/// <summary>
 	///     Checks if any lambda or local function in the enclosing member writes to the <paramref name="subject" />,
