@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Core.EvaluationContext;
 
@@ -20,13 +21,28 @@ public sealed class EvaluationCancellation
 	internal static readonly TimeSpan Tolerance = TimeSpan.FromMilliseconds(2);
 
 	private readonly CancellationToken _callerToken;
+	private readonly TimeSpan? _outerTimeout;
+	private readonly long _startTimestamp;
 	private readonly CancellationTokenSource? _timeoutCts;
 
-	internal EvaluationCancellation(TimeSpan? timeout, CancellationToken callerToken)
+	/// <param name="timeout">The timeout that cancels the evaluation.</param>
+	/// <param name="callerToken">The token with which the caller cancels the evaluation.</param>
+	/// <param name="outerTimeout">
+	///     The timeout of the expectation, when it does not cancel the evaluation and therefore is not the
+	///     <paramref name="timeout" />: it still limits what is awaited after the evaluation, see
+	///     <see cref="ForRemainingTimeout" />.
+	/// </param>
+	internal EvaluationCancellation(TimeSpan? timeout, CancellationToken callerToken, TimeSpan? outerTimeout = null)
 	{
 		Timeout = timeout;
 		_callerToken = callerToken;
+		_outerTimeout = outerTimeout ?? timeout;
 		Token = callerToken;
+		if (_outerTimeout is not null)
+		{
+			_startTimestamp = RealTimeSystem.Instance.GetTimestamp();
+		}
+
 		if (timeout is not null)
 		{
 			_timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(callerToken);
@@ -111,6 +127,26 @@ public sealed class EvaluationCancellation
 	///     Only the evaluation that created the cancellation releases it, so it is not part of the public API.
 	/// </remarks>
 	internal void Release() => _timeoutCts?.Dispose();
+
+	/// <summary>
+	///     Returns the cancellation for what is still awaited after the evaluation released the timer of the
+	///     <see cref="Timeout" />: its token is canceled by the caller or when the rest of the timeout of the
+	///     expectation elapses, which is measured from the start of the evaluation.
+	/// </summary>
+	/// <remarks>
+	///     Without a timeout it is this instance, as the token of the caller needs no timer. The returned cancellation
+	///     must be released as well.
+	/// </remarks>
+	internal EvaluationCancellation ForRemainingTimeout()
+	{
+		if (_outerTimeout is not { } timeout)
+		{
+			return this;
+		}
+
+		TimeSpan remaining = timeout - RealTimeSystem.Instance.GetElapsedTime(_startTimestamp);
+		return new EvaluationCancellation(remaining > TimeSpan.Zero ? remaining : TimeSpan.Zero, _callerToken);
+	}
 
 	/// <summary>
 	///     Returns a scope that releases the timer of the <see cref="Timeout" /> when it is disposed.

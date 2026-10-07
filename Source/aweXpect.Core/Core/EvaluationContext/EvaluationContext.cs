@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.TimeSystem;
@@ -62,19 +63,28 @@ internal class EvaluationContext : IEvaluationContext
 	}
 
 	/// <summary>
+	///     Whether a reason is registered with <see cref="ResolveOnFailure" /> in this context or in its current
+	///     attempt.
+	/// </summary>
+	public bool HasPendingReasons => _pendingReasons is not null || _attempt is { HasPendingReasons: true, };
+
+	/// <summary>
 	///     Resolves the reasons registered with <see cref="ResolveOnFailure" /> in this context and in its current
 	///     attempt, before the failure message of the evaluation is created.
 	/// </summary>
-	public async Task ResolvePendingReasons()
+	/// <remarks>
+	///     A reason that is still pending when the <paramref name="cancellationToken" /> is canceled is abandoned.
+	/// </remarks>
+	public async Task ResolvePendingReasons(CancellationToken cancellationToken)
 	{
 		foreach (AsyncBecauseReason reason in _pendingReasons ?? [])
 		{
-			await reason.Resolve();
+			await reason.Resolve(cancellationToken);
 		}
 
 		if (_attempt is not null)
 		{
-			await _attempt.ResolvePendingReasons();
+			await _attempt.ResolvePendingReasons(cancellationToken);
 		}
 	}
 

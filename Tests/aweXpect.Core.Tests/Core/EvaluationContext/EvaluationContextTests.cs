@@ -50,10 +50,28 @@ public class EvaluationContextTests
 		AsyncBecauseReason reason = new(Task.FromResult<string?>("of a"));
 		attempt.ResolveOnFailure(reason);
 
-		await context.ResolvePendingReasons();
+		await context.ResolvePendingReasons(CancellationToken.None);
 
 		await That(reason.ToString()).IsEqualTo(", because of a")
 			.Because("the failure message of the evaluation is created from the result of its last attempt");
+	}
+
+	[Test]
+	public async Task ResolvePendingReasons_WhenCancellationIsRequested_ShouldAbandonAPendingReason()
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		Context context = new();
+		AsyncBecauseReason reason = new(becauseSource.Task);
+		context.ResolveOnFailure(reason);
+
+		Task resolve = context.ResolvePendingReasons(new CancellationToken(true));
+		await Task.WhenAny(resolve, Task.Delay(TimeSpan.FromSeconds(10)));
+		bool isCompleted = resolve.IsCompleted;
+		becauseSource.SetResult("of a");
+
+		await That(isCompleted).IsTrue()
+			.Because("the cancellation must stop waiting for a reason that does not arrive");
+		await That(reason.ToString()).IsEqualTo(", because the reason was not available in time");
 	}
 
 	[Test]

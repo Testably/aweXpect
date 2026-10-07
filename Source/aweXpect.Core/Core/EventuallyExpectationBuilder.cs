@@ -82,7 +82,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 		// attempt at the end of the budget still decides. A budget of zero makes a single evaluation that only the
 		// outer timeout bounds.
 		EvaluationCancellation cancellation = new(
-			timeout < retryTimeout || retryTimeout == TimeSpan.Zero ? timeout : null, cancellationToken);
+			timeout < retryTimeout || retryTimeout == TimeSpan.Zero ? timeout : null, cancellationToken, timeout);
 		context.Cancellation = cancellation;
 		try
 		{

@@ -53,6 +53,8 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	/// </summary>
 	/// <remarks>
 	///     When the <paramref name="reason" /> resolves to <see langword="null" />, empty or only whitespace, it is ignored.
+	///     A <paramref name="reason" /> that is still pending when the timeout elapses or the evaluation is canceled is
+	///     not awaited any longer, and the failure message states that the reason was not available in time.
 	/// </remarks>
 	public ExpectationResult Because(Task<string?> reason)
 	{
@@ -252,6 +254,8 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	/// </summary>
 	/// <remarks>
 	///     When the <paramref name="reason" /> resolves to <see langword="null" />, empty or only whitespace, it is ignored.
+	///     A <paramref name="reason" /> that is still pending when the timeout elapses or the evaluation is canceled is
+	///     not awaited any longer, and the failure message states that the reason was not available in time.
 	/// </remarks>
 	public TSelf Because(Task<string?> reason)
 	{

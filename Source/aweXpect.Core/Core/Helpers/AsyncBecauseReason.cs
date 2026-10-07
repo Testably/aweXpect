@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
@@ -35,8 +36,26 @@ internal sealed class AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 			return result;
 		}
 
-		await Resolve();
+		await Resolve(CancellationToken.None);
 		if (_message is null)
+		{
+			return result;
+		}
+
+		return result.AppendExpectationText(_appendMessage ??= stringBuilder => stringBuilder.Append(_message));
+	}
+
+	/// <summary>
+	///     Applies the reason to the <paramref name="result" /> of the whole expectation without awaiting it.
+	/// </summary>
+	/// <remarks>
+	///     The reason is resolved when the evaluation in the <paramref name="context" /> fails, which a combination can
+	///     still cause for a met <paramref name="result" />. The evaluation limits how long it waits for the reason.
+	/// </remarks>
+	public ConstraintResult ApplyPending(ConstraintResult result, EvaluationContext.EvaluationContext context)
+	{
+		ResolveOnFailureOf(context);
+		if (_isResolved && _message is null)
 		{
 			return result;
 		}
@@ -59,8 +78,9 @@ internal sealed class AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 	///     later as an <see cref="TaskScheduler.UnobservedTaskException" />.
 	/// </summary>
 	private static void ObserveExceptions(Task<string?> task)
-		=> task.ContinueWith(static t => _ = t.Exception,
-			TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously);
+		=> task.ContinueWith(static t => _ = t.Exception, CancellationToken.None,
+			TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously,
+			TaskScheduler.Default);
 
 	/// <summary>
 	///     Applies the reason to the <paramref name="result" /> of the expectations on a member.
@@ -70,9 +90,12 @@ internal sealed class AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 	///     <paramref name="result" /> as well, and the reason is resolved when the evaluation in the
 	///     <paramref name="context" /> fails.<br />
 	///     The same holds for a member that is only evaluated for its expectation text, as an outer combination can
-	///     still meet the expectation.
+	///     still meet the expectation.<br />
+	///     A reason that is awaited right away is abandoned when the <paramref name="cancellationToken" /> of the
+	///     evaluation is canceled.
 	/// </remarks>
-	public async ValueTask<ConstraintResult> ApplyToMember(ConstraintResult result, IEvaluationContext context)
+	public async ValueTask<ConstraintResult> ApplyToMember(ConstraintResult result, IEvaluationContext context,
+		CancellationToken cancellationToken)
 	{
 		if (context is ExpectationTextEvaluationContext { Evaluation: { } evaluation, })
 		{
@@ -80,7 +103,7 @@ internal sealed class AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 		}
 		else if (result.Outcome != Outcome.Success || context is ExpectationTextEvaluationContext)
 		{
-			await Resolve();
+			await Resolve(cancellationToken);
 		}
 		else
 		{
@@ -113,7 +136,11 @@ internal sealed class AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 	/// <summary>
 	///     Awaits the reason, unless it was already resolved, and caches its message.
 	/// </summary>
-	public async Task Resolve()
+	/// <remarks>
+	///     A reason that is still pending when the <paramref name="cancellationToken" /> is canceled is abandoned, and
+	///     the message says so, because the failure of the expectation must be reported nevertheless.
+	/// </remarks>
+	public async Task Resolve(CancellationToken cancellationToken)
 	{
 		if (_isResolved)
 		{
@@ -123,7 +150,11 @@ internal sealed class AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 		string? resolvedReason;
 		try
 		{
-			resolvedReason = await reason.ConfigureAwait(false);
+			resolvedReason = await reason.AbandonOnCancellation(cancellationToken).ConfigureAwait(false);
+		}
+		catch (OperationCanceledException) when (reason is { IsCanceled: false, IsFaulted: false, })
+		{
+			resolvedReason = "the reason was not available in time";
 		}
 		catch (Exception exception)
 		{
