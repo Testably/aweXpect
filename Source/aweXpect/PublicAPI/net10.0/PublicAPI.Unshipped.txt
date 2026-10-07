@@ -5397,3 +5397,5 @@ aweXpect.Results.ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TI
 aweXpect.Results.ProperCollectionMatchResult<TType, TThat, TItem>.ProperCollectionMatchResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
 aweXpect.Results.StringProperCollectionMatchResult<TType, TThat>.StringProperCollectionMatchResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
 static aweXpect.EquivalencyExtensions.Equivalent<TSelf, TElement>(this aweXpect.Results.IObjectEqualityResult<TSelf, TElement>! result, System.Func<aweXpect.Equivalency.EquivalencyOptions!, aweXpect.Equivalency.EquivalencyOptions!>? options = null) -> TSelf
+*REMOVED*aweXpect.Results.CasingResult<TType, TThat>.IncludingUncasedLetters() -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.CasingResult<TType, TThat>.IncludingUncasedLetters(bool includeUncasedLetters = true) -> aweXpect.Results.AndOrResult<TType, TThat>!

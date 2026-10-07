@@ -1,4 +1,7 @@
-﻿namespace aweXpect.Tests;
+﻿using aweXpect.Core;
+using aweXpect.Results;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatString
 {
@@ -142,6 +145,52 @@ public sealed partial class ThatString
 					             is lower-cased including uncased letters,
 					             but it was "ABC"
 					             """);
+			}
+
+			[Test]
+			public async Task WhenFalseIsSpecified_ShouldNotMentionUncasedLetters()
+			{
+				string subject = "ABC";
+
+				async Task Act()
+					=> await That(subject).IsLowerCased().IncludingUncasedLetters(false);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is lower-cased,
+					             but it was "ABC"
+					             """);
+			}
+
+			[Test]
+			public async Task WhenFalseIsSpecified_ShouldSucceedForUpperCaseLetterWithoutLowerCaseForm()
+			{
+				string subject = "𝐀";
+
+				async Task Act()
+					=> await That(subject).IsLowerCased().IncludingUncasedLetters(false);
+
+				await That(Act).DoesNotThrow()
+					.Because("a letter without a lower-case form counts as lower-cased, as without the option");
+			}
+
+			[Test]
+			[Arguments(true, true)]
+			[Arguments(true, false)]
+			[Arguments(false, true)]
+			[Arguments(false, false)]
+			public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException(bool first, bool second)
+			{
+				string subject = "abc";
+				CasingResult<string, IThat<string?>> sut = That(subject).IsLowerCased();
+				_ = sut.IncludingUncasedLetters(first);
+
+				void Act() => sut.IncludingUncasedLetters(second);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("IncludingUncasedLetters cannot be specified more than once.")
+					.Because("the second value would silently replace the first one");
 			}
 		}
 

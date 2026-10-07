@@ -144,6 +144,42 @@ public sealed partial class ThatDelegate
 			}
 
 			[Test]
+			public async Task WhenFalseIsSpecified_ShouldFailForAThrownException()
+			{
+				Action @delegate = () => throw new MyException();
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AllowingExceptions(false).AtMost(5000.Milliseconds());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that @delegate
+					              executes in at most 0:05,
+					              but it did throw a MyException:
+					                {nameof(WhenFalseIsSpecified_ShouldFailForAThrownException)}
+					              """)
+					.Because("an exception fails the expectation, as without the option");
+			}
+
+			[Test]
+			[Arguments(true, true)]
+			[Arguments(true, false)]
+			[Arguments(false, true)]
+			[Arguments(false, false)]
+			public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException(bool first, bool second)
+			{
+				Action @delegate = () => { };
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn().AllowingExceptions(first).AllowingExceptions(second)
+						.AtMost(5000.Milliseconds());
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AllowingExceptions cannot be specified more than once.")
+					.Because("the second value would silently replace the first one");
+			}
+
+			[Test]
 			public async Task WhenTheUpperBoundCancelsTheDelegate_ShouldFail()
 			{
 				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
@@ -174,6 +210,43 @@ public sealed partial class ThatDelegate
 
 				await That(Act).DoesNotThrow()
 					.Because("the option must also be available on the tolerance overload");
+			}
+
+			[Test]
+			public async Task WhenToleranceIsGivenAndFalseIsSpecified_ShouldFailForAThrownException()
+			{
+				Action @delegate = () => throw new MyException();
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn(50.Milliseconds()).AllowingExceptions(false).Within(5.Seconds());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that @delegate
+					              executes in approximately 0:00.050 ± 0:05,
+					              but it did throw a MyException:
+					                {nameof(WhenToleranceIsGivenAndFalseIsSpecified_ShouldFailForAThrownException)}
+					              """)
+					.Because("an exception fails the expectation, as without the option");
+			}
+
+			[Test]
+			[Arguments(true, true)]
+			[Arguments(true, false)]
+			[Arguments(false, true)]
+			[Arguments(false, false)]
+			public async Task WhenToleranceIsGivenAndSpecifiedTwice_ShouldThrowInvalidOperationException(
+				bool first, bool second)
+			{
+				Action @delegate = () => { };
+
+				async Task Act()
+					=> await That(@delegate).ExecutesIn(50.Milliseconds())
+						.AllowingExceptions(first).AllowingExceptions(second).Within(5.Seconds());
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("AllowingExceptions cannot be specified more than once.")
+					.Because("the second value would silently replace the first one");
 			}
 		}
 	}

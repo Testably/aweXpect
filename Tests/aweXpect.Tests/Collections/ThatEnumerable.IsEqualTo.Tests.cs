@@ -1524,6 +1524,70 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
+			public async Task WhenFalseIsSpecified_ShouldFailForDuplicates()
+			{
+				IEnumerable<string> subject = ToEnumerable(["a", "b", "c", "c",]);
+				string[] expected = ["a", "b", "c",];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringDuplicates(false);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it contained item "c" at index 3 that was not expected
+
+					             Collection:
+					             [
+					               "a",
+					               "b",
+					               "c",
+					               "c"
+					             ]
+
+					             Expected:
+					             [
+					               "a",
+					               "b",
+					               "c"
+					             ]
+					             """)
+					.Because("the duplicates count, as without the option");
+			}
+
+			[Test]
+			public async Task WhenFalseIsSpecified_ShouldSucceedForTheNegationWithDuplicates()
+			{
+				IEnumerable<string> subject = ToEnumerable(["a", "b", "c", "c",]);
+				string[] expected = ["a", "b", "c",];
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(expected).IgnoringDuplicates(false);
+
+				await That(Act).DoesNotThrow()
+					.Because("the duplicates count, as without the option");
+			}
+
+			[Test]
+			[Arguments(true, true)]
+			[Arguments(true, false)]
+			[Arguments(false, true)]
+			[Arguments(false, false)]
+			public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException(bool first, bool second)
+			{
+				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);
+				string[] expected = ["a", "b", "c",];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringDuplicates(first).IgnoringDuplicates(second);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("IgnoringDuplicates cannot be specified more than once.")
+					.Because("the second value would silently replace the first one");
+			}
+
+			[Test]
 			public async Task WithAdditionalAndMissingItems_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c", "d", "e",]);

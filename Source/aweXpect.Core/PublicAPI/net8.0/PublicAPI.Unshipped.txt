@@ -556,8 +556,16 @@ aweXpect.StringEqualityOptionsExtensions
 aweXpect.ToleranceExtensions
 static aweXpect.CollectionIndexOptionsExtensions.AtIndex<TResult>(this TResult result, int index) -> TResult
 static aweXpect.CollectionIndexOptionsExtensions.AtIndexFromEnd<TResult>(this TResult result, int index) -> TResult
-static aweXpect.CollectionMatchOptionsExtensions.IgnoringDuplicates<TResult>(this TResult result) -> TResult
-static aweXpect.CollectionMatchOptionsExtensions.IgnoringInterspersedItems<TResult>(this TResult result) -> TResult
+static aweXpect.CollectionMatchOptionsExtensions.IgnoringDuplicates<TResult>(this TResult result, bool ignoreDuplicates = true) -> TResult
+static aweXpect.CollectionMatchOptionsExtensions.IgnoringInterspersedItems<TResult>(this TResult result, bool ignoreInterspersedItems = true) -> TResult
+*REMOVED*aweXpect.Options.CollectionMatchOptions.IgnoringDuplicates() -> void
+aweXpect.Options.CollectionMatchOptions.IgnoringDuplicates(bool ignoreDuplicates = true) -> void
+*REMOVED*aweXpect.Options.CollectionMatchOptions.IgnoringInterspersedItems() -> void
+aweXpect.Options.CollectionMatchOptions.IgnoringInterspersedItems(bool ignoreInterspersedItems = true) -> void
+*REMOVED*aweXpect.Results.ExecutesInResult<TResult>.AllowingExceptions() -> aweXpect.Results.ExecutesInResult<TResult>!
+aweXpect.Results.ExecutesInResult<TResult>.AllowingExceptions(bool allowExceptions = true) -> aweXpect.Results.ExecutesInResult<TResult>!
+*REMOVED*aweXpect.Results.ExecutesInToleranceResult<TResult>.AllowingExceptions() -> aweXpect.Results.ExecutesInToleranceResult<TResult>!
+aweXpect.Results.ExecutesInToleranceResult<TResult>.AllowingExceptions(bool allowExceptions = true) -> aweXpect.Results.ExecutesInToleranceResult<TResult>!
 static aweXpect.CollectionMatchOptionsExtensions.InAnyOrder<TResult>(this TResult result) -> TResult
 static aweXpect.CollectionMatchOptionsExtensions.Properly<TResult>(this TResult result) -> TResult
 static aweXpect.ObjectEqualityOptionsExtensions.Using<TSelf, TElement>(this aweXpect.Results.IObjectEqualityResult<TSelf, TElement>! result, System.Collections.Generic.IEqualityComparer<TElement>! comparer) -> TSelf

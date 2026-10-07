@@ -12,14 +12,16 @@ public class ExecutesInToleranceResult<TResult>(
 	TimeSpan expected)
 {
 	/// <summary>
-	///     …allowing the delegate to throw an exception, measuring the duration until it did so…
+	///     …allowing the delegate to throw an exception, measuring the duration until it did so,
+	///     according to the <paramref name="allowExceptions" /> parameter…
 	/// </summary>
 	/// <remarks>
 	///     A cancellation still fails the expectation, because it aborts the execution instead of timing it.
 	/// </remarks>
-	public ExecutesInToleranceResult<TResult> AllowingExceptions()
+	/// <exception cref="InvalidOperationException">The exceptions are already specified.</exception>
+	public ExecutesInToleranceResult<TResult> AllowingExceptions(bool allowExceptions = true)
 	{
-		options.AllowExceptions();
+		options.AllowingExceptions(allowExceptions);
 		return this;
 	}
 

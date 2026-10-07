@@ -1505,6 +1505,86 @@ public class CollectionMatchOptionsTests
 			await That(Act).Throws<InvalidOperationException>()
 				.WithMessage("IgnoringInterspersedItems cannot be specified more than once.");
 		}
+
+		[Test]
+		[Arguments(true, true)]
+		[Arguments(true, false)]
+		[Arguments(false, true)]
+		[Arguments(false, false)]
+		public async Task WhenSpecifiedTwiceWithAValue_ShouldThrowInvalidOperationException(bool first, bool second)
+		{
+			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			sut.IgnoringInterspersedItems(first);
+
+			void Act() => sut.IgnoringInterspersedItems(second);
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("IgnoringInterspersedItems cannot be specified more than once.")
+				.Because("the second value would silently replace the first one");
+		}
+
+		[Test]
+		public async Task WithFalse_ShouldDescribeTheItemsAsContiguous()
+		{
+			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			string expected = sut.GetExpectation("[1]", ExpectationGrammars.None);
+
+			sut.IgnoringInterspersedItems(false);
+
+			await That(sut.GetExpectation("[1]", ExpectationGrammars.None)).IsEqualTo(expected);
+		}
+
+		[Test]
+		public async Task WithFalse_WhenInAnyOrderIsSpecified_ShouldNotThrow()
+		{
+			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			sut.InAnyOrder();
+
+			void Act() => sut.IgnoringInterspersedItems(false);
+
+			await That(Act).DoesNotThrow()
+				.Because("not ignoring interspersed items states the default, which does not compete with the order");
+			await That(sut.GetExpectation("[1]", ExpectationGrammars.None))
+				.IsEqualTo("contains collection [1] in any order");
+		}
+
+		[Test]
+		public async Task WithFalse_WhenInAnyOrderIsSpecifiedAfterwards_ShouldNotThrow()
+		{
+			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			sut.IgnoringInterspersedItems(false);
+
+			void Act() => sut.InAnyOrder();
+
+			await That(Act).DoesNotThrow()
+				.Because("not ignoring interspersed items states the default, which does not compete with the order");
+			await That(sut.GetExpectation("[1]", ExpectationGrammars.None))
+				.IsEqualTo("contains collection [1] in any order");
+		}
+
+		[Test]
+		public async Task WithTrue_WhenInAnyOrderIsSpecified_ShouldThrowInvalidOperationException()
+		{
+			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			sut.InAnyOrder();
+
+			void Act() => sut.IgnoringInterspersedItems(true);
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("IgnoringInterspersedItems cannot be combined with InAnyOrder.");
+		}
+
+		[Test]
+		public async Task WithTrue_WhenInAnyOrderIsSpecifiedAfterwards_ShouldThrowInvalidOperationException()
+		{
+			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			sut.IgnoringInterspersedItems(true);
+
+			void Act() => sut.InAnyOrder();
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("InAnyOrder cannot be combined with IgnoringInterspersedItems.");
+		}
 	}
 
 	public class OptionTests
@@ -1519,6 +1599,35 @@ public class CollectionMatchOptionsTests
 
 			await That(Act).Throws<InvalidOperationException>()
 				.WithMessage("IgnoringDuplicates cannot be specified more than once.");
+		}
+
+		[Test]
+		[Arguments(true, true)]
+		[Arguments(true, false)]
+		[Arguments(false, true)]
+		[Arguments(false, false)]
+		public async Task IgnoringDuplicates_WhenSpecifiedTwiceWithAValue_ShouldThrowInvalidOperationException(
+			bool first, bool second)
+		{
+			CollectionMatchOptions sut = new();
+			sut.IgnoringDuplicates(first);
+
+			void Act() => sut.IgnoringDuplicates(second);
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("IgnoringDuplicates cannot be specified more than once.")
+				.Because("the second value would silently replace the first one");
+		}
+
+		[Test]
+		public async Task IgnoringDuplicates_WithFalse_ShouldNotMentionDuplicates()
+		{
+			CollectionMatchOptions sut = new();
+			string expected = sut.GetExpectation("[1]", ExpectationGrammars.None);
+
+			sut.IgnoringDuplicates(false);
+
+			await That(sut.GetExpectation("[1]", ExpectationGrammars.None)).IsEqualTo(expected);
 		}
 
 		[Test]
