@@ -125,18 +125,18 @@ public static partial class ValueFormatters
 		{
 			if (ValueFormatter.Registrations.Length > 0)
 			{
-				FormatItems(stringBuilder, value, value.Cast<object?>(), dictionary.Count, options,
+				FormatItems(stringBuilder, value, value.Cast<object?>(), GetCount(value), options,
 					new ItemFormatter<object?>(formatter, context, FormatDictionaryItem));
 			}
 			else
 			{
-				FormatItems(stringBuilder, value, GetEntries(dictionary), dictionary.Count, options,
+				FormatItems(stringBuilder, value, GetEntries(dictionary), GetCount(value), options,
 					new ItemFormatter<DictionaryEntry>(formatter, context, FormatDictionaryEntry));
 			}
 		}
 		else
 		{
-			FormatItems(stringBuilder, value, value.Cast<object?>(), (value as ICollection)?.Count, options,
+			FormatItems(stringBuilder, value, value.Cast<object?>(), GetCount(value), options,
 				new ItemFormatter<object?>(formatter, context, FormatItem));
 		}
 	}
@@ -356,14 +356,40 @@ public static partial class ValueFormatters
 	/// <summary>
 	///     Only reads a count the collection already knows, so that a lazy sequence is not enumerated twice.
 	/// </summary>
+	/// <remarks>
+	///     The count only names the number of remaining items, so a collection that throws when its count is read is
+	///     formatted like one that does not know its count.
+	/// </remarks>
 	private static int? GetCount<T>(IEnumerable<T> value)
-		=> value switch
+	{
+		try
 		{
-			ICollection collection => collection.Count,
-			ICollection<T> collection => collection.Count,
-			IReadOnlyCollection<T> collection => collection.Count,
-			_ => null,
-		};
+			return value switch
+			{
+				ICollection collection => collection.Count,
+				ICollection<T> collection => collection.Count,
+				IReadOnlyCollection<T> collection => collection.Count,
+				_ => null,
+			};
+		}
+		catch (Exception)
+		{
+			return null;
+		}
+	}
+
+	/// <inheritdoc cref="GetCount{T}(IEnumerable{T})" />
+	private static int? GetCount(IEnumerable value)
+	{
+		try
+		{
+			return (value as ICollection)?.Count;
+		}
+		catch (Exception)
+		{
+			return null;
+		}
+	}
 
 	/// <remarks>
 	///     A type that only implements the generic dictionary interfaces is a dictionary as well, so it is rendered in

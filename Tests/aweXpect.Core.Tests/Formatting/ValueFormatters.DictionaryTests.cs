@@ -112,6 +112,81 @@ public partial class ValueFormatters
 		}
 
 		[Test]
+		public async Task WhenCountThrows_AsTaskResult_ShouldFormatEntries()
+		{
+			Task<object> value = Task.FromResult<object>(new ThrowingCountHashtable
+			{
+				["1"] = 1,
+			});
+
+			string result = Formatter.Format(value);
+
+			await That(result).IsEqualTo("Task<object> (RanToCompletion, {[\"1\"] = 1})");
+		}
+
+		[Test]
+		public async Task WhenCountThrows_AsTupleItem_ShouldFormatEntries()
+		{
+			(int, ThrowingCountHashtable) value = (0, new ThrowingCountHashtable
+			{
+				["1"] = 1,
+			});
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo("(0, {[\"1\"] = 1})");
+		}
+
+		[Test]
+		public async Task WhenCountThrows_ShouldFormatEntries()
+		{
+			string expectedResult = "{[\"1\"] = 1}";
+			ThrowingCountHashtable value = new()
+			{
+				["1"] = 1,
+			};
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the count is only needed to name the number of remaining entries");
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Test]
+		public async Task WhenCountThrows_WhenAFormatterIsRegistered_ShouldFormatEntries()
+		{
+			using IDisposable _ = ValueFormatter.Register(new PairKeyFormatter());
+			ThrowingCountHashtable value = new()
+			{
+				["1"] = 1,
+			};
+
+			string result = Formatter.Format(value);
+
+			await That(result).IsEqualTo("{[\"1\"] = 1}");
+		}
+
+		[Test]
+		public async Task WhenCountThrows_WithLineBreaks_ShouldFormatEntries()
+		{
+			ThrowingCountHashtable value = new()
+			{
+				["1"] = 1,
+			};
+
+			string result = Formatter.Format(value, FormattingOptions.MultipleLines);
+
+			await That(result).IsEqualTo("""
+			                             {
+			                               ["1"] = 1
+			                             }
+			                             """);
+		}
+
+		[Test]
 		public async Task WhenDictionaryContainsItself_ShouldDetectTheRecursion()
 		{
 			string expectedResult = "{[\"self\"] = ValueFormatters.DictionaryTests.Holder { Value = { *recursive* } }}";
@@ -232,6 +307,41 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(expectedResult)
 				.Because("a dictionary is rendered in braces, even when it does not implement the non-generic IDictionary");
 			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Test]
+		public async Task WhenOnlyAGenericReadOnlyDictionary_WhenCountThrows_ShouldFormatEntries()
+		{
+			string expectedResult = "{[\"a\"] = 1}";
+			ReadOnlyDictionaryOnly<int> value = new(new Dictionary<string, int>
+			{
+				["a"] = 1,
+			}, new InvalidOperationException("count failed"));
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Test]
+		public async Task WhenOnlyAGenericReadOnlyDictionary_WhenCountThrows_ShouldSayThatMoreEntriesMayFollow()
+		{
+			string expectedResult =
+				"{[\"1\"] = 1, [\"2\"] = 2, [\"3\"] = 3, [\"4\"] = 4, [\"5\"] = 5, [\"6\"] = 6, [\"7\"] = 7, [\"8\"] = 8, [\"9\"] = 9, [\"10\"] = 10, (… and maybe more)}";
+			ReadOnlyDictionaryOnly<int> value = new(Enumerable.Range(1, 12).ToDictionary(i => i.ToString(), i => i),
+				new InvalidOperationException("count failed"));
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
@@ -398,10 +508,12 @@ public partial class ValueFormatters
 			}
 		}
 
-		private sealed class ReadOnlyDictionaryOnly<TValue>(Dictionary<string, TValue> inner)
+		private sealed class ReadOnlyDictionaryOnly<TValue>(
+			Dictionary<string, TValue> inner,
+			Exception? countException = null)
 			: IReadOnlyDictionary<string, TValue>
 		{
-			public int Count => inner.Count;
+			public int Count => countException is null ? inner.Count : throw countException;
 			public TValue this[string key] => inner[key];
 			public IEnumerable<string> Keys => inner.Keys;
 			public IEnumerable<TValue> Values => inner.Values;
@@ -409,6 +521,11 @@ public partial class ValueFormatters
 			public bool TryGetValue(string key, out TValue value) => inner.TryGetValue(key, out value!);
 			public IEnumerator<KeyValuePair<string, TValue>> GetEnumerator() => inner.GetEnumerator();
 			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+		}
+
+		private sealed class ThrowingCountHashtable : Hashtable
+		{
+			public override int Count => throw new InvalidOperationException("count failed");
 		}
 	}
 }

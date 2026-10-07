@@ -1780,7 +1780,7 @@ public sealed partial class ThatGeneric
 
 					             Actual:
 					             ThatGeneric.Whose.NegatedTests.Lists {
-					               Array = [Array did throw an InvalidOperationException: This operation cannot be performed on a default instance of ImmutableArray<T>.  Consider initializing the array, or checking the ImmutableArray<T>.IsDefault property.],
+					               Array = [the enumeration did throw an InvalidOperationException: This operation cannot be performed on a default instance of ImmutableArray<T>.  Consider initializing the array, or checking the ImmutableArray<T>.IsDefault property.],
 					               Items = <null>
 					             }
 					             """);
