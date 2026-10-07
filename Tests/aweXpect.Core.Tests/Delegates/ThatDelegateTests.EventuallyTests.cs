@@ -161,6 +161,75 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Test]
+		public async Task Is_ShouldRetryUntilTheSubjectIsOfTheType()
+		{
+			Counter counter = new(2);
+			object Subject() => counter.Value > 0 ? "foo" : 0;
+
+			async Task Act()
+				=> await That(Subject).Eventually().OnVirtualTime().Within(SuccessTimeout).Is<string>();
+
+			await That(Act).DoesNotThrow();
+			await That(counter.EvaluationCount).IsEqualTo(3);
+		}
+
+		[Test]
+		public async Task Is_WhenTheSubjectNeverHasTheType_ShouldFail()
+		{
+			async Task Act()
+				=> await That(() => (object)0).Eventually().OnVirtualTime().Within(VeryLowTimeout).Is<string>();
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that () => (object)0
+				             eventually is of type string within 0:00.050,
+				             but it was int
+
+				             Actual:
+				             0
+				             """);
+		}
+
+		[Test]
+		public async Task IsExactly_ShouldRetryUntilTheSubjectIsExactlyOfTheType()
+		{
+			Counter counter = new(2);
+			object Subject() => counter.Value > 0 ? "foo" : 0;
+
+			async Task Act()
+				=> await That(Subject).Eventually().OnVirtualTime().Within(SuccessTimeout).IsExactly<string>();
+
+			await That(Act).DoesNotThrow();
+			await That(counter.EvaluationCount).IsEqualTo(3);
+		}
+
+		[Test]
+		public async Task IsNot_ShouldRetryUntilTheSubjectIsNotOfTheType()
+		{
+			Counter counter = new(2);
+			object Subject() => counter.Value > 0 ? "foo" : 0;
+
+			async Task Act()
+				=> await That(Subject).Eventually().OnVirtualTime().Within(SuccessTimeout).IsNot<int>();
+
+			await That(Act).DoesNotThrow();
+			await That(counter.EvaluationCount).IsEqualTo(3);
+		}
+
+		[Test]
+		public async Task IsNotExactly_ShouldRetryUntilTheSubjectIsNotExactlyOfTheType()
+		{
+			Counter counter = new(2);
+			object Subject() => counter.Value > 0 ? "foo" : 0;
+
+			async Task Act()
+				=> await That(Subject).Eventually().OnVirtualTime().Within(SuccessTimeout).IsNotExactly<int>();
+
+			await That(Act).DoesNotThrow();
+			await That(counter.EvaluationCount).IsEqualTo(3);
+		}
+
+		[Test]
 		public async Task ShouldForwardTheCancellationTokenToTheSubject()
 		{
 			using CancellationTokenSource cts = new();

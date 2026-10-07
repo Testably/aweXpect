@@ -233,6 +233,36 @@ public sealed partial class ThatObject
 				}
 
 				[Test]
+				public async Task WhenExpectedTypeIsANonNullableValueTypeAndItIsNull_ShouldFail()
+				{
+					DummyClass subject = new()
+					{
+						NullableIntValue = null,
+					};
+					var expected = new
+					{
+						NullableIntValue = It.Is<int>().That.IsEqualTo(0),
+					};
+
+					async Task Act()
+						=> await That(subject).IsEquivalentTo(expected);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             is equivalent to expected,
+						             but it was not:
+						               Property NullableIntValue differed:
+						                   Actual: <null>
+						                 Expected: is int
+
+						             Equivalency options:
+						              - include public fields and properties
+						             """)
+						.Because("null is no value of a non-nullable value type, so its expectations are not evaluated");
+				}
+
+				[Test]
 				public async Task WhenMemberWithAsyncReasonIsMet_AndAnotherConditionFails_ShouldIncludeTheReason()
 				{
 					DummyClass subject = new()

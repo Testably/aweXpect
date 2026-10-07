@@ -140,6 +140,38 @@ public sealed partial class ThatEnumerable
 					              but it had {Formatter.Format(Local)} with kind Local and {Formatter.Format(Utc)} with kind Utc, which cannot be compared
 					              """).AsPrefix();
 			}
+
+			[Test]
+			public async Task WhenImmutableArrayNonNullableMemberKindsAreIncompatible_ShouldFail()
+			{
+				ImmutableArray<Item> subject = [new(Local), new(Utc),];
+
+				async Task Act()
+					=> await That(subject).IsInDescendingOrder(x => x.Value);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is in descending order by x => x.Value,
+					              but it had {Formatter.Format(Local)} with kind Local and {Formatter.Format(Utc)} with kind Utc, which cannot be compared
+					              """).AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenImmutableArrayNullableItemKindsAreIncompatible_ShouldFail()
+			{
+				ImmutableArray<DateTime?> subject = [Local, Utc, null, null,];
+
+				async Task Act()
+					=> await That(subject).IsInDescendingOrder();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is in descending order,
+					              but it had {Formatter.Format(Local)} with kind Local and {Formatter.Format(Utc)} with kind Utc, which cannot be compared
+					              """).AsPrefix();
+			}
 #endif
 		}
 	}
