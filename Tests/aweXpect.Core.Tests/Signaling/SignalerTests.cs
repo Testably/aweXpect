@@ -44,14 +44,23 @@ public sealed class SignalerTests
 		thread.Start();
 		SpinWait.SpinUntil(() => !thread.IsAlive || (thread.ThreadState & ThreadState.WaitSleepJoin) != 0);
 		whenWaiting();
+		return await WithinTheDefaultTimeout(completion.Task);
+	}
+
+	/// <summary>
+	///     Awaits the <paramref name="wait" />, but gives up after the default signaler timeout, so that a wait that
+	///     never ends fails the test instead of hanging the test run.
+	/// </summary>
+	private static async Task<TResult> WithinTheDefaultTimeout<TResult>(Task<TResult> wait)
+	{
 		using CancellationTokenSource cts = new();
-		if (await Task.WhenAny(completion.Task, Task.Delay(DefaultTimeout, cts.Token)) != completion.Task)
+		if (await Task.WhenAny(wait, Task.Delay(DefaultTimeout, cts.Token)) != wait)
 		{
 			throw new TimeoutException("The wait did not end.");
 		}
 
 		cts.Cancel();
-		return await completion.Task;
+		return await wait;
 	}
 
 	public sealed class Tests
@@ -119,7 +128,7 @@ public sealed class SignalerTests
 
 			Task<SignalerResult> wait = signaler.WaitAsync(Timeout.InfiniteTimeSpan);
 			signaler.Signal();
-			SignalerResult result = await wait;
+			SignalerResult result = await WithinTheDefaultTimeout(wait);
 
 			await That(result.IsSuccess).IsTrue();
 		}
@@ -589,7 +598,7 @@ public sealed class SignalerTests
 
 			Task<SignalerResult<int>> wait = signaler.WaitAsync(timeout: Timeout.InfiniteTimeSpan);
 			signaler.Signal(1);
-			SignalerResult<int> result = await wait;
+			SignalerResult<int> result = await WithinTheDefaultTimeout(wait);
 
 			await That(result.IsSuccess).IsTrue();
 		}
@@ -1005,7 +1014,8 @@ public sealed class SignalerTests
 				},
 				() =>
 				{
-					Thread.Sleep(20.Milliseconds());
+					// The stopwatch of a wait that returned without a signal stops, so the timeout of the wait bounds this.
+					SpinWait.SpinUntil(() => sw.Elapsed >= 20.Milliseconds(), timeout);
 					signaler.Signal(10);
 					signaler.Signal(11);
 				});

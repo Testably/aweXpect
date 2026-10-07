@@ -236,15 +236,14 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenTheIntervalExceedsTheBudget_ShouldMakeTheLastCheckAtTheEndOfTheBudget()
 	{
-		long startTimestamp = RealTimeSystem.Instance.GetTimestamp();
-		using Polling sut = Polling.Start(RealTimeSystem.Instance, startTimestamp, 50.Milliseconds(), 1.Hours(),
-			EvaluationCancellation.None);
+		VirtualTimeSystem time = new();
+		using Polling sut = Start(time, 50.Milliseconds(), 1.Hours(), EvaluationCancellation.None);
 
 		PollStep step = await sut.WaitForNextCheck();
 
 		await That(step).IsEqualTo(PollStep.LastCheck);
-		await That(sut.Elapsed).IsGreaterThanOrEqualTo(40.Milliseconds())
-			.Because("the wait is shortened to the remaining budget, and a timer can complete a few milliseconds before the stopwatch agrees");
+		await That(sut.Elapsed).IsEqualTo(50.Milliseconds())
+			.Because("the wait is shortened to the remaining budget");
 	}
 
 	[Test]
