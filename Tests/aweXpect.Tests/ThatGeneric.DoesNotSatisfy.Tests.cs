@@ -212,7 +212,7 @@ public sealed partial class ThatGeneric
 				cts.CancelAfter(50.Milliseconds());
 
 				async Task Act()
-					=> await That(subject).DoesNotSatisfy(_ => true).Within(Timeout.InfiniteTimeSpan)
+					=> await That(subject).DoesNotSatisfy(_ => true).Within(System.Threading.Timeout.InfiniteTimeSpan)
 						.WithCancellation(cts.Token);
 
 				await That(Act).Throws<InconclusiveTestException>()
@@ -232,7 +232,7 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject).DoesNotSatisfy(_ => ++count <= 2)
-						.Within(Timeout.InfiniteTimeSpan)
+						.Within(System.Threading.Timeout.InfiniteTimeSpan)
 						.CheckEvery(10.Milliseconds());
 
 				await That(Act).DoesNotThrow();

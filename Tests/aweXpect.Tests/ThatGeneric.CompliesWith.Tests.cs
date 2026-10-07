@@ -148,10 +148,7 @@ public sealed partial class ThatGeneric
 				};
 
 				async Task Act()
-					=> await That(subject).CompliesWith(x => x.IsEquivalentTo(new
-					{
-						Value = expectedValue,
-					}));
+					=> await That(subject).CompliesWith(x => x.IsEquivalentTo(new { Value = expectedValue, }));
 
 				await That(Act).Throws<FailException>()
 					.OnlyIf(!expectSuccess)
@@ -276,10 +273,7 @@ public sealed partial class ThatGeneric
 				MyChangingClass subject = new(42);
 
 				async Task Act()
-					=> await That(subject).CompliesWith(x => x.IsEquivalentTo(new
-						{
-							HasWaitedEnough = true,
-						}))
+					=> await That(subject).CompliesWith(x => x.IsEquivalentTo(new { HasWaitedEnough = true, }))
 						.Within(30.Seconds()).WithTimeout(50.Milliseconds());
 
 				await That(Act).Throws<FailException>()
@@ -367,7 +361,7 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject).CompliesWith(x => x.IsEqualTo(2))
-						.Within(Timeout.InfiniteTimeSpan).CheckEvery(100.Days())
+						.Within(System.Threading.Timeout.InfiniteTimeSpan).CheckEvery(100.Days())
 						.WithCancellation(cts.Token);
 
 				await That(Act).Throws<InconclusiveTestException>()
@@ -521,7 +515,7 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject).CompliesWith(x => x.IsEqualTo(2))
-						.Within(Timeout.InfiniteTimeSpan)
+						.Within(System.Threading.Timeout.InfiniteTimeSpan)
 						.WithCancellation(cts.Token);
 
 				await That(Act).Throws<InconclusiveTestException>()
@@ -542,7 +536,7 @@ public sealed partial class ThatGeneric
 					=> await That(subject).CompliesWith(x => x.IsEquivalentTo(new
 						{
 							HasWaitedEnough = true,
-						})).Within(Timeout.InfiniteTimeSpan)
+						})).Within(System.Threading.Timeout.InfiniteTimeSpan)
 						.CheckEvery(10.Milliseconds());
 
 				await That(Act).DoesNotThrow();
@@ -572,10 +566,7 @@ public sealed partial class ThatGeneric
 				MyChangingClass subject = new(42);
 
 				async Task Act()
-					=> await That(subject).CompliesWith(x => x.IsEquivalentTo(new
-						{
-							HasWaitedEnough = true,
-						}))
+					=> await That(subject).CompliesWith(x => x.IsEquivalentTo(new { HasWaitedEnough = true, }))
 						.Within(50.Milliseconds());
 
 				await That(Act).Throws<FailException>()

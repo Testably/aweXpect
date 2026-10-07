@@ -19,7 +19,7 @@ public sealed partial class ThatEnumerable
 		{
 			using CancellationTokenSource cts = new();
 			IEnumerable<IEnumerable<int>> subject =
-				ToEnumerable<IEnumerable<int>>(GetCancellingEnumerable(5, cts), Array.Empty<int>());
+				ToEnumerable<IEnumerable<int>>([GetCancellingEnumerable(5, cts), Array.Empty<int>(),]);
 			IEnumerable<Action<IThat<IEnumerable<int>?>>> expected =
 			[
 				a => a.IsNotNull(),
@@ -147,7 +147,7 @@ public sealed partial class ThatEnumerable
 			IEnumerable<int> subject = GetCancellingEnumerable(5, cts);
 
 			async Task Act()
-				=> await That(subject).Contains([-1, -2,]).WithCancellation(cts.Token);
+				=> await That(subject).Contains([-1, -2]).WithCancellation(cts.Token);
 
 			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
@@ -171,7 +171,7 @@ public sealed partial class ThatEnumerable
 			IEnumerable subject = GetCancellingEnumerable(5, cts);
 
 			async Task Act()
-				=> await That(subject).Contains([-1, -2,]).WithCancellation(cts.Token);
+				=> await That(subject).Contains([-1, -2]).WithCancellation(cts.Token);
 
 			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
@@ -397,7 +397,7 @@ public sealed partial class ThatEnumerable
 			IEnumerable<int> subject = GetCancellingEnumerable(5, cts);
 
 			async Task Act()
-				=> await That(subject).DoesNotEndWith(-1).WithCancellation(cts.Token);
+				=> await That(subject).DoesNotEndWith([-1]).WithCancellation(cts.Token);
 
 			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
@@ -460,7 +460,7 @@ public sealed partial class ThatEnumerable
 			IEnumerable<int> subject = GetCancellingEnumerable(5, cts);
 
 			async Task Act()
-				=> await That(subject).EndsWith(-1).WithCancellation(cts.Token);
+				=> await That(subject).EndsWith([-1]).WithCancellation(cts.Token);
 
 			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
@@ -481,7 +481,7 @@ public sealed partial class ThatEnumerable
 			IEnumerable subject = GetCancellingEnumerable(5, cts);
 
 			async Task Act()
-				=> await That(subject).EndsWith([-1,]).WithCancellation(cts.Token);
+				=> await That(subject).EndsWith([-1]).WithCancellation(cts.Token);
 
 			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
@@ -754,7 +754,7 @@ public sealed partial class ThatEnumerable
 			IEnumerable<int> subject = GetCancellingEnumerable(5, cts);
 
 			async Task Act()
-				=> await That(subject).IsEqualTo([0, 1, 2, 3, 4, 5, 6, 7,]).WithCancellation(cts.Token);
+				=> await That(subject).IsEqualTo([0, 1, 2, 3, 4, 5, 6, 7]).WithCancellation(cts.Token);
 
 			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
@@ -1008,10 +1008,7 @@ public sealed partial class ThatEnumerable
 		public async Task WhenTimeoutElapsedBeforeAnInMemoryCollectionIsEvaluated_ShouldJudgeItLikeAScalar()
 		{
 			async Task Collection()
-				=> await That(new[]
-					{
-						1, 2,
-					})
+				=> await That(new[] { 1, 2, })
 					.Satisfies(_ => OutlastTheTimeout()).And.IsEqualTo([1, 2,]).WithTimeout(50.Milliseconds());
 
 			async Task Scalar()
@@ -1027,10 +1024,7 @@ public sealed partial class ThatEnumerable
 		public async Task WhenTimeoutElapsedBeforeAnInMemoryCollectionIsEvaluated_ShouldReportItsMismatch()
 		{
 			async Task Act()
-				=> await That(new[]
-					{
-						1, 2,
-					})
+				=> await That(new[] { 1, 2, })
 					.Satisfies(_ => OutlastTheTimeout()).And.IsEqualTo([1, 3,]).WithTimeout(50.Milliseconds());
 
 			await That(Act).Throws<FailException>()
@@ -1075,7 +1069,7 @@ public sealed partial class ThatEnumerable
 			IEnumerable<int> subject = SlowNumbers();
 
 			async Task Act()
-				=> await That(subject).Contains([-1,]).WithTimeout(50.Milliseconds());
+				=> await That(subject).Contains([-1]).WithTimeout(50.Milliseconds());
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -1098,7 +1092,7 @@ public sealed partial class ThatEnumerable
 			IEnumerable<int> subject = SlowNumbers();
 
 			async Task Act()
-				=> await That(subject).EndsWith(-1).WithTimeout(50.Milliseconds());
+				=> await That(subject).EndsWith([-1]).WithTimeout(50.Milliseconds());
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""

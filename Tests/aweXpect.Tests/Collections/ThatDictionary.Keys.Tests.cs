@@ -168,12 +168,7 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task ForAFrozenDictionary_ShouldUseTheKeyComparer()
 			{
-				IDictionary<string, int> subject = new Dictionary<string, int>
-					{
-						{
-							"a", 1
-						},
-					}
+				IDictionary<string, int> subject = new Dictionary<string, int> { { "a", 1 }, }
 					.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
 
 				async Task Act()
@@ -211,12 +206,7 @@ public sealed partial class ThatDictionary
 			public async Task ForAReadOnlyDictionary_ShouldUseTheKeyComparerOfTheWrappedDictionary()
 			{
 				IDictionary<string, int> subject = new ReadOnlyDictionary<string, int>(
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
-					{
-						{
-							"a", 1
-						},
-					});
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, });
 
 				async Task Act()
 					=> await That(subject).Keys.Contains("A");
@@ -244,12 +234,8 @@ public sealed partial class ThatDictionary
 			{
 				SortedDictionary<string, int> subject = new(new ReverseComparer())
 				{
-					{
-						"a", 1
-					},
-					{
-						"b", 2
-					},
+					{ "a", 1 },
+					{ "b", 2 },
 				};
 
 				async Task Act()
@@ -263,12 +249,8 @@ public sealed partial class ThatDictionary
 			{
 				SortedDictionary<string, int> subject = new()
 				{
-					{
-						"a", 1
-					},
-					{
-						"B", 2
-					},
+					{ "a", 1 },
+					{ "B", 2 },
 				};
 
 				async Task Act()
@@ -283,12 +265,8 @@ public sealed partial class ThatDictionary
 			{
 				SortedList<string, int> subject = new()
 				{
-					{
-						"a", 1
-					},
-					{
-						"B", 2
-					},
+					{ "a", 1 },
+					{ "B", 2 },
 				};
 
 				async Task Act()
@@ -301,15 +279,7 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task IsEqualTo_ShouldUseTheKeyComparer()
 			{
-				Dictionary<string, int> subject = new(StringComparer.OrdinalIgnoreCase)
-				{
-					{
-						"a", 1
-					},
-					{
-						"b", 2
-					},
-				};
+				Dictionary<string, int> subject = new(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 2 }, };
 
 				async Task Act()
 					=> await That(subject).Keys.IsEqualTo(["A", "B",]);
@@ -320,21 +290,10 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task IsEquivalentTo_ForASortedDictionaryWithTheDefaultComparer_ShouldNotIgnoreTheOrder()
 			{
-				SortedDictionary<string, int> subject = new()
-				{
-					{
-						"a", 1
-					},
-					{
-						"b", 2
-					},
-				};
+				SortedDictionary<string, int> subject = new() { { "a", 1 }, { "b", 2 }, };
 
 				async Task Act()
-					=> await That(subject).Keys.IsEquivalentTo(new[]
-					{
-						"b", "a",
-					});
+					=> await That(subject).Keys.IsEquivalentTo(new[] { "b", "a", });
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -360,9 +319,7 @@ public sealed partial class ThatDictionary
 			{
 				IDictionary<string, int> subject = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
 				{
-					{
-						"a", 1
-					},
+					{ "a", 1 },
 				};
 
 				async Task Act()
@@ -374,12 +331,7 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task Using_ShouldOverrideTheKeyComparer()
 			{
-				Dictionary<string, int> subject = new(StringComparer.OrdinalIgnoreCase)
-				{
-					{
-						"a", 1
-					},
-				};
+				Dictionary<string, int> subject = new(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, };
 
 				async Task Act()
 					=> await That(subject).Keys.Contains("a").Using(new AllDifferentComparer());
@@ -400,12 +352,7 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenKeysContainTheKeyAccordingToTheKeyComparer_NegatedShouldFail()
 			{
-				Dictionary<string, int> subject = new(StringComparer.OrdinalIgnoreCase)
-				{
-					{
-						"a", 1
-					},
-				};
+				Dictionary<string, int> subject = new(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, };
 
 				async Task Act()
 					=> await That(subject).Keys.DoesNotContain("A");
@@ -426,12 +373,7 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenKeysDoNotContainTheKeyAccordingToTheKeyComparer_ShouldNameTheComparer()
 			{
-				Dictionary<string, int> subject = new(StringComparer.OrdinalIgnoreCase)
-				{
-					{
-						"a", 1
-					},
-				};
+				Dictionary<string, int> subject = new(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, };
 
 				async Task Act()
 					=> await That(subject).Keys.Contains("b");
@@ -452,12 +394,7 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WithTheDefaultKeyComparer_ShouldUseTheDefaultEquality()
 			{
-				Dictionary<string, int> subject = new()
-				{
-					{
-						"a", 1
-					},
-				};
+				Dictionary<string, int> subject = new() { { "a", 1 }, };
 
 				async Task Act()
 					=> await That(subject).Keys.Contains("A");
@@ -481,12 +418,7 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task ForASortedDictionary_ShouldNotBeAmbiguous()
 			{
-				SortedDictionary<string, int> subject = new()
-				{
-					{
-						"a", 1
-					},
-				};
+				SortedDictionary<string, int> subject = new() { { "a", 1 }, };
 
 				async Task Act()
 					=> await That(subject).Keys.Contains("a");

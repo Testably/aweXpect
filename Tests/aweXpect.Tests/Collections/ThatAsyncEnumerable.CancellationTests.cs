@@ -92,7 +92,7 @@ public sealed partial class ThatAsyncEnumerable
 			using CancellationTokenSource cts = new();
 
 			async Task Act()
-				=> await That(subject).IsEqualTo([1, 2, 3,]).Using(new CancellingComparer(cts))
+				=> await That(subject).IsEqualTo([1, 2, 3]).Using(new CancellingComparer(cts))
 					.WithCancellation(cts.Token);
 
 			await That(Act).Throws<InconclusiveTestException>()
@@ -420,7 +420,7 @@ public sealed partial class ThatAsyncEnumerable
 			IAsyncEnumerable<int> subject = HangAfter(cts.Cancel, 1, 2);
 
 			async Task Act()
-				=> await That(subject).IsEqualTo([1, 2, 3,]).WithCancellation(cts.Token);
+				=> await That(subject).IsEqualTo([1, 2, 3]).WithCancellation(cts.Token);
 
 			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
@@ -733,10 +733,7 @@ public sealed partial class ThatAsyncEnumerable
 			async IAsyncEnumerable<int> Numbers()
 			{
 				enumerations++;
-				foreach (int item in new[]
-				         {
-					         1, 2, 3,
-				         })
+				foreach (int item in new[] { 1, 2, 3, })
 				{
 					await Task.Yield();
 					yield return item;
@@ -971,7 +968,7 @@ public sealed partial class ThatAsyncEnumerable
 			IAsyncEnumerable<int> subject = HangAfter(1, 2);
 
 			async Task Act()
-				=> await That(subject).IsEqualTo([1, 2, 3,]).WithTimeout(1.Seconds());
+				=> await That(subject).IsEqualTo([1, 2, 3]).WithTimeout(1.Seconds());
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""

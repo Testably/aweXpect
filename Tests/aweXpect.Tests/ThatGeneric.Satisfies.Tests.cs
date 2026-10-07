@@ -396,7 +396,7 @@ public sealed partial class ThatGeneric
 				cts.CancelAfter(50.Milliseconds());
 
 				async Task Act()
-					=> await That(subject).Satisfies(_ => false).Within(Timeout.InfiniteTimeSpan)
+					=> await That(subject).Satisfies(_ => false).Within(System.Threading.Timeout.InfiniteTimeSpan)
 						.CheckEvery(100.Days())
 						.WithCancellation(cts.Token);
 
@@ -586,7 +586,7 @@ public sealed partial class ThatGeneric
 				cts.CancelAfter(50.Milliseconds());
 
 				async Task Act()
-					=> await That(subject).Satisfies(_ => false).Within(Timeout.InfiniteTimeSpan)
+					=> await That(subject).Satisfies(_ => false).Within(System.Threading.Timeout.InfiniteTimeSpan)
 						.WithCancellation(cts.Token);
 
 				await That(Act).Throws<InconclusiveTestException>()
@@ -605,7 +605,7 @@ public sealed partial class ThatGeneric
 				Other subject = new();
 
 				async Task Act()
-					=> await That(subject).Satisfies(_ => ++count > 2).Within(Timeout.InfiniteTimeSpan)
+					=> await That(subject).Satisfies(_ => ++count > 2).Within(System.Threading.Timeout.InfiniteTimeSpan)
 						.CheckEvery(10.Milliseconds());
 
 				await That(Act).DoesNotThrow();

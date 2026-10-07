@@ -405,10 +405,7 @@ public sealed partial class ThatEnumerable
 			IEnumerable subject = default(ImmutableArray<int>);
 
 			async Task Act()
-				=> await That(subject).IsEqualTo(new object[]
-				{
-					1, 2,
-				});
+				=> await That(subject).IsEqualTo(new object[] { 1, 2, });
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -425,10 +422,7 @@ public sealed partial class ThatEnumerable
 			IEnumerable subject = default(ImmutableArray<int>);
 
 			async Task Act()
-				=> await That(subject).IsNotEqualTo(new object[]
-				{
-					1, 2,
-				});
+				=> await That(subject).IsNotEqualTo(new object[] { 1, 2, });
 
 			await That(Act).DoesNotThrow()
 				.Because("a default ImmutableArray is not equal to a collection, like a null collection");
