@@ -4410,6 +4410,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:40:10 2026 \u002B0200",
         "message": "fix: describe the last attempt in \u0060IsOneOf\u0060 and \u0060IsNotOneOf\u0060 on \u0060DateTime\u0060 after an earlier incompatible kind (#1689)"
+      },
+      {
+        "sha": "3a0d86a45c60afc2bdef37100570c1e1ac13bddc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
+        "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
       }
     ],
     "labels": [
@@ -5147,7 +5153,8 @@ window.BENCHMARK_DATA = {
       "c8e40f00",
       "a8e6cbb0",
       "82b90d2e",
-      "e0c39d6f"
+      "e0c39d6f",
+      "3a0d86a4"
     ],
     "datasets": [
       {
@@ -5888,7 +5895,8 @@ window.BENCHMARK_DATA = {
           134.46996122996012,
           147.68552899360657,
           144.25693946225303,
-          126.95992737550002
+          126.95992737550002,
+          128.70569605093735
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6631,6 +6639,7 @@ window.BENCHMARK_DATA = {
           408,
           408,
           408,
+          416,
           416,
           416,
           416,
@@ -7383,7 +7392,8 @@ window.BENCHMARK_DATA = {
           272.9088138171605,
           282.8804441860744,
           246.71562458674114,
-          236.72349086174597
+          236.72349086174597,
+          247.2960232954759
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8129,6 +8139,7 @@ window.BENCHMARK_DATA = {
           952,
           952,
           952,
+          952,
           952
         ],
         "borderColor": "#FF671B",
@@ -8159,7 +8170,8 @@ window.BENCHMARK_DATA = {
           217.5970669269562,
           222.10297597249348,
           205.23426955540975,
-          212.4210744380951
+          212.4210744380951,
+          197.41954398155212
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8171,6 +8183,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -12148,6 +12161,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:40:10 2026 \u002B0200",
         "message": "fix: describe the last attempt in \u0060IsOneOf\u0060 and \u0060IsNotOneOf\u0060 on \u0060DateTime\u0060 after an earlier incompatible kind (#1689)"
+      },
+      {
+        "sha": "3a0d86a45c60afc2bdef37100570c1e1ac13bddc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
+        "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
       }
     ],
     "labels": [
@@ -12808,7 +12827,8 @@ window.BENCHMARK_DATA = {
       "c8e40f00",
       "a8e6cbb0",
       "82b90d2e",
-      "e0c39d6f"
+      "e0c39d6f",
+      "3a0d86a4"
     ],
     "datasets": [
       {
@@ -13472,7 +13492,8 @@ window.BENCHMARK_DATA = {
           109514.63397216797,
           111255.78554861886,
           108925.5356257512,
-          109811.89449637277
+          109811.89449637277,
+          103166.62219238281
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14138,6 +14159,7 @@ window.BENCHMARK_DATA = {
           16288,
           16288,
           16288,
+          16296,
           16296,
           16296,
           16296,
@@ -14813,7 +14835,8 @@ window.BENCHMARK_DATA = {
           2800834.65234375,
           2890043.576622596,
           2723789.0455729165,
-          2580494.7477678573
+          2580494.7477678573,
+          2325070.084735577
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15482,7 +15505,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15512,7 +15536,8 @@ window.BENCHMARK_DATA = {
           206967.84188406807,
           226235.38511439733,
           203647.48078264509,
-          196916.20835774738
+          196916.20835774738,
+          190735.02391764324
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -15524,6 +15549,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -19963,6 +19989,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:40:10 2026 \u002B0200",
         "message": "fix: describe the last attempt in \u0060IsOneOf\u0060 and \u0060IsNotOneOf\u0060 on \u0060DateTime\u0060 after an earlier incompatible kind (#1689)"
+      },
+      {
+        "sha": "3a0d86a45c60afc2bdef37100570c1e1ac13bddc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
+        "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
       }
     ],
     "labels": [
@@ -20700,7 +20732,8 @@ window.BENCHMARK_DATA = {
       "c8e40f00",
       "a8e6cbb0",
       "82b90d2e",
-      "e0c39d6f"
+      "e0c39d6f",
+      "3a0d86a4"
     ],
     "datasets": [
       {
@@ -21441,7 +21474,8 @@ window.BENCHMARK_DATA = {
           358.6183090209961,
           409.96627289908275,
           348.68909851710004,
-          316.3580826350621
+          316.3580826350621,
+          256.3877893447876
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22184,6 +22218,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          608,
           608,
           608,
           608,
@@ -22936,7 +22971,8 @@ window.BENCHMARK_DATA = {
           518.8186419169108,
           551.0246493021647,
           497.8183211546678,
-          465.96287937164306
+          465.96287937164306,
+          476.032538822719
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23682,6 +23718,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          2008,
           2008
         ],
         "borderColor": "#FF671B",
@@ -23712,7 +23749,8 @@ window.BENCHMARK_DATA = {
           425.4470073064168,
           443.51555728912354,
           392.2233221371969,
-          386.0161264737447
+          386.0161264737447,
+          374.801336701711
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -23724,6 +23762,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -28163,6 +28202,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:40:10 2026 \u002B0200",
         "message": "fix: describe the last attempt in \u0060IsOneOf\u0060 and \u0060IsNotOneOf\u0060 on \u0060DateTime\u0060 after an earlier incompatible kind (#1689)"
+      },
+      {
+        "sha": "3a0d86a45c60afc2bdef37100570c1e1ac13bddc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
+        "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
       }
     ],
     "labels": [
@@ -28900,7 +28945,8 @@ window.BENCHMARK_DATA = {
       "c8e40f00",
       "a8e6cbb0",
       "82b90d2e",
-      "e0c39d6f"
+      "e0c39d6f",
+      "3a0d86a4"
     ],
     "datasets": [
       {
@@ -29641,7 +29687,8 @@ window.BENCHMARK_DATA = {
           163.36314128239948,
           166.96671911875407,
           152.45862007141113,
-          141.09372336069742
+          141.09372336069742,
+          148.26110469500225
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30384,6 +30431,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          520,
           520,
           520,
           520,
@@ -31136,7 +31184,8 @@ window.BENCHMARK_DATA = {
           289.0748630932399,
           298.81401615142823,
           269.2316794054849,
-          241.46723055839539
+          241.46723055839539,
+          244.63455235163372
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31882,6 +31931,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1224,
           1224
         ],
         "borderColor": "#FF671B",
@@ -31912,7 +31962,8 @@ window.BENCHMARK_DATA = {
           266.55420713424684,
           276.0447735468546,
           249.01944433848064,
-          234.01756398494427
+          234.01756398494427,
+          237.19669600895472
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31924,6 +31975,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -36363,6 +36415,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:40:10 2026 \u002B0200",
         "message": "fix: describe the last attempt in \u0060IsOneOf\u0060 and \u0060IsNotOneOf\u0060 on \u0060DateTime\u0060 after an earlier incompatible kind (#1689)"
+      },
+      {
+        "sha": "3a0d86a45c60afc2bdef37100570c1e1ac13bddc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
+        "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
       }
     ],
     "labels": [
@@ -37100,7 +37158,8 @@ window.BENCHMARK_DATA = {
       "c8e40f00",
       "a8e6cbb0",
       "82b90d2e",
-      "e0c39d6f"
+      "e0c39d6f",
+      "3a0d86a4"
     ],
     "datasets": [
       {
@@ -37841,7 +37900,8 @@ window.BENCHMARK_DATA = {
           265.4620860417684,
           284.06651980082194,
           256.3516102472941,
-          235.95348705564226
+          235.95348705564226,
+          246.93383646011353
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38584,6 +38644,7 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
+          584,
           584,
           584,
           584,
@@ -39336,7 +39397,8 @@ window.BENCHMARK_DATA = {
           1351.08468069349,
           1411.544982092721,
           1251.7795834859212,
-          1136.304070154826
+          1136.304070154826,
+          1162.7872834523519
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40082,6 +40144,7 @@ window.BENCHMARK_DATA = {
           3944,
           3944,
           3944,
+          3944,
           3944
         ],
         "borderColor": "#FF671B",
@@ -40112,7 +40175,8 @@ window.BENCHMARK_DATA = {
           356.9201539675395,
           373.8337596484593,
           334.30736501400287,
-          326.45648460388185
+          326.45648460388185,
+          324.31370852543756
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -40124,6 +40188,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -44563,6 +44628,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:40:10 2026 \u002B0200",
         "message": "fix: describe the last attempt in \u0060IsOneOf\u0060 and \u0060IsNotOneOf\u0060 on \u0060DateTime\u0060 after an earlier incompatible kind (#1689)"
+      },
+      {
+        "sha": "3a0d86a45c60afc2bdef37100570c1e1ac13bddc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
+        "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
       }
     ],
     "labels": [
@@ -45300,7 +45371,8 @@ window.BENCHMARK_DATA = {
       "c8e40f00",
       "a8e6cbb0",
       "82b90d2e",
-      "e0c39d6f"
+      "e0c39d6f",
+      "3a0d86a4"
     ],
     "datasets": [
       {
@@ -46041,7 +46113,8 @@ window.BENCHMARK_DATA = {
           649.4298574447632,
           688.6662399927775,
           641.1165024893625,
-          590.6863476679875
+          590.6863476679875,
+          577.3890611784799
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46784,6 +46857,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          856,
           856,
           856,
           856,
@@ -47536,7 +47610,8 @@ window.BENCHMARK_DATA = {
           1421.3493090311686,
           1516.7950865427654,
           1356.2710932413736,
-          1274.0322651181903
+          1274.0322651181903,
+          1284.0766259511313
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48282,6 +48357,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -48312,7 +48388,8 @@ window.BENCHMARK_DATA = {
           671.4865087509155,
           700.1051335016887,
           680.0415073394776,
-          621.9136136599949
+          621.9136136599949,
+          634.1302262714931
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -48324,6 +48401,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -52763,6 +52841,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:40:10 2026 \u002B0200",
         "message": "fix: describe the last attempt in \u0060IsOneOf\u0060 and \u0060IsNotOneOf\u0060 on \u0060DateTime\u0060 after an earlier incompatible kind (#1689)"
+      },
+      {
+        "sha": "3a0d86a45c60afc2bdef37100570c1e1ac13bddc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
+        "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
       }
     ],
     "labels": [
@@ -53500,7 +53584,8 @@ window.BENCHMARK_DATA = {
       "c8e40f00",
       "a8e6cbb0",
       "82b90d2e",
-      "e0c39d6f"
+      "e0c39d6f",
+      "3a0d86a4"
     ],
     "datasets": [
       {
@@ -54241,7 +54326,8 @@ window.BENCHMARK_DATA = {
           1023.2954066140311,
           1056.9482728413172,
           1000.4291741689046,
-          928.3969171524047
+          928.3969171524047,
+          967.2160835266113
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54984,6 +55070,7 @@ window.BENCHMARK_DATA = {
           1248,
           1248,
           1248,
+          1264,
           1264,
           1264,
           1264,
@@ -55736,7 +55823,8 @@ window.BENCHMARK_DATA = {
           28227.228971354165,
           28796.494430541992,
           27469.12569173177,
-          26178.600689697265
+          26178.600689697265,
+          20204.395196097237
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56482,6 +56570,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -56512,7 +56601,8 @@ window.BENCHMARK_DATA = {
           792.4907321248736,
           860.9113993962605,
           795.6614363988241,
-          743.0316321690877
+          743.0316321690877,
+          732.0670407613119
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -56524,6 +56614,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -56733,6 +56824,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:40:10 2026 \u002B0200",
         "message": "fix: describe the last attempt in \u0060IsOneOf\u0060 and \u0060IsNotOneOf\u0060 on \u0060DateTime\u0060 after an earlier incompatible kind (#1689)"
+      },
+      {
+        "sha": "3a0d86a45c60afc2bdef37100570c1e1ac13bddc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
+        "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
       }
     ],
     "labels": [
@@ -56765,7 +56862,8 @@ window.BENCHMARK_DATA = {
       "c8e40f00",
       "a8e6cbb0",
       "82b90d2e",
-      "e0c39d6f"
+      "e0c39d6f",
+      "3a0d86a4"
     ],
     "datasets": [
       {
@@ -56801,7 +56899,8 @@ window.BENCHMARK_DATA = {
           774.3237487792969,
           815.4775744756063,
           735.5506409327189,
-          719.7604413986206
+          719.7604413986206,
+          671.5482345581055
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56839,6 +56938,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1816,
           1816,
           1816,
           1816,
@@ -56886,7 +56986,8 @@ window.BENCHMARK_DATA = {
           85156.56563626803,
           85032.92860630581,
           83092.55021972656,
-          79968.29377629206
+          79968.29377629206,
+          59742.699979341945
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56922,6 +57023,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252,
           5252,
           5252,
@@ -57121,6 +57223,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:40:10 2026 \u002B0200",
         "message": "fix: describe the last attempt in \u0060IsOneOf\u0060 and \u0060IsNotOneOf\u0060 on \u0060DateTime\u0060 after an earlier incompatible kind (#1689)"
+      },
+      {
+        "sha": "3a0d86a45c60afc2bdef37100570c1e1ac13bddc",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
+        "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
       }
     ],
     "labels": [
@@ -57153,7 +57261,8 @@ window.BENCHMARK_DATA = {
       "c8e40f00",
       "a8e6cbb0",
       "82b90d2e",
-      "e0c39d6f"
+      "e0c39d6f",
+      "3a0d86a4"
     ],
     "datasets": [
       {
@@ -57189,7 +57298,8 @@ window.BENCHMARK_DATA = {
           239.75034195582072,
           304.97349578993663,
           246.66691926320394,
-          232.86030954974038
+          232.86030954974038,
+          238.89018327849251
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -57227,6 +57337,7 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
+          664,
           664,
           664,
           664,
@@ -57274,7 +57385,8 @@ window.BENCHMARK_DATA = {
           31956.172403971355,
           33126.5643758138,
           30889.731115722658,
-          30972.008573091945
+          30972.008573091945,
+          18302.631251408504
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57315,6 +57427,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -57345,7 +57458,8 @@ window.BENCHMARK_DATA = {
           260.66469326019285,
           281.2242929385259,
           254.91282835006714,
-          234.76506390571595
+          234.76506390571595,
+          228.9157928029696
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -57357,6 +57471,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
