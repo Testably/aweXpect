@@ -98,7 +98,6 @@ public sealed class NestedExpectationEvaluationTests
 		Comparison comparison)
 	{
 		using CancellationTokenSource cts = new();
-		// Unique items are not equivalent, so the nested expectation of that comparison is not met.
 		CapturingConstraint constraint = new(comparison.ToString().EndsWith("AreUnique")
 			? Outcome.Failure
 			: Outcome.Success);
@@ -114,7 +113,8 @@ public sealed class NestedExpectationEvaluationTests
 		async Task Act()
 			=> await Compare(comparison, subject, expected, cts.Token);
 
-		await That(Act).DoesNotThrow();
+		await That(Act).DoesNotThrow()
+			.Because("the nested expectation is met, except for AreUnique, whose items must not be equivalent");
 		await That(constraint.CancellationToken).IsEqualTo(cts.Token)
 			.Because("the expectation has to compare with the options of its evaluation");
 	}

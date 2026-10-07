@@ -123,16 +123,7 @@ public class Signaler
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public Task<SignalerResult> WaitAsync(Times amount, TimeSpan? timeout = null,
 		CancellationToken cancellationToken = default)
-	{
-		if (amount.Value <= 0)
-		{
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(amount), "The amount must be greater than zero."));
-		}
-
-		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		return WaitForAsync(amount.Value, timeout, RealTimeSystem.Instance, cancellationToken);
-	}
+		=> WaitAsync(amount, timeout, RealTimeSystem.Instance, cancellationToken);
 
 	/// <summary>
 	///     Waits like <see cref="WaitAsync(Times, TimeSpan?, CancellationToken)" />, while the
@@ -405,16 +396,7 @@ public class Signaler<TParameter>
 		Func<TParameter, bool>? predicate = null,
 		TimeSpan? timeout = null,
 		CancellationToken cancellationToken = default)
-	{
-		if (amount.Value <= 0)
-		{
-			throw Tracing.WriteException(
-				new ArgumentOutOfRangeException(nameof(amount), "The amount must be greater than zero."));
-		}
-
-		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		return WaitForAsync(amount.Value, predicate, timeout, RealTimeSystem.Instance, cancellationToken);
-	}
+		=> WaitAsync(amount, predicate, timeout, RealTimeSystem.Instance, cancellationToken);
 
 	/// <summary>
 	///     Waits like <see cref="WaitAsync(Times, Func{TParameter, bool}?, TimeSpan?, CancellationToken)" />, while the

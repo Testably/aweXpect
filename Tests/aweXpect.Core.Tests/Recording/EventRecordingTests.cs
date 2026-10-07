@@ -1130,15 +1130,14 @@ public sealed class EventRecordingTests
 		};
 	}
 
-	/// <remarks>
-	///     Matches only once the <paramref name="duration" /> has passed since the predicate was first called, i.e. it
-	///     holds up the constraint that filters with it, so that the next constraint deterministically starts that long
-	///     after the evaluation.
-	/// </remarks>
 	/// <summary>
 	///     A predicate whose first call takes the <paramref name="duration" /> on the clock of the
 	///     <paramref name="timeSystem" />.
 	/// </summary>
+	/// <remarks>
+	///     It advances the clock on its first call, so that the next constraint deterministically starts that long after
+	///     the evaluation.
+	/// </remarks>
 	private static Func<int, bool> TakesAWhileWhenFirstCalled(VirtualTimeSystem timeSystem, TimeSpan duration)
 	{
 		int calls = 0;
