@@ -113,7 +113,7 @@ partial class Build
 			if (prId == null)
 			{
 				Log.Information(
-					"The workflow run belongs to no open pull request, so there is no mutation comment to write");
+					"The workflow run belongs to no pull request, so there is no mutation comment to write");
 				return;
 			}
 

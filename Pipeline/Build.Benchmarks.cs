@@ -62,7 +62,7 @@ partial class Build
 			int? prId = await BuildExtensions.ResolvePullRequestOfWorkflowRun(GithubToken);
 			if (prId == null)
 			{
-				Log.Information("Skip writing a comment, as the workflow run belongs to no open pull request.");
+				Log.Information("Skip writing a comment, as the workflow run belongs to no pull request.");
 				return;
 			}
 

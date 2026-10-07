@@ -43,13 +43,16 @@ public static class BuildExtensions
 	}
 
 	/// <summary>
-	///     Resolves the open pull request that triggered the workflow run under analysis, or <see langword="null" />
+	///     Resolves the pull request that triggered the workflow run under analysis, or <see langword="null" />
 	///     when there is none.
 	/// </summary>
 	/// <remarks>
 	///     The artifacts of that run are untrusted, because the pull request controls the code that produces them, so
 	///     the pull request is identified by the <c>workflow_run</c> event alone. The event lists no pull requests for
 	///     a fork, which is why the number is looked up by the head branch and verified against the head commit.
+	///     <para />
+	///     A pull request that was merged or closed while its run was analysed is still found. When the same commit
+	///     of the same branch belongs to several pull requests, the open one is taken.
 	/// </remarks>
 	public static async Task<int?> ResolvePullRequestOfWorkflowRun(string githubToken)
 	{
@@ -72,20 +75,25 @@ public static class BuildExtensions
 			"Testably", "aweXpect",
 			new PullRequestRequest
 			{
-				State = ItemStateFilter.Open,
+				State = ItemStateFilter.All,
 				Head = $"{headOwner}:{headBranch}",
 			});
 		// GitHub ignores a head filter it cannot interpret and then lists every pull request.
-		int[] numbers = pullRequests
+		PullRequest[] matches = pullRequests
 			.Where(pullRequest => pullRequest.Head.Sha == headSha &&
 			                      pullRequest.Head.Ref == headBranch &&
 			                      string.Equals(pullRequest.Head.User?.Login, headOwner,
 				                      StringComparison.OrdinalIgnoreCase))
-			.Select(pullRequest => pullRequest.Number)
 			.ToArray();
+		if (matches.Length > 1)
+		{
+			matches = matches.Where(pullRequest => pullRequest.State.Value == ItemState.Open).ToArray();
+		}
+
+		int[] numbers = matches.Select(pullRequest => pullRequest.Number).ToArray();
 		if (numbers.Length != 1)
 		{
-			Log.Information("Found {Count} open pull requests for the commit {Sha} of the workflow run",
+			Log.Information("Found {Count} pull requests for the commit {Sha} of the workflow run",
 				numbers.Length, headSha);
 			return null;
 		}
