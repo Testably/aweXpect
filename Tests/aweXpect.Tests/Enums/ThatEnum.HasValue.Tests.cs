@@ -851,6 +851,24 @@ public sealed partial class ThatEnum
 			}
 
 			[Test]
+			public async Task ShouldNameTheParameterOfNegatedOrderedComparisonsUnexpected()
+			{
+				MyNumbers subject = MyNumbers.Two;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotGreaterThan(unexpected: 2L).And
+						.HasValue().NotGreaterThan(unexpected: 2UL).And
+						.HasValue().NotGreaterThanOrEqualTo(unexpected: 3L).And
+						.HasValue().NotGreaterThanOrEqualTo(unexpected: 3UL).And
+						.HasValue().NotLessThan(unexpected: 2L).And
+						.HasValue().NotLessThan(unexpected: 2UL).And
+						.HasValue().NotLessThanOrEqualTo(unexpected: 1L).And
+						.HasValue().NotLessThanOrEqualTo(unexpected: 1UL);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			[Arguments(MyNumbers.One, 2L)]
 			[Arguments(MyNumbers.Two, 3L)]
 			public async Task ShouldSupportTheComparisonVocabulary(MyNumbers subject, long maximum)

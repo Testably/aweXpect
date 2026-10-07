@@ -37,10 +37,10 @@ public class CollectionCountResult<TReturn>(Func<EnumerableQuantifier, bool, TRe
 		=> factory(Ordered(expected, EnumerableQuantifier.MoreThan, "more than"), false);
 
 	/// <summary>
-	///     Verifies that the collection does not have more than <paramref name="expected" /> items.
+	///     Verifies that the collection does not have more than <paramref name="unexpected" /> items.
 	/// </summary>
-	public TReturn NotGreaterThan(int? expected)
-		=> factory(Ordered(expected, EnumerableQuantifier.MoreThan, "more than"), true);
+	public TReturn NotGreaterThan(int? unexpected)
+		=> factory(Ordered(unexpected, EnumerableQuantifier.MoreThan, "more than"), true);
 
 	/// <summary>
 	///     Verifies that the collection has at least <paramref name="expected" /> items.
@@ -49,10 +49,10 @@ public class CollectionCountResult<TReturn>(Func<EnumerableQuantifier, bool, TRe
 		=> factory(Ordered(expected, EnumerableQuantifier.AtLeast, "at least"), false);
 
 	/// <summary>
-	///     Verifies that the collection does not have at least <paramref name="expected" /> items.
+	///     Verifies that the collection does not have at least <paramref name="unexpected" /> items.
 	/// </summary>
-	public TReturn NotGreaterThanOrEqualTo(int? expected)
-		=> factory(Ordered(expected, EnumerableQuantifier.AtLeast, "at least"), true);
+	public TReturn NotGreaterThanOrEqualTo(int? unexpected)
+		=> factory(Ordered(unexpected, EnumerableQuantifier.AtLeast, "at least"), true);
 
 	/// <summary>
 	///     Verifies that the collection has fewer than <paramref name="expected" /> items.
@@ -61,10 +61,10 @@ public class CollectionCountResult<TReturn>(Func<EnumerableQuantifier, bool, TRe
 		=> factory(Ordered(expected, EnumerableQuantifier.LessThan, "fewer than"), false);
 
 	/// <summary>
-	///     Verifies that the collection does not have fewer than <paramref name="expected" /> items.
+	///     Verifies that the collection does not have fewer than <paramref name="unexpected" /> items.
 	/// </summary>
-	public TReturn NotLessThan(int? expected)
-		=> factory(Ordered(expected, EnumerableQuantifier.LessThan, "fewer than"), true);
+	public TReturn NotLessThan(int? unexpected)
+		=> factory(Ordered(unexpected, EnumerableQuantifier.LessThan, "fewer than"), true);
 
 	/// <summary>
 	///     Verifies that the collection has at most <paramref name="expected" /> items.
@@ -73,10 +73,10 @@ public class CollectionCountResult<TReturn>(Func<EnumerableQuantifier, bool, TRe
 		=> factory(Ordered(expected, EnumerableQuantifier.AtMost, "at most"), false);
 
 	/// <summary>
-	///     Verifies that the collection does not have at most <paramref name="expected" /> items.
+	///     Verifies that the collection does not have at most <paramref name="unexpected" /> items.
 	/// </summary>
-	public TReturn NotLessThanOrEqualTo(int? expected)
-		=> factory(Ordered(expected, EnumerableQuantifier.AtMost, "at most"), true);
+	public TReturn NotLessThanOrEqualTo(int? unexpected)
+		=> factory(Ordered(unexpected, EnumerableQuantifier.AtMost, "at most"), true);
 
 	/// <summary>
 	///     Verifies that the collection has between <paramref name="minimum" />…

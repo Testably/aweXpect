@@ -490,7 +490,7 @@ public sealed partial class ThatString
 			}
 
 			[Test]
-			public async Task WhenExpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
+			public async Task WhenUnexpectedLengthIsNegative_ShouldThrowArgumentOutOfRangeException()
 			{
 				string subject = "";
 
@@ -498,9 +498,9 @@ public sealed partial class ThatString
 					=> await That(subject).HasLength().NotGreaterThan(-1);
 
 				await That(Act).Throws<ArgumentOutOfRangeException>()
-					.WithMessage("*The expected length must not be negative.*")
+					.WithMessage("*The unexpected length must not be negative.*")
 					.AsWildcard().And
-					.WithParamName("expected");
+					.WithParamName("unexpected");
 			}
 
 			[Test]

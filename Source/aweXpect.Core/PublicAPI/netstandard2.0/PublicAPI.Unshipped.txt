@@ -80,20 +80,20 @@ static aweXpect.Core.ExpectationBuilderExtensions.ForMember<TSource, TTarget>(th
 ~aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.Whose<TMember>(System.Func<TType, TMember?>! memberAccessor, System.Action<aweXpect.Core.IThatSubject<TMember?>!>! expectations, string! doNotPopulateThisValue = "") -> aweXpect.Results.AndOrWhoseResult<TType, TThat, TSelf>.AdditionalAndOrWhoseResult!
 aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance>.WithToleranceValidation(System.Action<TTolerance>! validation) -> aweXpect.Options.ObjectEqualityWithToleranceOptions<TSubject, TTolerance>!
 aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.NotBetween(int? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>!, int?>!
-aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.NotGreaterThan(int? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
-aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.NotGreaterThanOrEqualTo(int? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
-aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.NotLessThan(int? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
-aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.NotLessThanOrEqualTo(int? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.NotGreaterThan(int? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.NotGreaterThanOrEqualTo(int? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.NotLessThan(int? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Int<TValue, TType, TThat>.NotLessThanOrEqualTo(int? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
 aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.NotBetween(long? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>!, long?>!
-aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.NotGreaterThan(long? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
-aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.NotGreaterThanOrEqualTo(long? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
-aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.NotLessThan(long? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
-aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.NotLessThanOrEqualTo(long? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.NotGreaterThan(long? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.NotGreaterThanOrEqualTo(long? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.NotLessThan(long? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.Long<TValue, TType, TThat>.NotLessThanOrEqualTo(long? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
 aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotBetween(System.TimeSpan? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, TThat>!, System.TimeSpan?>!
-aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotGreaterThan(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
-aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotGreaterThanOrEqualTo(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
-aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotLessThan(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
-aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotLessThanOrEqualTo(System.TimeSpan? expected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotGreaterThan(System.TimeSpan? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotGreaterThanOrEqualTo(System.TimeSpan? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotLessThan(System.TimeSpan? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
+aweXpect.Results.PropertyResult.TimeSpan<TValue, TType, TThat>.NotLessThanOrEqualTo(System.TimeSpan? unexpected) -> aweXpect.Results.AndOrResult<TType, TThat>!
 aweXpect.Options.CollectionOrderOptions<TItem>.HasComparer.get -> bool
 aweXpect.Options.ObjectEqualityOptions<TSubject>.Using(System.Collections.Generic.IEqualityComparer<TSubject>! comparer) -> aweXpect.Options.ObjectEqualityOptions<TSubject>!
 aweXpect.Options.StringEqualityOptions.FormatExpectedItem(string? expected) -> string!
@@ -321,10 +321,10 @@ aweXpect.Results.CollectionCountResult<TReturn>.LessThan(int? expected) -> TRetu
 aweXpect.Results.CollectionCountResult<TReturn>.LessThanOrEqualTo(int? expected) -> TReturn
 aweXpect.Results.CollectionCountResult<TReturn>.NotBetween(int? minimum) -> aweXpect.Results.BetweenResult<TReturn, int?>!
 aweXpect.Results.CollectionCountResult<TReturn>.NotEqualTo(int? unexpected) -> TReturn
-aweXpect.Results.CollectionCountResult<TReturn>.NotGreaterThan(int? expected) -> TReturn
-aweXpect.Results.CollectionCountResult<TReturn>.NotGreaterThanOrEqualTo(int? expected) -> TReturn
-aweXpect.Results.CollectionCountResult<TReturn>.NotLessThan(int? expected) -> TReturn
-aweXpect.Results.CollectionCountResult<TReturn>.NotLessThanOrEqualTo(int? expected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.NotGreaterThan(int? unexpected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.NotGreaterThanOrEqualTo(int? unexpected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.NotLessThan(int? unexpected) -> TReturn
+aweXpect.Results.CollectionCountResult<TReturn>.NotLessThanOrEqualTo(int? unexpected) -> TReturn
 aweXpect.Results.ExpectationResult.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
 aweXpect.Results.ExpectationResult<TType, TSelf>.ExpectationBuilder.get -> aweXpect.Core.ExpectationBuilder!
 aweXpect.Results.ObjectCountResult<TType, TThat, TElement>

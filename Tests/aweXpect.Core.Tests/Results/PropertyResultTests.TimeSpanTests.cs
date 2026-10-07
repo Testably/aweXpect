@@ -529,6 +529,20 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Test]
+		public async Task NotGreaterThan_ShouldValidateTheUnexpectedParameter()
+		{
+			string? parameterName = null;
+			PropertyResult.TimeSpan<string> sut = new(new Dummy(), _ => TimeSpan.Zero, "foo", (_, name) =>
+			{
+				parameterName = name;
+			});
+
+			_ = sut.NotGreaterThan(unexpected: 42.Seconds());
+
+			await That(parameterName).IsEqualTo("unexpected");
+		}
+
+		[Test]
 		public async Task NotGreaterThan_ShouldVerifyThatActualIsNotGreaterThanExpected()
 		{
 			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
@@ -634,6 +648,20 @@ public sealed partial class PropertyResultTests
 			_ = sut.NotGreaterThanOrEqualTo(42.Seconds());
 
 			await That(signal).Signaled().With(e => e == 42.Seconds());
+		}
+
+		[Test]
+		public async Task NotGreaterThanOrEqualTo_ShouldValidateTheUnexpectedParameter()
+		{
+			string? parameterName = null;
+			PropertyResult.TimeSpan<string> sut = new(new Dummy(), _ => TimeSpan.Zero, "foo", (_, name) =>
+			{
+				parameterName = name;
+			});
+
+			_ = sut.NotGreaterThanOrEqualTo(unexpected: 42.Seconds());
+
+			await That(parameterName).IsEqualTo("unexpected");
 		}
 
 		[Test]
@@ -745,6 +773,20 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Test]
+		public async Task NotLessThan_ShouldValidateTheUnexpectedParameter()
+		{
+			string? parameterName = null;
+			PropertyResult.TimeSpan<string> sut = new(new Dummy(), _ => TimeSpan.Zero, "foo", (_, name) =>
+			{
+				parameterName = name;
+			});
+
+			_ = sut.NotLessThan(unexpected: 42.Seconds());
+
+			await That(parameterName).IsEqualTo("unexpected");
+		}
+
+		[Test]
 		public async Task NotLessThan_ShouldVerifyThatActualIsNotLessThanExpected()
 		{
 			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
@@ -850,6 +892,20 @@ public sealed partial class PropertyResultTests
 			_ = sut.NotLessThanOrEqualTo(42.Seconds());
 
 			await That(signal).Signaled().With(e => e == 42.Seconds());
+		}
+
+		[Test]
+		public async Task NotLessThanOrEqualTo_ShouldValidateTheUnexpectedParameter()
+		{
+			string? parameterName = null;
+			PropertyResult.TimeSpan<string> sut = new(new Dummy(), _ => TimeSpan.Zero, "foo", (_, name) =>
+			{
+				parameterName = name;
+			});
+
+			_ = sut.NotLessThanOrEqualTo(unexpected: 42.Seconds());
+
+			await That(parameterName).IsEqualTo("unexpected");
 		}
 
 		[Test]

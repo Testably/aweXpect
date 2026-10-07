@@ -585,6 +585,20 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Test]
+		public async Task NotGreaterThan_ShouldValidateTheUnexpectedParameter()
+		{
+			string? parameterName = null;
+			PropertyResult.Long<string> sut = new(new Dummy(), _ => 0, "foo", (_, name) =>
+			{
+				parameterName = name;
+			});
+
+			_ = sut.NotGreaterThan(unexpected: 42);
+
+			await That(parameterName).IsEqualTo("unexpected");
+		}
+
+		[Test]
 		public async Task NotGreaterThan_ShouldVerifyThatActualIsNotGreaterThanExpected()
 		{
 			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
@@ -690,6 +704,20 @@ public sealed partial class PropertyResultTests
 			_ = sut.NotGreaterThanOrEqualTo(42);
 
 			await That(signal).Signaled().With(e => e == 42);
+		}
+
+		[Test]
+		public async Task NotGreaterThanOrEqualTo_ShouldValidateTheUnexpectedParameter()
+		{
+			string? parameterName = null;
+			PropertyResult.Long<string> sut = new(new Dummy(), _ => 0, "foo", (_, name) =>
+			{
+				parameterName = name;
+			});
+
+			_ = sut.NotGreaterThanOrEqualTo(unexpected: 42);
+
+			await That(parameterName).IsEqualTo("unexpected");
 		}
 
 		[Test]
@@ -801,6 +829,20 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Test]
+		public async Task NotLessThan_ShouldValidateTheUnexpectedParameter()
+		{
+			string? parameterName = null;
+			PropertyResult.Long<string> sut = new(new Dummy(), _ => 0, "foo", (_, name) =>
+			{
+				parameterName = name;
+			});
+
+			_ = sut.NotLessThan(unexpected: 42);
+
+			await That(parameterName).IsEqualTo("unexpected");
+		}
+
+		[Test]
 		public async Task NotLessThan_ShouldVerifyThatActualIsNotLessThanExpected()
 		{
 			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42);
@@ -906,6 +948,20 @@ public sealed partial class PropertyResultTests
 			_ = sut.NotLessThanOrEqualTo(42);
 
 			await That(signal).Signaled().With(e => e == 42);
+		}
+
+		[Test]
+		public async Task NotLessThanOrEqualTo_ShouldValidateTheUnexpectedParameter()
+		{
+			string? parameterName = null;
+			PropertyResult.Long<string> sut = new(new Dummy(), _ => 0, "foo", (_, name) =>
+			{
+				parameterName = name;
+			});
+
+			_ = sut.NotLessThanOrEqualTo(unexpected: 42);
+
+			await That(parameterName).IsEqualTo("unexpected");
 		}
 
 		[Test]
