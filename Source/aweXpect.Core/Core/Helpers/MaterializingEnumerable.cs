@@ -14,14 +14,15 @@ namespace aweXpect.Core.Helpers;
 /// </remarks>
 internal sealed class MaterializingEnumerable<T> : IMaterializedEnumerable<T>, IMaterializedEnumerable, IMaterialization
 {
-	private readonly IEnumerator<T> _enumerator;
+	private readonly IEnumerable<T> _enumerable;
 	private readonly List<T> _materializedItems = new();
+	private IEnumerator<T>? _enumerator;
 	private bool _isSourceDisposed;
 	private Exception? _sourceException;
 
 	private MaterializingEnumerable(IEnumerable<T> enumerable)
 	{
-		_enumerator = enumerable.GetEnumerator();
+		_enumerable = enumerable;
 	}
 
 	/// <inheritdoc cref="IMaterialization.ReleaseSource()" />
@@ -51,6 +52,8 @@ internal sealed class MaterializingEnumerable<T> : IMaterializedEnumerable<T>, I
 	}
 
 	/// <remarks>
+	///     The enumerator of the source is requested for the first item, so that an exception of the source fails the
+	///     expectation, whether it is thrown for the enumerator, while advancing it or for its current item.<br />
 	///     A source that threw is not advanced again, but every further enumeration throws the same exception, so that
 	///     it cannot be mistaken for the end of the source. The source is disposed once it threw or is exhausted; a
 	///     source that is only read partially is disposed when it is released.
@@ -69,7 +72,7 @@ internal sealed class MaterializingEnumerable<T> : IMaterializedEnumerable<T>, I
 
 		try
 		{
-			if (UserCode.Invoke(static enumerator => enumerator.MoveNext(), _enumerator))
+			if (UserCode.Invoke(static self => self.ReadNextItem(), this))
 			{
 				return true;
 			}
@@ -86,6 +89,18 @@ internal sealed class MaterializingEnumerable<T> : IMaterializedEnumerable<T>, I
 		return false;
 	}
 
+	private bool ReadNextItem()
+	{
+		_enumerator ??= _enumerable.GetEnumerator();
+		if (!_enumerator.MoveNext())
+		{
+			return false;
+		}
+
+		_materializedItems.Add(_enumerator.Current);
+		return true;
+	}
+
 	private void DisposeSource()
 	{
 		if (_isSourceDisposed)
@@ -96,7 +111,7 @@ internal sealed class MaterializingEnumerable<T> : IMaterializedEnumerable<T>, I
 		_isSourceDisposed = true;
 		try
 		{
-			_enumerator.Dispose();
+			_enumerator?.Dispose();
 		}
 		catch (Exception)
 		{
@@ -117,14 +132,8 @@ internal sealed class MaterializingEnumerable<T> : IMaterializedEnumerable<T>, I
 	public IEnumerator<T> GetEnumerator()
 	{
 		int index = 0;
-		// Stryker disable once Conditional : a mutated condition keeps appending the exhausted enumerator's current item until the test host runs out of memory, which costs a minute per mutant and cannot be killed any cheaper
 		while (index < _materializedItems.Count || MoveNext())
 		{
-			if (index == _materializedItems.Count)
-			{
-				_materializedItems.Add(_enumerator.Current);
-			}
-
 			yield return _materializedItems[index++];
 		}
 	}
@@ -134,15 +143,15 @@ internal sealed class MaterializingEnumerable<T> : IMaterializedEnumerable<T>, I
 
 internal sealed class MaterializingEnumerable : IMaterializedEnumerable, IMaterialization
 {
-	private readonly IEnumerator _enumerator;
+	private readonly IEnumerable _enumerable;
 	private readonly List<object?> _materializedItems = new();
+	private IEnumerator? _enumerator;
 	private bool _isSourceDisposed;
 	private Exception? _sourceException;
 
 	private MaterializingEnumerable(IEnumerable enumerable)
 	{
-		// ReSharper disable once GenericEnumeratorNotDisposed
-		_enumerator = enumerable.GetEnumerator();
+		_enumerable = enumerable;
 	}
 
 	/// <inheritdoc cref="IMaterialization.ReleaseSource()" />
@@ -183,7 +192,7 @@ internal sealed class MaterializingEnumerable : IMaterializedEnumerable, IMateri
 
 		try
 		{
-			if (UserCode.Invoke(static enumerator => enumerator.MoveNext(), _enumerator))
+			if (UserCode.Invoke(static self => self.ReadNextItem(), this))
 			{
 				return true;
 			}
@@ -198,6 +207,19 @@ internal sealed class MaterializingEnumerable : IMaterializedEnumerable, IMateri
 		Count = _materializedItems.Count;
 		DisposeSource();
 		return false;
+	}
+
+	private bool ReadNextItem()
+	{
+		// ReSharper disable once GenericEnumeratorNotDisposed
+		_enumerator ??= _enumerable.GetEnumerator();
+		if (!_enumerator.MoveNext())
+		{
+			return false;
+		}
+
+		_materializedItems.Add(_enumerator.Current);
+		return true;
 	}
 
 	private void DisposeSource()
@@ -230,11 +252,6 @@ internal sealed class MaterializingEnumerable : IMaterializedEnumerable, IMateri
 		int index = 0;
 		while (index < _materializedItems.Count || MoveNext())
 		{
-			if (index == _materializedItems.Count)
-			{
-				_materializedItems.Add(_enumerator.Current);
-			}
-
 			yield return _materializedItems[index++];
 		}
 	}
