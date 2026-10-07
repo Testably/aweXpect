@@ -65,6 +65,7 @@ public static partial class ThatNullableDateTime
 		public ConstraintResult IsMetBy(DateTime? actual)
 		{
 			Actual = actual;
+			_incompatibleKind = null;
 			if (actual is null)
 			{
 				Outcome = expected.Any(x => x is null) ? Outcome.Success : Outcome.Failure;
