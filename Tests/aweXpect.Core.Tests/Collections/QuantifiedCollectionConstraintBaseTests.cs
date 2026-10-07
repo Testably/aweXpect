@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Formatting;
 using aweXpect.Options;
 using aweXpect.Results;
 
@@ -10,6 +13,146 @@ namespace aweXpect.Core.Tests.Collections;
 
 public sealed class QuantifiedCollectionConstraintBaseTests
 {
+	[Test]
+	public async Task AppendContexts_WhenIncompleteItemsAreListedOnSeparateLines_ShouldMarkThemAsIncomplete()
+	{
+		int[] subject = Enumerable.Repeat(1, 20).ToArray();
+
+		async Task Act()
+			=> await That(subject).AtMost(9).AreVerifiedBy(x => x.IsEqualTo(1));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equal to 1 for at most 9 items,
+			             but at least 10 of at least 10 were
+
+			             Matching items:
+			             [
+			               1,
+			               1,
+			               1,
+			               1,
+			               1,
+			               1,
+			               1,
+			               1,
+			               1,
+			               1,
+			               (… and maybe more)
+			             ]
+			             """)
+			.Because("the evaluation stops once the outcome is determined, so further items may follow");
+	}
+
+	[Test]
+	public async Task AppendContexts_WhenIncompleteItemsAreTruncated_ShouldNotCountTheRemainingItems()
+	{
+		int[] subject = Enumerable.Repeat(1, 20).ToArray();
+
+		async Task Act()
+			=> await That(subject).AtMost(10).AreVerifiedBy(x => x.IsEqualTo(1));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equal to 1 for at most 10 items,
+			             but at least 11 of at least 11 were
+
+			             Matching items:
+			             [
+			               1,
+			               1,
+			               1,
+			               1,
+			               1,
+			               1,
+			               1,
+			               1,
+			               1,
+			               1,
+			               (… and maybe more)
+			             ]
+			             """)
+			.Because("the evaluation stops once the outcome is determined, so the number of items is not known");
+	}
+
+	[Test]
+	public async Task AppendContexts_WhenItemsAreNullableValues_ShouldListThemOnASingleLine()
+	{
+		int?[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).All().AreVerifiedBy(x => x.IsEqualTo(1));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equal to 1 for all items,
+			             but only 1 of at least 2 were
+
+			             Not matching items:
+			             [2, (… and maybe more)]
+			             """);
+	}
+
+	[Test]
+	public async Task AppendContexts_WhenTheSubjectIsKeyed_ShouldListTheItemsWithTheirKeys()
+	{
+		IEnumerable<int> subject = new KeyedValues(1, 2, 3);
+
+		async Task Act()
+			=> await That(subject).All().AreVerifiedBy(x => x.IsEqualTo(1));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equal to 1 for all items,
+			             but only 1 of at least 2 were
+
+			             Not matching items:
+			             [key1: 2, (… and maybe more)]
+			             """);
+	}
+
+	[Test]
+	public async Task AppendResult_ShouldUseTheVerb()
+	{
+		AreEvenConstraint sut = new(EnumerableQuantifier.All());
+
+		ConstraintResult result = sut.IsMetBy([2, 3,]);
+
+		await That(result.GetResultText()).IsEqualTo("only 1 of 2 were");
+	}
+
+	[Test]
+	public async Task AppendResult_WhenNegated_ShouldRenderTheNegatedResult()
+	{
+		int[] subject = [1, 1,];
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(it => it.All().AreVerifiedBy(x => x.IsEqualTo(1)));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equal to 1 not for all items,
+			             but all 2 were
+			             """);
+	}
+
+	[Test]
+	public async Task Complete_AfterACompletedEvaluationWithoutItems_ShouldStartANewEvaluation()
+	{
+		ReusedAreEvenConstraint sut = new(EnumerableQuantifier.All());
+		sut.IsMetBy([1,]);
+
+		ConstraintResult result = sut.IsMetBy([]);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Success)
+			.Because("the not matching item of the earlier evaluation does not count for the empty collection");
+	}
+
 	[Test]
 	public async Task IsMetBy_WhenTheEvaluationIsNotCompleted_ShouldFail()
 	{
@@ -29,6 +172,28 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 			             but it could not be verified, because the expectation did not decide its outcome
 			             """)
 			.Because("a constraint that forgets to complete the evaluation must not pass as inconclusive");
+	}
+
+	[Test]
+	public async Task Record_AfterACompletedEvaluation_ShouldStartANewEvaluation()
+	{
+		ReusedAreEvenConstraint sut = new(EnumerableQuantifier.All());
+		sut.IsMetBy([1, 3,]);
+
+		ConstraintResult result = sut.IsMetBy([2, 4,]);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Success)
+			.Because("the items of the earlier evaluation do not count");
+	}
+
+	[Test]
+	public async Task Record_WhenAFurtherItemIsUnansweredAfterTheEvaluationStopped_ShouldStayUndecided()
+	{
+		ReusedAreEvenConstraint sut = new(EnumerableQuantifier.All());
+
+		ConstraintResult result = sut.IsMetBy([-1, -2,]);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Undecided);
 	}
 
 	[Test]
@@ -151,6 +316,18 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 	}
 
 	[Test]
+	public async Task Record_WhenTheFirstItemAfterACompletedEvaluationIsUnanswered_ShouldStartANewEvaluation()
+	{
+		ReusedAreEvenConstraint sut = new(EnumerableQuantifier.All());
+		sut.IsMetBy([1,]);
+
+		ConstraintResult result = sut.IsMetBy([-1,]);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Undecided)
+			.Because("the not matching item of the earlier evaluation does not determine the outcome");
+	}
+
+	[Test]
 	public async Task Record_WhenUnansweredItemHasContexts_ShouldShowThemForTheItem()
 	{
 		InvalidOperationException exception = new("boom");
@@ -219,6 +396,44 @@ public sealed class QuantifiedCollectionConstraintBaseTests
 				}
 
 				Record(item, item % 2 == 0);
+			}
+
+			Complete();
+			return this;
+		}
+	}
+
+	private sealed class KeyedValues(params int[] values) : IEnumerable<int>, IKeyedCollection
+	{
+		public IEnumerator<int> GetEnumerator() => ((IEnumerable<int>)values).GetEnumerator();
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		public string Format() => "all keyed values";
+
+		public string Format(IEnumerable<int> indices, int? totalCount)
+			=> $"[{string.Join(", ", indices.Select(index => $"key{index}: {values[index]}"))}]";
+	}
+
+	/// <summary>
+	///     Does not start a new evaluation, like a constraint that is evaluated for each item of an outer collection, and
+	///     leaves a negative item undecided.
+	/// </summary>
+	private sealed class ReusedAreEvenConstraint(EnumerableQuantifier quantifier)
+		: QuantifiedCollectionConstraint<int[], int>("it", ExpectationGrammars.None, quantifier,
+			_ => "is even", "were")
+	{
+		public ReusedAreEvenConstraint IsMetBy(int[] actual)
+		{
+			Actual = actual;
+			foreach (int item in actual)
+			{
+				Record(item, new DummyConstraintResult(item switch
+				{
+					< 0 => Outcome.Undecided,
+					_ when item % 2 == 0 => Outcome.Success,
+					_ => Outcome.Failure,
+				}));
 			}
 
 			Complete();

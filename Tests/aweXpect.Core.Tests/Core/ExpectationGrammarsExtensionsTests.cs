@@ -4,6 +4,19 @@ public sealed class ExpectationGrammarsExtensionsTests
 {
 	[Test]
 	[Arguments(ExpectationGrammars.None, false)]
+	[Arguments(ExpectationGrammars.Nested, true)]
+	[Arguments(ExpectationGrammars.Plural, true)]
+	[Arguments(ExpectationGrammars.Negated, false)]
+	[Arguments(ExpectationGrammars.Negated | ExpectationGrammars.Plural, true)]
+	public async Task HasAnyFlag_ShouldReturnWhetherAnyOfTheFlagsIsSet(ExpectationGrammars input, bool expected)
+	{
+		bool result = input.HasAnyFlag(ExpectationGrammars.Nested, ExpectationGrammars.Plural);
+
+		await That(result).IsEqualTo(expected);
+	}
+
+	[Test]
+	[Arguments(ExpectationGrammars.None, false)]
 	[Arguments(ExpectationGrammars.Negated, true)]
 	[Arguments(ExpectationGrammars.Plural | ExpectationGrammars.Negated, true)]
 	[Arguments(ExpectationGrammars.Nested | ExpectationGrammars.Plural, false)]

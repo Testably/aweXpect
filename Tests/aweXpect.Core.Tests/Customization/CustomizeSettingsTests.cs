@@ -233,6 +233,24 @@ public sealed class CustomizeSettingsTests
 	}
 
 	[Test]
+	public async Task TestCancellation_FromCancellationToken_WhenTheFactoryThrows_ShouldThrowTheException()
+	{
+		MyException exception = new("the factory failed");
+		Exception? thrown;
+		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
+			       .Set(TestCancellation.FromCancellationToken(() => throw exception)))
+		{
+			async Task Act()
+				=> await That(true).IsTrue();
+
+			thrown = await Catch.ExceptionAsync(Act);
+		}
+
+		await That(thrown).IsSameAs(exception)
+			.Because("a broken customization is no failure of the expectation");
+	}
+
+	[Test]
 	public async Task TestCancellation_FromTimeout_ShouldBeApplied()
 	{
 		TimeSpan delay = 30.Seconds();

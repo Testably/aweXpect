@@ -245,6 +245,21 @@ public sealed class ConstraintResultExtensionsTests
 		}
 	}
 
+	public sealed class AsExpectationOnlyTests
+	{
+		[Test]
+		public async Task ShouldOnlyKeepTheExpectation()
+		{
+			ConstraintResult sut = new DummyConstraintResult(Outcome.Failure, "foo", "bar");
+
+			ConstraintResult result = sut.AsExpectationOnly();
+
+			await That(result.GetExpectationText()).IsEqualTo("foo");
+			await That(result.GetResultText()).IsEqualTo("")
+				.Because("the operand was not evaluated");
+		}
+	}
+
 	public sealed class PrependExpectationTextTests
 	{
 		[Test]

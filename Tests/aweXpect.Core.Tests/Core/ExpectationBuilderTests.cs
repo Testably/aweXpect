@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
@@ -745,6 +746,22 @@ public class ExpectationBuilderTests
 		await That(usedExpectationGrammars).IsEqualTo(ExpectationGrammars.Nested);
 	}
 
+#if NET8_0_OR_GREATER
+	[Test]
+	public async Task IsMet_WhenEvaluatedAgain_ShouldAwaitTheReleaseOfThePreviousEvaluation()
+	{
+		SlowlyReleasedAsyncEnumerable source = new(1, 2, 3);
+		List<int> disposeCountsAtEvaluation = [];
+		ExpectationResult expectation = ThatReadsFirstAsyncItem(source,
+			() => disposeCountsAtEvaluation.Add(source.DisposeCount));
+
+		await Expect.ThatAll(expectation, expectation);
+
+		await That(disposeCountsAtEvaluation).IsEqualTo(new[] { 0, 1, })
+			.Because("the source of the previous evaluation is released before the next evaluation starts");
+	}
+#endif
+
 	[Test]
 	public async Task IsMet_WhenFailing_ShouldReleaseTheMaterializedSourceAfterTheFailureMessage()
 	{
@@ -777,6 +794,19 @@ public class ExpectationBuilderTests
 		await That(source.DisposeCount).IsEqualTo(1)
 			.Because("the source that was only read partially is released after the evaluation");
 	}
+
+#if NET8_0_OR_GREATER
+	[Test]
+	public async Task IsMet_WhenSucceeding_WhenTheSourceIsReleasedAsynchronously_ShouldAwaitTheRelease()
+	{
+		SlowlyReleasedAsyncEnumerable source = new(1, 2, 3);
+
+		await ThatReadsFirstAsyncItem(source);
+
+		await That(source.DisposeCount).IsEqualTo(1)
+			.Because("the evaluation only ends once the source is released");
+	}
+#endif
 
 	[Test]
 	public async Task WhenAConstraintDoesNotDecideItsOutcome_ShouldFail()
@@ -1057,6 +1087,13 @@ public class ExpectationBuilderTests
 		ReadsFirstItemConstraint constraint)
 		=> new(That(subject).Get().ExpectationBuilder.AddConstraint((_, _) => constraint));
 
+#if NET8_0_OR_GREATER
+	private static ExpectationResult ThatReadsFirstAsyncItem(IAsyncEnumerable<int> subject,
+		Action? onEvaluation = null)
+		=> new(That(subject).Get().ExpectationBuilder.AddConstraint((_, _)
+			=> new ReadsFirstAsyncItemConstraint(onEvaluation)));
+#endif
+
 	private static ExpectationResult ThatUndecided(int subject)
 		=> new(That(subject).Get().ExpectationBuilder.AddConstraint((_, _)
 			=> new DummyConstraint("decides nothing",
@@ -1083,6 +1120,55 @@ public class ExpectationBuilderTests
 		public string GetDescription()
 			=> subject;
 	}
+
+#if NET8_0_OR_GREATER
+	/// <remarks>
+	///     It reads synchronously, so that the evaluation completes synchronously as well.
+	/// </remarks>
+	private sealed class ReadsFirstAsyncItemConstraint(Action? onEvaluation)
+		: IContextConstraint<IAsyncEnumerable<int>>
+	{
+		public ConstraintResult IsMetBy(IAsyncEnumerable<int> actual, IEvaluationContext context)
+		{
+			onEvaluation?.Invoke();
+			IAsyncEnumerator<int> enumerator = context
+				.UseMaterializedAsyncEnumerable(actual, CancellationToken.None)
+				.GetAsyncEnumerator();
+			_ = enumerator.MoveNextAsync().AsTask().GetAwaiter().GetResult();
+			return new DummyConstraintResult(Outcome.Success, "reads the first item");
+		}
+
+		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("reads the first item");
+	}
+
+	/// <summary>
+	///     Returns the <paramref name="values" /> synchronously, but releases its enumerator asynchronously.
+	/// </summary>
+	private sealed class SlowlyReleasedAsyncEnumerable(params int[] values) : IAsyncEnumerable<int>
+	{
+		public int DisposeCount { get; private set; }
+
+		public IAsyncEnumerator<int> GetAsyncEnumerator(CancellationToken cancellationToken = default)
+			=> new Enumerator(this, values);
+
+		private sealed class Enumerator(SlowlyReleasedAsyncEnumerable owner, int[] values) : IAsyncEnumerator<int>
+		{
+			private int _index = -1;
+
+			public int Current => values[_index];
+
+			public ValueTask<bool> MoveNextAsync()
+				=> new(++_index < values.Length);
+
+			public async ValueTask DisposeAsync()
+			{
+				await Task.Yield();
+				owner.DisposeCount++;
+			}
+		}
+	}
+#endif
 
 	/// <remarks>
 	///     It awaits until the evaluation is cancelled, or fails after half a minute, so that a regression fails the

@@ -102,6 +102,22 @@ public class StringDifferenceTests
 	public sealed class EqualityTests
 	{
 		[Test]
+		public async Task WhenActualValueIsEmpty_ShouldDifferAtIndex0()
+		{
+			StringDifference sut = new("", "This is a text");
+
+			await That(sut.IndexOfFirstMismatch(StringDifference.MatchType.Equality)).IsEqualTo(0);
+			await That(sut.ToString()).IsEqualTo(
+				"""
+				differs at index 0:
+				   ↓ (actual)
+				  ""
+				  "This is a text"
+				   ↑ (expected)
+				""");
+		}
+
+		[Test]
 		public async Task WhenActualValueIsLongerThanExpected_ShouldDifferAtIndexActualLength()
 		{
 			const string actual = "A text that is longer";
@@ -193,6 +209,21 @@ public class StringDifferenceTests
 				  "This is a long text"
 				  "This is a text that differs at index 10"
 				             ↑ (expected)
+				""");
+		}
+
+		[Test]
+		public async Task WhenIgnoringColumnsPerLine_WhenTheLineIsNotListed_ShouldIgnoreNoColumns()
+		{
+			StringDifference sut = new("a\nbcd", "a\nbXd", null, new StringDifferenceSettings(0, 0, [3,]));
+
+			await That(sut.ToString()).IsEqualTo(
+				"""
+				differs on line 2 and column 2:
+				       ↓ (actual)
+				  "a\nbcd"
+				  "a\nbXd"
+				       ↑ (expected)
 				""");
 		}
 
@@ -507,6 +538,24 @@ public class StringDifferenceTests
 		}
 
 		[Test]
+		public async Task WhenUsingTheCaseSensitiveCurrentCultureComparer_ShouldCompareWithTheCurrentCulture()
+		{
+			StringDifference sut = new(
+				"some TEXT that differs at X here",
+				"some text that differs at Y here",
+				StringComparer.CurrentCulture);
+
+			await That(sut.ToString()).IsEqualTo(
+				"""
+				differs at index 5:
+				        ↓ (actual)
+				  "some TEXT that differs at X here"
+				  "some text that differs at Y here"
+				        ↑ (expected)
+				""");
+		}
+
+		[Test]
 		public async Task WhenUsingTheCurrentCultureComparer_ShouldCompareWithTheCurrentCulture()
 		{
 			StringDifference sut = new(
@@ -521,6 +570,24 @@ public class StringDifferenceTests
 				  "…differs at X here"
 				  "…differs at Y here"
 				               ↑ (expected)
+				""");
+		}
+
+		[Test]
+		public async Task WhenUsingTheInvariantCultureComparer_ShouldCompareWithTheInvariantCulture()
+		{
+			StringDifference sut = new(
+				"some TEXT that differs at X here",
+				"some text that differs at Y here",
+				StringComparer.InvariantCulture);
+
+			await That(sut.ToString()).IsEqualTo(
+				"""
+				differs at index 5:
+				        ↓ (actual)
+				  "some TEXT that differs at X here"
+				  "some text that differs at Y here"
+				        ↑ (expected)
 				""");
 		}
 
@@ -944,6 +1011,25 @@ public class StringDifferenceTests
 				  "Prefix with an accented cafe\u0301 and MORE text X here"
 				        "prefix with an accented café and more text Y here"
 				                                                    ↑ (expected suffix)
+				""");
+		}
+
+		[Test]
+		public async Task WhenUsingACustomComparer_ShouldCompareWithTheComparer()
+		{
+			StringDifference sut = new(
+				"some TEXT that differs at X here",
+				"some text that differs at Y here",
+				new UpperCaseComparer(),
+				Settings);
+
+			await That(sut.ToString()).IsEqualTo(
+				"""
+				differs at index 26:
+				                             ↓ (actual)
+				  "some TEXT that differs at X here"
+				  "some text that differs at Y here"
+				                             ↑ (expected suffix)
 				""");
 		}
 
