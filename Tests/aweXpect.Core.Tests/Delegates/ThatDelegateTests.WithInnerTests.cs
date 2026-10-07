@@ -555,6 +555,7 @@ public sealed partial class ThatDelegateTests
 				             """);
 		}
 
+#pragma warning disable CA2263 // these tests deliberately cover the Type overloads
 		[Test]
 		public async Task WithoutInner_Type_WhenInnerExceptionIsOfTheType_ShouldFail()
 		{
@@ -571,6 +572,7 @@ public sealed partial class ThatDelegateTests
 				               inner
 				             """);
 		}
+#pragma warning restore CA2263
 
 		[Test]
 		public async Task WithoutInner_WhenInnerExceptionIsSet_ShouldFail()
