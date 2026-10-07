@@ -114,6 +114,11 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 		internal bool IsNegated { get; set; }
 
 		/// <summary>
+		///     Flag indicating if a condition was already specified with <c>OnlyIf(…)</c>, even the default one.
+		/// </summary>
+		internal bool IsOnlyIfSpecified { get; set; }
+
+		/// <summary>
 		///     Flag indicating if a duration was already specified with <c>Within(…)</c>, even an infinite one.
 		/// </summary>
 		internal bool IsWithinSpecified { get; set; }

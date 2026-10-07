@@ -123,6 +123,9 @@ one, so combine a type and a predicate in one call, e.g. `HasSingle().Matching<D
 `AsyncSingleMatchingItemResult<TCollection, TItem>` instead of an `AsyncSingleItemResult<TCollection, TItem>`. Only
 code that stores the result in an explicitly typed variable has to change.
 
+A second `OnlyIf(…)` on a `Throws…` expectation throws an `InvalidOperationException` at the call instead of silently
+replacing the first condition.
+
 The option methods are extension methods in the `aweXpect` namespace, and the result classes with a `TSelf` type
 parameter, e.g. `CountResult<TType, TThat, TSelf>`, are gone. A result of your own derives from
 `AndOrResult<TType, TThat, TSelf>` and implements `IOptionsProvider<TOptions>` for the options it offers, see
