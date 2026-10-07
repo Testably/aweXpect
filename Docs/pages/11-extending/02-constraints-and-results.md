@@ -871,6 +871,7 @@ await Expect.That(player).IsPlaying().Within(TimeSpan.FromSeconds(5)).CheckEvery
   `Undecided` when the evaluation was canceled before the timeout. The cancellation is only observed while waiting
   for the next check, so the first check is made even when the evaluation is already canceled.
 - A cancellation at the timeout, or by an effective timeout of the evaluation (`WithTimeout` or
-  `TestCancellation.FromTimeout`) that is not shorter than `Within`, lets the last check decide. For `Undecided`, the
-  constraint sets its `Outcome` to `Undecided`: the helper class then reports that the expectation could not be
-  verified, and a shorter effective timeout is reported as "did not finish within …".
+  `TestCancellation.FromTimeout`) that is not shorter than `Within` when the checks started with the evaluation, lets
+  the last check decide. For `Undecided`, the constraint sets its `Outcome` to `Undecided`: the helper class then
+  reports that the expectation could not be verified, and a shorter effective timeout is reported as "did not finish
+  within …".

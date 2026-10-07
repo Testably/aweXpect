@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using aweXpect.Chronology;
@@ -6,6 +7,7 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 using aweXpect.Results;
+using aweXpect.Signaling;
 
 namespace aweXpect.Core.Tests.Core.EvaluationContext;
 
@@ -101,6 +103,49 @@ public class EvaluationCancellationTests
 	}
 
 	[Test]
+	public async Task HasWaitElapsed_WhenTheTimeoutElapsedAndIsNotShorterThanTheWait_WhenTheWaitStartedLate_ShouldBeFalse()
+	{
+		EvaluationCancellation sut = new(100.Milliseconds(), CancellationToken.None);
+		await WaitForCancellation(sut.Token);
+
+		bool result = sut.HasWaitElapsed(100.Milliseconds(), 20.Milliseconds());
+
+		await That(result).IsFalse()
+			.Because("the wait started well into the evaluation, so the timeout cut it short");
+		sut.Release();
+	}
+
+	[Test]
+	public async Task HasWaitElapsed_WhenTheTimeoutElapsedAndIsLongerThanTheWait_WhenTheWaitStartedLate_ShouldBeFalse()
+	{
+		EvaluationCancellation sut = new(100.Milliseconds(), CancellationToken.None);
+		await WaitForCancellation(sut.Token);
+
+		bool result = sut.HasWaitElapsed(60.Milliseconds(), 20.Milliseconds());
+
+		await That(result).IsFalse()
+			.Because("a longer timeout only ends a wait that started so late that it could not complete");
+		sut.Release();
+	}
+
+	[Test]
+	[Arguments(1, true)]
+	[Arguments(0, false)]
+	public async Task HasWaitElapsed_WhenTheTimeoutElapsedAndIsNotShorterThanTheWait_ShouldAllowTheStartSlack(
+		int millisecondsWithinTheSlack, bool expectedResult)
+	{
+		EvaluationCancellation sut = new(100.Milliseconds(), CancellationToken.None);
+		await WaitForCancellation(sut.Token);
+		TimeSpan waited = 100.Milliseconds() - EvaluationCancellation.StartSlack +
+		                  millisecondsWithinTheSlack.Milliseconds();
+
+		bool result = sut.HasWaitElapsed(100.Milliseconds(), waited);
+
+		await That(result).IsEqualTo(expectedResult);
+		sut.Release();
+	}
+
+	[Test]
 	public async Task HasWaitElapsed_WhenTheTimeoutElapsedAndIsShorterThanTheWait_ShouldBeFalse()
 	{
 		EvaluationCancellation sut = new(10.Milliseconds(), CancellationToken.None);
@@ -181,6 +226,31 @@ public class EvaluationCancellationTests
 
 		await That(sut.Reason).IsEqualTo(CancellationReason.None);
 		sut.Release();
+	}
+
+	[Test]
+	public async Task Timeout_WhenItCutsShortTheWaitOfALaterConstraint_ShouldBeReported()
+	{
+		Signaler<int> signaler = new();
+		signaler.Signal(1);
+		Stopwatch? stopwatch = null;
+
+		bool TakesAWhile(int _)
+		{
+			stopwatch ??= Stopwatch.StartNew();
+			SpinWait.SpinUntil(() => stopwatch.Elapsed >= 200.Milliseconds());
+			return true;
+		}
+
+		async Task Act()
+			=> await That(signaler).Signaled().With(TakesAWhile)
+				.And.DidNotSignal(2.Times()).Within(300.Milliseconds())
+				.WithTimeout(300.Milliseconds());
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("*but it did not finish within 0:00.300").AsWildcard().And
+			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.300."))
+			.Because("the second constraint only watched for the rest of the timeout instead of its own 300 ms");
 	}
 
 	private static AndOrResult<bool, IExpectThat<bool>> Evaluate(CancellationCapturingConstraint constraint)
