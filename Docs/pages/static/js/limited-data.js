@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "1e0600a171464c43fa80e1f5e89c58934a6e78e0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 08:02:50 2026 \u002B0200",
-        "message": "refactor: consolidate comparer helpers into \u0060CollectionComparerHelpers\u0060 (#1366)"
-      },
-      {
         "sha": "adf00ff46db9fc060d1a00faf41bae27f15dd9fb",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 08:23:40 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
         "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
+      },
+      {
+        "sha": "e4877b71814748aeb8eae0bfbd3698446d51a28a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:11:36 2026 \u002B0200",
+        "message": "test: pin the NUnit 4 adapter tests to NUnit 4 and add a project for NUnit 5 (#1690)"
       }
     ],
     "labels": [
-      "1e0600a1",
       "adf00ff4",
       "5be679d9",
       "33ac0bdb",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "a8e6cbb0",
       "82b90d2e",
       "e0c39d6f",
-      "3a0d86a4"
+      "3a0d86a4",
+      "e4877b71"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          334.8974219640096,
           380.4438170115153,
           309.2303461294908,
           162.10056506670438,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           147.68552899360657,
           144.25693946225303,
           126.95992737550002,
-          128.70569605093735
+          128.70569605093735,
+          132.29847179140364
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -427,7 +427,6 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
-          912,
           920,
           920,
           920,
@@ -465,6 +464,7 @@ window.BENCHMARK_DATA = {
           408,
           408,
           408,
+          416,
           416,
           416,
           416,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          264.95683066050213,
           257.78558756510415,
           241.6386832169124,
           135.95577567418417,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           282.8804441860744,
           246.71562458674114,
           236.72349086174597,
-          247.2960232954759
+          247.2960232954759,
+          278.11817935307823
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -625,7 +625,8 @@ window.BENCHMARK_DATA = {
           222.10297597249348,
           205.23426955540975,
           212.4210744380951,
-          197.41954398155212
+          197.41954398155212,
+          165.53777418136596
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -637,6 +638,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -668,12 +670,6 @@ window.BENCHMARK_DATA = {
   },
   "Equivalency": {
     "commits": [
-      {
-        "sha": "1e0600a171464c43fa80e1f5e89c58934a6e78e0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 08:02:50 2026 \u002B0200",
-        "message": "refactor: consolidate comparer helpers into \u0060CollectionComparerHelpers\u0060 (#1366)"
-      },
       {
         "sha": "adf00ff46db9fc060d1a00faf41bae27f15dd9fb",
         "author": "Valentin Breu\u00DF",
@@ -967,10 +963,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
         "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
+      },
+      {
+        "sha": "e4877b71814748aeb8eae0bfbd3698446d51a28a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:11:36 2026 \u002B0200",
+        "message": "test: pin the NUnit 4 adapter tests to NUnit 4 and add a project for NUnit 5 (#1690)"
       }
     ],
     "labels": [
-      "1e0600a1",
       "adf00ff4",
       "5be679d9",
       "33ac0bdb",
@@ -1019,14 +1020,14 @@ window.BENCHMARK_DATA = {
       "a8e6cbb0",
       "82b90d2e",
       "e0c39d6f",
-      "3a0d86a4"
+      "3a0d86a4",
+      "e4877b71"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          448683.5196614583,
           433309.02034505206,
           422913.3953125,
           219935.76381835938,
@@ -1075,7 +1076,8 @@ window.BENCHMARK_DATA = {
           111255.78554861886,
           108925.5356257512,
           109811.89449637277,
-          103166.62219238281
+          103166.62219238281,
+          77261.2616373698
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1087,7 +1089,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          628384,
           628384,
           628384,
           628384,
@@ -1136,6 +1137,7 @@ window.BENCHMARK_DATA = {
           16296,
           16296,
           16296,
+          16296,
           16296
         ],
         "borderColor": "#63A2AC",
@@ -1151,7 +1153,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2641279.505301339,
           2615403.064583333,
           2520124.980769231,
           1312694.349330357,
@@ -1200,7 +1201,8 @@ window.BENCHMARK_DATA = {
           2890043.576622596,
           2723789.0455729165,
           2580494.7477678573,
-          2325070.084735577
+          2325070.084735577,
+          2029503.9372395833
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1212,7 +1214,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841651,
           4841647,
@@ -1261,7 +1262,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
-          4841647
+          4841647,
+          4841613
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1292,7 +1294,8 @@ window.BENCHMARK_DATA = {
           226235.38511439733,
           203647.48078264509,
           196916.20835774738,
-          190735.02391764324
+          190735.02391764324,
+          169412.5600748698
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1304,6 +1307,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -1335,12 +1339,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "1e0600a171464c43fa80e1f5e89c58934a6e78e0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 08:02:50 2026 \u002B0200",
-        "message": "refactor: consolidate comparer helpers into \u0060CollectionComparerHelpers\u0060 (#1366)"
-      },
       {
         "sha": "adf00ff46db9fc060d1a00faf41bae27f15dd9fb",
         "author": "Valentin Breu\u00DF",
@@ -1634,10 +1632,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
         "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
+      },
+      {
+        "sha": "e4877b71814748aeb8eae0bfbd3698446d51a28a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:11:36 2026 \u002B0200",
+        "message": "test: pin the NUnit 4 adapter tests to NUnit 4 and add a project for NUnit 5 (#1690)"
       }
     ],
     "labels": [
-      "1e0600a1",
       "adf00ff4",
       "5be679d9",
       "33ac0bdb",
@@ -1686,14 +1689,14 @@ window.BENCHMARK_DATA = {
       "a8e6cbb0",
       "82b90d2e",
       "e0c39d6f",
-      "3a0d86a4"
+      "3a0d86a4",
+      "e4877b71"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          565.4947686876569,
           568.425791867574,
           532.5304430552891,
           294.2913992588337,
@@ -1742,7 +1745,8 @@ window.BENCHMARK_DATA = {
           409.96627289908275,
           348.68909851710004,
           316.3580826350621,
-          256.3877893447876
+          256.3877893447876,
+          272.55215377807616
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1761,7 +1765,6 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
           1576,
           1576,
           1576,
@@ -1799,6 +1802,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          608,
           608,
           608,
           608,
@@ -1818,7 +1822,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          490.3035710016886,
           562.0343593188694,
           468.6073079109192,
           265.5732650416238,
@@ -1867,7 +1870,8 @@ window.BENCHMARK_DATA = {
           551.0246493021647,
           497.8183211546678,
           465.96287937164306,
-          476.032538822719
+          476.032538822719,
+          495.3544986089071
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1959,7 +1963,8 @@ window.BENCHMARK_DATA = {
           443.51555728912354,
           392.2233221371969,
           386.0161264737447,
-          374.801336701711
+          374.801336701711,
+          387.79125142097473
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1971,6 +1976,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -2002,12 +2008,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "1e0600a171464c43fa80e1f5e89c58934a6e78e0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 08:02:50 2026 \u002B0200",
-        "message": "refactor: consolidate comparer helpers into \u0060CollectionComparerHelpers\u0060 (#1366)"
-      },
       {
         "sha": "adf00ff46db9fc060d1a00faf41bae27f15dd9fb",
         "author": "Valentin Breu\u00DF",
@@ -2301,10 +2301,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
         "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
+      },
+      {
+        "sha": "e4877b71814748aeb8eae0bfbd3698446d51a28a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:11:36 2026 \u002B0200",
+        "message": "test: pin the NUnit 4 adapter tests to NUnit 4 and add a project for NUnit 5 (#1690)"
       }
     ],
     "labels": [
-      "1e0600a1",
       "adf00ff4",
       "5be679d9",
       "33ac0bdb",
@@ -2353,14 +2358,14 @@ window.BENCHMARK_DATA = {
       "a8e6cbb0",
       "82b90d2e",
       "e0c39d6f",
-      "3a0d86a4"
+      "3a0d86a4",
+      "e4877b71"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          345.38215919641345,
           358.7025234018053,
           336.97117062977384,
           173.28220529556273,
@@ -2409,7 +2414,8 @@ window.BENCHMARK_DATA = {
           166.96671911875407,
           152.45862007141113,
           141.09372336069742,
-          148.26110469500225
+          148.26110469500225,
+          144.20769170125325
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2428,7 +2434,6 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
-          1080,
           1064,
           1064,
           1064,
@@ -2466,6 +2471,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          520,
           520,
           520,
           520,
@@ -2485,7 +2491,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          257.240458215986,
           260.19358180363974,
           234.91125158163217,
           133.63013918059212,
@@ -2534,7 +2539,8 @@ window.BENCHMARK_DATA = {
           298.81401615142823,
           269.2316794054849,
           241.46723055839539,
-          244.63455235163372
+          244.63455235163372,
+          269.95344088872275
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2626,7 +2632,8 @@ window.BENCHMARK_DATA = {
           276.0447735468546,
           249.01944433848064,
           234.01756398494427,
-          237.19669600895472
+          237.19669600895472,
+          200.84191783836908
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2638,6 +2645,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -2669,12 +2677,6 @@ window.BENCHMARK_DATA = {
   },
   "String": {
     "commits": [
-      {
-        "sha": "1e0600a171464c43fa80e1f5e89c58934a6e78e0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 08:02:50 2026 \u002B0200",
-        "message": "refactor: consolidate comparer helpers into \u0060CollectionComparerHelpers\u0060 (#1366)"
-      },
       {
         "sha": "adf00ff46db9fc060d1a00faf41bae27f15dd9fb",
         "author": "Valentin Breu\u00DF",
@@ -2968,10 +2970,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
         "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
+      },
+      {
+        "sha": "e4877b71814748aeb8eae0bfbd3698446d51a28a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:11:36 2026 \u002B0200",
+        "message": "test: pin the NUnit 4 adapter tests to NUnit 4 and add a project for NUnit 5 (#1690)"
       }
     ],
     "labels": [
-      "1e0600a1",
       "adf00ff4",
       "5be679d9",
       "33ac0bdb",
@@ -3020,14 +3027,14 @@ window.BENCHMARK_DATA = {
       "a8e6cbb0",
       "82b90d2e",
       "e0c39d6f",
-      "3a0d86a4"
+      "3a0d86a4",
+      "e4877b71"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          632.7823322931926,
           604.840633392334,
           588.1439423194298,
           339.47937596638997,
@@ -3076,7 +3083,8 @@ window.BENCHMARK_DATA = {
           284.06651980082194,
           256.3516102472941,
           235.95348705564226,
-          246.93383646011353
+          246.93383646011353,
+          234.5517561117808
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3095,7 +3103,6 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
-          1576,
           1600,
           1600,
           1600,
@@ -3133,6 +3140,7 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
+          584,
           584,
           584,
           584,
@@ -3152,7 +3160,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1214.0112387793404,
           1210.7062016805014,
           1271.4010334014893,
           638.9035935084025,
@@ -3201,7 +3208,8 @@ window.BENCHMARK_DATA = {
           1411.544982092721,
           1251.7795834859212,
           1136.304070154826,
-          1162.7872834523519
+          1162.7872834523519,
+          1074.4109935760498
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3293,7 +3301,8 @@ window.BENCHMARK_DATA = {
           373.8337596484593,
           334.30736501400287,
           326.45648460388185,
-          324.31370852543756
+          324.31370852543756,
+          290.2447023073832
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3305,6 +3314,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -3336,12 +3346,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "1e0600a171464c43fa80e1f5e89c58934a6e78e0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 08:02:50 2026 \u002B0200",
-        "message": "refactor: consolidate comparer helpers into \u0060CollectionComparerHelpers\u0060 (#1366)"
-      },
       {
         "sha": "adf00ff46db9fc060d1a00faf41bae27f15dd9fb",
         "author": "Valentin Breu\u00DF",
@@ -3635,10 +3639,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
         "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
+      },
+      {
+        "sha": "e4877b71814748aeb8eae0bfbd3698446d51a28a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:11:36 2026 \u002B0200",
+        "message": "test: pin the NUnit 4 adapter tests to NUnit 4 and add a project for NUnit 5 (#1690)"
       }
     ],
     "labels": [
-      "1e0600a1",
       "adf00ff4",
       "5be679d9",
       "33ac0bdb",
@@ -3687,14 +3696,14 @@ window.BENCHMARK_DATA = {
       "a8e6cbb0",
       "82b90d2e",
       "e0c39d6f",
-      "3a0d86a4"
+      "3a0d86a4",
+      "e4877b71"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3066.1807594299316,
           3030.016466522217,
           2923.1399696895055,
           1605.770192082723,
@@ -3743,7 +3752,8 @@ window.BENCHMARK_DATA = {
           688.6662399927775,
           641.1165024893625,
           590.6863476679875,
-          577.3890611784799
+          577.3890611784799,
+          529.6957696914673
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3755,7 +3765,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          4032,
           4032,
           4032,
           4032,
@@ -3804,6 +3813,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          856,
           856
         ],
         "borderColor": "#63A2AC",
@@ -3819,7 +3829,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1449.1962752024333,
           1362.9447317759195,
           1284.651495107015,
           689.0055833498637,
@@ -3868,7 +3877,8 @@ window.BENCHMARK_DATA = {
           1516.7950865427654,
           1356.2710932413736,
           1274.0322651181903,
-          1284.0766259511313
+          1284.0766259511313,
+          1272.2204156239827
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3960,7 +3970,8 @@ window.BENCHMARK_DATA = {
           700.1051335016887,
           680.0415073394776,
           621.9136136599949,
-          634.1302262714931
+          634.1302262714931,
+          552.827801322937
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3972,6 +3983,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -4003,12 +4015,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "1e0600a171464c43fa80e1f5e89c58934a6e78e0",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 08:02:50 2026 \u002B0200",
-        "message": "refactor: consolidate comparer helpers into \u0060CollectionComparerHelpers\u0060 (#1366)"
-      },
       {
         "sha": "adf00ff46db9fc060d1a00faf41bae27f15dd9fb",
         "author": "Valentin Breu\u00DF",
@@ -4302,10 +4308,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
         "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
+      },
+      {
+        "sha": "e4877b71814748aeb8eae0bfbd3698446d51a28a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:11:36 2026 \u002B0200",
+        "message": "test: pin the NUnit 4 adapter tests to NUnit 4 and add a project for NUnit 5 (#1690)"
       }
     ],
     "labels": [
-      "1e0600a1",
       "adf00ff4",
       "5be679d9",
       "33ac0bdb",
@@ -4354,14 +4365,14 @@ window.BENCHMARK_DATA = {
       "a8e6cbb0",
       "82b90d2e",
       "e0c39d6f",
-      "3a0d86a4"
+      "3a0d86a4",
+      "e4877b71"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3117.8327437180737,
           2929.22376196725,
           2844.4870118361255,
           1633.9709972381593,
@@ -4410,7 +4421,8 @@ window.BENCHMARK_DATA = {
           1056.9482728413172,
           1000.4291741689046,
           928.3969171524047,
-          967.2160835266113
+          967.2160835266113,
+          826.6514413197835
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4422,7 +4434,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3792,
           3792,
           3792,
           3792,
@@ -4471,6 +4482,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1264,
           1264
         ],
         "borderColor": "#63A2AC",
@@ -4486,7 +4498,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          28760.40278930664,
           26582.58759358724,
           26036.971883920523,
           10554.614458211263,
@@ -4535,7 +4546,8 @@ window.BENCHMARK_DATA = {
           28796.494430541992,
           27469.12569173177,
           26178.600689697265,
-          20204.395196097237
+          20204.395196097237,
+          17054.773201497395
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4550,7 +4562,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33468,
@@ -4596,7 +4607,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471
+          33471,
+          33465
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4627,7 +4639,8 @@ window.BENCHMARK_DATA = {
           860.9113993962605,
           795.6614363988241,
           743.0316321690877,
-          732.0670407613119
+          732.0670407613119,
+          677.7818338530404
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4639,6 +4652,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -4855,6 +4869,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
         "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
+      },
+      {
+        "sha": "e4877b71814748aeb8eae0bfbd3698446d51a28a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:11:36 2026 \u002B0200",
+        "message": "test: pin the NUnit 4 adapter tests to NUnit 4 and add a project for NUnit 5 (#1690)"
       }
     ],
     "labels": [
@@ -4888,7 +4908,8 @@ window.BENCHMARK_DATA = {
       "a8e6cbb0",
       "82b90d2e",
       "e0c39d6f",
-      "3a0d86a4"
+      "3a0d86a4",
+      "e4877b71"
     ],
     "datasets": [
       {
@@ -4925,7 +4946,8 @@ window.BENCHMARK_DATA = {
           815.4775744756063,
           735.5506409327189,
           719.7604413986206,
-          671.5482345581055
+          671.5482345581055,
+          664.6221086638315
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4963,6 +4985,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1816,
           1816,
           1816,
           1816,
@@ -5012,7 +5035,8 @@ window.BENCHMARK_DATA = {
           85032.92860630581,
           83092.55021972656,
           79968.29377629206,
-          59742.699979341945
+          59742.699979341945,
+          30550.12803867885
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5054,7 +5078,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5252,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5254,6 +5279,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 13:53:09 2026 \u002B0200",
         "message": "ci: disable the mutation tests and pin the Stryker version (#1693)"
+      },
+      {
+        "sha": "e4877b71814748aeb8eae0bfbd3698446d51a28a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:11:36 2026 \u002B0200",
+        "message": "test: pin the NUnit 4 adapter tests to NUnit 4 and add a project for NUnit 5 (#1690)"
       }
     ],
     "labels": [
@@ -5287,7 +5318,8 @@ window.BENCHMARK_DATA = {
       "a8e6cbb0",
       "82b90d2e",
       "e0c39d6f",
-      "3a0d86a4"
+      "3a0d86a4",
+      "e4877b71"
     ],
     "datasets": [
       {
@@ -5324,7 +5356,8 @@ window.BENCHMARK_DATA = {
           304.97349578993663,
           246.66691926320394,
           232.86030954974038,
-          238.89018327849251
+          238.89018327849251,
+          247.55775231581467
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5362,6 +5395,7 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
+          664,
           664,
           664,
           664,
@@ -5411,7 +5445,8 @@ window.BENCHMARK_DATA = {
           33126.5643758138,
           30889.731115722658,
           30972.008573091945,
-          18302.631251408504
+          18302.631251408504,
+          16101.794182332356
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5453,6 +5488,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -5484,7 +5520,8 @@ window.BENCHMARK_DATA = {
           281.2242929385259,
           254.91282835006714,
           234.76506390571595,
-          228.9157928029696
+          228.9157928029696,
+          218.87901401519775
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5496,6 +5533,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
