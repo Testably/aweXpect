@@ -38,7 +38,8 @@ public async Task IsInLibrary_WhenAlbumIsMissing_ShouldReturnFalse()
 }
 ```
 
-If it fails, it will throw a framework-specific exception with the following message:
+If it fails, it throws [an exception that fails the test](./03-how-it-works/09-test-frameworks.md#failed-expectations)
+with the following message:
 
 ```text title="Failure message"
 Expected that result

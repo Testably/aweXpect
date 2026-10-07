@@ -5,10 +5,38 @@ For MSTest, NUnit, TUnit and xUnit (v2 and v3), the `aweXpect` package generates
 throws these exceptions. Another test framework needs an adapter of its own, see
 [test framework adapter](../11-extending/05-initialization.md#test-framework-adapter).
 
+## Failed expectations
+
+A failed expectation throws the assertion exception of the test framework, when the test project references the
+assembly that declares it:
+
+| Test framework                     | Thrown exception                                 |
+|------------------------------------|--------------------------------------------------|
+| MSTest                             | `AssertFailedException`                          |
+| NUnit                              | `AssertionException`                             |
+| TUnit                              | `TUnit.Assertions.Exceptions.AssertionException` |
+| TUnit without `TUnit.Assertions`   | `aweXpect.FailException`                         |
+| xUnit v3                           | `Xunit.Sdk.XunitException`                       |
+| xUnit v3 without `xunit.v3.assert` | an exception marked as assertion failure         |
+| xUnit v2                           | `Xunit.Sdk.XunitException`                       |
+| none detected                      | `aweXpect.FailException`                         |
+
+Each of them fails the test, and has the exception that caused the failure, if any, as inner exception.
+
+- The `TUnit` and `xunit.v3` packages include `TUnit.Assertions` and `xunit.v3.assert`. The rows "without" apply to a
+  test project that only references `TUnit.Core` or `xunit.v3.core`, because it uses aweXpect instead of the
+  assertions of the test framework.
+- `XunitException` is declared in `xunit.v3.assert`. Without it, the adapter throws an exception of its own that
+  implements an interface named `IAssertionException`, by which xUnit v3 recognizes an assertion failure.
+- xUnit v2 is detected by `xunit.assert`, which the `xunit` package includes. A test project that only references
+  `xunit.core` counts as "none detected".
+- "None detected" also applies when the generated adapter is not registered, see
+  [aweXpect2002](../07-analyzers.md#test-framework-adapter).
+
 ## Failing a test
 
-`Fail.Test` fails the running test with the given reason, in the same way as a failed expectation. `Fail.When` only
-fails it when the condition is `true`, and `Fail.Unless` when it is `false`:
+`Fail.Test` fails the running test with the given reason, with [the same exception](#failed-expectations) as a failed
+expectation. `Fail.When` only fails it when the condition is `true`, and `Fail.Unless` when it is `false`:
 
 ```csharp
 List<Track> playlist = // ...

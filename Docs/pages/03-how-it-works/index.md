@@ -23,8 +23,9 @@ string title = "Let It Be";
 await Expect.That(title).StartsWith("Abbey").Because("it is the album title");
 ```
 
-A failure throws the exception of your test framework, with a message that reads like a sentence. The expectation
-above fails with:
+A failure throws an exception that fails the test, usually the
+[assertion exception of your test framework](./09-test-frameworks.md#failed-expectations), with a message that reads
+like a sentence. The expectation above fails with:
 
 ```text title="Failure message"
 Expected that title

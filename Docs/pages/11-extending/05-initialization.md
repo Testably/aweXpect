@@ -41,7 +41,8 @@ own, e.g. `System.Version`, would only apply to the tests that run after the fir
 
 aweXpect reports a failed, skipped or inconclusive expectation by throwing the exception of the test framework. For
 MSTest, NUnit, TUnit and xUnit (v2 and v3), the `aweXpect` package generates an adapter into the test project and
-registers it. To support another test framework, implement `ITestFrameworkAdapter` and register it with
+registers it ([test frameworks](../03-how-it-works/09-test-frameworks.md) lists the exceptions it throws). To support
+another test framework, implement `ITestFrameworkAdapter` and register it with
 `TestFrameworkRegistry.Register` from a module initializer in the test project itself, as the generated adapters are.
 A module initializer only runs when its assembly is first used, and the tests never use an assembly that only contains
 an adapter, so a registration in a separate package would never run:
