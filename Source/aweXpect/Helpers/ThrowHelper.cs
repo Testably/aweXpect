@@ -11,7 +11,8 @@ internal static class ThrowHelper
 	/// <summary>
 	///     Rejects a key that occurs more than once in the <paramref name="entries" /> of a dictionary expectation and
 	///     returns them materialized, so that a sequence which can only be enumerated once survives both the guard
-	///     and the subsequent comparison.
+	///     and the subsequent comparison. The <paramref name="entries" /> are named after the polarity of the
+	///     expectation: the expected dictionary, or the unexpected one when <paramref name="negated" />.
 	/// </summary>
 	/// <remarks>
 	///     A dictionary holds one value per key, so a second entry for the same key either contradicts the first one
@@ -19,22 +20,7 @@ internal static class ThrowHelper
 	///     is runtime data and must not decide whether the expectation itself is valid.
 	/// </remarks>
 	public static ICollection<KeyValuePair<TKey, TValue>>? EnsureDistinctKeys<TKey, TValue>(
-		IEnumerable<KeyValuePair<TKey, TValue>>? entries,
-		[CallerArgumentExpression(nameof(entries))]
-		string? paramName = null)
-		=> EnsureDistinctKeysNamed(entries, paramName);
-
-	/// <summary>
-	///     <see cref="EnsureDistinctKeys{TKey,TValue}(IEnumerable{KeyValuePair{TKey,TValue}}?,string?)" /> for the
-	///     <paramref name="entries" /> named after the polarity of the expectation: the expected dictionary, or the
-	///     unexpected one when <paramref name="negated" />.
-	/// </summary>
-	public static ICollection<KeyValuePair<TKey, TValue>>? EnsureDistinctKeys<TKey, TValue>(
 		IEnumerable<KeyValuePair<TKey, TValue>>? entries, bool negated)
-		=> EnsureDistinctKeysNamed(entries, negated ? "unexpected" : "expected");
-
-	private static ICollection<KeyValuePair<TKey, TValue>>? EnsureDistinctKeysNamed<TKey, TValue>(
-		IEnumerable<KeyValuePair<TKey, TValue>>? entries, string? paramName)
 	{
 		if (entries is null || entries.IsDefaultImmutableArray())
 		{
@@ -48,17 +34,13 @@ internal static class ThrowHelper
 			return materializedEntries;
 		}
 
-		IGrouping<TKey, KeyValuePair<TKey, TValue>>? duplicate = materializedEntries
+		IGrouping<TKey, KeyValuePair<TKey, TValue>> duplicate = materializedEntries
 			.GroupBy(entry => entry.Key)
-			.FirstOrDefault(group => group.Skip(1).Any());
-		if (duplicate is not null)
-		{
-			// ReSharper disable once LocalizableElement
-			throw Tracing.WriteException(new ArgumentException(
-				$"The key {Formatter.Format(duplicate.Key)} must not occur more than once.", paramName));
-		}
-
-		return materializedEntries;
+			.First(group => group.Skip(1).Any());
+		// ReSharper disable once LocalizableElement
+		throw Tracing.WriteException(new ArgumentException(
+			$"The key {Formatter.Format(duplicate.Key)} must not occur more than once.",
+			negated ? "unexpected" : "expected"));
 	}
 
 	/// <summary>
@@ -80,25 +62,6 @@ internal static class ThrowHelper
 
 		HashSet<TKey> keys = new();
 		return entries.All(entry => keys.Add(entry.Key));
-	}
-
-	/// <summary>
-	///     Rejects a negative count, because an occurrence count is never below zero.
-	/// </summary>
-	/// <remarks>
-	///     The <paramref name="description" /> defaults to the parameter name, which reads naturally for a
-	///     <c>minimum</c> or a <c>maximum</c>, but not for an <c>expected</c> count.
-	/// </remarks>
-	public static void ThrowIfCountIsNegative(int? count, string? description = null,
-		[CallerArgumentExpression(nameof(count))]
-		string? paramName = null)
-	{
-		if (count < 0)
-		{
-			// ReSharper disable once LocalizableElement
-			throw Tracing.WriteException(new ArgumentOutOfRangeException(paramName,
-				$"The {description ?? paramName} must not be negative."));
-		}
 	}
 
 	/// <summary>

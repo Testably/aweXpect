@@ -18,13 +18,7 @@ public abstract partial class ConstraintResult
 	internal sealed class WithoutDecision(ConstraintResult inner) : ConstraintResult(inner.Grammars)
 	{
 		/// <inheritdoc cref="ConstraintResult.Outcome" />
-		public override Outcome Outcome
-		{
-			get => Outcome.Failure;
-
-			// The outcome of an expectation without a decision is always a failure, so the value is discarded.
-			protected set => _ = value;
-		}
+		public override Outcome Outcome => Outcome.Failure;
 
 		/// <inheritdoc cref="ConstraintResult.AppendExpectation(StringBuilder, string?)" />
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)

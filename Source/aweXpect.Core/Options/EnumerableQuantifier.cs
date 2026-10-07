@@ -76,31 +76,11 @@ public abstract partial class EnumerableQuantifier
 	///     Returns the <see cref="QuantifierContexts" /> which are helpful when the expectation is negated.
 	/// </summary>
 	/// <remarks>
-	///     The negated expectation reads as its complement, so it shows the same items as the complement would. Without a
-	///     complement, the negated expectation fails when the items are on the other side, so these items explain the
-	///     failure.
+	///     The negated expectation reads as its complement, so it shows the same items as the complement would. A
+	///     quantifier without a complement shows no items.
 	/// </remarks>
 	internal virtual QuantifierContexts GetNegatedQuantifierContext()
-	{
-		if (GetComplement(ExpectationGrammars.None) is { } complement)
-		{
-			return complement.GetQuantifierContext();
-		}
-
-		QuantifierContexts contexts = GetQuantifierContext();
-		QuantifierContexts negatedContexts = QuantifierContexts.None;
-		if (contexts.HasFlag(QuantifierContexts.MatchingItems))
-		{
-			negatedContexts |= QuantifierContexts.NotMatchingItems;
-		}
-
-		if (contexts.HasFlag(QuantifierContexts.NotMatchingItems))
-		{
-			negatedContexts |= QuantifierContexts.MatchingItems;
-		}
-
-		return negatedContexts;
-	}
+		=> GetComplement(ExpectationGrammars.None)?.GetQuantifierContext() ?? QuantifierContexts.None;
 
 	/// <summary>
 	///     Appends the result text to the <paramref name="stringBuilder" />.

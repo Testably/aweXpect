@@ -14,13 +14,7 @@ public abstract partial class ConstraintResult
 	internal sealed class FromCancellation(ConstraintResult inner) : ConstraintResult(inner.Grammars)
 	{
 		/// <inheritdoc cref="ConstraintResult.Outcome" />
-		public override Outcome Outcome
-		{
-			get => Outcome.Undecided;
-
-			// The outcome of a canceled expectation is always undecided, so the value is discarded.
-			protected set => _ = value;
-		}
+		public override Outcome Outcome => Outcome.Undecided;
 
 		/// <inheritdoc cref="ConstraintResult.AppendExpectation(StringBuilder, string?)" />
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -589,11 +589,6 @@ public partial class CollectionMatchOptions
 			VerifyCompleteForPositionalMatch(string it, IOptionsEquality<T2> options, int maximumNumber)
 		{
 			int positionalDeviations = _positionalDeviations + Math.Max(0, ExpectedItems.Length - _values.Count);
-			if (positionalDeviations == 0)
-			{
-				return (false, null);
-			}
-
 			if (_editDistance is not null)
 			{
 				List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)>? edits = await _editDistance.GetEdits((index, expected) => IsMatch(index, expected, options));

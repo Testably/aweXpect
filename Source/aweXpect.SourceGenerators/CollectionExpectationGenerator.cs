@@ -37,11 +37,7 @@ public class CollectionExpectationGenerator : IIncrementalGenerator
 
 	private static ImmutableArray<CollectionExpectationFamily> GetFamilies(GeneratorAttributeSyntaxContext context)
 	{
-		if (context.TargetSymbol is not IMethodSymbol helper)
-		{
-			return ImmutableArray<CollectionExpectationFamily>.Empty;
-		}
-
+		IMethodSymbol helper = (IMethodSymbol)context.TargetSymbol;
 		return context.Attributes
 			.Select(attributeData =>
 				CollectionExpectationFamily.Create(helper, attributeData, context.SemanticModel.Compilation))

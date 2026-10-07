@@ -59,11 +59,7 @@ public class ExpectationGenerator : IIncrementalGenerator
 	private static (EquatableArray<ExpectationToGenerate>, Problem?) GetExpectationsToGenerate(
 		GeneratorAttributeSyntaxContext context)
 	{
-		if (context.TargetSymbol is not INamedTypeSymbol classSymbol)
-		{
-			return (new EquatableArray<ExpectationToGenerate>([]), null);
-		}
-
+		INamedTypeSymbol classSymbol = (INamedTypeSymbol)context.TargetSymbol;
 		if (classSymbol.ContainingType is not null)
 		{
 			return (new EquatableArray<ExpectationToGenerate>([]),

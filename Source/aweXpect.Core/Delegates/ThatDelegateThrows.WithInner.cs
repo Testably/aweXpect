@@ -16,8 +16,8 @@ public partial class ThatDelegateThrows<TException>
 		expectations.ThrowIfNull();
 		return new AndOrResult<TException, IThatDelegateThrows<TException>>(ExpectationBuilder
 				.ForMember(
-					MemberAccessor<Exception?, Exception?>.FromFunc(
-						e => e?.InnerException,
+					MemberAccessor<Exception, Exception?>.FromFunc(
+						e => e.InnerException,
 						"the inner exception"),
 					(_, s) => s.Append(" that "),
 					false)

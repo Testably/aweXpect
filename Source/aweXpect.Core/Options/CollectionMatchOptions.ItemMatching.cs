@@ -461,18 +461,15 @@ public partial class CollectionMatchOptions
 		/// </remarks>
 		private sealed class FreeIndices
 		{
-			private readonly bool[] _isFree;
 			private readonly int[] _next;
 			private readonly int[] _previous;
 
 			public FreeIndices(int count)
 			{
-				_isFree = new bool[count];
 				_next = new int[count];
 				_previous = new int[count];
 				for (int i = 0; i < count; i++)
 				{
-					_isFree[i] = true;
 					_next[i] = i + 1 < count ? i + 1 : -1;
 					_previous[i] = i - 1;
 				}
@@ -495,12 +492,6 @@ public partial class CollectionMatchOptions
 
 			public void Remove(int index)
 			{
-				if (!_isFree[index])
-				{
-					return;
-				}
-
-				_isFree[index] = false;
 				int previous = _previous[index];
 				int next = _next[index];
 				if (previous >= 0)
