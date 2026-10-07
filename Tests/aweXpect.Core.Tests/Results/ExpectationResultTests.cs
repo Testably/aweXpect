@@ -78,6 +78,60 @@ public class ExpectationResultTests
 		await That(receivedToken).IsEqualTo(token);
 	}
 
+	[Test]
+	public async Task WithCancellation_TogetherWithTimeout_ShouldNotThrow()
+	{
+		using CancellationTokenSource cts = new();
+		ExpectationResult<int> sut = new(new MyExpectationBuilder("my-subject"));
+
+		void Act() => sut.WithTimeout(TimeSpan.FromSeconds(1)).WithCancellation(cts.Token)
+			.WithTimeout(TimeSpan.FromSeconds(2));
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Test]
+	public async Task WithCancellation_WhenSpecifiedTwice_ShouldKeepTheFirstToken()
+	{
+		MyExpectationBuilder myBuilder = new("my-subject");
+		using CancellationTokenSource cts = new();
+		CancellationToken token = cts.Token;
+		ExpectationResult<int> sut = new ExpectationResult<int>(myBuilder).WithCancellation(token);
+
+		void Act() => sut.WithCancellation(CancellationToken.None);
+
+		await That(Act).Throws<InvalidOperationException>();
+		CancellationToken? receivedToken = await myBuilder.GetRegisteredCancellationToken();
+		await That(receivedToken).IsEqualTo(token);
+	}
+
+	[Test]
+	public async Task WithCancellation_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+	{
+		using CancellationTokenSource cts = new();
+		ExpectationResult<int> sut = new ExpectationResult<int>(new MyExpectationBuilder("my-subject"))
+			.WithCancellation(cts.Token);
+
+		void Act() => sut.WithCancellation(cts.Token);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("WithCancellation cannot be specified more than once.")
+			.Because("the second token would silently replace the first one");
+	}
+
+	[Test]
+	public async Task WithCancellation_WhenSpecifiedTwice_WithoutValue_ShouldThrowInvalidOperationException()
+	{
+		using CancellationTokenSource cts = new();
+		ExpectationResult sut = new ExpectationResult(new MyExpectationBuilder("my-subject"))
+			.WithCancellation(cts.Token);
+
+		void Act() => sut.WithCancellation(cts.Token);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("WithCancellation cannot be specified more than once.");
+	}
+
 	private sealed class MyExpectationBuilder(string subject, Func<ConstraintResult>? resultBuilder = null)
 		: ExpectationBuilder(subject)
 	{
