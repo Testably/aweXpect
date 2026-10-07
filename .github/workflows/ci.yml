@@ -25,10 +25,10 @@ jobs:
                         10.0.3xx
             -   name: Run unit tests (windows)
                 if: matrix.os == 'windows-latest'
-                run: ./build.ps1 UnitTestsWithCoverage
+                run: ./build.ps1 UnitTestsWithCoverage TestFrameworks
             -   name: Run unit tests (ubuntu|macos)
                 if: matrix.os != 'windows-latest'
-                run: ./build.sh UnitTestsWithCoverage
+                run: ./build.sh UnitTestsWithCoverage TestFrameworks
             -   name: Upload artifacts
                 if: always()
                 uses: actions/upload-artifact@v7
