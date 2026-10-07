@@ -264,6 +264,42 @@ public class ValueTaskDelegateCodeFixProviderTests
 		AsTaskKey);
 
 	[Test]
+	public async Task ShouldNotOfferAFixForAnExplicitTaskTypeArgument() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest()
+		    {
+		        Task Act() => Task.CompletedTask;
+
+		        await Expect.That<Task>([|Act|]).DoesNotThrow();
+		        await Expect.That<Task>([|() => Act()|]).DoesNotThrow();
+		    }
+		}
+		""",
+		"""
+		using System;
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest()
+		    {
+		        Task Act() => Task.CompletedTask;
+
+		        await Expect.That<Task>([|Act|]).DoesNotThrow();
+		        await Expect.That<Task>([|() => Act()|]).DoesNotThrow();
+		    }
+		}
+		""",
+		AsTaskKey);
+
+	[Test]
 	public async Task ShouldNotOfferAFixForAnExplicitTypeArgument() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;

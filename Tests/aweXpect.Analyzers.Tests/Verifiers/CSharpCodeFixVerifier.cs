@@ -15,6 +15,8 @@ public static partial class CSharpCodeFixVerifier<TAnalyzer, TCodeFix>
 	{
 		public Test()
 		{
+			// The variants of a rule share its ID and its code fix, so markup without an ID stands for any of them
+			MarkupOptions = MarkupOptions.UseFirstDescriptor;
 			SolutionTransforms.Add((solution, projectId) =>
 			{
 				Project? project = solution.GetProject(projectId);
