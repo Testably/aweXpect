@@ -3643,6 +3643,8 @@ static aweXpect.ThatSignaler.Signaled<TParameter>(this aweXpect.Core.IThat<aweXp
 *REMOVED*aweXpect.Results.SignalCountResult<TParameter, TSelf>.SignalCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.SignalerOptions<TParameter>! options) -> void
 *REMOVED*aweXpect.Results.SignalCountResult<TParameter, TSelf>.With(System.Func<TParameter, bool>! predicate, string! doNotPopulateThisValue = "") -> TSelf!
 *REMOVED*aweXpect.Results.SignalCountResult<TParameter, TSelf>.Within(System.TimeSpan timeout) -> TSelf!
+*REMOVED*aweXpect.Results.SignalCountResult<TParameter>
+*REMOVED*aweXpect.Results.SignalCountResult<TParameter>.SignalCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.SignalerOptions<TParameter>! options) -> void
 *REMOVED*aweXpect.Results.StringCollectionMatchResult<TType, TThat, TSelf>
 *REMOVED*aweXpect.Results.StringCollectionMatchResult<TType, TThat, TSelf>.IgnoringDuplicates() -> TSelf!
 *REMOVED*aweXpect.Results.StringCollectionMatchResult<TType, TThat, TSelf>.InAnyOrder() -> TSelf!

@@ -9,16 +9,6 @@ namespace aweXpect.Internal.Tests.Results;
 public sealed class SignalCountResultTests
 {
 	[Test]
-	public async Task Generic_ShouldBeOptionsProvider_ForPredicateOptions()
-	{
-		SignalerOptions<int> options = new();
-		SignalCountResult<int> sut = CreateSut(options);
-
-		await That(sut).Is<IOptionsProvider<SignalerOptions>>()
-			.Whose(x => x.Options, it => it.IsSameAs(options));
-	}
-
-	[Test]
 	public async Task ShouldBeOptionsProvider_ForPredicateOptions()
 	{
 		SignalerOptions options = new();
@@ -26,16 +16,6 @@ public sealed class SignalCountResultTests
 
 		await That(sut).Is<IOptionsProvider<SignalerOptions>>()
 			.Whose(x => x.Options, it => it.IsSameAs(options));
-	}
-
-	private static SignalCountResult<TParameter> CreateSut<TParameter>(SignalerOptions<TParameter> options)
-	{
-		Signaler<TParameter> signaler = new();
-#pragma warning disable aweXpect0001
-		IThat<Signaler<TParameter>> source = That(signaler);
-#pragma warning restore aweXpect0001
-		return new SignalCountResult<TParameter>(source.Get().ExpectationBuilder,
-			source, new Quantifier(), options);
 	}
 
 	private static SignalCountResult CreateSut(SignalerOptions options)
