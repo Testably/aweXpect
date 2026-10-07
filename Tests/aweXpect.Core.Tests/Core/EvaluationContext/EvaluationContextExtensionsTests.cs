@@ -1,14 +1,13 @@
-﻿#if NET8_0_OR_GREATER
-using System.Threading;
-#endif
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Core.TimeSystem;
+using aweXpect.Signaling;
 using Context = aweXpect.Core.EvaluationContext.EvaluationContext;
 
 namespace aweXpect.Core.Tests.Core.EvaluationContext;
@@ -316,6 +315,143 @@ public class EvaluationContextExtensionsTests
 		await That(items2).IsEqualTo([2, 4, 6,])
 			.Because("the second consumer replays the first item and continues the source where the first one stopped");
 		await That(source.Enumerations).IsEqualTo(1);
+	}
+
+	[Test]
+	public async Task WaitForSignalsAsync_NegativeTimeout_ShouldThrowArgumentOutOfRangeException()
+	{
+		Signaler signaler = new();
+
+		void Act()
+			=> _ = new Context().WaitForSignalsAsync(signaler, 2.Times(), -2.Milliseconds(), CancellationToken.None);
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("timeout").And
+			.WithMessage("The timeout must not be negative.").AsPrefix();
+	}
+
+	[Test]
+	public async Task WaitForSignalsAsync_ShouldCompleteAsSoonAsEnoughSignalsWereRecorded()
+	{
+		VirtualTimeSystem timeSystem = new();
+		Context context = new()
+		{
+			TimeSystem = timeSystem,
+		};
+		Signaler signaler = new();
+		signaler.Signal();
+
+		SignalerResult result =
+			await context.WaitForSignalsAsync(signaler, 1.Times(), 30.Seconds(), CancellationToken.None);
+
+		await That(result.IsSuccess).IsTrue();
+		await That(timeSystem.Now).IsEqualTo(TimeSpan.Zero);
+	}
+
+	[Test]
+	public async Task WaitForSignalsAsync_ShouldLetTheTimeoutExpireOnTheTimeSystemOfTheEvaluation()
+	{
+		VirtualTimeSystem timeSystem = new();
+		Context context = new()
+		{
+			TimeSystem = timeSystem,
+		};
+		Signaler signaler = new();
+
+		SignalerResult result =
+			await context.WaitForSignalsAsync(signaler, 1.Times(), 30.Seconds(), CancellationToken.None);
+
+		await That(result.IsSuccess).IsFalse();
+		await That(timeSystem.Now).IsEqualTo(30.Seconds())
+			.Because("the wait ends when the virtual clock of the evaluation reaches the timeout");
+	}
+
+	[Test]
+	public async Task WaitForSignalsAsync_WhenSignalerIsNull_ShouldThrowArgumentNullException()
+	{
+		void Act()
+			=> _ = new Context().WaitForSignalsAsync(null!, 1.Times(), 30.Seconds(), CancellationToken.None);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("signaler").And
+			.WithMessage("The 'signaler' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	public async Task WaitForSignalsAsync_WithParameter_NegativeTimeout_ShouldThrowArgumentOutOfRangeException()
+	{
+		Signaler<int> signaler = new();
+
+		void Act()
+			=> _ = new Context().WaitForSignalsAsync(signaler, 2.Times(), null, -2.Milliseconds(),
+				CancellationToken.None);
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("timeout").And
+			.WithMessage("The timeout must not be negative.").AsPrefix();
+	}
+
+	[Test]
+	public async Task WaitForSignalsAsync_WithParameter_ShouldLetTheTimeoutExpireOnTheTimeSystemOfTheEvaluation()
+	{
+		VirtualTimeSystem timeSystem = new();
+		Context context = new()
+		{
+			TimeSystem = timeSystem,
+		};
+		Signaler<int> signaler = new();
+		signaler.Signal(1);
+
+		SignalerResult<int> result = await context.WaitForSignalsAsync(signaler, 1.Times(), p => p > 1,
+			30.Seconds(), CancellationToken.None);
+
+		await That(result.IsSuccess).IsFalse();
+		await That(result.Parameters).IsEqualTo([1,]);
+		await That(timeSystem.Now).IsEqualTo(30.Seconds())
+			.Because("the wait ends when the virtual clock of the evaluation reaches the timeout");
+	}
+
+	[Test]
+	public async Task WaitForSignalsAsync_WithParameter_WhenSignalerIsNull_ShouldThrowArgumentNullException()
+	{
+		void Act()
+			=> _ = new Context().WaitForSignalsAsync<int>(null!, 1.Times(), null, 30.Seconds(),
+				CancellationToken.None);
+
+		await That(Act).Throws<ArgumentNullException>()
+			.WithParamName("signaler").And
+			.WithMessage("The 'signaler' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	[Arguments(0)]
+	[Arguments(-1)]
+	public async Task WaitForSignalsAsync_WithParameter_ZeroOrNegativeAmount_ShouldThrowArgumentOutOfRangeException(
+		int amount)
+	{
+		Signaler<int> signaler = new();
+
+		void Act()
+			=> _ = new Context().WaitForSignalsAsync(signaler, amount, null, 30.Seconds(), CancellationToken.None);
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithMessage("The amount must be greater than zero*").AsWildcard().And
+			.WithParamName("amount");
+	}
+
+	[Test]
+	[Arguments(0)]
+	[Arguments(-1)]
+	public async Task WaitForSignalsAsync_ZeroOrNegativeAmount_ShouldThrowArgumentOutOfRangeException(int amount)
+	{
+		Signaler signaler = new();
+
+		void Act()
+			=> _ = new Context().WaitForSignalsAsync(signaler, amount, 30.Seconds(), CancellationToken.None);
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithMessage("The amount must be greater than zero*").AsWildcard().And
+			.WithParamName("amount");
 	}
 
 	private static IEnumerable<T> ToEnumerable<T>(params T[] items)

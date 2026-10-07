@@ -5,7 +5,6 @@ using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.TimeSystem;
 using aweXpect.Customization;
@@ -136,18 +135,14 @@ public class Signaler
 	}
 
 	/// <summary>
-	///     Waits like <see cref="WaitAsync(Times, TimeSpan?, CancellationToken)" /> as part of the evaluation in the
-	///     <paramref name="context" />, so that the <paramref name="timeout" /> expires on the clock of that evaluation.
+	///     Waits like <see cref="WaitAsync(Times, TimeSpan?, CancellationToken)" />, while the
+	///     <paramref name="timeout" /> expires on the <paramref name="timeSystem" />.
 	/// </summary>
-	/// <remarks>
-	///     A constraint waits this way, so that its wait and the timeout of the evaluation are measured on the same
-	///     clock, see <see cref="EvaluationContextExtensions.GetTimestamp(IEvaluationContext)" />.
-	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///     The <paramref name="amount" /> is not positive or the <paramref name="timeout" /> is negative.
 	/// </exception>
-	public Task<SignalerResult> WaitAsync(Times amount, TimeSpan? timeout, IEvaluationContext context,
-		CancellationToken cancellationToken = default)
+	internal Task<SignalerResult> WaitAsync(Times amount, TimeSpan? timeout, ITimeSystem timeSystem,
+		CancellationToken cancellationToken)
 	{
 		if (amount.Value <= 0)
 		{
@@ -156,7 +151,7 @@ public class Signaler
 		}
 
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		return WaitForAsync(amount.Value, timeout, EvaluationContext.GetTimeSystem(context), cancellationToken);
+		return WaitForAsync(amount.Value, timeout, timeSystem, cancellationToken);
 	}
 
 	private SignalerResult WaitFor(int amount, TimeSpan? timeout, CancellationToken cancellationToken)
@@ -422,23 +417,18 @@ public class Signaler<TParameter>
 	}
 
 	/// <summary>
-	///     Waits like <see cref="WaitAsync(Times, Func{TParameter, bool}?, TimeSpan?, CancellationToken)" /> as part of
-	///     the evaluation in the <paramref name="context" />, so that the <paramref name="timeout" /> expires on the
-	///     clock of that evaluation.
+	///     Waits like <see cref="WaitAsync(Times, Func{TParameter, bool}?, TimeSpan?, CancellationToken)" />, while the
+	///     <paramref name="timeout" /> expires on the <paramref name="timeSystem" />.
 	/// </summary>
-	/// <remarks>
-	///     A constraint waits this way, so that its wait and the timeout of the evaluation are measured on the same
-	///     clock, see <see cref="EvaluationContextExtensions.GetTimestamp(IEvaluationContext)" />.
-	/// </remarks>
 	/// <exception cref="ArgumentOutOfRangeException">
 	///     The <paramref name="amount" /> is not positive or the <paramref name="timeout" /> is negative.
 	/// </exception>
-	public Task<SignalerResult<TParameter>> WaitAsync(
+	internal Task<SignalerResult<TParameter>> WaitAsync(
 		Times amount,
 		Func<TParameter, bool>? predicate,
 		TimeSpan? timeout,
-		IEvaluationContext context,
-		CancellationToken cancellationToken = default)
+		ITimeSystem timeSystem,
+		CancellationToken cancellationToken)
 	{
 		if (amount.Value <= 0)
 		{
@@ -447,8 +437,7 @@ public class Signaler<TParameter>
 		}
 
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		return WaitForAsync(amount.Value, predicate, timeout, EvaluationContext.GetTimeSystem(context),
-			cancellationToken);
+		return WaitForAsync(amount.Value, predicate, timeout, timeSystem, cancellationToken);
 	}
 
 	private SignalerResult<TParameter> WaitFor(int amount, Func<TParameter, bool>? predicate, TimeSpan? timeout,

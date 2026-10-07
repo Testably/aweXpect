@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
@@ -50,8 +52,8 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="defaultTolerance" /> is read when the comparison is made or described, or once per
-	///     evaluation through <see cref="ForEvaluation()" />, and it is only named in the expectation text when it
-	///     differs from the default value of <typeparamref name="TTolerance" />.
+	///     evaluation through <see cref="ForEvaluation(IEvaluationContext, CancellationToken)" />, and it is only named
+	///     in the expectation text when it differs from the default value of <typeparamref name="TTolerance" />.
 	/// </remarks>
 	public ObjectEqualityWithToleranceOptions<TSubject, TTolerance> WithDefaultTolerance(
 		Func<TTolerance> defaultTolerance)
@@ -62,11 +64,12 @@ public class ObjectEqualityWithToleranceOptions<TSubject, TTolerance>(
 	}
 
 	/// <inheritdoc />
-	public override IOptionsEquality<TSubject> ForEvaluation()
+	public override ObjectEqualityOptions<TSubject> ForEvaluation(IEvaluationContext context,
+		CancellationToken cancellationToken)
 	{
 		if (MatchType is not WithinMatchType { IsDefault: true, } matchType)
 		{
-			return this;
+			return base.ForEvaluation(context, cancellationToken);
 		}
 
 		ObjectEqualityOptions<TSubject> options = new();

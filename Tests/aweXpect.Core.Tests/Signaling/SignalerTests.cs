@@ -2,10 +2,8 @@
 using System.Linq;
 using System.Threading;
 using aweXpect.Chronology;
-using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 using aweXpect.Signaling;
-using Context = aweXpect.Core.EvaluationContext.EvaluationContext;
 using ThreadState = System.Threading.ThreadState;
 
 namespace aweXpect.Core.Tests.Signaling;
@@ -228,68 +226,6 @@ public sealed class SignalerTests
 			await That(result.IsSuccess).IsFalse();
 			await That(sw.Elapsed).IsLessThan(DefaultTimeout)
 				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
-		}
-
-		[Test]
-		public async Task WaitAsync_WithContext_NegativeTimeout_ShouldThrowArgumentOutOfRangeException()
-		{
-			Signaler signaler = new();
-
-			void Act()
-				=> _ = signaler.WaitAsync(2.Times(), -2.Milliseconds(), new Context());
-
-			await That(Act).Throws<ArgumentOutOfRangeException>()
-				.WithParamName("timeout").And
-				.WithMessage("The timeout must not be negative.").AsPrefix();
-		}
-
-		[Test]
-		public async Task WaitAsync_WithContext_ShouldCompleteAsSoonAsEnoughSignalsWereRecorded()
-		{
-			VirtualTimeSystem timeSystem = new();
-			Context context = new()
-			{
-				TimeSystem = timeSystem,
-			};
-			Signaler signaler = new();
-			signaler.Signal();
-
-			SignalerResult result = await signaler.WaitAsync(1.Times(), 30.Seconds(), context);
-
-			await That(result.IsSuccess).IsTrue();
-			await That(timeSystem.Now).IsEqualTo(TimeSpan.Zero);
-		}
-
-		[Test]
-		public async Task WaitAsync_WithContext_ShouldLetTheTimeoutExpireOnTheTimeSystemOfTheEvaluation()
-		{
-			VirtualTimeSystem timeSystem = new();
-			Context context = new()
-			{
-				TimeSystem = timeSystem,
-			};
-			Signaler signaler = new();
-
-			SignalerResult result = await signaler.WaitAsync(1.Times(), 30.Seconds(), context);
-
-			await That(result.IsSuccess).IsFalse();
-			await That(timeSystem.Now).IsEqualTo(30.Seconds())
-				.Because("the wait ends when the virtual clock of the evaluation reaches the timeout");
-		}
-
-		[Test]
-		[Arguments(0)]
-		[Arguments(-1)]
-		public async Task WaitAsync_WithContext_ZeroOrNegativeAmount_ShouldThrowArgumentOutOfRangeException(int amount)
-		{
-			Signaler signaler = new();
-
-			void Act()
-				=> _ = signaler.WaitAsync(amount, 30.Seconds(), new Context());
-
-			await That(Act).Throws<ArgumentOutOfRangeException>()
-				.WithMessage("The amount must be greater than zero*").AsWildcard().And
-				.WithParamName("amount");
 		}
 
 		[Test]
@@ -725,53 +661,6 @@ public sealed class SignalerTests
 			await That(result.IsSuccess).IsFalse();
 			await That(result.Parameters).IsEqualTo([1,])
 				.Because("the signals received until the cancellation are returned");
-		}
-
-		[Test]
-		public async Task WaitAsync_WithContext_NegativeTimeout_ShouldThrowArgumentOutOfRangeException()
-		{
-			Signaler<int> signaler = new();
-
-			void Act()
-				=> _ = signaler.WaitAsync(2.Times(), null, -2.Milliseconds(), new Context());
-
-			await That(Act).Throws<ArgumentOutOfRangeException>()
-				.WithParamName("timeout").And
-				.WithMessage("The timeout must not be negative.").AsPrefix();
-		}
-
-		[Test]
-		public async Task WaitAsync_WithContext_ShouldLetTheTimeoutExpireOnTheTimeSystemOfTheEvaluation()
-		{
-			VirtualTimeSystem timeSystem = new();
-			Context context = new()
-			{
-				TimeSystem = timeSystem,
-			};
-			Signaler<int> signaler = new();
-			signaler.Signal(1);
-
-			SignalerResult<int> result = await signaler.WaitAsync(1.Times(), p => p > 1, 30.Seconds(), context);
-
-			await That(result.IsSuccess).IsFalse();
-			await That(result.Parameters).IsEqualTo([1,]);
-			await That(timeSystem.Now).IsEqualTo(30.Seconds())
-				.Because("the wait ends when the virtual clock of the evaluation reaches the timeout");
-		}
-
-		[Test]
-		[Arguments(0)]
-		[Arguments(-1)]
-		public async Task WaitAsync_WithContext_ZeroOrNegativeAmount_ShouldThrowArgumentOutOfRangeException(int amount)
-		{
-			Signaler<int> signaler = new();
-
-			void Act()
-				=> _ = signaler.WaitAsync(amount, null, 30.Seconds(), new Context());
-
-			await That(Act).Throws<ArgumentOutOfRangeException>()
-				.WithMessage("The amount must be greater than zero*").AsWildcard().And
-				.WithParamName("amount");
 		}
 
 		[Test]

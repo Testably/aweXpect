@@ -2,11 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Helpers;
-#if NET8_0_OR_GREATER
-using System.Threading;
-#endif
+using aweXpect.Signaling;
 
 namespace aweXpect.Core.EvaluationContext;
 
@@ -124,6 +124,47 @@ public static class EvaluationContextExtensions
 	/// </summary>
 	public static TimeSpan GetElapsedTime(this IEvaluationContext evaluationContext, long startTimestamp)
 		=> EvaluationContext.GetTimeSystem(evaluationContext).GetElapsedTime(startTimestamp);
+
+	/// <summary>
+	///     Waits like <see cref="Signaler.WaitAsync(Times, TimeSpan?, CancellationToken)" />, while the
+	///     <paramref name="timeout" /> expires on the clock of the evaluation.
+	/// </summary>
+	/// <remarks>
+	///     A constraint waits this way, so that its wait and the timeout of the evaluation are measured on the same
+	///     clock, see <see cref="GetTimestamp(IEvaluationContext)" />.
+	/// </remarks>
+	/// <exception cref="ArgumentNullException">The <paramref name="signaler" /> is <see langword="null" />.</exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///     The <paramref name="amount" /> is not positive or the <paramref name="timeout" /> is negative.
+	/// </exception>
+	public static Task<SignalerResult> WaitForSignalsAsync(this IEvaluationContext evaluationContext,
+		Signaler signaler, Times amount, TimeSpan? timeout, CancellationToken cancellationToken)
+	{
+		signaler.ThrowIfNull();
+		return signaler.WaitAsync(amount, timeout, EvaluationContext.GetTimeSystem(evaluationContext),
+			cancellationToken);
+	}
+
+	/// <summary>
+	///     Waits like <see cref="Signaler{TParameter}.WaitAsync(Times, Func{TParameter, bool}?, TimeSpan?, CancellationToken)" />,
+	///     while the <paramref name="timeout" /> expires on the clock of the evaluation.
+	/// </summary>
+	/// <remarks>
+	///     A constraint waits this way, so that its wait and the timeout of the evaluation are measured on the same
+	///     clock, see <see cref="GetTimestamp(IEvaluationContext)" />.
+	/// </remarks>
+	/// <exception cref="ArgumentNullException">The <paramref name="signaler" /> is <see langword="null" />.</exception>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///     The <paramref name="amount" /> is not positive or the <paramref name="timeout" /> is negative.
+	/// </exception>
+	public static Task<SignalerResult<TParameter>> WaitForSignalsAsync<TParameter>(
+		this IEvaluationContext evaluationContext, Signaler<TParameter> signaler, Times amount,
+		Func<TParameter, bool>? predicate, TimeSpan? timeout, CancellationToken cancellationToken)
+	{
+		signaler.ThrowIfNull();
+		return signaler.WaitAsync(amount, predicate, timeout, EvaluationContext.GetTimeSystem(evaluationContext),
+			cancellationToken);
+	}
 
 	private static readonly string[] MaterializationKeys =
 	[

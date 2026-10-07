@@ -241,12 +241,17 @@ internal sealed class SubjectComparedItem<TSetItem, TItem>(ExpectedItem<TItem> i
 
 	/// <inheritdoc />
 	/// <remarks>
-	///     The comparer of the subject only decides while the comparison of the inner item is the default one, which
-	///     needs no evaluation, so an inner item for the evaluation is matched directly.
+	///     The comparer of the subject only decides while the comparison of the inner item is the default one, so the
+	///     item is kept then, and an inner item for the evaluation is matched directly otherwise.
 	/// </remarks>
 	public override ContainedItem<TItem> ForEvaluation(IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
+		if (inner.UsesDefaultEquality)
+		{
+			return this;
+		}
+
 		ContainedItem<TItem> evaluationItem = inner.ForEvaluation(context, cancellationToken);
 		return ReferenceEquals(evaluationItem, inner) ? this : evaluationItem;
 	}

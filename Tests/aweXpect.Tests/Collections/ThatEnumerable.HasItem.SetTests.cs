@@ -10,6 +10,21 @@ public sealed partial class ThatEnumerable
 		public sealed class SetTests
 		{
 			[Test]
+			public async Task ForADateTimeSet_ShouldUseTheComparerOfTheSet()
+			{
+				HashSet<DateTime> subject = new(new SameDayComparer())
+				{
+					new DateTime(2024, 1, 1, 8, 0, 0),
+				};
+
+				async Task Act()
+					=> await That(subject).HasItem(new DateTime(2024, 1, 1, 20, 0, 0)).AtIndex(0);
+
+				await That(Act).DoesNotThrow()
+					.Because("an element type with a default tolerance keeps the comparer of the set until a tolerance is specified");
+			}
+
+			[Test]
 			public async Task ForADoubleSet_ShouldUseTheComparerOfTheSet()
 			{
 				HashSet<double> subject = new(new RoundingComparer())
@@ -198,6 +213,13 @@ public sealed partial class ThatEnumerable
 				public bool Equals(double x, double y) => Math.Round(x) == Math.Round(y);
 
 				public int GetHashCode(double obj) => Math.Round(obj).GetHashCode();
+			}
+
+			private sealed class SameDayComparer : IEqualityComparer<DateTime>
+			{
+				public bool Equals(DateTime x, DateTime y) => x.Date == y.Date;
+
+				public int GetHashCode(DateTime obj) => obj.Date.GetHashCode();
 			}
 		}
 	}
