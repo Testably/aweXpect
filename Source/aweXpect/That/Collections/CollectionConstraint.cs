@@ -122,9 +122,15 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>(
 		base.AppendContexts(contexts);
 	}
 
+	/// <remarks>
+	///     A collection whose number of items is known is counted to its end. When the condition throws for an item after
+	///     the ones that determine the outcome, the counting ends there, so that the outcome is the same as for a
+	///     collection that is read only until the outcome is determined. The first item is verified in any case.
+	/// </remarks>
 	private CollectionConstraint<TEnumerable, TItem> Verify(CollectionItems<TItem> materialized, bool cancelEarly,
 		CancellationToken cancellationToken)
 	{
+		bool hasItems = false;
 		foreach (TItem item in materialized)
 		{
 			if (IsCanceled(materialized, cancellationToken))
@@ -132,7 +138,18 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>(
 				return this;
 			}
 
-			if (IsDecidedBy(materialized, item, MatchesSynchronously(item), cancelEarly))
+			bool isMatch;
+			try
+			{
+				isMatch = MatchesSynchronously(item);
+			}
+			catch (Exception) when (hasItems && IsDetermined)
+			{
+				return FinishEarly(materialized);
+			}
+
+			hasItems = true;
+			if (IsDecidedBy(materialized, item, isMatch, cancelEarly))
 			{
 				return this;
 			}
@@ -141,9 +158,11 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>(
 		return Finish(materialized);
 	}
 
+	/// <inheritdoc cref="Verify" />
 	private async ValueTask<ConstraintResult> VerifyAsync(CollectionItems<TItem> materialized, bool cancelEarly,
 		CancellationToken cancellationToken)
 	{
+		bool hasItems = false;
 		foreach (TItem item in materialized)
 		{
 			if (IsCanceled(materialized, cancellationToken))
@@ -151,7 +170,18 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>(
 				return this;
 			}
 
-			if (IsDecidedBy(materialized, item, await Matches(item), cancelEarly))
+			bool isMatch;
+			try
+			{
+				isMatch = await Matches(item);
+			}
+			catch (Exception) when (hasItems && IsDetermined)
+			{
+				return FinishEarly(materialized);
+			}
+
+			hasItems = true;
+			if (IsDecidedBy(materialized, item, isMatch, cancelEarly))
 			{
 				return this;
 			}
@@ -185,9 +215,15 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>(
 			return false;
 		}
 
+		FinishEarly(materialized);
+		return true;
+	}
+
+	private CollectionConstraint<TEnumerable, TItem> FinishEarly(CollectionItems<TItem> materialized)
+	{
 		CompleteEarly();
 		materialized.SetContext(ref _collectionContext);
-		return true;
+		return this;
 	}
 
 	private CollectionConstraint<TEnumerable, TItem> Finish(CollectionItems<TItem> materialized)

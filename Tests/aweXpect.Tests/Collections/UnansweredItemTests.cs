@@ -18,6 +18,14 @@ public sealed class UnansweredItem
 	private static bool Throw(int _, Exception exception)
 		=> throw exception;
 
+	private static bool IsOne(int value, Exception exception)
+		=> value switch
+		{
+			0 => false,
+			1 => true,
+			_ => throw exception,
+		};
+
 	private static bool IsB(string? value)
 		=> value is null ? throw new InvalidOperationException("null") : value == "b";
 
@@ -41,6 +49,15 @@ public sealed class UnansweredItem
 
 		public int GetHashCode(string obj)
 			=> obj.GetHashCode();
+	}
+
+	private sealed class ThrowingForComparer(int value, Exception exception) : IEqualityComparer<int>
+	{
+		public bool Equals(int x, int y)
+			=> x == value || y == value ? throw exception : x == y;
+
+		public int GetHashCode(int obj)
+			=> 0;
 	}
 
 	public sealed class ComplyWithTests
@@ -586,6 +603,363 @@ public sealed class UnansweredItem
 			await That(Act).DoesNotThrow()
 				.Because("the first item already decides the outcome, whether the number of items is known or not");
 		}
+	}
+
+	public sealed class QuantifiedPredicateTests
+	{
+		[Test]
+		[Arguments("array")]
+		[Arguments("list")]
+		[Arguments("lazy")]
+		public async Task All_WhenThrowingItemFollowsTheDecidingItem_ShouldFailWithTheDecidingItem(string kind)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable<int> subject = Collection(kind, 0, 2);
+
+			async Task Act()
+				=> await That(subject).All().Satisfy(x => IsOne(x, exception));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             satisfies x => IsOne(x, exception) for all items,
+				             but none of at least 1 did
+
+				             Not matching items:
+				             [0, (… and maybe more)]
+
+				             Collection:
+				             *
+				             """).AsWildcard().And
+				.Whose(e => e.InnerException, i => i.IsNull())
+				.Because("the first item already decides the outcome, whether the number of items is known or not");
+		}
+
+		[Test]
+		[Arguments("array")]
+		[Arguments("list")]
+		[Arguments("lazy")]
+		public async Task AreEqualTo_WhenComparerThrowsAfterTheDecidingItem_ShouldFailWithTheDecidingItem(string kind)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable<int> subject = Collection(kind, 1, 2);
+
+			async Task Act()
+				=> await That(subject).None().AreEqualTo(1).Using(new ThrowingForComparer(2, exception));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to 1 using UnansweredItem.ThrowingForComparer for no items,
+				             but at least 1 of at least 1 were
+
+				             Matching items:
+				             [1, (… and maybe more)]
+
+				             Collection:
+				             *
+				             """).AsWildcard().And
+				.Whose(e => e.InnerException, i => i.IsNull())
+				.Because("the first item already decides the outcome, whether the number of items is known or not");
+		}
+
+		[Test]
+		[Arguments("array")]
+		[Arguments("list")]
+		[Arguments("lazy")]
+		public async Task AreUnique_WhenComparerThrowsAfterTheDecidingItems_ShouldFailWithTheDecidingItems(string kind)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable<int> subject = Collection(kind, 1, 1, 2);
+
+			async Task Act()
+				=> await That(subject).All().AreUnique().Using(new ThrowingForComparer(2, exception));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is unique using UnansweredItem.ThrowingForComparer for all items,
+				             but none of at least 2 were
+
+				             Not matching items:
+				             [1, 1, (… and maybe more)]
+
+				             Collection:
+				             *
+				             """).AsWildcard().And
+				.Whose(e => e.InnerException, i => i.IsNull())
+				.Because("the first two items already decide the outcome, whether the number of items is known or not");
+		}
+
+		[Test]
+		[Arguments("array")]
+		[Arguments("list")]
+		[Arguments("lazy")]
+		public async Task AreUnique_WhenMemberSelectorThrowsAfterTheDecidingItems_ShouldFailWithTheDecidingItems(
+			string kind)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable<int> subject = Collection(kind, 1, 1, 2);
+
+			async Task Act()
+				=> await That(subject).All().AreUnique(x => x < 2 ? x : throw exception);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is unique by x => x < 2 ? x : throw exception for all items,
+				             but none of at least 2 were
+
+				             Not matching items:
+				             [1, 1, (… and maybe more)]
+
+				             Collection:
+				             *
+				             """).AsWildcard().And
+				.Whose(e => e.InnerException, i => i.IsNull())
+				.Because("the first two items already decide the outcome, whether the number of items is known or not");
+		}
+
+		[Test]
+		[Arguments("array")]
+		[Arguments("list")]
+		[Arguments("lazy")]
+		public async Task AreUnique_WhenMemberSelectorThrowsForTheFirstItem_ShouldFailWithTheExceptionAsInnerException(
+			string kind)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable<int> subject = Collection(kind, 2, 1);
+
+			async Task Act()
+				=> await That(subject).AtLeast(0).AreUnique(x => x < 2 ? x : throw exception);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is unique by x => x < 2 ? x : throw exception for at least 0 items,
+				             but the member selector did throw an InvalidOperationException:
+				               boom
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+				.Because("the first item is always verified, whether the number of items is known or not");
+		}
+
+		[Test]
+		[Arguments("array")]
+		[Arguments("list")]
+		[Arguments("lazy")]
+		public async Task AtLeast_WhenPredicateThrowsForTheFirstItem_ShouldFailWithTheExceptionAsInnerException(
+			string kind)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable<int> subject = Collection(kind, 2, 1);
+
+			async Task Act()
+				=> await That(subject).AtLeast(0).Satisfy(x => IsOne(x, exception));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             satisfies x => IsOne(x, exception) for at least 0 items,
+				             but the predicate did throw an InvalidOperationException:
+				               boom
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception))
+				.Because("the first item is always verified, whether the number of items is known or not");
+		}
+
+		[Test]
+		[Arguments("array")]
+		[Arguments("list")]
+		[Arguments("lazy")]
+		public async Task Enumerable_WhenThrowingItemFollowsTheDecidingItem_ShouldFailWithTheDecidingItem(string kind)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable subject = Collection(kind, 1, 2);
+
+			async Task Act()
+				=> await That(subject).None().Satisfy(x => x is 1 ? true : throw exception);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             satisfies x => x is 1 ? true : throw exception for no items,
+				             but at least 1 of at least 1 did
+
+				             Matching items:
+				             [1, (… and maybe more)]
+
+				             Collection:
+				             *
+				             """).AsWildcard().And
+				.Whose(e => e.InnerException, i => i.IsNull())
+				.Because("the first item already decides the outcome, whether the number of items is known or not");
+		}
+
+		[Test]
+		[Arguments("array", "AtLeast(2)")]
+		[Arguments("list", "AtLeast(2)")]
+		[Arguments("lazy", "AtLeast(2)")]
+		[Arguments("array", "MoreThan(1)")]
+		[Arguments("list", "MoreThan(1)")]
+		[Arguments("lazy", "MoreThan(1)")]
+		public async Task LowerBound_WhenThrowingItemFollowsTheDecidingItems_ShouldSucceed(string kind,
+			string quantifier)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable<int> subject = Collection(kind, 1, 1, 2);
+
+			async Task Act()
+				=> await Quantify(That(subject), quantifier).Satisfy(x => IsOne(x, exception));
+
+			await That(Act).DoesNotThrow()
+				.Because("the first two items already decide the outcome, whether the number of items is known or not");
+		}
+
+		[Test]
+		[Arguments("array")]
+		[Arguments("list")]
+		[Arguments("lazy")]
+		public async Task Negated_WhenThrowingItemFollowsTheDecidingItem_ShouldFailWithTheDecidingItem(string kind)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable<int> subject = Collection(kind, 1, 2);
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.AtLeast(1).Satisfy(x => IsOne(x, exception)));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             satisfies x => IsOne(x, exception) for no items,
+				             but at least 1 of at least 1 did
+
+				             Matching items:
+				             [1, (… and maybe more)]
+
+				             Collection:
+				             *
+				             """).AsWildcard().And
+				.Whose(e => e.InnerException, i => i.IsNull())
+				.Because("the first item already decides the outcome, whether the number of items is known or not");
+		}
+
+		[Test]
+		[Arguments("array")]
+		[Arguments("list")]
+		[Arguments("lazy")]
+		public async Task Negated_WhenThrowingItemFollowsTheDecidingItem_ShouldSucceed(string kind)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable<int> subject = Collection(kind, 1, 2);
+
+			async Task Act()
+				=> await That(subject).DoesNotComplyWith(it => it.None().Satisfy(x => IsOne(x, exception)));
+
+			await That(Act).DoesNotThrow()
+				.Because("the first item already decides the outcome, whether the number of items is known or not");
+		}
+
+		[Test]
+		[Arguments("array")]
+		[Arguments("list")]
+		[Arguments("lazy")]
+		public async Task Nested_WhenThrowingItemFollowsTheDecidingItem_ShouldSucceed(string kind)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable<int>[] subject = [Collection(kind, 1, 2),];
+
+			async Task Act()
+				=> await That(subject).All().ComplyWith(x => x.AtLeast(1).Satisfy(y => IsOne(y, exception)));
+
+			await That(Act).DoesNotThrow()
+				.Because("the first item already decides the outcome, whether the number of items is known or not");
+		}
+
+		[Test]
+		[Arguments("array")]
+		[Arguments("list")]
+		[Arguments("lazy")]
+		public async Task None_WhenThrowingItemFollowsTheDecidingItem_ShouldFailWithTheDecidingItem(string kind)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable<int> subject = Collection(kind, 1, 2);
+
+			async Task Act()
+				=> await That(subject).None().Satisfy(x => IsOne(x, exception));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             satisfies x => IsOne(x, exception) for no items,
+				             but at least 1 of at least 1 did
+
+				             Matching items:
+				             [1, (… and maybe more)]
+
+				             Collection:
+				             *
+				             """).AsWildcard().And
+				.Whose(e => e.InnerException, i => i.IsNull())
+				.Because("the first item already decides the outcome, whether the number of items is known or not");
+		}
+
+		[Test]
+		[Arguments("array", "AtMost(1)", "for at most one item")]
+		[Arguments("list", "AtMost(1)", "for at most one item")]
+		[Arguments("lazy", "AtMost(1)", "for at most one item")]
+		[Arguments("array", "Between(0, 1)", "for between 0 and 1 items")]
+		[Arguments("list", "Between(0, 1)", "for between 0 and 1 items")]
+		[Arguments("lazy", "Between(0, 1)", "for between 0 and 1 items")]
+		[Arguments("array", "Exactly(1)", "for exactly one item")]
+		[Arguments("list", "Exactly(1)", "for exactly one item")]
+		[Arguments("lazy", "Exactly(1)", "for exactly one item")]
+		[Arguments("array", "LessThan(2)", "for fewer than 2 items")]
+		[Arguments("list", "LessThan(2)", "for fewer than 2 items")]
+		[Arguments("lazy", "LessThan(2)", "for fewer than 2 items")]
+		public async Task UpperBound_WhenThrowingItemFollowsTheDecidingItems_ShouldFailWithTheDecidingItems(
+			string kind, string quantifier, string expectedQuantifier)
+		{
+			InvalidOperationException exception = new("boom");
+			IEnumerable<int> subject = Collection(kind, 1, 1, 2);
+
+			async Task Act()
+				=> await Quantify(That(subject), quantifier).Satisfy(x => IsOne(x, exception));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage($"""
+				              Expected that subject
+				              satisfies x => IsOne(x, exception) {expectedQuantifier},
+				              but at least 2 of at least 2 did
+				              *
+				              Collection:
+				              *
+				              """).AsWildcard().And
+				.Whose(e => e.InnerException, i => i.IsNull())
+				.Because("the first two items already decide the outcome, whether the number of items is known or not");
+		}
+
+		private static IEnumerable<int> Collection(string kind, params int[] values)
+			=> kind switch
+			{
+				"array" => values,
+				"list" => new List<int>(values),
+				"lazy" => Lazy(values),
+				_ => throw new ArgumentOutOfRangeException(nameof(kind)),
+			};
+
+		private static aweXpect.ThatEnumerable.Elements<int> Quantify(IThat<IEnumerable<int>?> subject,
+			string quantifier)
+			=> quantifier switch
+			{
+				"AtLeast(2)" => subject.AtLeast(2),
+				"AtMost(1)" => subject.AtMost(1),
+				"Between(0, 1)" => subject.Between(0).And(1),
+				"Exactly(1)" => subject.Exactly(1),
+				"LessThan(2)" => subject.LessThan(2),
+				"MoreThan(1)" => subject.MoreThan(1),
+				_ => throw new ArgumentOutOfRangeException(nameof(quantifier)),
+			};
 	}
 
 	public sealed class HasItemThatTests
@@ -1213,6 +1587,31 @@ public sealed class UnansweredItem
 	public sealed class AsyncEnumerableTests
 	{
 		[Test]
+		public async Task AllAreUnique_WhenMemberSelectorThrowsAfterTheDecidingItems_ShouldFailWithTheDecidingItems()
+		{
+			InvalidOperationException exception = new("boom");
+			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable(1, 1, 2);
+
+			async Task Act()
+				=> await That(subject).All().AreUnique(x => x < 2 ? x : throw exception);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is unique by x => x < 2 ? x : throw exception for all items,
+				             but none of at least 2 were
+
+				             Not matching items:
+				             [1, 1, (… and maybe more)]
+
+				             Collection:
+				             [1, 1, (… and maybe more)]
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsNull())
+				.Because("the first two items already decide the outcome, like for a synchronous collection");
+		}
+
+		[Test]
 		public async Task AllComplyWith_WhenItemIsNull_ShouldFail()
 		{
 			IAsyncEnumerable<string?> subject = ThatAsyncEnumerable.ToAsyncEnumerable("a", null);
@@ -1399,6 +1798,31 @@ public sealed class UnansweredItem
 				             [1, (… and maybe more)]
 				             """).And
 				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+		}
+
+		[Test]
+		public async Task NoneSatisfy_WhenThrowingItemFollowsTheDecidingItem_ShouldFailWithTheDecidingItem()
+		{
+			InvalidOperationException exception = new("boom");
+			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable(1, 2);
+
+			async Task Act()
+				=> await That(subject).None().Satisfy(x => IsOne(x, exception));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             satisfies x => IsOne(x, exception) for no items,
+				             but at least 1 of at least 1 did
+
+				             Matching items:
+				             [1, (… and maybe more)]
+
+				             Collection:
+				             [1, (… and maybe more)]
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsNull())
+				.Because("the first item already decides the outcome, like for a synchronous collection");
 		}
 	}
 #endif

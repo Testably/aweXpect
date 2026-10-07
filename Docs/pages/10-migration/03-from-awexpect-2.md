@@ -101,6 +101,10 @@ exceptions directly or wrapped them in an `InvalidOperationException("Error eval
 so a test that expected such an exception now gets a failed expectation instead. Exceptions of aweXpect itself, such
 as the argument validation above, are still thrown.
 
+In a quantified expectation such as `None().Satisfy(…)` or `All().AreUnique(…)`, an exception for an item that follows
+the items which already determine the outcome does not change it, whether the subject is an array, a list, a lazy
+`IEnumerable<T>` or an `IAsyncEnumerable<T>`.
+
 ## Conflicting string options
 
 `IgnoringCase()` and `Using(comparer)` could be combined although only one of them ever took effect, and a comparer
