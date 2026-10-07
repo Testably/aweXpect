@@ -187,6 +187,17 @@ public sealed class TypeMetadataRegistryTests
 	}
 
 	[Test]
+	public async Task RegisterField_WithAProbe_ShouldRegisterTheFieldOfTheTypeOfTheProbe()
+	{
+		FieldProbe probe = new();
+
+		TypeMetadataRegistry.RegisterField(probe, nameof(FieldProbe.Value), x => x.Value);
+
+		TypeMetadataRegistry.Instance.TryGet(typeof(FieldProbe), out TypeMetadataRegistry.TypeMetadata? metadata);
+		await That(metadata?.Fields.Keys).IsEqualTo([nameof(FieldProbe.Value),]);
+	}
+
+	[Test]
 	public async Task RegisterSet_ShouldRegisterAReaderOfTheItemComparer()
 	{
 		HashSet<Batched> set = new(new SameValueComparer());
@@ -228,6 +239,11 @@ public sealed class TypeMetadataRegistryTests
 	}
 
 	private sealed class Dummy;
+
+	private sealed class FieldProbe
+	{
+		public int Value = 1;
+	}
 
 	private sealed class Marked : List<int>;
 

@@ -41,6 +41,17 @@ public class SynchronouslyTests
 	}
 
 	[Test]
+	public void WhenEvaluationIsMetRightAwayOnABlockedSynchronizationContext_WithValue_ShouldReturnTheValue()
+	{
+		int value = 0;
+
+		bool completed = BlockedSynchronizationContext.Run(() => value = Verify(That(42).IsEqualTo(42)));
+
+		Verify(That(completed).IsTrue());
+		Verify(That(value).IsEqualTo(42));
+	}
+
+	[Test]
 	public void WhenEvaluationYieldsOnABlockedSynchronizationContext_ShouldNotDeadlock()
 	{
 		bool completed = BlockedSynchronizationContext.Run(()

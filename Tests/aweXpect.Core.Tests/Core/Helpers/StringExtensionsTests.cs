@@ -54,6 +54,17 @@ public class StringExtensionsTests
 
 			await That(result).IsNull();
 		}
+
+		[Test]
+		public async Task WhenTheNormalizationCannotBeChecked_ShouldEscapeCombiningMarks()
+		{
+			string input = new(['a', (char)0x0301, (char)0xD800,]);
+
+			string result = input.DisplayWhitespace();
+
+			await That(result).IsEqualTo("a\\u" + "0301\\uD800")
+				.Because("a value whose normalization cannot be checked counts as not normalized");
+		}
 	}
 
 	public sealed class Escape
@@ -131,6 +142,19 @@ public class StringExtensionsTests
 			bool result = input.IsSplitAt(index);
 
 			await That(result).IsEqualTo(expected);
+		}
+	}
+
+	public sealed class RemoveIndentation
+	{
+		[Test]
+		public async Task WhenNull_ShouldReturnNull()
+		{
+			string? input = null;
+
+			string? result = input.RemoveIndentation();
+
+			await That(result).IsNull();
 		}
 	}
 

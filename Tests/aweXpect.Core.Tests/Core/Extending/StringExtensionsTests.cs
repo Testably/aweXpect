@@ -104,6 +104,13 @@ public class StringExtensionsTests
 		[Arguments("Update", "an Update")]
 		[Arguments("H", "an H")]
 		[Arguments("U", "a U")]
+		[Arguments("Int32", "an Int32")]
+		[Arguments("Object", "an Object")]
+		[Arguments("orange", "an orange")]
+		[Arguments("uint", "an uint")]
+		[Arguments("ulong", "a ulong")]
+		[Arguments("xylophone", "a xylophone")]
+		[Arguments("1st", "a 1st")]
 		public async Task ShouldReturnExpectedResult(string input, string expected)
 		{
 			string result = input.PrependAOrAn();
@@ -126,6 +133,17 @@ public class StringExtensionsTests
 
 	public sealed class TrimCommonWhiteSpace
 	{
+		[Test]
+		public async Task WhenAllLaterLinesAreBlank_ShouldReturnUnchangedInput()
+		{
+			string input = "foo\n  \n";
+
+			string result = input.TrimCommonWhiteSpace();
+
+			await That(result).IsEqualTo(input)
+				.Because("blank lines don't limit the common whitespace, so there is none to remove");
+		}
+
 		[Test]
 		public async Task WhenAnyLaterLineHasNoWhiteSpace_ShouldReturnUnchangedInput()
 		{

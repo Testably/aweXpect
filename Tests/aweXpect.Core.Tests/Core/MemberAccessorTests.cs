@@ -103,6 +103,7 @@ public sealed class MemberAccessorTests
 	[Arguments("(x, y) => x.Value", "(x, y) => x.Value ")]
 	[Arguments("GetSelector(x => x.Value)", "GetSelector(x => x.Value) ")]
 	[Arguments("selector", "selector ")]
+	[Arguments("1 => 1.Value", "1 => 1.Value ")]
 	public async Task FromFuncAsMemberAccessor_ShouldTryToExtractMemberAccessor(string expression, string expected)
 	{
 		MemberAccessor<string, int> subject = MemberAccessor<string, int>
@@ -131,6 +132,16 @@ public sealed class MemberAccessorTests
 	[Arguments("async (x, y) => await y.Value")]
 	[Arguments("async o => awaito.Value")]
 	[Arguments("static async o => await o.Value")]
+	[Arguments("async ( ) => await o.Value")]
+	[Arguments("async o => await o.")]
+	[Arguments("async o => await o.1")]
+	[Arguments("async o => await o.Value<int>")]
+	[Arguments("async o => await o.Get<int+1>()")]
+	[Arguments("async o => await o.Get<int")]
+	[Arguments("async o => await o.GetAsync(")]
+	[Arguments("async o => await o.GetAsync(\"a)")]
+	[Arguments("async o => await o.GetAsync(/* )")]
+	[Arguments("async o => await o.GetAsync(// )")]
 	public async Task FromFuncAsMemberAccessor_WithAsyncLambdaWithoutMemberPath_ShouldKeepExpression(
 		string expression)
 	{
@@ -163,6 +174,11 @@ public sealed class MemberAccessorTests
 	[Arguments("async o => await o.Items?[0].Value", "Items?[0].Value ")]
 	[Arguments("async o => await o.Tasks[0]", "Tasks[0] ")]
 	[Arguments("  async  o  =>\r\n\tawait\r\n  o.Value  ", "Value ")]
+	[Arguments("async o => await o.@class", "@class ")]
+	[Arguments("async o => await o._value", "_value ")]
+	[Arguments("async o => await o.GetAsync<List<int?>[], My_Type.Inner>()", "GetAsync<List<int?>[], My_Type.Inner>() ")]
+	[Arguments("async o => await o.GetAsync(\"a\\\")\")", "GetAsync(\"a\\\")\") ")]
+	[Arguments("async o => await o.GetAsync(1 / 2)", "GetAsync(1 / 2) ")]
 	public async Task FromFuncAsMemberAccessor_WithAsyncMemberLambda_ShouldExtractMemberPath(
 		string expression, string expected)
 	{

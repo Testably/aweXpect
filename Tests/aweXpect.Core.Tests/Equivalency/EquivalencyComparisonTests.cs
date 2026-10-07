@@ -2987,6 +2987,34 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
+	public async Task WhenJsonNodeOptionsMemberDiffers_ShouldCompareItsMembers()
+	{
+		var actual = new
+		{
+			Value = new JsonNodeOptions
+			{
+				PropertyNameCaseInsensitive = true,
+			},
+		};
+		var expected = new
+		{
+			Value = new JsonNodeOptions(),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("only a JsonNode stands for its JSON, not every type of its namespace");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value.PropertyNameCaseInsensitive differed:
+		                                                      Actual: True
+		                                                    Expected: False
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Test]
 	public async Task WhenListElementsAreInDifferentOrder_ShouldReportTheDifference()
 	{
 		List<int> actual = [1, 2, 3,];

@@ -2,6 +2,8 @@
 using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Equivalency;
+using aweXpect.Results;
 
 namespace aweXpect.Core.Tests.Core;
 
@@ -320,6 +322,22 @@ public class BecauseTests
 	}
 
 	[Test]
+	public async Task WhenAsyncReasonOfAMemberIsNull_ShouldNotIncludeBecause()
+	{
+		string subject = "foo";
+
+		async Task Act()
+			=> await That(subject).Whose(s => s.Length, l => l.IsEqualTo(5).Because(Task.FromResult<string?>(null)));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose Length is equal to 5,
+			             but Length was 3, which differs by -2
+			             """);
+	}
+
+	[Test]
 	public async Task WhenAsyncReasonOfAMemberIsPending_WhenTimeoutElapses_ShouldStillReportTheAssertionFailure()
 	{
 		TaskCompletionSource<string?> becauseSource = new();
@@ -338,6 +356,24 @@ public class BecauseTests
 		async Task Evaluate()
 			=> await That(subject).Whose(s => s.Length, l => l.IsEqualTo(5).Because(becauseSource.Task))
 				.WithTimeout(50.Milliseconds());
+	}
+
+	[Test]
+	public async Task WhenAsyncReasonOfAMemberOfANullSubject_ShouldIncludeTheReason()
+	{
+		string? subject = null;
+
+		async Task Act()
+			=> await That(subject).Whose(s => s?.Length,
+				l => l.IsEqualTo(5).Because(Task.FromResult<string?>("it must be long")));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose Length is equal to 5, because it must be long,
+			             but it was <null>
+			             """)
+			.Because("the expectation on the member is only described, but its reason is resolved for the failure");
 	}
 
 	[Test]
@@ -368,6 +404,22 @@ public class BecauseTests
 
 		await That(isRaised).IsFalse()
 			.Because("the exception must be observed without the scheduler of the code that added the reason");
+	}
+
+	[Test]
+	public async Task WhenAsyncReasonStartsWithBecause_ShouldHonorExistingPrefix()
+	{
+		int subject = 1;
+
+		async Task Act()
+			=> await That(subject).IsEqualTo(2).Because(Task.FromResult<string?>("because it must be two"));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equal to 2, because it must be two,
+			             but it was 1, which differs by -1
+			             """);
 	}
 
 	[Test]
@@ -411,6 +463,56 @@ public class BecauseTests
 		async Task Act() => await That(1).IsEqualTo(1).Because(becauseTask);
 
 		await That(Act).DoesNotThrow();
+	}
+
+	[Test]
+	public async Task WhenAwaitedTwice_ShouldKeepTheAsyncReason()
+	{
+		bool subject = true;
+		AndOrResult<bool, IThat<bool>> expectation =
+			That(subject).IsFalse().Because(Task.FromResult<string?>("it must be false"));
+
+		async Task Act()
+			=> await expectation;
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is False, because it must be false,
+			             but it was True
+			             """);
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is False, because it must be false,
+			             but it was True
+			             """)
+			.Because("the reason that the first evaluation resolved is kept");
+	}
+
+	[Test]
+	public async Task WhenAwaitedTwice_WhenAsyncReasonIsNull_ShouldNotIncludeBecause()
+	{
+		bool subject = true;
+		AndOrResult<bool, IThat<bool>> expectation =
+			That(subject).IsFalse().Because(Task.FromResult<string?>(null));
+
+		async Task Act()
+			=> await expectation;
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is False,
+			             but it was True
+			             """);
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is False,
+			             but it was True
+			             """)
+			.Because("the empty reason that the first evaluation resolved is still ignored");
 	}
 
 	[Test]
@@ -782,6 +884,86 @@ public class BecauseTests
 			             but
 			              [03] it was 1, which differs by -1
 			             """);
+	}
+
+	[Test]
+	public async Task WhenUsedInItIs_ShouldApplyAsyncBecauseReason()
+	{
+		var actual = new
+		{
+			Value = 1,
+		};
+		var expected = new
+		{
+			Value = It.Is<int>().That.IsGreaterThan(2).Because(Task.FromResult<string?>("it must be large")),
+		};
+
+		async Task Act()
+			=> await That(actual).IsEquivalentTo(expected);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that actual
+			             is equivalent to expected,
+			             but it was not:
+			               Property Value differed:
+			                   Actual: 1
+			                 Expected: is int that is greater than 2, because it must be large
+
+			             Equivalency options:
+			              - include public fields and properties
+			             """);
+	}
+
+	[Test]
+	public async Task WhenUsedInItIs_WhenAsyncReasonIsNull_ShouldNotIncludeBecause()
+	{
+		var actual = new
+		{
+			Value = 1,
+		};
+		var expected = new
+		{
+			Value = It.Is<int>().That.IsGreaterThan(2).Because(Task.FromResult<string?>(null)),
+		};
+
+		async Task Act()
+			=> await That(actual).IsEquivalentTo(expected);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that actual
+			             is equivalent to expected,
+			             but it was not:
+			               Property Value differed:
+			                   Actual: 1
+			                 Expected: is int that is greater than 2
+
+			             Equivalency options:
+			              - include public fields and properties
+			             """);
+	}
+
+	[Test]
+	public async Task WhenUsedInItIs_WhenExpectationIsMet_ShouldNotAwaitTheAsyncReason()
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		var actual = new
+		{
+			Value = 3,
+		};
+		var expected = new
+		{
+			Value = It.Is<int>().That.IsGreaterThan(2).Because(becauseSource.Task),
+		};
+
+		Task evaluation = Evaluate();
+
+		await That(await IsCompletedWithoutTheReason(evaluation, becauseSource)).IsTrue()
+			.Because("the reason is only needed for a failure message");
+
+		async Task Evaluate()
+			=> await That(actual).IsEquivalentTo(expected);
 	}
 
 	/// <summary>
