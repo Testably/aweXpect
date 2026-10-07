@@ -662,6 +662,11 @@ public abstract class ExpectationBuilder
 		{
 			andNode.AddNode(operand, textSeparator);
 		}
+		else if (_node is OrNode { Current: AndNode currentAndNode, })
+		{
+			// A single node evaluates the whole `And` chain, as only it skips the operands after a failed guard.
+			currentAndNode.AddNode(operand, textSeparator);
+		}
 		else if (_node is OrNode orNode)
 		{
 			AndNode newNode = new(orNode.Current);
