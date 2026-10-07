@@ -40,7 +40,7 @@ public sealed class EquivalencyExpectationBuilderTests
 		StringBuilder result = new();
 
 		ConstraintResult constraintResult =
-			await sut.IsMetBy("foo", new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
+			await sut.IsMetBy("foo", new EvaluationContext.EvaluationContext(), CancellationToken.None);
 		constraintResult.AppendExpectation(expectation);
 		constraintResult.AppendResult(result);
 
@@ -55,7 +55,7 @@ public sealed class EquivalencyExpectationBuilderTests
 	{
 		EquivalencyExpectationBuilder sut = CreateIsGreaterThan2();
 		ConstraintResult constraintResult =
-			await sut.IsMetBy("foo", new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
+			await sut.IsMetBy("foo", new EvaluationContext.EvaluationContext(), CancellationToken.None);
 
 		ConstraintResult negated = constraintResult.Negate();
 
@@ -69,7 +69,7 @@ public sealed class EquivalencyExpectationBuilderTests
 	{
 		EquivalencyExpectationBuilder sut = CreateIsGreaterThan2();
 		ConstraintResult constraintResult =
-			await sut.IsMetBy("foo", new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
+			await sut.IsMetBy("foo", new EvaluationContext.EvaluationContext(), CancellationToken.None);
 
 		bool hasString = constraintResult.TryGetStoredValue(out string? storedString);
 		bool hasInt = constraintResult.TryGetStoredValue(out int storedInt);
@@ -87,7 +87,7 @@ public sealed class EquivalencyExpectationBuilderTests
 		StringBuilder expectation = new();
 
 		ConstraintResult constraintResult =
-			await sut.IsMetBy<string?>(null, new aweXpect.Core.EvaluationContext.EvaluationContext(), CancellationToken.None);
+			await sut.IsMetBy<string?>(null, new EvaluationContext.EvaluationContext(), CancellationToken.None);
 		constraintResult.AppendExpectation(expectation);
 
 		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure)

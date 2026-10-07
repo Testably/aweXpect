@@ -7,7 +7,6 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
 using aweXpect.Equivalency;
-using aweXpect.Formatting;
 using aweXpect.Options;
 using aweXpect.Results;
 
@@ -190,7 +189,7 @@ public sealed class ResultContextCollectorExtensionsTests
 
 		async Task Act()
 			=> await That(subject).ShowsContexts((contexts, _, _)
-				=> contexts.AddCollectionContext<int>(new MaterializedEnumerable([])));
+				=> contexts.AddCollectionContext(new MaterializedEnumerable([])));
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -264,7 +263,7 @@ public sealed class ResultContextCollectorExtensionsTests
 
 		async Task Act()
 			=> await That(subject).ShowsContexts((contexts, _, _)
-				=> contexts.AddCollectionContext<int>(new MaterializedEnumerable([1, 2,], 2)));
+				=> contexts.AddCollectionContext(new MaterializedEnumerable([1, 2,], 2)));
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -276,65 +275,6 @@ public sealed class ResultContextCollectorExtensionsTests
 			             [1, 2]
 			             """);
 	}
-
-#if NET8_0_OR_GREATER
-	[Test]
-	public async Task AddCollectionContext_WithMaterializedAsyncEnumerable_ShouldListTheReceivedItems()
-	{
-		MaterializedAsyncEnumerable subject = new([1, 2,]);
-
-		async Task Act()
-			=> await That(subject).ShowsContexts((contexts, actual, _)
-				=> contexts.AddCollectionContext(actual));
-
-		await That(Act).Throws<FailException>()
-			.WithMessage("""
-			             Expected that subject
-			             shows contexts,
-			             but it did not
-
-			             Collection:
-			             [1, 2, (… and maybe more)]
-			             """);
-	}
-
-	[Test]
-	public async Task AddCollectionContext_WithMaterializedAsyncEnumerable_WhenNothingWasReceived_ShouldNotAddAContext()
-	{
-		int[] subject = [1, 2, 3,];
-
-		async Task Act()
-			=> await That(subject).ShowsContexts((contexts, _, _)
-				=> contexts.AddCollectionContext<int>(new MaterializedAsyncEnumerable([])));
-
-		await That(Act).Throws<FailException>()
-			.WithMessage("""
-			             Expected that subject
-			             shows contexts,
-			             but it did not
-			             """);
-	}
-
-	[Test]
-	public async Task AddCollectionContext_WithMaterializedAsyncEnumerable_WhenTheCountIsKnown_ShouldListTheItems()
-	{
-		int[] subject = [1, 2, 3,];
-
-		async Task Act()
-			=> await That(subject).ShowsContexts((contexts, _, _)
-				=> contexts.AddCollectionContext<int>(new MaterializedAsyncEnumerable([1, 2,], 2)));
-
-		await That(Act).Throws<FailException>()
-			.WithMessage("""
-			             Expected that subject
-			             shows contexts,
-			             but it did not
-
-			             Collection:
-			             [1, 2]
-			             """);
-	}
-#endif
 
 	[Test]
 	public async Task AddCollectionContext_WithoutCount_ShouldListTheItemsOnSeparateLines()
@@ -521,8 +461,12 @@ public sealed class ResultContextCollectorExtensionsTests
 	{
 		ReadOnlyDictionaryOnly dictionary = new(new Dictionary<string, int>
 		{
-			{ "a", 1 },
-			{ "b", 2 },
+			{
+				"a", 1
+			},
+			{
+				"b", 2
+			},
 		});
 
 		async Task Act()
@@ -848,6 +792,65 @@ public sealed class ResultContextCollectorExtensionsTests
 
 		public Task<IMaterializedAsyncEnumerable<int>> MaterializeItems(int? numberOfItems)
 			=> throw new InvalidOperationException("The context must not receive further items.");
+	}
+#endif
+
+#if NET8_0_OR_GREATER
+	[Test]
+	public async Task AddCollectionContext_WithMaterializedAsyncEnumerable_ShouldListTheReceivedItems()
+	{
+		MaterializedAsyncEnumerable subject = new([1, 2,]);
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, actual, _)
+				=> contexts.AddCollectionContext(actual));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+
+			             Collection:
+			             [1, 2, (… and maybe more)]
+			             """);
+	}
+
+	[Test]
+	public async Task AddCollectionContext_WithMaterializedAsyncEnumerable_WhenNothingWasReceived_ShouldNotAddAContext()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, _, _)
+				=> contexts.AddCollectionContext(new MaterializedAsyncEnumerable([])));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+			             """);
+	}
+
+	[Test]
+	public async Task AddCollectionContext_WithMaterializedAsyncEnumerable_WhenTheCountIsKnown_ShouldListTheItems()
+	{
+		int[] subject = [1, 2, 3,];
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, _, _)
+				=> contexts.AddCollectionContext(new MaterializedAsyncEnumerable([1, 2,], 2)));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+
+			             Collection:
+			             [1, 2]
+			             """);
 	}
 #endif
 }

@@ -20,7 +20,15 @@ public sealed class NestedCollectionGrammar
 		[Test]
 		public async Task AreEquivalentTo_ShouldUsePluralVerb()
 		{
-			Dictionary<string, int> subject = new() { { "a", 1 }, { "b", 2 }, };
+			Dictionary<string, int> subject = new()
+			{
+				{
+					"a", 1
+				},
+				{
+					"b", 2
+				},
+			};
 
 			async Task Act()
 				=> await That(subject).Values.All().AreEquivalentTo(1);
@@ -32,7 +40,12 @@ public sealed class NestedCollectionGrammar
 		[Test]
 		public async Task AreExactly_ShouldUsePluralVerb()
 		{
-			Dictionary<string, int> subject = new() { { "a", 1 }, };
+			Dictionary<string, int> subject = new()
+			{
+				{
+					"a", 1
+				},
+			};
 
 			async Task Act()
 				=> await That(subject).Values.All().AreExactly<long>();

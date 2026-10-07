@@ -139,7 +139,7 @@ public sealed partial class ThatAsyncEnumerable
 				[Test]
 				public async Task WithItemTypeWithoutTolerance_WhenItemsDiffer_ShouldFail()
 				{
-					IAsyncEnumerable<char> subject = ToAsyncEnumerable(['a', 'b', 'a',]);
+					IAsyncEnumerable<char> subject = ToAsyncEnumerable('a', 'b', 'a');
 
 					async Task Act()
 						=> await That(subject).All().AreEqualTo('a');

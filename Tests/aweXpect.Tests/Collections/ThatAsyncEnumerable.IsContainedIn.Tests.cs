@@ -1457,7 +1457,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithCollectionOfCharsInDifferentOrder_ShouldSucceed()
 			{
-				IAsyncEnumerable<char> subject = ToAsyncEnumerable(['a', 'c', 'b',]);
+				IAsyncEnumerable<char> subject = ToAsyncEnumerable('a', 'c', 'b');
 				char[] expected = ['a', 'b', 'c',];
 
 				async Task Act()
