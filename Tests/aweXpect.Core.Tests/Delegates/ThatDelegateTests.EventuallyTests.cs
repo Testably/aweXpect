@@ -243,7 +243,8 @@ public sealed partial class ThatDelegateTests
 			}
 
 			async Task Act()
-				=> await That(Subject).Eventually().Within(VeryLowTimeout).IsEqualTo(1).WithCancellation(cts.Token);
+				=> await That(Subject).Eventually().OnVirtualTime().Within(VeryLowTimeout).IsEqualTo(1)
+					.WithCancellation(cts.Token);
 
 			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
@@ -269,7 +270,8 @@ public sealed partial class ThatDelegateTests
 			}
 
 			async Task Act()
-				=> await That(Subject).Eventually().Within(VeryLowTimeout).IsEqualTo(1).WithCancellation(cts.Token);
+				=> await That(Subject).Eventually().OnVirtualTime().Within(VeryLowTimeout).IsEqualTo(1)
+					.WithCancellation(cts.Token);
 
 			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
@@ -719,6 +721,7 @@ public sealed partial class ThatDelegateTests
 
 			using (IDisposable __ = Customize.aweXpect.Settings().DefaultCheckInterval.Set(TimeSpan.FromDays(60)))
 			{
+				// Only the real `Task.Delay` rejects the interval, as the virtual clock never passes it to a timer.
 				async Task Act()
 					=> await That(() => counter.Value).Eventually()
 						.Within(Timeout.InfiniteTimeSpan).IsEqualTo(1)
@@ -730,6 +733,7 @@ public sealed partial class ThatDelegateTests
 					             eventually is equal to 1,
 					             but it could not be verified, because the evaluation was already canceled
 					             """)
+					.WithTimeout(30.Seconds())
 					.Because("an interval that `Task.Delay` cannot represent must not escape as an exception, " +
 					         "especially when the retry budget does not limit it either");
 			}
@@ -1045,7 +1049,7 @@ public sealed partial class ThatDelegateTests
 			using (IDisposable ___ = Customize.aweXpect.Settings().TestCancellation
 				       .Set(TestCancellation.FromTimeout(60.Days())))
 			{
-				async Task Act() => await That(() => counter.Value).Eventually().IsGreaterThan(3);
+				async Task Act() => await That(() => counter.Value).Eventually().OnVirtualTime().IsGreaterThan(3);
 
 				await That(Act).DoesNotThrow()
 					.Because("a test cancellation beyond the range of the cancellation timer must not throw");
@@ -1237,9 +1241,10 @@ public sealed partial class ThatDelegateTests
 			Counter counter = new(2);
 
 			async Task Act()
-				=> await That(() => counter.Value).Eventually().Within(60.Days()).IsGreaterThan(3);
+				=> await That(() => counter.Value).Eventually().OnVirtualTime().Within(60.Days()).IsGreaterThan(3);
 
 			await That(Act).DoesNotThrow()
+				.WithTimeout(30.Seconds())
 				.Because("a timeout beyond the range of the timers is still a valid retry budget");
 			await That(counter.EvaluationCount).IsEqualTo(4);
 		}
@@ -1266,10 +1271,10 @@ public sealed partial class ThatDelegateTests
 		public async Task WhenTimeoutIsInfinite_ShouldKeepRetrying()
 		{
 			Counter counter = new(2);
-			using CancellationTokenSource cts = new(SuccessTimeout);
+			using CancellationTokenSource cts = new(30.Seconds());
 
 			async Task Act()
-				=> await That(() => counter.Value).Eventually()
+				=> await That(() => counter.Value).Eventually().OnVirtualTime()
 					.Within(Timeout.InfiniteTimeSpan).IsGreaterThan(3)
 					.WithCancellation(cts.Token);
 
