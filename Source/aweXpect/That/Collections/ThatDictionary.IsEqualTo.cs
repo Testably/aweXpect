@@ -122,13 +122,6 @@ public static partial class ThatDictionary
 	{
 		private string? _failure;
 
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			AddDictionaryContext(contexts, Actual);
-			contexts.AddOptionsContexts(options);
-		}
-
 		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual,
 			CancellationToken cancellationToken)
 		{
@@ -159,7 +152,7 @@ public static partial class ThatDictionary
 				}
 
 				if (!UserCode.Invoke(static values => values.MatchedKeys.Add(values.Key),
-					    (MatchedKeys: matchedKeys, Key: pair.Key)))
+					    (MatchedKeys: matchedKeys, pair.Key)))
 				{
 					(collapsedKeys ??= []).Add(pair.Key);
 				}
@@ -188,6 +181,13 @@ public static partial class ThatDictionary
 			_failure = errors.Count == 0 ? null : $"{It} {string.Join(" and ", errors)}";
 			Outcome = _failure is null ? Outcome.Success : Outcome.Failure;
 			return this;
+		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			AddDictionaryContext(contexts, Actual);
+			contexts.AddOptionsContexts(options);
 		}
 
 		/// <summary>

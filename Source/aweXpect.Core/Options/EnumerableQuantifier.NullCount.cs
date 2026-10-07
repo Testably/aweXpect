@@ -6,7 +6,6 @@ namespace aweXpect.Options;
 
 public abstract partial class EnumerableQuantifier
 {
-
 	/// <summary>
 	///     Matches no count, because nothing can be ordered against <see langword="null" />, e.g.
 	///     <c>more than &lt;null&gt;</c>.

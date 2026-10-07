@@ -8,5 +8,5 @@ public interface IValueConstraint<in TValue> : IConstraint
 	/// <summary>
 	///     Checks if the <paramref name="actual" /> value meets the expectation.
 	/// </summary>
-	public ConstraintResult IsMetBy(TValue actual);
+	ConstraintResult IsMetBy(TValue actual);
 }

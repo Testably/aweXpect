@@ -60,10 +60,6 @@ public static partial class ThatNullableTimeSpan
 		: ConstraintResult.WithValue<TimeSpan?>(it, grammars),
 			IValueConstraint<TimeSpan?>
 	{
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
-
 		public ConstraintResult IsMetBy(TimeSpan? actual)
 		{
 			Actual = actual;
@@ -81,6 +77,10 @@ public static partial class ThatNullableTimeSpan
 
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

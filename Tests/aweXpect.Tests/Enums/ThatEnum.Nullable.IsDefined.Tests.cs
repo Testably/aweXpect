@@ -11,7 +11,7 @@ public sealed partial class ThatEnum
 				[Test]
 				public async Task WhenFlagsSubjectHasAnUndefinedBit_ShouldFail()
 				{
-					MyColors? subject = (MyColors)(1 << 4 | 1);
+					MyColors? subject = (MyColors)((1 << 4) | 1);
 
 					async Task Act()
 						=> await That(subject).IsDefined();

@@ -680,7 +680,7 @@ public sealed partial class ThatAsyncEnumerable
 					[Test]
 					public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
 					{
-						DateOnly[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 12),];
+						DateOnly[] values = [new(2024, 1, 11), new(2024, 1, 12),];
 						IAsyncEnumerable<DateOnly> subject = ToAsyncEnumerable(values);
 
 						object Act()
@@ -695,9 +695,9 @@ public sealed partial class ThatAsyncEnumerable
 					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
-						DateOnly[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 13),];
+						DateOnly[] values = [new(2024, 1, 11), new(2024, 1, 13),];
 						IAsyncEnumerable<DateOnly> subject = ToAsyncEnumerable(values);
-						DateOnly expected = new DateOnly(2024, 1, 11);
+						DateOnly expected = new(2024, 1, 11);
 
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(expected).Within(1.Days());
@@ -726,7 +726,7 @@ public sealed partial class ThatAsyncEnumerable
 					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
-						DateOnly[] values = [new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 12),];
+						DateOnly[] values = [new(2024, 1, 11), new(2024, 1, 12),];
 						IAsyncEnumerable<DateOnly> subject = ToAsyncEnumerable(values);
 
 						async Task Act()
@@ -802,7 +802,7 @@ public sealed partial class ThatAsyncEnumerable
 					[Test]
 					public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
 					{
-						TimeOnly[] values = [new TimeOnly(23, 59, 30), new TimeOnly(0, 0, 30),];
+						TimeOnly[] values = [new(23, 59, 30), new(0, 0, 30),];
 						IAsyncEnumerable<TimeOnly> subject = ToAsyncEnumerable(values);
 
 						async Task Act()
@@ -815,9 +815,9 @@ public sealed partial class ThatAsyncEnumerable
 					[Test]
 					public async Task WhenValuesAreNotWithinTolerance_ShouldFail()
 					{
-						TimeOnly[] values = [new TimeOnly(14, 0), new TimeOnly(14, 2),];
+						TimeOnly[] values = [new(14, 0), new(14, 2),];
 						IAsyncEnumerable<TimeOnly> subject = ToAsyncEnumerable(values);
-						TimeOnly expected = new TimeOnly(14, 0);
+						TimeOnly expected = new(14, 0);
 
 						async Task Act()
 							=> await That(subject).All().AreEqualTo(expected).Within(1.Minutes());
@@ -846,7 +846,7 @@ public sealed partial class ThatAsyncEnumerable
 					[Test]
 					public async Task WhenValuesAreWithinTolerance_ShouldSucceed()
 					{
-						TimeOnly[] values = [new TimeOnly(14, 0), new TimeOnly(14, 1),];
+						TimeOnly[] values = [new(14, 0), new(14, 1),];
 						IAsyncEnumerable<TimeOnly> subject = ToAsyncEnumerable(values);
 
 						async Task Act()

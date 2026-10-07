@@ -648,15 +648,15 @@ public sealed partial class ThatString
 					=> await That(subject).IsEqualTo(expected).IgnoringNewlineStyle();
 
 				await That(Act).Throws<FailException>()
-					.WithMessage($"""
-					              Expected that subject
-					              is equal to "foo\r\nbaz" ignoring newline style,
-					              but it was "foo\nbar", which differs on line 2 and column 3:
-					                        ↓ (actual)
-					                "foo\nbar"
-					                "foo\nbaz"
-					                        ↑ (expected)
-					              """);
+					.WithMessage("""
+					             Expected that subject
+					             is equal to "foo\r\nbaz" ignoring newline style,
+					             but it was "foo\nbar", which differs on line 2 and column 3:
+					                       ↓ (actual)
+					               "foo\nbar"
+					               "foo\nbaz"
+					                       ↑ (expected)
+					             """);
 			}
 
 			[Test]

@@ -1186,11 +1186,9 @@ public sealed class WhichNodeTests
 			             """);
 	}
 
-	private static ThatSubject<int> WhoseLength(IThat<string> subject, Func<string, int> length)
-		=> new ThatSubject<int>(subject.Get().ExpectationBuilder.ForWhich(length, " whose length "));
+	private static ThatSubject<int> WhoseLength(IThat<string> subject, Func<string, int> length) => new(subject.Get().ExpectationBuilder.ForWhich(length, " whose length "));
 
-	private static ThatSubject<int> WhoseAsyncLength(IThat<string> subject, Func<string, Task<int>> length)
-		=> new ThatSubject<int>(subject.Get().ExpectationBuilder.ForWhich(length, " whose length "));
+	private static ThatSubject<int> WhoseAsyncLength(IThat<string> subject, Func<string, Task<int>> length) => new(subject.Get().ExpectationBuilder.ForWhich(length, " whose length "));
 
 	private sealed class StartsWithBarConstraint(string it, ExpectationGrammars grammars)
 		: ConstraintResult.WithNotNullValue<string>(it, grammars), IValueConstraint<string>

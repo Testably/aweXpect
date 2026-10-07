@@ -461,7 +461,13 @@ public partial class ValueFormatters
 		[Test]
 		public async Task WithIndentation_WhenItemIsAnObject_ShouldIndentItsMembersOnce()
 		{
-			Item[] value = [new() { Value = 1, },];
+			Item[] value =
+			[
+				new()
+				{
+					Value = 1,
+				},
+			];
 			string expectedResult = """
 			                        [
 			                            ValueFormatters.CollectionTests.Item {
@@ -525,7 +531,10 @@ public partial class ValueFormatters
 					throw new InvalidOperationException("enumerated too often");
 				}
 
-				return ((IEnumerable<object>)new object[] { this, }).GetEnumerator();
+				return ((IEnumerable<object>)new object[]
+				{
+					this,
+				}).GetEnumerator();
 			}
 
 			IEnumerator IEnumerable.GetEnumerator()

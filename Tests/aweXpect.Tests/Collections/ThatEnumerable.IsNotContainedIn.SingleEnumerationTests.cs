@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using aweXpect.Core;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
 #endif
-using System.Linq.Expressions;
-using aweXpect.Core;
 
 // ReSharper disable PossibleMultipleEnumeration
 

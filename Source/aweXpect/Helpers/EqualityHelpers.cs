@@ -172,7 +172,7 @@ internal static class EqualityHelpers
 	}
 
 	public static bool IsConsideredEqualTo(this DateTime actual, DateTime? expected, TimeSpan tolerance)
-		=> IsConsideredEqualTo(actual, expected, tolerance, out _);
+		=> actual.IsConsideredEqualTo(expected, tolerance, out _);
 
 	public static bool IsConsideredEqualTo(this DateTime actual, DateTime? expected, TimeSpan tolerance,
 		out bool hasKindDifference)
@@ -183,7 +183,7 @@ internal static class EqualityHelpers
 	}
 
 	public static bool IsConsideredEqualTo(this DateTime? actual, DateTime? expected, TimeSpan tolerance)
-		=> IsConsideredEqualTo(actual, expected, tolerance, out _);
+		=> actual.IsConsideredEqualTo(expected, tolerance, out _);
 
 	public static bool IsConsideredEqualTo(this DateTime? actual, DateTime? expected, TimeSpan tolerance,
 		out bool hasKindDifference)
@@ -281,15 +281,6 @@ internal static class EqualityHelpers
 	public static bool IsKindCompatibleWith(this DateTime actual, DateTime other)
 		=> AreKindCompatible(actual.Kind, other.Kind);
 
-	/// <remarks>
-	///     A non-finite value has no distance to any other value, so no tolerance can bridge it, while
-	///     <see cref="double.Equals(double)" /> still lets <c>NaN</c> and each infinity match themselves.
-	/// </remarks>
-	private static bool IsFinite(double value) => !double.IsNaN(value) && !double.IsInfinity(value);
-
-	/// <inheritdoc cref="IsFinite(double)" />
-	private static bool IsFinite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
-
 	public static bool AreKindCompatible(DateTimeKind? actualKind, DateTimeKind? expectedKind)
 	{
 		if (actualKind == DateTimeKind.Unspecified || expectedKind == DateTimeKind.Unspecified)
@@ -299,4 +290,13 @@ internal static class EqualityHelpers
 
 		return actualKind == expectedKind;
 	}
+
+	/// <remarks>
+	///     A non-finite value has no distance to any other value, so no tolerance can bridge it, while
+	///     <see cref="double.Equals(double)" /> still lets <c>NaN</c> and each infinity match themselves.
+	/// </remarks>
+	private static bool IsFinite(double value) => !double.IsNaN(value) && !double.IsInfinity(value);
+
+	/// <inheritdoc cref="IsFinite(double)" />
+	private static bool IsFinite(float value) => !float.IsNaN(value) && !float.IsInfinity(value);
 }

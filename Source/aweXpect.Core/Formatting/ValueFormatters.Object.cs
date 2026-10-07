@@ -120,7 +120,7 @@ public static partial class ValueFormatters
 		}
 
 		const BindingFlags instanceMembers = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-		MethodInfo? toString = type.GetMethod(nameof(object.ToString), instanceMembers, null, Type.EmptyTypes, null);
+		MethodInfo? toString = type.GetMethod(nameof(ToString), instanceMembers, null, Type.EmptyTypes, null);
 		MethodInfo? printMembers = type.GetMethod("PrintMembers", instanceMembers, null, [typeof(StringBuilder),],
 			null);
 		return toString?.IsDefined(typeof(CompilerGeneratedAttribute), false) == true &&
@@ -266,7 +266,7 @@ public static partial class ValueFormatters
 					stringBuilder.Append(", ");
 				}
 
-				Format(Formatter, stringBuilder, items[i], WithoutLineBreaksForString(items[i], options), context);
+				Formatter.Format(stringBuilder, items[i], WithoutLineBreaksForString(items[i], options), context);
 			}
 
 			stringBuilder.Append(')');

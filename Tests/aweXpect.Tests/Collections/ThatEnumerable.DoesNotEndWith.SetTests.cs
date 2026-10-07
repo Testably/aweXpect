@@ -11,7 +11,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task Using_ShouldOverrideTheComparerOfTheSet()
 			{
-				SortedSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
+				SortedSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+					"b",
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotEndWith("B").Using(new AllDifferentComparer());
@@ -22,7 +26,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenSetDoesNotEndWithTheItemsAccordingToItsComparer_ShouldSucceed()
 			{
-				SortedSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
+				SortedSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+					"b",
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotEndWith("A");
@@ -33,7 +41,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenSetEndsWithTheItemsAccordingToItsComparer_ShouldFail()
 			{
-				SortedSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
+				SortedSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+					"b",
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotEndWith("B");

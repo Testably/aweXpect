@@ -6,10 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
-#if NET8_0_OR_GREATER
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
-#endif
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -17,6 +13,10 @@ using aweXpect.Core.EvaluationContext;
 using aweXpect.Customization;
 using aweXpect.Helpers;
 using aweXpect.Options;
+#if NET8_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
+#endif
 
 namespace aweXpect;
 
@@ -60,41 +60,8 @@ internal static class CollectionHelpers
 			.AddConstraint(memberName,
 				static (name, it, grammars) => new HasCollectionMemberConstraint<TSource>(it, grammars, name))
 			.ForWhich(memberAccessor, " that ", "it",
-				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural, negateMemberOnly: true,
-				contextMember: memberName));
-
-	/// <summary>
-	///     Names the member in the expectation text and rules a <see langword="null" /> subject out. A negation applies
-	///     to the continued expectation, so the text is the same in both grammars.
-	/// </summary>
-	private sealed class HasCollectionMemberConstraint<TSource>(
-		string it,
-		ExpectationGrammars grammars,
-		string memberName)
-		: ConstraintResult.WithNotNullValue<TSource>(it, grammars),
-			IValueConstraint<TSource>
-	{
-		public ConstraintResult IsMetBy(TSource actual)
-		{
-			Actual = actual;
-			Outcome = actual is null ? Outcome.Failure : Outcome.Success;
-			return this;
-		}
-
-		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("has ").Append(memberName);
-
-		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-		}
-
-		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendNormalExpectation(stringBuilder, indentation);
-
-		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-		}
-	}
+				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural, true,
+				memberName));
 
 	internal static string GetItemString(this EnumerableQuantifier quantifier)
 		=> quantifier.IsSingle() ? "item" : "items";
@@ -133,60 +100,6 @@ internal static class CollectionHelpers
 			return typeof(object);
 		}
 	}
-
-#if NET8_0_OR_GREATER
-	/// <summary>
-	///     Formats the items of the <paramref name="value" /> that were received so far, and marks them as incomplete,
-	///     unless the end of the source was reached.
-	/// </summary>
-	internal static string FormatMaterializedItems<TItem>(this IMaterializedAsyncEnumerable<TItem> value,
-		FormattingOptions options)
-	{
-		int count = value.Count ?? value.MaterializedItems.Count;
-		FormattingOptions formattingOptions = typeof(TItem).GetFormattingOption(count, value.Count);
-		if (options.UseLineBreaks)
-		{
-			formattingOptions = formattingOptions with
-			{
-				UseLineBreaks = true,
-			};
-		}
-
-		return Formatter.Format(HideCount(value.MaterializedItems), formattingOptions)
-			.AppendIsIncomplete(value.Count is null);
-	}
-
-	/// <summary>
-	///     Enumerates the <paramref name="source" /> until it ends or the <paramref name="cancellationToken" /> is
-	///     canceled, also while it waits for the next item.
-	/// </summary>
-	/// <remarks>
-	///     For expectations that report a canceled evaluation as undecided, which must not be aborted instead, when the
-	///     <paramref name="source" /> throws because of the cancellation instead of providing the next item.
-	/// </remarks>
-	internal static async IAsyncEnumerable<TItem> UntilCancelled<TItem>(this IAsyncEnumerable<TItem> source,
-		[EnumeratorCancellation] CancellationToken cancellationToken)
-	{
-		await using IAsyncEnumerator<TItem> enumerator = source.GetAsyncEnumerator(cancellationToken);
-		while (await MoveNextUntilCancelled(enumerator, cancellationToken))
-		{
-			yield return enumerator.Current;
-		}
-	}
-
-	private static async ValueTask<bool> MoveNextUntilCancelled<TItem>(IAsyncEnumerator<TItem> enumerator,
-		CancellationToken cancellationToken)
-	{
-		try
-		{
-			return await enumerator.MoveNextAsync();
-		}
-		catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-		{
-			return false;
-		}
-	}
-#endif
 
 	/// <summary>
 	///     Whether the <paramref name="cancellationToken" /> is canceled before all items of the
@@ -397,4 +310,91 @@ internal static class CollectionHelpers
 			TotalItemCount = totalCount,
 		};
 	}
+
+	/// <summary>
+	///     Names the member in the expectation text and rules a <see langword="null" /> subject out. A negation applies
+	///     to the continued expectation, so the text is the same in both grammars.
+	/// </summary>
+	private sealed class HasCollectionMemberConstraint<TSource>(
+		string it,
+		ExpectationGrammars grammars,
+		string memberName)
+		: ConstraintResult.WithNotNullValue<TSource>(it, grammars),
+			IValueConstraint<TSource>
+	{
+		public ConstraintResult IsMetBy(TSource actual)
+		{
+			Actual = actual;
+			Outcome = actual is null ? Outcome.Failure : Outcome.Success;
+			return this;
+		}
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("has ").Append(memberName);
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+		}
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> AppendNormalExpectation(stringBuilder, indentation);
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+		}
+	}
+
+#if NET8_0_OR_GREATER
+	/// <summary>
+	///     Formats the items of the <paramref name="value" /> that were received so far, and marks them as incomplete,
+	///     unless the end of the source was reached.
+	/// </summary>
+	internal static string FormatMaterializedItems<TItem>(this IMaterializedAsyncEnumerable<TItem> value,
+		FormattingOptions options)
+	{
+		int count = value.Count ?? value.MaterializedItems.Count;
+		FormattingOptions formattingOptions = typeof(TItem).GetFormattingOption(count, value.Count);
+		if (options.UseLineBreaks)
+		{
+			formattingOptions = formattingOptions with
+			{
+				UseLineBreaks = true,
+			};
+		}
+
+		return Formatter.Format(HideCount(value.MaterializedItems), formattingOptions)
+			.AppendIsIncomplete(value.Count is null);
+	}
+
+	/// <summary>
+	///     Enumerates the <paramref name="source" /> until it ends or the <paramref name="cancellationToken" /> is
+	///     canceled, also while it waits for the next item.
+	/// </summary>
+	/// <remarks>
+	///     For expectations that report a canceled evaluation as undecided, which must not be aborted instead, when the
+	///     <paramref name="source" /> throws because of the cancellation instead of providing the next item.
+	/// </remarks>
+	internal static async IAsyncEnumerable<TItem> UntilCancelled<TItem>(this IAsyncEnumerable<TItem> source,
+		[EnumeratorCancellation] CancellationToken cancellationToken)
+	{
+		await using IAsyncEnumerator<TItem> enumerator = source.GetAsyncEnumerator(cancellationToken);
+		while (await MoveNextUntilCancelled(enumerator, cancellationToken))
+		{
+			yield return enumerator.Current;
+		}
+	}
+
+	private static async ValueTask<bool> MoveNextUntilCancelled<TItem>(IAsyncEnumerator<TItem> enumerator,
+		CancellationToken cancellationToken)
+	{
+		try
+		{
+			return await enumerator.MoveNextAsync();
+		}
+		catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+		{
+			return false;
+		}
+	}
+#endif
 }

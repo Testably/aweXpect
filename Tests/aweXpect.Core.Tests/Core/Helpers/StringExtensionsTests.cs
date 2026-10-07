@@ -112,6 +112,7 @@ public class StringExtensionsTests
 			await That(result).IsNull();
 		}
 	}
+
 	public sealed class IsSplitAt
 	{
 		[Test]
@@ -132,6 +133,7 @@ public class StringExtensionsTests
 			await That(result).IsEqualTo(expected);
 		}
 	}
+
 	public sealed class RemoveNewlineStyle
 	{
 		[Test]

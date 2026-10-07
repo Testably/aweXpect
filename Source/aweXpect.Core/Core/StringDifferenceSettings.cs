@@ -5,7 +5,9 @@ namespace aweXpect.Core;
 /// <summary>
 ///     The comparison settings used to display the <see cref="StringDifference" />.
 /// </summary>
-public class StringDifferenceSettings(int ignoredTrailingLines, int ignoredTrailingColumns,
+public class StringDifferenceSettings(
+	int ignoredTrailingLines,
+	int ignoredTrailingColumns,
 	IReadOnlyList<int>? ignoredColumnsPerLine)
 {
 	/// <summary>

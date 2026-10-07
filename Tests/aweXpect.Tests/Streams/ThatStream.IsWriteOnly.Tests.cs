@@ -11,7 +11,7 @@ public sealed partial class ThatStream
 			[Test]
 			public async Task WhenMemberIsACollection_ShouldUsePluralVerb()
 			{
-				ChunkedStreamContainer subject = new(new ChunkedStream(canRead: true, canWrite: true));
+				ChunkedStreamContainer subject = new(new ChunkedStream(true, true));
 
 				async Task Act()
 					=> await That(subject).Whose(c => c.Chunks, chunks => chunks.IsWriteOnly());

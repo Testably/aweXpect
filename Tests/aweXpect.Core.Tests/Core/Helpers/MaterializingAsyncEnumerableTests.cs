@@ -12,7 +12,7 @@ public class MaterializingAsyncEnumerableTests
 	public async Task ReleaseSource_ShouldOnlyReplayTheItemsReadSoFar()
 	{
 		MaterializingAsyncEnumerable<int> materialized = (MaterializingAsyncEnumerable<int>)
-			MaterializingAsyncEnumerable<int>.Wrap(ToAsyncEnumerable([1, 2, 3]), CancellationToken.None);
+			MaterializingAsyncEnumerable<int>.Wrap(ToAsyncEnumerable([1, 2, 3,]), CancellationToken.None);
 		await materialized.MaterializeItems(0);
 
 		await materialized.ReleaseSource();
@@ -22,7 +22,7 @@ public class MaterializingAsyncEnumerableTests
 			items.Add(item);
 		}
 
-		await That(items).IsEqualTo([1])
+		await That(items).IsEqualTo([1,])
 			.Because("the released source must not be read any further");
 		await That(materialized.Count).IsNull()
 			.Because("it is unknown how many items the released source has");
@@ -90,7 +90,7 @@ public class MaterializingAsyncEnumerableTests
 	{
 		using CancellationTokenSource cts = new();
 		MaterializingAsyncEnumerable<int> materialized = (MaterializingAsyncEnumerable<int>)
-			MaterializingAsyncEnumerable<int>.Wrap(ToAsyncEnumerable([1, 2, 3]), cts.Token);
+			MaterializingAsyncEnumerable<int>.Wrap(ToAsyncEnumerable([1, 2, 3,]), cts.Token);
 		await using (IAsyncEnumerator<int> enumerator = materialized.GetAsyncEnumerator())
 		{
 			await enumerator.MoveNextAsync();
@@ -107,7 +107,7 @@ public class MaterializingAsyncEnumerableTests
 	public async Task WhenEnumeratedAfterCancellation_ShouldReplayTheMaterializedItemsAndThrow()
 	{
 		using CancellationTokenSource cts = new();
-		IAsyncEnumerable<int> materialized = MaterializingAsyncEnumerable<int>.Wrap(ToAsyncEnumerable([1, 2, 3]), cts.Token);
+		IAsyncEnumerable<int> materialized = MaterializingAsyncEnumerable<int>.Wrap(ToAsyncEnumerable([1, 2, 3,]), cts.Token);
 		await using (IAsyncEnumerator<int> enumerator = materialized.GetAsyncEnumerator())
 		{
 			await enumerator.MoveNextAsync();
@@ -127,7 +127,7 @@ public class MaterializingAsyncEnumerableTests
 		await That(Act).Throws<OperationCanceledException>()
 			.WithMessage(new OperationCanceledException().Message)
 			.Because("a cancellation must not be mistaken for the end of the source");
-		await That(items).IsEqualTo([1])
+		await That(items).IsEqualTo([1,])
 			.Because("the source must not be advanced once the evaluation is cancelled");
 	}
 
@@ -135,7 +135,7 @@ public class MaterializingAsyncEnumerableTests
 	public async Task WhenEnumeratedAfterCancellationOfAnExhaustedSource_ShouldReplayAllItems()
 	{
 		using CancellationTokenSource cts = new();
-		IAsyncEnumerable<int> materialized = MaterializingAsyncEnumerable<int>.Wrap(ToAsyncEnumerable([1, 2, 3]), cts.Token);
+		IAsyncEnumerable<int> materialized = MaterializingAsyncEnumerable<int>.Wrap(ToAsyncEnumerable([1, 2, 3,]), cts.Token);
 		await foreach (int _ in materialized)
 		{
 		}
@@ -147,14 +147,14 @@ public class MaterializingAsyncEnumerableTests
 			items.Add(item);
 		}
 
-		await That(items).IsEqualTo([1, 2, 3])
+		await That(items).IsEqualTo([1, 2, 3,])
 			.Because("the end of the source was reached before the cancellation");
 	}
 
 	[Test]
 	public async Task WhenEnumeratedWhileEnumerating_ShouldYieldAllItemsToBoth()
 	{
-		IAsyncEnumerable<int> materialized = MaterializingAsyncEnumerable<int>.Wrap(ToAsyncEnumerable([1, 1, 2]), CancellationToken.None);
+		IAsyncEnumerable<int> materialized = MaterializingAsyncEnumerable<int>.Wrap(ToAsyncEnumerable([1, 1, 2,]), CancellationToken.None);
 		List<int> outer = [];
 		List<int> inner = [];
 
@@ -170,19 +170,19 @@ public class MaterializingAsyncEnumerableTests
 			}
 		}
 
-		await That(outer).IsEqualTo([1, 1, 2])
+		await That(outer).IsEqualTo([1, 1, 2,])
 			.Because("the outer enumeration continues after the items that the inner one read");
-		await That(inner).IsEqualTo([1, 1, 2]);
+		await That(inner).IsEqualTo([1, 1, 2,]);
 	}
 
 	[Test]
 	public async Task WhenIterating_ShouldReturnAllValues()
 	{
-		IAsyncEnumerable<int> enumerable = ToAsyncEnumerable([1, 2, 3]);
+		IAsyncEnumerable<int> enumerable = ToAsyncEnumerable([1, 2, 3,]);
 
 		IAsyncEnumerable<int> materialized = MaterializingAsyncEnumerable<int>.Wrap(enumerable, CancellationToken.None);
 
-		await That(materialized).IsEqualTo([1, 2, 3]);
+		await That(materialized).IsEqualTo([1, 2, 3,]);
 	}
 
 	[Test]
@@ -211,13 +211,22 @@ public class MaterializingAsyncEnumerableTests
 	[Test]
 	public async Task Wrap_Twice_ShouldUseSameInstance()
 	{
-		IAsyncEnumerable<int> enumerable = ToAsyncEnumerable([1, 2, 3]);
+		IAsyncEnumerable<int> enumerable = ToAsyncEnumerable([1, 2, 3,]);
 
 		IAsyncEnumerable<int> materialized1 = MaterializingAsyncEnumerable<int>.Wrap(enumerable, CancellationToken.None);
 		IAsyncEnumerable<int> materialized2 = MaterializingAsyncEnumerable<int>.Wrap(materialized1, CancellationToken.None);
 
 		await That(enumerable).IsNotSameAs(materialized1);
 		await That(materialized1).IsSameAs(materialized2);
+	}
+
+	private static async IAsyncEnumerable<T> ToAsyncEnumerable<T>(T[] items)
+	{
+		foreach (T item in items)
+		{
+			await Task.Yield();
+			yield return item;
+		}
 	}
 
 	private sealed class DisposeTrackingAsyncEnumerable(params int[] values) : IAsyncEnumerable<int>
@@ -270,15 +279,6 @@ public class MaterializingAsyncEnumerableTests
 
 				return default;
 			}
-		}
-	}
-
-	private static async IAsyncEnumerable<T> ToAsyncEnumerable<T>(T[] items)
-	{
-		foreach (T item in items)
-		{
-			await Task.Yield();
-			yield return item;
 		}
 	}
 }

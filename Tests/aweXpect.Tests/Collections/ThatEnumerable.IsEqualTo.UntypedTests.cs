@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using aweXpect.Core;
 using aweXpect.Results;
 
@@ -46,7 +45,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task TypedArray_ShouldBindToTheTypedOverload()
 			{
-				IEnumerable subject = new ArrayList { 1, 2, };
+				IEnumerable subject = new ArrayList
+				{
+					1,
+					2,
+				};
 				int[] expected = [1, 2,];
 
 				async Task Act()
@@ -60,8 +63,16 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task UntypedExpected_ShouldBindToTheUntypedOverload()
 			{
-				IEnumerable subject = new ArrayList { 1, 2, };
-				IEnumerable expected = new ArrayList { 1, 2, };
+				IEnumerable subject = new ArrayList
+				{
+					1,
+					2,
+				};
+				IEnumerable expected = new ArrayList
+				{
+					1,
+					2,
+				};
 
 				async Task Act()
 					=> await (ObjectCollectionMatchResult<IEnumerable?, IThat<IEnumerable?>, object?>)
@@ -74,7 +85,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenExpectedIsNull_ShouldFail()
 			{
-				IEnumerable subject = new ArrayList { 1, 2, };
+				IEnumerable subject = new ArrayList
+				{
+					1,
+					2,
+				};
 				IEnumerable? expected = null;
 
 				async Task Act()
@@ -107,7 +122,11 @@ public sealed partial class ThatEnumerable
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				IEnumerable? subject = null;
-				IEnumerable expected = new ArrayList { 1, 2, };
+				IEnumerable expected = new ArrayList
+				{
+					1,
+					2,
+				};
 
 				async Task Act()
 					=> await That(subject)!.IsEqualTo(expected);
@@ -123,8 +142,17 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WithDifferentLength_ShouldFail()
 			{
-				IEnumerable subject = new ArrayList { 1, 2, 3, };
-				IEnumerable expected = new ArrayList { 1, 2, };
+				IEnumerable subject = new ArrayList
+				{
+					1,
+					2,
+					3,
+				};
+				IEnumerable expected = new ArrayList
+				{
+					1,
+					2,
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
@@ -149,8 +177,18 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WithDifferentOrder_ShouldFail()
 			{
-				IEnumerable subject = new ArrayList { 1, 3, 2, };
-				IEnumerable expected = new ArrayList { 1, 2, 3, };
+				IEnumerable subject = new ArrayList
+				{
+					1,
+					3,
+					2,
+				};
+				IEnumerable expected = new ArrayList
+				{
+					1,
+					2,
+					3,
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
@@ -179,8 +217,18 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WithDifferentOrder_WhenInAnyOrder_ShouldSucceed()
 			{
-				IEnumerable subject = new ArrayList { 1, 3, 2, };
-				IEnumerable expected = new ArrayList { 1, 2, 3, };
+				IEnumerable subject = new ArrayList
+				{
+					1,
+					3,
+					2,
+				};
+				IEnumerable expected = new ArrayList
+				{
+					1,
+					2,
+					3,
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).InAnyOrder();
@@ -192,8 +240,17 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WithDuplicates_WhenIgnoringDuplicates_ShouldSucceed()
 			{
-				IEnumerable subject = new ArrayList { 1, 1, 2, };
-				IEnumerable expected = new ArrayList { 1, 2, };
+				IEnumerable subject = new ArrayList
+				{
+					1,
+					1,
+					2,
+				};
+				IEnumerable expected = new ArrayList
+				{
+					1,
+					2,
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).IgnoringDuplicates();
@@ -207,7 +264,12 @@ public sealed partial class ThatEnumerable
 			{
 				int enumerations = 0;
 				IEnumerable subject = LazyItems();
-				IEnumerable expected = new ArrayList { 1, 2, 3, };
+				IEnumerable expected = new ArrayList
+				{
+					1,
+					2,
+					3,
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
@@ -228,8 +290,24 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WithMultiDimensionalArrayWithDifferentContent_ShouldFail()
 			{
-				IEnumerable subject = new[,] { { 1, 2, }, { 3, 4, }, };
-				IEnumerable expected = new[,] { { 1, 2, }, { 3, 5, }, };
+				IEnumerable subject = new[,]
+				{
+					{
+						1, 2,
+					},
+					{
+						3, 4,
+					},
+				};
+				IEnumerable expected = new[,]
+				{
+					{
+						1, 2,
+					},
+					{
+						3, 5,
+					},
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
@@ -256,8 +334,27 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WithMultiDimensionalArrayWithDifferentShape_ShouldSucceed()
 			{
-				IEnumerable subject = new[,] { { 1, 2, 3, }, { 4, 5, 6, }, };
-				IEnumerable expected = new[,] { { 1, 2, }, { 3, 4, }, { 5, 6, }, };
+				IEnumerable subject = new[,]
+				{
+					{
+						1, 2, 3,
+					},
+					{
+						4, 5, 6,
+					},
+				};
+				IEnumerable expected = new[,]
+				{
+					{
+						1, 2,
+					},
+					{
+						3, 4,
+					},
+					{
+						5, 6,
+					},
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
@@ -270,8 +367,24 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WithMultiDimensionalArrayWithSameContent_ShouldSucceed()
 			{
-				IEnumerable subject = new[,] { { 1, 2, }, { 3, 4, }, };
-				IEnumerable expected = new[,] { { 1, 2, }, { 3, 4, }, };
+				IEnumerable subject = new[,]
+				{
+					{
+						1, 2,
+					},
+					{
+						3, 4,
+					},
+				};
+				IEnumerable expected = new[,]
+				{
+					{
+						1, 2,
+					},
+					{
+						3, 4,
+					},
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
@@ -283,7 +396,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WithObjectArrayWithSameItems_ShouldSucceed()
 			{
-				IEnumerable subject = new ArrayList { 1, 2, };
+				IEnumerable subject = new ArrayList
+				{
+					1,
+					2,
+				};
 				object[] expected = [1, 2,];
 
 				async Task Act()
@@ -295,8 +412,16 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WithSameItems_ShouldSucceed()
 			{
-				IEnumerable subject = new ArrayList { 1, 2, };
-				IEnumerable expected = new ArrayList { 1, 2, };
+				IEnumerable subject = new ArrayList
+				{
+					1,
+					2,
+				};
+				IEnumerable expected = new ArrayList
+				{
+					1,
+					2,
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);

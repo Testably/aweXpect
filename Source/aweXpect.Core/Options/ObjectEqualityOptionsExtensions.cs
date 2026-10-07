@@ -55,35 +55,35 @@ public static class ObjectEqualityOptionsExtensions
 	public static TSelf Within<TSelf, TElement>(this IObjectEqualityWithToleranceResult<TSelf, TElement, byte> result,
 		byte tolerance)
 		where TSelf : IObjectEqualityWithToleranceResult<TSelf, TElement, byte>
-		=> Within<TSelf, TElement, byte>(result, tolerance);
+		=> result.Within<TSelf, TElement, byte>(tolerance);
 
 	/// <inheritdoc cref="Within{TSelf, TElement}(IObjectEqualityWithToleranceResult{TSelf, TElement, byte}, byte)" />
 	public static TSelf Within<TSelf, TElement>(this IObjectEqualityWithToleranceResult<TSelf, TElement, sbyte> result,
 		sbyte tolerance)
 		where TSelf : IObjectEqualityWithToleranceResult<TSelf, TElement, sbyte>
-		=> Within<TSelf, TElement, sbyte>(result, tolerance);
+		=> result.Within<TSelf, TElement, sbyte>(tolerance);
 
 	/// <inheritdoc cref="Within{TSelf, TElement}(IObjectEqualityWithToleranceResult{TSelf, TElement, byte}, byte)" />
 	public static TSelf Within<TSelf, TElement>(this IObjectEqualityWithToleranceResult<TSelf, TElement, short> result,
 		short tolerance)
 		where TSelf : IObjectEqualityWithToleranceResult<TSelf, TElement, short>
-		=> Within<TSelf, TElement, short>(result, tolerance);
+		=> result.Within<TSelf, TElement, short>(tolerance);
 
 	/// <inheritdoc cref="Within{TSelf, TElement}(IObjectEqualityWithToleranceResult{TSelf, TElement, byte}, byte)" />
 	public static TSelf Within<TSelf, TElement>(this IObjectEqualityWithToleranceResult<TSelf, TElement, ushort> result,
 		ushort tolerance)
 		where TSelf : IObjectEqualityWithToleranceResult<TSelf, TElement, ushort>
-		=> Within<TSelf, TElement, ushort>(result, tolerance);
+		=> result.Within<TSelf, TElement, ushort>(tolerance);
 
 	/// <inheritdoc cref="Within{TSelf, TElement}(IObjectEqualityWithToleranceResult{TSelf, TElement, byte}, byte)" />
 	public static TSelf Within<TSelf, TElement>(this IObjectEqualityWithToleranceResult<TSelf, TElement, uint> result,
 		uint tolerance)
 		where TSelf : IObjectEqualityWithToleranceResult<TSelf, TElement, uint>
-		=> Within<TSelf, TElement, uint>(result, tolerance);
+		=> result.Within<TSelf, TElement, uint>(tolerance);
 
 	/// <inheritdoc cref="Within{TSelf, TElement}(IObjectEqualityWithToleranceResult{TSelf, TElement, byte}, byte)" />
 	public static TSelf Within<TSelf, TElement>(this IObjectEqualityWithToleranceResult<TSelf, TElement, ulong> result,
 		ulong tolerance)
 		where TSelf : IObjectEqualityWithToleranceResult<TSelf, TElement, ulong>
-		=> Within<TSelf, TElement, ulong>(result, tolerance);
+		=> result.Within<TSelf, TElement, ulong>(tolerance);
 }

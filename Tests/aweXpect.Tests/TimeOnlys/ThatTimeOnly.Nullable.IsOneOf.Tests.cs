@@ -169,7 +169,7 @@ public sealed partial class ThatTimeOnly
 				public async Task WhenSubjectIsNullAndExpectedCanOnlyBeEnumeratedOnce_ShouldSucceed()
 				{
 					TimeOnly? subject = null;
-					IEnumerable<TimeOnly?> expected = Factory.GetSingleUseEnumerable<TimeOnly?>(CurrentTime(), null);
+					IEnumerable<TimeOnly?> expected = Factory.GetSingleUseEnumerable(CurrentTime(), null);
 
 					async Task Act()
 						=> await That(subject).IsOneOf(expected);

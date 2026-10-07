@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Numerics;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using aweXpect.Equivalency;
 
@@ -53,13 +57,13 @@ public sealed class ComparisonTypeParityTests
 		[
 			typeof(int), typeof(nint), typeof(DayOfWeek), typeof(string), typeof(decimal), typeof(DateTime),
 			typeof(DateTimeOffset), typeof(TimeSpan), typeof(Guid), typeof(DateOnly), typeof(TimeOnly), typeof(Half),
-			typeof(System.Runtime.InteropServices.NFloat), typeof(Int128), typeof(UInt128), typeof(BigInteger),
+			typeof(NFloat), typeof(Int128), typeof(UInt128), typeof(BigInteger),
 			typeof(Complex), typeof(Type), typeof(Assembly), typeof(Module), typeof(Action), typeof(Uri),
-			typeof(System.Globalization.CultureInfo), typeof(IPAddress), typeof(System.Text.Encoding), typeof(Task),
-			typeof(Task<int>), typeof(ValueTask), typeof(ValueTask<int>), typeof(System.Text.StringBuilder),
-			typeof(Regex), typeof(JsonElement), typeof(System.Text.Json.Nodes.JsonNode),
-			typeof(System.Text.Json.Nodes.JsonObject), typeof(System.Text.Json.Nodes.JsonArray),
-			typeof(System.Text.UTF8Encoding), typeof(Corpus.Level), typeof(Corpus.Handler), typeof(Corpus.DerivedType),
+			typeof(CultureInfo), typeof(IPAddress), typeof(Encoding), typeof(Task),
+			typeof(Task<int>), typeof(ValueTask), typeof(ValueTask<int>), typeof(StringBuilder),
+			typeof(Regex), typeof(JsonElement), typeof(JsonNode),
+			typeof(JsonObject), typeof(JsonArray),
+			typeof(UTF8Encoding), typeof(Corpus.Level), typeof(Corpus.Handler), typeof(Corpus.DerivedType),
 			typeof(Corpus.DerivedAssembly), typeof(Corpus.DerivedModule), typeof(Corpus.DerivedUri),
 			typeof(Corpus.DerivedCulture), typeof(Corpus.DerivedAddress), typeof(Corpus.DerivedEncoding),
 			typeof(Corpus.DerivedRegex), typeof(Corpus.DerivedTask), typeof(Corpus.DerivedTask<int>),
@@ -167,17 +171,10 @@ public sealed class ComparisonTypeParityTests
 	private static GeneratorRunner.GeneratorResult Run(IEnumerable<Type> types)
 		=> GeneratorRunner.Run(
 		[
-			Corpus(),
+			GeneratorRunner.CorpusSource(),
 			string.Join(Environment.NewLine, types.Select(type
 				=> $"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof({Name(type)}))]")),
 		]);
-
-	private static string Corpus()
-	{
-		using Stream stream = typeof(ComparisonTypeParityTests).Assembly.GetManifestResourceStream("Corpus.cs")!;
-		using StreamReader reader = new(stream);
-		return reader.ReadToEnd();
-	}
 
 	/// <summary>
 	///     The <paramref name="type" /> as source code, which for a type that is not generic is also the key of its

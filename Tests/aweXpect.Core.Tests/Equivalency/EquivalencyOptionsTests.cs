@@ -195,13 +195,10 @@ public sealed class EquivalencyOptionsTests
 	[Arguments(-1)]
 	public async Task WhenMaxRecursionDepthIsNotPositive_ShouldThrowArgumentOutOfRangeException(int maxRecursionDepth)
 	{
-		void Act()
+		void Act() => _ = new EquivalencyOptions
 		{
-			_ = new EquivalencyOptions
-			{
-				MaxRecursionDepth = maxRecursionDepth,
-			};
-		}
+			MaxRecursionDepth = maxRecursionDepth,
+		};
 
 		await That(Act).Throws<ArgumentOutOfRangeException>()
 			.WithMessage("*The maximum recursion depth must be greater than zero*").AsWildcard()

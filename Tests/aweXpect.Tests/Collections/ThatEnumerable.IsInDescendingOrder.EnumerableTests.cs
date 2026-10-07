@@ -51,7 +51,8 @@ public sealed partial class ThatEnumerable
 			{
 				IEnumerable subject = new ArrayList
 				{
-					"B", "a",
+					"B",
+					"a",
 				};
 
 				async Task Act()

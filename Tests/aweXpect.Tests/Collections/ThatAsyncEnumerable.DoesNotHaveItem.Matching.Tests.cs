@@ -66,7 +66,7 @@ public sealed partial class ThatAsyncEnumerable
 				public async Task WhenTypeIsSupertype_ShouldSucceed()
 				{
 					IAsyncEnumerable<MyBaseClass> subject =
-						ToAsyncEnumerable<MyBaseClass>(new MyBaseClass(0), new MyBaseClass(1));
+						ToAsyncEnumerable<MyBaseClass>(new MyBaseClass(), new MyBaseClass(1));
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().Matching<MyClass>().AtIndex(1);
@@ -78,7 +78,7 @@ public sealed partial class ThatAsyncEnumerable
 				public async Task WhenTypeMatchesAtGivenIndex_ShouldFail()
 				{
 					IAsyncEnumerable<MyBaseClass> subject =
-						ToAsyncEnumerable<MyBaseClass>(new MyBaseClass(0), new MyClass(1));
+						ToAsyncEnumerable(new MyBaseClass(), new MyClass(1));
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().Matching<MyClass>().AtIndex(1);
@@ -113,7 +113,7 @@ public sealed partial class ThatAsyncEnumerable
 				public async Task WhenItemOfTypeMatchesAtGivenIndex_ShouldFail()
 				{
 					IAsyncEnumerable<MyBaseClass> subject =
-						ToAsyncEnumerable<MyBaseClass>(new MyBaseClass(0), new MyClass(1));
+						ToAsyncEnumerable(new MyBaseClass(), new MyClass(1));
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().Matching<MyClass>(x => x.Value == 1).AtIndex(1);
@@ -145,7 +145,7 @@ public sealed partial class ThatAsyncEnumerable
 				public async Task WhenPredicateDoesNotMatch_ShouldSucceed()
 				{
 					IAsyncEnumerable<MyBaseClass> subject =
-						ToAsyncEnumerable<MyBaseClass>(new MyBaseClass(0), new MyClass(1));
+						ToAsyncEnumerable(new MyBaseClass(), new MyClass(1));
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().Matching<MyClass>(x => x.Value == 2).AtIndex(1);

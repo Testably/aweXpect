@@ -169,7 +169,13 @@ public sealed partial class ThatEnumerable
 			public async Task WhenExpectedIsANonGenericCollectionContainingTheSubject_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable([1, 2,]);
-				ArrayList expected = new() { 0, 1, 2, 3, };
+				ArrayList expected = new()
+				{
+					0,
+					1,
+					2,
+					3,
+				};
 
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected);
@@ -181,7 +187,11 @@ public sealed partial class ThatEnumerable
 			public async Task WhenExpectedIsANonGenericCollectionEqualToTheSubjectAndProperly_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2,]);
-				ArrayList expected = new() { 1, 2, };
+				ArrayList expected = new()
+				{
+					1,
+					2,
+				};
 
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).Properly();
@@ -207,7 +217,12 @@ public sealed partial class ThatEnumerable
 			public async Task WhenExpectedIsANonGenericCollectionInAnyOrder_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable([1, 2,]);
-				ArrayList expected = new() { 3, 2, 1, };
+				ArrayList expected = new()
+				{
+					3,
+					2,
+					1,
+				};
 
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected).InAnyOrder();
@@ -219,7 +234,11 @@ public sealed partial class ThatEnumerable
 			public async Task WhenExpectedIsANonGenericCollectionNotContainingTheSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2,]);
-				ArrayList expected = new() { 1, 3, };
+				ArrayList expected = new()
+				{
+					1,
+					3,
+				};
 
 				async Task Act()
 					=> await That(subject).IsContainedIn(expected);

@@ -125,7 +125,7 @@ public static class ConstraintResultExtensions
 			return;
 		}
 
-		string rightResult = GetResultText(right, indentation);
+		string rightResult = right.GetResultText(indentation);
 		stringBuilder.Append(rightResult.StartsWith(subject + " ", StringComparison.Ordinal)
 			? rightResult.Substring(subject.Length + 1)
 			: rightResult);

@@ -50,10 +50,6 @@ public static partial class ThatString
 		: ConstraintResult.WithValue<string?>(it, grammars),
 			IAsyncConstraint<string?>
 	{
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expectedValues, Grammars.IsNegated());
-
 		/// <remarks>
 		///     A match type that inspects the content of the subject, e.g. a prefix or a pattern, cannot answer for a
 		///     <see langword="null" /> subject, because it has no content.
@@ -75,6 +71,10 @@ public static partial class ThatString
 			Outcome = actual is null && options.InspectsSubject ? Outcome.FailureBothWays : Outcome.Failure;
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expectedValues, Grammars.IsNegated());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -22,14 +21,13 @@ public static partial class ThatEnumerable
 		this IThat<IEnumerable<TItem>?> subject)
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionCountResult<AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>>(
-			(quantifier, isNegated)
-				=> new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
-					expectationBuilder.AddConstraint((Quantifier: quantifier, IsNegated: isNegated),
-						static (state, it, grammars)
-							=> new CollectionCountConstraint<IEnumerable<TItem>?, TItem>(it, grammars, state.Quantifier)
-								.InvertIf(state.IsNegated)),
-					subject));
+		return new CollectionCountResult<AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>>((quantifier, isNegated)
+			=> new AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>(
+				expectationBuilder.AddConstraint((Quantifier: quantifier, IsNegated: isNegated),
+					static (state, it, grammars)
+						=> new CollectionCountConstraint<IEnumerable<TItem>?, TItem>(it, grammars, state.Quantifier)
+							.InvertIf(state.IsNegated)),
+				subject));
 	}
 
 	/// <summary>
@@ -56,14 +54,13 @@ public static partial class ThatEnumerable
 		this IThat<TItem[]?> subject)
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionCountResult<AndOrResult<TItem[], IThat<TItem[]?>>>(
-			(quantifier, isNegated)
-				=> new AndOrResult<TItem[], IThat<TItem[]?>>(
-					expectationBuilder.AddConstraint((Quantifier: quantifier, IsNegated: isNegated),
-						static (state, it, grammars)
-							=> new CollectionCountConstraint<IEnumerable<TItem>?, TItem>(it, grammars, state.Quantifier)
-								.InvertIf(state.IsNegated)),
-					subject));
+		return new CollectionCountResult<AndOrResult<TItem[], IThat<TItem[]?>>>((quantifier, isNegated)
+			=> new AndOrResult<TItem[], IThat<TItem[]?>>(
+				expectationBuilder.AddConstraint((Quantifier: quantifier, IsNegated: isNegated),
+					static (state, it, grammars)
+						=> new CollectionCountConstraint<IEnumerable<TItem>?, TItem>(it, grammars, state.Quantifier)
+							.InvertIf(state.IsNegated)),
+				subject));
 	}
 
 	/// <summary>
@@ -91,14 +88,13 @@ public static partial class ThatEnumerable
 		this IThat<IEnumerable?> subject)
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionCountResult<AndOrResult<IEnumerable, IThat<IEnumerable?>>>(
-			(quantifier, isNegated)
-				=> new AndOrResult<IEnumerable, IThat<IEnumerable?>>(
-					expectationBuilder.AddConstraint((Quantifier: quantifier, IsNegated: isNegated),
-						static (state, it, grammars)
-							=> new CollectionCountConstraint<IEnumerable, object?>(it, grammars,
-								state.Quantifier).InvertIf(state.IsNegated)),
-					subject));
+		return new CollectionCountResult<AndOrResult<IEnumerable, IThat<IEnumerable?>>>((quantifier, isNegated)
+			=> new AndOrResult<IEnumerable, IThat<IEnumerable?>>(
+				expectationBuilder.AddConstraint((Quantifier: quantifier, IsNegated: isNegated),
+					static (state, it, grammars)
+						=> new CollectionCountConstraint<IEnumerable, object?>(it, grammars,
+							state.Quantifier).InvertIf(state.IsNegated)),
+				subject));
 	}
 
 	/// <summary>
@@ -126,14 +122,13 @@ public static partial class ThatEnumerable
 			this IThat<ImmutableArray<TItem>> subject)
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
-		return new CollectionCountResult<AndOrResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>>(
-			(quantifier, isNegated)
-				=> new AndOrResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>(
-					expectationBuilder.AddConstraint((Quantifier: quantifier, IsNegated: isNegated),
-						static (state, it, grammars)
-							=> new CollectionCountConstraint<ImmutableArray<TItem>, TItem>(it,
-								grammars, state.Quantifier).InvertIf(state.IsNegated)),
-					subject));
+		return new CollectionCountResult<AndOrResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>>((quantifier, isNegated)
+			=> new AndOrResult<ImmutableArray<TItem>, IThat<ImmutableArray<TItem>>>(
+				expectationBuilder.AddConstraint((Quantifier: quantifier, IsNegated: isNegated),
+					static (state, it, grammars)
+						=> new CollectionCountConstraint<ImmutableArray<TItem>, TItem>(it,
+							grammars, state.Quantifier).InvertIf(state.IsNegated)),
+				subject));
 	}
 #endif
 

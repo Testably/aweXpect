@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
+using aweXpect.Core;
 #if NET8_0_OR_GREATER
 using System.Collections.Frozen;
 using System.Collections.Immutable;
 #else
 using System.Reflection;
 #endif
-using aweXpect.Core;
 
 namespace aweXpect.Helpers;
 

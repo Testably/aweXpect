@@ -14,8 +14,8 @@ public static class MyRepeatedCheckExtensions
 	{
 		RepeatedCheckOptions options = new();
 		return new RepeatedCheckResult<Probe, IThat<Probe>>(((IExpectThat<Probe>)subject).ExpectationBuilder
-				.AddConstraint((it, grammars)
-					=> new ReturnsPositiveConstraint(it, grammars, options).Invert()),
+			.AddConstraint((it, grammars)
+				=> new ReturnsPositiveConstraint(it, grammars, options).Invert()),
 			subject,
 			options);
 	}
@@ -24,8 +24,8 @@ public static class MyRepeatedCheckExtensions
 	{
 		RepeatedCheckOptions options = new();
 		return new RepeatedCheckResult<Probe, IThat<Probe>>(((IExpectThat<Probe>)subject).ExpectationBuilder
-				.AddConstraint((it, grammars)
-					=> new ReturnsPositiveConstraint(it, grammars, options)),
+			.AddConstraint((it, grammars)
+				=> new ReturnsPositiveConstraint(it, grammars, options)),
 			subject,
 			options);
 	}
@@ -52,7 +52,7 @@ public static class MyRepeatedCheckExtensions
 			{
 				_returned = UserCode.Invoke(actual.Read, "the probe");
 				Outcome = _returned > 0 ? Outcome.Success : Outcome.Failure;
-				return new ValueTask<bool>(_returned > 0 != IsNegated);
+				return new ValueTask<bool>((_returned > 0) != IsNegated);
 			}, context);
 			if (outcome == Outcome.Undecided)
 			{

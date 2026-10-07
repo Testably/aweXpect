@@ -28,7 +28,7 @@ public static partial class ThatNullableEnum
 		where TEnum : struct, Enum
 	{
 		IEnumerable<TEnum?> expectedValues = expected.ToNonEmptyValues(negated);
-		return new(subject.Get().ExpectationBuilder.AddConstraint(
+		return new AndOrResult<TEnum?, IThat<TEnum?>>(subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Negated: negated),
 				static (state, it, grammars) =>
 					new IsOneOfConstraint<TEnum>(it, grammars, state.ExpectedValues, state.ExpectedExpression)
@@ -57,10 +57,6 @@ public static partial class ThatNullableEnum
 			IValueConstraint<TEnum?>
 		where TEnum : struct, Enum
 	{
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
-
 		public ConstraintResult IsMetBy(TEnum? actual)
 		{
 			Actual = actual;
@@ -69,6 +65,10 @@ public static partial class ThatNullableEnum
 				: Outcome.Failure;
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

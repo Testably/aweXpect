@@ -397,7 +397,7 @@ public static partial class ThatSignaler
 			if (Actual?.Count > 0)
 			{
 				stringBuilder.Append(" in ");
-				ValueFormatters.Format(Formatter, stringBuilder, Actual.Parameters, FormattingOptions.MultipleLines);
+				Formatter.Format(stringBuilder, Actual.Parameters, FormattingOptions.MultipleLines);
 			}
 
 			AppendWaitedTime(stringBuilder, _waitedTime, Actual?.IsSuccess);

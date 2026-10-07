@@ -85,7 +85,7 @@ public static partial class EquivalencyComparison
 
 		string separator = $"{Environment.NewLine}and{Environment.NewLine}";
 		string failures = failureBuilder.ToString(start, failureBuilder.Length - start);
-		if (failures.Split([separator], StringSplitOptions.None).Any(entry => entry.TrimStart().Contains('\n', StringComparison.Ordinal)))
+		if (failures.Split([separator,], StringSplitOptions.None).Any(entry => entry.TrimStart().Contains('\n', StringComparison.Ordinal)))
 		{
 			return;
 		}
@@ -112,8 +112,6 @@ public static partial class EquivalencyComparison
 		/// </remarks>
 		private Dictionary<ComparedPair, int>? _comparedPairs;
 
-		private ConcurrentDictionary<Type, EquivalencyTypeOptions?>? _registeredOptions;
-
 		/// <summary>
 		///     The number of nested comparisons that were started so far.
 		/// </summary>
@@ -135,11 +133,17 @@ public static partial class EquivalencyComparison
 		/// </remarks>
 		private Dictionary<EquivalentPair, int>? _equivalentPairs;
 
+		private EquivalencyTypeOptions? _lastInheritedOptions;
+
+		private EquivalencyTypeOptions? _lastParentOptions;
+
 		/// <summary>
 		///     The <see cref="Depth" /> of the outermost pair on the current path that the result of the current pair
 		///     was derived from, or <c>0</c> when it was derived from the path itself.
 		/// </summary>
 		private int _outermostDependency = int.MaxValue;
+
+		private ConcurrentDictionary<Type, EquivalencyTypeOptions?>? _registeredOptions;
 
 		/// <summary>
 		///     The number of nested comparisons on the current path.
@@ -148,6 +152,46 @@ public static partial class EquivalencyComparison
 		///     Counted per path and not globally, so that two members on the same level are both at the same depth.
 		/// </remarks>
 		public int Depth { get; private set; }
+
+		/// <summary>
+		///     The number of differences that were appended to a failure message so far.
+		/// </summary>
+		/// <remarks>
+		///     Counted globally, so that a caller which is only interested in one comparison reads it before and after
+		///     that comparison and restores it afterwards when the differences were written into a throwaway builder.
+		/// </remarks>
+		public int DifferenceCount { get; set; }
+
+		/// <summary>
+		///     Whether the comparison only decides whether the objects are equivalent, without writing or counting their
+		///     differences.
+		/// </summary>
+		/// <remarks>
+		///     Set for a comparison whose differences nobody reads, e.g. of the items of a collection, and while elements
+		///     whose order is ignored are paired, as most of the pairs that are tried are not equivalent and never
+		///     reported, so formatting their values would be wasted.
+		/// </remarks>
+		public bool IsDecidingOnly { get; set; }
+
+		/// <summary>
+		///     Whether the comparison only counts the differences of the objects, without writing them.
+		/// </summary>
+		/// <remarks>
+		///     Set while the leftovers of elements whose order is ignored are ranked by their number of differences, as
+		///     only the pairs that are reported in the end are written.
+		/// </remarks>
+		public bool IsCountingOnly { get; set; }
+
+		/// <summary>
+		///     The options registered for a type, or <see langword="null" /> when it has no registration.
+		/// </summary>
+		/// <remarks>
+		///     Cached per <see cref="EquivalencyOptions" /> instance instead of per comparison, because resolving a
+		///     registration invokes its callback, every compared pair looks up both of its types, and the items of a
+		///     collection are compared one by one with the same options. Only read when the options have registrations.
+		/// </remarks>
+		public ConcurrentDictionary<Type, EquivalencyTypeOptions?> RegisteredOptions
+			=> _registeredOptions ??= RegisteredOptionsCache.GetOrCreateValue(equivalencyOptions);
 
 		/// <summary>
 		///     Starts the nested comparison of the <paramref name="pair" />, unless it is equivalent without comparing
@@ -206,49 +250,6 @@ public static partial class EquivalencyComparison
 		}
 
 		/// <summary>
-		///     The number of differences that were appended to a failure message so far.
-		/// </summary>
-		/// <remarks>
-		///     Counted globally, so that a caller which is only interested in one comparison reads it before and after
-		///     that comparison and restores it afterwards when the differences were written into a throwaway builder.
-		/// </remarks>
-		public int DifferenceCount { get; set; }
-
-		/// <summary>
-		///     Whether the comparison only decides whether the objects are equivalent, without writing or counting their
-		///     differences.
-		/// </summary>
-		/// <remarks>
-		///     Set for a comparison whose differences nobody reads, e.g. of the items of a collection, and while elements
-		///     whose order is ignored are paired, as most of the pairs that are tried are not equivalent and never
-		///     reported, so formatting their values would be wasted.
-		/// </remarks>
-		public bool IsDecidingOnly { get; set; }
-
-		/// <summary>
-		///     Whether the comparison only counts the differences of the objects, without writing them.
-		/// </summary>
-		/// <remarks>
-		///     Set while the leftovers of elements whose order is ignored are ranked by their number of differences, as
-		///     only the pairs that are reported in the end are written.
-		/// </remarks>
-		public bool IsCountingOnly { get; set; }
-
-		/// <summary>
-		///     The options registered for a type, or <see langword="null" /> when it has no registration.
-		/// </summary>
-		/// <remarks>
-		///     Cached per <see cref="EquivalencyOptions" /> instance instead of per comparison, because resolving a
-		///     registration invokes its callback, every compared pair looks up both of its types, and the items of a
-		///     collection are compared one by one with the same options. Only read when the options have registrations.
-		/// </remarks>
-		public ConcurrentDictionary<Type, EquivalencyTypeOptions?> RegisteredOptions
-			=> _registeredOptions ??= RegisteredOptionsCache.GetOrCreateValue(equivalencyOptions);
-
-		private EquivalencyTypeOptions? _lastParentOptions;
-		private EquivalencyTypeOptions? _lastInheritedOptions;
-
-		/// <summary>
 		///     Returns the options that a type without a registration inherits from the
 		///     <paramref name="parentOptions" />.
 		/// </summary>
@@ -289,7 +290,10 @@ public static partial class EquivalencyComparison
 			_index = index;
 		}
 
-		public static implicit operator MemberPath(string path) => new(path, null, -1);
+		public static implicit operator MemberPath(string path)
+		{
+			return new MemberPath(path, null, -1);
+		}
 
 		/// <summary>
 		///     The path of the member <paramref name="name" /> of the value at the <paramref name="parent" /> path.

@@ -95,10 +95,10 @@ public sealed partial class ThatSignaler
 					             Expected that signaler
 					             has recorded the callback at least once within 0:30 with parameters of which all satisfy x => x < 1,
 					             but none of 1 did
-					             
+
 					             Not matching items:
 					             [1]
-					             
+
 					             Collection:
 					             [1]
 					             """);

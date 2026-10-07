@@ -35,14 +35,14 @@ public abstract partial class ConstraintResult
 	public abstract class WithEqualToValue<T>(string it, ExpectationGrammars grammars, bool isExpectedNull)
 		: WithValue<T>(it, grammars)
 	{
+		/// <inheritdoc />
+		private protected override bool RendersNullSubject => true;
+
 		/// <remarks>
 		///     The table does not depend on the comparison of the caller, which could consider <see langword="null" />
 		///     equal to another value.
 		/// </remarks>
 		private protected override Outcome? GetNullSubjectOutcome()
 			=> IsNegated == isExpectedNull ? Outcome.Failure : null;
-
-		/// <inheritdoc />
-		private protected override bool RendersNullSubject => true;
 	}
 }

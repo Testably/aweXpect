@@ -334,9 +334,9 @@ public class ExpectationBuilderTests
 
 		sut.ForMember(MemberAccessor<string, string?>.FromFunc(_ => null, "items "))
 			.AddExpectations(inner => inner
-				.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
-				.AddExpectations(length => length.AddConstraint((_, _)
-					=> new DummyConstraint<int>(v => v == 3, "equal to 3"))),
+					.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+					.AddExpectations(length => length.AddConstraint((_, _)
+						=> new DummyConstraint<int>(v => v == 3, "equal to 3"))),
 				g => g | ExpectationGrammars.Plural);
 
 		ConstraintResult constraintResult = await sut.IsMetBy("bar", null!, CancellationToken.None);
@@ -353,7 +353,7 @@ public class ExpectationBuilderTests
 			.AddExpectations(length => length.AddConstraint((_, _)
 				=> new DummyConstraint<int>(v => v == 3, "equal to 3")));
 
-		ConstraintResult constraintResult = await sut.IsMetBy(null!, null!,CancellationToken.None);
+		ConstraintResult constraintResult = await sut.IsMetBy(null!, null!, CancellationToken.None);
 
 		await That(constraintResult.GetResultText()).IsEqualTo("it was <null>");
 	}
@@ -540,7 +540,7 @@ public class ExpectationBuilderTests
 		ManualExpectationBuilder<string> sut = new();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s.Length == 0, "is empty"));
 		sut.Or();
-		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s is ['f', ..], "starts with f"));
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s is ['f', ..,], "starts with f"));
 		sut.And();
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
 		sut.ForWhich<string, int>(s => s.Length, " whose length ");
@@ -730,8 +730,8 @@ public class ExpectationBuilderTests
 		ExpectationGrammars usedExpectationGrammars = ExpectationGrammars.None;
 		sut.AddConstraint((_, _) => new DummyConstraint<string>(s => s == "foo", "is foo"));
 		sut.ForWhich<string, int>(s => s.Length, " whose length ",
-			subjectName: "the length",
-			expectationGrammars: g => g | ExpectationGrammars.Nested);
+			"the length",
+			g => g | ExpectationGrammars.Nested);
 		sut.AddConstraint((it, g) =>
 		{
 			usedIt = it;
@@ -952,7 +952,7 @@ public class ExpectationBuilderTests
 	public async Task WithTimeout_WhenInfinite_AndAShorterTimeoutWasSet_ShouldKeepTheShorterTimeout()
 	{
 		async Task Act()
-			=> await ThatAwaiting(1).WithTimeout(50.Milliseconds()).WithTimeout(System.Threading.Timeout.InfiniteTimeSpan);
+			=> await ThatAwaiting(1).WithTimeout(50.Milliseconds()).WithTimeout(Timeout.InfiniteTimeSpan);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -971,7 +971,7 @@ public class ExpectationBuilderTests
 		cts.CancelAfter(50.Milliseconds());
 
 		async Task Act()
-			=> await ThatAwaiting(1).WithTimeout(System.Threading.Timeout.InfiniteTimeSpan).WithCancellation(cts.Token);
+			=> await ThatAwaiting(1).WithTimeout(Timeout.InfiniteTimeSpan).WithCancellation(cts.Token);
 
 		await That(Act).Throws<InconclusiveTestException>()
 			.WithMessage("""

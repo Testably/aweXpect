@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using aweXpect.Core;
+using aweXpect.Results;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
 #endif
-using aweXpect.Core;
-using aweXpect.Results;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -341,7 +341,7 @@ public sealed partial class ThatEnumerable
 
 				ObjectProperCollectionMatchWithToleranceResult<IEnumerable<int>, IThat<IEnumerable<int>?>, int, int>
 					expectation =
-					That(subject).Contains(GetExpected());
+						That(subject).Contains(GetExpected());
 				int readItemsWhenBuilt = readItems;
 				await expectation;
 

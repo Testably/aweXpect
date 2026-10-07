@@ -33,7 +33,7 @@ public sealed partial class ThatEnumerable
 				{
 					IEnumerable subject = new object[]
 					{
-						new MyBaseClass(0), new MyClass(1),
+						new MyBaseClass(), new MyClass(1),
 					};
 
 					async Task Act()
@@ -47,7 +47,7 @@ public sealed partial class ThatEnumerable
 				{
 					IEnumerable subject = new object[]
 					{
-						new MyBaseClass(0), new MyClass(1),
+						new MyBaseClass(), new MyClass(1),
 					};
 
 					async Task Act()

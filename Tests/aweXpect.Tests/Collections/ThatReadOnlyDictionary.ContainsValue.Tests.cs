@@ -38,6 +38,7 @@ public sealed partial class ThatReadOnlyDictionary
 
 				await That(Act).DoesNotThrow();
 			}
+
 			[Test]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
@@ -90,7 +91,12 @@ public sealed partial class ThatReadOnlyDictionary
 			[Test]
 			public async Task WhenTheValueLiesWithinTheTolerance_ShouldSucceed()
 			{
-				ReadOnlyDictionary<string, double> subject = new(new Dictionary<string, double> { { "a", 1.05 }, });
+				ReadOnlyDictionary<string, double> subject = new(new Dictionary<string, double>
+				{
+					{
+						"a", 1.05
+					},
+				});
 
 				ReadOnlyDictionary<string, double> result = await That(subject).ContainsValue(1.0).Within(0.1);
 
@@ -105,7 +111,12 @@ public sealed partial class ThatReadOnlyDictionary
 			public async Task ForAReadOnlyDictionaryOfStrings_ShouldKeepTheSubjectType()
 			{
 				ReadOnlyDictionary<string, string?> subject =
-					new(new Dictionary<string, string?> { { "a", "foo" }, });
+					new(new Dictionary<string, string?>
+					{
+						{
+							"a", "foo"
+						},
+					});
 
 				ReadOnlyDictionary<string, string?> result = await That(subject).ContainsValue("FOO").IgnoringCase();
 
@@ -120,7 +131,11 @@ public sealed partial class ThatReadOnlyDictionary
 			{
 				InvalidOperationException exception = new("enumeration failed");
 				IReadOnlyDictionary<string, int> subject = new ReadOnlyOnlyDictionary<string, int>(
-					new ThrowingDictionary<string, int>(exception, ThrowingMembers.Enumeration) { ["a"] = 1, ["b"] = 2, });
+					new ThrowingDictionary<string, int>(exception, ThrowingMembers.Enumeration)
+					{
+						["a"] = 1,
+						["b"] = 2,
+					});
 
 				async Task Act()
 					=> await That(subject).ContainsValue(1);

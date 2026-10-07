@@ -15,46 +15,46 @@ public sealed class FrameworkGeneratorTests
 	private static readonly Dictionary<string, MetadataReference> Frameworks = new()
 	{
 		["MSTest.TestFramework"] = GeneratorRunner.CompileToReference("MSTest.TestFramework", """
-			namespace Microsoft.VisualStudio.TestTools.UnitTesting
-			{
-				public class AssertFailedException : System.Exception
-				{
-					public AssertFailedException(string message) : base(message) { }
-					public AssertFailedException(string message, System.Exception inner) : base(message, inner) { }
-				}
-				public class AssertInconclusiveException(string message) : System.Exception(message);
-			}
-			"""),
+		                                                                                      namespace Microsoft.VisualStudio.TestTools.UnitTesting
+		                                                                                      {
+		                                                                                      	public class AssertFailedException : System.Exception
+		                                                                                      	{
+		                                                                                      		public AssertFailedException(string message) : base(message) { }
+		                                                                                      		public AssertFailedException(string message, System.Exception inner) : base(message, inner) { }
+		                                                                                      	}
+		                                                                                      	public class AssertInconclusiveException(string message) : System.Exception(message);
+		                                                                                      }
+		                                                                                      """),
 		["nunit.framework"] = GeneratorRunner.CompileToReference("nunit.framework", """
-			namespace NUnit.Framework
-			{
-				public class AssertionException : System.Exception
-				{
-					public AssertionException(string message) : base(message) { }
-					public AssertionException(string message, System.Exception inner) : base(message, inner) { }
-				}
-				public class IgnoreException(string message) : System.Exception(message);
-				public class InconclusiveException(string message) : System.Exception(message);
-			}
-			"""),
+		                                                                            namespace NUnit.Framework
+		                                                                            {
+		                                                                            	public class AssertionException : System.Exception
+		                                                                            	{
+		                                                                            		public AssertionException(string message) : base(message) { }
+		                                                                            		public AssertionException(string message, System.Exception inner) : base(message, inner) { }
+		                                                                            	}
+		                                                                            	public class IgnoreException(string message) : System.Exception(message);
+		                                                                            	public class InconclusiveException(string message) : System.Exception(message);
+		                                                                            }
+		                                                                            """),
 		["TUnit.Core"] = GeneratorRunner.CompileToReference("TUnit.Core", """
-			namespace TUnit.Core.Exceptions
-			{
-				public class SkipTestException(string reason) : System.Exception(reason);
-				public class InconclusiveTestException(string message, System.Exception? inner)
-					: System.Exception(message, inner);
-			}
-			"""),
+		                                                                  namespace TUnit.Core.Exceptions
+		                                                                  {
+		                                                                  	public class SkipTestException(string reason) : System.Exception(reason);
+		                                                                  	public class InconclusiveTestException(string message, System.Exception? inner)
+		                                                                  		: System.Exception(message, inner);
+		                                                                  }
+		                                                                  """),
 		["TUnit.Assertions"] = GeneratorRunner.CompileToReference("TUnit.Assertions", """
-			namespace TUnit.Assertions.Exceptions
-			{
-				public class AssertionException : System.Exception
-				{
-					public AssertionException(string? message) : base(message) { }
-					public AssertionException(string? message, System.Exception inner) : base(message, inner) { }
-				}
-			}
-			"""),
+		                                                                              namespace TUnit.Assertions.Exceptions
+		                                                                              {
+		                                                                              	public class AssertionException : System.Exception
+		                                                                              	{
+		                                                                              		public AssertionException(string? message) : base(message) { }
+		                                                                              		public AssertionException(string? message, System.Exception inner) : base(message, inner) { }
+		                                                                              	}
+		                                                                              }
+		                                                                              """),
 		// The xunit v3 adapters need nothing from xunit.v3.core, and `Xunit.Sdk.XunitException` from xunit.v3.assert
 		// is the same as the one of the xunit v2 assertions.
 		["xunit.v3.core"] = GeneratorRunner.CompileToReference("xunit.v3.core", "namespace Xunit.v3 { }"),
@@ -62,15 +62,15 @@ public sealed class FrameworkGeneratorTests
 	};
 
 	private static readonly MetadataReference Xunit2Assert = GeneratorRunner.CompileToReference("xunit.assert", """
-		namespace Xunit.Sdk
-		{
-			public class XunitException : System.Exception
-			{
-				public XunitException(string message) : base(message) { }
-				public XunitException(string message, System.Exception inner) : base(message, inner) { }
-			}
-		}
-		""");
+	                                                                                                            namespace Xunit.Sdk
+	                                                                                                            {
+	                                                                                                            	public class XunitException : System.Exception
+	                                                                                                            	{
+	                                                                                                            		public XunitException(string message) : base(message) { }
+	                                                                                                            		public XunitException(string message, System.Exception inner) : base(message, inner) { }
+	                                                                                                            	}
+	                                                                                                            }
+	                                                                                                            """);
 
 	public static IEnumerable<(string, string)> AdaptersAndFrameworks =>
 	[
@@ -92,8 +92,7 @@ public sealed class FrameworkGeneratorTests
 			{
 				foreach (LanguageVersion languageVersion in new[]
 				         {
-					         LanguageVersion.CSharp7_3, LanguageVersion.CSharp8, LanguageVersion.CSharp9,
-					         LanguageVersion.CSharp10, LanguageVersion.CSharp11, LanguageVersion.Latest,
+					         LanguageVersion.CSharp7_3, LanguageVersion.CSharp8, LanguageVersion.CSharp9, LanguageVersion.CSharp10, LanguageVersion.CSharp11, LanguageVersion.Latest,
 				         })
 				{
 					data.Add((adapter, frameworks, languageVersion));
@@ -110,20 +109,20 @@ public sealed class FrameworkGeneratorTests
 		string frameworks)
 	{
 		GeneratorRunner.GeneratorResult result = Run(frameworks, LanguageVersion.Latest, """
-			namespace aweXpect.Microsoft { internal class Shadow { } }
-			namespace aweXpect.NUnit { internal class Shadow { } }
-			namespace aweXpect.System { internal class Shadow { } }
-			namespace aweXpect.TUnit { internal class Shadow { } }
-			namespace aweXpect.Xunit { internal class Shadow { } }
-			namespace aweXpect.Frameworks
-			{
-				internal class Exception { }
-				internal class FailException { }
-				internal class InconclusiveException { }
-				internal interface ITestFrameworkAdapter { }
-				internal class SkipException { }
-			}
-			""");
+		                                                                                 namespace aweXpect.Microsoft { internal class Shadow { } }
+		                                                                                 namespace aweXpect.NUnit { internal class Shadow { } }
+		                                                                                 namespace aweXpect.System { internal class Shadow { } }
+		                                                                                 namespace aweXpect.TUnit { internal class Shadow { } }
+		                                                                                 namespace aweXpect.Xunit { internal class Shadow { } }
+		                                                                                 namespace aweXpect.Frameworks
+		                                                                                 {
+		                                                                                 	internal class Exception { }
+		                                                                                 	internal class FailException { }
+		                                                                                 	internal class InconclusiveException { }
+		                                                                                 	internal interface ITestFrameworkAdapter { }
+		                                                                                 	internal class SkipException { }
+		                                                                                 }
+		                                                                                 """);
 
 		await That(result.Errors).IsEmpty()
 			.Because("an extension package could declare a namespace under `aweXpect.` that shadows a framework or the BCL");
@@ -135,13 +134,13 @@ public sealed class FrameworkGeneratorTests
 	public async Task WhenConsumerSeesTheAdapterOfAnotherAssembly_ShouldNotWarn(string adapter, string frameworks)
 	{
 		MetadataReference helpers = GeneratorRunner.CompileToReference("Company.Testing", $$"""
-			[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("GeneratorTests")]
-			namespace aweXpect.Frameworks
-			{
-				internal class {{adapter}} { }
-				internal static class {{adapter}}Registration { }
-			}
-			""");
+		                                                                                    [assembly: System.Runtime.CompilerServices.InternalsVisibleTo("GeneratorTests")]
+		                                                                                    namespace aweXpect.Frameworks
+		                                                                                    {
+		                                                                                    	internal class {{adapter}} { }
+		                                                                                    	internal static class {{adapter}}Registration { }
+		                                                                                    }
+		                                                                                    """);
 
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(new FrameworkGenerator(),
 			["public class Foo { }",], true, LanguageVersion.Latest, References(frameworks, helpers));
@@ -168,16 +167,16 @@ public sealed class FrameworkGeneratorTests
 	public async Task WhenConsumerUsesCSharp8_AndCoreScansTheLoadedAssemblies_ShouldNotWarn()
 	{
 		MetadataReference netStandardCore = GeneratorRunner.CompileToReference("aweXpect.Core", """
-			[assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0")]
-			namespace aweXpect.Core.Adapters
-			{
-				public interface ITestFrameworkAdapter { }
-				public static class TestFrameworkRegistry
-				{
-					public static void Register(ITestFrameworkAdapter testFrameworkAdapter, bool overwrite = true) { }
-				}
-			}
-			""");
+		                                                                                        [assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0")]
+		                                                                                        namespace aweXpect.Core.Adapters
+		                                                                                        {
+		                                                                                        	public interface ITestFrameworkAdapter { }
+		                                                                                        	public static class TestFrameworkRegistry
+		                                                                                        	{
+		                                                                                        		public static void Register(ITestFrameworkAdapter testFrameworkAdapter, bool overwrite = true) { }
+		                                                                                        	}
+		                                                                                        }
+		                                                                                        """);
 
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(new FrameworkGenerator(),
 			["public class Foo { }",], false, LanguageVersion.CSharp8, References("nunit.framework", netStandardCore));
@@ -191,12 +190,12 @@ public sealed class FrameworkGeneratorTests
 	public async Task WhenConsumerUsesCSharp8_ShouldDeclareTheAdapterThatCanBeRegisteredManually()
 	{
 		GeneratorRunner.GeneratorResult result = Run("nunit.framework", LanguageVersion.CSharp8, """
-			public static class Setup
-			{
-				public static void Register()
-					=> aweXpect.Core.Adapters.TestFrameworkRegistry.Register(new aweXpect.Frameworks.NunitAdapter());
-			}
-			""");
+		                                                                                         public static class Setup
+		                                                                                         {
+		                                                                                         	public static void Register()
+		                                                                                         		=> aweXpect.Core.Adapters.TestFrameworkRegistry.Register(new aweXpect.Frameworks.NunitAdapter());
+		                                                                                         }
+		                                                                                         """);
 
 		await That(result.Errors).IsEmpty()
 			.Because("the warning aweXpect2002 tells a consumer that cannot compile a module initializer to register `aweXpect.Frameworks.NunitAdapter` manually");

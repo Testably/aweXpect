@@ -81,16 +81,16 @@ public abstract partial class ConstraintResult
 		}
 
 		/// <summary>
-		///     The outcome for a <see langword="null" /> <see cref="Actual" /> in the current negation, or
-		///     <see langword="null" /> when the set outcome applies.
-		/// </summary>
-		private protected virtual Outcome? GetNullSubjectOutcome() => null;
-
-		/// <summary>
 		///     Whether a <see langword="null" /> <see cref="Actual" /> is rendered as the result instead of the result text
 		///     of the expectation.
 		/// </summary>
 		private protected virtual bool RendersNullSubject => false;
+
+		/// <summary>
+		///     The outcome for a <see langword="null" /> <see cref="Actual" /> in the current negation, or
+		///     <see langword="null" /> when the set outcome applies.
+		/// </summary>
+		private protected virtual Outcome? GetNullSubjectOutcome() => null;
 
 		/// <summary>
 		///     Appends the expectation to the <paramref name="stringBuilder" /> when the <see cref="ExpectationGrammars" /> are

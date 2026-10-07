@@ -471,6 +471,7 @@ public class Signaler<TParameter>
 
 		return new SignalerResult<TParameter>(waiter.Missing == 0, waiter.Parameters);
 	}
+
 	/// <remarks>
 	///     The predicate is user code, so it runs outside the lock: it may signal again or block on another thread
 	///     that signals.

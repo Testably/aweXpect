@@ -54,7 +54,7 @@ public static partial class ThatAsyncEnumerable
 				static (state, it, grammars) =>
 					new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
-						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
+						state.MatchOptions, true).InvertIf(state.Negated)),
 			subject,
 			options,
 			matchOptions);
@@ -89,7 +89,7 @@ public static partial class ThatAsyncEnumerable
 							state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
 							state.Expected,
 							state.Options,
-							state.MatchOptions, failsForNullSubject: true)),
+							state.MatchOptions, true)),
 				subject,
 				options,
 				matchOptions);
@@ -125,7 +125,7 @@ public static partial class ThatAsyncEnumerable
 						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
 						state.Expected,
 						state.Options,
-						state.MatchOptions, failsForNullSubject: true)),
+						state.MatchOptions, true)),
 			subject,
 			options,
 			matchOptions);
@@ -144,8 +144,7 @@ public static partial class ThatAsyncEnumerable
 		IsContainedIn<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<Expression<Func<TItem, bool>>> expected,
-			[CallerArgumentExpression("expected")]
-			string doNotPopulateThisValue = "")
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		expected.ThrowIfNull();
 		IEnumerable<Expression<Func<TItem, bool>>> expectedValues = expected.WithoutNullElements();
@@ -158,7 +157,7 @@ public static partial class ThatAsyncEnumerable
 					=> new AsyncIsEqualToFromPredicateConstraint<TItem, TItem>(it, grammars,
 						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
 						state.Expected,
-						state.MatchOptions, failsForNullSubject: true)),
+						state.MatchOptions, true)),
 			subject,
 			matchOptions);
 	}
@@ -176,8 +175,7 @@ public static partial class ThatAsyncEnumerable
 		IsContainedIn<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<Action<IThatSubject<TItem?>>> expected,
-			[CallerArgumentExpression("expected")]
-			string doNotPopulateThisValue = "")
+			[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 	{
 		expected.ThrowIfNull();
 		IEnumerable<Action<IThatSubject<TItem?>>> expectedValues = expected.WithoutNullElements();
@@ -190,7 +188,7 @@ public static partial class ThatAsyncEnumerable
 					=> new AsyncIsEqualToFromExpectationsConstraint<TItem, TItem>(it, grammars,
 						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
 						state.Expected,
-						state.MatchOptions, failsForNullSubject: true)),
+						state.MatchOptions, true)),
 			subject,
 			matchOptions);
 	}
@@ -208,7 +206,8 @@ public static partial class ThatAsyncEnumerable
 		IsNotContainedIn<TItem>(
 			this IThat<IAsyncEnumerable<TItem>?> subject,
 			IEnumerable<TItem> unexpected,
-			[CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "")
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
 	{
 		unexpected.ThrowIfNull();
 		ObjectEqualityOptions<TItem> options = new();
@@ -224,7 +223,7 @@ public static partial class ThatAsyncEnumerable
 							state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
 							state.Unexpected,
 							state.Options,
-							state.MatchOptions, failsForNullSubject: true).Invert()),
+							state.MatchOptions, true).Invert()),
 				subject,
 				options,
 				matchOptions);
@@ -244,7 +243,8 @@ public static partial class ThatAsyncEnumerable
 		IsNotContainedIn(
 			this IThat<IAsyncEnumerable<string?>?> subject,
 			IEnumerable<string?> unexpected,
-			[CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "")
+			[CallerArgumentExpression("unexpected")]
+			string doNotPopulateThisValue = "")
 	{
 		unexpected.ThrowIfNull();
 		StringEqualityOptions options = new(nameof(unexpected));
@@ -260,7 +260,7 @@ public static partial class ThatAsyncEnumerable
 						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
 						state.Unexpected,
 						state.Options,
-						state.MatchOptions, failsForNullSubject: true).Invert()),
+						state.MatchOptions, true).Invert()),
 			subject,
 			options,
 			matchOptions);
@@ -294,7 +294,7 @@ public static partial class ThatAsyncEnumerable
 					=> new AsyncIsEqualToFromPredicateConstraint<TItem, TItem>(it, grammars,
 						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
 						state.Unexpected,
-						state.MatchOptions, failsForNullSubject: true).Invert()),
+						state.MatchOptions, true).Invert()),
 			subject,
 			matchOptions);
 	}
@@ -327,7 +327,7 @@ public static partial class ThatAsyncEnumerable
 					=> new AsyncIsEqualToFromExpectationsConstraint<TItem, TItem>(it, grammars,
 						state.DoNotPopulateThisValue.TrimCommonWhiteSpace(),
 						state.Unexpected,
-						state.MatchOptions, failsForNullSubject: true).Invert()),
+						state.MatchOptions, true).Invert()),
 			subject,
 			matchOptions);
 	}

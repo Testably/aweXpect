@@ -73,7 +73,15 @@ public sealed partial class ThatEnumerable
 				public async Task WhenAnEarlierAttemptHadItemsOfAnotherType_ShouldFormatTheCurrentItems()
 				{
 					int calls = 0;
-					Func<IEnumerable> subject = () => calls++ == 0 ? new[] { "a", } : new[] { 1, 2, };
+					Func<IEnumerable> subject = () => calls++ == 0
+						? new[]
+						{
+							"a",
+						}
+						: new[]
+						{
+							1, 2,
+						};
 
 					async Task Act()
 						=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
@@ -121,7 +129,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenEnumerableIsEmpty_ShouldSucceed()
 				{
-					IEnumerable subject = ToEnumerable((int[]) []);
+					IEnumerable subject = ToEnumerable((int[])[]);
 
 					async Task Act()
 						=> await That(subject).All().Satisfy(x => (int?)x == 0);

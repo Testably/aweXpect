@@ -65,7 +65,11 @@ public sealed class CollectionItemsTests
 	[Test]
 	public async Task Enumerate_WhenUntyped_ShouldReturnAllItems()
 	{
-		ArrayList subject = new() { "a", "b", };
+		ArrayList subject = new()
+		{
+			"a",
+			"b",
+		};
 
 		List<object?> result = Enumerate(CollectionItems<object?>.Of<IEnumerable>(subject));
 

@@ -22,14 +22,13 @@ internal abstract class HasSingleConstraintBase<TValue, TItem>(
 	PredicateOptions<TItem> options)
 	: ConstraintResult.WithValue<TItem?>(it, grammars)
 {
-	private int _count;
 	private bool _isEmpty;
 	private bool _isNull;
 
 	/// <summary>
 	///     The number of matching items so far.
 	/// </summary>
-	protected int Count => _count;
+	protected int Count { get; private set; }
 
 	/// <summary>
 	///     The single matching item, when the expectation is met.
@@ -51,7 +50,7 @@ internal abstract class HasSingleConstraintBase<TValue, TItem>(
 	protected void Start(bool isNull)
 	{
 		_isNull = isNull;
-		_count = 0;
+		Count = 0;
 		_isEmpty = true;
 		if (isNull)
 		{
@@ -72,14 +71,14 @@ internal abstract class HasSingleConstraintBase<TValue, TItem>(
 		}
 
 		Actual = item;
-		return ++_count > 1;
+		return ++Count > 1;
 	}
 
 	/// <summary>
 	///     Determines the outcome from the recorded items.
 	/// </summary>
 	protected void Complete()
-		=> Outcome = _count == 1 ? Outcome.Success : Outcome.Failure;
+		=> Outcome = Count == 1 ? Outcome.Success : Outcome.Failure;
 
 	/// <remarks>
 	///     The collection is served from the materialized items, so that the single item for further expectations
@@ -108,7 +107,7 @@ internal abstract class HasSingleConstraintBase<TValue, TItem>(
 		{
 			stringBuilder.ItWasNull(It, Grammars);
 		}
-		else if (_count == 0)
+		else if (Count == 0)
 		{
 			stringBuilder.Append(It).Append(_isEmpty
 				? Grammars.SubjectVerb(It, " was empty", " were empty")
@@ -156,10 +155,6 @@ internal sealed class HasSingleConstraint<TEnumerable, TItem>(
 	/// <inheritdoc />
 	protected override object? Materialized => _materialized;
 
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-		=> _collectionContext.AppendTo(contexts);
-
 	public ValueTask<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
@@ -202,6 +197,10 @@ internal sealed class HasSingleConstraint<TEnumerable, TItem>(
 
 		return new ValueTask<ConstraintResult>(this);
 	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+		=> _collectionContext.AppendTo(contexts);
 }
 
 #if NET8_0_OR_GREATER
@@ -217,10 +216,6 @@ internal sealed class AsyncHasSingleConstraint<TItem>(
 
 	/// <inheritdoc />
 	protected override object? Materialized => _materialized;
-
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-		=> _collectionContext.AppendTo(contexts);
 
 	public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -266,5 +261,9 @@ internal sealed class AsyncHasSingleConstraint<TItem>(
 
 		return this;
 	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+		=> _collectionContext.AppendTo(contexts);
 }
 #endif

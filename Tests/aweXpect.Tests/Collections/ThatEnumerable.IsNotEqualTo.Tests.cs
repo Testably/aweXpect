@@ -69,7 +69,7 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).DoesNotThrow();
 			}
-			
+
 			[Test]
 			public async Task WhenReferenceTypeDoesNotMatchNullability_ShouldStillWork()
 			{
@@ -77,7 +77,7 @@ public sealed partial class ThatEnumerable
 
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(["foo", "", "bar",]);
-				
+
 				await That(Act).DoesNotThrow();
 			}
 
@@ -114,7 +114,10 @@ public sealed partial class ThatEnumerable
 			{
 				int[]? subject = null;
 
-				IEnumerable<int>? result = await That(subject).IsNotEqualTo(new[] { 1, });
+				IEnumerable<int>? result = await That(subject).IsNotEqualTo(new[]
+				{
+					1,
+				});
 
 				await That(result).IsNull();
 			}
@@ -126,7 +129,7 @@ public sealed partial class ThatEnumerable
 
 				async Task Act()
 					=> await That(subject).IsNotEqualTo([1, 2, 3,]);
-				
+
 				await That(Act).DoesNotThrow();
 			}
 

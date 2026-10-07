@@ -738,7 +738,7 @@ public sealed partial class ThatNumber
 				await That(Act).DoesNotThrow();
 			}
 		}
-		
+
 		public sealed class NegatedTests
 		{
 			[Test]
@@ -747,7 +747,7 @@ public sealed partial class ThatNumber
 			public async Task ForInt_WhenValueIsGreaterThanOrEqualToZero_ShouldSucceed(int subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => 
+					=> await That(subject).DoesNotComplyWith(it =>
 						it.IsNegative());
 
 				await That(Act).DoesNotThrow();
@@ -758,7 +758,7 @@ public sealed partial class ThatNumber
 			public async Task ForInt_WhenValueIsLessThanZero_ShouldFail(int subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => 
+					=> await That(subject).DoesNotComplyWith(it =>
 						it.IsNegative());
 
 				await That(Act).Throws<FailException>()
@@ -768,7 +768,7 @@ public sealed partial class ThatNumber
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
-			
+
 			[Test]
 			[Arguments(1)]
 			[Arguments(0)]
@@ -776,7 +776,7 @@ public sealed partial class ThatNumber
 				int? subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => 
+					=> await That(subject).DoesNotComplyWith(it =>
 						it.IsNegative());
 
 				await That(Act).DoesNotThrow();
@@ -787,7 +787,7 @@ public sealed partial class ThatNumber
 			public async Task ForNullableInt_WhenValueIsLessThanZero_ShouldFail(int? subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => 
+					=> await That(subject).DoesNotComplyWith(it =>
 						it.IsNegative());
 
 				await That(Act).Throws<FailException>()

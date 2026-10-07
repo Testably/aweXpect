@@ -41,13 +41,13 @@ public sealed class CombinedResultTests
 	}
 
 	[Test]
-	[Arguments(Outcome.Success, Outcome.FailureBothWays)]
-	[Arguments(Outcome.Failure, Outcome.Success)]
+	[Arguments(Success, FailureBothWays)]
+	[Arguments(Failure, Success)]
 	public async Task Outcome_WhenMemberFailsBothWays_ShouldDependOnTheParentUnderNegation(Outcome parentOutcome,
 		Outcome expectedWhenNegated)
 	{
 		ConstraintResult sut = new MappingResult(new DummyConstraintResult(parentOutcome),
-			new DummyConstraintResult(Outcome.FailureBothWays), sb => sb.Append(" whose member "), "member");
+			new DummyConstraintResult(FailureBothWays), sb => sb.Append(" whose member "), "member");
 
 		sut.Negate();
 

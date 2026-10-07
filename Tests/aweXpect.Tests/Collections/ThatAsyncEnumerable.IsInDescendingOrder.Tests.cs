@@ -407,7 +407,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WhenCustomComparerIsUsed_ShouldNotCheckKinds()
 			{
-				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable<DateTime>(Local, Utc);
+				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable(Local, Utc);
 
 				async Task Act()
 					=> await That(subject).IsInDescendingOrder()
@@ -419,7 +419,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WhenKindIsUnspecified_ShouldSucceed()
 			{
-				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable<DateTime>(Utc.AddHours(2), Unspecified, Utc);
+				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable(Utc.AddHours(2), Unspecified, Utc);
 
 				async Task Act()
 					=> await That(subject).IsInDescendingOrder();
@@ -430,7 +430,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WhenKindsAreIncompatible_ShouldFail()
 			{
-				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable<DateTime>(Local, Unspecified, Utc);
+				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable(Local, Unspecified, Utc);
 
 				async Task Act()
 					=> await That(subject).IsInDescendingOrder();

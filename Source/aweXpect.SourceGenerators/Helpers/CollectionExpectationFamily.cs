@@ -111,8 +111,8 @@ internal sealed record CollectionExpectationFamily(
 		=> factory != null &&
 		   parameter.Type is INamedTypeSymbol { IsGenericType: true, } type &&
 		   FactoryMethods(factory).Any(x => x.ReturnType is INamedTypeSymbol returnType &&
-		                                   SymbolEqualityComparer.Default.Equals(returnType.OriginalDefinition,
-			                                   type.OriginalDefinition));
+		                                    SymbolEqualityComparer.Default.Equals(returnType.OriginalDefinition,
+			                                    type.OriginalDefinition));
 
 	private static IEnumerable<IMethodSymbol> FactoryMethods(INamedTypeSymbol factory)
 		=> factory.GetMembers().OfType<IMethodSymbol>()
@@ -126,7 +126,7 @@ internal sealed record CollectionExpectationFamily(
 	{
 		List<Variant> variants =
 		[
-			new Variant(declaration.PositiveName, parameterName, declaration.Summary, declaration.Remarks, false),
+			new(declaration.PositiveName, parameterName, declaration.Summary, declaration.Remarks, false),
 		];
 		if (hasPolarity)
 		{
@@ -364,7 +364,8 @@ internal sealed record CollectionExpectationFamily(
 			string call = $"{factory.ToDisplayString(TypeFormat)}.{factoryMethod.Name}()";
 			yield return new Instantiation(bindings, null)
 			{
-				OptionsParameter = optionsParameter.Name, FactoryCall = call,
+				OptionsParameter = optionsParameter.Name,
+				FactoryCall = call,
 			};
 			// The cast-up rebinds the first type parameter, so the parameter has to name one there, and the expected
 			// collection has to enumerate it, as an entry with a non-nullable value is no entry with a nullable one.
@@ -377,7 +378,8 @@ internal sealed record CollectionExpectationFamily(
 			{
 				yield return new Instantiation(bindings, nullable.TypeArguments[0].ToDisplayString(TypeFormat))
 				{
-					OptionsParameter = optionsParameter.Name, FactoryCall = call,
+					OptionsParameter = optionsParameter.Name,
+					FactoryCall = call,
 				};
 			}
 		}
@@ -557,7 +559,10 @@ internal sealed record CollectionExpectationFamily(
 		                 	/// </summary>
 		                 """;
 		// A subject kind can have its own reason for its priority, which applies to every family it takes part in.
-		string remarks = string.Join("\n", new[] { variant.Remarks, instantiation.Subject?.Remarks, }
+		string remarks = string.Join("\n", new[]
+			{
+				variant.Remarks, instantiation.Subject?.Remarks,
+			}
 			.Where(x => !string.IsNullOrEmpty(x)));
 		if (!string.IsNullOrEmpty(remarks))
 		{

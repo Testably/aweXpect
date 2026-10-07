@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using aweXpect.Core;
 using aweXpect.Helpers;
 using aweXpect.Results;
@@ -32,7 +31,7 @@ public static partial class ThatEnumerable
 		///     …are exactly of type <paramref name="type" />.
 		/// </summary>
 		public AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
-			AreExactly(Type type)
+			AreExactly(System.Type type)
 		{
 			type.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
@@ -72,7 +71,7 @@ public static partial class ThatEnumerable
 		///     …are exactly of type <paramref name="type" />.
 		/// </summary>
 		public AndOrResult<TEnumerable, IThat<TEnumerable?>>
-			AreExactly(Type type)
+			AreExactly(System.Type type)
 		{
 			type.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;
@@ -112,7 +111,7 @@ public static partial class ThatEnumerable
 		///     …are exactly of type <paramref name="type" />.
 		/// </summary>
 		public AndOrResult<TEnumerable, IThat<TEnumerable>>
-			AreExactly(Type type)
+			AreExactly(System.Type type)
 		{
 			type.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;

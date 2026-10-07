@@ -183,10 +183,10 @@ public sealed class EventRecordingTests
 		await That(result.GetEventCount(nameof(CustomEventClass.CustomEvent))).IsEqualTo(1)
 			.Because("removing the handler cannot stop an invocation that already started, so the stopped recording has to ignore it");
 		await That(result.ToString(nameof(CustomEventClass.CustomEvent))).IsEqualTo("""
-			[
-			  CustomEvent(1)
-			]
-			""")
+		                                                                            [
+		                                                                              CustomEvent(1)
+		                                                                            ]
+		                                                                            """)
 			.Because("the listed events have to match the evaluated count");
 	}
 
@@ -717,52 +717,6 @@ public sealed class EventRecordingTests
 			.Because("the reason is kept until the event is asked for, so that the other events can still be recorded");
 	}
 
-#if NET8_0_OR_GREATER
-	[Test]
-	public async Task WhenHandlerTakesARefStructParameter_ShouldThrowNotSupportedException()
-	{
-		RefStructHandlerClass sut = new();
-
-		void Act()
-			=> sut.Record().Events(nameof(RefStructHandlerClass.CustomEvent));
-
-		await That(Act).Throws<NotSupportedException>()
-			.WithMessage("The CustomEvent event cannot be recorded, because its handler takes a parameter that cannot be boxed: [ReadOnlySpan<byte>]")
-			.Because("a ref struct cannot be boxed into the recorded arguments");
-	}
-
-	[Test]
-	public async Task WhenHandlerTakesARefStructParameter_WhenAnotherEventIsRequestedByName_ShouldRecordIt()
-	{
-		RefStructHandlerClass sut = new();
-
-		IEventRecording<RefStructHandlerClass> recording =
-			sut.Record().Events(nameof(RefStructHandlerClass.OtherEvent));
-		sut.NotifyOtherEvent();
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
-
-		await That(result.GetEventCount(nameof(RefStructHandlerClass.OtherEvent))).IsEqualTo(1)
-			.Because("an event that cannot be recorded must not cost the recording of the other events of its type");
-	}
-
-	[Test]
-	public async Task WhenHandlerTakesARefStructParameter_WhenRecordingAllEvents_ShouldSkipTheEvent()
-	{
-		RefStructHandlerClass sut = new();
-		IEventRecording<RefStructHandlerClass> recording = sut.Record().Events();
-		sut.NotifyOtherEvent();
-		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
-
-		void Act()
-			=> result.GetEventCount(nameof(RefStructHandlerClass.CustomEvent));
-
-		await That(result.GetEventCount(nameof(RefStructHandlerClass.OtherEvent))).IsEqualTo(1);
-		await That(Act).Throws<NotSupportedException>()
-			.WithMessage("The CustomEvent event cannot be recorded, because its handler takes a parameter that cannot be boxed: [ReadOnlySpan<byte>]")
-			.Because("the reason is kept until the event is asked for, so that the other events can still be recorded");
-	}
-#endif
-
 	[Test]
 	public async Task WhenNoEventCanBeAttached_WithUnrecordedEventName_ShouldNotClaimThatNoEventWasFound()
 	{
@@ -857,11 +811,11 @@ public sealed class EventRecordingTests
 		await That(result.GetEventCount(nameof(RegisteredClass.CustomEvent))).IsEqualTo(2)
 			.Because("stopping the recording removes the registered handler");
 		await That(result.ToString(nameof(RegisteredClass.CustomEvent))).IsEqualTo("""
-			[
-			  CustomEvent(10),
-			  CustomEvent(20)
-			]
-			""");
+		                                                                           [
+		                                                                             CustomEvent(10),
+		                                                                             CustomEvent(20)
+		                                                                           ]
+		                                                                           """);
 	}
 
 	[Test]
@@ -1192,9 +1146,9 @@ public sealed class EventRecordingTests
 	{
 		public delegate void CustomEventDelegate(int arg1);
 
-		public event CustomEventDelegate? CustomEvent;
-
 		public int Number { get; set; }
+
+		public event CustomEventDelegate? CustomEvent;
 
 		public void NotifyCustomEvent(int arg1)
 			=> CustomEvent?.Invoke(arg1);
@@ -1336,4 +1290,50 @@ public sealed class EventRecordingTests
 			return await await started.Task;
 		}
 	}
+
+#if NET8_0_OR_GREATER
+	[Test]
+	public async Task WhenHandlerTakesARefStructParameter_ShouldThrowNotSupportedException()
+	{
+		RefStructHandlerClass sut = new();
+
+		void Act()
+			=> sut.Record().Events(nameof(RefStructHandlerClass.CustomEvent));
+
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage("The CustomEvent event cannot be recorded, because its handler takes a parameter that cannot be boxed: [ReadOnlySpan<byte>]")
+			.Because("a ref struct cannot be boxed into the recorded arguments");
+	}
+
+	[Test]
+	public async Task WhenHandlerTakesARefStructParameter_WhenAnotherEventIsRequestedByName_ShouldRecordIt()
+	{
+		RefStructHandlerClass sut = new();
+
+		IEventRecording<RefStructHandlerClass> recording =
+			sut.Record().Events(nameof(RefStructHandlerClass.OtherEvent));
+		sut.NotifyOtherEvent();
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		await That(result.GetEventCount(nameof(RefStructHandlerClass.OtherEvent))).IsEqualTo(1)
+			.Because("an event that cannot be recorded must not cost the recording of the other events of its type");
+	}
+
+	[Test]
+	public async Task WhenHandlerTakesARefStructParameter_WhenRecordingAllEvents_ShouldSkipTheEvent()
+	{
+		RefStructHandlerClass sut = new();
+		IEventRecording<RefStructHandlerClass> recording = sut.Record().Events();
+		sut.NotifyOtherEvent();
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		void Act()
+			=> result.GetEventCount(nameof(RefStructHandlerClass.CustomEvent));
+
+		await That(result.GetEventCount(nameof(RefStructHandlerClass.OtherEvent))).IsEqualTo(1);
+		await That(Act).Throws<NotSupportedException>()
+			.WithMessage("The CustomEvent event cannot be recorded, because its handler takes a parameter that cannot be boxed: [ReadOnlySpan<byte>]")
+			.Because("the reason is kept until the event is asked for, so that the other events can still be recorded");
+	}
+#endif
 }

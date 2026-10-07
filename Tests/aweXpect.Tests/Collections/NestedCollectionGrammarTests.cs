@@ -222,7 +222,7 @@ public sealed class NestedCollectionGrammar
 			IEnumerable? subject = null;
 
 			async Task Act()
-				=> await That(subject!).Contains((object?)1);
+				=> await That(subject!).Contains(1);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("*but it was <null>*").AsWildcard();
@@ -255,10 +255,13 @@ public sealed class NestedCollectionGrammar
 		[Test]
 		public async Task NotHasItemForEnumerable_ShouldUseSingularVerb()
 		{
-			IEnumerable subject = new[] { 1, 2, };
+			IEnumerable subject = new[]
+			{
+				1, 2,
+			};
 
 			async Task Act()
-				=> await That(subject).DoesNotComplyWith(it => it.HasItem((object?)1));
+				=> await That(subject).DoesNotComplyWith(it => it.HasItem(1));
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("*does not have an item*").AsWildcard();
@@ -303,7 +306,10 @@ public sealed class NestedCollectionGrammar
 		[Test]
 		public async Task NotHasItemWithPredicateForEnumerable_ShouldUseSingularVerb()
 		{
-			IEnumerable subject = new[] { 1, 2, };
+			IEnumerable subject = new[]
+			{
+				1, 2,
+			};
 
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem(x => Equals(x, 1)));
@@ -343,7 +349,7 @@ public sealed class NestedCollectionGrammar
 		[Test]
 		public async Task NotHasItem_ShouldUseSingularVerb()
 		{
-			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 2,]);
+			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable(1, 2);
 
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem(1));
@@ -355,7 +361,7 @@ public sealed class NestedCollectionGrammar
 		[Test]
 		public async Task NotHasItemThat_ShouldUseSingularVerb()
 		{
-			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 2,]);
+			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable(1, 2);
 
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.HasItemThat(i => i.IsEqualTo(1)));
@@ -367,7 +373,7 @@ public sealed class NestedCollectionGrammar
 		[Test]
 		public async Task NotHasItemWithPredicate_ShouldUseSingularVerb()
 		{
-			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 2,]);
+			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable(1, 2);
 
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.HasItem(x => x == 1));
@@ -379,7 +385,7 @@ public sealed class NestedCollectionGrammar
 		[Test]
 		public async Task NotHasSingle_ShouldUseSingularVerb()
 		{
-			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1,]);
+			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable(1);
 
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.HasSingle());

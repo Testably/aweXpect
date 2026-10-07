@@ -2,7 +2,6 @@
 using BenchmarkDotNet.Engines;
 using FluentAssertions;
 using FluentAssertions.Collections;
-using TUnit.Assertions.Enums;
 
 namespace aweXpect.Benchmarks;
 
@@ -12,8 +11,8 @@ namespace aweXpect.Benchmarks;
 /// </summary>
 public partial class HappyCaseBenchmarks
 {
-	private readonly string[] _stringArrayAnyOrderExpectation = ["foo", "baz", "bar"];
-	private readonly string[] _stringArrayAnyOrderSubject = ["foo", "bar", "baz"];
+	private readonly string[] _stringArrayAnyOrderExpectation = ["foo", "baz", "bar",];
+	private readonly string[] _stringArrayAnyOrderSubject = ["foo", "bar", "baz",];
 
 	[Benchmark]
 	public async Task StringArrayInAnyOrder_aweXpect()
@@ -27,5 +26,5 @@ public partial class HappyCaseBenchmarks
 	[Benchmark]
 	public async Task StringArrayInAnyOrder_TUnit()
 		=> (await Assert.That(_stringArrayAnyOrderSubject)
-			.IsEquivalentTo(_stringArrayAnyOrderExpectation, CollectionOrdering.Any))?.Consume(_consumer);
+			.IsEquivalentTo(_stringArrayAnyOrderExpectation))?.Consume(_consumer);
 }

@@ -92,7 +92,7 @@ public sealed partial class ThatEventRecording
 				sut.NotifyPropertyChanged("");
 
 				async Task Act() =>
-					await That(recording).DidNotTriggerPropertyChangedFor((string?)null);
+					await That(recording).DidNotTriggerPropertyChangedFor(null);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

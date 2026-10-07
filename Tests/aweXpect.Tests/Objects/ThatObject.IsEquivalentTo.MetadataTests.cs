@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using aweXpect.Core.Metadata;
 using aweXpect.Equivalency;
@@ -209,8 +208,8 @@ public sealed partial class ThatObject
 
 			private sealed class WithEvent
 			{
-				public event EventHandler? Changed;
 				public int Number { get; set; }
+				public event EventHandler? Changed;
 				public void Raise() => Changed?.Invoke(this, EventArgs.Empty);
 			}
 		}

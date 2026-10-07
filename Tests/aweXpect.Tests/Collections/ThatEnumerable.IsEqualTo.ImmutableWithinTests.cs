@@ -705,9 +705,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
-					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					DateOnly[] values = [new(2024, 1, 1), new(2024, 1, 11), new(2024, 1, 21),];
 					ImmutableArray<DateOnly> subject = [.. values,];
-					IEnumerable<DateOnly> expected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly> expected = [new(2024, 1, 1), new(2024, 1, 12), new(2024, 1, 21),];
 
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Within(1.Days());
@@ -718,9 +718,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
-					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					DateOnly[] values = [new(2024, 1, 1), new(2024, 1, 11), new(2024, 1, 21),];
 					ImmutableArray<DateOnly> subject = [.. values,];
-					IEnumerable<DateOnly> expected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 13), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly> expected = [new(2024, 1, 1), new(2024, 1, 13), new(2024, 1, 21),];
 
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Within(1.Days());
@@ -742,9 +742,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyIt()
 				{
-					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					DateOnly[] values = [new(2024, 1, 1), new(2024, 1, 11), new(2024, 1, 21),];
 					ImmutableArray<DateOnly> subject = [.. values,];
-					IEnumerable<DateOnly> expected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly> expected = [new(2024, 1, 1), new(2024, 1, 12), new(2024, 1, 21),];
 
 					async Task Act()
 					{
@@ -760,9 +760,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
 				{
-					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					DateOnly[] values = [new(2024, 1, 1), new(2024, 1, 11), new(2024, 1, 21),];
 					ImmutableArray<DateOnly> subject = [.. values,];
-					IEnumerable<DateOnly> expected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 13), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly> expected = [new(2024, 1, 1), new(2024, 1, 13), new(2024, 1, 21),];
 
 					async Task Act()
 					{
@@ -789,9 +789,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
 				{
-					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					DateOnly[] values = [new(2024, 1, 1), new(2024, 1, 11), new(2024, 1, 21),];
 					ImmutableArray<DateOnly> subject = [.. values,];
-					IEnumerable<DateOnly> expected = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 12), new DateOnly(2024, 1, 21),];
+					IEnumerable<DateOnly> expected = [new(2024, 1, 1), new(2024, 1, 12), new(2024, 1, 21),];
 
 					object Act()
 						=> That(subject).IsEqualTo(expected).Within(1.Days() + 1.Hours());
@@ -864,9 +864,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
 				{
-					TimeOnly[] values = [new TimeOnly(22, 0), new TimeOnly(23, 59, 30), new TimeOnly(2, 0),];
+					TimeOnly[] values = [new(22, 0), new(23, 59, 30), new(2, 0),];
 					ImmutableArray<TimeOnly> subject = [.. values,];
-					IEnumerable<TimeOnly> expected = [new TimeOnly(22, 0), new TimeOnly(0, 0, 30), new TimeOnly(2, 0),];
+					IEnumerable<TimeOnly> expected = [new(22, 0), new(0, 0, 30), new(2, 0),];
 
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
@@ -878,9 +878,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenEachElementLiesWithinTheTolerance_ShouldSucceed()
 				{
-					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					TimeOnly[] values = [new(13, 0), new(14, 0), new(15, 0),];
 					ImmutableArray<TimeOnly> subject = [.. values,];
-					IEnumerable<TimeOnly> expected = [new TimeOnly(13, 0), new TimeOnly(14, 1), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly> expected = [new(13, 0), new(14, 1), new(15, 0),];
 
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
@@ -891,9 +891,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenOneElementLiesOutsideTheTolerance_ShouldFail()
 				{
-					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					TimeOnly[] values = [new(13, 0), new(14, 0), new(15, 0),];
 					ImmutableArray<TimeOnly> subject = [.. values,];
-					IEnumerable<TimeOnly> expected = [new TimeOnly(13, 0), new TimeOnly(14, 2), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly> expected = [new(13, 0), new(14, 2), new(15, 0),];
 
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).Within(1.Minutes());
@@ -915,9 +915,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyIt()
 				{
-					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					TimeOnly[] values = [new(13, 0), new(14, 0), new(15, 0),];
 					ImmutableArray<TimeOnly> subject = [.. values,];
-					IEnumerable<TimeOnly> expected = [new TimeOnly(13, 0), new TimeOnly(14, 1), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly> expected = [new(13, 0), new(14, 1), new(15, 0),];
 
 					async Task Act()
 					{
@@ -933,9 +933,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
 				{
-					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					TimeOnly[] values = [new(13, 0), new(14, 0), new(15, 0),];
 					ImmutableArray<TimeOnly> subject = [.. values,];
-					IEnumerable<TimeOnly> expected = [new TimeOnly(13, 0), new TimeOnly(14, 2), new TimeOnly(15, 0),];
+					IEnumerable<TimeOnly> expected = [new(13, 0), new(14, 2), new(15, 0),];
 
 					async Task Act()
 					{

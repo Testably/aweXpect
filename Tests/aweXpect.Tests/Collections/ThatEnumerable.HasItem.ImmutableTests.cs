@@ -1,7 +1,6 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Collections.Immutable;
 using System.Linq;
-using aweXpect.Equivalency;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -109,7 +108,7 @@ public sealed partial class ThatEnumerable
 				ImmutableArray<int> subject = [0, 1, 2,];
 
 				async Task Act()
-					=> await That(subject).HasItem(predicate: null!);
+					=> await That(subject).HasItem(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("predicate").And
@@ -122,7 +121,7 @@ public sealed partial class ThatEnumerable
 				ImmutableArray<int> subject = [0, 1, 2,];
 
 				async Task Act()
-					=> await That(subject).DoesNotHaveItem(predicate: null!);
+					=> await That(subject).DoesNotHaveItem(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("predicate").And

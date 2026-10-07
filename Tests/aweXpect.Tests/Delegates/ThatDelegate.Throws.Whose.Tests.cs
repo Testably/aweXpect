@@ -92,7 +92,7 @@ public sealed partial class ThatDelegate
 
 					async Task Act()
 						=> await That(Delegate).Throws()
-							.Whose(memberAccessor: e => e.HResult, expectations: h => h.IsEqualTo(hResult));
+							.Whose(e => e.HResult, h => h.IsEqualTo(hResult));
 
 					await That(Act).DoesNotThrow();
 				}
@@ -306,6 +306,9 @@ public sealed partial class ThatDelegate
 
 			private sealed class AsyncException(int value) : Exception
 			{
+				public Task<int> GetValueAsync() => Task.FromResult(value);
+
+				public ValueTask<int> GetValueAsValueTaskAsync() => new(value);
 #pragma warning disable CA1822 // the tests access these members through the subject
 				public async Task<int> FaultedAsync()
 				{
@@ -319,10 +322,6 @@ public sealed partial class ThatDelegate
 					throw new InvalidOperationException("async member failed");
 				}
 #pragma warning restore CA1822
-
-				public Task<int> GetValueAsync() => Task.FromResult(value);
-
-				public ValueTask<int> GetValueAsValueTaskAsync() => new(value);
 			}
 
 			private sealed class MyException(Base payload) : Exception

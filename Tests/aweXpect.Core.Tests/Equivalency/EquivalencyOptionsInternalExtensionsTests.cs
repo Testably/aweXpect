@@ -56,12 +56,12 @@ public sealed class EquivalencyOptionsInternalExtensionsTests
 	public async Task GetOptionsFor_ShouldApplyTheRegistrationToTheFinalOptions()
 	{
 		EquivalencyOptions options = new EquivalencyOptions().For<MyBaseClass>(o => o with
-		{
-			Fields = IncludeMembers.None,
-		}) with
-		{
-			IgnoreCollectionOrder = true,
-		};
+			{
+				Fields = IncludeMembers.None,
+			}) with
+			{
+				IgnoreCollectionOrder = true,
+			};
 
 		EquivalencyTypeOptions result = options.GetOptionsFor(typeof(MyBaseClass));
 

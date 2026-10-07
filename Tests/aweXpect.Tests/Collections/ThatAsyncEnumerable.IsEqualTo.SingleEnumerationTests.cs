@@ -18,9 +18,9 @@ public sealed partial class ThatAsyncEnumerable
 			{
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
+					ToAsyncEnumerable(1, 2, 3),
+					ToAsyncEnumerable(1, 2, 3),
+					ToAsyncEnumerable(1, 2, 3),
 				];
 				IEnumerable<Action<IThat<int>>> expected =
 					Factory.GetSingleUseEnumerable<Action<IThat<int>>>(a => a.IsEqualTo(1), a => a.IsEqualTo(2),
@@ -37,9 +37,9 @@ public sealed partial class ThatAsyncEnumerable
 			{
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([1, 1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3, 3,]),
+					ToAsyncEnumerable(1, 1, 2, 3),
+					ToAsyncEnumerable(1, 2, 2, 3),
+					ToAsyncEnumerable(1, 2, 3, 3),
 				];
 				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(1, 2, 3);
 
@@ -54,9 +54,9 @@ public sealed partial class ThatAsyncEnumerable
 			{
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([3, 3, 2, 1,]),
-					ToAsyncEnumerable([1, 2, 2, 3,]),
-					ToAsyncEnumerable([2, 3, 1, 1,]),
+					ToAsyncEnumerable(3, 3, 2, 1),
+					ToAsyncEnumerable(1, 2, 2, 3),
+					ToAsyncEnumerable(2, 3, 1, 1),
 				];
 				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(1, 2, 3);
 
@@ -71,9 +71,9 @@ public sealed partial class ThatAsyncEnumerable
 			{
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([3, 2, 1,]),
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([2, 3, 1,]),
+					ToAsyncEnumerable(3, 2, 1),
+					ToAsyncEnumerable(1, 2, 3),
+					ToAsyncEnumerable(2, 3, 1),
 				];
 				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(1, 2, 3);
 
@@ -88,9 +88,9 @@ public sealed partial class ThatAsyncEnumerable
 			{
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
+					ToAsyncEnumerable(1, 2, 3),
+					ToAsyncEnumerable(1, 2, 3),
+					ToAsyncEnumerable(1, 2, 3),
 				];
 				IEnumerable<Expression<Func<int, bool>>> expected =
 					Factory.GetSingleUseEnumerable<Expression<Func<int, bool>>>(a => a == 1, a => a == 2, a => a == 3);
@@ -104,7 +104,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task Predicates_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 3, 2,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 3, 2);
 				IEnumerable<Expression<Func<int, bool>>> expected =
 					Factory.GetSingleUseEnumerable<Expression<Func<int, bool>>>(a => a == 1, a => a == 2, a => a == 3);
 
@@ -138,9 +138,9 @@ public sealed partial class ThatAsyncEnumerable
 			{
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 4,]),
+					ToAsyncEnumerable(1, 2, 3),
+					ToAsyncEnumerable(1, 2, 3),
+					ToAsyncEnumerable(1, 2, 4),
 				];
 				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(1, 2, 3);
 
@@ -183,9 +183,9 @@ public sealed partial class ThatAsyncEnumerable
 			{
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
+					ToAsyncEnumerable(1, 2, 3),
+					ToAsyncEnumerable(1, 2, 3),
+					ToAsyncEnumerable(1, 2, 3),
 				];
 				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(1, 2, 3);
 
@@ -198,7 +198,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 3, 2,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 3, 2);
 				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(1, 2, 3);
 
 				async Task Act()
@@ -232,9 +232,9 @@ public sealed partial class ThatAsyncEnumerable
 				int enumerations = 0;
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
+					ToAsyncEnumerable(1, 2, 3),
+					ToAsyncEnumerable(1, 2, 3),
+					ToAsyncEnumerable(1, 2, 3),
 				];
 				IEnumerable<int> expected = LazySequence();
 
@@ -257,7 +257,7 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WhenExpectedIsALazySequence_ShouldNotEnumerateItBeforeTheEvaluation()
 			{
 				int enumerations = 0;
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
 				IEnumerable<int> expected = LazySequence();
 
 				Expectation expectation = That(subject).IsEqualTo(expected);
@@ -289,9 +289,9 @@ public sealed partial class ThatAsyncEnumerable
 
 				IEnumerable<IAsyncEnumerable<int>> Items()
 				{
-					yield return ToAsyncEnumerable([1, 2,]);
+					yield return ToAsyncEnumerable(1, 2);
 					expected[1] = 3;
-					yield return ToAsyncEnumerable([1, 3,]);
+					yield return ToAsyncEnumerable(1, 3);
 				}
 			}
 
@@ -302,9 +302,9 @@ public sealed partial class ThatAsyncEnumerable
 				MyException exception = new("the expected items are not available");
 				IAsyncEnumerable<int>[] subject =
 				[
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
-					ToAsyncEnumerable([1, 2, 3,]),
+					ToAsyncEnumerable(1, 2, 3),
+					ToAsyncEnumerable(1, 2, 3),
+					ToAsyncEnumerable(1, 2, 3),
 				];
 				IEnumerable<int> expected = ThrowingSequence();
 

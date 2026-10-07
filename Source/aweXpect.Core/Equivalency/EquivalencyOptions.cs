@@ -57,6 +57,11 @@ public record EquivalencyOptions : EquivalencyTypeOptions
 	private Dictionary<Type, Func<EquivalencyTypeOptions, EquivalencyTypeOptions>> Registrations { get; init; } = new();
 
 	/// <summary>
+	///     Whether options are registered for any type with <see cref="For{TMember}" />.
+	/// </summary>
+	internal bool HasRegistrations => Registrations.Count > 0;
+
+	/// <summary>
 	///     Specifies the <paramref name="options" /> for members of type <typeparamref name="TMember" />.
 	/// </summary>
 	/// <remarks>
@@ -95,11 +100,6 @@ public record EquivalencyOptions : EquivalencyTypeOptions
 	/// </remarks>
 	public EquivalencyTypeOptions GetOptionsFor(Type type)
 		=> TryGetOptionsFor(type, out EquivalencyTypeOptions? options) ? options : this;
-
-	/// <summary>
-	///     Whether options are registered for any type with <see cref="For{TMember}" />.
-	/// </summary>
-	internal bool HasRegistrations => Registrations.Count > 0;
 
 	/// <remarks>
 	///     The base types are walked, most derived first: the <paramref name="type" /> is the runtime type of a value,

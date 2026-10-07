@@ -23,12 +23,6 @@ public class SignalCountWhoseResult<TParameter>(
 		IOptionsProvider<Quantifier>,
 		ISignalerResult<SignalCountWhoseResult<TParameter>, TParameter>
 {
-	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
-
-	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	SignalerOptions<TParameter> IOptionsProvider<SignalerOptions<TParameter>>.Options => options;
-
 	/// <summary>
 	///     …with parameters that…
 	/// </summary>
@@ -42,4 +36,10 @@ public class SignalCountWhoseResult<TParameter>(
 				" with parameters that ", null,
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural |
 				            ExpectationGrammars.Introduced));
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	SignalerOptions<TParameter> IOptionsProvider<SignalerOptions<TParameter>>.Options => options;
 }

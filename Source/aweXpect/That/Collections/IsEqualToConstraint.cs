@@ -147,7 +147,7 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 						cancellationToken);
 				}
 
-				var (result, failure) = verified.Result;
+				(bool result, string? failure) = verified.Result;
 				if (Fails(result, failure, cancellationToken))
 				{
 					return new ValueTask<ConstraintResult>(this);
@@ -184,7 +184,7 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 		bool isDetermined = false;
 		await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
 		{
-			var (result, failure) = await matcher.Verify(It, item, itemOptions, maximumNumber);
+			(bool result, string? failure) = await matcher.Verify(It, item, itemOptions, maximumNumber);
 			if (Fails(result, failure, cancellationToken))
 			{
 				return this;
@@ -222,7 +222,7 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 		{
 			while (true)
 			{
-				var (result, failure) = await verified;
+				(bool result, string? failure) = await verified;
 				if (Fails(result, failure, cancellationToken))
 				{
 					return this;
@@ -286,7 +286,7 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 
 	private void SetCompleted((bool, string?) completed, CancellationToken cancellationToken)
 	{
-		var (completedResult, completedFailure) = completed;
+		(bool completedResult, string? completedFailure) = completed;
 		// The final check can evaluate item expectations as well, e.g. to reassign items in any order.
 		if (IsAnItemExpectationCanceled(cancellationToken))
 		{
@@ -514,10 +514,10 @@ internal abstract class IsEqualToFromExpectationsConstraintBase<TValue, TItem>(
 	: CollectionMatchConstraintBase<TValue>(it, grammars, expected is null, failsForNullSubject, matchOptions)
 {
 	private CollectionMatchOptions.ExpectationItem<TItem>[] _expectations = [];
-	private bool _showsExpected;
 
 	// Not reset by Start, so that a sequence that is not a collection is enumerated once for all evaluations.
 	private ICollection<Action<IThatSubject<TItem?>>>? _materializedExpected;
+	private bool _showsExpected;
 
 	/// <inheritdoc />
 	protected override void Start()
@@ -735,7 +735,7 @@ internal sealed class AsyncIsEqualToConstraint<TItem, TMatch>(
 		}
 
 		IAsyncEnumerable<TItem> materialized =
-			context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
+			context.UseMaterializedAsyncEnumerable(actual, cancellationToken);
 		if (GetExpectedItems() is not { } expectedItems)
 		{
 			return new ValueTask<ConstraintResult>(FailForNullExpected(materialized));
@@ -770,7 +770,7 @@ internal sealed class AsyncIsEqualToFromExpectationsConstraint<TItem, TMatch>(
 		}
 
 		IAsyncEnumerable<TItem> materialized =
-			context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
+			context.UseMaterializedAsyncEnumerable(actual, cancellationToken);
 		if (await PrepareExpectations(context, cancellationToken) is not { } expectations)
 		{
 			return FailForNullExpected(materialized);
@@ -805,7 +805,7 @@ internal sealed class AsyncIsEqualToFromPredicateConstraint<TItem, TMatch>(
 		}
 
 		IAsyncEnumerable<TItem> materialized =
-			context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
+			context.UseMaterializedAsyncEnumerable(actual, cancellationToken);
 		if (GetExpectedItems() is not { } expectedItems)
 		{
 			return new ValueTask<ConstraintResult>(FailForNullExpected(materialized));

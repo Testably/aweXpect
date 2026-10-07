@@ -115,6 +115,14 @@ public class MaterializingEnumerableTests
 			.Because("a source that threw is not advanced again, but throws the same exception");
 	}
 
+	private static IEnumerable<T> ToEnumerable<T>(T[] items)
+	{
+		foreach (T item in items)
+		{
+			yield return item;
+		}
+	}
+
 	private sealed class DisposeTrackingEnumerable(Exception? exception, params int[] values) : IEnumerable<int>
 	{
 		public int DisposeCount { get; private set; }
@@ -150,14 +158,6 @@ public class MaterializingEnumerableTests
 			public void Reset() => _index = -1;
 
 			public void Dispose() => owner.DisposeCount++;
-		}
-	}
-
-	private static IEnumerable<T> ToEnumerable<T>(T[] items)
-	{
-		foreach (T item in items)
-		{
-			yield return item;
 		}
 	}
 }

@@ -195,7 +195,7 @@ public class QuantifierTests
 	{
 		Quantifier[] quantifiers =
 		[
-			new Quantifier(),
+			new(),
 			Configure(q => q.AtLeast(3)),
 			Configure(q => q.AtMost(3)),
 			Configure(q => q.Between(2, 4)),

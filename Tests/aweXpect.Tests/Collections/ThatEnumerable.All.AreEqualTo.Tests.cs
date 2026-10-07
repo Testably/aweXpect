@@ -612,13 +612,13 @@ public sealed partial class ThatEnumerable
 						             Expected that subject
 						             is equal to "foo" for all items,
 						             but only 1 of 3 were
-						             
+
 						             Not matching items:
 						             [
 						               " foo",
 						               "\tfoo"
 						             ]
-						             
+
 						             Collection:
 						             [
 						               " foo",
@@ -674,13 +674,13 @@ public sealed partial class ThatEnumerable
 						             Expected that subject
 						             is equal to "foo" for all items,
 						             but only 1 of 3 were
-						             
+
 						             Not matching items:
 						             [
 						               "foo ",
 						               "foo\t"
 						             ]
-						             
+
 						             Collection:
 						             [
 						               "foo ",

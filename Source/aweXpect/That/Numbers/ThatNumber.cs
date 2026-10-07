@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Text;
 using aweXpect.Options;
 #if NET8_0_OR_GREATER
 using System.Runtime.InteropServices;
 #endif
+
 #if !NET8_0_OR_GREATER
 using aweXpect.Helpers;
 #endif
@@ -362,7 +362,7 @@ public static partial class ThatNumber
 
 	private static double RoundToSignificantDigits(double value, int significantDigits)
 		=> double.TryParse(value.ToString($"G{significantDigits}", CultureInfo.InvariantCulture),
-			NumberStyles.Float, CultureInfo.InvariantCulture, out double roundedValue) &&
+			   NumberStyles.Float, CultureInfo.InvariantCulture, out double roundedValue) &&
 		   !double.IsInfinity(roundedValue)
 			? roundedValue
 			: value;

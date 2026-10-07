@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Helpers;
@@ -15,8 +14,7 @@ public static partial class ThatEnumerable
 		///     …satisfy the <paramref name="predicate" />.
 		/// </summary>
 		public AndOrResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>
-			Satisfy(
-				Func<string?, bool> predicate,
+			Satisfy(System.Func<string?, bool> predicate,
 				[CallerArgumentExpression("predicate")]
 				string doNotPopulateThisValue = "")
 		{
@@ -41,8 +39,7 @@ public static partial class ThatEnumerable
 		///     …satisfy the <paramref name="predicate" />.
 		/// </summary>
 		public AndOrResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
-			Satisfy(
-				Func<TItem, bool> predicate,
+			Satisfy(System.Func<TItem, bool> predicate,
 				[CallerArgumentExpression("predicate")]
 				string doNotPopulateThisValue = "")
 		{
@@ -67,8 +64,7 @@ public static partial class ThatEnumerable
 		///     …satisfy the <paramref name="predicate" />.
 		/// </summary>
 		public AndOrResult<TEnumerable, IThat<TEnumerable?>>
-			Satisfy(
-				Func<object?, bool> predicate,
+			Satisfy(System.Func<object?, bool> predicate,
 				[CallerArgumentExpression("predicate")]
 				string doNotPopulateThisValue = "")
 		{
@@ -93,8 +89,7 @@ public static partial class ThatEnumerable
 		///     …satisfy the <paramref name="predicate" />.
 		/// </summary>
 		public AndOrResult<TEnumerable, IThat<TEnumerable>>
-			Satisfy(
-				Func<TItem, bool> predicate,
+			Satisfy(System.Func<TItem, bool> predicate,
 				[CallerArgumentExpression("predicate")]
 				string doNotPopulateThisValue = "")
 		{
@@ -119,8 +114,7 @@ public static partial class ThatEnumerable
 		///     …satisfy the <paramref name="predicate" />.
 		/// </summary>
 		public AndOrResult<TEnumerable, IThat<TEnumerable>>
-			Satisfy(
-				Func<string?, bool> predicate,
+			Satisfy(System.Func<string?, bool> predicate,
 				[CallerArgumentExpression("predicate")]
 				string doNotPopulateThisValue = "")
 		{

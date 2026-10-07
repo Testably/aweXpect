@@ -181,6 +181,7 @@ public sealed partial class ThatNumber
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
+
 			[Test]
 			public async Task ForNullableDouble_WhenSubjectIsNull_ShouldFail()
 			{
@@ -241,6 +242,7 @@ public sealed partial class ThatNumber
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
+
 			[Test]
 			public async Task ForNullableFloat_WhenSubjectIsNull_ShouldFail()
 			{

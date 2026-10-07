@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using System.Text;
+using System.Threading;
 #if NET8_0_OR_GREATER
 using System.Runtime.InteropServices;
 #endif
-using System.Text;
-using System.Threading;
 
 namespace aweXpect.Core.Tests.Formatting;
 
@@ -91,8 +91,14 @@ public class ValueFormatterTests
 				Formatter.Format((double?)1.5),
 				Formatter.Format(1.5M),
 				Formatter.Format((decimal?)1.5M),
-				Formatter.Format(new[] { 1, 2, }),
-				Formatter.Format(new Dictionary<int, int> { [1] = 2, }),
+				Formatter.Format(new[]
+				{
+					1, 2,
+				}),
+				Formatter.Format(new Dictionary<int, int>
+				{
+					[1] = 2,
+				}),
 				Formatter.Format(new KeyValuePair<int, int>(1, 2)),
 			];
 		}
@@ -162,9 +168,18 @@ public class ValueFormatterTests
 				Append(sb => Formatter.Format(sb, (double?)1.5)),
 				Append(sb => Formatter.Format(sb, 1.5M)),
 				Append(sb => Formatter.Format(sb, (decimal?)1.5M)),
-				Append(sb => Formatter.Format(sb, (IEnumerable)new[] { 1, 2, })),
-				Append(sb => Formatter.Format(sb, new[] { 1, 2, })),
-				Append(sb => Formatter.Format(sb, new Dictionary<int, int> { [1] = 2, })),
+				Append(sb => Formatter.Format(sb, (IEnumerable)new[]
+				{
+					1, 2,
+				})),
+				Append(sb => Formatter.Format(sb, new[]
+				{
+					1, 2,
+				})),
+				Append(sb => Formatter.Format(sb, new Dictionary<int, int>
+				{
+					[1] = 2,
+				})),
 				Append(sb => Formatter.Format(sb, new KeyValuePair<int, int>(1, 2))),
 			];
 		}

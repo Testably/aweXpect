@@ -402,6 +402,56 @@ public partial class CollectionMatchOptions
 		}
 
 		/// <summary>
+		///     Searches an alternating path from the free <paramref name="root" /> expected item to a pending item and
+		///     flips it.
+		/// </summary>
+		private async ValueTask<bool> TryAugmentFromExpected(int root)
+		{
+			bool[] visited = new bool[_items.Count];
+			List<(int Expected, int Next, int Via)> path = [(root, 0, Unmatched),];
+			while (path.Count > 0)
+			{
+				(int expectedIndex, int next, _) = path[path.Count - 1];
+				int found = Unmatched;
+				for (int item = next; item < _items.Count; item++)
+				{
+					if (visited[item] || _expectedOfItem[item] == Discarded ||
+					    !(await Compare(_items[item].Index, _items[item].Value, _expected[expectedIndex])).IsMatch)
+					{
+						continue;
+					}
+
+					visited[item] = true;
+					found = item;
+					break;
+				}
+
+				if (found == Unmatched)
+				{
+					path.RemoveAt(path.Count - 1);
+					continue;
+				}
+
+				path[path.Count - 1] = (expectedIndex, found + 1, found);
+				if (_expectedOfItem[found] == Unmatched)
+				{
+					foreach ((int pathExpected, _, int via) in path)
+					{
+						_itemOfExpected[pathExpected] = via;
+						_expectedOfItem[via] = pathExpected;
+					}
+
+					_pendingItems.Remove(found);
+					return true;
+				}
+
+				path.Add((_expectedOfItem[found], 0, Unmatched));
+			}
+
+			return false;
+		}
+
+		/// <summary>
 		///     The indices from <c>0</c> to a count, in ascending order, from which any index can be removed in constant
 		///     time.
 		/// </summary>
@@ -480,56 +530,6 @@ public partial class CollectionMatchOptions
 
 				return indices;
 			}
-		}
-
-		/// <summary>
-		///     Searches an alternating path from the free <paramref name="root" /> expected item to a pending item and
-		///     flips it.
-		/// </summary>
-		private async ValueTask<bool> TryAugmentFromExpected(int root)
-		{
-			bool[] visited = new bool[_items.Count];
-			List<(int Expected, int Next, int Via)> path = [(root, 0, Unmatched),];
-			while (path.Count > 0)
-			{
-				(int expectedIndex, int next, _) = path[path.Count - 1];
-				int found = Unmatched;
-				for (int item = next; item < _items.Count; item++)
-				{
-					if (visited[item] || _expectedOfItem[item] == Discarded ||
-					    !(await Compare(_items[item].Index, _items[item].Value, _expected[expectedIndex])).IsMatch)
-					{
-						continue;
-					}
-
-					visited[item] = true;
-					found = item;
-					break;
-				}
-
-				if (found == Unmatched)
-				{
-					path.RemoveAt(path.Count - 1);
-					continue;
-				}
-
-				path[path.Count - 1] = (expectedIndex, found + 1, found);
-				if (_expectedOfItem[found] == Unmatched)
-				{
-					foreach ((int pathExpected, _, int via) in path)
-					{
-						_itemOfExpected[pathExpected] = via;
-						_expectedOfItem[via] = pathExpected;
-					}
-
-					_pendingItems.Remove(found);
-					return true;
-				}
-
-				path.Add((_expectedOfItem[found], 0, Unmatched));
-			}
-
-			return false;
 		}
 	}
 }

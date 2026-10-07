@@ -11,8 +11,8 @@ namespace aweXpect.Benchmarks;
 /// </summary>
 public partial class HappyCaseBenchmarks
 {
-	private readonly string[] _stringArrayExpectation = ["foo", "bar", "baz"];
-	private readonly string[] _stringArraySubject = ["foo", "bar", "baz"];
+	private readonly string[] _stringArrayExpectation = ["foo", "bar", "baz",];
+	private readonly string[] _stringArraySubject = ["foo", "bar", "baz",];
 
 	[Benchmark]
 	public async Task StringArray_aweXpect()

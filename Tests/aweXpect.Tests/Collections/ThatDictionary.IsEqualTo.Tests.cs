@@ -34,7 +34,7 @@ public sealed partial class ThatDictionary
 			{
 				IDictionary<string, int> subject = ToDictionary(["a", "b",], [1, 2,]);
 				IEnumerable<KeyValuePair<string, int>> expected =
-					Factory.GetSingleUseEnumerable<KeyValuePair<string, int>>(new("a", 1), new("b", 2));
+					Factory.GetSingleUseEnumerable<KeyValuePair<string, int>>(new KeyValuePair<string, int>("a", 1), new KeyValuePair<string, int>("b", 2));
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
@@ -238,8 +238,14 @@ public sealed partial class ThatDictionary
 			public async Task WhenTheDefaultTimeToleranceIsSet_ShouldApplyIt()
 			{
 				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
-				Dictionary<int, DateTime> subject = new() { [1] = value, };
-				Dictionary<int, DateTime> expected = new() { [1] = value.AddMilliseconds(500), };
+				Dictionary<int, DateTime> subject = new()
+				{
+					[1] = value,
+				};
+				Dictionary<int, DateTime> expected = new()
+				{
+					[1] = value.AddMilliseconds(500),
+				};
 
 				async Task Act()
 				{
@@ -256,8 +262,14 @@ public sealed partial class ThatDictionary
 			public async Task WhenTheDefaultTimeToleranceIsSet_ShouldMentionIt()
 			{
 				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
-				Dictionary<int, DateTime> subject = new() { [1] = value, };
-				Dictionary<int, DateTime> expected = new() { [1] = value.AddSeconds(2), };
+				Dictionary<int, DateTime> subject = new()
+				{
+					[1] = value,
+				};
+				Dictionary<int, DateTime> expected = new()
+				{
+					[1] = value.AddSeconds(2),
+				};
 
 				async Task Act()
 				{
@@ -326,7 +338,12 @@ public sealed partial class ThatDictionary
 			public async Task WhenSubjectIsACustomDictionaryWrapper_WithADifferentlyCasedKey_ShouldFail()
 			{
 				IReadOnlyDictionary<string, int> subject = new ThatReadOnlyDictionary.ReadOnlyOnlyDictionary<string, int>(
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "A", 1 }, });
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"A", 1
+						},
+					});
 				IDictionary<string, int> expected = ToDictionary(["a",], [1,]);
 
 				async Task Act()
@@ -348,7 +365,15 @@ public sealed partial class ThatDictionary
 			public async Task WhenSubjectIsACustomDictionaryWrapper_WithTwoDifferentlyCasedKeys_ShouldFail()
 			{
 				IReadOnlyDictionary<string, int> subject = new ThatReadOnlyDictionary.ReadOnlyOnlyDictionary<string, int>(
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "A", 1 }, { "B", 1 }, });
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"A", 1
+						},
+						{
+							"B", 1
+						},
+					});
 				IDictionary<string, int> expected = ToDictionary(["a", "b",], [1, 1,]);
 
 				async Task Act()
@@ -370,7 +395,15 @@ public sealed partial class ThatDictionary
 			public async Task WhenSubjectIsACustomDictionaryWrapper_WithTwoExpectedKeysForOneEntry_ShouldFail()
 			{
 				IReadOnlyDictionary<string, int> subject = new ThatReadOnlyDictionary.ReadOnlyOnlyDictionary<string, int>(
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, });
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+						{
+							"b", 1
+						},
+					});
 				IDictionary<string, int> expected = ToDictionary(["a", "A",], [1, 1,]);
 
 				async Task Act()
@@ -392,10 +425,16 @@ public sealed partial class ThatDictionary
 			public async Task WhenSubjectIsAReadOnlyDictionaryWrapper_ShouldUseTheComparerOfTheWrappedDictionary()
 			{
 				ReadOnlyDictionary<string, int> subject = new(
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { ["Let it be"] = 5, });
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						["Let it be"] = 5,
+					});
 
 				async Task Act()
-					=> await That(subject).IsEqualTo(new Dictionary<string, int> { ["LET IT BE"] = 5, });
+					=> await That(subject).IsEqualTo(new Dictionary<string, int>
+					{
+						["LET IT BE"] = 5,
+					});
 
 				await That(Act).DoesNotThrow()
 					.Because("IsEquivalentTo and ContainsKey use the comparer of the wrapped dictionary as well");
@@ -405,7 +444,12 @@ public sealed partial class ThatDictionary
 			public async Task WhenSubjectUsesACaseInsensitiveComparer_ShouldLookTheKeysUpThroughIt()
 			{
 				IDictionary<string, int> subject =
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, };
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+					};
 				IDictionary<string, int> expected = ToDictionary(["A",], [1,]);
 
 				async Task Act()
@@ -419,7 +463,12 @@ public sealed partial class ThatDictionary
 			public async Task WhenSubjectUsesACaseInsensitiveComparer_WithADifferentValue_ShouldFail()
 			{
 				IDictionary<string, int> subject =
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, };
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+					};
 				IDictionary<string, int> expected = ToDictionary(["A",], [2,]);
 
 				async Task Act()
@@ -440,7 +489,15 @@ public sealed partial class ThatDictionary
 			public async Task WhenSubjectUsesACaseInsensitiveComparer_WithAnAdditionalKey_ShouldFail()
 			{
 				IDictionary<string, int> subject =
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 2 }, };
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+						{
+							"b", 2
+						},
+					};
 				IDictionary<string, int> expected = ToDictionary(["A",], [1,]);
 
 				async Task Act()
@@ -462,7 +519,15 @@ public sealed partial class ThatDictionary
 			public async Task WhenSubjectUsesACaseInsensitiveComparer_WithDifferentlyCasedKeysThatStayDistinct_ShouldSucceed()
 			{
 				IDictionary<string, int> subject =
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, };
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+						{
+							"b", 1
+						},
+					};
 				IDictionary<string, int> expected = ToDictionary(["a", "B",], [1, 1,]);
 
 				async Task Act()
@@ -495,7 +560,12 @@ public sealed partial class ThatDictionary
 			public async Task WhenSubjectUsesACaseInsensitiveComparer_WithTwoKeysThatOnlyItUnifies_ShouldNotReject()
 			{
 				IDictionary<string, int> subject =
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, };
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+					};
 				List<KeyValuePair<string, int>> expected = [new("a", 1), new("A", 1),];
 
 				async Task Act()
@@ -517,7 +587,18 @@ public sealed partial class ThatDictionary
 			public async Task WhenSubjectUsesACaseInsensitiveComparer_WithTwoPairsOfExpectedKeysForTwoEntries_ShouldFail()
 			{
 				IDictionary<string, int> subject =
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, { "c", 1 }, };
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+						{
+							"b", 1
+						},
+						{
+							"c", 1
+						},
+					};
 				IDictionary<string, int> expected = ToDictionary(["a", "A", "b", "B",], [1, 1, 1, 1,]);
 
 				async Task Act()
@@ -536,7 +617,15 @@ public sealed partial class ThatDictionary
 
 			public static IEnumerable<Func<IDictionary<string, int>>> CaseInsensitiveDictionaries()
 			{
-				Dictionary<string, int> entries = new() { { "a", 1 }, { "b", 1 }, };
+				Dictionary<string, int> entries = new()
+				{
+					{
+						"a", 1
+					},
+					{
+						"b", 1
+					},
+				};
 				List<Func<IDictionary<string, int>>> dictionaries =
 				[
 					() => new Dictionary<string, int>(entries, StringComparer.OrdinalIgnoreCase),
@@ -584,8 +673,16 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenAValueDiffersInMoreThanCase_WithIgnoringCase_ShouldFail()
 			{
-				Dictionary<int, string> subject = new() { [1] = "Let It Be", [2] = "Help!", };
-				Dictionary<int, string> expected = new() { [1] = "LET IT BE", [2] = "YESTERDAY", };
+				Dictionary<int, string> subject = new()
+				{
+					[1] = "Let It Be",
+					[2] = "Help!",
+				};
+				Dictionary<int, string> expected = new()
+				{
+					[1] = "LET IT BE",
+					[2] = "YESTERDAY",
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).IgnoringCase();
@@ -607,8 +704,14 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenTheValuesDifferOnlyInCase_WithIgnoringCase_ShouldSucceed()
 			{
-				Dictionary<int, string> subject = new() { [1] = "Let It Be", };
-				Dictionary<int, string> expected = new() { [1] = "LET IT BE", };
+				Dictionary<int, string> subject = new()
+				{
+					[1] = "Let It Be",
+				};
+				Dictionary<int, string> expected = new()
+				{
+					[1] = "LET IT BE",
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).IgnoringCase();
@@ -623,8 +726,16 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenAValueLiesOutsideTheTolerance_ShouldFail()
 			{
-				Dictionary<string, double> subject = new() { ["a"] = 1.05, ["b"] = 2.2, };
-				Dictionary<string, double> expected = new() { ["a"] = 1.0, ["b"] = 2.0, };
+				Dictionary<string, double> subject = new()
+				{
+					["a"] = 1.05,
+					["b"] = 2.2,
+				};
+				Dictionary<string, double> expected = new()
+				{
+					["a"] = 1.0,
+					["b"] = 2.0,
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).Within(0.1);
@@ -643,8 +754,14 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenTheValuesLieWithinTheTolerance_ShouldSucceed()
 			{
-				Dictionary<string, DateTime> subject = new() { ["a"] = new DateTime(2024, 1, 1, 0, 0, 1), };
-				Dictionary<string, DateTime> expected = new() { ["a"] = new DateTime(2024, 1, 1), };
+				Dictionary<string, DateTime> subject = new()
+				{
+					["a"] = new DateTime(2024, 1, 1, 0, 0, 1),
+				};
+				Dictionary<string, DateTime> expected = new()
+				{
+					["a"] = new DateTime(2024, 1, 1),
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected).Within(1.Seconds());
@@ -659,12 +776,27 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task ForADictionary_ShouldBindToTheDictionaryOverload()
 			{
-				Dictionary<string, int> subject = new() { { "a", 1 }, { "b", 2 }, };
-				Dictionary<string, int> expected = new() { { "b", 2 }, { "a", 1 }, };
+				Dictionary<string, int> subject = new()
+				{
+					{
+						"a", 1
+					},
+					{
+						"b", 2
+					},
+				};
+				Dictionary<string, int> expected = new()
+				{
+					{
+						"b", 2
+					},
+					{
+						"a", 1
+					},
+				};
 
 				async Task Act()
-					=> await (ObjectEqualityWithToleranceResult<Dictionary<string, int>?, IThat<Dictionary<string, int>?>, int, int>)
-						That(subject).IsEqualTo(expected);
+					=> await That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow()
 					.Because("the compile-time result type pins the expectation to the dictionary overload");
@@ -673,8 +805,18 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task ForADictionary_ShouldKeepTheSubjectType()
 			{
-				Dictionary<string, int> subject = new() { { "a", 1 }, };
-				Dictionary<string, int> expected = new() { { "a", 1 }, };
+				Dictionary<string, int> subject = new()
+				{
+					{
+						"a", 1
+					},
+				};
+				Dictionary<string, int> expected = new()
+				{
+					{
+						"a", 1
+					},
+				};
 
 				Dictionary<string, int>? result = await That(subject).IsEqualTo(expected);
 
@@ -724,7 +866,15 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task ForASequenceOfDictionaryPairs_ShouldCompareInOrder()
 			{
-				SortedDictionary<string, int> subject = new() { { "a", 1 }, { "b", 2 }, };
+				SortedDictionary<string, int> subject = new()
+				{
+					{
+						"a", 1
+					},
+					{
+						"b", 2
+					},
+				};
 				List<KeyValuePair<string, int>> expected = [new("b", 2), new("a", 1),];
 
 				async Task Act()
@@ -738,12 +888,27 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task ForASortedDictionary_ShouldBindToTheDictionaryOverload()
 			{
-				SortedDictionary<string, int> subject = new() { { "b", 2 }, { "a", 1 }, };
-				Dictionary<string, int> expected = new() { { "a", 1 }, { "b", 2 }, };
+				SortedDictionary<string, int> subject = new()
+				{
+					{
+						"b", 2
+					},
+					{
+						"a", 1
+					},
+				};
+				Dictionary<string, int> expected = new()
+				{
+					{
+						"a", 1
+					},
+					{
+						"b", 2
+					},
+				};
 
 				async Task Act()
-					=> await (ObjectEqualityWithToleranceResult<IDictionary<string, int>?, IThat<IDictionary<string, int>?>, int, int>)
-						That(subject).IsEqualTo(expected);
+					=> await That(subject).IsEqualTo(expected);
 
 				await That(Act).DoesNotThrow()
 					.Because("a type that implements both dictionary interfaces must not become ambiguous");
@@ -752,8 +917,18 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task ForASortedDictionaryOfStrings_ShouldBindToTheStringOverload()
 			{
-				SortedDictionary<string, string> subject = new() { { "a", "foo" }, };
-				Dictionary<string, string> expected = new() { { "a", "FOO" }, };
+				SortedDictionary<string, string> subject = new()
+				{
+					{
+						"a", "foo"
+					},
+				};
+				Dictionary<string, string> expected = new()
+				{
+					{
+						"a", "FOO"
+					},
+				};
 
 				async Task Act()
 					=> await (StringEqualityResult<IDictionary<string, string?>?, IThat<IDictionary<string, string?>?>>)
@@ -806,8 +981,16 @@ public sealed partial class ThatDictionary
 			{
 				InvalidOperationException exception = new("enumeration failed");
 				IDictionary<string, int> subject =
-					new ThrowingDictionary<string, int>(exception, ThrowingMembers.Enumeration) { ["a"] = 1, ["b"] = 2, };
-				Dictionary<string, int> expected = new() { ["a"] = 1, ["b"] = 2, };
+					new ThrowingDictionary<string, int>(exception, ThrowingMembers.Enumeration)
+					{
+						["a"] = 1,
+						["b"] = 2,
+					};
+				Dictionary<string, int> expected = new()
+				{
+					["a"] = 1,
+					["b"] = 2,
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
@@ -830,9 +1013,17 @@ public sealed partial class ThatDictionary
 			{
 				InvalidOperationException exception = new("comparer failed");
 				ThrowingKeyComparer<string> comparer = new(exception);
-				Dictionary<string, int> subject = new(comparer) { ["a"] = 1, ["b"] = 2, };
+				Dictionary<string, int> subject = new(comparer)
+				{
+					["a"] = 1,
+					["b"] = 2,
+				};
 				comparer.IsArmed = true;
-				Dictionary<string, int> expected = new() { ["a"] = 1, ["b"] = 2, };
+				Dictionary<string, int> expected = new()
+				{
+					["a"] = 1,
+					["b"] = 2,
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
@@ -855,8 +1046,16 @@ public sealed partial class ThatDictionary
 			{
 				InvalidOperationException exception = new("lookup failed");
 				IDictionary<string, int> subject =
-					new ThrowingDictionary<string, int>(exception, ThrowingMembers.TryGetValue) { ["a"] = 1, ["b"] = 2, };
-				Dictionary<string, int> expected = new() { ["a"] = 1, ["b"] = 2, };
+					new ThrowingDictionary<string, int>(exception, ThrowingMembers.TryGetValue)
+					{
+						["a"] = 1,
+						["b"] = 2,
+					};
+				Dictionary<string, int> expected = new()
+				{
+					["a"] = 1,
+					["b"] = 2,
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);

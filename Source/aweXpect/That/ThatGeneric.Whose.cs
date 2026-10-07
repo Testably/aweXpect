@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Helpers;
@@ -151,7 +151,7 @@ public static partial class ThatGeneric
 
 #if NET8_0_OR_GREATER
 		// Only the interface itself, because searching the implemented interfaces is not trim-safe.
-		return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Collections.Generic.IAsyncEnumerable<>);
+		return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IAsyncEnumerable<>);
 #else
 		return false;
 #endif
@@ -175,7 +175,7 @@ public static partial class ThatGeneric
 		}
 
 		Type definition = type.GetGenericTypeDefinition();
-		return definition == typeof(System.Collections.Generic.IDictionary<,>) ||
-		       definition == typeof(System.Collections.Generic.IReadOnlyDictionary<,>);
+		return definition == typeof(IDictionary<,>) ||
+		       definition == typeof(IReadOnlyDictionary<,>);
 	}
 }

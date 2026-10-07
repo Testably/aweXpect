@@ -253,9 +253,9 @@ public partial class ValueFormatters
 			string[] results =
 			[
 				Formatter.Format((Int128)(-1)),
-				Formatter.Format((object?)new BigInteger(-2)),
+				Formatter.Format(new BigInteger(-2)),
 				Formatter.Format(UInt128.MaxValue),
-				Formatter.Format((object?)(Int128)(-4), FormattingOptions.WithType),
+				Formatter.Format((Int128)(-4), FormattingOptions.WithType),
 				Formatter.Format(new BigInteger(-5), FormattingOptions.WithType),
 			];
 

@@ -485,7 +485,7 @@ public sealed class OrNodeTests
 	public async Task ShouldNotEvaluateSecondNodeWhenFirstNodeSucceeds()
 	{
 		async Task Act()
-			=> await That(1).IsEqualTo(1).Or.Satisfies<int>(_ => throw new MyException());
+			=> await That(1).IsEqualTo(1).Or.Satisfies(_ => throw new MyException());
 
 		await That(Act).DoesNotThrow();
 	}

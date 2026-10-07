@@ -8,7 +8,6 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
-using aweXpect.Options;
 
 namespace aweXpect;
 
@@ -31,12 +30,12 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 	private int _index;
 	private IList<TItem>? _items;
 	private int _itemsCount;
+	private int _offset;
 
 	/// <summary>
 	///     The expected items in the expectation text, formatted only when the text is written.
 	/// </summary>
 	private string ExpectedText => _expectedText ??= expectedExpression ?? Formatter.Format(expectedValues);
-	private int _offset;
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
@@ -140,13 +139,6 @@ internal sealed class EndsWithConstraint<TEnumerable, TItem, TMatch>(
 {
 	private CollectionContext _collectionContext;
 
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-	{
-		_collectionContext.AppendTo(contexts);
-		base.AppendContexts(contexts);
-	}
-
 	public async ValueTask<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
@@ -198,6 +190,13 @@ internal sealed class EndsWithConstraint<TEnumerable, TItem, TMatch>(
 		return this;
 	}
 
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		_collectionContext.AppendTo(contexts);
+		base.AppendContexts(contexts);
+	}
+
 	/// <remarks>
 	///     The items of a non-generic collection are laid out by the type of the first one that is not
 	///     <see langword="null" />.
@@ -224,13 +223,6 @@ internal sealed class AsyncEndsWithConstraint<TItem, TMatch>(
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
 	private CollectionContext _collectionContext;
-
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-	{
-		_collectionContext.AppendTo(contexts);
-		base.AppendContexts(contexts);
-	}
 
 	public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -265,6 +257,13 @@ internal sealed class AsyncEndsWithConstraint<TItem, TMatch>(
 		}
 
 		return this;
+	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		_collectionContext.AppendTo(contexts);
+		base.AppendContexts(contexts);
 	}
 }
 #endif

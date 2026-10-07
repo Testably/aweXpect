@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using aweXpect.Equivalency;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -94,7 +93,7 @@ public sealed partial class ThatEnumerable
 				[
 					0,
 					1,
-					2
+					2,
 				];
 
 				async Task Act()
@@ -159,7 +158,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
 
 				async Task Act()
-					=> await That(subject).HasItem(predicate: null!);
+					=> await That(subject).HasItem(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("predicate").And
@@ -172,7 +171,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
 
 				async Task Act()
-					=> await That(subject).DoesNotHaveItem(predicate: null!);
+					=> await That(subject).DoesNotHaveItem(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("predicate").And
@@ -354,7 +353,10 @@ public sealed partial class ThatEnumerable
 			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldNotReadFurther()
 			{
 				int readItems = 0;
-				IEnumerable<int> subject = new[] { 2, 3, 4, }.Select(x =>
+				IEnumerable<int> subject = new[]
+				{
+					2, 3, 4,
+				}.Select(x =>
 				{
 					readItems++;
 					return x;
@@ -399,7 +401,7 @@ public sealed partial class ThatEnumerable
 				[
 					0,
 					1,
-					expected
+					expected,
 				];
 
 				async Task Act()
@@ -1280,7 +1282,7 @@ public sealed partial class ThatEnumerable
 			{
 				IEnumerable<int> subject = new[]
 				{
-					expected, 3, 4
+					expected, 3, 4,
 				};
 
 				async Task Act()

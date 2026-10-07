@@ -12,6 +12,22 @@ public sealed partial class ThatDelegateTests
 {
 	public sealed class EventuallyTests
 	{
+		/// <summary>
+		///     A timeout that is long enough to allow multiple check intervals, but short enough to keep the tests fast.
+		/// </summary>
+		private TimeSpan LowTimeout { get; } = TimeSpan.FromMilliseconds(500);
+
+		/// <summary>
+		///     A timeout for expectations that are expected to succeed. It has enough headroom to stay reliable on a
+		///     loaded machine, but still fails reasonably fast when the retry logic breaks.
+		/// </summary>
+		private TimeSpan SuccessTimeout { get; } = TimeSpan.FromSeconds(5);
+
+		/// <summary>
+		///     A timeout that expires after a single check interval.
+		/// </summary>
+		private TimeSpan VeryLowTimeout { get; } = TimeSpan.FromMilliseconds(50);
+
 		[Test]
 		public async Task Because_ShouldBeIncludedInTheMessage()
 		{
@@ -636,7 +652,7 @@ public sealed partial class ThatDelegateTests
 			{
 				async Task Act()
 					=> await That(() => counter.Value).Eventually()
-						.Within(System.Threading.Timeout.InfiniteTimeSpan).IsEqualTo(1)
+						.Within(Timeout.InfiniteTimeSpan).IsEqualTo(1)
 						.WithCancellation(cts.Token);
 
 				await That(Act).Throws<InconclusiveTestException>()
@@ -1185,7 +1201,7 @@ public sealed partial class ThatDelegateTests
 
 			async Task Act()
 				=> await That(() => counter.Value).Eventually()
-					.Within(System.Threading.Timeout.InfiniteTimeSpan).IsGreaterThan(3)
+					.Within(Timeout.InfiniteTimeSpan).IsGreaterThan(3)
 					.WithCancellation(cts.Token);
 
 			await That(Act).DoesNotThrow();
@@ -1199,7 +1215,7 @@ public sealed partial class ThatDelegateTests
 			Func<Task<int>> subject = () => new TaskCompletionSource<int>().Task;
 
 			async Task Act()
-				=> await That(subject).Eventually().Within(System.Threading.Timeout.InfiniteTimeSpan).IsEqualTo(1)
+				=> await That(subject).Eventually().Within(Timeout.InfiniteTimeSpan).IsEqualTo(1)
 					.WithCancellation(cts.Token);
 
 			await That(Act).Throws<InconclusiveTestException>()
@@ -1398,22 +1414,6 @@ public sealed partial class ThatDelegateTests
 				             """)
 				.Because("the tighter limit wins");
 		}
-
-		/// <summary>
-		///     A timeout that is long enough to allow multiple check intervals, but short enough to keep the tests fast.
-		/// </summary>
-		private TimeSpan LowTimeout { get; } = TimeSpan.FromMilliseconds(500);
-
-		/// <summary>
-		///     A timeout for expectations that are expected to succeed. It has enough headroom to stay reliable on a
-		///     loaded machine, but still fails reasonably fast when the retry logic breaks.
-		/// </summary>
-		private TimeSpan SuccessTimeout { get; } = TimeSpan.FromSeconds(5);
-
-		/// <summary>
-		///     A timeout that expires after a single check interval.
-		/// </summary>
-		private TimeSpan VeryLowTimeout { get; } = TimeSpan.FromMilliseconds(50);
 
 		private static int CountOccurrences(string value, string needle)
 		{

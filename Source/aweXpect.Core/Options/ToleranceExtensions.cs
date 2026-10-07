@@ -43,32 +43,32 @@ public static class ToleranceExtensions
 	/// </remarks>
 	public static TSelf Within<TSelf>(this INumberToleranceResult<TSelf, byte> result, byte tolerance)
 		where TSelf : INumberToleranceResult<TSelf, byte>
-		=> Within<TSelf, byte>(result, tolerance);
+		=> result.Within<TSelf, byte>(tolerance);
 
 	/// <inheritdoc cref="Within{TSelf}(INumberToleranceResult{TSelf, byte}, byte)" />
 	public static TSelf Within<TSelf>(this INumberToleranceResult<TSelf, sbyte> result, sbyte tolerance)
 		where TSelf : INumberToleranceResult<TSelf, sbyte>
-		=> Within<TSelf, sbyte>(result, tolerance);
+		=> result.Within<TSelf, sbyte>(tolerance);
 
 	/// <inheritdoc cref="Within{TSelf}(INumberToleranceResult{TSelf, byte}, byte)" />
 	public static TSelf Within<TSelf>(this INumberToleranceResult<TSelf, short> result, short tolerance)
 		where TSelf : INumberToleranceResult<TSelf, short>
-		=> Within<TSelf, short>(result, tolerance);
+		=> result.Within<TSelf, short>(tolerance);
 
 	/// <inheritdoc cref="Within{TSelf}(INumberToleranceResult{TSelf, byte}, byte)" />
 	public static TSelf Within<TSelf>(this INumberToleranceResult<TSelf, ushort> result, ushort tolerance)
 		where TSelf : INumberToleranceResult<TSelf, ushort>
-		=> Within<TSelf, ushort>(result, tolerance);
+		=> result.Within<TSelf, ushort>(tolerance);
 
 	/// <inheritdoc cref="Within{TSelf}(INumberToleranceResult{TSelf, byte}, byte)" />
 	public static TSelf Within<TSelf>(this INumberToleranceResult<TSelf, uint> result, uint tolerance)
 		where TSelf : INumberToleranceResult<TSelf, uint>
-		=> Within<TSelf, uint>(result, tolerance);
+		=> result.Within<TSelf, uint>(tolerance);
 
 	/// <inheritdoc cref="Within{TSelf}(INumberToleranceResult{TSelf, byte}, byte)" />
 	public static TSelf Within<TSelf>(this INumberToleranceResult<TSelf, ulong> result, ulong tolerance)
 		where TSelf : INumberToleranceResult<TSelf, ulong>
-		=> Within<TSelf, ulong>(result, tolerance);
+		=> result.Within<TSelf, ulong>(tolerance);
 
 #if NET8_0_OR_GREATER
 	/// <inheritdoc cref="Within{TSelf}(INumberToleranceResult{TSelf, byte}, byte)" />

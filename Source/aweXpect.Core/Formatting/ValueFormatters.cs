@@ -1,12 +1,12 @@
-using System;
-using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 #if NET8_0_OR_GREATER
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 #else
 using System.Globalization;
 #endif
+using System;
+using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -38,7 +38,7 @@ public static partial class ValueFormatters
 		FormattingContext? context = null)
 	{
 		StringBuilder stringBuilder = new();
-		Format(formatter, stringBuilder, value, options, context);
+		formatter.Format(stringBuilder, value, options, context);
 		return stringBuilder.ToString();
 	}
 
@@ -63,34 +63,34 @@ public static partial class ValueFormatters
 		switch (value)
 		{
 			case bool boolValue:
-				Format(formatter, stringBuilder, boolValue, options);
+				formatter.Format(stringBuilder, boolValue, options);
 				return;
 			case string stringValue:
-				Format(formatter, stringBuilder, stringValue, options);
+				formatter.Format(stringBuilder, stringValue, options);
 				return;
 			case char charValue:
-				Format(formatter, stringBuilder, charValue, options);
+				formatter.Format(stringBuilder, charValue, options);
 				return;
 			case Type typeValue:
-				Format(formatter, stringBuilder, typeValue, options);
+				formatter.Format(stringBuilder, typeValue, options);
 				return;
 			case Exception exceptionValue:
-				Format(formatter, stringBuilder, exceptionValue, options);
+				formatter.Format(stringBuilder, exceptionValue, options);
 				return;
 			case IEnumerable enumerableValue:
 				FormatEnumerable(formatter, stringBuilder, enumerableValue, options, context);
 				return;
 			case HttpStatusCode httpStatusCodeValue:
-				Format(formatter, stringBuilder, httpStatusCodeValue, options);
+				formatter.Format(stringBuilder, httpStatusCodeValue, options);
 				return;
 			case DateTime dateTimeValue:
-				Format(formatter, stringBuilder, dateTimeValue, options);
+				formatter.Format(stringBuilder, dateTimeValue, options);
 				return;
 			case DateTimeOffset dateTimeOffsetValue:
-				Format(formatter, stringBuilder, dateTimeOffsetValue, options);
+				formatter.Format(stringBuilder, dateTimeOffsetValue, options);
 				return;
 			case TimeSpan timeSpanValue:
-				Format(formatter, stringBuilder, timeSpanValue, options);
+				formatter.Format(stringBuilder, timeSpanValue, options);
 				return;
 #if NET8_0_OR_GREATER
 			case DateOnly dateOnlyValue:
@@ -101,16 +101,16 @@ public static partial class ValueFormatters
 				return;
 #endif
 			case Guid guidValue:
-				Format(formatter, stringBuilder, guidValue, options);
+				formatter.Format(stringBuilder, guidValue, options);
 				return;
 			case Enum enumValue:
-				Format(formatter, stringBuilder, enumValue, options);
+				formatter.Format(stringBuilder, enumValue, options);
 				return;
 			case double doubleValue:
-				Format(formatter, stringBuilder, doubleValue, options);
+				formatter.Format(stringBuilder, doubleValue, options);
 				return;
 			case float floatValue:
-				Format(formatter, stringBuilder, floatValue, options);
+				formatter.Format(stringBuilder, floatValue, options);
 				return;
 #if NET8_0_OR_GREATER
 			case Half halfValue:
@@ -121,37 +121,37 @@ public static partial class ValueFormatters
 				return;
 #endif
 			case decimal decimalValue:
-				Format(formatter, stringBuilder, decimalValue, options);
+				formatter.Format(stringBuilder, decimalValue, options);
 				return;
 			case int intValue:
-				Format(formatter, stringBuilder, intValue, options);
+				formatter.Format(stringBuilder, intValue, options);
 				return;
 			case uint uintValue:
-				Format(formatter, stringBuilder, uintValue, options);
+				formatter.Format(stringBuilder, uintValue, options);
 				return;
 			case long longValue:
-				Format(formatter, stringBuilder, longValue, options);
+				formatter.Format(stringBuilder, longValue, options);
 				return;
 			case ulong ulongValue:
-				Format(formatter, stringBuilder, ulongValue, options);
+				formatter.Format(stringBuilder, ulongValue, options);
 				return;
 			case byte byteValue:
-				Format(formatter, stringBuilder, byteValue, options);
+				formatter.Format(stringBuilder, byteValue, options);
 				return;
 			case sbyte sbyteValue:
-				Format(formatter, stringBuilder, sbyteValue, options);
+				formatter.Format(stringBuilder, sbyteValue, options);
 				return;
 			case short shortValue:
-				Format(formatter, stringBuilder, shortValue, options);
+				formatter.Format(stringBuilder, shortValue, options);
 				return;
 			case ushort ushortValue:
-				Format(formatter, stringBuilder, ushortValue, options);
+				formatter.Format(stringBuilder, ushortValue, options);
 				return;
 			case nint nintValue:
-				Format(formatter, stringBuilder, nintValue, options);
+				formatter.Format(stringBuilder, nintValue, options);
 				return;
 			case nuint nuintValue:
-				Format(formatter, stringBuilder, nuintValue, options);
+				formatter.Format(stringBuilder, nuintValue, options);
 				return;
 		}
 
@@ -363,7 +363,7 @@ public static partial class ValueFormatters
 			return "+∞";
 		}
 
-		if (formattedValue != numberFormat.NaNSymbol && formattedValue.IndexOfAny(['.', 'E']) < 0)
+		if (formattedValue != numberFormat.NaNSymbol && formattedValue.IndexOfAny(['.', 'E',]) < 0)
 		{
 			formattedValue += ".0";
 		}

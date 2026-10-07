@@ -24,7 +24,6 @@ public partial class CollectionMatchOptions
 	private sealed class BoundedEditDistance<T3>
 	{
 		private readonly T3[] _expectedItems;
-		private readonly int _maximumEdits;
 		private readonly List<byte[]> _rows = new();
 		private readonly int _start;
 		private readonly int _unreachable;
@@ -34,14 +33,14 @@ public partial class CollectionMatchOptions
 		{
 			_expectedItems = expectedItems;
 			// The distances are stored as bytes, which bounds the band.
-			_maximumEdits = Math.Min(maximumEdits, byte.MaxValue - 1);
-			_unreachable = _maximumEdits + 1;
-			_width = (2 * _maximumEdits) + 1;
+			MaximumEdits = Math.Min(maximumEdits, byte.MaxValue - 1);
+			_unreachable = MaximumEdits + 1;
+			_width = (2 * MaximumEdits) + 1;
 			_start = start;
 			byte[] row = CreateRow();
 			for (int offset = 0; offset < _width; offset++)
 			{
-				int expectedIndex = start - _maximumEdits + offset;
+				int expectedIndex = start - MaximumEdits + offset;
 				if (expectedIndex >= 0 && expectedIndex <= expectedItems.Length)
 				{
 					row[offset] = (byte)Math.Abs(start - expectedIndex);
@@ -54,7 +53,7 @@ public partial class CollectionMatchOptions
 		/// <summary>
 		///     The number of edits up to which the distance is computed.
 		/// </summary>
-		public int MaximumEdits => _maximumEdits;
+		public int MaximumEdits { get; }
 
 		/// <summary>
 		///     Adds the next subject item, which <paramref name="areConsideredEqual" /> receives by its index.
@@ -70,7 +69,7 @@ public partial class CollectionMatchOptions
 			int minimum = _unreachable;
 			for (int offset = 0; offset < _width; offset++)
 			{
-				int expectedIndex = subjectIndex + 1 - _maximumEdits + offset;
+				int expectedIndex = subjectIndex + 1 - MaximumEdits + offset;
 				if (expectedIndex < 0 || expectedIndex > _expectedItems.Length)
 				{
 					continue;
@@ -99,7 +98,7 @@ public partial class CollectionMatchOptions
 			}
 
 			_rows.Add(row);
-			return minimum <= _maximumEdits;
+			return minimum <= MaximumEdits;
 		}
 
 		/// <summary>
@@ -115,8 +114,8 @@ public partial class CollectionMatchOptions
 		{
 			int subjectIndex = _start + _rows.Count - 1;
 			int expectedIndex = _expectedItems.Length;
-			int finalOffset = expectedIndex - subjectIndex + _maximumEdits;
-			if (finalOffset < 0 || finalOffset >= _width || _rows[_rows.Count - 1][finalOffset] > _maximumEdits)
+			int finalOffset = expectedIndex - subjectIndex + MaximumEdits;
+			if (finalOffset < 0 || finalOffset >= _width || _rows[_rows.Count - 1][finalOffset] > MaximumEdits)
 			{
 				return null;
 			}
@@ -173,7 +172,7 @@ public partial class CollectionMatchOptions
 		{
 			byte[] row = _rows[subjectIndex - _start];
 			byte[] previous = _rows[subjectIndex - _start - 1];
-			int offset = expectedIndex - subjectIndex + _maximumEdits;
+			int offset = expectedIndex - subjectIndex + MaximumEdits;
 			if (expectedIndex > 0 && previous[offset] < _unreachable)
 			{
 				bool isEqual = await areConsideredEqual(subjectIndex - 1, _expectedItems[expectedIndex - 1]);

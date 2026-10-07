@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+
 // ReSharper disable PossibleMultipleEnumeration
 
 namespace aweXpect.Tests;

@@ -16,7 +16,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task Expectations_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
 				IEnumerable<Action<IThat<int>>> expected =
 					Factory.GetSingleUseEnumerable<Action<IThat<int>>>(a => a.IsEqualTo(2), a => a.IsEqualTo(4));
 
@@ -41,7 +41,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task Predicates_WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
 				IEnumerable<Expression<Func<int, bool>>> expected =
 					Factory.GetSingleUseEnumerable<Expression<Func<int, bool>>>(a => a == 2, a => a == 4);
 
@@ -100,7 +100,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
 				IEnumerable<int> expected = Factory.GetSingleUseEnumerable(2, 4);
 
 				async Task Act()
@@ -124,7 +124,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WhenUnexpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
 				IEnumerable<int> unexpected = Factory.GetSingleUseEnumerable(2, 3);
 
 				async Task Act()

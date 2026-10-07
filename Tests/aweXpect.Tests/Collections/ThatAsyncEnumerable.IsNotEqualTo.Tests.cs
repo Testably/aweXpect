@@ -104,7 +104,10 @@ public sealed partial class ThatAsyncEnumerable
 			{
 				IAsyncEnumerable<int>? subject = null;
 
-				IAsyncEnumerable<int>? result = await That(subject).IsNotEqualTo(new[] { 1, });
+				IAsyncEnumerable<int>? result = await That(subject).IsNotEqualTo(new[]
+				{
+					1,
+				});
 
 				await That(result).IsNull();
 			}

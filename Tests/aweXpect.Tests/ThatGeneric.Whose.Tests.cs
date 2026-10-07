@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
 #endif
-using System.Diagnostics;
-using System.Threading;
 
 namespace aweXpect.Tests;
 
@@ -178,7 +178,7 @@ public sealed partial class ThatGeneric
 				};
 
 				async Task Act()
-					=> await That(subject).Whose(async (MyClass o) => await o.GetValueAsync(), v => v.IsEqualTo(2));
+					=> await That(subject).Whose(async o => await o.GetValueAsync(), v => v.IsEqualTo(2));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -1592,7 +1592,7 @@ public sealed partial class ThatGeneric
 			[Test]
 			public async Task WhenNestedMemberOfSingleItemIsNull_ShouldFail()
 			{
-				Container[] subject = [new Container(),];
+				Container[] subject = [new(),];
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it =>
@@ -1609,7 +1609,7 @@ public sealed partial class ThatGeneric
 			[Test]
 			public async Task WhenNestedMemberOfSingleItemAfterAndIsNull_ShouldFail()
 			{
-				Container[] subject = [new Container(),];
+				Container[] subject = [new(),];
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsNotEmpty().And.HasSingle().Which
@@ -1632,7 +1632,7 @@ public sealed partial class ThatGeneric
 			[Test]
 			public async Task WhenNestedMemberOfSingleItemAfterOrIsNull_ShouldFail()
 			{
-				Container[] subject = [new Container(),];
+				Container[] subject = [new(),];
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsEmpty().Or.HasSingle().Which
@@ -1739,6 +1739,29 @@ public sealed partial class ThatGeneric
 					             """).AsWildcard();
 			}
 
+			private sealed class Container
+			{
+				public Inner? In { get; set; }
+				public string? Name { get; set; }
+			}
+
+			private sealed class Lists
+			{
+				public List<int>? Items { get; set; }
+#if NET8_0_OR_GREATER
+				public ImmutableArray<int> Array { get; set; }
+#endif
+			}
+
+			private sealed class Inner
+			{
+				public string? Name { get; set; }
+				public Inner? Other { get; set; }
+#pragma warning disable CA1822 // the tests access this member through the subject
+				public Inner Next => throw new InvalidOperationException("next failed");
+#pragma warning restore CA1822
+			}
+
 #if NET8_0_OR_GREATER
 			[Test]
 			public async Task WhenImmutableArrayMemberAfterIsIsDefault_ShouldFail()
@@ -1776,29 +1799,6 @@ public sealed partial class ThatGeneric
 					.Because("a default ImmutableArray is not equal to a collection, like a null collection");
 			}
 #endif
-
-			private sealed class Container
-			{
-				public Inner? In { get; set; }
-				public string? Name { get; set; }
-			}
-
-			private sealed class Lists
-			{
-				public List<int>? Items { get; set; }
-#if NET8_0_OR_GREATER
-				public ImmutableArray<int> Array { get; set; }
-#endif
-			}
-
-			private sealed class Inner
-			{
-				public string? Name { get; set; }
-				public Inner? Other { get; set; }
-#pragma warning disable CA1822 // the tests access this member through the subject
-				public Inner Next => throw new InvalidOperationException("next failed");
-#pragma warning restore CA1822
-			}
 		}
 	}
 }

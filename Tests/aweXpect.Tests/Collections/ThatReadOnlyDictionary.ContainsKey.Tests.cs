@@ -215,7 +215,11 @@ public sealed partial class ThatReadOnlyDictionary
 			{
 				InvalidOperationException exception = new("count failed");
 				IReadOnlyDictionary<string, int> subject = new ReadOnlyOnlyDictionary<string, int>(
-					new ThrowingDictionary<string, int>(exception, ThrowingMembers.Count) { ["a"] = 1, ["b"] = 2, });
+					new ThrowingDictionary<string, int>(exception, ThrowingMembers.Count)
+					{
+						["a"] = 1,
+						["b"] = 2,
+					});
 
 				async Task Act()
 					=> await That(subject).ContainsKey("x");
@@ -234,7 +238,11 @@ public sealed partial class ThatReadOnlyDictionary
 				InvalidOperationException exception = new("comparer failed");
 				ThrowingKeyComparer<string> comparer = new(exception);
 				IReadOnlyDictionary<string, int> subject = new ReadOnlyOnlyDictionary<string, int>(
-					new Dictionary<string, int>(comparer) { ["a"] = 1, ["b"] = 2, });
+					new Dictionary<string, int>(comparer)
+					{
+						["a"] = 1,
+						["b"] = 2,
+					});
 				comparer.IsArmed = true;
 
 				async Task Act()
@@ -258,7 +266,11 @@ public sealed partial class ThatReadOnlyDictionary
 			{
 				InvalidOperationException exception = new("lookup failed");
 				IReadOnlyDictionary<string, int> subject = new ReadOnlyOnlyDictionary<string, int>(
-					new ThrowingDictionary<string, int>(exception, ThrowingMembers.ContainsKey) { ["a"] = 1, ["b"] = 2, });
+					new ThrowingDictionary<string, int>(exception, ThrowingMembers.ContainsKey)
+					{
+						["a"] = 1,
+						["b"] = 2,
+					});
 
 				async Task Act()
 					=> await That(subject).ContainsKey("a");

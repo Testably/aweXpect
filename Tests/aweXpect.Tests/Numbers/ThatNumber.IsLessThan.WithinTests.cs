@@ -289,39 +289,6 @@ public sealed partial class ThatNumber
 					.Because("adding a tolerance to negative infinity leaves negative infinity, which is not less than itself");
 			}
 
-#if NET8_0_OR_GREATER
-			[Test]
-			public async Task ForHalf_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldSucceed()
-			{
-				Half subject = Half.MaxValue;
-				Half expected = Half.MinValue;
-
-				async Task Act()
-					=> await That(subject).IsLessThan(expected).Within(Half.PositiveInfinity);
-
-				await That(Act).DoesNotThrow()
-					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
-			}
-
-			[Test]
-			public async Task ForHalf_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldFail()
-			{
-				Half subject = Half.MaxValue;
-				Half expected = Half.MinValue;
-
-				async Task Act()
-					=> await That(subject).IsLessThan(expected).Within(Half.MaxValue);
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is less than Half.MinValue ± Half.MaxValue,
-					             but it was Half.MaxValue, which differs by 131008.0
-					             """)
-					.Because("a distance that is not representable exceeds every finite tolerance");
-			}
-#endif
-
 			[Test]
 			[Arguments(5, 5)]
 			[Arguments(5, 6)]
@@ -406,6 +373,121 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
+			[Test]
+			[Arguments(5, 5)]
+			[Arguments(5, 6)]
+			public async Task ForNullableInt_WhenInsideTolerance_ShouldSucceed(
+				int? subject, int? expected)
+			{
+				async Task Act()
+					=> await That(subject).IsLessThan(expected).Within(1);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task ForNullableInt_WhenSubjectIsNull_ShouldFail()
+			{
+				int? subject = null;
+				int? expected = 5;
+
+				async Task Act()
+					=> await That(subject).IsLessThan(expected).Within(1);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is less than 5 ± 1,
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
+			public async Task ForSByte_WhenDifferenceWouldOverflow_ShouldFailWithoutThrowing()
+			{
+				sbyte subject = sbyte.MaxValue;
+				sbyte expected = sbyte.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsLessThan(expected).Within(1);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is less than -128 ± 1,
+					             but it was 127, which differs by 255
+					             """)
+					.Because("the difference must not overflow the range of sbyte");
+			}
+
+			[Test]
+			public async Task WhenToleranceIsNotSet_ShouldUseStrictInequality()
+			{
+				int subject = 5;
+				int expected = 5;
+
+				async Task Act()
+					=> await That(subject).IsLessThan(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is less than 5,
+					             but it was 5
+					             """);
+			}
+
+			[Test]
+			public async Task WhenToleranceIsZero_ShouldUseStrictInequality()
+			{
+				int subject = 5;
+				int expected = 5;
+
+				async Task Act()
+					=> await That(subject).IsLessThan(expected).Within(0);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is less than 5 ± 0,
+					             but it was 5
+					             """)
+					.Because("a tolerance widens the bound, but does not make the comparison inclusive");
+			}
+
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task ForHalf_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldSucceed()
+			{
+				Half subject = Half.MaxValue;
+				Half expected = Half.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsLessThan(expected).Within(Half.PositiveInfinity);
+
+				await That(Act).DoesNotThrow()
+					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
+			}
+
+			[Test]
+			public async Task ForHalf_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldFail()
+			{
+				Half subject = Half.MaxValue;
+				Half expected = Half.MinValue;
+
+				async Task Act()
+					=> await That(subject).IsLessThan(expected).Within(Half.MaxValue);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is less than Half.MinValue ± Half.MaxValue,
+					             but it was Half.MaxValue, which differs by 131008.0
+					             """)
+					.Because("a distance that is not representable exceeds every finite tolerance");
+			}
+#endif
+
 #if NET8_0_OR_GREATER
 			[Test]
 			public async Task ForNFloat_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldSucceed()
@@ -456,88 +538,6 @@ public sealed partial class ThatNumber
 					.Because("adding a tolerance to negative infinity leaves negative infinity, which is not less than itself");
 			}
 #endif
-
-			[Test]
-			[Arguments(5, 5)]
-			[Arguments(5, 6)]
-			public async Task ForNullableInt_WhenInsideTolerance_ShouldSucceed(
-				int? subject, int? expected)
-			{
-				async Task Act()
-					=> await That(subject).IsLessThan(expected).Within(1);
-
-				await That(Act).DoesNotThrow();
-			}
-
-			[Test]
-			public async Task ForNullableInt_WhenSubjectIsNull_ShouldFail()
-			{
-				int? subject = null;
-				int? expected = 5;
-
-				async Task Act()
-					=> await That(subject).IsLessThan(expected).Within(1);
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is less than 5 ± 1,
-					             but it was <null>
-					             """);
-			}
-
-			[Test]
-			public async Task ForSByte_WhenDifferenceWouldOverflow_ShouldFailWithoutThrowing()
-			{
-				sbyte subject = sbyte.MaxValue;
-				sbyte expected = sbyte.MinValue;
-
-				async Task Act()
-					=> await That(subject).IsLessThan(expected).Within((sbyte)1);
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is less than -128 ± 1,
-					             but it was 127, which differs by 255
-					             """)
-					.Because("the difference must not overflow the range of sbyte");
-			}
-
-			[Test]
-			public async Task WhenToleranceIsNotSet_ShouldUseStrictInequality()
-			{
-				int subject = 5;
-				int expected = 5;
-
-				async Task Act()
-					=> await That(subject).IsLessThan(expected);
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is less than 5,
-					             but it was 5
-					             """);
-			}
-
-			[Test]
-			public async Task WhenToleranceIsZero_ShouldUseStrictInequality()
-			{
-				int subject = 5;
-				int expected = 5;
-
-				async Task Act()
-					=> await That(subject).IsLessThan(expected).Within(0);
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is less than 5 ± 0,
-					             but it was 5
-					             """)
-					.Because("a tolerance widens the bound, but does not make the comparison inclusive");
-			}
 		}
 	}
 }

@@ -222,7 +222,10 @@ public sealed partial class ThatNumber
 			public async Task ForDouble_WhenNonFiniteValuesDiffer_ShouldSucceed(
 				double subject, double unexpectedValue, double tolerance)
 			{
-				double[] unexpected = { unexpectedValue, };
+				double[] unexpected =
+				{
+					unexpectedValue,
+				};
 				double? nullableSubject = subject;
 
 				async Task Act()
@@ -258,7 +261,10 @@ public sealed partial class ThatNumber
 			public async Task ForDouble_WhenSubjectIsTheSameNonFiniteValue_ShouldFail(
 				double value, double tolerance)
 			{
-				double[] unexpected = { value, };
+				double[] unexpected =
+				{
+					value,
+				};
 				double? nullableSubject = value;
 
 				async Task Act()
@@ -395,7 +401,10 @@ public sealed partial class ThatNumber
 			public async Task ForFloat_WhenNonFiniteValuesDiffer_ShouldSucceed(
 				float subject, float unexpectedValue, float tolerance)
 			{
-				float[] unexpected = { unexpectedValue, };
+				float[] unexpected =
+				{
+					unexpectedValue,
+				};
 				float? nullableSubject = subject;
 
 				async Task Act()
@@ -431,7 +440,10 @@ public sealed partial class ThatNumber
 			public async Task ForFloat_WhenSubjectIsTheSameNonFiniteValue_ShouldFail(
 				float value, float tolerance)
 			{
-				float[] unexpected = { value, };
+				float[] unexpected =
+				{
+					value,
+				};
 				float? nullableSubject = value;
 
 				async Task Act()
@@ -539,7 +551,10 @@ public sealed partial class ThatNumber
 			{
 				Half subject = (Half)subjectValue;
 				Half tolerance = (Half)toleranceValue;
-				Half[] unexpected = { (Half)unexpectedValue, };
+				Half[] unexpected =
+				{
+					(Half)unexpectedValue,
+				};
 				Half? nullableSubject = subject;
 
 				async Task Act()
@@ -567,7 +582,10 @@ public sealed partial class ThatNumber
 			{
 				Half subject = (Half)value;
 				Half tolerance = (Half)toleranceValue;
-				Half[] unexpected = { subject, };
+				Half[] unexpected =
+				{
+					subject,
+				};
 				Half? nullableSubject = subject;
 
 				async Task Act()

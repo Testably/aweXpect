@@ -10,7 +10,12 @@ public class CastingEnumerableTests
 	[Test]
 	public async Task Count_WhenSourceIsACollection_ShouldBeItsCount()
 	{
-		CastingEnumerable<int, int?> enumerable = new(new List<int> { 1, 2, 3, });
+		CastingEnumerable<int, int?> enumerable = new(new List<int>
+		{
+			1,
+			2,
+			3,
+		});
 
 		await That(enumerable.Count).IsEqualTo(3);
 	}
@@ -84,6 +89,14 @@ public class CastingEnumerableTests
 			.Because("a missing source is rejected right away, as Enumerable.Cast does");
 	}
 
+	private static IEnumerable<T> ToEnumerable<T>(T[] items)
+	{
+		foreach (T item in items)
+		{
+			yield return item;
+		}
+	}
+
 	private sealed class ReadOnlyItems(params int[] values) : IReadOnlyCollection<int>
 	{
 		public int Count => values.Length;
@@ -91,13 +104,5 @@ public class CastingEnumerableTests
 		public IEnumerator<int> GetEnumerator() => ((IEnumerable<int>)values).GetEnumerator();
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-	}
-
-	private static IEnumerable<T> ToEnumerable<T>(T[] items)
-	{
-		foreach (T item in items)
-		{
-			yield return item;
-		}
 	}
 }

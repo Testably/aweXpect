@@ -736,7 +736,7 @@ public sealed partial class ThatNumber
 					              """);
 			}
 		}
-		
+
 		public sealed class NegatedTests
 		{
 			[Test]
@@ -744,7 +744,7 @@ public sealed partial class ThatNumber
 			public async Task ForInt_WhenValueIsGreaterThanZero_ShouldFail(int subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => 
+					=> await That(subject).DoesNotComplyWith(it =>
 						it.IsPositive());
 
 				await That(Act).Throws<FailException>()
@@ -761,18 +761,18 @@ public sealed partial class ThatNumber
 			public async Task ForInt_WhenValueIsLessThanOrEqualToZero_ShouldSucceed(int subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => 
+					=> await That(subject).DoesNotComplyWith(it =>
 						it.IsPositive());
 
 				await That(Act).DoesNotThrow();
 			}
-			
+
 			[Test]
 			[Arguments(1)]
 			public async Task ForNullableInt_WhenValueIsGreaterThanZero_ShouldFail(int? subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => 
+					=> await That(subject).DoesNotComplyWith(it =>
 						it.IsPositive());
 
 				await That(Act).Throws<FailException>()
@@ -790,7 +790,7 @@ public sealed partial class ThatNumber
 				int? subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => 
+					=> await That(subject).DoesNotComplyWith(it =>
 						it.IsPositive());
 
 				await That(Act).DoesNotThrow();

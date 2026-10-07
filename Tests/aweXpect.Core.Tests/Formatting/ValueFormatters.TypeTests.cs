@@ -10,6 +10,110 @@ public partial class ValueFormatters
 {
 	public sealed class TypeTests
 	{
+		public static IEnumerable<(Type, string)> SimpleTypes
+			=>
+			[
+				(
+					typeof(int), "int"
+				),
+				(
+					typeof(int?), "int?"
+				),
+				(
+					typeof(uint), "uint"
+				),
+				(
+					typeof(uint?), "uint?"
+				),
+				(
+					typeof(nint), "nint"
+				),
+				(
+					typeof(nint?), "nint?"
+				),
+				(
+					typeof(nuint), "nuint"
+				),
+				(
+					typeof(nuint?), "nuint?"
+				),
+				(
+					typeof(byte), "byte"
+				),
+				(
+					typeof(byte?), "byte?"
+				),
+				(
+					typeof(sbyte), "sbyte"
+				),
+				(
+					typeof(sbyte?), "sbyte?"
+				),
+				(
+					typeof(short), "short"
+				),
+				(
+					typeof(short?), "short?"
+				),
+				(
+					typeof(ushort), "ushort"
+				),
+				(
+					typeof(ushort?), "ushort?"
+				),
+				(
+					typeof(long), "long"
+				),
+				(
+					typeof(long?), "long?"
+				),
+				(
+					typeof(ulong), "ulong"
+				),
+				(
+					typeof(ulong?), "ulong?"
+				),
+				(
+					typeof(float), "float"
+				),
+				(
+					typeof(float?), "float?"
+				),
+				(
+					typeof(double), "double"
+				),
+				(
+					typeof(double?), "double?"
+				),
+				(
+					typeof(decimal), "decimal"
+				),
+				(
+					typeof(decimal?), "decimal?"
+				),
+				(
+					typeof(string), "string"
+				),
+				(
+					typeof(object), "object"
+				),
+				(
+					typeof(bool), "bool"
+				),
+				(
+					typeof(bool?), "bool?"
+				),
+				(
+					typeof(char), "char"
+				),
+				(
+					typeof(char?), "char?"
+				),
+				(
+					typeof(void), "void"
+				),
+			];
+
 		[Test]
 		public async Task NestedGenericTypeInGenericTypes_ShouldIncludeTheDeclaringTypeAndName()
 		{
@@ -348,6 +452,12 @@ public partial class ValueFormatters
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
+		// ReSharper disable once UnusedParameter.Local
+		private static void DummyMethodToGetSpecialTypes<TParameter>(TParameter value)
+		{
+			// This method is only used to get a void return type and generic parameter types.
+		}
+
 		// ReSharper disable once UnusedTypeParameter
 		private class NestedGenericType<T>
 		{
@@ -358,115 +468,5 @@ public partial class ValueFormatters
 				public sealed class InnerGenericClass<T1>;
 			}
 		}
-
-		// ReSharper disable once UnusedParameter.Local
-		private static void DummyMethodToGetSpecialTypes<TParameter>(TParameter value)
-		{
-			// This method is only used to get a void return type and generic parameter types.
-		}
-
-		public static IEnumerable<(Type, string)> SimpleTypes
-			=>
-			[
-				(
-					typeof(int), "int"
-				),
-				(
-					typeof(int?), "int?"
-				),
-				(
-					typeof(uint), "uint"
-				),
-				(
-					typeof(uint?), "uint?"
-				),
-				(
-					typeof(nint), "nint"
-				),
-				(
-					typeof(nint?), "nint?"
-				),
-				(
-					typeof(nuint), "nuint"
-				),
-				(
-					typeof(nuint?), "nuint?"
-				),
-				(
-					typeof(byte), "byte"
-				),
-				(
-					typeof(byte?), "byte?"
-				),
-				(
-					typeof(sbyte), "sbyte"
-				),
-				(
-					typeof(sbyte?), "sbyte?"
-				),
-				(
-					typeof(short), "short"
-				),
-				(
-					typeof(short?), "short?"
-				),
-				(
-					typeof(ushort), "ushort"
-				),
-				(
-					typeof(ushort?), "ushort?"
-				),
-				(
-					typeof(long), "long"
-				),
-				(
-					typeof(long?), "long?"
-				),
-				(
-					typeof(ulong), "ulong"
-				),
-				(
-					typeof(ulong?), "ulong?"
-				),
-				(
-					typeof(float), "float"
-				),
-				(
-					typeof(float?), "float?"
-				),
-				(
-					typeof(double), "double"
-				),
-				(
-					typeof(double?), "double?"
-				),
-				(
-					typeof(decimal), "decimal"
-				),
-				(
-					typeof(decimal?), "decimal?"
-				),
-				(
-					typeof(string), "string"
-				),
-				(
-					typeof(object), "object"
-				),
-				(
-					typeof(bool), "bool"
-				),
-				(
-					typeof(bool?), "bool?"
-				),
-				(
-					typeof(char), "char"
-				),
-				(
-					typeof(char?), "char?"
-				),
-				(
-					typeof(void), "void"
-				),
-			];
 	}
 }

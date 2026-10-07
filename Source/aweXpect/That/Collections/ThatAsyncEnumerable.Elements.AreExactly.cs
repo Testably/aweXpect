@@ -1,5 +1,4 @@
 ﻿#if NET8_0_OR_GREATER
-using System;
 using System.Collections.Generic;
 using aweXpect.Core;
 using aweXpect.Helpers;
@@ -33,7 +32,7 @@ public static partial class ThatAsyncEnumerable
 		///     …are exactly of type <paramref name="type" />.
 		/// </summary>
 		public AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
-			AreExactly(Type type)
+			AreExactly(System.Type type)
 		{
 			type.ThrowIfNull();
 			ExpectationBuilder expectationBuilder = _subject.Get().ExpectationBuilder;

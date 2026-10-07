@@ -88,7 +88,10 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenAllMembersAreDuplicatedIgnoringCase_ShouldSucceed()
 				{
-					IEnumerable subject = new[] { "a", "A", "b", "B", };
+					IEnumerable subject = new[]
+					{
+						"a", "A", "b", "B",
+					};
 
 					async Task Act()
 						=> await That(subject).All().AreNotUnique(x => (string)x!).IgnoringCase();
@@ -99,7 +102,10 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenSomeMembersAreUnique_ShouldFail()
 				{
-					IEnumerable subject = new[] { "a", "A", "b", "b", };
+					IEnumerable subject = new[]
+					{
+						"a", "A", "b", "b",
+					};
 
 					async Task Act()
 						=> await That(subject).All().AreNotUnique(x => (string)x!);

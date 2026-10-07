@@ -233,7 +233,12 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task ForASortedDictionary_ShouldNotBeAmbiguous()
 			{
-				SortedDictionary<string, int> subject = new() { { "a", 1 }, };
+				SortedDictionary<string, int> subject = new()
+				{
+					{
+						"a", 1
+					},
+				};
 
 				async Task Act()
 					=> await That(subject).Values.Contains(1);

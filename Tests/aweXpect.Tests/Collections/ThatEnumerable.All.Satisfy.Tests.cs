@@ -94,7 +94,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenEnumerableIsEmpty_ShouldSucceed()
 				{
-					IEnumerable<int> subject = ToEnumerable((int[]) []);
+					IEnumerable<int> subject = ToEnumerable((int[])[]);
 
 					async Task Act()
 						=> await That(subject).All().Satisfy(x => x == 0);
@@ -302,7 +302,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenEnumerableIsEmpty_ShouldSucceed()
 				{
-					IEnumerable<string> subject = ToEnumerable((string[]) []);
+					IEnumerable<string> subject = ToEnumerable((string[])[]);
 
 					async Task Act()
 						=> await That(subject).All().Satisfy(x => x == "");
@@ -368,7 +368,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenEnumerableIsEmpty_ShouldFail()
 				{
-					IEnumerable<int> subject = ToEnumerable((int[]) []);
+					IEnumerable<int> subject = ToEnumerable((int[])[]);
 
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it =>
@@ -461,7 +461,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenEnumerableIsEmpty_ShouldFail()
 				{
-					IEnumerable<string> subject = ToEnumerable((string[]) []);
+					IEnumerable<string> subject = ToEnumerable((string[])[]);
 
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it =>

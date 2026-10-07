@@ -7,6 +7,7 @@ using aweXpect.Options;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
 using System.Runtime.CompilerServices;
+
 #else
 using System;
 using aweXpect.SourceGenerators;
@@ -25,7 +26,7 @@ public static partial class ThatNumber
 		params TNumber?[] expected)
 		where TNumber : struct, INumber<TNumber>
 	{
-		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(negated: false);
+		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(false);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((ExpectedValues: expectedValues, Options: options),
@@ -44,7 +45,7 @@ public static partial class ThatNumber
 		params TNumber?[] expected)
 		where TNumber : struct, INumber<TNumber>
 	{
-		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(negated: false);
+		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(false);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((ExpectedValues: expectedValues, Options: options),
@@ -64,7 +65,7 @@ public static partial class ThatNumber
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where TNumber : struct, INumber<TNumber>
 	{
-		IEnumerable<TNumber> expectedValues = expected.ToNonEmptyValues(negated: false);
+		IEnumerable<TNumber> expectedValues = expected.ToNonEmptyValues(false);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
@@ -85,7 +86,7 @@ public static partial class ThatNumber
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where TNumber : struct, INumber<TNumber>
 	{
-		IEnumerable<TNumber> expectedValues = expected.ToNonEmptyValues(negated: false);
+		IEnumerable<TNumber> expectedValues = expected.ToNonEmptyValues(false);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
@@ -106,7 +107,7 @@ public static partial class ThatNumber
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where TNumber : struct, INumber<TNumber>
 	{
-		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(negated: false);
+		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(false);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
@@ -127,7 +128,7 @@ public static partial class ThatNumber
 		[CallerArgumentExpression("expected")] string doNotPopulateThisValue = "")
 		where TNumber : struct, INumber<TNumber>
 	{
-		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(negated: false);
+		IEnumerable<TNumber?> expectedValues = expected.ToNonEmptyValues(false);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
@@ -147,7 +148,7 @@ public static partial class ThatNumber
 		params TNumber?[] unexpected)
 		where TNumber : struct, INumber<TNumber>
 	{
-		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(negated: true);
+		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(true);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint((UnexpectedValues: unexpectedValues, Options: options),
@@ -166,13 +167,13 @@ public static partial class ThatNumber
 		params TNumber?[] unexpected)
 		where TNumber : struct, INumber<TNumber>
 	{
-		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(negated: true);
+		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(true);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((UnexpectedValues: unexpectedValues, Options: options),
 				static (state, it, grammars) =>
 					new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, state.UnexpectedValues,
-						null, state.Options)
+							null, state.Options)
 						.Invert()),
 			subject,
 			options);
@@ -188,14 +189,14 @@ public static partial class ThatNumber
 		string doNotPopulateThisValue = "")
 		where TNumber : struct, INumber<TNumber>
 	{
-		IEnumerable<TNumber> unexpectedValues = unexpected.ToNonEmptyValues(negated: true);
+		IEnumerable<TNumber> unexpectedValues = unexpected.ToNonEmptyValues(true);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(UnexpectedValues: unexpectedValues, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
 				static (state, it, grammars) =>
 					new IsOneOfConstraint<TNumber>(it, grammars, state.UnexpectedValues,
-						state.DoNotPopulateThisValue, state.Options)
+							state.DoNotPopulateThisValue, state.Options)
 						.Invert()),
 			subject,
 			options);
@@ -211,14 +212,14 @@ public static partial class ThatNumber
 		string doNotPopulateThisValue = "")
 		where TNumber : struct, INumber<TNumber>
 	{
-		IEnumerable<TNumber> unexpectedValues = unexpected.ToNonEmptyValues(negated: true);
+		IEnumerable<TNumber> unexpectedValues = unexpected.ToNonEmptyValues(true);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(UnexpectedValues: unexpectedValues, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
 				static (state, it, grammars) =>
 					new NullableIsOneOfConstraint<TNumber>(it, grammars, state.UnexpectedValues,
-						state.DoNotPopulateThisValue, state.Options)
+							state.DoNotPopulateThisValue, state.Options)
 						.Invert()),
 			subject,
 			options);
@@ -234,14 +235,14 @@ public static partial class ThatNumber
 		string doNotPopulateThisValue = "")
 		where TNumber : struct, INumber<TNumber>
 	{
-		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(negated: true);
+		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(true);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NumberToleranceResult<TNumber, IThat<TNumber>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(UnexpectedValues: unexpectedValues, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
 				static (state, it, grammars) =>
 					new IsOneOfConstraintWithNullable<TNumber>(it, grammars, state.UnexpectedValues,
-						state.DoNotPopulateThisValue, state.Options)
+							state.DoNotPopulateThisValue, state.Options)
 						.Invert()),
 			subject,
 			options);
@@ -257,14 +258,14 @@ public static partial class ThatNumber
 		string doNotPopulateThisValue = "")
 		where TNumber : struct, INumber<TNumber>
 	{
-		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(negated: true);
+		IEnumerable<TNumber?> unexpectedValues = unexpected.ToNonEmptyValues(true);
 		NumberTolerance<TNumber> options = new(CalculateDifference);
 		return new NullableNumberToleranceResult<TNumber, IThat<TNumber?>>(
 			subject.Get().ExpectationBuilder.AddConstraint(
 				(UnexpectedValues: unexpectedValues, DoNotPopulateThisValue: doNotPopulateThisValue, Options: options),
 				static (state, it, grammars) =>
 					new NullableIsOneOfConstraintWithNullable<TNumber>(it, grammars, state.UnexpectedValues,
-						state.DoNotPopulateThisValue, state.Options)
+							state.DoNotPopulateThisValue, state.Options)
 						.Invert()),
 			subject,
 			options);
@@ -280,10 +281,6 @@ public static partial class ThatNumber
 			IValueConstraint<TNumber>
 		where TNumber : struct, INumber<TNumber>
 	{
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
-
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
@@ -292,6 +289,10 @@ public static partial class ThatNumber
 				: Outcome.Failure;
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -328,10 +329,6 @@ public static partial class ThatNumber
 			IValueConstraint<TNumber?>
 		where TNumber : struct, INumber<TNumber>
 	{
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
-
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
@@ -340,6 +337,10 @@ public static partial class ThatNumber
 				: Outcome.Failure;
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -376,10 +377,6 @@ public static partial class ThatNumber
 			IValueConstraint<TNumber>
 		where TNumber : struct, INumber<TNumber>
 	{
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
-
 		public ConstraintResult IsMetBy(TNumber actual)
 		{
 			Actual = actual;
@@ -388,6 +385,10 @@ public static partial class ThatNumber
 				: Outcome.Failure;
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -424,10 +425,6 @@ public static partial class ThatNumber
 			IValueConstraint<TNumber?>
 		where TNumber : struct, INumber<TNumber>
 	{
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
-
 		public ConstraintResult IsMetBy(TNumber? actual)
 		{
 			Actual = actual;
@@ -436,6 +433,10 @@ public static partial class ThatNumber
 				: Outcome.Failure;
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

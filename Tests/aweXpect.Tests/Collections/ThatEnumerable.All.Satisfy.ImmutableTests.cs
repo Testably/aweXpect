@@ -60,7 +60,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenItemsAreOfAReferenceType_ShouldHandThemOutAsNotNullable()
 				{
-					ImmutableArray<Version> subject = [new Version(1, 2), new Version(1, 3),];
+					ImmutableArray<Version> subject = [new(1, 2), new(1, 3),];
 
 					async Task Act()
 						=> await That(subject).All().Satisfy(x => x.Major == 1);

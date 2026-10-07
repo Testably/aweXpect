@@ -43,7 +43,7 @@ public sealed partial class ThatVersion
 			public async Task WhenSubjectIsContained_ShouldSucceed()
 			{
 				Version? subject = new(1, 2);
-				IEnumerable<Version?> expected = [new Version(1, 3), new Version(1, 2),];
+				IEnumerable<Version?> expected = [new(1, 3), new(1, 2),];
 
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -71,7 +71,7 @@ public sealed partial class ThatVersion
 			public async Task WhenSubjectIsNullAndExpectedContainsNull_ShouldSucceed()
 			{
 				Version? subject = null;
-				IEnumerable<Version?> expected = [new Version(1, 3), null,];
+				IEnumerable<Version?> expected = [new(1, 3), null,];
 
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -83,7 +83,7 @@ public sealed partial class ThatVersion
 			public async Task WhenSubjectIsNullAndExpectedDoesNotContainNull_ShouldFail()
 			{
 				Version? subject = null;
-				IEnumerable<Version?> expected = [new Version(1, 3),];
+				IEnumerable<Version?> expected = [new(1, 3),];
 
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -103,7 +103,7 @@ public sealed partial class ThatVersion
 			public async Task WhenSubjectOmitsAComponentOfExpected_ShouldFail()
 			{
 				Version? subject = new(1, 2);
-				IEnumerable<Version?> expected = [new Version(1, 2, 0), new Version(1, 2, 0, 0),];
+				IEnumerable<Version?> expected = [new(1, 2, 0), new(1, 2, 0, 0),];
 
 				async Task Act()
 					=> await That(subject).IsOneOf(expected);
@@ -127,7 +127,7 @@ public sealed partial class ThatVersion
 			public async Task WhenSubjectIsContained_ShouldFail()
 			{
 				Version? subject = new(1, 2);
-				IEnumerable<Version?> expected = [new Version(1, 3), new Version(1, 2),];
+				IEnumerable<Version?> expected = [new(1, 3), new(1, 2),];
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(expected));
@@ -147,7 +147,7 @@ public sealed partial class ThatVersion
 			public async Task WhenSubjectIsDifferent_ShouldSucceed()
 			{
 				Version? subject = new(1, 2);
-				IEnumerable<Version?> expected = [new Version(1, 3),];
+				IEnumerable<Version?> expected = [new(1, 3),];
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.IsOneOf(expected));

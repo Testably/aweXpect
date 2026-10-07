@@ -2,6 +2,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
+using System.Reflection.PortableExecutable;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
@@ -174,7 +177,7 @@ internal static partial class SnippetCompiler
 		Dictionary<string, string> paths = new(StringComparer.OrdinalIgnoreCase);
 #if NETFRAMEWORK
 		foreach (string path in Directory.GetFiles(
-			         System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory(), "*.dll")
+			         RuntimeEnvironment.GetRuntimeDirectory(), "*.dll")
 			         .Concat(Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.dll")))
 		{
 			if (IsManaged(path))
@@ -204,9 +207,9 @@ internal static partial class SnippetCompiler
 		try
 		{
 			using FileStream stream = File.OpenRead(path);
-			using System.Reflection.PortableExecutable.PEReader reader = new(stream);
+			using PEReader reader = new(stream);
 			return reader.HasMetadata &&
-			       System.Reflection.Metadata.PEReaderExtensions.GetMetadataReader(reader).IsAssembly;
+			       PEReaderExtensions.GetMetadataReader(reader).IsAssembly;
 		}
 		catch (BadImageFormatException)
 		{

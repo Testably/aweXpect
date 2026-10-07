@@ -135,7 +135,11 @@ public sealed partial class ThatEnumerable
 			public async Task WhenExpectedIsANonGenericCollection_ShouldUseItsItemsAsExpectedCollection()
 			{
 				IEnumerable subject = ToEnumerable([1, 2, 3,]);
-				ArrayList expected = new() { 1, 3, };
+				ArrayList expected = new()
+				{
+					1,
+					3,
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(expected);
@@ -162,7 +166,11 @@ public sealed partial class ThatEnumerable
 			public async Task WhenExpectedIsANonGenericCollectionInAnyOrder_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable([1, 2, 3,]);
-				ArrayList expected = new() { 3, 2, };
+				ArrayList expected = new()
+				{
+					3,
+					2,
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(expected).InAnyOrder();
@@ -188,7 +196,11 @@ public sealed partial class ThatEnumerable
 			public async Task WhenExpectedIsANonGenericCollectionWithAllItemsAndProperly_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2,]);
-				ArrayList expected = new() { 1, 2, };
+				ArrayList expected = new()
+				{
+					1,
+					2,
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(expected).Properly();
@@ -214,7 +226,11 @@ public sealed partial class ThatEnumerable
 			public async Task WhenExpectedIsANonGenericCollectionWithInterspersedItems_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable([1, 2, 3,]);
-				ArrayList expected = new() { 1, 3, };
+				ArrayList expected = new()
+				{
+					1,
+					3,
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(expected).IgnoringInterspersedItems();

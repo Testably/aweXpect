@@ -348,7 +348,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithSubsetStartingInsideTheAbandonedPartialMatch_ShouldFail()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 1, 1, 2,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 1, 1, 2);
 				int[] expected = [1, 1, 2,];
 
 				async Task Act()

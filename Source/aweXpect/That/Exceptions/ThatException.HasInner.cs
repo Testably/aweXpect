@@ -17,7 +17,7 @@ public static partial class ThatException
 		Action<IThatSubject<Exception?>> expectations)
 	{
 		expectations.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder
+		return new AndOrResult<Exception, IThat<Exception?>>(subject.Get().ExpectationBuilder
 				.ForMember<Exception, Exception?>(e => e.InnerException,
 					" that ",
 					false)
@@ -49,7 +49,7 @@ public static partial class ThatException
 		where TInnerException : Exception?
 	{
 		expectations.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder
+		return new AndOrResult<Exception, IThat<Exception?>>(subject.Get().ExpectationBuilder
 				.ForMember<Exception?, Exception?>(e => e?.InnerException,
 					" that ",
 					false)
@@ -83,7 +83,7 @@ public static partial class ThatException
 	{
 		type.ThrowIfNotAnExceptionType();
 		expectations.ThrowIfNull();
-		return new(subject.Get().ExpectationBuilder
+		return new AndOrResult<Exception, IThat<Exception?>>(subject.Get().ExpectationBuilder
 				// An inner exception of another type is hidden like a missing one, as the type mismatch already fails.
 				.ForMember<Exception?, Exception?>(
 					e => e?.InnerException is { } inner && type.IsOrImplements(inner) ? inner : null,
@@ -105,7 +105,7 @@ public static partial class ThatException
 		Type type)
 	{
 		type.ThrowIfNotAnExceptionType();
-		return new(subject.Get().ExpectationBuilder.AddConstraint(type, static (innerExceptionType, it, grammars)
+		return new AndOrResult<Exception, IThat<Exception?>>(subject.Get().ExpectationBuilder.AddConstraint(type, static (innerExceptionType, it, grammars)
 				=> new HasInnerExceptionValueConstraint(innerExceptionType, it, grammars)),
 			subject);
 	}

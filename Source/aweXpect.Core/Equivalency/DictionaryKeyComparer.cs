@@ -13,6 +13,12 @@ namespace aweXpect.Equivalency;
 /// </summary>
 internal abstract class DictionaryKeyComparer
 {
+	/// <remarks>
+	///     A reader holds no state, so the one created by reflection is kept per dictionary interface, as every compared
+	///     dictionary of an unregistered type would otherwise create it again.
+	/// </remarks>
+	private static readonly ConcurrentDictionary<Type, DictionaryKeyComparer> CreatedReaders = new();
+
 	/// <summary>
 	///     Returns an <see cref="IEqualityComparer{T}" /> or an <see cref="IComparer{T}" /> of <see cref="object" /> that
 	///     decides like the key comparer of the <paramref name="dictionary" />, or <see langword="null" /> when that
@@ -54,12 +60,6 @@ internal abstract class DictionaryKeyComparer
 		CreatedReaders.TryAdd(dictionaryInterface, created);
 		return created;
 	}
-
-	/// <remarks>
-	///     A reader holds no state, so the one created by reflection is kept per dictionary interface, as every compared
-	///     dictionary of an unregistered type would otherwise create it again.
-	/// </remarks>
-	private static readonly ConcurrentDictionary<Type, DictionaryKeyComparer> CreatedReaders = new();
 
 	/// <summary>
 	///     Creates the reader for dictionaries with the given type arguments.

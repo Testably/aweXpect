@@ -237,8 +237,8 @@ public class AndOrWhoseResultTests
 
 		async Task Act()
 			=> await That(sut).Is<MyClass>()
-				.Whose(memberAccessor: f => f.Value1, expectations: f => f.IsFalse())
-				.AndWhose(memberAccessor: f => f.Value2, expectations: f => f.IsFalse());
+				.Whose(f => f.Value1, f => f.IsFalse())
+				.AndWhose(f => f.Value2, f => f.IsFalse());
 
 		await That(Act).DoesNotThrow();
 	}
@@ -646,7 +646,7 @@ public class AndOrWhoseResultTests
 
 		async Task Act()
 			=> await That(sut).Is<MyClass>()
-				.Whose((f) => f.Value1, f => f.IsTrue());
+				.Whose(f => f.Value1, f => f.IsTrue());
 
 		await That(Act).Throws()
 			.WithMessage("""

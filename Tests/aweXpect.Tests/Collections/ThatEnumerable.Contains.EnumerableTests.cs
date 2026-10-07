@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using aweXpect.Core;
 
@@ -353,7 +352,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenExpectedIsANullString_ShouldMatchTheNullItem()
 			{
-				IEnumerable subject = new ArrayList { "a", null, };
+				IEnumerable subject = new ArrayList
+				{
+					"a",
+					null,
+				};
 				string? expected = null;
 
 				async Task Act()
@@ -378,7 +381,12 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenExpectedIsNullLiteral_ShouldMatchTheNullItem()
 			{
-				IEnumerable subject = new ArrayList { 1, "a", null, };
+				IEnumerable subject = new ArrayList
+				{
+					1,
+					"a",
+					null,
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(null).Once();
@@ -390,7 +398,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenExpectedIsNullLiteral_WithoutANullItem_ShouldFail()
 			{
-				ArrayList subject = new() { 1, "a", };
+				ArrayList subject = new()
+				{
+					1,
+					"a",
+				};
 
 				async Task Act()
 					=> await That(subject).Contains(null);

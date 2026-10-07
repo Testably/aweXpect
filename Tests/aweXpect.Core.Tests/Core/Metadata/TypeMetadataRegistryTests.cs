@@ -195,7 +195,13 @@ public sealed class TypeMetadataRegistryTests
 
 		TypeMetadataRegistry.Instance.TryGet(typeof(ISet<Batched>), out TypeMetadataRegistry.TypeMetadata? metadata);
 		Func<object?, object?, bool>? itemComparer = metadata?.ItemComparer?.Read(set);
-		await That(itemComparer?.Invoke(new Batched { Value = 1, }, new Batched { Value = 1, })).IsTrue()
+		await That(itemComparer?.Invoke(new Batched
+			{
+				Value = 1,
+			}, new Batched
+			{
+				Value = 1,
+			})).IsTrue()
 			.Because("the comparison finds the reader through the set interface the runtime type implements");
 	}
 

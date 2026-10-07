@@ -332,7 +332,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithDeviationFollowedByMatchingItems_ShouldOnlyReportTheUnexpectedItem()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 4, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 4, 3);
 				int[] expected = [1, 2, 3,];
 
 				async Task Act()
@@ -595,7 +595,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithRunAfterAbandonedPartialMatch_ShouldSucceed()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2);
 				int[] expected = [1, 3, 1, 2,];
 
 				async Task Act()
@@ -1577,7 +1577,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithManyMissingItems_ShouldSucceed()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1);
 				int[] expected = [..Enumerable.Range(100, 25), 1,];
 
 				async Task Act()
@@ -1589,7 +1589,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithManyMissingItemsAndAdditionalItem_ShouldFail()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2);
 				int[] expected = [..Enumerable.Range(100, 25), 1,];
 
 				async Task Act()
@@ -2002,7 +2002,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithManyMissingItems_ShouldSucceed()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1);
 				int[] expected = [..Enumerable.Range(100, 25), 1,];
 
 				async Task Act()
@@ -2014,7 +2014,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithManyMissingItemsAndAdditionalItem_ShouldFail()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2);
 				int[] expected = [..Enumerable.Range(100, 25), 1,];
 
 				async Task Act()
@@ -3462,7 +3462,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithManyMissingItems_ShouldSucceed()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1);
 				int[] expected = [..Enumerable.Range(100, 25), 1,];
 
 				async Task Act()
@@ -3994,7 +3994,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithManyMissingItems_ShouldSucceed()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1);
 				int[] expected = [..Enumerable.Range(100, 25), 1,];
 
 				async Task Act()
@@ -4073,7 +4073,7 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WhenCombinedWithInAnyOrder_ShouldThrowInvalidOperationException(bool inAnyOrderFirst,
 				bool negated)
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 3);
 				int[] expected = [1, 2, 3,];
 
 				async Task Act()

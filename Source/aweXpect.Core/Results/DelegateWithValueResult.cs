@@ -14,7 +14,6 @@ namespace aweXpect.Results;
 public class DelegateWithValueResult<T>(ExpectationBuilder expectationBuilder)
 	: ExpectationResult<T>(expectationBuilder)
 {
-
 	/// <summary>
 	///     Returns the result returned from the delegate.
 	/// </summary>

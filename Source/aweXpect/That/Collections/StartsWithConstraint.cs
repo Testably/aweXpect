@@ -8,7 +8,6 @@ using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
-using aweXpect.Options;
 
 namespace aweXpect;
 
@@ -28,7 +27,6 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 	private string? _expectedText;
 	private TItem? _firstMismatchItem;
 	private bool _foundMismatch;
-	private int _index;
 
 	/// <summary>
 	///     The expected items in the expectation text, formatted only when the text is written.
@@ -38,7 +36,7 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 	/// <summary>
 	///     The number of items that were compared.
 	/// </summary>
-	protected int Count => _index;
+	protected int Count { get; private set; }
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
@@ -51,7 +49,7 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 	{
 		_firstMismatchItem = default;
 		_foundMismatch = false;
-		_index = 0;
+		Count = 0;
 	}
 
 	/// <summary>
@@ -59,7 +57,7 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 	/// </summary>
 	protected ValueTask<bool> MatchesNext(TItem item)
 	{
-		TMatch expectedItem = expected[_index++];
+		TMatch expectedItem = expected[Count++];
 		return CollectionItems<TItem>.TryCast(item, out TMatch matchedItem)
 			? options.AreConsideredEqual(matchedItem, expectedItem)
 			: new ValueTask<bool>(false);
@@ -78,7 +76,7 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 			return Outcome.Failure;
 		}
 
-		return expected.Length == _index ? Outcome.Success : null;
+		return expected.Length == Count ? Outcome.Success : null;
 	}
 
 	/// <summary>
@@ -98,14 +96,14 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 		{
 			stringBuilder.Append(It).Append(" contained item ");
 			Formatter.Format(stringBuilder, _firstMismatchItem);
-			stringBuilder.Append(" at index ").Append(_index - 1).Append(" instead of ");
-			stringBuilder.AppendExpectedItem(expected[_index - 1], options);
+			stringBuilder.Append(" at index ").Append(Count - 1).Append(" instead of ");
+			stringBuilder.AppendExpectedItem(expected[Count - 1], options);
 		}
 		else
 		{
-			stringBuilder.Append(It).Append(" contained only ").AppendItemCount(_index).Append(" and lacked ")
-				.AppendItemCount(expected.Length - _index).Append(": ");
-			Formatter.Format(stringBuilder, expected.Skip(_index), FormattingOptions.MultipleLines);
+			stringBuilder.Append(It).Append(" contained only ").AppendItemCount(Count).Append(" and lacked ")
+				.AppendItemCount(expected.Length - Count).Append(": ");
+			Formatter.Format(stringBuilder, expected.Skip(Count), FormattingOptions.MultipleLines);
 		}
 	}
 
@@ -138,13 +136,6 @@ internal sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>(
 {
 	private CollectionContext _collectionContext;
 	private IEnumerable<TItem>? _items;
-
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-	{
-		_collectionContext.AppendTo(contexts);
-		base.AppendContexts(contexts);
-	}
 
 	public async ValueTask<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -193,6 +184,13 @@ internal sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>(
 		return this;
 	}
 
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		_collectionContext.AppendTo(contexts);
+		base.AppendContexts(contexts);
+	}
+
 	/// <remarks>
 	///     The items of a non-generic collection are laid out by the type of the first one that is not
 	///     <see langword="null" />.
@@ -221,13 +219,6 @@ internal sealed class AsyncStartsWithConstraint<TItem, TMatch>(
 {
 	private readonly List<TItem> _foundValues = [];
 	private CollectionContext _collectionContext;
-
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-	{
-		_collectionContext.AppendTo(contexts);
-		base.AppendContexts(contexts);
-	}
 
 	public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -272,6 +263,13 @@ internal sealed class AsyncStartsWithConstraint<TItem, TMatch>(
 		_collectionContext.Set(materializedEnumerable as IMaterializedAsyncEnumerable<TItem>);
 		Outcome = Outcome.Failure;
 		return this;
+	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		_collectionContext.AppendTo(contexts);
+		base.AppendContexts(contexts);
 	}
 
 	protected override void AppendMatchingItems(StringBuilder stringBuilder)

@@ -61,7 +61,8 @@ public static partial class ThatObject
 		this IThat<TSubject> subject,
 		[RequiresMemberMetadata] TExpected unexpected,
 		Func<EquivalencyOptions<TExpected>, EquivalencyOptions>? options = null,
-		[CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "")
+		[CallerArgumentExpression("unexpected")]
+		string doNotPopulateThisValue = "")
 	{
 		ExpectationBuilder expectationBuilder = subject.Get().ExpectationBuilder;
 		EquivalencyOptions equivalencyOptions = Customize.aweXpect.Equivalency().DefaultEquivalencyOptions.Get();
@@ -92,6 +93,7 @@ public static partial class ThatObject
 		this IThat<TSubject> subject,
 		[RequiresMemberMetadata] object? unexpected,
 		Func<EquivalencyOptions<object?>, EquivalencyOptions>? options = null,
-		[CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "")
+		[CallerArgumentExpression("unexpected")]
+		string doNotPopulateThisValue = "")
 		=> subject.IsNotEquivalentTo<TSubject, object?>(unexpected, options, doNotPopulateThisValue);
 }

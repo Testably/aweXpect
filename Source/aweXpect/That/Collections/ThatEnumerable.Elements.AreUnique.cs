@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Helpers;
-using aweXpect.Options;
 using aweXpect.Results;
+using StringEqualityOptions = aweXpect.Options.StringEqualityOptions;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -87,7 +86,7 @@ public static partial class ThatEnumerable
 							it, grammars,
 							state.Quantifier,
 							a => a,
-							memberAccessorExpression: null,
+							null,
 							state.Options,
 							state.ExpectUnique,
 							itemOptions);
@@ -218,7 +217,7 @@ public static partial class ThatEnumerable
 							it, grammars,
 							state.Quantifier,
 							a => a,
-							memberAccessorExpression: null,
+							null,
 							state.Options,
 							state.ExpectUnique,
 							itemOptions);
@@ -349,7 +348,7 @@ public static partial class ThatEnumerable
 							it, grammars,
 							state.Quantifier,
 							a => a,
-							memberAccessorExpression: null,
+							null,
 							state.Options,
 							state.ExpectUnique,
 							itemOptions);
@@ -467,7 +466,7 @@ public static partial class ThatEnumerable
 							it, grammars,
 							state.Quantifier,
 							a => (TItem)a!,
-							memberAccessorExpression: null,
+							null,
 							state.Options,
 							state.ExpectUnique)),
 				_subject,
@@ -583,7 +582,7 @@ public static partial class ThatEnumerable
 							it, grammars,
 							state.Quantifier,
 							a => (string?)a,
-							memberAccessorExpression: null,
+							null,
 							state.Options,
 							state.ExpectUnique)),
 				_subject,

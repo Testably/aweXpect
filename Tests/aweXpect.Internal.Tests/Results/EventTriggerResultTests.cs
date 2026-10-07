@@ -207,6 +207,22 @@ public sealed class EventTriggerResultTests
 			             """);
 	}
 
+	private static EventTriggerResult<T> CreateSut<T>(T subject, Quantifier quantifier, RepeatedCheckOptions options,
+		TriggerEventFilter? filter = null)
+		where T : notnull
+	{
+		RecordingFactory<T> recording = new(subject, nameof(subject));
+		filter ??= new TriggerEventFilter();
+#pragma warning disable aweXpect0001
+		IThat<IEventRecording<T>> source = That(recording.Events());
+#pragma warning restore aweXpect0001
+		return new EventTriggerResult<T>(source.Get().ExpectationBuilder,
+			source,
+			filter,
+			quantifier,
+			options);
+	}
+
 	private sealed class CustomEventWithParametersClass<T1>
 	{
 		public delegate void CustomEventDelegate(T1 arg1);
@@ -225,21 +241,5 @@ public sealed class EventTriggerResultTests
 
 		public void NotifyCustomEvent(T1 arg1, T2 arg2, T3 arg3)
 			=> CustomEvent?.Invoke(arg1, arg2, arg3);
-	}
-
-	private static EventTriggerResult<T> CreateSut<T>(T subject, Quantifier quantifier, RepeatedCheckOptions options,
-		TriggerEventFilter? filter = null)
-		where T : notnull
-	{
-		RecordingFactory<T> recording = new(subject, nameof(subject));
-		filter ??= new TriggerEventFilter();
-#pragma warning disable aweXpect0001
-		IThat<IEventRecording<T>> source = That(recording.Events());
-#pragma warning restore aweXpect0001
-		return new EventTriggerResult<T>(source.Get().ExpectationBuilder,
-			source,
-			filter,
-			quantifier,
-			options);
 	}
 }

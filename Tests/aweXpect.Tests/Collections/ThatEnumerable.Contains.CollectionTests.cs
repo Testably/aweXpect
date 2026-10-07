@@ -661,7 +661,10 @@ public sealed partial class ThatEnumerable
 			public async Task WithSubsetAfterMoreThan20ItemsThatBreakAPartialMatch_ShouldSucceed()
 			{
 				IEnumerable<int> subject =
-					ToEnumerable(new[] { 1, }.Concat(Enumerable.Repeat(0, 21)).Concat(Enumerable.Range(1, 30)).ToArray());
+					ToEnumerable(new[]
+					{
+						1,
+					}.Concat(Enumerable.Repeat(0, 21)).Concat(Enumerable.Range(1, 30)).ToArray());
 
 				async Task Act()
 					=> await That(subject).Contains(Enumerable.Range(1, 30));

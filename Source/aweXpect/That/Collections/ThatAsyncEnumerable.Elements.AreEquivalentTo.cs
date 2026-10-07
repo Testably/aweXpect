@@ -7,7 +7,6 @@ using aweXpect.Core.Metadata;
 using aweXpect.Customization;
 using aweXpect.Equivalency;
 using aweXpect.Helpers;
-using aweXpect.Options;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -31,7 +30,7 @@ public static partial class ThatAsyncEnumerable
 				equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 			}
 
-			ObjectEqualityOptions<TItem> equalityOptions = new();
+			Options.ObjectEqualityOptions<TItem> equalityOptions = new();
 			equalityOptions.Equivalent(equivalencyOptions);
 			return new ObjectEqualityResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem>(
 				expectationBuilder.AddConstraint(

@@ -33,7 +33,7 @@ public sealed class OptionInferenceTests
 		byte[] subject = [5,];
 
 		async Task Act()
-			=> await That(subject).Contains((byte)6).Within(1);
+			=> await That(subject).Contains(6).Within(1);
 
 		await That(Act).DoesNotThrow()
 			.Because("an int literal converts to a byte only as a constant, so a dedicated overload takes it");
@@ -78,7 +78,10 @@ public sealed class OptionInferenceTests
 		double[] subject = [1.0,];
 
 		async Task Act()
-			=> await That(subject).IsEqualTo(new[] { 1.5, }).Within(1);
+			=> await That(subject).IsEqualTo(new[]
+			{
+				1.5,
+			}).Within(1);
 
 		await That(Act).DoesNotThrow();
 	}

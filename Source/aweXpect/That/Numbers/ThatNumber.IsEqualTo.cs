@@ -1,10 +1,10 @@
-﻿using System;
-using aweXpect.Core;
+﻿using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
 #if !NET8_0_OR_GREATER
+using System;
 using aweXpect.SourceGenerators;
 #endif
 

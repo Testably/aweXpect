@@ -15,15 +15,14 @@ namespace aweXpect;
 ///     The verification of the items at the index by the item expectations and the texts of <c>HasItemThat</c>, shared
 ///     by the synchronous and the asynchronous collections.
 /// </summary>
-internal abstract class HasItemThatConstraintBase<TValue, TItem> :
-	ConstraintResult.WithNotNullValue<TValue>,
+internal abstract class HasItemThatConstraintBase<TValue, TItem> : ConstraintResult.WithNotNullValue<TValue>,
 	IExpectationTextConstraint
 {
 	private readonly ManualExpectationBuilder<TItem> _itemExpectationBuilder;
 	private TItem? _actual;
 	private bool _hasIndex;
-	private ConstraintResult? _itemResult;
 	private int _itemIndex;
+	private ConstraintResult? _itemResult;
 	private ConstraintResult? _unansweredItem;
 
 	protected HasItemThatConstraintBase(string it,
@@ -188,13 +187,6 @@ internal sealed class HasItemThatConstraint<TEnumerable, TItem>(
 {
 	private CollectionContext _collectionContext;
 
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-	{
-		_collectionContext.AppendTo(contexts);
-		AppendItemContexts(contexts);
-	}
-
 	public async ValueTask<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
@@ -238,6 +230,13 @@ internal sealed class HasItemThatConstraint<TEnumerable, TItem>(
 
 		return this;
 	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		_collectionContext.AppendTo(contexts);
+		AppendItemContexts(contexts);
+	}
 }
 
 #if NET8_0_OR_GREATER
@@ -250,13 +249,6 @@ internal sealed class AsyncHasItemThatConstraint<TItem>(
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
 	private CollectionContext _collectionContext;
-
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-	{
-		_collectionContext.AppendTo(contexts);
-		AppendItemContexts(contexts);
-	}
 
 	public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -299,6 +291,13 @@ internal sealed class AsyncHasItemThatConstraint<TItem>(
 		}
 
 		return this;
+	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		_collectionContext.AppendTo(contexts);
+		AppendItemContexts(contexts);
 	}
 }
 #endif

@@ -140,6 +140,23 @@ internal static class TimeDifferenceHelpers
 		IEnumerable<decimal?> differenceTicks)
 		=> stringBuilder.AppendTimeDifference(GetSmallest(differenceTicks), "the closest value");
 
+	private static decimal? GetSmallest(IEnumerable<decimal?> differences)
+	{
+		decimal? smallest = null;
+		foreach (decimal? difference in differences)
+		{
+			if (difference is not null && (smallest is null || Math.Abs(difference.Value) < Math.Abs(smallest.Value)))
+			{
+				smallest = difference;
+			}
+		}
+
+		return smallest;
+	}
+
+	private static StringBuilder AppendReference(this StringBuilder stringBuilder, string? reference)
+		=> reference is null ? stringBuilder : stringBuilder.Append(" from ").Append(reference);
+
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Appends the shorter difference around the clock face between <paramref name="actual" /> and
@@ -179,21 +196,4 @@ internal static class TimeDifferenceHelpers
 			: stringBuilder.AppendTimeDifference(afterMaximum, "the maximum");
 	}
 #endif
-
-	private static decimal? GetSmallest(IEnumerable<decimal?> differences)
-	{
-		decimal? smallest = null;
-		foreach (decimal? difference in differences)
-		{
-			if (difference is not null && (smallest is null || Math.Abs(difference.Value) < Math.Abs(smallest.Value)))
-			{
-				smallest = difference;
-			}
-		}
-
-		return smallest;
-	}
-
-	private static StringBuilder AppendReference(this StringBuilder stringBuilder, string? reference)
-		=> reference is null ? stringBuilder : stringBuilder.Append(" from ").Append(reference);
 }

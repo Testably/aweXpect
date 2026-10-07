@@ -14,7 +14,6 @@ public class IsUtf8SpanParsableResult<TType>(
 	: AndOrResult<SpanWrapper<byte>, IThat<SpanWrapper<byte>>>(expectationBuilder, subject)
 	where TType : IUtf8SpanParsable<TType>
 {
-
 	/// <summary>
 	///     Gives access to the parsed value.
 	/// </summary>

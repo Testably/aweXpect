@@ -101,7 +101,7 @@ public partial class ValueFormatters
 			string result = Formatter.Format(value);
 			string objectResult = Formatter.Format((object?)value);
 			string memberResult = Formatter.Format(new Holder(value), FormattingOptions.SingleLine);
-			string nonGenericResult = Formatter.Format((object?)nonGeneric);
+			string nonGenericResult = Formatter.Format(nonGeneric);
 
 			await That(result).IsEqualTo("{CUSTOM(1)}");
 			await That(objectResult).IsEqualTo("{CUSTOM(1)}")
@@ -159,7 +159,7 @@ public partial class ValueFormatters
 			StringBuilder sb = new();
 
 			string result = Formatter.Format(value);
-			string objectResult = Formatter.Format((object?)value);
+			string objectResult = Formatter.Format(value);
 			Formatter.Format(sb, value);
 
 			await That(result).IsEqualTo(expectedResult);

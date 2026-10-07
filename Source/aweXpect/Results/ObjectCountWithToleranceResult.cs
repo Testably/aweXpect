@@ -23,12 +23,12 @@ public class ObjectCountWithToleranceResult<TType, TThat, TElement, TTolerance>(
 			TElement, TTolerance>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
-
-	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	ObjectEqualityOptions<TElement> IOptionsProvider<ObjectEqualityOptions<TElement>>.Options => options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	ObjectEqualityWithToleranceOptions<TElement, TTolerance>
 		IOptionsProvider<ObjectEqualityWithToleranceOptions<TElement, TTolerance>>.Options => options;
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
 }

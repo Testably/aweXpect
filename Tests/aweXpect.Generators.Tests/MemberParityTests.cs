@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -48,7 +47,7 @@ public sealed partial class MemberParityTests
 	];
 
 	private static readonly Lazy<GeneratorRunner.GeneratorResult> Result = new(()
-		=> GeneratorRunner.Run([Corpus(), Attributes(),]));
+		=> GeneratorRunner.Run([GeneratorRunner.CorpusSource(), Attributes(),]));
 
 	/// <remarks>
 	///     A compared type usually lives in the assembly under test, whose non-public members Roslyn does not import
@@ -56,18 +55,7 @@ public sealed partial class MemberParityTests
 	/// </remarks>
 	private static readonly Lazy<GeneratorRunner.GeneratorResult> LibraryResult = new(()
 		=> GeneratorRunner.Run([Attributes(),],
-			additionalReferences: GeneratorRunner.CompileToReference("Corpus", Corpus())));
-
-	private static string Corpus()
-	{
-		using Stream stream = typeof(MemberParityTests).Assembly.GetManifestResourceStream("Corpus.cs")!;
-		using StreamReader reader = new(stream);
-		return reader.ReadToEnd();
-	}
-
-	private static string Attributes()
-		=> string.Join(Environment.NewLine, CorpusTypes.Select(x
-			=> $"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof({x.Name}))]"));
+			additionalReferences: GeneratorRunner.CompileToReference("Corpus", GeneratorRunner.CorpusSource())));
 
 	public static IEnumerable<(Type, string)> Types
 	{
@@ -82,6 +70,10 @@ public sealed partial class MemberParityTests
 			return data;
 		}
 	}
+
+	private static string Attributes()
+		=> string.Join(Environment.NewLine, CorpusTypes.Select(x
+			=> $"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof({x.Name}))]"));
 
 	[Test]
 	public async Task GeneratedRegistrations_ShouldCompileWithoutWarnings()
@@ -99,28 +91,6 @@ public sealed partial class MemberParityTests
 		await That(LibraryResult.Value.Warnings).IsEmpty();
 		await That(LibraryResult.Value.GeneratorDiagnostics).IsEmpty();
 	}
-
-#if DEBUG
-	[Test]
-	[MethodDataSource(nameof(Types))]
-	public async Task RegisteredExplicitProperties_ShouldMatchReflection(Type type, string key)
-	{
-		Dictionary<string, HashSet<string>> registrations = ParseExplicit(Result.Value.Generated);
-
-		await That(registrations[key]).IsEqualTo(ReflectedExplicitProperties(type)).InAnyOrder()
-			.Because("the comparison falls back to the explicit implementations, so a registration that differs would match a different member under AOT");
-	}
-
-	[Test]
-	[MethodDataSource(nameof(Types))]
-	public async Task RegisteredExplicitProperties_WhenCorpusIsReferenced_ShouldMatchReflection(Type type, string key)
-	{
-		Dictionary<string, HashSet<string>> registrations = ParseExplicit(LibraryResult.Value.Generated);
-
-		await That(registrations[key]).IsEqualTo(ReflectedExplicitProperties(type)).InAnyOrder()
-			.Because("an explicit implementation is private, which the default import of a referenced assembly could leave out");
-	}
-#endif
 
 	[Test]
 	[MethodDataSource(nameof(Types))]
@@ -177,6 +147,55 @@ public sealed partial class MemberParityTests
 		return property.GetMethod;
 	}
 
+	private static Dictionary<string, HashSet<string>> Parse(string generated)
+	{
+		Dictionary<string, HashSet<string>> result = new(StringComparer.Ordinal);
+		HashSet<string>? current = null;
+		foreach (string rawLine in generated.Split('\n'))
+		{
+			string line = rawLine.TrimEnd('\r').TrimStart('\t');
+			if (line.StartsWith("// global::", StringComparison.Ordinal) || line.StartsWith("// (", StringComparison.Ordinal))
+			{
+				current = [];
+				result[line.Substring(3)] = current;
+				continue;
+			}
+
+			Match match = Registration().Match(line);
+			if (match.Success && current is not null)
+			{
+				current.Add((match.Groups[1].Value == "Field" ? "F:" : "P:") + match.Groups[2].Value);
+			}
+		}
+
+		return result;
+	}
+
+	[GeneratedRegex("\\.Register(Field|Property)(?:<.*>)?\\((?:probe, )?\"(\\w+)\"")]
+	private static partial Regex Registration();
+
+#if DEBUG
+	[Test]
+	[MethodDataSource(nameof(Types))]
+	public async Task RegisteredExplicitProperties_ShouldMatchReflection(Type type, string key)
+	{
+		Dictionary<string, HashSet<string>> registrations = ParseExplicit(Result.Value.Generated);
+
+		await That(registrations[key]).IsEqualTo(ReflectedExplicitProperties(type)).InAnyOrder()
+			.Because("the comparison falls back to the explicit implementations, so a registration that differs would match a different member under AOT");
+	}
+
+	[Test]
+	[MethodDataSource(nameof(Types))]
+	public async Task RegisteredExplicitProperties_WhenCorpusIsReferenced_ShouldMatchReflection(Type type, string key)
+	{
+		Dictionary<string, HashSet<string>> registrations = ParseExplicit(LibraryResult.Value.Generated);
+
+		await That(registrations[key]).IsEqualTo(ReflectedExplicitProperties(type)).InAnyOrder()
+			.Because("an explicit implementation is private, which the default import of a referenced assembly could leave out");
+	}
+#endif
+
 #if DEBUG
 	/// <remarks>
 	///     The oracle is what <c>IncludeMembersExtensions.GetExplicitProperties</c> reflects over: the readable private
@@ -224,31 +243,4 @@ public sealed partial class MemberParityTests
 	[GeneratedRegex("\\.RegisterExplicitProperty<.*>\\(\"([^\"]+)\"")]
 	private static partial Regex ExplicitRegistration();
 #endif
-
-	private static Dictionary<string, HashSet<string>> Parse(string generated)
-	{
-		Dictionary<string, HashSet<string>> result = new(StringComparer.Ordinal);
-		HashSet<string>? current = null;
-		foreach (string rawLine in generated.Split('\n'))
-		{
-			string line = rawLine.TrimEnd('\r').TrimStart('\t');
-			if (line.StartsWith("// global::", StringComparison.Ordinal) || line.StartsWith("// (", StringComparison.Ordinal))
-			{
-				current = [];
-				result[line.Substring(3)] = current;
-				continue;
-			}
-
-			Match match = Registration().Match(line);
-			if (match.Success && current is not null)
-			{
-				current.Add((match.Groups[1].Value == "Field" ? "F:" : "P:") + match.Groups[2].Value);
-			}
-		}
-
-		return result;
-	}
-
-	[GeneratedRegex("\\.Register(Field|Property)(?:<.*>)?\\((?:probe, )?\"(\\w+)\"")]
-	private static partial Regex Registration();
 }

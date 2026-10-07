@@ -3,7 +3,6 @@ using System.Runtime.CompilerServices;
 using aweXpect.Core;
 using aweXpect.Options;
 #if NET8_0_OR_GREATER
-using System.Numerics;
 #endif
 
 namespace aweXpect.Helpers;
@@ -131,7 +130,8 @@ internal static class NumberToleranceExtensions
 
 	public static void ThrowIfNaN<TNumber>(this TNumber? value,
 		string? description = null,
-		[CallerArgumentExpression(nameof(value))] string? paramName = null)
+		[CallerArgumentExpression(nameof(value))]
+		string? paramName = null)
 #if NET8_0_OR_GREATER
 		where TNumber : struct, INumber<TNumber>
 #else

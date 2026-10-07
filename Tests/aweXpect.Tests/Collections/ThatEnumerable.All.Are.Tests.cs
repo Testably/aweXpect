@@ -163,7 +163,17 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenAllItemsMatchType_ShouldFail()
 				{
-					IEnumerable<MyBaseClass> subject = [new MyClass { Foo = 1, }, new MyClass { Foo = 2, },];
+					IEnumerable<MyBaseClass> subject =
+					[
+						new MyClass
+						{
+							Foo = 1,
+						},
+						new MyClass
+						{
+							Foo = 2,
+						},
+					];
 
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().Are<MyClass>());
@@ -191,7 +201,17 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenOneItemDoesNotMatchType_ShouldSucceed()
 				{
-					IEnumerable<MyBaseClass> subject = [new MyClass { Foo = 1, }, new MyBaseClass { Foo = 2, },];
+					IEnumerable<MyBaseClass> subject =
+					[
+						new MyClass
+						{
+							Foo = 1,
+						},
+						new()
+						{
+							Foo = 2,
+						},
+					];
 
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().Are<MyClass>());

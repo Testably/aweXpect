@@ -1,6 +1,6 @@
 <Project>
 
-	<Import Project="$(MSBuildThisFileDirectory)/../Directory.Build.props" Condition="Exists('$(MSBuildThisFileDirectory)/../Directory.Build.props')" />
+	<Import Project="$(MSBuildThisFileDirectory)/../Directory.Build.props" Condition="Exists('$(MSBuildThisFileDirectory)/../Directory.Build.props')"/>
 
 	<PropertyGroup>
 		<TargetFrameworks>net48;net8.0;net10.0</TargetFrameworks>
@@ -29,10 +29,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="TUnit.Engine" />
-		<PackageReference Include="AutoFixture" />
-		<PackageReference Include="Microsoft.Testing.Extensions.TrxReport" />
-		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
+		<PackageReference Include="TUnit.Engine"/>
+		<PackageReference Include="AutoFixture"/>
+		<PackageReference Include="Microsoft.Testing.Extensions.TrxReport"/>
+		<PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage"/>
 		<PackageReference Include="Nullable">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -40,9 +40,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Compile Include="$(MSBuildThisFileDirectory)Shared/*.cs" Link="Shared/%(Filename)%(Extension)" />
-		<Using Include="TUnit.Core" />
-		<Using Include="aweXpect.TestHelpers" />
+		<Compile Include="$(MSBuildThisFileDirectory)Shared/*.cs" Link="Shared/%(Filename)%(Extension)"/>
+		<Using Include="TUnit.Core"/>
+		<Using Include="aweXpect.TestHelpers"/>
 	</ItemGroup>
 
 	<!--
@@ -51,7 +51,7 @@
 	    that would do the same applies to the compiler too, which needs far more than the test host ever does.
 	-->
 	<ItemGroup Condition="'$(MutationTestHeapHardLimit)' != ''">
-		<RuntimeHostConfigurationOption Include="System.GC.HeapHardLimit" Value="$(MutationTestHeapHardLimit)" />
+		<RuntimeHostConfigurationOption Include="System.GC.HeapHardLimit" Value="$(MutationTestHeapHardLimit)"/>
 	</ItemGroup>
 
 </Project>

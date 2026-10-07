@@ -22,7 +22,10 @@ internal sealed class OccurrenceCounter<TMember>(
 	/// <summary>
 	///     The index of the first distinct member with each hash code.
 	/// </summary>
-	private readonly Dictionary<int, int>? _candidates = getHashCode is null ? null : new();
+	private readonly Dictionary<int, int>? _candidates = getHashCode is null ? null : new Dictionary<int, int>();
+
+	private readonly List<TMember> _distinctMembers = [];
+	private readonly List<int> _occurrences = [];
 
 	/// <summary>
 	///     The indices of the further distinct members with the same hash code, which are rare, so that a list is only
@@ -30,8 +33,6 @@ internal sealed class OccurrenceCounter<TMember>(
 	/// </summary>
 	private Dictionary<int, List<int>>? _furtherCandidates;
 
-	private readonly List<TMember> _distinctMembers = [];
-	private readonly List<int> _occurrences = [];
 	private int _notUniqueCount;
 
 	/// <summary>

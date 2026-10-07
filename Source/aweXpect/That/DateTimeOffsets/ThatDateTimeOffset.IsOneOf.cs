@@ -60,10 +60,6 @@ public static partial class ThatDateTimeOffset
 		: ConstraintResult.WithValue<DateTimeOffset>(it, grammars),
 			IValueConstraint<DateTimeOffset>
 	{
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
-
 		public ConstraintResult IsMetBy(DateTimeOffset actual)
 		{
 			Actual = actual;
@@ -82,6 +78,10 @@ public static partial class ThatDateTimeOffset
 			Outcome = Outcome.Failure;
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

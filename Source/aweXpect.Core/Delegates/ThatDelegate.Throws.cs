@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
@@ -101,7 +100,7 @@ public abstract partial class ThatDelegate
 
 		/// <inheritdoc cref="ConstraintResult.FailureCause" />
 		public override Exception? FailureCause
-			=> (Outcome is Outcome.Failure or Outcome.FailureBothWays) && !_tookTooLong ? _actual?.Exception : null;
+			=> Outcome is Outcome.Failure or Outcome.FailureBothWays && !_tookTooLong ? _actual?.Exception : null;
 
 		public ConstraintResult IsMetBy(DelegateValue value)
 		{

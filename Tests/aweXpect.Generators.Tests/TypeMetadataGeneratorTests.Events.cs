@@ -69,34 +69,34 @@ public sealed partial class TypeMetadataGeneratorTests
 		public async Task WhenBaseEventIsHiddenNonPubliclyInAReferencedAssembly_ShouldNotRegisterIt()
 		{
 			MetadataReference library = GeneratorRunner.CompileToReference("Lib", """
-				using System;
+			                                                                      using System;
 
-				namespace Lib;
+			                                                                      namespace Lib;
 
-				public class Base
-				{
-					public event EventHandler? Changed;
-					public event EventHandler? Removed;
-				}
+			                                                                      public class Base
+			                                                                      {
+			                                                                      	public event EventHandler? Changed;
+			                                                                      	public event EventHandler? Removed;
+			                                                                      }
 
-				public class HidingPrivately : Base
-				{
-					private new event Action? Changed;
-					public event Action? Own;
-					public void Raise() => Changed?.Invoke();
-				}
+			                                                                      public class HidingPrivately : Base
+			                                                                      {
+			                                                                      	private new event Action? Changed;
+			                                                                      	public event Action? Own;
+			                                                                      	public void Raise() => Changed?.Invoke();
+			                                                                      }
 
-				public class HidingInternally : Base
-				{
-					internal new event Action? Removed;
-					public void Raise() => Removed?.Invoke();
-				}
+			                                                                      public class HidingInternally : Base
+			                                                                      {
+			                                                                      	internal new event Action? Removed;
+			                                                                      	public void Raise() => Removed?.Invoke();
+			                                                                      }
 
-				public class Leaf : HidingInternally
-				{
-					public event Action? More;
-				}
-				""");
+			                                                                      public class Leaf : HidingInternally
+			                                                                      {
+			                                                                      	public event Action? More;
+			                                                                      }
+			                                                                      """);
 
 			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
 				[Record("new Lib.HidingPrivately().Watch(); new Lib.Leaf().Watch();"),],
@@ -138,14 +138,14 @@ public sealed partial class TypeMetadataGeneratorTests
 		public async Task WhenBaseTypeNameExistsInTwoReferencedAssemblies_ShouldNotRegisterTheType()
 		{
 			MetadataReference first = GeneratorRunner.CompileToReference("Dup1", """
-				namespace Dup;
+			                                                                     namespace Dup;
 
-				public class Same
-				{
-					public event System.Action? Changed;
-					public int Id { get; set; }
-				}
-				""");
+			                                                                     public class Same
+			                                                                     {
+			                                                                     	public event System.Action? Changed;
+			                                                                     	public int Id { get; set; }
+			                                                                     }
+			                                                                     """);
 			MetadataReference second = GeneratorRunner.CompileToReference("Dup2",
 				"namespace Dup { public class Same { public event System.Action? Other; } }");
 			MetadataReference third = GeneratorRunner.CompileToReference("Dup3",
@@ -170,16 +170,16 @@ public sealed partial class TypeMetadataGeneratorTests
 		public async Task WhenBaseTypeNameIsAlsoDeclaredInternallyElsewhere_ShouldRegisterTheType()
 		{
 			MetadataReference library = GeneratorRunner.CompileToReference("Lib", """
-				namespace Lib;
+			                                                                      namespace Lib;
 
-				public class Args : System.EventArgs { }
-				public delegate void Handler(Args args);
+			                                                                      public class Args : System.EventArgs { }
+			                                                                      public delegate void Handler(Args args);
 
-				public class Publisher
-				{
-					public event Handler? Changed;
-				}
-				""");
+			                                                                      public class Publisher
+			                                                                      {
+			                                                                      	public event Handler? Changed;
+			                                                                      }
+			                                                                      """);
 			MetadataReference polyfill = GeneratorRunner.CompileToReference("Polyfill",
 				"namespace Lib { internal class Args { } internal delegate void Handler(int x); }");
 
@@ -209,23 +209,23 @@ public sealed partial class TypeMetadataGeneratorTests
 			MetadataReference libraryA = GeneratorRunner.CompileToReference("LibA",
 				"namespace LibA { public class Args : System.EventArgs { } }");
 			MetadataReference libraryB = GeneratorRunner.CompileToReference("LibB", """
-				namespace LibB;
+			                                                                        namespace LibB;
 
-				public delegate void Handler(LibA.Args args);
-				public delegate void ListHandler(System.Collections.Generic.List<LibA.Args> args);
+			                                                                        public delegate void Handler(LibA.Args args);
+			                                                                        public delegate void ListHandler(System.Collections.Generic.List<LibA.Args> args);
 
-				public class Publisher
-				{
-					public event Handler? Changed;
-					public event System.EventHandler? Fine;
-				}
+			                                                                        public class Publisher
+			                                                                        {
+			                                                                        	public event Handler? Changed;
+			                                                                        	public event System.EventHandler? Fine;
+			                                                                        }
 
-				public class ListPublisher
-				{
-					public event ListHandler? Changed;
-					public event System.EventHandler? Fine;
-				}
-				""", libraryA);
+			                                                                        public class ListPublisher
+			                                                                        {
+			                                                                        	public event ListHandler? Changed;
+			                                                                        	public event System.EventHandler? Fine;
+			                                                                        }
+			                                                                        """, libraryA);
 
 			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
 			[
@@ -303,18 +303,18 @@ public sealed partial class TypeMetadataGeneratorTests
 		public async Task WhenExtensionIsDeclaredInAReferencedAssembly_ShouldRegisterTheArgumentType()
 		{
 			MetadataReference library = GeneratorRunner.CompileToReference("Watchers", """
-				using aweXpect.Core.Metadata;
-				using aweXpect.Recording;
+			                                                                           using aweXpect.Core.Metadata;
+			                                                                           using aweXpect.Recording;
 
-				namespace Watchers;
+			                                                                           namespace Watchers;
 
-				public static class Extensions
-				{
-					public static IEventRecording<T> Observe<T>([RequiresEventMetadata] this T subject)
-						where T : notnull
-						=> subject.Record().Events();
-				}
-				""", MetadataReference.CreateFromFile(typeof(TypeMetadataRegistry).Assembly.Location));
+			                                                                           public static class Extensions
+			                                                                           {
+			                                                                           	public static IEventRecording<T> Observe<T>([RequiresEventMetadata] this T subject)
+			                                                                           		where T : notnull
+			                                                                           		=> subject.Record().Events();
+			                                                                           }
+			                                                                           """, MetadataReference.CreateFromFile(typeof(TypeMetadataRegistry).Assembly.Location));
 
 			GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
 			[

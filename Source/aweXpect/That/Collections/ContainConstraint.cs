@@ -62,6 +62,11 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	/// </summary>
 	protected abstract Type CollectionType { get; }
 
+	/// <summary>
+	///     Whether the predicate is synchronous, so that the items can be counted without awaiting it.
+	/// </summary>
+	protected bool IsSynchronous => _predicate is not null;
+
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
 		=> Item.AppendContexts(contexts);
@@ -81,11 +86,6 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 			Outcome = Outcome.FailureBothWays;
 		}
 	}
-
-	/// <summary>
-	///     Whether the predicate is synchronous, so that the items can be counted without awaiting it.
-	/// </summary>
-	protected bool IsSynchronous => _predicate is not null;
 
 	/// <summary>
 	///     Whether the <paramref name="item" /> matches the synchronous predicate.
@@ -224,13 +224,6 @@ internal sealed class ContainConstraint<TEnumerable, TItem>(
 	/// <inheritdoc />
 	protected override Type CollectionType => typeof(IEnumerable<TItem>);
 
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-	{
-		_collectionContext.AppendTo(contexts);
-		base.AppendContexts(contexts);
-	}
-
 	public ValueTask<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
@@ -256,6 +249,13 @@ internal sealed class ContainConstraint<TEnumerable, TItem>(
 		return IsSynchronous
 			? new ValueTask<ConstraintResult>(Count(materialized, cancellationToken))
 			: CountAsync(materialized, cancellationToken);
+	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		_collectionContext.AppendTo(contexts);
+		base.AppendContexts(contexts);
 	}
 
 	private ContainConstraint<TEnumerable, TItem> Count(CollectionItems<TItem> materialized, CancellationToken cancellationToken)
@@ -333,13 +333,6 @@ internal sealed class AsyncContainConstraint<TItem>(
 	/// <inheritdoc />
 	protected override Type CollectionType => typeof(IAsyncEnumerable<TItem>);
 
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-	{
-		_collectionContext.AppendTo(contexts);
-		base.AppendContexts(contexts);
-	}
-
 	public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
@@ -383,6 +376,13 @@ internal sealed class AsyncContainConstraint<TItem>(
 		_collectionContext.Set(items, totalCount: totalCount);
 		Finish();
 		return this;
+	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		_collectionContext.AppendTo(contexts);
+		base.AppendContexts(contexts);
 	}
 }
 #endif

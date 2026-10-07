@@ -25,7 +25,7 @@ public interface ICollectionMatcher<in T, out T2> where T : T2
 	///     are too many deviations.
 	/// </remarks>
 	/// <returns><see langword="true" /> when it results in a failure, otherwise <see langword="false" />.</returns>
-	public ValueTask<(bool, string?)>
+	ValueTask<(bool, string?)>
 		Verify(string it, T value, IOptionsEquality<T2> options, int maximumNumber);
 
 	/// <summary>
@@ -36,6 +36,6 @@ public interface ICollectionMatcher<in T, out T2> where T : T2
 	///     are too many deviations.
 	/// </remarks>
 	/// <returns><see langword="true" /> when it results in a failure, otherwise <see langword="false" />.</returns>
-	public ValueTask<(bool, string?)>
+	ValueTask<(bool, string?)>
 		VerifyComplete(string it, IOptionsEquality<T2> options, int maximumNumber);
 }

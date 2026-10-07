@@ -232,21 +232,20 @@ public sealed partial class ThatException
 							new Exception("inner3B"))));
 
 				async Task Act()
-					=> await That(subject).HasRecursiveInnerExceptions(
-						c => c.All().Satisfy(e => e.Message != "inner3A"));
+					=> await That(subject).HasRecursiveInnerExceptions(c => c.All().Satisfy(e => e.Message != "inner3A"));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has recursive inner exceptions of which all satisfy e => e.Message != "inner3A",
 					             but only 2 of at least 3 did
-					             
+
 					             Not matching items:
 					             [
 					               Exception: inner3A,
 					               (… and maybe more)
 					             ]
-					             
+
 					             Collection:
 					             [
 					               Exception: inner1*,
@@ -267,21 +266,20 @@ public sealed partial class ThatException
 							new Exception("inner3B"))));
 
 				async Task Act()
-					=> await That(subject).HasRecursiveInnerExceptions(
-						c => c.None().Satisfy(e => e.Message != "inner3A"));
+					=> await That(subject).HasRecursiveInnerExceptions(c => c.None().Satisfy(e => e.Message != "inner3A"));
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
 					             has recursive inner exceptions of which none satisfy e => e.Message != "inner3A",
 					             but at least 1 of at least 1 did
-					             
+
 					             Matching items:
 					             [
 					               Exception: inner1*,
 					               (… and maybe more)
 					             ]
-					             
+
 					             Collection:
 					             [
 					               Exception: inner1*,
@@ -306,7 +304,7 @@ public sealed partial class ThatException
 					             """);
 			}
 		}
-		
+
 		public sealed class NegatedTests
 		{
 			[Test]
@@ -392,7 +390,7 @@ public sealed partial class ThatException
 					             Expected that subject
 					             does not have recursive inner exceptions that have exactly one item,
 					             but it had 1 recursive inner exception
-					             
+
 					             Collection:
 					             [
 					               ArgumentException: inner

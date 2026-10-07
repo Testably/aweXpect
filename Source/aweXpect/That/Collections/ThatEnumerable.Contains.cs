@@ -3,11 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -160,8 +156,7 @@ public static partial class ThatEnumerable
 	internal static ObjectCountWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>
 		ContainsItemWithToleranceCore<TItem, TTolerance>(
 			IThat<IEnumerable<TItem>?> subject,
-			TItem expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			TItem expected, Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
 			bool negated)
 	{
 		Quantifier quantifier = new();
@@ -182,8 +177,7 @@ public static partial class ThatEnumerable
 		Summary = ContainsMatchingItem, NegatedSummary = DoesNotContainMatchingItem)]
 	internal static CountResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
 		ContainsMatchingItemCore<TItem>(
-			IThat<IEnumerable<TItem>?> subject,
-			Func<TItem, bool> predicate,
+			IThat<IEnumerable<TItem>?> subject, System.Func<TItem, bool> predicate,
 			string predicateExpression,
 			bool negated)
 	{
@@ -251,8 +245,7 @@ public static partial class ThatEnumerable
 		Remarks = BelowValuePriorityRemarks)]
 	internal static CountResult<IEnumerable, IThat<IEnumerable?>>
 		ContainsMatchingItemForEnumerableCore(
-			IThat<IEnumerable?> subject,
-			Func<object?, bool> predicate,
+			IThat<IEnumerable?> subject, System.Func<object?, bool> predicate,
 			string predicateExpression,
 			bool negated)
 	{
@@ -325,8 +318,7 @@ public static partial class ThatEnumerable
 	internal static ObjectCountWithToleranceResult<TCollection, IThat<TCollection>, TItem, TTolerance>
 		ContainsItemWithToleranceForCollectionCore<TCollection, TItem, TTolerance>(
 			IThat<TCollection> subject,
-			TItem expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			TItem expected, Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
 			bool negated)
 		where TCollection : IEnumerable
 	{
@@ -348,8 +340,7 @@ public static partial class ThatEnumerable
 		Summary = ContainsMatchingItem, NegatedSummary = DoesNotContainMatchingItem)]
 	internal static CountResult<TCollection, IThat<TCollection>>
 		ContainsMatchingItemForCollectionCore<TCollection, TItem>(
-			IThat<TCollection> subject,
-			Func<TItem, bool> predicate,
+			IThat<TCollection> subject, System.Func<TItem, bool> predicate,
 			string predicateExpression,
 			bool negated)
 		where TCollection : IEnumerable
@@ -392,8 +383,8 @@ public static partial class ThatEnumerable
 					new IsEqualToConstraint<IEnumerable<TItem>, TItem, TItem>(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
 						state.MatchOptions,
-						failsForNullSubject: true,
-						canUseSubjectComparer: true).InvertIf(state.Negated)),
+						true,
+						true).InvertIf(state.Negated)),
 			subject,
 			options,
 			matchOptions);
@@ -422,8 +413,8 @@ public static partial class ThatEnumerable
 					new IsEqualToConstraint<IEnumerable<string?>, string?, string?>(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
 						state.MatchOptions,
-						failsForNullSubject: true,
-						canUseSubjectComparer: true).InvertIf(state.Negated)),
+						true,
+						true).InvertIf(state.Negated)),
 			subject,
 			options,
 			matchOptions);
@@ -450,7 +441,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 					new IsEqualToConstraint<IEnumerable<string?>, string?, string?>(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
-						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
+						state.MatchOptions, true).InvertIf(state.Negated)),
 			subject,
 			options,
 			matchOptions);
@@ -480,10 +471,10 @@ public static partial class ThatEnumerable
 					MatchOptions: matchOptions, Negated: negated),
 				static (state, it, grammars) =>
 					new IsEqualToConstraint<IEnumerable<TItem>, TItem, TItem>(it, grammars,
-						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
-						state.MatchOptions,
-						failsForNullSubject: true,
-						canUseSubjectComparer: true)
+							state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
+							state.MatchOptions,
+							true,
+							true)
 						.InvertIf(state.Negated)),
 			subject,
 			options,
@@ -513,8 +504,8 @@ public static partial class ThatEnumerable
 					new IsEqualToConstraint<IEnumerable, TItem, TItem>(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
 						state.MatchOptions,
-						failsForNullSubject: true,
-						canUseSubjectComparer: true).InvertIf(state.Negated)),
+						true,
+						true).InvertIf(state.Negated)),
 			subject,
 			options,
 			matchOptions);
@@ -556,7 +547,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 					new IsEqualToConstraint<TCollection, TItem, TItem>(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
-						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
+						state.MatchOptions, true).InvertIf(state.Negated)),
 			subject,
 			options,
 			matchOptions);
@@ -584,7 +575,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 					new IsEqualToConstraint<TCollection, string?, string?>(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
-						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
+						state.MatchOptions, true).InvertIf(state.Negated)),
 			subject,
 			options,
 			matchOptions);
@@ -613,7 +604,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars) =>
 					new IsEqualToConstraint<TCollection, TItem, TItem>(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
-						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
+						state.MatchOptions, true).InvertIf(state.Negated)),
 			subject,
 			options,
 			matchOptions);
@@ -640,7 +631,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars)
 					=> new IsEqualToFromPredicateConstraint<IEnumerable<TItem>, TItem, TItem>(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.MatchOptions,
-						failsForNullSubject: true).InvertIf(state.Negated)),
+						true).InvertIf(state.Negated)),
 			subject,
 			matchOptions);
 	}
@@ -667,7 +658,7 @@ public static partial class ThatEnumerable
 					=> new IsEqualToFromExpectationsConstraint<IEnumerable<TItem>, TItem, TItem>(it,
 						grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.MatchOptions,
-						failsForNullSubject: true).InvertIf(state.Negated)),
+						true).InvertIf(state.Negated)),
 			subject,
 			matchOptions);
 	}
@@ -695,7 +686,7 @@ public static partial class ThatEnumerable
 				static (state, it, grammars)
 					=> new IsEqualToFromPredicateConstraint<TCollection, TItem, TItem>(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.MatchOptions,
-						failsForNullSubject: true).InvertIf(state.Negated)),
+						true).InvertIf(state.Negated)),
 			subject,
 			matchOptions);
 	}
@@ -724,7 +715,7 @@ public static partial class ThatEnumerable
 					=> new IsEqualToFromExpectationsConstraint<TCollection, TItem, TItem>(it,
 						grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.MatchOptions,
-						failsForNullSubject: true).InvertIf(state.Negated)),
+						true).InvertIf(state.Negated)),
 			subject,
 			matchOptions);
 	}

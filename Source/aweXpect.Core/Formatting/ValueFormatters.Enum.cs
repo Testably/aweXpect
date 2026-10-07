@@ -25,7 +25,7 @@ public static partial class ValueFormatters
 
 		if (options?.IncludeType == true)
 		{
-			return $"{Format(formatter, value.GetType())} {FormatEnumValue(value)}";
+			return $"{formatter.Format(value.GetType())} {FormatEnumValue(value)}";
 		}
 
 		return FormatEnumValue(value);
@@ -49,7 +49,7 @@ public static partial class ValueFormatters
 		{
 			if (options?.IncludeType == true)
 			{
-				Format(formatter, stringBuilder, value.GetType());
+				formatter.Format(stringBuilder, value.GetType());
 				stringBuilder.Append(' ');
 			}
 

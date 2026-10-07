@@ -36,7 +36,12 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task ForAnUntypedSortedSet_ShouldUseTheDefaultOrder()
 			{
-				IEnumerable subject = new SortedSet<string>(new ReverseComparer()) { "a", "b", "c", };
+				IEnumerable subject = new SortedSet<string>(new ReverseComparer())
+				{
+					"a",
+					"b",
+					"c",
+				};
 
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder();
@@ -60,7 +65,12 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task ShouldUseTheComparerOfTheSet()
 			{
-				SortedSet<string> subject = new(new ReverseComparer()) { "a", "b", "c", };
+				SortedSet<string> subject = new(new ReverseComparer())
+				{
+					"a",
+					"b",
+					"c",
+				};
 
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder();
@@ -71,7 +81,12 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task Using_ShouldOverrideTheComparerOfTheSet()
 			{
-				SortedSet<string> subject = new(new ReverseComparer()) { "a", "b", "c", };
+				SortedSet<string> subject = new(new ReverseComparer())
+				{
+					"a",
+					"b",
+					"c",
+				};
 
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder().Using(Comparer<string>.Default);
@@ -94,7 +109,12 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WithAMember_ShouldIgnoreTheComparerOfTheSet()
 			{
-				SortedSet<string> subject = new(new ReverseComparer()) { "a", "b", "c", };
+				SortedSet<string> subject = new(new ReverseComparer())
+				{
+					"a",
+					"b",
+					"c",
+				};
 
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder(x => x);

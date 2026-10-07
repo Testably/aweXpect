@@ -14,7 +14,7 @@ public sealed partial class ThatAsyncEnumerable
 				[Test]
 				public async Task WhenEnoughItemsAreUnique_ShouldSucceed()
 				{
-					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3, 4, 5, 5,]);
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3, 4, 5, 5);
 
 					async Task Act()
 						=> await That(subject).AtLeast(4).AreUnique();
@@ -41,7 +41,7 @@ public sealed partial class ThatAsyncEnumerable
 				[Test]
 				public async Task WhenTooFewItemsAreUnique_ShouldFail()
 				{
-					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3, 3, 4, 4,]);
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3, 3, 4, 4);
 
 					async Task Act()
 						=> await That(subject).AtLeast(4).AreUnique();
@@ -66,7 +66,7 @@ public sealed partial class ThatAsyncEnumerable
 				[Test]
 				public async Task WhenAllItemsAreUnique_ShouldFail()
 				{
-					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
 
 					async Task Act()
 						=> await That(subject).AtLeast(1).AreNotUnique();
@@ -85,7 +85,7 @@ public sealed partial class ThatAsyncEnumerable
 				[Test]
 				public async Task WhenItContainsDuplicates_ShouldSucceed()
 				{
-					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3, 1,]);
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3, 1);
 
 					async Task Act()
 						=> await That(subject).AtLeast(1).AreNotUnique();
@@ -99,7 +99,7 @@ public sealed partial class ThatAsyncEnumerable
 				[Test]
 				public async Task WhenEnoughItemsAreUnique_ShouldFail()
 				{
-					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3, 4, 5, 5,]);
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3, 4, 5, 5);
 
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.AtLeast(4).AreUnique());
@@ -121,7 +121,7 @@ public sealed partial class ThatAsyncEnumerable
 				[Test]
 				public async Task WhenTooFewItemsAreUnique_ShouldSucceed()
 				{
-					IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3, 3, 4, 4,]);
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3, 3, 4, 4);
 
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.AtLeast(4).AreUnique());

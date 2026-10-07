@@ -39,9 +39,16 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 	public AwexpectCustomization Global
 		=> _isGlobal ? this : _globalCustomization ??= new AwexpectCustomization(this);
 
+	internal ITraceWriter? TraceWriter
+		=> ((IAwexpectCustomization)this).Get<ITraceWriter?>(TraceWriterKey, null);
+
 	/// <inheritdoc cref="IAwexpectCustomization.Get{TValue}(string, TValue)" />
 	TValue IAwexpectCustomization.Get<TValue>(string key, TValue defaultValue)
 		=> Lookup(_isGlobal ? null : _store.Value, _global.Store, key, defaultValue);
+
+	/// <inheritdoc cref="IAwexpectCustomization.Set{TValue}(string, TValue)" />
+	CustomizationLifetime IAwexpectCustomization.Set<TValue>(string key, TValue value)
+		=> Set(key, value);
 
 	/// <summary>
 	///     The settings that every evaluation reads, with a single access to the value of the current async flow.
@@ -87,10 +94,6 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 			_ => defaultValue,
 		};
 
-	/// <inheritdoc cref="IAwexpectCustomization.Set{TValue}(string, TValue)" />
-	CustomizationLifetime IAwexpectCustomization.Set<TValue>(string key, TValue value)
-		=> Set(key, value);
-
 	private CustomizationLifetime Set(string key, object? value)
 	{
 		if (_isGlobal)
@@ -108,9 +111,6 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 	/// </summary>
 	public CustomizationLifetime EnableTracing(ITraceWriter traceWriter)
 		=> Set(TraceWriterKey, traceWriter);
-
-	internal ITraceWriter? TraceWriter
-		=> ((IAwexpectCustomization)this).Get<ITraceWriter?>(TraceWriterKey, null);
 
 	/// <summary>
 	///     Replaces the immutable store as a whole, so that reading a value never needs a lock.
@@ -166,7 +166,7 @@ public partial class AwexpectCustomization : IAwexpectCustomization
 
 		public static CustomizationStore With(CustomizationStore? store, string key, object token, object? value)
 		{
-			Dictionary<string, Layer> values = store == null ? new() : new(store._values);
+			Dictionary<string, Layer> values = store == null ? new Dictionary<string, Layer>() : new Dictionary<string, Layer>(store._values);
 			values.TryGetValue(key, out Layer? below);
 			values[key] = new Layer(token, value, below);
 			return new CustomizationStore(values);

@@ -1,6 +1,5 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Collections.Generic;
-using System.Linq;
 using aweXpect.Core;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -802,7 +801,7 @@ public sealed partial class ThatAsyncEnumerable
 			public async Task WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("predicate failed");
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([1, 2, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2, 3);
 
 				async Task Act()
 					=> await That(subject).DoesNotContain(x => x == 2 ? throw exception : false);
@@ -840,7 +839,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WhenItemIsMissing_ShouldFailWithThePositiveExpectation()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable([2, 3,]);
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(2, 3);
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(it => it.DoesNotContain(1));

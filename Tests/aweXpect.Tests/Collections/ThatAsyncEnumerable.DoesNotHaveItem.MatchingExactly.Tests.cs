@@ -33,7 +33,7 @@ public sealed partial class ThatAsyncEnumerable
 				public async Task WhenTypeIsSubtype_ShouldSucceed()
 				{
 					IAsyncEnumerable<MyBaseClass> subject =
-						ToAsyncEnumerable<MyBaseClass>(new MyBaseClass(0), new MyClass(1));
+						ToAsyncEnumerable<MyBaseClass>(new MyBaseClass(), new MyClass(1));
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyBaseClass>().AtIndex(1);
@@ -45,7 +45,7 @@ public sealed partial class ThatAsyncEnumerable
 				public async Task WhenTypeMatchesExactlyAtGivenIndex_ShouldFail()
 				{
 					IAsyncEnumerable<MyBaseClass> subject =
-						ToAsyncEnumerable<MyBaseClass>(new MyBaseClass(0), new MyClass(1));
+						ToAsyncEnumerable(new MyBaseClass(), new MyClass(1));
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyClass>().AtIndex(1);
@@ -80,7 +80,7 @@ public sealed partial class ThatAsyncEnumerable
 				public async Task WhenItemOfTypeMatchesAtGivenIndex_ShouldFail()
 				{
 					IAsyncEnumerable<MyBaseClass> subject =
-						ToAsyncEnumerable<MyBaseClass>(new MyBaseClass(0), new MyClass(1));
+						ToAsyncEnumerable(new MyBaseClass(), new MyClass(1));
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyClass>(x => x.Value == 1).AtIndex(1);
@@ -112,7 +112,7 @@ public sealed partial class ThatAsyncEnumerable
 				public async Task WhenTypeIsSubtype_ShouldSucceed()
 				{
 					IAsyncEnumerable<MyBaseClass> subject =
-						ToAsyncEnumerable<MyBaseClass>(new MyBaseClass(0), new MyClass(1));
+						ToAsyncEnumerable(new MyBaseClass(), new MyClass(1));
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem().MatchingExactly<MyBaseClass>(_ => true).AtIndex(1);

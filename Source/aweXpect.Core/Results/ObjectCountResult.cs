@@ -20,8 +20,8 @@ public class ObjectCountResult<TType, TThat, TElement>(
 		IObjectEqualityResult<ObjectCountResult<TType, TThat, TElement>, TElement>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
+	ObjectEqualityOptions<TElement> IOptionsProvider<ObjectEqualityOptions<TElement>>.Options => options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	ObjectEqualityOptions<TElement> IOptionsProvider<ObjectEqualityOptions<TElement>>.Options => options;
+	Quantifier IOptionsProvider<Quantifier>.Options => quantifier;
 }

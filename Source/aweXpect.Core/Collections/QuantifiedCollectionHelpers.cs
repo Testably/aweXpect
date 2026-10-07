@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Options;
 
 namespace aweXpect;

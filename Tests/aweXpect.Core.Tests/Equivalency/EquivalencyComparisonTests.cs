@@ -1,17 +1,10 @@
 using System.Collections;
-#if NET8_0_OR_GREATER
-using System.Collections.Frozen;
-#endif
 using System.Collections.Generic;
-#if NET8_0_OR_GREATER
-using System.Collections.Immutable;
-#endif
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Numerics;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
@@ -21,6 +14,12 @@ using aweXpect.Core.Metadata;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 using aweXpect.Equivalency;
+#if NET8_0_OR_GREATER
+using System.Collections.Frozen;
+#endif
+#if NET8_0_OR_GREATER
+using System.Collections.Immutable;
+#endif
 
 namespace aweXpect.Core.Tests.Equivalency;
 
@@ -56,7 +55,10 @@ public sealed partial class EquivalencyComparisonTests
 		ExplicitSpan actual = new(1);
 		var expected = new
 		{
-			Values = new[] { 1, },
+			Values = new[]
+			{
+				1,
+			},
 		};
 		StringBuilder failureBuilder = new();
 
@@ -1186,7 +1188,8 @@ public sealed partial class EquivalencyComparisonTests
 			},
 			Unordered = new List<int>
 			{
-				1, 2,
+				1,
+				2,
 			},
 		};
 		var expected = new
@@ -1197,7 +1200,8 @@ public sealed partial class EquivalencyComparisonTests
 			},
 			Unordered = new List<int>
 			{
-				2, 1,
+				2,
+				1,
 			},
 		};
 		EquivalencyOptions options = new EquivalencyOptions().For<List<int>>(x => x with
@@ -2002,11 +2006,17 @@ public sealed partial class EquivalencyComparisonTests
 	{
 		var actual = new
 		{
-			Items = new[] { 1, }.Select<int, int>(_ => throw new InvalidOperationException("enumeration failed")),
+			Items = new[]
+			{
+				1,
+			}.Select<int, int>(_ => throw new InvalidOperationException("enumeration failed")),
 		};
 		var expected = new
 		{
-			Items = new[] { 1, },
+			Items = new[]
+			{
+				1,
+			},
 		};
 
 		async Task Act()
@@ -2030,11 +2040,17 @@ public sealed partial class EquivalencyComparisonTests
 	{
 		var actual = new
 		{
-			Items = new[] { 1, }.Select<int, int>(_ => throw new InvalidOperationException("enumeration failed")),
+			Items = new[]
+			{
+				1,
+			}.Select<int, int>(_ => throw new InvalidOperationException("enumeration failed")),
 		};
 		var unexpected = new
 		{
-			Items = new[] { 1, },
+			Items = new[]
+			{
+				1,
+			},
 		};
 
 		async Task Act()
@@ -2056,7 +2072,10 @@ public sealed partial class EquivalencyComparisonTests
 	[Test]
 	public async Task WhenEnumeratingTheSubjectThrows_ShouldFailWithTheException()
 	{
-		object subject = new[] { 1, }.Select<int, int>(_ => throw new InvalidOperationException("enumeration failed"));
+		object subject = new[]
+		{
+			1,
+		}.Select<int, int>(_ => throw new InvalidOperationException("enumeration failed"));
 		int[] expected = [1,];
 
 		async Task Act()
@@ -2633,8 +2652,8 @@ public sealed partial class EquivalencyComparisonTests
 		{
 			Type = typeof(int),
 			Method = typeof(string).GetMethod(nameof(string.Trim), Type.EmptyTypes),
-			Assembly = typeof(EquivalencyComparisonTests).Assembly,
-			Module = typeof(EquivalencyComparisonTests).Module,
+			typeof(EquivalencyComparisonTests).Assembly,
+			typeof(EquivalencyComparisonTests).Module,
 			Delegate = (Func<string?, bool>)string.IsNullOrEmpty,
 			Uri = new Uri("a/b", UriKind.Relative),
 			Culture = new CultureInfo("de-DE"),
@@ -2643,8 +2662,8 @@ public sealed partial class EquivalencyComparisonTests
 		{
 			Type = typeof(int),
 			Method = typeof(string).GetMethod(nameof(string.Trim), Type.EmptyTypes),
-			Assembly = typeof(EquivalencyComparisonTests).Assembly,
-			Module = typeof(EquivalencyComparisonTests).Module,
+			typeof(EquivalencyComparisonTests).Assembly,
+			typeof(EquivalencyComparisonTests).Module,
 			Delegate = (Func<string?, bool>)string.IsNullOrEmpty,
 			Uri = new Uri("a/b", UriKind.Relative),
 			Culture = new CultureInfo("de-DE"),
@@ -3176,7 +3195,10 @@ public sealed partial class EquivalencyComparisonTests
 		};
 		var expected = new
 		{
-			Value = new[] { 2, 3, },
+			Value = new[]
+			{
+				2, 3,
+			},
 		};
 		StringBuilder failureBuilder = new();
 
@@ -3230,10 +3252,10 @@ public sealed partial class EquivalencyComparisonTests
 		await That(result).IsFalse();
 		await That(failureBuilder.ToString()).IsEqualTo($"""
 
-		                                                  Property Value differed:
-		                                                      Actual: {typeof(EquivalencyComparisonTests).Module.Name}
-		                                                    Expected: aweXpect.Core.dll
-		                                                """).IgnoringNewlineStyle()
+		                                                   Property Value differed:
+		                                                       Actual: {typeof(EquivalencyComparisonTests).Module.Name}
+		                                                     Expected: aweXpect.Core.dll
+		                                                 """).IgnoringNewlineStyle()
 			.Because("a module describes an emitted file, so walking it reaches getters that throw instead of state that could be compared");
 	}
 
@@ -3936,14 +3958,18 @@ public sealed partial class EquivalencyComparisonTests
 		{
 			Values = new HashSet<int>
 			{
-				1, 2, 3,
+				1,
+				2,
+				3,
 			},
 		};
 		var expected = new
 		{
 			Values = new HashSet<int>
 			{
-				3, 2, 1,
+				3,
+				2,
+				1,
 			},
 		};
 		StringBuilder failureBuilder = new();
@@ -4027,14 +4053,16 @@ public sealed partial class EquivalencyComparisonTests
 		{
 			Values = new HashSet<int>
 			{
-				1, 2,
+				1,
+				2,
 			},
 		};
 		var expected = new
 		{
 			Values = new HashSet<int>
 			{
-				1, 3,
+				1,
+				3,
 			},
 		};
 		StringBuilder failureBuilder = new();
@@ -4070,7 +4098,10 @@ public sealed partial class EquivalencyComparisonTests
 	[Test]
 	public async Task WhenSetSubjectIsAFrozenSet_AndUsesACaseInsensitiveComparer_ShouldMatchTheExpectedItemsThroughIt()
 	{
-		FrozenSet<string> actual = new[] { "a", "b", }.ToFrozenSet(StringComparer.OrdinalIgnoreCase);
+		FrozenSet<string> actual = new[]
+		{
+			"a", "b",
+		}.ToFrozenSet(StringComparer.OrdinalIgnoreCase);
 		HashSet<string> expected = ["B", "A",];
 		StringBuilder failureBuilder = new();
 
@@ -5134,7 +5165,10 @@ public sealed partial class EquivalencyComparisonTests
 
 	private sealed class ExplicitSpan(int value) : IHasSpan
 	{
-		ReadOnlySpan<int> IHasSpan.Values => new[] { value, };
+		ReadOnlySpan<int> IHasSpan.Values => new[]
+		{
+			value,
+		};
 	}
 
 	private class ExplicitValue(int value, int other) : IHasValue
@@ -5440,7 +5474,11 @@ public sealed partial class EquivalencyComparisonTests
 
 	private sealed class WithSpan(int value)
 	{
-		public ReadOnlySpan<int> Span => new[] { value, };
+		public ReadOnlySpan<int> Span => new[]
+		{
+			value,
+		};
+
 		public int Value => value;
 	}
 

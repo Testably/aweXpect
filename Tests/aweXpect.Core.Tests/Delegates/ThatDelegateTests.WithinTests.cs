@@ -63,7 +63,7 @@ public sealed partial class ThatDelegateTests
 			Action @delegate = () => throw new MyException();
 
 			async Task Act()
-				=> await That(@delegate).Throws<MyException>().Within(timeout: 1.Seconds());
+				=> await That(@delegate).Throws<MyException>().Within(1.Seconds());
 
 			await That(Act).DoesNotThrow();
 		}

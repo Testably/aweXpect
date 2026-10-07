@@ -78,7 +78,12 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task ForASortedDictionary_ShouldBindToTheDictionaryOverload()
 			{
-				SortedDictionary<string, int> subject = new() { { "a", 1 }, };
+				SortedDictionary<string, int> subject = new()
+				{
+					{
+						"a", 1
+					},
+				};
 
 				async Task Act()
 					=> await (AndOrResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>>)
@@ -96,7 +101,11 @@ public sealed partial class ThatDictionary
 			{
 				InvalidOperationException exception = new("comparer failed");
 				ThrowingKeyComparer<string> comparer = new(exception);
-				Dictionary<string, int> subject = new(comparer) { ["a"] = 1, ["b"] = 2, };
+				Dictionary<string, int> subject = new(comparer)
+				{
+					["a"] = 1,
+					["b"] = 2,
+				};
 				comparer.IsArmed = true;
 
 				async Task Act()
@@ -121,7 +130,11 @@ public sealed partial class ThatDictionary
 			{
 				InvalidOperationException exception = new("lookup failed");
 				IDictionary<string, int> subject =
-					new ThrowingDictionary<string, int>(exception, ThrowingMembers.ContainsKey) { ["a"] = 1, ["b"] = 2, };
+					new ThrowingDictionary<string, int>(exception, ThrowingMembers.ContainsKey)
+					{
+						["a"] = 1,
+						["b"] = 2,
+					};
 
 				async Task Act()
 					=> await That(subject).DoesNotContainKey("x");

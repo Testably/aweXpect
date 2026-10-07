@@ -14,7 +14,6 @@ public class IsSpanParsableResult<TType>(
 	: AndOrResult<SpanWrapper<char>, IThat<SpanWrapper<char>>>(expectationBuilder, subject)
 	where TType : ISpanParsable<TType>
 {
-
 	/// <summary>
 	///     Gives access to the parsed value.
 	/// </summary>

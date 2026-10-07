@@ -11,7 +11,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task Using_ShouldOverrideTheComparerOfTheSet()
 			{
-				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+					"b",
+				};
 
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(["B", "A",]).InAnyOrder().Using(StringComparer.Ordinal);
@@ -22,7 +26,11 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenSetContainsTheItemsAccordingToItsComparer_ShouldFail()
 			{
-				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase) { "a", "b", };
+				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"a",
+					"b",
+				};
 
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(["B", "A",]).InAnyOrder();

@@ -24,8 +24,8 @@ public class ObjectProperCollectionMatchResult<TType, TThat, TItem>(
 		IObjectEqualityResult<ObjectProperCollectionMatchResult<TType, TThat, TItem>, TItem>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	CollectionMatchOptions IOptionsProvider<CollectionMatchOptions>.Options => collectionMatchOptions;
+	ObjectEqualityOptions<TItem> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	ObjectEqualityOptions<TItem> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => options;
+	CollectionMatchOptions IOptionsProvider<CollectionMatchOptions>.Options => collectionMatchOptions;
 }

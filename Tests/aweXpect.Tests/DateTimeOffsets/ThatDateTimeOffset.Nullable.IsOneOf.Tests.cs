@@ -169,7 +169,7 @@ public sealed partial class ThatDateTimeOffset
 				{
 					DateTimeOffset? subject = null;
 					IEnumerable<DateTimeOffset?> expected =
-						Factory.GetSingleUseEnumerable<DateTimeOffset?>(CurrentTime(), null);
+						Factory.GetSingleUseEnumerable(CurrentTime(), null);
 
 					async Task Act()
 						=> await That(subject).IsOneOf(expected);

@@ -525,7 +525,7 @@ public sealed partial class ThatEnumerable
 						               " foo",
 						               "\tfoo"
 						             ]
-						             
+
 						             Collection:
 						             [
 						               " foo",
@@ -587,7 +587,7 @@ public sealed partial class ThatEnumerable
 						               "foo ",
 						               "foo\t"
 						             ]
-						             
+
 						             Collection:
 						             [
 						               "foo ",

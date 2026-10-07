@@ -88,7 +88,7 @@ public partial class StringEqualityOptions
 			{
 				return new ValueTask<bool>(Contains(actual, expected, comparer));
 			}
-			
+
 			return new ValueTask<bool>(actual.Contains(expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 		}
 

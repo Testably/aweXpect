@@ -77,7 +77,7 @@ public sealed partial class ThatEnumerable
 				IEnumerable<Item> subject = [new(Utc), new(Local),];
 
 				async Task Act()
-					=> await That(subject).IsInAscendingOrder((Func<Item, DateTime>)null!);
+					=> await That(subject).IsInAscendingOrder(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("memberAccessor").And
@@ -147,6 +147,12 @@ public sealed partial class ThatEnumerable
 					.Because("the second attempt only contains UTC times in ascending order");
 			}
 
+			private sealed class Item(DateTime value)
+			{
+				public DateTime Value { get; } = value;
+				public DateTime? NullableValue { get; } = value;
+			}
+
 #if NET8_0_OR_GREATER
 			[Test]
 			public async Task WhenImmutableArrayIsRetriedAfterIncompatibleKinds_ShouldJudgeTheNextAttemptOnItsOwn()
@@ -212,12 +218,6 @@ public sealed partial class ThatEnumerable
 					              """).AsPrefix();
 			}
 #endif
-
-			private sealed class Item(DateTime value)
-			{
-				public DateTime Value { get; } = value;
-				public DateTime? NullableValue { get; } = value;
-			}
 		}
 	}
 }

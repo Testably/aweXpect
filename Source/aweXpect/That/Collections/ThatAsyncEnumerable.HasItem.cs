@@ -1,5 +1,4 @@
 ﻿#if NET8_0_OR_GREATER
-using System;
 using System.Collections.Generic;
 using aweXpect.Core;
 using aweXpect.Helpers;
@@ -52,8 +51,7 @@ public static partial class ThatAsyncEnumerable
 		Summary = HasMatchingItem, NegatedSummary = DoesNotHaveMatchingItem)]
 	internal static HasItemResult<IAsyncEnumerable<TItem>>
 		HasMatchingItemCore<TItem>(
-			IThat<IAsyncEnumerable<TItem>?> subject,
-			Func<TItem, bool> predicate,
+			IThat<IAsyncEnumerable<TItem>?> subject, System.Func<TItem, bool> predicate,
 			string predicateExpression,
 			bool negated)
 	{

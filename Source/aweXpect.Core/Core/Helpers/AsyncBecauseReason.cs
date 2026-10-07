@@ -21,24 +21,6 @@ internal sealed class AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 	private bool _isResolved;
 	private string? _message;
 
-	private static string CreateMessage(string reason)
-	{
-		const string prefix = "because";
-		string message = reason.Trim();
-
-		return !message.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
-			? $", {prefix} {message}"
-			: $", {message}";
-	}
-
-	/// <summary>
-	///     Marks a faulted <paramref name="task" /> as observed, so that a reason that is never awaited cannot surface
-	///     later as an <see cref="TaskScheduler.UnobservedTaskException" />.
-	/// </summary>
-	private static void ObserveExceptions(Task<string?> task)
-		=> task.ContinueWith(static t => _ = t.Exception,
-			TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously);
-
 	public async ValueTask<ConstraintResult>
 		ApplyTo(ConstraintResult result)
 	{
@@ -61,6 +43,24 @@ internal sealed class AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 
 		return result.AppendExpectationText(_appendMessage ??= stringBuilder => stringBuilder.Append(_message));
 	}
+
+	private static string CreateMessage(string reason)
+	{
+		const string prefix = "because";
+		string message = reason.Trim();
+
+		return !message.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
+			? $", {prefix} {message}"
+			: $", {message}";
+	}
+
+	/// <summary>
+	///     Marks a faulted <paramref name="task" /> as observed, so that a reason that is never awaited cannot surface
+	///     later as an <see cref="TaskScheduler.UnobservedTaskException" />.
+	/// </summary>
+	private static void ObserveExceptions(Task<string?> task)
+		=> task.ContinueWith(static t => _ = t.Exception,
+			TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously);
 
 	/// <summary>
 	///     Applies the reason to the <paramref name="result" /> of the expectations on a member.

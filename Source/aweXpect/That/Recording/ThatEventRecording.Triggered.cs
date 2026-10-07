@@ -1,9 +1,10 @@
 ﻿using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
-using aweXpect.Options;
 using aweXpect.Recording;
 using aweXpect.Results;
+using RepeatedCheckOptions = aweXpect.Options.RepeatedCheckOptions;
+using TriggerEventFilter = aweXpect.Options.TriggerEventFilter;
 
 namespace aweXpect;
 
@@ -22,7 +23,7 @@ public static partial class ThatEventRecording
 		where TSubject : notnull
 	{
 		eventName.ThrowIfNull();
-		Quantifier quantifier = new();
+		Options.Quantifier quantifier = new();
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();
 		return new EventTriggerResult<TSubject>(
@@ -54,7 +55,7 @@ public static partial class ThatEventRecording
 		where TSubject : notnull
 	{
 		eventName.ThrowIfNull();
-		Quantifier quantifier = new();
+		Options.Quantifier quantifier = new();
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();
 		return new EventTriggerResult<TSubject>(

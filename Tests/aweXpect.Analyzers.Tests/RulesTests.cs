@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 
 namespace aweXpect.Analyzers.Tests;
@@ -19,7 +17,7 @@ public class RulesTests
 			.Select(line => line.Substring(3).Trim())
 			.ToArray();
 
-		await Expect.That(headings).IsEqualTo(Descriptors().Select(descriptor => descriptor.Id).Distinct())
+		await That(headings).IsEqualTo(Descriptors().Select(descriptor => descriptor.Id).Distinct())
 			.Because("the help link of each rule points to the section with the rule ID as heading");
 	}
 
@@ -28,7 +26,7 @@ public class RulesTests
 	{
 		foreach (DiagnosticDescriptor descriptor in Descriptors())
 		{
-			await Expect.That(descriptor.HelpLinkUri)
+			await That(descriptor.HelpLinkUri)
 				.IsEqualTo($"https://docs.testably.org/aweXpect/analyzers#{descriptor.Id.ToLowerInvariant()}")
 				.Because($"{descriptor.Id} should link to its section on the analyzers page");
 		}

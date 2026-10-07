@@ -23,12 +23,12 @@ public class ObjectHasItemWithToleranceResult<TCollection, TItem, TTolerance>(
 			TTolerance>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
-
-	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	ObjectEqualityOptions<TItem> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	ObjectEqualityWithToleranceOptions<TItem, TTolerance>
 		IOptionsProvider<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>.Options => options;
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	CollectionIndexOptions IOptionsProvider<CollectionIndexOptions>.Options => collectionIndexOptions;
 }

@@ -2,11 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using aweXpect.Core.Constraints;
+using aweXpect.Core.Helpers;
 #if NET8_0_OR_GREATER
 using System.Threading;
 #endif
-using aweXpect.Core.Constraints;
-using aweXpect.Core.Helpers;
 
 namespace aweXpect.Core.EvaluationContext;
 

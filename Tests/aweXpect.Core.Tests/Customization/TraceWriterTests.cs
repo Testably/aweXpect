@@ -84,6 +84,7 @@ public class TraceWriterTests
 		await That(traceWriterWithFlowTraceWriter).IsSameAs(flowTraceWriter)
 			.Because("a trace writer enabled in the current flow takes precedence over the global one");
 	}
+
 	[Test]
 	public async Task FailTest_ShouldBeLogged()
 	{

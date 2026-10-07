@@ -289,39 +289,6 @@ public sealed partial class ThatNumber
 					.Because("subtracting a tolerance from infinity leaves infinity, which is not greater than itself");
 			}
 
-#if NET8_0_OR_GREATER
-			[Test]
-			public async Task ForHalf_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldSucceed()
-			{
-				Half subject = Half.MinValue;
-				Half expected = Half.MaxValue;
-
-				async Task Act()
-					=> await That(subject).IsGreaterThan(expected).Within(Half.PositiveInfinity);
-
-				await That(Act).DoesNotThrow()
-					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
-			}
-
-			[Test]
-			public async Task ForHalf_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldFail()
-			{
-				Half subject = Half.MinValue;
-				Half expected = Half.MaxValue;
-
-				async Task Act()
-					=> await That(subject).IsGreaterThan(expected).Within(Half.MaxValue);
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is greater than Half.MaxValue ± Half.MaxValue,
-					             but it was Half.MinValue, which differs by -131008.0
-					             """)
-					.Because("a distance that is not representable exceeds every finite tolerance");
-			}
-#endif
-
 			[Test]
 			[Arguments(5, 5)]
 			[Arguments(6, 5)]
@@ -404,39 +371,6 @@ public sealed partial class ThatNumber
 					              """);
 			}
 
-#if NET8_0_OR_GREATER
-			[Test]
-			public async Task ForNFloat_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldSucceed()
-			{
-				NFloat subject = NFloat.MinValue;
-				NFloat expected = NFloat.MaxValue;
-
-				async Task Act()
-					=> await That(subject).IsGreaterThan(expected).Within(NFloat.PositiveInfinity);
-
-				await That(Act).DoesNotThrow()
-					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
-			}
-
-			[Test]
-			public async Task ForNFloat_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldFail()
-			{
-				NFloat subject = NFloat.MinValue;
-				NFloat expected = NFloat.MaxValue;
-
-				async Task Act()
-					=> await That(subject).IsGreaterThan(expected).Within(NFloat.MaxValue);
-
-				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is greater than NFloat.MaxValue ± NFloat.MaxValue,
-					             but it was NFloat.MinValue
-					             """)
-					.Because("a distance that is not representable exceeds every finite tolerance");
-			}
-#endif
-
 			[Test]
 			[Arguments(5, 5)]
 			[Arguments(6, 5)]
@@ -473,7 +407,7 @@ public sealed partial class ThatNumber
 				sbyte expected = sbyte.MaxValue;
 
 				async Task Act()
-					=> await That(subject).IsGreaterThan(expected).Within((sbyte)1);
+					=> await That(subject).IsGreaterThan(expected).Within(1);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -518,6 +452,72 @@ public sealed partial class ThatNumber
 					             """)
 					.Because("a tolerance widens the bound, but does not make the comparison inclusive");
 			}
+
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task ForHalf_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldSucceed()
+			{
+				Half subject = Half.MinValue;
+				Half expected = Half.MaxValue;
+
+				async Task Act()
+					=> await That(subject).IsGreaterThan(expected).Within(Half.PositiveInfinity);
+
+				await That(Act).DoesNotThrow()
+					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
+			}
+
+			[Test]
+			public async Task ForHalf_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldFail()
+			{
+				Half subject = Half.MinValue;
+				Half expected = Half.MaxValue;
+
+				async Task Act()
+					=> await That(subject).IsGreaterThan(expected).Within(Half.MaxValue);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is greater than Half.MaxValue ± Half.MaxValue,
+					             but it was Half.MinValue, which differs by -131008.0
+					             """)
+					.Because("a distance that is not representable exceeds every finite tolerance");
+			}
+#endif
+
+#if NET8_0_OR_GREATER
+			[Test]
+			public async Task ForNFloat_WhenDistanceOverflowsAndToleranceIsInfinite_ShouldSucceed()
+			{
+				NFloat subject = NFloat.MinValue;
+				NFloat expected = NFloat.MaxValue;
+
+				async Task Act()
+					=> await That(subject).IsGreaterThan(expected).Within(NFloat.PositiveInfinity);
+
+				await That(Act).DoesNotThrow()
+					.Because("every finite distance is below an infinite tolerance, even when it is not representable");
+			}
+
+			[Test]
+			public async Task ForNFloat_WhenDistanceOverflowsAndToleranceIsMaxValue_ShouldFail()
+			{
+				NFloat subject = NFloat.MinValue;
+				NFloat expected = NFloat.MaxValue;
+
+				async Task Act()
+					=> await That(subject).IsGreaterThan(expected).Within(NFloat.MaxValue);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is greater than NFloat.MaxValue ± NFloat.MaxValue,
+					             but it was NFloat.MinValue
+					             """)
+					.Because("a distance that is not representable exceeds every finite tolerance");
+			}
+#endif
 		}
 	}
 }

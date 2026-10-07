@@ -2,9 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -74,8 +72,7 @@ public static partial class ThatAsyncEnumerable
 			TTolerance>
 		ContainsItemWithToleranceCore<TItem, TTolerance>(
 			IThat<IAsyncEnumerable<TItem>?> subject,
-			TItem expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
+			TItem expected, Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance> options,
 			bool negated)
 	{
 		Quantifier quantifier = new();
@@ -120,8 +117,7 @@ public static partial class ThatAsyncEnumerable
 		Summary = ContainsMatchingItem, NegatedSummary = DoesNotContainMatchingItem)]
 	internal static CountResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
 		ContainsMatchingItemCore<TItem>(
-			IThat<IAsyncEnumerable<TItem>?> subject,
-			Func<TItem, bool> predicate,
+			IThat<IAsyncEnumerable<TItem>?> subject, System.Func<TItem, bool> predicate,
 			string predicateExpression,
 			bool negated)
 	{
@@ -161,7 +157,7 @@ public static partial class ThatAsyncEnumerable
 				static (state, it, grammars) =>
 					new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
-						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
+						state.MatchOptions, true).InvertIf(state.Negated)),
 			subject,
 			options,
 			matchOptions);
@@ -191,7 +187,7 @@ public static partial class ThatAsyncEnumerable
 				static (state, it, grammars) =>
 					new AsyncIsEqualToConstraint<TItem, TItem>(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
-						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
+						state.MatchOptions, true).InvertIf(state.Negated)),
 			subject,
 			options,
 			matchOptions);
@@ -218,7 +214,7 @@ public static partial class ThatAsyncEnumerable
 				static (state, it, grammars) =>
 					new AsyncIsEqualToConstraint<string?, string?>(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.Options,
-						state.MatchOptions, failsForNullSubject: true).InvertIf(state.Negated)),
+						state.MatchOptions, true).InvertIf(state.Negated)),
 			subject,
 			options,
 			matchOptions);
@@ -255,7 +251,7 @@ public static partial class ThatAsyncEnumerable
 				static (state, it, grammars)
 					=> new AsyncIsEqualToFromPredicateConstraint<TItem, TItem>(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.MatchOptions,
-						failsForNullSubject: true).InvertIf(state.Negated)),
+						true).InvertIf(state.Negated)),
 			subject,
 			matchOptions);
 	}
@@ -291,7 +287,7 @@ public static partial class ThatAsyncEnumerable
 				static (state, it, grammars)
 					=> new AsyncIsEqualToFromExpectationsConstraint<TItem, TItem>(it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.ExpectedValues, state.MatchOptions,
-						failsForNullSubject: true).InvertIf(state.Negated)),
+						true).InvertIf(state.Negated)),
 			subject,
 			matchOptions);
 	}

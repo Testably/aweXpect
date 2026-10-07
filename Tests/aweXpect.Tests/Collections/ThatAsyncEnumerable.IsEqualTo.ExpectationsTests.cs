@@ -154,7 +154,7 @@ public sealed partial class ThatAsyncEnumerable
 
 					             Collection:
 					             []
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -354,7 +354,7 @@ public sealed partial class ThatAsyncEnumerable
 					               contained item "d" at index 3 instead of an item that is equal to "x" and
 					               contained item "e" at index 4 instead of an item that is equal to "y" and
 					               lacked 1 of 6 expected items: an item that is equal to "z"
-					             
+
 					             Collection:
 					             [
 					               "a",
@@ -363,7 +363,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "d",
 					               "e"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -403,7 +403,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "c",
 					               "d"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -443,7 +443,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "d",
 					               "e"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -482,7 +482,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "c",
 					               "b"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -512,14 +512,14 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in order,
 					             but it lacked 1 of 4 expected items: an item that is equal to "c"
-					             
+
 					             Collection:
 					             [
 					               "a",
 					               "b",
 					               "c"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -549,7 +549,7 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in order,
 					             but it contained item "c" at index 3 that was not expected
-					             
+
 					             Collection:
 					             [
 					               "a",
@@ -557,7 +557,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "c",
 					               "c"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -587,14 +587,14 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in order,
 					             but it lacked 1 of 4 expected items: an item that is equal to "a"
-					             
+
 					             Collection:
 					             [
 					               "a",
 					               "b",
 					               "c"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -632,7 +632,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "b",
 					               "c"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -662,14 +662,14 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in order,
 					             but it lacked 1 of 4 expected items: an item that is equal to "d"
-					             
+
 					             Collection:
 					             [
 					               "a",
 					               "b",
 					               "c"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -703,14 +703,14 @@ public sealed partial class ThatAsyncEnumerable
 					             but it lacked 2 of 5 expected items:
 					               an item that is equal to "d",
 					               an item that is equal to "e"
-					             
+
 					             Collection:
 					             [
 					               "a",
 					               "b",
 					               "c"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -879,10 +879,10 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
 					             but it lacked all 3 expected items
-					             
+
 					             Collection:
 					             []
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -914,7 +914,7 @@ public sealed partial class ThatAsyncEnumerable
 
 					             Collection:
 					             []
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -1022,7 +1022,7 @@ public sealed partial class ThatAsyncEnumerable
 					                 an item that is equal to "x",
 					                 an item that is equal to "y",
 					                 an item that is equal to "z"
-					             
+
 					             Collection:
 					             [
 					               "a",
@@ -1031,7 +1031,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "d",
 					               "e"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -1063,7 +1063,7 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
 					             but it contained item "d" at index 3 that was not expected
-					             
+
 					             Collection:
 					             [
 					               "a",
@@ -1071,7 +1071,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "c",
 					               "d"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -1102,7 +1102,7 @@ public sealed partial class ThatAsyncEnumerable
 					             but it
 					               contained item "d" at index 3 that was not expected and
 					               contained item "e" at index 4 that was not expected
-					             
+
 					             Collection:
 					             [
 					               "a",
@@ -1111,7 +1111,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "d",
 					               "e"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -1148,7 +1148,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "c",
 					               "b"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -1231,8 +1231,11 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithExpectationsBuiltInALoop_ShouldSucceed()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable(new[] { 1, 2, });
-				IEnumerable<Action<IThat<int>>> expected = new[] { 1, 2, }
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2);
+				IEnumerable<Action<IThat<int>>> expected = new[]
+					{
+						1, 2,
+					}
 					.Select(v => (Action<IThat<int>>)(x => x.Satisfies(i => i == v)))
 					.ToList();
 
@@ -1246,7 +1249,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithItemMatchingSeveralExpectations_ShouldSucceed()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable(new[] { 5, });
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(5);
 				IEnumerable<Action<IThat<int>>> expected =
 				[
 					x => x.IsGreaterThan(0),
@@ -1280,14 +1283,14 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in order ignoring duplicates,
 					             but it lacked 1 of 4 expected items: an item that is equal to "d"
-					             
+
 					             Collection:
 					             [
 					               "a",
 					               "b",
 					               "c"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -1321,14 +1324,14 @@ public sealed partial class ThatAsyncEnumerable
 					             but it lacked 2 of 5 expected items:
 					               an item that is equal to "d",
 					               an item that is equal to "e"
-					             
+
 					             Collection:
 					             [
 					               "a",
 					               "b",
 					               "c"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -1499,7 +1502,7 @@ public sealed partial class ThatAsyncEnumerable
 
 					             Collection:
 					             []
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -1607,7 +1610,7 @@ public sealed partial class ThatAsyncEnumerable
 					                 an item that is equal to "x",
 					                 an item that is equal to "y",
 					                 an item that is equal to "z"
-					             
+
 					             Collection:
 					             [
 					               "a",
@@ -1616,7 +1619,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "d",
 					               "e"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -1656,7 +1659,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "c",
 					               "d"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -1696,7 +1699,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "d",
 					               "e"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -1743,14 +1746,14 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order,
 					             but it lacked 1 of 4 expected items: an item that is equal to "c"
-					             
+
 					             Collection:
 					             [
 					               "a",
 					               "b",
 					               "c"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -1788,7 +1791,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "c",
 					               "c"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -1818,14 +1821,14 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order,
 					             but it lacked 1 of 4 expected items: an item that is equal to "a"
-					             
+
 					             Collection:
 					             [
 					               "a",
 					               "b",
 					               "c"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -1863,7 +1866,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "b",
 					               "c"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -1893,14 +1896,14 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order,
 					             but it lacked 1 of 4 expected items: an item that is equal to "d"
-					             
+
 					             Collection:
 					             [
 					               "a",
 					               "b",
 					               "c"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -1934,14 +1937,14 @@ public sealed partial class ThatAsyncEnumerable
 					             but it lacked 2 of 5 expected items:
 					               an item that is equal to "d",
 					               an item that is equal to "e"
-					             
+
 					             Collection:
 					             [
 					               "a",
 					               "b",
 					               "c"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -2117,7 +2120,7 @@ public sealed partial class ThatAsyncEnumerable
 
 					             Collection:
 					             []
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -2151,7 +2154,7 @@ public sealed partial class ThatAsyncEnumerable
 
 					             Collection:
 					             []
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -2259,7 +2262,7 @@ public sealed partial class ThatAsyncEnumerable
 					                 an item that is equal to "x",
 					                 an item that is equal to "y",
 					                 an item that is equal to "z"
-					             
+
 					             Collection:
 					             [
 					               "a",
@@ -2268,7 +2271,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "d",
 					               "e"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -2308,7 +2311,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "c",
 					               "d"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -2348,7 +2351,7 @@ public sealed partial class ThatAsyncEnumerable
 					               "d",
 					               "e"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -2448,8 +2451,11 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithExpectationsBuiltInALoop_ShouldSucceed()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable(new[] { 1, 2, });
-				IEnumerable<Action<IThat<int>>> expected = new[] { 1, 2, }
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2);
+				IEnumerable<Action<IThat<int>>> expected = new[]
+					{
+						1, 2,
+					}
 					.Select(v => (Action<IThat<int>>)(x => x.Satisfies(i => i == v)))
 					.ToList();
 
@@ -2463,7 +2469,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WithItemMatchingSeveralExpectations_ShouldSucceed()
 			{
-				IAsyncEnumerable<int> subject = ToAsyncEnumerable(new[] { 5, });
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(5);
 				IEnumerable<Action<IThat<int>>> expected =
 				[
 					x => x.IsGreaterThan(0),
@@ -2497,14 +2503,14 @@ public sealed partial class ThatAsyncEnumerable
 					             Expected that subject
 					             is equal to collection expected in any order ignoring duplicates,
 					             but it lacked 1 of 4 expected items: an item that is equal to "d"
-					             
+
 					             Collection:
 					             [
 					               "a",
 					               "b",
 					               "c"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",
@@ -2538,14 +2544,14 @@ public sealed partial class ThatAsyncEnumerable
 					             but it lacked 2 of 5 expected items:
 					               an item that is equal to "d",
 					               an item that is equal to "e"
-					             
+
 					             Collection:
 					             [
 					               "a",
 					               "b",
 					               "c"
 					             ]
-					             
+
 					             Expected:
 					             [
 					               an item that is equal to "a",

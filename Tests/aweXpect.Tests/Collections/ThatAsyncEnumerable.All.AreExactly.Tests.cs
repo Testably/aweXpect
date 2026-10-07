@@ -230,7 +230,13 @@ public sealed partial class ThatAsyncEnumerable
 				public async Task WhenAllItemsMatchTypeExactly_ShouldFail()
 				{
 					IAsyncEnumerable<MyBaseClass> subject =
-						ToAsyncEnumerable<MyBaseClass>(new MyClass { Foo = 1, }, new MyClass { Foo = 2, });
+						ToAsyncEnumerable<MyBaseClass>(new MyClass
+						{
+							Foo = 1,
+						}, new MyClass
+						{
+							Foo = 2,
+						});
 
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().AreExactly<MyClass>());
@@ -259,7 +265,13 @@ public sealed partial class ThatAsyncEnumerable
 				public async Task WhenOneItemIsOfDerivedType_ShouldSucceed()
 				{
 					IAsyncEnumerable<MyBaseClass> subject =
-						ToAsyncEnumerable<MyBaseClass>(new MyClass { Foo = 1, }, new MyBaseClass { Foo = 2, });
+						ToAsyncEnumerable<MyBaseClass>(new MyClass
+						{
+							Foo = 1,
+						}, new MyBaseClass
+						{
+							Foo = 2,
+						});
 
 					async Task Act()
 						=> await That(subject).DoesNotComplyWith(it => it.All().AreExactly<MyBaseClass>());

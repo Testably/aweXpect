@@ -20,6 +20,12 @@ internal class ExpectationNode : Node
 
 	private List<IBecauseReason>? _reasons;
 
+	/// <summary>
+	///     Whether the members of this node continue from the value that the preceding operand of an <c>And</c> stores,
+	///     e.g. for <c>AndWhose</c>.
+	/// </summary>
+	public bool ContinuesPrecedingOperand { get; init; }
+
 	/// <inheritdoc />
 	public override void AddConstraint(IConstraint constraint)
 	{
@@ -52,12 +58,6 @@ internal class ExpectationNode : Node
 		=> throw Tracing.WriteException(
 			new NotSupportedException(
 				$"Don't specify the inner node for Expectation nodes directly. Use {nameof(AddMapping)}() instead."));
-
-	/// <summary>
-	///     Whether the members of this node continue from the value that the preceding operand of an <c>And</c> stores,
-	///     e.g. for <c>AndWhose</c>.
-	/// </summary>
-	public bool ContinuesPrecedingOperand { get; init; }
 
 	/// <summary>
 	///     Indicates, if the node is empty.

@@ -25,12 +25,12 @@ public class ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem,
 			ObjectProperCollectionMatchWithToleranceResult<TType, TThat, TItem, TTolerance>, TItem, TTolerance>
 {
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	CollectionMatchOptions IOptionsProvider<CollectionMatchOptions>.Options => collectionMatchOptions;
-
-	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	ObjectEqualityOptions<TItem> IOptionsProvider<ObjectEqualityOptions<TItem>>.Options => options;
 
 	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
 	ObjectEqualityWithToleranceOptions<TItem, TTolerance>
 		IOptionsProvider<ObjectEqualityWithToleranceOptions<TItem, TTolerance>>.Options => options;
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	CollectionMatchOptions IOptionsProvider<CollectionMatchOptions>.Options => collectionMatchOptions;
 }

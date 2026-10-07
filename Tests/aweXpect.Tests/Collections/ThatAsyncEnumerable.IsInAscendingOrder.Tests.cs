@@ -420,7 +420,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WhenCustomComparerIsUsed_ShouldNotCheckKinds()
 			{
-				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable<DateTime>(Utc, Local);
+				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable(Utc, Local);
 
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder()
@@ -432,7 +432,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WhenKindIsUnspecified_ShouldSucceed()
 			{
-				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable<DateTime>(Utc, Unspecified, Utc.AddHours(2));
+				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable(Utc, Unspecified, Utc.AddHours(2));
 
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder();
@@ -443,7 +443,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WhenKindsAreIncompatible_ShouldFail()
 			{
-				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable<DateTime>(Utc, Unspecified, Local);
+				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable(Utc, Unspecified, Local);
 
 				async Task Act()
 					=> await That(subject).IsInAscendingOrder();
@@ -459,7 +459,7 @@ public sealed partial class ThatAsyncEnumerable
 			[Test]
 			public async Task WhenKindsAreIncompatibleAndNegated_ShouldFail()
 			{
-				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable<DateTime>(Utc, Local);
+				IAsyncEnumerable<DateTime> subject = ToAsyncEnumerable(Utc, Local);
 
 				async Task Act()
 					=> await That(subject).DoesNotComplyWith(x => x.IsInAscendingOrder());
@@ -528,8 +528,8 @@ public sealed partial class ThatAsyncEnumerable
 
 				IAsyncEnumerable<DateTime> GetSubject()
 					=> attempts++ == 0
-						? ToAsyncEnumerable<DateTime>(Utc, Local)
-						: ToAsyncEnumerable<DateTime>(Utc, Utc.AddHours(1));
+						? ToAsyncEnumerable(Utc, Local)
+						: ToAsyncEnumerable(Utc, Utc.AddHours(1));
 
 				async Task Act()
 					=> await That(GetSubject).Eventually().CheckEvery(1.Milliseconds()).IsInAscendingOrder();

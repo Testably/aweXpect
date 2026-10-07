@@ -26,7 +26,7 @@ internal static class StringExtensions
 	///     unquoted text, like an exception message, is not read as a literal and often holds a path.
 	/// </remarks>
 	[return: NotNullIfNotNull(nameof(value))]
-	public static string? DisplayWhitespace(this string? value) => Escape(value, null);
+	public static string? DisplayWhitespace(this string? value) => value.Escape(null);
 
 	/// <summary>
 	///     Escapes the <paramref name="value" /> like a C# literal enclosed in <paramref name="quote" /> characters, so

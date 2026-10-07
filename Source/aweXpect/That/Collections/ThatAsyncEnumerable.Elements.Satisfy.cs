@@ -1,5 +1,4 @@
 ﻿#if NET8_0_OR_GREATER
-using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using aweXpect.Core;
@@ -16,8 +15,7 @@ public static partial class ThatAsyncEnumerable
 		///     …satisfy the <paramref name="predicate" />.
 		/// </summary>
 		public AndOrResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>
-			Satisfy(
-				Func<string?, bool> predicate,
+			Satisfy(System.Func<string?, bool> predicate,
 				[CallerArgumentExpression("predicate")]
 				string doNotPopulateThisValue = "")
 		{
@@ -42,8 +40,7 @@ public static partial class ThatAsyncEnumerable
 		///     …satisfy the <paramref name="predicate" />.
 		/// </summary>
 		public AndOrResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>>
-			Satisfy(
-				Func<TItem, bool> predicate,
+			Satisfy(System.Func<TItem, bool> predicate,
 				[CallerArgumentExpression("predicate")]
 				string doNotPopulateThisValue = "")
 		{

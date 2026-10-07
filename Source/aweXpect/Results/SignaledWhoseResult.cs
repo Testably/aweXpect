@@ -24,9 +24,6 @@ public class SignaledWhoseResult<TParameter>(
 			expectationBuilder, returnValue),
 		ISignalerResult<SignaledWhoseResult<TParameter>, TParameter>
 {
-	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
-	SignalerOptions<TParameter> IOptionsProvider<SignalerOptions<TParameter>>.Options => options;
-
 	/// <summary>
 	///     …with parameters that…
 	/// </summary>
@@ -40,4 +37,7 @@ public class SignaledWhoseResult<TParameter>(
 				" with parameters that ", null,
 				grammars => grammars | ExpectationGrammars.Nested | ExpectationGrammars.Plural |
 				            ExpectationGrammars.Introduced));
+
+	/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+	SignalerOptions<TParameter> IOptionsProvider<SignalerOptions<TParameter>>.Options => options;
 }

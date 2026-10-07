@@ -1051,161 +1051,6 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Generated).IsEmpty();
 	}
 
-#if DEBUG
-	[Test]
-	public async Task WhenPropertyIsImplementedExplicitly_ForAnInaccessibleInterface_ShouldLeaveItOut()
-	{
-		MetadataReference library = GeneratorRunner.CompileToReference("Lib",
-			"namespace Lib { internal interface IHidden { int Value { get; } } public class WithHidden : IHidden { public int Own { get; set; } int IHidden.Value => Own; } }");
-		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
-			["[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(Lib.WithHidden))]",],
-			additionalReferences: library);
-
-		await That(result.Errors).IsEmpty();
-		await That(result.Generated).Contains("RegisterProperty<global::Lib.WithHidden, int>(\"Own\", o => o.Own);");
-		await That(result.Generated).DoesNotContain("RegisterExplicitProperty")
-			.Because("the generated code cannot cast to an interface it cannot see, and leaving out one fallback must not cost the type its registration");
-	}
-
-	[Test]
-	public async Task WhenPropertyIsImplementedExplicitly_ForAnInterfaceOverAnAnonymousType_ShouldNotRegisterTheType()
-	{
-		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
-		[
-			"""
-			namespace Models;
-
-			public interface IHasItem<T>
-			{
-				T Item { get; }
-			}
-
-			public class Box<T> : IHasItem<T>
-			{
-				public T Value { get; set; } = default!;
-				T IHasItem<T>.Item => Value;
-			}
-
-			public static class Box
-			{
-				public static Box<T> Of<T>(T value) => new() { Value = value, };
-			}
-			""",
-			Call("Expect.That(Models.Box.Of(new { A = 1 })).IsEquivalentTo(new { Value = new { A = 1 }, Item = new { A = 1 } });"),
-		]);
-
-		await That(result.Errors).IsEmpty();
-		await That(result.Generated).DoesNotContain("global::Models.Box<")
-			.Because("the generated code cannot cast to an interface over an anonymous type, and registering the other members alone would answer the explicit lookup differently than reflection");
-	}
-
-	[Test]
-	public async Task WhenPropertyIsImplementedExplicitly_OnABaseType_ShouldRegisterItOnce()
-	{
-		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
-		[
-			"""
-			namespace Models;
-
-			public interface IHasValue
-			{
-				int Value { get; }
-			}
-
-			public class Base : IHasValue
-			{
-				public int Own { get; set; }
-				int IHasValue.Value => 1;
-			}
-
-			public class Derived : Base, IHasValue
-			{
-				int IHasValue.Value => 2;
-			}
-			""",
-			"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(Models.Derived))]",
-		]);
-
-		await That(result.Errors).IsEmpty();
-		await That(result.Generated)
-			.Contains("RegisterExplicitProperty<global::Models.Derived, int>(\"Models.IHasValue.Value\", o => ((global::Models.IHasValue)o).Value);")
-			.Exactly(1)
-			.Because("the re-implementation hides the one on the base, as it does for reflection");
-	}
-
-	[Test]
-	public async Task WhenPropertyIsImplementedExplicitly_OnAGenericOverAnAnonymousType_ShouldRegisterItThroughAProbe()
-	{
-		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
-		[
-			"""
-			namespace Models;
-
-			public interface IHasId
-			{
-				int Id { get; }
-			}
-
-			public class Box<T> : IHasId
-			{
-				public T Value { get; set; } = default!;
-				int IHasId.Id => 42;
-			}
-
-			public static class Box
-			{
-				public static Box<T> Of<T>(T value) => new() { Value = value, };
-			}
-			""",
-			Call("Expect.That(Models.Box.Of(new { A = 1 })).IsEquivalentTo(new { Value = new { A = 1 }, Id = 42 });"),
-		]);
-
-		await That(result.Errors).IsEmpty();
-		await That(result.Warnings).IsEmpty();
-		await That(result.Generated).Contains("RegisterProperty(probe, \"Value\", o => o.Value);");
-		await That(result.Generated)
-			.Contains("RegisterExplicitProperty(probe, \"Models.IHasId.Id\", o => ((global::Models.IHasId)o).Id);")
-			.Because("a registered type answers the explicit lookup from its registration only, so leaving the implementation out would report it as missing although reflection finds it");
-	}
-
-	[Test]
-	public async Task WhenPropertyIsImplementedExplicitly_ShouldRegisterItThroughItsInterface()
-	{
-		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
-		[
-			"""
-			namespace Models;
-
-			public interface IHasValue
-			{
-				int Value { get; }
-			}
-
-			public interface IHasItems<T>
-			{
-				T Value { get; }
-			}
-
-			public class WithExplicit : IHasValue, IHasItems<string>
-			{
-				public int Own { get; set; }
-				int IHasValue.Value => Own;
-				string IHasItems<string>.Value => "";
-			}
-			""",
-			Call("Expect.That(new Models.WithExplicit()).IsEquivalentTo(new { Value = 1 });"),
-		]);
-
-		await That(result.Errors).IsEmpty();
-		await That(result.Warnings).IsEmpty();
-		await That(result.Generated)
-			.Contains("RegisterExplicitProperty<global::Models.WithExplicit, int>(\"Models.IHasValue.Value\", o => ((global::Models.IHasValue)o).Value);");
-		await That(result.Generated)
-			.Contains("RegisterExplicitProperty<global::Models.WithExplicit, string>(\"Models.IHasItems<System.String>.Value\", o => ((global::Models.IHasItems<string>)o).Value);")
-			.Because("each implementation is registered under its own qualified name, so that the comparison can tell an ambiguous short name apart");
-	}
-#endif
-
 	[Test]
 	public async Task WhenPropertyReturnsByReference_ShouldRegisterIt()
 	{
@@ -1376,18 +1221,18 @@ public sealed partial class TypeMetadataGeneratorTests
 		string typeAttribute)
 	{
 		MetadataReference library = GeneratorRunner.CompileToReference("Lib", $$"""
-			using System.Diagnostics.CodeAnalysis;
-			{{assemblyAttribute}}
-			namespace Lib
-			{
-				{{outerAttribute}}
-				public class Outer
-				{
-					{{typeAttribute}}
-					public class Foo { public int Id { get; set; } }
-				}
-			}
-			""");
+		                                                                        using System.Diagnostics.CodeAnalysis;
+		                                                                        {{assemblyAttribute}}
+		                                                                        namespace Lib
+		                                                                        {
+		                                                                        	{{outerAttribute}}
+		                                                                        	public class Outer
+		                                                                        	{
+		                                                                        		{{typeAttribute}}
+		                                                                        		public class Foo { public int Id { get; set; } }
+		                                                                        	}
+		                                                                        }
+		                                                                        """);
 
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
 			["#pragma warning disable LIBEXP001\n" + Call("Expect.That(new Lib.Outer.Foo()).IsEquivalentTo(new Lib.Outer.Foo());"),],
@@ -1508,4 +1353,159 @@ public sealed partial class TypeMetadataGeneratorTests
 
 	[GeneratedRegex("^\t+// global::Models\\.Other\r?$", RegexOptions.Multiline)]
 	private static partial Regex OtherRegistration();
+
+#if DEBUG
+	[Test]
+	public async Task WhenPropertyIsImplementedExplicitly_ForAnInaccessibleInterface_ShouldLeaveItOut()
+	{
+		MetadataReference library = GeneratorRunner.CompileToReference("Lib",
+			"namespace Lib { internal interface IHidden { int Value { get; } } public class WithHidden : IHidden { public int Own { get; set; } int IHidden.Value => Own; } }");
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+			["[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(Lib.WithHidden))]",],
+			additionalReferences: library);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("RegisterProperty<global::Lib.WithHidden, int>(\"Own\", o => o.Own);");
+		await That(result.Generated).DoesNotContain("RegisterExplicitProperty")
+			.Because("the generated code cannot cast to an interface it cannot see, and leaving out one fallback must not cost the type its registration");
+	}
+
+	[Test]
+	public async Task WhenPropertyIsImplementedExplicitly_ForAnInterfaceOverAnAnonymousType_ShouldNotRegisterTheType()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Models;
+
+			public interface IHasItem<T>
+			{
+				T Item { get; }
+			}
+
+			public class Box<T> : IHasItem<T>
+			{
+				public T Value { get; set; } = default!;
+				T IHasItem<T>.Item => Value;
+			}
+
+			public static class Box
+			{
+				public static Box<T> Of<T>(T value) => new() { Value = value, };
+			}
+			""",
+			Call("Expect.That(Models.Box.Of(new { A = 1 })).IsEquivalentTo(new { Value = new { A = 1 }, Item = new { A = 1 } });"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("global::Models.Box<")
+			.Because("the generated code cannot cast to an interface over an anonymous type, and registering the other members alone would answer the explicit lookup differently than reflection");
+	}
+
+	[Test]
+	public async Task WhenPropertyIsImplementedExplicitly_OnABaseType_ShouldRegisterItOnce()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Models;
+
+			public interface IHasValue
+			{
+				int Value { get; }
+			}
+
+			public class Base : IHasValue
+			{
+				public int Own { get; set; }
+				int IHasValue.Value => 1;
+			}
+
+			public class Derived : Base, IHasValue
+			{
+				int IHasValue.Value => 2;
+			}
+			""",
+			"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(Models.Derived))]",
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains("RegisterExplicitProperty<global::Models.Derived, int>(\"Models.IHasValue.Value\", o => ((global::Models.IHasValue)o).Value);")
+			.Exactly(1)
+			.Because("the re-implementation hides the one on the base, as it does for reflection");
+	}
+
+	[Test]
+	public async Task WhenPropertyIsImplementedExplicitly_OnAGenericOverAnAnonymousType_ShouldRegisterItThroughAProbe()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Models;
+
+			public interface IHasId
+			{
+				int Id { get; }
+			}
+
+			public class Box<T> : IHasId
+			{
+				public T Value { get; set; } = default!;
+				int IHasId.Id => 42;
+			}
+
+			public static class Box
+			{
+				public static Box<T> Of<T>(T value) => new() { Value = value, };
+			}
+			""",
+			Call("Expect.That(Models.Box.Of(new { A = 1 })).IsEquivalentTo(new { Value = new { A = 1 }, Id = 42 });"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty();
+		await That(result.Generated).Contains("RegisterProperty(probe, \"Value\", o => o.Value);");
+		await That(result.Generated)
+			.Contains("RegisterExplicitProperty(probe, \"Models.IHasId.Id\", o => ((global::Models.IHasId)o).Id);")
+			.Because("a registered type answers the explicit lookup from its registration only, so leaving the implementation out would report it as missing although reflection finds it");
+	}
+
+	[Test]
+	public async Task WhenPropertyIsImplementedExplicitly_ShouldRegisterItThroughItsInterface()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Models;
+
+			public interface IHasValue
+			{
+				int Value { get; }
+			}
+
+			public interface IHasItems<T>
+			{
+				T Value { get; }
+			}
+
+			public class WithExplicit : IHasValue, IHasItems<string>
+			{
+				public int Own { get; set; }
+				int IHasValue.Value => Own;
+				string IHasItems<string>.Value => "";
+			}
+			""",
+			Call("Expect.That(new Models.WithExplicit()).IsEquivalentTo(new { Value = 1 });"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty();
+		await That(result.Generated)
+			.Contains("RegisterExplicitProperty<global::Models.WithExplicit, int>(\"Models.IHasValue.Value\", o => ((global::Models.IHasValue)o).Value);");
+		await That(result.Generated)
+			.Contains("RegisterExplicitProperty<global::Models.WithExplicit, string>(\"Models.IHasItems<System.String>.Value\", o => ((global::Models.IHasItems<string>)o).Value);")
+			.Because("each implementation is registered under its own qualified name, so that the comparison can tell an ambiguous short name apart");
+	}
+#endif
 }

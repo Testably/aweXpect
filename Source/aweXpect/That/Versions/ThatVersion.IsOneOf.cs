@@ -31,7 +31,7 @@ public static partial class ThatVersion
 		bool negated)
 	{
 		IEnumerable<Version?> expectedValues = expected.ToNonEmptyValues(negated);
-		return new(subject.Get().ExpectationBuilder.AddConstraint(
+		return new AndOrResult<Version?, IThat<Version?>>(subject.Get().ExpectationBuilder.AddConstraint(
 				(ExpectedValues: expectedValues, ExpectedExpression: expectedExpression, Negated: negated),
 				static (state, it, grammars) =>
 					new IsOneOfConstraint(it, grammars, state.ExpectedValues, state.ExpectedExpression)
@@ -47,10 +47,6 @@ public static partial class ThatVersion
 		: ConstraintResult.WithValue<Version?>(it, grammars),
 			IValueConstraint<Version?>
 	{
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
-
 		public ConstraintResult IsMetBy(Version? actual)
 		{
 			Actual = actual;
@@ -59,6 +55,10 @@ public static partial class ThatVersion
 				: Outcome.Failure;
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

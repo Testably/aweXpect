@@ -84,8 +84,7 @@ public sealed class StringBlockHasItemResultTests
 #pragma warning disable aweXpect0001
 		IThat<IEnumerable<string>?> source = That<IEnumerable<string>?>(Array.Empty<string>());
 #pragma warning restore aweXpect0001
-		return new StringHasItemResult<IEnumerable<string>>(source.Get().ExpectationBuilder.AddConstraint(
-				(it, _) => new DummyConstraint(it)),
+		return new StringHasItemResult<IEnumerable<string>>(source.Get().ExpectationBuilder.AddConstraint((it, _) => new DummyConstraint(it)),
 			source,
 			new CollectionIndexOptions(),
 			options);

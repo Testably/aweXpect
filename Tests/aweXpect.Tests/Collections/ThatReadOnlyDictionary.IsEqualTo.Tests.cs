@@ -74,7 +74,15 @@ public sealed partial class ThatReadOnlyDictionary
 			public async Task WhenSubjectUsesACaseInsensitiveComparer_WithTwoExpectedKeysForOneEntry_ShouldFail()
 			{
 				IReadOnlyDictionary<string, int> subject =
-					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, };
+					new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+						{
+							"b", 1
+						},
+					};
 				IReadOnlyDictionary<string, int> expected = ToDictionary(["a", "A",], [1, 1,]);
 
 				async Task Act()
@@ -119,7 +127,15 @@ public sealed partial class ThatReadOnlyDictionary
 			public async Task WhenSubjectHasAnAdditionalKey_ShouldFail()
 			{
 				ReadOnlyOnlyDictionary<string, int> subject =
-					new(new Dictionary<string, int> { { "a", 1 }, { "b", 2 }, });
+					new(new Dictionary<string, int>
+					{
+						{
+							"a", 1
+						},
+						{
+							"b", 2
+						},
+					});
 				IReadOnlyDictionary<string, int> expected = ToDictionary(["a",], [1,]);
 
 				async Task Act()
@@ -140,7 +156,12 @@ public sealed partial class ThatReadOnlyDictionary
 			public async Task WhenSubjectUsesACaseInsensitiveComparer_ShouldLookTheKeysUpThroughIt()
 			{
 				ReadOnlyOnlyDictionary<string, int> subject =
-					new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, });
+					new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+					});
 				IReadOnlyDictionary<string, int> expected = ToDictionary(["A",], [1,]);
 
 				async Task Act()
@@ -163,7 +184,15 @@ public sealed partial class ThatReadOnlyDictionary
 			public async Task WhenTheComparerCannotBeRead_WithAnAdditionalKey_ShouldNotNameIt()
 			{
 				ReadOnlyOnlyDictionary<string, int> subject =
-					new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, });
+					new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+						{
+							"b", 1
+						},
+					});
 				IReadOnlyDictionary<string, int> expected = ToDictionary(["A",], [1,]);
 
 				async Task Act()
@@ -185,7 +214,15 @@ public sealed partial class ThatReadOnlyDictionary
 			public async Task WhenTheComparerCannotBeRead_WithTwoExpectedKeysForOneEntry_ShouldFail()
 			{
 				ReadOnlyOnlyDictionary<string, int> subject =
-					new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) { { "a", 1 }, { "b", 1 }, });
+					new(new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+					{
+						{
+							"a", 1
+						},
+						{
+							"b", 1
+						},
+					});
 				IReadOnlyDictionary<string, int> expected = ToDictionary(["a", "A",], [1, 1,]);
 
 				async Task Act()
@@ -209,7 +246,12 @@ public sealed partial class ThatReadOnlyDictionary
 			[Test]
 			public async Task WhenTheValuesDifferOnlyInCase_WithIgnoringCase_ShouldSucceed()
 			{
-				ReadOnlyOnlyDictionary<int, string> subject = new(new Dictionary<int, string> { { 1, "Let It Be" }, });
+				ReadOnlyOnlyDictionary<int, string> subject = new(new Dictionary<int, string>
+				{
+					{
+						1, "Let It Be"
+					},
+				});
 				IReadOnlyDictionary<int, string> expected = ToDictionary([1,], ["LET IT BE",]);
 
 				async Task Act()
@@ -224,7 +266,12 @@ public sealed partial class ThatReadOnlyDictionary
 			[Test]
 			public async Task WhenTheValuesLieWithinTheTolerance_ShouldSucceed()
 			{
-				ReadOnlyOnlyDictionary<string, double> subject = new(new Dictionary<string, double> { { "a", 1.05 }, });
+				ReadOnlyOnlyDictionary<string, double> subject = new(new Dictionary<string, double>
+				{
+					{
+						"a", 1.05
+					},
+				});
 				IReadOnlyDictionary<string, double> expected = ToDictionary(["a",], [1.0,]);
 
 				async Task Act()
@@ -241,8 +288,16 @@ public sealed partial class ThatReadOnlyDictionary
 			{
 				InvalidOperationException exception = new("enumeration failed");
 				IReadOnlyDictionary<string, int> subject = new ReadOnlyOnlyDictionary<string, int>(
-					new ThrowingDictionary<string, int>(exception, ThrowingMembers.Enumeration) { ["a"] = 1, ["b"] = 2, });
-				Dictionary<string, int> expected = new() { ["a"] = 1, ["b"] = 2, };
+					new ThrowingDictionary<string, int>(exception, ThrowingMembers.Enumeration)
+					{
+						["a"] = 1,
+						["b"] = 2,
+					});
+				Dictionary<string, int> expected = new()
+				{
+					["a"] = 1,
+					["b"] = 2,
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
@@ -266,9 +321,17 @@ public sealed partial class ThatReadOnlyDictionary
 				InvalidOperationException exception = new("comparer failed");
 				ThrowingKeyComparer<string> comparer = new(exception);
 				IReadOnlyDictionary<string, int> subject = new ReadOnlyOnlyDictionary<string, int>(
-					new Dictionary<string, int>(comparer) { ["a"] = 1, ["b"] = 2, });
+					new Dictionary<string, int>(comparer)
+					{
+						["a"] = 1,
+						["b"] = 2,
+					});
 				comparer.IsArmed = true;
-				Dictionary<string, int> expected = new() { ["a"] = 1, ["b"] = 2, };
+				Dictionary<string, int> expected = new()
+				{
+					["a"] = 1,
+					["b"] = 2,
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
@@ -291,8 +354,16 @@ public sealed partial class ThatReadOnlyDictionary
 			{
 				InvalidOperationException exception = new("lookup failed");
 				IReadOnlyDictionary<string, int> subject = new ReadOnlyOnlyDictionary<string, int>(
-					new ThrowingDictionary<string, int>(exception, ThrowingMembers.TryGetValue) { ["a"] = 1, ["b"] = 2, });
-				Dictionary<string, int> expected = new() { ["a"] = 1, ["b"] = 2, };
+					new ThrowingDictionary<string, int>(exception, ThrowingMembers.TryGetValue)
+					{
+						["a"] = 1,
+						["b"] = 2,
+					});
+				Dictionary<string, int> expected = new()
+				{
+					["a"] = 1,
+					["b"] = 2,
+				};
 
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);

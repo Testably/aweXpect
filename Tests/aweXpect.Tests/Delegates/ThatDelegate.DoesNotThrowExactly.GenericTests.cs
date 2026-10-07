@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace aweXpect.Tests;
 
@@ -124,7 +125,7 @@ public sealed partial class ThatDelegate
 					             """);
 			}
 		}
-		
+
 		public sealed class FuncValueGenericTests
 		{
 			[Test]
@@ -152,7 +153,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateReturnsNullTask_ShouldFail()
 			{
-				Func<System.Threading.CancellationToken, Task<int>> @delegate = _ => null!;
+				Func<CancellationToken, Task<int>> @delegate = _ => null!;
 
 				async Task Act()
 					=> await That(@delegate).DoesNotThrowExactly<NullReferenceException>();

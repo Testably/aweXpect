@@ -153,10 +153,6 @@ internal sealed class IsInOrderConstraint<TEnumerable, TItem, TMember>(
 {
 	private CollectionContext _collectionContext;
 
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-		=> _collectionContext.AppendTo(contexts);
-
 	public ValueTask<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
@@ -194,6 +190,10 @@ internal sealed class IsInOrderConstraint<TEnumerable, TItem, TMember>(
 		Outcome = Outcome.Success;
 		return new ValueTask<ConstraintResult>(this);
 	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+		=> _collectionContext.AppendTo(contexts);
 }
 
 #if NET8_0_OR_GREATER
@@ -210,10 +210,6 @@ internal sealed class AsyncIsInOrderConstraint<TItem, TMember>(
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
 	private CollectionContext _collectionContext;
-
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-		=> _collectionContext.AppendTo(contexts);
 
 	public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -243,5 +239,9 @@ internal sealed class AsyncIsInOrderConstraint<TItem, TMember>(
 		Outcome = cancellationToken.IsCanceledBeforeTheEndOf(materialized) ? Outcome.Undecided : Outcome.Success;
 		return this;
 	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+		=> _collectionContext.AppendTo(contexts);
 }
 #endif

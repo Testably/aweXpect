@@ -40,6 +40,9 @@ public abstract partial class ThatDelegate
 			_synchronousSubject = synchronousSubject;
 		}
 
+		/// <inheritdoc cref="IExpectThat{T}.ExpectationBuilder" />
+		ExpectationBuilder IExpectThat<WithValue<T>>.ExpectationBuilder => _expectationBuilder;
+
 		/// <summary>
 		///     Creates the subject also for a <see langword="null" /> <paramref name="subject" />, which the expectations
 		///     report as <c>&lt;null&gt;</c> instead of throwing.
@@ -54,9 +57,6 @@ public abstract partial class ThatDelegate
 		/// </remarks>
 		internal static WithValue<T> Create(ExpectationBuilder expectationBuilder, Func<T>? subject)
 			=> subject is null ? new WithValue<T>(expectationBuilder) : new WithValue<T>(expectationBuilder, subject);
-
-		/// <inheritdoc cref="IExpectThat{T}.ExpectationBuilder" />
-		ExpectationBuilder IExpectThat<WithValue<T>>.ExpectationBuilder => _expectationBuilder;
 
 		/// <summary>
 		///     Specify expectations that the delegate must eventually satisfy.

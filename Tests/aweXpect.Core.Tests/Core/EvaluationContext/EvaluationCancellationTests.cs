@@ -182,6 +182,7 @@ public class EvaluationCancellationTests
 		await That(sut.Reason).IsEqualTo(CancellationReason.None);
 		sut.Release();
 	}
+
 	private static AndOrResult<bool, IExpectThat<bool>> Evaluate(CancellationCapturingConstraint constraint)
 	{
 #pragma warning disable aweXpect0001

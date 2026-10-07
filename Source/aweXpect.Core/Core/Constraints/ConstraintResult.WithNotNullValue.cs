@@ -23,9 +23,9 @@ public abstract partial class ConstraintResult
 		: WithValue<T>(it, grammars)
 	{
 		/// <inheritdoc />
-		private protected override Outcome? GetNullSubjectOutcome() => Outcome.FailureBothWays;
+		private protected override bool RendersNullSubject => true;
 
 		/// <inheritdoc />
-		private protected override bool RendersNullSubject => true;
+		private protected override Outcome? GetNullSubjectOutcome() => Outcome.FailureBothWays;
 	}
 }

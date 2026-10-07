@@ -129,10 +129,6 @@ public static partial class ThatObject
 	{
 		private IObjectMatchResult? _matchResult;
 
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> options.AppendContexts(contexts);
-
 		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
@@ -140,6 +136,10 @@ public static partial class ThatObject
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> options.AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
@@ -167,10 +167,6 @@ public static partial class ThatObject
 	{
 		private IObjectMatchResult? _matchResult;
 
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> options.AppendContexts(contexts);
-
 		public async ValueTask<ConstraintResult> IsMetBy(T actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
@@ -178,6 +174,10 @@ public static partial class ThatObject
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> options.AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
@@ -205,10 +205,6 @@ public static partial class ThatObject
 	{
 		private IObjectMatchResult? _matchResult;
 
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> options.AppendContexts(contexts);
-
 		public async ValueTask<ConstraintResult> IsMetBy(T? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
@@ -216,6 +212,10 @@ public static partial class ThatObject
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> options.AppendContexts(contexts);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(

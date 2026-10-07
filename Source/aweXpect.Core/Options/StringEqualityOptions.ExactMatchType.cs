@@ -99,8 +99,8 @@ public partial class StringEqualityOptions
 
 		/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
 		public ValueTask<bool>
-		AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
-			IEqualityComparer<string>? comparer)
+			AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
+				IEqualityComparer<string>? comparer)
 		{
 			if (actual is null && expected is null)
 			{
@@ -116,7 +116,7 @@ public partial class StringEqualityOptions
 			{
 				return new ValueTask<bool>(AreEqualByComparer(comparer, actual, expected));
 			}
-			
+
 			return new ValueTask<bool>(string.Equals(actual, expected, ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal));
 		}
 

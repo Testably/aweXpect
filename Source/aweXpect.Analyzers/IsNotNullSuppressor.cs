@@ -240,9 +240,9 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 			// Only the nodes that make up an awaited or verified expectation chain, an `Expect.ThatAll` combination
 			// or an assignment of the evaluated result are known to always evaluate their children.
 			if (current is not (InvocationExpressionSyntax or MemberAccessExpressionSyntax
-			    or ParenthesizedExpressionSyntax or AwaitExpressionSyntax or ArgumentListSyntax
-			    or AssignmentExpressionSyntax or EqualsValueClauseSyntax
-			    or VariableDeclaratorSyntax or VariableDeclarationSyntax) &&
+				    or ParenthesizedExpressionSyntax or AwaitExpressionSyntax or ArgumentListSyntax
+				    or AssignmentExpressionSyntax or EqualsValueClauseSyntax
+				    or VariableDeclaratorSyntax or VariableDeclarationSyntax) &&
 			    !IsEvaluatingArgument(current, semanticModel, cancellationToken))
 			{
 				return true;
@@ -531,7 +531,8 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 		}
 
 		ITypeSymbol receiver = methodSymbol.ReceiverType!;
-		for (INamedTypeSymbol? type = methodSymbol.ReturnType as INamedTypeSymbol; type is not null;
+		for (INamedTypeSymbol? type = methodSymbol.ReturnType as INamedTypeSymbol;
+		     type is not null;
 		     type = type.BaseType)
 		{
 			if (IsAweXpectAssembly(type.ContainingAssembly, compilation) &&

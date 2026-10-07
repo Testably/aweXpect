@@ -157,6 +157,12 @@ public static class TypeMetadataRegistry
 		private int _order;
 		private int _version;
 
+		/// <summary>
+		///     Changes whenever a registration is published, so that what was derived from the registrations can tell
+		///     that it is outdated.
+		/// </summary>
+		public int Version => Volatile.Read(ref _version);
+
 		public void AddField(Type type, string name, Type memberType, Func<object, object?> getValue,
 			ValueComparer? valueComparer = null)
 			=> Add(type, metadata
@@ -251,12 +257,6 @@ public static class TypeMetadataRegistry
 			_metadata.AddOrUpdate(type, metadata, (_, published) => published.MergedWith(metadata));
 			Interlocked.Increment(ref _version);
 		}
-
-		/// <summary>
-		///     Changes whenever a registration is published, so that what was derived from the registrations can tell
-		///     that it is outdated.
-		/// </summary>
-		public int Version => Volatile.Read(ref _version);
 
 		/// <remarks>
 		///     Registrations keep the order the generator emitted them in, so that a failure message lists the members of
@@ -419,10 +419,10 @@ public static class TypeMetadataRegistry
 		Action<object, Delegate> removeHandler,
 		int order) : IRecordableEvent
 	{
-		public string Name { get; } = name;
 		public Func<Action<object?[]>, Delegate> CreateHandler { get; } = createHandler;
 		public Action<object, Delegate> AddHandler { get; } = addHandler;
 		public Action<object, Delegate> RemoveHandler { get; } = removeHandler;
 		public int Order { get; } = order;
+		public string Name { get; } = name;
 	}
 }

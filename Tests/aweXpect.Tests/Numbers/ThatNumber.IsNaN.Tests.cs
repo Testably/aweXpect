@@ -416,7 +416,7 @@ public sealed partial class ThatNumber
 			];
 #endif
 		}
-		
+
 		public sealed class NegatedTests
 		{
 			[Test]
@@ -425,7 +425,7 @@ public sealed partial class ThatNumber
 			public async Task ForDouble_WhenSubjectIsInfinity_ShouldSucceed(double subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => 
+					=> await That(subject).DoesNotComplyWith(it =>
 						it.IsNaN());
 
 				await That(Act).DoesNotThrow();
@@ -436,7 +436,7 @@ public sealed partial class ThatNumber
 			{
 				double subject = double.NaN;
 
-				async Task Act() => await That(subject).DoesNotComplyWith(it => 
+				async Task Act() => await That(subject).DoesNotComplyWith(it =>
 					it.IsNaN());
 
 				await That(Act).Throws<FailException>()
@@ -457,12 +457,12 @@ public sealed partial class ThatNumber
 			public async Task ForDouble_WhenSubjectIsNormalValue_ShouldSucceed(double subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => 
+					=> await That(subject).DoesNotComplyWith(it =>
 						it.IsNaN());
 
 				await That(Act).DoesNotThrow();
 			}
-			
+
 			[Test]
 			[Arguments(double.PositiveInfinity)]
 			[Arguments(double.NegativeInfinity)]
@@ -470,7 +470,7 @@ public sealed partial class ThatNumber
 				double? subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => 
+					=> await That(subject).DoesNotComplyWith(it =>
 						it.IsNaN());
 
 				await That(Act).DoesNotThrow();
@@ -482,7 +482,7 @@ public sealed partial class ThatNumber
 			{
 				double? subject = double.NaN;
 
-				async Task Act() => await That(subject).DoesNotComplyWith(it => 
+				async Task Act() => await That(subject).DoesNotComplyWith(it =>
 					it.IsNaN());
 
 				await That(Act).Throws<FailException>()
@@ -492,6 +492,7 @@ public sealed partial class ThatNumber
 					              but it was {Formatter.Format(subject)}
 					              """);
 			}
+
 			[Test]
 			[Arguments(-1.0)]
 			[Arguments(0.0)]
@@ -503,7 +504,7 @@ public sealed partial class ThatNumber
 				double? subject)
 			{
 				async Task Act()
-					=> await That(subject).DoesNotComplyWith(it => 
+					=> await That(subject).DoesNotComplyWith(it =>
 						it.IsNaN());
 
 				await That(Act).DoesNotThrow();

@@ -227,9 +227,15 @@ public partial class ValueFormatters
 
 			string result = Formatter.Format(value, FormattingOptions.MultipleLines);
 			string objectResult = Formatter.Format((object?)value, FormattingOptions.MultipleLines);
-			string typeResult = Formatter.Format(value, FormattingOptions.MultipleLines with { IncludeType = true, });
+			string typeResult = Formatter.Format(value, FormattingOptions.MultipleLines with
+			{
+				IncludeType = true,
+			});
 			Formatter.Format(sb, value, FormattingOptions.MultipleLines);
-			Formatter.Format(typeSb, value, FormattingOptions.MultipleLines with { IncludeType = true, });
+			Formatter.Format(typeSb, value, FormattingOptions.MultipleLines with
+			{
+				IncludeType = true,
+			});
 
 			await That(result).IsEqualTo(expectedResult)
 				.Because("a raw quote or line break would break the layout of the message, just as for a nested string");

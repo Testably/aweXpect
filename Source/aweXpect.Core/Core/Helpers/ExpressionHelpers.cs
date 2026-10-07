@@ -20,7 +20,7 @@ internal static class ExpressionHelpers
 
 	public static string GetMemberPath(Expression expression)
 	{
-		MemberExpression? memberExpression = GetMemberExpression(expression);
+		MemberExpression? memberExpression = expression.GetMemberExpression();
 		StringBuilder path = new();
 		while (memberExpression != null)
 		{
@@ -30,7 +30,7 @@ internal static class ExpressionHelpers
 			}
 
 			path.Insert(0, memberExpression.Member.Name);
-			memberExpression = GetMemberExpression(memberExpression.Expression);
+			memberExpression = memberExpression.Expression.GetMemberExpression();
 		}
 
 		return path.ToString();

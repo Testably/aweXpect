@@ -24,14 +24,21 @@ internal sealed class MaterializingEnumerable<T> : IMaterializedEnumerable<T>, I
 		_enumerator = enumerable.GetEnumerator();
 	}
 
-	public int? Count { get; private set; }
-
-	/// <inheritdoc />
-	public IReadOnlyList<T> MaterializedItems => _materializedItems;
+	/// <inheritdoc cref="IMaterialization.ReleaseSource()" />
+	public Task ReleaseSource()
+	{
+		DisposeSource();
+		return Task.CompletedTask;
+	}
 
 	/// <inheritdoc />
 	IReadOnlyList<object?> IMaterializedEnumerable.MaterializedItems
 		=> _materializedItems.ConvertAll(item => (object?)item);
+
+	public int? Count { get; private set; }
+
+	/// <inheritdoc />
+	public IReadOnlyList<T> MaterializedItems => _materializedItems;
 
 	public static IEnumerable<T> Wrap(IEnumerable<T> enumerable)
 	{
@@ -41,40 +48,6 @@ internal sealed class MaterializingEnumerable<T> : IMaterializedEnumerable<T>, I
 		}
 
 		return new MaterializingEnumerable<T>(enumerable);
-	}
-
-	#region IEnumerable<T> Members
-
-	/// <inheritdoc />
-	IEnumerator IEnumerable.GetEnumerator()
-		=> GetEnumerator();
-
-	/// <remarks>
-	///     The items are replayed by index, so that an enumeration nested in another one continues where the other one
-	///     stopped, instead of cutting it short.
-	/// </remarks>
-	public IEnumerator<T> GetEnumerator()
-	{
-		int index = 0;
-		// Stryker disable once Conditional : a mutated condition keeps appending the exhausted enumerator's current item until the test host runs out of memory, which costs a minute per mutant and cannot be killed any cheaper
-		while (index < _materializedItems.Count || MoveNext())
-		{
-			if (index == _materializedItems.Count)
-			{
-				_materializedItems.Add(_enumerator.Current);
-			}
-
-			yield return _materializedItems[index++];
-		}
-	}
-
-	#endregion
-
-	/// <inheritdoc cref="IMaterialization.ReleaseSource()" />
-	public Task ReleaseSource()
-	{
-		DisposeSource();
-		return Task.CompletedTask;
 	}
 
 	/// <remarks>
@@ -130,6 +103,33 @@ internal sealed class MaterializingEnumerable<T> : IMaterializedEnumerable<T>, I
 			// The outcome is already decided, so an exception while disposing the source must not replace it.
 		}
 	}
+
+	#region IEnumerable<T> Members
+
+	/// <inheritdoc />
+	IEnumerator IEnumerable.GetEnumerator()
+		=> GetEnumerator();
+
+	/// <remarks>
+	///     The items are replayed by index, so that an enumeration nested in another one continues where the other one
+	///     stopped, instead of cutting it short.
+	/// </remarks>
+	public IEnumerator<T> GetEnumerator()
+	{
+		int index = 0;
+		// Stryker disable once Conditional : a mutated condition keeps appending the exhausted enumerator's current item until the test host runs out of memory, which costs a minute per mutant and cannot be killed any cheaper
+		while (index < _materializedItems.Count || MoveNext())
+		{
+			if (index == _materializedItems.Count)
+			{
+				_materializedItems.Add(_enumerator.Current);
+			}
+
+			yield return _materializedItems[index++];
+		}
+	}
+
+	#endregion
 }
 
 internal sealed class MaterializingEnumerable : IMaterializedEnumerable, IMaterialization
@@ -143,6 +143,13 @@ internal sealed class MaterializingEnumerable : IMaterializedEnumerable, IMateri
 	{
 		// ReSharper disable once GenericEnumeratorNotDisposed
 		_enumerator = enumerable.GetEnumerator();
+	}
+
+	/// <inheritdoc cref="IMaterialization.ReleaseSource()" />
+	public Task ReleaseSource()
+	{
+		DisposeSource();
+		return Task.CompletedTask;
 	}
 
 	public int? Count { get; private set; }
@@ -159,36 +166,6 @@ internal sealed class MaterializingEnumerable : IMaterializedEnumerable, IMateri
 		}
 
 		return new MaterializingEnumerable(enumerable);
-	}
-
-	#region IEnumerable Members
-
-	/// <inheritdoc />
-	IEnumerator IEnumerable.GetEnumerator()
-		=> GetEnumerator();
-
-	/// <inheritdoc cref="MaterializingEnumerable{T}.GetEnumerator()" />
-	private IEnumerator GetEnumerator()
-	{
-		int index = 0;
-		while (index < _materializedItems.Count || MoveNext())
-		{
-			if (index == _materializedItems.Count)
-			{
-				_materializedItems.Add(_enumerator.Current);
-			}
-
-			yield return _materializedItems[index++];
-		}
-	}
-
-	#endregion
-
-	/// <inheritdoc cref="IMaterialization.ReleaseSource()" />
-	public Task ReleaseSource()
-	{
-		DisposeSource();
-		return Task.CompletedTask;
 	}
 
 	/// <inheritdoc cref="MaterializingEnumerable{T}.MoveNext()" />
@@ -240,4 +217,27 @@ internal sealed class MaterializingEnumerable : IMaterializedEnumerable, IMateri
 			// The outcome is already decided, so an exception while disposing the source must not replace it.
 		}
 	}
+
+	#region IEnumerable Members
+
+	/// <inheritdoc />
+	IEnumerator IEnumerable.GetEnumerator()
+		=> GetEnumerator();
+
+	/// <inheritdoc cref="MaterializingEnumerable{T}.GetEnumerator()" />
+	private IEnumerator GetEnumerator()
+	{
+		int index = 0;
+		while (index < _materializedItems.Count || MoveNext())
+		{
+			if (index == _materializedItems.Count)
+			{
+				_materializedItems.Add(_enumerator.Current);
+			}
+
+			yield return _materializedItems[index++];
+		}
+	}
+
+	#endregion
 }

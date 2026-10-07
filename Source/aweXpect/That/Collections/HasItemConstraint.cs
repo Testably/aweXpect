@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,6 +49,11 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 	/// </summary>
 	protected CollectionIndexOptions Options { get; }
 
+	/// <summary>
+	///     Whether the predicate is synchronous, so that the items can be verified without awaiting it.
+	/// </summary>
+	protected bool IsSynchronous => _synchronousItem is not null;
+
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)
 		=> Item.AppendContexts(contexts);
@@ -63,11 +67,6 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 		_hasIndex = false;
 		Outcome = Outcome.Failure;
 	}
-
-	/// <summary>
-	///     Whether the predicate is synchronous, so that the items can be verified without awaiting it.
-	/// </summary>
-	protected bool IsSynchronous => _synchronousItem is not null;
 
 	/// <summary>
 	///     Whether the <paramref name="item" /> matches the synchronous predicate.
@@ -151,13 +150,6 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>(
 {
 	private CollectionContext _collectionContext;
 
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-	{
-		_collectionContext.AppendTo(contexts);
-		base.AppendContexts(contexts);
-	}
-
 	public ValueTask<ConstraintResult> IsMetBy(TEnumerable actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
@@ -188,6 +180,13 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>(
 		return IsSynchronous
 			? new ValueTask<ConstraintResult>(Verify(materialized, count, cancellationToken))
 			: VerifyAsync(materialized, count, cancellationToken);
+	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		_collectionContext.AppendTo(contexts);
+		base.AppendContexts(contexts);
 	}
 
 	private HasItemConstraint<TEnumerable, TItem> Verify(CollectionItems<TItem> materialized, int? count,
@@ -246,13 +245,6 @@ internal sealed class AsyncHasItemConstraint<TItem>(
 {
 	private CollectionContext _collectionContext;
 
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-	{
-		_collectionContext.AppendTo(contexts);
-		base.AppendContexts(contexts);
-	}
-
 	public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TItem>? actual, IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
@@ -295,6 +287,13 @@ internal sealed class AsyncHasItemConstraint<TItem>(
 		}
 
 		return this;
+	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+	{
+		_collectionContext.AppendTo(contexts);
+		base.AppendContexts(contexts);
 	}
 }
 #endif

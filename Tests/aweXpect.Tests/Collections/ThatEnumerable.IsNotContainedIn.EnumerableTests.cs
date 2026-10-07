@@ -132,7 +132,13 @@ public sealed partial class ThatEnumerable
 			public async Task WhenUnexpectedIsANonGenericCollectionContainingTheSubject_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2,]);
-				ArrayList unexpected = new() { 0, 1, 2, 3, };
+				ArrayList unexpected = new()
+				{
+					0,
+					1,
+					2,
+					3,
+				};
 
 				async Task Act()
 					=> await That(subject).IsNotContainedIn(unexpected);
@@ -160,7 +166,11 @@ public sealed partial class ThatEnumerable
 			public async Task WhenUnexpectedIsANonGenericCollectionNotContainingTheSubject_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable([1, 2,]);
-				ArrayList unexpected = new() { 1, 3, };
+				ArrayList unexpected = new()
+				{
+					1,
+					3,
+				};
 
 				async Task Act()
 					=> await That(subject).IsNotContainedIn(unexpected);

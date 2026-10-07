@@ -66,9 +66,6 @@ public static partial class ThatEventRecording
 			return this;
 		}
 
-		private bool AreFound(IEventRecordingResult result)
-			=> quantifier.Check(result.GetEventCount(eventName, _isMatch), false) != null;
-
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			if (quantifier.IsNever(_isNegated))
@@ -92,6 +89,9 @@ public static partial class ThatEventRecording
 				stringBuilder.Append(filter).Append(' ').Append(quantifier.ToString(_isNegated)).Append(options);
 			}
 		}
+
+		private bool AreFound(IEventRecordingResult result)
+			=> quantifier.Check(result.GetEventCount(eventName, _isMatch), false) != null;
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{

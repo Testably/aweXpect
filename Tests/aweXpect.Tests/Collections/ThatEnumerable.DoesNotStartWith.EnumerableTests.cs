@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using aweXpect.Equivalency;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -115,7 +114,7 @@ public sealed partial class ThatEnumerable
 			[Test]
 			public async Task WhenSubjectStartsWithNull_ShouldFail()
 			{
-				IEnumerable subject = ToEnumerable<string?>(null, "a");
+				IEnumerable subject = ToEnumerable(null, "a");
 				string?[] unexpected = [null,];
 
 				async Task Act()
@@ -184,7 +183,11 @@ public sealed partial class ThatEnumerable
 			public async Task WhenUnexpectedIsANonGenericCollection_ShouldFail()
 			{
 				IEnumerable subject = ToEnumerable([1, 2, 3,]);
-				ArrayList unexpected = new() { 1, 2, };
+				ArrayList unexpected = new()
+				{
+					1,
+					2,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotStartWith(unexpected);
@@ -202,7 +205,11 @@ public sealed partial class ThatEnumerable
 			public async Task WhenUnexpectedIsANonGenericCollectionThatDiffers_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable([1, 2, 3,]);
-				ArrayList unexpected = new() { 1, 3, };
+				ArrayList unexpected = new()
+				{
+					1,
+					3,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotStartWith(unexpected);

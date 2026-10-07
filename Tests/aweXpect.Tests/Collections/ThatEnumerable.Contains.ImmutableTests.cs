@@ -732,7 +732,7 @@ public sealed partial class ThatEnumerable
 				ImmutableArray<string?> subject = ["green", "blue",];
 
 				async Task Act()
-					=> await That(subject).Contains((string?)null);
+					=> await That(subject).Contains(null);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

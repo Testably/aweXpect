@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using aweXpect.Core;
 using aweXpect.Helpers;
-using aweXpect.Options;
 using aweXpect.Results;
 using aweXpect.SourceGenerators;
+using StringEqualityOptions = aweXpect.Options.StringEqualityOptions;
 
 namespace aweXpect;
 
@@ -17,13 +17,12 @@ public static partial class ThatEnumerable
 	internal static ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>
 		AreEqualToWithToleranceCore<TItem, TTolerance>(
 			Elements<TItem> elements,
-			TItem expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
+			TItem expected, Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
 	{
 		IEnumerableElements<TItem> iElements = elements;
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem, TTolerance>(
-			expectationBuilder.AddConstraint((Options: options, Expected: expected, Quantifier: iElements.Quantifier),
+			expectationBuilder.AddConstraint((Options: options, Expected: expected, iElements.Quantifier),
 				static (state, it, grammars) =>
 				{
 					SubjectEqualityOptions<TItem, TItem> itemOptions = new(state.Options, state.Expected is not null);
@@ -47,7 +46,7 @@ public static partial class ThatEnumerable
 		ItemEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable<TItem>?, IThat<IEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((Options: options, Expected: expected, Quantifier: iElements.Quantifier),
+			expectationBuilder.AddConstraint((Options: options, Expected: expected, iElements.Quantifier),
 				static (state, it, grammars) =>
 				{
 					SubjectEqualityOptions<TItem, TItem> itemOptions =
@@ -73,7 +72,7 @@ public static partial class ThatEnumerable
 		ItemEqualityOptions<object?> options = new();
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IEnumerable, IThat<IEnumerable?>, object?>(
-			expectationBuilder.AddConstraint((Options: options, Expected: expected, Quantifier: iElements.Quantifier),
+			expectationBuilder.AddConstraint((Options: options, Expected: expected, iElements.Quantifier),
 				static (state, it, grammars) =>
 				{
 					SubjectEqualityOptions<object?, object?> itemOptions =
@@ -96,10 +95,10 @@ public static partial class ThatEnumerable
 		where TEnumerable : struct, IEnumerable<TItem>
 	{
 		IStructEnumerableElements<TEnumerable, TItem> iElements = elements;
-		ObjectEqualityOptions<object?> options = new();
+		Options.ObjectEqualityOptions<object?> options = new();
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, object?>(
-			expectationBuilder.AddConstraint((Quantifier: iElements.Quantifier, Expected: expected, Options: options),
+			expectationBuilder.AddConstraint((iElements.Quantifier, Expected: expected, Options: options),
 				static (state, it, grammars)
 					=> new CollectionConstraint<TEnumerable, object?>(
 						it, grammars,
@@ -115,14 +114,13 @@ public static partial class ThatEnumerable
 	internal static ObjectEqualityWithToleranceResult<TEnumerable, IThat<TEnumerable>, TItem, TTolerance>
 		AreEqualToWithToleranceForStructCore<TEnumerable, TItem, TTolerance>(
 			ElementsForStructEnumerable<TEnumerable, TItem> elements,
-			TItem expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
+			TItem expected, Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
 		where TEnumerable : struct, IEnumerable<TItem>
 	{
 		IStructEnumerableElements<TEnumerable, TItem> iElements = elements;
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<TEnumerable, IThat<TEnumerable>, TItem, TTolerance>(
-			expectationBuilder.AddConstraint((Quantifier: iElements.Quantifier, Expected: expected, Options: options),
+			expectationBuilder.AddConstraint((iElements.Quantifier, Expected: expected, Options: options),
 				static (state, it, grammars)
 					=> new CollectionConstraint<TEnumerable, object?>(
 						it, grammars,
@@ -143,7 +141,7 @@ public static partial class ThatEnumerable
 		StringEqualityOptions options = new(nameof(expected));
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IEnumerable<string?>, IThat<IEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((Options: options, Expected: expected, Quantifier: iElements.Quantifier),
+			expectationBuilder.AddConstraint((Options: options, Expected: expected, iElements.Quantifier),
 				static (state, it, grammars) =>
 				{
 					SubjectEqualityOptions<string?, string?> itemOptions =
@@ -169,7 +167,7 @@ public static partial class ThatEnumerable
 		StringEqualityOptions options = new(nameof(expected));
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<TEnumerable, IThat<TEnumerable>>(
-			expectationBuilder.AddConstraint((Quantifier: iElements.Quantifier, Expected: expected, Options: options),
+			expectationBuilder.AddConstraint((iElements.Quantifier, Expected: expected, Options: options),
 				static (state, it, grammars)
 					=> new CollectionConstraint<TEnumerable, object?>(
 						it, grammars,

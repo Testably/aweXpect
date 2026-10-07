@@ -60,7 +60,7 @@ public record CollectionOrderOptions<TItem>
 /// <summary>
 ///     Orders two strings ordinally, as for a collection of strings, and any other items with the default comparer.
 /// </summary>
-file sealed class ObjectComparer : IComparer<object>
+sealed file class ObjectComparer : IComparer<object>
 {
 	public static ObjectComparer Instance { get; } = new();
 

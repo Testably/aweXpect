@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using aweXpect.Core;
-using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
 using aweXpect.SourceGenerators;
 
@@ -51,11 +50,6 @@ public static partial class ThatDictionary
 		return false;
 	}
 
-	/// <summary>
-	///     Looks the <paramref name="key" /> up through the dictionary itself, so that its key comparer decides.
-	/// </summary>
-	private delegate bool ValueLookup<in TKey, TValue>(TKey key, out TValue? value);
-
 	private static ValueLookup<TKey, TValue> GetLookup<TKey, TValue>(
 		IEnumerable<KeyValuePair<TKey, TValue>> dictionary)
 		=> dictionary is IDictionary<TKey, TValue> mutableDictionary
@@ -97,4 +91,9 @@ public static partial class ThatDictionary
 		context.SetDictionary(dictionary);
 		context.AppendTo(contexts);
 	}
+
+	/// <summary>
+	///     Looks the <paramref name="key" /> up through the dictionary itself, so that its key comparer decides.
+	/// </summary>
+	private delegate bool ValueLookup<in TKey, TValue>(TKey key, out TValue? value);
 }

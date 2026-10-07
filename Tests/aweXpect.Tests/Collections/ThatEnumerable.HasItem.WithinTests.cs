@@ -17,7 +17,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemAtTheIndexLiesWithinTheTolerance_ShouldSucceed()
 				{
-					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					DateOnly[] values = [new(2024, 1, 1), new(2024, 1, 11), new(2024, 1, 21),];
 					IEnumerable<DateOnly> subject = values;
 
 					async Task Act()
@@ -29,7 +29,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesAtTheEdgeOfTheTolerance_ShouldSucceed()
 				{
-					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					DateOnly[] values = [new(2024, 1, 1), new(2024, 1, 11), new(2024, 1, 21),];
 					IEnumerable<DateOnly> subject = values;
 
 					async Task Act()
@@ -41,9 +41,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesOutsideTheTolerance_ShouldFail()
 				{
-					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					DateOnly[] values = [new(2024, 1, 1), new(2024, 1, 11), new(2024, 1, 21),];
 					IEnumerable<DateOnly> subject = values;
-					DateOnly expected = new DateOnly(2024, 1, 13);
+					DateOnly expected = new(2024, 1, 13);
 
 					async Task Act()
 						=> await That(subject).HasItem(expected).Within(1.Days());
@@ -62,7 +62,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenToleranceIsNotAWholeNumberOfDays_ShouldThrowArgumentOutOfRangeException()
 				{
-					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					DateOnly[] values = [new(2024, 1, 1), new(2024, 1, 11), new(2024, 1, 21),];
 					IEnumerable<DateOnly> subject = values;
 
 					object Act()
@@ -146,7 +146,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheDefaultToleranceIsSet_ShouldApplyIt()
 				{
-					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					DateTime[] values = [new(2024, 1, 1, 13, 0, 0), new(2024, 1, 1, 14, 0, 0), new(2024, 1, 1, 15, 0, 0),];
 					IEnumerable<DateTime> subject = values;
 
 					async Task Act()
@@ -163,9 +163,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheDefaultToleranceIsSet_ShouldMentionIt()
 				{
-					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					DateTime[] values = [new(2024, 1, 1, 13, 0, 0), new(2024, 1, 1, 14, 0, 0), new(2024, 1, 1, 15, 0, 0),];
 					IEnumerable<DateTime> subject = values;
-					DateTime expected = new DateTime(2024, 1, 1, 14, 2, 0);
+					DateTime expected = new(2024, 1, 1, 14, 2, 0);
 
 					async Task Act()
 					{
@@ -189,7 +189,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemAtTheIndexLiesWithinTheTolerance_ShouldSucceed()
 				{
-					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					DateTime[] values = [new(2024, 1, 1, 13, 0, 0), new(2024, 1, 1, 14, 0, 0), new(2024, 1, 1, 15, 0, 0),];
 					IEnumerable<DateTime> subject = values;
 
 					async Task Act()
@@ -201,7 +201,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesAtTheEdgeOfTheTolerance_ShouldSucceed()
 				{
-					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					DateTime[] values = [new(2024, 1, 1, 13, 0, 0), new(2024, 1, 1, 14, 0, 0), new(2024, 1, 1, 15, 0, 0),];
 					IEnumerable<DateTime> subject = values;
 
 					async Task Act()
@@ -213,9 +213,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesOutsideTheTolerance_ShouldFail()
 				{
-					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					DateTime[] values = [new(2024, 1, 1, 13, 0, 0), new(2024, 1, 1, 14, 0, 0), new(2024, 1, 1, 15, 0, 0),];
 					IEnumerable<DateTime> subject = values;
-					DateTime expected = new DateTime(2024, 1, 1, 14, 2, 0);
+					DateTime expected = new(2024, 1, 1, 14, 2, 0);
 
 					async Task Act()
 						=> await That(subject).HasItem(expected).Within(1.Minutes());
@@ -285,7 +285,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemAtTheIndexLiesWithinTheTolerance_ShouldSucceed()
 				{
-					DateTimeOffset[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+					DateTimeOffset[] values = [new(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
 					IEnumerable<DateTimeOffset> subject = values;
 
 					async Task Act()
@@ -297,7 +297,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesAtTheEdgeOfTheTolerance_ShouldSucceed()
 				{
-					DateTimeOffset[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+					DateTimeOffset[] values = [new(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
 					IEnumerable<DateTimeOffset> subject = values;
 
 					async Task Act()
@@ -309,9 +309,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesOutsideTheTolerance_ShouldFail()
 				{
-					DateTimeOffset[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+					DateTimeOffset[] values = [new(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
 					IEnumerable<DateTimeOffset> subject = values;
-					DateTimeOffset expected = new DateTimeOffset(2024, 1, 1, 14, 2, 0, TimeSpan.Zero);
+					DateTimeOffset expected = new(2024, 1, 1, 14, 2, 0, TimeSpan.Zero);
 
 					async Task Act()
 						=> await That(subject).HasItem(expected).Within(1.Minutes());
@@ -695,7 +695,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenAnItemLiesAcrossMidnight_ShouldUseTheShorterDistance()
 				{
-					TimeOnly[] values = [new TimeOnly(22, 0), new TimeOnly(23, 59, 30), new TimeOnly(2, 0),];
+					TimeOnly[] values = [new(22, 0), new(23, 59, 30), new(2, 0),];
 					IEnumerable<TimeOnly> subject = values;
 
 					async Task Act()
@@ -708,7 +708,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemAtTheIndexLiesWithinTheTolerance_ShouldSucceed()
 				{
-					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					TimeOnly[] values = [new(13, 0), new(14, 0), new(15, 0),];
 					IEnumerable<TimeOnly> subject = values;
 
 					async Task Act()
@@ -720,7 +720,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesAtTheEdgeOfTheTolerance_ShouldSucceed()
 				{
-					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					TimeOnly[] values = [new(13, 0), new(14, 0), new(15, 0),];
 					IEnumerable<TimeOnly> subject = values;
 
 					async Task Act()
@@ -732,9 +732,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesOutsideTheTolerance_ShouldFail()
 				{
-					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					TimeOnly[] values = [new(13, 0), new(14, 0), new(15, 0),];
 					IEnumerable<TimeOnly> subject = values;
-					TimeOnly expected = new TimeOnly(14, 2);
+					TimeOnly expected = new(14, 2);
 
 					async Task Act()
 						=> await That(subject).HasItem(expected).Within(1.Minutes());
@@ -820,7 +820,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemAtTheIndexLiesWithinTheTolerance_ShouldSucceed()
 				{
-					TimeSpan[] values = [new TimeSpan(1, 0, 0), new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
+					TimeSpan[] values = [new(1, 0, 0), new(2, 0, 0), new(3, 0, 0),];
 					IEnumerable<TimeSpan> subject = values;
 
 					async Task Act()
@@ -832,7 +832,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesAtTheEdgeOfTheTolerance_ShouldSucceed()
 				{
-					TimeSpan[] values = [new TimeSpan(1, 0, 0), new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
+					TimeSpan[] values = [new(1, 0, 0), new(2, 0, 0), new(3, 0, 0),];
 					IEnumerable<TimeSpan> subject = values;
 
 					async Task Act()
@@ -844,9 +844,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesOutsideTheTolerance_ShouldFail()
 				{
-					TimeSpan[] values = [new TimeSpan(1, 0, 0), new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
+					TimeSpan[] values = [new(1, 0, 0), new(2, 0, 0), new(3, 0, 0),];
 					IEnumerable<TimeSpan> subject = values;
-					TimeSpan expected = new TimeSpan(2, 2, 0);
+					TimeSpan expected = new(2, 2, 0);
 
 					async Task Act()
 						=> await That(subject).HasItem(expected).Within(1.Minutes());
@@ -923,9 +923,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesAtTheEdgeOfTheTolerance_ShouldFail()
 				{
-					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					DateOnly[] values = [new(2024, 1, 1), new(2024, 1, 11), new(2024, 1, 21),];
 					IEnumerable<DateOnly> subject = values;
-					DateOnly unexpected = new DateOnly(2024, 1, 12);
+					DateOnly unexpected = new(2024, 1, 12);
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem(unexpected).Within(1.Days());
@@ -944,7 +944,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
-					DateOnly[] values = [new DateOnly(2024, 1, 1), new DateOnly(2024, 1, 11), new DateOnly(2024, 1, 21),];
+					DateOnly[] values = [new(2024, 1, 1), new(2024, 1, 11), new(2024, 1, 21),];
 					IEnumerable<DateOnly> subject = values;
 
 					async Task Act()
@@ -998,9 +998,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesAtTheEdgeOfTheTolerance_ShouldFail()
 				{
-					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					DateTime[] values = [new(2024, 1, 1, 13, 0, 0), new(2024, 1, 1, 14, 0, 0), new(2024, 1, 1, 15, 0, 0),];
 					IEnumerable<DateTime> subject = values;
-					DateTime unexpected = new DateTime(2024, 1, 1, 14, 1, 0);
+					DateTime unexpected = new(2024, 1, 1, 14, 1, 0);
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem(unexpected).Within(1.Minutes());
@@ -1019,7 +1019,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
-					DateTime[] values = [new DateTime(2024, 1, 1, 13, 0, 0), new DateTime(2024, 1, 1, 14, 0, 0), new DateTime(2024, 1, 1, 15, 0, 0),];
+					DateTime[] values = [new(2024, 1, 1, 13, 0, 0), new(2024, 1, 1, 14, 0, 0), new(2024, 1, 1, 15, 0, 0),];
 					IEnumerable<DateTime> subject = values;
 
 					async Task Act()
@@ -1070,9 +1070,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesAtTheEdgeOfTheTolerance_ShouldFail()
 				{
-					DateTimeOffset[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+					DateTimeOffset[] values = [new(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
 					IEnumerable<DateTimeOffset> subject = values;
-					DateTimeOffset unexpected = new DateTimeOffset(2024, 1, 1, 14, 1, 0, TimeSpan.Zero);
+					DateTimeOffset unexpected = new(2024, 1, 1, 14, 1, 0, TimeSpan.Zero);
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem(unexpected).Within(1.Minutes());
@@ -1091,7 +1091,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
-					DateTimeOffset[] values = [new DateTimeOffset(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new DateTimeOffset(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
+					DateTimeOffset[] values = [new(2024, 1, 1, 13, 0, 0, TimeSpan.Zero), new(2024, 1, 1, 14, 0, 0, TimeSpan.Zero), new(2024, 1, 1, 15, 0, 0, TimeSpan.Zero),];
 					IEnumerable<DateTimeOffset> subject = values;
 
 					async Task Act()
@@ -1359,9 +1359,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesAtTheEdgeOfTheTolerance_ShouldFail()
 				{
-					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					TimeOnly[] values = [new(13, 0), new(14, 0), new(15, 0),];
 					IEnumerable<TimeOnly> subject = values;
-					TimeOnly unexpected = new TimeOnly(14, 1);
+					TimeOnly unexpected = new(14, 1);
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem(unexpected).Within(1.Minutes());
@@ -1380,7 +1380,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
-					TimeOnly[] values = [new TimeOnly(13, 0), new TimeOnly(14, 0), new TimeOnly(15, 0),];
+					TimeOnly[] values = [new(13, 0), new(14, 0), new(15, 0),];
 					IEnumerable<TimeOnly> subject = values;
 
 					async Task Act()
@@ -1434,9 +1434,9 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesAtTheEdgeOfTheTolerance_ShouldFail()
 				{
-					TimeSpan[] values = [new TimeSpan(1, 0, 0), new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
+					TimeSpan[] values = [new(1, 0, 0), new(2, 0, 0), new(3, 0, 0),];
 					IEnumerable<TimeSpan> subject = values;
-					TimeSpan unexpected = new TimeSpan(2, 1, 0);
+					TimeSpan unexpected = new(2, 1, 0);
 
 					async Task Act()
 						=> await That(subject).DoesNotHaveItem(unexpected).Within(1.Minutes());
@@ -1455,7 +1455,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTheItemLiesOutsideTheTolerance_ShouldSucceed()
 				{
-					TimeSpan[] values = [new TimeSpan(1, 0, 0), new TimeSpan(2, 0, 0), new TimeSpan(3, 0, 0),];
+					TimeSpan[] values = [new(1, 0, 0), new(2, 0, 0), new(3, 0, 0),];
 					IEnumerable<TimeSpan> subject = values;
 
 					async Task Act()

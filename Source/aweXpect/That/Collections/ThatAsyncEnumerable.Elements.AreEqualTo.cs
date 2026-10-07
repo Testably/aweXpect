@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using aweXpect.Core;
 using aweXpect.Helpers;
-using aweXpect.Options;
 using aweXpect.Results;
 using aweXpect.SourceGenerators;
+using StringEqualityOptions = aweXpect.Options.StringEqualityOptions;
 
 namespace aweXpect;
 
@@ -17,14 +17,13 @@ public static partial class ThatAsyncEnumerable
 	internal static ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem, TTolerance>
 		AreEqualToWithToleranceCore<TItem, TTolerance>(
 			Elements<TItem> elements,
-			TItem expected,
-			ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
+			TItem expected, Options.ObjectEqualityWithToleranceOptions<TItem, TTolerance> options)
 	{
 		IAsyncEnumerableElements<TItem> iElements = elements;
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityWithToleranceResult<IAsyncEnumerable<TItem>, IThat<IAsyncEnumerable<TItem>?>, TItem,
 			TTolerance>(
-			expectationBuilder.AddConstraint((Quantifier: iElements.Quantifier, Expected: expected, Options: options),
+			expectationBuilder.AddConstraint((iElements.Quantifier, Expected: expected, Options: options),
 				static (state, it, grammars)
 					=> new AsyncCollectionConstraint<TItem>(
 						it, grammars,
@@ -42,10 +41,10 @@ public static partial class ThatAsyncEnumerable
 			TItem expected)
 	{
 		IAsyncEnumerableElements<TItem> iElements = elements;
-		ObjectEqualityOptions<TItem> options = new();
+		Options.ObjectEqualityOptions<TItem> options = new();
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new ObjectEqualityResult<IAsyncEnumerable<TItem>?, IThat<IAsyncEnumerable<TItem>?>, TItem>(
-			expectationBuilder.AddConstraint((Quantifier: iElements.Quantifier, Expected: expected, Options: options),
+			expectationBuilder.AddConstraint((iElements.Quantifier, Expected: expected, Options: options),
 				static (state, it, grammars)
 					=> new AsyncCollectionConstraint<TItem>(
 						it, grammars,
@@ -66,7 +65,7 @@ public static partial class ThatAsyncEnumerable
 		StringEqualityOptions options = new(nameof(expected));
 		ExpectationBuilder expectationBuilder = iElements.Subject.Get().ExpectationBuilder;
 		return new StringEqualityTypeResult<IAsyncEnumerable<string?>, IThat<IAsyncEnumerable<string?>?>>(
-			expectationBuilder.AddConstraint((Quantifier: iElements.Quantifier, Expected: expected, Options: options),
+			expectationBuilder.AddConstraint((iElements.Quantifier, Expected: expected, Options: options),
 				static (state, it, grammars)
 					=> new AsyncCollectionConstraint<string?>(
 						it, grammars,

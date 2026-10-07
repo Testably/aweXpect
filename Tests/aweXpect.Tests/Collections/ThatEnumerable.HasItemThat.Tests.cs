@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using aweXpect.Core;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
 #endif
@@ -166,7 +165,10 @@ public sealed partial class ThatEnumerable
 			public async Task WhenEnumerableContainsDifferentItemAtGivenIndex_ShouldNotReadFurther()
 			{
 				int readItems = 0;
-				IEnumerable<int> subject = new[] { 2, 3, 4, }.Select(x =>
+				IEnumerable<int> subject = new[]
+				{
+					2, 3, 4,
+				}.Select(x =>
 				{
 					readItems++;
 					return x;
@@ -206,7 +208,7 @@ public sealed partial class ThatEnumerable
 				[
 					0,
 					1,
-					2
+					2,
 				];
 
 				async Task Act()
@@ -746,7 +748,7 @@ public sealed partial class ThatEnumerable
 					             """);
 			}
 		}
-		
+
 		public sealed class NegatedTests
 		{
 			[Test]

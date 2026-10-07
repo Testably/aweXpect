@@ -73,10 +73,6 @@ internal sealed class CollectionCountConstraint<TEnumerable, TItem>(
 {
 	private CollectionContext _collectionContext;
 
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-		=> _collectionContext.AppendTo(contexts);
-
 	public ValueTask<ConstraintResult> IsMetBy(
 		TEnumerable actual,
 		IEvaluationContext context,
@@ -126,6 +122,10 @@ internal sealed class CollectionCountConstraint<TEnumerable, TItem>(
 		Complete(count, count);
 		return new ValueTask<ConstraintResult>(this);
 	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+		=> _collectionContext.AppendTo(contexts);
 }
 
 #if NET8_0_OR_GREATER
@@ -137,10 +137,6 @@ internal sealed class AsyncCollectionCountConstraint<TItem>(
 		IAsyncContextConstraint<IAsyncEnumerable<TItem>?>
 {
 	private CollectionContext _collectionContext;
-
-	/// <inheritdoc />
-	public override void AppendContexts(ResultContextCollector contexts)
-		=> _collectionContext.AppendTo(contexts);
 
 	public async ValueTask<ConstraintResult> IsMetBy(
 		IAsyncEnumerable<TItem>? actual,
@@ -180,5 +176,9 @@ internal sealed class AsyncCollectionCountConstraint<TItem>(
 		Complete(count, count);
 		return this;
 	}
+
+	/// <inheritdoc />
+	public override void AppendContexts(ResultContextCollector contexts)
+		=> _collectionContext.AppendTo(contexts);
 }
 #endif

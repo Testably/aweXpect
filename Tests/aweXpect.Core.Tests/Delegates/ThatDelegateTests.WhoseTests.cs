@@ -44,7 +44,7 @@ public sealed partial class ThatDelegateTests
 		[Test]
 		public async Task Throws_Whose_WhenAsyncMemberReturnsNullTask_ShouldFail()
 		{
-			void Delegate() => throw new AsyncException(1, task: null);
+			void Delegate() => throw new AsyncException(1, null);
 
 			async Task Act()
 				=> await That(Delegate).Throws<AsyncException>()
@@ -244,7 +244,10 @@ public sealed partial class ThatDelegateTests
 				throw new InvalidOperationException($"async member failed for {value}");
 			}
 
-			public Task<int[]> GetItemsAsync() => Task.FromResult(new[] { value, });
+			public Task<int[]> GetItemsAsync() => Task.FromResult(new[]
+			{
+				value,
+			});
 
 			public Task<int> GetTask() => task!;
 

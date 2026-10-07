@@ -79,8 +79,7 @@ public sealed class StringBlockResultTests
 #pragma warning disable aweXpect0001
 		IThat<string?> source = That(subject);
 #pragma warning restore aweXpect0001
-		return new StringEqualityTypeResult<string?, IThat<string?>>(source.Get().ExpectationBuilder.AddConstraint(
-				(it, _) => new DummyConstraint(it)),
+		return new StringEqualityTypeResult<string?, IThat<string?>>(source.Get().ExpectationBuilder.AddConstraint((it, _) => new DummyConstraint(it)),
 			source,
 			options);
 	}

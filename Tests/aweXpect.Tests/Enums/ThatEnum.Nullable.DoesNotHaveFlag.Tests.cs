@@ -77,7 +77,7 @@ public sealed partial class ThatEnum
 					MyColors? subject = MyColors.Yellow | MyColors.Red;
 
 					async Task Act()
-						=> await That(subject).DoesNotHaveFlag(unexpected: MyColors.Blue);
+						=> await That(subject).DoesNotHaveFlag(MyColors.Blue);
 
 					await That(Act).DoesNotThrow();
 				}

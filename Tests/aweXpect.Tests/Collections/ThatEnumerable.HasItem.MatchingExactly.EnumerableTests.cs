@@ -100,7 +100,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTypeDoesNotMatch_ShouldFail()
 				{
-					IEnumerable subject = ToEnumerable<int>(1, 2, 3);
+					IEnumerable subject = ToEnumerable(1, 2, 3);
 
 					async Task Act()
 						=> await That(subject).HasItem().MatchingExactly<uint>(_ => true);
@@ -266,7 +266,7 @@ public sealed partial class ThatEnumerable
 				[Test]
 				public async Task WhenTypeDoesNotMatch_ShouldFail()
 				{
-					IEnumerable subject = ToEnumerable<int>(1, 2, 3);
+					IEnumerable subject = ToEnumerable(1, 2, 3);
 
 					async Task Act()
 						=> await That(subject).HasItem().MatchingExactly<uint>();

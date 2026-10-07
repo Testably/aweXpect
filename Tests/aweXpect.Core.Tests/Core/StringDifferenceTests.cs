@@ -616,6 +616,11 @@ public class StringDifferenceTests
 
 	public sealed class SuffixTests
 	{
+		private static readonly StringDifferenceSettings Settings = new(0, 0)
+		{
+			MatchType = StringDifference.MatchType.Suffix,
+		};
+
 		[Test]
 		public async Task WhenActualValueIsNull_ShouldDifferAtIndex0()
 		{
@@ -1017,11 +1022,6 @@ public class StringDifferenceTests
 					""")
 				.Because("the window must not start between the two halves of a surrogate pair");
 		}
-
-		private static readonly StringDifferenceSettings Settings = new(0, 0)
-		{
-			MatchType = StringDifference.MatchType.Suffix,
-		};
 	}
 
 	private sealed class ExecuteOnceComparer : IEqualityComparer<string>

@@ -78,7 +78,10 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenAtLeastOneValueIsANumberOfADifferentType_ShouldFail()
 			{
-				Dictionary<string, object> subject = new() { ["a"] = 1, };
+				Dictionary<string, object> subject = new()
+				{
+					["a"] = 1,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotContainValues(2, 1L);
@@ -101,7 +104,11 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenOneStringValueDiffersOnlyInCase_WithIgnoringCase_ShouldFail()
 			{
-				Dictionary<int, string?> subject = new() { [1] = "foo", [2] = "bar", };
+				Dictionary<int, string?> subject = new()
+				{
+					[1] = "foo",
+					[2] = "bar",
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotContainValues("BAZ", "BAR").IgnoringCase();
@@ -126,7 +133,11 @@ public sealed partial class ThatDictionary
 			public async Task WhenOneValueOfAnEnumerableExists_ShouldFail()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);
-				IEnumerable<int> unexpected = new List<int> { 42, 2, };
+				IEnumerable<int> unexpected = new List<int>
+				{
+					42,
+					2,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotContainValues(unexpected);
@@ -164,7 +175,10 @@ public sealed partial class ThatDictionary
 			public async Task WhenTheDefaultTimeToleranceIsSet_ShouldApplyIt()
 			{
 				DateTime value = new(2020, 1, 1, 12, 0, 0, DateTimeKind.Utc);
-				Dictionary<int, DateTime> subject = new() { [1] = value, };
+				Dictionary<int, DateTime> subject = new()
+				{
+					[1] = value,
+				};
 				DateTime unexpected = value.AddMilliseconds(500);
 
 				async Task Act()
@@ -219,7 +233,11 @@ public sealed partial class ThatDictionary
 			public async Task WhenValuesOfAnEnumerableDoNotExist_ShouldSucceed()
 			{
 				IDictionary<int, int> subject = ToDictionary([1, 2, 3,], [41, 42, 43,]);
-				IEnumerable<int> unexpected = new List<int> { 0, 2, };
+				IEnumerable<int> unexpected = new List<int>
+				{
+					0,
+					2,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotContainValues(unexpected);
@@ -271,7 +289,11 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenNoValueLiesWithinTheTolerance_ShouldSucceed()
 			{
-				Dictionary<string, double> subject = new() { ["a"] = 1.2, ["b"] = 2.2, };
+				Dictionary<string, double> subject = new()
+				{
+					["a"] = 1.2,
+					["b"] = 2.2,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotContainValues(1.0, 2.0).Within(0.1);
@@ -282,7 +304,11 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task WhenOneValueLiesWithinTheTolerance_ShouldFail()
 			{
-				Dictionary<string, double> subject = new() { ["a"] = 1.2, ["b"] = 2.05, };
+				Dictionary<string, double> subject = new()
+				{
+					["a"] = 1.2,
+					["b"] = 2.05,
+				};
 
 				async Task Act()
 					=> await That(subject).DoesNotContainValues(1.0, 2.0).Within(0.1);
@@ -306,9 +332,17 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task ForADictionary_ShouldKeepTheSubjectType()
 			{
-				Dictionary<string, int> subject = new() { { "a", 1 }, };
+				Dictionary<string, int> subject = new()
+				{
+					{
+						"a", 1
+					},
+				};
 
-				Dictionary<string, int> result = await That(subject).DoesNotContainValues(new List<int> { 2, });
+				Dictionary<string, int> result = await That(subject).DoesNotContainValues(new List<int>
+				{
+					2,
+				});
 
 				await That(result).IsSameAs(subject);
 			}
@@ -316,7 +350,12 @@ public sealed partial class ThatDictionary
 			[Test]
 			public async Task ForASortedDictionary_ShouldBindToTheDictionaryOverload()
 			{
-				SortedDictionary<string, int> subject = new() { { "a", 1 }, };
+				SortedDictionary<string, int> subject = new()
+				{
+					{
+						"a", 1
+					},
+				};
 
 				async Task Act()
 					=> await (ObjectEqualityWithToleranceResult<IDictionary<string, int>, IThat<IDictionary<string, int>?>, int, int>)
@@ -334,7 +373,11 @@ public sealed partial class ThatDictionary
 			{
 				InvalidOperationException exception = new("enumeration failed");
 				IDictionary<string, int> subject =
-					new ThrowingDictionary<string, int>(exception, ThrowingMembers.Enumeration) { ["a"] = 1, ["b"] = 2, };
+					new ThrowingDictionary<string, int>(exception, ThrowingMembers.Enumeration)
+					{
+						["a"] = 1,
+						["b"] = 2,
+					};
 
 				async Task Act()
 					=> await That(subject).DoesNotContainValues(7, 8);

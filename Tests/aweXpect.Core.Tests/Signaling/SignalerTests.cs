@@ -4,6 +4,7 @@ using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Customization;
 using aweXpect.Signaling;
+using ThreadState = System.Threading.ThreadState;
 
 namespace aweXpect.Core.Tests.Signaling;
 
@@ -416,7 +417,7 @@ public sealed class SignalerTests
 			SignalerResult? pendingResult = null;
 			Thread pendingWait = new(() => pendingResult = signaler.Wait(2.Times(), 5.Seconds()));
 			pendingWait.Start();
-			while ((pendingWait.ThreadState & System.Threading.ThreadState.WaitSleepJoin) == 0)
+			while ((pendingWait.ThreadState & ThreadState.WaitSleepJoin) == 0)
 			{
 				await Task.Delay(1.Milliseconds());
 			}

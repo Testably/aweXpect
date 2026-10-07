@@ -6,7 +6,6 @@ using aweXpect.Core.Metadata;
 using aweXpect.Customization;
 using aweXpect.Equivalency;
 using aweXpect.Helpers;
-using aweXpect.Options;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -30,7 +29,7 @@ public static partial class ThatEnumerable
 				equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 			}
 
-			ObjectEqualityOptions<TItem> equalityOptions = new();
+			Options.ObjectEqualityOptions<TItem> equalityOptions = new();
 			equalityOptions.Equivalent(equivalencyOptions);
 			return new ObjectEqualityResult<IEnumerable<TItem>, IThat<IEnumerable<TItem>?>, TItem>(
 				expectationBuilder.AddConstraint(
@@ -77,7 +76,7 @@ public static partial class ThatEnumerable
 				equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 			}
 
-			ObjectEqualityOptions<object?> equalityOptions = new();
+			Options.ObjectEqualityOptions<object?> equalityOptions = new();
 			equalityOptions.Equivalent(equivalencyOptions);
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable?>, object?>(
 				expectationBuilder.AddConstraint(
@@ -124,7 +123,7 @@ public static partial class ThatEnumerable
 				equivalencyOptions = options(new EquivalencyOptions<TExpected>(equivalencyOptions));
 			}
 
-			ObjectEqualityOptions<TItem> equalityOptions = new();
+			Options.ObjectEqualityOptions<TItem> equalityOptions = new();
 			equalityOptions.Equivalent(equivalencyOptions);
 			return new ObjectEqualityResult<TEnumerable, IThat<TEnumerable>, TItem>(
 				expectationBuilder.AddConstraint(

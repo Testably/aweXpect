@@ -1,7 +1,5 @@
-using System.Threading.Tasks;
-using Verifier =
-	aweXpect.Analyzers.Tests.Verifiers.CSharpCodeFixVerifier<aweXpect.Analyzers.DelegateSubjectAnalyzer,
-		aweXpect.Analyzers.CodeFixers.DelegateSubjectCodeFixProvider>;
+using Verifier = aweXpect.Analyzers.Tests.Verifiers.CSharpCodeFixVerifier<aweXpect.Analyzers.DelegateSubjectAnalyzer,
+	aweXpect.Analyzers.CodeFixers.DelegateSubjectCodeFixProvider>;
 
 namespace aweXpect.Analyzers.Tests;
 

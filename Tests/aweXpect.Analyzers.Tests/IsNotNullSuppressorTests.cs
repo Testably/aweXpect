@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Testing;
 using Verifier = aweXpect.Analyzers.Tests.Verifiers.CSharpSuppressorVerifier<aweXpect.Analyzers.IsNotNullSuppressor>;
@@ -234,6 +233,7 @@ public class IsNotNullSuppressorTests
 			""",
 			SuppressedNullabilityWarning("CS8602")
 		);
+
 	[Test]
 	public async Task WhenExpectationIsDiscarded_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(

@@ -21,13 +21,12 @@ public partial class CollectionMatchOptions
 		/// </remarks>
 		private readonly Dictionary<ValueTuple<TItem>, int> _counts;
 
-		private readonly List<TItem> _foundItems;
 		private int _remaining;
 
 		public ExpectedItemCounts(List<TItem> expected)
 		{
 			_counts = new Dictionary<ValueTuple<TItem>, int>(expected.Count);
-			_foundItems = new List<TItem>(expected.Count);
+			FoundItems = new List<TItem>(expected.Count);
 			_remaining = expected.Count;
 			foreach (TItem item in expected)
 			{
@@ -40,7 +39,7 @@ public partial class CollectionMatchOptions
 		/// <summary>
 		///     The items that were found, in the order in which they were searched.
 		/// </summary>
-		public List<TItem> FoundItems => _foundItems;
+		public List<TItem> FoundItems { get; }
 
 		/// <summary>
 		///     Whether every expected item was found.
@@ -60,7 +59,7 @@ public partial class CollectionMatchOptions
 
 			_counts[key] = count - 1;
 			_remaining--;
-			_foundItems.Add(item);
+			FoundItems.Add(item);
 			return true;
 		}
 	}

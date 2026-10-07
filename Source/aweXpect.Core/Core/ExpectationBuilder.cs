@@ -22,12 +22,11 @@ public abstract class ExpectationBuilder
 {
 	private protected const string DefaultCurrentSubject = "it";
 
-	/// <summary>
-	///     The other exceptions of the faulted subject in the current evaluation.
-	/// </summary>
-	private Exception[]? _otherExceptions;
+	private CancellationToken _cancellationToken;
 
 	private EvaluationContext.EvaluationContext? _evaluationContext;
+	private bool _hasCancellationToken;
+	private bool _hasTimeout;
 
 	/// <summary>
 	///     The current name for the subject (defaults to <see cref="DefaultCurrentSubject" />).
@@ -36,9 +35,10 @@ public abstract class ExpectationBuilder
 
 	private Node _node = new ExpectationNode();
 
-	private List<IBecauseReason>? _reasons;
-
-	private ITimeSystem? _timeSystem;
+	/// <summary>
+	///     The other exceptions of the faulted subject in the current evaluation.
+	/// </summary>
+	private Exception[]? _otherExceptions;
 
 	/// <summary>
 	///     The which node that still waits for the expectations on its member, or <see langword="null" />.
@@ -54,10 +54,10 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	private Node? _pendingWhichRoot;
 
-	private CancellationToken _cancellationToken;
-	private bool _hasCancellationToken;
-	private bool _hasTimeout;
+	private List<IBecauseReason>? _reasons;
 	private TimeSpan _timeout;
+
+	private ITimeSystem? _timeSystem;
 
 	/// <summary>
 	///     Initializes the <see cref="ExpectationBuilder" /> with the <paramref name="subjectExpression" />
@@ -124,6 +124,11 @@ public abstract class ExpectationBuilder
 	///     about as much as a simple constraint.
 	/// </remarks>
 	internal bool IsTracing { get; private set; }
+
+	/// <summary>
+	///     The reasons of the expectation.
+	/// </summary>
+	private protected IEnumerable<IBecauseReason> Reasons => _reasons ?? [];
 
 	/// <summary>
 	///     Adds the <see cref="IValueConstraint{TValue}" /> from the <paramref name="constraintBuilder" /> which verifies the
@@ -573,11 +578,6 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
-	///     The reasons of the expectation.
-	/// </summary>
-	private protected IEnumerable<IBecauseReason> Reasons => _reasons ?? [];
-
-	/// <summary>
 	///     Resolves the reasons that must be awaited, so that their message is available.
 	/// </summary>
 	internal async Task ResolveReasons()
@@ -1007,12 +1007,12 @@ public abstract class ExpectationBuilder
 		private Func<string, ExpectationGrammars, IValueConstraint<TSource>>? _sourceConstraintBuilder;
 
 		internal MemberExpectationBuilder(Func<
-				Action<ExpectationBuilder>,
-				Func<ExpectationGrammars, ExpectationGrammars>?,
-				Func<string, ExpectationGrammars, IValueConstraint<TSource>>?,
-				Func<MappingNode>,
-				ExpectationBuilder>
-			callback,
+					Action<ExpectationBuilder>,
+					Func<ExpectationGrammars, ExpectationGrammars>?,
+					Func<string, ExpectationGrammars, IValueConstraint<TSource>>?,
+					Func<MappingNode>,
+					ExpectationBuilder>
+				callback,
 			MappingNodes<TMember> mappingNodes)
 		{
 			_callback = callback;
@@ -1146,7 +1146,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		if (_subjectSource.IsNullTaskSubject)
 		{
 			ConstraintResult expectation = await rootNode.IsMetBy(default(TValue),
-				EvaluationContext.ExpectationTextEvaluationContext.For(context), token);
+				ExpectationTextEvaluationContext.For(context), token);
 			return NullSubjectResult.CreateForNullTaskSubject(expectation, default(TValue));
 		}
 
@@ -1239,7 +1239,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		Exception exception)
 	{
 		ConstraintResult expectation = await rootNode.IsMetBy(default(TValue),
-			EvaluationContext.ExpectationTextEvaluationContext.For(context), cancellation.Token);
+			ExpectationTextEvaluationContext.For(context), cancellation.Token);
 		if (cancellation.Timeout is { } timeout && cancellation.HasTimedOut(exception))
 		{
 			return new ConstraintResult.FromException(expectation,

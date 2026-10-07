@@ -1,7 +1,9 @@
 using System;
+using aweXpect.Core.Metadata;
+#if NET8_0_OR_GREATER
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using aweXpect.Core.Metadata;
+#endif
 
 namespace aweXpect.Core;
 

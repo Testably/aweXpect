@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using System.Threading;
-using aweXpect.Core;
 using aweXpect.Core.Metadata;
 
 namespace aweXpect.Recording;
@@ -10,6 +9,10 @@ internal sealed class EventRecorder(string eventName, Action onRecorded) : IDisp
 {
 	private readonly object _lock = new();
 
+	private int _count;
+
+	private IRecordableEvent? _event;
+
 	/// <remarks>
 	///     Only appended to, and replaced by a larger copy before the count grows beyond it, so that a reader that reads
 	///     the count before the array sees every event below the count without a lock, and a snapshot needs only the
@@ -17,15 +20,12 @@ internal sealed class EventRecorder(string eventName, Action onRecorded) : IDisp
 	/// </remarks>
 	private RecordedEvent[] _events = [];
 
-	private int _count;
-
 	/// <remarks>
 	///     Removing the handler cannot stop an invocation that already started, so a stopped recorder answers from the
 	///     events it had when it stopped, and an event that arrives later is ignored.
 	/// </remarks>
 	private int _frozenCount = -1;
 
-	private IRecordableEvent? _event;
 	private Delegate? _handler;
 	private object? _subject;
 

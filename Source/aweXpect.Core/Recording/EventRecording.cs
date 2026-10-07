@@ -96,6 +96,56 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 		}
 	}
 
+	public async Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
+		IEvaluationContext? context = null, CancellationToken cancellationToken = default)
+	{
+		ThrowIfStopped(context);
+		try
+		{
+			if (timeout > TimeSpan.Zero || timeout == Timeout.InfiniteTimeSpan)
+			{
+				await WaitUntil(areFound, timeout, cancellationToken);
+			}
+		}
+		catch
+		{
+			if (_stopsAfterEvaluation)
+			{
+				// A predicate that throws must not leave the handlers attached to the subject.
+				Stop(context);
+			}
+
+			throw;
+		}
+
+		Snapshot snapshot = new(this);
+		if (_stopsAfterEvaluation)
+		{
+			StopWithEvaluation(context);
+		}
+
+		return snapshot;
+	}
+
+	/// <inheritdoc cref="IDisposable.Dispose()" />
+	public void Dispose() => Stop(null);
+
+	/// <summary>
+	///     Gets the number of recorded events for <paramref name="eventName" /> that match the <paramref name="filter" />.
+	/// </summary>
+	public int GetEventCount(string eventName, Func<object?[], bool>? filter = null)
+		=> _recorders[GetRecorderIndex(eventName)].GetEventCount(filter);
+
+	/// <summary>
+	///     Returns a formatted string for the recorded events for <paramref name="eventName" />.
+	/// </summary>
+	public string ToString(string eventName)
+		=> _recorders[GetRecorderIndex(eventName)].ToString();
+
+	/// <inheritdoc />
+	public override string ToString()
+		=> _subjectExpression;
+
 	private IRecordableEvent Find(IRecordableEvent[] events, string eventName, TSubject subject)
 	{
 		foreach (IRecordableEvent @event in events)
@@ -156,37 +206,6 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 			? metadata.OrderedEvents
 			: null;
 
-	public async Task<IEventRecordingResult> StopWhen(Func<IEventRecordingResult, bool> areFound, TimeSpan timeout,
-		IEvaluationContext? context = null, CancellationToken cancellationToken = default)
-	{
-		ThrowIfStopped(context);
-		try
-		{
-			if (timeout > TimeSpan.Zero || timeout == System.Threading.Timeout.InfiniteTimeSpan)
-			{
-				await WaitUntil(areFound, timeout, cancellationToken);
-			}
-		}
-		catch
-		{
-			if (_stopsAfterEvaluation)
-			{
-				// A predicate that throws must not leave the handlers attached to the subject.
-				Stop(context);
-			}
-
-			throw;
-		}
-
-		Snapshot snapshot = new(this);
-		if (_stopsAfterEvaluation)
-		{
-			StopWithEvaluation(context);
-		}
-
-		return snapshot;
-	}
-
 	/// <remarks>
 	///     The later constraints of the same expectation can still wait for events, so the recording only stops when
 	///     the evaluation ends. Without an <see cref="Core.EvaluationContext.EvaluationContext" /> of this library,
@@ -194,7 +213,7 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 	/// </remarks>
 	private void StopWithEvaluation(IEvaluationContext? context)
 	{
-		if (context is Core.EvaluationContext.EvaluationContext evaluationContext)
+		if (context is EvaluationContext evaluationContext)
 		{
 			evaluationContext.ReleaseWithEvaluation(() => Stop(context));
 		}
@@ -245,9 +264,6 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 	private void NotifyRecordedEvent()
 		=> Interlocked.Exchange(ref _recorded, null)?.TrySetResult(true);
 
-	/// <inheritdoc cref="IDisposable.Dispose()" />
-	public void Dispose() => Stop(null);
-
 	/// <summary>
 	///     Keeps recording until <see cref="Dispose" /> instead of stopping with the next evaluation.
 	/// </summary>
@@ -263,22 +279,6 @@ internal sealed class EventRecording<TSubject> : IDisposableEventRecording<TSubj
 		_stopsAfterEvaluation = false;
 		return this;
 	}
-
-	/// <summary>
-	///     Gets the number of recorded events for <paramref name="eventName" /> that match the <paramref name="filter" />.
-	/// </summary>
-	public int GetEventCount(string eventName, Func<object?[], bool>? filter = null)
-		=> _recorders[GetRecorderIndex(eventName)].GetEventCount(filter);
-
-	/// <summary>
-	///     Returns a formatted string for the recorded events for <paramref name="eventName" />.
-	/// </summary>
-	public string ToString(string eventName)
-		=> _recorders[GetRecorderIndex(eventName)].ToString();
-
-	/// <inheritdoc />
-	public override string ToString()
-		=> _subjectExpression;
 
 	private void Stop(IEvaluationContext? context)
 	{

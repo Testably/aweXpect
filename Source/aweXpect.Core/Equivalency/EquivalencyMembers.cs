@@ -27,6 +27,7 @@ internal readonly struct EquivalencyMember(
 	///     also the runtime type a collection item of that type has.
 	/// </remarks>
 	public Type DeclaredType { get; } = Nullable.GetUnderlyingType(declaredType) ?? declaredType;
+
 	public Func<object, object?> GetValue { get; } = getValue;
 
 	/// <summary>

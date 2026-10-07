@@ -2,9 +2,10 @@
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
-using aweXpect.Options;
 using aweXpect.Recording;
 using aweXpect.Results;
+using RepeatedCheckOptions = aweXpect.Options.RepeatedCheckOptions;
+using TriggerEventFilter = aweXpect.Options.TriggerEventFilter;
 
 namespace aweXpect;
 
@@ -18,16 +19,16 @@ public static partial class ThatEventRecording
 		this IThat<IEventRecording<TSubject>> subject)
 		where TSubject : INotifyPropertyChanged
 	{
-		Quantifier quantifier = new();
+		Options.Quantifier quantifier = new();
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();
 		return new EventTriggerResult<TSubject>(
 			subject.Get().ExpectationBuilder.AddConstraint((Filter: filter, Quantifier: quantifier, Options: options),
 				static (state, it, grammars)
-				=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
-					state.Filter,
-					state.Quantifier,
-					state.Options)),
+					=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
+						state.Filter,
+						state.Quantifier,
+						state.Options)),
 			subject,
 			filter,
 			quantifier,
@@ -47,16 +48,16 @@ public static partial class ThatEventRecording
 		this IThat<IEventRecording<TSubject>> subject)
 		where TSubject : INotifyPropertyChanged
 	{
-		Quantifier quantifier = new();
+		Options.Quantifier quantifier = new();
 		TriggerEventFilter filter = new();
 		RepeatedCheckOptions options = new();
 		return new EventTriggerResult<TSubject>(
 			subject.Get().ExpectationBuilder.AddConstraint((Filter: filter, Quantifier: quantifier, Options: options),
 				static (state, it, grammars)
-				=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
-					state.Filter,
-					state.Quantifier,
-					state.Options).Invert()),
+					=> new HaveTriggeredConstraint<TSubject>(it, grammars, nameof(INotifyPropertyChanged.PropertyChanged),
+						state.Filter,
+						state.Quantifier,
+						state.Options).Invert()),
 			subject,
 			filter,
 			quantifier,

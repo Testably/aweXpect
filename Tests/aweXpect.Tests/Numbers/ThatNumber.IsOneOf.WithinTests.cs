@@ -212,7 +212,10 @@ public sealed partial class ThatNumber
 			public async Task ForDouble_WhenNonFiniteValuesDiffer_ShouldFail(
 				double subject, double expectedValue, double tolerance)
 			{
-				double[] expected = { expectedValue, };
+				double[] expected =
+				{
+					expectedValue,
+				};
 				double? nullableSubject = subject;
 
 				async Task Act()
@@ -272,7 +275,10 @@ public sealed partial class ThatNumber
 			public async Task ForDouble_WhenSubjectIsTheSameNonFiniteValue_ShouldSucceed(
 				double value, double tolerance)
 			{
-				double[] expected = { value, };
+				double[] expected =
+				{
+					value,
+				};
 				double? nullableSubject = value;
 
 				async Task Act()
@@ -385,7 +391,10 @@ public sealed partial class ThatNumber
 			public async Task ForFloat_WhenNonFiniteValuesDiffer_ShouldFail(
 				float subject, float expectedValue, float tolerance)
 			{
-				float[] expected = { expectedValue, };
+				float[] expected =
+				{
+					expectedValue,
+				};
 				float? nullableSubject = subject;
 
 				async Task Act()
@@ -445,7 +454,10 @@ public sealed partial class ThatNumber
 			public async Task ForFloat_WhenSubjectIsTheSameNonFiniteValue_ShouldSucceed(
 				float value, float tolerance)
 			{
-				float[] expected = { value, };
+				float[] expected =
+				{
+					value,
+				};
 				float? nullableSubject = value;
 
 				async Task Act()
@@ -537,7 +549,10 @@ public sealed partial class ThatNumber
 			{
 				Half subject = (Half)subjectValue;
 				Half tolerance = (Half)toleranceValue;
-				Half[] expected = { (Half)expectedValue, };
+				Half[] expected =
+				{
+					(Half)expectedValue,
+				};
 				Half? nullableSubject = subject;
 
 				async Task Act()
@@ -581,7 +596,10 @@ public sealed partial class ThatNumber
 			{
 				Half subject = (Half)value;
 				Half tolerance = (Half)toleranceValue;
-				Half[] expected = { subject, };
+				Half[] expected =
+				{
+					subject,
+				};
 				Half? nullableSubject = subject;
 
 				async Task Act()

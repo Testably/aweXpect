@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace aweXpect.Core;
@@ -25,9 +24,9 @@ public interface IStringMatchType
 	///     considered equal; otherwise <see langword="false" />.
 	/// </summary>
 	ValueTask<bool>
-	AreConsideredEqual(string? actual, string? expected,
-		bool ignoreCase,
-		IEqualityComparer<string>? comparer);
+		AreConsideredEqual(string? actual, string? expected,
+			bool ignoreCase,
+			IEqualityComparer<string>? comparer);
 
 	/// <summary>
 	///     Get the expectations text.

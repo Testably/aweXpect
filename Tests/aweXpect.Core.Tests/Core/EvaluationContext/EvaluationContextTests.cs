@@ -35,7 +35,7 @@ public class EvaluationContextTests
 		Context context = new();
 		Context attempt = await context.StartAttempt();
 		DisposeTrackingEnumerable source = new(null, 1, 2);
-		_ = attempt.UseMaterializedEnumerable<int>(source).First();
+		_ = attempt.UseMaterializedEnumerable(source).First();
 
 		await context.ReleaseMaterializations();
 
@@ -76,7 +76,7 @@ public class EvaluationContextTests
 	{
 		Context context = new();
 		DisposeTrackingEnumerable source = new(null, 1, 2);
-		_ = context.UseMaterializedEnumerable<int>(source).First();
+		_ = context.UseMaterializedEnumerable(source).First();
 		context.Store("foo", "foo-value");
 
 		Context attempt = await context.StartAttempt();
@@ -176,7 +176,7 @@ public class EvaluationContextTests
 	{
 		Context context = new();
 		DisposeTrackingEnumerable source = new(null, 1, 2);
-		IEnumerable<int> materialized = context.UseMaterializedEnumerable<int>(source);
+		IEnumerable<int> materialized = context.UseMaterializedEnumerable(source);
 		_ = materialized.First();
 		MaterializesConstraint constraint = new(source);
 		ManualExpectationBuilder<int> builder = new();
@@ -232,7 +232,7 @@ public class EvaluationContextTests
 		MyContextConstraint constraint = new();
 		await new AndOrResult<bool, IExpectThat<bool>>(
 			((IExpectThat<bool>)that).ExpectationBuilder
-				.AddConstraint((_, _) => constraint),
+			.AddConstraint((_, _) => constraint),
 			that);
 
 		return constraint.Context!;

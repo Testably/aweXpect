@@ -127,7 +127,6 @@ public sealed partial class ThatDelegate
 
 		public sealed class FuncValueTests
 		{
-
 			[Test]
 			[AutoArguments]
 			public async Task WhenAwaited_ShouldReturnResultFromDelegate(int value)

@@ -468,7 +468,7 @@ public sealed partial class ThatEventRecording
 				sut.NotifyPropertyChanged("");
 
 				async Task Act() =>
-					await That(recording).TriggeredPropertyChangedFor((string?)null);
+					await That(recording).TriggeredPropertyChangedFor(null);
 
 				await That(Act).DoesNotThrow()
 					.Because("the contract makes no difference between the two spellings of the all-properties notification");
@@ -483,7 +483,7 @@ public sealed partial class ThatEventRecording
 				sut.NotifyPropertyChanged(sut, null);
 
 				async Task Act() =>
-					await That(recording).TriggeredPropertyChangedFor((string?)null);
+					await That(recording).TriggeredPropertyChangedFor(null);
 
 				await That(Act).DoesNotThrow()
 					.Because("the explicit string overload remains the way to assert the null property name");
@@ -501,7 +501,7 @@ public sealed partial class ThatEventRecording
 				sut.NotifyPropertyChanged(nameof(PropertyChangedClass.MyValue));
 
 				async Task Act() =>
-					await That(recording).TriggeredPropertyChangedFor((string?)null);
+					await That(recording).TriggeredPropertyChangedFor(null);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

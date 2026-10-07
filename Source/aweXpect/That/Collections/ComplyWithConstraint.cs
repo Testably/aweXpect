@@ -24,8 +24,8 @@ internal abstract class ComplyWithConstraintBase<TValue, TItem>
 		IExpectationTextConstraint
 {
 	private readonly ManualExpectationBuilder<TItem> _builder;
-	private CollectionContext _collectionContext;
 	private readonly ManualExpectationBuilder<TItem> _negatedBuilder;
+	private CollectionContext _collectionContext;
 	private ConstraintResult? _unansweredItem;
 	private int _unansweredItemIndex;
 

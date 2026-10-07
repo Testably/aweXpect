@@ -1,9 +1,7 @@
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Testing;
-using Verifier =
-	aweXpect.Analyzers.Tests.Verifiers.CSharpCodeFixVerifier<aweXpect.Analyzers.UnorderedCollectionAnalyzer,
-		aweXpect.Analyzers.CodeFixers.UnorderedCollectionCodeFixProvider>;
+using Verifier = aweXpect.Analyzers.Tests.Verifiers.CSharpCodeFixVerifier<aweXpect.Analyzers.UnorderedCollectionAnalyzer,
+	aweXpect.Analyzers.CodeFixers.UnorderedCollectionCodeFixProvider>;
 
 namespace aweXpect.Analyzers.Tests;
 

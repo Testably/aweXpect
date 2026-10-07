@@ -61,10 +61,6 @@ public static partial class ThatTimeOnly
 		: ConstraintResult.WithValue<TimeOnly?>(it, grammars),
 			IValueConstraint<TimeOnly>
 	{
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
-
 		public ConstraintResult IsMetBy(TimeOnly actual)
 		{
 			Actual = actual;
@@ -83,6 +79,10 @@ public static partial class ThatTimeOnly
 
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

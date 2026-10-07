@@ -31,20 +31,20 @@ public class FrameworkGenerator : IIncrementalGenerator
 	{
 		IncrementalValueProvider<Settings> settings = context.CompilationProvider
 			.Select((c, _) => new Settings(
-				HasMsTest: References(c, "Microsoft.VisualStudio.TestPlatform.TestFramework") ||
-				           References(c, "MSTest.TestFramework"),
-				HasNunit: References(c, "nunit.framework"),
-				HasTUnit: References(c, "TUnit.Core"),
-				HasTUnitAssertions: References(c, "TUnit.Assertions"),
-				HasXunit2: References(c, "xunit.assert"),
-				HasXunit3Core: References(c, "xunit.v3.core"),
-				HasXunit3Assert: References(c, "xunit.v3.assert"),
-				HasDoesNotReturn: HasAttribute(c, "System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute"),
-				HasStackTraceHidden: HasAttribute(c, "System.Diagnostics.StackTraceHiddenAttribute"),
-				HasTestFrameworkRegistry: SupportsAdapterRegistration(c),
-				HasModuleInitializerAttribute: HasAttribute(c, "System.Runtime.CompilerServices.ModuleInitializerAttribute"),
-				CanCompileModuleInitializer: HasModuleInitializerLanguageVersion(c),
-				IsAdapterFoundByScan: CoreScansForAdapters(c)));
+				References(c, "Microsoft.VisualStudio.TestPlatform.TestFramework") ||
+				References(c, "MSTest.TestFramework"),
+				References(c, "nunit.framework"),
+				References(c, "TUnit.Core"),
+				References(c, "TUnit.Assertions"),
+				References(c, "xunit.assert"),
+				References(c, "xunit.v3.core"),
+				References(c, "xunit.v3.assert"),
+				HasAttribute(c, "System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute"),
+				HasAttribute(c, "System.Diagnostics.StackTraceHiddenAttribute"),
+				SupportsAdapterRegistration(c),
+				HasAttribute(c, "System.Runtime.CompilerServices.ModuleInitializerAttribute"),
+				HasModuleInitializerLanguageVersion(c),
+				CoreScansForAdapters(c)));
 
 		context.RegisterSourceOutput(settings, Emit);
 	}
@@ -170,21 +170,6 @@ public class FrameworkGenerator : IIncrementalGenerator
 		       !Version.TryParse(targetFramework.Substring(netCoreApp.Length), out Version? version) ||
 		       version.Major < 8;
 	}
-
-	private readonly record struct Settings(
-		bool HasMsTest,
-		bool HasNunit,
-		bool HasTUnit,
-		bool HasTUnitAssertions,
-		bool HasXunit2,
-		bool HasXunit3Core,
-		bool HasXunit3Assert,
-		bool HasDoesNotReturn,
-		bool HasStackTraceHidden,
-		bool HasTestFrameworkRegistry,
-		bool HasModuleInitializerAttribute,
-		bool CanCompileModuleInitializer,
-		bool IsAdapterFoundByScan);
 
 	/// <remarks>
 	///     The adapter is nested in its registration, because a project that sees the internals of another project
@@ -424,4 +409,19 @@ public class FrameworkGenerator : IIncrementalGenerator
 		        (attributeSymbol.DeclaredAccessibility == Accessibility.Internal &&
 		         SymbolEqualityComparer.Default.Equals(attributeSymbol.ContainingAssembly, c.Assembly)));
 	}
+
+	private readonly record struct Settings(
+		bool HasMsTest,
+		bool HasNunit,
+		bool HasTUnit,
+		bool HasTUnitAssertions,
+		bool HasXunit2,
+		bool HasXunit3Core,
+		bool HasXunit3Assert,
+		bool HasDoesNotReturn,
+		bool HasStackTraceHidden,
+		bool HasTestFrameworkRegistry,
+		bool HasModuleInitializerAttribute,
+		bool CanCompileModuleInitializer,
+		bool IsAdapterFoundByScan);
 }

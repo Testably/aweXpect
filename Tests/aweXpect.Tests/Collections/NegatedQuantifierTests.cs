@@ -62,7 +62,10 @@ public sealed class NegatedQuantifier
 		[Test]
 		public async Task ComplyWithForEnumerable_WhenNegatedAndSomeItemsMatch_ShouldShowTheMatchingItems()
 		{
-			IEnumerable subject = new[] { 1, 2, };
+			IEnumerable subject = new[]
+			{
+				1, 2,
+			};
 
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.MoreThan(0).ComplyWith(item => item.IsEqualTo(1)));
@@ -338,7 +341,10 @@ public sealed class NegatedQuantifier
 		[Test]
 		public async Task NotNestedAreEqualToForEnumerable_WhenNegatedAndSomeItemsMatch_ShouldShowTheMatchingItems()
 		{
-			IEnumerable subject = new[] { 1, 2, };
+			IEnumerable subject = new[]
+			{
+				1, 2,
+			};
 
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.MoreThan(0).AreEqualTo(1));
@@ -415,7 +421,10 @@ public sealed class NegatedQuantifier
 		[Test]
 		public async Task NotNestedSatisfyForEnumerable_WhenNegatedAndSomeItemsMatch_ShouldShowTheMatchingItems()
 		{
-			IEnumerable subject = new[] { 1, 2, };
+			IEnumerable subject = new[]
+			{
+				1, 2,
+			};
 
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.MoreThan(0).Satisfy(item => Equals(item, 1)));
@@ -441,7 +450,7 @@ public sealed class NegatedQuantifier
 		[Test]
 		public async Task AreEqualTo_WhenNegatedAndSomeItemsMatch_ShouldShowTheMatchingItems()
 		{
-			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 2,]);
+			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable(1, 2);
 
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.MoreThan(0).AreEqualTo(1));
@@ -463,7 +472,7 @@ public sealed class NegatedQuantifier
 		[Test]
 		public async Task AreUnique_WhenNegatedAndSomeItemsMatch_ShouldShowTheMatchingItems()
 		{
-			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 1, 2,]);
+			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable(1, 1, 2);
 
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.MoreThan(0).AreUnique());
@@ -485,7 +494,7 @@ public sealed class NegatedQuantifier
 		[Test]
 		public async Task ComplyWith_WhenNegatedAndSomeItemsMatch_ShouldShowTheMatchingItems()
 		{
-			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 2,]);
+			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable(1, 2);
 
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.MoreThan(0).ComplyWith(item => item.IsEqualTo(1)));
@@ -507,7 +516,7 @@ public sealed class NegatedQuantifier
 		[Test]
 		public async Task Satisfy_WhenNegatedAndSomeItemsMatch_ShouldShowTheMatchingItems()
 		{
-			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable([1, 2,]);
+			IAsyncEnumerable<int> subject = ThatAsyncEnumerable.ToAsyncEnumerable(1, 2);
 
 			async Task Act()
 				=> await That(subject).DoesNotComplyWith(it => it.MoreThan(0).Satisfy(item => item == 1));

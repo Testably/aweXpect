@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
@@ -74,7 +73,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 		if (subject is null)
 		{
 			ConstraintResult missingSubject = await rootNode.IsMetBy(default(TValue),
-				EvaluationContext.ExpectationTextEvaluationContext.For(context), cancellationToken);
+				ExpectationTextEvaluationContext.For(context), cancellationToken);
 			return missingSubject.Fail("it was <null>", default(TValue));
 		}
 
@@ -148,14 +147,14 @@ internal class EventuallyExpectationBuilder<TValue>(
 			bool isCanceled = failure is OperationCanceledException && cancellationToken.IsCancellationRequested;
 			if (!isCanceled && (isLastAttempt || exceededTimeout is not null || polling.Remaining <= TimeSpan.Zero))
 			{
-				result ??= await rootNode.IsMetBy(data, EvaluationContext.ExpectationTextEvaluationContext.For(currentContext),
+				result ??= await rootNode.IsMetBy(data, ExpectationTextEvaluationContext.For(currentContext),
 					System.Threading.CancellationToken.None);
 				return AppendTimeout(WithFailureCause(result, failure, hasContexts, exceededTimeout), retryTimeout);
 			}
 
 			if (cancellationToken.IsCancellationRequested)
 			{
-				result ??= await rootNode.IsMetBy(data, EvaluationContext.ExpectationTextEvaluationContext.For(currentContext),
+				result ??= await rootNode.IsMetBy(data, ExpectationTextEvaluationContext.For(currentContext),
 					System.Threading.CancellationToken.None);
 				return AppendTimeout(new ConstraintResult.FromCancellation(WithFailureCause(result, failure, hasContexts)),
 					retryTimeout);
@@ -233,8 +232,8 @@ internal class EventuallyExpectationBuilder<TValue>(
 			}
 
 			return (default, exceededTimeout is null
-				? exception
-				: ExpectationBuilder<TValue>.CreateTimeoutException(exceededTimeout.Value, exception),
+					? exception
+					: ExpectationBuilder<TValue>.CreateTimeoutException(exceededTimeout.Value, exception),
 				exceededTimeout, NullSubjectKind.None);
 		}
 	}
@@ -291,7 +290,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 		if (nullKind == NullSubjectKind.NullTaskReturned)
 		{
 			ConstraintResult expectation = await rootNode.IsMetBy(data,
-				EvaluationContext.ExpectationTextEvaluationContext.For(context), System.Threading.CancellationToken.None);
+				ExpectationTextEvaluationContext.For(context), System.Threading.CancellationToken.None);
 			return (expectation.Fail("it returned <null> instead of a task", data), null);
 		}
 

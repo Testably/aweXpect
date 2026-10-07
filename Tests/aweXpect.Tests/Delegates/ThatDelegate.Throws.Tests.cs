@@ -1,4 +1,6 @@
-﻿namespace aweXpect.Tests;
+﻿using System.Threading;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatDelegate
 {
@@ -150,7 +152,7 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateReturnsNullTask_ShouldFail()
 			{
-				Func<System.Threading.CancellationToken, Task<int>> @delegate = _ => null!;
+				Func<CancellationToken, Task<int>> @delegate = _ => null!;
 
 				async Task<NullReferenceException> Act()
 					=> await That(@delegate).Throws<NullReferenceException>();
@@ -538,7 +540,7 @@ public sealed partial class ThatDelegate
 				Action action = () => throw new CustomException();
 
 				async Task Act()
-					=> await That(action).Throws((Type)null!);
+					=> await That(action).Throws(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("type").And

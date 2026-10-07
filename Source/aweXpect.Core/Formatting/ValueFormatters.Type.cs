@@ -80,7 +80,7 @@ public static partial class ValueFormatters
 		}
 
 		StringBuilder stringBuilder = new();
-		Format(formatter, stringBuilder, value, options);
+		formatter.Format(stringBuilder, value, options);
 		return stringBuilder.ToString();
 	}
 

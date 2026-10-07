@@ -49,7 +49,7 @@ public static partial class ValueFormatters
 		if (status == TaskStatus.Faulted && task.Exception?.InnerException is { } exception)
 		{
 			stringBuilder.Append(", ");
-			Format(Formatter, stringBuilder, exception, options);
+			Formatter.Format(stringBuilder, exception, options);
 		}
 		else if (status == TaskStatus.RanToCompletion && typeWithResult is not null)
 		{
@@ -158,7 +158,7 @@ public static partial class ValueFormatters
 			}
 
 			object? result = getResult(task);
-			Format(Formatter, stringBuilder, result, WithoutLineBreaksForString(result, options), context);
+			Formatter.Format(stringBuilder, result, WithoutLineBreaksForString(result, options), context);
 		}
 		finally
 		{

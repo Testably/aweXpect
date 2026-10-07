@@ -7,6 +7,13 @@ namespace aweXpect.Core.Tests.Equivalency;
 
 public sealed partial class EquivalencyComparisonTests
 {
+	public enum SharedShape
+	{
+		Members,
+		List,
+		Dictionary,
+	}
+
 	[Test]
 	public async Task WhenSharedPairDiffers_ShouldReportItForEveryPath()
 	{
@@ -707,13 +714,6 @@ public sealed partial class EquivalencyComparisonTests
 
 			return this;
 		}
-	}
-
-	public enum SharedShape
-	{
-		Members,
-		List,
-		Dictionary,
 	}
 
 	private sealed class WithFields(Heavy item)

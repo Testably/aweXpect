@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-#if NET8_0_OR_GREATER
-using System.Diagnostics.CodeAnalysis;
-#endif
 using System.Linq;
 using System.Reflection;
 using aweXpect.Core;
+#if NET8_0_OR_GREATER
+using System.Diagnostics.CodeAnalysis;
+#endif
 
 namespace aweXpect.Equivalency;
 
@@ -139,7 +139,7 @@ internal static class IncludeMembersExtensions
 					         BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
 #pragma warning restore S3011
 				{
-					if (property.Name.Contains('.', StringComparison.Ordinal) &&property.GetGetMethod(true) is { IsPrivate: true, } &&
+					if (property.Name.Contains('.', StringComparison.Ordinal) && property.GetGetMethod(true) is { IsPrivate: true, } &&
 					    property.GetIndexParameters().Length == 0 && !IsByRefLike(property.PropertyType) &&
 					    !byName.ContainsKey(property.Name))
 					{
@@ -152,7 +152,7 @@ internal static class IncludeMembersExtensions
 		});
 
 	private static FieldInfo[] GetAllFields(Type type, IncludeMembers includeMembers)
-		=> AllFields.GetOrAdd((type, GetBindingFlags(includeMembers)), static key
+		=> AllFields.GetOrAdd((type, includeMembers.GetBindingFlags()), static key
 			=> ReflectionFallback.IsSupported
 				? MostDerived(key.Item1.GetFields(key.Item2))
 				: throw Tracing.WriteException(ReflectionFallback.NotSupported(key.Item1, "fields")));
@@ -164,7 +164,7 @@ internal static class IncludeMembersExtensions
 	///     by-ref-like type, such as a span, cannot be read either, because its value cannot be boxed.
 	/// </remarks>
 	private static PropertyInfo[] GetAllProperties(Type type, IncludeMembers includeMembers)
-		=> AllProperties.GetOrAdd((type, GetBindingFlags(includeMembers)), static key
+		=> AllProperties.GetOrAdd((type, includeMembers.GetBindingFlags()), static key
 			=> ReflectionFallback.IsSupported
 				? MostDerived(key.Item1.GetProperties(key.Item2)
 						.Where(property => property.GetIndexParameters().Length == 0))

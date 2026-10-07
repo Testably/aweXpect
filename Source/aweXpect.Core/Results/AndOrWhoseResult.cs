@@ -51,7 +51,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 	{
 		memberAccessor.ThrowIfNull();
 		expectations.ThrowIfNull();
-		return new(
+		return new AdditionalAndOrWhoseResult(
 			ExpectationBuilder
 				.ForMember(
 					MemberAccessor<TType, TMember?>.FromFuncAsMemberAccessor(memberAccessor, doNotPopulateThisValue),
@@ -81,7 +81,7 @@ public class AndOrWhoseResult<TType, TThat, TSelf>(
 	{
 		memberAccessor.ThrowIfNull();
 		expectations.ThrowIfNull();
-		return new(
+		return new AdditionalAndOrWhoseResult(
 			ExpectationBuilder
 				.ForAsyncMember(
 					MemberAccessor<TType, Task<TMember>>.FromFuncAsMemberAccessor(memberAccessor,

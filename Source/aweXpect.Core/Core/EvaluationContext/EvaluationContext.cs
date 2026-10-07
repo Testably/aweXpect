@@ -11,56 +11,11 @@ internal class EvaluationContext : IEvaluationContext
 {
 	private EvaluationContext? _attempt;
 	private List<EvaluationContext>? _checks;
-	private int _nestingDepth;
 	private List<Dictionary<string, object?>?>? _nestedStores;
+	private int _nestingDepth;
 	private List<AsyncBecauseReason>? _pendingReasons;
 	private List<Action>? _releases;
 	private Dictionary<string, object?>? _store;
-
-	#region IEvaluationContext Members
-
-	/// <inheritdoc />
-	/// <remarks>
-	///     A value stored while an item or a member is evaluated is only received during that evaluation.
-	/// </remarks>
-	public void Store<T>(string key, T value)
-	{
-		if (IsNested(key))
-		{
-			_nestedStores ??= [];
-			while (_nestedStores.Count < _nestingDepth)
-			{
-				_nestedStores.Add(null);
-			}
-
-			(_nestedStores[_nestingDepth - 1] ??= new Dictionary<string, object?>())[key] = value;
-			return;
-		}
-
-		_store ??= new Dictionary<string, object?>();
-		_store[key] = value;
-	}
-
-	/// <inheritdoc />
-	public bool TryReceive<T>(string key, [NotNullWhen(true)] out T? value)
-	{
-		Dictionary<string, object?>? store = IsNested(key) ? GetNestedStore() : _store;
-		if (store != null &&
-		    store.TryGetValue(key, out object? storedValue)
-		    && storedValue is T typeMatchingValue)
-		{
-			value = typeMatchingValue;
-			return true;
-		}
-
-		value = default;
-		return false;
-	}
-
-	/// <inheritdoc />
-	public EvaluationCancellation Cancellation { get; set; } = EvaluationCancellation.None;
-
-	#endregion
 
 	/// <summary>
 	///     The time system of the evaluation, with which a repeated check measures the time and waits between its checks.
@@ -204,7 +159,7 @@ internal class EvaluationContext : IEvaluationContext
 	public async Task<EvaluationContext> StartAttempt()
 	{
 		await ReleaseMaterializations();
-		_attempt = new EvaluationContext()
+		_attempt = new EvaluationContext
 		{
 			Cancellation = Cancellation,
 			TimeSystem = TimeSystem,
@@ -239,4 +194,49 @@ internal class EvaluationContext : IEvaluationContext
 			_context._nestingDepth--;
 		}
 	}
+
+	#region IEvaluationContext Members
+
+	/// <inheritdoc />
+	/// <remarks>
+	///     A value stored while an item or a member is evaluated is only received during that evaluation.
+	/// </remarks>
+	public void Store<T>(string key, T value)
+	{
+		if (IsNested(key))
+		{
+			_nestedStores ??= [];
+			while (_nestedStores.Count < _nestingDepth)
+			{
+				_nestedStores.Add(null);
+			}
+
+			(_nestedStores[_nestingDepth - 1] ??= new Dictionary<string, object?>())[key] = value;
+			return;
+		}
+
+		_store ??= new Dictionary<string, object?>();
+		_store[key] = value;
+	}
+
+	/// <inheritdoc />
+	public bool TryReceive<T>(string key, [NotNullWhen(true)] out T? value)
+	{
+		Dictionary<string, object?>? store = IsNested(key) ? GetNestedStore() : _store;
+		if (store != null &&
+		    store.TryGetValue(key, out object? storedValue)
+		    && storedValue is T typeMatchingValue)
+		{
+			value = typeMatchingValue;
+			return true;
+		}
+
+		value = default;
+		return false;
+	}
+
+	/// <inheritdoc />
+	public EvaluationCancellation Cancellation { get; set; } = EvaluationCancellation.None;
+
+	#endregion
 }

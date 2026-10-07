@@ -16,8 +16,8 @@ public abstract partial class ConstraintResult
 	/// </summary>
 	internal class FromException : ConstraintResult
 	{
-		private readonly Exception _exception;
 		private readonly TimeSpan? _exceededTimeout;
+		private readonly Exception _exception;
 		private readonly bool _hasContexts;
 		private readonly ConstraintResult _inner;
 		private readonly string _it;

@@ -18,8 +18,14 @@ public sealed class EquivalencyMatchTypeTests
 	{
 		EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-		IObjectMatchResult result = await sut.AreConsideredEqualWithExplanation(new Dummy { Value = 1, },
-			new Dummy { Value = 2, });
+		IObjectMatchResult result = await sut.AreConsideredEqualWithExplanation(new Dummy
+			{
+				Value = 1,
+			},
+			new Dummy
+			{
+				Value = 2,
+			});
 
 		await That(result).IsSameAs(sut)
 			.Because("the match type keeps the differences itself, so that a comparison allocates no result");
@@ -41,7 +47,13 @@ public sealed class EquivalencyMatchTypeTests
 	{
 		EquivalencyMatchType sut = new(new EquivalencyOptions());
 
-		bool result = await sut.AreConsideredEqual(new Dummy { Value = 1, }, new Dummy { Value = expectedValue, });
+		bool result = await sut.AreConsideredEqual(new Dummy
+		{
+			Value = 1,
+		}, new Dummy
+		{
+			Value = expectedValue,
+		});
 
 		await That(result).IsEqualTo(expectMatch);
 	}
@@ -232,7 +244,8 @@ internal static class EquivalencyMatchTypeTestExtensions
 	public static AndOrResult<TSubject, IThat<TSubject>> IsNotEquivalentToUsingMatchType<TSubject, TExpected>(
 		this IThat<TSubject> subject,
 		[RequiresMemberMetadata] TExpected unexpected,
-		[CallerArgumentExpression("unexpected")] string doNotPopulateThisValue = "")
+		[CallerArgumentExpression("unexpected")]
+		string doNotPopulateThisValue = "")
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsEquivalentToConstraint<TSubject, TExpected>(it, grammars, unexpected,
 					unexpected is null ? null : doNotPopulateThisValue, CreateOptions<TSubject>()).Invert()),
@@ -258,9 +271,6 @@ internal static class EquivalencyMatchTypeTestExtensions
 	{
 		private IObjectMatchResult? _matchResult;
 
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddEqualityOptionsContexts(options);
-
 		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
@@ -268,6 +278,9 @@ internal static class EquivalencyMatchTypeTestExtensions
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
+
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddEqualityOptionsContexts(options);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(

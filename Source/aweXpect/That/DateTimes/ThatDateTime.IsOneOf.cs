@@ -60,10 +60,6 @@ public static partial class ThatDateTime
 		: ConstraintResult.WithValue<DateTime>(it, grammars),
 			IValueConstraint<DateTime>
 	{
-		/// <inheritdoc />
-		public override void AppendContexts(ResultContextCollector contexts)
-			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
-
 		private DateTimeKind? _incompatibleKind;
 
 		public ConstraintResult IsMetBy(DateTime actual)
@@ -98,6 +94,10 @@ public static partial class ThatDateTime
 			Outcome = Outcome.Failure;
 			return this;
 		}
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.AddExpectedValuesContext(expectedExpression, expected, Grammars.IsNegated());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

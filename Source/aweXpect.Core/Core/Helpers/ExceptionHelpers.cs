@@ -6,7 +6,8 @@ namespace aweXpect.Core.Helpers;
 internal static class ExceptionHelpers
 {
 	public static void ThrowIfNull(this object? parameter,
-		[CallerArgumentExpression(nameof(parameter))] string? paramName = null)
+		[CallerArgumentExpression(nameof(parameter))]
+		string? paramName = null)
 	{
 		if (parameter is null)
 		{
@@ -19,7 +20,8 @@ internal static class ExceptionHelpers
 	///     Throws when the <paramref name="type" /> is null or not an exception type, as no exception could ever match it.
 	/// </summary>
 	public static void ThrowIfNotAnExceptionType(this Type? type,
-		[CallerArgumentExpression(nameof(type))] string? paramName = null)
+		[CallerArgumentExpression(nameof(type))]
+		string? paramName = null)
 	{
 		type.ThrowIfNull(paramName);
 		if (!typeof(Exception).IsAssignableFrom(type))

@@ -125,7 +125,7 @@ public class ValueTaskDelegateCodeFixProvider : CodeFixProvider
 
 	private static bool HasAsTask(ExpressionSyntax value, SemanticModel semanticModel)
 		=> semanticModel.GetSpeculativeSymbolInfo(value.SpanStart, AsTask(value),
-				SpeculativeBindingOption.BindAsExpression).Symbol is IMethodSymbol { Name: "AsTask", } method &&
+			   SpeculativeBindingOption.BindAsExpression).Symbol is IMethodSymbol { Name: "AsTask", } method &&
 		   IsValueTask(method.ContainingType);
 
 	/// <summary>

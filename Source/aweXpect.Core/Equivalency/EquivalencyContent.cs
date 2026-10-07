@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Concurrent;
+using System.Text;
+using System.Text.RegularExpressions;
+using aweXpect.Core;
 #if !NET8_0_OR_GREATER
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 #endif
-using System.Text;
 #if NET8_0_OR_GREATER
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 #endif
-using System.Text.RegularExpressions;
-using aweXpect.Core;
 
 namespace aweXpect.Equivalency;
 

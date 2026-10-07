@@ -137,7 +137,7 @@ public sealed partial class ThatDelegate
 				Action @delegate = () => { };
 
 				async Task Act()
-					=> await That(@delegate).DoesNotThrow((Type)null!);
+					=> await That(@delegate).DoesNotThrow(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("type").And
@@ -157,7 +157,7 @@ public sealed partial class ThatDelegate
 				await That(awaiter).IsEqualTo(typeof(TaskAwaiter))
 					.Because("the delegate may throw another exception instead of returning a value");
 			}
-			
+
 			[Test]
 			public async Task WhenDelegateDoesNotThrow_ShouldSucceed()
 			{
@@ -286,7 +286,7 @@ public sealed partial class ThatDelegate
 				Func<int> @delegate = () => 1;
 
 				async Task Act()
-					=> await That(@delegate).DoesNotThrow((Type)null!);
+					=> await That(@delegate).DoesNotThrow(null!);
 
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("type").And
