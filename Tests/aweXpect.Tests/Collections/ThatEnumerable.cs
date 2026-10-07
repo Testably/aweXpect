@@ -68,29 +68,6 @@ public partial class ThatEnumerable
 	}
 
 	/// <summary>
-	///     Returns an <see cref="IEnumerable{T}" /> with incrementing numbers, starting with 0, which cancels the
-	///     <paramref name="cancellationTokenSource" /> after <paramref name="cancelAfter" /> iteration.
-	/// </summary>
-	private static IEnumerable<int> GetCancellingEnumerable(
-		int[] values,
-		int cancelAfter,
-		CancellationTokenSource cancellationTokenSource,
-		int limit = 10_000)
-	{
-		int index = 0;
-		while (index < limit)
-		{
-			if (index == cancelAfter)
-			{
-				cancellationTokenSource.Cancel();
-			}
-
-			int idx = index++ % values.Length;
-			yield return values[idx];
-		}
-	}
-
-	/// <summary>
 	///     Returns an <see cref="IEnumerable{T}" /> with the <paramref name="items" />, whose enumeration throws the
 	///     <paramref name="exception" /> afterwards.
 	/// </summary>

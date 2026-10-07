@@ -28,7 +28,6 @@ public sealed partial class ThatStream
 	}
 
 	public class MyStream(
-		byte[]? buffer = null,
 		bool canRead = false,
 		bool canWrite = false,
 		bool canSeek = false,
@@ -36,8 +35,6 @@ public sealed partial class ThatStream
 		long length = 0)
 		: Stream
 	{
-		private readonly byte[] _buffer = buffer ?? Array.Empty<byte>();
-
 		/// <inheritdoc />
 		public override bool CanRead { get; } = canRead;
 
