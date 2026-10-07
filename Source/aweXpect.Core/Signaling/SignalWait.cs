@@ -6,29 +6,49 @@ using aweXpect.Core.Helpers;
 namespace aweXpect.Signaling;
 
 /// <summary>
-///     Waits for the signals of a waiter, which completes its task when enough signals were received.
+///     The wait of a waiter, which completes it when enough signals were received.
 /// </summary>
 /// <remarks>
 ///     A wait ends at the <c>timeout</c> or at the cancellation without throwing, so that the caller returns the
 ///     signals received until then.
 /// </remarks>
-internal static class SignalWait
+internal sealed class SignalWait : IDisposable
 {
 	/// <summary>
-	///     Creates the task source of a waiter, whose continuations never run on the thread that signals.
+	///     Wakes a blocked thread on the thread that signals.
 	/// </summary>
-	public static TaskCompletionSource<bool> CreateCompletion()
-		=> new(TaskCreationOptions.RunContinuationsAsynchronously);
+	/// <remarks>
+	///     The <see cref="_completion" /> cannot do that: on .NET Framework a thread that blocks on its task is woken
+	///     through the thread pool, so that the wait would last until one of its threads is free.
+	/// </remarks>
+	private readonly ManualResetEventSlim _completed = new();
 
 	/// <summary>
-	///     Blocks the current thread until the <paramref name="completion" /> completes, the <paramref name="timeout" />
-	///     expires or the <paramref name="cancellationToken" /> is canceled.
+	///     Completes an asynchronous wait, whose continuations never run on the thread that signals.
 	/// </summary>
-	public static void Block(Task completion, TimeSpan timeout, CancellationToken cancellationToken)
+	private readonly TaskCompletionSource<bool> _completion = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+	/// <inheritdoc cref="IDisposable.Dispose()" />
+	public void Dispose() => _completed.Dispose();
+
+	/// <summary>
+	///     Ends the wait, because enough signals were received.
+	/// </summary>
+	public void Complete()
+	{
+		_completed.Set();
+		_completion.TrySetResult(true);
+	}
+
+	/// <summary>
+	///     Blocks the current thread until the wait is completed, the <paramref name="timeout" /> expires or the
+	///     <paramref name="cancellationToken" /> is canceled.
+	/// </summary>
+	public void Block(TimeSpan timeout, CancellationToken cancellationToken)
 	{
 		try
 		{
-			completion.Wait(ToMilliseconds(timeout), cancellationToken);
+			_completed.Wait(ToMilliseconds(timeout), cancellationToken);
 		}
 		catch (OperationCanceledException)
 		{
@@ -37,11 +57,12 @@ internal static class SignalWait
 	}
 
 	/// <summary>
-	///     Waits without blocking a thread until the <paramref name="completion" /> completes, the
-	///     <paramref name="timeout" /> expires or the <paramref name="cancellationToken" /> is canceled.
+	///     Waits without blocking a thread until the wait is completed, the <paramref name="timeout" /> expires or the
+	///     <paramref name="cancellationToken" /> is canceled.
 	/// </summary>
-	public static async Task WaitAsync(Task completion, TimeSpan timeout, CancellationToken cancellationToken)
+	public async Task WaitAsync(TimeSpan timeout, CancellationToken cancellationToken)
 	{
+		Task completion = _completion.Task;
 		if (completion.IsCompleted)
 		{
 			return;

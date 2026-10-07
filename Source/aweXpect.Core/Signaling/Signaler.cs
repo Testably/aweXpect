@@ -146,7 +146,7 @@ public class Signaler
 			TimeSpan waitTimeout = timeout ?? Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
 			if (waitTimeout != TimeSpan.Zero)
 			{
-				SignalWait.Block(waiter.Completion.Task, waitTimeout, cancellationToken);
+				waiter.Wait.Block(waitTimeout, cancellationToken);
 			}
 		}
 		finally
@@ -171,7 +171,7 @@ public class Signaler
 			TimeSpan waitTimeout = timeout ?? Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
 			if (waitTimeout != TimeSpan.Zero)
 			{
-				await SignalWait.WaitAsync(waiter.Completion.Task, waitTimeout, cancellationToken);
+				await waiter.Wait.WaitAsync(waitTimeout, cancellationToken);
 			}
 		}
 		finally
@@ -208,6 +208,7 @@ public class Signaler
 		{
 			_waiters.Remove(waiter);
 			waiter.Count = _counter;
+			waiter.Wait.Dispose();
 		}
 	}
 
@@ -217,7 +218,7 @@ public class Signaler
 	/// </remarks>
 	private sealed class Waiter(int missing)
 	{
-		public TaskCompletionSource<bool> Completion { get; } = SignalWait.CreateCompletion();
+		public SignalWait Wait { get; } = new();
 
 		/// <summary>
 		///     The number of signals when the wait ended.
@@ -230,7 +231,7 @@ public class Signaler
 		{
 			if (Missing > 0 && --Missing == 0)
 			{
-				Completion.TrySetResult(true);
+				Wait.Complete();
 			}
 		}
 	}
@@ -403,7 +404,7 @@ public class Signaler<TParameter>
 			TimeSpan waitTimeout = timeout ?? Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
 			if (waitTimeout != TimeSpan.Zero)
 			{
-				SignalWait.Block(waiter.Completion.Task, waitTimeout, cancellationToken);
+				waiter.Wait.Block(waitTimeout, cancellationToken);
 			}
 		}
 		finally
@@ -423,7 +424,7 @@ public class Signaler<TParameter>
 			TimeSpan waitTimeout = timeout ?? Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
 			if (waitTimeout != TimeSpan.Zero)
 			{
-				await SignalWait.WaitAsync(waiter.Completion.Task, waitTimeout, cancellationToken);
+				await waiter.Wait.WaitAsync(waitTimeout, cancellationToken);
 			}
 		}
 		finally
@@ -459,6 +460,7 @@ public class Signaler<TParameter>
 			_waiters.Remove(waiter);
 			waiter.HasEnded = true;
 			waiter.Parameters = _parameters.ToArray();
+			waiter.Wait.Dispose();
 		}
 	}
 
@@ -505,7 +507,7 @@ public class Signaler<TParameter>
 	/// </remarks>
 	private sealed class Waiter(int missing, Func<TParameter, bool>? predicate)
 	{
-		public TaskCompletionSource<bool> Completion { get; } = SignalWait.CreateCompletion();
+		public SignalWait Wait { get; } = new();
 		public Exception? Exception { get; private set; }
 
 		/// <summary>
@@ -532,7 +534,7 @@ public class Signaler<TParameter>
 			Missing = Math.Max(0, Missing - matches);
 			if (Missing == 0)
 			{
-				Completion.TrySetResult(true);
+				Wait.Complete();
 			}
 		}
 
@@ -544,7 +546,7 @@ public class Signaler<TParameter>
 			}
 
 			Exception ??= exception;
-			Completion.TrySetResult(true);
+			Wait.Complete();
 		}
 	}
 }
