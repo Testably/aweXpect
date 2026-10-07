@@ -153,7 +153,7 @@ await Expect.That(subject).Is<string>().Or.Is<int>();               // fixed: th
 
 The value is `default` (also `null` for a reference type that is not annotated as nullable) when another alternative
 was met. Do not use it, or check it first and suppress the warning there. The rule is not reported when the value has
-the type of the subject, because then every alternative returns the subject. See
+the type of the subject, or a base type or an interface of it, because then every alternative returns the subject. See
 [Combining expectations](./03-how-it-works/03-combining.md#using-the-result).
 
 ## Nullability suppressor
