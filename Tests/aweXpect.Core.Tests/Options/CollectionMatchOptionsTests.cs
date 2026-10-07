@@ -1913,6 +1913,80 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Test]
+		public async Task Contains_WhenAnotherDuplicateIsWithinTheRun_ShouldReportItInsteadOfTheNextExpectedItem()
+		{
+			int[] subject = [1, 2, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).Contains([1, 2, 3,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection [1, 2, 3,] in order and contiguous,
+				             but it contained item 2 at index 2 instead of 3
+
+				             Collection:
+				             [1, 2, 2, 3]
+
+				             Expected:
+				             [1, 2, 3]
+				             """)
+				.Because("an interrupting item is not reported instead of an expected item that it is equal to");
+		}
+
+		[Test]
+		public async Task Contains_WhenTheRunStartsAtADuplicate_ShouldReportTheItemsThatInterruptTheShortestRun()
+		{
+			int[] subject = [1, 1, 5, 2, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).Contains([1, 2, 3,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection [1, 2, 3,] in order and contiguous,
+				             but it
+				               contained item 5 at index 2 instead of 2 and
+				               contained item 2 at index 4 instead of 3
+
+				             Collection:
+				             [1, 1, 5, 2, 2, 3]
+
+				             Expected:
+				             [1, 2, 3]
+				             """);
+		}
+
+		[Test]
+		public async Task Contains_WithPredicates_WhenSeveralItemsOfTheRunMatchAPredicate_ShouldReportTheItemThatMatchesNone()
+		{
+			int[] subject = [1, 5, 0, 7,];
+
+			async Task Act()
+				=> await That(subject).Contains([x => x == 1, x => x == 0 || x == 5, x => x == 7,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection [x => x == 1, x => x == 0 || x == 5, x => x == 7,] in order and contiguous,
+				             but it contained item 0 at index 2 instead of x => (x == 7)
+
+				             Collection:
+				             [1, 5, 0, 7]
+
+				             Expected:
+				             [
+				               x => (x == 1),
+				               x => ((x == 0) OrElse (x == 5)),
+				               x => (x == 7)
+				             ]
+				             """)
+				.Because("the 5 matches the second predicate, so it is not reported instead of it");
+		}
+
+		[Test]
 		public async Task IsContainedIn_WhenADuplicateIsInOrder_ShouldReportTheGapInTheExpectedItems()
 		{
 			int[] subject = [1, 2,];
@@ -1955,6 +2029,85 @@ public class CollectionMatchOptionsTests
 				             Expected:
 				             [2, 1, 2]
 				             """);
+		}
+
+		[Test]
+		public async Task IsContainedIn_WhenAnotherExpectedDuplicateIsWithinTheRun_ShouldReportTheNextItemInsteadOfIt()
+		{
+			int[] subject = [1, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).IsContainedIn([1, 2, 2, 3,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is contained in collection [1, 2, 2, 3,] in order and contiguous,
+				             but it contained item 3 at index 2 instead of 2
+
+				             Collection:
+				             [1, 2, 3]
+
+				             Expected:
+				             [1, 2, 2, 3]
+				             """)
+				.Because("an item is not reported instead of an expected item that it is equal to");
+		}
+
+		[Test]
+		public async Task IsEqualTo_WhenOnlyOneOfTwoMovedDuplicatesIsExpected_ShouldReportTheFirstOneInWrongOrder()
+		{
+			int[] subject = [1, 1, 7, 8, 9,];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo([7, 8, 9, 1,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [7, 8, 9, 1,] in order,
+				             but it
+				               contained item 1 at index 0 in wrong order and
+				               contained item 1 at index 1 that was not expected
+
+				             Collection:
+				             [1, 1, 7, 8, 9]
+
+				             Expected:
+				             [7, 8, 9, 1]
+				             """);
+		}
+
+		[Test]
+		public async Task IsEqualTo_WithPredicates_WhenAMovedItemMatchesSeveralPredicates_ShouldPairAsManyItemsAsPossible()
+		{
+			int[] subject = [1, 2, 7, 8, 9,];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo([x => x == 7, x => x == 8, x => x == 9, x => x <= 2, x => x == 1,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [x => x == 7, x => x == 8, x => x == 9, x => x <= 2, x => x == 1,] in order,
+				             but it
+				               contained item 1 at index 0 in wrong order and
+				               contained item 2 at index 1 in wrong order
+				             (but the items match in a different order)
+
+				             Collection:
+				             [1, 2, 7, 8, 9]
+
+				             Expected:
+				             [
+				               x => (x == 7),
+				               x => (x == 8),
+				               x => (x == 9),
+				               x => (x <= 2),
+				               x => (x == 1)
+				             ]
+				             """)
+				.Because("the 1 takes the last predicate, so that the 2 is no unexpected item and no predicate is missing");
 		}
 	}
 

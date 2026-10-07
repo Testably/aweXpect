@@ -595,6 +595,39 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
+			public async Task WithItemsMatchingTheSamePredicateInAnInterruptedRun_ShouldReportTheItemThatMatchesNone()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 5, 0, 7,]);
+				IEnumerable<Expression<Func<int, bool>>> expected =
+				[
+					x => x == 1,
+					x => x == 0 || x == 5,
+					x => x == 7,
+				];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order and contiguous,
+					             but it contained item 0 at index 2 instead of x => (x == 7)
+
+					             Collection:
+					             [1, 5, 0, 7]
+
+					             Expected:
+					             [
+					               x => (x == 1),
+					               x => ((x == 0) OrElse (x == 5)),
+					               x => (x == 7)
+					             ]
+					             """)
+					.Because("the 5 matches the second predicate, so it is not reported instead of it");
+			}
+
+			[Test]
 			public async Task WithMissingItem_ShouldFail()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);

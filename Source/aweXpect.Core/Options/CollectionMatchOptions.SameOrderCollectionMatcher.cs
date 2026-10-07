@@ -631,6 +631,10 @@ public partial class CollectionMatchOptions
 		///     An additional item that matches a missing item was moved, so both are reported as one item in the wrong
 		///     order.
 		/// </summary>
+		/// <remarks>
+		///     An item can match several missing items, so the items are paired by a maximum matching, which reports as
+		///     few items as not expected or missing as possible.
+		/// </remarks>
 		private async ValueTask<(bool, string?)>
 			ReturnEditsError(string it, List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)> edits,
 				IOptionsEquality<T2> options, int maximumNumber)
@@ -654,23 +658,19 @@ public partial class CollectionMatchOptions
 				}
 			}
 
-			Dictionary<int, T> outOfOrderItems = new();
-			foreach (KeyValuePair<int, T> additionalItem in additionalItems.ToList())
+			Dictionary<int, T> unexpectedItems = new();
+			ItemMatching<T, T3> matching = new(missingItems,
+				(index, _, expected) => IsMatch(index, expected, options), unexpectedItems);
+			foreach (KeyValuePair<int, T> additionalItem in additionalItems)
 			{
-				for (int i = 0; i < missingItems.Count; i++)
-				{
-					if (await IsMatch(additionalItem.Key, missingItems[i], options))
-					{
-						missingItems.RemoveAt(i);
-						additionalItems.Remove(additionalItem.Key);
-						outOfOrderItems.Add(additionalItem.Key, additionalItem.Value);
-						break;
-					}
-				}
+				await matching.Add(additionalItem.Key, additionalItem.Value);
+				await matching.ResolvePendingItems();
 			}
 
-			return ReturnError(it, incorrectItems, outOfOrderItems, additionalItems, missingItems, options,
-				maximumNumber);
+			Dictionary<int, T> outOfOrderItems = matching.MatchedPairs()
+				.ToDictionary(pair => pair.Index, pair => _values[pair.Index]);
+			return ReturnError(it, incorrectItems, outOfOrderItems, unexpectedItems,
+				matching.UnmatchedExpectedItems(), options, maximumNumber);
 		}
 
 		private (bool, string?) ReturnError(string it, Dictionary<int, (T Item, T3 Expected)> incorrectItems,

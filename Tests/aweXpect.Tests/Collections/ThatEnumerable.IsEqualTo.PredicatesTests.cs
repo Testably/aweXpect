@@ -773,6 +773,46 @@ public sealed partial class ThatEnumerable
 
 
 			[Test]
+			public async Task WithMovedItemMatchingSeveralPredicates_ShouldReportAllMovedItemsInWrongOrder()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 7, 8, 9,]);
+				IEnumerable<Expression<Func<int, bool>>> expected =
+				[
+					x => x == 7,
+					x => x == 8,
+					x => x == 9,
+					x => x <= 2,
+					x => x == 1,
+				];
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it
+					               contained item 1 at index 0 in wrong order and
+					               contained item 2 at index 1 in wrong order
+					             (but the items match in a different order)
+
+					             Collection:
+					             [1, 2, 7, 8, 9]
+
+					             Expected:
+					             [
+					               x => (x == 7),
+					               x => (x == 8),
+					               x => (x == 9),
+					               x => (x <= 2),
+					               x => (x == 1)
+					             ]
+					             """)
+					.Because("the 1 takes the last predicate, so that the 2 is no unexpected item and no predicate is missing");
+			}
+
+			[Test]
 			public async Task WithSameCollection_ShouldSucceed()
 			{
 				IEnumerable<string> subject = ToEnumerable(["a", "b", "c",]);

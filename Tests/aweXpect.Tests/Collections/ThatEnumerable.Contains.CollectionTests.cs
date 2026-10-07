@@ -401,6 +401,30 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
+			public async Task WithDuplicateWithinAnInterruptedRun_ShouldReportItInsteadOfTheNextExpectedItem()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 2, 3,]);
+				int[] expected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order and contiguous,
+					             but it contained item 2 at index 2 instead of 3
+
+					             Collection:
+					             [1, 2, 2, 3]
+
+					             Expected:
+					             [1, 2, 3]
+					             """)
+					.Because("an interrupting item is not reported instead of an expected item that it is equal to");
+			}
+
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldSucceed()
 			{
 				IEnumerable<string> subject = ToEnumerable(["c", "a", "b", "c",]);
