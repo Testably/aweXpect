@@ -139,7 +139,7 @@ public class DelegateAsyncValueSourceTests
 		OperationCanceledException exception = new("my own reason");
 		Func<CancellationToken, Task<int>> @delegate = async _ =>
 		{
-			await Task.Delay(10.Milliseconds());
+			await Task.Delay(10.Milliseconds(), CancellationToken.None);
 			throw exception;
 		};
 
