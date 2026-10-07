@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Internal;
 
@@ -87,6 +89,13 @@ public abstract class Expectation
 	/// </summary>
 	/// <exception cref="InvalidOperationException">A time system is already set.</exception>
 	internal abstract void UseTimeSystem(ITimeSystem timeSystem);
+
+	/// <summary>
+	///     Adds the cancellation of each expectation for what is still awaited after its evaluation, see
+	///     <see cref="EvaluationCancellation.ForRemainingTimeout" />, to the <paramref name="cancellations" />. The
+	///     caller releases them.
+	/// </summary>
+	internal abstract void AddRemainingCancellations(List<EvaluationCancellation> cancellations);
 
 	/// <param name="index">The number of the last expectation in the result.</param>
 	/// <param name="subject">The subject line, or with <paramref name="isNumbered" /> the subject it names.</param>
@@ -221,11 +230,20 @@ public abstract class Expectation
 			}
 		}
 
-		private async Task GetResultOrThrow(CancellationToken cancellationToken = default)
+		/// <inheritdoc />
+		internal override void AddRemainingCancellations(List<EvaluationCancellation> cancellations)
+		{
+			foreach (Expectation expectation in _expectations)
+			{
+				expectation.AddRemainingCancellations(cancellations);
+			}
+		}
+
+		private async Task GetResultOrThrow()
 		{
 			try
 			{
-				await ThrowUnlessMet(cancellationToken);
+				await ThrowUnlessMet();
 			}
 			finally
 			{
@@ -233,7 +251,7 @@ public abstract class Expectation
 			}
 		}
 
-		private async Task ThrowUnlessMet(CancellationToken cancellationToken)
+		private async Task ThrowUnlessMet()
 		{
 			Result result = await GetResult(0);
 			if (result.ConstraintResult.Outcome == Outcome.Success)
@@ -248,7 +266,7 @@ public abstract class Expectation
 			sb.AppendLine();
 			sb.AppendLine("but");
 			result.ConstraintResult.AppendResult(sb);
-			await ResultContextRenderer.AppendContexts(sb, result.ConstraintResult, cancellationToken);
+			await AppendContexts(sb, result.ConstraintResult);
 
 			if (result.ConstraintResult.Outcome == Outcome.Undecided)
 			{
@@ -256,6 +274,32 @@ public abstract class Expectation
 			}
 
 			Fail.Test(sb.ToString(), result.ConstraintResult.FailureCause);
+		}
+
+		/// <remarks>
+		///     A context is awaited until the first timeout of the expectations elapses or one of them is canceled, as
+		///     the contexts of all expectations are rendered together.
+		/// </remarks>
+		private async Task AppendContexts(StringBuilder stringBuilder, ConstraintResult failure)
+		{
+			List<EvaluationCancellation> cancellations = [];
+			AddRemainingCancellations(cancellations);
+			CancellationToken[] tokens = cancellations.Select(remaining => remaining.Token)
+				.Where(token => token.CanBeCanceled).ToArray();
+			using CancellationTokenSource? cancellation =
+				tokens.Length > 0 ? CancellationTokenSource.CreateLinkedTokenSource(tokens) : null;
+			try
+			{
+				await ResultContextRenderer.AppendContexts(stringBuilder, failure,
+					cancellation?.Token ?? CancellationToken.None);
+			}
+			finally
+			{
+				foreach (EvaluationCancellation remaining in cancellations)
+				{
+					remaining.Release();
+				}
+			}
 		}
 
 		/// <remarks>

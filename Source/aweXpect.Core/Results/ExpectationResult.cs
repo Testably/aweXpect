@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Internal;
 
 namespace aweXpect.Results;
@@ -161,6 +163,10 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	/// <inheritdoc />
 	internal override void UseTimeSystem(ITimeSystem timeSystem)
 		=> ExpectationBuilder.UseTimeSystem(timeSystem);
+
+	/// <inheritdoc />
+	internal override void AddRemainingCancellations(List<EvaluationCancellation> cancellations)
+		=> cancellations.Add(ExpectationBuilder.GetRemainingCancellation());
 
 	private async Task GetResultOrThrow(ValueTask<ConstraintResult> isMet)
 	{
@@ -380,6 +386,10 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	/// <inheritdoc />
 	internal override void UseTimeSystem(ITimeSystem timeSystem)
 		=> ExpectationBuilder.UseTimeSystem(timeSystem);
+
+	/// <inheritdoc />
+	internal override void AddRemainingCancellations(List<EvaluationCancellation> cancellations)
+		=> cancellations.Add(ExpectationBuilder.GetRemainingCancellation());
 
 	/// <inheritdoc cref="ExpectationResult.FromFailure(ConstraintResult)" />
 	private async Task<string> FromFailure(ConstraintResult failure)

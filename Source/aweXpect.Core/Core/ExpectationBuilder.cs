@@ -808,8 +808,22 @@ public abstract class ExpectationBuilder
 	/// <summary>
 	///     Creates the exception message from the <paramref name="failure" />.
 	/// </summary>
-	internal Task<string> FromFailure(ConstraintResult failure)
-		=> FromFailure(Subject, failure, CancellationToken ?? System.Threading.CancellationToken.None);
+	/// <remarks>
+	///     A context is awaited until the timeout of the evaluation elapses or the evaluation is canceled.
+	/// </remarks>
+	internal async Task<string> FromFailure(ConstraintResult failure)
+	{
+		EvaluationCancellation cancellation = GetRemainingCancellation();
+		using EvaluationCancellation.ReleaseScope _ = cancellation.ReleaseAtTheEnd();
+		return await FromFailure(Subject, failure, cancellation.Token);
+	}
+
+	/// <summary>
+	///     Returns the cancellation for what is still awaited after the current evaluation, see
+	///     <see cref="EvaluationCancellation.ForRemainingTimeout" />. It must be released.
+	/// </summary>
+	internal EvaluationCancellation GetRemainingCancellation()
+		=> (_evaluationContext?.Cancellation ?? EvaluationCancellation.None).ForRemainingTimeout();
 
 	/// <summary>
 	///     Creates the exception message from the <paramref name="failure" />.
