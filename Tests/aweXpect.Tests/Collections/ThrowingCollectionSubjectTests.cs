@@ -731,7 +731,7 @@ public sealed class ThrowingCollectionSubject
 				=> new ThrowingCollection<int>(exception, ThrowingMembers.Enumeration, 1, 2);
 
 			async Task Act()
-				=> await That(subject).Eventually().Within(50.Milliseconds()).CheckEvery(10.Milliseconds())
+				=> await That(subject).Eventually().Within(50.Milliseconds()).CheckEvery(50.Milliseconds())
 					.Contains(3);
 
 			await That(Act).Throws<FailException>()

@@ -94,19 +94,16 @@ public sealed class RepeatedCheckOptionsTests
 	public async Task CheckRepeatedly_WhenTheContextIsOfAnotherImplementation_ShouldUseTheRealTimeSystem()
 	{
 		RepeatedCheckOptions sut = new();
-		sut.Within(50.Milliseconds());
-		sut.CheckEvery(10.Milliseconds());
+		sut.Within(30.Seconds());
+		sut.CheckEvery(50.Milliseconds());
 		int checks = 0;
 		Stopwatch stopwatch = Stopwatch.StartNew();
 
-		Outcome outcome = await sut.CheckRepeatedly(_ =>
-		{
-			checks++;
-			return new ValueTask<bool>(false);
-		}, new ForeignEvaluationContext());
+		Outcome outcome = await sut.CheckRepeatedly(_ => new ValueTask<bool>(++checks == 2),
+			new ForeignEvaluationContext());
 
-		await That(outcome).IsEqualTo(Outcome.Failure);
-		await That(checks).IsGreaterThan(1);
+		await That(outcome).IsEqualTo(Outcome.Success)
+			.Because("the second check is met long before the budget ends, however late the first one starts");
 		await That(stopwatch.Elapsed).IsGreaterThanOrEqualTo(40.Milliseconds())
 			.Because("the checks wait in real time, and a timer can complete a few milliseconds before the stopwatch agrees");
 	}

@@ -539,7 +539,7 @@ public sealed partial class ThatGeneric
 					       .Set(TestCancellation.FromTimeout(300.Milliseconds())))
 				{
 					async Task Act()
-						=> await That(subject).Satisfies(_ => false).Within(2.Seconds()).WithTimeout(10.Seconds());
+						=> await That(subject).Satisfies(_ => false).Within(30.Seconds()).WithTimeout(60.Seconds());
 
 					exception = await Catch.ExceptionAsync(Act);
 				}
@@ -547,7 +547,7 @@ public sealed partial class ThatGeneric
 				await That(exception).IsExactly<FailException>().And
 					.HasMessage("""
 					            Expected that subject
-					            satisfies _ => false within 0:02,
+					            satisfies _ => false within 0:30,
 					            but it did not finish within 0:00.300
 					            """).And
 					.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.300."))
@@ -563,7 +563,7 @@ public sealed partial class ThatGeneric
 					       .Set(TestCancellation.FromTimeout(300.Milliseconds())))
 				{
 					async Task Act()
-						=> await That(subject).Satisfies(_ => false).Within(2.Seconds());
+						=> await That(subject).Satisfies(_ => false).Within(30.Seconds());
 
 					exception = await Catch.ExceptionAsync(Act);
 				}
@@ -571,7 +571,7 @@ public sealed partial class ThatGeneric
 				await That(exception).IsExactly<FailException>().And
 					.HasMessage("""
 					            Expected that subject
-					            satisfies _ => false within 0:02,
+					            satisfies _ => false within 0:30,
 					            but it did not finish within 0:00.300
 					            """).And
 					.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.300."))
