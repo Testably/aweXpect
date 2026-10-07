@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using System.Threading;
 using aweXpect.Chronology;
+using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 using aweXpect.Delegates;
+using aweXpect.Results;
 
 namespace aweXpect.Core.Tests.Delegates;
 
@@ -659,6 +663,26 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Test]
+		public async Task WhenCancelledWhileTheCheckIsPending_ShouldBeInconclusive()
+		{
+			using CancellationTokenSource cts = new();
+			cts.CancelAfter(50.Milliseconds());
+			Func<int> subject = () => 1;
+
+			async Task Act()
+				=> await Awaits(That(subject).Eventually().Within(60.Seconds()), (_, token) => UntilCanceled(token))
+					.WithCancellation(cts.Token);
+
+			await That(Act).Throws<InconclusiveTestException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually awaits within 1:00,
+				             but it could not be verified, because the evaluation was already canceled
+				             """)
+				.Because("a cancellation by the caller is not reported as a check that did not finish");
+		}
+
+		[Test]
 		public async Task WhenCancelledWhileTheSubjectIsPending_ShouldBeInconclusive()
 		{
 			using CancellationTokenSource cts = new();
@@ -1136,6 +1160,167 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Test]
+		public async Task WhenTheCheckDoesNotFinishWithinTheTimeout_ShouldFail()
+		{
+			Func<int> subject = () => 1;
+
+			async Task Act()
+				=> await Awaits(That(subject).Eventually().Within(VeryLowTimeout), (_, token) => UntilCanceled(token));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually awaits within 0:00.050,
+				             but it did not finish within 0:00.050
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.Because("the timeout bounds the check of an attempt like its subject");
+		}
+
+		[Test]
+		public async Task WhenTheCheckDoesNotFinishWithinTheTimeout_WithCancellation_ShouldFail()
+		{
+			using CancellationTokenSource cts = new(60.Seconds());
+			Func<int> subject = () => 1;
+
+			async Task Act()
+				=> await Awaits(That(subject).Eventually().Within(VeryLowTimeout), (_, token) => UntilCanceled(token))
+					.WithCancellation(cts.Token);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually awaits within 0:00.050,
+				             but it did not finish within 0:00.050
+				             """);
+		}
+
+		[Test]
+		[Arguments(50)]
+		[Arguments(5000)]
+		public async Task WhenTheCheckDoesNotFinishWithinTheTimeout_WithTimeoutThatIsNotShorter_ShouldFail(
+			int timeoutInMilliseconds)
+		{
+			Func<int> subject = () => 1;
+
+			async Task Act()
+				=> await Awaits(That(subject).Eventually().Within(VeryLowTimeout), (_, token) => UntilCanceled(token))
+					.WithTimeout(timeoutInMilliseconds.Milliseconds());
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually awaits within 0:00.050,
+				             but it did not finish within 0:00.050
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.Because("a timeout that is not shorter than the retry budget must not leave the check unbounded");
+		}
+
+		[Test]
+		public async Task WhenTheCheckDoesNotFinishWithinWithTimeout_ShouldFail()
+		{
+			Func<int> subject = () => 1;
+
+			async Task Act()
+				=> await Awaits(That(subject).Eventually().Within(SuccessTimeout), (_, token) => UntilCanceled(token))
+					.WithTimeout(VeryLowTimeout);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually awaits within 0:05,
+				             but it did not finish within 0:00.050
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
+		}
+
+		[Test]
+		public async Task WhenTheCheckDoesNotFinishWithinTheTimeout_WithTestCancellationTimeout_ShouldFail()
+		{
+			Func<int> subject = () => 1;
+			Exception? exception;
+
+			using (IDisposable __ = Customize.aweXpect.Settings().DefaultEventuallyTimeout.Set(VeryLowTimeout))
+			using (IDisposable ___ = Customize.aweXpect.Settings().TestCancellation
+				       .Set(TestCancellation.FromTimeout(60.Seconds())))
+			{
+				async Task Act() => await Awaits(That(subject).Eventually(), (_, token) => UntilCanceled(token));
+
+				exception = await Catch.ExceptionAsync(Act);
+			}
+
+			await That(exception).IsExactly<FailException>().And
+				.HasMessage("""
+				            Expected that subject
+				            eventually awaits within 0:00.050,
+				            but it did not finish within 0:00.050
+				            """);
+		}
+
+		[Test]
+		public async Task WhenTheCheckFinishesInTheLastAttempt_ShouldDecide()
+		{
+			Counter counter = new();
+
+			using (IDisposable __ = Customize.aweXpect.Settings().DefaultCheckInterval.Set(30.Seconds()))
+			{
+				// The check completes asynchronously, so the real limit of its attempts must be out of reach.
+				async Task Act()
+					=> await Awaits(That(() => counter.Value).Eventually().OnVirtualTime().Within(SuccessTimeout),
+						async (_, _) =>
+						{
+							await Task.Yield();
+							return Outcome.Failure;
+						}).WithTimeout(SuccessTimeout);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that () => counter.Value
+					             eventually awaits within 0:05,
+					             but it stopped awaiting
+					             """)
+					.Because("the check of the last attempt, made when the timeout is used up, must still decide");
+			}
+
+			await That(counter.EvaluationCount).IsEqualTo(2);
+		}
+
+		[Test]
+		[Arguments(50)]
+		[Arguments(5000)]
+		public async Task WhenTheCheckStopsUndecidedAtTheTimeout_ShouldFail(int timeoutInMilliseconds)
+		{
+			Func<int> subject = () => 1;
+			EvaluationCancellation? cancellation = null;
+
+			async Task Act()
+				=> await Awaits(That(subject).Eventually().Within(VeryLowTimeout), async (context, _) =>
+				{
+					cancellation = context.Cancellation;
+					try
+					{
+						return await UntilCanceled(context.Cancellation.Token);
+					}
+					catch (OperationCanceledException)
+					{
+						return Outcome.Undecided;
+					}
+				}).WithTimeout(timeoutInMilliseconds.Milliseconds());
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             eventually awaits within 0:00.050,
+				             but it did not finish within 0:00.050
+				             """).And
+				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
+				.Because("a constraint that observes the cancellation of its context is bounded as well");
+			await That(cancellation?.Reason).IsEqualTo(CancellationReason.Timeout)
+				.Because("the constraint is told that it was a timeout which canceled it");
+		}
+
+		[Test]
 		public async Task WhenTheConstraintAddsAContext_ShouldNotDuplicateItPerAttempt()
 		{
 			Counter counter = new();
@@ -1489,6 +1674,21 @@ public sealed partial class ThatDelegateTests
 				.Because("the tighter limit wins");
 		}
 
+		private static ExpectationResult<int> Awaits(EventuallySubject<int> subject,
+			Func<IEvaluationContext, CancellationToken, Task<Outcome>> check)
+			=> new(((IExpectThat<int>)subject).ExpectationBuilder.AddConstraint((_, _)
+				=> new AwaitingConstraint(check)));
+
+		/// <remarks>
+		///     It awaits until the <paramref name="cancellationToken" /> is canceled, or fails after half a minute, so
+		///     that a regression fails the test instead of hanging the test run.
+		/// </remarks>
+		private static async Task<Outcome> UntilCanceled(CancellationToken cancellationToken)
+		{
+			await Task.Delay(30.Seconds(), cancellationToken);
+			return Outcome.Failure;
+		}
+
 		private static int CountOccurrences(string value, string needle)
 		{
 			int count = 0;
@@ -1500,6 +1700,17 @@ public sealed partial class ThatDelegateTests
 			}
 
 			return count;
+		}
+
+		private sealed class AwaitingConstraint(Func<IEvaluationContext, CancellationToken, Task<Outcome>> check)
+			: IAsyncContextConstraint<int>
+		{
+			public async ValueTask<ConstraintResult> IsMetBy(int actual, IEvaluationContext context,
+				CancellationToken cancellationToken)
+				=> new DummyConstraintResult(await check(context, cancellationToken), "awaits", "it stopped awaiting");
+
+			public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+				=> stringBuilder.Append("awaits");
 		}
 
 		private sealed class Counter(int validAfter = int.MaxValue)

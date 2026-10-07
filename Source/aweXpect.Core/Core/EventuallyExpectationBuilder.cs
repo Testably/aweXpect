@@ -137,8 +137,10 @@ internal class EventuallyExpectationBuilder<TValue>(
 				await EvaluateSubject(subject, retryTimeout, polling, interval, cancellation);
 			bool hasContexts = HasContexts(failure, nullKind, ref wasChecked);
 
-			(ConstraintResult? result, failure) =
-				await CheckAttempt(rootNode, data, failure, nullKind, currentContext, cancellationToken);
+			(ConstraintResult? result, failure, TimeSpan? exceededCheckTimeout) = await CheckAttempt(rootNode, data,
+				failure, nullKind, currentContext, retryTimeout,
+				GetAttemptLimit(retryTimeout, polling.Remaining, interval));
+			exceededTimeout ??= exceededCheckTimeout;
 			if (result?.Outcome == Outcome.Success)
 			{
 				return result;
@@ -274,34 +276,63 @@ internal class EventuallyExpectationBuilder<TValue>(
 	/// </summary>
 	/// <remarks>
 	///     A <see langword="null" /> task of the subject fails the attempt without a check, as there is no value.
+	///     <para />
+	///     An evaluation without a timeout bounds the check by the <paramref name="limit" />, like the subject, because
+	///     a constraint can also wait, e.g. for the next item of a collection. The constraints observe the limit as
+	///     the timeout of their evaluation, and a check that it canceled did not finish within the
+	///     <paramref name="retryTimeout" />.
 	/// </remarks>
-	private static async Task<(ConstraintResult? Result, Exception? Failure)> CheckAttempt(Node rootNode,
-		TValue? data,
-		Exception? failure,
-		NullSubjectKind nullKind,
-		EvaluationContext.EvaluationContext context,
-		CancellationToken cancellationToken)
+	private static async Task<(ConstraintResult? Result, Exception? Failure, TimeSpan? ExceededTimeout)>
+		CheckAttempt(Node rootNode,
+			TValue? data,
+			Exception? failure,
+			NullSubjectKind nullKind,
+			EvaluationContext.EvaluationContext context,
+			TimeSpan retryTimeout,
+			TimeSpan? limit)
 	{
 		if (failure is not null)
 		{
-			return (null, failure);
+			return (null, failure, null);
 		}
 
 		if (nullKind == NullSubjectKind.NullTaskReturned)
 		{
 			ConstraintResult expectation = await rootNode.IsMetBy(data,
 				ExpectationTextEvaluationContext.For(context), System.Threading.CancellationToken.None);
-			return (expectation.Fail("it returned <null> instead of a task", data), null);
+			return (expectation.Fail("it returned <null> instead of a task", data), null, null);
 		}
 
+		EvaluationCancellation cancellation = context.Cancellation;
+		EvaluationCancellation? limitCancellation = cancellation.Timeout is null && limit is not null
+			? new EvaluationCancellation(limit, cancellation.Token)
+			: null;
+		context.Cancellation = limitCancellation ?? cancellation;
+		CancellationToken cancellationToken = context.Cancellation.Token;
+		ConstraintResult? result = null;
+		Exception? canceled = null;
 		try
 		{
-			return (await rootNode.IsMetBy(data, context, cancellationToken), null);
+			result = await rootNode.IsMetBy(data, context, cancellationToken);
 		}
 		catch (OperationCanceledException exception) when (cancellationToken.IsCancellationRequested)
 		{
-			return (null, exception);
+			canceled = exception;
 		}
+		finally
+		{
+			context.Cancellation = cancellation;
+			limitCancellation?.Release();
+		}
+
+		if (limitCancellation?.Reason == CancellationReason.Timeout &&
+		    result?.Outcome is null or Outcome.Undecided)
+		{
+			return (result, ExpectationBuilder<TValue>.CreateTimeoutException(retryTimeout,
+				canceled ?? new OperationCanceledException(cancellationToken)), retryTimeout);
+		}
+
+		return (result, canceled, null);
 	}
 
 	/// <summary>

@@ -170,7 +170,9 @@ expectation inconclusive instead of failed.
 The timeout also bounds each evaluation: an evaluation that is still running when the timeout is used up is abandoned,
 even if the delegate ignores its `CancellationToken`, which is canceled at that point, and the expectation fails with
 "did not finish within …" and a `TimeoutException` as inner exception. The last evaluation, which is made when the
-timeout is used up, still gets one check interval (at most the timeout) to finish. A synchronous delegate cannot be
+timeout is used up, still gets one check interval (at most the timeout) to finish. An expectation that waits while it
+checks the value, e.g. for the next item of an `IAsyncEnumerable<T>`, is canceled in the same way and fails with the
+same message. A synchronous delegate cannot be
 interrupted, so an evaluation that returns after that point fails the same way, whatever its result. Only
 `Within(TimeSpan.Zero)`, which makes a single evaluation, does not bound it, for a synchronous and an asynchronous
 delegate alike; a `WithTimeout` or a global timeout still does.
