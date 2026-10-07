@@ -695,6 +695,26 @@ public sealed partial class ThatEnumerable
 				await That(Act).DoesNotThrow();
 			}
 
+			[Test]
+			public async Task WithMultiDimensionalArray_ShouldSearchForItsItemsAcrossTheDimensions()
+			{
+				IEnumerable subject = new[,]
+				{
+					{
+						1, 2,
+					},
+					{
+						3, 4,
+					},
+				};
+				int[] expected = [1, 2, 3, 4,];
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("it asks about the items of the multi-dimensional array, not about its shape");
+			}
 
 			[Test]
 			public async Task WithSameCollection_ShouldSucceed()

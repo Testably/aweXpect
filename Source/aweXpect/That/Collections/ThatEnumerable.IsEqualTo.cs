@@ -41,6 +41,10 @@ public static partial class ThatEnumerable
 		"The priority is below the one of the value overloads, so that an empty collection expression binds to them\n" +
 		"instead of to this one.";
 
+	private const string MultiDimensionalArrayRemarks =
+		"A multi-dimensional array is only equal to an array of the same rank with the same length in every\n" +
+		"dimension, also when the order of the items or their duplicates are ignored.";
+
 	[CreateExpectationFamily("Is{Not}EqualTo", Summary = Matches, NegatedSummary = DoesNotMatch,
 		Remarks = SetComparerRemarks)]
 	internal static ObjectCollectionMatchResult<IEnumerable<TItem>?, IThat<IEnumerable<TItem>?>, TItem>
@@ -98,7 +102,8 @@ public static partial class ThatEnumerable
 	}
 
 	[CreateExpectationFamily("Is{Not}EqualTo", Priority = -1,
-		Summary = Matches, NegatedSummary = DoesNotMatch, Remarks = UntypedSetComparerRemarks)]
+		Summary = Matches, NegatedSummary = DoesNotMatch,
+		Remarks = MultiDimensionalArrayRemarks + "\n" + UntypedSetComparerRemarks)]
 	internal static ObjectCollectionMatchResult<IEnumerable?, IThat<IEnumerable?>, TItem>
 		IsEqualToForEnumerableCore<TItem>(
 			IThat<IEnumerable?> subject,
@@ -118,7 +123,8 @@ public static partial class ThatEnumerable
 						it, grammars,
 						state.ExpectedExpression.TrimCommonWhiteSpace(), state.Expected, state.Options,
 						state.MatchOptions,
-						canUseSubjectComparer: true);
+						canUseSubjectComparer: true,
+						expectedWithDimensions: state.Expected);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,
@@ -147,9 +153,8 @@ public static partial class ThatEnumerable
 		Summary = Matches, NegatedSummary = DoesNotMatch,
 		Remarks =
 			"Without this overload an untyped <see cref=\"System.Collections.IEnumerable\" /> would bind to the\n" +
-			"equality expectation for objects, which compares the instances by reference. A multi-dimensional array\n" +
-			"has no shape as an <see cref=\"System.Collections.IEnumerable\" />, so it is compared by its flattened\n" +
-			"content.\n" + UntypedSetComparerRemarks)]
+			"equality expectation for objects, which compares the instances by reference.\n" +
+			MultiDimensionalArrayRemarks + "\n" + UntypedSetComparerRemarks)]
 	internal static ObjectCollectionMatchResult<IEnumerable?, IThat<IEnumerable?>, object?>
 		IsEqualToForObjectsCore(
 			IThat<IEnumerable?> subject,
@@ -170,7 +175,8 @@ public static partial class ThatEnumerable
 						state.ExpectedExpression.TrimCommonWhiteSpace(),
 						state.Expected.NullIfDefaultImmutableArray()?.Cast<object?>(),
 						state.Options, state.MatchOptions,
-						canUseSubjectComparer: true);
+						canUseSubjectComparer: true,
+						expectedWithDimensions: state.Expected);
 					return state.Negated ? constraint.Invert() : constraint;
 				}),
 			subject,

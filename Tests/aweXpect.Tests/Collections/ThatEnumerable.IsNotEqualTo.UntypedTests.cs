@@ -255,7 +255,7 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
-			public async Task WithMultiDimensionalArrayWithDifferentShape_ShouldFail()
+			public async Task WithMultiDimensionalArrayWithDifferentShape_ShouldSucceed()
 			{
 				IEnumerable subject = new[,]
 				{
@@ -282,6 +282,67 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsNotEqualTo(unexpected);
 
+				await That(Act).DoesNotThrow()
+					.Because("a multi-dimensional array is only equal to an array with the same length in every dimension");
+			}
+
+			[Test]
+			public async Task WithMultiDimensionalArrayWithDifferentShape_WhenInAnyOrder_ShouldSucceed()
+			{
+				IEnumerable subject = new[,]
+				{
+					{
+						1, 2, 3,
+					},
+					{
+						4, 5, 6,
+					},
+				};
+				IEnumerable unexpected = new[,]
+				{
+					{
+						6, 5,
+					},
+					{
+						4, 3,
+					},
+					{
+						2, 1,
+					},
+				};
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected).InAnyOrder();
+
+				await That(Act).DoesNotThrow()
+					.Because("the options only apply to the items, the dimensions have to be the same with every option");
+			}
+
+			[Test]
+			public async Task WithMultiDimensionalArrayWithSameContent_ShouldFail()
+			{
+				IEnumerable subject = new[,]
+				{
+					{
+						1, 2,
+					},
+					{
+						3, 4,
+					},
+				};
+				IEnumerable unexpected = new[,]
+				{
+					{
+						1, 2,
+					},
+					{
+						3, 4,
+					},
+				};
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
@@ -289,20 +350,61 @@ public sealed partial class ThatEnumerable
 					             but it was
 
 					             Collection:
-					             [1, 2, 3, 4, 5, 6]
+					             [1, 2, 3, 4]
 
 					             Expected:
 					             [
 					               1,
 					               2,
 					               3,
-					               4,
-					               5,
-					               6
+					               4
 					             ]
-					             """)
-					.Because(
-						"a multi-dimensional array has no shape as an IEnumerable, so it is compared by its flattened content");
+					             """);
+			}
+
+			[Test]
+			public async Task WithMultiDimensionalSubject_WhenUnexpectedIsATypedArrayWithSameItems_ShouldSucceed()
+			{
+				IEnumerable subject = new[,]
+				{
+					{
+						1, 2, 3, 4,
+					},
+				};
+				int[] unexpected = [1, 2, 3, 4,];
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow()
+					.Because("a multi-dimensional array is not equal to a one-dimensional array with the same items");
+			}
+
+			[Test]
+			public async Task WithMultiDimensionalUnexpected_WhenSubjectIsOneDimensionalWithSameItems_ShouldSucceed()
+			{
+				IEnumerable subject = new ArrayList
+				{
+					1,
+					2,
+					3,
+					4,
+				};
+				IEnumerable unexpected = new[,]
+				{
+					{
+						1, 2,
+					},
+					{
+						3, 4,
+					},
+				};
+
+				async Task Act()
+					=> await That(subject).IsNotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow()
+					.Because("a one-dimensional collection is not equal to a multi-dimensional array with the same items");
 			}
 
 			[Test]
