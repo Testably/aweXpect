@@ -30,9 +30,10 @@ public class CharEqualityResult<TType, TThat> : AndOrResult<TType, TThat>
 	///     The comparison is the same as for <see langword="string" />s, i.e.
 	///     <see cref="System.StringComparison.OrdinalIgnoreCase" />.
 	/// </remarks>
+	/// <exception cref="System.InvalidOperationException">The casing is already specified.</exception>
 	public AndOrResult<TType, TThat> IgnoringCase(bool ignoreCase = true)
 	{
-		_options.IgnoreCase = ignoreCase;
+		_options.IgnoringCase(ignoreCase);
 		return this;
 	}
 }
