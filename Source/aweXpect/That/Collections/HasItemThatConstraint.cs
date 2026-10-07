@@ -206,15 +206,15 @@ internal sealed class HasItemThatConstraint<TEnumerable, TItem>(
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		materialized.SetContext(ref _collectionContext);
 
-		IEnumerable<TItem> items = materialized.Items;
-		if (!ThatEnumerable.TryCountForIndex(Options, actual, items, cancellationToken, out int? count))
+		if (!ThatEnumerable.TryCountForIndex(Options, actual, materialized.Items, cancellationToken,
+			    out int? count))
 		{
 			Outcome = Outcome.Undecided;
 			return this;
 		}
 
 		int index = 0;
-		foreach (TItem item in items)
+		foreach (TItem item in materialized)
 		{
 			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 			{

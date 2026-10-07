@@ -158,7 +158,7 @@ internal sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>(
 		subjectComparing?.UseComparerOf(actual);
 		CollectionItems<TItem> materialized = CollectionItems<TItem>.Materialize(actual, context);
 		_items = materialized.Items;
-		foreach (TItem item in _items)
+		foreach (TItem item in materialized)
 		{
 			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 			{
