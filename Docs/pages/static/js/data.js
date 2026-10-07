@@ -4392,6 +4392,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:07:05 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.17 (#1687)"
+      },
+      {
+        "sha": "a8e6cbb0921667eb9773fa25913c69b0c4430849",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
+        "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
       }
     ],
     "labels": [
@@ -5126,7 +5132,8 @@ window.BENCHMARK_DATA = {
       "d98a48a7",
       "0c874997",
       "0d6d920b",
-      "c8e40f00"
+      "c8e40f00",
+      "a8e6cbb0"
     ],
     "datasets": [
       {
@@ -5864,7 +5871,8 @@ window.BENCHMARK_DATA = {
           61.340656868049074,
           128.28232489029565,
           121.58482841082981,
-          134.46996122996012
+          134.46996122996012,
+          147.68552899360657
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6607,6 +6615,7 @@ window.BENCHMARK_DATA = {
           408,
           408,
           408,
+          416,
           416
         ],
         "borderColor": "#63A2AC",
@@ -7353,7 +7362,8 @@ window.BENCHMARK_DATA = {
           129.84236729939778,
           251.46556717554728,
           234.66731909605173,
-          272.9088138171605
+          272.9088138171605,
+          282.8804441860744
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8096,6 +8106,7 @@ window.BENCHMARK_DATA = {
           952,
           952,
           952,
+          952,
           952
         ],
         "borderColor": "#FF671B",
@@ -8123,7 +8134,8 @@ window.BENCHMARK_DATA = {
           106.80773875543049,
           220.66658164773668,
           202.08744321550643,
-          217.5970669269562
+          217.5970669269562,
+          222.10297597249348
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8135,6 +8147,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -12091,6 +12104,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:07:05 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.17 (#1687)"
+      },
+      {
+        "sha": "a8e6cbb0921667eb9773fa25913c69b0c4430849",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
+        "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
       }
     ],
     "labels": [
@@ -12748,7 +12767,8 @@ window.BENCHMARK_DATA = {
       "d98a48a7",
       "0c874997",
       "0d6d920b",
-      "c8e40f00"
+      "c8e40f00",
+      "a8e6cbb0"
     ],
     "datasets": [
       {
@@ -13409,7 +13429,8 @@ window.BENCHMARK_DATA = {
           56382.93774820964,
           109018.22732309195,
           111007.1862548828,
-          109514.63397216797
+          109514.63397216797,
+          111255.78554861886
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14075,6 +14096,7 @@ window.BENCHMARK_DATA = {
           16288,
           16288,
           16288,
+          16296,
           16296
         ],
         "borderColor": "#63A2AC",
@@ -14744,7 +14766,8 @@ window.BENCHMARK_DATA = {
           1268723.9576822917,
           2702084.5614583334,
           2611354.097395833,
-          2800834.65234375
+          2800834.65234375,
+          2890043.576622596
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15410,6 +15433,7 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841651,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -15437,7 +15461,8 @@ window.BENCHMARK_DATA = {
           103924.31419959434,
           209126.07451171876,
           216446.14325358073,
-          206967.84188406807
+          206967.84188406807,
+          226235.38511439733
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -15449,6 +15474,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -19867,6 +19893,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:07:05 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.17 (#1687)"
+      },
+      {
+        "sha": "a8e6cbb0921667eb9773fa25913c69b0c4430849",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
+        "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
       }
     ],
     "labels": [
@@ -20601,7 +20633,8 @@ window.BENCHMARK_DATA = {
       "d98a48a7",
       "0c874997",
       "0d6d920b",
-      "c8e40f00"
+      "c8e40f00",
+      "a8e6cbb0"
     ],
     "datasets": [
       {
@@ -21339,7 +21372,8 @@ window.BENCHMARK_DATA = {
           129.4725998878479,
           297.2087939807347,
           268.26614558696747,
-          358.6183090209961
+          358.6183090209961,
+          409.96627289908275
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22082,6 +22116,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          608,
           608
         ],
         "borderColor": "#63A2AC",
@@ -22828,7 +22863,8 @@ window.BENCHMARK_DATA = {
           240.38030180564294,
           537.5275234222412,
           471.8293621381124,
-          518.8186419169108
+          518.8186419169108,
+          551.0246493021647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23571,6 +23607,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          2008,
           2008
         ],
         "borderColor": "#FF671B",
@@ -23598,7 +23635,8 @@ window.BENCHMARK_DATA = {
           188.058620764659,
           402.64622151056926,
           383.92930589403426,
-          425.4470073064168
+          425.4470073064168,
+          443.51555728912354
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -23610,6 +23648,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -28028,6 +28067,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:07:05 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.17 (#1687)"
+      },
+      {
+        "sha": "a8e6cbb0921667eb9773fa25913c69b0c4430849",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
+        "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
       }
     ],
     "labels": [
@@ -28762,7 +28807,8 @@ window.BENCHMARK_DATA = {
       "d98a48a7",
       "0c874997",
       "0d6d920b",
-      "c8e40f00"
+      "c8e40f00",
+      "a8e6cbb0"
     ],
     "datasets": [
       {
@@ -29500,7 +29546,8 @@ window.BENCHMARK_DATA = {
           75.87682268449238,
           148.91186265945436,
           144.04427870114645,
-          163.36314128239948
+          163.36314128239948,
+          166.96671911875407
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30243,6 +30290,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          520,
           520
         ],
         "borderColor": "#63A2AC",
@@ -30989,7 +31037,8 @@ window.BENCHMARK_DATA = {
           133.5051192442576,
           260.5635449545724,
           238.43588604245866,
-          289.0748630932399
+          289.0748630932399,
+          298.81401615142823
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -31732,6 +31781,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1224,
           1224
         ],
         "borderColor": "#FF671B",
@@ -31759,7 +31809,8 @@ window.BENCHMARK_DATA = {
           123.74599652630943,
           245.37986879348756,
           232.59543402989706,
-          266.55420713424684
+          266.55420713424684,
+          276.0447735468546
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -31771,6 +31822,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -36189,6 +36241,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:07:05 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.17 (#1687)"
+      },
+      {
+        "sha": "a8e6cbb0921667eb9773fa25913c69b0c4430849",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
+        "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
       }
     ],
     "labels": [
@@ -36923,7 +36981,8 @@ window.BENCHMARK_DATA = {
       "d98a48a7",
       "0c874997",
       "0d6d920b",
-      "c8e40f00"
+      "c8e40f00",
+      "a8e6cbb0"
     ],
     "datasets": [
       {
@@ -37661,7 +37720,8 @@ window.BENCHMARK_DATA = {
           124.7457462310791,
           260.6718131701152,
           239.73423732121785,
-          265.4620860417684
+          265.4620860417684,
+          284.06651980082194
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38404,6 +38464,7 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
+          584,
           584
         ],
         "borderColor": "#63A2AC",
@@ -39150,7 +39211,8 @@ window.BENCHMARK_DATA = {
           591.2784699122111,
           1221.933433151245,
           1245.8991654713948,
-          1351.08468069349
+          1351.08468069349,
+          1411.544982092721
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -39893,6 +39955,7 @@ window.BENCHMARK_DATA = {
           3944,
           3944,
           3944,
+          3944,
           3944
         ],
         "borderColor": "#FF671B",
@@ -39920,7 +39983,8 @@ window.BENCHMARK_DATA = {
           161.33901645739874,
           331.2323572476705,
           325.4316096305847,
-          356.9201539675395
+          356.9201539675395,
+          373.8337596484593
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -39932,6 +39996,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -44350,6 +44415,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:07:05 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.17 (#1687)"
+      },
+      {
+        "sha": "a8e6cbb0921667eb9773fa25913c69b0c4430849",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
+        "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
       }
     ],
     "labels": [
@@ -45084,7 +45155,8 @@ window.BENCHMARK_DATA = {
       "d98a48a7",
       "0c874997",
       "0d6d920b",
-      "c8e40f00"
+      "c8e40f00",
+      "a8e6cbb0"
     ],
     "datasets": [
       {
@@ -45822,7 +45894,8 @@ window.BENCHMARK_DATA = {
           296.8572865486145,
           640.9725953420003,
           594.1570999962943,
-          649.4298574447632
+          649.4298574447632,
+          688.6662399927775
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -46565,6 +46638,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          856,
           856
         ],
         "borderColor": "#63A2AC",
@@ -47311,7 +47385,8 @@ window.BENCHMARK_DATA = {
           609.1682336330414,
           1371.2204779307046,
           1255.9418339362512,
-          1421.3493090311686
+          1421.3493090311686,
+          1516.7950865427654
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48054,6 +48129,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -48081,7 +48157,8 @@ window.BENCHMARK_DATA = {
           306.9008693013872,
           646.291883913676,
           606.9482201848712,
-          671.4865087509155
+          671.4865087509155,
+          700.1051335016887
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -48093,6 +48170,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -52511,6 +52589,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:07:05 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.17 (#1687)"
+      },
+      {
+        "sha": "a8e6cbb0921667eb9773fa25913c69b0c4430849",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
+        "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
       }
     ],
     "labels": [
@@ -53245,7 +53329,8 @@ window.BENCHMARK_DATA = {
       "d98a48a7",
       "0c874997",
       "0d6d920b",
-      "c8e40f00"
+      "c8e40f00",
+      "a8e6cbb0"
     ],
     "datasets": [
       {
@@ -53983,7 +54068,8 @@ window.BENCHMARK_DATA = {
           502.9044852623573,
           969.7287312825521,
           943.9315375010173,
-          1023.2954066140311
+          1023.2954066140311,
+          1056.9482728413172
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -54726,6 +54812,7 @@ window.BENCHMARK_DATA = {
           1248,
           1248,
           1248,
+          1264,
           1264
         ],
         "borderColor": "#63A2AC",
@@ -55472,7 +55559,8 @@ window.BENCHMARK_DATA = {
           9443.415021623883,
           27719.161811241738,
           26995.21945659931,
-          28227.228971354165
+          28227.228971354165,
+          28796.494430541992
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56215,6 +56303,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -56242,7 +56331,8 @@ window.BENCHMARK_DATA = {
           374.5448865890503,
           808.6336347579957,
           757.7921792439053,
-          792.4907321248736
+          792.4907321248736,
+          860.9113993962605
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -56254,6 +56344,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -56442,6 +56533,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:07:05 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.17 (#1687)"
+      },
+      {
+        "sha": "a8e6cbb0921667eb9773fa25913c69b0c4430849",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
+        "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
       }
     ],
     "labels": [
@@ -56471,7 +56568,8 @@ window.BENCHMARK_DATA = {
       "d98a48a7",
       "0c874997",
       "0d6d920b",
-      "c8e40f00"
+      "c8e40f00",
+      "a8e6cbb0"
     ],
     "datasets": [
       {
@@ -56504,7 +56602,8 @@ window.BENCHMARK_DATA = {
           355.55527383940563,
           744.1354974110922,
           765.0326632772174,
-          774.3237487792969
+          774.3237487792969,
+          815.4775744756063
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56542,6 +56641,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1816,
           1816
         ],
         "borderColor": "#63A2AC",
@@ -56583,7 +56683,8 @@ window.BENCHMARK_DATA = {
           28697.135393415178,
           81594.28129069011,
           81419.26825823102,
-          85156.56563626803
+          85156.56563626803,
+          85032.92860630581
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56619,6 +56720,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252,
           5252,
           5252
@@ -56797,6 +56899,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:07:05 2026 \u002B0200",
         "message": "chore: bump aweXpect to v3.0.0-pre.17 (#1687)"
+      },
+      {
+        "sha": "a8e6cbb0921667eb9773fa25913c69b0c4430849",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
+        "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
       }
     ],
     "labels": [
@@ -56826,7 +56934,8 @@ window.BENCHMARK_DATA = {
       "d98a48a7",
       "0c874997",
       "0d6d920b",
-      "c8e40f00"
+      "c8e40f00",
+      "a8e6cbb0"
     ],
     "datasets": [
       {
@@ -56859,7 +56968,8 @@ window.BENCHMARK_DATA = {
           136.48703560462366,
           283.5047616958618,
           291.08639560426985,
-          239.75034195582072
+          239.75034195582072,
+          304.97349578993663
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56897,6 +57007,7 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
+          664,
           664
         ],
         "borderColor": "#63A2AC",
@@ -56938,7 +57049,8 @@ window.BENCHMARK_DATA = {
           9122.359176635742,
           30918.375451660155,
           30489.133728027344,
-          31956.172403971355
+          31956.172403971355,
+          33126.5643758138
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56976,6 +57088,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -57003,7 +57116,8 @@ window.BENCHMARK_DATA = {
           124.34598207473755,
           249.06301546096802,
           239.74138558705647,
-          260.66469326019285
+          260.66469326019285,
+          281.2242929385259
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -57015,6 +57129,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
