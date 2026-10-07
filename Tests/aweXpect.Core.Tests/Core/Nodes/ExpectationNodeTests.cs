@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Sources;
 using aweXpect.Core.Tests.TestHelpers;
@@ -654,6 +656,19 @@ public class ExpectationNodeTests
 	}
 
 	[Test]
+	public async Task AppendExpectation_WithReasons_ShouldAppendThemAfterTheConstraint()
+	{
+		StringBuilder sb = new();
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyConstraint("foo"));
+		node.AddReasons([new BecauseReason("bar"),]);
+
+		node.AppendExpectation(sb);
+
+		await That(sb.ToString()).IsEqualTo("foo, because bar");
+	}
+
+	[Test]
 	public async Task Equals_IfConstraintIsDifferent_ShouldBeFalse()
 	{
 		ExpectationNode node1 = new();
@@ -839,6 +854,41 @@ public class ExpectationNodeTests
 	}
 
 	[Test]
+	public async Task IsMetBy_WhenAsyncUserCodeIsCancelledWithTheEvaluation_ShouldThrowTheCancellation()
+	{
+		using CancellationTokenSource cts = new();
+		cts.Cancel();
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyAsyncConstraint<int>(async _ =>
+		{
+			await Task.Yield();
+			return UserCode.Invoke<ConstraintResult>(() => throw new OperationCanceledException("canceled", cts.Token));
+		}));
+
+		async Task Act() =>
+			await node.IsMetBy(1, null!, cts.Token);
+
+		await That(Act).Throws<OperationCanceledException>()
+			.WithMessage("canceled")
+			.Because("a requested cancellation aborts the evaluation instead of failing it");
+	}
+
+	[Test]
+	public async Task IsMetBy_WhenConstraintDoesNotAnswerAnItem_ShouldFailWithTheItemResult()
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new ThrowingConstraint<int>(new UnansweredItemException(
+			new DummyConstraintResult(Outcome.FailureBothWays, "is valid", "it was broken"), "foo")));
+
+		ConstraintResult result = await node.IsMetBy(1, null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays);
+		await That(result.GetExpectationText()).IsEqualTo("throws");
+		await That(result.GetResultText()).IsEqualTo("for item \"foo\", it was broken")
+			.Because("an item without a known index is named by its value");
+	}
+
+	[Test]
 	public async Task IsMetBy_WhenContextConstraintThrowsException_ShouldThrowTheException()
 	{
 		MyException exception = new();
@@ -851,6 +901,21 @@ public class ExpectationNodeTests
 		await That(Act).Throws<MyException>()
 			.WithMessage("IsMetBy_WhenContextConstraintThrowsException_ShouldThrowTheException")
 			.Because("only an exception from the code of the caller fails the expectation");
+	}
+
+	[Test]
+	public async Task IsMetBy_WhenExpectationTextConstraintDoesNotAnswerAnItem_ShouldUseItsExpectationResult()
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new ThrowingExpectationTextConstraint<int>(new UnansweredItemException(
+			new DummyConstraintResult(Outcome.FailureBothWays, "is valid", "it was broken"), "foo", 2)));
+
+		ConstraintResult result = await node.IsMetBy(1, null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays);
+		await That(result.GetExpectationText()).IsEqualTo("the expectation result")
+			.Because("the constraint provides its expectation as a separate result");
+		await That(result.GetResultText()).IsEqualTo("for the item at index 2, it was broken");
 	}
 
 	[Test]
@@ -874,6 +939,20 @@ public class ExpectationNodeTests
 		                                    yeah!, but it did throw a MyException:
 		                                      IsMetBy_WhenNoConstraintSupportsAFaultedDelegateValue_ShouldFailWithTheException
 		                                    """);
+	}
+
+	[Test]
+	public async Task IsMetBy_WhenOnlyTheExpectationTextIsEvaluated_ShouldHaveNoResultText()
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyConstraint("foo"));
+
+		ConstraintResult result = await node.IsMetBy(1, ExpectationTextEvaluationContext.For(null),
+			CancellationToken.None);
+
+		await That(result.GetExpectationText()).IsEqualTo("foo");
+		await That(result.GetResultText()).IsEqualTo("")
+			.Because("the constraint was not evaluated");
 	}
 
 	[Test]
@@ -1077,6 +1156,67 @@ public class ExpectationNodeTests
 
 
 	[Test]
+	public async Task IsMetBy_WithReason_WhenAsyncConstraintFails_ShouldAppendTheReason()
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyAsyncConstraint<int>(_
+			=> Task.FromResult<ConstraintResult>(new DummyConstraintResult(Outcome.Failure, "foo", "bar"))));
+		node.AddReasons([new AsyncBecauseReason(Task.FromResult<string?>("baz")),]);
+
+		ConstraintResult result = await node.IsMetBy(1, null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.GetExpectationText()).IsEqualTo("foo, because baz");
+	}
+
+	[Test]
+	public async Task IsMetBy_WithReason_WhenAsyncContextConstraintFails_ShouldAppendTheReason()
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new DummyAsyncContextConstraint<int>(_
+			=> Task.FromResult<ConstraintResult>(new DummyConstraintResult(Outcome.Failure, "foo", "bar"))));
+		node.AddReasons([new BecauseReason("baz"),]);
+
+		ConstraintResult result = await node.IsMetBy(1, null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(result.GetExpectationText()).IsEqualTo("foo, because baz");
+	}
+
+	[Test]
+	public async Task IsMetBy_WithReason_WhenConstraintDoesNotAnswerAnItem_ShouldFailWithTheItemResult()
+	{
+		ExpectationNode node = new();
+		node.AddConstraint(new ThrowingConstraint<int>(new UnansweredItemException(
+			new DummyConstraintResult(Outcome.FailureBothWays, "is valid", "it was broken"), "foo", 3)));
+		node.AddReasons([new BecauseReason("baz"),]);
+
+		ConstraintResult result = await node.IsMetBy(1, null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays);
+		await That(result.GetExpectationText()).IsEqualTo("throws, because baz");
+		await That(result.GetResultText()).IsEqualTo("for the item at index 3, it was broken");
+	}
+
+	[Test]
+	public async Task IsMetBy_WithReason_WhenUserCodeIsCancelledWithTheEvaluation_ShouldThrowTheCancellation()
+	{
+		using CancellationTokenSource cts = new();
+		cts.Cancel();
+		ExpectationNode node = new();
+		node.AddConstraint(new UserCodeConstraint<int>(() => throw new OperationCanceledException("canceled", cts.Token),
+			"yeah!", "not yeah!"));
+		node.AddReasons([new BecauseReason("baz"),]);
+
+		async Task Act() =>
+			await node.IsMetBy(1, null!, cts.Token);
+
+		await That(Act).Throws<OperationCanceledException>()
+			.WithMessage("canceled")
+			.Because("a requested cancellation aborts the evaluation instead of failing it");
+	}
+
+	[Test]
 	public async Task IsMetBy_WithUnsupportedConstraint_ShouldThrowInvalidOperationException()
 	{
 		ExpectationNode node = new();
@@ -1246,6 +1386,28 @@ public class ExpectationNodeTests
 		}
 
 		public override ConstraintResult Negate() => this;
+	}
+
+	private sealed class ThrowingConstraint<T>(Exception exception) : IValueConstraint<T>
+	{
+		public ConstraintResult IsMetBy(T actual) => throw exception;
+
+		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("throws");
+	}
+
+	private sealed class ThrowingExpectationTextConstraint<T>(Exception exception)
+		: IValueConstraint<T>, IExpectationTextConstraint
+	{
+		public ValueTask<ConstraintResult> GetExpectationResult(IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> new(new ConstraintResult.ExpectationOnly<T>(ExpectationGrammars.None, "the expectation result",
+				"not the expectation result"));
+
+		public ConstraintResult IsMetBy(T actual) => throw exception;
+
+		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("the constraint itself");
 	}
 
 	private sealed class UnsupportedConstraint : IConstraint

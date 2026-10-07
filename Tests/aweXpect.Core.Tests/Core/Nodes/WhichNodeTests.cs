@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
@@ -119,6 +121,18 @@ public sealed class WhichNodeTests
 		whichNode.AppendExpectation(sb);
 
 		await That(sb.ToString()).IsEqualTo("inner-node");
+	}
+
+	[Test]
+	public async Task AppendExpectation_WithParentAndWithoutSeparator_ShouldAppendParentAndInnerExpectation()
+	{
+		WhichNode<string, int> whichNode = new(new DummyNode("foo"), s => s.Length);
+		whichNode.AddNode(new DummyNode("bar"));
+		StringBuilder sb = new();
+
+		whichNode.AppendExpectation(sb);
+
+		await That(sb.ToString()).IsEqualTo("foobar");
 	}
 
 	[Test]
@@ -399,6 +413,22 @@ public sealed class WhichNodeTests
 	}
 
 	[Test]
+	public async Task IsMetBy_WhenAsyncMemberAccessorReturnsNullTask_WithoutSeparator_ShouldOnlyRenderTheMemberExpectation()
+	{
+		Func<string, Task<int>> memberAccessor = _ => null!;
+		WhichNode<string, int> whichNode = new(new DummyNode("", () => new DummyConstraintResult(Outcome.Success)),
+			memberAccessor);
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new NotEvaluatedConstraint<int>("e2", "not e2"));
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays);
+		await That(result.GetExpectationText()).IsEqualTo("e2");
+		await That(result.GetResultText()).IsEqualTo("it returned <null> instead of a task");
+	}
+
+	[Test]
 	public async Task IsMetBy_WhenMemberAccessorIsCancelledWithTheEvaluation_ShouldThrowTheCancellation()
 	{
 		using CancellationTokenSource cts = new();
@@ -554,6 +584,31 @@ public sealed class WhichNodeTests
 	}
 
 	[Test]
+	public async Task IsMetBy_WhenParentProjectsANullSource_ShouldNotAccessTheMember()
+	{
+		Func<string, string?> nullMember = _ => null;
+		Func<string, int> throwingMember = _ => throw new MyException("The member must not be accessed.");
+		WhichNode<string, string?> outerWhich = new(
+			new DummyNode("", () => new DummyConstraintResult(Outcome.Success)), nullMember, " which ");
+		outerWhich.AddNode(new ExpectationNode());
+		outerWhich.AddConstraint(new DummyConstraint<string?>(_ => true, "is anything"));
+		WhichNode<string, int> innerWhich = new(outerWhich, throwingMember);
+		innerWhich.AddNode(new ExpectationNode());
+		int? observed = null;
+		innerWhich.AddConstraint(new DummyConstraint<int>(i =>
+		{
+			observed = i;
+			return true;
+		}, "is anything"));
+
+		ConstraintResult result = await innerWhich.IsMetBy("foo", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Success);
+		await That(observed).IsEqualTo(0)
+			.Because("the member of a null source is not accessed, so its default value is evaluated");
+	}
+
+	[Test]
 	public async Task IsMetBy_WhenParentWhichNodeProjectsToInnerSource_ShouldEvaluateAgainstProjectedValue()
 	{
 		WhichNode<string, int> outerWhich = new(null, s => s!.Length);
@@ -643,6 +698,20 @@ public sealed class WhichNodeTests
 	}
 
 	[Test]
+	public async Task IsMetBy_WithoutParentAndSeparator_WithContextMember_ShouldLabelTheContextsWithTheMember()
+	{
+		WhichNode<string, int> whichNode = new(null, s => s.Length, contextMember: "Length");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new DummyConstraint("", () => new ContextConstraintResult()));
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+
+		IReadOnlyList<ResultContextCollector.Entry>? contexts = ResultContextCollector.Capture(result);
+		await That(contexts!.Single().GetSubjectLabel()).IsEqualTo("Length");
+		await That(result.GetExpectationText()).IsEqualTo("has a context");
+	}
+
+	[Test]
 	public async Task IsMetBy_WithoutParent_ShouldUseNodeResult()
 	{
 		WhichNode<string, int> whichNode = new(null, s => s.Length);
@@ -674,6 +743,21 @@ public sealed class WhichNodeTests
 		await That(negated.Outcome).IsEqualTo(Outcome.Failure);
 		await That(sb.ToString()).IsEqualTo("not e1 which e2");
 		await That(negated.GetResultText()).IsEqualTo("not r1");
+	}
+
+	[Test]
+	public async Task Negate_Twice_ShouldRestoreTheExpectation()
+	{
+		WhichNode<string, int> whichNode = new(
+			new DummyNode("", () => new NegatableConstraintResult(Outcome.Success, "1")), s => s.Length, " which ");
+		whichNode.AddNode(new ExpectationNode());
+		whichNode.AddConstraint(new DummyConstraint("", () => new NegatableConstraintResult(Outcome.Success)));
+
+		ConstraintResult result = await whichNode.IsMetBy("foo", null!, CancellationToken.None);
+		ConstraintResult negatedTwice = result.Negate().Negate();
+
+		await That(negatedTwice.Outcome).IsEqualTo(Outcome.Success);
+		await That(negatedTwice.GetExpectationText()).IsEqualTo("e1 which e2");
 	}
 
 	[Test]
@@ -862,6 +946,22 @@ public sealed class WhichNodeTests
 		ConstraintResult result = await whichNode.IsMetBy("", null!, CancellationToken.None);
 
 		await That(result.Outcome).IsEqualTo(expectedOutcome);
+	}
+
+	[Test]
+	public async Task ReplaceRightMostOperand_WhenTheMemberExpectationsAreCombined_ShouldOnlyReplaceTheirRightMostOperand()
+	{
+		WhichNode<string, int> whichNode = new(null, s => s.Length, " whose length ");
+		AndNode andNode = new(new DummyNode("e1"));
+		andNode.AddNode(new DummyNode("e2"));
+		whichNode.AddNode(andNode);
+		StringBuilder sb = new();
+
+		Node result = whichNode.ReplaceRightMostOperand(_ => new DummyNode("replaced"));
+
+		result.AppendExpectation(sb);
+		await That(result).IsSameAs(whichNode);
+		await That(sb.ToString()).IsEqualTo("whose length e1 and replaced");
 	}
 
 	[Test]
@@ -1234,6 +1334,27 @@ public sealed class WhichNodeTests
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> AppendNormalResult(stringBuilder, indentation);
+	}
+
+	private sealed class ContextConstraintResult() : ConstraintResult(FurtherProcessingStrategy.Continue)
+	{
+		public override Outcome Outcome { get; protected set; } = Outcome.Failure;
+
+		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("has a context");
+
+		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null) { }
+
+		public override void AppendContexts(ResultContextCollector contexts)
+			=> contexts.Add(new ResultContext.Fixed("Actual", "3"));
+
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
+		{
+			value = default;
+			return false;
+		}
+
+		public override ConstraintResult Negate() => this;
 	}
 
 	private sealed class NegatableConstraintResult(Outcome outcome, string id = "2")

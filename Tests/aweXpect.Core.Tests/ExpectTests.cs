@@ -294,6 +294,34 @@ public class ExpectTests
 	}
 
 	[Test]
+	public async Task ThatAll_Result_ShouldNotBeNegated()
+	{
+		Expectation.Combination sut = ThatAll(new MyExpectation(new Expectation.Result(1, "foo",
+			new DummyConstraintResult(Outcome.Failure, "expectation", "result"))));
+		ConstraintResult result = (await sut.GetResult(0)).ConstraintResult;
+
+		ConstraintResult negated = result.Negate();
+
+		await That(negated).IsSameAs(result);
+		await That(negated.Outcome).IsEqualTo(Outcome.Failure)
+			.Because("a combination is never negated");
+	}
+
+	[Test]
+	public async Task ThatAll_Result_ShouldNotStoreAValue()
+	{
+		Expectation.Combination sut = ThatAll(new MyExpectation(new Expectation.Result(1, "foo",
+			new DummyConstraintResult(42, Outcome.Success, "expectation"))));
+		ConstraintResult result = (await sut.GetResult(0)).ConstraintResult;
+
+		bool hasValue = result.TryGetStoredValue(out int value);
+
+		await That(hasValue).IsFalse()
+			.Because("a combination of several expectations has no single subject");
+		await That(value).IsEqualTo(0);
+	}
+
+	[Test]
 	public async Task ThatAll_WhenACombinationWithAMultiLineValueFails_ShouldIndentTheValueLikeTheEntry()
 	{
 		MyClass expected = new()
@@ -612,6 +640,17 @@ public class ExpectTests
 			             [04] title4:
 			             content4
 			             """);
+	}
+
+	[Test]
+	public async Task ThatAll_WhenExpectationsIsEmpty_ShouldThrowArgumentException()
+	{
+		async Task Act()
+			=> await ThatAll();
+
+		await That(Act).Throws<ArgumentException>()
+			.WithParamName("expectations").And
+			.WithMessage("You must provide at least one expectation.").AsPrefix();
 	}
 
 	[Test]

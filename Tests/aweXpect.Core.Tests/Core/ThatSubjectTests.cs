@@ -79,6 +79,22 @@ public sealed class ThatSubjectTests
 	}
 
 	[Test]
+	public async Task IsExactly_WhenSubjectIsNull_ShouldFail()
+	{
+		object? subject = null;
+
+		async Task Act()
+			=> await That(subject).IsExactly<string>();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is exactly of type string,
+			             but it was <null>
+			             """);
+	}
+
+	[Test]
 	public async Task IsExactly_WhenTypeIsSubtype_ShouldIncludeTheActualTypeAndValue()
 	{
 		object subject = new Outer<string>.Derived

@@ -55,4 +55,14 @@ public sealed class ExpectationTests
 
 		await That(Act).DoesNotThrow();
 	}
+
+	[Test]
+	public async Task ToString_ShouldReturnTheNameOfTheType()
+	{
+		Expectation sut = Expect.ThatAll(That(true).IsEqualTo(true));
+
+		string? result = sut.ToString();
+
+		await That(result).IsEqualTo(typeof(Expectation.Combination.All).ToString());
+	}
 }

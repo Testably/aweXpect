@@ -517,6 +517,18 @@ public class ManualExpectationBuilderTests
 		await That(sut.Subject).IsEmpty();
 	}
 
+	[Test]
+	public async Task ToString_ShouldReturnTheExpectationWithItsReasons()
+	{
+		ManualExpectationBuilder<int> sut = new();
+		sut.AddConstraint((_, _, _) => new DummyConstraint("is foo"));
+		sut.AddReason("of a");
+
+		string result = sut.ToString();
+
+		await That(result).IsEqualTo("it is foo, because of a");
+	}
+
 	private sealed class ContextConstraint<T>(Func<T, IEvaluationContext, CancellationToken, Outcome> callback)
 		: IAsyncContextConstraint<T>
 	{
