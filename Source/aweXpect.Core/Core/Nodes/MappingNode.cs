@@ -240,7 +240,8 @@ internal sealed class MappingNode<TSource, TTarget, TNarrowed> : MappingNode
 
 	/// <inheritdoc cref="object.Equals(object?)" />
 	public override bool Equals(object? obj)
-		=> obj is MappingNode<TSource, TTarget, TNarrowed> other && MemberAccessor.Equals(other.MemberAccessor);
+		=> obj is MappingNode<TSource, TTarget, TNarrowed> other && MemberAccessor.Equals(other.MemberAccessor) &&
+		   base.Equals(other);
 
 	/// <inheritdoc cref="object.GetHashCode()" />
 	public override int GetHashCode() => MemberAccessor.GetHashCode();

@@ -332,35 +332,43 @@ internal class ExpectationNode : Node
 	}
 
 	/// <inheritdoc cref="object.Equals(object?)" />
-	public override bool Equals(object? obj) => obj is ExpectationNode other && Equals(other);
+	/// <remarks>
+	///     Nodes of different types are not equal, so that the equality with a derived node is symmetric.
+	/// </remarks>
+	public override bool Equals(object? obj)
+		=> obj is ExpectationNode other && other.GetType() == GetType() && Equals(other);
 
 	private bool Equals(ExpectationNode other)
-	{
-		if (_constraint is null && other._constraint is null)
-		{
-			return _inner?.Equals(other._inner) != false;
-		}
-
-		if (_constraint is null || other._constraint is null)
-		{
-			return false;
-		}
-
-		StringBuilder sb1 = new();
-		StringBuilder sb2 = new();
-		_constraint.AppendExpectation(sb1);
-		other._constraint.AppendExpectation(sb2);
-		return sb1.ToString() == sb2.ToString() && _inner?.Equals(other._inner) != false;
-	}
+		=> GetConstraintExpectation() == other.GetConstraintExpectation() && Equals(_inner, other._inner);
 
 	/// <inheritdoc cref="object.GetHashCode()" />
 	// ReSharper disable NonReadonlyMemberInGetHashCode
 #pragma warning disable S2328 // The node is built up incrementally, so the hash code can only be based on the mutable state
 	public override int GetHashCode()
-		=> _constraint?.GetType().GetHashCode() ?? 17
-			+ _inner?.GetHashCode() ?? 0;
+	{
+		unchecked
+		{
+			return ((GetConstraintExpectation()?.GetHashCode() ?? 17) * 31) + (_inner?.GetHashCode() ?? 0);
+		}
+	}
 #pragma warning restore S2328
 	// ReSharper restore NonReadonlyMemberInGetHashCode
+
+	/// <summary>
+	///     The expectation text of the constraint, which the equality and the hash code are both based on, or
+	///     <see langword="null" /> without a constraint.
+	/// </summary>
+	private string? GetConstraintExpectation()
+	{
+		if (_constraint is null)
+		{
+			return null;
+		}
+
+		StringBuilder stringBuilder = new();
+		_constraint.AppendExpectation(stringBuilder);
+		return stringBuilder.ToString();
+	}
 
 	/// <summary>
 	///     The expectation of a <paramref name="constraint" /> which is not a <see cref="ConstraintResult" /> itself.

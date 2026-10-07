@@ -194,6 +194,29 @@ public sealed class WhichNodeTests
 	}
 
 	[Test]
+	public async Task Equals_IfOnlyOneHasAnInnerNode_ShouldBeFalseBothWays()
+	{
+		DummyNode node1 = new("1", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
+		WhichNode<string, int> whichNode1 = new(null, s => s.Length);
+		WhichNode<string, int> whichNode2 = new(null, s => s.Length);
+		whichNode2.AddNode(node1);
+
+		await That(whichNode1.Equals(whichNode2)).IsFalse();
+		await That(whichNode2.Equals(whichNode1)).IsFalse();
+	}
+
+	[Test]
+	public async Task Equals_IfOnlyOneHasAParent_ShouldBeFalseBothWays()
+	{
+		DummyNode node1 = new("1", () => new DummyConstraintResult<string?>(Outcome.Success, "1", ""));
+		WhichNode<string, int> whichNode1 = new(null, s => s.Length);
+		WhichNode<string, int> whichNode2 = new(node1, s => s.Length);
+
+		await That(whichNode1.Equals(whichNode2)).IsFalse();
+		await That(whichNode2.Equals(whichNode1)).IsFalse();
+	}
+
+	[Test]
 	public async Task Equals_IfParentsAreBothNull_ShouldBeTrue()
 	{
 		WhichNode<string, int> whichNode1 = new(null, s => s.Length);

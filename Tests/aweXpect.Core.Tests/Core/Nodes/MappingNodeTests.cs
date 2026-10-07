@@ -39,6 +39,48 @@ public class MappingNodeTests
 	}
 
 	[Test]
+	public async Task Equals_IfMemberExpectationsAreDifferent_ShouldBeFalse()
+	{
+		MappingNode<string, int, int> node1 = new(
+			MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+		node1.AddConstraint(new DummyConstraint("is 1"));
+		MappingNode<string, int, int> node2 = new(
+			MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+		node2.AddConstraint(new DummyConstraint("is 2"));
+
+		await That(node1.Equals(node2)).IsFalse();
+		await That(node2.Equals(node1)).IsFalse();
+	}
+
+	[Test]
+	public async Task Equals_IfMemberExpectationsAreSame_ShouldBeTrue()
+	{
+		MappingNode<string, int, int> node1 = new(
+			MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+		node1.AddConstraint(new DummyConstraint("is 1"));
+		MappingNode<string, int, int> node2 = new(
+			MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+		node2.AddConstraint(new DummyConstraint("is 1"));
+
+		await That(node1.Equals(node2)).IsTrue();
+		await That(node1.GetHashCode()).IsEqualTo(node2.GetHashCode());
+	}
+
+	[Test]
+	public async Task Equals_IfNodesWithMemberExpectationsAreDifferent_ShouldBeFalse()
+	{
+		MappingNode<string, int, int> node1 = new(
+			MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+		node1.AddNode(new DummyNode("is 1"));
+		MappingNode<string, int, int> node2 = new(
+			MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));
+		node2.AddNode(new DummyNode("is 2"));
+
+		await That(node1.Equals(node2)).IsFalse();
+		await That(node2.Equals(node1)).IsFalse();
+	}
+
+	[Test]
 	public async Task Equals_WhenOtherIsDifferentNode_ShouldBeFalse()
 	{
 		MappingNode<string, int, int> node = new(MemberAccessor<string, int>.FromFunc(s => s.Length, " length "));

@@ -130,6 +130,23 @@ public class ManualExpectationBuilderTests
 	}
 
 	[Test]
+	[Arguments("is 1", "is 1", true)]
+	[Arguments("is 1", "is 2", false)]
+	public async Task Equals_ExpectationsOnTheSameMember_ShouldCompareTheExpectations(
+		string expectation1, string expectation2, bool expectedResult)
+	{
+		ManualExpectationBuilder<string> sut1 = new();
+		sut1.ForMember(MemberAccessor<string, int>.FromFunc(s => s.Length, "length "))
+			.AddExpectations(e => e.AddConstraint((_, _, _) => new DummyConstraint(expectation1)));
+		ManualExpectationBuilder<string> sut2 = new();
+		sut2.ForMember(MemberAccessor<string, int>.FromFunc(s => s.Length, "length "))
+			.AddExpectations(e => e.AddConstraint((_, _, _) => new DummyConstraint(expectation2)));
+
+		await That(sut1.Equals(sut2)).IsEqualTo(expectedResult);
+		await That(sut2.Equals(sut1)).IsEqualTo(expectedResult);
+	}
+
+	[Test]
 	public async Task Equals_FirstNull_ShouldBeFalse()
 	{
 		ManualExpectationBuilder<int> sut = new();
