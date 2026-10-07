@@ -11,6 +11,43 @@ public sealed partial class ThatSignaler
 		public sealed class NegatedTests
 		{
 			[Test]
+			public async Task WhenEveryCountMeetsThePositiveExpectation_ShouldNegateTheQuantifierWithNot()
+			{
+				Signaler signaler = new();
+
+				async Task Act() =>
+					await That(signaler).DoesNotComplyWith(s => s.Signaled().AtLeast(0.Times()));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has recorded the callback not at least 0 times,
+					             but it was never recorded
+					             """)
+					.Because("no count is fewer than zero, so there is no complementary quantifier to name");
+			}
+
+			[Test]
+			public async Task WhenEveryCountMeetsThePositiveExpectationWithParameter_ShouldNegateTheQuantifierWithNot()
+			{
+				Signaler<int> signaler = new();
+				signaler.Signal(1);
+
+				async Task Act() =>
+					await That(signaler).DoesNotComplyWith(s => s.Signaled().AtLeast(0.Times()));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has recorded the callback not at least 0 times,
+					             but it was recorded once in [
+					               1
+					             ]
+					             """)
+					.Because("no count is fewer than zero, so there is no complementary quantifier to name");
+			}
+
+			[Test]
 			[Arguments("Default", 1, "has never recorded the callback", "recorded once")]
 			[Arguments("Never", 0, "has recorded the callback at least once", "never recorded")]
 			[Arguments("Once", 1, "has recorded the callback not exactly once", "recorded once")]

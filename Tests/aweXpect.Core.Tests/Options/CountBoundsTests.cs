@@ -59,8 +59,9 @@ public class CountBoundsTests
 
 		CountBounds? complement = sut.Complement();
 
-		await That(complement is null).IsEqualTo(method is "Between" || (method is "Exactly" && value > 0))
-			.Because("only a range with two bounds has no single complement, except for exactly zero");
+		await That(complement is null).IsEqualTo(method is "Between" || (method is "Exactly" && value > 0) ||
+		                                         (method is "AtLeast" && value == 0))
+			.Because("a range with two bounds has no single complement, except for exactly zero, and at least zero has an empty one");
 		for (int amount = 0; amount <= 5 && complement is { } c; amount++)
 		{
 			await That(c.Check(amount, true) == true).IsNotEqualTo(sut.Check(amount, true) == true)

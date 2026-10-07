@@ -122,6 +122,10 @@ internal readonly record struct CountBounds
 	///     The bounds that are met exactly when these are not, or <see langword="null" /> when that is not a single
 	///     range, e.g. for <c>between 1 and 3</c>.
 	/// </summary>
+	/// <remarks>
+	///     Bounds that every count meets, e.g. <c>at least 0 times</c>, have an empty complement, which is no range either,
+	///     as <see cref="LessThan" /> and <see cref="MoreThan" /> reject it.
+	/// </remarks>
 	public CountBounds? Complement()
 	{
 		if (IsNever)
@@ -131,6 +135,8 @@ internal readonly record struct CountBounds
 
 		return (Minimum, Maximum) switch
 		{
+			(null, int.MaxValue) when AllowEqual => null,
+			(0, null) when AllowEqual => null,
 			(null, { } maximum) => new CountBounds(maximum, null, !AllowEqual),
 			({ } minimum, null) => new CountBounds(null, minimum, !AllowEqual),
 			_ => null,
