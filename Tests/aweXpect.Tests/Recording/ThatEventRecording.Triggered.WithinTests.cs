@@ -420,7 +420,7 @@ public sealed partial class ThatEventRecording
 					async Task Act() =>
 						await That(recording)
 							.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
-							.Within(2.Seconds()).WithTimeout(10.Seconds());
+							.Within(30.Seconds()).WithTimeout(60.Seconds());
 
 					exception = await Catch.ExceptionAsync(Act);
 				}
@@ -428,7 +428,7 @@ public sealed partial class ThatEventRecording
 				await That(exception).IsExactly<FailException>().And
 					.HasMessage("""
 					            Expected that recording
-					            has recorded the CustomEvent event on sut at least once within 0:02,
+					            has recorded the CustomEvent event on sut at least once within 0:30,
 					            but it did not finish within 0:00.300
 					            """).And
 					.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.300."))

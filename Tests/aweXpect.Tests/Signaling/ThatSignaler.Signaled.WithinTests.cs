@@ -112,7 +112,7 @@ public sealed partial class ThatSignaler
 					       .Set(TestCancellation.FromTimeout(300.Milliseconds())))
 				{
 					async Task Act() =>
-						await That(signaler).Signaled().Within(2.Seconds()).WithTimeout(10.Seconds());
+						await That(signaler).Signaled().Within(30.Seconds()).WithTimeout(60.Seconds());
 
 					exception = await Catch.ExceptionAsync(Act);
 				}
@@ -120,7 +120,7 @@ public sealed partial class ThatSignaler
 				await That(exception).IsExactly<FailException>().And
 					.HasMessage("""
 					            Expected that signaler
-					            has recorded the callback at least once within 0:02,
+					            has recorded the callback at least once within 0:30,
 					            but it did not finish within 0:00.300
 					            """).And
 					.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.300."))

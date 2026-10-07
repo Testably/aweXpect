@@ -272,20 +272,35 @@ public class BecauseTests
 		WhenAsyncReasonIsPending_WhenTimeoutIsLongerThanTheRetryBudgetOfEventually_ShouldStillReportTheAssertionFailure()
 	{
 		TaskCompletionSource<string?> becauseSource = new();
+		VirtualTimeSystem timeSystem = new();
+		int calls = 0;
 		Task evaluation = Evaluate();
 
 		await That(await IsCompletedWithoutTheReason(evaluation, becauseSource)).IsTrue()
 			.Because("the timeout must stop waiting for the reason, although it does not cancel the attempts");
 		await That(() => evaluation).Throws<FailException>()
 			.WithMessage("""
-			             Expected that () => 1
+			             Expected that Subject
 			             eventually is equal to 2 within 0:00.020, because the reason was not available in time,
 			             but it was 1, which differs by -1
 			             """);
+		await That(calls).IsEqualTo(2)
+			.Because("the wait of the virtual clock leaves exactly one more attempt at the end of the budget");
+
+		int Subject()
+		{
+			if (++calls == 2)
+			{
+				timeSystem.Advance(10.Milliseconds());
+			}
+
+			return 1;
+		}
 
 		async Task Evaluate()
-			=> await That(() => 1).Eventually().Within(20.Milliseconds()).IsEqualTo(2).Because(becauseSource.Task)
-				.WithTimeout(100.Milliseconds());
+			=> await That(Subject).Eventually().OnVirtualTime(timeSystem).Within(20.Milliseconds()).IsEqualTo(2)
+				.Because(becauseSource.Task)
+				.WithTimeout(30.Milliseconds());
 	}
 
 	[Test]
