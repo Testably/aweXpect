@@ -361,12 +361,14 @@ public class QuantifierTests
 	}
 
 	[Test]
+	[Arguments("AtLeast", 0, "not at least 0 times")]
 	[Arguments("AtLeast", 1, "never")]
 	[Arguments("AtLeast", 2, "fewer than twice")]
 	[Arguments("AtLeast", 3, "fewer than 3 times")]
 	[Arguments("AtMost", 0, "at least once")]
 	[Arguments("AtMost", 1, "more than once")]
 	[Arguments("AtMost", 3, "more than 3 times")]
+	[Arguments("AtMost", int.MaxValue, "not at most 2147483647 times")]
 	[Arguments("Between", 3, "not between 3 and 5 times")]
 	[Arguments("Exactly", 0, "at least once")]
 	[Arguments("Exactly", 1, "not exactly once")]
