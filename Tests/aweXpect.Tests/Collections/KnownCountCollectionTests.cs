@@ -91,6 +91,24 @@ public sealed class KnownCountCollection
 		public bool Remove(T item) => throw new NotSupportedException();
 	}
 
+	/// <summary>
+	///     A collection of <see cref="int" /> items that also is a collection of another number of
+	///     <see cref="string" /> items.
+	/// </summary>
+	private sealed class CollectionOfTwoItemTypes(int[] items, string[] otherItems)
+		: IReadOnlyCollection<int>, IReadOnlyCollection<string>
+	{
+		int IReadOnlyCollection<int>.Count => items.Length;
+
+		int IReadOnlyCollection<string>.Count => otherItems.Length;
+
+		public IEnumerator<int> GetEnumerator() => ((IEnumerable<int>)items).GetEnumerator();
+
+		IEnumerator<string> IEnumerable<string>.GetEnumerator() => ((IEnumerable<string>)otherItems).GetEnumerator();
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+
 	public sealed class HasCountTests
 	{
 		[Test]
@@ -1075,6 +1093,47 @@ public sealed class KnownCountCollection
 				             Collection:
 				             [1, 2, 3, 4, (… and maybe more)]
 				             """);
+		}
+
+		[Test]
+		public async Task HasItem_AtIndexFromEnd_WhenTheSubjectAlsoCountsItemsOfAnotherType_ShouldCountTheItemsThatAreRead()
+		{
+			IEnumerable<int> subject = new CollectionOfTwoItemTypes([1, 2, 3,], ["a",]);
+
+			async Task Act()
+				=> await That(subject).HasItem(3).AtIndexFromEnd(0);
+
+			await That(Act).DoesNotThrow()
+				.Because("the index is counted from the end of the 3 items of the subject");
+		}
+
+		[Test]
+		[Arguments(Kind.List)]
+		[Arguments(Kind.Queue)]
+		[Arguments(Kind.Stack)]
+		[Arguments(Kind.ReadOnlyCollection)]
+		[Arguments(Kind.ConcurrentQueue)]
+		public async Task HasItem_AtIndexFromEnd_WhenCanceled_ShouldStillVerifyTheItem(Kind kind)
+		{
+			CancellationToken token = new(true);
+			IEnumerable<int> subject = Create(kind, 1, 2, 3, 4, 5);
+
+			async Task Act()
+				=> await That(subject).HasItem(5).AtIndexFromEnd(0).WithCancellation(token);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Test]
+		public async Task HasItemThat_AtIndexFromEnd_WhenTheSubjectAlsoCountsItemsOfAnotherType_ShouldCountTheItemsThatAreRead()
+		{
+			IEnumerable<int> subject = new CollectionOfTwoItemTypes([1, 2, 3,], ["a",]);
+
+			async Task Act()
+				=> await That(subject).HasItemThat(x => x.IsEqualTo(3)).AtIndexFromEnd(0);
+
+			await That(Act).DoesNotThrow()
+				.Because("the index is counted from the end of the 3 items of the subject");
 		}
 
 		[Test]

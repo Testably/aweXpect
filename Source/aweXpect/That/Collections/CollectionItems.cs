@@ -139,9 +139,14 @@ internal readonly struct CollectionItems<TItem>
 		=> cancellationToken.IsCancellationRequested && IsIncomplete();
 
 	private bool IsIncomplete()
-		=> _typed is not null
-			? !KnowsItsCount(_typed) && _typed is not ICountable { Count: not null, }
-			: _untyped is not ICountable { Count: not null, } && _untyped.GetUntypedCount() is null;
+		=> _typed is not null ? IsIncomplete(_typed) : CollectionHelpers.IsIncomplete(_untyped);
+
+	/// <summary>
+	///     Whether the typed <paramref name="items" /> can have further items to come from their source, which neither
+	///     a collection that knows its number of items nor a sequence that was read to its end has.
+	/// </summary>
+	internal static bool IsIncomplete(IEnumerable<TItem> items)
+		=> !KnowsItsCount(items) && items is not ICountable { Count: not null, };
 
 	/// <summary>
 	///     Whether the typed <paramref name="items" /> are a collection that <see cref="CountOf{TEnumerable}" /> gets

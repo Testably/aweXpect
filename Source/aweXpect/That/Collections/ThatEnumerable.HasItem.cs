@@ -337,8 +337,9 @@ public static partial class ThatEnumerable
 	///     Counts the items when the index is counted from the end, and returns <see langword="false" /> when the
 	///     <paramref name="cancellationToken" /> is canceled before the count is known.
 	/// </summary>
-	internal static bool TryCountForIndex<TItem>(CollectionIndexOptions options, object actual, IEnumerable<TItem> items,
-		CancellationToken cancellationToken, out int? count)
+	internal static bool TryCountForIndex<TEnumerable, TItem>(CollectionIndexOptions options, TEnumerable actual,
+		IEnumerable<TItem> items, CancellationToken cancellationToken, out int? count)
+		where TEnumerable : IEnumerable?
 	{
 		count = null;
 		if (options.Match is not CollectionIndexOptions.IMatchFromEnd)
@@ -346,11 +347,7 @@ public static partial class ThatEnumerable
 			return true;
 		}
 
-		count = actual switch
-		{
-			ICollection<TItem> collection => UserCode.Invoke(static subject => subject.Count, collection),
-			_ => (actual as IEnumerable).GetUntypedCount() ?? items.CountUnlessCanceled(cancellationToken),
-		};
+		count = CollectionItems<TItem>.CountOf(actual) ?? items.CountUnlessCanceled(cancellationToken);
 		return count is not null;
 	}
 
