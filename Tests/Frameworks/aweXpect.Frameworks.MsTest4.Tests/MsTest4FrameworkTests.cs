@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -49,5 +50,16 @@ public sealed class MsTestFrameworkTests
 
 		await Expect.That(Act).Throws<AssertInconclusiveException>()
 			.WithMessage("my message");
+	}
+
+	[TestMethod]
+	public async Task TestFramework_ShouldHaveMajorVersion4()
+	{
+		// The assembly version of MSTest does not follow the package version (MSTest 3 is fixed at 14.0.0.0).
+		string? version = typeof(TestClassAttribute).Assembly
+			.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+
+		await Expect.That(version).StartsWith("4.")
+			.Because("this project tests the adapter against MSTest 4");
 	}
 }

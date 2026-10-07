@@ -47,4 +47,13 @@ public sealed class NUnit3TestFrameworkTests
 		await Expect.That(Act).Throws<IgnoreException>()
 			.WithMessage("my message");
 	}
+
+	[Test]
+	public async Task TestFramework_ShouldHaveMajorVersion3()
+	{
+		Version? version = typeof(TestAttribute).Assembly.GetName().Version;
+
+		await Expect.That(version?.Major).IsEqualTo(3)
+			.Because("this project tests the adapter against NUnit 3");
+	}
 }

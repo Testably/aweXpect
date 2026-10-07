@@ -47,4 +47,13 @@ public sealed class Xunit2TestFrameworkTests
 		await Expect.That(Act).Throws<SkipException>()
 			.WithMessage("SKIPPED: my message (xunit v2 does not support skipping test)");
 	}
+
+	[Fact]
+	public async Task TestFramework_ShouldHaveMajorVersion2()
+	{
+		Version? version = typeof(FactAttribute).Assembly.GetName().Version;
+
+		await Expect.That(version?.Major).IsEqualTo(2)
+			.Because("this project tests the adapter against xunit v2");
+	}
 }
