@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Linq;
 using aweXpect.Analyzers.Helpers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -70,9 +71,9 @@ public class AwaitExpectationAnalyzer : DiagnosticAnalyzer
 					return true;
 				case IExpressionStatementOperation:
 				case ISimpleAssignmentOperation { Target: IDiscardOperation, }:
-					return false;
+					return IsConsumedByExtensionMethod(current);
 				case IVariableInitializerOperation initializer:
-					return IsLocalUsed(initializer);
+					return IsLocalUsed(initializer) || IsConsumedByExtensionMethod(current);
 				case IInvocationOperation invocation when IsVerification(invocation):
 					return true;
 				case IArgumentOperation argument when !IsExtensionReceiver(argument):
@@ -168,6 +169,72 @@ public class AwaitExpectationAnalyzer : DiagnosticAnalyzer
 		   } ||
 		   invocation.TargetMethod.MatchesFullName("aweXpect", "Synchronous", "SynchronouslyExtensions",
 			   "VerifySynchronously");
+
+	/// <summary>
+	///     Whether the discarded <paramref name="value" /> was returned by an extension method that does not continue
+	///     the expectation, like a helper that verifies it and returns its value. What such a method does with the
+	///     expectation is unknown, so it is not provably discarded.
+	/// </summary>
+	/// <remarks>
+	///     Only what follows the last part of the fluent API matters, because an extension method can also return a
+	///     type of its own in the middle of the expectation, like the quantifier of <c>All()</c>.
+	/// </remarks>
+	private static bool IsConsumedByExtensionMethod(IOperation value)
+	{
+		IOperation? current = value;
+		while (current is not null && !IsPartOfTheFluentApi(current.Type))
+		{
+			if (current is IInvocationOperation { TargetMethod.IsExtensionMethod: true, })
+			{
+				return true;
+			}
+
+			current = current switch
+			{
+				IInvocationOperation invocation => invocation.Instance,
+				IMemberReferenceOperation memberReference => memberReference.Instance,
+				IConversionOperation conversion => conversion.Operand,
+				IParenthesizedOperation parenthesized => parenthesized.Operand,
+				_ => null,
+			};
+		}
+
+		return false;
+	}
+
+	/// <summary>
+	///     Whether the <paramref name="type" /> is declared by aweXpect or one of its extension packages, or derives
+	///     from or implements such a type, like a result, an <c>IThat&lt;T&gt;</c> or a quantifier. A type parameter
+	///     counts when it is constrained to such a type.
+	/// </summary>
+	private static bool IsPartOfTheFluentApi(ITypeSymbol? type)
+	{
+		if (type is ITypeParameterSymbol typeParameter)
+		{
+			return typeParameter.ConstraintTypes.Any(IsPartOfTheFluentApi);
+		}
+
+		for (ITypeSymbol? current = type; current is not null; current = current.BaseType)
+		{
+			if (IsInAweXpectNamespace(current))
+			{
+				return true;
+			}
+		}
+
+		return type?.AllInterfaces.Any(IsInAweXpectNamespace) == true;
+	}
+
+	private static bool IsInAweXpectNamespace(ITypeSymbol type)
+	{
+		INamespaceSymbol? @namespace = type.ContainingNamespace;
+		while (@namespace?.ContainingNamespace is { IsGlobalNamespace: false, } parent)
+		{
+			@namespace = parent;
+		}
+
+		return @namespace?.Name == "aweXpect";
+	}
 
 	private static bool IsExtensionReceiver(IArgumentOperation argument)
 		=> argument is
