@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Fallout.Common;
 using Fallout.Common.IO;
 using Fallout.Common.Tooling;
@@ -25,7 +26,9 @@ namespace Build;
 
 partial class Build
 {
-	private static bool DisableMutationTests = false;
+	// Stryker's runner for the Microsoft.Testing.Platform cannot capture the coverage of the unit tests within the
+	// time limit of the mutation jobs: https://github.com/stryker-mutator/stryker-net/issues/3871
+	private static bool DisableMutationTests = true;
 
 	private const long MaxMutationReportSize = 100 * 1024 * 1024;
 
@@ -442,6 +445,7 @@ partial class Build
 
 		DotNetToolInstall(_ => _
 			.SetPackageName("dotnet-stryker")
+			.SetVersion(GetStrykerVersion())
 			.SetToolInstallationPath(toolPath));
 
 		string branchName = BranchName;
@@ -555,6 +559,16 @@ partial class Build
 		string body = sb.ToString();
 		return body;
 	}
+
+	/// <summary>
+	///     The version of Stryker to install, which is the one that the <c>PackageDownload</c> of the build project
+	///     pins, so that Dependabot keeps it up to date.
+	/// </summary>
+	static string GetStrykerVersion()
+		=> XDocument.Load(RootDirectory / "Pipeline" / "Build.csproj")
+			.Descendants("PackageDownload")
+			.Single(package => package.Attribute("Include")?.Value == "dotnet-stryker")
+			.Attribute("Version")!.Value.Trim('[', ']');
 
 	static string PathForJson(Project project)
 		=> $"\"{project.Path.ToString().Replace(@"\", @"\\")}\"";
