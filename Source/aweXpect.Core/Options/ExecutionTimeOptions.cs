@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using aweXpect.Core.Helpers;
+using aweXpect.Results;
 
 namespace aweXpect.Options;
 
@@ -117,13 +118,14 @@ public class ExecutionTimeOptions
 	///     using the provided <paramref name="tolerance" />.
 	/// </summary>
 	/// <remarks>
-	///     The limit is named after <c>Within</c>, which specifies the <paramref name="tolerance" />.
+	///     The limit is named after <see cref="ExecutesInToleranceResult{TResult}.Within(TimeSpan)" />, which specifies
+	///     the <paramref name="tolerance" />.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
 	internal void Approximately(TimeSpan expected, TimeSpan tolerance)
 	{
 		ToleranceHelpers.ThrowIfInvalid(tolerance);
-		SetLimit(new ApproximatelyLimit(expected, tolerance), nameof(Within));
+		SetLimit(new ApproximatelyLimit(expected, tolerance), nameof(ExecutesInToleranceResult<>.Within));
 		SetUpperBound(tolerance > TimeSpan.MaxValue - expected ? TimeSpan.MaxValue : expected + tolerance);
 	}
 
