@@ -354,6 +354,30 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Test]
+			public async Task WithDuplicateBeforeAGapInExpected_ShouldReportTheGap()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(1, 2);
+				int[] expected = [2, 1, 9, 2,];
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is contained in collection expected in order and contiguous,
+					             but it contained item 2 at index 1 instead of 9
+
+					             Collection:
+					             [1, 2]
+
+					             Expected:
+					             [2, 1, 9, 2]
+					             """)
+					.Because("the last expected 2 follows the 1, so the items are in order and only skip the 9");
+			}
+
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["c", "a", "b", "c",]);

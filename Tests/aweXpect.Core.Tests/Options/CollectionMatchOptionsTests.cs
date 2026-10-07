@@ -1587,6 +1587,229 @@ public class CollectionMatchOptionsTests
 		}
 	}
 
+	public class InWrongOrderTests
+	{
+		[Test]
+		public async Task Contains_WhenADuplicateIsInOrder_ShouldReportTheInterruptingItem()
+		{
+			int[] subject = [2, 1, 9, 2,];
+
+			async Task Act()
+				=> await That(subject).Contains([1, 2,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection [1, 2,] in order and contiguous,
+				             but it contained item 9 at index 2 instead of 2
+
+				             Collection:
+				             [2, 1, 9, 2]
+
+				             Expected:
+				             [1, 2]
+				             """)
+				.Because("the 2 at index 3 follows the 1, so only the 9 keeps the items from being contiguous");
+		}
+
+		[Test]
+		public async Task Contains_WhenADuplicateIsInOrderBehindMoreItemsThanAreInWrongOrder_ShouldReportTheItemInWrongOrder()
+		{
+			int[] subject = [2, 1, 9, 9, 2,];
+
+			async Task Act()
+				=> await That(subject).Contains([1, 2,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection [1, 2,] in order and contiguous,
+				             but it contained item 1 at index 1 in wrong order
+
+				             Collection:
+				             [2, 1, 9, 9, 2]
+
+				             Expected:
+				             [1, 2]
+				             """)
+				.Because("one item in the wrong order is the shorter explanation than two interrupting items");
+		}
+
+		[Test]
+		public async Task Contains_WhenADuplicateIsInOrderIgnoringInterspersedItems_ShouldOnlyReportTheMissingItem()
+		{
+			int[] subject = [2, 1, 2,];
+
+			async Task Act()
+				=> await That(subject).Contains([1, 2, 3,]).IgnoringInterspersedItems();
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection [1, 2, 3,] in order ignoring interspersed items,
+				             but it lacked 1 of 3 expected items: 3
+
+				             Collection:
+				             [2, 1, 2]
+
+				             Expected:
+				             [1, 2, 3]
+				             """);
+		}
+
+		[Test]
+		public async Task Contains_WhenDuplicatesOfSeveralItemsAreInOrder_ShouldReportTheInterruptingItem()
+		{
+			int[] subject = [1, 2, 0, 1, 9, 2,];
+
+			async Task Act()
+				=> await That(subject).Contains([0, 1, 2,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection [0, 1, 2,] in order and contiguous,
+				             but it contained item 9 at index 4 instead of 2
+
+				             Collection:
+				             [1, 2, 0, 1, 9, 2]
+
+				             Expected:
+				             [0, 1, 2]
+				             """);
+		}
+
+		[Test]
+		public async Task Contains_WhenNoDuplicateIsInOrder_ShouldReportTheItemInWrongOrder()
+		{
+			int[] subject = [1, 1, 2,];
+
+			async Task Act()
+				=> await That(subject).Contains([2, 1,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection [2, 1,] in order and contiguous,
+				             but it contained item 2 at index 2 in wrong order
+
+				             Collection:
+				             [1, 1, 2]
+
+				             Expected:
+				             [2, 1]
+				             """);
+		}
+
+		[Test]
+		public async Task Contains_WhenThePredicateThrowsForAnItemThatIsNotAssigned_ShouldNotMatchIt()
+		{
+			int[] subject = [7, 1, 3, 0, 7,];
+
+			async Task Act()
+				=> await That(subject).Contains([x => x == 1, x => 9 / x == 3, x => x == 7,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection [x => x == 1, x => 9 / x == 3, x => x == 7,] in order and contiguous,
+				             but it contained item 0 at index 3 instead of x => (x == 7)
+
+				             Collection:
+				             [7, 1, 3, 0, 7]
+
+				             Expected:
+				             [
+				               x => (x == 1),
+				               x => ((9 / x) == 3),
+				               x => (x == 7)
+				             ]
+				             """)
+				.Because("only the explanation compares the 0 with the predicate that throws for it");
+		}
+
+		[Test]
+		public async Task Contains_WhenThePredicateThrowsForAnItemThatIsNotAssignedUnderNegation_ShouldSucceed()
+		{
+			int[] subject = [7, 1, 3, 0, 7,];
+
+			async Task Act()
+				=> await That(subject).DoesNotContain([x => x == 1, x => 9 / x == 3, x => x == 7,]);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Test]
+		public async Task Contains_WithPredicates_WhenADuplicateIsInOrder_ShouldReportTheInterruptingItem()
+		{
+			int[] subject = [2, 1, 9, 2,];
+
+			async Task Act()
+				=> await That(subject).Contains([x => x == 1, x => x == 2,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection [x => x == 1, x => x == 2,] in order and contiguous,
+				             but it contained item 9 at index 2 instead of x => (x == 2)
+
+				             Collection:
+				             [2, 1, 9, 2]
+
+				             Expected:
+				             [
+				               x => (x == 1),
+				               x => (x == 2)
+				             ]
+				             """);
+		}
+
+		[Test]
+		public async Task IsContainedIn_WhenADuplicateIsInOrder_ShouldReportTheGapInTheExpectedItems()
+		{
+			int[] subject = [1, 2,];
+
+			async Task Act()
+				=> await That(subject).IsContainedIn([2, 1, 9, 2,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is contained in collection [2, 1, 9, 2,] in order and contiguous,
+				             but it contained item 2 at index 1 instead of 9
+
+				             Collection:
+				             [1, 2]
+
+				             Expected:
+				             [2, 1, 9, 2]
+				             """);
+		}
+
+		[Test]
+		public async Task
+			IsContainedIn_WhenADuplicateIsInOrderIgnoringInterspersedItems_ShouldOnlyReportTheUnexpectedItem()
+		{
+			int[] subject = [1, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).IsContainedIn([2, 1, 2,]).IgnoringInterspersedItems();
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is contained in collection [2, 1, 2,] in order ignoring interspersed items,
+				             but it contained item 3 at index 2 that was not expected
+
+				             Collection:
+				             [1, 2, 3]
+
+				             Expected:
+				             [2, 1, 2]
+				             """);
+		}
+	}
+
 	public class OptionTests
 	{
 		[Test]
