@@ -58,6 +58,33 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Test]
+	public async Task WhenAnAttributeOnlyHasTheNameOfTheMarker_ShouldNotRegister()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Models,
+			"""
+			namespace Lookalike
+			{
+				public sealed class RequiresMemberMetadataAttribute : System.Attribute;
+			}
+
+			[Lookalike.RequiresMemberMetadata]
+			public class Tests
+			{
+				public static void Check([Lookalike.RequiresMemberMetadata] object expected) { }
+
+				public void Test() => Check(new Models.Other());
+			}
+			""",
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).IsEmpty()
+			.Because("only the marker of aweXpect.Core seeds the walk, whatever another attribute is called");
+	}
+
+	[Test]
 	public async Task WhenAnonymousTypeCarriesATypeParameter_ShouldNotRegisterIt()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -74,6 +101,28 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Errors).IsEmpty();
 		await That(result.Generated).DoesNotContain("default(T)")
 			.Because("the type parameter of the enclosing method cannot be named in a module initializer");
+	}
+
+	[Test]
+	[Arguments("values")]
+	[Arguments("new Models.Outer<T>.Inner()")]
+	public async Task WhenAnonymousTypeCarriesATypeParameterIndirectly_ShouldNotRegisterIt(string value)
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class Outer<T> { public class Inner { public int Id { get; set; } } } }",
+			$$"""
+			  using aweXpect;
+			  public class Tests
+			  {
+			  	public void Test<T>(T[] values) => Expect.That(new { Value = {{value}} }).IsEquivalentTo(new { Value = {{value}} });
+			  }
+			  """,
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("probe")
+			.Because("an array of the type parameter or a type nested in a generic over it cannot be named either");
 	}
 
 	[Test]
@@ -466,6 +515,21 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Test]
+	public async Task WhenConsumerDeclaresTheModuleInitializerAsPolyfill_ShouldEmit()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace System.Runtime.CompilerServices { internal sealed class ModuleInitializerAttribute : Attribute; }",
+			Models,
+			Call("Expect.That(new Models.Other()).IsEquivalentTo(new Models.Other());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);")
+			.Because("an internal polyfill in the consumer's own assembly can be applied by the generated code");
+	}
+
+	[Test]
 	public async Task WhenConsumerIsExperimental_ShouldRegisterItsTypes()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -610,6 +674,50 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Test]
+	public async Task WhenCoreHasAnIncompatibleRegistry_ShouldNotEmit()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Models,
+			"""
+			namespace aweXpect.Core.Metadata
+			{
+				[System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = true)]
+				public sealed class GenerateMetadataAttribute(System.Type type) : System.Attribute
+				{
+					public System.Type Type { get; } = type;
+				}
+
+				public class TypeMetadataRegistry
+				{
+					public void RegisterProperty<T, TMember>(T probe, string name, System.Func<T, TMember> getValue) { }
+					internal static void RegisterProperty<T, TMember>(string name, System.Func<T, TMember> getValue, bool other) { }
+					public static void RegisterProperty<T, TMember>(string name, System.Func<T, TMember> getValue) { }
+					public void RegisterBatch(System.Action register) { }
+					internal static void RegisterBatch(System.Func<int> register) { }
+					public static void RegisterBatch(System.Action register, bool other) { }
+					public void RegisterDictionary<TKey, TValue>() { }
+					internal static void RegisterDictionary<TKey, TValue>(int other) { }
+					public void RegisterSet<T>() { }
+					internal static void RegisterSet<T>(int other) { }
+					public void RegisterCollection<T>() { }
+					internal static void RegisterCollection<T>(int other) { }
+					public void RegisterExplicitProperty<T, TMember>(string name, System.Func<T, TMember> getValue) { }
+					internal static void RegisterExplicitProperty<T, TMember>(string name, System.Func<T, TMember> getValue, int other) { }
+				}
+			}
+			""",
+			"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(Models.Other))]",
+			"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof(System.Collections.Generic.List<Models.Other>))]",
+		], false);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics).IsEmpty();
+		await That(result.Generated).IsEmpty()
+			.Because("only public static registration methods can be called from the generated code");
+	}
+
+	[Test]
 	public async Task WhenCoreIsNotReferenced_ShouldNotEmit()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -660,6 +768,24 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Warnings).IsEmpty();
 		await That(result.Generated).DoesNotContain("WithNumericObsolete")
 			.Because("the compiler reads a numeric id in a pragma as a CS code, so the warning would stay");
+	}
+
+	[Test]
+	public async Task WhenDictionaryHasDynamicValues_ShouldRegisterIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Call("""
+			     var expected = new { Map = new System.Collections.Generic.Dictionary<string, dynamic>(), Value = (dynamic)1 };
+			     Expect.That(expected).IsEquivalentTo(expected);
+			     """),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains("global::aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterDictionary<string, dynamic>();")
+			.Because("dynamic can be named in the generated code");
+		await That(result.Generated).Contains("Value = default(dynamic)");
 	}
 
 	[Test]
@@ -736,6 +862,24 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Test]
+	[Arguments("Models.Point?")]
+	[Arguments("(int Left, Models.Point Right)")]
+	public async Task WhenGenerateMetadataAttributeNamesANullableOrATuple_ShouldRegisterItWithoutADiagnostic(
+		string type)
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public struct Point { public int X; } }",
+			$"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof({type}))]",
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics).IsEmpty()
+			.Because("the diagnostic looks for the registration under the key the walk uses");
+		await That(result.Generated).Contains("RegisterField<global::Models.Point, int>(\"X\", o => o.X);");
+	}
+
+	[Test]
 	public async Task WhenGenerateMetadataAttributeNamesAnUnregistrableType_ShouldLinkToTheDocumentation()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
@@ -764,6 +908,86 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.GeneratorDiagnostics).HasSingle().Which
 			.Satisfies(x => x.Id == "aweXpect2001" && x.GetMessage().Contains("'Models.Generic<>'"))
 			.Because("the escape hatch is used when something already went wrong, so silently doing nothing is not acceptable");
+	}
+
+	[Test]
+	public async Task WhenGenerateMetadataAttributeNamesNoType_ShouldIgnoreIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+			["[assembly: aweXpect.Core.Metadata.GenerateMetadata(null!)]",]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.GeneratorDiagnostics).IsEmpty();
+		await That(result.Generated).IsEmpty()
+			.Because("there is no type to register or to report");
+	}
+
+	[Test]
+	public async Task WhenGenericOverAnAnonymousTypeIsNestedOrGlobal_ShouldRegisterItThroughAProbe()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			public class Box<T>
+			{
+				public T Value { get; set; } = default!;
+			}
+
+			namespace Models
+			{
+				public class Outer<T>
+				{
+					public class Inner
+					{
+						public int Id { get; set; }
+					}
+				}
+			}
+			""",
+			Call("""
+			     var item = new { A = 1 };
+			     Expect.That(Make(item)).IsEquivalentTo(Make(item));
+
+			     static (Box<T>, Models.Outer<T>.Inner) Make<T>(T value) => (new Box<T> { Value = value, }, new Models.Outer<T>.Inner());
+			     """),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated)
+			.Contains("static global::Box<T0> Probe0<T0>(T0 p0) where T0 : class => default;")
+			.Because("a type in the global namespace is spelled with global:: alone");
+		await That(result.Generated)
+			.Contains("static global::Models.Outer<T0>.Inner Probe0<T0>(T0 p0) where T0 : class => default;")
+			.Because("a nested type is spelled through its generic container");
+	}
+
+	[Test]
+	[Arguments("RequiresDynamicCode(\"emits\")")]
+	[Arguments("RequiresAssemblyFiles")]
+	public async Task WhenGetterRequiresDynamicCodeOrAssemblyFiles_ShouldNotRegisterTheType(string attribute)
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			$$"""
+			  namespace Models
+			  {
+			  	public class WithTrimmedGetter
+			  	{
+			  		public int Id { get; set; }
+			  		public string Name
+			  		{
+			  			[System.Diagnostics.CodeAnalysis.{{attribute}}]
+			  			get => "";
+			  		}
+			  	}
+			  }
+			  """,
+			Call("Expect.That(new Models.WithTrimmedGetter()).IsEquivalentTo(new Models.WithTrimmedGetter());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("WithTrimmedGetter")
+			.Because("calling such a getter would make the registration itself a warning on publish");
 	}
 
 	[Test]
@@ -828,6 +1052,76 @@ public sealed partial class TypeMetadataGeneratorTests
 		await That(result.Warnings).IsEmpty();
 		await That(result.Generated).DoesNotContain("OverridingTheSetter")
 			.Because("an override of the setter alone is read through the inherited getter, which would make the registration a trimming warning on publish");
+	}
+
+	[Test]
+	public async Task WhenInvocationDoesNotNameTheMethod_ShouldStillRegister()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Models,
+			"""
+			public delegate void Compare([aweXpect.Core.Metadata.RequiresMemberMetadata] object expected);
+
+			public class Tests
+			{
+				public void Test(System.Func<Compare> getCompare) => getCompare()(new Models.Other());
+			}
+			""",
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);")
+			.Because("an invocation that does not reveal the name of its method has to be bound to be judged");
+	}
+
+	[Test]
+	public async Task WhenMarkedArgumentIsOmitted_ShouldRegisterTheParameterType()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Models,
+			"""
+			public class Tests
+			{
+				public static void Check(int first = 0,
+					[aweXpect.Core.Metadata.RequiresMemberMetadata] Models.Other? expected = null, int last = 0) { }
+
+				public void Test()
+				{
+					Check();
+					Check(last: 1, first: 2);
+				}
+			}
+			""",
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);")
+			.Because("without an argument, the declared type of the parameter is all that reaches the comparison");
+	}
+
+	[Test]
+	public async Task WhenMarkerIsAppliedThroughANamespaceAlias_ShouldRegister()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			Models,
+			"""
+			using M = aweXpect.Core.Metadata;
+
+			public class Tests
+			{
+				public static void Check<[M::RequiresMemberMetadata] T>(T expected) { }
+
+				public void Test() => Check(new Models.Other());
+			}
+			""",
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("RegisterProperty<global::Models.Other, int>(\"Count\", o => o.Count);")
+			.Because("an alias-qualified marker carries the name of the marker as well");
 	}
 
 	[Test]
@@ -1024,6 +1318,21 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Test]
+	public async Task WhenMemberIsObsoleteWithoutError_ShouldRegisterIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public class WithOld { [System.Obsolete(\"gone\", false)] public int Old { get; set; } } }",
+			Call("Expect.That(new Models.WithOld()).IsEquivalentTo(new Models.WithOld());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Warnings).IsEmpty();
+		await That(result.Generated).Contains("RegisterProperty<global::Models.WithOld, int>(\"Old\", o => o.Old);")
+			.Because("only an obsolete member that is an error cannot be referenced");
+	}
+
+	[Test]
 	public async Task WhenMemberTypeIsNotReferenced_ShouldNotRegisterTheType()
 	{
 		MetadataReference dependency = GeneratorRunner.CompileToReference("Dependency",
@@ -1049,6 +1358,20 @@ public sealed partial class TypeMetadataGeneratorTests
 
 		await That(result.Errors).IsEmpty();
 		await That(result.Generated).IsEmpty();
+	}
+
+	[Test]
+	public async Task WhenPropertyIsAPointer_ShouldNotRegisterTheType()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"namespace Models { public unsafe class WithPointer { public int Id { get; set; } public int* Pointer => null; public delegate*<void> Function => null; } }",
+			Call("Expect.That(new Models.WithPointer()).IsEquivalentTo(new Models.WithPointer());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("WithPointer")
+			.Because("a pointer cannot be a type argument of a registration, and reflection cannot box it either");
 	}
 
 	[Test]

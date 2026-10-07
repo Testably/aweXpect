@@ -25,6 +25,18 @@ public sealed class FrameworkGeneratorTests
 		                                                                                      	public class AssertInconclusiveException(string message) : System.Exception(message);
 		                                                                                      }
 		                                                                                      """),
+		["Microsoft.VisualStudio.TestPlatform.TestFramework"] = GeneratorRunner.CompileToReference(
+			"Microsoft.VisualStudio.TestPlatform.TestFramework", """
+			                                                    namespace Microsoft.VisualStudio.TestTools.UnitTesting
+			                                                    {
+			                                                    	public class AssertFailedException : System.Exception
+			                                                    	{
+			                                                    		public AssertFailedException(string message) : base(message) { }
+			                                                    		public AssertFailedException(string message, System.Exception inner) : base(message, inner) { }
+			                                                    	}
+			                                                    	public class AssertInconclusiveException(string message) : System.Exception(message);
+			                                                    }
+			                                                    """),
 		["nunit.framework"] = GeneratorRunner.CompileToReference("nunit.framework", """
 		                                                                            namespace NUnit.Framework
 		                                                                            {
@@ -75,6 +87,7 @@ public sealed class FrameworkGeneratorTests
 	public static IEnumerable<(string, string)> AdaptersAndFrameworks =>
 	[
 		("MsTestAdapter", "MSTest.TestFramework"),
+		("MsTestAdapter", "Microsoft.VisualStudio.TestPlatform.TestFramework"),
 		("NunitAdapter", "nunit.framework"),
 		("TUnitAdapter", "TUnit.Core"),
 		("TUnitAdapter", "TUnit.Core,TUnit.Assertions"),
@@ -130,6 +143,21 @@ public sealed class FrameworkGeneratorTests
 	}
 
 	[Test]
+	public async Task WhenConsumerDeclaresTheAttributesAsPolyfills_ShouldUseThem()
+	{
+		GeneratorRunner.GeneratorResult result = Run("nunit.framework", LanguageVersion.Latest, """
+		                                                                                       namespace System.Diagnostics
+		                                                                                       {
+		                                                                                       	internal sealed class StackTraceHiddenAttribute : Attribute { }
+		                                                                                       }
+		                                                                                       """);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("[global::System.Diagnostics.StackTraceHidden]")
+			.Because("an internal polyfill in the consumer's own assembly can be applied by the generated code");
+	}
+
+	[Test]
 	[MethodDataSource(nameof(AdaptersAndFrameworks))]
 	public async Task WhenConsumerSeesTheAdapterOfAnotherAssembly_ShouldNotWarn(string adapter, string frameworks)
 	{
@@ -164,10 +192,13 @@ public sealed class FrameworkGeneratorTests
 	}
 
 	[Test]
-	public async Task WhenConsumerUsesCSharp8_AndCoreScansTheLoadedAssemblies_ShouldNotWarn()
+	[Arguments(".NETStandard,Version=v2.0")]
+	[Arguments(".NETCoreApp,Version=v7.0")]
+	[Arguments(".NETCoreApp,Version=vNext")]
+	public async Task WhenConsumerUsesCSharp8_AndCoreScansTheLoadedAssemblies_ShouldNotWarn(string targetFramework)
 	{
-		MetadataReference netStandardCore = GeneratorRunner.CompileToReference("aweXpect.Core", """
-		                                                                                        [assembly: System.Runtime.Versioning.TargetFramework(".NETStandard,Version=v2.0")]
+		MetadataReference netStandardCore = GeneratorRunner.CompileToReference("aweXpect.Core", $$"""
+		                                                                                        [assembly: System.Runtime.Versioning.TargetFramework("{{targetFramework}}")]
 		                                                                                        namespace aweXpect.Core.Adapters
 		                                                                                        {
 		                                                                                        	public interface ITestFrameworkAdapter { }
@@ -183,7 +214,7 @@ public sealed class FrameworkGeneratorTests
 
 		await That(result.Generated).Contains("class NunitAdapter ");
 		await That(result.GeneratorDiagnostics).IsEmpty()
-			.Because("a consumer below .NET 8 resolves the .NET Standard build of aweXpect.Core, which still finds the adapter by scanning the loaded assemblies");
+			.Because("only a build of aweXpect.Core recognised as .NET 8 or later no longer finds the adapter by scanning the loaded assemblies");
 	}
 
 	[Test]
@@ -231,6 +262,44 @@ public sealed class FrameworkGeneratorTests
 		await That(result.GeneratorDiagnostics).IsEmpty();
 		await That(result.Generated).Contains(
 			"global::aweXpect.Core.Adapters.TestFrameworkRegistry.Register(new NunitAdapter(), overwrite: false);");
+	}
+
+	[Test]
+	public async Task WhenCoreCannotRegisterTheAdapter_ShouldNotRegisterIt()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(new FrameworkGenerator(),
+		[
+			"""
+			namespace aweXpect.Core.Adapters
+			{
+				public interface ITestFrameworkAdapter { }
+				public class TestFrameworkRegistry
+				{
+					public void Register(ITestFrameworkAdapter testFrameworkAdapter, bool overwrite) { }
+					internal static void Register(ITestFrameworkAdapter testFrameworkAdapter, bool overwrite, bool other) { }
+					public static void Register(ITestFrameworkAdapter testFrameworkAdapter) { }
+					public static void Register(ITestFrameworkAdapter testFrameworkAdapter, int priority) { }
+				}
+			}
+			""",
+		], false, LanguageVersion.Latest, References("nunit.framework"));
+
+		await That(result.GeneratorDiagnostics).IsEmpty();
+		await That(result.Generated).Contains("class NunitAdapter ").And
+			.DoesNotContain("ModuleInitializer")
+			.Because("only a public static Register(adapter, bool overwrite) can be called by the registration");
+	}
+
+	[Test]
+	public async Task WhenCoreIsNotReferenced_ShouldNotRegisterTheAdapter()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(new FrameworkGenerator(),
+			["public class Foo { }",], false, LanguageVersion.Latest, References("nunit.framework"));
+
+		await That(result.GeneratorDiagnostics).IsEmpty();
+		await That(result.Generated).Contains("class NunitAdapter ").And
+			.DoesNotContain("ModuleInitializer")
+			.Because("there is no registry to register the adapter with");
 	}
 
 	[Test]
