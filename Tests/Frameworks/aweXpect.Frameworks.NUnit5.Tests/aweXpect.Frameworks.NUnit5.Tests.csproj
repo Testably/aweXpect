@@ -5,7 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="NUnit" VersionOverride="[4.6.1,5.0.0)"/>
+		<PackageReference Include="NUnit"/>
 		<PackageReference Include="NUnit3TestAdapter">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

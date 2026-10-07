@@ -68,7 +68,7 @@ Always test basic functionality after making changes:
 
 ### Testing Framework Support
 The library supports multiple testing frameworks. Test projects are in `Tests/Frameworks/`:
-- **NUnit3/NUnit4**: `aweXpect.Frameworks.NUnit*.Tests`
+- **NUnit3/NUnit4/NUnit5**: `aweXpect.Frameworks.NUnit*.Tests`
 - **xUnit2/xUnit3**: `aweXpect.Frameworks.XUnit*.Tests`
 - **MSTest**: `aweXpect.Frameworks.MsTest.Tests`
 - **TUnit**: `aweXpect.Frameworks.TUnit.Tests`
