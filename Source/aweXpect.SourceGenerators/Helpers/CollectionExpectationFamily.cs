@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Globalization;
+using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 
 namespace aweXpect.SourceGenerators.Helpers;
@@ -580,7 +581,7 @@ internal sealed record CollectionExpectationFamily(
 		if (priority != 0)
 		{
 			header +=
-				$"\n\t[global::System.Runtime.CompilerServices.OverloadResolutionPriority({priority})]";
+				$"\n\t[global::System.Runtime.CompilerServices.OverloadResolutionPriority({priority.ToString(CultureInfo.InvariantCulture)})]";
 		}
 
 		return header;
