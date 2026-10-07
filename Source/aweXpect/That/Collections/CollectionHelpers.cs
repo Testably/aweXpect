@@ -71,14 +71,18 @@ internal static class CollectionHelpers
 	///     Adds the "Expected" context, listing the <paramref name="expectedItems" /> materialized from the
 	///     <paramref name="expected" /> collection.
 	/// </summary>
+	/// <remarks>
+	///     The count is read as code of the caller, so that an expected collection whose count throws gets no context
+	///     instead of aborting the failure message.
+	/// </remarks>
 	internal static void AddExpectedItemsContext<TItem>(this ResultContextCollector contexts,
 		IEnumerable<TItem> expected, ICollection<TItem> expectedItems)
 		=> contexts.Add(new ResultContext.SyncCallback("Expected",
 			() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
 			{
-				ICollection<TItem> coll => coll.Count,
-				IReadOnlyCollection<TItem> coll => coll.Count,
-				ICollection coll => coll.Count,
+				ICollection<TItem> coll => UserCode.Invoke(static collection => collection.Count, coll),
+				IReadOnlyCollection<TItem> coll => UserCode.Invoke(static collection => collection.Count, coll),
+				ICollection coll => UserCode.Invoke(static collection => collection.Count, coll),
 				ICountable countable => countable.Count,
 				_ => null,
 			})),
@@ -86,12 +90,12 @@ internal static class CollectionHelpers
 
 	/// <remarks>
 	///     Only the first items are listed, so an endless source of <see langword="null" /> items must not be searched
-	///     to its end. An exception of the source is ignored here, as the formatter enumerates the same items and
-	///     renders it.
+	///     to its end, unless it <paramref name="knowsItsCount" />. An exception of the source is ignored here, as the
+	///     formatter enumerates the same items and renders it.
 	/// </remarks>
-	private static Type GetItemTypeOfListedItems(IEnumerable value)
+	private static Type GetItemTypeOfListedItems(IEnumerable value, bool knowsItsCount)
 	{
-		IEnumerable<object?> items = value is ICollection
+		IEnumerable<object?> items = knowsItsCount
 			? value.Cast<object?>()
 			: value.Cast<object?>().Take(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
 		try
@@ -193,7 +197,8 @@ internal static class CollectionHelpers
 			ICountable countable => countable.Count,
 			_ => value.GetUntypedCount(),
 		};
-		return Formatter.Format(value, GetItemTypeOfListedItems(value).GetFormattingOption(totalCount, totalCount));
+		return Formatter.Format(value,
+			GetItemTypeOfListedItems(value, totalCount is not null).GetFormattingOption(totalCount, totalCount));
 	}
 
 	/// <summary>

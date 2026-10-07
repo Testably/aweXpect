@@ -335,6 +335,22 @@ public partial class ValueFormatters
 		}
 
 		[Test]
+		public async Task WhenCountIsNotKnown_AsObject_ShouldNotEnumerateFurtherThanNeeded()
+		{
+			int enumeratedItems = 0;
+			IEnumerable<int> value = Enumerable.Range(1, 25).Select(x =>
+			{
+				enumeratedItems++;
+				return x;
+			}).Where(_ => true);
+
+			string result = Formatter.Format((object?)value);
+
+			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and maybe more)]");
+			await That(enumeratedItems).IsEqualTo(11);
+		}
+
+		[Test]
 		public async Task WhenCountIsNotKnown_WithLineBreaks_ShouldSayOnTheLastLineThatMoreItemsMayFollow()
 		{
 			IEnumerable<int> value = Lazy(Enumerable.Range(1, 12));
@@ -518,6 +534,43 @@ public partial class ValueFormatters
 		}
 
 		[Test]
+		public async Task WhenGenericCollection_AsObject_ShouldNameTheNumberOfRemainingItems()
+		{
+			HashSet<int> value = [..Enumerable.Range(1, 12),];
+			StringBuilder sb = new();
+
+			string result = Formatter.Format((object?)value);
+			Formatter.Format(sb, (IEnumerable)value);
+
+			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 2 more)]")
+				.Because("a collection that knows its count is formatted alike however it is passed");
+			await That(sb.ToString()).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 2 more)]");
+		}
+
+		[Test]
+		public async Task WhenGenericCollection_AsObject_WhenCountThrows_ShouldSayThatMoreItemsMayFollow()
+		{
+			ThrowingCountGenericCollection value = new(Enumerable.Range(1, 12).ToArray());
+
+			string result = Formatter.Format((object?)value);
+
+			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and maybe more)]");
+		}
+
+		[Test]
+		public async Task WhenGenericCollectionOfReferenceTypes_AsObject_ShouldNameTheNumberOfRemainingItems()
+		{
+			HashSet<string> value = [..Enumerable.Range(1, 12).Select(x => $"{x}"),];
+
+			string result = Formatter.Format((object?)value);
+
+			await That(result).IsEqualTo(
+				"""
+				["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", (… and 2 more)]
+				""");
+		}
+
+		[Test]
 		public async Task WhenGenericCollection_WhenCountThrows_ShouldListTheItems()
 		{
 			ThrowingCountGenericCollection value = new([1, 2, 3,]);
@@ -585,6 +638,30 @@ public partial class ValueFormatters
 			string result = Formatter.Format(value);
 
 			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 3 more)]");
+		}
+
+		[Test]
+		public async Task WhenReadOnlyCollection_AsObject_ShouldNameTheNumberOfRemainingItems()
+		{
+			ReadOnlyCollection value = new(Enumerable.Range(1, 13).ToArray());
+			StringBuilder sb = new();
+
+			string result = Formatter.Format((object?)value);
+			Formatter.Format(sb, (IEnumerable)value);
+
+			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 3 more)]")
+				.Because("a collection that knows its count is formatted alike however it is passed");
+			await That(sb.ToString()).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 3 more)]");
+		}
+
+		[Test]
+		public async Task WhenReadOnlyCollection_AsObject_WhenCountThrows_ShouldSayThatMoreItemsMayFollow()
+		{
+			ThrowingCountReadOnlyCollection value = new(Enumerable.Range(1, 12).ToArray());
+
+			string result = Formatter.Format((object?)value);
+
+			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and maybe more)]");
 		}
 
 		[Test]

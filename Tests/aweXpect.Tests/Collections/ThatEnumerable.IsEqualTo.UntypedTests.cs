@@ -1,7 +1,9 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using aweXpect.Core;
 using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
+using aweXpect.Customization;
 using aweXpect.Results;
 
 namespace aweXpect.Tests;
@@ -139,6 +141,32 @@ public sealed partial class ThatEnumerable
 					             is equal to collection expected in order,
 					             but it was <null>
 					             """);
+			}
+
+			[Test]
+			public async Task WhenTheFirstListedItemsAreNull_ShouldLayOutTheCollectionByTheTypeOfALaterItem()
+			{
+				IEnumerable subject = new ReadOnlyNullableItems([null, null, 1,]);
+				IEnumerable? expected = null;
+
+				async Task Act()
+				{
+					using (Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(2))
+					{
+						await That(subject).IsEqualTo(expected);
+					}
+				}
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but the expected collection was <null>
+
+					             Collection:
+					             [<null>, <null>, (… and 1 more)]
+					             """)
+					.Because("all items of a collection that knows its count are searched, like the ones of a list");
 			}
 
 			[Test]
@@ -969,6 +997,13 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).DoesNotThrow()
 					.Because("the items are compared, although the collections are different instances");
+			}
+
+			private sealed class ReadOnlyNullableItems(IReadOnlyList<int?> items) : IReadOnlyCollection<int?>
+			{
+				public int Count => items.Count;
+				public IEnumerator<int?> GetEnumerator() => items.GetEnumerator();
+				IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 			}
 		}
 	}
