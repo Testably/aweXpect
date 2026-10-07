@@ -49,20 +49,7 @@ public static partial class ThatString
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Active))
-			{
-				stringBuilder.Append("with lines");
-			}
-			else if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.Append("lines are");
-			}
-			else
-			{
-				stringBuilder.Append(Grammars.Verb("has lines", "have lines"));
-			}
-		}
+			=> stringBuilder.Append(Grammars.Verb("has lines", "have lines"));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -71,20 +58,7 @@ public static partial class ThatString
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-		{
-			if (Grammars.HasFlag(ExpectationGrammars.Active))
-			{
-				stringBuilder.Append("without lines");
-			}
-			else if (Grammars.HasFlag(ExpectationGrammars.Nested))
-			{
-				stringBuilder.Append("lines are not");
-			}
-			else
-			{
-				stringBuilder.Append(Grammars.Verb("does not have lines", "do not have lines"));
-			}
-		}
+			=> stringBuilder.Append(Grammars.Verb("does not have lines", "do not have lines"));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
