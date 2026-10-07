@@ -107,6 +107,16 @@ public sealed partial class ThatString
 			}
 
 			[Test]
+			public async Task WhenStringIsParsable_ShouldReturnTheNotNullSubject()
+			{
+				string? subject = "42";
+
+				string result = await That(subject).IsParsableInto<int>();
+
+				await That(result).IsSameAs(subject);
+			}
+
+			[Test]
 			public async Task WhenStringIsParsable_ShouldSucceed()
 			{
 				string subject = "42";

@@ -11,7 +11,7 @@ public class IsParsableResult<TType>(
 	ExpectationBuilder expectationBuilder,
 	IThat<string?> subject,
 	IFormatProvider? formatProvider)
-	: AndOrResult<string?, IThat<string?>>(expectationBuilder, subject)
+	: AndOrResult<string, IThat<string?>>(expectationBuilder, subject)
 	where TType : IParsable<TType>
 {
 	/// <summary>

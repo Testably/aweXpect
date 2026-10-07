@@ -166,6 +166,10 @@ public sealed class GuaranteesNotNullTests
 	[Arguments(nameof(HandingOutANullableString), false)]
 	[Arguments(nameof(HandingOutANotNullableInt), true)]
 	[Arguments(nameof(HandingOutANullableIntFromItsBase), false)]
+	[Arguments(nameof(HandingOutANotNullableStringFromItsBase), true)]
+	[Arguments(nameof(HandingOutANullableStringFromItsBase), false)]
+	[Arguments(nameof(HandingOutANotNullableStringThroughItsBase), true)]
+	[Arguments(nameof(HandingOutANullableStringThroughItsBase), false)]
 	public async Task ShouldDetectANotNullableSubject(string methodName, bool expected)
 	{
 		MethodInfo method = typeof(GuaranteesNotNullTests)
@@ -175,6 +179,27 @@ public sealed class GuaranteesNotNullTests
 
 		await That(result).IsEqualTo(expected)
 			.Because("the check for unmarked expectations must not silently degrade into one that finds nothing");
+	}
+
+	[Test]
+	[Arguments(nameof(HandingOutANullableString), true)]
+	[Arguments(nameof(HandingOutANotNullableString), false)]
+	[Arguments(nameof(HandingOutANullableIntFromItsBase), true)]
+	[Arguments(nameof(HandingOutANotNullableInt), false)]
+	[Arguments(nameof(HandingOutANullableStringFromItsBase), true)]
+	[Arguments(nameof(HandingOutANotNullableStringFromItsBase), false)]
+	[Arguments(nameof(HandingOutANullableStringThroughItsBase), true)]
+	[Arguments(nameof(HandingOutANotNullableStringThroughItsBase), false)]
+	[Arguments(nameof(HandingOutAStringItsBaseAnnotates), true)]
+	public async Task ShouldDetectANullableSubject(string methodName, bool expected)
+	{
+		MethodInfo method = typeof(GuaranteesNotNullTests)
+			.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static)!;
+
+		bool result = HandsOutANullableSubject(method);
+
+		await That(result).IsEqualTo(expected)
+			.Because("the check for marked expectations must not silently degrade into one that finds nothing");
 	}
 
 	[Test]
@@ -583,22 +608,24 @@ public sealed class GuaranteesNotNullTests
 			return false;
 		}
 
-		byte[] parameterFlags = GetNullableFlags(method.GetParameters()[0], method);
+		byte[] parameterFlags = GetNullableFlags(method.GetParameters()[0].GetCustomAttributesData(), method);
 		bool isNullableSubject = Nullable.GetUnderlyingType(subjectType) is not null ||
 		                         GetFlag(parameterFlags, 1) == 2;
 		Type nonNullableSubjectType = Nullable.GetUnderlyingType(subjectType) ?? subjectType;
 		return isNullableSubject &&
-		       Names(method.ReturnType, GetNullableFlags(method.ReturnParameter, method), 0,
+		       Names(method.ReturnType, method.ReturnType,
+			       GetNullableFlags(method.ReturnParameter.GetCustomAttributesData(), method), 0,
 			       nonNullableSubjectType, asNullable, []);
 	}
 
 	/// <remarks>
 	///     The base types are walked as well, because a result can fix the awaited type in its base class, like
 	///     <c>AndOrResult&lt;TType?, TThat, TSelf&gt;</c>. A base names the result again as <c>TSelf</c>, so each base
-	///     is walked only once. The flags of the declared type do not describe a base type, so only a nullable struct
-	///     is detected there.
+	///     is walked only once. The flags of a base type are stored on the type that derives from it and follow the
+	///     base type as it is written there, so <paramref name="declared" /> counts the slots, while
+	///     <paramref name="type" /> has the type arguments of the result filled in.
 	/// </remarks>
-	private static bool Names(Type type, byte[] flags, int slot, Type subjectType, bool asNullable,
+	private static bool Names(Type type, Type declared, byte[] flags, int slot, Type subjectType, bool asNullable,
 		HashSet<Type> visited)
 	{
 		if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IThat<>))
@@ -611,36 +638,55 @@ public sealed class GuaranteesNotNullTests
 			return asNullable && underlyingType == subjectType;
 		}
 
-		if (type == subjectType && TakesASlot(type))
+		if (type == subjectType && TakesASlot(type) && TakesASlot(declared))
 		{
-			return GetFlag(flags, slot) == (asNullable ? 2 : 1);
+			byte flag = GetFlag(flags, slot);
+			if (declared.IsGenericParameter && declared != type)
+			{
+				// A type parameter that a base type passes on is annotated where the result is named, so the base
+				// type only decides when it annotates the type parameter itself.
+				return asNullable && flag == 2;
+			}
+
+			return flag == (asNullable ? 2 : 1);
 		}
 
-		if (type.IsGenericParameter)
+		if (declared.IsGenericParameter)
 		{
 			return false;
 		}
 
-		return (type.IsGenericType && NamesTypeArgument(type, flags, slot, subjectType, asNullable, visited)) ||
-		       (visited.Add(type) && type.BaseType is { } baseType &&
-		        Names(baseType, [0,], 0, subjectType, asNullable, visited));
+		if (type.IsGenericType && NamesTypeArgument(type, declared, flags, slot, subjectType, asNullable, visited))
+		{
+			return true;
+		}
+
+		if (!visited.Add(type) || type.BaseType is not { } baseType)
+		{
+			return false;
+		}
+
+		Type definition = type.IsGenericType ? type.GetGenericTypeDefinition() : type;
+		return Names(baseType, definition.BaseType!,
+			GetNullableFlags(definition.GetCustomAttributesData(), definition), 0, subjectType, asNullable, visited);
 	}
 
-	private static bool NamesTypeArgument(Type type, byte[] flags, int slot, Type subjectType, bool asNullable,
-		HashSet<Type> visited)
+	private static bool NamesTypeArgument(Type type, Type declared, byte[] flags, int slot, Type subjectType,
+		bool asNullable, HashSet<Type> visited)
 	{
-		int next = slot + (TakesASlot(type) ? 1 : 0);
+		int next = slot + (TakesASlot(declared) ? 1 : 0);
 		Type[] parameters = type.GetGenericTypeDefinition().GetGenericArguments();
 		Type[] arguments = type.GetGenericArguments();
+		Type[] declaredArguments = declared.GetGenericArguments();
 		for (int index = 0; index < arguments.Length; index++)
 		{
 			if (!IsInputValue(type, parameters[index]) &&
-			    Names(arguments[index], flags, next, subjectType, asNullable, visited))
+			    Names(arguments[index], declaredArguments[index], flags, next, subjectType, asNullable, visited))
 			{
 				return true;
 			}
 
-			next += CountSlots(arguments[index]);
+			next += CountSlots(declaredArguments[index]);
 		}
 
 		return false;
@@ -675,9 +721,9 @@ public sealed class GuaranteesNotNullTests
 	private static byte GetFlag(byte[] flags, int slot)
 		=> flags.Length == 1 ? flags[0] : slot < flags.Length ? flags[slot] : (byte)0;
 
-	private static byte[] GetNullableFlags(ParameterInfo parameter, MethodInfo method)
+	private static byte[] GetNullableFlags(IList<CustomAttributeData> attributes, MemberInfo declaredIn)
 	{
-		CustomAttributeData? nullable = parameter.GetCustomAttributesData().FirstOrDefault(attribute
+		CustomAttributeData? nullable = attributes.FirstOrDefault(attribute
 			=> attribute.AttributeType.FullName == "System.Runtime.CompilerServices.NullableAttribute");
 		if (nullable is not null)
 		{
@@ -687,7 +733,7 @@ public sealed class GuaranteesNotNullTests
 				: ((IEnumerable<CustomAttributeTypedArgument>)value!).Select(argument => (byte)argument.Value!).ToArray();
 		}
 
-		for (MemberInfo? member = method; member is not null; member = member.DeclaringType)
+		for (MemberInfo? member = declaredIn; member is not null; member = member.DeclaringType)
 		{
 			CustomAttributeData? context = member.GetCustomAttributesData().FirstOrDefault(attribute
 				=> attribute.AttributeType.FullName == "System.Runtime.CompilerServices.NullableContextAttribute");
@@ -1135,6 +1181,37 @@ public sealed class GuaranteesNotNullTests
 	private static NullableNumberToleranceResult<int, IThat<int?>> HandingOutANullableIntFromItsBase(
 		IThat<int?> subject)
 		=> throw new NotSupportedException();
+
+	private static NullableStringFromItsBase HandingOutANullableStringFromItsBase(IThat<string?> subject)
+		=> throw new NotSupportedException();
+
+	private static NotNullableStringFromItsBase HandingOutANotNullableStringFromItsBase(IThat<string?> subject)
+		=> throw new NotSupportedException();
+
+	private static PassingOnToItsBase<string?, IThat<string?>> HandingOutANullableStringThroughItsBase(
+		IThat<string?> subject)
+		=> throw new NotSupportedException();
+
+	private static PassingOnToItsBase<string, IThat<string?>> HandingOutANotNullableStringThroughItsBase(
+		IThat<string?> subject)
+		=> throw new NotSupportedException();
+
+	private static AnnotatedInItsBase<string, IThat<string?>> HandingOutAStringItsBaseAnnotates(
+		IThat<string?> subject)
+		=> throw new NotSupportedException();
+
+	private sealed class NullableStringFromItsBase(ExpectationBuilder expectationBuilder, IThat<string?> subject)
+		: AndOrResult<string?, IThat<string?>>(expectationBuilder, subject);
+
+	private sealed class NotNullableStringFromItsBase(ExpectationBuilder expectationBuilder, IThat<string?> subject)
+		: AndOrResult<string, IThat<string?>>(expectationBuilder, subject);
+
+	private sealed class PassingOnToItsBase<TType, TThat>(ExpectationBuilder expectationBuilder, TThat subject)
+		: AndOrResult<TType, TThat>(expectationBuilder, subject);
+
+	private sealed class AnnotatedInItsBase<TType, TThat>(ExpectationBuilder expectationBuilder, TThat subject)
+		: AndOrResult<TType?, TThat>(expectationBuilder, subject)
+		where TType : class;
 
 	private sealed class Observation(
 		string identifier,
