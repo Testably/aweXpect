@@ -84,7 +84,7 @@ public sealed class EquivalencyExpectationBuilderTests
 	public async Task IsMetBy_WhenValueIsNullForAReferenceType_ShouldEvaluateTheExpectationsAndDescribeNull()
 	{
 		It.IsEquivalent<string> isEquivalent = It.Is<string>();
-		isEquivalent.That.IsEmpty();
+		_ = isEquivalent.That.IsEmpty();
 		EquivalencyExpectationBuilder sut =
 			(EquivalencyExpectationBuilder)((IExpectThat<string>)isEquivalent).ExpectationBuilder;
 		StringBuilder expectation = new();
