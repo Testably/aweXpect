@@ -205,8 +205,8 @@ internal class WhichNode<TSource, TMember> : Node
 	public override bool Equals(object? obj) => obj is WhichNode<TSource, TMember> other && Equals(other);
 
 	private bool Equals(WhichNode<TSource, TMember> other) =>
-		_parent?.Equals(other._parent) != false &&
-		_inner?.Equals(other._inner) != false;
+		Equals(_parent, other._parent) &&
+		Equals(_inner, other._inner);
 
 	/// <inheritdoc cref="object.GetHashCode()" />
 	public override int GetHashCode() => _parent?.GetHashCode() ?? 17;

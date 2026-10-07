@@ -713,6 +713,26 @@ public class ExpectationNodeTests
 	}
 
 	[Test]
+	[Arguments(false)]
+	[Arguments(true)]
+	public async Task Equals_IfOnlyOneHasAnInnerNode_ShouldBeFalseBothWays(bool withConstraint)
+	{
+		ExpectationNode node1 = new();
+		ExpectationNode node2 = new();
+		if (withConstraint)
+		{
+			node1.AddConstraint(new DummyConstraint("foo"));
+			node2.AddConstraint(new DummyConstraint("foo"));
+		}
+
+		node2.AddMapping(new MappingNode<string, int, int>(
+			MemberAccessor<string, int>.FromFunc(s => s.Length, " with length ")));
+
+		await That(node1.Equals(node2)).IsFalse();
+		await That(node2.Equals(node1)).IsFalse();
+	}
+
+	[Test]
 	public async Task Equals_WhenOtherIsDifferentNode_ShouldBeFalse()
 	{
 		ExpectationNode node = new();
@@ -724,6 +744,17 @@ public class ExpectationNodeTests
 	}
 
 	[Test]
+	public async Task Equals_WhenOtherIsMappingNode_ShouldBeFalseBothWays()
+	{
+		ExpectationNode node = new();
+		object other = new MappingNode<string, int, int>(
+			MemberAccessor<string, int>.FromFunc(s => s.Length, " with length "));
+
+		await That(node.Equals(other)).IsFalse();
+		await That(other.Equals(node)).IsFalse();
+	}
+
+	[Test]
 	public async Task Equals_WhenOtherIsNull_ShouldBeFalse()
 	{
 		ExpectationNode node = new();
@@ -731,6 +762,50 @@ public class ExpectationNodeTests
 		bool result = node.Equals(null);
 
 		await That(result).IsFalse();
+	}
+
+	[Test]
+	public async Task GetHashCode_IfConstraintsAndInnerNodesAreSame_ShouldBeEqual()
+	{
+		ExpectationNode node1 = new();
+		node1.AddConstraint(new DummyConstraint("foo"));
+		node1.AddMapping(new MappingNode<string, int, int>(
+			MemberAccessor<string, int>.FromFunc(s => s.Length, " with length ")));
+		ExpectationNode node2 = new();
+		node2.AddConstraint(new DummyConstraint("foo"));
+		node2.AddMapping(new MappingNode<string, int, int>(
+			MemberAccessor<string, int>.FromFunc(s => s.Length, " with length ")));
+
+		await That(node1.Equals(node2)).IsTrue();
+		await That(node1.GetHashCode()).IsEqualTo(node2.GetHashCode());
+	}
+
+	[Test]
+	public async Task GetHashCode_IfConstraintsAreSameButInnerNodesAreDifferent_ShouldNotBeEqual()
+	{
+		ExpectationNode node1 = new();
+		node1.AddConstraint(new DummyConstraint("foo"));
+		node1.AddMapping(new MappingNode<string, int, int>(
+			MemberAccessor<string, int>.FromFunc(s => s.Length, " with length1 ")));
+		ExpectationNode node2 = new();
+		node2.AddConstraint(new DummyConstraint("foo"));
+		node2.AddMapping(new MappingNode<string, int, int>(
+			MemberAccessor<string, int>.FromFunc(s => s.Length, " with length2 ")));
+
+		await That(node1.Equals(node2)).IsFalse();
+		await That(node1.GetHashCode()).IsNotEqualTo(node2.GetHashCode());
+	}
+
+	[Test]
+	public async Task GetHashCode_IfConstraintsOfDifferentTypesHaveTheSameExpectation_ShouldBeEqual()
+	{
+		ExpectationNode node1 = new();
+		node1.AddConstraint(new DummyConstraint("foo"));
+		ExpectationNode node2 = new();
+		node2.AddConstraint(new DummyConstraint<int>(_ => true, "foo"));
+
+		await That(node1.Equals(node2)).IsTrue();
+		await That(node1.GetHashCode()).IsEqualTo(node2.GetHashCode());
 	}
 
 	[Test]
