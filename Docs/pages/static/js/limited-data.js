@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "d9d72aca14d3b0b8fb07efb789ccb5df2d6b143a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
-        "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
-      },
-      {
         "sha": "f5b89dba50c242d92d5f55918993957afb7adb58",
         "author": "Valentin Breu\u00DF",
         "date": "Thu Sep 24 06:42:28 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
         "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
+      },
+      {
+        "sha": "82b90d2ea7e6b0152df0739bbbee5fdaada69a39",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:50:55 2026 \u002B0200",
+        "message": "ci: identify the pull request of an analysed run by the event instead of its artifacts (#1688)"
       }
     ],
     "labels": [
-      "d9d72aca",
       "f5b89dba",
       "14b53a3d",
       "1e0600a1",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "0c874997",
       "0d6d920b",
       "c8e40f00",
-      "a8e6cbb0"
+      "a8e6cbb0",
+      "82b90d2e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          366.88434807459515,
           325.7155992984772,
           246.4557346979777,
           334.8974219640096,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           128.28232489029565,
           121.58482841082981,
           134.46996122996012,
-          147.68552899360657
+          147.68552899360657,
+          144.25693946225303
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -420,7 +420,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          936,
           936,
           912,
           912,
@@ -469,6 +468,7 @@ window.BENCHMARK_DATA = {
           408,
           408,
           416,
+          416,
           416
         ],
         "borderColor": "#63A2AC",
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          247.6801100730896,
           232.2529143333435,
           203.37873796621957,
           264.95683066050213,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           251.46556717554728,
           234.66731909605173,
           272.9088138171605,
-          282.8804441860744
+          282.8804441860744,
+          246.71562458674114
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -622,7 +622,8 @@ window.BENCHMARK_DATA = {
           220.66658164773668,
           202.08744321550643,
           217.5970669269562,
-          222.10297597249348
+          222.10297597249348,
+          205.23426955540975
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -634,6 +635,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -662,12 +664,6 @@ window.BENCHMARK_DATA = {
   },
   "Equivalency": {
     "commits": [
-      {
-        "sha": "d9d72aca14d3b0b8fb07efb789ccb5df2d6b143a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
-        "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
-      },
       {
         "sha": "f5b89dba50c242d92d5f55918993957afb7adb58",
         "author": "Valentin Breu\u00DF",
@@ -961,10 +957,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
         "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
+      },
+      {
+        "sha": "82b90d2ea7e6b0152df0739bbbee5fdaada69a39",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:50:55 2026 \u002B0200",
+        "message": "ci: identify the pull request of an analysed run by the event instead of its artifacts (#1688)"
       }
     ],
     "labels": [
-      "d9d72aca",
       "f5b89dba",
       "14b53a3d",
       "1e0600a1",
@@ -1013,14 +1014,14 @@ window.BENCHMARK_DATA = {
       "0c874997",
       "0d6d920b",
       "c8e40f00",
-      "a8e6cbb0"
+      "a8e6cbb0",
+      "82b90d2e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          402744.52099609375,
           426699.6129557292,
           331180.2082519531,
           448683.5196614583,
@@ -1069,7 +1070,8 @@ window.BENCHMARK_DATA = {
           109018.22732309195,
           111007.1862548828,
           109514.63397216797,
-          111255.78554861886
+          111255.78554861886,
+          108925.5356257512
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1081,7 +1083,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          628408,
           628408,
           628384,
           628384,
@@ -1130,6 +1131,7 @@ window.BENCHMARK_DATA = {
           16288,
           16288,
           16296,
+          16296,
           16296
         ],
         "borderColor": "#63A2AC",
@@ -1145,7 +1147,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2575607.152604167,
           2561419.760216346,
           1912716.6604166667,
           2641279.505301339,
@@ -1194,7 +1195,8 @@ window.BENCHMARK_DATA = {
           2702084.5614583334,
           2611354.097395833,
           2800834.65234375,
-          2890043.576622596
+          2890043.576622596,
+          2723789.0455729165
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1206,7 +1208,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841651,
           4841647,
           4841651,
@@ -1255,6 +1256,7 @@ window.BENCHMARK_DATA = {
           4841651,
           4841651,
           4841651,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -1283,7 +1285,8 @@ window.BENCHMARK_DATA = {
           209126.07451171876,
           216446.14325358073,
           206967.84188406807,
-          226235.38511439733
+          226235.38511439733,
+          203647.48078264509
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1295,6 +1298,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -1323,12 +1327,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "d9d72aca14d3b0b8fb07efb789ccb5df2d6b143a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
-        "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
-      },
       {
         "sha": "f5b89dba50c242d92d5f55918993957afb7adb58",
         "author": "Valentin Breu\u00DF",
@@ -1622,10 +1620,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
         "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
+      },
+      {
+        "sha": "82b90d2ea7e6b0152df0739bbbee5fdaada69a39",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:50:55 2026 \u002B0200",
+        "message": "ci: identify the pull request of an analysed run by the event instead of its artifacts (#1688)"
       }
     ],
     "labels": [
-      "d9d72aca",
       "f5b89dba",
       "14b53a3d",
       "1e0600a1",
@@ -1674,14 +1677,14 @@ window.BENCHMARK_DATA = {
       "0c874997",
       "0d6d920b",
       "c8e40f00",
-      "a8e6cbb0"
+      "a8e6cbb0",
+      "82b90d2e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          614.0945189339774,
           606.9750425338746,
           404.67807575372547,
           565.4947686876569,
@@ -1730,7 +1733,8 @@ window.BENCHMARK_DATA = {
           297.2087939807347,
           268.26614558696747,
           358.6183090209961,
-          409.96627289908275
+          409.96627289908275,
+          348.68909851710004
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1742,7 +1746,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1616,
           1616,
           1592,
           1592,
@@ -1791,6 +1794,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           608,
+          608,
           608
         ],
         "borderColor": "#63A2AC",
@@ -1806,7 +1810,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          498.2847960472107,
           467.1022602830614,
           371.5217943925124,
           490.3035710016886,
@@ -1855,7 +1858,8 @@ window.BENCHMARK_DATA = {
           537.5275234222412,
           471.8293621381124,
           518.8186419169108,
-          551.0246493021647
+          551.0246493021647,
+          497.8183211546678
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1944,7 +1948,8 @@ window.BENCHMARK_DATA = {
           402.64622151056926,
           383.92930589403426,
           425.4470073064168,
-          443.51555728912354
+          443.51555728912354,
+          392.2233221371969
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1956,6 +1961,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -1984,12 +1990,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "d9d72aca14d3b0b8fb07efb789ccb5df2d6b143a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
-        "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
-      },
       {
         "sha": "f5b89dba50c242d92d5f55918993957afb7adb58",
         "author": "Valentin Breu\u00DF",
@@ -2283,10 +2283,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
         "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
+      },
+      {
+        "sha": "82b90d2ea7e6b0152df0739bbbee5fdaada69a39",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:50:55 2026 \u002B0200",
+        "message": "ci: identify the pull request of an analysed run by the event instead of its artifacts (#1688)"
       }
     ],
     "labels": [
-      "d9d72aca",
       "f5b89dba",
       "14b53a3d",
       "1e0600a1",
@@ -2335,14 +2340,14 @@ window.BENCHMARK_DATA = {
       "0c874997",
       "0d6d920b",
       "c8e40f00",
-      "a8e6cbb0"
+      "a8e6cbb0",
+      "82b90d2e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          344.52720368703206,
           329.71701486294086,
           263.3782348950704,
           345.38215919641345,
@@ -2391,7 +2396,8 @@ window.BENCHMARK_DATA = {
           148.91186265945436,
           144.04427870114645,
           163.36314128239948,
-          166.96671911875407
+          166.96671911875407,
+          152.45862007141113
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2403,7 +2409,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1104,
           1104,
           1080,
           1080,
@@ -2452,6 +2457,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           520,
+          520,
           520
         ],
         "borderColor": "#63A2AC",
@@ -2467,7 +2473,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          243.47133977596576,
           242.38292394365584,
           188.00750862635098,
           257.240458215986,
@@ -2516,7 +2521,8 @@ window.BENCHMARK_DATA = {
           260.5635449545724,
           238.43588604245866,
           289.0748630932399,
-          298.81401615142823
+          298.81401615142823,
+          269.2316794054849
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2605,7 +2611,8 @@ window.BENCHMARK_DATA = {
           245.37986879348756,
           232.59543402989706,
           266.55420713424684,
-          276.0447735468546
+          276.0447735468546,
+          249.01944433848064
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2617,6 +2624,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -2645,12 +2653,6 @@ window.BENCHMARK_DATA = {
   },
   "String": {
     "commits": [
-      {
-        "sha": "d9d72aca14d3b0b8fb07efb789ccb5df2d6b143a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
-        "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
-      },
       {
         "sha": "f5b89dba50c242d92d5f55918993957afb7adb58",
         "author": "Valentin Breu\u00DF",
@@ -2944,10 +2946,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
         "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
+      },
+      {
+        "sha": "82b90d2ea7e6b0152df0739bbbee5fdaada69a39",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:50:55 2026 \u002B0200",
+        "message": "ci: identify the pull request of an analysed run by the event instead of its artifacts (#1688)"
       }
     ],
     "labels": [
-      "d9d72aca",
       "f5b89dba",
       "14b53a3d",
       "1e0600a1",
@@ -2996,14 +3003,14 @@ window.BENCHMARK_DATA = {
       "0c874997",
       "0d6d920b",
       "c8e40f00",
-      "a8e6cbb0"
+      "a8e6cbb0",
+      "82b90d2e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          625.3137149175008,
           620.1444105148315,
           476.55130367279054,
           632.7823322931926,
@@ -3052,7 +3059,8 @@ window.BENCHMARK_DATA = {
           260.6718131701152,
           239.73423732121785,
           265.4620860417684,
-          284.06651980082194
+          284.06651980082194,
+          256.3516102472941
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3064,7 +3072,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          1592,
           1592,
           1576,
           1576,
@@ -3113,6 +3120,7 @@ window.BENCHMARK_DATA = {
           576,
           576,
           584,
+          584,
           584
         ],
         "borderColor": "#63A2AC",
@@ -3128,7 +3136,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1179.566806411743,
           1175.6374717439924,
           870.0199383417765,
           1214.0112387793404,
@@ -3177,7 +3184,8 @@ window.BENCHMARK_DATA = {
           1221.933433151245,
           1245.8991654713948,
           1351.08468069349,
-          1411.544982092721
+          1411.544982092721,
+          1251.7795834859212
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3266,7 +3274,8 @@ window.BENCHMARK_DATA = {
           331.2323572476705,
           325.4316096305847,
           356.9201539675395,
-          373.8337596484593
+          373.8337596484593,
+          334.30736501400287
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3278,6 +3287,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -3306,12 +3316,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "d9d72aca14d3b0b8fb07efb789ccb5df2d6b143a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
-        "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
-      },
       {
         "sha": "f5b89dba50c242d92d5f55918993957afb7adb58",
         "author": "Valentin Breu\u00DF",
@@ -3605,10 +3609,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
         "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
+      },
+      {
+        "sha": "82b90d2ea7e6b0152df0739bbbee5fdaada69a39",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:50:55 2026 \u002B0200",
+        "message": "ci: identify the pull request of an analysed run by the event instead of its artifacts (#1688)"
       }
     ],
     "labels": [
-      "d9d72aca",
       "f5b89dba",
       "14b53a3d",
       "1e0600a1",
@@ -3657,14 +3666,14 @@ window.BENCHMARK_DATA = {
       "0c874997",
       "0d6d920b",
       "c8e40f00",
-      "a8e6cbb0"
+      "a8e6cbb0",
+      "82b90d2e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2681.35092976888,
           2623.4026667277017,
           2263.8075921194895,
           3066.1807594299316,
@@ -3713,7 +3722,8 @@ window.BENCHMARK_DATA = {
           640.9725953420003,
           594.1570999962943,
           649.4298574447632,
-          688.6662399927775
+          688.6662399927775,
+          641.1165024893625
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3725,7 +3735,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3808,
           3808,
           4032,
           4032,
@@ -3774,6 +3783,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           856,
+          856,
           856
         ],
         "borderColor": "#63A2AC",
@@ -3789,7 +3799,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1318.2128634134929,
           1294.726900736491,
           1012.8783800942557,
           1449.1962752024333,
@@ -3838,7 +3847,8 @@ window.BENCHMARK_DATA = {
           1371.2204779307046,
           1255.9418339362512,
           1421.3493090311686,
-          1516.7950865427654
+          1516.7950865427654,
+          1356.2710932413736
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3927,7 +3937,8 @@ window.BENCHMARK_DATA = {
           646.291883913676,
           606.9482201848712,
           671.4865087509155,
-          700.1051335016887
+          700.1051335016887,
+          680.0415073394776
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3939,6 +3950,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -3967,12 +3979,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "d9d72aca14d3b0b8fb07efb789ccb5df2d6b143a",
-        "author": "Valentin Breu\u00DF",
-        "date": "Thu Sep 24 05:49:53 2026 \u002B0200",
-        "message": "feat: add \u0060IsNotPositive\u0060 and \u0060IsNotNegative\u0060 for numbers (#1329)"
-      },
       {
         "sha": "f5b89dba50c242d92d5f55918993957afb7adb58",
         "author": "Valentin Breu\u00DF",
@@ -4266,10 +4272,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
         "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
+      },
+      {
+        "sha": "82b90d2ea7e6b0152df0739bbbee5fdaada69a39",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:50:55 2026 \u002B0200",
+        "message": "ci: identify the pull request of an analysed run by the event instead of its artifacts (#1688)"
       }
     ],
     "labels": [
-      "d9d72aca",
       "f5b89dba",
       "14b53a3d",
       "1e0600a1",
@@ -4318,14 +4329,14 @@ window.BENCHMARK_DATA = {
       "0c874997",
       "0d6d920b",
       "c8e40f00",
-      "a8e6cbb0"
+      "a8e6cbb0",
+      "82b90d2e"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3153.5936186654226,
           3031.907234700521,
           2257.967160797119,
           3117.8327437180737,
@@ -4374,7 +4385,8 @@ window.BENCHMARK_DATA = {
           969.7287312825521,
           943.9315375010173,
           1023.2954066140311,
-          1056.9482728413172
+          1056.9482728413172,
+          1000.4291741689046
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4386,7 +4398,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3808,
           3808,
           3792,
           3792,
@@ -4435,6 +4446,7 @@ window.BENCHMARK_DATA = {
           1248,
           1248,
           1264,
+          1264,
           1264
         ],
         "borderColor": "#63A2AC",
@@ -4450,7 +4462,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26510.617586263023,
           26177.42107747396,
           15204.705733079176,
           28760.40278930664,
@@ -4499,7 +4510,8 @@ window.BENCHMARK_DATA = {
           27719.161811241738,
           26995.21945659931,
           28227.228971354165,
-          28796.494430541992
+          28796.494430541992,
+          27469.12569173177
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4517,7 +4529,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33468,
@@ -4550,6 +4561,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33465,
+          33471,
           33471,
           33471,
           33471,
@@ -4588,7 +4600,8 @@ window.BENCHMARK_DATA = {
           808.6336347579957,
           757.7921792439053,
           792.4907321248736,
-          860.9113993962605
+          860.9113993962605,
+          795.6614363988241
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4600,6 +4613,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -4795,6 +4809,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
         "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
+      },
+      {
+        "sha": "82b90d2ea7e6b0152df0739bbbee5fdaada69a39",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:50:55 2026 \u002B0200",
+        "message": "ci: identify the pull request of an analysed run by the event instead of its artifacts (#1688)"
       }
     ],
     "labels": [
@@ -4825,7 +4845,8 @@ window.BENCHMARK_DATA = {
       "0c874997",
       "0d6d920b",
       "c8e40f00",
-      "a8e6cbb0"
+      "a8e6cbb0",
+      "82b90d2e"
     ],
     "datasets": [
       {
@@ -4859,7 +4880,8 @@ window.BENCHMARK_DATA = {
           744.1354974110922,
           765.0326632772174,
           774.3237487792969,
-          815.4775744756063
+          815.4775744756063,
+          735.5506409327189
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4897,6 +4919,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1816,
           1816,
           1816
         ],
@@ -4940,7 +4963,8 @@ window.BENCHMARK_DATA = {
           81594.28129069011,
           81419.26825823102,
           85156.56563626803,
-          85032.92860630581
+          85032.92860630581,
+          83092.55021972656
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4976,6 +5000,7 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5256,
+          5252,
           5252,
           5252,
           5252,
@@ -5161,6 +5186,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 12:17:05 2026 \u002B0200",
         "message": "test: make real-time dependent tests of \u0060Eventually\u0060, \u0060Polling\u0060 and the signaler deterministic (#1686)"
+      },
+      {
+        "sha": "82b90d2ea7e6b0152df0739bbbee5fdaada69a39",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 12:50:55 2026 \u002B0200",
+        "message": "ci: identify the pull request of an analysed run by the event instead of its artifacts (#1688)"
       }
     ],
     "labels": [
@@ -5191,7 +5222,8 @@ window.BENCHMARK_DATA = {
       "0c874997",
       "0d6d920b",
       "c8e40f00",
-      "a8e6cbb0"
+      "a8e6cbb0",
+      "82b90d2e"
     ],
     "datasets": [
       {
@@ -5225,7 +5257,8 @@ window.BENCHMARK_DATA = {
           283.5047616958618,
           291.08639560426985,
           239.75034195582072,
-          304.97349578993663
+          304.97349578993663,
+          246.66691926320394
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5263,6 +5296,7 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
+          664,
           664,
           664
         ],
@@ -5306,7 +5340,8 @@ window.BENCHMARK_DATA = {
           30918.375451660155,
           30489.133728027344,
           31956.172403971355,
-          33126.5643758138
+          33126.5643758138,
+          30889.731115722658
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5345,6 +5380,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -5373,7 +5409,8 @@ window.BENCHMARK_DATA = {
           249.06301546096802,
           239.74138558705647,
           260.66469326019285,
-          281.2242929385259
+          281.2242929385259,
+          254.91282835006714
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5385,6 +5422,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
