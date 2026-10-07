@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading;
 
 namespace aweXpect.Core.Tests.Formatting;
@@ -64,6 +65,23 @@ public partial class ValueFormatters
 			string result = Formatter.Format(value);
 
 			await That(result).IsEqualTo("Task<string> (RanToCompletion, \"foo\")");
+		}
+
+		[Test]
+		public async Task WhenResultIsNestedDeeperThanTheMaximumDepth_ShouldLeaveOutTheDeepestResult()
+		{
+			object value = 1;
+			for (int i = 0; i < 1000; i++)
+			{
+				value = Task.FromResult(value);
+			}
+
+			string expectedResult = string.Concat(Enumerable.Repeat("Task<object> (RanToCompletion, ", 21)) + "…" +
+			                        new string(')', 21);
+
+			string result = Formatter.Format(value);
+
+			await That(result).IsEqualTo(expectedResult);
 		}
 
 		[Test]

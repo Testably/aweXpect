@@ -234,6 +234,31 @@ public partial class ValueFormatters
 		}
 
 		[Test]
+		public async Task WhenNestedDeeperThanTheMaximumDepth_ShouldLeaveOutTheItemsOfTheArray()
+		{
+			List<object> value = [];
+			List<object> current = value;
+			for (int i = 0; i < 19; i++)
+			{
+				List<object> inner = [];
+				current.Add(inner);
+				current = inner;
+			}
+
+			current.Add(new[,]
+			{
+				{
+					1, 2,
+				},
+			});
+			string expectedResult = new string('[', 20) + "[ … ]" + new string(']', 20);
+
+			string result = Formatter.Format(value);
+
+			await That(result).IsEqualTo(expectedResult);
+		}
+
+		[Test]
 		public async Task WhenSameInstanceIsContainedTwice_ShouldFormatBoth()
 		{
 			int[,] item =

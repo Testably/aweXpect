@@ -479,6 +479,18 @@ public partial class ValueFormatters
 #endif
 
 		[Test]
+		public async Task WhenEnumerationThrowsAfterTheFirstItem_ShouldRenderAPlaceholderAfterTheItems()
+		{
+			string expectedResult =
+				"[1, 2, (the enumeration did throw an InvalidOperationException: enumeration failed)]";
+			IEnumerable<int> value = Throwing(new InvalidOperationException("enumeration failed"), 1, 2);
+
+			string result = Formatter.Format(value);
+
+			await That(result).IsEqualTo(expectedResult);
+		}
+
+		[Test]
 		public async Task WhenGenericCollection_ShouldNameTheNumberOfRemainingItems()
 		{
 			HashSet<int> value = [..Enumerable.Range(1, 12),];
@@ -657,6 +669,22 @@ public partial class ValueFormatters
 			                        """;
 
 			string result = Formatter.Format(value, FormattingOptions.Indented());
+
+			await That(result).IsEqualTo(expectedResult);
+		}
+
+		[Test]
+		public async Task WithLineBreaks_WhenItemIsNull_ShouldUseDefaultNullString()
+		{
+			object?[] value = [null, 1,];
+			string expectedResult = """
+			                        [
+			                          <null>,
+			                          1
+			                        ]
+			                        """;
+
+			string result = Formatter.Format(value, FormattingOptions.MultipleLines);
 
 			await That(result).IsEqualTo(expectedResult);
 		}
