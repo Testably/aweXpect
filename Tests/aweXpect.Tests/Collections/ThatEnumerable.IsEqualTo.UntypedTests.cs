@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using aweXpect.Core;
+using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
 
 namespace aweXpect.Tests;
@@ -760,7 +762,7 @@ public sealed partial class ThatEnumerable
 
 				async Task Act()
 					=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
-						.IsEqualTo(expected);
+						.IsEqualTo(expected).WithTimeSystem(new VirtualTimeSystem());
 
 				await That(Act).DoesNotThrow()
 					.Because("the dimensions are compared again in every attempt");

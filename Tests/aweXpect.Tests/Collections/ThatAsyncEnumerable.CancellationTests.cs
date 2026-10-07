@@ -4,6 +4,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using aweXpect.Core;
+using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -802,10 +804,11 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenSourceHangsAfterSomeItems_ShouldFailAfterTheTimeout()
 		{
-			IAsyncEnumerable<int> subject = HangAfter(1, 2, 3);
+			VirtualTimeSystem time = new();
+			IAsyncEnumerable<int> subject = HangAfter(() => time.Advance(1.Seconds()), 1, 2, 3);
 
 			async Task Act()
-				=> await That(subject).Contains(4).WithTimeout(1.Seconds());
+				=> await That(subject).Contains(4).WithTimeout(1.Seconds()).WithTimeSystem(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -817,16 +820,17 @@ public sealed partial class ThatAsyncEnumerable
 				             [1, 2, 3, (… and maybe more)]
 				             """).And
 				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:01."))
-				.Because("the timeout must be long enough that the items are delivered before it elapses, even on a busy machine");
+				.Because("the timeout elapses once the source delivered its items and hangs");
 		}
 
 		[Test]
 		public async Task WhenSourceHangsBeforeTheCollectionIsFormatted_ShouldFailAfterTheTimeout()
 		{
-			IAsyncEnumerable<int> subject = HangAfter(1, 2);
+			VirtualTimeSystem time = new();
+			IAsyncEnumerable<int> subject = HangAfter(() => time.Advance(1.Seconds()), 1, 2);
 
 			async Task Act()
-				=> await That(subject).IsInAscendingOrder().WithTimeout(1.Seconds());
+				=> await That(subject).IsInAscendingOrder().WithTimeout(1.Seconds()).WithTimeSystem(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -837,7 +841,7 @@ public sealed partial class ThatAsyncEnumerable
 				             Collection:
 				             [1, 2, (… and maybe more)]
 				             """)
-				.Because("the timeout must be long enough that the items are delivered before it elapses, even on a busy machine");
+				.Because("the timeout elapses once the source delivered its items and hangs");
 		}
 
 		[Test]
@@ -944,10 +948,11 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldFailACount()
 		{
-			IAsyncEnumerable<int> subject = HangAfter(1, 2);
+			VirtualTimeSystem time = new();
+			IAsyncEnumerable<int> subject = HangAfter(() => time.Advance(1.Seconds()), 1, 2);
 
 			async Task Act()
-				=> await That(subject).HasCount(3).WithTimeout(1.Seconds());
+				=> await That(subject).HasCount(3).WithTimeout(1.Seconds()).WithTimeSystem(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -965,10 +970,11 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldFailIsEqualTo()
 		{
-			IAsyncEnumerable<int> subject = HangAfter(1, 2);
+			VirtualTimeSystem time = new();
+			IAsyncEnumerable<int> subject = HangAfter(() => time.Advance(1.Seconds()), 1, 2);
 
 			async Task Act()
-				=> await That(subject).IsEqualTo([1, 2, 3]).WithTimeout(1.Seconds());
+				=> await That(subject).IsEqualTo([1, 2, 3]).WithTimeout(1.Seconds()).WithTimeSystem(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
@@ -989,10 +995,12 @@ public sealed partial class ThatAsyncEnumerable
 		[Test]
 		public async Task WhenTimeoutElapsesWhileTheSourceHangs_ShouldKeepTheFailureOfASiblingOfIsEqualTo()
 		{
-			IAsyncEnumerable<int> subject = HangAfter(1, 2);
+			VirtualTimeSystem time = new();
+			IAsyncEnumerable<int> subject = HangAfter(() => time.Advance(1.Seconds()), 1, 2);
 
 			async Task Act()
-				=> await That(subject).HasCount().EqualTo(0).And.IsEqualTo([1, 2, 3,]).WithTimeout(1.Seconds());
+				=> await That(subject).HasCount().EqualTo(0).And.IsEqualTo([1, 2, 3,]).WithTimeout(1.Seconds())
+					.WithTimeSystem(time);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""

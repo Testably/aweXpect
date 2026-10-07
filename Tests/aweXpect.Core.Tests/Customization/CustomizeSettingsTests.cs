@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Threading;
+﻿using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
@@ -210,26 +209,25 @@ public sealed class CustomizeSettingsTests
 	public async Task TestCancellation_FromCancellationToken_ShouldBeApplied()
 	{
 		TimeSpan delay = 30.Seconds();
-		Stopwatch stopwatch = new();
+		VirtualTimeSystem time = new();
 		CancellationToken cancelledToken = new(true);
 		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromCancellationToken(() => cancelledToken)))
 		{
 			async Task Act()
-				=> await That(cancellationToken => Task.Delay(delay, cancellationToken))
-					.DoesNotThrow();
+				=> await That(cancellationToken => time.Delay(delay, cancellationToken))
+					.DoesNotThrow().WithTimeSystem(time);
 
-			stopwatch.Start();
 			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
-				             Expected that cancellationToken => Task.Delay(delay, cancellationToken)
+				             Expected that cancellationToken => time.Delay(delay, cancellationToken)
 				             does not throw any exception,
 				             but it could not be verified, because the evaluation was already canceled
 				             """);
-			stopwatch.Stop();
 		}
 
-		await That(stopwatch.Elapsed).IsLessThan(delay);
+		await That(time.Now).IsEqualTo(TimeSpan.Zero)
+			.Because("the canceled evaluation must not wait for the subject");
 	}
 
 	[Test]
@@ -254,28 +252,26 @@ public sealed class CustomizeSettingsTests
 	public async Task TestCancellation_FromTimeout_ShouldBeApplied()
 	{
 		TimeSpan delay = 30.Seconds();
-		Stopwatch stopwatch = new();
+		VirtualTimeSystem time = new();
 		Exception? exception;
 		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromTimeout(LowTimeout)))
 		{
 			async Task Act()
-				=> await That(cancellationToken => Task.Delay(delay, cancellationToken))
-					.Throws<TaskCanceledException>();
+				=> await That(cancellationToken => time.Delay(delay, cancellationToken))
+					.Throws<TaskCanceledException>().WithTimeSystem(time);
 
-			stopwatch.Start();
 			exception = await Catch.ExceptionAsync(Act);
-			stopwatch.Stop();
 		}
 
 		await That(exception).IsExactly<FailException>().And
 			.HasMessage("""
-			            Expected that cancellationToken => Task.Delay(delay, cancellationToken)
+			            Expected that cancellationToken => time.Delay(delay, cancellationToken)
 			            throws a TaskCanceledException,
 			            but it did not finish within 0:00.100
 			            """);
-		await That(stopwatch.Elapsed).IsLessThan(delay);
-		await That(stopwatch.Elapsed).IsGreaterThanOrEqualTo(LowTimeout).Within(50.Milliseconds());
+		await That(time.Now).IsEqualTo(LowTimeout)
+			.Because("the timeout of the test cancellation ends the wait for the subject");
 	}
 
 	[Test]
@@ -305,21 +301,22 @@ public sealed class CustomizeSettingsTests
 	[Test]
 	public async Task TestCancellation_FromTimeout_WhenWithTimeoutIsLonger_ShouldApplyTheTestCancellationTimeout()
 	{
+		VirtualTimeSystem time = new();
 		Exception? exception;
 		using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromTimeout(LowTimeout)))
 		{
 			async Task Act()
-				=> await That(cancellationToken => Task.Delay(30.Seconds(), cancellationToken))
+				=> await That(cancellationToken => time.Delay(30.Seconds(), cancellationToken))
 					.Throws<TaskCanceledException>()
-					.WithTimeout(20.Seconds());
+					.WithTimeout(20.Seconds()).WithTimeSystem(time);
 
 			exception = await Catch.ExceptionAsync(Act);
 		}
 
 		await That(exception).IsExactly<FailException>().And
 			.HasMessage("""
-			            Expected that cancellationToken => Task.Delay(30.Seconds(), cancellationToken)
+			            Expected that cancellationToken => time.Delay(30.Seconds(), cancellationToken)
 			            throws a TaskCanceledException,
 			            but it did not finish within 0:00.100
 			            """)
@@ -329,7 +326,7 @@ public sealed class CustomizeSettingsTests
 	[Test]
 	public async Task TestCancellation_None_ShouldBeApplied()
 	{
-		Stopwatch stopwatch = new();
+		VirtualTimeSystem time = new();
 		CancellationToken cancelledToken = new(true);
 		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromCancellationToken(() => cancelledToken)))
@@ -337,80 +334,77 @@ public sealed class CustomizeSettingsTests
 			using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
 				       .Set(TestCancellation.None()))
 			{
-				stopwatch.Start();
-				await That(cancellationToken => Task.Delay(LowTimeout, cancellationToken))
-					.DoesNotThrow();
-				stopwatch.Stop();
+				await That(cancellationToken => time.Delay(LowTimeout, cancellationToken))
+					.DoesNotThrow().WithTimeSystem(time);
 			}
 		}
 
-		await That(stopwatch.Elapsed).IsGreaterThanOrEqualTo(LowTimeout).Within(50.Milliseconds());
+		await That(time.Now).IsEqualTo(LowTimeout)
+			.Because("without a test cancellation the subject runs to its end");
 	}
 
 	[Test]
 	public async Task TestCancellation_PerDefault_ShouldNotCancel()
 	{
-		Stopwatch stopwatch = new();
-		stopwatch.Start();
-		await That(cancellationToken => Task.Delay(LowTimeout, cancellationToken)).DoesNotThrow();
-		stopwatch.Stop();
+		VirtualTimeSystem time = new();
 
-		await That(stopwatch.Elapsed).IsGreaterThanOrEqualTo(LowTimeout).Within(50.Milliseconds());
+		await That(cancellationToken => time.Delay(LowTimeout, cancellationToken)).DoesNotThrow()
+			.WithTimeSystem(time);
+
+		await That(time.Now).IsEqualTo(LowTimeout)
+			.Because("without a test cancellation the subject runs to its end");
 	}
 
 	[Test]
 	public async Task WithCancellation_OverwritesTheCancellationToken()
 	{
 		TimeSpan delay = 30.Seconds();
-		Stopwatch stopwatch = new();
+		VirtualTimeSystem time = new();
 		using CancellationTokenSource cts = new();
 		CancellationToken cancelledToken = new(true);
 		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
 			       .Set(TestCancellation.FromCancellationToken(() => cts.Token)))
 		{
 			async Task Act()
-				=> await That(cancellationToken => Task.Delay(delay, cancellationToken))
+				=> await That(cancellationToken => time.Delay(delay, cancellationToken))
 					.Throws<TaskCanceledException>()
-					.WithCancellation(cancelledToken);
+					.WithCancellation(cancelledToken).WithTimeSystem(time);
 
-			stopwatch.Start();
 			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
-				             Expected that cancellationToken => Task.Delay(delay, cancellationToken)
+				             Expected that cancellationToken => time.Delay(delay, cancellationToken)
 				             throws a TaskCanceledException,
 				             but it could not be verified, because the evaluation was already canceled
 				             """);
-			stopwatch.Stop();
 		}
 
-		await That(stopwatch.Elapsed).IsLessThan(delay);
+		await That(time.Now).IsEqualTo(TimeSpan.Zero)
+			.Because("the canceled evaluation must not wait for the subject");
 	}
 
 	[Test]
 	public async Task WithTimeout_WhenShorterThanTheTestCancellationTimeout_ShouldBeApplied()
 	{
 		TimeSpan delay = 30.Seconds();
-		TimeSpan testTimeout = 20.Seconds();
-		Stopwatch stopwatch = new();
+		VirtualTimeSystem time = new();
 		using (IDisposable _ = Customize.aweXpect.Settings().TestCancellation
-			       .Set(TestCancellation.FromTimeout(testTimeout)))
+			       .Set(TestCancellation.FromTimeout(20.Seconds())))
 		{
 			async Task Act()
-				=> await That(cancellationToken => Task.Delay(delay, cancellationToken))
+				=> await That(cancellationToken => time.Delay(delay, cancellationToken))
 					.Throws<TaskCanceledException>()
-					.WithTimeout(20.Milliseconds());
+					.WithTimeout(20.Milliseconds()).WithTimeSystem(time);
 
-			stopwatch.Start();
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
-				             Expected that cancellationToken => Task.Delay(delay, cancellationToken)
+				             Expected that cancellationToken => time.Delay(delay, cancellationToken)
 				             throws a TaskCanceledException,
 				             but it did not finish within 0:00.020
 				             """);
-			stopwatch.Stop();
 		}
 
-		await That(stopwatch.Elapsed).IsLessThan(testTimeout);
+		await That(time.Now).IsEqualTo(20.Milliseconds())
+			.Because("the shorter timeout of WithTimeout ends the wait, not the test cancellation");
 	}
 
 	private sealed class ChangingClass(VirtualTimeSystem time)

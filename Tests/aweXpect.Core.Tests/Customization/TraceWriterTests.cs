@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using aweXpect.Chronology;
+using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 
@@ -358,13 +359,13 @@ public class TraceWriterTests
 		TestTraceWriter traceWriter = new();
 		using (traceWriter.Register())
 		{
-			await That(callback).ExecutesIn().AtMost(500.Milliseconds());
+			await That(callback).ExecutesIn().AtMost(500.Milliseconds()).WithTimeSystem(new VirtualTimeSystem());
 		}
 
 		await That(traceWriter.Messages).IsEqualTo([
-			"Checking expectation for callback delegate returning in 0:*",
+			"Checking expectation for callback delegate returning in 0:00 with timeout of 0:00.500",
 			"  Successfully verified that callback executes in at most 0:00.500",
-		]).AsWildcard();
+		]);
 	}
 
 	[Test]
@@ -374,13 +375,12 @@ public class TraceWriterTests
 		TestTraceWriter traceWriter = new();
 		using (traceWriter.Register())
 		{
-			await That(callback).ExecutesIn().AtMost(500.Milliseconds());
+			await That(callback).ExecutesIn().AtMost(500.Milliseconds()).WithTimeSystem(new VirtualTimeSystem());
 		}
 
 		await That(traceWriter.Messages).HasCount(2);
-		await That(traceWriter.Messages[0]).IsEqualTo("Checking expectation for callback delegate returning int 4 in 0:*")
-			.AsWildcard()
-			.Because("the measured duration is wall-clock time, which a busy machine can stretch beyond a second");
+		await That(traceWriter.Messages[0]).IsEqualTo(
+			"Checking expectation for callback delegate returning int 4 in 0:00 with timeout of 0:00.500");
 		await That(traceWriter.Messages[1]).IsEqualTo("  Successfully verified that callback executes in at most 0:00.500");
 	}
 

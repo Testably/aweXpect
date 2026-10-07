@@ -713,24 +713,25 @@ public sealed partial class ThatDelegateTests
 		public async Task WhenCancelledWhileTheSubjectIsPending_ShouldBeInconclusive()
 		{
 			using CancellationTokenSource cts = new();
-			cts.CancelAfter(50.Milliseconds());
-			Func<Task<int>> subject = () => PendingTask.Of<int>();
-			Stopwatch stopwatch = new();
+			VirtualTimeSystem time = new();
+			time.CancelAt(50.Milliseconds(), cts);
+			Func<Task<int>> subject = () =>
+			{
+				time.Advance(50.Milliseconds());
+				return PendingTask.Of<int>();
+			};
 
 			async Task Act()
-				=> await That(subject).Eventually().Within(60.Seconds()).IsEqualTo(1)
+				=> await That(subject).Eventually().OnVirtualTime(time).Within(60.Seconds()).IsEqualTo(1)
 					.WithCancellation(cts.Token);
 
-			stopwatch.Start();
 			await That(Act).Throws<InconclusiveTestException>()
 				.WithMessage("""
 				             Expected that subject
 				             eventually is equal to 1 within 1:00,
 				             but it could not be verified, because the evaluation was already canceled
 				             """);
-			stopwatch.Stop();
-
-			await That(stopwatch.Elapsed).IsLessThan(30.Seconds())
+			await That(time.Now).IsEqualTo(50.Milliseconds())
 				.Because("the cancellation must stop waiting for a subject that does not observe it");
 		}
 
@@ -1112,17 +1113,15 @@ public sealed partial class ThatDelegateTests
 		public async Task WhenTestCancellationTimeoutExpires_ShouldFail()
 		{
 			Counter counter = new();
-			Stopwatch stopwatch = new();
+			VirtualTimeSystem time = new();
 			Exception? exception;
 
 			using (IDisposable __ = Customize.aweXpect.Settings().TestCancellation
 				       .Set(TestCancellation.FromTimeout(VeryLowTimeout)))
 			{
-				async Task Act() => await That(() => counter.Value).Eventually().IsEqualTo(1);
+				async Task Act() => await That(() => counter.Value).Eventually().OnVirtualTime(time).IsEqualTo(1);
 
-				stopwatch.Start();
 				exception = await Catch.ExceptionAsync(Act);
-				stopwatch.Stop();
 			}
 
 			await That(exception).IsExactly<FailException>().And
@@ -1132,7 +1131,8 @@ public sealed partial class ThatDelegateTests
 				            but it did not finish within 0:00.050
 				            """).AsWildcard().And
 				.HasInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
-			await That(stopwatch.Elapsed).IsLessThan(30.Seconds());
+			await That(time.Now).IsEqualTo(VeryLowTimeout)
+				.Because("the timeout of the test cancellation ends the retries");
 		}
 
 		[Test]
@@ -1687,12 +1687,12 @@ public sealed partial class ThatDelegateTests
 		public async Task WithTimeout_ShouldCancelTheRetries()
 		{
 			Counter counter = new();
-			Stopwatch stopwatch = new();
+			VirtualTimeSystem time = new();
 
 			async Task Act()
-				=> await That(() => counter.Value).Eventually().IsEqualTo(1).WithTimeout(VeryLowTimeout);
+				=> await That(() => counter.Value).Eventually().OnVirtualTime(time).IsEqualTo(1)
+					.WithTimeout(VeryLowTimeout);
 
-			stopwatch.Start();
 			await That(Act).Throws<FailException>()
 				.WithMessage("""
 				             Expected that () => counter.Value
@@ -1700,9 +1700,8 @@ public sealed partial class ThatDelegateTests
 				             but it did not finish within 0:00.050
 				             """).And
 				.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."));
-			stopwatch.Stop();
 
-			await That(stopwatch.Elapsed).IsLessThan(30.Seconds())
+			await That(time.Now).IsEqualTo(VeryLowTimeout)
 				.Because("WithTimeout cancels the evaluation like everywhere else, instead of setting the retry budget");
 		}
 

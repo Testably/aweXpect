@@ -19,6 +19,10 @@
 						  SetTargetFramework="TargetFramework=netstandard2.0"/>
 	</ItemGroup>
 
+	<ItemGroup>
+		<Compile Include="..\aweXpect.Core.Tests\TestHelpers\VirtualTimeSystem.cs" Link="TestHelpers\VirtualTimeSystem.cs"/>
+	</ItemGroup>
+
 	<!-- .NET Framework gets the immutable and frozen collections from a package, which is referenced so that their comparers are tested there as well. -->
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
 		<PackageReference Include="System.Collections.Immutable"/>

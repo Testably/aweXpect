@@ -1,4 +1,6 @@
 ﻿using System.Threading;
+using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Signaling;
 
 // ReSharper disable MethodHasAsyncOverload
@@ -51,7 +53,8 @@ public sealed partial class ThatSignaler
 				Signaler signaler = new();
 
 				async Task Act() =>
-					await That(signaler).DidNotSignal().Within(200.Milliseconds()).WithTimeout(200.Milliseconds());
+					await That(signaler).DidNotSignal().Within(200.Milliseconds()).WithTimeout(200.Milliseconds())
+						.WithTimeSystem(new VirtualTimeSystem());
 
 				await That(Act).DoesNotThrow()
 					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
@@ -63,7 +66,8 @@ public sealed partial class ThatSignaler
 				Signaler<string> signaler = new();
 
 				async Task Act() =>
-					await That(signaler).DidNotSignal().Within(200.Milliseconds()).WithTimeout(200.Milliseconds());
+					await That(signaler).DidNotSignal().Within(200.Milliseconds()).WithTimeout(200.Milliseconds())
+						.WithTimeSystem(new VirtualTimeSystem());
 
 				await That(Act).DoesNotThrow()
 					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
