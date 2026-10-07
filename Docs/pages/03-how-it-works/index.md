@@ -11,6 +11,7 @@ Describes the concepts that all expectations share.
 | [Time and cancellation](./06-time-and-cancellation.md) | timeouts, cancellation, waiting, execution time                    |
 | [Configuration](./07-configuration.md)                 | customization lifetimes, global defaults, formatting, settings     |
 | [Native AOT and trimming](./08-native-aot.md)          | equivalency and events under Native AOT and trimming               |
+| [Test frameworks](./09-test-frameworks.md)             | `Fail`, `Skip`, the exceptions per test framework                  |
 
 ## Anatomy of an expectation
 
@@ -22,8 +23,9 @@ string title = "Let It Be";
 await Expect.That(title).StartsWith("Abbey").Because("it is the album title");
 ```
 
-A failure throws the exception of your test framework, with a message that reads like a sentence. The expectation
-above fails with:
+A failure throws an exception that fails the test, usually the
+[assertion exception of your test framework](./09-test-frameworks.md#failed-expectations), with a message that reads
+like a sentence. The expectation above fails with:
 
 ```text title="Failure message"
 Expected that title
