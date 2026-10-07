@@ -134,10 +134,57 @@ public static partial class ValueFormatters
 					new ItemFormatter<DictionaryEntry>(formatter, context, FormatDictionaryEntry));
 			}
 		}
+		else if (value is Array { Rank: > 1, } array)
+		{
+			FormatMultiDimensionalArray(stringBuilder, array, options,
+				new ItemFormatter<object?>(formatter, context, FormatItem));
+		}
 		else
 		{
 			FormatItems(stringBuilder, value, value.Cast<object?>(), (value as ICollection)?.Count, options,
 				new ItemFormatter<object?>(formatter, context, FormatItem));
+		}
+	}
+
+	/// <remarks>
+	///     An array of rank greater than one enumerates its items as one flat sequence, which does not tell its
+	///     dimensions, so each dimension is written as a nested collection, like the jagged array with the same items.
+	///     The array is tracked as a single collection, like in <see cref="FormatItems{T}" />.
+	/// </remarks>
+	private static void FormatMultiDimensionalArray(
+		StringBuilder stringBuilder,
+		Array value,
+		FormattingOptions? options,
+		ItemFormatter<object?> itemFormatter)
+	{
+		FormattingContext context = itemFormatter.Context;
+		if (!context.FormattedObjects.Add(value))
+		{
+			stringBuilder.Append("[ *recursive* ]");
+			return;
+		}
+
+		try
+		{
+			if (!EnterContent(context))
+			{
+				stringBuilder.Append("[ \u2026 ]");
+				return;
+			}
+
+			options ??= FormattingOptions.SingleLine;
+			if (options.IncludeType)
+			{
+				Formatter.Format(stringBuilder, value.GetType());
+				stringBuilder.Append(' ');
+			}
+
+			new ArrayDimensionWriter(value, options, itemFormatter).Append(stringBuilder, 0);
+		}
+		finally
+		{
+			context.Depth--;
+			context.FormattedObjects.Remove(value);
 		}
 	}
 
@@ -387,6 +434,92 @@ public static partial class ValueFormatters
 		finally
 		{
 			(enumerator as IDisposable)?.Dispose();
+		}
+	}
+
+	/// <summary>
+	///     Writes the dimensions of an array of rank greater than one as nested collections.
+	/// </summary>
+	/// <remarks>
+	///     The maximum number of collection items applies to the whole array, so that the items which are not
+	///     written are named once, where the next one would follow. A dimension without items counts as one item, so
+	///     that an array without any item is limited as well.
+	/// </remarks>
+	private sealed class ArrayDimensionWriter(
+		Array array,
+		FormattingOptions options,
+		ItemFormatter<object?> itemFormatter)
+	{
+		private readonly string _itemIndentation = options.Indentation + "  ";
+		private readonly IEnumerator _items = array.GetEnumerator();
+		private readonly int _maximumCount = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get();
+		private int _count;
+		private bool _isLimited;
+
+		public void Append(StringBuilder stringBuilder, int dimension)
+		{
+			int length = array.GetLength(dimension);
+			if (length == 0)
+			{
+				_count++;
+			}
+
+			stringBuilder.Append('[');
+			for (int index = 0; index < length && !_isLimited; index++)
+			{
+				AppendSeparator(stringBuilder, index == 0);
+				if (_count >= _maximumCount)
+				{
+					_isLimited = true;
+					stringBuilder.Append("(\u2026 and ").Append(GetTotalCount() - _maximumCount).Append(" more)");
+				}
+				else if (dimension == array.Rank - 1)
+				{
+					_count++;
+					_items.MoveNext();
+					stringBuilder.Append(itemFormatter.FormatSingle(_items.Current, options).Indent("  ", false));
+				}
+				else
+				{
+					StringBuilder nestedBuilder = new();
+					Append(nestedBuilder, dimension + 1);
+					stringBuilder.Append(nestedBuilder.ToString().Indent("  ", false));
+				}
+			}
+
+			if (options.UseLineBreaks && length > 0)
+			{
+				stringBuilder.AppendLine().Append(options.Indentation);
+			}
+
+			stringBuilder.Append(']');
+		}
+
+		private void AppendSeparator(StringBuilder stringBuilder, bool isFirst)
+		{
+			if (!isFirst)
+			{
+				stringBuilder.Append(options.UseLineBreaks ? "," : ", ");
+			}
+
+			if (options.UseLineBreaks)
+			{
+				stringBuilder.AppendLine().Append(_itemIndentation);
+			}
+		}
+
+		/// <summary>
+		///     The number of items, or of dimensions without items when the array has none.
+		/// </summary>
+		private long GetTotalCount()
+		{
+			long totalCount = 1;
+			for (int dimension = 0; dimension < array.Rank && array.GetLength(dimension) > 0; dimension++)
+			{
+				totalCount *= array.GetLength(dimension);
+			}
+
+			return totalCount;
 		}
 	}
 

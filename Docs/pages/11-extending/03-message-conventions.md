@@ -119,7 +119,8 @@ backslash, the enclosing quote, line breaks, tabs, control characters, invisible
 zero-width space), combining marks in text that is not normalized (like the accent of a decomposed `é`) and unpaired
 surrogates are shown as `\\`, `\"` (or `\'` in a char), `\n`, `\r`, `\t`, `\0` or `\uXXXX`. Exception messages and the
 `ToString()` of other objects are not quoted, so only their line breaks, control and invisible characters are escaped
-when they are written on a single line.
+when they are written on a single line. A multi-dimensional array is written with a nested collection per dimension,
+e.g. `[[1, 2], [3, 4]]` for an `int[2,2]`.
 
 The `FormattingOptions` change the layout: `FormattingOptions.MultipleLines` puts every item of a collection on its
 own line, e.g. for a context, `FormattingOptions.WithType` prefixes the type (`int[] [1, 2]`), and

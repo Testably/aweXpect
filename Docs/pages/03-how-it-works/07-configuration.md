@@ -87,7 +87,7 @@ least `MinimumNumberOfCharactersAfterStringDifference` characters after the firs
 
 The items of a collection beyond the maximum are summarized at the end of the list: `(… and 7 more)` when the total
 number of items is known, and `(… and maybe more)` when it is not, e.g. for a lazy sequence or when the expectation
-stopped enumerating early.
+stopped enumerating early. For a multi-dimensional array the maximum applies to the items of all dimensions together.
 
 The maximum number of collection items must be positive, and the other two values must not be negative.
 

@@ -313,22 +313,18 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsEqualTo(expected);
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is equal to collection expected in order,
-					             but it contained item 4 at index 3 instead of 5
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to collection expected in order,
+					              but it contained item 4 at index 3 instead of 5
 
-					             Collection:
-					             [1, 2, 3, 4]
+					              Collection:
+					              {Formatter.Format(subject)}
 
-					             Expected:
-					             [
-					               1,
-					               2,
-					               3,
-					               5
-					             ]
-					             """);
+					              Expected:
+					              {Formatter.Format(expected)}
+					              """)
+					.Because("both arrays are listed as the formatter writes a multi-dimensional array");
 			}
 
 			[Test]
@@ -395,24 +391,17 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsEqualTo(expected);
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is equal to collection expected in order,
-					             but it had dimensions [2,3] instead of [3,2]
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to collection expected in order,
+					              but it had dimensions [2,3] instead of [3,2]
 
-					             Collection:
-					             [1, 2, 3, 4, 5, 6]
+					              Collection:
+					              {Formatter.Format(subject)}
 
-					             Expected:
-					             [
-					               1,
-					               2,
-					               3,
-					               4,
-					               5,
-					               6
-					             ]
-					             """)
+					              Expected:
+					              {Formatter.Format(expected)}
+					              """)
 					.Because("a multi-dimensional array is only equal to an array with the same length in every dimension");
 			}
 

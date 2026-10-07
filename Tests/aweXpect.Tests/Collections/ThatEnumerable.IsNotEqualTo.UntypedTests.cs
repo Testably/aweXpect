@@ -344,22 +344,18 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsNotEqualTo(unexpected);
 
 				await That(Act).Throws<FailException>()
-					.WithMessage("""
-					             Expected that subject
-					             is not equal to collection unexpected in order,
-					             but it was
+					.WithMessage($"""
+					              Expected that subject
+					              is not equal to collection unexpected in order,
+					              but it was
 
-					             Collection:
-					             [1, 2, 3, 4]
+					              Collection:
+					              {Formatter.Format(subject)}
 
-					             Expected:
-					             [
-					               1,
-					               2,
-					               3,
-					               4
-					             ]
-					             """);
+					              Expected:
+					              {Formatter.Format(unexpected)}
+					              """)
+					.Because("both arrays are listed as the formatter writes a multi-dimensional array");
 			}
 
 			[Test]

@@ -424,11 +424,19 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 	{
 		if (expected is not null && _expectedItems is not null)
 		{
-			contexts.AddExpectedItemsContext(expected, _expectedItems);
+			AppendExpectedItemsContext(contexts, expected, _expectedItems);
 		}
 
 		contexts.AddOptionsContexts(options);
 	}
+
+	/// <summary>
+	///     Adds the "Expected" context, listing the <paramref name="expectedItems" /> materialized from the
+	///     <paramref name="expected" /> collection.
+	/// </summary>
+	protected virtual void AppendExpectedItemsContext(ResultContextCollector contexts, IEnumerable<TItem> expected,
+		ICollection<TItem> expectedItems)
+		=> contexts.AddExpectedItemsContext(expected, expectedItems);
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
@@ -513,6 +521,24 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 		return VerifyItems(untypedItems,
 			MatchOptions.GetCollectionMatcher<object?, object?>(expectedItems.Cast<object?>()),
 			new UntypedOptions(itemOptions), cancellationToken);
+	}
+
+	/// <remarks>
+	///     An expected array of rank greater than one is listed with its dimensions, like the subject in the
+	///     "Collection" context, as its materialized items do not tell them.
+	/// </remarks>
+	protected override void AppendExpectedItemsContext(ResultContextCollector contexts, IEnumerable<TItem> expected,
+		ICollection<TItem> expectedItems)
+	{
+		if (expectedWithDimensions is Array { Rank: > 1, } expectedArray)
+		{
+			contexts.Add(new ResultContext.SyncCallback("Expected",
+				() => CollectionHelpers.FormatUntypedCollection(expectedArray), -2));
+		}
+		else
+		{
+			base.AppendExpectedItemsContext(contexts, expected, expectedItems);
+		}
 	}
 
 	/// <summary>

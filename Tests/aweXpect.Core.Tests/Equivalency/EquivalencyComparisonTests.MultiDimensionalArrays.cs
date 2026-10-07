@@ -468,10 +468,14 @@ public sealed partial class EquivalencyComparisonTests
 			             Expected that actual
 			             is not equivalent to unexpected,
 			             but it was [
-			                 1,
-			                 2,
-			                 3,
-			                 4
+			                 [
+			                   1,
+			                   2
+			                 ],
+			                 [
+			                   3,
+			                   4
+			                 ]
 			               ], which is considered equivalent
 
 			             Equivalency options:
