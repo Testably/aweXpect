@@ -159,13 +159,21 @@ internal sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
 			}
 
 			KeepItemType(item, isUntyped);
-			await Add(items, occurrences, item);
+			try
+			{
+				await Add(items, occurrences, item);
+			}
+			catch (Exception) when (items.Count > 0 && occurrences.Determines(Quantifier, ExpectUnique))
+			{
+				// A collection whose number of items is known is counted to its end. When the member selector or the
+				// comparison throws for an item after the ones that determine the outcome, the counting ends there,
+				// so that the outcome is the same as for a collection that is read only until it is determined.
+				return FinishEarly(materialized, items, occurrences);
+			}
+
 			if (cancelEarly && occurrences.Determines(Quantifier, ExpectUnique))
 			{
-				RecordAll(items, occurrences);
-				CompleteEarly();
-				materialized.SetContext(ref _collectionContext);
-				return this;
+				return FinishEarly(materialized, items, occurrences);
 			}
 		}
 
@@ -180,6 +188,15 @@ internal sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
 	{
 		_collectionContext.AppendTo(contexts);
 		base.AppendContexts(contexts);
+	}
+
+	private AreUniqueConstraint<TEnumerable, TItem, TMember> FinishEarly(CollectionItems<TItem> materialized,
+		List<(TItem Item, int MemberIndex)> items, OccurrenceCounter<TMember> occurrences)
+	{
+		RecordAll(items, occurrences);
+		CompleteEarly();
+		materialized.SetContext(ref _collectionContext);
+		return this;
 	}
 
 	private void KeepItemType(TItem item, bool isUntyped)
