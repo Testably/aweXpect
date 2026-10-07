@@ -1,4 +1,7 @@
-﻿namespace aweXpect.Tests;
+﻿using aweXpect.Core;
+using aweXpect.Results;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatChar
 {
@@ -20,6 +23,25 @@ public sealed partial class ThatChar
 					             is equal to <null>,
 					             but it was 'a'
 					             """);
+			}
+
+			[Test]
+			[Arguments(true, true)]
+			[Arguments(true, false)]
+			[Arguments(false, true)]
+			[Arguments(false, false)]
+			public async Task WhenIgnoringCaseIsSpecifiedTwice_ShouldThrowInvalidOperationException(
+				bool first, bool second)
+			{
+				char subject = 'a';
+				CharEqualityResult<char, IThat<char>> sut = That(subject).IsEqualTo('A');
+				_ = sut.IgnoringCase(first);
+
+				void Act() => sut.IgnoringCase(second);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("IgnoringCase cannot be specified more than once.")
+					.Because("the second value would silently replace the first one");
 			}
 
 			[Test]

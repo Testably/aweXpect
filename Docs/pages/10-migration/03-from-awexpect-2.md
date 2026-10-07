@@ -116,6 +116,9 @@ only once, and options that would replace each other, e.g. `AtLeast(2).AtMost(5)
 `InvalidOperationException` at the call instead of silently keeping the later one; write a range as
 `Between(2).And(5)`. `HasItem(…).AtIndex(1).FromEnd()` becomes `HasItem(…).AtIndexFromEnd(1)`.
 
+`IgnoringCase(…)` on a `char` expectation can only be repeated on a stored result; the second call now throws an
+`InvalidOperationException` as well.
+
 A second `Matching…` after `HasSingle().Matching…` no longer compiles. It was silently ignored or replaced the first
 one, so combine a type and a predicate in one call, e.g. `HasSingle().Matching<Dog>(d => d.Name == "Rex")`. The
 `Matching…` methods therefore return a `SingleMatchingItemResult<TCollection, TItem>` instead of a
