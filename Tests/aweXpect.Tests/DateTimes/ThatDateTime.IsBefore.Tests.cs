@@ -1,3 +1,6 @@
+using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
+
 namespace aweXpect.Tests;
 
 public sealed partial class ThatDateTime
@@ -18,7 +21,7 @@ public sealed partial class ThatDateTime
 
 				async Task Act()
 					=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
-						.IsBefore(expected);
+						.IsBefore(expected).WithTimeSystem(new VirtualTimeSystem());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""

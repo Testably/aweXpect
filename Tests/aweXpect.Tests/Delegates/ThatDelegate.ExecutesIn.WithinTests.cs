@@ -1,4 +1,7 @@
-﻿namespace aweXpect.Tests;
+﻿using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
+
+namespace aweXpect.Tests;
 
 public sealed partial class ThatDelegate
 {
@@ -9,26 +12,29 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateIsTooFast_ShouldFail()
 			{
-				Action @delegate = () => Task.Delay(5.Milliseconds()).Wait();
+				VirtualTimeSystem time = new();
+				Action @delegate = () => time.Advance(5.Milliseconds());
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn(10000.Milliseconds()).Within(1123.Milliseconds());
+					=> await That(@delegate).ExecutesIn(10000.Milliseconds()).Within(1123.Milliseconds())
+						.WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in approximately 0:10 ± 0:01.123,
-					             but it took only 0:*
-					             """).AsWildcard();
+					             but it took only 0:00.005
+					             """);
 			}
 
 			[Test]
 			public async Task WhenDelegateTakesLongEnough_ShouldSucceed()
 			{
-				Action @delegate = () => Task.Delay(50.Milliseconds()).Wait();
+				VirtualTimeSystem time = new();
+				Action @delegate = () => time.Advance(50.Milliseconds());
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn(50.Milliseconds()).Within(5.Seconds());
+					=> await That(@delegate).ExecutesIn(50.Milliseconds()).Within(5.Seconds()).WithTimeSystem(time);
 
 				await That(Act).DoesNotThrow();
 			}
@@ -36,30 +42,32 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesTooLong_ShouldFail()
 			{
-				Action @delegate = () => Task.Delay(50.Milliseconds()).Wait();
+				VirtualTimeSystem time = new();
+				Action @delegate = () => time.Advance(50.Milliseconds());
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn(10.Milliseconds()).Within(5.Milliseconds());
+					=> await That(@delegate).ExecutesIn(10.Milliseconds()).Within(5.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in approximately 0:00.010 ± 0:00.005,
-					             but it took 0:*
-					             """).AsWildcard();
+					             but it took 0:00.050
+					             """);
 			}
 
 			[Test]
 			public async Task WhenDelegateThrowsAnException_ShouldFail()
 			{
+				VirtualTimeSystem time = new();
 				Action @delegate = () =>
 				{
-					Task.Delay(500.Milliseconds()).Wait();
+					time.Advance(500.Milliseconds());
 					throw new MyException();
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn(500.Milliseconds()).Within(50.Seconds());
+					=> await That(@delegate).ExecutesIn(500.Milliseconds()).Within(50.Seconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage($"""

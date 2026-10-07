@@ -1,4 +1,6 @@
 ﻿using System.Threading;
+using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Tests;
 
@@ -22,17 +24,18 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				Action @delegate = () => Task.Delay(50.Milliseconds()).Wait();
+				VirtualTimeSystem time = new();
+				Action @delegate = () => time.Advance(50.Milliseconds());
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in at most 0:00.010,
-					             but it took 0:*
-					             """).AsWildcard();
+					             but it took 0:00.050
+					             """);
 			}
 
 			[Test]
@@ -123,10 +126,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				Func<Task> @delegate = () => Task.Delay(30.Seconds());
+				VirtualTimeSystem time = new();
+				Func<Task> @delegate = () => time.Delay(30.Seconds(), CancellationToken.None);
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -225,10 +229,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				Func<Task<int>> @delegate = () => Task.Delay(30.Seconds()).ContinueWith(_ => 1);
+				VirtualTimeSystem time = new();
+				Func<Task<int>> @delegate = () => time.Delay(30.Seconds(), CancellationToken.None).ContinueWith(_ => 1);
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -291,10 +296,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				ValueTask Delegate() => new(Task.Delay(30.Seconds()));
+				VirtualTimeSystem time = new();
+				ValueTask Delegate() => new(time.Delay(30.Seconds(), CancellationToken.None));
 
 				async Task Act()
-					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds());
+					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -381,10 +387,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				ValueTask Delegate(CancellationToken token) => new(Task.Delay(30.Seconds(), token));
+				VirtualTimeSystem time = new();
+				ValueTask Delegate(CancellationToken token) => new(time.Delay(30.Seconds(), token));
 
 				async Task Act()
-					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds());
+					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -449,10 +456,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
-				ValueTask<int> Delegate() => new(Task.Delay(30.Seconds()).ContinueWith(_ => 1));
+				VirtualTimeSystem time = new();
+				ValueTask<int> Delegate() => new(time.Delay(30.Seconds(), CancellationToken.None).ContinueWith(_ => 1));
 
 				async Task Act()
-					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds());
+					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -539,11 +547,12 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
+				VirtualTimeSystem time = new();
 				ValueTask<int> Delegate(CancellationToken token)
-					=> new(Task.Delay(30.Seconds(), token).ContinueWith(_ => 1, token));
+					=> new(time.Delay(30.Seconds(), token).ContinueWith(_ => 1, token));
 
 				async Task Act()
-					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds());
+					=> await That(Delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -607,21 +616,22 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenDelegateTakesLonger_ShouldFail()
 			{
+				VirtualTimeSystem time = new();
 				Func<int> @delegate = () =>
 				{
-					Task.Delay(50.Milliseconds()).Wait();
+					time.Advance(50.Milliseconds());
 					return 0;
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in at most 0:00.010,
-					             but it took 0:*
-					             """).AsWildcard();
+					             but it took 0:00.050
+					             """);
 			}
 
 			[Test]
@@ -664,10 +674,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task AtLeast_WhenDelegateExceedsTheMinimum_ShouldNotCancelTheCancellationToken()
 			{
-				Func<CancellationToken, Task> @delegate = token => Task.Delay(200.Milliseconds(), token);
+				VirtualTimeSystem time = new();
+				Func<CancellationToken, Task> @delegate = token => time.Delay(200.Milliseconds(), token);
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtLeast(50.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtLeast(50.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).DoesNotThrow()
 					.Because("a minimum is no upper bound, so nothing may interrupt the delegate");
@@ -676,10 +687,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task AtMost_WithoutReturnValue_WhenDelegateExceedsTheMaximum_ShouldCancelTheCancellationToken()
 			{
-				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
+				VirtualTimeSystem time = new();
+				Func<CancellationToken, Task> @delegate = token => time.Delay(30.Seconds(), token);
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -693,14 +705,15 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task AtMost_WithReturnValue_WhenDelegateExceedsTheMaximum_ShouldCancelTheCancellationToken()
 			{
+				VirtualTimeSystem time = new();
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
-					await Task.Delay(30.Seconds(), token);
+					await time.Delay(30.Seconds(), token);
 					return 1;
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -714,10 +727,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task Between_WithoutReturnValue_WhenDelegateExceedsTheMaximum_ShouldCancelTheCancellationToken()
 			{
-				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
+				VirtualTimeSystem time = new();
+				Func<CancellationToken, Task> @delegate = token => time.Delay(30.Seconds(), token);
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().Between(10.Milliseconds()).And(50.Milliseconds());
+					=> await That(@delegate).ExecutesIn().Between(10.Milliseconds()).And(50.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -731,14 +745,15 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task Between_WithReturnValue_WhenDelegateExceedsTheMaximum_ShouldCancelTheCancellationToken()
 			{
+				VirtualTimeSystem time = new();
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
-					await Task.Delay(30.Seconds(), token);
+					await time.Delay(30.Seconds(), token);
 					return 1;
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().Between(10.Milliseconds()).And(50.Milliseconds());
+					=> await That(@delegate).ExecutesIn().Between(10.Milliseconds()).And(50.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -752,10 +767,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task Within_WithoutReturnValue_WhenDelegateExceedsTheTolerance_ShouldCancelTheCancellationToken()
 			{
-				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
+				VirtualTimeSystem time = new();
+				Func<CancellationToken, Task> @delegate = token => time.Delay(30.Seconds(), token);
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn(10.Milliseconds()).Within(40.Milliseconds());
+					=> await That(@delegate).ExecutesIn(10.Milliseconds()).Within(40.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -769,14 +785,15 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task Within_WithReturnValue_WhenDelegateExceedsTheTolerance_ShouldCancelTheCancellationToken()
 			{
+				VirtualTimeSystem time = new();
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
-					await Task.Delay(30.Seconds(), token);
+					await time.Delay(30.Seconds(), token);
 					return 1;
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn(10.Milliseconds()).Within(40.Milliseconds());
+					=> await That(@delegate).ExecutesIn(10.Milliseconds()).Within(40.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -790,10 +807,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WithoutCancellationToken_WhenAsyncDelegateExceedsTheMaximum_ShouldAbandonIt()
 			{
-				Func<Task> @delegate = () => Task.Delay(30.Seconds());
+				VirtualTimeSystem time = new();
+				Func<Task> @delegate = () => time.Delay(30.Seconds(), CancellationToken.None);
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -807,22 +825,23 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WithoutCancellationToken_WhenSyncDelegateExceedsTheMaximum_ShouldAwaitItToCompletion()
 			{
+				VirtualTimeSystem time = new();
 				bool didComplete = false;
 				Action @delegate = () =>
 				{
-					Task.Delay(100.Milliseconds()).Wait();
+					time.Advance(100.Milliseconds());
 					didComplete = true;
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtMost(10.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in at most 0:00.010,
-					             but it took 0:*
-					             """).AsWildcard();
+					             but it took 0:00.100
+					             """);
 				await That(didComplete).IsTrue()
 					.Because("a delegate that cannot be interrupted is awaited instead of being abandoned");
 			}
@@ -833,10 +852,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenLaterTimeoutIsLonger_ShouldKeepTheUpperBound()
 			{
-				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
+				VirtualTimeSystem time = new();
+				Func<CancellationToken, Task> @delegate = token => time.Delay(30.Seconds(), token);
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds()).WithTimeout(60.Seconds());
+					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds()).WithTimeout(60.Seconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -850,27 +870,29 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenSyncDelegateExceedsTheTimeoutAndTheMaximum_ShouldReportTheDuration()
 			{
-				Action @delegate = () => Block(200.Milliseconds());
+				VirtualTimeSystem time = new();
+				Action @delegate = () => time.Advance(200.Milliseconds());
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(100.Milliseconds()).WithTimeout(50.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtMost(100.Milliseconds()).WithTimeout(50.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that @delegate
 					             executes in at most 0:00.100,
-					             but it took 0:*
-					             """).AsWildcard()
+					             but it took 0:00.200
+					             """)
 					.Because("the delegate violates the maximum on its own, which the measured duration shows best");
 			}
 
 			[Test]
 			public async Task WhenSyncDelegateExceedsTheTimeoutButNotTheMaximum_ShouldFailWithTheTimeout()
 			{
-				Action @delegate = () => Block(200.Milliseconds());
+				VirtualTimeSystem time = new();
+				Action @delegate = () => time.Advance(200.Milliseconds());
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(5.Seconds()).WithTimeout(50.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtMost(5.Seconds()).WithTimeout(50.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -885,10 +907,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenSyncDelegateExceedsTheTimeoutButReachesTheMinimum_ShouldFailWithTheTimeout()
 			{
-				Action @delegate = () => Block(200.Milliseconds());
+				VirtualTimeSystem time = new();
+				Action @delegate = () => time.Advance(200.Milliseconds());
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtLeast(100.Milliseconds()).WithTimeout(50.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtLeast(100.Milliseconds()).WithTimeout(50.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -903,14 +926,15 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WhenSyncDelegateWithValueExceedsTheTimeoutButNotTheMaximum_ShouldFailWithTheTimeout()
 			{
+				VirtualTimeSystem time = new();
 				Func<int> @delegate = () =>
 				{
-					Block(200.Milliseconds());
+					time.Advance(200.Milliseconds());
 					return 1;
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(5.Seconds()).WithTimeout(50.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtMost(5.Seconds()).WithTimeout(50.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -925,10 +949,11 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WithoutReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{
-				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
+				VirtualTimeSystem time = new();
+				Func<CancellationToken, Task> @delegate = token => time.Delay(30.Seconds(), token);
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(4000.Milliseconds()).WithTimeout(50.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtMost(4000.Milliseconds()).WithTimeout(50.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -941,14 +966,15 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WithReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{
+				VirtualTimeSystem time = new();
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
-					await Task.Delay(30.Seconds(), token);
+					await time.Delay(30.Seconds(), token);
 					return 1;
 				};
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(4000.Milliseconds()).WithTimeout(50.Milliseconds());
+					=> await That(@delegate).ExecutesIn().AtMost(4000.Milliseconds()).WithTimeout(50.Milliseconds()).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -957,15 +983,6 @@ public sealed partial class ThatDelegate
 					             but it did not finish within 0:00.050
 					             """);
 			}
-
-			/// <remarks>
-			///     Blocks the calling thread like a synchronous delegate that cannot be interrupted.
-			/// </remarks>
-			private static void Block(TimeSpan duration)
-			{
-				using ManualResetEventSlim neverSet = new();
-				_ = neverSet.Wait(duration);
-			}
 		}
 
 		public sealed class WithCancellationTests
@@ -973,11 +990,12 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WithoutReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{
-				Func<CancellationToken, Task> @delegate = token => Task.Delay(30.Seconds(), token);
+				VirtualTimeSystem time = new();
+				Func<CancellationToken, Task> @delegate = token => time.Delay(30.Seconds(), token);
 				CancellationToken cancelledToken = new(true);
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds()).WithCancellation(cancelledToken);
+					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds()).WithCancellation(cancelledToken).WithTimeSystem(time);
 
 				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""
@@ -990,15 +1008,16 @@ public sealed partial class ThatDelegate
 			[Test]
 			public async Task WithReturnValue_WhenTimeoutIsApplied_ShouldCancelTheCancellationToken()
 			{
+				VirtualTimeSystem time = new();
 				Func<CancellationToken, Task<int>> @delegate = async token =>
 				{
-					await Task.Delay(30.Seconds(), token);
+					await time.Delay(30.Seconds(), token);
 					return 1;
 				};
 				CancellationToken cancelledToken = new(true);
 
 				async Task Act()
-					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds()).WithCancellation(cancelledToken);
+					=> await That(@delegate).ExecutesIn().AtMost(50.Milliseconds()).WithCancellation(cancelledToken).WithTimeSystem(time);
 
 				await That(Act).Throws<InconclusiveTestException>()
 					.WithMessage("""

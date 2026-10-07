@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
+using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
 #endif
@@ -278,7 +279,7 @@ public sealed partial class ThatGeneric
 				ThrowingClass subject = new();
 				TimeSpan retryWindow = TimeSpan.FromSeconds(30);
 				int evaluations = 0;
-				Stopwatch stopwatch = Stopwatch.StartNew();
+				VirtualTimeSystem time = new();
 
 				bool IsOne(int x)
 				{
@@ -288,7 +289,7 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject).Whose(o => o.FaultedAsync(),
-						v => v.Satisfies(IsOne).Within(retryWindow));
+						v => v.Satisfies(IsOne).Within(retryWindow)).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -300,7 +301,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("async member failed"));
 				await That(evaluations).IsEqualTo(0)
 					.Because("a faulted async member must fail at once instead of being retried for the 30 s window");
-				await That(stopwatch.Elapsed).IsLessThan(retryWindow)
+				await That(time.Now).IsEqualTo(TimeSpan.Zero)
 					.Because("the member must not be read again for the 30 s window either");
 			}
 
@@ -1034,7 +1035,7 @@ public sealed partial class ThatGeneric
 				ThrowingClass subject = new();
 				TimeSpan retryWindow = TimeSpan.FromSeconds(30);
 				int evaluations = 0;
-				Stopwatch stopwatch = Stopwatch.StartNew();
+				VirtualTimeSystem time = new();
 
 				bool IsOne(int x)
 				{
@@ -1044,7 +1045,7 @@ public sealed partial class ThatGeneric
 
 				async Task Act()
 					=> await That(subject).Whose(o => o.Throwing,
-						v => v.Satisfies(IsOne).Within(retryWindow));
+						v => v.Satisfies(IsOne).Within(retryWindow)).WithTimeSystem(time);
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -1056,7 +1057,7 @@ public sealed partial class ThatGeneric
 					.And.WithInner<InvalidOperationException>(inner => inner.HasMessage("member failed"));
 				await That(evaluations).IsEqualTo(0)
 					.Because("a throwing member must fail at once instead of being retried for the 30 s window");
-				await That(stopwatch.Elapsed).IsLessThan(retryWindow)
+				await That(time.Now).IsEqualTo(TimeSpan.Zero)
 					.Because("the member must not be read again for the 30 s window either");
 			}
 

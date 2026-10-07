@@ -2,6 +2,8 @@
 using System.Globalization;
 using System.Text;
 using aweXpect.Core;
+using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Tests;
 
@@ -19,7 +21,7 @@ public sealed partial class ThatSpan
 
 				async Task Act()
 					=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
-						.IsNotParsableInto<int>().And.IsParsableInto<int>();
+						.IsNotParsableInto<int>().And.IsParsableInto<int>().WithTimeSystem(new VirtualTimeSystem());
 
 				FailException exception = await That(Act).Throws<FailException>()
 					.WithMessage("""

@@ -3,7 +3,6 @@ using aweXpect.Chronology;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Tests.TestHelpers;
-using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Core.Tests.Core.Helpers;
 
@@ -289,14 +288,15 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenTheTimeoutIsShorterThanTheBudget_ShouldBeCanceled()
 	{
-		EvaluationCancellation cancellation = new(20.Milliseconds(), CancellationToken.None);
-		using Polling sut = Polling.Start(RealTimeSystem.Instance, RealTimeSystem.Instance.GetTimestamp(),
-			30.Seconds(), 1.Hours(), cancellation);
+		VirtualTimeSystem timeSystem = new();
+		EvaluationCancellation cancellation = new(20.Milliseconds(), CancellationToken.None, null, timeSystem);
+		using Polling sut = Start(timeSystem, 30.Seconds(), 1.Hours(), cancellation);
 
 		PollStep step = await sut.WaitForNextCheck();
 
 		await That(step).IsEqualTo(PollStep.Canceled)
 			.Because("a shorter timeout ends the checks, so that it is reported as the timeout");
+		await That(timeSystem.Now).IsEqualTo(20.Milliseconds());
 		cancellation.Release();
 	}
 

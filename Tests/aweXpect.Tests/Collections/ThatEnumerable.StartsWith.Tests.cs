@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -153,7 +155,7 @@ public sealed partial class ThatEnumerable
 
 				async Task Act()
 					=> await That(GetSubject).Eventually().WithinTwoAttempts(5.Seconds())
-						.StartsWith(1);
+						.StartsWith(1).WithTimeSystem(new VirtualTimeSystem());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
@@ -178,7 +180,7 @@ public sealed partial class ThatEnumerable
 
 				async Task Act()
 					=> await That(GetSubject).Eventually().WithinTwoAttempts(5.Seconds())
-						.StartsWith(1, 2);
+						.StartsWith(1, 2).WithTimeSystem(new VirtualTimeSystem());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""

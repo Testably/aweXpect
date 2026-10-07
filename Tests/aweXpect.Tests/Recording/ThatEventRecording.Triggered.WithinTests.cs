@@ -1,4 +1,6 @@
 ﻿using System.Threading;
+using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 using aweXpect.Recording;
 
@@ -90,7 +92,8 @@ public sealed partial class ThatEventRecording
 					await That(recording)
 						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
 						.Within(10.Milliseconds())
-						.Never();
+						.Never()
+						.WithTimeSystem(new VirtualTimeSystem());
 
 				await That(Act).DoesNotThrow();
 				cts.Cancel();
@@ -163,14 +166,15 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording)
 						.Triggered(nameof(CustomEventWithParametersClass<string>.CustomEvent))
-						.Within(10.Milliseconds());
+						.Within(10.Milliseconds())
+						.WithTimeSystem(new VirtualTimeSystem());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
-					             but it was never recorded within 0:*
-					             """).AsWildcard();
+					             but it was never recorded within 0:00.010
+					             """);
 				cts.Cancel();
 			}
 
@@ -207,14 +211,15 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording)
 						.Triggered(nameof(CustomEventWithParametersClass<string, int>.CustomEvent))
-						.Within(10.Milliseconds());
+						.Within(10.Milliseconds())
+						.WithTimeSystem(new VirtualTimeSystem());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
-					             but it was never recorded within 0:*
-					             """).AsWildcard();
+					             but it was never recorded within 0:00.010
+					             """);
 				cts.Cancel();
 			}
 
@@ -251,14 +256,15 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording)
 						.Triggered(nameof(CustomEventWithParametersClass<string, int, bool>.CustomEvent))
-						.Within(10.Milliseconds());
+						.Within(10.Milliseconds())
+						.WithTimeSystem(new VirtualTimeSystem());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
-					             but it was never recorded within 0:*
-					             """).AsWildcard();
+					             but it was never recorded within 0:00.010
+					             """);
 				cts.Cancel();
 			}
 
@@ -295,14 +301,15 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording)
 						.Triggered(nameof(CustomEventWithParametersClass<string, int, bool, DateTime>.CustomEvent))
-						.Within(10.Milliseconds());
+						.Within(10.Milliseconds())
+						.WithTimeSystem(new VirtualTimeSystem());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
-					             but it was never recorded within 0:*
-					             """).AsWildcard();
+					             but it was never recorded within 0:00.010
+					             """);
 				cts.Cancel();
 			}
 
@@ -339,14 +346,15 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording)
 						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
-						.Within(10.Milliseconds());
+						.Within(10.Milliseconds())
+						.WithTimeSystem(new VirtualTimeSystem());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.010,
-					             but it was never recorded within 0:*
-					             """).AsWildcard();
+					             but it was never recorded within 0:00.010
+					             """);
 				cts.Cancel();
 			}
 
@@ -395,14 +403,15 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording)
 						.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
-						.Within(200.Milliseconds()).WithTimeout(200.Milliseconds());
+						.Within(200.Milliseconds()).WithTimeout(200.Milliseconds())
+						.WithTimeSystem(new VirtualTimeSystem());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the CustomEvent event on sut at least once within 0:00.200,
-					             but it was never recorded within 0:*
-					             """).AsWildcard()
+					             but it was never recorded within 0:00.200
+					             """)
 					.Because("an outer timeout that is not shorter than Within must not decide the outcome");
 			}
 
@@ -420,7 +429,8 @@ public sealed partial class ThatEventRecording
 					async Task Act() =>
 						await That(recording)
 							.Triggered(nameof(CustomEventWithoutParametersClass.CustomEvent))
-							.Within(30.Seconds()).WithTimeout(60.Seconds());
+							.Within(30.Seconds()).WithTimeout(60.Seconds())
+							.WithTimeSystem(new VirtualTimeSystem());
 
 					exception = await Catch.ExceptionAsync(Act);
 				}

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -23,7 +25,7 @@ public sealed partial class ThatDateTime
 
 					async Task Act()
 						=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
-							.IsOneOf(expected);
+							.IsOneOf(expected).WithTimeSystem(new VirtualTimeSystem());
 
 					await That(Act).Throws<FailException>()
 						.WithMessage($"""

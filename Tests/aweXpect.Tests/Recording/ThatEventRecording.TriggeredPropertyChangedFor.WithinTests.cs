@@ -1,5 +1,7 @@
 ﻿using System.Threading;
 using aweXpect.Core;
+using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Recording;
 
 namespace aweXpect.Tests;
@@ -30,14 +32,15 @@ public sealed partial class ThatEventRecording
 				async Task Act() =>
 					await That(recording).TriggeredPropertyChangedFor(x => x.MyValue)
 						.Within(10.Milliseconds())
-						.AtLeast(3.Times());
+						.AtLeast(3.Times())
+						.WithTimeSystem(new VirtualTimeSystem());
 
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that recording
 					             has recorded the PropertyChanged event on sut for property MyValue at least 3 times within 0:00.010,
-					             but it was never recorded within 0:*
-					             """).AsWildcard();
+					             but it was never recorded within 0:00.010
+					             """);
 				cts.Cancel();
 			}
 
