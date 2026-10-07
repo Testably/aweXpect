@@ -36,7 +36,8 @@ With `IgnoringDuplicates()`, only which items occur matters, not how often: ever
 item of the collection, and every item of the collection has to match an expected item.
 
 A multi-dimensional array is only equal to an array of the same rank with the same length in every dimension, also with
-`InAnyOrder()` or `IgnoringDuplicates()`, while the other expectations on this page only look at its items.
+`InAnyOrder()` or `IgnoringDuplicates()`, while the other expectations on this page only look at its items. A failed
+comparison with a collection names an item of such an array by its index in every dimension (e.g. `[1,2]`).
 
 ## Contained items
 

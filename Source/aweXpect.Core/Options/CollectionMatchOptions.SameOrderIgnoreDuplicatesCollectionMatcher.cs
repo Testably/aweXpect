@@ -12,12 +12,14 @@ public partial class CollectionMatchOptions
 	private sealed class SameOrderIgnoreDuplicatesCollectionMatcher<T, T2>(
 		EquivalenceRelations equivalenceRelation,
 		IEnumerable<T> expected,
-		bool ignoreInterspersedItems)
+		bool ignoreInterspersedItems,
+		int[]? dimensions)
 		: SameOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, T>(
 			equivalenceRelation,
 			expected,
 			EqualityComparer<T>.Default,
-			ignoreInterspersedItems)
+			ignoreInterspersedItems,
+			dimensions)
 		where T : T2
 	{
 		private HashSet<T>? _expectedValues;
@@ -75,6 +77,12 @@ public partial class CollectionMatchOptions
 		where T : T2
 	{
 		private readonly IEqualityComparer<T3>? _comparer;
+
+		/// <summary>
+		///     The dimensions of a subject that is an array of rank greater than one.
+		/// </summary>
+		private readonly int[]? _dimensions;
+
 		private readonly EquivalenceRelations _equivalenceRelations;
 		private readonly List<int> _firstIndexOfSubjectItem = new();
 		private readonly bool _ignoreInterspersedItems;
@@ -96,10 +104,12 @@ public partial class CollectionMatchOptions
 		protected SameOrderIgnoreDuplicatesCollectionMatcherBase(EquivalenceRelations equivalenceRelation,
 			IEnumerable<T3> expected,
 			IEqualityComparer<T3>? comparer,
-			bool ignoreInterspersedItems)
+			bool ignoreInterspersedItems,
+			int[]? dimensions = null)
 		{
 			_equivalenceRelations = equivalenceRelation;
 			_ignoreInterspersedItems = ignoreInterspersedItems;
+			_dimensions = dimensions;
 			ExpectedItems = expected as T3[] ?? expected.ToArray();
 			_comparer = comparer;
 		}
@@ -295,7 +305,7 @@ public partial class CollectionMatchOptions
 					(expectedId, subjectId) => IsMatch(subjectId, expectedId, options), false, GetOrderMatch());
 				return InOrderDeviations<T, T3>.From(searchedInExpected, true,
 					subjectId => (_firstIndexOfSubjectItem[subjectId], _subjectIds.Items[subjectId]),
-					position => ExpectedItems[position]);
+					position => ExpectedItems[position], _dimensions);
 			}
 
 			InOrderMismatch searchedInSubject = await InOrderMismatch.Explain(_subjectIdAt.ToArray(),
@@ -303,7 +313,7 @@ public partial class CollectionMatchOptions
 				(subjectId, expectedId) => IsMatch(subjectId, expectedId, options), false, GetOrderMatch());
 			return InOrderDeviations<T, T3>.From(searchedInSubject, false,
 				position => (position, _subjectIds.Items[_subjectIdAt[position]]),
-				expectedId => _expectedDistinctItems[expectedId]);
+				expectedId => _expectedDistinctItems[expectedId], _dimensions);
 		}
 
 		/// <summary>

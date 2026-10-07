@@ -316,7 +316,7 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              is equal to collection expected in order,
-					              but it contained item 4 at index 3 instead of 5
+					              but it contained item 4 at index [1,1] instead of 5
 
 					              Collection:
 					              {Formatter.Format(subject)}
@@ -325,6 +325,218 @@ public sealed partial class ThatEnumerable
 					              {Formatter.Format(expected)}
 					              """)
 					.Because("both arrays are listed as the formatter writes a multi-dimensional array");
+			}
+
+			[Test]
+			public async Task WithMultiDimensionalArrayWithDifferentContent_WhenIgnoringDuplicates_ShouldFail()
+			{
+				IEnumerable subject = new[,]
+				{
+					{
+						1, 2,
+					},
+					{
+						3, 4,
+					},
+				};
+				IEnumerable expected = new[,]
+				{
+					{
+						1, 2,
+					},
+					{
+						3, 5,
+					},
+				};
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).IgnoringDuplicates();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to collection expected in order ignoring duplicates,
+					              but it
+					                contained item 4 at index [1,1] that was not expected and
+					                lacked 1 of 4 expected items: 5
+
+					              Collection:
+					              {Formatter.Format(subject)}
+
+					              Expected:
+					              {Formatter.Format(expected)}
+					              """);
+			}
+
+			[Test]
+			public async Task WithMultiDimensionalArrayWithDifferentContent_WhenInAnyOrder_ShouldFail()
+			{
+				IEnumerable subject = new[,]
+				{
+					{
+						1, 2,
+					},
+					{
+						9, 4,
+					},
+				};
+				IEnumerable expected = new[,]
+				{
+					{
+						4, 3,
+					},
+					{
+						2, 1,
+					},
+				};
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).InAnyOrder();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to collection expected in any order,
+					              but it
+					                contained item 9 at index [1,0] that was not expected and
+					                lacked 1 of 4 expected items: 3
+
+					              Collection:
+					              {Formatter.Format(subject)}
+
+					              Expected:
+					              {Formatter.Format(expected)}
+					              """);
+			}
+
+			[Test]
+			public async Task WithMultiDimensionalArrayWithDifferentContent_WhenInAnyOrderIgnoringDuplicates_ShouldFail()
+			{
+				IEnumerable subject = new[,]
+				{
+					{
+						1, 2,
+					},
+					{
+						9, 4,
+					},
+				};
+				IEnumerable expected = new[,]
+				{
+					{
+						4, 3,
+					},
+					{
+						2, 1,
+					},
+				};
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected).InAnyOrder().IgnoringDuplicates();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to collection expected in any order ignoring duplicates,
+					              but it
+					                contained item 9 at index [1,0] that was not expected and
+					                lacked 1 of 4 expected items: 3
+
+					              Collection:
+					              {Formatter.Format(subject)}
+
+					              Expected:
+					              {Formatter.Format(expected)}
+					              """);
+			}
+
+			[Test]
+			public async Task WithMultiDimensionalArrayWithDifferentOrder_ShouldFail()
+			{
+				IEnumerable subject = new[,]
+				{
+					{
+						1, 2, 3,
+					},
+					{
+						4, 5, 6,
+					},
+				};
+				IEnumerable expected = new[,]
+				{
+					{
+						1, 2, 4,
+					},
+					{
+						5, 3, 6,
+					},
+				};
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to collection expected in order,
+					              but it contained item 3 at index [0,2] in wrong order
+					              (but the items match in a different order)
+
+					              Collection:
+					              {Formatter.Format(subject)}
+
+					              Expected:
+					              {Formatter.Format(expected)}
+					              """);
+			}
+
+			[Test]
+			public async Task WithMultiDimensionalArrayOfRankThreeWithDifferentContent_ShouldFail()
+			{
+				IEnumerable subject = new[,,]
+				{
+					{
+						{
+							1, 2,
+						},
+					},
+					{
+						{
+							3, 4,
+						},
+					},
+				};
+				IEnumerable expected = new[,,]
+				{
+					{
+						{
+							1, 0,
+						},
+					},
+					{
+						{
+							0, 4,
+						},
+					},
+				};
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to collection expected in order,
+					              but it
+					                contained item 2 at index [0,0,1] instead of 0 and
+					                contained item 3 at index [1,0,0] instead of 0
+
+					              Collection:
+					              {Formatter.Format(subject)}
+
+					              Expected:
+					              {Formatter.Format(expected)}
+					              """);
 			}
 
 			[Test]

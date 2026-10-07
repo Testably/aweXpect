@@ -288,6 +288,154 @@ public class CollectionMatchOptionsTests
 		}
 	}
 
+	public class DimensionsTests
+	{
+		[Test]
+		[Arguments(false, false)]
+		[Arguments(false, true)]
+		[Arguments(true, false)]
+		[Arguments(true, true)]
+		public async Task ShouldNameAnUnexpectedItemByItsIndexInEveryDimension(bool inAnyOrder,
+			bool ignoringDuplicates)
+		{
+			CollectionMatchOptions sut = new();
+			if (inAnyOrder)
+			{
+				sut.InAnyOrder();
+			}
+
+			if (ignoringDuplicates)
+			{
+				sut.IgnoringDuplicates();
+			}
+
+			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 3, 4, 5,], [2, 3,]),
+				[1, 2, 3, 4, 9, 5,]);
+
+			await That(result).Contains("contained item 9 at index [1,1] that was not expected");
+		}
+
+		[Test]
+		public async Task WhenAnItemIsIncorrect_ShouldNameItByItsIndexInEveryDimension()
+		{
+			CollectionMatchOptions sut = new();
+
+			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 3, 0, 5, 6,], [2, 3,]),
+				[1, 2, 3, 4, 5, 6,]);
+
+			await That(result).IsEqualTo("True: it contained item 4 at index [1,0] instead of 0");
+		}
+
+		[Test]
+		public async Task WhenAnItemIsInWrongOrder_ShouldNameItByItsIndexInEveryDimension()
+		{
+			CollectionMatchOptions sut = new();
+
+			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 4, 5, 3, 6,], [2, 3,]),
+				[1, 2, 3, 4, 5, 6,]);
+
+			await That(result).IsEqualTo("""
+			                             True: it contained item 3 at index [0,2] in wrong order
+			                             (but the items match in a different order)
+			                             """);
+		}
+
+		[Test]
+		[Arguments(false)]
+		[Arguments(true)]
+		public async Task WhenAnItemInterruptsTheExpectedItems_ShouldNameItByItsIndexInEveryDimension(
+			bool ignoringDuplicates)
+		{
+			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			sut.IgnoringDuplicates(ignoringDuplicates);
+
+			string result = await Describe(sut.GetCollectionMatcher<int, int>([3, 5,], [2, 3,]),
+				[1, 2, 3, 4, 5, 6,]);
+
+			await That(result).IsEqualTo("True: it contained item 4 at index [1,0] instead of 5");
+		}
+
+		[Test]
+		[Arguments(false)]
+		[Arguments(true)]
+		public async Task WhenAnItemOfAContainedSubjectIsInWrongOrder_ShouldNameItByItsIndexInEveryDimension(
+			bool ignoringDuplicates)
+		{
+			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
+			sut.IgnoringDuplicates(ignoringDuplicates);
+
+			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 3, 4, 5,], [2, 2,]),
+				[2, 3, 4, 1,]);
+
+			await That(result).IsEqualTo("True: it contained item 1 at index [1,1] in wrong order");
+		}
+
+		[Test]
+		public async Task WhenThereAreTooManyDeviations_ShouldNameTheListedItemsByTheirIndexInEveryDimension()
+		{
+			CollectionMatchOptions sut = new();
+			sut.InAnyOrder();
+
+			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 3, 4, 5, 6,], [3, 2,]),
+				[1, 7, 8, 9, 10, 11,]);
+
+			await That(result).IsEqualTo("""
+			                             failed early: it had more than 4 deviations:
+			                               contained item 7 at index [0,1] that was not expected,
+			                               contained item 8 at index [1,0] that was not expected,
+			                               (… and maybe more)
+			                             """);
+		}
+
+		[Test]
+		public async Task WithMoreThanTwoDimensions_ShouldNameAnItemByItsIndexInEveryDimension()
+		{
+			CollectionMatchOptions sut = new();
+
+			string result = await Describe(
+				sut.GetCollectionMatcher<int, int>(Enumerable.Range(0, 24).Select(x => x == 17 ? -1 : x), [2, 3, 4,]),
+				Enumerable.Range(0, 24));
+
+			await That(result).IsEqualTo("True: it contained item 17 at index [1,1,1] instead of -1");
+		}
+
+		[Test]
+		public async Task WithOneDimension_ShouldNameAnItemByItsPosition()
+		{
+			CollectionMatchOptions sut = new();
+
+			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 3, 0,], [4,]), [1, 2, 3, 4,]);
+
+			await That(result).IsEqualTo("True: it contained item 4 at index 3 instead of 0");
+		}
+
+		[Test]
+		public async Task WithoutDimensions_ShouldNameAnItemByItsPosition()
+		{
+			CollectionMatchOptions sut = new();
+
+			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 3, 0,], null), [1, 2, 3, 4,]);
+
+			await That(result).IsEqualTo("True: it contained item 4 at index 3 instead of 0");
+		}
+
+		private static async Task<string> Describe(ICollectionMatcher<int, int> matcher, IEnumerable<int> subject)
+		{
+			ObjectEqualityOptions<int> options = new();
+			foreach (int item in subject)
+			{
+				(bool isFailure, string? error) = await matcher.Verify("it", item, options, 2);
+				if (isFailure)
+				{
+					return $"failed early: {error}";
+				}
+			}
+
+			(bool isCompleteFailure, string? completeError) = await matcher.VerifyComplete("it", options, 2);
+			return $"{isCompleteFailure}: {completeError}";
+		}
+	}
+
 	public class ExpectationItemTests
 	{
 		[Test]
@@ -1765,6 +1913,80 @@ public class CollectionMatchOptionsTests
 		}
 
 		[Test]
+		public async Task Contains_WhenAnotherDuplicateIsWithinTheRun_ShouldReportItInsteadOfTheNextExpectedItem()
+		{
+			int[] subject = [1, 2, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).Contains([1, 2, 3,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection [1, 2, 3,] in order and contiguous,
+				             but it contained item 2 at index 2 instead of 3
+
+				             Collection:
+				             [1, 2, 2, 3]
+
+				             Expected:
+				             [1, 2, 3]
+				             """)
+				.Because("an interrupting item is not reported instead of an expected item that it is equal to");
+		}
+
+		[Test]
+		public async Task Contains_WhenTheRunStartsAtADuplicate_ShouldReportTheItemsThatInterruptTheShortestRun()
+		{
+			int[] subject = [1, 1, 5, 2, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).Contains([1, 2, 3,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection [1, 2, 3,] in order and contiguous,
+				             but it
+				               contained item 5 at index 2 instead of 2 and
+				               contained item 2 at index 4 instead of 3
+
+				             Collection:
+				             [1, 1, 5, 2, 2, 3]
+
+				             Expected:
+				             [1, 2, 3]
+				             """);
+		}
+
+		[Test]
+		public async Task Contains_WithPredicates_WhenSeveralItemsOfTheRunMatchAPredicate_ShouldReportTheItemThatMatchesNone()
+		{
+			int[] subject = [1, 5, 0, 7,];
+
+			async Task Act()
+				=> await That(subject).Contains([x => x == 1, x => x == 0 || x == 5, x => x == 7,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             contains collection [x => x == 1, x => x == 0 || x == 5, x => x == 7,] in order and contiguous,
+				             but it contained item 0 at index 2 instead of x => (x == 7)
+
+				             Collection:
+				             [1, 5, 0, 7]
+
+				             Expected:
+				             [
+				               x => (x == 1),
+				               x => ((x == 0) OrElse (x == 5)),
+				               x => (x == 7)
+				             ]
+				             """)
+				.Because("the 5 matches the second predicate, so it is not reported instead of it");
+		}
+
+		[Test]
 		public async Task IsContainedIn_WhenADuplicateIsInOrder_ShouldReportTheGapInTheExpectedItems()
 		{
 			int[] subject = [1, 2,];
@@ -1807,6 +2029,85 @@ public class CollectionMatchOptionsTests
 				             Expected:
 				             [2, 1, 2]
 				             """);
+		}
+
+		[Test]
+		public async Task IsContainedIn_WhenAnotherExpectedDuplicateIsWithinTheRun_ShouldReportTheNextItemInsteadOfIt()
+		{
+			int[] subject = [1, 2, 3,];
+
+			async Task Act()
+				=> await That(subject).IsContainedIn([1, 2, 2, 3,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is contained in collection [1, 2, 2, 3,] in order and contiguous,
+				             but it contained item 3 at index 2 instead of 2
+
+				             Collection:
+				             [1, 2, 3]
+
+				             Expected:
+				             [1, 2, 2, 3]
+				             """)
+				.Because("an item is not reported instead of an expected item that it is equal to");
+		}
+
+		[Test]
+		public async Task IsEqualTo_WhenOnlyOneOfTwoMovedDuplicatesIsExpected_ShouldReportTheFirstOneInWrongOrder()
+		{
+			int[] subject = [1, 1, 7, 8, 9,];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo([7, 8, 9, 1,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [7, 8, 9, 1,] in order,
+				             but it
+				               contained item 1 at index 0 in wrong order and
+				               contained item 1 at index 1 that was not expected
+
+				             Collection:
+				             [1, 1, 7, 8, 9]
+
+				             Expected:
+				             [7, 8, 9, 1]
+				             """);
+		}
+
+		[Test]
+		public async Task IsEqualTo_WithPredicates_WhenAMovedItemMatchesSeveralPredicates_ShouldPairAsManyItemsAsPossible()
+		{
+			int[] subject = [1, 2, 7, 8, 9,];
+
+			async Task Act()
+				=> await That(subject).IsEqualTo([x => x == 7, x => x == 8, x => x == 9, x => x <= 2, x => x == 1,]);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is equal to collection [x => x == 7, x => x == 8, x => x == 9, x => x <= 2, x => x == 1,] in order,
+				             but it
+				               contained item 1 at index 0 in wrong order and
+				               contained item 2 at index 1 in wrong order
+				             (but the items match in a different order)
+
+				             Collection:
+				             [1, 2, 7, 8, 9]
+
+				             Expected:
+				             [
+				               x => (x == 7),
+				               x => (x == 8),
+				               x => (x == 9),
+				               x => (x <= 2),
+				               x => (x == 1)
+				             ]
+				             """)
+				.Because("the 1 takes the last predicate, so that the 2 is no unexpected item and no predicate is missing");
 		}
 	}
 

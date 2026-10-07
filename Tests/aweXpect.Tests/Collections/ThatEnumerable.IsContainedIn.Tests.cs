@@ -406,6 +406,30 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
+			public async Task WithDuplicateAtAGapInExpected_ShouldReportTheNextItemInsteadOfIt()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
+				int[] expected = [1, 2, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is contained in collection expected in order and contiguous,
+					             but it contained item 3 at index 2 instead of 2
+
+					             Collection:
+					             [1, 2, 3]
+
+					             Expected:
+					             [1, 2, 2, 3]
+					             """)
+					.Because("an item is not reported instead of an expected item that it is equal to");
+			}
+
+			[Test]
 			public async Task WithDuplicateBeforeAGapInExpected_ShouldReportTheGap()
 			{
 				IEnumerable<int> subject = ToEnumerable([1, 2,]);

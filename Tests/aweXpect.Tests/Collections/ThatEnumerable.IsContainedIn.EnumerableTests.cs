@@ -717,6 +717,37 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
+			public async Task WithMultiDimensionalArray_WhenAnItemIsNotExpected_ShouldNameItsIndexInEveryDimension()
+			{
+				IEnumerable subject = new[,]
+				{
+					{
+						1, 2,
+					},
+					{
+						3, 9,
+					},
+				};
+				int[] expected = [1, 2, 3, 4,];
+
+				async Task Act()
+					=> await That(subject).IsContainedIn(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is contained in collection expected in order and contiguous,
+					              but it contained item 9 at index [1,1] that was not expected
+
+					              Collection:
+					              {Formatter.Format(subject)}
+
+					              Expected:
+					              [1, 2, 3, 4]
+					              """);
+			}
+
+			[Test]
 			public async Task WithSameCollection_ShouldSucceed()
 			{
 				IEnumerable subject = ToEnumerable(["a", "b", "c",]);

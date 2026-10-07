@@ -13,8 +13,9 @@ public partial class CollectionMatchOptions
 {
 	private sealed class AnyOrderIgnoreDuplicatesCollectionMatcher<T, T2>(
 		EquivalenceRelations equivalenceRelation,
-		IEnumerable<T> expected)
-		: AnyOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, T>(equivalenceRelation, expected, true)
+		IEnumerable<T> expected,
+		int[]? dimensions)
+		: AnyOrderIgnoreDuplicatesCollectionMatcherBase<T, T2, T>(equivalenceRelation, expected, true, dimensions)
 		where T : T2
 	{
 		protected override ValueTask<bool> AreConsideredEqual(int index, T value, T expected,
@@ -67,6 +68,12 @@ public partial class CollectionMatchOptions
 		private readonly Dictionary<int, T> _additionalItems = new();
 		private readonly bool _areExpectedValues;
 		private readonly List<T3> _coveredItems = new();
+
+		/// <summary>
+		///     The dimensions of a subject that is an array of rank greater than one.
+		/// </summary>
+		private readonly int[]? _dimensions;
+
 		private readonly List<(int Index, T Value)> _distinctItems = new();
 		private readonly EquivalenceRelations _equivalenceRelations;
 		private readonly IEnumerable<T3> _expected;
@@ -82,11 +89,12 @@ public partial class CollectionMatchOptions
 		///     the count of unique ones.
 		/// </remarks>
 		protected AnyOrderIgnoreDuplicatesCollectionMatcherBase(EquivalenceRelations equivalenceRelation,
-			IEnumerable<T3> expected, bool areExpectedValues)
+			IEnumerable<T3> expected, bool areExpectedValues, int[]? dimensions = null)
 		{
 			_equivalenceRelations = equivalenceRelation;
 			_expected = expected;
 			_areExpectedValues = areExpectedValues;
+			_dimensions = dimensions;
 		}
 
 		/// <inheritdoc />
@@ -138,7 +146,7 @@ public partial class CollectionMatchOptions
 			List<string> errors = new();
 			if (!_equivalenceRelations.Includes(EquivalenceRelations.Contains))
 			{
-				errors.AddRange(AdditionalItemsError(_additionalItems, formatItem));
+				errors.AddRange(AdditionalItemsError(_additionalItems, formatItem, _dimensions));
 			}
 			else if (_equivalenceRelations.Includes(EquivalenceRelations.ContainsProperly) && !_additionalItems.Any())
 			{
@@ -342,7 +350,7 @@ public partial class CollectionMatchOptions
 			=> _equivalenceRelations.Includes(EquivalenceRelations.IsContainedIn) ? 0 : _missingItems.Count;
 
 		private IEnumerable<string> GetDeviations()
-			=> AdditionalItemsError(_additionalItems, CreateItemFormatter());
+			=> AdditionalItemsError(_additionalItems, CreateItemFormatter(), _dimensions);
 
 		/// <summary>
 		///     Missing items are no deviation for the IsContainedIn relation, so they are not listed.

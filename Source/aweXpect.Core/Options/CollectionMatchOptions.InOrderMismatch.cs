@@ -422,6 +422,11 @@ public partial class CollectionMatchOptions
 		private async ValueTask FindTheInterruptions(List<(int SoughtId, int Position)> chain)
 		{
 			await MoveTowardsTheEnd(chain);
+			if (_isOneToOne)
+			{
+				await MoveBehindThePreviousItem(chain);
+			}
+
 			int start = chain[0].Position;
 			int end = chain[chain.Count - 1].Position;
 			HashSet<int> chainPositions = new(chain.Select(link => link.Position));
@@ -455,6 +460,29 @@ public partial class CollectionMatchOptions
 			{
 				(int soughtId, int position) = chain[i];
 				for (int candidate = chain[i + 1].Position - 1; candidate > position; candidate--)
+				{
+					if (await CanBeTakenBy(candidate, soughtId))
+					{
+						chain[i] = (soughtId, candidate);
+						break;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		///     Behind the first item of the run, each item takes the first searched item it can take, so that an item
+		///     which interrupts the run does not match the sought item behind it, with which it is reported.
+		/// </summary>
+		/// <remarks>
+		///     The run neither starts earlier nor ends later, so it is not interrupted by more items.
+		/// </remarks>
+		private async ValueTask MoveBehindThePreviousItem(List<(int SoughtId, int Position)> chain)
+		{
+			for (int i = 1; i < chain.Count; i++)
+			{
+				(int soughtId, int position) = chain[i];
+				for (int candidate = chain[i - 1].Position + 1; candidate < position; candidate++)
 				{
 					if (await CanBeTakenBy(candidate, soughtId))
 					{

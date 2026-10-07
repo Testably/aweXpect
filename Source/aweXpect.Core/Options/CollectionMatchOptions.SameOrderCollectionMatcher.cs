@@ -13,9 +13,10 @@ public partial class CollectionMatchOptions
 		EquivalenceRelations equivalenceRelation,
 		IEnumerable<T> expected,
 		bool ignoreInterspersedItems,
-		bool addsInAnyOrderHint)
+		bool addsInAnyOrderHint,
+		int[]? dimensions)
 		: SameOrderCollectionMatcherBase<T, T2, T>(equivalenceRelation, expected, ignoreInterspersedItems,
-			addsInAnyOrderHint)
+			addsInAnyOrderHint, dimensions)
 		where T : T2
 	{
 		private HashSet<T>? _expectedValues;
@@ -31,7 +32,7 @@ public partial class CollectionMatchOptions
 			=> options.AreConsideredEqual(value, expected);
 
 		protected override ICollectionMatcher<T, T2> CreateAnyOrderMatcher()
-			=> new AnyOrderCollectionMatcher<T, T2>(EquivalenceRelation, ExpectedItems);
+			=> new AnyOrderCollectionMatcher<T, T2>(EquivalenceRelation, ExpectedItems, null);
 	}
 
 	private sealed class SameOrderFromExpectationCollectionMatcher<T, T2>(
@@ -82,6 +83,11 @@ public partial class CollectionMatchOptions
 		/// </summary>
 		private readonly bool _addsInAnyOrderHint;
 
+		/// <summary>
+		///     The dimensions of a subject that is an array of rank greater than one.
+		/// </summary>
+		private readonly int[]? _dimensions;
+
 		private readonly bool _ignoreInterspersedItems;
 		private readonly List<T> _values;
 
@@ -121,11 +127,13 @@ public partial class CollectionMatchOptions
 		protected SameOrderCollectionMatcherBase(EquivalenceRelations equivalenceRelation,
 			IEnumerable<T3> expected,
 			bool ignoreInterspersedItems,
-			bool addsInAnyOrderHint)
+			bool addsInAnyOrderHint,
+			int[]? dimensions = null)
 		{
 			EquivalenceRelation = equivalenceRelation;
 			_ignoreInterspersedItems = ignoreInterspersedItems;
 			_addsInAnyOrderHint = addsInAnyOrderHint;
+			_dimensions = dimensions;
 			ExpectedItems = expected as T3[] ?? expected.ToArray();
 			_values = new List<T>(ExpectedItems.Length);
 			_isFound = ExpectedItems.Length == 0;
@@ -280,7 +288,7 @@ public partial class CollectionMatchOptions
 					(expectedIndex, index) => IsMatch(index, ExpectedItems[expectedIndex], options),
 					true, orderMatch);
 				return InOrderDeviations<T, T3>.From(searchedInExpected, true,
-					index => (index, _values[index]), expectedIndex => ExpectedItems[expectedIndex]);
+					index => (index, _values[index]), expectedIndex => ExpectedItems[expectedIndex], _dimensions);
 			}
 
 			InOrderMismatch searchedInSubject = await InOrderMismatch.Explain(
@@ -288,7 +296,7 @@ public partial class CollectionMatchOptions
 				(index, expectedIndex) => IsMatch(index, ExpectedItems[expectedIndex], options),
 				true, orderMatch);
 			return InOrderDeviations<T, T3>.From(searchedInSubject, false,
-				index => (index, _values[index]), expectedIndex => ExpectedItems[expectedIndex]);
+				index => (index, _values[index]), expectedIndex => ExpectedItems[expectedIndex], _dimensions);
 		}
 
 		/// <summary>
@@ -577,8 +585,10 @@ public partial class CollectionMatchOptions
 		///     Additional items are no deviation for the containment relation, so they are left out.
 		/// </summary>
 		private IEnumerable<string> GetDeviations(IOptionsEquality<T2> options)
-			=> IncorrectItemsError(_incorrectItems ?? new Dictionary<int, (T Item, T3 Expected)>(), options)
-				.Concat(AdditionalItemsError(_additionalItems ?? new Dictionary<int, T>(), CreateItemFormatter()));
+			=> IncorrectItemsError(_incorrectItems ?? new Dictionary<int, (T Item, T3 Expected)>(), options,
+					_dimensions)
+				.Concat(AdditionalItemsError(_additionalItems ?? new Dictionary<int, T>(), CreateItemFormatter(),
+					_dimensions));
 
 		/// <summary>
 		///     Every subject item was compared with the expected item at its position, so the expected items beyond the
@@ -621,6 +631,10 @@ public partial class CollectionMatchOptions
 		///     An additional item that matches a missing item was moved, so both are reported as one item in the wrong
 		///     order.
 		/// </summary>
+		/// <remarks>
+		///     An item can match several missing items, so the items are paired by a maximum matching, which reports as
+		///     few items as not expected or missing as possible.
+		/// </remarks>
 		private async ValueTask<(bool, string?)>
 			ReturnEditsError(string it, List<(EditKind Kind, int SubjectIndex, int ExpectedIndex)> edits,
 				IOptionsEquality<T2> options, int maximumNumber)
@@ -644,23 +658,19 @@ public partial class CollectionMatchOptions
 				}
 			}
 
-			Dictionary<int, T> outOfOrderItems = new();
-			foreach (KeyValuePair<int, T> additionalItem in additionalItems.ToList())
+			Dictionary<int, T> unexpectedItems = new();
+			ItemMatching<T, T3> matching = new(missingItems,
+				(index, _, expected) => IsMatch(index, expected, options), unexpectedItems);
+			foreach (KeyValuePair<int, T> additionalItem in additionalItems)
 			{
-				for (int i = 0; i < missingItems.Count; i++)
-				{
-					if (await IsMatch(additionalItem.Key, missingItems[i], options))
-					{
-						missingItems.RemoveAt(i);
-						additionalItems.Remove(additionalItem.Key);
-						outOfOrderItems.Add(additionalItem.Key, additionalItem.Value);
-						break;
-					}
-				}
+				await matching.Add(additionalItem.Key, additionalItem.Value);
+				await matching.ResolvePendingItems();
 			}
 
-			return ReturnError(it, incorrectItems, outOfOrderItems, additionalItems, missingItems, options,
-				maximumNumber);
+			Dictionary<int, T> outOfOrderItems = matching.MatchedPairs()
+				.ToDictionary(pair => pair.Index, pair => _values[pair.Index]);
+			return ReturnError(it, incorrectItems, outOfOrderItems, unexpectedItems,
+				matching.UnmatchedExpectedItems(), options, maximumNumber);
 		}
 
 		private (bool, string?) ReturnError(string it, Dictionary<int, (T Item, T3 Expected)> incorrectItems,
@@ -670,9 +680,9 @@ public partial class CollectionMatchOptions
 			Func<object?, string> formatItem =
 				GetItemFormatter(additionalItems.Values.Cast<object?>(), missingItems.Cast<object?>());
 			List<string> errors = new();
-			errors.AddRange(IncorrectItemsError(incorrectItems, options));
-			errors.AddRange(OutOfOrderItemsError(outOfOrderItems));
-			errors.AddRange(AdditionalItemsError(additionalItems, formatItem));
+			errors.AddRange(IncorrectItemsError(incorrectItems, options, _dimensions));
+			errors.AddRange(OutOfOrderItemsError(outOfOrderItems, _dimensions));
+			errors.AddRange(AdditionalItemsError(additionalItems, formatItem, _dimensions));
 			errors.AddRange(MissingItemsError(ExpectedItems.Length, missingItems, EquivalenceRelation, false,
 				formatItem, options, maximumNumber));
 
