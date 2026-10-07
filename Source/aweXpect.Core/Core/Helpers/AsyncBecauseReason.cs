@@ -159,7 +159,7 @@ internal sealed class AsyncBecauseReason(Task<string?> reason) : IBecauseReason
 		catch (Exception exception)
 		{
 			resolvedReason = $"the reason did throw {Formatter.Format(exception.GetType()).PrependAOrAn()}: " +
-			                 exception.Message.DisplayWhitespace();
+			                 ValueFormatters.GetMessage(exception).DisplayWhitespace();
 		}
 
 		if (!string.IsNullOrWhiteSpace(resolvedReason))

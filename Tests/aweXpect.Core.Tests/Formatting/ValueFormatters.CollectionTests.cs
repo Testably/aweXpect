@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 #endif
 using System.Linq;
 using System.Text;
+using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration
@@ -94,6 +95,22 @@ public partial class ValueFormatters
 				             Expected that subject
 				             is null,
 				             but it was [the enumeration did throw an InvalidOperationException: enumeration\nfailed]
+				             """);
+		}
+
+		[Test]
+		public async Task InFailureMessage_WhenEnumerationThrowsAnExceptionWhoseMessageThrows_ShouldRenderAPlaceholder()
+		{
+			object subject = Throwing(new ThrowingMessageException());
+
+			async Task Act()
+				=> await That(subject).IsNull();
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is null,
+				             but it was [the enumeration did throw a ThrowingMessageException: [Message of ThrowingMessageException did throw an InvalidOperationException]]
 				             """);
 		}
 

@@ -22,9 +22,10 @@ public abstract partial class ThatDelegate(ExpectationBuilder expectationBuilder
 		}
 
 		string message = (relation + Formatter.Format(exception.GetType())).PrependAOrAn();
-		if (!string.IsNullOrEmpty(exception.Message))
+		string exceptionMessage = ValueFormatters.GetMessage(exception);
+		if (!string.IsNullOrEmpty(exceptionMessage))
 		{
-			message += ":" + Environment.NewLine + exception.Message.Indent(indentation + "  ");
+			message += ":" + Environment.NewLine + exceptionMessage.Indent(indentation + "  ");
 		}
 
 		return message;

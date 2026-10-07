@@ -48,7 +48,7 @@ public static partial class ValueFormatters
 		}
 
 		FormatType(value.GetType(), stringBuilder);
-		string? message = value.Message;
+		string? message = GetMessage(value);
 		if (string.IsNullOrEmpty(message))
 		{
 			return;

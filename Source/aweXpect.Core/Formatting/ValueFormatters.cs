@@ -204,11 +204,39 @@ public static partial class ValueFormatters
 	{
 		exception = (exception as UserCodeException)?.Exception ?? exception;
 		exception = (exception as TargetInvocationException)?.InnerException ?? exception;
-		// The registered formatters are bypassed, as one of them might be the thrower.
+		return $"{thrower} did throw {FormatExceptionType(exception).PrependAOrAn()}: " +
+		       GetMessage(exception).DisplayWhitespace();
+	}
+
+	/// <summary>
+	///     The message of an <paramref name="exception" /> that code of the caller threw, or a placeholder when reading
+	///     the message throws, so that building a failure message does not throw and hide the failure.
+	/// </summary>
+	/// <remarks>
+	///     The placeholder only names the type of the exception that the message threw, because reading the message of
+	///     that exception could throw again.
+	/// </remarks>
+	internal static string GetMessage(Exception exception)
+	{
+		try
+		{
+			return exception.Message;
+		}
+		catch (Exception thrownException)
+		{
+			return $"[Message of {FormatExceptionType(exception)} did throw " +
+			       $"{FormatExceptionType(thrownException).PrependAOrAn()}]";
+		}
+	}
+
+	/// <remarks>
+	///     The registered formatters are bypassed, as one of them might be the thrower.
+	/// </remarks>
+	private static string FormatExceptionType(Exception exception)
+	{
 		StringBuilder exceptionType = new();
 		FormatType(exception.GetType(), exceptionType);
-		return
-			$"{thrower} did throw {exceptionType.ToString().PrependAOrAn()}: {exception.Message.DisplayWhitespace()}";
+		return exceptionType.ToString();
 	}
 
 	/// <summary>

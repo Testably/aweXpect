@@ -28,6 +28,25 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Test]
+		public async Task DoesNotThrow_WhenMessageOfTheExceptionThrows_ShouldFailWithAPlaceholderForTheMessage()
+		{
+			Exception exception = new ThrowingMessageException();
+			Action @delegate = () => throw exception;
+
+			async Task Act()
+				=> await That(@delegate).DoesNotThrow();
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that @delegate
+				             does not throw any exception,
+				             but it did throw a ThrowingMessageException:
+				               [Message of ThrowingMessageException did throw an InvalidOperationException]
+				             """).And
+				.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+		}
+
+		[Test]
 		public async Task DoesNotThrow_WhoseResult_WhenDelegateThrows_ShouldForwardExceptionAsInnerException()
 		{
 			Exception exception = new MyException();

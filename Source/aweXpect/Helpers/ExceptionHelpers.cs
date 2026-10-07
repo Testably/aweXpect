@@ -150,13 +150,34 @@ internal static class ExceptionHelpers
 		string? exceptionMessage = null)
 	{
 		string message = (relation + Formatter.Format(exception.GetType())).PrependAOrAn();
-		exceptionMessage ??= exception.Message;
+		exceptionMessage ??= exception.GetMessage();
 		if (!string.IsNullOrEmpty(exceptionMessage))
 		{
 			message += ":" + Environment.NewLine + exceptionMessage.Indent(indentation + "  ");
 		}
 
 		return message;
+	}
+
+	/// <summary>
+	///     The message of an <paramref name="exception" /> that code of the caller threw, or a placeholder when reading
+	///     the message throws, so that building a failure message does not throw and hide the failure.
+	/// </summary>
+	/// <remarks>
+	///     The placeholder only names the type of the exception that the message threw, because reading the message of
+	///     that exception could throw again.
+	/// </remarks>
+	public static string GetMessage(this Exception exception)
+	{
+		try
+		{
+			return exception.Message;
+		}
+		catch (Exception thrownException)
+		{
+			return $"[Message of {Formatter.Format(exception.GetType())} did throw " +
+			       $"{Formatter.Format(thrownException.GetType()).PrependAOrAn()}]";
+		}
 	}
 
 	public static IEnumerable<Exception> GetInnerExceptions(this Exception? actual)
