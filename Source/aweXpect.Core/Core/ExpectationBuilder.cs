@@ -523,8 +523,10 @@ public abstract class ExpectationBuilder
 	/// <summary>
 	///     Adds a <paramref name="cancellationToken" /> to be used by the constraints.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A cancellation token is already set.</exception>
 	public void WithCancellation(CancellationToken cancellationToken)
 	{
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_hasCancellationToken, nameof(WithCancellation));
 		_cancellationToken = cancellationToken;
 		_hasCancellationToken = true;
 	}

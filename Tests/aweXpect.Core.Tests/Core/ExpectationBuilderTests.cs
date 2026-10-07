@@ -918,6 +918,48 @@ public class ExpectationBuilderTests
 	}
 
 	[Test]
+	public async Task WithCancellation_TogetherWithTimeout_ShouldApplyBoth()
+	{
+		using CancellationTokenSource cts = new();
+
+		async Task Act()
+			=> await ThatAwaiting(1).WithCancellation(cts.Token).WithTimeout(50.Milliseconds());
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             awaits,
+			             but it did not finish within 0:00.050
+			             """)
+			.Because("a timeout is a different option than the cancellation token");
+	}
+
+	[Test]
+	public async Task WithCancellation_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+	{
+		using CancellationTokenSource cts = new();
+		ExpectationResult sut = ThatAwaiting(1).WithCancellation(cts.Token);
+
+		void Act() => sut.WithCancellation(System.Threading.CancellationToken.None);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("WithCancellation cannot be specified more than once.")
+			.Because("the second token would silently replace the first one");
+	}
+
+	[Test]
+	public async Task WithCancellation_WhenSpecifiedTwice_WithTimeoutInBetween_ShouldThrowInvalidOperationException()
+	{
+		using CancellationTokenSource cts = new();
+		ExpectationResult sut = ThatAwaiting(1).WithCancellation(cts.Token).WithTimeout(50.Milliseconds());
+
+		void Act() => sut.WithCancellation(cts.Token);
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("WithCancellation cannot be specified more than once.");
+	}
+
+	[Test]
 	public async Task WithTimeout_WhenALongerTimeoutFollows_ShouldKeepTheShorterTimeout()
 	{
 		async Task Act()

@@ -76,6 +76,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	///     </c>
 	///     to apply the <paramref name="cancellationToken" /> globally.
 	/// </remarks>
+	/// <exception cref="InvalidOperationException">A cancellation token is already set.</exception>
 	public ExpectationResult WithCancellation(CancellationToken cancellationToken)
 	{
 		ExpectationBuilder.WithCancellation(cancellationToken);
@@ -320,6 +321,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	///     </c>
 	///     to apply the <paramref name="cancellationToken" /> globally.
 	/// </remarks>
+	/// <exception cref="InvalidOperationException">A cancellation token is already set.</exception>
 	public TSelf WithCancellation(CancellationToken cancellationToken)
 	{
 		ExpectationBuilder.WithCancellation(cancellationToken);
