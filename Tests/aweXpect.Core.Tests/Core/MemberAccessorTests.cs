@@ -85,7 +85,7 @@ public sealed class MemberAccessorTests
 	public async Task FromExpression_WithDifferentMethodCalls_ShouldNotBeEqual()
 	{
 		MemberAccessor<string, int> sut = MemberAccessor<string, int>.FromExpression(x => x.GetHashCode());
-		MemberAccessor<string, int> other = MemberAccessor<string, int>.FromExpression(x => x.IndexOf("a"));
+		MemberAccessor<string, int> other = MemberAccessor<string, int>.FromExpression(x => x.IndexOf("ab"));
 
 		await That(sut.Equals(other)).IsFalse();
 		await That(sut.GetHashCode()).IsNotEqualTo(other.GetHashCode());
@@ -104,14 +104,14 @@ public sealed class MemberAccessorTests
 	public async Task FromExpression_WithoutMemberPath_ShouldBeNamedInTheExpectation()
 	{
 		ManualExpectationBuilder<string> sut = new();
-		sut.ForMember(MemberAccessor<string, int>.FromExpression(x => x.IndexOf("a")))
+		sut.ForMember(MemberAccessor<string, int>.FromExpression(x => x.IndexOf("ab")))
 			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
 				=> new DummyConstraint<int>(v => v == 2, "equal to 2")));
 
 		ConstraintResult constraintResult = await sut.IsMetBy("bar", null!, CancellationToken.None);
 
 		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure);
-		await That(constraintResult.GetExpectationText()).IsEqualTo("IndexOf(\"a\") equal to 2");
+		await That(constraintResult.GetExpectationText()).IsEqualTo("IndexOf(\"ab\") equal to 2");
 	}
 
 	[Test]
@@ -125,7 +125,7 @@ public sealed class MemberAccessorTests
 			(MemberAccessor<MyClass, double>.FromExpression(_ => 1.5), "1.5 "),
 			(MemberAccessor<MyClass, int>.FromExpression(x => x.Value + 1), "(x.Value + 1) "),
 			(MemberAccessor<MyClass, int>.FromExpression(x => x.GetHashCode()), "GetHashCode() "),
-			(MemberAccessor<MyClass, int>.FromExpression(x => x.Name.IndexOf("a")), "Name.IndexOf(\"a\") "),
+			(MemberAccessor<MyClass, int>.FromExpression(x => x.Name.IndexOf("ab")), "Name.IndexOf(\"ab\") "),
 			(MemberAccessor<MyClass, int>.FromExpression(x => x.Name.IndexOf(text)), "Name.IndexOf(text) "),
 			(MemberAccessor<MyClass, int>.FromExpression(x => x.Name.IndexOf(x.Name)), "Name.IndexOf(x.Name) "),
 			(MemberAccessor<MyClass, int>.FromExpression(x => x.Name.IndexOf(_text)), "Name.IndexOf(_text) "),
@@ -152,8 +152,8 @@ public sealed class MemberAccessorTests
 	[Test]
 	public async Task FromExpression_WithSameMethodCall_ShouldBeEqual()
 	{
-		MemberAccessor<string, int> sut = MemberAccessor<string, int>.FromExpression(x => x.IndexOf("a"));
-		MemberAccessor<string, int> other = MemberAccessor<string, int>.FromExpression(y => y.IndexOf("a"));
+		MemberAccessor<string, int> sut = MemberAccessor<string, int>.FromExpression(x => x.IndexOf("ab"));
+		MemberAccessor<string, int> other = MemberAccessor<string, int>.FromExpression(y => y.IndexOf("ab"));
 
 		await That(sut.Equals(other)).IsTrue();
 		await That(sut.GetHashCode()).IsEqualTo(other.GetHashCode());

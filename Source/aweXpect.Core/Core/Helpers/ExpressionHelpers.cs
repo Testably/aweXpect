@@ -156,7 +156,7 @@ internal static class ExpressionHelpers
 	private static bool IsCapturing(Expression expression)
 		=> expression is ConstantExpression { Value: not (null or IConvertible), } ||
 		   (expression is MemberExpression { Expression: { } instance, Member: FieldInfo field, } &&
-		    field.Name.IndexOf('<') >= 0 && IsCapturing(instance));
+		    field.Name.Contains('<', StringComparison.Ordinal) && IsCapturing(instance));
 
 	private sealed class CapturedVariableNames : ExpressionVisitor
 	{
