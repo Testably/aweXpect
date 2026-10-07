@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "33ac0bdb8b1435c181c4cea34b5938a1255801d3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
-        "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
-      },
-      {
         "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
         "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
+      },
+      {
+        "sha": "a07a99e21c62fcc44d71c973dc607c32b262670a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
+        "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
       }
     ],
     "labels": [
-      "33ac0bdb",
       "e50f5061",
       "1c1e3359",
       "250bac89",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "3a0d86a4",
       "e4877b71",
       "e4e4a0e6",
-      "9f96f8b9"
+      "9f96f8b9",
+      "a07a99e2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          162.10056506670438,
           241.9545815785726,
           354.9138753230755,
           330.47076206207277,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           128.70569605093735,
           132.29847179140364,
           128.71559431552888,
-          157.909753036499
+          157.909753036499,
+          69.51080529689789
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -424,7 +424,6 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
-          912,
           920,
           920,
           920,
@@ -462,6 +461,7 @@ window.BENCHMARK_DATA = {
           408,
           408,
           408,
+          416,
           416,
           416,
           416,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          135.95577567418417,
           230.99256037076313,
           234.43503063065666,
           277.0887091841017,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           247.2960232954759,
           278.11817935307823,
           230.19768505830032,
-          315.1370669092451
+          315.1370669092451,
+          144.43615654536657
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -628,7 +628,8 @@ window.BENCHMARK_DATA = {
           197.41954398155212,
           165.53777418136596,
           195.0618337949117,
-          212.27659174601237
+          212.27659174601237,
+          108.34737239565167
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -640,6 +641,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -674,12 +676,6 @@ window.BENCHMARK_DATA = {
   },
   "Equivalency": {
     "commits": [
-      {
-        "sha": "33ac0bdb8b1435c181c4cea34b5938a1255801d3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
-        "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
-      },
       {
         "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
         "author": "Valentin Breu\u00DF",
@@ -973,10 +969,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
         "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
+      },
+      {
+        "sha": "a07a99e21c62fcc44d71c973dc607c32b262670a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
+        "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
       }
     ],
     "labels": [
-      "33ac0bdb",
       "e50f5061",
       "1c1e3359",
       "250bac89",
@@ -1025,14 +1026,14 @@ window.BENCHMARK_DATA = {
       "3a0d86a4",
       "e4877b71",
       "e4e4a0e6",
-      "9f96f8b9"
+      "9f96f8b9",
+      "a07a99e2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          219935.76381835938,
           302810.2771344866,
           414575.8200683594,
           445190.5305989583,
@@ -1081,7 +1082,8 @@ window.BENCHMARK_DATA = {
           103166.62219238281,
           77261.2616373698,
           110900.74981219952,
-          103380.93493652344
+          103380.93493652344,
+          59559.44956461588
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1093,7 +1095,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          628384,
           628384,
           628384,
           628384,
@@ -1142,6 +1143,7 @@ window.BENCHMARK_DATA = {
           16296,
           16296,
           16296,
+          16296,
           16296
         ],
         "borderColor": "#63A2AC",
@@ -1157,7 +1159,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1312694.349330357,
           1765410.9028645833,
           2495256.078125,
           2261677.1007254464,
@@ -1206,7 +1207,8 @@ window.BENCHMARK_DATA = {
           2325070.084735577,
           2029503.9372395833,
           2601839.8395647323,
-          2542567.26171875
+          2542567.26171875,
+          1334207.38046875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1218,7 +1220,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841647,
           4841611,
           4841651,
           4841635,
@@ -1267,7 +1268,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841613,
           4841651,
-          4841631
+          4841631,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1301,7 +1303,8 @@ window.BENCHMARK_DATA = {
           190735.02391764324,
           169412.5600748698,
           211350.13321358818,
-          227074.20301920574
+          227074.20301920574,
+          114274.30141038161
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1313,6 +1316,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -1347,12 +1351,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "33ac0bdb8b1435c181c4cea34b5938a1255801d3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
-        "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
-      },
       {
         "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
         "author": "Valentin Breu\u00DF",
@@ -1646,10 +1644,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
         "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
+      },
+      {
+        "sha": "a07a99e21c62fcc44d71c973dc607c32b262670a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
+        "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
       }
     ],
     "labels": [
-      "33ac0bdb",
       "e50f5061",
       "1c1e3359",
       "250bac89",
@@ -1698,14 +1701,14 @@ window.BENCHMARK_DATA = {
       "3a0d86a4",
       "e4877b71",
       "e4e4a0e6",
-      "9f96f8b9"
+      "9f96f8b9",
+      "a07a99e2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          294.2913992588337,
           437.31962765180145,
           561.2740639368693,
           572.2930903116862,
@@ -1754,7 +1757,8 @@ window.BENCHMARK_DATA = {
           256.3877893447876,
           272.55215377807616,
           298.51415025270904,
-          331.8805335362752
+          331.8805335362752,
+          146.25526429812115
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1770,7 +1774,6 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
           1576,
           1576,
           1576,
@@ -1808,6 +1811,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          608,
           608,
           608,
           608,
@@ -1830,7 +1834,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          265.5732650416238,
           394.3921975135803,
           464.85439586639404,
           506.42377713521324,
@@ -1879,7 +1882,8 @@ window.BENCHMARK_DATA = {
           476.032538822719,
           495.3544986089071,
           472.6657814979553,
-          595.1926895141602
+          595.1926895141602,
+          265.34278405507405
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1974,7 +1978,8 @@ window.BENCHMARK_DATA = {
           374.801336701711,
           387.79125142097473,
           384.12522625923157,
-          447.6786728858948
+          447.6786728858948,
+          222.32614852831915
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1986,6 +1991,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -2020,12 +2026,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "33ac0bdb8b1435c181c4cea34b5938a1255801d3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
-        "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
-      },
       {
         "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
         "author": "Valentin Breu\u00DF",
@@ -2319,10 +2319,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
         "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
+      },
+      {
+        "sha": "a07a99e21c62fcc44d71c973dc607c32b262670a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
+        "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
       }
     ],
     "labels": [
-      "33ac0bdb",
       "e50f5061",
       "1c1e3359",
       "250bac89",
@@ -2371,14 +2376,14 @@ window.BENCHMARK_DATA = {
       "3a0d86a4",
       "e4877b71",
       "e4e4a0e6",
-      "9f96f8b9"
+      "9f96f8b9",
+      "a07a99e2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          173.28220529556273,
           265.1044013659159,
           341.4331901868184,
           340.2542008399963,
@@ -2427,7 +2432,8 @@ window.BENCHMARK_DATA = {
           148.26110469500225,
           144.20769170125325,
           146.50328726768493,
-          182.17733670870464
+          182.17733670870464,
+          85.12685470921653
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2443,7 +2449,6 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
-          1080,
           1064,
           1064,
           1064,
@@ -2481,6 +2486,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          520,
           520,
           520,
           520,
@@ -2503,7 +2509,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          133.63013918059212,
           260.7137795130412,
           249.27881676355997,
           290.4156669298808,
@@ -2552,7 +2557,8 @@ window.BENCHMARK_DATA = {
           244.63455235163372,
           269.95344088872275,
           235.27648987088884,
-          344.28317203521726
+          344.28317203521726,
+          136.4304206053416
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2647,7 +2653,8 @@ window.BENCHMARK_DATA = {
           237.19669600895472,
           200.84191783836908,
           235.24980303219385,
-          268.45120941797893
+          268.45120941797893,
+          131.01223762218768
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2659,6 +2666,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -2693,12 +2701,6 @@ window.BENCHMARK_DATA = {
   },
   "String": {
     "commits": [
-      {
-        "sha": "33ac0bdb8b1435c181c4cea34b5938a1255801d3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
-        "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
-      },
       {
         "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
         "author": "Valentin Breu\u00DF",
@@ -2992,10 +2994,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
         "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
+      },
+      {
+        "sha": "a07a99e21c62fcc44d71c973dc607c32b262670a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
+        "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
       }
     ],
     "labels": [
-      "33ac0bdb",
       "e50f5061",
       "1c1e3359",
       "250bac89",
@@ -3044,14 +3051,14 @@ window.BENCHMARK_DATA = {
       "3a0d86a4",
       "e4877b71",
       "e4e4a0e6",
-      "9f96f8b9"
+      "9f96f8b9",
+      "a07a99e2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          339.47937596638997,
           434.7333507537842,
           584.3941752570016,
           619.9223340352377,
@@ -3100,7 +3107,8 @@ window.BENCHMARK_DATA = {
           246.93383646011353,
           234.5517561117808,
           248.11837339401245,
-          286.6833854675293
+          286.6833854675293,
+          140.5606133086341
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3116,7 +3124,6 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
-          1576,
           1600,
           1600,
           1600,
@@ -3154,6 +3161,7 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
+          584,
           584,
           584,
           584,
@@ -3176,7 +3184,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          638.9035935084025,
           997.948850886027,
           1164.684745495136,
           1292.890371831258,
@@ -3225,7 +3232,8 @@ window.BENCHMARK_DATA = {
           1162.7872834523519,
           1074.4109935760498,
           1174.1289899190267,
-          1474.113236363729
+          1474.113236363729,
+          662.3275872639248
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3320,7 +3328,8 @@ window.BENCHMARK_DATA = {
           324.31370852543756,
           290.2447023073832,
           325.12535707767194,
-          380.9069531758626
+          380.9069531758626,
+          188.75718556131636
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3332,6 +3341,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -3366,12 +3376,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "33ac0bdb8b1435c181c4cea34b5938a1255801d3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
-        "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
-      },
       {
         "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
         "author": "Valentin Breu\u00DF",
@@ -3665,10 +3669,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
         "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
+      },
+      {
+        "sha": "a07a99e21c62fcc44d71c973dc607c32b262670a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
+        "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
       }
     ],
     "labels": [
-      "33ac0bdb",
       "e50f5061",
       "1c1e3359",
       "250bac89",
@@ -3717,14 +3726,14 @@ window.BENCHMARK_DATA = {
       "3a0d86a4",
       "e4877b71",
       "e4e4a0e6",
-      "9f96f8b9"
+      "9f96f8b9",
+      "a07a99e2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1605.770192082723,
           1613.3105629512243,
           2960.5992584228516,
           2781.722848256429,
@@ -3773,7 +3782,8 @@ window.BENCHMARK_DATA = {
           577.3890611784799,
           529.6957696914673,
           591.1264041491917,
-          690.1892388661703
+          690.1892388661703,
+          342.1757644812266
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3785,7 +3795,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          4032,
           4168,
           4168,
           4168,
@@ -3834,6 +3843,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          856,
           856
         ],
         "borderColor": "#63A2AC",
@@ -3849,7 +3859,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          689.0055833498637,
           993.2851346333822,
           1286.4451543367827,
           1424.523985417684,
@@ -3898,7 +3907,8 @@ window.BENCHMARK_DATA = {
           1284.0766259511313,
           1272.2204156239827,
           1241.7527656555176,
-          1588.7325370788574
+          1588.7325370788574,
+          708.1604086330959
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3993,7 +4003,8 @@ window.BENCHMARK_DATA = {
           634.1302262714931,
           552.827801322937,
           613.0097901026407,
-          713.7595713933309
+          713.7595713933309,
+          362.3581245128925
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4005,6 +4016,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -4039,12 +4051,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "33ac0bdb8b1435c181c4cea34b5938a1255801d3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 10:02:51 2026 \u002B0200",
-        "message": "fix!: surface a cancellation between async enumerable items as a cancellation (#1370)"
-      },
       {
         "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
         "author": "Valentin Breu\u00DF",
@@ -4338,10 +4344,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
         "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
+      },
+      {
+        "sha": "a07a99e21c62fcc44d71c973dc607c32b262670a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
+        "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
       }
     ],
     "labels": [
-      "33ac0bdb",
       "e50f5061",
       "1c1e3359",
       "250bac89",
@@ -4390,14 +4401,14 @@ window.BENCHMARK_DATA = {
       "3a0d86a4",
       "e4877b71",
       "e4e4a0e6",
-      "9f96f8b9"
+      "9f96f8b9",
+      "a07a99e2"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1633.9709972381593,
           1699.4059089933123,
           2904.773911339896,
           2746.697520446777,
@@ -4446,7 +4457,8 @@ window.BENCHMARK_DATA = {
           967.2160835266113,
           826.6514413197835,
           970.0448721476963,
-          1093.7553983052571
+          1093.7553983052571,
+          551.4206887880961
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4458,7 +4470,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3792,
           3928,
           3928,
           3928,
@@ -4507,6 +4518,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1264,
           1264
         ],
         "borderColor": "#63A2AC",
@@ -4522,7 +4534,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          10554.614458211263,
           13557.310091291156,
           26436.324474628156,
           24352.103568522136,
@@ -4571,7 +4582,8 @@ window.BENCHMARK_DATA = {
           20204.395196097237,
           17054.773201497395,
           25491.593420846122,
-          25337.29578944615
+          25337.29578944615,
+          10919.010286603656
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4583,7 +4595,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33465,
           33471,
           33468,
@@ -4632,7 +4643,8 @@ window.BENCHMARK_DATA = {
           33471,
           33465,
           33471,
-          33468
+          33468,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4666,7 +4678,8 @@ window.BENCHMARK_DATA = {
           732.0670407613119,
           677.7818338530404,
           763.0835143602811,
-          923.8292442321778
+          923.8292442321778,
+          434.2536027772086
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4678,6 +4691,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -4915,6 +4929,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
         "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
+      },
+      {
+        "sha": "a07a99e21c62fcc44d71c973dc607c32b262670a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
+        "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
       }
     ],
     "labels": [
@@ -4951,7 +4971,8 @@ window.BENCHMARK_DATA = {
       "3a0d86a4",
       "e4877b71",
       "e4e4a0e6",
-      "9f96f8b9"
+      "9f96f8b9",
+      "a07a99e2"
     ],
     "datasets": [
       {
@@ -4991,7 +5012,8 @@ window.BENCHMARK_DATA = {
           671.5482345581055,
           664.6221086638315,
           726.6206457773844,
-          826.8584680557251
+          826.8584680557251,
+          370.2186816419874
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5029,6 +5051,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1816,
           1816,
           1816,
           1816,
@@ -5084,7 +5107,8 @@ window.BENCHMARK_DATA = {
           59742.699979341945,
           30550.12803867885,
           80930.81984165737,
-          55566.31945800781
+          55566.31945800781,
+          28806.078369140625
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5129,7 +5153,8 @@ window.BENCHMARK_DATA = {
           5252,
           5256,
           5252,
-          5247
+          5247,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5347,6 +5372,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
         "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
+      },
+      {
+        "sha": "a07a99e21c62fcc44d71c973dc607c32b262670a",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
+        "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
       }
     ],
     "labels": [
@@ -5383,7 +5414,8 @@ window.BENCHMARK_DATA = {
       "3a0d86a4",
       "e4877b71",
       "e4e4a0e6",
-      "9f96f8b9"
+      "9f96f8b9",
+      "a07a99e2"
     ],
     "datasets": [
       {
@@ -5423,7 +5455,8 @@ window.BENCHMARK_DATA = {
           238.89018327849251,
           247.55775231581467,
           240.59601265589396,
-          283.48961407343546
+          283.48961407343546,
+          126.06770662466685
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5461,6 +5494,7 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
+          664,
           664,
           664,
           664,
@@ -5516,7 +5550,8 @@ window.BENCHMARK_DATA = {
           18302.631251408504,
           16101.794182332356,
           30843.401501464843,
-          26076.549479166668
+          26076.549479166668,
+          10431.874232365535
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5561,6 +5596,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
+          5615,
           5615
         ],
         "borderColor": "#FF671B",
@@ -5595,7 +5631,8 @@ window.BENCHMARK_DATA = {
           228.9157928029696,
           218.87901401519775,
           233.129546216556,
-          264.4644939740499
+          264.4644939740499,
+          133.89500074386598
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5607,6 +5644,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
