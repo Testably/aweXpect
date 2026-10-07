@@ -82,6 +82,22 @@ public sealed partial class ThatEnum
 			}
 
 			[Test]
+			public async Task WhenParamsValuesContainTheSubject_ShouldFail()
+			{
+				MyColors subject = MyColors.Blue;
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(MyColors.Green, MyColors.Blue);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not one of [Green, Blue],
+					             but it was Blue
+					             """);
+			}
+
+			[Test]
 			[Arguments(MyColors.Blue)]
 			[Arguments(MyColors.Green, MyColors.Blue, MyColors.Yellow)]
 			public async Task WhenSubjectIsContained_ShouldFail(MyColors subject,

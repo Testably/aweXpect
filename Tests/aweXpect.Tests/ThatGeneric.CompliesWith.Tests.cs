@@ -138,6 +138,26 @@ public sealed partial class ThatGeneric
 			}
 
 			[Test]
+			public async Task WhenUsedForTheItemsOfAnEmptyCollection_ShouldDescribeTheExpectations()
+			{
+				int[] subject = [];
+
+				async Task Act()
+					=> await That(subject).HasItemThat(item => item.CompliesWith(it => it.IsEqualTo(1)));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item that is equal to 1,
+					             but it had no item
+
+					             Collection:
+					             []
+					             """)
+					.Because("without any item the expectations are described without being evaluated");
+			}
+
+			[Test]
 			[Arguments(1, true)]
 			[Arguments(2, false)]
 			public async Task WhenValueIsDifferent_ShouldFail(int expectedValue, bool expectSuccess)

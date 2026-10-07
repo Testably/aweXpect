@@ -217,6 +217,22 @@ public sealed partial class ThatObject
 			}
 
 			[Test]
+			public async Task WhenSubjectIsNullAndTypeIsOpenGeneric_ShouldFail()
+			{
+				object? subject = null;
+
+				async Task Act()
+					=> await That(subject).IsExactly(typeof(List<>));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is exactly of type List<>,
+					             but it was <null>
+					             """);
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNullableValueType_ShouldSucceedForTheUnderlyingType()
 			{
 				int? subject = 5;

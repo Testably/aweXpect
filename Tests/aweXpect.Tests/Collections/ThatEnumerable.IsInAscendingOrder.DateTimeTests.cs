@@ -28,6 +28,18 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
+			public async Task WhenCustomComparerIsUsedForNullableItems_ShouldNotCheckKinds()
+			{
+				IEnumerable<DateTime?> subject = [Utc, Local,];
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder()
+						.Using(Comparer<DateTime?>.Create((a, b) => Nullable.Compare(a, b)));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
 			public async Task WhenKindsAreIncompatible_ShouldFail()
 			{
 				IEnumerable<DateTime> subject = [Utc, Unspecified, Local,];

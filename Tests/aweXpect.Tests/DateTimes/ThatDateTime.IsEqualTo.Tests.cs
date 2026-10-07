@@ -9,6 +9,26 @@ public sealed partial class ThatDateTime
 		public sealed class Tests
 		{
 			[Test]
+			[Arguments(DateTimeKind.Utc)]
+			[Arguments(DateTimeKind.Unspecified)]
+			public async Task WhenExpectedIsNull_ShouldFail(DateTimeKind subjectKind)
+			{
+				DateTime subject = new(2024, 11, 1, 14, 15, 0, subjectKind);
+				DateTime? expected = null;
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is equal to <null>,
+					              but it was {Formatter.Format(subject)}
+					              """)
+					.Because("there is no kind to compare with, so only the value is shown");
+			}
+
+			[Test]
 			[Arguments(DateTimeKind.Local)]
 			[Arguments(DateTimeKind.Utc)]
 			[Arguments(DateTimeKind.Unspecified)]

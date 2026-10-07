@@ -82,6 +82,23 @@ public sealed partial class ThatTimeOnly
 			}
 
 			[Test]
+			public async Task WhenParamsValuesContainTheSubject_ShouldFail()
+			{
+				TimeOnly subject = CurrentTime();
+				TimeOnly later = LaterTime();
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(later, subject);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of {Formatter.Format(new[] { later, subject, })},
+					              but it was {Formatter.Format(subject)}
+					              """);
+			}
+
+			[Test]
 			public async Task WhenSubjectIsContained_ShouldFail()
 			{
 				TimeOnly subject = CurrentTime();

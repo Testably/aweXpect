@@ -49,12 +49,89 @@ public sealed partial class ThatEnumerable
 		}
 
 		[Test]
+		public async Task Contains_ForNullableBytes_WhenTheItemLiesWithinTheTolerance_ShouldSucceed()
+		{
+			byte?[] subject = [null, 9,];
+
+			async Task Act()
+				=> await That(subject).Contains((byte)10).Within(1);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Test]
 		public async Task Contains_ForNullableInts_WhenTheItemLiesWithinTheTolerance_ShouldSucceed()
 		{
 			int?[] subject = [null, 9,];
 
 			async Task Act()
 				=> await That(subject).Contains(10).Within(1);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Test]
+		public async Task Contains_ForNullableLongs_WhenTheItemLiesWithinTheTolerance_ShouldSucceed()
+		{
+			long?[] subject = [null, 9,];
+
+			async Task Act()
+				=> await That(subject).Contains(10L).Within(1L);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Test]
+		public async Task Contains_ForNullableSBytes_WhenTheItemLiesWithinTheTolerance_ShouldSucceed()
+		{
+			sbyte?[] subject = [null, 9,];
+
+			async Task Act()
+				=> await That(subject).Contains((sbyte)10).Within(1);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Test]
+		public async Task Contains_ForNullableShorts_WhenTheItemLiesWithinTheTolerance_ShouldSucceed()
+		{
+			short?[] subject = [null, 9,];
+
+			async Task Act()
+				=> await That(subject).Contains((short)10).Within(1);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Test]
+		public async Task Contains_ForNullableUInts_WhenTheItemLiesWithinTheTolerance_ShouldSucceed()
+		{
+			uint?[] subject = [null, 9,];
+
+			async Task Act()
+				=> await That(subject).Contains(10U).Within(1U);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Test]
+		public async Task Contains_ForNullableULongs_WhenTheItemLiesWithinTheTolerance_ShouldSucceed()
+		{
+			ulong?[] subject = [null, 9,];
+
+			async Task Act()
+				=> await That(subject).Contains(10UL).Within(1UL);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		[Test]
+		public async Task Contains_ForNullableUShorts_WhenTheItemLiesWithinTheTolerance_ShouldSucceed()
+		{
+			ushort?[] subject = [null, 9,];
+
+			async Task Act()
+				=> await That(subject).Contains((ushort)10).Within(1);
 
 			await That(Act).DoesNotThrow();
 		}

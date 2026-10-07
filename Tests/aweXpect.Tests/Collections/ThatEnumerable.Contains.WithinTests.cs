@@ -87,6 +87,27 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Test]
+				public async Task Item_WhenItLiesOutsideAToleranceOfSeveralDays_ShouldFail()
+				{
+					DateOnly[] values = [new(2024, 1, 1), new(2024, 1, 11), new(2024, 1, 21),];
+					IEnumerable<DateOnly> subject = values;
+					DateOnly expected = new(2024, 1, 14);
+
+					async Task Act()
+						=> await That(subject).Contains(expected).Within(2.Days());
+
+					await That(Act).Throws<FailException>()
+						.WithMessage($"""
+						              Expected that subject
+						              contains an item equal to {Formatter.Format(expected)} ± 2 days at least once,
+						              but it did not contain it
+
+						              Collection:
+						              {Formatter.Format(values, FormattingOptions.MultipleLines)}
+						              """);
+				}
+
+				[Test]
 				public async Task Item_WhenItLiesOutsideTheTolerance_ShouldFail()
 				{
 					DateOnly[] values = [new(2024, 1, 1), new(2024, 1, 11), new(2024, 1, 21),];

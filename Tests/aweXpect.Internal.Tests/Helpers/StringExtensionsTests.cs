@@ -106,6 +106,14 @@ public sealed class StringExtensionsTests
 		[Arguments("Update", "an Update")]
 		[Arguments("H", "an H")]
 		[Arguments("U", "a U")]
+		[Arguments("egg", "an egg")]
+		[Arguments("ice", "an ice")]
+		[Arguments("Item", "an Item")]
+		[Arguments("orange", "an orange")]
+		[Arguments("Owl", "an Owl")]
+		[Arguments("umbrella", "an umbrella")]
+		[Arguments("Utopia", "a Utopia")]
+		[Arguments("Uganda", "a Uganda")]
 		public async Task ShouldReturnExpectedValue(string input, string expected)
 		{
 			string result = input.PrependAOrAn();
@@ -116,6 +124,16 @@ public sealed class StringExtensionsTests
 
 	public sealed class TrimCommonWhiteSpace
 	{
+		[Test]
+		public async Task WhenAllLaterLinesAreBlank_ShouldReturnUnchangedInput()
+		{
+			string input = "foo\n  \n";
+
+			string result = input.TrimCommonWhiteSpace();
+
+			await That(result).IsEqualTo(input);
+		}
+
 		[Test]
 		public async Task WhenAnyLaterLineHasNoWhiteSpace_ShouldReturnUnchangedInput()
 		{
