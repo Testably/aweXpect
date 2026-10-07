@@ -5,6 +5,18 @@ namespace aweXpect.Core.Tests.Options;
 public class CollectionIndexOptionsTests
 {
 	[Test]
+	public async Task AtIndex_WhenIndexIsNegative_ShouldThrowArgumentOutOfRangeException()
+	{
+		CollectionIndexOptions sut = new();
+
+		void Act() => sut.AtIndex(-1);
+
+		await That(Act).Throws<ArgumentOutOfRangeException>()
+			.WithParamName("index").And
+			.WithMessage("The index must not be negative.").AsPrefix();
+	}
+
+	[Test]
 	public async Task AtIndex_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
 	{
 		CollectionIndexOptions sut = new();
@@ -38,6 +50,28 @@ public class CollectionIndexOptionsTests
 
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("AtIndexFromEnd cannot be combined with AtIndex.");
+	}
+
+	[Test]
+	public async Task AtIndexFromEnd_WhenCountIsUnknown_ShouldNotDecideTheMatch()
+	{
+		CollectionIndexOptions sut = new();
+
+		sut.AtIndexFromEnd(1);
+
+		await That(sut.Match).Is<CollectionIndexOptions.IMatchFromEnd>()
+			.Whose(match => match.MatchesIndex(3, null), it => it.IsNull());
+	}
+
+	[Test]
+	public async Task AtIndexFromEnd_WhenIndexIsBeforeTheExpectedIndex_ShouldNotDecideTheMatch()
+	{
+		CollectionIndexOptions sut = new();
+
+		sut.AtIndexFromEnd(1);
+
+		await That(sut.Match).Is<CollectionIndexOptions.IMatchFromEnd>()
+			.Whose(match => match.MatchesIndex(2, 5), it => it.IsNull());
 	}
 
 	[Test]

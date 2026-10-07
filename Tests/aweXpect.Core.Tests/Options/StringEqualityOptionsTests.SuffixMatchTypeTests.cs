@@ -24,6 +24,21 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		[Arguments("barfoo", true)]
+		[Arguments("oo", false)]
+		public async Task AreConsideredEqual_WhenAComparerIsUsed_ShouldCompareTheSuffixWithIt(string actual,
+			bool expectMatch)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsSuffix().Using(StringComparer.OrdinalIgnoreCase);
+
+			bool result = await sut.AreConsideredEqual(actual, "FOO");
+
+			await That(result).IsEqualTo(expectMatch)
+				.Because("a subject shorter than the suffix cannot end with it");
+		}
+
+		[Test]
 		[Arguments(false, false)]
 		[Arguments(true, true)]
 		public async Task AreConsideredEqual_WhenCaseIsIgnored_ShouldIgnoreCase(bool ignoreCase, bool expectMatch)

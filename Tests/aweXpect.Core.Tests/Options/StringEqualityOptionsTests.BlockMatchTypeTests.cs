@@ -227,6 +227,17 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		public async Task GetExpectation_WhenNegatedAndPassive_ShouldSayNotMatching()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsBlock();
+
+			string result = sut.GetExpectation("foo", ExpectationGrammars.Negated);
+
+			await That(result).IsEqualTo("not matching \"foo\" as block");
+		}
+
+		[Test]
 		public async Task GetExtendedFailure_Null_ShouldReturnItWasNull()
 		{
 			StringEqualityOptions sut = new("expected");

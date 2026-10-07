@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using aweXpect.Core.Helpers;
 using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
@@ -53,6 +54,47 @@ public class ObjectEqualityOptionsTests
 	}
 
 	[Test]
+	public async Task AreConsideredEqual_WhenBothAreNull_ShouldReturnTrue()
+	{
+		ObjectEqualityOptions<string?> sut = new();
+
+		bool result = await sut.AreConsideredEqual(null, (string?)null);
+
+		await That(result).IsTrue();
+	}
+
+	[Test]
+	public async Task AreConsideredEqual_WhenEqualsThrows_ShouldNameTheEqualsOfTheSubject()
+	{
+		InvalidOperationException exception = new("equals failed");
+		ObjectEqualityOptions<ThrowingEquals> sut = new();
+
+		async Task Act()
+			=> await sut.AreConsideredEqual(new ThrowingEquals(exception), new ThrowingEquals(exception));
+
+		await That(Act).Throws<UserCodeException>()
+			.WithMessage("The code of the caller threw an exception while the expectation was evaluated.").And
+			.Whose(e => e.Thrower, thrower => thrower.IsEqualTo("Equals of ObjectEqualityOptionsTests.ThrowingEquals")).And
+			.Whose(e => e.Exception, inner => inner.IsSameAs(exception));
+	}
+
+	[Test]
+	public async Task AreConsideredEqual_WhenEqualsThrowsForAnotherType_ShouldNameTheEqualsOfTheSubject()
+	{
+		InvalidOperationException exception = new("equals failed");
+		ObjectEqualityOptions<ThrowingEquals> sut = new();
+
+		async Task Act()
+			=> await sut.AreConsideredEqual(new ThrowingEquals(exception), "foo");
+
+		await That(Act).Throws<UserCodeException>()
+			.WithMessage("The code of the caller threw an exception while the expectation was evaluated.").And
+			.Whose(e => e.Thrower, thrower => thrower.IsEqualTo("Equals of ObjectEqualityOptionsTests.ThrowingEquals")).And
+			.Whose(e => e.Exception, inner => inner.IsSameAs(exception))
+			.Because("a value of another type is compared with Equals(object) of the subject");
+	}
+
+	[Test]
 	[MethodDataSource(nameof(DifferentNumbers))]
 	public async Task AreConsideredEqual_WhenNumbersHaveDifferentValues_ShouldReturnFalse(
 		object actual, object expected)
@@ -75,6 +117,78 @@ public class ObjectEqualityOptionsTests
 		bool result = await sut.AreConsideredEqual(actual, expected);
 
 		await That(result).IsTrue();
+	}
+
+	[Test]
+	[Arguments(null, "foo")]
+	[Arguments("foo", null)]
+	public async Task AreConsideredEqual_WhenOnlyOneIsNull_ShouldReturnFalse(string? actual, string? expected)
+	{
+		ObjectEqualityOptions<string?> sut = new();
+
+		bool result = await sut.AreConsideredEqual(actual, expected);
+
+		await That(result).IsFalse();
+	}
+
+	[Test]
+	[Arguments(false, "is equal to 3")]
+	[Arguments(true, "is not equal to 3")]
+	public async Task GetExpectation_ShouldDescribeTheEquality(bool isNegated, string expected)
+	{
+		ObjectEqualityOptions<int> sut = new();
+
+		string result = sut.GetExpectation("3", isNegated ? ExpectationGrammars.Negated : ExpectationGrammars.None);
+
+		await That(result).IsEqualTo(expected);
+	}
+
+	[Test]
+	[Arguments(false, "is equal to 3 using ObjectEqualityOptionsTests.ModuloComparer")]
+	[Arguments(true, "is not equal to 3 using ObjectEqualityOptionsTests.ModuloComparer")]
+	public async Task GetExpectation_WithATypedComparer_ShouldNameTheComparer(bool isNegated, string expected)
+	{
+		ObjectEqualityOptions<int> sut = new();
+		sut.Using(new ModuloComparer(10));
+
+		string result = sut.GetExpectation("3", isNegated ? ExpectationGrammars.Negated : ExpectationGrammars.None);
+
+		await That(result).IsEqualTo(expected);
+	}
+
+	[Test]
+	[Arguments(false, "is equal to 3 using ObjectEqualityOptionsTests.AllEqualComparer")]
+	[Arguments(true, "is not equal to 3 using ObjectEqualityOptionsTests.AllEqualComparer")]
+	public async Task GetExpectation_WithAnUntypedComparer_ShouldNameTheComparer(bool isNegated, string expected)
+	{
+		ObjectEqualityOptions<object> sut = new();
+		sut.Using(new AllEqualComparer());
+
+		string result = sut.GetExpectation("3", isNegated ? ExpectationGrammars.Negated : ExpectationGrammars.None);
+
+		await That(result).IsEqualTo(expected);
+	}
+
+	[Test]
+	public async Task GetItemExpectation_WithATypedComparer_ShouldNameTheComparer()
+	{
+		ObjectEqualityOptions<int> sut = new();
+		sut.Using(new ModuloComparer(10));
+
+		string result = sut.GetItemExpectation("3", "an item", "equal to");
+
+		await That(result).IsEqualTo("an item equal to 3 using ObjectEqualityOptionsTests.ModuloComparer");
+	}
+
+	[Test]
+	public async Task GetItemExpectation_WithAnUntypedComparer_ShouldNameTheComparer()
+	{
+		ObjectEqualityOptions<object> sut = new();
+		sut.Using(new AllEqualComparer());
+
+		string result = sut.GetItemExpectation("3", "an item", "equal to");
+
+		await That(result).IsEqualTo("an item equal to 3 using ObjectEqualityOptionsTests.AllEqualComparer");
 	}
 
 	[Test]
@@ -189,6 +303,30 @@ public class ObjectEqualityOptionsTests
 	}
 
 	[Test]
+	public async Task Using_WithATypedComparer_WhenTheExpectedValueIsNullForAValueType_ShouldReturnFalse()
+	{
+		ObjectEqualityOptions<int> sut = new();
+		sut.Using(new ModuloComparer(10));
+
+		bool result = await sut.AreConsideredEqual<object?>(1, null);
+
+		await That(result).IsFalse()
+			.Because("null is no value of a value type, so the comparer cannot compare it");
+	}
+
+	[Test]
+	public async Task Using_WithATypedComparer_WhenTheValuesAreNullForAReferenceType_ShouldCompareWithIt()
+	{
+		ObjectEqualityOptions<string?> sut = new();
+		sut.Using(new AllEqualStringComparer());
+
+		bool result = await sut.AreConsideredEqual(null, (string?)null);
+
+		await That(result).IsTrue()
+			.Because("null is a valid value of a reference type, so the comparer decides");
+	}
+
+	[Test]
 	public async Task Using_WithATypedComparer_WithNull_ShouldThrowArgumentNullException()
 	{
 		ObjectEqualityOptions<int> sut = new();
@@ -198,6 +336,17 @@ public class ObjectEqualityOptionsTests
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("comparer").And
 			.WithMessage("The 'comparer' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	public async Task Using_WithAnUntypedComparer_ShouldCompareWithIt()
+	{
+		ObjectEqualityOptions<object> sut = new();
+		sut.Using(new AllEqualComparer());
+
+		bool result = await sut.AreConsideredEqual(1, "foo");
+
+		await That(result).IsTrue();
 	}
 
 	[Test]
@@ -289,6 +438,12 @@ public class ObjectEqualityOptionsTests
 		(
 			(nint)4, (nuint)4
 		),
+		(
+			(ushort)5, 5L
+		),
+		(
+			7u, (short)7
+		),
 #if NET8_0_OR_GREATER
 		(
 			(Half)10, 10
@@ -309,11 +464,25 @@ public class ObjectEqualityOptionsTests
 		public int GetHashCode(object obj) => 0;
 	}
 
+	private sealed class AllEqualStringComparer : IEqualityComparer<string?>
+	{
+		public bool Equals(string? x, string? y) => true;
+
+		public int GetHashCode(string? obj) => 0;
+	}
+
 	private sealed class ModuloComparer(int modulus) : IEqualityComparer<int>
 	{
 		public bool Equals(int x, int y) => x % modulus == y % modulus;
 
 		public int GetHashCode(int obj) => obj % modulus;
+	}
+
+	private sealed class ThrowingEquals(Exception exception)
+	{
+		public override bool Equals(object? obj) => throw exception;
+
+		public override int GetHashCode() => 0;
 	}
 
 	private sealed class DummyMatchType : IObjectMatchType

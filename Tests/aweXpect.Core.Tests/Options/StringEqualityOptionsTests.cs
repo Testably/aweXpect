@@ -35,6 +35,47 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		public async Task AreConsideredEqual_WhenACustomMatchTypeCompletesLater_ShouldAwaitIt()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.SetMatchType(new DelegatingMatchType(async () =>
+			{
+				await Task.Yield();
+				return true;
+			}), "AsCustom");
+
+			bool result = await sut.AreConsideredEqual("foo", "bar");
+
+			await That(result).IsTrue();
+		}
+
+		[Test]
+		[Arguments(false)]
+		[Arguments(true)]
+		public async Task AreConsideredEqual_WhenACustomMatchTypeTimesOut_ShouldThrowArgumentException(bool completesLater)
+		{
+			RegexMatchTimeoutException exception = new("foo", "bar", TimeSpan.FromSeconds(1));
+			StringEqualityOptions sut = new("expected");
+			sut.SetMatchType(new DelegatingMatchType(completesLater
+				? async () =>
+				{
+					await Task.Yield();
+					throw exception;
+				}
+				: () => throw exception), "AsCustom");
+
+			async Task Act() => await sut.AreConsideredEqual("foo", "bar");
+
+			await That(Act).Throws<ArgumentException>()
+				.WithMessage(
+					"""The wildcard pattern "bar" did not complete within 0:01. Simplify the pattern to avoid catastrophic backtracking.""")
+				.AsPrefix().And
+				.WithParamName("expected").And
+				.WithInner<RegexMatchTimeoutException>(inner => inner.IsSameAs(exception))
+				.Because("a timeout of a custom match type must be reported like one of a pattern");
+		}
+
+		[Test]
 		public async Task AreConsideredEqual_WhenIndentationIsIgnored_ShouldEmptyWhiteSpaceOnlyLines()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -270,6 +311,17 @@ public sealed partial class StringEqualityOptionsTests
 			Change(sut, option, false);
 
 			await That(sut.ComparesByOrdinalEquality).IsTrue();
+		}
+
+		[Test]
+		public async Task CountOccurrences_WhenAComparerIsUsed_ShouldCompareEveryWindowWithIt()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.Using(StringComparer.OrdinalIgnoreCase);
+
+			int result = await sut.CountOccurrences("xabAB", "ab");
+
+			await That(result).IsEqualTo(2);
 		}
 
 		[Test]
@@ -520,6 +572,18 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		public async Task GetExtendedFailure_WhenExpectedIsNull_ShouldOnlyTrimTheActualValue()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.IgnoringLeadingWhiteSpace();
+			sut.IgnoringTrailingWhiteSpace();
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, " foo ", null);
+
+			await That(result).IsEqualTo("it was \"foo\"");
+		}
+
+		[Test]
 		public async Task GetExtendedFailure_WhenIndentationAndLeadingWhiteSpaceAreIgnored_ShouldReportOriginalPosition()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -583,6 +647,18 @@ public sealed partial class StringEqualityOptionsTests
 			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  a\nbcd", "a\nbXd");
 
 			await That(result).Contains("differs on line 2 and column 2:");
+		}
+
+		[Test]
+		public async Task GetExtendedMemberFailure_WhenACustomMatchTypeFails_ShouldKeepItsFailure()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.SetMatchType(new DelegatingMatchType(() => new ValueTask<bool>(false), "my custom failure"), "AsCustom");
+
+			string result = sut.GetExtendedMemberFailure("it", "message", ExpectationGrammars.None, "foo", "bar");
+
+			await That(result).IsEqualTo("my custom failure")
+				.Because("only the failures of the built-in match types can be rephrased");
 		}
 
 		[Test]
@@ -939,6 +1015,28 @@ public sealed partial class StringEqualityOptionsTests
 			public string GetExtendedFailure(string it, string? actual, string? expected, bool ignoreCase,
 				IEqualityComparer<string> comparer, StringDifferenceSettings? settings)
 				=> throw new NotSupportedException();
+
+			public string GetTypeString() => throw new NotSupportedException();
+
+			public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
+				=> throw new NotSupportedException();
+		}
+
+		private sealed class DelegatingMatchType(Func<ValueTask<bool>> areConsideredEqual, string failure = "")
+			: IStringMatchType
+		{
+			public bool InspectsSubject => false;
+
+			public ValueTask<bool> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
+				IEqualityComparer<string>? comparer)
+				=> areConsideredEqual();
+
+			public string GetExpectation(string? expected, ExpectationGrammars grammars)
+				=> throw new NotSupportedException();
+
+			public string GetExtendedFailure(string it, string? actual, string? expected, bool ignoreCase,
+				IEqualityComparer<string> comparer, StringDifferenceSettings? settings)
+				=> failure;
 
 			public string GetTypeString() => throw new NotSupportedException();
 

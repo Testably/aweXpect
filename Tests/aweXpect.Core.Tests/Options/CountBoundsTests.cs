@@ -37,6 +37,22 @@ public class CountBoundsTests
 	}
 
 	[Test]
+	[Arguments("AtLeast", 1, "at least one")]
+	[Arguments("AtMost", 2, "at most 2")]
+	[Arguments("Between", 1, "between 1 and 3")]
+	[Arguments("LessThan", 2, "fewer than 2")]
+	[Arguments("MoreThan", 1, "more than one")]
+	public async Task AppendItems_ShouldDescribeTheBounds(string method, int value, string expected)
+	{
+		CountBounds sut = Create(method, value);
+		StringBuilder sb = new();
+
+		sut.AppendItems(sb);
+
+		await That(sb.ToString()).IsEqualTo(expected);
+	}
+
+	[Test]
 	[Arguments(0, "never")]
 	[Arguments(1, "exactly once")]
 	[Arguments(2, "exactly twice")]
@@ -47,6 +63,36 @@ public class CountBoundsTests
 		StringBuilder sb = new();
 
 		sut.AppendTimes(sb, false);
+
+		await That(sb.ToString()).IsEqualTo(expected);
+	}
+
+	[Test]
+	[Arguments("AtLeast", 1, "at least once")]
+	[Arguments("AtMost", 2, "at most twice")]
+	[Arguments("Between", 1, "between 1 and 3 times")]
+	[Arguments("LessThan", 2, "fewer than twice")]
+	[Arguments("MoreThan", 3, "more than 3 times")]
+	public async Task AppendTimes_ShouldDescribeTheBounds(string method, int value, string expected)
+	{
+		CountBounds sut = Create(method, value);
+		StringBuilder sb = new();
+
+		sut.AppendTimes(sb, false);
+
+		await That(sb.ToString()).IsEqualTo(expected);
+	}
+
+	[Test]
+	[Arguments("AtLeast", 2, "fewer than twice")]
+	[Arguments("Between", 1, "not between 1 and 3 times")]
+	[Arguments("Exactly", 0, "at least once")]
+	public async Task AppendTimes_WhenNegated_ShouldDescribeTheComplement(string method, int value, string expected)
+	{
+		CountBounds sut = Create(method, value);
+		StringBuilder sb = new();
+
+		sut.AppendTimes(sb, true);
 
 		await That(sb.ToString()).IsEqualTo(expected);
 	}
@@ -117,6 +163,23 @@ public class CountBoundsTests
 			.WithParamName(paramName).And
 			.WithMessage(expectedMessage).AsPrefix()
 			.Because("a collection quantifier must reject an empty range like the occurrence quantifier does");
+	}
+
+	[Test]
+	[Arguments("AtLeast", 1, true)]
+	[Arguments("AtLeast", 2, false)]
+	[Arguments("AtMost", 1, true)]
+	[Arguments("Between", 1, false)]
+	[Arguments("Exactly", 1, true)]
+	[Arguments("Exactly", 2, false)]
+	[Arguments("LessThan", 2, false)]
+	public async Task IsSingleItem_ShouldOnlyBeTrueWhenTheNumberIsOne(string method, int value, bool expected)
+	{
+		CountBounds sut = Create(method, value);
+
+		bool result = sut.IsSingleItem();
+
+		await That(result).IsEqualTo(expected);
 	}
 
 	private static CountBounds Create(string method, int value)

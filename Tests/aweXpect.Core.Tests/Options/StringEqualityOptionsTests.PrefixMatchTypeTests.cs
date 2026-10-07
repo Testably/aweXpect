@@ -24,6 +24,21 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		[Arguments("foobar", true)]
+		[Arguments("fo", false)]
+		public async Task AreConsideredEqual_WhenAComparerIsUsed_ShouldCompareThePrefixWithIt(string actual,
+			bool expectMatch)
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.AsPrefix().Using(StringComparer.OrdinalIgnoreCase);
+
+			bool result = await sut.AreConsideredEqual(actual, "FOO");
+
+			await That(result).IsEqualTo(expectMatch)
+				.Because("a subject shorter than the prefix cannot start with it");
+		}
+
+		[Test]
 		[Arguments(false, false)]
 		[Arguments(true, true)]
 		public async Task AreConsideredEqual_WhenCaseIsIgnored_ShouldIgnoreCase(bool ignoreCase, bool expectMatch)
