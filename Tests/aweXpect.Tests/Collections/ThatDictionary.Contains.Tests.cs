@@ -125,6 +125,18 @@ public sealed partial class ThatDictionary
 					              """)
 					.Because("the applied default tolerance is part of the expectation");
 			}
+
+			[Test]
+			public async Task WhenValueHasATypeWithoutTolerance_ShouldSucceed()
+			{
+				IDictionary<string, char> subject = ToDictionary(["a", "b",], ['x', 'y',]);
+
+				async Task Act()
+					=> await That(subject).Contains(new KeyValuePair<string, char>("b", 'y'));
+
+				await That(Act).DoesNotThrow()
+					.Because("values without a tolerance use the general overload");
+			}
 		}
 
 		public sealed class ComparerTests

@@ -79,6 +79,16 @@ public class CastingEnumerableTests
 	}
 
 	[Test]
+	public async Task WhenEnumeratedWithoutItemType_ShouldCastEachItemOfTheSource()
+	{
+		IEnumerable enumerable = new CastingEnumerable<int, int?>(ToEnumerable([1, 2,]));
+
+		List<object?> items = enumerable.Cast<object?>().ToList();
+
+		await That(items).IsEqualTo([1, 2,]);
+	}
+
+	[Test]
 	public async Task WhenSourceIsNull_ShouldThrowArgumentNullException()
 	{
 		void Act() => _ = new CastingEnumerable<int, int?>(null!);

@@ -98,6 +98,28 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Test]
+				public async Task WhenItContainsDuplicateNullItems_ShouldFail()
+				{
+					IEnumerable<int?> subject = ToEnumerable<int?>([1, null, null,]);
+
+					async Task Act()
+						=> await That(subject).All().AreUnique();
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             is unique for all items,
+						             but only 1 of at least 3 were
+
+						             Not matching items:
+						             [<null>, <null>, (… and maybe more)]
+
+						             Collection:
+						             [1, <null>, <null>, (… and maybe more)]
+						             """);
+				}
+
+				[Test]
 				public async Task WhenItContainsDuplicates_ShouldFail()
 				{
 					IEnumerable<int> subject = ToEnumerable([1, 2, 3, 1,]);
@@ -373,6 +395,37 @@ public sealed partial class ThatEnumerable
 						             [
 						               "a",
 						               "A",
+						               (… and maybe more)
+						             ]
+						             """);
+				}
+
+				[Test]
+				public async Task WhenItContainsDuplicateNullItems_ShouldFail()
+				{
+					IEnumerable<string?> subject = ToEnumerable<string?>(["a", null, null,]);
+
+					async Task Act()
+						=> await That(subject).All().AreUnique();
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             is unique for all items,
+						             but only 1 of at least 3 were
+
+						             Not matching items:
+						             [
+						               <null>,
+						               <null>,
+						               (… and maybe more)
+						             ]
+
+						             Collection:
+						             [
+						               "a",
+						               <null>,
+						               <null>,
 						               (… and maybe more)
 						             ]
 						             """);

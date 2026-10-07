@@ -229,6 +229,49 @@ public sealed partial class ThatEnumerable
 					              but it had {Formatter.Format(Utc)} with kind Utc and {Formatter.Format(Local)} with kind Local, which cannot be compared
 					              """).AsPrefix();
 			}
+
+			[Test]
+			public async Task WhenImmutableArrayNonNullableMemberKindsAreIncompatible_ShouldFail()
+			{
+				ImmutableArray<Item> subject = [new(Utc), new(Local),];
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder(x => x.Value);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is in ascending order by x => x.Value,
+					              but it had {Formatter.Format(Utc)} with kind Utc and {Formatter.Format(Local)} with kind Local, which cannot be compared
+					              """).AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenImmutableArrayNullableItemKindsAreCompatible_ShouldSucceed()
+			{
+				ImmutableArray<DateTime?> subject = [null, Utc, Unspecified, Utc.AddHours(2),];
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenImmutableArrayNullableItemKindsAreIncompatible_ShouldFail()
+			{
+				ImmutableArray<DateTime?> subject = [null, null, Utc, Local,];
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is in ascending order,
+					              but it had {Formatter.Format(Utc)} with kind Utc and {Formatter.Format(Local)} with kind Local, which cannot be compared
+					              """).AsPrefix();
+			}
 #endif
 		}
 	}
