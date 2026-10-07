@@ -258,7 +258,9 @@ private sealed class HasPlaylistConstraint(string it, ExpectationGrammars gramma
 - The contexts of the built-in expectations are available as extensions on the `ResultContextCollector`, so that a
   custom expectation shows them alike: `AddCollectionContext`, `AddDictionaryContext`, `AddExpectedValuesContext`,
   `AddStringContext`, `AddEqualityOptionsContexts` and `AddEquivalencyContext`. An `ObjectEqualityOptions<T>`
-  compares like `IsEquivalentTo` with `SetMatchType(new EquivalencyMatchType(options), "Equivalent")`.
+  compares like `IsEquivalentTo` with `SetMatchType(new EquivalencyMatchType(options), "Equivalent")`. A constraint
+  compares with the options that `ForEvaluation(context, cancellationToken)` returns for its evaluation, so that the
+  timeout and the cancellation of the evaluation also end the expectations of an `It.Is…` in the expected object.
 
 ## Exceptions
 

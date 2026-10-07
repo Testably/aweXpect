@@ -82,7 +82,8 @@ internal class EventuallyExpectationBuilder<TValue>(
 		// attempt at the end of the budget still decides. A budget of zero makes a single evaluation that only the
 		// outer timeout bounds.
 		EvaluationCancellation cancellation = new(
-			timeout < retryTimeout || retryTimeout == TimeSpan.Zero ? timeout : null, cancellationToken, timeout);
+			timeout < retryTimeout || retryTimeout == TimeSpan.Zero ? timeout : null, cancellationToken, timeout,
+			timeSystem);
 		context.Cancellation = cancellation;
 		try
 		{
@@ -196,7 +197,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 	{
 		CancellationToken cancellationToken = cancellation.Token;
 		TimeSpan? limit = GetAttemptLimit(retryTimeout, polling.Remaining, interval);
-		using CancellationTokenSource? attemptCts = CreateAttemptCancellation(limit, cancellationToken);
+		using CancellationTokenSource? attemptCts = CreateAttemptCancellation(limit, polling, cancellationToken);
 		CancellationToken attemptToken = attemptCts?.Token ?? cancellationToken;
 		long startTimestamp = polling.GetTimestamp();
 		Task<TValue>? task = null;
@@ -304,7 +305,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 
 		EvaluationCancellation cancellation = context.Cancellation;
 		EvaluationCancellation? limitCancellation = cancellation.Timeout is null && limit is not null
-			? new EvaluationCancellation(limit, cancellation.Token)
+			? new EvaluationCancellation(limit, cancellation.Token, null, context.TimeSystem)
 			: null;
 		context.Cancellation = limitCancellation ?? cancellation;
 		CancellationToken cancellationToken = context.Cancellation.Token;
@@ -371,7 +372,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 	}
 
 	private static CancellationTokenSource? CreateAttemptCancellation(TimeSpan? limit,
-		CancellationToken cancellationToken)
+		Polling polling, CancellationToken cancellationToken)
 	{
 		if (limit is null)
 		{
@@ -379,7 +380,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 		}
 
 		CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-		cts.CancelAfter(limit.Value.ToTimerTimeout());
+		polling.CancelAfter(cts, limit.Value.ToTimerTimeout());
 		return cts;
 	}
 

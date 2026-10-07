@@ -673,7 +673,8 @@ public class AndOrWhoseResultTests
 			             but it did not finish within 0:00.050
 			             """)
 			.And.WithInner<TimeoutException>(inner
-				=> inner.HasMessage("The operation did not finish within 0:00.050."));
+				=> inner.HasMessage("The operation did not finish within 0:00.050."))
+			.WithTimeout(30.Seconds());
 	}
 
 	private static AndOrWhoseResult<int, IThat<string?>> IsNumeric(IThat<string?> subject)

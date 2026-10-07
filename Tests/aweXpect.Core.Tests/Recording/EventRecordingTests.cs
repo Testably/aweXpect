@@ -1,9 +1,9 @@
 ﻿using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Metadata;
+using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Recording;
 
 namespace aweXpect.Core.Tests.Recording;
@@ -290,21 +290,25 @@ public sealed class EventRecordingTests
 	[Test]
 	public async Task WhenChainedWithAnd_WhenALaterWaitIsCutShortByTheTimeout_ShouldFailWithTheTimeout()
 	{
+		VirtualTimeSystem timeSystem = new();
 		CustomEventClass sut = new();
 		IEventRecording<CustomEventClass> recording = sut.Record().Events();
 		sut.NotifyCustomEvent(1);
-		Func<int, bool> takesAWhile = TakesAWhileWhenFirstCalled(TimeSpan.FromMilliseconds(900));
+		Func<int, bool> takesAWhile = TakesAWhileWhenFirstCalled(timeSystem, TimeSpan.FromMilliseconds(900));
 
 		async Task Act()
 			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).WithParameter(takesAWhile)
 				.And.DidNotTrigger(nameof(CustomEventClass.CustomEvent)).WithParameter<int>(p => p == 2)
 				.Within(TimeSpan.FromSeconds(1))
-				.WithTimeout(TimeSpan.FromSeconds(1));
+				.WithTimeout(TimeSpan.FromSeconds(1))
+				.UseTimeSystem(timeSystem);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("*but it did not finish within 0:01").AsWildcard().And
 			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:01."))
-			.Because("the second constraint only watched for the rest of the timeout instead of its own second, which a delay of up to 900 ms on a busy machine does not hide");
+			.Because("the second constraint only watched for the rest of the timeout instead of its own second");
+		await That(timeSystem.Now).IsEqualTo(TimeSpan.FromSeconds(1))
+			.Because("the timeout ended the wait of the second constraint 100 ms after it started");
 	}
 
 	[Test]
@@ -1126,18 +1130,24 @@ public sealed class EventRecordingTests
 		};
 	}
 
+	/// <summary>
+	///     A predicate whose first call takes the <paramref name="duration" /> on the clock of the
+	///     <paramref name="timeSystem" />.
+	/// </summary>
 	/// <remarks>
-	///     Matches only once the <paramref name="duration" /> has passed since the predicate was first called, i.e. it
-	///     holds up the constraint that filters with it, so that the next constraint deterministically starts that long
-	///     after the evaluation.
+	///     It advances the clock on its first call, so that the next constraint deterministically starts that long after
+	///     the evaluation.
 	/// </remarks>
-	private static Func<int, bool> TakesAWhileWhenFirstCalled(TimeSpan duration)
+	private static Func<int, bool> TakesAWhileWhenFirstCalled(VirtualTimeSystem timeSystem, TimeSpan duration)
 	{
-		Stopwatch? stopwatch = null;
+		int calls = 0;
 		return _ =>
 		{
-			stopwatch ??= Stopwatch.StartNew();
-			SpinWait.SpinUntil(() => stopwatch.Elapsed >= duration);
+			if (Interlocked.Increment(ref calls) == 1)
+			{
+				timeSystem.Advance(duration);
+			}
+
 			return true;
 		};
 	}

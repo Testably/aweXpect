@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -117,12 +118,12 @@ public static partial class ThatDictionary
 		IEnumerable<KeyValuePair<TKey, TValue>>? expected,
 		IOptionsEquality<TValue> options)
 		: ConstraintResult.WithEqualToValue<TDictionary?>(it, grammars, expected is null),
-			IAsyncConstraint<TDictionary?>
+			IAsyncContextConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
 		private string? _failure;
 
-		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual,
+		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
@@ -138,6 +139,7 @@ public static partial class ThatDictionary
 				return this;
 			}
 
+			IOptionsEquality<TValue> evaluationOptions = options.ForEvaluation(context, cancellationToken);
 			ValueLookup<TKey, TValue> tryGetValue = GetLookup(actual);
 			List<TKey>? missingKeys = null;
 			List<TKey>? collapsedKeys = null;
@@ -157,7 +159,7 @@ public static partial class ThatDictionary
 					(collapsedKeys ??= []).Add(pair.Key);
 				}
 
-				if (!await options.AreConsideredEqual(value!, pair.Value))
+				if (!await evaluationOptions.AreConsideredEqual(value!, pair.Value))
 				{
 					(incorrectValues ??= []).Add(
 						$"contained key {Formatter.Format(pair.Key)} with value {Formatter.Format(value)} instead of {Formatter.Format(pair.Value)}");

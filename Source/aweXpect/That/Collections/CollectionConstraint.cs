@@ -29,6 +29,8 @@ internal abstract class PredicateCollectionConstraint<TValue, TItem>(
 	private readonly SynchronousElementCondition<TItem>? _synchronousCondition =
 		condition as SynchronousElementCondition<TItem>;
 
+	private ElementCondition<TItem>? _evaluationCondition;
+
 	/// <summary>
 	///     What every item is verified for.
 	/// </summary>
@@ -55,6 +57,15 @@ internal abstract class PredicateCollectionConstraint<TValue, TItem>(
 	}
 
 	/// <summary>
+	///     Verifies the items of the evaluation in the <paramref name="context" /> with the condition for it.
+	/// </summary>
+	protected void StartEvaluation(IEvaluationContext context, CancellationToken cancellationToken)
+	{
+		StartEvaluation();
+		_evaluationCondition = condition.ForEvaluation(context, cancellationToken);
+	}
+
+	/// <summary>
 	///     Whether the <paramref name="item" /> meets the synchronous condition.
 	/// </summary>
 	protected bool MatchesSynchronously(TItem item)
@@ -64,7 +75,7 @@ internal abstract class PredicateCollectionConstraint<TValue, TItem>(
 	///     Whether the <paramref name="item" /> meets the condition.
 	/// </summary>
 	protected ValueTask<bool> Matches(TItem item)
-		=> condition.IsMetBy(item);
+		=> (_evaluationCondition ?? condition).IsMetBy(item);
 }
 
 /// <remarks>
@@ -93,7 +104,7 @@ internal sealed class CollectionConstraint<TEnumerable, TItem>(
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
-		StartEvaluation();
+		StartEvaluation(context, cancellationToken);
 		_collectionContext = default;
 		_itemType = null;
 		Actual = actual;
@@ -251,7 +262,7 @@ internal sealed class AsyncCollectionConstraint<TItem>(
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
 	{
-		StartEvaluation();
+		StartEvaluation(context, cancellationToken);
 		_collectionContext = default;
 		Actual = actual;
 		if (actual is null)

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -303,12 +302,12 @@ public static partial class ThatSignaler
 			int determinableAmount = quantifier.DeterminableAmount;
 			_defaultTimeout = GetDefaultTimeout(options, determinableAmount);
 			TimeSpan? timeout = determinableAmount > 0 ? options.Timeout ?? _defaultTimeout : TimeSpan.Zero;
-			Stopwatch stopwatch = Stopwatch.StartNew();
+			long startTimestamp = context.GetTimestamp();
 			// With nothing to wait for, the timeout is zero, and the Times overload rejects an amount of zero.
 			Actual = determinableAmount > 0
-				? await actual.WaitAsync(determinableAmount.Times(), timeout, cancellationToken)
+				? await context.WaitForSignalsAsync(actual, determinableAmount.Times(), timeout, cancellationToken)
 				: await actual.WaitAsync(timeout, cancellationToken);
-			TimeSpan waited = stopwatch.Elapsed;
+			TimeSpan waited = context.GetElapsedTime(startTimestamp);
 			_waitedTime = options.Timeout is null && _defaultTimeout is null ? null : waited;
 			if (IsCanceledBeforeTheTimeout(Actual.IsSuccess, timeout, waited, context))
 			{
@@ -367,12 +366,13 @@ public static partial class ThatSignaler
 			int determinableAmount = quantifier.DeterminableAmount;
 			_defaultTimeout = GetDefaultTimeout(options, determinableAmount);
 			TimeSpan? timeout = determinableAmount > 0 ? options.Timeout ?? _defaultTimeout : TimeSpan.Zero;
-			Stopwatch stopwatch = Stopwatch.StartNew();
+			long startTimestamp = context.GetTimestamp();
 			// With nothing to wait for, the timeout is zero, and the Times overload rejects an amount of zero.
 			Actual = await UserCode.InvokeAsync(async () => determinableAmount > 0
-				? await actual.WaitAsync(determinableAmount.Times(), o.Matches, timeout, cancellationToken)
+				? await context.WaitForSignalsAsync(actual, determinableAmount.Times(), o.Matches, timeout,
+					cancellationToken)
 				: await actual.WaitAsync(o.Matches, timeout, cancellationToken), "the predicate", CancellationToken.None);
-			TimeSpan waited = stopwatch.Elapsed;
+			TimeSpan waited = context.GetElapsedTime(startTimestamp);
 			_waitedTime = o.Timeout is null && _defaultTimeout is null ? null : waited;
 			if (IsCanceledBeforeTheTimeout(Actual.IsSuccess, timeout, waited, context))
 			{

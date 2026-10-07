@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Metadata;
 
 namespace aweXpect.Equivalency;
@@ -29,12 +31,36 @@ public static partial class EquivalencyComparison
 	/// <remarks>
 	///     In case of a difference, the <paramref name="failureBuilder" /> contains a human readable explanation.
 	/// </remarks>
-	public static async ValueTask<bool>
+	public static ValueTask<bool>
 		Compare<TActual, TExpected>(
 			[RequiresMemberMetadata] TActual actual,
 			[RequiresMemberMetadata] TExpected expected,
 			EquivalencyOptions equivalencyOptions,
 			StringBuilder failureBuilder)
+		=> Compare(actual, expected, equivalencyOptions, failureBuilder, null, CancellationToken.None);
+
+	/// <summary>
+	///     Checks if <paramref name="actual" /> is considered equivalent to <paramref name="expected" /> like
+	///     <see cref="Compare{TActual, TExpected}(TActual, TExpected, EquivalencyOptions, StringBuilder)" />, as part of
+	///     the <paramref name="evaluation" />.
+	/// </summary>
+	/// <param name="actual">The actual value.</param>
+	/// <param name="expected">The expected value.</param>
+	/// <param name="equivalencyOptions">The options of the comparison.</param>
+	/// <param name="failureBuilder">Receives the explanation of a difference.</param>
+	/// <param name="evaluation">
+	///     The evaluation whose cancellation and time system the expectations of an <c>It.Is…</c> in the
+	///     <paramref name="expected" /> object use, or <see langword="null" /> outside an evaluation.
+	/// </param>
+	/// <param name="cancellationToken">The token that cancels the <paramref name="evaluation" />.</param>
+	internal static async ValueTask<bool>
+		Compare<TActual, TExpected>(
+			TActual actual,
+			TExpected expected,
+			EquivalencyOptions equivalencyOptions,
+			StringBuilder failureBuilder,
+			IEvaluationContext? evaluation,
+			CancellationToken cancellationToken)
 	{
 		int start = failureBuilder.Length;
 		bool result = await Compare(
@@ -45,7 +71,11 @@ public static partial class EquivalencyComparison
 			failureBuilder,
 			"",
 			MemberType.Value,
-			new EquivalencyContext(equivalencyOptions));
+			new EquivalencyContext(equivalencyOptions)
+			{
+				Evaluation = evaluation,
+				CancellationToken = cancellationToken,
+			});
 		JoinSingleLineEntries(failureBuilder, start);
 		return result;
 	}
@@ -54,11 +84,21 @@ public static partial class EquivalencyComparison
 	///     Checks if <paramref name="actual" /> is considered equivalent to <paramref name="expected" /> using the
 	///     <paramref name="equivalencyOptions" />, without explaining a difference.
 	/// </summary>
+	/// <param name="actual">The actual value.</param>
+	/// <param name="expected">The expected value.</param>
+	/// <param name="equivalencyOptions">The options of the comparison.</param>
+	/// <param name="evaluation">
+	///     The evaluation whose cancellation and time system the expectations of an <c>It.Is…</c> in the
+	///     <paramref name="expected" /> object use, or <see langword="null" /> outside an evaluation.
+	/// </param>
+	/// <param name="cancellationToken">The token that cancels the <paramref name="evaluation" />.</param>
 	internal static ValueTask<bool>
 		IsEquivalent<TActual, TExpected>(
 			TActual actual,
 			TExpected expected,
-			EquivalencyOptions equivalencyOptions)
+			EquivalencyOptions equivalencyOptions,
+			IEvaluationContext? evaluation = null,
+			CancellationToken cancellationToken = default)
 		=> Compare(
 			actual,
 			expected,
@@ -70,6 +110,8 @@ public static partial class EquivalencyComparison
 			new EquivalencyContext(equivalencyOptions)
 			{
 				IsDecidingOnly = true,
+				Evaluation = evaluation,
+				CancellationToken = cancellationToken,
 			});
 
 	/// <remarks>
@@ -181,6 +223,16 @@ public static partial class EquivalencyComparison
 		///     only the pairs that are reported in the end are written.
 		/// </remarks>
 		public bool IsCountingOnly { get; set; }
+
+		/// <summary>
+		///     The evaluation that the comparison is part of, or <see langword="null" /> outside an evaluation.
+		/// </summary>
+		public IEvaluationContext? Evaluation { get; set; }
+
+		/// <summary>
+		///     The token that cancels the <see cref="Evaluation" />.
+		/// </summary>
+		public CancellationToken CancellationToken { get; set; }
 
 		/// <summary>
 		///     The options registered for a type, or <see langword="null" /> when it has no registration.

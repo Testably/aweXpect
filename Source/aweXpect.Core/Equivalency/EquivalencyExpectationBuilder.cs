@@ -39,7 +39,8 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 	{
 		if (value is T typedValue)
 		{
-			_result = await ApplyReasons(await GetRootNode().IsMetBy(typedValue, context, cancellationToken));
+			_result = await ApplyReasons(await GetRootNode().IsMetBy(typedValue, context, cancellationToken),
+				cancellationToken);
 		}
 		else if (value is null)
 		{
@@ -53,7 +54,8 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 				// ReSharper disable ExpressionIsAlwaysNull
 				// typedDefault is used to have the correct generic overload in `IsMetBy`.
 				_result = new NotMatchingTypesResult(typedDefault,
-					await ApplyReasons(await GetRootNode().IsMetBy(typedDefault, context, cancellationToken)));
+					await ApplyReasons(await GetRootNode().IsMetBy(typedDefault, context, cancellationToken),
+						cancellationToken));
 				// ReSharper restore ExpressionIsAlwaysNull
 			}
 		}
@@ -66,6 +68,24 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 	}
 
 	internal override bool IsOfExpectedType(object value) => value is T;
+
+	/// <summary>
+	///     Appends the reasons to the expectation of the <paramref name="result" />.
+	/// </summary>
+	/// <remarks>
+	///     The difference is described right after the comparison, so a reason that must be awaited is awaited here,
+	///     until the <paramref name="cancellationToken" /> of the evaluation is canceled.
+	/// </remarks>
+	private async ValueTask<ConstraintResult> ApplyReasons(ConstraintResult result,
+		CancellationToken cancellationToken)
+	{
+		if (result.Outcome != Outcome.Success)
+		{
+			await ResolveReasons(cancellationToken);
+		}
+
+		return await ApplyReasons(result);
+	}
 
 	private sealed class NotMatchingTypesResult : ConstraintResult
 	{

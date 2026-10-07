@@ -24,6 +24,7 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 
 	private readonly SynchronouslyMatchedItem<TItem>? _synchronousItem;
 	private TItem? _actual;
+	private ContainedItem<TItem> _evaluationItem;
 	private bool _hasIndex;
 
 	protected HasItemConstraintBase(
@@ -35,6 +36,7 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 	{
 		_itemGrammars = grammars;
 		Item = item;
+		_evaluationItem = item;
 		_synchronousItem = item as SynchronouslyMatchedItem<TItem>;
 		Options = options;
 	}
@@ -59,10 +61,11 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 		=> Item.AppendContexts(contexts);
 
 	/// <summary>
-	///     Starts a new evaluation, which fails unless an item at the index matches.
+	///     Starts a new evaluation in the <paramref name="context" />, which fails unless an item at the index matches.
 	/// </summary>
-	protected void Start()
+	protected void Start(IEvaluationContext context, CancellationToken cancellationToken)
 	{
+		_evaluationItem = Item.ForEvaluation(context, cancellationToken);
 		_actual = default;
 		_hasIndex = false;
 		Outcome = Outcome.Failure;
@@ -78,7 +81,7 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 	///     Whether the <paramref name="item" /> matches.
 	/// </summary>
 	protected ValueTask<bool> Matches(TItem item)
-		=> Item.Matches(item);
+		=> _evaluationItem.Matches(item);
 
 	/// <summary>
 	///     Whether the item at the <paramref name="index" /> of a collection with <paramref name="count" /> items is at
@@ -155,7 +158,7 @@ internal sealed class HasItemConstraint<TEnumerable, TItem>(
 	{
 		_collectionContext = default;
 		Actual = actual;
-		Start();
+		Start(context, cancellationToken);
 		if (actual.IsDefaultImmutableArray())
 		{
 			return new ValueTask<ConstraintResult>(this.AsNullSubject(It));
@@ -250,7 +253,7 @@ internal sealed class AsyncHasItemConstraint<TItem>(
 	{
 		_collectionContext = default;
 		Actual = actual;
-		Start();
+		Start(context, cancellationToken);
 		if (actual is null)
 		{
 			return this;

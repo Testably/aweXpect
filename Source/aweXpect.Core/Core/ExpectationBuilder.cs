@@ -1176,7 +1176,7 @@ internal class ExpectationBuilder<TValue> : ExpectationBuilder
 		TimeSpan? timeout,
 		CancellationToken cancellationToken)
 	{
-		EvaluationCancellation cancellation = EvaluationCancellation.Create(timeout, cancellationToken);
+		EvaluationCancellation cancellation = EvaluationCancellation.Create(timeout, cancellationToken, timeSystem);
 		using EvaluationCancellation.ReleaseScope _ = cancellation.ReleaseAtTheEnd();
 		context.Cancellation = cancellation;
 		CancellationToken token = cancellation.Token;

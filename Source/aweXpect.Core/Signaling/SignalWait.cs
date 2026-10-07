@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Signaling;
 
@@ -44,6 +45,10 @@ internal sealed class SignalWait : IDisposable
 	///     Blocks the current thread until the wait is completed, the <paramref name="timeout" /> expires or the
 	///     <paramref name="cancellationToken" /> is canceled.
 	/// </summary>
+	/// <remarks>
+	///     The <paramref name="timeout" /> always expires in real time: the thread blocks on the event, which only a
+	///     real timer can end, and no evaluation waits this way.
+	/// </remarks>
 	public void Block(TimeSpan timeout, CancellationToken cancellationToken)
 	{
 		try
@@ -57,10 +62,10 @@ internal sealed class SignalWait : IDisposable
 	}
 
 	/// <summary>
-	///     Waits without blocking a thread until the wait is completed, the <paramref name="timeout" /> expires or the
-	///     <paramref name="cancellationToken" /> is canceled.
+	///     Waits without blocking a thread until the wait is completed, the <paramref name="timeout" /> expires on the
+	///     <paramref name="timeSystem" /> or the <paramref name="cancellationToken" /> is canceled.
 	/// </summary>
-	public async Task WaitAsync(TimeSpan timeout, CancellationToken cancellationToken)
+	public async Task WaitAsync(TimeSpan timeout, ITimeSystem timeSystem, CancellationToken cancellationToken)
 	{
 		Task completion = _completion.Task;
 		if (completion.IsCompleted)
@@ -69,7 +74,7 @@ internal sealed class SignalWait : IDisposable
 		}
 
 		using CancellationTokenSource delayCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
-		Task delay = Task.Delay(timeout.ToTimerTimeout(), delayCts.Token);
+		Task delay = timeSystem.Delay(timeout.ToTimerTimeout(), delayCts.Token);
 		await Task.WhenAny(completion, delay);
 		// Releases the timer of the delay, which would otherwise run until the timeout.
 		delayCts.Cancel();

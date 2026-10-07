@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Threading;
 using aweXpect.Options;
+using Context = aweXpect.Core.EvaluationContext.EvaluationContext;
 
 namespace aweXpect.Core.Tests.Options;
 
@@ -28,7 +30,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 			new ObjectEqualityWithToleranceOptions<int, int>((a, e, t) => Math.Abs(a - e) <= t)
 				.WithDefaultTolerance(() => ++reads);
 
-		IOptionsEquality<int> evaluation = sut.ForEvaluation();
+		ObjectEqualityOptions<int> evaluation = sut.ForEvaluation(new Context(), CancellationToken.None);
 		bool first = await evaluation.AreConsideredEqual(1, 2);
 		bool second = await evaluation.AreConsideredEqual(1, 3);
 
@@ -46,7 +48,7 @@ public class ObjectEqualityWithToleranceOptionsTests
 				.WithDefaultTolerance(() => 5);
 		sut.Within(1);
 
-		IOptionsEquality<int> evaluation = sut.ForEvaluation();
+		IOptionsEquality<int> evaluation = sut.ForEvaluation(new Context(), CancellationToken.None);
 
 		await That(evaluation).IsSameAs(sut)
 			.Because("an explicit tolerance does not depend on a setting");

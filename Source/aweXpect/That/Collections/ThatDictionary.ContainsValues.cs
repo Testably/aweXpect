@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -125,22 +126,24 @@ public static partial class ThatDictionary
 		IOptionsEquality<TValue> options,
 		bool isAny)
 		: ConstraintResult.WithNotNullValue<TDictionary?>(it, grammars),
-			IAsyncConstraint<TDictionary?>
+			IAsyncContextConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
 		private List<TValue>? _existingValues;
 		private List<TValue>? _missingValues;
 
-		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is not null)
 			{
+				IOptionsEquality<TValue> evaluationOptions = options.ForEvaluation(context, cancellationToken);
 				_missingValues = [];
 				_existingValues = [];
 				foreach (TValue item in expected)
 				{
-					if (await ContainsValue(actual, item, options))
+					if (await ContainsValue(actual, item, evaluationOptions))
 					{
 						_existingValues.Add(item);
 					}

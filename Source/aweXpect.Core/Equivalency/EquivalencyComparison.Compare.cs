@@ -442,20 +442,28 @@ public static partial class EquivalencyComparison
 	/// <remarks>
 	///     A separate method, because the comparison of a nested object is on the stack once for every nested level,
 	///     and its state would otherwise also hold the evaluation of the expectation.
+	///     <para />
+	///     The expectation is evaluated in a context of its own, which is canceled and measures the time like the
+	///     evaluation that the comparison is part of: the collections it materializes and the reasons it leaves pending
+	///     only matter until the difference is described, and it is evaluated again for every value it is compared with.
 	/// </remarks>
+	/// <exception cref="OperationCanceledException">
+	///     The cancellation of the evaluation kept the expectation from deciding, so the values are not compared any
+	///     further.
+	/// </exception>
 	private static async ValueTask<bool?> CompareWithExpectation<TActual>(TActual actual,
 		EquivalencyExpectationBuilder equivalencyExpectationBuilder, StringBuilder failureBuilder,
 		MemberPath memberPath, MemberType memberType, EquivalencyContext context)
 	{
-		EvaluationContext evaluationContext = new();
+		CancellationToken cancellationToken = context.CancellationToken;
+		EvaluationContext evaluationContext = EvaluationContext.ForNestedExpectation(context.Evaluation);
 		ConstraintResult? result;
 		try
 		{
-			result = await equivalencyExpectationBuilder.IsMetBy(actual, evaluationContext,
-				CancellationToken.None);
+			result = await equivalencyExpectationBuilder.IsMetBy(actual, evaluationContext, cancellationToken);
 			if (result.Outcome != Outcome.Success)
 			{
-				await evaluationContext.ResolvePendingReasons(CancellationToken.None);
+				await evaluationContext.ResolvePendingReasons(cancellationToken);
 			}
 		}
 		finally
@@ -470,6 +478,7 @@ public static partial class EquivalencyComparison
 
 		if (result.Outcome is not (Outcome.Failure or Outcome.FailureBothWays))
 		{
+			cancellationToken.ThrowIfCancellationRequested();
 			return null;
 		}
 

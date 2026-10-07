@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -46,12 +45,12 @@ public static partial class ThatEventRecording
 				return this;
 			}
 
-			Stopwatch? stopwatch = options.IsRepeated ? Stopwatch.StartNew() : null;
+			long? startTimestamp = options.IsRepeated ? context.GetTimestamp() : null;
 			_result = await actual.StopWhen(_areFound ??= AreFound, options.Timeout, context, cancellationToken);
 			int eventCount = _result.GetEventCount(eventName, _isMatch);
-			if (stopwatch is not null)
+			if (startTimestamp is not null)
 			{
-				_waitedTime = stopwatch.Elapsed;
+				_waitedTime = context.GetElapsedTime(startTimestamp.Value);
 				_stoppedEarly = quantifier.Check(eventCount, false) != null;
 				if (!_stoppedEarly && cancellationToken.IsCancellationRequested &&
 				    !context.Cancellation.HasWaitElapsed(options.Timeout, _waitedTime.Value))

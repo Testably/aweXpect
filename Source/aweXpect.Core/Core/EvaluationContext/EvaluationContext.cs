@@ -34,6 +34,33 @@ internal class EvaluationContext : IEvaluationContext
 	public static NestedEvaluation StartNestedEvaluation(IEvaluationContext context)
 		=> new(context as EvaluationContext);
 
+	/// <summary>
+	///     Returns a new context for an expectation that is evaluated on its own during the evaluation in the
+	///     <paramref name="context" />, e.g. an <c>It.Is…</c> in an expected object: it is canceled and measures the
+	///     time like that evaluation, while its materialized collections, reasons and stored values are its own.
+	/// </summary>
+	/// <remarks>
+	///     The caller releases the returned context. Without a <paramref name="context" />, i.e. outside an evaluation,
+	///     it neither times out nor is canceled.
+	/// </remarks>
+	public static EvaluationContext ForNestedExpectation(IEvaluationContext? context)
+		=> context is null
+			? new EvaluationContext()
+			: new EvaluationContext
+			{
+				Cancellation = context.Cancellation,
+				TimeSystem = GetTimeSystem(context),
+			};
+
+	/// <summary>
+	///     The time system of the evaluation in the <paramref name="context" />, or the real one outside an evaluation
+	///     and for a <paramref name="context" /> of another implementation.
+	/// </summary>
+	public static ITimeSystem GetTimeSystem(IEvaluationContext? context)
+		=> context is EvaluationContext evaluationContext
+			? evaluationContext.TimeSystem
+			: RealTimeSystem.Instance;
+
 	private bool IsNested(string key)
 		=> _nestingDepth > 0 && !EvaluationContextExtensions.IsMaterializationKey(key);
 

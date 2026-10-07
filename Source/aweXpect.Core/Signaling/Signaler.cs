@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.TimeSystem;
 using aweXpect.Customization;
 
 namespace aweXpect.Signaling;
@@ -105,7 +106,7 @@ public class Signaler
 		CancellationToken cancellationToken = default)
 	{
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		return WaitForAsync(1, timeout, cancellationToken);
+		return WaitForAsync(1, timeout, RealTimeSystem.Instance, cancellationToken);
 	}
 
 	/// <summary>
@@ -122,6 +123,17 @@ public class Signaler
 	/// <exception cref="ArgumentOutOfRangeException">The <paramref name="timeout" /> is negative.</exception>
 	public Task<SignalerResult> WaitAsync(Times amount, TimeSpan? timeout = null,
 		CancellationToken cancellationToken = default)
+		=> WaitAsync(amount, timeout, RealTimeSystem.Instance, cancellationToken);
+
+	/// <summary>
+	///     Waits like <see cref="WaitAsync(Times, TimeSpan?, CancellationToken)" />, while the
+	///     <paramref name="timeout" /> expires on the <paramref name="timeSystem" />.
+	/// </summary>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///     The <paramref name="amount" /> is not positive or the <paramref name="timeout" /> is negative.
+	/// </exception>
+	internal Task<SignalerResult> WaitAsync(Times amount, TimeSpan? timeout, ITimeSystem timeSystem,
+		CancellationToken cancellationToken)
 	{
 		if (amount.Value <= 0)
 		{
@@ -130,7 +142,7 @@ public class Signaler
 		}
 
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		return WaitForAsync(amount.Value, timeout, cancellationToken);
+		return WaitForAsync(amount.Value, timeout, timeSystem, cancellationToken);
 	}
 
 	private SignalerResult WaitFor(int amount, TimeSpan? timeout, CancellationToken cancellationToken)
@@ -157,7 +169,7 @@ public class Signaler
 		return new SignalerResult(waiter.Missing == 0, waiter.Count);
 	}
 
-	private async Task<SignalerResult> WaitForAsync(int amount, TimeSpan? timeout,
+	private async Task<SignalerResult> WaitForAsync(int amount, TimeSpan? timeout, ITimeSystem timeSystem,
 		CancellationToken cancellationToken)
 	{
 		Waiter? waiter = Register(amount, out int counter);
@@ -171,7 +183,7 @@ public class Signaler
 			TimeSpan waitTimeout = timeout ?? Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
 			if (waitTimeout != TimeSpan.Zero)
 			{
-				await waiter.Wait.WaitAsync(waitTimeout, cancellationToken);
+				await waiter.Wait.WaitAsync(waitTimeout, timeSystem, cancellationToken);
 			}
 		}
 		finally
@@ -360,7 +372,7 @@ public class Signaler<TParameter>
 		CancellationToken cancellationToken = default)
 	{
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		return WaitForAsync(1, predicate, timeout, cancellationToken);
+		return WaitForAsync(1, predicate, timeout, RealTimeSystem.Instance, cancellationToken);
 	}
 
 	/// <summary>
@@ -384,6 +396,21 @@ public class Signaler<TParameter>
 		Func<TParameter, bool>? predicate = null,
 		TimeSpan? timeout = null,
 		CancellationToken cancellationToken = default)
+		=> WaitAsync(amount, predicate, timeout, RealTimeSystem.Instance, cancellationToken);
+
+	/// <summary>
+	///     Waits like <see cref="WaitAsync(Times, Func{TParameter, bool}?, TimeSpan?, CancellationToken)" />, while the
+	///     <paramref name="timeout" /> expires on the <paramref name="timeSystem" />.
+	/// </summary>
+	/// <exception cref="ArgumentOutOfRangeException">
+	///     The <paramref name="amount" /> is not positive or the <paramref name="timeout" /> is negative.
+	/// </exception>
+	internal Task<SignalerResult<TParameter>> WaitAsync(
+		Times amount,
+		Func<TParameter, bool>? predicate,
+		TimeSpan? timeout,
+		ITimeSystem timeSystem,
+		CancellationToken cancellationToken)
 	{
 		if (amount.Value <= 0)
 		{
@@ -392,7 +419,7 @@ public class Signaler<TParameter>
 		}
 
 		ThrowHelper.ThrowIfTimeoutIsNegative(timeout);
-		return WaitForAsync(amount.Value, predicate, timeout, cancellationToken);
+		return WaitForAsync(amount.Value, predicate, timeout, timeSystem, cancellationToken);
 	}
 
 	private SignalerResult<TParameter> WaitFor(int amount, Func<TParameter, bool>? predicate, TimeSpan? timeout,
@@ -416,7 +443,7 @@ public class Signaler<TParameter>
 	}
 
 	private async Task<SignalerResult<TParameter>> WaitForAsync(int amount, Func<TParameter, bool>? predicate,
-		TimeSpan? timeout, CancellationToken cancellationToken)
+		TimeSpan? timeout, ITimeSystem timeSystem, CancellationToken cancellationToken)
 	{
 		Waiter waiter = Register(amount, predicate);
 		try
@@ -424,7 +451,7 @@ public class Signaler<TParameter>
 			TimeSpan waitTimeout = timeout ?? Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
 			if (waitTimeout != TimeSpan.Zero)
 			{
-				await waiter.Wait.WaitAsync(waitTimeout, cancellationToken);
+				await waiter.Wait.WaitAsync(waitTimeout, timeSystem, cancellationToken);
 			}
 		}
 		finally

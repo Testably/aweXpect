@@ -273,11 +273,10 @@ public sealed class PollingTests
 	[Test]
 	public async Task WaitForNextCheck_WhenTheTimeoutElapsedBeforeTheStart_ShouldBeCanceled()
 	{
-		EvaluationCancellation cancellation = new(100.Milliseconds(), CancellationToken.None);
-		TaskCompletionSource<bool> canceled = new();
-		using CancellationTokenRegistration _ = cancellation.Token.Register(() => canceled.TrySetResult(true));
-		await canceled.Task;
-		using Polling sut = Polling.Start(RealTimeSystem.Instance, RealTimeSystem.Instance.GetTimestamp(),
+		VirtualTimeSystem timeSystem = new();
+		EvaluationCancellation cancellation = new(100.Milliseconds(), CancellationToken.None, null, timeSystem);
+		timeSystem.Advance(100.Milliseconds());
+		using Polling sut = Polling.Start(timeSystem, timeSystem.GetTimestamp(),
 			100.Milliseconds(), 1.Hours(), cancellation);
 
 		PollStep step = await sut.WaitForNextCheck();

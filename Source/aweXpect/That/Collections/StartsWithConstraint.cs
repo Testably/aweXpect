@@ -24,6 +24,7 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 	IOptionsEquality<TMatch> options)
 	: ConstraintResult.WithNotNullValue<TValue>(it, grammars)
 {
+	private IOptionsEquality<TMatch>? _evaluationOptions;
 	private string? _expectedText;
 	private TItem? _firstMismatchItem;
 	private bool _foundMismatch;
@@ -43,10 +44,11 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 		=> contexts.AddOptionsContexts(options);
 
 	/// <summary>
-	///     Starts a new evaluation.
+	///     Starts a new evaluation in the <paramref name="context" />.
 	/// </summary>
-	protected void Start()
+	protected void Start(IEvaluationContext context, CancellationToken cancellationToken)
 	{
+		_evaluationOptions = options.ForEvaluation(context, cancellationToken);
 		_firstMismatchItem = default;
 		_foundMismatch = false;
 		Count = 0;
@@ -59,7 +61,7 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 	{
 		TMatch expectedItem = expected[Count++];
 		return CollectionItems<TItem>.TryCast(item, out TMatch matchedItem)
-			? options.AreConsideredEqual(matchedItem, expectedItem)
+			? (_evaluationOptions ?? options).AreConsideredEqual(matchedItem, expectedItem)
 			: new ValueTask<bool>(false);
 	}
 
@@ -142,7 +144,7 @@ internal sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>(
 	{
 		_collectionContext = default;
 		_items = null;
-		Start();
+		Start(context, cancellationToken);
 		Actual = actual;
 		if (actual.IsDefaultImmutableArray())
 		{
@@ -225,7 +227,7 @@ internal sealed class AsyncStartsWithConstraint<TItem, TMatch>(
 	{
 		_collectionContext = default;
 		_foundValues.Clear();
-		Start();
+		Start(context, cancellationToken);
 		Actual = actual;
 		if (actual is null)
 		{
