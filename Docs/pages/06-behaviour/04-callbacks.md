@@ -106,3 +106,51 @@ await Expect.That(signaler).Signaled().AtLeast(2.Times()).WhoseParameters.Contai
 ```
 
 A failure message lists the recorded parameters.
+
+## Waiting without an expectation
+
+A signaler can also be used directly, e.g. to continue a test only after a callback was signaled. `WaitAsync` waits
+without blocking a thread, until the callback was signaled or the timeout expired:
+
+```csharp
+Signaler<string> signaler = new();
+player.Play("Let It Be", title => signaler.Signal(title));
+
+SignalerResult<string> result = await signaler.WaitAsync(timeout: TimeSpan.FromSeconds(5));
+
+Fail.Unless(result.IsSuccess, $"only {result.Count} tracks completed: {string.Join(", ", result.Parameters)}");
+```
+
+`Wait` takes the same parameters, but blocks the calling thread while it waits, and `IsSignaled` returns immediately:
+
+```csharp
+Signaler<string> signaler = new();
+
+bool isSignaled = signaler.IsSignaled(2.Times());
+SignalerResult<string> result = signaler.Wait(2.Times(), title => title.StartsWith("Let"));
+```
+
+All parameters are optional and have the same meaning for `Wait` and `WaitAsync`:
+
+| Parameter           | Without it                                                                                               |
+|---------------------|----------------------------------------------------------------------------------------------------------|
+| `amount`            | waits for one signal; `IsSignaled` checks for at least one signal                                        |
+| `predicate`         | counts every signal; only a `Signaler<T>` has it, to count the signals that match                        |
+| `timeout`           | waits for at most the [`DefaultSignalerTimeout`](../03-how-it-works/07-configuration.md#settings) (30 s) |
+| `cancellationToken` | only the timeout ends the wait                                                                           |
+
+- Signals that were received before the wait count as well, so a callback that was already signaled is not missed.
+- The `amount` of a wait must be greater than zero and the `timeout` must not be negative, otherwise an
+  `ArgumentOutOfRangeException` is thrown. `TimeSpan.Zero` does not wait at all, and `Timeout.InfiniteTimeSpan` waits
+  without a limit.
+- When the timeout expires or the `CancellationToken` is canceled, the wait returns without throwing an exception.
+- An exception of the `predicate` ends the wait and is thrown by `Wait` or `WaitAsync`, also when the predicate ran
+  on the thread that signaled.
+
+The `SignalerResult` tells how the wait ended:
+
+| Property     | Value                                                                                                  |
+|--------------|--------------------------------------------------------------------------------------------------------|
+| `IsSuccess`  | `true` when enough signals were received before the timeout expired or the wait was canceled           |
+| `Count`      | the number of signals that were received until the wait ended                                          |
+| `Parameters` | the parameters of these signals, also of those that did not match the `predicate` (`Signaler<T>` only) |

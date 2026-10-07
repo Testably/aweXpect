@@ -11,6 +11,7 @@ Describes the concepts that all expectations share.
 | [Time and cancellation](./06-time-and-cancellation.md) | timeouts, cancellation, waiting, execution time                    |
 | [Configuration](./07-configuration.md)                 | customization lifetimes, global defaults, formatting, settings     |
 | [Native AOT and trimming](./08-native-aot.md)          | equivalency and events under Native AOT and trimming               |
+| [Test frameworks](./09-test-frameworks.md)             | `Fail`, `Skip`, the exceptions per test framework                  |
 
 ## Anatomy of an expectation
 
