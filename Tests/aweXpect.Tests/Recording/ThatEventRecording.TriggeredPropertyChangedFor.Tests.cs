@@ -59,6 +59,54 @@ public sealed partial class ThatEventRecording
 			}
 
 			[Test]
+			public async Task WhenEventArgsAreNull_ShouldNotMatchAllProperties()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChangedWithoutEventArgs();
+
+				async Task Act() =>
+					await That(recording).TriggeredPropertyChangedFor(null);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the PropertyChanged event on sut for all properties at least once,
+					             but it was never recorded in [
+					               PropertyChanged(ThatEventRecording.PropertyChangedClass {
+					                   MyValue = 0
+					                 }, <null>)
+					             ]
+					             """)
+					.Because("an event without event args names no property, so it is no notification for all properties");
+			}
+
+			[Test]
+			public async Task WhenEventArgsAreNull_ShouldNotMatchTheProperty()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChangedWithoutEventArgs();
+
+				async Task Act() =>
+					await That(recording).TriggeredPropertyChangedFor(x => x.MyValue);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the PropertyChanged event on sut for property MyValue at least once,
+					             but it was never recorded in [
+					               PropertyChanged(ThatEventRecording.PropertyChangedClass {
+					                   MyValue = 0
+					                 }, <null>)
+					             ]
+					             """)
+					.Because("an event without event args names no property");
+			}
+
+			[Test]
 			public async Task WhenEventIsRecordedWithEmptyPropertyName_ShouldMatchExpressionForAnyProperty()
 			{
 				PropertyChangedClass sut = new();

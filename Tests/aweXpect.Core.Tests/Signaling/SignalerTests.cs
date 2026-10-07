@@ -122,6 +122,22 @@ public sealed class SignalerTests
 		}
 
 		[Test]
+		public async Task WaitAsync_AlreadySignaled_ShouldSucceedWithoutWaiting()
+		{
+			Signaler signaler = new();
+			signaler.Signal();
+			signaler.Signal();
+
+			Task<SignalerResult> wait = signaler.WaitAsync(10.Seconds());
+
+			await That(wait.IsCompleted).IsTrue()
+				.Because("the signals were already received, so there is nothing to wait for");
+			SignalerResult result = await wait;
+			await That(result.IsSuccess).IsTrue();
+			await That(result.Count).IsEqualTo(2);
+		}
+
+		[Test]
 		public async Task WaitAsync_InfiniteTimeout_ShouldWaitForTheSignal()
 		{
 			Signaler signaler = new();
@@ -226,6 +242,20 @@ public sealed class SignalerTests
 			await That(result.IsSuccess).IsFalse();
 			await That(sw.Elapsed).IsLessThan(DefaultTimeout)
 				.Because("the 10 ms timeout must end the wait long before the default signaler timeout of 30 s would");
+		}
+
+		[Test]
+		public async Task WaitAsync_WhenNoTimeoutIsGiven_ShouldUseTheDefaultSignalerTimeout()
+		{
+			Signaler signaler = new();
+
+			using (IDisposable __ = Customize.aweXpect.Settings().DefaultSignalerTimeout.Set(TimeSpan.Zero))
+			{
+				SignalerResult result = await signaler.WaitAsync();
+
+				await That(result.IsSuccess).IsFalse()
+					.Because("a default timeout of zero ends the wait right away");
+			}
 		}
 
 		[Test]
@@ -592,6 +622,29 @@ public sealed class SignalerTests
 		}
 
 		[Test]
+		public async Task Signal_WhenTheWaitEndsWhileItsPredicateThrows_ShouldNotThrow()
+		{
+			Signaler<int> signaler = new();
+			using ManualResetEventSlim waitEnded = new();
+
+			SignalerResult<int> result = await WhileWaiting(
+				() =>
+				{
+					SignalerResult<int> waitResult = signaler.Wait(_ =>
+					{
+						waitEnded.Wait(5.Seconds());
+						throw new InvalidOperationException("predicate failed");
+					}, 200.Milliseconds());
+					waitEnded.Set();
+					return waitResult;
+				},
+				() => signaler.Signal(1));
+
+			await That(result.IsSuccess).IsFalse()
+				.Because("the predicate failed only after the wait had already ended with its timeout");
+		}
+
+		[Test]
 		public async Task WaitAsync_InfiniteTimeout_ShouldWaitForTheSignal()
 		{
 			Signaler<int> signaler = new();
@@ -664,6 +717,20 @@ public sealed class SignalerTests
 		}
 
 		[Test]
+		public async Task WaitAsync_WhenNoTimeoutIsGiven_ShouldUseTheDefaultSignalerTimeout()
+		{
+			Signaler<int> signaler = new();
+
+			using (IDisposable __ = Customize.aweXpect.Settings().DefaultSignalerTimeout.Set(TimeSpan.Zero))
+			{
+				SignalerResult<int> result = await signaler.WaitAsync();
+
+				await That(result.IsSuccess).IsFalse()
+					.Because("a default timeout of zero ends the wait right away");
+			}
+		}
+
+		[Test]
 		public async Task WaitAsync_WithPredicate_ShouldOnlyCountMatchingSignals()
 		{
 			Signaler<int> signaler = new();
@@ -698,6 +765,21 @@ public sealed class SignalerTests
 			sw.Stop();
 			await That(sw.Elapsed).IsLessThan(timeout)
 				.Because("the exception ends the wait instead of letting it run into the timeout");
+		}
+
+		[Test]
+		[Arguments(0)]
+		[Arguments(-1)]
+		public async Task WaitAsync_ZeroOrNegativeAmount_ShouldThrowArgumentOutOfRangeException(int amount)
+		{
+			Signaler<int> signaler = new();
+
+			void Act()
+				=> _ = signaler.WaitAsync(amount);
+
+			await That(Act).Throws<ArgumentOutOfRangeException>()
+				.WithMessage("The amount must be greater than zero*").AsWildcard().And
+				.WithParamName("amount");
 		}
 
 		[Test]

@@ -48,6 +48,40 @@ public sealed partial class ThatSignaler
 			}
 
 			[Test]
+			public async Task WhenNothingIsAwaited_ShouldNotNameAWaitedTime()
+			{
+				Signaler signaler = new();
+
+				async Task Act() =>
+					await That(signaler).DoesNotComplyWith(s => s.Signaled().AtLeast(0.Times()));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has recorded the callback not at least 0 times,
+					             but it was never recorded
+					             """)
+					.Because("without a timeout, nothing was awaited");
+			}
+
+			[Test]
+			public async Task WhenNothingIsAwaitedWithParameter_ShouldNotNameAWaitedTime()
+			{
+				Signaler<int> signaler = new();
+
+				async Task Act() =>
+					await That(signaler).DoesNotComplyWith(s => s.Signaled().AtLeast(0.Times()));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that signaler
+					             has recorded the callback not at least 0 times,
+					             but it was never recorded
+					             """)
+					.Because("without a timeout, nothing was awaited");
+			}
+
+			[Test]
 			[Arguments("Default", 1, "has never recorded the callback", "recorded once")]
 			[Arguments("Never", 0, "has recorded the callback at least once", "never recorded")]
 			[Arguments("Once", 1, "has recorded the callback not exactly once", "recorded once")]

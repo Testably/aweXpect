@@ -111,6 +111,9 @@ public sealed partial class ThatEventRecording
 
 		public void NotifyPropertyChanged(object? sender, string? propertyName)
 			=> PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs(propertyName));
+
+		public void NotifyPropertyChangedWithoutEventArgs()
+			=> PropertyChanged?.Invoke(this, null!);
 	}
 
 	/// <remarks>
