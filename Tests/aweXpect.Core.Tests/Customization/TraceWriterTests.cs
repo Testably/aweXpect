@@ -212,4 +212,281 @@ public class TraceWriterTests
 		await That(traceWriter.Exceptions).Contains(e
 			=> e is SkipTestException && e.Message == "foo");
 	}
+
+	[Test]
+	public async Task WhenTheSubjectThrows_ShouldTraceThatItThrewAndFail()
+	{
+		Task<int> subject = Task.FromException<int>(new MyException("foo"));
+		TestTraceWriter traceWriter = new();
+
+		async Task Act()
+		{
+			using (traceWriter.Register())
+			{
+				await That(subject).IsEqualTo(1);
+			}
+		}
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equal to 1,
+			             but it did throw a TraceWriterTests.MyException:
+			               foo
+			             """);
+		await That(traceWriter.Messages).IsEqualTo(["Checking expectation for subject threw an exception",]);
+	}
+
+	[Test]
+	public async Task WhenTheTraceWriterThrows_ShouldKeepTheFailureOfAnExpectation()
+	{
+		async Task Act()
+		{
+			using (new ThrowingTraceWriter().Register())
+			{
+				await That(true).IsFalse();
+			}
+		}
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that true
+			             is False,
+			             but it was True
+			             """);
+	}
+
+	[Test]
+	public async Task WhenTheTraceWriterThrows_ShouldKeepTheFailureOfAThrowingSubject()
+	{
+		Task<int> subject = Task.FromException<int>(new MyException("foo"));
+
+		async Task Act()
+		{
+			using (new ThrowingTraceWriter().Register())
+			{
+				await That(subject).IsEqualTo(1);
+			}
+		}
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equal to 1,
+			             but it did throw a TraceWriterTests.MyException:
+			               foo
+			             """);
+	}
+
+	[Test]
+	public async Task WhenTheTraceWriterThrows_ShouldKeepTheReasonOfAnExplicitFailure()
+	{
+		void Act()
+		{
+			using (new ThrowingTraceWriter().Register())
+			{
+				Fail.Test("foo");
+			}
+		}
+
+		await That(Act).Throws<FailException>().WithMessage("foo");
+	}
+
+	[Test]
+	public async Task WhenTheTraceWriterThrows_ShouldMeetTheExpectation()
+	{
+		ThrowingTraceWriter traceWriter = new();
+
+		async Task Act()
+		{
+			using (traceWriter.Register())
+			{
+				await That(true).IsTrue();
+			}
+		}
+
+		await That(Act).DoesNotThrow();
+		await That(traceWriter.WrittenMessages).IsEqualTo(2)
+			.Because("the trace writer is still called for every message");
+	}
+
+	[Test]
+	public async Task WhenTheTraceWriterThrows_WithAsyncDelegate_ShouldMeetTheExpectation()
+	{
+		Func<Task<int>> callback = () => Task.FromResult(4);
+
+		async Task Act()
+		{
+			using (new ThrowingTraceWriter().Register())
+			{
+				await That(callback).DoesNotThrow();
+			}
+		}
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Test]
+	public async Task WhenTheTraceWriterThrows_WithDelegate_ShouldMeetTheExpectation()
+	{
+		Func<int> callback = () => 4;
+
+		async Task Act()
+		{
+			using (new ThrowingTraceWriter().Register())
+			{
+				await That(callback).DoesNotThrow();
+			}
+		}
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Test]
+	public async Task WhenTheTraceWriterThrows_WithEventually_ShouldMeetTheExpectationInTheFirstAttempt()
+	{
+		int attempts = 0;
+		Func<int> subject = () => ++attempts;
+
+		async Task Act()
+		{
+			using (new ThrowingTraceWriter().Register())
+			{
+				await That(subject).Eventually().OnVirtualTime().Within(5.Seconds()).IsEqualTo(1);
+			}
+		}
+
+		await That(Act).DoesNotThrow();
+		await That(attempts).IsEqualTo(1);
+	}
+
+	[Test]
+	public async Task WhenTheTraceWriterThrows_WithEventually_ShouldKeepTheFailureOfAThrowingSubject()
+	{
+		Func<int> subject = () => throw new MyException("foo");
+
+		async Task Act()
+		{
+			using (new ThrowingTraceWriter().Register())
+			{
+				await That(subject).Eventually().OnVirtualTime().Within(50.Milliseconds()).IsEqualTo(1);
+			}
+		}
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             eventually is equal to 1 within 0:00.050,
+			             but it did throw a TraceWriterTests.MyException:
+			               foo
+			             """);
+	}
+
+	[Test]
+	public async Task WhenToStringOfTheSubjectThrows_ShouldMeetTheExpectation()
+	{
+		ThrowingToString subject = new();
+		TestTraceWriter traceWriter = new();
+
+		async Task Act()
+		{
+			using (traceWriter.Register())
+			{
+				await That(subject).IsNotNull();
+			}
+		}
+
+		await That(Act).DoesNotThrow();
+		await That(traceWriter.Messages).IsEqualTo([
+			"Checking expectation for subject [ToString of TraceWriterTests.ThrowingToString did throw a TraceWriterTests.MyException: foo]",
+			"  Successfully verified that subject is not null",
+		]);
+	}
+
+	[Test]
+	public async Task WhenToStringOfTheSubjectThrows_WithAsyncDelegate_ShouldMeetTheExpectation()
+	{
+		Func<Task<ThrowingToString>> callback = () => Task.FromResult(new ThrowingToString());
+		TestTraceWriter traceWriter = new();
+
+		async Task Act()
+		{
+			using (traceWriter.Register())
+			{
+				await That(callback).DoesNotThrow();
+			}
+		}
+
+		await That(Act).DoesNotThrow();
+		await That(traceWriter.Messages).HasCount(2);
+	}
+
+	[Test]
+	public async Task WhenToStringOfTheSubjectThrows_WithDelegate_ShouldMeetTheExpectation()
+	{
+		Func<ThrowingToString> callback = () => new ThrowingToString();
+		TestTraceWriter traceWriter = new();
+
+		async Task Act()
+		{
+			using (traceWriter.Register())
+			{
+				await That(callback).DoesNotThrow();
+			}
+		}
+
+		await That(Act).DoesNotThrow();
+		await That(traceWriter.Messages).HasCount(2);
+	}
+
+	[Test]
+	public async Task WhenToStringOfTheSubjectThrows_WithEventually_ShouldMeetTheExpectationInTheFirstAttempt()
+	{
+		int attempts = 0;
+		Func<ThrowingToString> subject = () =>
+		{
+			attempts++;
+			return new ThrowingToString();
+		};
+		TestTraceWriter traceWriter = new();
+
+		async Task Act()
+		{
+			using (traceWriter.Register())
+			{
+				await That(subject).Eventually().OnVirtualTime().Within(5.Seconds()).IsNotNull();
+			}
+		}
+
+		await That(Act).DoesNotThrow();
+		await That(attempts).IsEqualTo(1);
+		await That(traceWriter.Messages).IsEqualTo([
+			"Checking expectation for subject [ToString of TraceWriterTests.ThrowingToString did throw a TraceWriterTests.MyException: foo]",
+			"  Successfully verified that subject eventually is not null",
+		]);
+	}
+
+	private sealed class MyException(string message) : Exception(message);
+
+	private sealed class ThrowingToString
+	{
+		public override string ToString()
+			=> throw new MyException("foo");
+	}
+
+	private sealed class ThrowingTraceWriter : ITraceWriter
+	{
+		public int WrittenMessages { get; private set; }
+
+		public void WriteMessage(string message)
+		{
+			WrittenMessages++;
+			throw new MyException("the trace writer is broken");
+		}
+
+		public void WriteException(Exception exception)
+			=> throw new MyException("the trace writer is broken");
+
+		public CustomizationLifetime Register() => Customize.aweXpect.EnableTracing(this);
+	}
 }

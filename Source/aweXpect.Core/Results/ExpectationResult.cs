@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.TimeSystem;
-using aweXpect.Customization;
 
 namespace aweXpect.Results;
 
@@ -164,19 +162,7 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 
 		if (result.Outcome == Outcome.Success)
 		{
-			ITraceWriter? traceWriter = Customize.aweXpect.TraceWriter;
-			if (traceWriter != null)
-			{
-				StringBuilder sb = new();
-				sb.Append("  Successfully verified that ");
-				sb.Append(result.TryGetValue(out IDescribableSubject? describableSubject)
-					? describableSubject.GetDescription()
-					: ExpectationBuilder.Subject);
-				sb.Append(' ');
-				result.AppendExpectation(sb);
-				traceWriter.WriteMessage(sb.ToString());
-			}
-
+			Tracing.WriteSuccess(ExpectationBuilder.Subject, result);
 			return;
 		}
 
@@ -404,19 +390,7 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 		switch (result.Outcome)
 		{
 			case Outcome.Success:
-				ITraceWriter? traceWriter = Customize.aweXpect.TraceWriter;
-				if (traceWriter != null)
-				{
-					StringBuilder sb = new();
-					sb.Append("  Successfully verified that ");
-					sb.Append(result.TryGetValue(out IDescribableSubject? describableSubject)
-						? describableSubject.GetDescription()
-						: ExpectationBuilder.Subject);
-					sb.Append(' ');
-					result.AppendExpectation(sb);
-					traceWriter.WriteMessage(sb.ToString());
-				}
-
+				Tracing.WriteSuccess(ExpectationBuilder.Subject, result);
 				return GetStoredValueOrDefault(result);
 			case Outcome.Undecided:
 				Fail.Inconclusive(await FromFailure(result));
