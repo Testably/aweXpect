@@ -121,7 +121,8 @@ one, so combine a type and a predicate in one call, e.g. `HasSingle().Matching<D
 `Matching…` methods therefore return a `SingleMatchingItemResult<TCollection, TItem>` instead of a
 `SingleItemResult<TCollection, TItem>`, and for an `IAsyncEnumerable<T>` an
 `AsyncSingleMatchingItemResult<TCollection, TItem>` instead of an `AsyncSingleItemResult<TCollection, TItem>`. Only
-code that stores the result in an explicitly typed variable has to change.
+code that stores the result in an explicitly typed variable has to change. A second `Matching…` on a stored
+`HasSingle()` or `HasItem()` result, where it still compiles, throws an `InvalidOperationException` at the call.
 
 The option methods are extension methods in the `aweXpect` namespace, and the result classes with a `TSelf` type
 parameter, e.g. `CountResult<TType, TThat, TSelf>`, are gone. A result of your own derives from

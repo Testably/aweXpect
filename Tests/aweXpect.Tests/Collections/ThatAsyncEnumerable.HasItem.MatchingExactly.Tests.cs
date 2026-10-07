@@ -1,5 +1,6 @@
 ﻿#if NET8_0_OR_GREATER
 using System.Collections.Generic;
+using aweXpect.Results;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -120,6 +121,21 @@ public sealed partial class ThatAsyncEnumerable
 						             Collection:
 						             []
 						             """);
+				}
+
+				[Test]
+				public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+				{
+					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable<MyClass>([0, 1, 2,], x => new MyClass(x));
+					HasItemWithConditionResult<IAsyncEnumerable<MyClass>, MyClass> result = That(subject).HasItem();
+					_ = result.Matching(_ => true);
+
+					void Act()
+						=> _ = result.MatchingExactly<MyClass>(_ => true);
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("Matching cannot be specified more than once.")
+						.Because("a second filter would silently replace the first one");
 				}
 
 				[Test]
@@ -373,6 +389,21 @@ public sealed partial class ThatAsyncEnumerable
 						             Collection:
 						             []
 						             """);
+				}
+
+				[Test]
+				public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+				{
+					IAsyncEnumerable<MyClass> subject = ToAsyncEnumerable<MyClass>([0, 1, 2,], x => new MyClass(x));
+					HasItemWithConditionResult<IAsyncEnumerable<MyClass>, MyClass> result = That(subject).HasItem();
+					_ = result.Matching(_ => true);
+
+					void Act()
+						=> _ = result.MatchingExactly<MyClass>();
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("Matching cannot be specified more than once.")
+						.Because("a second filter would silently replace the first one");
 				}
 
 				[Test]

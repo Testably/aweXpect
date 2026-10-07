@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using aweXpect.Results;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -118,6 +119,21 @@ public sealed partial class ThatEnumerable
 
 					await That(Act).DoesNotThrow()
 						.Because("a boxed nullable value has the underlying type, so the nullable type is compared by it");
+				}
+
+				[Test]
+				public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+				{
+					IEnumerable<MyClass> subject = ToEnumerable<MyClass>([0, 1, 2,], x => new MyClass(x));
+					HasItemWithConditionResult<IEnumerable<MyClass>, MyClass> result = That(subject).HasItem();
+					_ = result.Matching(_ => true);
+
+					void Act()
+						=> _ = result.MatchingExactly<MyClass>(_ => true);
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("Matching cannot be specified more than once.")
+						.Because("a second filter would silently replace the first one");
 				}
 
 				[Test]
@@ -339,6 +355,21 @@ public sealed partial class ThatEnumerable
 
 					await That(Act).DoesNotThrow()
 						.Because("a boxed nullable value has the underlying type, so the nullable type is compared by it");
+				}
+
+				[Test]
+				public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+				{
+					IEnumerable<MyClass> subject = ToEnumerable<MyClass>([0, 1, 2,], x => new MyClass(x));
+					HasItemWithConditionResult<IEnumerable<MyClass>, MyClass> result = That(subject).HasItem();
+					_ = result.Matching(_ => true);
+
+					void Act()
+						=> _ = result.MatchingExactly<MyClass>();
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("Matching cannot be specified more than once.")
+						.Because("a second filter would silently replace the first one");
 				}
 
 				[Test]

@@ -100,6 +100,23 @@ internal static class ThrowHelper
 	}
 
 	/// <summary>
+	///     Rejects the <paramref name="option" /> when it <paramref name="isAlreadySpecified" />, because the later
+	///     value would silently replace the earlier one.
+	/// </summary>
+	/// <remarks>
+	///     Mirrors the check of the options in aweXpect.Core; keep the message identical.
+	/// </remarks>
+	public static void ThrowIfOptionIsAlreadySpecified(bool isAlreadySpecified, string option)
+	{
+		if (isAlreadySpecified)
+		{
+			// ReSharper disable once LocalizableElement
+			throw Tracing.WriteException(
+				new InvalidOperationException($"{option} cannot be specified more than once."));
+		}
+	}
+
+	/// <summary>
 	///     Rejects a negative position when the filter is built, because it could never address a parameter.
 	/// </summary>
 	public static void ThrowIfPositionIsNegative(int? position,
