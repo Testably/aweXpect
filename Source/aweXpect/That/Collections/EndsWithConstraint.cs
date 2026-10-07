@@ -45,9 +45,14 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 	/// <summary>
 	///     Starts a new evaluation in the <paramref name="context" />.
 	/// </summary>
+	/// <remarks>
+	///     The expected items are validated here, so that an unusable pattern is rejected whichever items the subject
+	///     has.
+	/// </remarks>
 	protected void Start(IEvaluationContext context, CancellationToken cancellationToken)
 	{
 		_evaluationOptions = options.ForEvaluation(context, cancellationToken);
+		options.ValidateExpectedItems(expected);
 		_firstMismatchItem = default;
 		_foundMismatch = false;
 		_items = null;

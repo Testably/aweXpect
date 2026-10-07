@@ -209,6 +209,18 @@ internal sealed class EqualStringItem(StringEqualityOptions options, string? exp
 
 	/// <inheritdoc />
 	/// <remarks>
+	///     The expected string is validated here, so that an unusable pattern is rejected whichever items the subject
+	///     has.
+	/// </remarks>
+	public override ContainedItem<string?> ForEvaluation(IEvaluationContext context,
+		CancellationToken cancellationToken)
+	{
+		options.ValidateExpected(Expected);
+		return this;
+	}
+
+	/// <inheritdoc />
+	/// <remarks>
 	///     A match type other than equality describes the item, so it reads "contains an item matching regex …".
 	/// </remarks>
 	public override string GetItemExpectation()

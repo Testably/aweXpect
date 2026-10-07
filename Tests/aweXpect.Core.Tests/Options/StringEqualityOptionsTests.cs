@@ -846,6 +846,87 @@ public sealed partial class StringEqualityOptionsTests
 				.Because("a comparer cannot be reset to the default one");
 		}
 
+		[Test]
+		[Arguments("AsPrefix", null)]
+		[Arguments("AsPrefix", "")]
+		[Arguments("AsPrefix", "  ")]
+		[Arguments("AsSuffix", null)]
+		[Arguments("AsSuffix", "")]
+		[Arguments("AsSuffix", "  ")]
+		[Arguments("AsRegex", null)]
+		[Arguments("AsRegex", "")]
+		[Arguments("AsRegex", "[")]
+		[Arguments("AsWildcard", null)]
+		public async Task ValidateExpected_WhenExpectedIsUnusable_ShouldThrowTheSameExceptionAsTheComparison(
+			string matchType, string? expected)
+		{
+			StringEqualityOptions sut = new StringEqualityOptions("unexpected")
+				.IgnoringLeadingWhiteSpace().IgnoringTrailingWhiteSpace();
+			SetMatchType(sut, matchType);
+			ArgumentException? comparisonException = null;
+			try
+			{
+				await sut.AreConsideredEqual("foo", expected);
+			}
+			catch (ArgumentException exception)
+			{
+				comparisonException = exception;
+			}
+
+			void Act() => sut.ValidateExpected(expected);
+
+			ArgumentException validationException = await That(Act).Throws<ArgumentException>()
+				.WithParamName("unexpected");
+			await That(validationException.GetType()).IsEqualTo(comparisonException?.GetType());
+			await That(validationException.Message).IsEqualTo(comparisonException?.Message);
+		}
+
+		[Test]
+		[Arguments("", null)]
+		[Arguments("", "")]
+		[Arguments("AsBlock", null)]
+		[Arguments("AsBlock", "")]
+		[Arguments("Containing", null)]
+		[Arguments("AsPrefix", "f")]
+		[Arguments("AsSuffix", "f")]
+		[Arguments("AsRegex", "f.*")]
+		[Arguments("AsWildcard", "")]
+		[Arguments("AsWildcard", "f*")]
+		public async Task ValidateExpected_WhenExpectedIsUsable_ShouldNotThrow(string matchType, string? expected)
+		{
+			StringEqualityOptions sut = new("expected");
+			SetMatchType(sut, matchType);
+
+			void Act() => sut.ValidateExpected(expected);
+
+			await That(Act).DoesNotThrow();
+		}
+
+		private static void SetMatchType(StringEqualityOptions options, string matchType)
+		{
+			switch (matchType)
+			{
+				case "AsBlock":
+					options.AsBlock();
+					break;
+				case "AsPrefix":
+					options.AsPrefix();
+					break;
+				case "AsRegex":
+					options.AsRegex();
+					break;
+				case "AsSuffix":
+					options.AsSuffix();
+					break;
+				case "AsWildcard":
+					options.AsWildcard();
+					break;
+				case "Containing":
+					options.Containing();
+					break;
+			}
+		}
+
 		private static void Change(StringEqualityOptions options, string option, bool enable)
 		{
 			switch (option)

@@ -1019,6 +1019,8 @@ public static class PropertyResult
 			Actual = actual;
 			_exception = null;
 			_value = null;
+			// An unusable pattern is rejected whichever value the property has, also when it cannot be read.
+			options.ValidateExpected(expected);
 			try
 			{
 				_value = mapper(actual);

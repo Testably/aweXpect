@@ -206,6 +206,18 @@ internal sealed class ElementEqualToString<TItem>(
 			: subjectOptions.AreConsideredEqual((string?)(object?)item, expected);
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     The expected string is validated here, so that an unusable pattern is rejected whichever items the subject
+	///     has.
+	/// </remarks>
+	public override ElementCondition<TItem> ForEvaluation(IEvaluationContext context,
+		CancellationToken cancellationToken)
+	{
+		options.ValidateExpected(expected);
+		return this;
+	}
+
+	/// <inheritdoc />
 	public override string GetExpectation(ExpectationGrammars grammars)
 		=> ElementExpectations.IsEqualToString(grammars, expected, options, subjectOptions);
 

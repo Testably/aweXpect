@@ -77,13 +77,13 @@ public static partial class ThatString
 				}
 			}
 
-			if (isOneOf)
+			if (actual is null && options.InspectsSubject)
 			{
-				Outcome = Outcome.Success;
+				Outcome = Outcome.FailureBothWays;
 			}
 			else
 			{
-				Outcome = actual is null && options.InspectsSubject ? Outcome.FailureBothWays : Outcome.Failure;
+				Outcome = isOneOf ? Outcome.Success : Outcome.Failure;
 			}
 
 			return this;
