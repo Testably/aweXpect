@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Options;
 
 namespace aweXpect.Core.Tests.Options;
@@ -584,6 +585,48 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		public async Task GetExtendedFailure_WhenACustomMatchTypeThrowsWithoutComparer_ShouldNotCatchTheException()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.SetMatchType(new CustomMatchType(), "AsCustom");
+
+			void Act()
+				=> sut.GetExtendedFailure("it", ExpectationGrammars.None, "foo", "bar");
+
+			await That(Act).Throws<NotSupportedException>()
+				.Because("without a comparer no code of the caller is called while the failure is explained");
+		}
+
+		[Test]
+		[Arguments("Exact", "1.2.3", "1.2.4")]
+		[Arguments("AsPrefix", "1.2.3.4", "1.2.4")]
+		[Arguments("AsSuffix", "0.1.2.3", "1.2.4")]
+		public async Task GetExtendedFailure_WhenTheComparerThrowsForAPartOfTheValues_ShouldOmitTheDifference(
+			string matchType, string actual, string expected)
+		{
+			StringEqualityOptions sut = WithMatchType(matchType);
+			sut.Using(new VersionStringComparer());
+
+			bool isEqual = await sut.AreConsideredEqual(actual, expected);
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, actual, expected);
+
+			await That(isEqual).IsFalse();
+			await That(result).IsEqualTo($"it was \"{actual}\"")
+				.Because("the comparer answered for the values and is only called for parts of them to locate the difference");
+		}
+
+		[Test]
+		public async Task GetExtendedFailure_WhenTheComparerThrowsForTrimmedValues_ShouldOmitTheDifference()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.Using(new ThrowingForComparer("1.2.3"));
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, " 1.2.3", "1.2.4");
+
+			await That(result).IsEqualTo("it was \" 1.2.3\"");
+		}
+
+		[Test]
 		public async Task GetExtendedFailure_WhenIndentationAndLeadingWhiteSpaceAreIgnored_ShouldReportOriginalPosition()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -1130,6 +1173,16 @@ public sealed partial class StringEqualityOptionsTests
 			public bool Equals(string? x, string? y) => throw exception;
 
 			public int GetHashCode(string obj) => throw exception;
+		}
+
+		private sealed class ThrowingForComparer(string value) : IEqualityComparer<string>
+		{
+			public bool Equals(string? x, string? y)
+				=> x == value || y == value
+					? throw new NotSupportedException($"cannot compare '{x}' and '{y}'")
+					: x == y;
+
+			public int GetHashCode(string obj) => obj.GetHashCode();
 		}
 	}
 }

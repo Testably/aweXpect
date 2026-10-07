@@ -117,9 +117,27 @@ public sealed class StringDifference(
 		{
 			MatchType.Wildcard => ToPatternString(MatchType.Wildcard, prefix, actual, expected),
 			MatchType.Regex => ToPatternString(MatchType.Regex, prefix, actual, expected),
-			_ => ToEqualityString(prefix, actual, expected,
-				IndexOfFirstMismatch(settings?.MatchType ?? MatchType.Equality), settings),
+			_ => ToEqualityString(prefix, actual, expected),
 		};
+	}
+
+	/// <remarks>
+	///     A comparer of the caller is called for parts of the values to locate the difference, for which it may throw,
+	///     so the difference is then described without its position.
+	/// </remarks>
+	private string ToEqualityString(string prefix, string actual, string expected)
+	{
+		int indexOfFirstMismatch;
+		try
+		{
+			indexOfFirstMismatch = IndexOfFirstMismatch(settings?.MatchType ?? MatchType.Equality);
+		}
+		catch (Exception)
+		{
+			return prefix;
+		}
+
+		return ToEqualityString(prefix, actual, expected, indexOfFirstMismatch, settings);
 	}
 
 	private static string ToEqualityString(string prefix, string actual, string expected, int indexOfFirstMismatch,

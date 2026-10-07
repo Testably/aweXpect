@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 
 namespace aweXpect.Core.Tests.Core;
@@ -520,6 +521,15 @@ public class StringDifferenceTests
 		}
 
 		[Test]
+		public async Task WhenTheComparerThrowsForAPartOfTheValues_ShouldOmitThePosition()
+		{
+			StringDifference sut = new("1.2.3", "1.2.4", new VersionStringComparer());
+
+			await That(sut.ToString()).IsEqualTo("differs")
+				.Because("the comparer answers for the values, not for the parts that locate the difference");
+		}
+
+		[Test]
 		public async Task WhenUsingACustomComparer_ShouldCompareWithTheComparer()
 		{
 			StringDifference sut = new(
@@ -721,6 +731,15 @@ public class StringDifferenceTests
 				is shorter than the expected length of 21 and misses the prefix:
 				  "A text "
 				""");
+		}
+
+		[Test]
+		public async Task WhenTheComparerThrowsForAPartOfTheValues_ShouldOmitThePosition()
+		{
+			StringDifference sut = new("2.3", "1.2.4", new VersionStringComparer(), Settings);
+
+			await That(sut.ToString()).IsEqualTo("differs")
+				.Because("a shorter value only misses a prefix when the comparer found the rest to be equal");
 		}
 
 		[Test]
