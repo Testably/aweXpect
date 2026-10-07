@@ -106,6 +106,24 @@ public sealed partial class ThatDelegate
 				}
 
 				[Test]
+				[Arguments(true, true)]
+				[Arguments(true, false)]
+				[Arguments(false, true)]
+				[Arguments(false, false)]
+				public async Task WhenOnlyIfIsSpecifiedTwice_ShouldThrowInvalidOperationException(
+					bool first, bool second)
+				{
+					Action action = () => { };
+
+					async Task Act()
+						=> await That(action).Throws().OnlyIf(first).OnlyIf(second);
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("OnlyIf cannot be specified more than once.")
+						.Because("a second condition would silently replace the first one");
+				}
+
+				[Test]
 				public async Task WhenTrue_ShouldFailWhenNoExceptionWasThrow()
 				{
 					Action action = () => { };
@@ -205,6 +223,24 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws<Exception>().OnlyIf(false);
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Test]
+				[Arguments(true, true)]
+				[Arguments(true, false)]
+				[Arguments(false, true)]
+				[Arguments(false, false)]
+				public async Task WhenOnlyIfIsSpecifiedTwice_ShouldThrowInvalidOperationException(
+					bool first, bool second)
+				{
+					Action action = () => { };
+
+					async Task Act()
+						=> await That(action).Throws<ArgumentException>().OnlyIf(first).OnlyIf(second);
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("OnlyIf cannot be specified more than once.")
+						.Because("a second condition would silently replace the first one");
 				}
 
 				[Test]
@@ -324,6 +360,24 @@ public sealed partial class ThatDelegate
 						=> await That(action).Throws(typeof(Exception)).OnlyIf(false);
 
 					await That(Act).DoesNotThrow();
+				}
+
+				[Test]
+				[Arguments(true, true)]
+				[Arguments(true, false)]
+				[Arguments(false, true)]
+				[Arguments(false, false)]
+				public async Task WhenOnlyIfIsSpecifiedTwice_ShouldThrowInvalidOperationException(
+					bool first, bool second)
+				{
+					Action action = () => { };
+
+					async Task Act()
+						=> await That(action).Throws(typeof(ArgumentException)).OnlyIf(first).OnlyIf(second);
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("OnlyIf cannot be specified more than once.")
+						.Because("a second condition would silently replace the first one");
 				}
 
 				[Test]
