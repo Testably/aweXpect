@@ -8,6 +8,43 @@ namespace aweXpect.Core.Tests.Customization;
 public class AwexpectCustomizationTests
 {
 	[Test]
+	public async Task Dispose_InAnotherFlow_ShouldKeepTheValueOfTheCurrentFlow()
+	{
+		AwexpectCustomization customization = new();
+		using CustomizationLifetime _ = customization.MyConfiguration().Set("current");
+		CustomizationLifetime otherLifetime = await SetInAwaitedMethod(customization, "other");
+
+		otherLifetime.Dispose();
+
+		await That(customization.MyConfiguration().Get()).IsEqualTo("current")
+			.Because("a lifetime of another flow is not part of the values of the current flow");
+	}
+
+	[Test]
+	public async Task Dispose_InAnotherFlow_WhenTheCurrentFlowHasNoValues_ShouldKeepTheDefaultValue()
+	{
+		AwexpectCustomization customization = new();
+		CustomizationLifetime otherLifetime = await SetInAwaitedMethod(customization, "other");
+
+		otherLifetime.Dispose();
+
+		await That(customization.MyConfiguration().Get()).IsEqualTo("foo");
+	}
+
+	[Test]
+	public async Task Dispose_InAnotherFlow_WhenTheCurrentFlowOnlyHasOtherValues_ShouldKeepThem()
+	{
+		AwexpectCustomization customization = new();
+		using CustomizationLifetime _ = customization.Formatting().MaximumStringLength.Set(7);
+		CustomizationLifetime otherLifetime = await SetInAwaitedMethod(customization, "other");
+
+		otherLifetime.Dispose();
+
+		await That(customization.MyConfiguration().Get()).IsEqualTo("foo");
+		await That(customization.Formatting().MaximumStringLength.Get()).IsEqualTo(7);
+	}
+
+	[Test]
 	public async Task Dispose_OutOfOrder_ShouldKeepLaterValueAndThenFallBackToGlobalValue()
 	{
 		AwexpectCustomization customization = new();
@@ -238,6 +275,22 @@ public class AwexpectCustomizationTests
 			.Because("a null stored globally is a value, not the absence of one");
 		await That(flow.Get<string?>("my-key", "fallback")).IsNull()
 			.Because("the current flow follows the global value when it stores none itself");
+	}
+
+	[Test]
+	public async Task Global_GetEvaluationSettings_ShouldIgnoreTheValuesOfTheCurrentFlow()
+	{
+		AwexpectCustomization customization = new();
+		TestCancellation globalCancellation = TestCancellation.FromTimeout(TimeSpan.FromSeconds(10));
+		using CustomizationLifetime globalLifetime =
+			customization.Global.Settings().TestCancellation.Set(globalCancellation);
+		using CustomizationLifetime scopedLifetime =
+			customization.Settings().TestCancellation.Set(TestCancellation.FromTimeout(TimeSpan.FromSeconds(5)));
+
+		(TestCancellation? testCancellation, _) = customization.Global.GetEvaluationSettings();
+
+		await That(testCancellation).IsSameAs(globalCancellation)
+			.Because("the global customization only reads the global values");
 	}
 
 	[Test]
@@ -502,6 +555,16 @@ public class AwexpectCustomizationTests
 
 	private static string FormatValues(AwexpectCustomization.FormattingCustomization formatting)
 		=> $"{formatting.MaximumNumberOfCollectionItems.Get()}/{formatting.MaximumStringLength.Get()}";
+
+	/// <remarks>
+	///     The value set in the awaited method is not visible to the caller, which keeps the values of its own flow.
+	/// </remarks>
+	private static async Task<CustomizationLifetime> SetInAwaitedMethod(AwexpectCustomization customization,
+		string value)
+	{
+		await Task.Yield();
+		return customization.MyConfiguration().Set(value);
+	}
 }
 
 public static class DummyExtensions

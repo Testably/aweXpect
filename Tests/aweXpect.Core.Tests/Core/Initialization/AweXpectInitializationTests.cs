@@ -100,6 +100,50 @@ public sealed class AweXpectInitializationTests
 	}
 #endif
 
+#if NET8_0_OR_GREATER
+	[Test]
+	public async Task Fallback_Fail_ShouldThrowFailException()
+	{
+		ITestFrameworkAdapter fallback = AweXpectInitialization.DetectTestFramework(new TestFrameworkRegistry.Registration());
+
+		void Act() => fallback.Fail("my failure");
+
+		await That(Act).Throws<FailException>().WithMessage("my failure");
+	}
+
+	[Test]
+	public async Task Fallback_FailWithInnerException_ShouldThrowFailExceptionWithTheInnerException()
+	{
+		ITestFrameworkAdapter fallback = AweXpectInitialization.DetectTestFramework(new TestFrameworkRegistry.Registration());
+		InvalidOperationException innerException = new("the cause");
+
+		void Act() => fallback.Fail("my failure", innerException);
+
+		await That(Act).Throws<FailException>().WithMessage("my failure").And
+			.WithInner<InvalidOperationException>(inner => inner.IsSameAs(innerException));
+	}
+
+	[Test]
+	public async Task Fallback_Inconclusive_ShouldThrowInconclusiveException()
+	{
+		ITestFrameworkAdapter fallback = AweXpectInitialization.DetectTestFramework(new TestFrameworkRegistry.Registration());
+
+		void Act() => fallback.Inconclusive("my reason");
+
+		await That(Act).Throws<InconclusiveException>().WithMessage("my reason");
+	}
+
+	[Test]
+	public async Task Fallback_Skip_ShouldThrowSkipException()
+	{
+		ITestFrameworkAdapter fallback = AweXpectInitialization.DetectTestFramework(new TestFrameworkRegistry.Registration());
+
+		void Act() => fallback.Skip("my reason");
+
+		await That(Act).Throws<SkipException>().WithMessage("my reason");
+	}
+#endif
+
 #if !NET8_0_OR_GREATER
 	private sealed class UnavailableFrameworkAdapter : ITestFrameworkAdapter
 	{

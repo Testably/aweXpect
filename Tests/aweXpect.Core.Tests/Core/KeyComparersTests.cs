@@ -1,11 +1,38 @@
 using System.Collections;
+using System.Collections.Concurrent;
+using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using System.Dynamic;
 
 namespace aweXpect.Core.Tests.Core;
 
 public sealed class KeyComparersTests
 {
+#if NET8_0_OR_GREATER
+	[Test]
+	public async Task CreateKeySet_ForAConcurrentDictionary_ShouldUseItsComparer()
+	{
+		ConcurrentDictionary<string, int> dictionary = new(StringComparer.OrdinalIgnoreCase);
+
+		ISet<string> keys = KeyComparers.CreateKeySet(dictionary);
+
+		await That(keys.Add("a") && !keys.Add("A")).IsTrue();
+	}
+#else
+	[Test]
+	public async Task CreateKeySet_ForAConcurrentDictionary_ShouldUseTheDefaultEquality()
+	{
+		ConcurrentDictionary<string, int> dictionary = new(StringComparer.OrdinalIgnoreCase);
+
+		ISet<string> keys = KeyComparers.CreateKeySet(dictionary);
+
+		await That(keys.Add("a") && keys.Add("A")).IsTrue()
+			.Because("the ConcurrentDictionary of .NET Framework exposes no comparer");
+	}
+#endif
+
 	[Test]
 	public async Task CreateKeySet_ForACustomDictionary_ShouldUseTheDefaultEquality()
 	{
@@ -28,6 +55,42 @@ public sealed class KeyComparersTests
 	}
 
 	[Test]
+	public async Task CreateKeySet_ForAFrozenDictionary_ShouldUseItsComparer()
+	{
+		FrozenDictionary<string, int> dictionary = new Dictionary<string, int>
+		{
+			["b"] = 1,
+		}.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
+
+		ISet<string> keys = KeyComparers.CreateKeySet(dictionary);
+
+		await That(keys.Add("a") && !keys.Add("A")).IsTrue();
+	}
+
+	[Test]
+	public async Task CreateKeySet_ForAnImmutableDictionary_ShouldUseItsComparer()
+	{
+		ImmutableDictionary<string, int> dictionary = ImmutableDictionary.Create<string, int>(
+			StringComparer.OrdinalIgnoreCase);
+
+		ISet<string> keys = KeyComparers.CreateKeySet(dictionary);
+
+		await That(keys.Add("a") && !keys.Add("A")).IsTrue();
+	}
+
+	[Test]
+	public async Task CreateKeySet_ForAnImmutableSortedDictionary_ShouldTreatKeysThatItsComparerOrdersEquallyAsTheSame()
+	{
+		ImmutableSortedDictionary<string, int> dictionary = ImmutableSortedDictionary.Create<string, int>(
+			StringComparer.OrdinalIgnoreCase);
+
+		ISet<string> keys = KeyComparers.CreateKeySet(dictionary);
+
+		await That(keys).IsExactly<SortedSet<string>>();
+		await That(keys.Add("a") && !keys.Add("A")).IsTrue();
+	}
+
+	[Test]
 	public async Task CreateKeySet_ForAReadOnlyDictionary_ShouldUseTheComparerOfTheWrappedDictionary()
 	{
 		ReadOnlyDictionary<string, int> dictionary =
@@ -40,9 +103,31 @@ public sealed class KeyComparersTests
 	}
 
 	[Test]
+	public async Task CreateKeySet_ForAReadOnlyDictionaryOfAnUnknownDictionary_ShouldUseTheDefaultEquality()
+	{
+		ReadOnlyDictionary<string, object?> dictionary = new(new ExpandoObject());
+
+		ISet<string> keys = KeyComparers.CreateKeySet(dictionary);
+
+		await That(keys.Add("a") && keys.Add("A")).IsTrue()
+			.Because("the comparer of a wrapped dictionary type that is not known cannot be read");
+	}
+
+	[Test]
 	public async Task CreateKeySet_ForASortedDictionary_ShouldTreatKeysThatItsComparerOrdersEquallyAsTheSame()
 	{
 		SortedDictionary<string, int> dictionary = new(StringComparer.OrdinalIgnoreCase);
+
+		ISet<string> keys = KeyComparers.CreateKeySet(dictionary);
+
+		await That(keys).IsExactly<SortedSet<string>>();
+		await That(keys.Add("a") && !keys.Add("A")).IsTrue();
+	}
+
+	[Test]
+	public async Task CreateKeySet_ForASortedList_ShouldTreatKeysThatItsComparerOrdersEquallyAsTheSame()
+	{
+		SortedList<string, int> dictionary = new(StringComparer.OrdinalIgnoreCase);
 
 		ISet<string> keys = KeyComparers.CreateKeySet(dictionary);
 

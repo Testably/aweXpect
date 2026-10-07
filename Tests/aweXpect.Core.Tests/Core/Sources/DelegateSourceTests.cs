@@ -40,4 +40,36 @@ public class DelegateSourceTests
 			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.050."))
 			.Because("a synchronous delegate that reacts to the timeout is reported the same way");
 	}
+
+	[Test]
+	public async Task WhenDelegateIsNull_ShouldFail()
+	{
+		Action? @delegate = null;
+
+		async Task Act()
+			=> await That(@delegate!).DoesNotThrow();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that @delegate
+			             does not throw any exception,
+			             but it was <null>
+			             """);
+	}
+
+	[Test]
+	public async Task WhenDelegateWithCancellationTokenIsNull_ShouldFail()
+	{
+		Action<CancellationToken>? @delegate = null;
+
+		async Task Act()
+			=> await That(@delegate!).DoesNotThrow();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that @delegate
+			             does not throw any exception,
+			             but it was <null>
+			             """);
+	}
 }

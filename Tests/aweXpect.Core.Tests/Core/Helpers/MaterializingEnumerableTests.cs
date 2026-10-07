@@ -88,6 +88,24 @@ public class MaterializingEnumerableTests
 	}
 
 	[Test]
+	public async Task Untyped_ReleaseSource_WhenDisposingTheSourceThrows_ShouldNotThrow()
+	{
+		DisposeTrackingEnumerable source = new(null, 1, 2)
+		{
+			DisposeException = new InvalidOperationException("dispose failed"),
+		};
+		MaterializingEnumerable materialized =
+			(MaterializingEnumerable)MaterializingEnumerable.Wrap(new UntypedEnumerable(source));
+		_ = materialized.Cast<object?>().First();
+
+		async Task Act() => await materialized.ReleaseSource();
+
+		await That(Act).DoesNotThrow()
+			.Because("the outcome is already decided when the source is released");
+		await That(source.DisposeCount).IsEqualTo(1);
+	}
+
+	[Test]
 	public async Task Untyped_ReleaseSource_WhenPartiallyRead_ShouldDisposeTheSourceOnce()
 	{
 		DisposeTrackingEnumerable source = new(null, 1, 2);
@@ -188,6 +206,36 @@ public class MaterializingEnumerableTests
 			.WithInner<InvalidOperationException>(inner => inner.HasMessage("the source is broken"));
 		await That(source.DisposeCount).IsEqualTo(1)
 			.Because("a source that threw is not advanced again, so it is released right away");
+	}
+
+	[Test]
+	public async Task Untyped_Wrap_ForCollection_ShouldUseCollection()
+	{
+		ArrayList collection = new();
+
+		IEnumerable enumerable = MaterializingEnumerable.Wrap(collection);
+
+		await That(enumerable).IsSameAs(collection);
+	}
+
+	[Test]
+	public async Task Untyped_Wrap_ForNull_ShouldReturnNull()
+	{
+		IEnumerable? enumerable = MaterializingEnumerable.Wrap(null);
+
+		await That(enumerable).IsNull();
+	}
+
+	[Test]
+	public async Task Untyped_Wrap_Twice_ShouldUseSameInstance()
+	{
+		IEnumerable enumerable = new UntypedEnumerable(ToEnumerable([1, 2, 3,]));
+
+		IEnumerable materialized1 = MaterializingEnumerable.Wrap(enumerable);
+		IEnumerable materialized2 = MaterializingEnumerable.Wrap(materialized1);
+
+		await That(materialized1).IsNotSameAs(enumerable);
+		await That(materialized2).IsSameAs(materialized1);
 	}
 
 	[Test]

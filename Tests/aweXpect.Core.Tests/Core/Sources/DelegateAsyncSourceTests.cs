@@ -156,6 +156,56 @@ public class DelegateAsyncSourceTests
 	}
 
 	[Test]
+	public async Task WhenDelegateIsNull_ShouldFail()
+	{
+		Func<Task>? @delegate = null;
+
+		async Task Act()
+			=> await That(@delegate!).DoesNotThrow();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that @delegate
+			             does not throw any exception,
+			             but it was <null>
+			             """);
+	}
+
+	[Test]
+	public async Task WhenDelegateReturnsNull_ShouldFail()
+	{
+		Func<Task> @delegate = () => null!;
+
+		async Task Act()
+			=> await That(@delegate).DoesNotThrow();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that @delegate
+			             does not throw any exception,
+			             but it returned <null> instead of a task
+			             """);
+	}
+
+	[Test]
+	public async Task WhenDelegateThrowsBeforeReturningATask_ShouldFail()
+	{
+		Func<Task> @delegate = () => throw new MyException("synchronous");
+
+		async Task Act()
+			=> await That(@delegate).DoesNotThrow();
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that @delegate
+			             does not throw any exception,
+			             but it did throw a MyException:
+			               synchronous
+			             """)
+			.Because("an exception before the task is returned is thrown by the delegate as well");
+	}
+
+	[Test]
 	public async Task WhenDelegateThrowsItsOwnCancellationOnTimeout_ShouldReportThatItDidNotFinish()
 	{
 		Func<CancellationToken, Task> @delegate = async token =>
