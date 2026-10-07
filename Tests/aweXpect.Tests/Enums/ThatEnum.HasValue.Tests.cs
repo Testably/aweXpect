@@ -880,6 +880,81 @@ public sealed partial class ThatEnum
 			}
 
 			[Test]
+			[Arguments("GreaterThan", "has value greater than <null>")]
+			[Arguments("NotGreaterThan", "does not have value greater than <null>")]
+			[Arguments("GreaterThanOrEqualTo", "has value greater than or equal to <null>")]
+			[Arguments("NotGreaterThanOrEqualTo", "does not have value greater than or equal to <null>")]
+			[Arguments("LessThan", "has value less than <null>")]
+			[Arguments("NotLessThan", "does not have value less than <null>")]
+			[Arguments("LessThanOrEqualTo", "has value less than or equal to <null>")]
+			[Arguments("NotLessThanOrEqualTo", "does not have value less than or equal to <null>")]
+			[Arguments("BetweenNullAnd", "has value between <null> and 3")]
+			[Arguments("BetweenAndNull", "has value between 1 and <null>")]
+			[Arguments("NotBetweenNullAnd", "does not have value between <null> and 3")]
+			[Arguments("NotBetweenAndNull", "does not have value between 1 and <null>")]
+			public async Task UnsignedComparisons_WhenTheBoundIsNull_ShouldFail(string comparison, string expectation)
+			{
+				MyNumbers subject = MyNumbers.Two;
+				ulong? bound = null;
+
+				async Task Act()
+					=> await (comparison switch
+					{
+						"GreaterThan" => That(subject).HasValue().GreaterThan(bound),
+						"NotGreaterThan" => That(subject).HasValue().NotGreaterThan(bound),
+						"GreaterThanOrEqualTo" => That(subject).HasValue().GreaterThanOrEqualTo(bound),
+						"NotGreaterThanOrEqualTo" => That(subject).HasValue().NotGreaterThanOrEqualTo(bound),
+						"LessThan" => That(subject).HasValue().LessThan(bound),
+						"NotLessThan" => That(subject).HasValue().NotLessThan(bound),
+						"LessThanOrEqualTo" => That(subject).HasValue().LessThanOrEqualTo(bound),
+						"NotLessThanOrEqualTo" => That(subject).HasValue().NotLessThanOrEqualTo(bound),
+						"BetweenNullAnd" => That(subject).HasValue().Between(bound).And(3UL),
+						"BetweenAndNull" => That(subject).HasValue().Between(1UL).And(bound),
+						"NotBetweenNullAnd" => That(subject).HasValue().NotBetween(bound).And(3UL),
+						_ => That(subject).HasValue().NotBetween(1UL).And(bound),
+					});
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              {expectation},
+					              but it had value 2
+					              """)
+					.Because("an unsigned null bound behaves like the signed one, as nothing can be ordered against null");
+			}
+
+			[Test]
+			public async Task UnsignedNotEqualTo_WhenUnexpectedIsNull_ShouldSucceed()
+			{
+				MyNumbers subject = MyNumbers.Two;
+				ulong? unexpected = null;
+
+				async Task Act()
+					=> await That(subject).HasValue().NotEqualTo(unexpected);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenInsideRecursiveInnerExceptions_ShouldPhraseTheValueActively()
+			{
+				void Act() => throw new Exception("outer", new NumberException(MyNumbers.One));
+
+				async Task Assert()
+					=> await That(Act).Throws<Exception>()
+						.WithRecursiveInnerExceptions(r => r.HasItemThat(e
+							=> e.Is<NumberException>().Whose(x => x.Number, n => n.HasValue().EqualTo(2L))));
+
+				await That(Assert).Throws<FailException>()
+					.WithMessage("""
+					             Expected that Act
+					             throws an exception with recursive inner exceptions that have an item that is of type ThatEnum.HasValue.ContinuationTests.NumberException whose Number with value equal to 2,
+					             but recursive inner exceptions had no matching item
+					             """).AsPrefix()
+					.Because("the remaining message lists the default exception message, which depends on the culture");
+			}
+
+			[Test]
 			public async Task WhenNested_ShouldNameTheValue()
 			{
 				Exception subject = new("outer", new NumberException(MyNumbers.One));
