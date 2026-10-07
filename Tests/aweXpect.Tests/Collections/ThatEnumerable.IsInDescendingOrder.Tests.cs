@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using aweXpect.Core;
+using aweXpect.Results;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -10,6 +12,20 @@ public sealed partial class ThatEnumerable
 	{
 		public sealed class Tests
 		{
+			[Test]
+			public async Task WhenComparerIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			{
+				IEnumerable<int> subject = ToEnumerable([3, 2, 1,]);
+				CollectionOrderResult<int, IEnumerable<int>, IThat<IEnumerable<int>?>> sut =
+					That(subject).IsInDescendingOrder();
+				_ = sut.Using(Comparer<int>.Default);
+
+				void Act() => sut.Using(Comparer<int>.Default);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Using cannot be specified more than once.");
+			}
+
 			[Test]
 			public async Task WhenItemsAreNotSortedCorrectly_ShouldFail()
 			{

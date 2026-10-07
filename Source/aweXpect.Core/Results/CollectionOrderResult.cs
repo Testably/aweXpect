@@ -23,6 +23,7 @@ public class CollectionOrderResult<TMember, TType, TThat>(
 	/// <summary>
 	///     Use the given <paramref name="comparer" /> to verify the order of items.
 	/// </summary>
+	/// <exception cref="System.InvalidOperationException">A comparer is already set.</exception>
 	public AndOrResult<TType, TThat> Using(IComparer<TMember> comparer)
 	{
 		options.SetComparer(comparer);

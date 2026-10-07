@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using aweXpect.Core;
+using aweXpect.Results;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -21,6 +23,20 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("comparer").And
 					.WithMessage("The 'comparer' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenComparerIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+			{
+				IEnumerable<int> subject = ToEnumerable([1, 2, 3,]);
+				CollectionOrderResult<int, IEnumerable<int>, IThat<IEnumerable<int>?>> sut =
+					That(subject).IsInAscendingOrder();
+				_ = sut.Using(Comparer<int>.Default);
+
+				void Act() => sut.Using(Comparer<int>.Default);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Using cannot be specified more than once.");
 			}
 
 			[Test]

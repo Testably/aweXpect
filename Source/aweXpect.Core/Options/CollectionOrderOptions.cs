@@ -24,9 +24,11 @@ public record CollectionOrderOptions<TItem>
 	/// <summary>
 	///     Set the comparer to use to compare the order of items.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A comparer is already set.</exception>
 	public void SetComparer(IComparer<TItem> comparer)
 	{
 		comparer.ThrowIfNull();
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_comparer is not null, "Using");
 		_comparer = comparer;
 	}
 
