@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using aweXpect.Core;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 
@@ -78,11 +79,21 @@ internal readonly struct CollectionItems<TItem>
 	///     The number of items of the <paramref name="actual" /> subject, when it is a collection that knows it without
 	///     being enumerated.
 	/// </summary>
+	/// <remarks>
+	///     The collection is asked as code of the caller, so that an exception of its count fails the expectation.
+	/// </remarks>
 	public static int? CountOf<TEnumerable>(TEnumerable actual)
 		where TEnumerable : IEnumerable?
-		=> IsTypedSubject<TEnumerable>.Value
-			? (actual as ICollection<TItem>)?.Count
-			: actual.GetUntypedCount();
+	{
+		if (!IsTypedSubject<TEnumerable>.Value)
+		{
+			return actual.GetUntypedCount();
+		}
+
+		return actual is ICollection<TItem> collection
+			? UserCode.Invoke(static subject => subject.Count, collection)
+			: null;
+	}
 
 	/// <summary>
 	///     Casts the <paramref name="item" /> to <typeparamref name="TMatch" />, which can fail for an untyped item.
@@ -144,6 +155,10 @@ internal readonly struct CollectionItems<TItem>
 	/// </summary>
 	/// <remarks>
 	///     A <see cref="List{T}" /> keeps its own enumerator, so that a modification during the enumeration still throws.
+	///     <br />
+	///     The enumerator of any other collection is requested, advanced and read as code of the caller, so that an
+	///     exception of a subject that is not materialized fails the expectation as well. The delegates are static and
+	///     get the enumerator as their argument, so that guarding an item allocates nothing.
 	/// </remarks>
 	public struct Enumerator : IDisposable
 	{
@@ -172,7 +187,7 @@ internal readonly struct CollectionItems<TItem>
 			}
 			else
 			{
-				_enumerator = items.GetEnumerator();
+				_enumerator = UserCode.Invoke(static source => source.GetEnumerator(), items);
 			}
 		}
 
@@ -204,17 +219,36 @@ internal readonly struct CollectionItems<TItem>
 				return true;
 			}
 
-			if (!_enumerator!.MoveNext())
-			{
-				return false;
-			}
-
-			Current = _enumerator.Current;
-			return true;
+			(bool hasItem, TItem item) = UserCode.Invoke(
+				static enumerator => enumerator.MoveNext() ? (true, enumerator.Current) : (false, default(TItem)!),
+				_enumerator!);
+			Current = item;
+			return hasItem;
 		}
 
 		/// <inheritdoc cref="IDisposable.Dispose()" />
-		public void Dispose() => _enumerator?.Dispose();
+		public void Dispose()
+		{
+			if (_enumerator is not null)
+			{
+				DisposeIgnoringExceptions(_enumerator);
+			}
+		}
+
+		/// <remarks>
+		///     Kept apart from <see cref="Dispose()" />, which can only be inlined without exception handling.
+		/// </remarks>
+		private static void DisposeIgnoringExceptions(IEnumerator<TItem> enumerator)
+		{
+			try
+			{
+				enumerator.Dispose();
+			}
+			catch (Exception)
+			{
+				// The outcome is already decided, so an exception while disposing the enumerator must not replace it.
+			}
+		}
 	}
 
 	/// <remarks>

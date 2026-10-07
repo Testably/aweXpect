@@ -169,7 +169,8 @@ public sealed partial class ThatEnumerable
 			[Test]
 			[Arguments(false)]
 			[Arguments(true)]
-			public async Task WhenTheEnumerationThrows_ShouldThrowAndDisposeTheEnumeratorOnce(bool isFirstItemAwaited)
+			public async Task WhenTheEnumerationThrows_ShouldFailWithTheExceptionAndDisposeTheEnumeratorOnce(
+				bool isFirstItemAwaited)
 			{
 				Exception exception = new NotSupportedException("thrown by the enumeration");
 				TrackingCollection subject = new([1, 2, 3,], 2, exception);
@@ -183,8 +184,9 @@ public sealed partial class ThatEnumerable
 				async Task Act()
 					=> await That(subject).IsEqualTo(expected);
 
-				NotSupportedException thrown = await That(Act).ThrowsExactly<NotSupportedException>();
-				await That(thrown).IsSameAs(exception);
+				FailException failure = await That(Act).Throws<FailException>()
+					.WithMessage("*thrown by the enumeration*").AsWildcard();
+				await That(failure.InnerException).IsSameAs(exception);
 				await That(subject.Enumerators[0].DisposeCount).IsEqualTo(1);
 			}
 

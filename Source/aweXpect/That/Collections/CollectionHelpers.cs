@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -166,7 +167,7 @@ internal static class CollectionHelpers
 
 		totalCount ??= value switch
 		{
-			ICollection<TItem> coll => coll.Count,
+			ICollection<TItem> coll => UserCode.Invoke(static subject => subject.Count, coll),
 			ICountable countable => countable.Count,
 			_ => null,
 		};
@@ -186,7 +187,7 @@ internal static class CollectionHelpers
 
 		int? totalCount = value switch
 		{
-			ICollection coll => coll.Count,
+			ICollection coll => UserCode.Invoke(static subject => subject.Count, coll),
 			ICountable countable => countable.Count,
 			_ => value.GetUntypedCount(),
 		};
@@ -207,8 +208,8 @@ internal static class CollectionHelpers
 		=> value switch
 		{
 			null => null,
-			ICollection collection => collection.Count,
-			IReadOnlyCollection<object?> collection => collection.Count,
+			ICollection collection => UserCode.Invoke(static subject => subject.Count, collection),
+			IReadOnlyCollection<object?> collection => UserCode.Invoke(static subject => subject.Count, collection),
 			_ => ReflectionFallback.IsSupported ? ReadGenericCount(value) : null,
 		};
 
@@ -216,13 +217,34 @@ internal static class CollectionHelpers
 	[RequiresUnreferencedCode("Reads the count of a generic collection interface, which the trimmer may remove.")]
 #endif
 	private static int? ReadGenericCount(IEnumerable value)
-		=> (int?)GenericCountProperties.GetOrAdd(value.GetType(), static type => type.GetInterfaces()
-				.FirstOrDefault(interfaceType => interfaceType.IsGenericType &&
-				                                 interfaceType.GetGenericTypeDefinition() is var definition &&
-				                                 (definition == typeof(ICollection<>) ||
-				                                  definition == typeof(IReadOnlyCollection<>)))
-				?.GetProperty(nameof(ICollection.Count)))
-			?.GetValue(value);
+	{
+		PropertyInfo? count = GenericCountProperties.GetOrAdd(value.GetType(), static type => type.GetInterfaces()
+			.FirstOrDefault(interfaceType => interfaceType.IsGenericType &&
+			                                 interfaceType.GetGenericTypeDefinition() is var definition &&
+			                                 (definition == typeof(ICollection<>) ||
+			                                  definition == typeof(IReadOnlyCollection<>)))
+			?.GetProperty(nameof(ICollection.Count)));
+		return count is null
+			? null
+			: UserCode.Invoke(static values => ReadCount(values.Count, values.Subject), (Count: count, Subject: value));
+	}
+
+	/// <remarks>
+	///     The reflection wraps an exception of the count, which is unwrapped, so that the exception of the collection
+	///     fails the expectation.
+	/// </remarks>
+	private static int? ReadCount(PropertyInfo count, IEnumerable subject)
+	{
+		try
+		{
+			return (int?)count.GetValue(subject);
+		}
+		catch (TargetInvocationException exception) when (exception.InnerException is not null)
+		{
+			ExceptionDispatchInfo.Capture(exception.InnerException).Throw();
+			throw;
+		}
+	}
 
 	/// <summary>
 	///     Formats the items that were read from a source that did not reach its end, marked as incomplete.

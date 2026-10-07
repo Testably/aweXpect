@@ -19,15 +19,19 @@ internal sealed class ThrowingKeyComparer<TKey>(Exception exception) : IEquality
 }
 
 /// <summary>
-///     The members of a <see cref="ThrowingDictionary{TKey,TValue}" /> that throw.
+///     The members of a <see cref="ThrowingDictionary{TKey,TValue}" /> or a <see cref="ThrowingCollection{T}" /> that
+///     throw.
 /// </summary>
 [Flags]
-internal enum ThrowingMembers
+public enum ThrowingMembers
 {
 	Enumeration = 1,
 	TryGetValue = 2,
 	ContainsKey = 4,
 	Count = 8,
+	MoveNext = 16,
+	Current = 32,
+	Dispose = 64,
 }
 
 /// <summary>

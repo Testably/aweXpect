@@ -348,7 +348,7 @@ public static partial class ThatEnumerable
 
 		count = actual switch
 		{
-			ICollection<TItem> collection => collection.Count,
+			ICollection<TItem> collection => UserCode.Invoke(static subject => subject.Count, collection),
 			_ => (actual as IEnumerable).GetUntypedCount() ?? items.CountUnlessCanceled(cancellationToken),
 		};
 		return count is not null;

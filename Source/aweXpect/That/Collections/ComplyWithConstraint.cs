@@ -98,7 +98,7 @@ internal abstract class ComplyWithConstraintBase<TValue, TItem>
 		IEnumerable<TItem> items, bool cancelEarly, IEvaluationContext context, CancellationToken cancellationToken)
 	{
 		int index = 0;
-		foreach (TItem item in items)
+		foreach (TItem item in CollectionItems<TItem>.Of(items))
 		{
 			if (materialized.IsCanceledBeforeTheEnd(cancellationToken))
 			{
