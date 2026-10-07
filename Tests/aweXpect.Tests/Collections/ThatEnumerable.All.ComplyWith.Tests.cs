@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
@@ -327,6 +328,57 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Test]
+				public async Task WhenItemsAreDifferentCollectionsThatAreEqual_ShouldVerifyEachItem()
+				{
+					IEnumerable<int>[] subject = [new AlwaysEqualSequence(1, 2), new AlwaysEqualSequence(1, 3),];
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(x => x.HasItem(2));
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an item equal to 2 for all items,
+						             but only 1 of 2 did
+
+						             Not matching items:
+						             [
+						               [
+						                 1,
+						                 3
+						               ]
+						             ]
+
+						             Collection:
+						             [
+						               [
+						                 1,
+						                 2
+						               ],
+						               [
+						                 1,
+						                 3
+						               ]
+						             ]
+
+						             Collection (item [1]):
+						             [1, 3]
+						             """)
+						.Because("a collection is identified by its reference, not by its equality");
+				}
+
+				[Test]
+				public async Task WhenItemsAreDifferentCollectionsWhoseEqualsThrows_ShouldVerifyEachItem()
+				{
+					IEnumerable<int>[] subject = [new ThrowingEqualsSequence(1, 2), new ThrowingEqualsSequence(2, 3),];
+
+					async Task Act()
+						=> await That(subject).All().ComplyWith(x => x.HasItem(2));
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Test]
 				public async Task WhenItemsAreLazyCollectionsThatComply_ShouldSucceed()
 				{
 					IEnumerable<IEnumerable<int>> subject =
@@ -543,6 +595,28 @@ public sealed partial class ThatEnumerable
 						             is equal to 0 for all items,
 						             but it was <null>
 						             """);
+				}
+
+				private sealed class AlwaysEqualSequence(params int[] items) : IEnumerable<int>
+				{
+					public IEnumerator<int> GetEnumerator() => ((IEnumerable<int>)items).GetEnumerator();
+
+					IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+					public override bool Equals(object? obj) => obj is AlwaysEqualSequence;
+
+					public override int GetHashCode() => 0;
+				}
+
+				private sealed class ThrowingEqualsSequence(params int[] items) : IEnumerable<int>
+				{
+					public IEnumerator<int> GetEnumerator() => ((IEnumerable<int>)items).GetEnumerator();
+
+					IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+					public override bool Equals(object? obj) => throw new InvalidOperationException("Equals failed");
+
+					public override int GetHashCode() => 0;
 				}
 			}
 
