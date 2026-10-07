@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
-        "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
-      },
-      {
         "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
         "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
+      },
+      {
+        "sha": "464696d177a9f9c12b445c4c827f1ac2a073c091",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
+        "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
       }
     ],
     "labels": [
-      "1c1e3359",
       "250bac89",
       "e2846045",
       "24837307",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "e4e4a0e6",
       "9f96f8b9",
       "a07a99e2",
-      "998fbcba"
+      "998fbcba",
+      "464696d1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          354.9138753230755,
           330.47076206207277,
           286.55542169298445,
           354.77341641698564,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           128.71559431552888,
           157.909753036499,
           69.51080529689789,
-          128.40656195368086
+          128.40656195368086,
+          129.95676968778884
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -422,7 +422,6 @@ window.BENCHMARK_DATA = {
         "data": [
           912,
           912,
-          912,
           920,
           920,
           920,
@@ -460,6 +459,7 @@ window.BENCHMARK_DATA = {
           408,
           408,
           408,
+          416,
           416,
           416,
           416,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          234.43503063065666,
           277.0887091841017,
           268.40035581588745,
           291.6323030471802,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           230.19768505830032,
           315.1370669092451,
           144.43615654536657,
-          251.95767988477434
+          251.95767988477434,
+          253.325025338393
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -630,7 +630,8 @@ window.BENCHMARK_DATA = {
           195.0618337949117,
           212.27659174601237,
           108.34737239565167,
-          198.2337419305529
+          198.2337419305529,
+          196.85899329185486
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -642,6 +643,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -678,12 +680,6 @@ window.BENCHMARK_DATA = {
   },
   "Equivalency": {
     "commits": [
-      {
-        "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
-        "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
-      },
       {
         "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
         "author": "Valentin Breu\u00DF",
@@ -977,10 +973,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
         "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
+      },
+      {
+        "sha": "464696d177a9f9c12b445c4c827f1ac2a073c091",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
+        "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
       }
     ],
     "labels": [
-      "1c1e3359",
       "250bac89",
       "e2846045",
       "24837307",
@@ -1029,14 +1030,14 @@ window.BENCHMARK_DATA = {
       "e4e4a0e6",
       "9f96f8b9",
       "a07a99e2",
-      "998fbcba"
+      "998fbcba",
+      "464696d1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          414575.8200683594,
           445190.5305989583,
           336645.06989397324,
           449303.7570800781,
@@ -1085,7 +1086,8 @@ window.BENCHMARK_DATA = {
           110900.74981219952,
           103380.93493652344,
           59559.44956461588,
-          110850.44731445312
+          110850.44731445312,
+          107334.43834635416
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1097,7 +1099,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          628384,
           628384,
           628384,
           676856,
@@ -1146,6 +1147,7 @@ window.BENCHMARK_DATA = {
           16296,
           16296,
           16296,
+          16296,
           16296
         ],
         "borderColor": "#63A2AC",
@@ -1161,7 +1163,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2495256.078125,
           2261677.1007254464,
           1918723.2403738839,
           2433865.0203125,
@@ -1210,7 +1211,8 @@ window.BENCHMARK_DATA = {
           2601839.8395647323,
           2542567.26171875,
           1334207.38046875,
-          2412160.971454327
+          2412160.971454327,
+          2272112.578450521
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1222,7 +1224,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841635,
           4841609,
           4841635,
@@ -1271,7 +1272,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841631,
           4841647,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1307,7 +1309,8 @@ window.BENCHMARK_DATA = {
           211350.13321358818,
           227074.20301920574,
           114274.30141038161,
-          198374.70086669922
+          198374.70086669922,
+          191173.42393391926
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1319,6 +1322,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -1355,12 +1359,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
-        "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
-      },
       {
         "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
         "author": "Valentin Breu\u00DF",
@@ -1654,10 +1652,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
         "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
+      },
+      {
+        "sha": "464696d177a9f9c12b445c4c827f1ac2a073c091",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
+        "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
       }
     ],
     "labels": [
-      "1c1e3359",
       "250bac89",
       "e2846045",
       "24837307",
@@ -1706,14 +1709,14 @@ window.BENCHMARK_DATA = {
       "e4e4a0e6",
       "9f96f8b9",
       "a07a99e2",
-      "998fbcba"
+      "998fbcba",
+      "464696d1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          561.2740639368693,
           572.2930903116862,
           479.8030530489408,
           598.3480112212045,
@@ -1762,7 +1765,8 @@ window.BENCHMARK_DATA = {
           298.51415025270904,
           331.8805335362752,
           146.25526429812115,
-          253.27509797414143
+          253.27509797414143,
+          269.18895077705383
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1776,7 +1780,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1592,
           1592,
-          1592,
           1576,
           1576,
           1576,
@@ -1814,6 +1817,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          608,
           608,
           608,
           608,
@@ -1838,7 +1842,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          464.85439586639404,
           506.42377713521324,
           514.1353323276227,
           546.7772801717123,
@@ -1887,7 +1890,8 @@ window.BENCHMARK_DATA = {
           472.6657814979553,
           595.1926895141602,
           265.34278405507405,
-          511.3131476084391
+          511.3131476084391,
+          522.5753299713135
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1984,7 +1988,8 @@ window.BENCHMARK_DATA = {
           384.12522625923157,
           447.6786728858948,
           222.32614852831915,
-          403.5982783953349
+          403.5982783953349,
+          402.8951257387797
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1996,6 +2001,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -2032,12 +2038,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
-        "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
-      },
       {
         "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
         "author": "Valentin Breu\u00DF",
@@ -2331,10 +2331,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
         "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
+      },
+      {
+        "sha": "464696d177a9f9c12b445c4c827f1ac2a073c091",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
+        "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
       }
     ],
     "labels": [
-      "1c1e3359",
       "250bac89",
       "e2846045",
       "24837307",
@@ -2383,14 +2388,14 @@ window.BENCHMARK_DATA = {
       "e4e4a0e6",
       "9f96f8b9",
       "a07a99e2",
-      "998fbcba"
+      "998fbcba",
+      "464696d1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          341.4331901868184,
           340.2542008399963,
           298.8287676493327,
           356.2859659535544,
@@ -2439,7 +2444,8 @@ window.BENCHMARK_DATA = {
           146.50328726768493,
           182.17733670870464,
           85.12685470921653,
-          151.41907165845234
+          151.41907165845234,
+          162.9340720006398
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2453,7 +2459,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1080,
           1080,
-          1080,
           1064,
           1064,
           1064,
@@ -2491,6 +2496,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          520,
           520,
           520,
           520,
@@ -2515,7 +2521,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          249.27881676355997,
           290.4156669298808,
           295.770979983466,
           306.6942390759786,
@@ -2564,7 +2569,8 @@ window.BENCHMARK_DATA = {
           235.27648987088884,
           344.28317203521726,
           136.4304206053416,
-          246.45414049284798
+          246.45414049284798,
+          263.02980254246637
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2661,7 +2667,8 @@ window.BENCHMARK_DATA = {
           235.24980303219385,
           268.45120941797893,
           131.01223762218768,
-          236.13340884844462
+          236.13340884844462,
+          244.23050106488742
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2673,6 +2680,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -2709,12 +2717,6 @@ window.BENCHMARK_DATA = {
   },
   "String": {
     "commits": [
-      {
-        "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
-        "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
-      },
       {
         "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
         "author": "Valentin Breu\u00DF",
@@ -3008,10 +3010,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
         "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
+      },
+      {
+        "sha": "464696d177a9f9c12b445c4c827f1ac2a073c091",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
+        "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
       }
     ],
     "labels": [
-      "1c1e3359",
       "250bac89",
       "e2846045",
       "24837307",
@@ -3060,14 +3067,14 @@ window.BENCHMARK_DATA = {
       "e4e4a0e6",
       "9f96f8b9",
       "a07a99e2",
-      "998fbcba"
+      "998fbcba",
+      "464696d1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          584.3941752570016,
           619.9223340352377,
           516.2475307171161,
           699.9428461619785,
@@ -3116,7 +3123,8 @@ window.BENCHMARK_DATA = {
           248.11837339401245,
           286.6833854675293,
           140.5606133086341,
-          240.89363451004027
+          240.89363451004027,
+          236.60691464742024
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3130,7 +3138,6 @@ window.BENCHMARK_DATA = {
         "data": [
           1576,
           1576,
-          1576,
           1600,
           1600,
           1600,
@@ -3168,6 +3175,7 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
+          584,
           584,
           584,
           584,
@@ -3192,7 +3200,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1164.684745495136,
           1292.890371831258,
           1165.7716802869525,
           1368.4931264241536,
@@ -3241,7 +3248,8 @@ window.BENCHMARK_DATA = {
           1174.1289899190267,
           1474.113236363729,
           662.3275872639248,
-          1216.8918950398763
+          1216.8918950398763,
+          1135.0551546732584
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3338,7 +3346,8 @@ window.BENCHMARK_DATA = {
           325.12535707767194,
           380.9069531758626,
           188.75718556131636,
-          329.50015811920167
+          329.50015811920167,
+          357.16741905212405
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3350,6 +3359,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -3386,12 +3396,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
-        "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
-      },
       {
         "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
         "author": "Valentin Breu\u00DF",
@@ -3685,10 +3689,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
         "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
+      },
+      {
+        "sha": "464696d177a9f9c12b445c4c827f1ac2a073c091",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
+        "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
       }
     ],
     "labels": [
-      "1c1e3359",
       "250bac89",
       "e2846045",
       "24837307",
@@ -3737,14 +3746,14 @@ window.BENCHMARK_DATA = {
       "e4e4a0e6",
       "9f96f8b9",
       "a07a99e2",
-      "998fbcba"
+      "998fbcba",
+      "464696d1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2960.5992584228516,
           2781.722848256429,
           1947.3610178629558,
           2966.8654547471265,
@@ -3793,7 +3802,8 @@ window.BENCHMARK_DATA = {
           591.1264041491917,
           690.1892388661703,
           342.1757644812266,
-          596.966326268514
+          596.966326268514,
+          566.4970643860953
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3805,7 +3815,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          4168,
           4168,
           4168,
           4328,
@@ -3854,6 +3863,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          856,
           856
         ],
         "borderColor": "#63A2AC",
@@ -3869,7 +3879,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1286.4451543367827,
           1424.523985417684,
           1308.3196460088095,
           1482.8327919006347,
@@ -3918,7 +3927,8 @@ window.BENCHMARK_DATA = {
           1241.7527656555176,
           1588.7325370788574,
           708.1604086330959,
-          1361.6681577046713
+          1361.6681577046713,
+          1277.5239940370832
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4015,7 +4025,8 @@ window.BENCHMARK_DATA = {
           613.0097901026407,
           713.7595713933309,
           362.3581245128925,
-          650.306664721171
+          650.306664721171,
+          636.9033426871666
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4027,6 +4038,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -4063,12 +4075,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
-        "message": "fix: match explicitly implemented interface properties in equivalency (#1368)"
-      },
       {
         "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
         "author": "Valentin Breu\u00DF",
@@ -4362,10 +4368,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
         "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
+      },
+      {
+        "sha": "464696d177a9f9c12b445c4c827f1ac2a073c091",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
+        "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
       }
     ],
     "labels": [
-      "1c1e3359",
       "250bac89",
       "e2846045",
       "24837307",
@@ -4414,14 +4425,14 @@ window.BENCHMARK_DATA = {
       "e4e4a0e6",
       "9f96f8b9",
       "a07a99e2",
-      "998fbcba"
+      "998fbcba",
+      "464696d1"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2904.773911339896,
           2746.697520446777,
           1990.7065361567907,
           3035.0068926493327,
@@ -4470,7 +4481,8 @@ window.BENCHMARK_DATA = {
           970.0448721476963,
           1093.7553983052571,
           551.4206887880961,
-          1034.52440478007
+          1034.52440478007,
+          990.2430680138724
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4482,7 +4494,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3928,
           3928,
           3928,
           4272,
@@ -4531,6 +4542,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1264,
           1264
         ],
         "borderColor": "#63A2AC",
@@ -4546,7 +4558,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26436.324474628156,
           24352.103568522136,
           15694.400777963492,
           23958.653832571847,
@@ -4595,7 +4606,8 @@ window.BENCHMARK_DATA = {
           25491.593420846122,
           25337.29578944615,
           10919.010286603656,
-          20865.700933837892
+          20865.700933837892,
+          19326.512987264
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4607,7 +4619,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33468,
           33465,
           33468,
@@ -4655,6 +4666,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33468,
+          33471,
           33471,
           33471
         ],
@@ -4692,7 +4704,8 @@ window.BENCHMARK_DATA = {
           763.0835143602811,
           923.8292442321778,
           434.2536027772086,
-          735.9685022989909
+          735.9685022989909,
+          724.3659522874015
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4704,6 +4717,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -4955,6 +4969,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
         "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
+      },
+      {
+        "sha": "464696d177a9f9c12b445c4c827f1ac2a073c091",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
+        "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
       }
     ],
     "labels": [
@@ -4993,7 +5013,8 @@ window.BENCHMARK_DATA = {
       "e4e4a0e6",
       "9f96f8b9",
       "a07a99e2",
-      "998fbcba"
+      "998fbcba",
+      "464696d1"
     ],
     "datasets": [
       {
@@ -5035,7 +5056,8 @@ window.BENCHMARK_DATA = {
           726.6206457773844,
           826.8584680557251,
           370.2186816419874,
-          720.0846664428711
+          720.0846664428711,
+          720.6847084681193
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5073,6 +5095,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1816,
           1816,
           1816,
           1816,
@@ -5132,7 +5155,8 @@ window.BENCHMARK_DATA = {
           80930.81984165737,
           55566.31945800781,
           28806.078369140625,
-          59803.41401890346
+          59803.41401890346,
+          61225.11710030692
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5179,6 +5203,7 @@ window.BENCHMARK_DATA = {
           5252,
           5247,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -5409,6 +5434,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
         "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
+      },
+      {
+        "sha": "464696d177a9f9c12b445c4c827f1ac2a073c091",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
+        "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
       }
     ],
     "labels": [
@@ -5447,7 +5478,8 @@ window.BENCHMARK_DATA = {
       "e4e4a0e6",
       "9f96f8b9",
       "a07a99e2",
-      "998fbcba"
+      "998fbcba",
+      "464696d1"
     ],
     "datasets": [
       {
@@ -5489,7 +5521,8 @@ window.BENCHMARK_DATA = {
           240.59601265589396,
           283.48961407343546,
           126.06770662466685,
-          256.43952117647444
+          256.43952117647444,
+          233.4618682463964
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5527,6 +5560,7 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
+          664,
           664,
           664,
           664,
@@ -5586,7 +5620,8 @@ window.BENCHMARK_DATA = {
           30843.401501464843,
           26076.549479166668,
           10431.874232365535,
-          18769.713187081474
+          18769.713187081474,
+          18734.728539603097
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5633,6 +5668,7 @@ window.BENCHMARK_DATA = {
           5614,
           5615,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -5669,7 +5705,8 @@ window.BENCHMARK_DATA = {
           233.129546216556,
           264.4644939740499,
           133.89500074386598,
-          245.34382966586523
+          245.34382966586523,
+          246.47795225779217
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5681,6 +5718,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
