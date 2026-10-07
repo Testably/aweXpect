@@ -45,6 +45,29 @@ public class ThrownExceptionVocabularyAnalyzerTests
 		);
 
 	[Test]
+	public async Task WhenCalledAsStaticMethodWithReorderedNamedArguments_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        void Act() => throw new Exception("foo");
+
+			        await {|#0:ThatException.HasMessage(expected: "foo", subject: Expect.That(Act).Throws<Exception>())|};
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.ThrownExceptionVocabularyRule)
+				.WithLocation(0)
+				.WithArguments("HasMessage", "WithMessage")
+		);
+
+	[Test]
 	public async Task WhenUsingDoesNotHaveInnerAfterWhich_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""

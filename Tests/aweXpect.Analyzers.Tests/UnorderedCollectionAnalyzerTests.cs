@@ -5,6 +5,28 @@ namespace aweXpect.Analyzers.Tests;
 public class UnorderedCollectionAnalyzerTests
 {
 	[Test]
+	public async Task WhenCalledAsStaticMethodWithReorderedNamedArguments_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Collections.Generic;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(HashSet<int> subject)
+			    {
+			        await ThatEnumerable.{|#0:IsEqualTo|}(expected: new[] { 1, 2, }, subject: Expect.That(subject));
+			        await ThatEnumerable.{|#1:StartsWith|}(expected: new[] { 1, 2, }, subject: Expect.That(subject));
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.UnorderedCollectionRule).WithLocation(0).WithArguments("HashSet<int>"),
+			Verifier.Diagnostic(Rules.UnorderedCollectionNoMeaningRule).WithLocation(1)
+				.WithArguments("StartsWith", "HashSet<int>")
+		);
+
+	[Test]
 	public async Task WhenChainedWithAndOnAStoredResult_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
