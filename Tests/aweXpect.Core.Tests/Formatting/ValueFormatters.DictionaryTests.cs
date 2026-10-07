@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using aweXpect.Customization;
@@ -288,6 +289,22 @@ public partial class ValueFormatters
 			await That(result).IsEqualTo(ValueFormatter.NullString);
 			await That(objectResult).IsEqualTo(ValueFormatter.NullString);
 			await That(sb.ToString()).IsEqualTo(ValueFormatter.NullString);
+		}
+
+		[Test]
+		public async Task WhenOnlyAGenericDictionary_ShouldUseBraces()
+		{
+			string expectedResult = "{[\"a\"] = 1}";
+			IDictionary<string, object?> value = new ExpandoObject();
+			value["a"] = 1;
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+
+			await That(value is IDictionary).IsFalse();
+			await That(result).IsEqualTo(expectedResult)
+				.Because("a dictionary is rendered in braces, even when it does not implement the non-generic IDictionary");
+			await That(objectResult).IsEqualTo(expectedResult);
 		}
 
 		[Test]

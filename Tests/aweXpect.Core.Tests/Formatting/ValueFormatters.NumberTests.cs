@@ -29,6 +29,24 @@ public partial class ValueFormatters
 		}
 
 		[Test]
+		public async Task Numbers_Decimal_MinAndMaxValue_ShouldUseCSharpSyntax()
+		{
+			StringBuilder sb = new();
+
+			string maxValueResult = Formatter.Format(decimal.MaxValue);
+			string minValueResult = Formatter.Format(decimal.MinValue);
+			string maxValueWithTypeResult = Formatter.Format(decimal.MaxValue, FormattingOptions.WithType);
+			string minValueWithTypeResult = Formatter.Format(decimal.MinValue, FormattingOptions.WithType);
+			Formatter.Format(sb, decimal.MaxValue);
+
+			await That(maxValueResult).IsEqualTo("decimal.MaxValue");
+			await That(minValueResult).IsEqualTo("decimal.MinValue");
+			await That(maxValueWithTypeResult).IsEqualTo("decimal.MaxValue");
+			await That(minValueWithTypeResult).IsEqualTo("decimal.MinValue");
+			await That(sb.ToString()).IsEqualTo("decimal.MaxValue");
+		}
+
+		[Test]
 		[Arguments(2, "2.0")]
 		[Arguments(1.1, "1.1")]
 		[Arguments(1.12, "1.12")]
@@ -61,6 +79,25 @@ public partial class ValueFormatters
 
 			await That(result).IsEqualTo(expectedResult);
 			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Test]
+		[Arguments(double.NegativeInfinity, "-∞", "double -∞")]
+		[Arguments(double.PositiveInfinity, "+∞", "double +∞")]
+		[Arguments(double.MinValue, "double.MinValue", "double.MinValue")]
+		[Arguments(double.MaxValue, "double.MaxValue", "double.MaxValue")]
+		public async Task Numbers_Double_InfinityAndMinAndMaxValue_ShouldUseCSharpSyntax(double value,
+			string expectedResult, string expectedResultWithType)
+		{
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string resultWithType = Formatter.Format(value, FormattingOptions.WithType);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(resultWithType).IsEqualTo(expectedResultWithType);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
 
@@ -137,6 +174,25 @@ public partial class ValueFormatters
 		}
 
 		[Test]
+		[Arguments(float.NegativeInfinity, "-∞", "float -∞")]
+		[Arguments(float.PositiveInfinity, "+∞", "float +∞")]
+		[Arguments(float.MinValue, "float.MinValue", "float.MinValue")]
+		[Arguments(float.MaxValue, "float.MaxValue", "float.MaxValue")]
+		public async Task Numbers_Float_InfinityAndMinAndMaxValue_ShouldUseCSharpSyntax(float value,
+			string expectedResult, string expectedResultWithType)
+		{
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string resultWithType = Formatter.Format(value, FormattingOptions.WithType);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(resultWithType).IsEqualTo(expectedResultWithType);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Test]
 		public async Task Numbers_Float_NegativeZero_ShouldKeepTheSign()
 		{
 			float value = -0.0F;
@@ -157,6 +213,7 @@ public partial class ValueFormatters
 		[Arguments(float.Epsilon, "1.401298E-45")]
 		[Arguments(1e30F, "1E+30")]
 		[Arguments(16777215F, "16777215.0")]
+		[Arguments(111.099174F, "111.099174")]
 		public async Task Numbers_Float_ShouldBeRoundTrippable(float value, string expectedResult)
 		{
 			StringBuilder sb = new();
@@ -189,6 +246,22 @@ public partial class ValueFormatters
 			await That(objectResult).IsEqualTo(expectedResult);
 			await That(sb.ToString()).IsEqualTo(expectedResult);
 		}
+
+#if NET8_0_OR_GREATER
+		[Test]
+		public async Task Numbers_Half_Infinity_ShouldUseTheInfinitySign()
+		{
+			string negativeResult = Formatter.Format(Half.NegativeInfinity);
+			string positiveResult = Formatter.Format(Half.PositiveInfinity);
+			string negativeWithTypeResult = Formatter.Format(Half.NegativeInfinity, FormattingOptions.WithType);
+			string positiveWithTypeResult = Formatter.Format(Half.PositiveInfinity, FormattingOptions.WithType);
+
+			await That(negativeResult).IsEqualTo("-∞");
+			await That(positiveResult).IsEqualTo("+∞");
+			await That(negativeWithTypeResult).IsEqualTo("Half -∞");
+			await That(positiveWithTypeResult).IsEqualTo("Half +∞");
+		}
+#endif
 
 #if NET8_0_OR_GREATER
 		[Test]
