@@ -53,14 +53,11 @@ internal sealed class MaterializingAsyncEnumerable<T> : IMaterializedAsyncEnumer
 				yield break;
 			}
 
-			_enumerator ??= _enumerable.GetAsyncEnumerator(_cancellationToken);
-			// Stryker disable once Conditional : a mutated condition keeps appending the exhausted enumerator's current item until the test host runs out of memory, which costs a minute per mutant and cannot be killed any cheaper
-			if (!await MoveNext(_enumerator))
+			if (!await MoveNext())
 			{
 				break;
 			}
 
-			_materializedItems.Add(_enumerator.Current);
 			cancellationToken.ThrowIfCancellationRequested();
 			yield return _materializedItems[index];
 		}
@@ -153,10 +150,12 @@ internal sealed class MaterializingAsyncEnumerable<T> : IMaterializedAsyncEnumer
 	}
 
 	/// <remarks>
+	///     The enumerator of the source is requested for the first item, so that an exception of the source fails the
+	///     expectation, whether it is thrown for the enumerator, while advancing it or for its current item.<br />
 	///     A source that threw is not advanced again, but every further enumeration throws the same exception, so that
 	///     it cannot be mistaken for the end of the source.
 	/// </remarks>
-	private async ValueTask<bool> MoveNext(IAsyncEnumerator<T> enumerator)
+	private async ValueTask<bool> MoveNext()
 	{
 		if (_sourceException is not null)
 		{
@@ -165,8 +164,13 @@ internal sealed class MaterializingAsyncEnumerable<T> : IMaterializedAsyncEnumer
 
 		try
 		{
-			return await UserCode.InvokeAsync(static state => state.Self.MoveNextOrAbandon(state.Enumerator),
-				(Self: this, Enumerator: enumerator), _cancellationToken);
+			if (!await UserCode.InvokeAsync(static self => self.MoveNextOrAbandon(), this, _cancellationToken))
+			{
+				return false;
+			}
+
+			_materializedItems.Add(UserCode.Invoke(static enumerator => enumerator.Current, _enumerator!));
+			return true;
 		}
 		catch (Exception exception) when (!(exception is OperationCanceledException &&
 		                                    _cancellationToken.IsCancellationRequested))
@@ -176,10 +180,11 @@ internal sealed class MaterializingAsyncEnumerable<T> : IMaterializedAsyncEnumer
 		}
 	}
 
-	private ValueTask<bool> MoveNextOrAbandon(IAsyncEnumerator<T> enumerator)
+	private ValueTask<bool> MoveNextOrAbandon()
 	{
+		_enumerator ??= _enumerable.GetAsyncEnumerator(_cancellationToken);
 		_cancellationToken.ThrowIfCancellationRequested();
-		ValueTask<bool> moveNext = enumerator.MoveNextAsync();
+		ValueTask<bool> moveNext = _enumerator.MoveNextAsync();
 		return (moveNext.IsCompleted && !_cancellationToken.IsCancellationRequested) ||
 		       !_cancellationToken.CanBeCanceled
 			? moveNext

@@ -72,6 +72,22 @@ public class MaterializingAsyncEnumerableTests
 	}
 
 	[Test]
+	public async Task ReleaseSource_WhenNeverEnumerated_ShouldNotGetTheEnumeratorOfTheSource()
+	{
+		DisposeTrackingAsyncEnumerable source = new(1, 2);
+		MaterializingAsyncEnumerable<int> materialized = (MaterializingAsyncEnumerable<int>)
+			MaterializingAsyncEnumerable<int>.Wrap(source, CancellationToken.None);
+
+		await materialized.ReleaseSource();
+		await materialized.MaterializeItems(null);
+
+		await That(source.GetAsyncEnumeratorCount).IsEqualTo(0)
+			.Because("the released source must not be read");
+		await That(source.DisposeCount).IsEqualTo(0);
+		await That(materialized.Count).IsNull();
+	}
+
+	[Test]
 	public async Task ReleaseSource_WhenPartiallyRead_ShouldDisposeTheSourceOnce()
 	{
 		DisposeTrackingAsyncEnumerable source = new(1, 2);
@@ -101,6 +117,30 @@ public class MaterializingAsyncEnumerableTests
 
 		await That(materialized.Count).IsNull()
 			.Because("a cancelled enumeration does not know how many items the source has");
+	}
+
+	[Test]
+	public async Task WhenCurrentThrows_ShouldThrowTheSameUserCodeExceptionAgain()
+	{
+		InvalidOperationException exception = new("the item is broken");
+		DisposeTrackingAsyncEnumerable source = new(1, 2)
+		{
+			CurrentException = exception,
+		};
+		MaterializingAsyncEnumerable<int> materialized = (MaterializingAsyncEnumerable<int>)
+			MaterializingAsyncEnumerable<int>.Wrap(source, CancellationToken.None);
+
+		Exception? first = await Catch(() => materialized.MaterializeItems(null));
+		Exception? second = await Catch(() => materialized.MaterializeItems(null));
+		await materialized.ReleaseSource();
+
+		await That(first).Is<UserCodeException>()
+			.Whose(e => e.Thrower, thrower => thrower.IsNull()).And
+			.Whose(e => e.InnerException, inner => inner.IsSameAs(exception))
+			.Because("an exception of the source fails the expectation like one of the subject");
+		await That(second).IsSameAs(first)
+			.Because("every further enumeration throws the exception of the source again");
+		await That(source.DisposeCount).IsEqualTo(1);
 	}
 
 	[Test]
@@ -176,6 +216,31 @@ public class MaterializingAsyncEnumerableTests
 	}
 
 	[Test]
+	public async Task WhenGetAsyncEnumeratorThrows_ShouldThrowTheSameUserCodeExceptionAgain()
+	{
+		InvalidOperationException exception = new("the source is broken");
+		DisposeTrackingAsyncEnumerable source = new(1, 2)
+		{
+			GetAsyncEnumeratorException = exception,
+		};
+		MaterializingAsyncEnumerable<int> materialized = (MaterializingAsyncEnumerable<int>)
+			MaterializingAsyncEnumerable<int>.Wrap(source, CancellationToken.None);
+
+		Exception? first = await Catch(() => materialized.MaterializeItems(null));
+		Exception? second = await Catch(() => materialized.MaterializeItems(null));
+		await materialized.ReleaseSource();
+
+		await That(first).Is<UserCodeException>()
+			.Whose(e => e.Thrower, thrower => thrower.IsNull()).And
+			.Whose(e => e.InnerException, inner => inner.IsSameAs(exception))
+			.Because("an exception of the source fails the expectation like one of the subject");
+		await That(second).IsSameAs(first)
+			.Because("every further enumeration throws the exception of the source again");
+		await That(source.GetAsyncEnumeratorCount).IsEqualTo(1)
+			.Because("a source that threw is not asked for its enumerator again");
+	}
+
+	[Test]
 	public async Task WhenIterating_ShouldReturnAllValues()
 	{
 		IAsyncEnumerable<int> enumerable = ToAsyncEnumerable([1, 2, 3,]);
@@ -220,6 +285,19 @@ public class MaterializingAsyncEnumerableTests
 		await That(materialized1).IsSameAs(materialized2);
 	}
 
+	private static async Task<Exception?> Catch(Func<Task> action)
+	{
+		try
+		{
+			await action();
+			return null;
+		}
+		catch (Exception exception)
+		{
+			return exception;
+		}
+	}
+
 	private static async IAsyncEnumerable<T> ToAsyncEnumerable<T>(T[] items)
 	{
 		foreach (T item in items)
@@ -243,14 +321,28 @@ public class MaterializingAsyncEnumerableTests
 
 		public TaskCompletionSource<bool>? PendingMoveNext { get; set; }
 
+		public Exception? CurrentException { get; set; }
+
+		public int GetAsyncEnumeratorCount { get; private set; }
+
+		public Exception? GetAsyncEnumeratorException { get; set; }
+
 		public IAsyncEnumerator<int> GetAsyncEnumerator(CancellationToken cancellationToken = default)
-			=> new Enumerator(this, values);
+		{
+			GetAsyncEnumeratorCount++;
+			if (GetAsyncEnumeratorException is not null)
+			{
+				throw GetAsyncEnumeratorException;
+			}
+
+			return new Enumerator(this, values);
+		}
 
 		private sealed class Enumerator(DisposeTrackingAsyncEnumerable owner, int[] values) : IAsyncEnumerator<int>
 		{
 			private int _index = -1;
 
-			public int Current => values[_index];
+			public int Current => owner.CurrentException is null ? values[_index] : throw owner.CurrentException;
 
 			public async ValueTask<bool> MoveNextAsync()
 			{

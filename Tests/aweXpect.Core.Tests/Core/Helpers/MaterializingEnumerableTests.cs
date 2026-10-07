@@ -56,6 +56,24 @@ public class MaterializingEnumerableTests
 	}
 
 	[Test]
+	public async Task ReleaseSource_WhenNeverEnumerated_ShouldNotGetTheEnumeratorOfTheSource()
+	{
+		DisposeTrackingEnumerable source = new(null, 1, 2);
+		MaterializingEnumerable<int> materialized =
+			(MaterializingEnumerable<int>)MaterializingEnumerable<int>.Wrap(source);
+
+		await materialized.ReleaseSource();
+		List<int> result = materialized.ToList();
+
+		await That(source.GetEnumeratorCount).IsEqualTo(0)
+			.Because("the enumerator of the source is only requested for the first item");
+		await That(source.DisposeCount).IsEqualTo(0);
+		await That(result).IsEmpty()
+			.Because("the released source must not be read");
+		await That(materialized.Count).IsNull();
+	}
+
+	[Test]
 	public async Task ReleaseSource_WhenPartiallyRead_ShouldDisposeTheSourceOnce()
 	{
 		DisposeTrackingEnumerable source = new(null, 1, 2);
@@ -87,6 +105,29 @@ public class MaterializingEnumerableTests
 	}
 
 	[Test]
+	public async Task Untyped_WhenCurrentThrows_ShouldThrowTheSameUserCodeExceptionAgain()
+	{
+		InvalidOperationException exception = new("the item is broken");
+		DisposeTrackingEnumerable source = new(null, 1, 2)
+		{
+			CurrentException = exception,
+		};
+		IEnumerable materialized = MaterializingEnumerable.Wrap(new UntypedEnumerable(source));
+
+		Exception? first = Catch(() => _ = materialized.Cast<object?>().ToList());
+		Exception? second = Catch(() => _ = materialized.Cast<object?>().ToList());
+
+		await That(first).Is<UserCodeException>()
+			.Whose(e => e.Thrower, thrower => thrower.IsNull()).And
+			.Whose(e => e.InnerException, inner => inner.IsSameAs(exception))
+			.Because("an exception of the source fails the expectation like one of the subject");
+		await That(second).IsSameAs(first)
+			.Because("every further enumeration throws the exception of the source again");
+		await That(source.DisposeCount).IsEqualTo(1)
+			.Because("a source that threw is not advanced again, so it is released right away");
+	}
+
+	[Test]
 	public async Task Untyped_WhenEnumeratedWhileEnumerating_ShouldYieldAllItemsToBoth()
 	{
 		IEnumerable materialized = MaterializingEnumerable.Wrap(new UntypedEnumerable(ToEnumerable([1, 1, 2,])));
@@ -105,6 +146,31 @@ public class MaterializingEnumerableTests
 		await That(outer).IsEqualTo([1, 1, 2,])
 			.Because("the outer enumeration continues after the items that the inner one read");
 		await That(inner).IsEqualTo([1, 1, 2,]);
+	}
+
+	[Test]
+	public async Task Untyped_WhenGetEnumeratorThrows_ShouldThrowTheSameUserCodeExceptionAgain()
+	{
+		InvalidOperationException exception = new("the source is broken");
+		DisposeTrackingEnumerable source = new(null, 1, 2)
+		{
+			GetEnumeratorException = exception,
+		};
+		MaterializingEnumerable materialized =
+			(MaterializingEnumerable)MaterializingEnumerable.Wrap(new UntypedEnumerable(source));
+
+		Exception? first = Catch(() => _ = materialized.Cast<object?>().ToList());
+		Exception? second = Catch(() => _ = materialized.Cast<object?>().ToList());
+		await materialized.ReleaseSource();
+
+		await That(first).Is<UserCodeException>()
+			.Whose(e => e.Thrower, thrower => thrower.IsNull()).And
+			.Whose(e => e.InnerException, inner => inner.IsSameAs(exception))
+			.Because("an exception of the source fails the expectation like one of the subject");
+		await That(second).IsSameAs(first)
+			.Because("every further enumeration throws the exception of the source again");
+		await That(source.GetEnumeratorCount).IsEqualTo(1)
+			.Because("a source that threw is not asked for its enumerator again");
 	}
 
 	[Test]
@@ -139,6 +205,29 @@ public class MaterializingEnumerableTests
 			.Because("a partially read source is read further by the next enumeration");
 		await That(source.DisposeCount).IsEqualTo(1);
 		await That(result).IsEqualTo([1, 2,]);
+	}
+
+	[Test]
+	public async Task WhenCurrentThrows_ShouldThrowTheSameUserCodeExceptionAgain()
+	{
+		InvalidOperationException exception = new("the item is broken");
+		DisposeTrackingEnumerable source = new(null, 1, 2)
+		{
+			CurrentException = exception,
+		};
+		IEnumerable<int> materialized = MaterializingEnumerable<int>.Wrap(source);
+
+		Exception? first = Catch(() => _ = materialized.ToList());
+		Exception? second = Catch(() => _ = materialized.ToList());
+
+		await That(first).Is<UserCodeException>()
+			.Whose(e => e.Thrower, thrower => thrower.IsNull()).And
+			.Whose(e => e.InnerException, inner => inner.IsSameAs(exception))
+			.Because("an exception of the source fails the expectation like one of the subject");
+		await That(second).IsSameAs(first)
+			.Because("every further enumeration throws the exception of the source again");
+		await That(source.DisposeCount).IsEqualTo(1)
+			.Because("a source that threw is not advanced again, so it is released right away");
 	}
 
 	[Test]
@@ -182,6 +271,31 @@ public class MaterializingEnumerableTests
 		await That(outer).IsEqualTo([1, 1, 2,])
 			.Because("the items that the inner enumeration adds must not break the replay of the outer one");
 		await That(inner).IsEqualTo([1, 1, 2,]);
+	}
+
+	[Test]
+	public async Task WhenGetEnumeratorThrows_ShouldThrowTheSameUserCodeExceptionAgain()
+	{
+		InvalidOperationException exception = new("the source is broken");
+		DisposeTrackingEnumerable source = new(null, 1, 2)
+		{
+			GetEnumeratorException = exception,
+		};
+		MaterializingEnumerable<int> materialized =
+			(MaterializingEnumerable<int>)MaterializingEnumerable<int>.Wrap(source);
+
+		Exception? first = Catch(() => _ = materialized.ToList());
+		Exception? second = Catch(() => _ = materialized.ToList());
+		await materialized.ReleaseSource();
+
+		await That(first).Is<UserCodeException>()
+			.Whose(e => e.Thrower, thrower => thrower.IsNull()).And
+			.Whose(e => e.InnerException, inner => inner.IsSameAs(exception))
+			.Because("an exception of the source fails the expectation like one of the subject");
+		await That(second).IsSameAs(first)
+			.Because("every further enumeration throws the exception of the source again");
+		await That(source.GetEnumeratorCount).IsEqualTo(1)
+			.Because("a source that threw is not asked for its enumerator again");
 	}
 
 	[Test]
@@ -269,6 +383,19 @@ public class MaterializingEnumerableTests
 
 		await That(enumerable).IsNotSameAs(materialized1);
 		await That(materialized1).IsSameAs(materialized2);
+	}
+
+	private static Exception? Catch(Action action)
+	{
+		try
+		{
+			action();
+			return null;
+		}
+		catch (Exception exception)
+		{
+			return exception;
+		}
 	}
 
 	private static IEnumerable<T> ToEnumerable<T>(T[] items)

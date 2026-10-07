@@ -11,9 +11,24 @@ internal sealed class DisposeTrackingEnumerable(Exception? exception, params int
 {
 	public int DisposeCount { get; private set; }
 
+	public Exception? CurrentException { get; set; }
+
 	public Exception? DisposeException { get; set; }
 
-	public IEnumerator<int> GetEnumerator() => new Enumerator(this, exception, values);
+	public int GetEnumeratorCount { get; private set; }
+
+	public Exception? GetEnumeratorException { get; set; }
+
+	public IEnumerator<int> GetEnumerator()
+	{
+		GetEnumeratorCount++;
+		if (GetEnumeratorException is not null)
+		{
+			throw GetEnumeratorException;
+		}
+
+		return new Enumerator(this, exception, values);
+	}
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
@@ -22,7 +37,7 @@ internal sealed class DisposeTrackingEnumerable(Exception? exception, params int
 	{
 		private int _index = -1;
 
-		public int Current => values[_index];
+		public int Current => owner.CurrentException is null ? values[_index] : throw owner.CurrentException;
 
 		object IEnumerator.Current => Current;
 
