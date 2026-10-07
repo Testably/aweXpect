@@ -177,15 +177,37 @@ public partial class CollectionMatchOptions(
 	/// </summary>
 	public ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(IEnumerable<T> expected)
 		where T : T2
-		=> (_inAnyOrder, _ignoringDuplicates) switch
+		=> GetCollectionMatcher<T, T2>(expected, null);
+
+	/// <summary>
+	///     Get the collection matcher for the <paramref name="expected" /> enumerable and a subject that is an array
+	///     with the <paramref name="dimensions" />.
+	/// </summary>
+	/// <remarks>
+	///     An array of rank greater than one enumerates its items as one flat sequence with the last dimension changing
+	///     first, so with the length of each of its <paramref name="dimensions" /> a failure names an item by its index
+	///     in every dimension, e.g. <c>[1,1]</c>. Without more than one dimension it names an item by its position in
+	///     the sequence.
+	/// </remarks>
+	public ICollectionMatcher<T, T2> GetCollectionMatcher<T, T2>(IEnumerable<T> expected, int[]? dimensions)
+		where T : T2
+	{
+		if (dimensions?.Length <= 1)
 		{
-			(true, true) => new AnyOrderIgnoreDuplicatesCollectionMatcher<T, T2>(_equivalenceRelations, expected),
-			(true, false) => new AnyOrderCollectionMatcher<T, T2>(_equivalenceRelations, expected),
+			dimensions = null;
+		}
+
+		return (_inAnyOrder, _ignoringDuplicates) switch
+		{
+			(true, true) => new AnyOrderIgnoreDuplicatesCollectionMatcher<T, T2>(_equivalenceRelations, expected,
+				dimensions),
+			(true, false) => new AnyOrderCollectionMatcher<T, T2>(_equivalenceRelations, expected, dimensions),
 			(false, true) => new SameOrderIgnoreDuplicatesCollectionMatcher<T, T2>(_equivalenceRelations, expected,
-				_ignoringInterspersedItems),
+				_ignoringInterspersedItems, dimensions),
 			(false, false) => new SameOrderCollectionMatcher<T, T2>(_equivalenceRelations, expected,
-				_ignoringInterspersedItems, AddsInAnyOrderHint),
+				_ignoringInterspersedItems, AddsInAnyOrderHint, dimensions),
 		};
+	}
 
 	/// <summary>
 	///     Get the collection matcher for the <paramref name="expected" /> enumerable of predicates.
@@ -405,8 +427,30 @@ public partial class CollectionMatchOptions(
 			.ToString();
 	}
 
+	/// <summary>
+	///     The index of an item as a failure names it, which is the index in each dimension for a subject with the
+	///     <paramref name="dimensions" /> of an array of rank greater than one, as it enumerates its items with the
+	///     last dimension changing first.
+	/// </summary>
+	private static string FormatIndex(int index, int[]? dimensions)
+	{
+		if (dimensions is null)
+		{
+			return index.ToString();
+		}
+
+		int[] indices = new int[dimensions.Length];
+		for (int dimension = dimensions.Length - 1; dimension >= 0; dimension--)
+		{
+			indices[dimension] = index % dimensions[dimension];
+			index /= dimensions[dimension];
+		}
+
+		return $"[{string.Join(",", indices)}]";
+	}
+
 	private static IEnumerable<string> AdditionalItemsError<T>(Dictionary<int, T> additionalItems,
-		Func<object?, string> formatItem)
+		Func<object?, string> formatItem, int[]? dimensions)
 	{
 		bool hasAdditionalItems = additionalItems.Any();
 		if (hasAdditionalItems)
@@ -414,13 +458,13 @@ public partial class CollectionMatchOptions(
 			foreach (KeyValuePair<int, T> additionalItem in additionalItems)
 			{
 				yield return
-					$"contained item {formatItem(additionalItem.Value)} at index {additionalItem.Key} that was not expected";
+					$"contained item {formatItem(additionalItem.Value)} at index {FormatIndex(additionalItem.Key, dimensions)} that was not expected";
 			}
 		}
 	}
 
 	private static IEnumerable<string> IncorrectItemsError<T, TExpected>(
-		Dictionary<int, (T Item, TExpected Expected)> incorrectItems, object options)
+		Dictionary<int, (T Item, TExpected Expected)> incorrectItems, object options, int[]? dimensions)
 	{
 		bool hasIncorrectItems = incorrectItems.Any();
 		if (hasIncorrectItems)
@@ -430,7 +474,7 @@ public partial class CollectionMatchOptions(
 				(string item, string expected) =
 					ValuePairFormatter.Format(incorrectItem.Value.Item, incorrectItem.Value.Expected);
 				yield return
-					$"contained item {item} at index {incorrectItem.Key} instead of {DescribeExpected(expected, options)}";
+					$"contained item {item} at index {FormatIndex(incorrectItem.Key, dimensions)} instead of {DescribeExpected(expected, options)}";
 			}
 		}
 	}
@@ -449,12 +493,13 @@ public partial class CollectionMatchOptions(
 			: formattedExpected;
 	}
 
-	private static IEnumerable<string> OutOfOrderItemsError<T>(Dictionary<int, T> outOfOrderItems)
+	private static IEnumerable<string> OutOfOrderItemsError<T>(Dictionary<int, T> outOfOrderItems,
+		int[]? dimensions)
 	{
 		foreach (KeyValuePair<int, T> outOfOrderItem in outOfOrderItems)
 		{
 			yield return
-				$"contained item {Formatter.Format(outOfOrderItem.Value)} at index {outOfOrderItem.Key} in wrong order";
+				$"contained item {Formatter.Format(outOfOrderItem.Value)} at index {FormatIndex(outOfOrderItem.Key, dimensions)} in wrong order";
 		}
 	}
 

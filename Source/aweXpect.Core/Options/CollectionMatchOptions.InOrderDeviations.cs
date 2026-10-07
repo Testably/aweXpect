@@ -15,8 +15,14 @@ public partial class CollectionMatchOptions
 	/// </remarks>
 	private sealed class InOrderDeviations<T, T3>
 	{
-		private InOrderDeviations()
+		/// <summary>
+		///     The dimensions of a subject that is an array of rank greater than one.
+		/// </summary>
+		private readonly int[]? _dimensions;
+
+		private InOrderDeviations(int[]? dimensions)
 		{
+			_dimensions = dimensions;
 		}
 
 		private Dictionary<int, (T Item, T3 Expected)> InterruptingItems { get; } = new();
@@ -40,10 +46,11 @@ public partial class CollectionMatchOptions
 		/// <param name="expected">
 		///     The expected item of a sought id, or of a searched position when the subject was searched.
 		/// </param>
+		/// <param name="dimensions">The dimensions of a subject that is an array of rank greater than one.</param>
 		public static InOrderDeviations<T, T3> From(InOrderMismatch mismatch, bool isContainedIn,
-			Func<int, (int Index, T Item)> subject, Func<int, T3> expected)
+			Func<int, (int Index, T Item)> subject, Func<int, T3> expected, int[]? dimensions)
 		{
-			InOrderDeviations<T, T3> deviations = new();
+			InOrderDeviations<T, T3> deviations = new(dimensions);
 			if (isContainedIn)
 			{
 				deviations.AddSearchedSubject(mismatch, subject, expected);
@@ -112,11 +119,11 @@ public partial class CollectionMatchOptions
 		///     The deviations that name a subject item; for the containment relation, additional items are none.
 		/// </summary>
 		public List<string> ListDeviations(EquivalenceRelations equivalenceRelation, object options)
-			=> IncorrectItemsError(InterruptingItems, options)
-				.Concat(OutOfOrderItemsError(OutOfOrderItems))
+			=> IncorrectItemsError(InterruptingItems, options, _dimensions)
+				.Concat(OutOfOrderItemsError(OutOfOrderItems, _dimensions))
 				.Concat(equivalenceRelation.Includes(EquivalenceRelations.Contains)
 					? []
-					: AdditionalItemsError(UnexpectedItems, CreateItemFormatter()))
+					: AdditionalItemsError(UnexpectedItems, CreateItemFormatter(), _dimensions))
 				.ToList();
 
 		/// <remarks>

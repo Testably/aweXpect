@@ -288,6 +288,154 @@ public class CollectionMatchOptionsTests
 		}
 	}
 
+	public class DimensionsTests
+	{
+		[Test]
+		[Arguments(false, false)]
+		[Arguments(false, true)]
+		[Arguments(true, false)]
+		[Arguments(true, true)]
+		public async Task ShouldNameAnUnexpectedItemByItsIndexInEveryDimension(bool inAnyOrder,
+			bool ignoringDuplicates)
+		{
+			CollectionMatchOptions sut = new();
+			if (inAnyOrder)
+			{
+				sut.InAnyOrder();
+			}
+
+			if (ignoringDuplicates)
+			{
+				sut.IgnoringDuplicates();
+			}
+
+			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 3, 4, 5,], [2, 3,]),
+				[1, 2, 3, 4, 9, 5,]);
+
+			await That(result).Contains("contained item 9 at index [1,1] that was not expected");
+		}
+
+		[Test]
+		public async Task WhenAnItemIsIncorrect_ShouldNameItByItsIndexInEveryDimension()
+		{
+			CollectionMatchOptions sut = new();
+
+			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 3, 0, 5, 6,], [2, 3,]),
+				[1, 2, 3, 4, 5, 6,]);
+
+			await That(result).IsEqualTo("True: it contained item 4 at index [1,0] instead of 0");
+		}
+
+		[Test]
+		public async Task WhenAnItemIsInWrongOrder_ShouldNameItByItsIndexInEveryDimension()
+		{
+			CollectionMatchOptions sut = new();
+
+			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 4, 5, 3, 6,], [2, 3,]),
+				[1, 2, 3, 4, 5, 6,]);
+
+			await That(result).IsEqualTo("""
+			                             True: it contained item 3 at index [0,2] in wrong order
+			                             (but the items match in a different order)
+			                             """);
+		}
+
+		[Test]
+		[Arguments(false)]
+		[Arguments(true)]
+		public async Task WhenAnItemInterruptsTheExpectedItems_ShouldNameItByItsIndexInEveryDimension(
+			bool ignoringDuplicates)
+		{
+			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.Contains);
+			sut.IgnoringDuplicates(ignoringDuplicates);
+
+			string result = await Describe(sut.GetCollectionMatcher<int, int>([3, 5,], [2, 3,]),
+				[1, 2, 3, 4, 5, 6,]);
+
+			await That(result).IsEqualTo("True: it contained item 4 at index [1,0] instead of 5");
+		}
+
+		[Test]
+		[Arguments(false)]
+		[Arguments(true)]
+		public async Task WhenAnItemOfAContainedSubjectIsInWrongOrder_ShouldNameItByItsIndexInEveryDimension(
+			bool ignoringDuplicates)
+		{
+			CollectionMatchOptions sut = new(CollectionMatchOptions.EquivalenceRelations.IsContainedIn);
+			sut.IgnoringDuplicates(ignoringDuplicates);
+
+			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 3, 4, 5,], [2, 2,]),
+				[2, 3, 4, 1,]);
+
+			await That(result).IsEqualTo("True: it contained item 1 at index [1,1] in wrong order");
+		}
+
+		[Test]
+		public async Task WhenThereAreTooManyDeviations_ShouldNameTheListedItemsByTheirIndexInEveryDimension()
+		{
+			CollectionMatchOptions sut = new();
+			sut.InAnyOrder();
+
+			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 3, 4, 5, 6,], [3, 2,]),
+				[1, 7, 8, 9, 10, 11,]);
+
+			await That(result).IsEqualTo("""
+			                             failed early: it had more than 4 deviations:
+			                               contained item 7 at index [0,1] that was not expected,
+			                               contained item 8 at index [1,0] that was not expected,
+			                               (… and maybe more)
+			                             """);
+		}
+
+		[Test]
+		public async Task WithMoreThanTwoDimensions_ShouldNameAnItemByItsIndexInEveryDimension()
+		{
+			CollectionMatchOptions sut = new();
+
+			string result = await Describe(
+				sut.GetCollectionMatcher<int, int>(Enumerable.Range(0, 24).Select(x => x == 17 ? -1 : x), [2, 3, 4,]),
+				Enumerable.Range(0, 24));
+
+			await That(result).IsEqualTo("True: it contained item 17 at index [1,1,1] instead of -1");
+		}
+
+		[Test]
+		public async Task WithOneDimension_ShouldNameAnItemByItsPosition()
+		{
+			CollectionMatchOptions sut = new();
+
+			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 3, 0,], [4,]), [1, 2, 3, 4,]);
+
+			await That(result).IsEqualTo("True: it contained item 4 at index 3 instead of 0");
+		}
+
+		[Test]
+		public async Task WithoutDimensions_ShouldNameAnItemByItsPosition()
+		{
+			CollectionMatchOptions sut = new();
+
+			string result = await Describe(sut.GetCollectionMatcher<int, int>([1, 2, 3, 0,], null), [1, 2, 3, 4,]);
+
+			await That(result).IsEqualTo("True: it contained item 4 at index 3 instead of 0");
+		}
+
+		private static async Task<string> Describe(ICollectionMatcher<int, int> matcher, IEnumerable<int> subject)
+		{
+			ObjectEqualityOptions<int> options = new();
+			foreach (int item in subject)
+			{
+				(bool isFailure, string? error) = await matcher.Verify("it", item, options, 2);
+				if (isFailure)
+				{
+					return $"failed early: {error}";
+				}
+			}
+
+			(bool isCompleteFailure, string? completeError) = await matcher.VerifyComplete("it", options, 2);
+			return $"{isCompleteFailure}: {completeError}";
+		}
+	}
+
 	public class ExpectationItemTests
 	{
 		[Test]

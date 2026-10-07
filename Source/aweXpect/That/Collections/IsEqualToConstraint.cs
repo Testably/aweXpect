@@ -521,9 +521,19 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 		}
 
 		return VerifyItems(untypedItems,
-			MatchOptions.GetCollectionMatcher<object?, object?>(expectedItems.Cast<object?>()),
+			MatchOptions.GetCollectionMatcher<object?, object?>(expectedItems.Cast<object?>(),
+				GetDimensions(untypedItems.Value as Array)),
 			new UntypedOptions(itemOptions), cancellationToken);
 	}
+
+	/// <summary>
+	///     The length of each dimension of an <paramref name="array" /> of rank greater than one, by which a failure
+	///     names the index of an item; otherwise <see langword="null" />.
+	/// </summary>
+	private static int[]? GetDimensions(Array? array)
+		=> array is { Rank: > 1, }
+			? Enumerable.Range(0, array.Rank).Select(array.GetLength).ToArray()
+			: null;
 
 	/// <remarks>
 	///     An expected array of rank greater than one is listed with its dimensions, like the subject in the
