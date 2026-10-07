@@ -377,6 +377,30 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
+			public async Task WithDuplicateBeforeAnInterruptedRun_ShouldReportTheInterruptingItem()
+			{
+				IEnumerable<int> subject = ToEnumerable([2, 1, 9, 2,]);
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order and contiguous,
+					             but it contained item 9 at index 2 instead of 2
+
+					             Collection:
+					             [2, 1, 9, 2]
+
+					             Expected:
+					             [1, 2]
+					             """)
+					.Because("the last 2 follows the 1, so only the 9 keeps the items from being contiguous");
+			}
+
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldSucceed()
 			{
 				IEnumerable<string> subject = ToEnumerable(["c", "a", "b", "c",]);
@@ -4509,6 +4533,37 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
+			public async Task WhenIgnoringCase_WithDuplicateBeforeAnInterruptedRun_ShouldReportTheInterruptingItem()
+			{
+				string[] subject = ["B", "a", "x", "b",];
+				string[] expected = ["A", "b",];
+
+				async Task Act()
+					=> await That(subject).Contains(expected).IgnoringCase();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected ignoring case in order and contiguous,
+					             but it contained item "x" at index 2 instead of "b"
+
+					             Collection:
+					             [
+					               "B",
+					               "a",
+					               "x",
+					               "b"
+					             ]
+
+					             Expected:
+					             [
+					               "A",
+					               "b"
+					             ]
+					             """);
+			}
+
+			[Test]
 			[Arguments("FOO", true)]
 			[Arguments("goo", false)]
 			public async Task WhenIgnoringCase_ShouldUseCaseInsensitiveMatch(string match, bool expectSuccess)
@@ -4668,6 +4723,30 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<InvalidOperationException>()
 					.WithMessage("IgnoringInterspersedItems cannot be specified more than once.")
 					.Because("the second value would silently replace the first one");
+			}
+
+			[Test]
+			public async Task WithDuplicateBeforeTheItemsInOrder_ShouldOnlyReportTheMissingItem()
+			{
+				IEnumerable<int> subject = ToEnumerable([2, 1, 2,]);
+				int[] expected = [1, 2, 3,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected).IgnoringInterspersedItems();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order ignoring interspersed items,
+					             but it lacked 1 of 3 expected items: 3
+
+					             Collection:
+					             [2, 1, 2]
+
+					             Expected:
+					             [1, 2, 3]
+					             """)
+					.Because("the last 2 follows the 1, so the found items are in order");
 			}
 
 			[Test]

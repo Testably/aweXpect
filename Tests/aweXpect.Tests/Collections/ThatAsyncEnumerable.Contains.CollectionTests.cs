@@ -344,6 +344,30 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Test]
+			public async Task WithDuplicateBeforeAnInterruptedRun_ShouldReportTheInterruptingItem()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(2, 1, 9, 2);
+				int[] expected = [1, 2,];
+
+				async Task Act()
+					=> await That(subject).Contains(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             contains collection expected in order and contiguous,
+					             but it contained item 9 at index 2 instead of 2
+
+					             Collection:
+					             [2, 1, 9, 2]
+
+					             Expected:
+					             [1, 2]
+					             """)
+					.Because("the last 2 follows the 1, so only the 9 keeps the items from being contiguous");
+			}
+
+			[Test]
 			public async Task WithDuplicatesAtBeginOfSubject_ShouldSucceed()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["c", "a", "b", "c",]);

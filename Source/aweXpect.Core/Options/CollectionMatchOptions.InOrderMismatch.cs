@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Options;
 
@@ -129,8 +130,13 @@ public partial class CollectionMatchOptions
 			}
 
 			List<(int SoughtId, int Position)> chain = FindTheLongestChainInOrder();
-			if (_orderMatch == OrderMatch.Contiguous && chain.Count > 0 &&
-			    UnmatchedSoughtIds.Count == 0 && OutOfOrder.Count == 0)
+			AddTheItemsOutOfOrder(chain);
+			if (_isOneToOne && OutOfOrder.Count > 0)
+			{
+				await TakeTheSpareItemsInOrder(chain.Count);
+			}
+			else if (_orderMatch == OrderMatch.Contiguous && chain.Count > 0 &&
+			         UnmatchedSoughtIds.Count == 0 && OutOfOrder.Count == 0)
 			{
 				await FindTheInterruptions(chain);
 			}
@@ -219,17 +225,16 @@ public partial class CollectionMatchOptions
 
 		/// <summary>
 		///     A longest increasing subsequence over the positions of the assigned searched items, in which each sought
-		///     item may use any occurrence of its searched item.
+		///     item may use any occurrence of its searched item and any of its <paramref name="sparePositions" />.
 		/// </summary>
 		/// <remarks>
 		///     Sought items that share their searched item are duplicates of each other, so only the first one is placed.
 		/// </remarks>
-		private List<(int SoughtId, int Position)> FindTheLongestChainInOrder()
+		private List<(int SoughtId, int Position)> FindTheLongestChainInOrder(List<int>?[]? sparePositions = null)
 		{
 			List<(int SoughtId, int Position, int Previous)> entries = new();
 			List<int> tails = new();
 			HashSet<int> placedSearchedIds = new();
-			List<int> placedSoughtIds = new();
 			for (int soughtId = 0; soughtId < _soughtCount; soughtId++)
 			{
 				int searchedId = _assignedSearchedId[soughtId];
@@ -238,8 +243,13 @@ public partial class CollectionMatchOptions
 					continue;
 				}
 
-				placedSoughtIds.Add(soughtId);
-				ExtendTheChains(soughtId, _occurrences[searchedId], entries, tails);
+				List<int> positions = _occurrences[searchedId];
+				if (sparePositions?[soughtId] is { } spares)
+				{
+					positions = positions.Concat(spares).OrderBy(position => position).ToList();
+				}
+
+				ExtendTheChains(soughtId, positions, entries, tails);
 			}
 
 			List<(int SoughtId, int Position)> chain = new();
@@ -251,11 +261,109 @@ public partial class CollectionMatchOptions
 			}
 
 			chain.Reverse();
-			HashSet<int> chainedSoughtIds = new(chain.Select(link => link.SoughtId));
-			OutOfOrder.AddRange(placedSoughtIds
-				.Where(soughtId => !chainedSoughtIds.Contains(soughtId))
-				.Select(soughtId => (soughtId, _occurrences[_assignedSearchedId[soughtId]][0])));
 			return chain;
+		}
+
+		/// <summary>
+		///     The placed sought items outside the <paramref name="chain" /> are in the wrong order.
+		/// </summary>
+		private void AddTheItemsOutOfOrder(List<(int SoughtId, int Position)> chain)
+		{
+			HashSet<int> chainedSoughtIds = new(chain.Select(link => link.SoughtId));
+			HashSet<int> placedSearchedIds = new();
+			for (int soughtId = 0; soughtId < _soughtCount; soughtId++)
+			{
+				int searchedId = _assignedSearchedId[soughtId];
+				if (searchedId != None && placedSearchedIds.Add(searchedId) && !chainedSoughtIds.Contains(soughtId))
+				{
+					OutOfOrder.Add((soughtId, _occurrences[searchedId][0]));
+				}
+			}
+		}
+
+		/// <summary>
+		///     One-to-one, a searched item that is not assigned can replace the assigned one of each sought item it
+		///     matches, as the matching stays maximum; when such items allow a longer chain, the sought items of that chain
+		///     take them, so that an item is only in the wrong order when no duplicate of it is in order.
+		/// </summary>
+		/// <remarks>
+		///     A run through such items that more items interrupt than were in the wrong order is the longer explanation,
+		///     so the assignment is kept then.<br />
+		///     Sought items that match the same searched items keep the items they are assigned to, so the chain is only
+		///     a longest one when each searched item matches at most one sought item.
+		/// </remarks>
+		private async ValueTask TakeTheSpareItemsInOrder(int chainLength)
+		{
+			List<(int SoughtId, int Position)> longerChain =
+				FindTheLongestChainInOrder(await FindTheSparePositions());
+			if (longerChain.Count <= chainLength)
+			{
+				return;
+			}
+
+			int[] assignedSearchedId = (int[])_assignedSearchedId.Clone();
+			bool[] isSearchedMatched = (bool[])_isSearchedMatched.Clone();
+			foreach ((int soughtId, int position) in longerChain)
+			{
+				_isSearchedMatched[_assignedSearchedId[soughtId]] = false;
+				_isSearchedMatched[_searched[position]] = true;
+				_assignedSearchedId[soughtId] = _searched[position];
+			}
+
+			if (_orderMatch == OrderMatch.Contiguous && longerChain.Count == _soughtCount)
+			{
+				await FindTheInterruptions(longerChain);
+				if (Interruptions.Count > OutOfOrder.Count)
+				{
+					Interruptions.Clear();
+					assignedSearchedId.CopyTo(_assignedSearchedId, 0);
+					isSearchedMatched.CopyTo(_isSearchedMatched, 0);
+					return;
+				}
+			}
+
+			OutOfOrder.Clear();
+			AddTheItemsOutOfOrder(longerChain);
+		}
+
+		/// <summary>
+		///     The positions of the searched items that are not assigned, for each assigned sought item they match.
+		/// </summary>
+		/// <remarks>
+		///     The matching does not compare a searched item once every sought item is assigned, so each of them is
+		///     compared here, which only an explanation with an item in the wrong order needs.
+		/// </remarks>
+		private async ValueTask<List<int>?[]> FindTheSparePositions()
+		{
+			List<int>?[] sparePositions = new List<int>?[_soughtCount];
+			foreach (int searchedId in Enumerable.Range(0, _isSearchedMatched.Length)
+				         .Where(id => !_isSearchedMatched[id]))
+			{
+				for (int soughtId = 0; soughtId < _soughtCount; soughtId++)
+				{
+					if (_assignedSearchedId[soughtId] != None && await IsAnsweredMatch(searchedId, soughtId))
+					{
+						(sparePositions[soughtId] ??= new List<int>()).AddRange(_occurrences[searchedId]);
+					}
+				}
+			}
+
+			return sparePositions;
+		}
+
+		/// <summary>
+		///     A comparison that code of the caller did not answer is no match, like for the matching.
+		/// </summary>
+		private async ValueTask<bool> IsAnsweredMatch(int searchedId, int soughtId)
+		{
+			try
+			{
+				return await _isMatch(searchedId, soughtId);
+			}
+			catch (Exception exception) when (exception is UserCodeException or UnansweredItemException)
+			{
+				return false;
+			}
 		}
 
 		/// <summary>
@@ -370,7 +478,7 @@ public partial class CollectionMatchOptions
 				return true;
 			}
 
-			if (!_isOneToOne || _isSearchedMatched[searchedId] || !await _isMatch(searchedId, soughtId))
+			if (!_isOneToOne || _isSearchedMatched[searchedId] || !await IsAnsweredMatch(searchedId, soughtId))
 			{
 				return false;
 			}
