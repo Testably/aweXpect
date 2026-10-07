@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 
@@ -21,6 +23,17 @@ internal abstract class ContainedItem<TItem>
 	///     Whether the <paramref name="item" /> is the one looked for.
 	/// </summary>
 	public abstract ValueTask<bool> Matches(TItem item);
+
+	/// <summary>
+	///     Returns the item to match the items with during the evaluation in the <paramref name="context" />.
+	/// </summary>
+	/// <remarks>
+	///     Only an item whose comparison evaluates expectations of its own returns another item than itself, see
+	///     <see cref="ObjectEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" />.
+	/// </remarks>
+	public virtual ContainedItem<TItem> ForEvaluation(IEvaluationContext context,
+		CancellationToken cancellationToken)
+		=> this;
 
 	/// <summary>
 	///     Lets the comparer of a set <paramref name="collection" /> decide, when the comparison allows it.
@@ -155,6 +168,14 @@ internal sealed class EqualItem<TItem>(ObjectEqualityOptions<TItem> options, TIt
 		=> options.AreConsideredEqual(item, Expected);
 
 	/// <inheritdoc />
+	public override ContainedItem<TItem> ForEvaluation(IEvaluationContext context,
+		CancellationToken cancellationToken)
+	{
+		ObjectEqualityOptions<TItem> evaluationOptions = options.ForEvaluation(context, cancellationToken);
+		return ReferenceEquals(evaluationOptions, options) ? this : new EqualItem<TItem>(evaluationOptions, Expected);
+	}
+
+	/// <inheritdoc />
 	/// <remarks>
 	///     The verb keeps a direct object, so a match type that describes the item reads "contains an item
 	///     equivalent to …", and one that only formats it names the comparison itself instead of leaving the
@@ -217,6 +238,18 @@ internal sealed class SubjectComparedItem<TSetItem, TItem>(ExpectedItem<TItem> i
 		=> _comparer is null
 			? inner.Matches(item)
 			: new ValueTask<bool>(_comparer.AreEqual(item, Expected));
+
+	/// <inheritdoc />
+	/// <remarks>
+	///     The comparer of the subject only decides while the comparison of the inner item is the default one, which
+	///     needs no evaluation, so an inner item for the evaluation is matched directly.
+	/// </remarks>
+	public override ContainedItem<TItem> ForEvaluation(IEvaluationContext context,
+		CancellationToken cancellationToken)
+	{
+		ContainedItem<TItem> evaluationItem = inner.ForEvaluation(context, cancellationToken);
+		return ReferenceEquals(evaluationItem, inner) ? this : evaluationItem;
+	}
 
 	/// <inheritdoc />
 	public override void UseComparerOf(object collection)

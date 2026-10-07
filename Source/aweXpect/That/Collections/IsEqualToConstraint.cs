@@ -408,10 +408,12 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 	}
 
 	/// <summary>
-	///     The options to compare the items with.
+	///     The options to compare the items with during the evaluation in the <paramref name="context" />.
 	/// </summary>
-	protected IOptionsEquality<TMatch> GetItemOptions()
-		=> options is ObjectEqualityOptions<TMatch> objectOptions ? objectOptions.ForEvaluation() : options;
+	protected IOptionsEquality<TMatch> GetItemOptions(IEvaluationContext context, CancellationToken cancellationToken)
+		=> options is ObjectEqualityOptions<TMatch> objectOptions
+			? objectOptions.ForEvaluation(context, cancellationToken).ForEvaluation()
+			: options;
 
 	/// <summary>
 	///     Whether the comparison of the options was not changed, so that the comparer of a set subject may decide.
@@ -496,7 +498,7 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 				: FailForNullExpected(CollectionItems<object?>.Materialize(actual, context)));
 		}
 
-		IOptionsEquality<TMatch> itemOptions = GetItemOptions();
+		IOptionsEquality<TMatch> itemOptions = GetItemOptions(context, cancellationToken);
 		SubjectComparer = canUseSubjectComparer && HasDefaultEquality()
 			? CollectionComparerHelpers.GetSubjectComparer<TItem>(actual)
 			: null;
@@ -823,7 +825,7 @@ internal sealed class AsyncIsEqualToConstraint<TItem, TMatch>(
 		}
 
 		return VerifyItems(materialized, MatchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems),
-			GetItemOptions(), cancellationToken);
+			GetItemOptions(context, cancellationToken), cancellationToken);
 	}
 }
 

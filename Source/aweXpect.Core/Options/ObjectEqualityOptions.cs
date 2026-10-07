@@ -5,9 +5,12 @@ using System.Globalization;
 #endif
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
+using aweXpect.Equivalency;
 
 namespace aweXpect.Options;
 
@@ -281,6 +284,30 @@ public partial class ObjectEqualityOptions<TSubject> : IOptionsEquality<TSubject
 	///     Options that depend on a customized setting read it once here instead of on every comparison.
 	/// </remarks>
 	public virtual IOptionsEquality<TSubject> ForEvaluation() => this;
+
+	/// <summary>
+	///     Returns the options to use for all comparisons of the evaluation in the <paramref name="context" />.
+	/// </summary>
+	/// <remarks>
+	///     A comparison that evaluates expectations of its own, i.e. the <c>It.Is…</c> in the expected object of an
+	///     equivalency comparison, evaluates them as part of that evaluation: the <paramref name="cancellationToken" />
+	///     cancels them, and its timeout and time system apply to them. The returned options are only valid for that
+	///     evaluation. Options whose comparison evaluates nothing return themselves.<br />
+	///     Without this, such expectations are evaluated on their own, without a timeout and without cancellation.
+	/// </remarks>
+	public ObjectEqualityOptions<TSubject> ForEvaluation(IEvaluationContext context,
+		CancellationToken cancellationToken)
+	{
+		if (MatchType is not EquivalencyMatchType matchType)
+		{
+			return this;
+		}
+
+		return new ObjectEqualityOptions<TSubject>
+		{
+			MatchType = matchType.ForEvaluation(context, cancellationToken),
+		};
+	}
 
 	/// <summary>
 	///     Specifies a new <see cref="IObjectMatchType" /> to use for matching two objects.

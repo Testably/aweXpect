@@ -24,6 +24,7 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 	IOptionsEquality<TMatch> options)
 	: ConstraintResult.WithNotNullValue<TValue>(it, grammars)
 {
+	private IOptionsEquality<TMatch>? _evaluationOptions;
 	private string? _expectedText;
 	private TItem? _firstMismatchItem;
 	private bool _foundMismatch;
@@ -42,10 +43,11 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 		=> contexts.AddOptionsContexts(options);
 
 	/// <summary>
-	///     Starts a new evaluation.
+	///     Starts a new evaluation in the <paramref name="context" />.
 	/// </summary>
-	protected void Start()
+	protected void Start(IEvaluationContext context, CancellationToken cancellationToken)
 	{
+		_evaluationOptions = options.ForEvaluation(context, cancellationToken);
 		_firstMismatchItem = default;
 		_foundMismatch = false;
 		_items = null;
@@ -69,7 +71,7 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 
 			TItem item = items[_index + _offset];
 			if (!CollectionItems<TItem>.TryCast(item, out TMatch matchedItem) ||
-			    !await options.AreConsideredEqual(matchedItem, expected[_index]))
+			    !await (_evaluationOptions ?? options).AreConsideredEqual(matchedItem, expected[_index]))
 			{
 				_firstMismatchItem = item;
 				_foundMismatch = true;
@@ -143,7 +145,7 @@ internal sealed class EndsWithConstraint<TEnumerable, TItem, TMatch>(
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;
-		Start();
+		Start(context, cancellationToken);
 		Actual = actual;
 		if (actual.IsDefaultImmutableArray())
 		{
@@ -228,7 +230,7 @@ internal sealed class AsyncEndsWithConstraint<TItem, TMatch>(
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;
-		Start();
+		Start(context, cancellationToken);
 		Actual = actual;
 		if (actual is null)
 		{

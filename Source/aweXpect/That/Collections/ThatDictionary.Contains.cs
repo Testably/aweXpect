@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -100,13 +101,13 @@ public static partial class ThatDictionary
 		KeyValuePair<TKey, TValue> expected,
 		IOptionsEquality<TValue> options)
 		: ConstraintResult.WithNotNullValue<TDictionary?>(it, grammars),
-			IAsyncConstraint<TDictionary?>
+			IAsyncContextConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
 		private TValue? _actualValue;
 		private bool _hasKey;
 
-		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual,
+		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
@@ -117,7 +118,8 @@ public static partial class ThatDictionary
 			}
 
 			_hasKey = TryLookUp(GetLookup(actual), expected.Key, out _actualValue);
-			Outcome = _hasKey && await options.AreConsideredEqual(_actualValue!, expected.Value)
+			Outcome = _hasKey && await options.ForEvaluation(context, cancellationToken)
+				.AreConsideredEqual(_actualValue!, expected.Value)
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;

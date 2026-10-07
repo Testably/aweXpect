@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Metadata;
 using aweXpect.Options;
@@ -22,8 +24,10 @@ namespace aweXpect.Equivalency;
 /// </remarks>
 public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 {
+	private readonly CancellationToken _cancellationToken;
 	private readonly EquivalencyOptions _equivalencyOptions;
-	private readonly StringBuilder _failureBuilder = new();
+	private readonly IEvaluationContext? _evaluation;
+	private StringBuilder? _failureBuilder;
 	private bool _isMatch;
 
 	/// <summary>
@@ -35,6 +39,20 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 		equivalencyOptions.ThrowIfNull();
 		_equivalencyOptions = equivalencyOptions;
 	}
+
+	private EquivalencyMatchType(EquivalencyOptions equivalencyOptions, IEvaluationContext evaluation,
+		CancellationToken cancellationToken)
+	{
+		_equivalencyOptions = equivalencyOptions;
+		_evaluation = evaluation;
+		_cancellationToken = cancellationToken;
+	}
+
+	/// <remarks>
+	///     Created by the first comparison that explains its differences, because the items of a collection are
+	///     compared without an explanation.
+	/// </remarks>
+	private StringBuilder FailureBuilder => _failureBuilder ??= new StringBuilder();
 
 	/// <inheritdoc cref="IObjectMatchResult.IsMatch" />
 	bool IObjectMatchResult.IsMatch => _isMatch;
@@ -50,13 +68,14 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 
 		if (actual is null != expected is null)
 		{
-			_failureBuilder.Clear();
-			_failureBuilder.Append(it);
-			_failureBuilder.Append(grammars.SubjectVerb(it, " was ", " were "));
-			Formatter.Format(_failureBuilder, actual, FormattingOptions.SingleLine);
-			_failureBuilder.Append(" instead of ");
-			Formatter.Format(_failureBuilder, expected, FormattingOptions.SingleLine);
-			return _failureBuilder.ToString();
+			StringBuilder failureBuilder = FailureBuilder;
+			failureBuilder.Clear();
+			failureBuilder.Append(it);
+			failureBuilder.Append(grammars.SubjectVerb(it, " was ", " were "));
+			Formatter.Format(failureBuilder, actual, FormattingOptions.SingleLine);
+			failureBuilder.Append(" instead of ");
+			Formatter.Format(failureBuilder, expected, FormattingOptions.SingleLine);
+			return failureBuilder.ToString();
 		}
 
 		return $"{it}{grammars.SubjectVerb(it, " was not:", " were not:")}{_failureBuilder}";
@@ -64,16 +83,29 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 
 	/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TActual, TExpected}(TActual, TExpected)" />
 	public ValueTask<bool> AreConsideredEqual<TActual, TExpected>(TActual actual, TExpected expected)
-		=> EquivalencyComparison.IsEquivalent(actual, expected, _equivalencyOptions);
+		=> EquivalencyComparison.IsEquivalent(actual, expected, _equivalencyOptions, _evaluation, _cancellationToken);
 
 	/// <inheritdoc cref="IObjectMatchType.AreConsideredEqualWithExplanation{TActual, TExpected}(TActual, TExpected)" />
 	public async ValueTask<IObjectMatchResult> AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual,
 		TExpected expected)
 	{
-		_failureBuilder.Clear();
-		_isMatch = await EquivalencyComparison.Compare(actual, expected, _equivalencyOptions, _failureBuilder);
+		StringBuilder failureBuilder = FailureBuilder;
+		failureBuilder.Clear();
+		_isMatch = await EquivalencyComparison.Compare(actual, expected, _equivalencyOptions, failureBuilder,
+			_evaluation, _cancellationToken);
 		return this;
 	}
+
+	/// <summary>
+	///     Returns a match type for the comparisons of the <paramref name="evaluation" />, so that the expectations of
+	///     an <c>It.Is…</c> in the expected object are canceled by the <paramref name="cancellationToken" /> and use
+	///     the timeout and the time system of the <paramref name="evaluation" />.
+	/// </summary>
+	/// <remarks>
+	///     It also keeps the differences of its own comparisons, so that evaluations do not share them.
+	/// </remarks>
+	internal EquivalencyMatchType ForEvaluation(IEvaluationContext evaluation, CancellationToken cancellationToken)
+		=> new(_equivalencyOptions, evaluation, cancellationToken);
 
 	/// <inheritdoc cref="IObjectMatchType.GetExpectation(string, ExpectationGrammars)" />
 	public string GetExpectation(string expected, ExpectationGrammars grammars)

@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -85,13 +86,15 @@ public static partial class ThatDictionary
 		TValue expected,
 		IOptionsEquality<TValue> options)
 		: ConstraintResult.WithNotNullValue<TDictionary?>(it, grammars),
-			IAsyncConstraint<TDictionary?>
+			IAsyncContextConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
-		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			Outcome = actual is not null && await ContainsValue(actual, expected, options)
+			Outcome = actual is not null &&
+			          await ContainsValue(actual, expected, options.ForEvaluation(context, cancellationToken))
 				? Outcome.Success
 				: Outcome.Failure;
 			return this;

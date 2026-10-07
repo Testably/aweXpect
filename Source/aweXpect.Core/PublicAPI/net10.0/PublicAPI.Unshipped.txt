@@ -677,3 +677,4 @@ aweXpect.Results.StringOccurrenceCountResult<TType, TThat>.AsBlock() -> aweXpect
 aweXpect.Results.StringOccurrenceCountResult<TType, TThat>.StringOccurrenceCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.StringEqualityOptions! options) -> void
 static aweXpect.Core.Metadata.TypeMetadataRegistry.RegisterCollection<T>() -> void
 aweXpect.Options.CollectionIndexOptions.SetMatch(aweXpect.Options.CollectionIndexOptions.IMatch! match, string! option) -> void
+aweXpect.Options.ObjectEqualityOptions<TSubject>.ForEvaluation(aweXpect.Core.EvaluationContext.IEvaluationContext! context, System.Threading.CancellationToken cancellationToken) -> aweXpect.Options.ObjectEqualityOptions<TSubject>!

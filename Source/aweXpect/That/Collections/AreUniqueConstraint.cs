@@ -59,10 +59,11 @@ internal abstract class AreUniqueConstraintBase<TValue, TItem, TMember>(
 	}
 
 	/// <summary>
-	///     Counts the occurrences of the members of the items.
+	///     Counts the occurrences of the members of the items during the evaluation in the <paramref name="context" />.
 	/// </summary>
-	protected OccurrenceCounter<TMember> CreateCounter()
-		=> new(options, MemberHashing.For(options));
+	protected OccurrenceCounter<TMember> CreateCounter(IEvaluationContext context,
+		CancellationToken cancellationToken)
+		=> new(options.ForEvaluation(context, cancellationToken), MemberHashing.For(options));
 
 	/// <summary>
 	///     Adds the member of the <paramref name="item" /> to the <paramref name="occurrences" />.
@@ -147,7 +148,7 @@ internal sealed class AreUniqueConstraint<TEnumerable, TItem, TMember>(
 		}
 
 		bool cancelEarly = CollectionItems<TItem>.CountOf(actual) is null;
-		OccurrenceCounter<TMember> occurrences = CreateCounter();
+		OccurrenceCounter<TMember> occurrences = CreateCounter(context, cancellationToken);
 		List<(TItem Item, int MemberIndex)> items = [];
 		foreach (TItem item in materialized)
 		{
@@ -239,7 +240,7 @@ internal sealed class AsyncAreUniqueConstraint<TItem, TMember>(
 
 		IAsyncEnumerable<TItem> materialized =
 			context.UseMaterializedAsyncEnumerable<TItem>(actual, cancellationToken);
-		OccurrenceCounter<TMember> occurrences = CreateCounter();
+		OccurrenceCounter<TMember> occurrences = CreateCounter(context, cancellationToken);
 		List<(TItem Item, int MemberIndex)> items = [];
 		await foreach (TItem item in materialized.UntilCancelled(cancellationToken))
 		{

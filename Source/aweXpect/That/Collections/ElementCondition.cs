@@ -1,6 +1,8 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 
@@ -20,6 +22,17 @@ internal abstract class ElementCondition<TItem>
 	///     Whether the <paramref name="item" /> meets the condition.
 	/// </summary>
 	public abstract ValueTask<bool> IsMetBy(TItem item);
+
+	/// <summary>
+	///     Returns the condition to verify the items with during the evaluation in the <paramref name="context" />.
+	/// </summary>
+	/// <remarks>
+	///     Only a condition whose comparison evaluates expectations of its own returns another condition than itself,
+	///     see <see cref="ObjectEqualityOptions{TSubject}.ForEvaluation(IEvaluationContext, CancellationToken)" />.
+	/// </remarks>
+	public virtual ElementCondition<TItem> ForEvaluation(IEvaluationContext context,
+		CancellationToken cancellationToken)
+		=> this;
 
 	/// <summary>
 	///     The expectation on a single item for the <paramref name="grammars" />, e.g. "is equal to 1".
@@ -154,6 +167,16 @@ internal sealed class ElementEqualTo<TItem, TValue>(
 		=> options.AreConsideredEqual((TValue)(object?)item!, expected);
 
 	/// <inheritdoc />
+	public override ElementCondition<TItem> ForEvaluation(IEvaluationContext context,
+		CancellationToken cancellationToken)
+	{
+		IOptionsEquality<TValue> evaluationOptions = options.ForEvaluation(context, cancellationToken);
+		return ReferenceEquals(evaluationOptions, options)
+			? this
+			: new ElementEqualTo<TItem, TValue>(evaluationOptions, expected, contextOptions);
+	}
+
+	/// <inheritdoc />
 	public override string GetExpectation(ExpectationGrammars grammars)
 		=> ElementExpectations.IsEqualTo(grammars, Formatter.Format(expected), options);
 
@@ -204,6 +227,16 @@ internal sealed class ElementEquivalentTo<TItem, TValue, TExpected>(
 	/// <inheritdoc />
 	public override ValueTask<bool> IsMetBy(TItem item)
 		=> options.AreConsideredEqual((TValue)(object?)item!, expected);
+
+	/// <inheritdoc />
+	public override ElementCondition<TItem> ForEvaluation(IEvaluationContext context,
+		CancellationToken cancellationToken)
+	{
+		ObjectEqualityOptions<TValue> evaluationOptions = options.ForEvaluation(context, cancellationToken);
+		return ReferenceEquals(evaluationOptions, options)
+			? this
+			: new ElementEquivalentTo<TItem, TValue, TExpected>(evaluationOptions, expected, expectedExpression);
+	}
 
 	/// <inheritdoc />
 	public override string GetExpectation(ExpectationGrammars grammars)

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -73,7 +74,7 @@ public static partial class ThatObject
 		string? expectedExpression,
 		ObjectEqualityOptions<TSubject> options)
 		: ConstraintResult.WithValue<TSubject>(it, grammars),
-			IAsyncConstraint<TSubject>
+			IAsyncContextConstraint<TSubject>
 	{
 		private IObjectMatchResult? _matchResult;
 
@@ -81,12 +82,14 @@ public static partial class ThatObject
 		///     Every candidate is compared with an explanation, as the failure message explains the comparison with a
 		///     single candidate, or with the matching one when negated.
 		/// </remarks>
-		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			ObjectEqualityOptions<TSubject> evaluationOptions = options.ForEvaluation(context, cancellationToken);
 			foreach (TExpected? value in expected)
 			{
-				_matchResult = await options.AreConsideredEqualWithExplanation(actual, value);
+				_matchResult = await evaluationOptions.AreConsideredEqualWithExplanation(actual, value);
 				if (_matchResult.IsMatch)
 				{
 					Outcome = Outcome.Success;

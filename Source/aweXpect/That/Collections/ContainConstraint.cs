@@ -24,6 +24,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	private readonly SynchronouslyMatchedItem<TItem>? _predicate;
 	private object? _actual;
 	private int _count;
+	private ContainedItem<TItem> _evaluationItem;
 	private TItem? _firstFoundItem;
 	private bool _isFinished;
 	private bool _isLookedUp;
@@ -37,6 +38,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	{
 		It = it;
 		Item = item;
+		_evaluationItem = item;
 		_expected = item as ExpectedItem<TItem>;
 		_predicate = item as SynchronouslyMatchedItem<TItem>;
 		Quantifier = quantifier;
@@ -72,10 +74,11 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 		=> Item.AppendContexts(contexts);
 
 	/// <summary>
-	///     Starts a new evaluation of the <paramref name="actual" /> subject.
+	///     Starts a new evaluation of the <paramref name="actual" /> subject in the <paramref name="context" />.
 	/// </summary>
-	protected void Start(object? actual)
+	protected void Start(object? actual, IEvaluationContext context, CancellationToken cancellationToken)
 	{
+		_evaluationItem = Item.ForEvaluation(context, cancellationToken);
 		_actual = actual;
 		_count = 0;
 		_firstFoundItem = default;
@@ -97,7 +100,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	///     Whether the <paramref name="item" /> matches.
 	/// </summary>
 	protected ValueTask<bool> Matches(TItem item)
-		=> Item.Matches(item);
+		=> _evaluationItem.Matches(item);
 
 	/// <summary>
 	///     Counts the matching <paramref name="item" /> and returns the outcome, when the remaining items cannot change
@@ -228,7 +231,7 @@ internal sealed class ContainConstraint<TEnumerable, TItem>(
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;
-		Start(actual);
+		Start(actual, context, cancellationToken);
 		if (actual.IsDefaultImmutableArray())
 		{
 			return new ValueTask<ConstraintResult>(this.AsNullSubject(It));
@@ -337,7 +340,7 @@ internal sealed class AsyncContainConstraint<TItem>(
 		CancellationToken cancellationToken)
 	{
 		_collectionContext = default;
-		Start(actual);
+		Start(actual, context, cancellationToken);
 		if (actual is null)
 		{
 			return this;

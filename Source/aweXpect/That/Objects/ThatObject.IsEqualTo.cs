@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -125,14 +126,16 @@ public static partial class ThatObject
 		string? expectedExpression,
 		ObjectEqualityOptions<TSubject> options)
 		: ConstraintResult.WithEqualToValue<TSubject>(it, grammars, expected is null),
-			IAsyncConstraint<TSubject>
+			IAsyncContextConstraint<TSubject>
 	{
 		private IObjectMatchResult? _matchResult;
 
-		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TSubject actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_matchResult = await options.AreConsideredEqualWithExplanation(actual, expected);
+			_matchResult = await options.ForEvaluation(context, cancellationToken)
+				.AreConsideredEqualWithExplanation(actual, expected);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -162,15 +165,17 @@ public static partial class ThatObject
 		T? expected,
 		ObjectEqualityOptions<T> options)
 		: ConstraintResult.WithValue<T>(it, grammars),
-			IAsyncConstraint<T>
+			IAsyncContextConstraint<T>
 		where T : struct
 	{
 		private IObjectMatchResult? _matchResult;
 
-		public async ValueTask<ConstraintResult> IsMetBy(T actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(T actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_matchResult = await options.AreConsideredEqualWithExplanation(actual, expected);
+			_matchResult = await options.ForEvaluation(context, cancellationToken)
+				.AreConsideredEqualWithExplanation(actual, expected);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
@@ -200,15 +205,17 @@ public static partial class ThatObject
 		T? expected,
 		ObjectEqualityOptions<T?> options)
 		: ConstraintResult.WithEqualToValue<T?>(it, grammars, expected is null),
-			IAsyncConstraint<T?>
+			IAsyncContextConstraint<T?>
 		where T : struct
 	{
 		private IObjectMatchResult? _matchResult;
 
-		public async ValueTask<ConstraintResult> IsMetBy(T? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(T? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			_matchResult = await options.AreConsideredEqualWithExplanation(actual, expected);
+			_matchResult = await options.ForEvaluation(context, cancellationToken)
+				.AreConsideredEqualWithExplanation(actual, expected);
 			Outcome = _matchResult.IsMatch ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
