@@ -256,6 +256,29 @@ public sealed class ExpectationGeneratorTests
 	}
 
 	[Test]
+	[Arguments("""CreateExpectationOn<int[]>("IsEmpty", "{value}.Length == 0")""")]
+	[Arguments("""CreateExpectationOn<Missing>("IsZero", "{value} == 0")""")]
+	[Arguments("""CreateExpectationOn<int>("IsZero")""")]
+	[Arguments("""CreateExpectationOn<int>(null, "{value} == 0")""")]
+	[Arguments("""CreateExpectationOn<int>("IsZero", null)""")]
+	public async Task WhenTheAttributeCannotBeRead_ShouldEmitNothing(string attribute)
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			$$"""
+			  using aweXpect.SourceGenerators;
+
+			  namespace Lib;
+
+			  [{{attribute}}]
+			  public static partial class ThatInt;
+			  """);
+
+		await That(result.GeneratorDiagnostics).IsEmpty();
+		await That(result.Generated).DoesNotContain("partial class ThatInt")
+			.Because("an attribute without a named target type, a name and an outcome describes no expectation");
+	}
+
+	[Test]
 	public async Task WhenTheNameHasNoNotPlaceholder_ShouldEmitOnlyThePositiveOverload()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -271,6 +294,68 @@ public sealed class ExpectationGeneratorTests
 		await That(result.Generated).Contains(" IsZero(this ").Once();
 		await That(result.Generated).DoesNotContain(".Invert()")
 			.Because("only a name with {Not} declares a negated overload");
+	}
+
+	[Test]
+	public async Task WhenTheOptionalTextsAreNull_ShouldFallBackToTheDefaults()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			using aweXpect.SourceGenerators;
+
+			namespace Lib;
+
+			[CreateExpectationOnNullable<string>("Is{Not}Empty", "{value} == \"\"",
+				PositiveExpectationText = null, NegativeExpectationText = null, ExpectationText = "is {not} empty",
+				Summary = null, NegatedSummary = null, Remarks = null, NegatedRemarks = null)]
+			public static partial class ThatString;
+			""");
+
+		await That(result.Generated).Contains("///     Verifies that the subject is empty.").Once();
+		await That(result.Generated).Contains("///     Verifies that the subject is not empty.").Once();
+		await That(result.Generated).DoesNotContain("<remarks>")
+			.Because("a text set to null is the same as one that is not set");
+	}
+
+	[Test]
+	public async Task WhenUsingContainsNull_ShouldSkipIt()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			using aweXpect.SourceGenerators;
+
+			namespace Lib;
+
+			[CreateExpectationOn<int>("IsZero", "{value} == 0", ExpectationText = "is zero",
+				Using = new string[] { null, "System.Text", })]
+			public static partial class ThatInt;
+			""");
+
+		await That(result.Generated).Contains("using System.Text;").Once();
+		await That(result.Generated).DoesNotContain("using ;")
+			.Because("a null namespace cannot be imported");
+	}
+
+	[Test]
+	[Arguments("has {not} items", "has items", "have items")]
+	[Arguments("does {not} fail", "does fail", "do fail")]
+	[Arguments("contains {not} zero", "contains zero", "contains zero")]
+	[Arguments("zero", "zero", "zero")]
+	public async Task WithExpectationText_ShouldSelectThePluralOfItsVerb(string expectationText, string singular,
+		string plural)
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			$$"""
+			  using aweXpect.SourceGenerators;
+
+			  namespace Lib;
+
+			  [CreateExpectationOn<int>("IsZero", "{value} == 0", ExpectationText = "{{expectationText}}")]
+			  public static partial class ThatInt;
+			  """);
+
+		await That(result.Generated).Contains($"Grammars.Verb(\"{singular}\", \"{plural}\")")
+			.Because("only the leading verb of the expectation text changes for a plural subject");
 	}
 
 	[Test]
@@ -300,6 +385,26 @@ public sealed class ExpectationGeneratorTests
 	}
 
 	[Test]
+	public async Task WithNegatedSummary_ShouldUseItForTheNegatedOverload()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			using aweXpect.SourceGenerators;
+
+			namespace Lib;
+
+			[CreateExpectationOnNullable<string>("Is{Not}Empty", "{value} == \"\"", ExpectationText = "is {not} empty",
+				NegatedSummary = "Verifies that the subject is not <see cref=\"string.Empty\" />.")]
+			public static partial class ThatString;
+			""");
+
+		await That(result.Generated).Contains("///     Verifies that the subject is empty.").Once()
+			.Because("the negated summary only replaces the one of the negated overload");
+		await That(result.Generated)
+			.Contains("///     Verifies that the subject is not <see cref=\"string.Empty\" />.").Once();
+	}
+
+	[Test]
 	public async Task WithNotPlaceholder_ShouldEmitBothPolarities()
 	{
 		GeneratorRunner.GeneratorResult result = Run(
@@ -316,6 +421,45 @@ public sealed class ExpectationGeneratorTests
 		await That(result.Generated).Contains(" IsNotZero(this ").Once();
 		await That(result.Generated).Contains("///     Verifies that the subject is not zero.").Once();
 		await That(result.Generated).Contains("Grammars.Verb(\"is not zero\", \"are not zero\")").Once();
+	}
+
+	[Test]
+	[Arguments("")]
+	[Arguments(", ExpectationText = null")]
+	public async Task WithoutExpectationText_ShouldDescribeTheExpectationByItsName(string expectationText)
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			$$"""
+			  using aweXpect.SourceGenerators;
+
+			  namespace Lib;
+
+			  [CreateExpectationOn<int>("Is{Not}Zero", "{value} == 0"{{expectationText}})]
+			  public static partial class ThatInt;
+			  """);
+
+		await That(result.Generated).Contains("Grammars.Verb(\"IsZero\", \"IsZero\")").Once()
+			.Because("the name is the only description left");
+		await That(result.Generated).Contains("Grammars.Verb(\"not IsZero\", \"not IsZero\")").Once();
+	}
+
+	[Test]
+	public async Task WithPositiveAndNegativeExpectationText_ShouldUseThem()
+	{
+		GeneratorRunner.GeneratorResult result = Run(
+			"""
+			using aweXpect.SourceGenerators;
+
+			namespace Lib;
+
+			[CreateExpectationOn<int>("Is{Not}Zero", "{value} == 0",
+				PositiveExpectationText = "equals zero", NegativeExpectationText = "differs from zero")]
+			public static partial class ThatInt;
+			""");
+
+		await That(result.Generated).Contains("///     Verifies that the subject equals zero.").Once();
+		await That(result.Generated).Contains("///     Verifies that the subject differs from zero.").Once()
+			.Because("each polarity can be described on its own, when inserting a \"not\" does not read well");
 	}
 
 	[Test]

@@ -118,6 +118,30 @@ public sealed partial class TypeMetadataGeneratorTests
 	}
 
 	[Test]
+	public async Task WhenCollectionInheritsMembersFromAMicrosoftType_ShouldNotRegisterThem()
+	{
+		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(
+		[
+			"""
+			namespace Microsoft.Extensions
+			{
+				public class Bag : System.Collections.Generic.List<int>
+				{
+					public string Label { get; set; } = "";
+				}
+			}
+
+			public class GlobalBag : Microsoft.Extensions.Bag;
+			""",
+			Call("Expect.That(new GlobalBag()).IsEquivalentTo(new GlobalBag());"),
+		]);
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).DoesNotContain("\"Label\"")
+			.Because("a member declared in a namespace of Microsoft belongs to the framework, like one of System");
+	}
+
+	[Test]
 	public async Task WhenCoreCannotRegisterCollections_ShouldNotRegisterTheirMembers()
 	{
 		GeneratorRunner.GeneratorResult result = GeneratorRunner.Run(

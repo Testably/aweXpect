@@ -104,6 +104,7 @@ internal static class GeneratorRunner
 		IEnumerable<MetadataReference> references, bool supportsNullable = true)
 		=> CSharpCompilation.Create(assemblyName, trees, references,
 			new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary,
+				allowUnsafe: true,
 				nullableContextOptions: supportsNullable
 					? NullableContextOptions.Enable
 					: NullableContextOptions.Disable));
