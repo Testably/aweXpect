@@ -121,19 +121,19 @@ internal static class CollectionHelpers
 		IEnumerable materialized)
 		=> cancellationToken.IsCancellationRequested && IsIncomplete(materialized);
 
-	/// <summary>
-	///     Whether the untyped <paramref name="items" /> can have further items to come from their source, which
-	///     neither a collection that knows its number of items nor a sequence that was read to its end has.
-	/// </summary>
-	internal static bool IsIncomplete(IEnumerable? items)
-		=> items is not ICountable { Count: not null, } && items.GetUntypedCount() is null;
-
 #if NET8_0_OR_GREATER
 	/// <inheritdoc cref="IsCanceledBeforeTheEndOf{TItem}(CancellationToken, IEnumerable{TItem})" />
 	internal static bool IsCanceledBeforeTheEndOf<TItem>(this CancellationToken cancellationToken,
 		IAsyncEnumerable<TItem> materialized)
 		=> cancellationToken.IsCancellationRequested && materialized is not ICountable { Count: not null, };
 #endif
+
+	/// <summary>
+	///     Whether the untyped <paramref name="items" /> can have further items to come from their source, which
+	///     neither a collection that knows its number of items nor a sequence that was read to its end has.
+	/// </summary>
+	internal static bool IsIncomplete(IEnumerable? items)
+		=> items is not ICountable { Count: not null, } && items.GetUntypedCount() is null;
 
 	/// <summary>
 	///     Counts the items of the <paramref name="source" />, or returns <see langword="null" /> when the
