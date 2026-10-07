@@ -572,6 +572,37 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
+	public async Task WhenListTypeIsRegisteredAsACollection_AndHasAField_ShouldCompareTheRegisteredField()
+	{
+		TypeMetadataRegistry.RegisterBatch(() =>
+		{
+			TypeMetadataRegistry.RegisterField<RegisteredTaggedList, string>(nameof(RegisteredTaggedList.Tag),
+				o => o.Tag.ToUpperInvariant() + "!");
+			TypeMetadataRegistry.RegisterCollection<RegisteredTaggedList>();
+		});
+		object actual = new RegisteredTaggedList
+		{
+			Tag = "a",
+		};
+		object expected = new RegisteredTaggedList
+		{
+			Tag = "b",
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Field Tag differed:
+		                                                      Actual: "A!"
+		                                                    Expected: "B!"
+		                                                """).IgnoringNewlineStyle()
+			.Because("the registered field is the one the collection declares itself, and reflection is not asked");
+	}
+
+	[Test]
 	public async Task WhenListTypeIsRegisteredAsACollection_ShouldCompareTheRegisteredMembers()
 	{
 		RegisterShoutingList();
@@ -843,6 +874,11 @@ public sealed partial class EquivalencyComparisonTests
 	{
 		public string Name { get; set; } = "";
 		public string Unregistered { get; set; } = "";
+	}
+
+	private sealed class RegisteredTaggedList : List<int>
+	{
+		public string Tag = "";
 	}
 
 	private sealed class PlainList(int capacity) : List<int>(capacity)

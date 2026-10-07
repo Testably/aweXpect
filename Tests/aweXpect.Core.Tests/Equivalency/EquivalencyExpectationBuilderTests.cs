@@ -81,6 +81,27 @@ public sealed class EquivalencyExpectationBuilderTests
 	}
 
 	[Test]
+	public async Task IsMetBy_WhenValueIsNullForAReferenceType_ShouldEvaluateTheExpectationsAndDescribeNull()
+	{
+		It.IsEquivalent<string> isEquivalent = It.Is<string>();
+		isEquivalent.That.IsEmpty();
+		EquivalencyExpectationBuilder sut =
+			(EquivalencyExpectationBuilder)((IExpectThat<string>)isEquivalent).ExpectationBuilder;
+		StringBuilder expectation = new();
+		StringBuilder result = new();
+
+		ConstraintResult constraintResult =
+			await sut.IsMetBy<string?>(null, new EvaluationContext.EvaluationContext(), CancellationToken.None);
+		constraintResult.AppendExpectation(expectation);
+		constraintResult.AppendResult(result);
+
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.FailureBothWays);
+		await That(expectation.ToString()).IsEqualTo("is empty")
+			.Because("null is a valid value of a reference type, so the expectations are evaluated for it");
+		await That(result.ToString()).IsEqualTo(" was <null>");
+	}
+
+	[Test]
 	public async Task IsMetBy_WhenValueIsNullForAValueType_ShouldFailWithoutEvaluatingTheExpectations()
 	{
 		EquivalencyExpectationBuilder sut = CreateIsGreaterThan2();
