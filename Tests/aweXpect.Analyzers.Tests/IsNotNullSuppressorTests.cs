@@ -7,6 +7,31 @@ namespace aweXpect.Analyzers.Tests;
 public class IsNotNullSuppressorTests
 {
 	[Test]
+	public async Task WhenAMemberIsAssignedAfterExpectation_ShouldSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class Holder
+			{
+			    public string? Value = "foo";
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest(string? subject, Holder holder)
+			    {
+			        await Expect.That(subject).IsNotNull();
+			        holder.Value = null;
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			SuppressedNullabilityWarning()
+		);
+
+	[Test]
 	public async Task WhenAwaitedExpectationIsAssigned_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -720,6 +745,42 @@ public class IsNotNullSuppressorTests
 		);
 
 	[Test]
+	public async Task WhenExtensionReturnsADerivedResultBeforeAnd_ShouldSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Core;
+			using aweXpect.Results;
+
+			public class MyResult : AndOrResult<string?, IThat<string?>>
+			{
+			    public MyResult(ExpectationBuilder expectationBuilder, IThat<string?> returnValue)
+			        : base(expectationBuilder, returnValue)
+			    {
+			    }
+			}
+
+			public static class MyExpectations
+			{
+			    public static MyResult IsAbsolutePath(this IThat<string?> subject)
+			        => throw new NotSupportedException();
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest(string? subject)
+			    {
+			        await Expect.That(subject).IsAbsolutePath().And.IsNotNull();
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			SuppressedNullabilityWarning()
+		);
+
+	[Test]
 	public async Task WhenExtensionReturnsThatOfSameTypeBeforeExpectation_ShouldNotSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			// The returned `IThat<string?>` could be a member of the same type, e.g. the file name of a path.
@@ -1274,6 +1335,34 @@ public class IsNotNullSuppressorTests
 			}
 			""",
 			SuppressedNullabilityWarning()
+		);
+
+	[Test]
+	public async Task WhenSubjectIsWrappedBeforeExpectation_ShouldNotSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Core;
+
+			public static class MyWrappers
+			{
+			    public static IThat<string?> Wrap(this string? subject) => Expect.That(subject);
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest(string? subject, string? other)
+			    {
+			        await subject.Wrap().IsNotNull();
+			        _ = {|#0:subject|}.Length;
+			        await MyWrappers.Wrap(other).IsNotNull();
+			        _ = {|#1:other|}.Length;
+			    }
+			}
+			""",
+			NotSuppressedNullabilityWarning(),
+			DiagnosticResult.CompilerWarning("CS8602").WithLocation(1).WithIsSuppressed(false)
 		);
 
 	[Test]

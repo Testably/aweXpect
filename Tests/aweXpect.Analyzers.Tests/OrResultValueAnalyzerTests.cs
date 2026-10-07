@@ -241,6 +241,26 @@ public class OrResultValueAnalyzerTests
 		);
 
 	[Test]
+	public async Task WhenTheOrIsOfATypeParameter_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Core;
+			using aweXpect.Results;
+
+			public class MyClass
+			{
+			    public async Task<string> MyTest<TThat>(AndOrResult<int, TThat> result)
+			        where TThat : IThat<string>
+			    {
+			        return await result.Or.IsEqualTo("foo");
+			    }
+			}
+			"""
+		);
+
+	[Test]
 	public async Task WhenTheValueIsAValueType_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""

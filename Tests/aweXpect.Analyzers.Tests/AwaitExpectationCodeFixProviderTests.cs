@@ -106,6 +106,73 @@ public class AwaitExpectationCodeFixProviderTests
 		""");
 
 	[Test]
+	public async Task ShouldAwaitEachKindOfReturnedGenericTask() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    private readonly Task<int> _task = Task.FromResult(1);
+
+		    public Task<int> MyTest(int value, Task<int> task)
+		    {
+		        {|aweXpect0001:Expect.That(value)|}.IsPositive();
+		        if (value == 1)
+		        {
+		            return task;
+		        }
+
+		        if (value == 2)
+		        {
+		            return (task);
+		        }
+
+		        if (value == 3)
+		        {
+		            return this._task;
+		        }
+
+		        return GetValue();
+		    }
+
+		    private Task<int> GetValue() => Task.FromResult(1);
+		}
+		""",
+		"""
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    private readonly Task<int> _task = Task.FromResult(1);
+
+		    public async Task<int> MyTest(int value, Task<int> task)
+		    {
+		        await Expect.That(value).IsPositive();
+		        if (value == 1)
+		        {
+		            return await task;
+		        }
+
+		        if (value == 2)
+		        {
+		            return await (task);
+		        }
+
+		        if (value == 3)
+		        {
+		            return await this._task;
+		        }
+
+		        return await GetValue();
+		    }
+
+		    private Task<int> GetValue() => Task.FromResult(1);
+		}
+		""");
+
+	[Test]
 	public async Task ShouldAwaitTheDiscardedExpectation() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System.Threading.Tasks;
@@ -386,6 +453,43 @@ public class AwaitExpectationCodeFixProviderTests
 		""");
 
 	[Test]
+	public async Task ShouldMakeAMethodAsyncThatImplementsNoInterfaceMember() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public interface IMarker
+		{
+		    static int Version => 1;
+		}
+
+		public class MyClass : IMarker
+		{
+		    public void MyTest()
+		    {
+		        {|aweXpect0001:Expect.That(true)|}.IsTrue();
+		    }
+		}
+		""",
+		"""
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public interface IMarker
+		{
+		    static int Version => 1;
+		}
+
+		public class MyClass : IMarker
+		{
+		    public async Task MyTest()
+		    {
+		        await Expect.That(true).IsTrue();
+		    }
+		}
+		""");
+
+	[Test]
 	public async Task ShouldMakeAReferencedTaskMethodAsync() => await Verifier.VerifyCodeFixAsync(
 		"""
 		using System;
@@ -452,6 +556,33 @@ public class AwaitExpectationCodeFixProviderTests
 		    {
 		        var subject = true;
 		        await Expect.That(subject).IsTrue();
+		    }
+		}
+		""");
+
+	[Test]
+	public async Task ShouldMakeExpressionBodiedLocalFunctionAsync() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public void MyTest()
+		    {
+		        static void Verify(bool value) => {|aweXpect0001:Expect.That(value)|}.IsTrue();
+		    }
+		}
+		""",
+		"""
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public void MyTest()
+		    {
+		        static async Task Verify(bool value) => await Expect.That(value).IsTrue();
 		    }
 		}
 		""");
@@ -908,6 +1039,62 @@ public class AwaitExpectationCodeFixProviderTests
 		    {
 		        {|aweXpect0001:Expect.That(subject)|}.IsTrue();
 		        return Task.Delay(1);
+		    }
+		}
+		""");
+
+	[Test]
+	public async Task ShouldNotOfferAFixForATaskMethodReturningNull() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public Task<int> MyTest(bool subject)
+		    {
+		        {|aweXpect0001:Expect.That(subject)|}.IsTrue();
+		        return null;
+		    }
+		}
+		""",
+		"""
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public Task<int> MyTest(bool subject)
+		    {
+		        {|aweXpect0001:Expect.That(subject)|}.IsTrue();
+		        return null;
+		    }
+		}
+		""");
+
+	[Test]
+	public async Task ShouldNotOfferAFixForATernaryExpression() => await Verifier.VerifyCodeFixAsync(
+		"""
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest(bool condition)
+		    {
+		        _ = condition ? {|aweXpect0001:Expect.That(true)|}.IsTrue() : {|aweXpect0001:Expect.That(false)|}.IsTrue();
+		    }
+		}
+		""",
+		"""
+		using System.Threading.Tasks;
+		using aweXpect;
+
+		public class MyClass
+		{
+		    public async Task MyTest(bool condition)
+		    {
+		        _ = condition ? {|aweXpect0001:Expect.That(true)|}.IsTrue() : {|aweXpect0001:Expect.That(false)|}.IsTrue();
 		    }
 		}
 		""");
