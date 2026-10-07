@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Internal;
 using aweXpect.Core.Metadata;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Recording;
@@ -301,7 +302,7 @@ public sealed class EventRecordingTests
 				.And.DidNotTrigger(nameof(CustomEventClass.CustomEvent)).WithParameter<int>(p => p == 2)
 				.Within(TimeSpan.FromSeconds(1))
 				.WithTimeout(TimeSpan.FromSeconds(1))
-				.UseTimeSystem(timeSystem);
+				.WithTimeSystem(timeSystem);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("*but it did not finish within 0:01").AsWildcard().And

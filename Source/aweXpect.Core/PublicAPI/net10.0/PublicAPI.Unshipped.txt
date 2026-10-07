@@ -682,3 +682,10 @@ static aweXpect.Core.EvaluationContext.EvaluationContextExtensions.GetTimestamp(
 static aweXpect.Core.EvaluationContext.EvaluationContextExtensions.WaitForSignalsAsync(this aweXpect.Core.EvaluationContext.IEvaluationContext! evaluationContext, aweXpect.Signaling.Signaler! signaler, aweXpect.Core.Times amount, System.TimeSpan? timeout, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult!>!
 static aweXpect.Core.EvaluationContext.EvaluationContextExtensions.WaitForSignalsAsync<TParameter>(this aweXpect.Core.EvaluationContext.IEvaluationContext! evaluationContext, aweXpect.Signaling.Signaler<TParameter>! signaler, aweXpect.Core.Times amount, System.Func<TParameter, bool>? predicate, System.TimeSpan? timeout, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task<aweXpect.Signaling.SignalerResult<TParameter>!>!
 aweXpect.Options.CollectionMatchOptions.GetCollectionMatcher<T, T2>(System.Collections.Generic.IEnumerable<T>! expected, int[]? dimensions) -> aweXpect.Core.ICollectionMatcher<T, T2>!
+aweXpect.Core.Internal.ITimeSystem
+aweXpect.Core.Internal.ITimeSystem.CancelAfter(System.Threading.CancellationTokenSource! cancellationTokenSource, System.TimeSpan delay) -> void
+aweXpect.Core.Internal.ITimeSystem.Delay(System.TimeSpan delay, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.Task!
+aweXpect.Core.Internal.ITimeSystem.GetElapsedTime(long startTimestamp) -> System.TimeSpan
+aweXpect.Core.Internal.ITimeSystem.GetTimestamp() -> long
+aweXpect.Core.Internal.TimeSystemExtensions
+static aweXpect.Core.Internal.TimeSystemExtensions.WithTimeSystem<TExpectation>(this TExpectation! expectation, aweXpect.Core.Internal.ITimeSystem! timeSystem) -> TExpectation!

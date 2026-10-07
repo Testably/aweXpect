@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using aweXpect.Core.TimeSystem;
+using aweXpect.Core.Internal;
 
 namespace aweXpect.Core.Tests.TestHelpers;
 
@@ -23,7 +23,7 @@ namespace aweXpect.Core.Tests.TestHelpers;
 ///     its own cancels after real time; a cancellation by the caller is scheduled with
 ///     <see cref="CancelAt(TimeSpan, CancellationTokenSource)" />.
 /// </remarks>
-internal sealed class VirtualTimeSystem : ITimeSystem, IStopwatchFactory
+internal sealed class VirtualTimeSystem : ITimeSystem
 {
 	/// <summary>
 	///     How long a wait that a cancellation cut short waits in real time for being canceled itself, so that a
@@ -48,12 +48,6 @@ internal sealed class VirtualTimeSystem : ITimeSystem, IStopwatchFactory
 			}
 		}
 	}
-
-	/// <inheritdoc />
-	IStopwatch IStopwatchFactory.New() => new VirtualStopwatch(this);
-
-	/// <inheritdoc />
-	public IStopwatchFactory Stopwatch => this;
 
 	/// <inheritdoc />
 	public long GetTimestamp() => Now.Ticks;
@@ -202,34 +196,6 @@ internal sealed class VirtualTimeSystem : ITimeSystem, IStopwatchFactory
 			if (time > _now)
 			{
 				_now = time;
-			}
-		}
-	}
-
-	private sealed class VirtualStopwatch(VirtualTimeSystem timeSystem) : IStopwatch
-	{
-		private TimeSpan _elapsed;
-		private TimeSpan _startedAt;
-
-		public TimeSpan Elapsed => IsRunning ? _elapsed + (timeSystem.Now - _startedAt) : _elapsed;
-
-		public bool IsRunning { get; private set; }
-
-		public void Start()
-		{
-			if (!IsRunning)
-			{
-				_startedAt = timeSystem.Now;
-				IsRunning = true;
-			}
-		}
-
-		public void Stop()
-		{
-			if (IsRunning)
-			{
-				_elapsed += timeSystem.Now - _startedAt;
-				IsRunning = false;
 			}
 		}
 	}

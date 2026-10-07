@@ -6,6 +6,7 @@ using System.Threading.Tasks.Sources;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Extending;
+using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
 
@@ -832,6 +833,8 @@ public class ExpectTests
 
 		internal override Task ResolvePendingReasons()
 			=> Task.CompletedTask;
+
+		internal override void UseTimeSystem(ITimeSystem timeSystem) { }
 	}
 
 	/// <summary>

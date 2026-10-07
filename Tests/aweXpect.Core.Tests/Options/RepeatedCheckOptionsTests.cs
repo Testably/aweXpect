@@ -8,6 +8,7 @@ using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Options;
 using aweXpect.Results;
@@ -53,7 +54,7 @@ public sealed class RepeatedCheckOptionsTests
 					checks++;
 					time.Advance(600.Milliseconds());
 				})
-				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).UseTimeSystem(time);
+				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).WithTimeSystem(time);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -75,7 +76,7 @@ public sealed class RepeatedCheckOptionsTests
 
 		async Task Act()
 			=> await HasMatchingItem(That<IEnumerable<int>>(subject), _ => false, () => checks++)
-				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).UseTimeSystem(time);
+				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).WithTimeSystem(time);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -117,7 +118,7 @@ public sealed class RepeatedCheckOptionsTests
 
 		async Task Act()
 			=> await HasMatchingItem(That(subject), _ => checks.Count > 2, () => checks.Add(time.Now))
-				.Within(100.Milliseconds()).CheckEvery(6.Seconds()).UseTimeSystem(time);
+				.Within(100.Milliseconds()).CheckEvery(6.Seconds()).WithTimeSystem(time);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -194,7 +195,7 @@ public sealed class RepeatedCheckOptionsTests
 						throw lastThrown;
 					},
 					() => checks++)
-				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).UseTimeSystem(time);
+				.Within(500.Milliseconds()).CheckEvery(10.Milliseconds()).WithTimeSystem(time);
 
 		Exception? exception = await Catch.ExceptionAsync(Act);
 

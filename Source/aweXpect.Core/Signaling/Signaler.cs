@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.Internal;
 using aweXpect.Core.TimeSystem;
 using aweXpect.Customization;
 

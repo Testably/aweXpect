@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Helpers;
-using aweXpect.Core.TimeSystem;
+using aweXpect.Core.Internal;
 
 namespace aweXpect.Core.Sources;
 

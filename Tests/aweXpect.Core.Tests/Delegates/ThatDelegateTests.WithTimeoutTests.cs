@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using aweXpect.Chronology;
+using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Delegates;
@@ -29,7 +30,7 @@ public sealed partial class ThatDelegateTests
 			};
 
 			async Task Act()
-				=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds()).UseTimeSystem(timeSystem);
+				=> await That(@delegate).DoesNotThrow().WithTimeout(50.Milliseconds()).WithTimeSystem(timeSystem);
 
 			await That(Act).Throws<FailException>()
 				.WithMessage("""

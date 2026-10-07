@@ -5,6 +5,7 @@ using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Equivalency;
 using aweXpect.Options;
@@ -252,7 +253,7 @@ public sealed class NestedExpectationEvaluationTests
 		};
 
 		async Task Act()
-			=> await That(subject).IsEquivalentTo(expected).UseTimeSystem(timeSystem);
+			=> await That(subject).IsEquivalentTo(expected).WithTimeSystem(timeSystem);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -284,7 +285,7 @@ public sealed class NestedExpectationEvaluationTests
 		};
 
 		async Task Act()
-			=> await That(subject).IsEquivalentTo(expected).WithTimeout(10.Seconds()).UseTimeSystem(timeSystem);
+			=> await That(subject).IsEquivalentTo(expected).WithTimeout(10.Seconds()).WithTimeSystem(timeSystem);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("*but it did not finish within 0:10*").AsWildcard().And

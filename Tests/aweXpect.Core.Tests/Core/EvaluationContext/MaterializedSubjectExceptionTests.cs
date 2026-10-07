@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 #if NET8_0_OR_GREATER
 using System.Threading;
@@ -265,7 +266,7 @@ public class MaterializedSubjectExceptionTests
 
 		async Task Act()
 			=> await That(subject).CompliesWith(it => it.Contains(1))
-				.Within(TimeSpan.FromMilliseconds(30)).CheckEvery(TimeSpan.FromMilliseconds(10)).UseTimeSystem(time);
+				.Within(TimeSpan.FromMilliseconds(30)).CheckEvery(TimeSpan.FromMilliseconds(10)).WithTimeSystem(time);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""

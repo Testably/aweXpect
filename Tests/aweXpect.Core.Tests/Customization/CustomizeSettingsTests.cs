@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Threading;
 using aweXpect.Chronology;
+using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
-using aweXpect.Core.TimeSystem;
 using aweXpect.Customization;
 using aweXpect.Signaling;
 
@@ -28,11 +28,11 @@ public sealed class CustomizeSettingsTests
 		ChangingClass sut2 = new(time);
 
 		await That(Customize.aweXpect.Settings().DefaultCheckInterval.Get()).IsEqualTo(100.Milliseconds());
-		await That(sut1).Satisfies(x => x.HasMeasuredInterval).Within(30.Seconds()).UseTimeSystem(time);
+		await That(sut1).Satisfies(x => x.HasMeasuredInterval).Within(30.Seconds()).WithTimeSystem(time);
 		await That(sut1.Interval).IsEqualTo(100.Milliseconds());
 		using (IDisposable __ = Customize.aweXpect.Settings().DefaultCheckInterval.Set(timeout))
 		{
-			await That(sut2).Satisfies(x => x.HasMeasuredInterval).Within(30.Seconds()).UseTimeSystem(time);
+			await That(sut2).Satisfies(x => x.HasMeasuredInterval).Within(30.Seconds()).WithTimeSystem(time);
 			await That(sut2.Interval).IsEqualTo(timeout);
 		}
 	}
@@ -397,23 +397,23 @@ public sealed class CustomizeSettingsTests
 
 	private sealed class ChangingClass(VirtualTimeSystem time)
 	{
-		private readonly IStopwatch _stopwatch = time.Stopwatch.New();
+		private long? _startTimestamp;
 
 		public bool HasMeasuredInterval
 		{
 			get
 			{
-				if (!_stopwatch.IsRunning)
+				if (_startTimestamp is null)
 				{
-					_stopwatch.Start();
+					_startTimestamp = time.GetTimestamp();
 					return false;
 				}
 
-				_stopwatch.Stop();
+				Interval = time.GetElapsedTime(_startTimestamp.Value);
 				return true;
 			}
 		}
 
-		public TimeSpan Interval => _stopwatch.Elapsed;
+		public TimeSpan Interval { get; private set; }
 	}
 }

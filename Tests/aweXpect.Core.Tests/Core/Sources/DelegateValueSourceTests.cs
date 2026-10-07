@@ -1,4 +1,5 @@
 ﻿using aweXpect.Chronology;
+using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Core.Sources;
@@ -12,7 +13,7 @@ public class DelegateValueSourceTests
 
 		async Task Act() =>
 			await That(() => 1).ExecutesIn().AtLeast(1000.Milliseconds())
-				.UseTimeSystem(timeSystem);
+				.WithTimeSystem(timeSystem);
 
 		await That(Act).DoesNotThrow();
 	}
