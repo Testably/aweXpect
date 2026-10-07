@@ -63,6 +63,79 @@ public class EvaluationCancellationTests
 	}
 
 	[Test]
+	public async Task ForRemainingTimeout_WithOuterTimeout_ShouldHaveTheRestOfTheOuterTimeout()
+	{
+		EvaluationCancellation sut = new(null, CancellationToken.None, 30.Seconds());
+
+		EvaluationCancellation result = sut.ForRemainingTimeout();
+		result.Release();
+
+		await That(sut.Timeout).IsNull()
+			.Because("the outer timeout does not cancel the evaluation");
+		await That(result.Timeout).IsNotNull().And.IsLessThanOrEqualTo(30.Seconds())
+			.Because("the outer timeout still limits what is awaited after the evaluation");
+		await That(result.Timeout).IsGreaterThan(TimeSpan.Zero);
+	}
+
+	[Test]
+	public async Task ForRemainingTimeout_WithoutTimeout_ShouldBeTheSameInstance()
+	{
+		using CancellationTokenSource cts = new();
+		EvaluationCancellation sut = EvaluationCancellation.Create(null, cts.Token);
+
+		EvaluationCancellation result = sut.ForRemainingTimeout();
+
+		await That(result).IsSameAs(sut)
+			.Because("the token of the caller needs no timer that the evaluation could have released");
+	}
+
+	[Test]
+	public async Task ForRemainingTimeout_WithTimeout_ShouldBeCanceledByTheCaller()
+	{
+		using CancellationTokenSource cts = new();
+		EvaluationCancellation sut = EvaluationCancellation.Create(30.Seconds(), cts.Token);
+		sut.Release();
+
+		EvaluationCancellation result = sut.ForRemainingTimeout();
+		bool isCanceledBefore = result.Token.IsCancellationRequested;
+		cts.Cancel();
+		bool isCanceledAfter = result.Token.IsCancellationRequested;
+		result.Release();
+
+		await That(isCanceledBefore).IsFalse();
+		await That(isCanceledAfter).IsTrue();
+		await That(result.Reason).IsEqualTo(CancellationReason.Caller);
+	}
+
+	[Test]
+	public async Task ForRemainingTimeout_WithTimeout_ShouldHaveTheRestOfTheTimeout()
+	{
+		EvaluationCancellation sut = EvaluationCancellation.Create(30.Seconds(), CancellationToken.None);
+		sut.Release();
+
+		EvaluationCancellation result = sut.ForRemainingTimeout();
+		result.Release();
+
+		await That(result).IsNotSameAs(sut)
+			.Because("the evaluation already released its timer");
+		await That(result.Timeout).IsNotNull().And.IsLessThanOrEqualTo(30.Seconds())
+			.Because("the timeout is measured from the start of the evaluation");
+		await That(result.Timeout).IsGreaterThan(TimeSpan.Zero);
+	}
+
+	[Test]
+	public async Task ForRemainingTimeout_WithTimeoutOfZero_ShouldHaveNoTimeLeft()
+	{
+		EvaluationCancellation sut = EvaluationCancellation.Create(TimeSpan.Zero, CancellationToken.None);
+		sut.Release();
+
+		EvaluationCancellation result = sut.ForRemainingTimeout();
+		result.Release();
+
+		await That(result.Timeout).IsEqualTo(TimeSpan.Zero);
+	}
+
+	[Test]
 	public async Task HasWaitElapsed_WhenTheCallerCanceled_ShouldBeFalse()
 	{
 		using CancellationTokenSource cts = new();

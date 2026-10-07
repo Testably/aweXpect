@@ -275,6 +275,27 @@ public class ManualExpectationBuilderTests
 	}
 
 	[Test]
+	public async Task IsMetBy_WhenConstraintFails_WhenCancellationIsRequested_ShouldAbandonAPendingReason()
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		ManualExpectationBuilder<int> sut = new();
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(_ => false, "is foo"));
+		sut.AddReason(becauseSource.Task);
+		StringBuilder reasons = new();
+
+		Task evaluation = sut.IsMetBy(1, null!, new CancellationToken(true)).AsTask();
+		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
+		bool isCompleted = evaluation.IsCompleted;
+		becauseSource.SetResult("of a");
+		await evaluation;
+		sut.AppendReasons(reasons);
+
+		await That(isCompleted).IsTrue()
+			.Because("the cancellation must stop waiting for a reason that does not arrive");
+		await That(reasons.ToString()).IsEqualTo(", because the reason was not available in time");
+	}
+
+	[Test]
 	public async Task IsMetBy_WhenConstraintSucceeds_ShouldResolveReasonOnlyWhenTheEvaluationFails()
 	{
 		ManualExpectationBuilder<int> sut = new();
@@ -286,7 +307,7 @@ public class ManualExpectationBuilderTests
 
 		await sut.IsMetBy(1, context, CancellationToken.None);
 		sut.AppendReasons(reasonsWhenMet);
-		await context.ResolvePendingReasons();
+		await context.ResolvePendingReasons(CancellationToken.None);
 		sut.AppendReasons(reasonsWhenFailed);
 
 		await That(reasonsWhenMet.ToString()).IsEmpty()
@@ -375,6 +396,32 @@ public class ManualExpectationBuilderTests
 	}
 
 	[Test]
+	public async Task IsMetBy_WithoutContext_WhenCancellationIsRequested_ShouldAbandonAPendingReasonOfAMetMember()
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		ManualExpectationBuilder<string> sut = new();
+		sut.ForMember(MemberAccessor<string, int>.FromFunc(x => x.Length, "length "))
+			.AddExpectations(length =>
+			{
+				length.AddConstraint((_, _) => new DummyConstraint<int>(v => v == 3, "equal to 3"));
+				length.AddReason(becauseSource.Task);
+			});
+		sut.And();
+		sut.AddConstraint((_, _) => new DummyConstraint<string>(_ => false, "is bar"));
+
+		Task<ConstraintResult> evaluation = sut.IsMetBy("foo", new CancellationToken(true)).AsTask();
+		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
+		bool isCompleted = evaluation.IsCompleted;
+		becauseSource.SetResult("of a");
+		ConstraintResult result = await evaluation;
+
+		await That(isCompleted).IsTrue()
+			.Because("the cancellation must stop waiting for a reason that does not arrive");
+		await That(result.GetExpectationText())
+			.IsEqualTo("length equal to 3, because the reason was not available in time and is bar");
+	}
+
+	[Test]
 	public async Task IsMetBy_WithoutContext_WhenMetMemberHasAsyncReason_AndEvaluationFails_ShouldAppendTheReason()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -422,6 +469,27 @@ public class ManualExpectationBuilderTests
 		sut.AppendReasons(sb);
 
 		await That(sb.ToString()).IsEqualTo(", because of a");
+	}
+
+	[Test]
+	public async Task PrepareExpectation_WhenCancellationIsRequested_ShouldAbandonAPendingReason()
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		ManualExpectationBuilder<int> sut = new();
+		sut.AddConstraint((_, _, _) => new DummyConstraint("is foo"));
+		sut.AddReason(becauseSource.Task);
+		StringBuilder sb = new();
+
+		Task preparation = sut.PrepareExpectation(null!, new CancellationToken(true));
+		await Task.WhenAny(preparation, Task.Delay(TimeSpan.FromSeconds(10)));
+		bool isCompleted = preparation.IsCompleted;
+		becauseSource.SetResult("of a");
+		await preparation;
+		sut.AppendReasons(sb);
+
+		await That(isCompleted).IsTrue()
+			.Because("the cancellation must stop waiting for a reason that does not arrive");
+		await That(sb.ToString()).IsEqualTo(", because the reason was not available in time");
 	}
 
 	[Test]

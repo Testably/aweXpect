@@ -75,6 +75,12 @@ public abstract class Expectation
 	/// </summary>
 	internal abstract Task EndEvaluation();
 
+	/// <summary>
+	///     Resolves the reasons that must be awaited of the met expectations, before the failure message of a
+	///     combination shows them.
+	/// </summary>
+	internal abstract Task ResolvePendingReasons();
+
 	/// <param name="index">The number of the last expectation in the result.</param>
 	/// <param name="subject">The subject line, or with <paramref name="isNumbered" /> the subject it names.</param>
 	/// <param name="result">The result of the expectation.</param>
@@ -180,6 +186,15 @@ public abstract class Expectation
 			}
 		}
 
+		/// <inheritdoc />
+		internal override async Task ResolvePendingReasons()
+		{
+			foreach (Expectation expectation in _expectations)
+			{
+				await expectation.ResolvePendingReasons();
+			}
+		}
+
 		private async Task GetResultOrThrow(CancellationToken cancellationToken = default)
 		{
 			try
@@ -200,6 +215,7 @@ public abstract class Expectation
 				return;
 			}
 
+			await ResolvePendingReasons();
 			StringBuilder sb = new();
 			sb.AppendLine(GetSubjectLine());
 			result.ConstraintResult.AppendExpectation(sb);

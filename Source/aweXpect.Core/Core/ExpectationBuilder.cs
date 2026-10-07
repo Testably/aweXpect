@@ -565,14 +565,22 @@ public abstract class ExpectationBuilder
 	///     The reasons are applied to the whole expectation instead of to the constraint they were given for, so that
 	///     they follow every suffix, e.g. constraints combined with <c>And</c> or <c>Or</c> and the timeout of
 	///     <c>Eventually</c>.
+	///     <para />
+	///     With an <paramref name="evaluation" />, a reason that must be awaited is appended without awaiting it and
+	///     resolved by <see cref="ResolvePendingReasons()" />, which limits the wait. It is passed for a
+	///     <paramref name="result" /> that is not met and for the member of a combination, as the combination can still
+	///     fail a met expectation.
 	/// </remarks>
-	internal async ValueTask<ConstraintResult> ApplyReasons(ConstraintResult result)
+	internal async ValueTask<ConstraintResult> ApplyReasons(ConstraintResult result,
+		EvaluationContext.EvaluationContext? evaluation = null)
 	{
 		if (_reasons is not null)
 		{
 			foreach (IBecauseReason reason in _reasons)
 			{
-				result = await reason.ApplyTo(result);
+				result = evaluation is not null && reason is AsyncBecauseReason asyncReason
+					? asyncReason.ApplyPending(result, evaluation)
+					: await reason.ApplyTo(result);
 			}
 		}
 
@@ -580,13 +588,35 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
+	///     Resolves the reasons that must be awaited of the current evaluation, when it fails or when a combination
+	///     fails the met expectation.
+	/// </summary>
+	/// <remarks>
+	///     A reason is awaited until the timeout of the evaluation elapses or the evaluation is canceled.
+	/// </remarks>
+	internal Task ResolvePendingReasons()
+		=> _evaluationContext is { HasPendingReasons: true, } context
+			? ResolvePendingReasons(context)
+			: Task.CompletedTask;
+
+	private static async Task ResolvePendingReasons(EvaluationContext.EvaluationContext context)
+	{
+		EvaluationCancellation cancellation = context.Cancellation.ForRemainingTimeout();
+		using EvaluationCancellation.ReleaseScope _ = cancellation.ReleaseAtTheEnd();
+		await context.ResolvePendingReasons(cancellation.Token);
+	}
+
+	/// <summary>
 	///     Resolves the reasons that must be awaited, so that their message is available.
 	/// </summary>
-	internal async Task ResolveReasons()
+	/// <remarks>
+	///     A reason that is still pending when the <paramref name="cancellationToken" /> is canceled is abandoned.
+	/// </remarks>
+	internal async Task ResolveReasons(CancellationToken cancellationToken)
 	{
 		foreach (AsyncBecauseReason reason in _reasons?.OfType<AsyncBecauseReason>() ?? [])
 		{
-			await reason.Resolve();
+			await reason.Resolve(cancellationToken);
 		}
 	}
 
@@ -913,7 +943,8 @@ public abstract class ExpectationBuilder
 			result = await isMet;
 			if (_reasons is not null)
 			{
-				result = await ApplyReasons(result);
+				result = await ApplyReasons(result,
+					endsWhenMet && result.Outcome == Outcome.Success ? null : _evaluationContext);
 			}
 		}
 		catch
@@ -940,7 +971,7 @@ public abstract class ExpectationBuilder
 				result = new ConstraintResult.WithoutDecision(result);
 			}
 
-			await _evaluationContext.ResolvePendingReasons();
+			await ResolvePendingReasons();
 		}
 
 		return _otherExceptions is null ? result : new ConstraintResult.WithOtherExceptions(result, _otherExceptions);

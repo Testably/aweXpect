@@ -829,6 +829,9 @@ public class ExpectTests
 
 		internal override Task EndEvaluation()
 			=> Task.CompletedTask;
+
+		internal override Task ResolvePendingReasons()
+			=> Task.CompletedTask;
 	}
 
 	/// <summary>

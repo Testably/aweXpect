@@ -455,7 +455,7 @@ public static partial class EquivalencyComparison
 				CancellationToken.None);
 			if (result.Outcome != Outcome.Success)
 			{
-				await evaluationContext.ResolvePendingReasons();
+				await evaluationContext.ResolvePendingReasons(CancellationToken.None);
 			}
 		}
 		finally

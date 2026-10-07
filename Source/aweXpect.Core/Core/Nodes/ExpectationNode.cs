@@ -217,7 +217,7 @@ internal class ExpectationNode : Node
 			ConstraintResult innerResult =
 				await IsInnerMetBy(_inner, value, result ?? source, context, cancellationToken);
 			innerResult = _combineResults?.Invoke(result, innerResult) ?? innerResult;
-			return await ApplyReasons(innerResult, context);
+			return await ApplyReasons(innerResult, context, cancellationToken);
 		}
 
 		if (result is null)
@@ -227,7 +227,7 @@ internal class ExpectationNode : Node
 					$"The expectation node does not support {Formatter.Format(typeof(TValue))} with value {Formatter.Format(value)}."));
 		}
 
-		return await ApplyReasons(result, context);
+		return await ApplyReasons(result, context, cancellationToken);
 	}
 
 	/// <summary>
@@ -259,16 +259,19 @@ internal class ExpectationNode : Node
 	///     A <see cref="ValueTask{TResult}" />, because most nodes have no reasons, and then neither a state machine is
 	///     started nor anything is allocated.
 	/// </remarks>
-	private ValueTask<ConstraintResult> ApplyReasons(ConstraintResult result, IEvaluationContext context)
-		=> _reasons is null ? new ValueTask<ConstraintResult>(result) : ApplyReasonsAsync(_reasons, result, context);
+	private ValueTask<ConstraintResult> ApplyReasons(ConstraintResult result, IEvaluationContext context,
+		CancellationToken cancellationToken)
+		=> _reasons is null
+			? new ValueTask<ConstraintResult>(result)
+			: ApplyReasonsAsync(_reasons, result, context, cancellationToken);
 
 	private static async ValueTask<ConstraintResult> ApplyReasonsAsync(List<IBecauseReason> reasons,
-		ConstraintResult result, IEvaluationContext context)
+		ConstraintResult result, IEvaluationContext context, CancellationToken cancellationToken)
 	{
 		foreach (IBecauseReason reason in reasons)
 		{
 			result = reason is AsyncBecauseReason asyncReason
-				? await asyncReason.ApplyToMember(result, context)
+				? await asyncReason.ApplyToMember(result, context, cancellationToken)
 				: await reason.ApplyTo(result);
 		}
 

@@ -1,4 +1,7 @@
-﻿using aweXpect.Core.Tests.TestHelpers;
+﻿using System.Runtime.CompilerServices;
+using System.Threading;
+using aweXpect.Chronology;
+using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Core;
 
@@ -170,6 +173,122 @@ public class BecauseTests
 	}
 
 	[Test]
+	public async Task WhenAsyncReasonIsPending_WhenAbandonedReasonFaultsLater_ShouldNotRaiseUnobservedTaskException()
+	{
+		MyException exception = new();
+		bool isRaised = false;
+		EventHandler<UnobservedTaskExceptionEventArgs> handler = (_, e) =>
+		{
+			if (e.Exception.InnerExceptions.Contains(exception))
+			{
+				isRaised = true;
+			}
+		};
+
+		TaskScheduler.UnobservedTaskException += handler;
+		bool isCompleted;
+		try
+		{
+			isCompleted = await AbandonReasonThatFaultsLater(exception);
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+		finally
+		{
+			TaskScheduler.UnobservedTaskException -= handler;
+		}
+
+		await That(isCompleted).IsTrue()
+			.Because("the cancellation must stop waiting for the reason");
+		await That(isRaised).IsFalse()
+			.Because("the exception of an abandoned reason must be observed, as nobody else awaits it");
+	}
+
+	[Test]
+	public async Task WhenAsyncReasonIsPending_WhenCancellationIsRequested_ShouldStillReportTheAssertionFailure()
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		using CancellationTokenSource cts = new();
+		bool subject = false;
+		Task evaluation = Evaluate();
+
+		cts.Cancel();
+
+		await That(await IsCompletedWithoutTheReason(evaluation, becauseSource)).IsTrue()
+			.Because("the cancellation must stop waiting for a reason that does not arrive");
+		await That(() => evaluation).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is True, because the reason was not available in time,
+			             but it was False
+			             """);
+
+		async Task Evaluate()
+			=> await That(subject).IsTrue().Because(becauseSource.Task).WithCancellation(cts.Token);
+	}
+
+	[Test]
+	public async Task WhenAsyncReasonIsPending_WhenItCompletesWithinTheTimeout_ShouldIncludeTheReason()
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		bool subject = false;
+		Task evaluation = Evaluate();
+
+		becauseSource.SetResult("r1");
+
+		await That(() => evaluation).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is True, because r1,
+			             but it was False
+			             """);
+
+		async Task Evaluate()
+			=> await That(subject).IsTrue().Because(becauseSource.Task).WithTimeout(30.Seconds());
+	}
+
+	[Test]
+	public async Task WhenAsyncReasonIsPending_WhenTimeoutElapses_ShouldStillReportTheAssertionFailure()
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		bool subject = false;
+		Task evaluation = Evaluate();
+
+		await That(await IsCompletedWithoutTheReason(evaluation, becauseSource)).IsTrue()
+			.Because("the timeout must stop waiting for a reason that does not arrive");
+		await That(() => evaluation).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is True, because the reason was not available in time,
+			             but it was False
+			             """);
+
+		async Task Evaluate()
+			=> await That(subject).IsTrue().Because(becauseSource.Task).WithTimeout(50.Milliseconds());
+	}
+
+	[Test]
+	public async Task
+		WhenAsyncReasonIsPending_WhenTimeoutIsLongerThanTheRetryBudgetOfEventually_ShouldStillReportTheAssertionFailure()
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		Task evaluation = Evaluate();
+
+		await That(await IsCompletedWithoutTheReason(evaluation, becauseSource)).IsTrue()
+			.Because("the timeout must stop waiting for the reason, although it does not cancel the attempts");
+		await That(() => evaluation).Throws<FailException>()
+			.WithMessage("""
+			             Expected that () => 1
+			             eventually is equal to 2 within 0:00.020, because the reason was not available in time,
+			             but it was 1, which differs by -1
+			             """);
+
+		async Task Evaluate()
+			=> await That(() => 1).Eventually().Within(20.Milliseconds()).IsEqualTo(2).Because(becauseSource.Task)
+				.WithTimeout(100.Milliseconds());
+	}
+
+	[Test]
 	public async Task WhenAsyncReasonIsSlow_WhenExpectationIsMet_ShouldNotAwaitTheReason()
 	{
 		bool reasonWasResolved = false;
@@ -183,6 +302,57 @@ public class BecauseTests
 
 		await That(reasonWasResolved).IsFalse()
 			.Because("a met expectation never builds a failure message, so it must not wait for the reason");
+	}
+
+	[Test]
+	public async Task WhenAsyncReasonOfAMemberIsPending_WhenTimeoutElapses_ShouldStillReportTheAssertionFailure()
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		string subject = "foo";
+		Task evaluation = Evaluate();
+
+		await That(await IsCompletedWithoutTheReason(evaluation, becauseSource)).IsTrue()
+			.Because("the timeout must stop waiting for a reason that does not arrive");
+		await That(() => evaluation).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose Length is equal to 5, because the reason was not available in time,
+			             but Length was 3, which differs by -2
+			             """);
+
+		async Task Evaluate()
+			=> await That(subject).Whose(s => s.Length, l => l.IsEqualTo(5).Because(becauseSource.Task))
+				.WithTimeout(50.Milliseconds());
+	}
+
+	[Test]
+	public async Task
+		WhenAsyncReasonOfAMetExpectationFaultsLater_OnABlockedTaskScheduler_ShouldNotRaiseUnobservedTaskException()
+	{
+		MyException exception = new();
+		bool isRaised = false;
+		EventHandler<UnobservedTaskExceptionEventArgs> handler = (_, e) =>
+		{
+			if (e.Exception.InnerExceptions.Contains(exception))
+			{
+				isRaised = true;
+			}
+		};
+
+		TaskScheduler.UnobservedTaskException += handler;
+		try
+		{
+			MeetExpectationOnABlockedTaskSchedulerWithReasonThatFaultsLater(exception);
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+		finally
+		{
+			TaskScheduler.UnobservedTaskException -= handler;
+		}
+
+		await That(isRaised).IsFalse()
+			.Because("the exception must be observed without the scheduler of the code that added the reason");
 	}
 
 	[Test]
@@ -389,5 +559,286 @@ public class BecauseTests
 			              [01] it was True
 			              [02] it was 1, which differs by -1
 			             """);
+	}
+
+	[Test]
+	public async Task WhenUsedInExpectThatAll_WhenAllExpectationsAreMet_ShouldNotAwaitTheAsyncReason()
+	{
+		Task<string?> becauseTask = PendingTask.Of<string?>();
+
+		async Task Act() => await ThatAll(
+			That(true).IsTrue().Because(becauseTask),
+			That(1).IsEqualTo(1));
+
+		await That(Act).DoesNotThrow()
+			.Because("a met combination never builds a failure message, so it must not wait for the reason");
+	}
+
+	[Test]
+	public async Task WhenUsedInExpectThatAll_WhenAsyncReasonOfAMetExpectationCompletesLater_ShouldAwaitTheReason()
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		Task combination = Combination();
+
+		becauseSource.SetResult("r1");
+
+		await That(() => combination).Throws()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that true is True, because r1
+			              [02] Expected that 1 is equal to 2
+			             but
+			              [02] it was 1, which differs by -1
+			             """);
+
+		async Task Combination() => await ThatAll(
+			That(true).IsTrue().Because(becauseSource.Task),
+			That(1).IsEqualTo(2));
+	}
+
+	[Test]
+	public async Task
+		WhenUsedInExpectThatAll_WhenAsyncReasonOfAMetExpectationFaultsLater_ShouldNotRaiseUnobservedTaskException()
+	{
+		MyException exception = new();
+		bool isRaised = false;
+		EventHandler<UnobservedTaskExceptionEventArgs> handler = (_, e) =>
+		{
+			if (e.Exception.InnerExceptions.Contains(exception))
+			{
+				isRaised = true;
+			}
+		};
+
+		TaskScheduler.UnobservedTaskException += handler;
+		try
+		{
+			await MeetCombinationWithReasonThatFaultsLater(exception);
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+		finally
+		{
+			TaskScheduler.UnobservedTaskException -= handler;
+		}
+
+		await That(isRaised).IsFalse()
+			.Because("the exception of a reason that is never awaited must be observed");
+	}
+
+	[Test]
+	public async Task WhenUsedInExpectThatAll_WhenAsyncReasonOfAMetExpectationIsPending_ShouldStopWaitingAtItsTimeout()
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		Task evaluation = Evaluate();
+
+		await That(await IsCompletedWithoutTheReason(evaluation, becauseSource)).IsTrue()
+			.Because("the timeout of the met expectation must stop waiting for a reason that does not arrive");
+		await That(() => evaluation).Throws<FailException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that true is True, because the reason was not available in time
+			              [02] Expected that 1 is equal to 2
+			             but
+			              [02] it was 1, which differs by -1
+			             """);
+
+		async Task Evaluate() => await ThatAll(
+			That(true).IsTrue().Because(becauseSource.Task).WithTimeout(50.Milliseconds()),
+			That(1).IsEqualTo(2));
+	}
+
+	[Test]
+	[Arguments(null)]
+	[Arguments("")]
+	[Arguments("  ")]
+	public async Task WhenUsedInExpectThatAll_WhenAsyncReasonOfAMetExpectationIsNullOrWhitespace_ShouldNotIncludeBecause(
+		string? because)
+	{
+		async Task Act() => await ThatAll(
+			That(true).IsTrue().Because(Task.FromResult(because)),
+			That(1).IsEqualTo(2));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that true is True
+			              [02] Expected that 1 is equal to 2
+			             but
+			              [02] it was 1, which differs by -1
+			             """);
+	}
+
+	[Test]
+	public async Task WhenUsedInExpectThatAll_WhenAsyncReasonOfAMetExpectationThrows_ShouldKeepTheExpectationMet()
+	{
+		Task<string?> becauseTask = Task.FromException<string?>(new MyException("the reason provider is broken"));
+
+		async Task Act() => await ThatAll(
+			That(true).IsTrue().Because(becauseTask),
+			That(1).IsEqualTo(2));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that true is True, because the reason did throw a MyException: the reason provider is broken
+			              [02] Expected that 1 is equal to 2
+			             but
+			              [02] it was 1, which differs by -1
+			             """)
+			.Because("a broken reason provider must not fail a met expectation");
+	}
+
+	[Test]
+	public async Task WhenUsedInExpectThatAll_WithAsyncReasonOnAMetExpectation_ShouldAppendTheReason()
+	{
+		async Task Act() => await ThatAll(
+			That(true).IsTrue().Because(Task.FromResult<string?>("r1")),
+			That(1).IsEqualTo(2));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that true is True, because r1
+			              [02] Expected that 1 is equal to 2
+			             but
+			              [02] it was 1, which differs by -1
+			             """);
+	}
+
+	[Test]
+	public async Task WhenUsedInExpectThatAll_WithAsyncReasonOnAMetExpectationOfANestedCombination_ShouldAppendTheReason()
+	{
+		async Task Act() => await ThatAll(
+			ThatAll(
+				That(true).IsTrue().Because(Task.FromResult<string?>("r1")),
+				That(2).IsEqualTo(2)),
+			That(1).IsEqualTo(2));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			               Expected all of the following to succeed:
+			                [01] Expected that true is True, because r1
+			                [02] Expected that 2 is equal to 2
+			              [03] Expected that 1 is equal to 2
+			             but
+			              [03] it was 1, which differs by -1
+			             """);
+	}
+
+	[Test]
+	public async Task WhenUsedInExpectThatAll_WithReasonsOnSeveralExpectations_ShouldAppendAllReasons()
+	{
+		async Task Act() => await ThatAll(
+			That(true).IsTrue().Because(Task.FromResult<string?>("r1")).And.IsNotEqualTo(false).Because("r2"),
+			That(2).IsEqualTo(2).Because("r3"),
+			That(3).IsEqualTo(3).Because(Task.FromResult<string?>("r4")),
+			That(1).IsEqualTo(2).Because(Task.FromResult<string?>("r5")));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that true is True and is not False, because r1, because r2
+			              [02] Expected that 2 is equal to 2, because r3
+			              [03] Expected that 3 is equal to 3, because r4
+			              [04] Expected that 1 is equal to 2, because r5
+			             but
+			              [04] it was 1, which differs by -1
+			             """);
+	}
+
+	[Test]
+	public async Task WhenUsedInExpectThatAny_WhenAnOuterCombinationFails_ShouldAppendTheAsyncReasonOfAMetExpectation()
+	{
+		async Task Act() => await ThatAll(
+			ThatAny(
+				That(true).IsTrue().Because(Task.FromResult<string?>("r1")),
+				That(2).IsEqualTo(3).Because(Task.FromResult<string?>("r2"))),
+			That(1).IsEqualTo(2));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			               Expected any of the following to succeed:
+			                [01] Expected that true is True, because r1
+			                [02] Expected that 2 is equal to 3, because r2
+			              [03] Expected that 1 is equal to 2
+			             but
+			              [03] it was 1, which differs by -1
+			             """);
+	}
+
+	/// <summary>
+	///     Fails an expectation whose reason is still pending when the evaluation is canceled, and lets the reason fault
+	///     afterwards.
+	/// </summary>
+	/// <remarks>
+	///     The reason is only reachable from within this method, so that it can be collected afterwards.
+	/// </remarks>
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static async Task<bool> AbandonReasonThatFaultsLater(Exception exception)
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		using CancellationTokenSource cts = new();
+		Task evaluation = Evaluate();
+		cts.Cancel();
+
+		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
+		bool isCompleted = evaluation.IsCompleted;
+		becauseSource.SetException(exception);
+		await That(() => evaluation).Throws<FailException>();
+		return isCompleted;
+
+		async Task Evaluate()
+			=> await That(false).IsTrue().Because(becauseSource.Task).WithCancellation(cts.Token);
+	}
+
+	/// <summary>
+	///     Waits for the <paramref name="evaluation" /> whose reason from the <paramref name="becauseSource" /> never
+	///     arrives, and returns whether it completed.
+	/// </summary>
+	/// <remarks>
+	///     It gives up after ten seconds and then provides no reason, so that an evaluation that waits for the reason
+	///     fails the test instead of hanging the test run.
+	/// </remarks>
+	private static async Task<bool> IsCompletedWithoutTheReason(Task evaluation,
+		TaskCompletionSource<string?> becauseSource)
+	{
+		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
+		bool isCompleted = evaluation.IsCompleted;
+		becauseSource.TrySetResult(null);
+		return isCompleted;
+	}
+
+	/// <summary>
+	///     Meets a combination with a reason on one of its expectations, and lets the reason fault afterwards.
+	/// </summary>
+	/// <remarks>
+	///     The reason is only reachable from within this method, so that it can be collected afterwards.
+	/// </remarks>
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static async Task MeetCombinationWithReasonThatFaultsLater(Exception exception)
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		await ThatAll(
+			That(true).IsTrue().Because(becauseSource.Task),
+			That(1).IsEqualTo(1));
+		becauseSource.SetException(exception);
+	}
+
+	/// <summary>
+	///     Meets an expectation with a reason as a task of a <see cref="BlockedTaskScheduler" />, and lets the reason
+	///     fault afterwards.
+	/// </summary>
+	/// <remarks>
+	///     The reason is only reachable from within this method, so that it can be collected afterwards.
+	/// </remarks>
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static void MeetExpectationOnABlockedTaskSchedulerWithReasonThatFaultsLater(Exception exception)
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		BlockedTaskScheduler.Run(() => That(1).IsEqualTo(1).Because(becauseSource.Task).GetAwaiter().GetResult());
+		becauseSource.SetException(exception);
 	}
 }

@@ -54,7 +54,7 @@ public sealed class ManualExpectationBuilder<TValue>(
 	public async Task PrepareExpectation(IEvaluationContext context, CancellationToken cancellationToken)
 	{
 		await GetRootNode().IsMetBy<TValue>(default, ExpectationTextEvaluationContext.For(context), cancellationToken);
-		await ResolveReasons();
+		await ResolveReasons(cancellationToken);
 	}
 
 	/// <summary>
@@ -112,7 +112,7 @@ public sealed class ManualExpectationBuilder<TValue>(
 		}
 		else if (result.Outcome != Outcome.Success)
 		{
-			await ResolveReasons();
+			await ResolveReasons(cancellationToken);
 		}
 		else
 		{
@@ -148,7 +148,7 @@ public sealed class ManualExpectationBuilder<TValue>(
 			ConstraintResult result = await IsMetBy(value, context, cancellationToken);
 			if (result.Outcome != Outcome.Success)
 			{
-				await context.ResolvePendingReasons();
+				await context.ResolvePendingReasons(cancellationToken);
 			}
 
 			return result;
