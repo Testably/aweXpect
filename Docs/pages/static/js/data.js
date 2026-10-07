@@ -4428,6 +4428,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:39:49 2026 \u002B0200",
         "message": "fix!: hand out a non-null subject when awaiting \u0060IsParsableInto\u0060 on a string (#1691)"
+      },
+      {
+        "sha": "9f96f8b98b0347930a55827ba71f5ac3a27432eb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
+        "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
       }
     ],
     "labels": [
@@ -5168,7 +5174,8 @@ window.BENCHMARK_DATA = {
       "e0c39d6f",
       "3a0d86a4",
       "e4877b71",
-      "e4e4a0e6"
+      "e4e4a0e6",
+      "9f96f8b9"
     ],
     "datasets": [
       {
@@ -5912,7 +5919,8 @@ window.BENCHMARK_DATA = {
           126.95992737550002,
           128.70569605093735,
           132.29847179140364,
-          128.71559431552888
+          128.71559431552888,
+          157.909753036499
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6655,6 +6663,7 @@ window.BENCHMARK_DATA = {
           408,
           408,
           408,
+          416,
           416,
           416,
           416,
@@ -7413,7 +7422,8 @@ window.BENCHMARK_DATA = {
           236.72349086174597,
           247.2960232954759,
           278.11817935307823,
-          230.19768505830032
+          230.19768505830032,
+          315.1370669092451
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8162,6 +8172,7 @@ window.BENCHMARK_DATA = {
           952,
           952,
           952,
+          952,
           952
         ],
         "borderColor": "#FF671B",
@@ -8195,7 +8206,8 @@ window.BENCHMARK_DATA = {
           212.4210744380951,
           197.41954398155212,
           165.53777418136596,
-          195.0618337949117
+          195.0618337949117,
+          212.27659174601237
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8207,6 +8219,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -12205,6 +12218,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:39:49 2026 \u002B0200",
         "message": "fix!: hand out a non-null subject when awaiting \u0060IsParsableInto\u0060 on a string (#1691)"
+      },
+      {
+        "sha": "9f96f8b98b0347930a55827ba71f5ac3a27432eb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
+        "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
       }
     ],
     "labels": [
@@ -12868,7 +12887,8 @@ window.BENCHMARK_DATA = {
       "e0c39d6f",
       "3a0d86a4",
       "e4877b71",
-      "e4e4a0e6"
+      "e4e4a0e6",
+      "9f96f8b9"
     ],
     "datasets": [
       {
@@ -13535,7 +13555,8 @@ window.BENCHMARK_DATA = {
           109811.89449637277,
           103166.62219238281,
           77261.2616373698,
-          110900.74981219952
+          110900.74981219952,
+          103380.93493652344
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14201,6 +14222,7 @@ window.BENCHMARK_DATA = {
           16288,
           16288,
           16288,
+          16296,
           16296,
           16296,
           16296,
@@ -14882,7 +14904,8 @@ window.BENCHMARK_DATA = {
           2580494.7477678573,
           2325070.084735577,
           2029503.9372395833,
-          2601839.8395647323
+          2601839.8395647323,
+          2542567.26171875
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15554,7 +15577,8 @@ window.BENCHMARK_DATA = {
           4841651,
           4841647,
           4841613,
-          4841651
+          4841651,
+          4841631
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15587,7 +15611,8 @@ window.BENCHMARK_DATA = {
           196916.20835774738,
           190735.02391764324,
           169412.5600748698,
-          211350.13321358818
+          211350.13321358818,
+          227074.20301920574
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -15599,6 +15624,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -20059,6 +20085,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:39:49 2026 \u002B0200",
         "message": "fix!: hand out a non-null subject when awaiting \u0060IsParsableInto\u0060 on a string (#1691)"
+      },
+      {
+        "sha": "9f96f8b98b0347930a55827ba71f5ac3a27432eb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
+        "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
       }
     ],
     "labels": [
@@ -20799,7 +20831,8 @@ window.BENCHMARK_DATA = {
       "e0c39d6f",
       "3a0d86a4",
       "e4877b71",
-      "e4e4a0e6"
+      "e4e4a0e6",
+      "9f96f8b9"
     ],
     "datasets": [
       {
@@ -21543,7 +21576,8 @@ window.BENCHMARK_DATA = {
           316.3580826350621,
           256.3877893447876,
           272.55215377807616,
-          298.51415025270904
+          298.51415025270904,
+          331.8805335362752
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22286,6 +22320,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          608,
           608,
           608,
           608,
@@ -23044,7 +23079,8 @@ window.BENCHMARK_DATA = {
           465.96287937164306,
           476.032538822719,
           495.3544986089071,
-          472.6657814979553
+          472.6657814979553,
+          595.1926895141602
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -23793,6 +23829,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          2008,
           2008
         ],
         "borderColor": "#FF671B",
@@ -23826,7 +23863,8 @@ window.BENCHMARK_DATA = {
           386.0161264737447,
           374.801336701711,
           387.79125142097473,
-          384.12522625923157
+          384.12522625923157,
+          447.6786728858948
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -23838,6 +23876,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -28298,6 +28337,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:39:49 2026 \u002B0200",
         "message": "fix!: hand out a non-null subject when awaiting \u0060IsParsableInto\u0060 on a string (#1691)"
+      },
+      {
+        "sha": "9f96f8b98b0347930a55827ba71f5ac3a27432eb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
+        "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
       }
     ],
     "labels": [
@@ -29038,7 +29083,8 @@ window.BENCHMARK_DATA = {
       "e0c39d6f",
       "3a0d86a4",
       "e4877b71",
-      "e4e4a0e6"
+      "e4e4a0e6",
+      "9f96f8b9"
     ],
     "datasets": [
       {
@@ -29782,7 +29828,8 @@ window.BENCHMARK_DATA = {
           141.09372336069742,
           148.26110469500225,
           144.20769170125325,
-          146.50328726768493
+          146.50328726768493,
+          182.17733670870464
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30525,6 +30572,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          520,
           520,
           520,
           520,
@@ -31283,7 +31331,8 @@ window.BENCHMARK_DATA = {
           241.46723055839539,
           244.63455235163372,
           269.95344088872275,
-          235.27648987088884
+          235.27648987088884,
+          344.28317203521726
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32032,6 +32081,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1224,
           1224
         ],
         "borderColor": "#FF671B",
@@ -32065,7 +32115,8 @@ window.BENCHMARK_DATA = {
           234.01756398494427,
           237.19669600895472,
           200.84191783836908,
-          235.24980303219385
+          235.24980303219385,
+          268.45120941797893
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32077,6 +32128,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -36537,6 +36589,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:39:49 2026 \u002B0200",
         "message": "fix!: hand out a non-null subject when awaiting \u0060IsParsableInto\u0060 on a string (#1691)"
+      },
+      {
+        "sha": "9f96f8b98b0347930a55827ba71f5ac3a27432eb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
+        "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
       }
     ],
     "labels": [
@@ -37277,7 +37335,8 @@ window.BENCHMARK_DATA = {
       "e0c39d6f",
       "3a0d86a4",
       "e4877b71",
-      "e4e4a0e6"
+      "e4e4a0e6",
+      "9f96f8b9"
     ],
     "datasets": [
       {
@@ -38021,7 +38080,8 @@ window.BENCHMARK_DATA = {
           235.95348705564226,
           246.93383646011353,
           234.5517561117808,
-          248.11837339401245
+          248.11837339401245,
+          286.6833854675293
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -38764,6 +38824,7 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
+          584,
           584,
           584,
           584,
@@ -39522,7 +39583,8 @@ window.BENCHMARK_DATA = {
           1136.304070154826,
           1162.7872834523519,
           1074.4109935760498,
-          1174.1289899190267
+          1174.1289899190267,
+          1474.113236363729
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40271,6 +40333,7 @@ window.BENCHMARK_DATA = {
           3944,
           3944,
           3944,
+          3944,
           3944
         ],
         "borderColor": "#FF671B",
@@ -40304,7 +40367,8 @@ window.BENCHMARK_DATA = {
           326.45648460388185,
           324.31370852543756,
           290.2447023073832,
-          325.12535707767194
+          325.12535707767194,
+          380.9069531758626
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -40316,6 +40380,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -44776,6 +44841,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:39:49 2026 \u002B0200",
         "message": "fix!: hand out a non-null subject when awaiting \u0060IsParsableInto\u0060 on a string (#1691)"
+      },
+      {
+        "sha": "9f96f8b98b0347930a55827ba71f5ac3a27432eb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
+        "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
       }
     ],
     "labels": [
@@ -45516,7 +45587,8 @@ window.BENCHMARK_DATA = {
       "e0c39d6f",
       "3a0d86a4",
       "e4877b71",
-      "e4e4a0e6"
+      "e4e4a0e6",
+      "9f96f8b9"
     ],
     "datasets": [
       {
@@ -46260,7 +46332,8 @@ window.BENCHMARK_DATA = {
           590.6863476679875,
           577.3890611784799,
           529.6957696914673,
-          591.1264041491917
+          591.1264041491917,
+          690.1892388661703
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47003,6 +47076,7 @@ window.BENCHMARK_DATA = {
           840,
           840,
           840,
+          856,
           856,
           856,
           856,
@@ -47761,7 +47835,8 @@ window.BENCHMARK_DATA = {
           1274.0322651181903,
           1284.0766259511313,
           1272.2204156239827,
-          1241.7527656555176
+          1241.7527656555176,
+          1588.7325370788574
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48510,6 +48585,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -48543,7 +48619,8 @@ window.BENCHMARK_DATA = {
           621.9136136599949,
           634.1302262714931,
           552.827801322937,
-          613.0097901026407
+          613.0097901026407,
+          713.7595713933309
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -48555,6 +48632,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -53015,6 +53093,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:39:49 2026 \u002B0200",
         "message": "fix!: hand out a non-null subject when awaiting \u0060IsParsableInto\u0060 on a string (#1691)"
+      },
+      {
+        "sha": "9f96f8b98b0347930a55827ba71f5ac3a27432eb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
+        "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
       }
     ],
     "labels": [
@@ -53755,7 +53839,8 @@ window.BENCHMARK_DATA = {
       "e0c39d6f",
       "3a0d86a4",
       "e4877b71",
-      "e4e4a0e6"
+      "e4e4a0e6",
+      "9f96f8b9"
     ],
     "datasets": [
       {
@@ -54499,7 +54584,8 @@ window.BENCHMARK_DATA = {
           928.3969171524047,
           967.2160835266113,
           826.6514413197835,
-          970.0448721476963
+          970.0448721476963,
+          1093.7553983052571
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55242,6 +55328,7 @@ window.BENCHMARK_DATA = {
           1248,
           1248,
           1248,
+          1264,
           1264,
           1264,
           1264,
@@ -56000,7 +56087,8 @@ window.BENCHMARK_DATA = {
           26178.600689697265,
           20204.395196097237,
           17054.773201497395,
-          25491.593420846122
+          25491.593420846122,
+          25337.29578944615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56749,7 +56837,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33465,
-          33471
+          33471,
+          33468
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -56782,7 +56871,8 @@ window.BENCHMARK_DATA = {
           743.0316321690877,
           732.0670407613119,
           677.7818338530404,
-          763.0835143602811
+          763.0835143602811,
+          923.8292442321778
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -56794,6 +56884,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -57024,6 +57115,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:39:49 2026 \u002B0200",
         "message": "fix!: hand out a non-null subject when awaiting \u0060IsParsableInto\u0060 on a string (#1691)"
+      },
+      {
+        "sha": "9f96f8b98b0347930a55827ba71f5ac3a27432eb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
+        "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
       }
     ],
     "labels": [
@@ -57059,7 +57156,8 @@ window.BENCHMARK_DATA = {
       "e0c39d6f",
       "3a0d86a4",
       "e4877b71",
-      "e4e4a0e6"
+      "e4e4a0e6",
+      "9f96f8b9"
     ],
     "datasets": [
       {
@@ -57098,7 +57196,8 @@ window.BENCHMARK_DATA = {
           719.7604413986206,
           671.5482345581055,
           664.6221086638315,
-          726.6206457773844
+          726.6206457773844,
+          826.8584680557251
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -57136,6 +57235,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1816,
           1816,
           1816,
           1816,
@@ -57189,7 +57289,8 @@ window.BENCHMARK_DATA = {
           79968.29377629206,
           59742.699979341945,
           30550.12803867885,
-          80930.81984165737
+          80930.81984165737,
+          55566.31945800781
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57233,7 +57334,8 @@ window.BENCHMARK_DATA = {
           5252,
           5252,
           5256,
-          5252
+          5252,
+          5247
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57445,6 +57547,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 14:39:49 2026 \u002B0200",
         "message": "fix!: hand out a non-null subject when awaiting \u0060IsParsableInto\u0060 on a string (#1691)"
+      },
+      {
+        "sha": "9f96f8b98b0347930a55827ba71f5ac3a27432eb",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 14:42:31 2026 \u002B0200",
+        "message": "ci: close gaps in the test runs and the public API check of pull requests (#1692)"
       }
     ],
     "labels": [
@@ -57480,7 +57588,8 @@ window.BENCHMARK_DATA = {
       "e0c39d6f",
       "3a0d86a4",
       "e4877b71",
-      "e4e4a0e6"
+      "e4e4a0e6",
+      "9f96f8b9"
     ],
     "datasets": [
       {
@@ -57519,7 +57628,8 @@ window.BENCHMARK_DATA = {
           232.86030954974038,
           238.89018327849251,
           247.55775231581467,
-          240.59601265589396
+          240.59601265589396,
+          283.48961407343546
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -57557,6 +57667,7 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
+          664,
           664,
           664,
           664,
@@ -57610,7 +57721,8 @@ window.BENCHMARK_DATA = {
           30972.008573091945,
           18302.631251408504,
           16101.794182332356,
-          30843.401501464843
+          30843.401501464843,
+          26076.549479166668
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57654,7 +57766,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57687,7 +57800,8 @@ window.BENCHMARK_DATA = {
           234.76506390571595,
           228.9157928029696,
           218.87901401519775,
-          233.129546216556
+          233.129546216556,
+          264.4644939740499
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -57699,6 +57813,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
