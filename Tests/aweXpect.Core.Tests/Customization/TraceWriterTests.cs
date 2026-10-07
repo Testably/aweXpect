@@ -487,6 +487,6 @@ public class TraceWriterTests
 		public void WriteException(Exception exception)
 			=> throw new MyException("the trace writer is broken");
 
-		public IDisposable Register() => Customize.aweXpect.EnableTracing(this);
+		public CustomizationLifetime Register() => Customize.aweXpect.EnableTracing(this);
 	}
 }
