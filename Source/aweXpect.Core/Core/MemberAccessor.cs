@@ -38,8 +38,12 @@ public class MemberAccessor<TSource, TTarget> : MemberAccessor
 	}
 
 	/// <summary>
-	///     Creates a member accessor from the given <paramref name="expression" />.
+	///     Creates a member accessor from the given <paramref name="expression" />, which is displayed as its member
+	///     path (for example <c>x => x.Foo.Bar</c> as <c>Foo.Bar</c>).
 	/// </summary>
+	/// <remarks>
+	///     An <paramref name="expression" /> that is no member path is displayed as the expression itself.
+	/// </remarks>
 	public static MemberAccessor<TSource, TTarget> FromExpression(
 		Expression<Func<TSource, TTarget>> expression)
 	{
