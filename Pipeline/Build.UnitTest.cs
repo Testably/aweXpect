@@ -93,13 +93,18 @@ partial class Build
 				.SetConfiguration(Configuration.Debug)
 				.EnableNoLogo());
 
+			// The projects that `UnitTests` did not run in Debug: under `CoreOnly` it runs its own projects in Debug.
+			Project[] projects = UnitTestProjects(BuildScope == BuildScope.CoreOnly
+				? BuildScope.MainOnly
+				: BuildScope.Default);
+
 			AbsolutePath resultsDirectory = TestResultsDirectory / Configuration.Debug;
-			RunUnitTests(UnitTestProjects(BuildScope.Default), framework => framework != NetFramework,
+			RunUnitTests(projects, framework => framework != NetFramework,
 				Configuration.Debug, resultsDirectory, false);
 
 			if (EnvironmentInfo.IsWin)
 			{
-				RunUnitTests(UnitTestProjects(BuildScope), framework => framework == NetFramework,
+				RunUnitTests(projects, framework => framework == NetFramework,
 					Configuration.Debug, resultsDirectory, false);
 			}
 		});
