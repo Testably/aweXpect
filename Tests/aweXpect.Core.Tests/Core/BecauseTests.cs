@@ -1,6 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Threading;
 using aweXpect.Chronology;
+using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Equivalency;
 using aweXpect.Results;
@@ -436,6 +437,170 @@ public class BecauseTests
 			             is False, because the reason did throw a ThrowingMessageException: [Message of ThrowingMessageException did throw an InvalidOperationException],
 			             but it was True
 			             """);
+	}
+
+	[Test]
+	public async Task WhenAsyncReasonOfNestedExpectationsCompletesLater_WhenExpectationFails_ShouldIncludeTheReason()
+	{
+		TaskCompletionSource<string?> becauseSource = new(TaskCreationOptions.RunContinuationsAsynchronously);
+		int[] subject = [1, 2,];
+		Task evaluation = Evaluate();
+
+		await Task.WhenAny(evaluation, Task.Delay(100.Milliseconds()));
+		bool isCompletedWhilePending = evaluation.IsCompleted;
+		becauseSource.SetResult("r1");
+
+		await That(isCompletedWhilePending).IsFalse()
+			.Because("nothing limits how long the failure message waits for the reason");
+		await That(() => evaluation).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equal to 1 for all items, because r1,
+			             but only 1 of 2 were
+
+			             Not matching items:
+			             [2]
+
+			             Collection:
+			             [1, 2]
+			             """);
+
+		async Task Evaluate()
+			=> await That(subject).All().ComplyWith(x => x.IsEqualTo(1).Because(becauseSource.Task));
+	}
+
+	[Test]
+	public async Task WhenAsyncReasonOfNestedExpectationsIsPending_WhenExpectationIsMet_ShouldNotAwaitTheReason()
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		int[] subject = [1, 1,];
+		Task evaluation = Evaluate();
+
+		await That(await IsCompletedWithoutTheReason(evaluation, becauseSource)).IsTrue()
+			.Because("a met expectation never builds a failure message, so it must not wait for the reason");
+		await That(() => evaluation).DoesNotThrow();
+
+		async Task Evaluate()
+			=> await That(subject).All().ComplyWith(x => x.IsEqualTo(1).Because(becauseSource.Task));
+	}
+
+	[Test]
+	public async Task
+		WhenAsyncReasonOfNestedExpectationsIsPending_WhenSubjectIsNull_ShouldStopWaitingAtTheTimeout()
+	{
+		VirtualTimeSystem timeSystem = new();
+		TaskCompletionSource<string?> becauseSource = new();
+		int[]? subject = null;
+		Task evaluation = Evaluate();
+
+		await That(await IsCompletedOnceTheTimeoutElapsed(evaluation, timeSystem, becauseSource)).IsTrue()
+			.Because("the timeout must stop waiting for a reason that does not arrive");
+		await That(() => evaluation).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equal to 1 for all items, because the reason was not available in time,
+			             but it was <null>
+			             """);
+
+		async Task Evaluate()
+			=> await That(subject).All().ComplyWith(x => x.IsEqualTo(1).Because(becauseSource.Task))
+				.WithTimeout(30.Seconds()).WithTimeSystem(timeSystem);
+	}
+
+	[Test]
+	public async Task
+		WhenAsyncReasonOfNestedExpectationsIsPending_WithEventually_WhenAttemptExceedsTheRetryBudget_ShouldStopWaitingAtTheTimeout()
+	{
+		VirtualTimeSystem timeSystem = new();
+		TaskCompletionSource<string?> becauseSource = new();
+		Func<int[]> subject = () =>
+		{
+			timeSystem.Advance(60.Seconds());
+			throw new MyException();
+		};
+		Task evaluation = Evaluate();
+
+		await That(await IsCompletedWithoutTheReason(evaluation, becauseSource)).IsTrue()
+			.Because("the timeout must stop waiting for the reason, although it does not cancel the attempts");
+		await That(() => evaluation).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             eventually is equal to 1 for all items, because the reason was not available in time within 0:05,
+			             but it did not finish within 0:05
+			             """);
+
+		async Task Evaluate()
+			=> await That(subject).Eventually().Within(5.Seconds()).OnVirtualTime(timeSystem).All()
+				.ComplyWith(x => x.IsEqualTo(1).Because(becauseSource.Task)).WithTimeout(30.Seconds());
+	}
+
+	[Test]
+	public async Task
+		WhenAsyncReasonOfNestedExpectationsIsPending_WithEventually_WhenSubjectIsNull_ShouldStopWaitingAtTheTimeout()
+	{
+		VirtualTimeSystem timeSystem = new();
+		TaskCompletionSource<string?> becauseSource = new();
+		Func<int[]>? subject = null;
+		Task evaluation = Evaluate();
+
+		await That(await IsCompletedOnceTheTimeoutElapsed(evaluation, timeSystem, becauseSource)).IsTrue()
+			.Because("the timeout must stop waiting for a reason that does not arrive");
+		await That(() => evaluation).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             eventually is equal to 1 for all items, because the reason was not available in time,
+			             but it was <null>
+			             """);
+
+		async Task Evaluate()
+			=> await That(subject!).Eventually().Within(5.Seconds()).OnVirtualTime(timeSystem).All()
+				.ComplyWith(x => x.IsEqualTo(1).Because(becauseSource.Task)).WithTimeout(30.Seconds());
+	}
+
+	[Test]
+	public async Task
+		WhenAsyncReasonOfNestedExpectationsIsPending_WithEventually_WhenSubjectReturnsANullTask_ShouldStopWaitingAtTheTimeout()
+	{
+		VirtualTimeSystem timeSystem = new();
+		TaskCompletionSource<string?> becauseSource = new();
+		Func<Task<int[]>> subject = () => null!;
+		Task evaluation = Evaluate();
+
+		await That(await IsCompletedOnceTheTimeoutElapsed(evaluation, timeSystem, becauseSource)).IsTrue()
+			.Because("the timeout must stop waiting for the reason, although it does not cancel the attempts");
+		await That(() => evaluation).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             eventually is equal to 1 for all items, because the reason was not available in time within 0:05,
+			             but it returned <null> instead of a task
+			             """);
+
+		async Task Evaluate()
+			=> await That(subject).Eventually().Within(5.Seconds()).OnVirtualTime(timeSystem).All()
+				.ComplyWith(x => x.IsEqualTo(1).Because(becauseSource.Task)).WithTimeout(30.Seconds());
+	}
+
+	[Test]
+	public async Task
+		WhenAsyncReasonOfNestedExpectationsIsPending_WithEventually_WhenSubjectThrows_ShouldStopWaitingAtAShorterTimeout()
+	{
+		VirtualTimeSystem timeSystem = new();
+		TaskCompletionSource<string?> becauseSource = new();
+		Func<int[]> subject = () => throw new MyException();
+		Task evaluation = Evaluate();
+
+		await That(await IsCompletedWithoutTheReason(evaluation, becauseSource)).IsTrue()
+			.Because("the timeout must stop waiting for a reason that does not arrive");
+		await That(() => evaluation).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             eventually is equal to 1 for all items, because the reason was not available in time within 0:30,
+			             but it did not finish within 0:05
+			             """);
+
+		async Task Evaluate()
+			=> await That(subject).Eventually().Within(30.Seconds()).OnVirtualTime(timeSystem).All()
+				.ComplyWith(x => x.IsEqualTo(1).Because(becauseSource.Task)).WithTimeout(5.Seconds());
 	}
 
 	[Test]
@@ -1019,6 +1184,25 @@ public class BecauseTests
 		TaskCompletionSource<string?> becauseSource)
 	{
 		await Task.WhenAny(evaluation, Task.Delay(TimeSpan.FromSeconds(10)));
+		bool isCompleted = evaluation.IsCompleted;
+		becauseSource.TrySetResult(null);
+		return isCompleted;
+	}
+
+	/// <summary>
+	///     Moves the clock of the <paramref name="timeSystem" /> beyond every timeout until the
+	///     <paramref name="evaluation" /> completes, for an evaluation that waits without moving the clock itself.
+	/// </summary>
+	private static async Task<bool> IsCompletedOnceTheTimeoutElapsed(Task evaluation, VirtualTimeSystem timeSystem,
+		TaskCompletionSource<string?> becauseSource)
+	{
+		Task safetyNet = Task.Delay(TimeSpan.FromSeconds(10));
+		while (!evaluation.IsCompleted && !safetyNet.IsCompleted)
+		{
+			timeSystem.Advance(60.Seconds());
+			await Task.WhenAny(evaluation, safetyNet, Task.Delay(20.Milliseconds()));
+		}
+
 		bool isCompleted = evaluation.IsCompleted;
 		becauseSource.TrySetResult(null);
 		return isCompleted;

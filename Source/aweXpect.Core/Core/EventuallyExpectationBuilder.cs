@@ -72,8 +72,13 @@ internal class EventuallyExpectationBuilder<TValue>(
 	{
 		if (subject is null)
 		{
+			// Nothing is evaluated, but the cancellation still limits what is awaited for the failure message.
+			EvaluationCancellation missingSubjectCancellation =
+				EvaluationCancellation.Create(timeout, cancellationToken, timeSystem);
+			using EvaluationCancellation.ReleaseScope _ = missingSubjectCancellation.ReleaseAtTheEnd();
+			context.Cancellation = missingSubjectCancellation;
 			ConstraintResult missingSubject = await rootNode.IsMetBy(default(TValue),
-				ExpectationTextEvaluationContext.For(context), cancellationToken);
+				ExpectationTextEvaluationContext.For(context), missingSubjectCancellation.Token);
 			return missingSubject.Fail("it was <null>", default(TValue));
 		}
 

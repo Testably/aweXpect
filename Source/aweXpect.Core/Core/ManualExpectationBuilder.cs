@@ -51,10 +51,22 @@ public sealed class ManualExpectationBuilder<TValue>(
 	///     <see cref="AppendExpectation" /> also describes expectations whose text depends on an evaluation (e.g. a nested
 	///     <c>DoesNotComplyWith</c>) or on a reason that must be awaited, when no value is evaluated.
 	/// </summary>
+	/// <remarks>
+	///     During an evaluation, a reason that must be awaited is resolved when the evaluation fails, as a met
+	///     expectation does not wait for a reason and the evaluation limits how long it waits for one.
+	/// </remarks>
 	public async Task PrepareExpectation(IEvaluationContext context, CancellationToken cancellationToken)
 	{
-		await GetRootNode().IsMetBy<TValue>(default, ExpectationTextEvaluationContext.For(context), cancellationToken);
-		await ResolveReasons(cancellationToken);
+		IEvaluationContext textContext = ExpectationTextEvaluationContext.For(context);
+		await GetRootNode().IsMetBy<TValue>(default, textContext, cancellationToken);
+		if (textContext is ExpectationTextEvaluationContext { Evaluation: { } evaluation, })
+		{
+			ResolveReasonsOnFailureOf(evaluation);
+		}
+		else
+		{
+			await ResolveReasons(cancellationToken);
+		}
 	}
 
 	/// <summary>
