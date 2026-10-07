@@ -1,7 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+#if NET8_0_OR_GREATER
+using System.Collections.Immutable;
+#endif
 using System.Linq;
 using System.Text;
+using aweXpect.Customization;
 
 // ReSharper disable PossibleMultipleEnumeration
 
@@ -55,6 +59,25 @@ public partial class ValueFormatters
 				               10,
 				               (… and 16 more)
 				             ]
+				             """);
+		}
+
+		[Test]
+		public async Task InFailureMessage_WhenCountThrows_ShouldListTheItems()
+		{
+			object subject = new ThrowingCountCollection([1, 2,]);
+
+			async Task Act()
+				=> await That(subject).IsNull();
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             is null,
+				             but it was [
+				                 1,
+				                 2
+				               ]
 				             """);
 		}
 
@@ -319,6 +342,143 @@ public partial class ValueFormatters
 		}
 
 		[Test]
+		public async Task WhenCountAndEnumerationThrow_ShouldRenderAPlaceholderForTheEnumeration()
+		{
+			string expectedResult = "[the enumeration did throw an InvalidOperationException: enumeration failed]";
+			ThrowingCountCollection value = new(Throwing(new InvalidOperationException("enumeration failed")));
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Test]
+		public async Task WhenCountThrows_AsTaskResult_ShouldListTheItems()
+		{
+			Task<object> value = Task.FromResult<object>(new ThrowingCountCollection([1, 2, 3,]));
+
+			string result = Formatter.Format(value);
+
+			await That(result).IsEqualTo("Task<object> (RanToCompletion, [1, 2, 3])");
+		}
+
+		[Test]
+		public async Task WhenCountThrows_AsTupleItem_ShouldListTheItems()
+		{
+			(int, ThrowingCountCollection) value = (0, new ThrowingCountCollection([1, 2, 3,]));
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine);
+
+			await That(result).IsEqualTo("(0, [1, 2, 3])");
+		}
+
+		[Test]
+		public async Task WhenCountThrows_ShouldListTheItems()
+		{
+			string expectedResult = "[1, 2, 3]";
+			ThrowingCountCollection value = new([1, 2, 3,]);
+			StringBuilder sb = new();
+			StringBuilder nonGenericSb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+			Formatter.Format(nonGenericSb, (IEnumerable)value);
+
+			await That(result).IsEqualTo(expectedResult)
+				.Because("the count is only needed to name the number of remaining items");
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+			await That(nonGenericSb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Test]
+		public async Task WhenCountThrows_ShouldSayThatMoreItemsMayFollow()
+		{
+			string expectedResult = "[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and maybe more)]";
+			ThrowingCountCollection value = new(Enumerable.Range(1, 12));
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Test]
+		public async Task WhenCountThrows_WithLineBreaks_ShouldSayOnTheLastLineThatMoreItemsMayFollow()
+		{
+			string expectedResult = """
+			                        [
+			                          1,
+			                          2,
+			                          3,
+			                          (… and maybe more)
+			                        ]
+			                        """;
+			ThrowingCountCollection value = new(Enumerable.Range(1, 12));
+			using IDisposable _ = Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Set(3);
+
+			string result = Formatter.Format(value, FormattingOptions.MultipleLines);
+			string objectResult = Formatter.Format((object?)value, FormattingOptions.MultipleLines);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+		}
+
+		[Test]
+		public async Task WhenCountThrows_WithTotalItemCount_ShouldNameTheNumberOfRemainingItems()
+		{
+			ThrowingCountCollection value = new(Enumerable.Range(1, 12));
+
+			string result = Formatter.Format(value, FormattingOptions.SingleLine with
+			{
+				TotalItemCount = 12,
+			});
+
+			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 2 more)]");
+		}
+
+		[Test]
+		public async Task WhenCountThrows_WithType_ShouldIncludeTypeInformation()
+		{
+			string expectedResult = "ValueFormatters.CollectionTests.ThrowingCountCollection [1, 2, 3]";
+			ThrowingCountCollection value = new([1, 2, 3,]);
+
+			string result = Formatter.Format(value, FormattingOptions.WithType);
+			string objectResult = Formatter.Format((object?)value, FormattingOptions.WithType);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+		}
+
+#if NET8_0_OR_GREATER
+		[Test]
+		public async Task WhenDefaultImmutableArray_ShouldRenderAPlaceholderForTheEnumeration()
+		{
+			ImmutableArray<int> value = default;
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object)value);
+			Formatter.Format(sb, value);
+
+			await That(result).StartsWith("[the enumeration did throw an InvalidOperationException: ").And.EndsWith("]")
+				.Because("neither the count nor the items of an uninitialized array can be read");
+			await That(objectResult).IsEqualTo(result);
+			await That(sb.ToString()).IsEqualTo(result);
+		}
+#endif
+
+		[Test]
 		public async Task WhenGenericCollection_ShouldNameTheNumberOfRemainingItems()
 		{
 			HashSet<int> value = [..Enumerable.Range(1, 12),];
@@ -326,6 +486,16 @@ public partial class ValueFormatters
 			string result = Formatter.Format(value);
 
 			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 2 more)]");
+		}
+
+		[Test]
+		public async Task WhenGenericCollection_WhenCountThrows_ShouldListTheItems()
+		{
+			ThrowingCountGenericCollection value = new([1, 2, 3,]);
+
+			string result = Formatter.Format(value);
+
+			await That(result).IsEqualTo("[1, 2, 3]");
 		}
 
 		[Test]
@@ -386,6 +556,16 @@ public partial class ValueFormatters
 			string result = Formatter.Format(value);
 
 			await That(result).IsEqualTo("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, (… and 3 more)]");
+		}
+
+		[Test]
+		public async Task WhenReadOnlyCollection_WhenCountThrows_ShouldListTheItems()
+		{
+			ThrowingCountReadOnlyCollection value = new([1, 2, 3,]);
+
+			string result = Formatter.Format(value);
+
+			await That(result).IsEqualTo("[1, 2, 3]");
 		}
 
 		[Test]
@@ -536,6 +716,60 @@ public partial class ValueFormatters
 					this,
 				}).GetEnumerator();
 			}
+
+			IEnumerator IEnumerable.GetEnumerator()
+				=> GetEnumerator();
+		}
+
+		private sealed class ThrowingCountCollection(IEnumerable<int> items) : ICollection, IEnumerable<int>
+		{
+			public int Count => throw new InvalidOperationException("count failed");
+			public bool IsSynchronized => false;
+			public object SyncRoot => this;
+
+			public void CopyTo(Array array, int index)
+				=> throw new NotSupportedException();
+
+			public IEnumerator<int> GetEnumerator()
+				=> items.GetEnumerator();
+
+			IEnumerator IEnumerable.GetEnumerator()
+				=> GetEnumerator();
+		}
+
+		private sealed class ThrowingCountGenericCollection(int[] items) : ICollection<int>
+		{
+			public int Count => throw new InvalidOperationException("count failed");
+			public bool IsReadOnly => true;
+
+			public void Add(int item)
+				=> throw new NotSupportedException();
+
+			public void Clear()
+				=> throw new NotSupportedException();
+
+			public bool Contains(int item)
+				=> throw new NotSupportedException();
+
+			public void CopyTo(int[] array, int arrayIndex)
+				=> throw new NotSupportedException();
+
+			public bool Remove(int item)
+				=> throw new NotSupportedException();
+
+			public IEnumerator<int> GetEnumerator()
+				=> ((IEnumerable<int>)items).GetEnumerator();
+
+			IEnumerator IEnumerable.GetEnumerator()
+				=> GetEnumerator();
+		}
+
+		private sealed class ThrowingCountReadOnlyCollection(int[] items) : IReadOnlyCollection<int>
+		{
+			public int Count => throw new InvalidOperationException("count failed");
+
+			public IEnumerator<int> GetEnumerator()
+				=> ((IEnumerable<int>)items).GetEnumerator();
 
 			IEnumerator IEnumerable.GetEnumerator()
 				=> GetEnumerator();
