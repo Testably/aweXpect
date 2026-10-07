@@ -492,6 +492,86 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
+			public async Task WhenSpecifiedTwice_WithExactType_ShouldThrowInvalidOperationException()
+			{
+				IEnumerable<MyBaseClass> subject =
+					ToEnumerable(new MyClass(1), new MyOtherClass(2), new MyBaseClass(3));
+				SingleItemResult<IEnumerable<MyBaseClass>, MyBaseClass> result = That(subject).HasSingle();
+				_ = result.Matching(_ => true);
+
+				void Act()
+					=> _ = result.MatchingExactly<MyBaseClass>();
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Matching cannot be specified more than once.")
+					.Because("a second filter would silently replace the first one");
+			}
+
+			[Test]
+			public async Task WhenSpecifiedTwice_WithExactTypeAndPredicate_ShouldThrowInvalidOperationException()
+			{
+				IEnumerable<MyBaseClass> subject =
+					ToEnumerable(new MyClass(1), new MyOtherClass(2), new MyBaseClass(3));
+				SingleItemResult<IEnumerable<MyBaseClass>, MyBaseClass> result = That(subject).HasSingle();
+				_ = result.Matching(_ => true);
+
+				void Act()
+					=> _ = result.MatchingExactly<MyBaseClass>(_ => true);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Matching cannot be specified more than once.")
+					.Because("a second filter would silently replace the first one");
+			}
+
+			[Test]
+			public async Task WhenSpecifiedTwice_WithPredicate_ShouldThrowInvalidOperationException()
+			{
+				IEnumerable<MyBaseClass> subject =
+					ToEnumerable(new MyClass(1), new MyOtherClass(2), new MyBaseClass(3));
+				SingleItemResult<IEnumerable<MyBaseClass>, MyBaseClass> result = That(subject).HasSingle();
+				_ = result.MatchingExactly<MyBaseClass>();
+
+				void Act()
+					=> _ = result.Matching(_ => true);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Matching cannot be specified more than once.")
+					.Because("a second filter would silently replace the first one");
+			}
+
+			[Test]
+			public async Task WhenSpecifiedTwice_WithType_ShouldThrowInvalidOperationException()
+			{
+				IEnumerable<MyBaseClass> subject =
+					ToEnumerable(new MyClass(1), new MyOtherClass(2), new MyBaseClass(3));
+				SingleItemResult<IEnumerable<MyBaseClass>, MyBaseClass> result = That(subject).HasSingle();
+				_ = result.Matching(_ => true);
+
+				void Act()
+					=> _ = result.Matching<MyOtherClass>();
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Matching cannot be specified more than once.")
+					.Because("a second filter would silently replace the first one");
+			}
+
+			[Test]
+			public async Task WhenSpecifiedTwice_WithTypeAndPredicate_ShouldThrowInvalidOperationException()
+			{
+				IEnumerable<MyBaseClass> subject =
+					ToEnumerable(new MyClass(1), new MyOtherClass(2), new MyBaseClass(3));
+				SingleItemResult<IEnumerable<MyBaseClass>, MyBaseClass> result = That(subject).HasSingle();
+				_ = result.Matching(_ => true);
+
+				void Act()
+					=> _ = result.Matching<MyOtherClass>(_ => true);
+
+				await That(Act).Throws<InvalidOperationException>()
+					.WithMessage("Matching cannot be specified more than once.")
+					.Because("a second filter would silently replace the first one");
+			}
+
+			[Test]
 			public async Task WithBecause_WhenNoItemMatches_ShouldIncludeTheReason()
 			{
 				IEnumerable<int> subject = ToEnumerable(1, 2, 3);

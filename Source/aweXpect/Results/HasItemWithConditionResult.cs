@@ -37,6 +37,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	/// <summary>
 	///     …that satisfies the <paramref name="predicate" />.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A filter is already set.</exception>
 	public HasItemResult<TCollection> Matching(Func<TItem, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
@@ -50,6 +51,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	/// <summary>
 	///     …of type <typeparamref name="T" />.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A filter is already set.</exception>
 	public HasItemResult<TCollection> Matching<T>()
 	{
 		_options.SetPredicate(item => item is T,
@@ -60,6 +62,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	/// <summary>
 	///     …of type <typeparamref name="T" /> that satisfies the <paramref name="predicate" />.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A filter is already set.</exception>
 	public HasItemResult<TCollection> Matching<T>(Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
@@ -73,6 +76,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	/// <summary>
 	///     …exactly of type <typeparamref name="T" />.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A filter is already set.</exception>
 	public HasItemResult<TCollection> MatchingExactly<T>()
 	{
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
@@ -85,6 +89,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	/// <summary>
 	///     …exactly of type <typeparamref name="T" /> that satisfies the <paramref name="predicate" />.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A filter is already set.</exception>
 	public HasItemResult<TCollection> MatchingExactly<T>(Func<T, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")

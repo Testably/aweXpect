@@ -124,7 +124,8 @@ one, so combine a type and a predicate in one call, e.g. `HasSingle().Matching<D
 `Matching…` methods therefore return a `SingleMatchingItemResult<TCollection, TItem>` instead of a
 `SingleItemResult<TCollection, TItem>`, and for an `IAsyncEnumerable<T>` an
 `AsyncSingleMatchingItemResult<TCollection, TItem>` instead of an `AsyncSingleItemResult<TCollection, TItem>`. Only
-code that stores the result in an explicitly typed variable has to change.
+code that stores the result in an explicitly typed variable has to change. A second `Matching…` on a stored
+`HasSingle()` or `HasItem()` result, where it still compiles, throws an `InvalidOperationException` at the call.
 
 A second `OnlyIf(…)` on a `Throws…` expectation throws an `InvalidOperationException` at the call instead of silently
 replacing the first condition.
