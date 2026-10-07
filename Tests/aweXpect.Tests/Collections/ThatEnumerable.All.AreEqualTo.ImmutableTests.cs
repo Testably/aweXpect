@@ -144,6 +144,18 @@ public sealed partial class ThatEnumerable
 
 					await That(Act).DoesNotThrow();
 				}
+
+				[Test]
+				public async Task WhenNoItemsDiffer_WithATypeWithoutTolerance_ShouldSucceed()
+				{
+					ImmutableArray<char> subject = ['a', 'a', 'a',];
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo('a');
+
+					await That(Act).DoesNotThrow()
+						.Because("items without a tolerance use the general overload");
+				}
 			}
 
 			public sealed class ImmutableStringItemTests

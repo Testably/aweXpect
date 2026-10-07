@@ -305,6 +305,19 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Test]
+			public async Task WithItemsOfATypeWithoutTolerance_ShouldSucceed()
+			{
+				IAsyncEnumerable<char> subject = ToAsyncEnumerable('a', 'c');
+				char[] unexpected = ['a', 'b', 'c',];
+
+				async Task Act()
+					=> await That(subject).IsNotContainedIn(unexpected);
+
+				await That(Act).DoesNotThrow()
+					.Because("items without a tolerance use the general overload");
+			}
+
+			[Test]
 			public async Task WithMissingItem_ShouldFail()
 			{
 				IAsyncEnumerable<string> subject = ToAsyncEnumerable(["a", "b", "c",]);

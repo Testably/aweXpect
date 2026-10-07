@@ -309,6 +309,19 @@ public sealed partial class ThatDictionary
 					             {["a"] = 1, ["b"] = 2}
 					             """);
 			}
+
+			[Test]
+			public async Task WhenValuesHaveATypeWithoutTolerance_ShouldSucceed()
+			{
+				IDictionary<string, char> subject = ToDictionary(["a", "b",], ['x', 'y',]);
+				IDictionary<string, char> expected = ToDictionary(["b", "a",], ['y', 'x',]);
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("values without a tolerance use the general overload");
+			}
 		}
 
 		public sealed class ComparerTests

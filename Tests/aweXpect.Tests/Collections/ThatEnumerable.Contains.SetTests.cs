@@ -599,6 +599,37 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
+			[Arguments(nameof(StringComparer.InvariantCulture))]
+			[Arguments(nameof(StringComparer.InvariantCultureIgnoreCase))]
+			[Arguments(nameof(StringComparer.CurrentCulture))]
+			[Arguments(nameof(StringComparer.CurrentCultureIgnoreCase))]
+			public async Task WhenSetDoesNotContainItemAccordingToItsCultureComparer_ShouldNameTheComparer(
+				string comparerName)
+			{
+				using CultureOverride __ = new("de-DE");
+				StringComparer comparer = (StringComparer)typeof(StringComparer).GetProperty(comparerName)!.GetValue(null)!;
+				HashSet<string> subject = new(comparer)
+				{
+					"a",
+				};
+
+				async Task Act()
+					=> await That(subject).Contains("b");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              contains "b" using the subject's StringComparer.{comparerName} at least once,
+					              but it did not contain it
+
+					              Collection:
+					              [
+					                "a"
+					              ]
+					              """);
+			}
+
+			[Test]
 			public async Task WhenStringSetContainsItemAccordingToItsComparer_ShouldSucceed()
 			{
 				HashSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
