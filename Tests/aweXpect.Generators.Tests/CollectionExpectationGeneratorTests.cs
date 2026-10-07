@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using aweXpect.SourceGenerators;
 using Microsoft.CodeAnalysis;
@@ -941,6 +942,39 @@ public sealed class CollectionExpectationGeneratorTests
 		await That(result.Generated).Contains("CallerArgumentExpression(\"expected\")").Once();
 		await That(result.Generated).Contains("\t\t\tdoNotPopulateThisValue);").Once();
 		await That(result.Generated).Contains("\t\t\tnull);").Once();
+	}
+
+	[Test]
+	public async Task WithPriority_ShouldRenderItIndependentOfTheCurrentCulture()
+	{
+		CultureInfo originalCulture = CultureInfo.CurrentCulture;
+		CultureInfo culture = (CultureInfo)CultureInfo.InvariantCulture.Clone();
+		culture.NumberFormat.NegativeSign = "\u2212";
+		GeneratorRunner.GeneratorResult result;
+		CultureInfo.CurrentCulture = culture;
+		try
+		{
+			result = Run(
+				"""
+				namespace Lib;
+
+				public static partial class ThatList
+				{
+					[CreateExpectationFamily("Contains", Priority = -2, Summary = "Contains.")]
+					internal static IThat<IEnumerable<TItem>?> ContainsCore<TItem>(
+						IThat<IEnumerable<TItem>?> subject,
+						TItem expected)
+						=> null!;
+				}
+				""");
+		}
+		finally
+		{
+			CultureInfo.CurrentCulture = originalCulture;
+		}
+
+		await That(result.Errors).IsEmpty();
+		await That(result.Generated).Contains("OverloadResolutionPriority(-2)").Once();
 	}
 
 	private static GeneratorRunner.GeneratorResult Run(string source)
