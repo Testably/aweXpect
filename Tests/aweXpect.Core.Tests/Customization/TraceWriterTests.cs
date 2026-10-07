@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using aweXpect.Chronology;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
@@ -122,6 +125,194 @@ public class TraceWriterTests
 			"Checking expectation for subject True with timeout of 0:07",
 			"  Successfully verified that subject is True",
 		]);
+	}
+
+	[Test]
+	public async Task ForDelegateReturningALazySequence_ShouldEnumerateItAsOftenAsWithoutTracing()
+	{
+		int enumerations = 0;
+		Func<IEnumerable<int>> callback = () => Items();
+		TestTraceWriter traceWriter = new();
+
+		await That(callback).DoesNotThrow();
+		int enumerationsWithoutTracing = enumerations;
+		using (traceWriter.Register())
+		{
+			await That(callback).DoesNotThrow();
+		}
+
+		await That(enumerations).IsEqualTo(enumerationsWithoutTracing)
+			.Because("tracing must not enumerate a sequence that the expectations do not enumerate");
+		await That(traceWriter.Messages).IsEqualTo([
+			"Checking expectation for callback delegate returning IEnumerable<int> in 0:*",
+			"  Successfully verified that callback does not throw any exception",
+		]).AsWildcard();
+
+		IEnumerable<int> Items()
+		{
+			enumerations++;
+			yield return 1;
+		}
+	}
+
+	[Test]
+	public async Task ForDelegateReturningALazySequenceAsObject_ShouldNotEnumerateIt()
+	{
+		int enumerations = 0;
+		Func<object> callback = () => Items();
+		TestTraceWriter traceWriter = new();
+		using (traceWriter.Register())
+		{
+			await That(callback).DoesNotThrow();
+		}
+
+		await That(enumerations).IsEqualTo(0);
+		await That(traceWriter.Messages[0])
+			.IsEqualTo("Checking expectation for callback delegate returning object in 0:*").AsWildcard();
+
+		IEnumerable<int> Items()
+		{
+			enumerations++;
+			yield return 1;
+		}
+	}
+
+	[Test]
+	public async Task ForDelegateReturningALinqQuery_ShouldNotEnumerateIt()
+	{
+		int enumerations = 0;
+		int[] source = [1, 2, 3,];
+		Func<IEnumerable<int>> callback = () => source.Select(item =>
+		{
+			enumerations++;
+			return item;
+		});
+		TestTraceWriter traceWriter = new();
+		using (traceWriter.Register())
+		{
+			await That(callback).DoesNotThrow();
+		}
+
+		await That(enumerations).IsEqualTo(0);
+		await That(traceWriter.Messages[0])
+			.IsEqualTo("Checking expectation for callback delegate returning IEnumerable<int> in 0:*").AsWildcard();
+	}
+
+	[Test]
+	public async Task ForDelegateReturningAnArray_ShouldTraceTheItems()
+	{
+		Func<int[]> callback = () => [1, 2, 3,];
+		TestTraceWriter traceWriter = new();
+		using (traceWriter.Register())
+		{
+			await That(callback).DoesNotThrow();
+		}
+
+		await That(traceWriter.Messages[0])
+			.IsEqualTo("Checking expectation for callback delegate returning int[] [1, 2, 3] in 0:*").AsWildcard();
+	}
+
+	[Test]
+	public async Task ForDelegateReturningADictionary_ShouldTraceTheItems()
+	{
+		Func<IReadOnlyDictionary<string, int>> callback = () => new Dictionary<string, int>
+		{
+			["foo"] = 1,
+		};
+		TestTraceWriter traceWriter = new();
+		using (traceWriter.Register())
+		{
+			await That(callback).DoesNotThrow();
+		}
+
+		await That(traceWriter.Messages[0])
+			.IsEqualTo(
+				"Checking expectation for callback delegate returning IReadOnlyDictionary<string, int> {[\"foo\"] = 1} in 0:*")
+			.AsWildcard();
+	}
+
+	[Test]
+	public async Task ForDelegateReturningAList_ShouldTraceTheItems()
+	{
+		Func<IEnumerable<int>> callback = () => new List<int>
+		{
+			1,
+			2,
+			3,
+		};
+		TestTraceWriter traceWriter = new();
+		using (traceWriter.Register())
+		{
+			await That(callback).DoesNotThrow();
+		}
+
+		await That(traceWriter.Messages[0])
+			.IsEqualTo("Checking expectation for callback delegate returning IEnumerable<int> [1, 2, 3] in 0:*")
+			.AsWildcard();
+	}
+
+	[Test]
+	public async Task ForDelegateReturningANullSequence_ShouldTraceNull()
+	{
+		Func<IEnumerable<int>?> callback = () => null;
+		TestTraceWriter traceWriter = new();
+		using (traceWriter.Register())
+		{
+			await That(callback).DoesNotThrow();
+		}
+
+		await That(traceWriter.Messages[0])
+			.IsEqualTo("Checking expectation for callback delegate returning IEnumerable<int> <null> in 0:*")
+			.AsWildcard();
+	}
+
+	[Test]
+	public async Task ForDelegateReturningAReadOnlyCollection_ShouldTraceTheItems()
+	{
+		Func<IEnumerable<int>> callback = () => new MyReadOnlyCollection();
+		TestTraceWriter traceWriter = new();
+		using (traceWriter.Register())
+		{
+			await That(callback).DoesNotThrow();
+		}
+
+		await That(traceWriter.Messages[0])
+			.IsEqualTo("Checking expectation for callback delegate returning IEnumerable<int> [1, 2] in 0:*")
+			.AsWildcard()
+			.Because("a collection that only implements the read-only interface holds its items as well");
+	}
+
+	[Test]
+	public async Task ForDelegateReturningASet_ShouldTraceTheItems()
+	{
+		Func<IEnumerable<int>> callback = () => new HashSet<int>
+		{
+			1,
+		};
+		TestTraceWriter traceWriter = new();
+		using (traceWriter.Register())
+		{
+			await That(callback).DoesNotThrow();
+		}
+
+		await That(traceWriter.Messages[0])
+			.IsEqualTo("Checking expectation for callback delegate returning IEnumerable<int> [1] in 0:*")
+			.AsWildcard()
+			.Because("a set only implements the generic collection interfaces");
+	}
+
+	[Test]
+	public async Task ForDelegateReturningAString_ShouldTraceTheString()
+	{
+		Func<string> callback = () => "foo";
+		TestTraceWriter traceWriter = new();
+		using (traceWriter.Register())
+		{
+			await That(callback).DoesNotThrow();
+		}
+
+		await That(traceWriter.Messages[0])
+			.IsEqualTo("Checking expectation for callback delegate returning string \"foo\" in 0:*").AsWildcard();
 	}
 
 	[Test]
@@ -467,6 +658,19 @@ public class TraceWriterTests
 	}
 
 	private sealed class MyException(string message) : Exception(message);
+
+	private sealed class MyReadOnlyCollection : IReadOnlyCollection<int>
+	{
+		public int Count => 2;
+
+		public IEnumerator<int> GetEnumerator()
+		{
+			yield return 1;
+			yield return 2;
+		}
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	}
 
 	private sealed class ThrowingToString
 	{

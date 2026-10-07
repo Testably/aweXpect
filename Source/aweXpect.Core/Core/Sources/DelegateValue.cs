@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using aweXpect.Core.Helpers;
 
 namespace aweXpect.Core.Sources;
 
@@ -34,17 +37,36 @@ public class DelegateValue<TValue>(in TValue? value, Exception? exception, TimeS
 	}
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     A sequence that is no collection is named by the returned type only, because listing its items would
+	///     enumerate it, which runs the code of a lazy sequence and consumes a sequence that can be enumerated only
+	///     once.
+	/// </remarks>
 	public override string ToString()
 	{
 		if (Exception == null)
 		{
-			return
-				$"delegate returning {Formatter.Format(typeof(TValue))} {Formatter.Format(Value)} in {Formatter.Format(Duration)}";
+			return Value is IEnumerable sequence && !IsCollection(sequence)
+				? $"delegate returning {Formatter.Format(typeof(TValue))} in {Formatter.Format(Duration)}"
+				: $"delegate returning {Formatter.Format(typeof(TValue))} {Formatter.Format(Value)} in {Formatter.Format(Duration)}";
 		}
 
 		return
 			$"delegate returning {Formatter.Format(typeof(TValue))} throwing {Formatter.Format(Exception)} after {Formatter.Format(Duration)}";
 	}
+
+	/// <summary>
+	///     Whether the <paramref name="sequence" /> holds its items, so that enumerating it only reads them.
+	/// </summary>
+	/// <remarks>
+	///     A type that knows its number of items has them at hand, which a <see langword="string" />, an array and
+	///     every collection, set and dictionary does, while an iterator, a LINQ query and an
+	///     <see cref="System.Linq.IQueryable" /> do not.
+	/// </remarks>
+	private static bool IsCollection(IEnumerable sequence)
+		=> sequence is string or ICollection ||
+		   sequence.GetType().FindGenericInterface(definition => definition == typeof(ICollection<>) ||
+		                                                         definition == typeof(IReadOnlyCollection<>)) is not null;
 }
 
 /// <summary>
