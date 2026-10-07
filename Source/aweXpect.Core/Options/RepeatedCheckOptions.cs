@@ -109,8 +109,9 @@ public class RepeatedCheckOptions
 	///             <see cref="Timeout" /> having elapsed (see
 	///             <see cref="EvaluationCancellation.HasWaitElapsed(TimeSpan, TimeSpan)" />): when it came at the
 	///             <see cref="Timeout" />, or when the effective timeout of the evaluation is not shorter than the
-	///             <see cref="Timeout" />. Any other cancellation, e.g. by the caller or by a shorter timeout, ends the
-	///             checks with <see cref="Outcome.Undecided" />.
+	///             <see cref="Timeout" /> and the checks started with the evaluation. Any other cancellation, e.g. by the
+	///             caller, by a shorter timeout or by a timeout that elapsed during checks which started later in the
+	///             evaluation, ends the checks with <see cref="Outcome.Undecided" />.
 	///         </item>
 	///         <item>
 	///             The first check receives the <paramref name="context" />, so that it shares the materialized collections

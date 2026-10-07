@@ -271,6 +271,23 @@ public sealed class PollingTests
 	}
 
 	[Test]
+	public async Task WaitForNextCheck_WhenTheTimeoutElapsedBeforeTheStart_ShouldBeCanceled()
+	{
+		EvaluationCancellation cancellation = new(100.Milliseconds(), CancellationToken.None);
+		TaskCompletionSource<bool> canceled = new();
+		using CancellationTokenRegistration _ = cancellation.Token.Register(() => canceled.TrySetResult(true));
+		await canceled.Task;
+		using Polling sut = Polling.Start(RealTimeSystem.Instance, RealTimeSystem.Instance.GetTimestamp(),
+			100.Milliseconds(), 1.Hours(), cancellation);
+
+		PollStep step = await sut.WaitForNextCheck();
+
+		await That(step).IsEqualTo(PollStep.Canceled)
+			.Because("the timeout left no time for the budget, so it is reported as the timeout");
+		cancellation.Release();
+	}
+
+	[Test]
 	public async Task WaitForNextCheck_WhenTheTimeoutIsShorterThanTheBudget_ShouldBeCanceled()
 	{
 		EvaluationCancellation cancellation = new(20.Milliseconds(), CancellationToken.None);

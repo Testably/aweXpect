@@ -19,6 +19,18 @@ public sealed class EvaluationCancellation
 	/// </remarks>
 	internal static readonly TimeSpan Tolerance = TimeSpan.FromMilliseconds(2);
 
+	/// <summary>
+	///     How long after the start of the evaluation a wait can start and still count as elapsed when the
+	///     <see cref="Timeout" /> ends it.
+	/// </summary>
+	/// <remarks>
+	///     It covers what lies between the start of the timer of the timeout and the start of the first wait: evaluating
+	///     the subject and reaching the constraint, which takes a few milliseconds even when that code is compiled on its
+	///     first use or the thread is preempted. A wait of an earlier constraint takes longer, and the timeout that
+	///     remains after it no longer covers the wait.
+	/// </remarks>
+	internal static readonly TimeSpan StartSlack = TimeSpan.FromMilliseconds(50);
+
 	private readonly CancellationToken _callerToken;
 	private readonly CancellationTokenSource? _timeoutCts;
 
@@ -83,10 +95,12 @@ public sealed class EvaluationCancellation
 	///     cancellation.
 	/// </summary>
 	/// <remarks>
-	///     This is the case, when the cancellation came at the end of the wait, or when the <see cref="Timeout" /> elapsed
-	///     and is not shorter than the <paramref name="waitTimeout" />: its timer started before the wait, so it can expire
-	///     slightly before the wait does. A cancellation by the caller, a shorter <see cref="Timeout" /> and every
-	///     cancellation of an infinite <paramref name="waitTimeout" /> end the wait without a decision.
+	///     This is the case, when the cancellation came at the end of the wait, or when the <see cref="Timeout" /> elapsed,
+	///     is not shorter than the <paramref name="waitTimeout" /> and the wait started with the evaluation: its timer
+	///     started before the wait, so it can expire slightly before the wait does. A cancellation by the caller, a
+	///     shorter <see cref="Timeout" />, a <see cref="Timeout" /> that elapsed during a wait which started later in the
+	///     evaluation (e.g. the wait of a second constraint) and every cancellation of an infinite
+	///     <paramref name="waitTimeout" /> end the wait without a decision.
 	/// </remarks>
 	public bool HasWaitElapsed(TimeSpan waitTimeout, TimeSpan waited)
 	{
@@ -95,7 +109,14 @@ public sealed class EvaluationCancellation
 			return false;
 		}
 
-		return waitTimeout - waited < Tolerance || (Reason == CancellationReason.Timeout && Timeout >= waitTimeout);
+		if (waitTimeout - waited < Tolerance)
+		{
+			return true;
+		}
+
+		// The timeout elapses that long after the start of the evaluation, so the part of it that the wait did not
+		// cover is the time by which the wait started after the evaluation.
+		return Reason == CancellationReason.Timeout && Timeout >= waitTimeout && Timeout - waited < StartSlack;
 	}
 
 	internal bool HasTimedOut(Exception? exception)

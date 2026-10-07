@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using aweXpect.Core.EvaluationContext;
@@ -284,6 +285,26 @@ public sealed class EventRecordingTests
 			.Because("the first constraint must not stop the recording that the second one still waits on");
 		await That(sut.HasSubscribers()).IsFalse()
 			.Because("the recording stops when the evaluation of the whole expectation ends");
+	}
+
+	[Test]
+	public async Task WhenChainedWithAnd_WhenALaterWaitIsCutShortByTheTimeout_ShouldFailWithTheTimeout()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		sut.NotifyCustomEvent(1);
+		Func<int, bool> takesAWhile = TakesAWhileWhenFirstCalled(TimeSpan.FromMilliseconds(900));
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).WithParameter(takesAWhile)
+				.And.DidNotTrigger(nameof(CustomEventClass.CustomEvent)).WithParameter<int>(p => p == 2)
+				.Within(TimeSpan.FromSeconds(1))
+				.WithTimeout(TimeSpan.FromSeconds(1));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("*but it did not finish within 0:01").AsWildcard().And
+			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:01."))
+			.Because("the second constraint only watched for the rest of the timeout instead of its own second, which a delay of up to 900 ms on a busy machine does not hide");
 	}
 
 	[Test]
@@ -1102,6 +1123,22 @@ public sealed class EventRecordingTests
 			}
 
 			return parameter == 2;
+		};
+	}
+
+	/// <remarks>
+	///     Matches only once the <paramref name="duration" /> has passed since the predicate was first called, i.e. it
+	///     holds up the constraint that filters with it, so that the next constraint deterministically starts that long
+	///     after the evaluation.
+	/// </remarks>
+	private static Func<int, bool> TakesAWhileWhenFirstCalled(TimeSpan duration)
+	{
+		Stopwatch? stopwatch = null;
+		return _ =>
+		{
+			stopwatch ??= Stopwatch.StartNew();
+			SpinWait.SpinUntil(() => stopwatch.Elapsed >= duration);
+			return true;
 		};
 	}
 

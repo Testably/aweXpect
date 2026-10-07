@@ -119,7 +119,9 @@ The interval must be positive, and `Within` and `CheckEvery` can each only be sp
 
 As for [`Eventually()`](#eventually), the tighter timeout wins: a `WithTimeout` or a global
 `TestCancellation.FromTimeout` that is shorter than `Within` ends the checks and fails the expectation with "did not
-finish within …", while one that is not shorter lets the last check at the timeout decide. A cancellation via
+finish within …", while one that is not shorter lets the last check at the timeout decide. The timeout covers the whole
+evaluation, so it also ends the checks of a later expectation (e.g. after `.And`) with "did not finish within …", when
+too little of it was left for their `Within`. A cancellation via
 `WithCancellation` or `TestCancellation.FromCancellationToken` makes the expectation inconclusive.
 
 ### Eventually
