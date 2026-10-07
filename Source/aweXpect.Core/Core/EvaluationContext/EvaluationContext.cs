@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.Internal;
 using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Core.EvaluationContext;

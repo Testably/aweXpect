@@ -8,6 +8,7 @@ using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Initialization;
+using aweXpect.Core.Internal;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Sources;
 using aweXpect.Core.TimeSystem;
@@ -1024,8 +1025,13 @@ public abstract class ExpectationBuilder
 	/// <summary>
 	///     Specifies a <see cref="ITimeSystem" /> to use for the expectation.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A time system is already set.</exception>
 	internal void UseTimeSystem(ITimeSystem timeSystem)
-		=> _timeSystem = timeSystem;
+	{
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_timeSystem is not null,
+			nameof(TimeSystemExtensions.WithTimeSystem));
+		_timeSystem = timeSystem;
+	}
 
 	/// <summary>
 	///     Helper class to specify constraints on the selected <typeparamref name="TMember" />.

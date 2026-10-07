@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using aweXpect.Chronology;
-using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Core.Tests.TestHelpers;
 
@@ -150,19 +149,14 @@ public sealed class VirtualTimeSystemTests
 	}
 
 	[Test]
-	public async Task Stopwatch_ShouldMeasureTheVirtualTimeWhileItIsRunning()
+	public async Task GetElapsedTime_ShouldMeasureTheVirtualTimeSinceTheTimestamp()
 	{
 		VirtualTimeSystem sut = new();
-		IStopwatch stopwatch = sut.Stopwatch.New();
 		sut.Advance(10.Milliseconds());
-		stopwatch.Start();
-		sut.Advance(20.Milliseconds());
-		TimeSpan elapsedWhileRunning = stopwatch.Elapsed;
-		stopwatch.Stop();
-		sut.Advance(40.Milliseconds());
+		long timestamp = sut.GetTimestamp();
 
-		await That(elapsedWhileRunning).IsEqualTo(20.Milliseconds());
-		await That(stopwatch.Elapsed).IsEqualTo(20.Milliseconds());
-		await That(stopwatch.IsRunning).IsFalse();
+		sut.Advance(20.Milliseconds());
+
+		await That(sut.GetElapsedTime(timestamp)).IsEqualTo(20.Milliseconds());
 	}
 }

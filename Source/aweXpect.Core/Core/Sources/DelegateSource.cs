@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using aweXpect.Core.TimeSystem;
+using aweXpect.Core.Internal;
 
 namespace aweXpect.Core.Sources;
 
@@ -52,17 +52,15 @@ internal class DelegateSource : IValueSource<DelegateValue>
 			return new ValueTask<DelegateValue>(new DelegateValue(null, TimeSpan.Zero, true));
 		}
 
-		IStopwatch sw = timeSystem.Stopwatch.New();
+		long startTimestamp = timeSystem.GetTimestamp();
 		try
 		{
-			sw.Start();
 			_action(cancellationToken);
-			sw.Stop();
-			return new ValueTask<DelegateValue>(new DelegateValue(null, sw.Elapsed));
+			return new ValueTask<DelegateValue>(new DelegateValue(null, timeSystem.GetElapsedTime(startTimestamp)));
 		}
 		catch (Exception ex)
 		{
-			return new ValueTask<DelegateValue>(new DelegateValue(ex, sw.Elapsed));
+			return new ValueTask<DelegateValue>(new DelegateValue(ex, timeSystem.GetElapsedTime(startTimestamp)));
 		}
 	}
 

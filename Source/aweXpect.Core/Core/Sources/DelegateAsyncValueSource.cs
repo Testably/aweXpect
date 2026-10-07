@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Helpers;
-using aweXpect.Core.TimeSystem;
+using aweXpect.Core.Internal;
 
 namespace aweXpect.Core.Sources;
 
@@ -21,27 +21,25 @@ internal class DelegateAsyncValueSource<TValue>(Func<CancellationToken, Task<TVa
 			return new DelegateValue<TValue>(default, null, TimeSpan.Zero, true);
 		}
 
-		IStopwatch sw = timeSystem.Stopwatch.New();
+		long startTimestamp = timeSystem.GetTimestamp();
 		Task<TValue>? task = null;
 		try
 		{
-			sw.Start();
 			task = action(cancellationToken);
 			if (task is null)
 			{
-				return new DelegateValue<TValue>(default, null, sw.Elapsed)
+				return new DelegateValue<TValue>(default, null, timeSystem.GetElapsedTime(startTimestamp))
 				{
 					NullKind = NullSubjectKind.NullTaskReturned,
 				};
 			}
 
 			TValue value = await task.AbandonOnCancellation(cancellationToken);
-			sw.Stop();
-			return new DelegateValue<TValue>(value, null, sw.Elapsed);
+			return new DelegateValue<TValue>(value, null, timeSystem.GetElapsedTime(startTimestamp));
 		}
 		catch (Exception ex)
 		{
-			return new DelegateValue<TValue>(default, ex, sw.Elapsed)
+			return new DelegateValue<TValue>(default, ex, timeSystem.GetElapsedTime(startTimestamp))
 			{
 				OtherExceptions = task?.GetOtherExceptions(ex),
 			};

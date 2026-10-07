@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.Internal;
 using aweXpect.Core.Nodes;
-using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Core;
 

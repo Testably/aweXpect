@@ -3,6 +3,7 @@ using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
 using aweXpect.Results;
@@ -367,7 +368,7 @@ public class EvaluationCancellationTests
 			=> await That(signaler).Signaled().With(TakesAWhile)
 				.And.DidNotSignal(2.Times()).Within(300.Milliseconds())
 				.WithTimeout(300.Milliseconds())
-				.UseTimeSystem(timeSystem);
+				.WithTimeSystem(timeSystem);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("*but it did not finish within 0:00.300").AsWildcard().And

@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.TimeSystem;
+using aweXpect.Core.Internal;
 
 namespace aweXpect.Results;
 
@@ -147,14 +147,9 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	internal override Task ResolvePendingReasons()
 		=> ExpectationBuilder.ResolvePendingReasons();
 
-	/// <summary>
-	///     Specifies a <see cref="ITimeSystem" /> to use for the expectation.
-	/// </summary>
-	internal ExpectationResult UseTimeSystem(ITimeSystem timeSystem)
-	{
-		ExpectationBuilder.UseTimeSystem(timeSystem);
-		return this;
-	}
+	/// <inheritdoc />
+	internal override void UseTimeSystem(ITimeSystem timeSystem)
+		=> ExpectationBuilder.UseTimeSystem(timeSystem);
 
 	private async Task GetResultOrThrow(ValueTask<ConstraintResult> isMet)
 	{
@@ -360,14 +355,9 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	internal override Task ResolvePendingReasons()
 		=> ExpectationBuilder.ResolvePendingReasons();
 
-	/// <summary>
-	///     Specifies a <see cref="ITimeSystem" /> to use for the expectation.
-	/// </summary>
-	internal TSelf UseTimeSystem(ITimeSystem timeSystem)
-	{
-		ExpectationBuilder.UseTimeSystem(timeSystem);
-		return (TSelf)this;
-	}
+	/// <inheritdoc />
+	internal override void UseTimeSystem(ITimeSystem timeSystem)
+		=> ExpectationBuilder.UseTimeSystem(timeSystem);
 
 	/// <inheritdoc cref="ExpectationResult.FromFailure(ConstraintResult)" />
 	private async Task<string> FromFailure(ConstraintResult failure)

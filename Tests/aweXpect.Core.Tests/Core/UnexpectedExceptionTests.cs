@@ -1,4 +1,5 @@
-﻿using aweXpect.Core.Tests.TestHelpers;
+﻿using aweXpect.Core.Internal;
+using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Core;
 
@@ -80,7 +81,7 @@ public sealed class UnexpectedExceptionTests
 		VirtualTimeSystem time = new();
 
 		async Task Act()
-			=> await That(subject).Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(30)).UseTimeSystem(time);
+			=> await That(subject).Satisfies(x => x == 1).Within(TimeSpan.FromSeconds(30)).WithTimeSystem(time);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""

@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.Internal;
 
 namespace aweXpect.Core;
 
@@ -80,6 +81,12 @@ public abstract class Expectation
 	///     combination shows them.
 	/// </summary>
 	internal abstract Task ResolvePendingReasons();
+
+	/// <summary>
+	///     Lets the evaluations of the expectation run on the <paramref name="timeSystem" />.
+	/// </summary>
+	/// <exception cref="InvalidOperationException">A time system is already set.</exception>
+	internal abstract void UseTimeSystem(ITimeSystem timeSystem);
 
 	/// <param name="index">The number of the last expectation in the result.</param>
 	/// <param name="subject">The subject line, or with <paramref name="isNumbered" /> the subject it names.</param>
@@ -192,6 +199,19 @@ public abstract class Expectation
 			foreach (Expectation expectation in _expectations)
 			{
 				await expectation.ResolvePendingReasons();
+			}
+		}
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     A combination has no evaluation of its own, so every combined expectation runs on the
+		///     <paramref name="timeSystem" />.
+		/// </remarks>
+		internal override void UseTimeSystem(ITimeSystem timeSystem)
+		{
+			foreach (Expectation expectation in _expectations)
+			{
+				expectation.UseTimeSystem(timeSystem);
 			}
 		}
 

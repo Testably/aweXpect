@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using aweXpect.Core.Helpers;
+using aweXpect.Core.Internal;
 using aweXpect.Core.TimeSystem;
 
 namespace aweXpect.Core.EvaluationContext;

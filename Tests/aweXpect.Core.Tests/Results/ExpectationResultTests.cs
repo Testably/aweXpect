@@ -1,9 +1,9 @@
 ﻿using System.Text;
 using System.Threading;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.Internal;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Tests.TestHelpers;
-using aweXpect.Core.TimeSystem;
 using aweXpect.Results;
 
 namespace aweXpect.Core.Tests.Results;

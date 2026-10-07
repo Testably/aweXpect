@@ -28,6 +28,15 @@ Besides the success and the failure of the expectation, cover what a caller can 
 - When the constraint calls [code of the caller](./02-constraints-and-results.md#code-of-the-caller), let that code
   throw and verify that the failure has the exception as its `InnerException`.
 
+### Waits and timeouts
+
+A test of an expectation that waits, e.g. with `Within(…)`, or of a timeout depends on the speed of the machine
+when it runs in real time. Instead, let the expectation run on a virtual clock: implement `ITimeSystem` from the
+namespace `aweXpect.Core.Internal` and pass it with `.WithTimeSystem(…)`. The waits, the timeouts and the measured
+durations of every evaluation of that expectation then elapse on that clock. A constraint follows that clock when it
+repeats its checks with `RepeatedCheckOptions.CheckRepeatedly(…)` and measures with `GetTimestamp()` and
+`GetElapsedTime(…)` of its `IEvaluationContext`, but not when it waits with `Task.Delay(…)` itself.
+
 ## Packaging
 
 - Reference the [`aweXpect.Core`](https://www.nuget.org/packages/aweXpect.Core) package in your extension, not
@@ -52,3 +61,5 @@ the highest of these minimum versions in the test project. Therefore:
   together with as many versions of `aweXpect` as possible.
 - A new major version of `aweXpect.Core` can contain breaking changes. Build and test your extension against it, and
   release a new version if it needs changes.
+- The namespace `aweXpect.Core.Internal` is infrastructure, e.g. for the tests of your extension, and may change in
+  any version. Do not use it in the code that your extension ships.

@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using aweXpect.Chronology;
+using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Core.Sources;
@@ -13,7 +14,7 @@ public class DelegateSourceTests
 
 		async Task Act() =>
 			await That(() => { }).ExecutesIn().AtLeast(1000.Milliseconds())
-				.UseTimeSystem(timeSystem);
+				.WithTimeSystem(timeSystem);
 
 		await That(Act).DoesNotThrow();
 	}

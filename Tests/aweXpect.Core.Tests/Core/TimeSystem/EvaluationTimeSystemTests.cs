@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using aweXpect.Chronology;
+using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Recording;
 using aweXpect.Signaling;
@@ -23,7 +24,7 @@ public sealed class EvaluationTimeSystemTests
 		Signaler signaler = new();
 
 		async Task Act()
-			=> await That(signaler).Signaled().Within(30.Seconds()).UseTimeSystem(timeSystem);
+			=> await That(signaler).Signaled().Within(30.Seconds()).WithTimeSystem(timeSystem);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -41,7 +42,7 @@ public sealed class EvaluationTimeSystemTests
 		Signaler signaler = new();
 		signaler.Signal();
 
-		await That(signaler).Signaled().Within(30.Seconds()).UseTimeSystem(timeSystem);
+		await That(signaler).Signaled().Within(30.Seconds()).WithTimeSystem(timeSystem);
 
 		await That(timeSystem.Now).IsEqualTo(TimeSpan.Zero);
 	}
@@ -54,7 +55,7 @@ public sealed class EvaluationTimeSystemTests
 
 		async Task Act()
 			=> await That(signaler).Signaled().Within(30.Seconds()).WithTimeout(30.Seconds())
-				.UseTimeSystem(timeSystem);
+				.WithTimeSystem(timeSystem);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -74,7 +75,7 @@ public sealed class EvaluationTimeSystemTests
 
 		async Task Act()
 			=> await That(signaler).Signaled().Within(30.Seconds()).WithTimeout(10.Seconds())
-				.UseTimeSystem(timeSystem);
+				.WithTimeSystem(timeSystem);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -95,7 +96,7 @@ public sealed class EvaluationTimeSystemTests
 		signaler.Signal(1);
 
 		async Task Act()
-			=> await That(signaler).Signaled(2.Times()).Within(30.Seconds()).UseTimeSystem(timeSystem);
+			=> await That(signaler).Signaled(2.Times()).Within(30.Seconds()).WithTimeSystem(timeSystem);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -117,7 +118,7 @@ public sealed class EvaluationTimeSystemTests
 
 		async Task Act()
 			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Within(30.Seconds())
-				.UseTimeSystem(timeSystem);
+				.WithTimeSystem(timeSystem);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -137,7 +138,7 @@ public sealed class EvaluationTimeSystemTests
 
 		async Task Act()
 			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Within(30.Seconds())
-				.WithTimeout(10.Seconds()).UseTimeSystem(timeSystem);
+				.WithTimeout(10.Seconds()).WithTimeSystem(timeSystem);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
@@ -163,7 +164,7 @@ public sealed class EvaluationTimeSystemTests
 		};
 
 		async Task Act()
-			=> await That(subject).DoesNotThrow().WithTimeout(1.Hours()).UseTimeSystem(timeSystem);
+			=> await That(subject).DoesNotThrow().WithTimeout(1.Hours()).WithTimeSystem(timeSystem);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("""
