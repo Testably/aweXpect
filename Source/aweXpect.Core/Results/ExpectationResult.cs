@@ -143,6 +143,10 @@ public class ExpectationResult(ExpectationBuilder expectationBuilder)
 	internal override Task EndEvaluation()
 		=> ExpectationBuilder.EndEvaluation();
 
+	/// <inheritdoc />
+	internal override Task ResolvePendingReasons()
+		=> ExpectationBuilder.ResolvePendingReasons();
+
 	/// <summary>
 	///     Specifies a <see cref="ITimeSystem" /> to use for the expectation.
 	/// </summary>
@@ -361,6 +365,10 @@ public class ExpectationResult<TType, TSelf>(ExpectationBuilder expectationBuild
 	/// <inheritdoc />
 	internal override Task EndEvaluation()
 		=> ExpectationBuilder.EndEvaluation();
+
+	/// <inheritdoc />
+	internal override Task ResolvePendingReasons()
+		=> ExpectationBuilder.ResolvePendingReasons();
 
 	/// <summary>
 	///     Specifies a <see cref="ITimeSystem" /> to use for the expectation.

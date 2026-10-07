@@ -1,4 +1,5 @@
-﻿using aweXpect.Core.Tests.TestHelpers;
+﻿using System.Runtime.CompilerServices;
+using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Core;
 
@@ -389,5 +390,207 @@ public class BecauseTests
 			              [01] it was True
 			              [02] it was 1, which differs by -1
 			             """);
+	}
+
+	[Test]
+	public async Task WhenUsedInExpectThatAll_WhenAllExpectationsAreMet_ShouldNotAwaitTheAsyncReason()
+	{
+		Task<string?> becauseTask = PendingTask.Of<string?>();
+
+		async Task Act() => await ThatAll(
+			That(true).IsTrue().Because(becauseTask),
+			That(1).IsEqualTo(1));
+
+		await That(Act).DoesNotThrow()
+			.Because("a met combination never builds a failure message, so it must not wait for the reason");
+	}
+
+	[Test]
+	public async Task WhenUsedInExpectThatAll_WhenAsyncReasonOfAMetExpectationCompletesLater_ShouldAwaitTheReason()
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		Task combination = Combination();
+
+		becauseSource.SetResult("r1");
+
+		await That(() => combination).Throws()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that true is True, because r1
+			              [02] Expected that 1 is equal to 2
+			             but
+			              [02] it was 1, which differs by -1
+			             """);
+
+		async Task Combination() => await ThatAll(
+			That(true).IsTrue().Because(becauseSource.Task),
+			That(1).IsEqualTo(2));
+	}
+
+	[Test]
+	public async Task
+		WhenUsedInExpectThatAll_WhenAsyncReasonOfAMetExpectationFaultsLater_ShouldNotRaiseUnobservedTaskException()
+	{
+		MyException exception = new();
+		bool isRaised = false;
+		EventHandler<UnobservedTaskExceptionEventArgs> handler = (_, e) =>
+		{
+			if (e.Exception.InnerExceptions.Contains(exception))
+			{
+				isRaised = true;
+			}
+		};
+
+		TaskScheduler.UnobservedTaskException += handler;
+		try
+		{
+			await MeetCombinationWithReasonThatFaultsLater(exception);
+			GC.Collect();
+			GC.WaitForPendingFinalizers();
+		}
+		finally
+		{
+			TaskScheduler.UnobservedTaskException -= handler;
+		}
+
+		await That(isRaised).IsFalse()
+			.Because("the exception of a reason that is never awaited must be observed");
+	}
+
+	[Test]
+	[Arguments(null)]
+	[Arguments("")]
+	[Arguments("  ")]
+	public async Task WhenUsedInExpectThatAll_WhenAsyncReasonOfAMetExpectationIsNullOrWhitespace_ShouldNotIncludeBecause(
+		string? because)
+	{
+		async Task Act() => await ThatAll(
+			That(true).IsTrue().Because(Task.FromResult(because)),
+			That(1).IsEqualTo(2));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that true is True
+			              [02] Expected that 1 is equal to 2
+			             but
+			              [02] it was 1, which differs by -1
+			             """);
+	}
+
+	[Test]
+	public async Task WhenUsedInExpectThatAll_WhenAsyncReasonOfAMetExpectationThrows_ShouldKeepTheExpectationMet()
+	{
+		Task<string?> becauseTask = Task.FromException<string?>(new MyException("the reason provider is broken"));
+
+		async Task Act() => await ThatAll(
+			That(true).IsTrue().Because(becauseTask),
+			That(1).IsEqualTo(2));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that true is True, because the reason did throw a MyException: the reason provider is broken
+			              [02] Expected that 1 is equal to 2
+			             but
+			              [02] it was 1, which differs by -1
+			             """)
+			.Because("a broken reason provider must not fail a met expectation");
+	}
+
+	[Test]
+	public async Task WhenUsedInExpectThatAll_WithAsyncReasonOnAMetExpectation_ShouldAppendTheReason()
+	{
+		async Task Act() => await ThatAll(
+			That(true).IsTrue().Because(Task.FromResult<string?>("r1")),
+			That(1).IsEqualTo(2));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that true is True, because r1
+			              [02] Expected that 1 is equal to 2
+			             but
+			              [02] it was 1, which differs by -1
+			             """);
+	}
+
+	[Test]
+	public async Task WhenUsedInExpectThatAll_WithAsyncReasonOnAMetExpectationOfANestedCombination_ShouldAppendTheReason()
+	{
+		async Task Act() => await ThatAll(
+			ThatAll(
+				That(true).IsTrue().Because(Task.FromResult<string?>("r1")),
+				That(2).IsEqualTo(2)),
+			That(1).IsEqualTo(2));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			               Expected all of the following to succeed:
+			                [01] Expected that true is True, because r1
+			                [02] Expected that 2 is equal to 2
+			              [03] Expected that 1 is equal to 2
+			             but
+			              [03] it was 1, which differs by -1
+			             """);
+	}
+
+	[Test]
+	public async Task WhenUsedInExpectThatAll_WithReasonsOnSeveralExpectations_ShouldAppendAllReasons()
+	{
+		async Task Act() => await ThatAll(
+			That(true).IsTrue().Because(Task.FromResult<string?>("r1")).And.IsNotEqualTo(false).Because("r2"),
+			That(2).IsEqualTo(2).Because("r3"),
+			That(3).IsEqualTo(3).Because(Task.FromResult<string?>("r4")),
+			That(1).IsEqualTo(2).Because(Task.FromResult<string?>("r5")));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that true is True and is not False, because r1, because r2
+			              [02] Expected that 2 is equal to 2, because r3
+			              [03] Expected that 3 is equal to 3, because r4
+			              [04] Expected that 1 is equal to 2, because r5
+			             but
+			              [04] it was 1, which differs by -1
+			             """);
+	}
+
+	[Test]
+	public async Task WhenUsedInExpectThatAny_WhenAnOuterCombinationFails_ShouldAppendTheAsyncReasonOfAMetExpectation()
+	{
+		async Task Act() => await ThatAll(
+			ThatAny(
+				That(true).IsTrue().Because(Task.FromResult<string?>("r1")),
+				That(2).IsEqualTo(3).Because(Task.FromResult<string?>("r2"))),
+			That(1).IsEqualTo(2));
+
+		await That(Act).Throws()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			               Expected any of the following to succeed:
+			                [01] Expected that true is True, because r1
+			                [02] Expected that 2 is equal to 3, because r2
+			              [03] Expected that 1 is equal to 2
+			             but
+			              [03] it was 1, which differs by -1
+			             """);
+	}
+
+	/// <summary>
+	///     Meets a combination with a reason on one of its expectations, and lets the reason fault afterwards.
+	/// </summary>
+	/// <remarks>
+	///     The reason is only reachable from within this method, so that it can be collected afterwards.
+	/// </remarks>
+	[MethodImpl(MethodImplOptions.NoInlining)]
+	private static async Task MeetCombinationWithReasonThatFaultsLater(Exception exception)
+	{
+		TaskCompletionSource<string?> becauseSource = new();
+		await ThatAll(
+			That(true).IsTrue().Because(becauseSource.Task),
+			That(1).IsEqualTo(1));
+		becauseSource.SetException(exception);
 	}
 }

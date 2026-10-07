@@ -565,19 +565,33 @@ public abstract class ExpectationBuilder
 	///     The reasons are applied to the whole expectation instead of to the constraint they were given for, so that
 	///     they follow every suffix, e.g. constraints combined with <c>And</c> or <c>Or</c> and the timeout of
 	///     <c>Eventually</c>.
+	///     <para />
+	///     The member of a combination passes the <paramref name="combinationContext" /> of its evaluation, as the
+	///     combination can still fail a met expectation: a reason that must be awaited is then also appended to a met
+	///     <paramref name="result" /> and resolved by <see cref="ResolvePendingReasons" />.
 	/// </remarks>
-	internal async ValueTask<ConstraintResult> ApplyReasons(ConstraintResult result)
+	internal async ValueTask<ConstraintResult> ApplyReasons(ConstraintResult result,
+		IEvaluationContext? combinationContext = null)
 	{
 		if (_reasons is not null)
 		{
 			foreach (IBecauseReason reason in _reasons)
 			{
-				result = await reason.ApplyTo(result);
+				result = combinationContext is not null && reason is AsyncBecauseReason asyncReason
+					? await asyncReason.ApplyToMember(result, combinationContext)
+					: await reason.ApplyTo(result);
 			}
 		}
 
 		return result;
 	}
+
+	/// <summary>
+	///     Resolves the reasons that must be awaited of the current evaluation, when a combination fails the met
+	///     expectation.
+	/// </summary>
+	internal Task ResolvePendingReasons()
+		=> _evaluationContext?.ResolvePendingReasons() ?? Task.CompletedTask;
 
 	/// <summary>
 	///     Resolves the reasons that must be awaited, so that their message is available.
@@ -913,7 +927,7 @@ public abstract class ExpectationBuilder
 			result = await isMet;
 			if (_reasons is not null)
 			{
-				result = await ApplyReasons(result);
+				result = await ApplyReasons(result, endsWhenMet ? null : _evaluationContext);
 			}
 		}
 		catch
