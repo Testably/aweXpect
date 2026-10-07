@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Fallout.Common;
 using Fallout.Common.IO;
@@ -25,6 +26,8 @@ namespace Build;
 partial class Build
 {
 	private static bool DisableMutationTests = false;
+
+	private const long MaxMutationReportSize = 100 * 1024 * 1024;
 
 	/// <summary>
 	///     Disjoint slices of the mutated source, so that the full run can be spread over parallel jobs.
@@ -104,21 +107,20 @@ partial class Build
 		.OnlyWhenDynamic(() => BuildScope == BuildScope.Default)
 		.Executes(async () =>
 		{
-			if (!File.Exists(ArtifactsDirectory / "aweXpect" / "PR.txt"))
+			// The artifacts are untrusted, because the pull request controls the code that produces them, so the pull
+			// request to comment on comes from the event of the workflow run.
+			int? prId = await BuildExtensions.ResolvePullRequestOfWorkflowRun(GithubToken);
+			if (prId == null)
 			{
-				// The mutation tests write it when they run for a pull request, so without it there is no score to
-				// comment on - a run outside the default build scope never gets that far.
-				Log.Information("Missing PR.txt file in artifacts, so there is no mutation comment to write");
+				Log.Information(
+					"The workflow run belongs to no pull request, so there is no mutation comment to write");
 				return;
 			}
 
-			string prNumber = File.ReadAllText(ArtifactsDirectory / "aweXpect" / "PR.txt");
-			Log.Debug("Pull request number: {PullRequestId}", prNumber);
 			List<string> mutationCommentBodies = [];
 			foreach (AbsolutePath file in ArtifactsDirectory.GetFiles("MutationTest_*.md", 2))
 			{
-				string body = await File.ReadAllTextAsync(file);
-				mutationCommentBodies.Add(body);
+				mutationCommentBodies.Add(await File.ReadAllTextAsync(file));
 			}
 
 			if (mutationCommentBodies.Count == 0)
@@ -127,42 +129,39 @@ partial class Build
 				return;
 			}
 
-			if (int.TryParse(prNumber, out int prId))
+			GitHubClient gitHubClient = new(new ProductHeaderValue("Fallout"));
+			Credentials tokenAuth = new(GithubToken);
+			gitHubClient.Credentials = tokenAuth;
+			IReadOnlyList<IssueComment> comments =
+				await gitHubClient.Issue.Comment.GetAllForIssue("Testably",
+					"aweXpect", prId.Value);
+			IssueComment existingComment = null;
+			Log.Information($"Found {comments.Count} comments");
+			foreach (IssueComment comment in comments)
 			{
-				GitHubClient gitHubClient = new(new ProductHeaderValue("Fallout"));
-				Credentials tokenAuth = new(GithubToken);
-				gitHubClient.Credentials = tokenAuth;
-				IReadOnlyList<IssueComment> comments =
-					await gitHubClient.Issue.Comment.GetAllForIssue("Testably",
-						"aweXpect", prId);
-				IssueComment existingComment = null;
-				Log.Information($"Found {comments.Count} comments");
-				foreach (IssueComment comment in comments)
+				if (comment.IsPipelineComment("## :alien: Mutation Results"))
 				{
-					if (comment.Body.Contains("## :alien: Mutation Results"))
-					{
-						Log.Information($"Found comment: {comment.Body}");
-						existingComment = comment;
-					}
+					Log.Information($"Found comment: {comment.Body}");
+					existingComment = comment;
 				}
+			}
 
-				string body = "## :alien: Mutation Results"
-				              + Environment.NewLine
-				              + $"[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FTestably%2FaweXpect%2Fpull/{prId}/merge)](https://dashboard.stryker-mutator.io/reports/github.com/Testably/aweXpect/pull/{prId}/merge)"
-				              + Environment.NewLine
-				              + string.Join(Environment.NewLine, mutationCommentBodies);
-				if (existingComment == null)
-				{
-					Log.Information($"Create comment:\n{body}");
-					await gitHubClient.Issue.Comment.Create("Testably", "aweXpect",
-						prId, body);
-				}
-				else
-				{
-					Log.Information($"Update comment:\n{body}");
-					await gitHubClient.Issue.Comment.Update("Testably", "aweXpect",
-						existingComment.Id, body);
-				}
+			string body = "## :alien: Mutation Results"
+			              + Environment.NewLine
+			              + $"[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FTestably%2FaweXpect%2Fpull/{prId}/merge)](https://dashboard.stryker-mutator.io/reports/github.com/Testably/aweXpect/pull/{prId}/merge)"
+			              + Environment.NewLine
+			              + string.Join(Environment.NewLine, mutationCommentBodies).AsUntrustedCommentContent();
+			if (existingComment == null)
+			{
+				Log.Information($"Create comment:\n{body}");
+				await gitHubClient.Issue.Comment.Create("Testably", "aweXpect",
+					prId.Value, body);
+			}
+			else
+			{
+				Log.Information($"Update comment:\n{body}");
+				await gitHubClient.Issue.Comment.Update("Testably", "aweXpect",
+					existingComment.Id, body);
 			}
 		});
 
@@ -173,6 +172,13 @@ partial class Build
 		.OnlyWhenDynamic(() => BuildScope == BuildScope.Default)
 		.Executes(async () =>
 		{
+			string version = await GetMutationDashboardVersion();
+			if (version == null)
+			{
+				Log.Information("The run has no version on the mutation dashboard, so there is nothing to publish");
+				return;
+			}
+
 			ArtifactsDirectory.CreateDirectory();
 			List<Project> projects = [];
 			List<Project> projectsWithoutReport = [];
@@ -215,15 +221,24 @@ partial class Build
 			string apiKey = Environment.GetEnvironmentVariable("STRYKER_DASHBOARD_API_KEY");
 			foreach (Project project in projects)
 			{
-				string branchName = File.ReadAllText(ArtifactsDirectory / project.Name / "BranchName.txt");
-				string reportComment =
-					File.ReadAllText(ArtifactsDirectory / project.Name / "Stryker" / "reports" /
-					                 "mutation-report.json");
+				AbsolutePath reportFile = ArtifactsDirectory / project.Name / "Stryker" / "reports" /
+				                          "mutation-report.json";
+				if (new FileInfo(reportFile).Length > MaxMutationReportSize)
+				{
+					Assert.Fail($"The {project.Name} mutation report is larger than {MaxMutationReportSize} bytes");
+				}
+
+				string reportComment = File.ReadAllText(reportFile);
+				if (JsonNode.Parse(reportComment) is not JsonObject)
+				{
+					Assert.Fail($"The {project.Name} mutation report is no JSON object");
+				}
+
 				using HttpClient client = new();
 				client.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
 				// https://stryker-mutator.io/docs/General/dashboard/#send-a-report-via-curl
 				HttpResponseMessage response = await client.PutAsync(
-					$"https://dashboard.stryker-mutator.io/api/reports/github.com/Testably/aweXpect/{branchName}?module={project.Name}",
+					$"https://dashboard.stryker-mutator.io/api/reports/github.com/Testably/aweXpect/{version}?module={project.Name}",
 					new StringContent(reportComment, new MediaTypeHeaderValue("application/json")));
 				string responseContent = await response.Content.ReadAsStringAsync();
 				if (response.IsSuccessStatusCode)
@@ -290,12 +305,52 @@ partial class Build
 		}
 		else
 		{
-			File.Copy(projectDirectory / sliceReports[0].Name / "BranchName.txt",
-				projectDirectory / "BranchName.txt", true);
 			MergeMutationReports(sliceReports, projectDirectory);
 		}
 
 		return true;
+	}
+
+	/// <summary>
+	///     The version under which the dashboard stores the mutation reports of the analysed run, or
+	///     <see langword="null" /> when it has none.
+	/// </summary>
+	/// <remarks>
+	///     The artifacts are untrusted, because a pull request controls the code that produces them, so the version
+	///     comes from the event alone, and a run that a pull request triggered can only publish to the version of
+	///     that pull request.
+	/// </remarks>
+	private async Task<string> GetMutationDashboardVersion()
+	{
+		string version = null;
+		if (GitHubActions?.EventName != "workflow_run")
+		{
+			// The reports come from this very run, so its own ref identifies them.
+			string gitRef = GitHubActions?.Ref ?? "";
+			if (gitRef.StartsWith("refs/tags/", StringComparison.Ordinal))
+			{
+				version = "release/" + gitRef.Substring("refs/tags/".Length);
+			}
+			else if (gitRef.StartsWith("refs/heads/", StringComparison.Ordinal))
+			{
+				version = gitRef.Substring("refs/heads/".Length);
+			}
+		}
+		else if (Environment.GetEnvironmentVariable("WorkflowRunEvent") == "pull_request")
+		{
+			int? prId = await BuildExtensions.ResolvePullRequestOfWorkflowRun(GithubToken);
+			return prId == null ? null : $"pull/{prId}/merge";
+		}
+		else
+		{
+			version = Environment.GetEnvironmentVariable("WorkflowRunHeadBranch");
+		}
+
+		// The version becomes a part of the path that the report is sent to.
+		return version != null &&
+		       Regex.IsMatch(version, @"\A[A-Za-z0-9][A-Za-z0-9._-]*(/[A-Za-z0-9][A-Za-z0-9._-]*)*\z")
+			? version
+			: null;
 	}
 
 	/// <summary>
@@ -397,8 +452,6 @@ partial class Build
 			Log.Information("Use release branch analysis for '{BranchName}'", branchName);
 		}
 
-		File.WriteAllText(ArtifactsDirectory / "BranchName.txt", branchName);
-
 		string mutateSection = "";
 		if (!string.IsNullOrEmpty(MutationSlice))
 		{
@@ -455,12 +508,6 @@ partial class Build
 
 		File.WriteAllText(ArtifactsDirectory / $"MutationTest_{project.Name}.md",
 			CreateMutationCommentBody(project.Name));
-
-		if (GitHubActions?.IsPullRequest == true)
-		{
-			Log.Information($"Write pull request number to PR.txt: {GitHubActions?.PullRequestNumber}");
-			File.WriteAllText(ArtifactsDirectory / "PR.txt", GitHubActions?.PullRequestNumber?.ToString());
-		}
 	}
 
 	string CreateMutationCommentBody(string projectName)

@@ -52,53 +52,54 @@ partial class Build
 			string fileContent = await File.ReadAllTextAsync(ArtifactsDirectory / "Benchmarks" / "results" /
 			                                                 "aweXpect.Benchmarks.HappyCaseBenchmarks-report-github.md");
 			Log.Information("Report:\n {FileContent}", fileContent);
-			if (GitHubActions?.IsPullRequest == true)
-			{
-				File.WriteAllText(ArtifactsDirectory / "PR.txt", GitHubActions.PullRequestNumber.ToString());
-			}
 		});
 
 	Target BenchmarkComment => _ => _
 		.Executes(async () =>
 		{
-			await "Benchmarks".DownloadArtifactTo(ArtifactsDirectory, GithubToken);
-			if (!File.Exists(ArtifactsDirectory / "PR.txt"))
+			// The artifact is untrusted, because the pull request controls the code that produces it, so the pull
+			// request to comment on comes from the event of the workflow run.
+			int? prId = await BuildExtensions.ResolvePullRequestOfWorkflowRun(GithubToken);
+			if (prId == null)
 			{
-				Log.Information("Skip writing a comment, as no PR number was specified.");
+				Log.Information("Skip writing a comment, as the workflow run belongs to no pull request.");
 				return;
 			}
 
-			string prNumber = File.ReadAllText(ArtifactsDirectory / "PR.txt");
-			string body = CreateBenchmarkCommentBody();
-			Log.Debug("Pull request number: {PullRequestId}", prNumber);
-			if (int.TryParse(prNumber, out int prId))
+			await "Benchmarks".DownloadArtifactTo(ArtifactsDirectory, GithubToken);
+			if (!File.Exists(ArtifactsDirectory / "Benchmarks" / "results" /
+			                 "aweXpect.Benchmarks.HappyCaseBenchmarks-report-github.md"))
 			{
-				GitHubClient gitHubClient = new(new ProductHeaderValue("Fallout"));
-				Credentials tokenAuth = new(GithubToken);
-				gitHubClient.Credentials = tokenAuth;
-				IReadOnlyList<IssueComment> comments =
-					await gitHubClient.Issue.Comment.GetAllForIssue("Testably", "aweXpect", prId);
-				long? commentId = null;
-				Log.Information($"Found {comments.Count} comments");
-				foreach (IssueComment comment in comments)
-				{
-					if (comment.Body.Contains("## :rocket: Benchmark Results"))
-					{
-						Log.Information($"Found comment: {comment.Body}");
-						commentId = comment.Id;
-					}
-				}
+				Log.Information("Skip writing a comment, as the workflow run produced no benchmark report.");
+				return;
+			}
 
-				if (commentId == null)
+			string body = CreateBenchmarkCommentBody().AsUntrustedCommentContent();
+			GitHubClient gitHubClient = new(new ProductHeaderValue("Fallout"));
+			Credentials tokenAuth = new(GithubToken);
+			gitHubClient.Credentials = tokenAuth;
+			IReadOnlyList<IssueComment> comments =
+				await gitHubClient.Issue.Comment.GetAllForIssue("Testably", "aweXpect", prId.Value);
+			long? commentId = null;
+			Log.Information($"Found {comments.Count} comments");
+			foreach (IssueComment comment in comments)
+			{
+				if (comment.IsPipelineComment("## :rocket: Benchmark Results"))
 				{
-					Log.Information($"Create comment:\n{body}");
-					await gitHubClient.Issue.Comment.Create("Testably", "aweXpect", prId, body);
+					Log.Information($"Found comment: {comment.Body}");
+					commentId = comment.Id;
 				}
-				else
-				{
-					Log.Information($"Update comment:\n{body}");
-					await gitHubClient.Issue.Comment.Update("Testably", "aweXpect", commentId.Value, body);
-				}
+			}
+
+			if (commentId == null)
+			{
+				Log.Information($"Create comment:\n{body}");
+				await gitHubClient.Issue.Comment.Create("Testably", "aweXpect", prId.Value, body);
+			}
+			else
+			{
+				Log.Information($"Update comment:\n{body}");
+				await gitHubClient.Issue.Comment.Update("Testably", "aweXpect", commentId.Value, body);
 			}
 		});
 
