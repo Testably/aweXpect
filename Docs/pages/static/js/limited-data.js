@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
-        "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
-      },
-      {
         "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 11:34:43 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
         "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
+      },
+      {
+        "sha": "998fbcba07f55588650d37e481c620b6925b626d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
+        "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
       }
     ],
     "labels": [
-      "e50f5061",
       "1c1e3359",
       "250bac89",
       "e2846045",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "e4877b71",
       "e4e4a0e6",
       "9f96f8b9",
-      "a07a99e2"
+      "a07a99e2",
+      "998fbcba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          241.9545815785726,
           354.9138753230755,
           330.47076206207277,
           286.55542169298445,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           132.29847179140364,
           128.71559431552888,
           157.909753036499,
-          69.51080529689789
+          69.51080529689789,
+          128.40656195368086
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -423,7 +423,6 @@ window.BENCHMARK_DATA = {
           912,
           912,
           912,
-          912,
           920,
           920,
           920,
@@ -461,6 +460,7 @@ window.BENCHMARK_DATA = {
           408,
           408,
           408,
+          416,
           416,
           416,
           416,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          230.99256037076313,
           234.43503063065666,
           277.0887091841017,
           268.40035581588745,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           278.11817935307823,
           230.19768505830032,
           315.1370669092451,
-          144.43615654536657
+          144.43615654536657,
+          251.95767988477434
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -629,7 +629,8 @@ window.BENCHMARK_DATA = {
           165.53777418136596,
           195.0618337949117,
           212.27659174601237,
-          108.34737239565167
+          108.34737239565167,
+          198.2337419305529
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -641,6 +642,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -676,12 +678,6 @@ window.BENCHMARK_DATA = {
   },
   "Equivalency": {
     "commits": [
-      {
-        "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
-        "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
-      },
       {
         "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
         "author": "Valentin Breu\u00DF",
@@ -975,10 +971,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
         "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
+      },
+      {
+        "sha": "998fbcba07f55588650d37e481c620b6925b626d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
+        "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
       }
     ],
     "labels": [
-      "e50f5061",
       "1c1e3359",
       "250bac89",
       "e2846045",
@@ -1027,14 +1028,14 @@ window.BENCHMARK_DATA = {
       "e4877b71",
       "e4e4a0e6",
       "9f96f8b9",
-      "a07a99e2"
+      "a07a99e2",
+      "998fbcba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          302810.2771344866,
           414575.8200683594,
           445190.5305989583,
           336645.06989397324,
@@ -1083,7 +1084,8 @@ window.BENCHMARK_DATA = {
           77261.2616373698,
           110900.74981219952,
           103380.93493652344,
-          59559.44956461588
+          59559.44956461588,
+          110850.44731445312
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1095,7 +1097,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          628384,
           628384,
           628384,
           628384,
@@ -1144,6 +1145,7 @@ window.BENCHMARK_DATA = {
           16296,
           16296,
           16296,
+          16296,
           16296
         ],
         "borderColor": "#63A2AC",
@@ -1159,7 +1161,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1765410.9028645833,
           2495256.078125,
           2261677.1007254464,
           1918723.2403738839,
@@ -1208,7 +1209,8 @@ window.BENCHMARK_DATA = {
           2029503.9372395833,
           2601839.8395647323,
           2542567.26171875,
-          1334207.38046875
+          1334207.38046875,
+          2412160.971454327
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1220,7 +1222,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841611,
           4841651,
           4841635,
           4841609,
@@ -1269,6 +1270,7 @@ window.BENCHMARK_DATA = {
           4841613,
           4841651,
           4841631,
+          4841647,
           4841647
         ],
         "borderColor": "#FF671B",
@@ -1304,7 +1306,8 @@ window.BENCHMARK_DATA = {
           169412.5600748698,
           211350.13321358818,
           227074.20301920574,
-          114274.30141038161
+          114274.30141038161,
+          198374.70086669922
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1316,6 +1319,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -1351,12 +1355,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
-        "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
-      },
       {
         "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
         "author": "Valentin Breu\u00DF",
@@ -1650,10 +1648,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
         "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
+      },
+      {
+        "sha": "998fbcba07f55588650d37e481c620b6925b626d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
+        "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
       }
     ],
     "labels": [
-      "e50f5061",
       "1c1e3359",
       "250bac89",
       "e2846045",
@@ -1702,14 +1705,14 @@ window.BENCHMARK_DATA = {
       "e4877b71",
       "e4e4a0e6",
       "9f96f8b9",
-      "a07a99e2"
+      "a07a99e2",
+      "998fbcba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          437.31962765180145,
           561.2740639368693,
           572.2930903116862,
           479.8030530489408,
@@ -1758,7 +1761,8 @@ window.BENCHMARK_DATA = {
           272.55215377807616,
           298.51415025270904,
           331.8805335362752,
-          146.25526429812115
+          146.25526429812115,
+          253.27509797414143
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1773,7 +1777,6 @@ window.BENCHMARK_DATA = {
           1592,
           1592,
           1592,
-          1592,
           1576,
           1576,
           1576,
@@ -1811,6 +1814,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          608,
           608,
           608,
           608,
@@ -1834,7 +1838,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          394.3921975135803,
           464.85439586639404,
           506.42377713521324,
           514.1353323276227,
@@ -1883,7 +1886,8 @@ window.BENCHMARK_DATA = {
           495.3544986089071,
           472.6657814979553,
           595.1926895141602,
-          265.34278405507405
+          265.34278405507405,
+          511.3131476084391
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1979,7 +1983,8 @@ window.BENCHMARK_DATA = {
           387.79125142097473,
           384.12522625923157,
           447.6786728858948,
-          222.32614852831915
+          222.32614852831915,
+          403.5982783953349
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1991,6 +1996,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -2026,12 +2032,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
-        "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
-      },
       {
         "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
         "author": "Valentin Breu\u00DF",
@@ -2325,10 +2325,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
         "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
+      },
+      {
+        "sha": "998fbcba07f55588650d37e481c620b6925b626d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
+        "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
       }
     ],
     "labels": [
-      "e50f5061",
       "1c1e3359",
       "250bac89",
       "e2846045",
@@ -2377,14 +2382,14 @@ window.BENCHMARK_DATA = {
       "e4877b71",
       "e4e4a0e6",
       "9f96f8b9",
-      "a07a99e2"
+      "a07a99e2",
+      "998fbcba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          265.1044013659159,
           341.4331901868184,
           340.2542008399963,
           298.8287676493327,
@@ -2433,7 +2438,8 @@ window.BENCHMARK_DATA = {
           144.20769170125325,
           146.50328726768493,
           182.17733670870464,
-          85.12685470921653
+          85.12685470921653,
+          151.41907165845234
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2448,7 +2454,6 @@ window.BENCHMARK_DATA = {
           1080,
           1080,
           1080,
-          1080,
           1064,
           1064,
           1064,
@@ -2486,6 +2491,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          520,
           520,
           520,
           520,
@@ -2509,7 +2515,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          260.7137795130412,
           249.27881676355997,
           290.4156669298808,
           295.770979983466,
@@ -2558,7 +2563,8 @@ window.BENCHMARK_DATA = {
           269.95344088872275,
           235.27648987088884,
           344.28317203521726,
-          136.4304206053416
+          136.4304206053416,
+          246.45414049284798
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2654,7 +2660,8 @@ window.BENCHMARK_DATA = {
           200.84191783836908,
           235.24980303219385,
           268.45120941797893,
-          131.01223762218768
+          131.01223762218768,
+          236.13340884844462
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2666,6 +2673,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -2701,12 +2709,6 @@ window.BENCHMARK_DATA = {
   },
   "String": {
     "commits": [
-      {
-        "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
-        "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
-      },
       {
         "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
         "author": "Valentin Breu\u00DF",
@@ -3000,10 +3002,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
         "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
+      },
+      {
+        "sha": "998fbcba07f55588650d37e481c620b6925b626d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
+        "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
       }
     ],
     "labels": [
-      "e50f5061",
       "1c1e3359",
       "250bac89",
       "e2846045",
@@ -3052,14 +3059,14 @@ window.BENCHMARK_DATA = {
       "e4877b71",
       "e4e4a0e6",
       "9f96f8b9",
-      "a07a99e2"
+      "a07a99e2",
+      "998fbcba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          434.7333507537842,
           584.3941752570016,
           619.9223340352377,
           516.2475307171161,
@@ -3108,7 +3115,8 @@ window.BENCHMARK_DATA = {
           234.5517561117808,
           248.11837339401245,
           286.6833854675293,
-          140.5606133086341
+          140.5606133086341,
+          240.89363451004027
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3123,7 +3131,6 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
-          1576,
           1600,
           1600,
           1600,
@@ -3161,6 +3168,7 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
+          584,
           584,
           584,
           584,
@@ -3184,7 +3192,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          997.948850886027,
           1164.684745495136,
           1292.890371831258,
           1165.7716802869525,
@@ -3233,7 +3240,8 @@ window.BENCHMARK_DATA = {
           1074.4109935760498,
           1174.1289899190267,
           1474.113236363729,
-          662.3275872639248
+          662.3275872639248,
+          1216.8918950398763
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3329,7 +3337,8 @@ window.BENCHMARK_DATA = {
           290.2447023073832,
           325.12535707767194,
           380.9069531758626,
-          188.75718556131636
+          188.75718556131636,
+          329.50015811920167
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3341,6 +3350,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -3376,12 +3386,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
-        "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
-      },
       {
         "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
         "author": "Valentin Breu\u00DF",
@@ -3675,10 +3679,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
         "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
+      },
+      {
+        "sha": "998fbcba07f55588650d37e481c620b6925b626d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
+        "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
       }
     ],
     "labels": [
-      "e50f5061",
       "1c1e3359",
       "250bac89",
       "e2846045",
@@ -3727,14 +3736,14 @@ window.BENCHMARK_DATA = {
       "e4877b71",
       "e4e4a0e6",
       "9f96f8b9",
-      "a07a99e2"
+      "a07a99e2",
+      "998fbcba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1613.3105629512243,
           2960.5992584228516,
           2781.722848256429,
           1947.3610178629558,
@@ -3783,7 +3792,8 @@ window.BENCHMARK_DATA = {
           529.6957696914673,
           591.1264041491917,
           690.1892388661703,
-          342.1757644812266
+          342.1757644812266,
+          596.966326268514
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3795,7 +3805,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          4168,
           4168,
           4168,
           4168,
@@ -3844,6 +3853,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          856,
           856
         ],
         "borderColor": "#63A2AC",
@@ -3859,7 +3869,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          993.2851346333822,
           1286.4451543367827,
           1424.523985417684,
           1308.3196460088095,
@@ -3908,7 +3917,8 @@ window.BENCHMARK_DATA = {
           1272.2204156239827,
           1241.7527656555176,
           1588.7325370788574,
-          708.1604086330959
+          708.1604086330959,
+          1361.6681577046713
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4004,7 +4014,8 @@ window.BENCHMARK_DATA = {
           552.827801322937,
           613.0097901026407,
           713.7595713933309,
-          362.3581245128925
+          362.3581245128925,
+          650.306664721171
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4016,6 +4027,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -4051,12 +4063,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "e50f50614b201e1b4c5a226176cf7782ba90c8c6",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 10:11:59 2026 \u002B0200",
-        "message": "fix!: honour the subject\u0027s comparer in dictionary equivalency and set collection expectations (#1369)"
-      },
       {
         "sha": "1c1e3359c4bc39523032cffe2b2dca847e7d1ac5",
         "author": "Valentin Breu\u00DF",
@@ -4350,10 +4356,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
         "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
+      },
+      {
+        "sha": "998fbcba07f55588650d37e481c620b6925b626d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
+        "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
       }
     ],
     "labels": [
-      "e50f5061",
       "1c1e3359",
       "250bac89",
       "e2846045",
@@ -4402,14 +4413,14 @@ window.BENCHMARK_DATA = {
       "e4877b71",
       "e4e4a0e6",
       "9f96f8b9",
-      "a07a99e2"
+      "a07a99e2",
+      "998fbcba"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1699.4059089933123,
           2904.773911339896,
           2746.697520446777,
           1990.7065361567907,
@@ -4458,7 +4469,8 @@ window.BENCHMARK_DATA = {
           826.6514413197835,
           970.0448721476963,
           1093.7553983052571,
-          551.4206887880961
+          551.4206887880961,
+          1034.52440478007
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4470,7 +4482,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3928,
           3928,
           3928,
           3928,
@@ -4519,6 +4530,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1264,
           1264
         ],
         "borderColor": "#63A2AC",
@@ -4534,7 +4546,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          13557.310091291156,
           26436.324474628156,
           24352.103568522136,
           15694.400777963492,
@@ -4583,7 +4594,8 @@ window.BENCHMARK_DATA = {
           17054.773201497395,
           25491.593420846122,
           25337.29578944615,
-          10919.010286603656
+          10919.010286603656,
+          20865.700933837892
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4595,7 +4607,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33465,
           33471,
           33468,
           33465,
@@ -4644,6 +4655,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33468,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -4679,7 +4691,8 @@ window.BENCHMARK_DATA = {
           677.7818338530404,
           763.0835143602811,
           923.8292442321778,
-          434.2536027772086
+          434.2536027772086,
+          735.9685022989909
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4691,6 +4704,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -4935,6 +4949,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
         "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
+      },
+      {
+        "sha": "998fbcba07f55588650d37e481c620b6925b626d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
+        "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
       }
     ],
     "labels": [
@@ -4972,7 +4992,8 @@ window.BENCHMARK_DATA = {
       "e4877b71",
       "e4e4a0e6",
       "9f96f8b9",
-      "a07a99e2"
+      "a07a99e2",
+      "998fbcba"
     ],
     "datasets": [
       {
@@ -5013,7 +5034,8 @@ window.BENCHMARK_DATA = {
           664.6221086638315,
           726.6206457773844,
           826.8584680557251,
-          370.2186816419874
+          370.2186816419874,
+          720.0846664428711
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5051,6 +5073,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1816,
           1816,
           1816,
           1816,
@@ -5108,7 +5131,8 @@ window.BENCHMARK_DATA = {
           30550.12803867885,
           80930.81984165737,
           55566.31945800781,
-          28806.078369140625
+          28806.078369140625,
+          59803.41401890346
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5154,7 +5178,8 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5247,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5378,6 +5403,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 15:25:38 2026 \u002B0200",
         "message": "fix: bound the check of an attempt of \u0060Eventually()\u0060 by the retry budget (#1695)"
+      },
+      {
+        "sha": "998fbcba07f55588650d37e481c620b6925b626d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Wed Oct 7 16:09:27 2026 \u002B0200",
+        "message": "fix: fail the expectation when the enumerator or the current item of a materialized subject throws (#1697)"
       }
     ],
     "labels": [
@@ -5415,7 +5446,8 @@ window.BENCHMARK_DATA = {
       "e4877b71",
       "e4e4a0e6",
       "9f96f8b9",
-      "a07a99e2"
+      "a07a99e2",
+      "998fbcba"
     ],
     "datasets": [
       {
@@ -5456,7 +5488,8 @@ window.BENCHMARK_DATA = {
           247.55775231581467,
           240.59601265589396,
           283.48961407343546,
-          126.06770662466685
+          126.06770662466685,
+          256.43952117647444
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5494,6 +5527,7 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
+          664,
           664,
           664,
           664,
@@ -5551,7 +5585,8 @@ window.BENCHMARK_DATA = {
           16101.794182332356,
           30843.401501464843,
           26076.549479166668,
-          10431.874232365535
+          10431.874232365535,
+          18769.713187081474
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5597,7 +5632,8 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5632,7 +5668,8 @@ window.BENCHMARK_DATA = {
           218.87901401519775,
           233.129546216556,
           264.4644939740499,
-          133.89500074386598
+          133.89500074386598,
+          245.34382966586523
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5644,6 +5681,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
