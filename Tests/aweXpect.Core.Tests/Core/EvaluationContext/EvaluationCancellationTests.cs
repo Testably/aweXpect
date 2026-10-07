@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using aweXpect.Chronology;
@@ -186,8 +185,7 @@ public class EvaluationCancellationTests
 	[Test]
 	public async Task HasWaitElapsed_WhenTheTimeoutElapsedAndIsNotShorterThanTheWait_ShouldBeTrue()
 	{
-		EvaluationCancellation sut = new(10.Milliseconds(), CancellationToken.None);
-		await WaitForCancellation(sut.Token);
+		EvaluationCancellation sut = TimedOutAfter(10.Milliseconds());
 
 		bool result = sut.HasWaitElapsed(10.Milliseconds(), 1.Milliseconds());
 
@@ -199,8 +197,7 @@ public class EvaluationCancellationTests
 	[Test]
 	public async Task HasWaitElapsed_WhenTheTimeoutElapsedAndIsNotShorterThanTheWait_WhenTheWaitStartedLate_ShouldBeFalse()
 	{
-		EvaluationCancellation sut = new(100.Milliseconds(), CancellationToken.None);
-		await WaitForCancellation(sut.Token);
+		EvaluationCancellation sut = TimedOutAfter(100.Milliseconds());
 
 		bool result = sut.HasWaitElapsed(100.Milliseconds(), 20.Milliseconds());
 
@@ -212,8 +209,7 @@ public class EvaluationCancellationTests
 	[Test]
 	public async Task HasWaitElapsed_WhenTheTimeoutElapsedAndIsLongerThanTheWait_WhenTheWaitStartedLate_ShouldBeFalse()
 	{
-		EvaluationCancellation sut = new(100.Milliseconds(), CancellationToken.None);
-		await WaitForCancellation(sut.Token);
+		EvaluationCancellation sut = TimedOutAfter(100.Milliseconds());
 
 		bool result = sut.HasWaitElapsed(60.Milliseconds(), 20.Milliseconds());
 
@@ -228,8 +224,7 @@ public class EvaluationCancellationTests
 	public async Task HasWaitElapsed_WhenTheTimeoutElapsedAndIsNotShorterThanTheWait_ShouldAllowTheStartSlack(
 		int millisecondsWithinTheSlack, bool expectedResult)
 	{
-		EvaluationCancellation sut = new(100.Milliseconds(), CancellationToken.None);
-		await WaitForCancellation(sut.Token);
+		EvaluationCancellation sut = TimedOutAfter(100.Milliseconds());
 		TimeSpan waited = 100.Milliseconds() - EvaluationCancellation.StartSlack +
 		                  millisecondsWithinTheSlack.Milliseconds();
 
@@ -242,8 +237,7 @@ public class EvaluationCancellationTests
 	[Test]
 	public async Task HasWaitElapsed_WhenTheTimeoutElapsedAndIsShorterThanTheWait_ShouldBeFalse()
 	{
-		EvaluationCancellation sut = new(10.Milliseconds(), CancellationToken.None);
-		await WaitForCancellation(sut.Token);
+		EvaluationCancellation sut = TimedOutAfter(10.Milliseconds());
 
 		bool result = sut.HasWaitElapsed(1.Seconds(), 10.Milliseconds());
 
@@ -255,8 +249,7 @@ public class EvaluationCancellationTests
 	[Test]
 	public async Task HasWaitElapsed_WhenTheWaitIsInfinite_ShouldBeFalse()
 	{
-		EvaluationCancellation sut = new(10.Milliseconds(), CancellationToken.None);
-		await WaitForCancellation(sut.Token);
+		EvaluationCancellation sut = TimedOutAfter(10.Milliseconds());
 
 		bool result = sut.HasWaitElapsed(Timeout.InfiniteTimeSpan, 10.Milliseconds());
 
@@ -291,9 +284,7 @@ public class EvaluationCancellationTests
 	[Test]
 	public async Task Reason_WhenTheTimeoutElapsed_ShouldBeTimeout()
 	{
-		EvaluationCancellation sut = new(10.Milliseconds(), CancellationToken.None);
-
-		await WaitForCancellation(sut.Token);
+		EvaluationCancellation sut = TimedOutAfter(10.Milliseconds());
 
 		await That(sut.Reason).IsEqualTo(CancellationReason.Timeout);
 		sut.Release();
@@ -303,8 +294,7 @@ public class EvaluationCancellationTests
 	public async Task Reason_WhenTheTimeoutElapsedAndTheCallerCanceled_ShouldBeCaller()
 	{
 		using CancellationTokenSource cts = new();
-		EvaluationCancellation sut = new(10.Milliseconds(), cts.Token);
-		await WaitForCancellation(sut.Token);
+		EvaluationCancellation sut = TimedOutAfter(10.Milliseconds(), cts.Token);
 
 		cts.Cancel();
 
@@ -360,24 +350,31 @@ public class EvaluationCancellationTests
 	{
 		Signaler<int> signaler = new();
 		signaler.Signal(1);
-		Stopwatch? stopwatch = null;
+		VirtualTimeSystem timeSystem = new();
+		int calls = 0;
 
 		bool TakesAWhile(int _)
 		{
-			stopwatch ??= Stopwatch.StartNew();
-			SpinWait.SpinUntil(() => stopwatch.Elapsed >= 200.Milliseconds());
+			if (Interlocked.Increment(ref calls) == 1)
+			{
+				timeSystem.Advance(200.Milliseconds());
+			}
+
 			return true;
 		}
 
 		async Task Act()
 			=> await That(signaler).Signaled().With(TakesAWhile)
 				.And.DidNotSignal(2.Times()).Within(300.Milliseconds())
-				.WithTimeout(300.Milliseconds());
+				.WithTimeout(300.Milliseconds())
+				.UseTimeSystem(timeSystem);
 
 		await That(Act).Throws<FailException>()
 			.WithMessage("*but it did not finish within 0:00.300").AsWildcard().And
 			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.300."))
 			.Because("the second constraint only watched for the rest of the timeout instead of its own 300 ms");
+		await That(timeSystem.Now).IsEqualTo(300.Milliseconds())
+			.Because("the timeout ended the wait of the second constraint 100 ms after it started");
 	}
 
 	private static AndOrResult<bool, IExpectThat<bool>> Evaluate(CancellationCapturingConstraint constraint)
@@ -390,11 +387,15 @@ public class EvaluationCancellationTests
 			that);
 	}
 
-	private static async Task WaitForCancellation(CancellationToken token)
+	/// <summary>
+	///     An evaluation cancellation whose <paramref name="timeout" /> elapsed on a virtual clock.
+	/// </summary>
+	private static EvaluationCancellation TimedOutAfter(TimeSpan timeout, CancellationToken callerToken = default)
 	{
-		TaskCompletionSource<bool> canceled = new();
-		using CancellationTokenRegistration _ = token.Register(() => canceled.TrySetResult(true));
-		await canceled.Task;
+		VirtualTimeSystem timeSystem = new();
+		EvaluationCancellation cancellation = new(timeout, callerToken, null, timeSystem);
+		timeSystem.Advance(timeout);
+		return cancellation;
 	}
 
 	private sealed class CancellationCapturingConstraint : IAsyncContextConstraint<bool>
