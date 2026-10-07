@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
+using aweXpect.Core.Constraints;
 using aweXpect.Core.Metadata;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Customization;
@@ -25,6 +26,32 @@ namespace aweXpect.Core.Tests.Equivalency;
 
 public sealed partial class EquivalencyComparisonTests
 {
+	[Test]
+	public async Task WhenActualFieldIsInternal_WithInternalFields_ShouldCompareIt()
+	{
+		WithInternalValue actual = new(2);
+		var expected = new
+		{
+			Value = 1,
+		};
+		StringBuilder failureBuilder = new();
+		EquivalencyOptions options = new()
+		{
+			Fields = IncludeMembers.Public | IncludeMembers.Internal,
+		};
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                      Actual: 2
+		                                                    Expected: 1
+		                                                """).IgnoringNewlineStyle()
+			.Because("the expected property falls back to the internal field of the same name on the actual object");
+	}
+
 	[Test]
 	public async Task WhenActualFieldIsPrivate_WithInternalFields_ShouldTreatItAsMissing()
 	{
@@ -676,6 +703,33 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
+	public async Task WhenCollectionElementMatchesAScopedIgnoreRule_ShouldStillCompareIt()
+	{
+		int[] actual = [1,];
+		int[] expected = [2,];
+		EquivalencyOptions options = new()
+		{
+			MembersToIgnore =
+			[
+				new MemberToIgnore.ByFieldPredicate((_, _) => true, "all fields"),
+				new MemberToIgnore.ByPropertyPredicate((_, _) => true, "all properties"),
+			],
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("a collection element is neither a field nor a property, so a rule scoped to either never applies to it");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [0] differed:
+		                                                      Actual: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Test]
 	public async Task WhenCollectionElementsFormatIdentically_ShouldAppendTheRuntimeType()
 	{
 		var actual = new
@@ -704,6 +758,76 @@ public sealed partial class EquivalencyComparisonTests
 		                                                    Expected: 1 (long)
 		                                                """).IgnoringNewlineStyle()
 			.Because("two elements that format identically are only told apart by their type");
+	}
+
+	[Test]
+	public async Task WhenCollectionHasFewerElements_AndTheMissingElementIsIgnored_ShouldSucceed()
+	{
+		object?[] actual = [1,];
+		object?[] expected = [1, null,];
+		EquivalencyOptions options = new()
+		{
+			MembersToIgnore = [new MemberToIgnore.ByName("[1]"),],
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("an ignored element is not reported as missing");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Test]
+	public async Task WhenCollectionHasFewerElements_ShouldReportTheMissingElements()
+	{
+		int[] actual = [1,];
+		int[] expected = [1, 2, 3,];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [1] was missing 2 and
+		                                                  Element [2] was missing 3
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Test]
+	public async Task WhenCollectionHasMoreElements_AndTheSuperfluousElementIsIgnored_ShouldSucceed()
+	{
+		object?[] actual = [null, null,];
+		object?[] expected = [null,];
+		EquivalencyOptions options = new()
+		{
+			MembersToIgnore = [new MemberToIgnore.ByName("[1]"),],
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("an ignored element is not reported as superfluous");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Test]
+	public async Task WhenCollectionHasMoreElements_ShouldReportTheSuperfluousElements()
+	{
+		int[] actual = [1, 2, 3,];
+		int[] expected = [1,];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [1] had superfluous 2 and
+		                                                  Element [2] had superfluous 3
+		                                                """).IgnoringNewlineStyle();
 	}
 
 	[Test]
@@ -770,6 +894,94 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
+	public async Task WhenCollectionOrderIsIgnored_AndADictionaryElementHasAnUnmatchedKey_ShouldReportIt()
+	{
+		object[] actual =
+		[
+			new Hashtable(StringComparer.OrdinalIgnoreCase)
+			{
+				["A"] = 1,
+			},
+		];
+		object[] expected =
+		[
+			new Dictionary<string, int>
+			{
+				["a"] = 1,
+			},
+		];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [0][A] matched no expected key
+		                                                """).IgnoringNewlineStyle()
+			.Because("the key is only written for the leftover pair, not while the elements are matched");
+	}
+
+	[Test]
+	public async Task WhenCollectionOrderIsIgnored_AndADictionaryElementLacksADistinctKey_ShouldReportIt()
+	{
+		object[] actual =
+		[
+			new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+			{
+				["a"] = 1,
+			},
+		];
+		object[] expected =
+		[
+			new Dictionary<string, int>
+			{
+				["a"] = 1,
+				["A"] = 1,
+			},
+		];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [0][A] lacked a distinct key
+		                                                """).IgnoringNewlineStyle()
+			.Because("the key is only written for the leftover pair, not while the elements are matched");
+	}
+
+	[Test]
+	public async Task WhenCollectionOrderIsIgnored_AndAnArrayElementHasOtherDimensions_ShouldReportThem()
+	{
+		int[][,] actual = [new int[1, 2],];
+		int[][,] expected = [new int[2, 1],];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [0] had dimensions [1,2] instead of [2,1]
+		                                                """).IgnoringNewlineStyle()
+			.Because("the dimensions are only written for the leftover pair, not while the elements are matched");
+	}
+
+	[Test]
 	public async Task WhenCollectionOrderIsIgnored_AndAnElementIsIgnored_ShouldIgnoreItInBothCollections()
 	{
 		int[] actual = [1, 2, 3,];
@@ -786,6 +998,129 @@ public sealed partial class EquivalencyComparisonTests
 		await That(result).IsTrue()
 			.Because("an ignored element has no counterpart it could be skipped in once the order is ignored, so neither the actual 2 has to be matched nor the expected 99 has to be found");
 		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Test]
+	public async Task WhenCollectionOrderIsIgnored_AndAnElementIsMissingAMember_ShouldReportIt()
+	{
+		object[] actual = [new WithPublicValue(1),];
+		object[] expected =
+		[
+			new
+			{
+				Value = 1,
+				Other = 2,
+			},
+		];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property [0].Other was missing on the actual object
+		                                                """).IgnoringNewlineStyle()
+			.Because("the missing member is only written for the leftover pair, not while the elements are matched");
+	}
+
+	[Test]
+	public async Task WhenCollectionOrderIsIgnored_AndAnElementIsNull_WithAnIgnoreRule_ShouldMatchIt()
+	{
+		object?[] actual = [1, null,];
+		object?[] expected = [null, 1,];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+			MembersToIgnore = [new MemberToIgnore.ByName("Unused"),],
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsTrue();
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Test]
+	public async Task WhenCollectionOrderIsIgnored_AndANestedCollectionHasASuperfluousElement_ShouldReportIt()
+	{
+		int[][] actual = [[1, 2,],];
+		int[][] expected = [[1,],];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [0][1] had superfluous 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("the superfluous element is only written for the leftover pair, not while the elements are matched or ranked");
+	}
+
+	[Test]
+	public async Task WhenCollectionOrderIsIgnored_AndANestedCollectionMissesAnElement_ShouldReportIt()
+	{
+		int[][] actual = [[1,],];
+		int[][] expected = [[1, 2,],];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [0][1] was missing 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("the missing element is only written for the leftover pair, not while the elements are matched or ranked");
+	}
+
+	[Test]
+	public async Task WhenCollectionOrderIsIgnored_AndAnItIsMemberDoesNotMatch_ShouldReportIt()
+	{
+		object[] actual =
+		[
+			new
+			{
+				Value = 1,
+			},
+		];
+		object[] expected =
+		[
+			new
+			{
+				Value = It.Is<int>().That.IsGreaterThan(2),
+			},
+		];
+		EquivalencyOptions options = new()
+		{
+			IgnoreCollectionOrder = true,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, options, failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property [0].Value differed:
+		                                                      Actual: 1
+		                                                    Expected: is int that is greater than 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("the expectation is only written for the leftover pair, not while the elements are matched");
 	}
 
 	[Test]
@@ -1318,6 +1653,31 @@ public sealed partial class EquivalencyComparisonTests
 #endif
 
 	[Test]
+	public async Task WhenDateTimeMemberHasAnIncompatibleKind_ShouldReportTheDifference()
+	{
+		var actual = new
+		{
+			Value = new DateTime(2024, 1, 2, 3, 4, 5, DateTimeKind.Utc),
+		};
+		var expected = new
+		{
+			Value = new DateTime(2024, 1, 2, 3, 4, 5, DateTimeKind.Local),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("a UTC and a local time with the same ticks describe different instants, although their Equals ignores the kind");
+		await That(failureBuilder.ToString()).IsEqualTo($$"""
+
+		                                                  Property Value differed:
+		                                                      Actual: 2024-01-02T03:04:05.0000000Z
+		                                                    Expected: {{expected.Value:o}}
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Test]
 	public async Task WhenDelegateMemberDiffers_ShouldReportTheDifference()
 	{
 		var actual = new
@@ -1360,6 +1720,29 @@ public sealed partial class EquivalencyComparisonTests
 		await That(result).IsFalse()
 			.Because("two closures over the same value are separate targets, and walking them would compare whatever the lambda captured - up to the whole enclosing object");
 		await That(failureBuilder.ToString()).Contains("Property Value differed:");
+	}
+
+	[Test]
+	public async Task WhenDictionaryHasAnAdditionalAndAMissingKeyWithNullValues_ShouldReportBoth()
+	{
+		Dictionary<string, object?> actual = new()
+		{
+			["a"] = null,
+		};
+		Dictionary<string, object?> expected = new()
+		{
+			["b"] = null,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [a] had superfluous <null> and
+		                                                  Element [b] was missing <null>
+		                                                """).IgnoringNewlineStyle();
 	}
 
 	[Test]
@@ -1525,6 +1908,55 @@ public sealed partial class EquivalencyComparisonTests
 		                                                    Expected: 2
 		                                                """).IgnoringNewlineStyle()
 			.Because("a member path to ignore has to match on every machine, whatever its culture");
+	}
+
+	[Test]
+	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndAnEntryHasANullKey_ShouldCompareItAsASequence()
+	{
+		ReadOnlyDictionaryWithEntries actual = new(new KeyValuePair<string, int>("a", 1),
+			new KeyValuePair<string, int>(null!, 2));
+		object[] expected = [new KeyValuePair<string, int>("a", 1), new KeyValuePair<string, int>(null!, 2),];
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), new StringBuilder());
+
+		await That(result).IsTrue()
+			.Because("a dictionary cannot hold a null key, so the entries are compared as the items of a sequence");
+	}
+
+	[Test]
+	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndAnEntryHasNoKey_ShouldCompareItAsASequence()
+	{
+		ReadOnlyDictionaryWithEntries actual = new(1, 2);
+		int[] expected = [1, 2,];
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), new StringBuilder());
+
+		await That(result).IsTrue()
+			.Because("an entry without a key cannot be copied into a dictionary, so the entries are compared as the items of a sequence");
+	}
+
+	[Test]
+	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndAnEntryHasNoValue_ShouldCompareItAsASequence()
+	{
+		ReadOnlyDictionaryWithEntries actual = new(new KeyOnly("a"));
+		object[] expected = [new KeyOnly("a"),];
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), new StringBuilder());
+
+		await That(result).IsTrue()
+			.Because("an entry without a value cannot be copied into a dictionary, so the entries are compared as the items of a sequence");
+	}
+
+	[Test]
+	public async Task WhenDictionaryOnlyImplementsTheGenericInterface_AndAnEntryIsNull_ShouldCompareItAsASequence()
+	{
+		ReadOnlyDictionaryWithEntries actual = new([null,]);
+		object?[] expected = [null,];
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), new StringBuilder());
+
+		await That(result).IsTrue()
+			.Because("a null entry cannot be copied into a dictionary, so the entries are compared as the items of a sequence");
 	}
 
 	[Test]
@@ -1884,6 +2316,31 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
+	public async Task WhenDictionarySubjectUsesAnUnreadableComparer_WithOneMatchedKeyOfSeveral_ShouldReportTheKeyCounts()
+	{
+		Hashtable actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			["a"] = 1,
+			["b"] = 1,
+			["c"] = 1,
+		};
+		Dictionary<string, int> expected = new()
+		{
+			["A"] = 1,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  It contained 3 keys and matched 1 expected key
+		                                                """).IgnoringNewlineStyle()
+			.Because("without the comparer of the hashtable, the matched key \"a\" cannot be told apart from the superfluous ones");
+	}
+
+	[Test]
 	public async Task WhenDictionarySubjectUsesAnUnreadableComparer_WithTwoKeysThatOnlyItUnifies_ShouldReportTheKeyCounts()
 	{
 		Hashtable actual = new(StringComparer.OrdinalIgnoreCase)
@@ -1956,6 +2413,25 @@ public sealed partial class EquivalencyComparisonTests
 		                                                      Actual: 2
 		                                                    Expected: 3
 		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Test]
+	public async Task WhenDictionaryValuesAreNull_ShouldSucceed()
+	{
+		Dictionary<string, object?> actual = new()
+		{
+			["a"] = null,
+		};
+		Dictionary<string, object?> expected = new()
+		{
+			["a"] = null,
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue();
+		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
 	[Test]
@@ -2862,6 +3338,73 @@ public sealed partial class EquivalencyComparisonTests
 		                                                      Actual: <null>
 		                                                    Expected: is string that is empty
 		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Test]
+	public async Task WhenItIsMemberIsUndecided_AndActualIsComparedByMembers_ShouldCompareTheMembers()
+	{
+		var actual = new
+		{
+			Value = new WithPublicValue(1),
+		};
+		var expected = new
+		{
+			Value = IsUndecided<WithPublicValue>(),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value.That was missing on the actual object
+		                                                """).IgnoringNewlineStyle()
+			.Because("an expectation that cannot decide leaves the comparison to the members of the expected value");
+	}
+
+	[Test]
+	public async Task WhenItIsMemberIsUndecided_ShouldCompareTheValues()
+	{
+		var actual = new
+		{
+			Value = 1,
+		};
+		var expected = new
+		{
+			Value = IsUndecided<int>(),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("an expectation that cannot decide leaves the comparison to the values");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                      Actual: 1
+		                                                    Expected: is int that decides nothing
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Test]
+	public async Task WhenItIsMemberMatches_ShouldSucceed()
+	{
+		var actual = new
+		{
+			Value = 3,
+		};
+		var expected = new
+		{
+			Value = It.Is<int>().That.IsGreaterThan(2),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue();
+		await That(failureBuilder.ToString()).IsEmpty();
 	}
 
 	[Test]
@@ -4179,6 +4722,24 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
+	public async Task WhenSetSubjectUsesACaseInsensitiveComparer_AndContainsNull_ShouldMatchItByEquivalency()
+	{
+		HashSet<string?> actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			"a",
+			null,
+		};
+		object?[] expected = [null, "A",];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a null item is never handed to the comparer of the set, but still equivalent to another null");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Test]
 	public async Task WhenSetSubjectUsesACaseInsensitiveComparer_AndExpectedIsAnArray_ShouldMatchTheExpectedItemsThroughIt()
 	{
 		HashSet<string> actual = new(StringComparer.OrdinalIgnoreCase)
@@ -5087,6 +5648,13 @@ public sealed partial class EquivalencyComparisonTests
 	private static Regex PatternB() => PatternBRegex;
 #endif
 
+	private static It.IsEquivalent<T> IsUndecided<T>()
+	{
+		It.IsEquivalent<T> isEquivalent = It.Is<T>();
+		((IExpectThat<T>)isEquivalent).ExpectationBuilder.AddConstraint((_, _) => new UndecidedConstraint<T>());
+		return isEquivalent;
+	}
+
 	private static void RegisterAmbiguousExplicitPhantom()
 	{
 		TypeMetadataRegistry.RegisterExplicitProperty<RegisteredAmbiguousExplicitProbe, int>("Lib.IFirst.Phantom",
@@ -5236,6 +5804,11 @@ public sealed partial class EquivalencyComparisonTests
 		int Value { get; }
 	}
 
+	private sealed class KeyOnly(string key)
+	{
+		public string Key => key;
+	}
+
 	/// <remarks>
 	///     Builds a chain of <paramref name="depth" /> nodes, so a comparison recurses exactly that many levels.
 	/// </remarks>
@@ -5301,6 +5874,30 @@ public sealed partial class EquivalencyComparisonTests
 		public bool TryGetValue(TKey key, out TValue value) => entries.TryGetValue(key, out value!);
 		public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => entries.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+	}
+
+	/// <remarks>
+	///     Has no entries of its own, but enumerates the given <paramref name="entries" /> when it is enumerated as a
+	///     sequence, so that the comparison finds entries that it cannot copy into a dictionary.
+	/// </remarks>
+	private sealed class ReadOnlyDictionaryWithEntries(params object?[] entries) : IReadOnlyDictionary<string, int>
+	{
+		public int Count => 0;
+		public IEnumerable<string> Keys => [];
+		public IEnumerable<int> Values => [];
+		public int this[string key] => throw new KeyNotFoundException();
+		public bool ContainsKey(string key) => false;
+
+		public bool TryGetValue(string key, out int value)
+		{
+			value = 0;
+			return false;
+		}
+
+		public IEnumerator<KeyValuePair<string, int>> GetEnumerator()
+			=> Enumerable.Empty<KeyValuePair<string, int>>().GetEnumerator();
+
+		IEnumerator IEnumerable.GetEnumerator() => entries.GetEnumerator();
 	}
 
 #if NET8_0_OR_GREATER
@@ -5379,6 +5976,14 @@ public sealed partial class EquivalencyComparisonTests
 			get => throw new InvalidOperationException("indexer failed");
 			set => base[key] = value;
 		}
+	}
+
+	private sealed class UndecidedConstraint<T> : IValueConstraint<T>
+	{
+		public ConstraintResult IsMetBy(T actual) => new DummyConstraintResult(Outcome.Undecided, "decides nothing");
+
+		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("decides nothing");
 	}
 
 	private sealed class ValueLikeWithConstantText(int value)

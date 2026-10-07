@@ -49,6 +49,59 @@ public sealed class EquivalencyOptionsTests
 	}
 
 	[Test]
+	public async Task ToString_WhenComparingByMembers_ShouldNameIt()
+	{
+		EquivalencyOptions options = new()
+		{
+			ComparisonType = EquivalencyComparisonType.ByMembers,
+		};
+
+		string result = options.ToString();
+
+		await That(result).IsEqualTo("""
+		                              - include public fields and properties
+		                              - compare types by members
+		                             """).IgnoringNewlineStyle();
+	}
+
+	[Test]
+	public async Task ToString_WhenMembersAreIgnored_ShouldListThemByKind()
+	{
+		EquivalencyOptions options = new()
+		{
+			MembersToIgnore =
+			[
+				new MemberToIgnore.ByName("Foo"),
+				new MemberToIgnore.ByFieldPredicate((_, _) => true, "all fields"),
+				new MemberToIgnore.ByPropertyPredicate((_, _) => true, "all properties"),
+			],
+		};
+
+		string result = options.ToString();
+
+		await That(result).IsEqualTo("""
+		                              - include public fields and properties
+		                              - ignore members: ["Foo"]
+		                              - ignore fields: [all fields]
+		                              - ignore properties: [all properties]
+		                             """).IgnoringNewlineStyle()
+			.Because("a failure message has to say whether a predicate applies to the fields, to the properties or to both");
+	}
+
+	[Test]
+	public async Task ToString_WhenNoFieldsAreIncluded_ShouldSayNo()
+	{
+		EquivalencyOptions options = new()
+		{
+			Fields = IncludeMembers.None,
+		};
+
+		string result = options.ToString();
+
+		await That(result).IsEqualTo(" - include no fields and public properties");
+	}
+
+	[Test]
 	public async Task ToString_WhenVisibilitiesAreCombined_ShouldNameEachOfThem()
 	{
 		EquivalencyOptions options = new()
