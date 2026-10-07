@@ -116,7 +116,30 @@ public sealed partial class ThatString
 			}
 
 			[Test]
-			public async Task WhenNestedInAnExpectationOnTheLines_ShouldFail()
+			public async Task WhenNestedInAMemberExpectationOnAnItem_ShouldFail()
+			{
+				string subject = "a\nb";
+
+				async Task Act()
+					=> await That(subject).HasLines(lines => lines.HasItemThat(line => line
+						.Whose(s => s.Trim(), t => t.HasLines(l => l.HasCount(3)))));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has lines that have an item that has Trim() that has lines that have exactly 3 items,
+					             but it had no matching item
+
+					             Collection:
+					             [
+					               "a",
+					               "b"
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNestedInAnItemExpectationOnTheLines_ShouldFail()
 			{
 				string subject = "a\nb";
 
@@ -126,7 +149,7 @@ public sealed partial class ThatString
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has lines that have an item that lines are that have exactly 3 items,
+					             has lines that have an item that has lines that have exactly 3 items,
 					             but it had no matching item
 
 					             Collection:
@@ -253,7 +276,7 @@ public sealed partial class ThatString
 			}
 
 			[Test]
-			public async Task WhenNestedInAnExpectationOnTheLines_ShouldFail()
+			public async Task WhenNestedInAnItemExpectationOnTheLines_ShouldFail()
 			{
 				string subject = "a\nb";
 
@@ -264,11 +287,31 @@ public sealed partial class ThatString
 				await That(Act).Throws<FailException>()
 					.WithMessage("""
 					             Expected that subject
-					             has lines that have an item that lines are not that have exactly one item,
+					             has lines that have an item that does not have lines that have exactly one item,
 					             but it had no matching item
 
 					             Collection:
 					             [
+					               "a",
+					               "b"
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNestedLinesSatisfyTheExpectations_ShouldFail()
+			{
+				string subject = "a\nb";
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it
+						.HasLines(lines => lines.HasItemThat(line => line.HasLines(l => l.HasCount(1)))));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have lines that have an item that has lines that have exactly one item,
+					             but it had lines [
 					               "a",
 					               "b"
 					             ]
