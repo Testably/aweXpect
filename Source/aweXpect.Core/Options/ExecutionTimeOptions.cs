@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using aweXpect.Core.Helpers;
+using aweXpect.Results;
 
 namespace aweXpect.Options;
 
@@ -11,6 +12,7 @@ public class ExecutionTimeOptions
 {
 	private bool _isAllowingExceptionsSpecified;
 	private Limit? _limit;
+	private string? _limitOption;
 	private Action<TimeSpan>? _onUpperBound;
 	private TimeSpan? _upperBound;
 
@@ -90,54 +92,72 @@ public class ExecutionTimeOptions
 	/// <summary>
 	///     Requires the value to be within the given <paramref name="duration" />.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
 	public void Within(TimeSpan duration)
 	{
 		ThrowHelper.ThrowIfDurationIsNegative(duration);
-		_limit = new MaximumLimit(duration, true);
+		SetLimit(new MaximumLimit(duration, true), nameof(Within));
 		SetUpperBound(duration);
 	}
 
 	/// <summary>
 	///     Requires the value to be at most <paramref name="maximum" />.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
 	public void AtMost(TimeSpan maximum)
 	{
 		ThrowHelper.ThrowIfDurationIsNegative(maximum);
-		_limit = new MaximumLimit(maximum);
+		SetLimit(new MaximumLimit(maximum), nameof(AtMost));
 		SetUpperBound(maximum);
 	}
 
 	/// <summary>
 	///     Requires the value to be at least <paramref name="minimum" />.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
 	public void AtLeast(TimeSpan minimum)
 	{
 		ThrowHelper.ThrowIfDurationIsNegative(minimum);
-		_limit = new MinimumLimit(minimum);
-		_upperBound = null;
+		SetLimit(new MinimumLimit(minimum), nameof(AtLeast));
 	}
 
 	/// <summary>
 	///     Requires the value to be approximately <paramref name="expected" />,
 	///     using the provided <paramref name="tolerance" />.
 	/// </summary>
+	/// <remarks>
+	///     The limit is named after <see cref="ExecutesInToleranceResult{TResult}.Within(TimeSpan)" />, which specifies
+	///     the <paramref name="tolerance" />.
+	/// </remarks>
+	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
 	internal void Approximately(TimeSpan expected, TimeSpan tolerance)
 	{
 		ToleranceHelpers.ThrowIfInvalid(tolerance);
-		_limit = new ApproximatelyLimit(expected, tolerance);
+		SetLimit(new ApproximatelyLimit(expected, tolerance), nameof(ExecutesInToleranceResult<>.Within));
 		SetUpperBound(tolerance > TimeSpan.MaxValue - expected ? TimeSpan.MaxValue : expected + tolerance);
 	}
 
 	/// <summary>
 	///     Requires the value to be between <paramref name="minimum" /> and <paramref name="maximum" />.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
 	public void Between(TimeSpan minimum, TimeSpan maximum)
 	{
 		ThrowHelper.ThrowIfDurationIsNegative(minimum);
 		ThrowHelper.ThrowIfDurationIsNegative(maximum);
 		ThrowHelper.ThrowIfMaximumIsBelowMinimum<TimeSpan>(minimum, maximum);
-		_limit = new BetweenLimit(minimum, maximum);
+		SetLimit(new BetweenLimit(minimum, maximum), nameof(Between));
 		SetUpperBound(maximum);
+	}
+
+	/// <summary>
+	///     Rejects a second limit, because it would silently replace the first one.
+	/// </summary>
+	private void SetLimit(Limit limit, string option)
+	{
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_limitOption, option);
+		_limitOption = option;
+		_limit = limit;
 	}
 
 	private void SetUpperBound(TimeSpan upperBound)
