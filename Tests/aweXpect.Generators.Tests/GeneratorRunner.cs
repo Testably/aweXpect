@@ -74,6 +74,22 @@ internal static class GeneratorRunner
 		return MetadataReference.CreateFromImage(stream.ToArray());
 	}
 
+	/// <summary>
+	///     The source of <see cref="Corpus" />, preceded by the global usings of <c>Usings.cs</c> that it relies on.
+	/// </summary>
+	/// <remarks>
+	///     The corpus is also compiled on its own, where the global usings of this project are missing, and a code
+	///     cleanup removes the usings and namespaces in it that these global usings make redundant.
+	/// </remarks>
+	public static string CorpusSource()
+	{
+		using Stream stream = typeof(GeneratorRunner).Assembly.GetManifestResourceStream("Corpus.cs")!;
+		using StreamReader reader = new(stream);
+		return "global using System;" + Environment.NewLine +
+		       "global using System.Threading.Tasks;" + Environment.NewLine +
+		       reader.ReadToEnd();
+	}
+
 	public static CSharpCompilation CreateCompilation(string[] sources, bool referenceCore = true)
 		=> Compile("GeneratorTests", Parse(sources, new CSharpParseOptions(LanguageVersion.Latest)),
 			GetReferences(referenceCore));

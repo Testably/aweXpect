@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -48,7 +47,7 @@ public sealed partial class MemberParityTests
 	];
 
 	private static readonly Lazy<GeneratorRunner.GeneratorResult> Result = new(()
-		=> GeneratorRunner.Run([Corpus(), Attributes(),]));
+		=> GeneratorRunner.Run([GeneratorRunner.CorpusSource(), Attributes(),]));
 
 	/// <remarks>
 	///     A compared type usually lives in the assembly under test, whose non-public members Roslyn does not import
@@ -56,7 +55,7 @@ public sealed partial class MemberParityTests
 	/// </remarks>
 	private static readonly Lazy<GeneratorRunner.GeneratorResult> LibraryResult = new(()
 		=> GeneratorRunner.Run([Attributes(),],
-			additionalReferences: GeneratorRunner.CompileToReference("Corpus", Corpus())));
+			additionalReferences: GeneratorRunner.CompileToReference("Corpus", GeneratorRunner.CorpusSource())));
 
 	public static IEnumerable<(Type, string)> Types
 	{
@@ -70,13 +69,6 @@ public sealed partial class MemberParityTests
 
 			return data;
 		}
-	}
-
-	private static string Corpus()
-	{
-		using Stream stream = typeof(MemberParityTests).Assembly.GetManifestResourceStream("Corpus.cs")!;
-		using StreamReader reader = new(stream);
-		return reader.ReadToEnd();
 	}
 
 	private static string Attributes()

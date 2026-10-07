@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -26,7 +25,7 @@ public sealed partial class EventParityTests
 	];
 
 	private static readonly Lazy<GeneratorRunner.GeneratorResult> Result = new(()
-		=> GeneratorRunner.Run([Corpus(), Attributes(),]));
+		=> GeneratorRunner.Run([GeneratorRunner.CorpusSource(), Attributes(),]));
 
 	/// <remarks>
 	///     A subject usually lives in the assembly under test, whose non-public members Roslyn does not import by
@@ -34,7 +33,7 @@ public sealed partial class EventParityTests
 	/// </remarks>
 	private static readonly Lazy<GeneratorRunner.GeneratorResult> LibraryResult = new(()
 		=> GeneratorRunner.Run([Attributes(),],
-			additionalReferences: GeneratorRunner.CompileToReference("Corpus", Corpus())));
+			additionalReferences: GeneratorRunner.CompileToReference("Corpus", GeneratorRunner.CorpusSource())));
 
 	public static IEnumerable<(Type, string)> Types
 	{
@@ -48,13 +47,6 @@ public sealed partial class EventParityTests
 
 			return data;
 		}
-	}
-
-	private static string Corpus()
-	{
-		using Stream stream = typeof(EventParityTests).Assembly.GetManifestResourceStream("Corpus.cs")!;
-		using StreamReader reader = new(stream);
-		return reader.ReadToEnd();
 	}
 
 	private static string Attributes()

@@ -171,17 +171,10 @@ public sealed class ComparisonTypeParityTests
 	private static GeneratorRunner.GeneratorResult Run(IEnumerable<Type> types)
 		=> GeneratorRunner.Run(
 		[
-			Corpus(),
+			GeneratorRunner.CorpusSource(),
 			string.Join(Environment.NewLine, types.Select(type
 				=> $"[assembly: aweXpect.Core.Metadata.GenerateMetadata(typeof({Name(type)}))]")),
 		]);
-
-	private static string Corpus()
-	{
-		using Stream stream = typeof(ComparisonTypeParityTests).Assembly.GetManifestResourceStream("Corpus.cs")!;
-		using StreamReader reader = new(stream);
-		return reader.ReadToEnd();
-	}
 
 	/// <summary>
 	///     The <paramref name="type" /> as source code, which for a type that is not generic is also the key of its

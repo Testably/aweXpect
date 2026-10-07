@@ -29,11 +29,11 @@ public sealed partial class MemberParityTests
 	];
 
 	private static readonly Lazy<GeneratorRunner.GeneratorResult> CollectionResult = new(()
-		=> GeneratorRunner.Run([Corpus(), CollectionAttributes(),]));
+		=> GeneratorRunner.Run([GeneratorRunner.CorpusSource(), CollectionAttributes(),]));
 
 	private static readonly Lazy<GeneratorRunner.GeneratorResult> CollectionLibraryResult = new(()
 		=> GeneratorRunner.Run([CollectionAttributes(),],
-			additionalReferences: GeneratorRunner.CompileToReference("Corpus", Corpus())));
+			additionalReferences: GeneratorRunner.CompileToReference("Corpus", GeneratorRunner.CorpusSource())));
 
 	private static string CollectionAttributes()
 		=> string.Join(Environment.NewLine, CollectionTypes.Select(x
