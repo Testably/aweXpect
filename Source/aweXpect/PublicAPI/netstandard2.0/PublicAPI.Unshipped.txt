@@ -1114,14 +1114,14 @@ static aweXpect.ThatEnumerable.StartsWith(this aweXpect.Core.IThat<System.Collec
 static aweXpect.ThatEnumerable.StartsWith(this aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.TimeSpan>?>! subject, System.Collections.Generic.IEnumerable<System.TimeSpan>! expected, string! doNotPopulateThisValue = "") -> aweXpect.Results.ObjectEqualityWithToleranceResult<System.Collections.Generic.IEnumerable<System.TimeSpan>!, aweXpect.Core.IThat<System.Collections.Generic.IEnumerable<System.TimeSpan>?>!, System.TimeSpan, System.TimeSpan>!
 aweXpect.Results.EnumValueResult<TValue, TType>.NotBetween(long? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!, long?>!
 aweXpect.Results.EnumValueResult<TValue, TType>.NotBetween(ulong? minimum) -> aweXpect.Results.BetweenResult<aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!, ulong?>!
-aweXpect.Results.EnumValueResult<TValue, TType>.NotGreaterThan(long? expected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
-aweXpect.Results.EnumValueResult<TValue, TType>.NotGreaterThan(ulong? expected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
-aweXpect.Results.EnumValueResult<TValue, TType>.NotGreaterThanOrEqualTo(long? expected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
-aweXpect.Results.EnumValueResult<TValue, TType>.NotGreaterThanOrEqualTo(ulong? expected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
-aweXpect.Results.EnumValueResult<TValue, TType>.NotLessThan(long? expected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
-aweXpect.Results.EnumValueResult<TValue, TType>.NotLessThan(ulong? expected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
-aweXpect.Results.EnumValueResult<TValue, TType>.NotLessThanOrEqualTo(long? expected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
-aweXpect.Results.EnumValueResult<TValue, TType>.NotLessThanOrEqualTo(ulong? expected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
+aweXpect.Results.EnumValueResult<TValue, TType>.NotGreaterThan(long? unexpected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
+aweXpect.Results.EnumValueResult<TValue, TType>.NotGreaterThan(ulong? unexpected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
+aweXpect.Results.EnumValueResult<TValue, TType>.NotGreaterThanOrEqualTo(long? unexpected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
+aweXpect.Results.EnumValueResult<TValue, TType>.NotGreaterThanOrEqualTo(ulong? unexpected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
+aweXpect.Results.EnumValueResult<TValue, TType>.NotLessThan(long? unexpected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
+aweXpect.Results.EnumValueResult<TValue, TType>.NotLessThan(ulong? unexpected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
+aweXpect.Results.EnumValueResult<TValue, TType>.NotLessThanOrEqualTo(long? unexpected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
+aweXpect.Results.EnumValueResult<TValue, TType>.NotLessThanOrEqualTo(ulong? unexpected) -> aweXpect.Results.AndOrResult<TType, aweXpect.Core.IThat<TValue>!>!
 *REMOVED*static aweXpect.ThatChar.IsEqualTo(this aweXpect.Core.IThat<char>! subject, char? expected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 *REMOVED*static aweXpect.ThatChar.IsNotEqualTo(this aweXpect.Core.IThat<char>! subject, char? unexpected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!
 *REMOVED*static aweXpect.ThatChar.IsNotOneOf(this aweXpect.Core.IThat<char>! subject, params char?[]! unexpected) -> aweXpect.Results.AndOrResult<char, aweXpect.Core.IThat<char>!>!

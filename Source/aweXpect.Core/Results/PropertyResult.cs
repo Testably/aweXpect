@@ -76,15 +76,15 @@ public static class PropertyResult
 		}
 
 		/// <summary>
-		///     …is not greater than the <paramref name="expected" /> value.
+		///     …is not greater than the <paramref name="unexpected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> NotGreaterThan(
-			int? expected)
+			int? unexpected)
 		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => !(a > e),
+			validation?.Invoke(unexpected, nameof(unexpected));
+			return Add(unexpected, (a, e) => !(a > e),
 				"greater than ", true,
-				expected is null);
+				unexpected is null);
 		}
 
 		/// <summary>
@@ -100,15 +100,15 @@ public static class PropertyResult
 		}
 
 		/// <summary>
-		///     …is not greater than or equal to the <paramref name="expected" /> value.
+		///     …is not greater than or equal to the <paramref name="unexpected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> NotGreaterThanOrEqualTo(
-			int? expected)
+			int? unexpected)
 		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => !(a >= e),
+			validation?.Invoke(unexpected, nameof(unexpected));
+			return Add(unexpected, (a, e) => !(a >= e),
 				"greater than or equal to ", true,
-				expected is null);
+				unexpected is null);
 		}
 
 		/// <summary>
@@ -124,15 +124,15 @@ public static class PropertyResult
 		}
 
 		/// <summary>
-		///     …is not less than the <paramref name="expected" /> value.
+		///     …is not less than the <paramref name="unexpected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> NotLessThan(
-			int? expected)
+			int? unexpected)
 		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => !(a < e),
+			validation?.Invoke(unexpected, nameof(unexpected));
+			return Add(unexpected, (a, e) => !(a < e),
 				"less than ", true,
-				expected is null);
+				unexpected is null);
 		}
 
 		/// <summary>
@@ -148,15 +148,15 @@ public static class PropertyResult
 		}
 
 		/// <summary>
-		///     …is not less than or equal to the <paramref name="expected" /> value.
+		///     …is not less than or equal to the <paramref name="unexpected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> NotLessThanOrEqualTo(
-			int? expected)
+			int? unexpected)
 		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => !(a <= e),
+			validation?.Invoke(unexpected, nameof(unexpected));
+			return Add(unexpected, (a, e) => !(a <= e),
 				"less than or equal to ", true,
-				expected is null);
+				unexpected is null);
 		}
 
 		/// <summary>
@@ -278,15 +278,15 @@ public static class PropertyResult
 		}
 
 		/// <summary>
-		///     …is not greater than the <paramref name="expected" /> value.
+		///     …is not greater than the <paramref name="unexpected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> NotGreaterThan(
-			long? expected)
+			long? unexpected)
 		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => !(a > e),
+			validation?.Invoke(unexpected, nameof(unexpected));
+			return Add(unexpected, (a, e) => !(a > e),
 				"greater than ", true,
-				expected is null);
+				unexpected is null);
 		}
 
 		/// <summary>
@@ -302,15 +302,15 @@ public static class PropertyResult
 		}
 
 		/// <summary>
-		///     …is not greater than or equal to the <paramref name="expected" /> value.
+		///     …is not greater than or equal to the <paramref name="unexpected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> NotGreaterThanOrEqualTo(
-			long? expected)
+			long? unexpected)
 		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => !(a >= e),
+			validation?.Invoke(unexpected, nameof(unexpected));
+			return Add(unexpected, (a, e) => !(a >= e),
 				"greater than or equal to ", true,
-				expected is null);
+				unexpected is null);
 		}
 
 		/// <summary>
@@ -326,15 +326,15 @@ public static class PropertyResult
 		}
 
 		/// <summary>
-		///     …is not less than the <paramref name="expected" /> value.
+		///     …is not less than the <paramref name="unexpected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> NotLessThan(
-			long? expected)
+			long? unexpected)
 		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => !(a < e),
+			validation?.Invoke(unexpected, nameof(unexpected));
+			return Add(unexpected, (a, e) => !(a < e),
 				"less than ", true,
-				expected is null);
+				unexpected is null);
 		}
 
 		/// <summary>
@@ -350,15 +350,15 @@ public static class PropertyResult
 		}
 
 		/// <summary>
-		///     …is not less than or equal to the <paramref name="expected" /> value.
+		///     …is not less than or equal to the <paramref name="unexpected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> NotLessThanOrEqualTo(
-			long? expected)
+			long? unexpected)
 		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => !(a <= e),
+			validation?.Invoke(unexpected, nameof(unexpected));
+			return Add(unexpected, (a, e) => !(a <= e),
 				"less than or equal to ", true,
-				expected is null);
+				unexpected is null);
 		}
 
 		/// <summary>
@@ -538,15 +538,15 @@ public static class PropertyResult
 		}
 
 		/// <summary>
-		///     …is not greater than the <paramref name="expected" /> value.
+		///     …is not greater than the <paramref name="unexpected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> NotGreaterThan(
-			TimeSpan? expected)
+			TimeSpan? unexpected)
 		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => !(a > e),
+			validation?.Invoke(unexpected, nameof(unexpected));
+			return Add(unexpected, (a, e) => !(a > e),
 				"greater than ", true,
-				expected is null);
+				unexpected is null);
 		}
 
 		/// <summary>
@@ -562,15 +562,15 @@ public static class PropertyResult
 		}
 
 		/// <summary>
-		///     …is not greater than or equal to the <paramref name="expected" /> value.
+		///     …is not greater than or equal to the <paramref name="unexpected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> NotGreaterThanOrEqualTo(
-			TimeSpan? expected)
+			TimeSpan? unexpected)
 		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => !(a >= e),
+			validation?.Invoke(unexpected, nameof(unexpected));
+			return Add(unexpected, (a, e) => !(a >= e),
 				"greater than or equal to ", true,
-				expected is null);
+				unexpected is null);
 		}
 
 		/// <summary>
@@ -586,15 +586,15 @@ public static class PropertyResult
 		}
 
 		/// <summary>
-		///     …is not less than the <paramref name="expected" /> value.
+		///     …is not less than the <paramref name="unexpected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> NotLessThan(
-			TimeSpan? expected)
+			TimeSpan? unexpected)
 		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => !(a < e),
+			validation?.Invoke(unexpected, nameof(unexpected));
+			return Add(unexpected, (a, e) => !(a < e),
 				"less than ", true,
-				expected is null);
+				unexpected is null);
 		}
 
 		/// <summary>
@@ -610,15 +610,15 @@ public static class PropertyResult
 		}
 
 		/// <summary>
-		///     …is not less than or equal to the <paramref name="expected" /> value.
+		///     …is not less than or equal to the <paramref name="unexpected" /> value.
 		/// </summary>
 		public AndOrResult<TType, TThat> NotLessThanOrEqualTo(
-			TimeSpan? expected)
+			TimeSpan? unexpected)
 		{
-			validation?.Invoke(expected, nameof(expected));
-			return Add(expected, (a, e) => !(a <= e),
+			validation?.Invoke(unexpected, nameof(unexpected));
+			return Add(unexpected, (a, e) => !(a <= e),
 				"less than or equal to ", true,
-				expected is null);
+				unexpected is null);
 		}
 
 		/// <summary>

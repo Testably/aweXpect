@@ -81,16 +81,16 @@ public class EnumValueResult<TValue, TType>
 		=> AddGreaterThan(expected, Formatter.Format(expected));
 
 	/// <summary>
-	///     …is not greater than the <paramref name="expected" /> value.
+	///     …is not greater than the <paramref name="unexpected" /> value.
 	/// </summary>
-	public AndOrResult<TType, IThat<TValue>> NotGreaterThan(long? expected)
-		=> AddNotGreaterThan(expected, Formatter.Format(expected));
+	public AndOrResult<TType, IThat<TValue>> NotGreaterThan(long? unexpected)
+		=> AddNotGreaterThan(unexpected, Formatter.Format(unexpected));
 
 	/// <summary>
-	///     …is not greater than the <paramref name="expected" /> value.
+	///     …is not greater than the <paramref name="unexpected" /> value.
 	/// </summary>
-	public AndOrResult<TType, IThat<TValue>> NotGreaterThan(ulong? expected)
-		=> AddNotGreaterThan(expected, Formatter.Format(expected));
+	public AndOrResult<TType, IThat<TValue>> NotGreaterThan(ulong? unexpected)
+		=> AddNotGreaterThan(unexpected, Formatter.Format(unexpected));
 
 	/// <summary>
 	///     …is greater than or equal to the <paramref name="expected" /> value.
@@ -105,16 +105,16 @@ public class EnumValueResult<TValue, TType>
 		=> AddGreaterThanOrEqualTo(expected, Formatter.Format(expected));
 
 	/// <summary>
-	///     …is not greater than or equal to the <paramref name="expected" /> value.
+	///     …is not greater than or equal to the <paramref name="unexpected" /> value.
 	/// </summary>
-	public AndOrResult<TType, IThat<TValue>> NotGreaterThanOrEqualTo(long? expected)
-		=> AddNotGreaterThanOrEqualTo(expected, Formatter.Format(expected));
+	public AndOrResult<TType, IThat<TValue>> NotGreaterThanOrEqualTo(long? unexpected)
+		=> AddNotGreaterThanOrEqualTo(unexpected, Formatter.Format(unexpected));
 
 	/// <summary>
-	///     …is not greater than or equal to the <paramref name="expected" /> value.
+	///     …is not greater than or equal to the <paramref name="unexpected" /> value.
 	/// </summary>
-	public AndOrResult<TType, IThat<TValue>> NotGreaterThanOrEqualTo(ulong? expected)
-		=> AddNotGreaterThanOrEqualTo(expected, Formatter.Format(expected));
+	public AndOrResult<TType, IThat<TValue>> NotGreaterThanOrEqualTo(ulong? unexpected)
+		=> AddNotGreaterThanOrEqualTo(unexpected, Formatter.Format(unexpected));
 
 	/// <summary>
 	///     …is less than the <paramref name="expected" /> value.
@@ -129,16 +129,16 @@ public class EnumValueResult<TValue, TType>
 		=> AddLessThan(expected, Formatter.Format(expected));
 
 	/// <summary>
-	///     …is not less than the <paramref name="expected" /> value.
+	///     …is not less than the <paramref name="unexpected" /> value.
 	/// </summary>
-	public AndOrResult<TType, IThat<TValue>> NotLessThan(long? expected)
-		=> AddNotLessThan(expected, Formatter.Format(expected));
+	public AndOrResult<TType, IThat<TValue>> NotLessThan(long? unexpected)
+		=> AddNotLessThan(unexpected, Formatter.Format(unexpected));
 
 	/// <summary>
-	///     …is not less than the <paramref name="expected" /> value.
+	///     …is not less than the <paramref name="unexpected" /> value.
 	/// </summary>
-	public AndOrResult<TType, IThat<TValue>> NotLessThan(ulong? expected)
-		=> AddNotLessThan(expected, Formatter.Format(expected));
+	public AndOrResult<TType, IThat<TValue>> NotLessThan(ulong? unexpected)
+		=> AddNotLessThan(unexpected, Formatter.Format(unexpected));
 
 	/// <summary>
 	///     …is less than or equal to the <paramref name="expected" /> value.
@@ -153,16 +153,16 @@ public class EnumValueResult<TValue, TType>
 		=> AddLessThanOrEqualTo(expected, Formatter.Format(expected));
 
 	/// <summary>
-	///     …is not less than or equal to the <paramref name="expected" /> value.
+	///     …is not less than or equal to the <paramref name="unexpected" /> value.
 	/// </summary>
-	public AndOrResult<TType, IThat<TValue>> NotLessThanOrEqualTo(long? expected)
-		=> AddNotLessThanOrEqualTo(expected, Formatter.Format(expected));
+	public AndOrResult<TType, IThat<TValue>> NotLessThanOrEqualTo(long? unexpected)
+		=> AddNotLessThanOrEqualTo(unexpected, Formatter.Format(unexpected));
 
 	/// <summary>
-	///     …is not less than or equal to the <paramref name="expected" /> value.
+	///     …is not less than or equal to the <paramref name="unexpected" /> value.
 	/// </summary>
-	public AndOrResult<TType, IThat<TValue>> NotLessThanOrEqualTo(ulong? expected)
-		=> AddNotLessThanOrEqualTo(expected, Formatter.Format(expected));
+	public AndOrResult<TType, IThat<TValue>> NotLessThanOrEqualTo(ulong? unexpected)
+		=> AddNotLessThanOrEqualTo(unexpected, Formatter.Format(unexpected));
 
 	/// <summary>
 	///     …is between the <paramref name="minimum" />…
