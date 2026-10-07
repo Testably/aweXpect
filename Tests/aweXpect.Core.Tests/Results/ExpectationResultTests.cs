@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Text;
+using System.Threading;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.Nodes;
 using aweXpect.Core.Tests.TestHelpers;
@@ -49,6 +50,45 @@ public class ExpectationResultTests
 
 		await That(result).IsEqualTo(0);
 		await That(traceWriter.Messages).IsEqualTo(["  Successfully verified that my-subject SUCCESS",]);
+	}
+
+	[Test]
+	public async Task IsMet_WhenTheExpectationTextThrows_WhenTracing_ShouldMeetTheExpectation()
+	{
+		ExpectationResult sut = new(new MyExpectationBuilder("my-subject", () => new ThrowingTextConstraintResult()));
+		TestTraceWriter traceWriter = new();
+
+		async Task Act()
+		{
+			using (traceWriter.Register())
+			{
+				await sut;
+			}
+		}
+
+		await That(Act).DoesNotThrow();
+		await That(traceWriter.Messages).IsEmpty();
+	}
+
+	[Test]
+	public async Task IsMet_WhenTheExpectationTextThrows_WhenTracing_ShouldReturnTheValue()
+	{
+		ExpectationResult<int> sut =
+			new(new MyExpectationBuilder("my-subject", () => new ThrowingTextConstraintResult()));
+		TestTraceWriter traceWriter = new();
+		int result = 0;
+
+		async Task Act()
+		{
+			using (traceWriter.Register())
+			{
+				result = await sut;
+			}
+		}
+
+		await That(Act).DoesNotThrow();
+		await That(result).IsEqualTo(4);
+		await That(traceWriter.Messages).IsEmpty();
 	}
 
 	[Test]
@@ -157,5 +197,35 @@ public class ExpectationResultTests
 			ConstraintResult result = _resultBuilder();
 			return new ValueTask<ConstraintResult>(result);
 		}
+	}
+
+	private sealed class ThrowingTextConstraintResult : ConstraintResult
+	{
+		public ThrowingTextConstraintResult() : base(FurtherProcessingStrategy.Continue)
+		{
+			Outcome = Outcome.Success;
+		}
+
+		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> throw new NotSupportedException("the expectation text is broken");
+
+		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
+		{
+			// A met expectation has no result text.
+		}
+
+		public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
+		{
+			if (4 is TValue typedValue)
+			{
+				value = typedValue;
+				return true;
+			}
+
+			value = default;
+			return false;
+		}
+
+		public override ConstraintResult Negate() => this;
 	}
 }

@@ -197,7 +197,7 @@ public static partial class ValueFormatters
 	///     The placeholder for a value that could not be formatted, because code of the caller threw the
 	///     <paramref name="exception" />, so that building a failure message does not throw and hide the failure.
 	/// </summary>
-	private static string FormatThrownException(string thrower, Exception exception)
+	internal static string FormatThrownException(string thrower, Exception exception)
 		=> $"[{DescribeThrownException(thrower, exception)}]";
 
 	private static string DescribeThrownException(string thrower, Exception exception)
