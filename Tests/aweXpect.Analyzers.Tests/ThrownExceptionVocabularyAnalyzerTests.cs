@@ -5,6 +5,23 @@ namespace aweXpect.Analyzers.Tests;
 public class ThrownExceptionVocabularyAnalyzerTests
 {
 	[Test]
+	public async Task WhenCalledAsStaticMethod_OnNull_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public void MyTest()
+			    {
+			        _ = ThatException.HasMessage<Exception>(null, "foo");
+			    }
+			}
+			"""
+		);
+
+	[Test]
 	public async Task WhenCalledAsStaticMethod_ShouldBeFlaggedOnTheWholeInvocation() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""

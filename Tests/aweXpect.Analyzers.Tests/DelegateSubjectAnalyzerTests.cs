@@ -5,6 +5,37 @@ namespace aweXpect.Analyzers.Tests;
 public class DelegateSubjectAnalyzerTests
 {
 	[Test]
+	public async Task WhenNotChainedDirectlyOnTheDelegateSubject_ShouldBeFlaggedOnTheWholeInvocation() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        int Act() => 1;
+
+			        await {|#0:ThatObject.IsEqualTo(Expect.That(Act), 1)|};
+			        await {|#1:(Expect.That(Act)).IsEqualTo(1)|};
+			        await Expect.That(Act)?{|#2:.IsEqualTo(1)|};
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.DelegateSubjectRule)
+				.WithLocation(0)
+				.WithArguments("IsEqualTo"),
+			Verifier.Diagnostic(Rules.DelegateSubjectRule)
+				.WithLocation(1)
+				.WithArguments("IsEqualTo"),
+			Verifier.Diagnostic(Rules.DelegateSubjectRule)
+				.WithLocation(2)
+				.WithArguments("IsEqualTo")
+		);
+
+	[Test]
 	public async Task WhenUsingACustomHelperOnADelegateSubject_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -110,6 +141,30 @@ public class DelegateSubjectAnalyzerTests
 			        int Act() => 1;
 
 			        Expect.That(Act).Inspect();
+			    }
+			}
+			"""
+		);
+
+	[Test]
+	public async Task WhenUsingAnExtensionDeclaredForAnotherTypeNestedInThatDelegate_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using aweXpect.Core;
+			using aweXpect.Delegates;
+
+			public static class MyExtensions
+			{
+			    public static void Inspect(this IThat<ThatDelegate.ThrowsOption> subject)
+			    {
+			    }
+			}
+
+			public class MyClass
+			{
+			    public void MyTest(IThat<ThatDelegate.ThrowsOption> subject)
+			    {
+			        subject.Inspect();
 			    }
 			}
 			"""

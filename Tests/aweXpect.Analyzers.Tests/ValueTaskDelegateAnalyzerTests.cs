@@ -79,6 +79,48 @@ public class ValueTaskDelegateAnalyzerTests
 		);
 
 	[Test]
+	public async Task WhenPassingALambdaReturningAnotherTypeNamedValueTask_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using aweXpect;
+
+			namespace Tasks
+			{
+			    public class ValueTask { }
+			}
+
+			namespace Other.Tasks
+			{
+			    public class ValueTask<T1, T2> { }
+			}
+
+			namespace Other.Threading.Tasks
+			{
+			    public class ValueTask { }
+			}
+
+			namespace Other.System.Threading.Tasks
+			{
+			    public class ValueTask { }
+			}
+
+			public class ValueTask { }
+
+			public class MyClass
+			{
+			    public void MyTest()
+			    {
+			        Expect.That(() => new ValueTask());
+			        Expect.That(() => new Tasks.ValueTask());
+			        Expect.That(() => new Other.Tasks.ValueTask<int, int>());
+			        Expect.That(() => new Other.Threading.Tasks.ValueTask());
+			        Expect.That(() => new Other.System.Threading.Tasks.ValueTask());
+			    }
+			}
+			"""
+		);
+
+	[Test]
 	public async Task WhenPassingALambdaReturningAsTask_WithoutValueTaskOverloads_ShouldNotBeFlagged()
 		=> await VerifyWithoutValueTaskOverloadsAsync(
 			"""

@@ -272,6 +272,42 @@ public class AwaitExpectationAnalyzerTests
 		);
 
 	[Test]
+	public async Task WhenCallingAnotherGetResult_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Core;
+
+			public class Holder
+			{
+			    public bool GetResult() => true;
+			}
+
+			public static class MyExtensions
+			{
+			    public static bool GetResult(this Expectation expectation) => true;
+
+			    public static Holder Hold(this Expectation expectation) => new();
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        {|#0:Expect.That(subject)|}.IsTrue().GetResult();
+			        {|#1:Expect.That(subject)|}.IsTrue().Hold().GetResult();
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.AwaitExpectationRule)
+				.WithLocation(0),
+			Verifier.Diagnostic(Rules.AwaitExpectationRule)
+				.WithLocation(1)
+		);
+
+	[Test]
 	public async Task WhenChainedWithAnd_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -523,6 +559,37 @@ public class AwaitExpectationAnalyzerTests
 		);
 
 	[Test]
+	public async Task WhenPassedAsArgument_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Core;
+
+			public class Holder
+			{
+			    public Holder(Expectation expectation)
+			    {
+			    }
+
+			    public static void Consume(int value, Expectation expectation)
+			    {
+			    }
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        _ = new Holder(Expect.That(subject).IsTrue());
+			        Holder.Consume(1, Expect.That(subject).IsTrue());
+			    }
+			}
+			"""
+		);
+
+	[Test]
 	public async Task WhenReturnedFromExpressionBodiedMethod_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -595,6 +662,54 @@ public class AwaitExpectationAnalyzerTests
 		);
 
 	[Test]
+	public async Task WhenReturnedFromLambda_ToMethodReturningANonGenericTask_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public static class Deferred
+			{
+			    public static Task Run<T>(Func<T> func) => Task.CompletedTask;
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        await Deferred.Run(() => Expect.That(subject).IsTrue());
+			    }
+			}
+			"""
+		);
+
+	[Test]
+	public async Task WhenReturnedFromLambda_ToMethodReturningTheTypeParameter_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public static class Deferred
+			{
+			    public static T Pass<T>(Func<T> func) => func();
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        await Deferred.Pass(() => Expect.That(subject).IsTrue());
+			    }
+			}
+			"""
+		);
+
+	[Test]
 	public async Task WhenReturnedFromLambda_ToTaskRun_AndTaskIsAwaitedLater_ShouldNotBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -632,6 +747,26 @@ public class AwaitExpectationAnalyzerTests
 			Verifier.Diagnostic(Rules.AwaitExpectationRule)
 				.WithLocation(0)
 		);
+
+	[Test]
+	public async Task WhenReturnedFromLambda_ToTaskRun_WithConfigureAwait_AndStoredInALocal_ShouldNotBeFlagged()
+		=> await Verifier
+			.VerifyAnalyzerAsync(
+				"""
+				using System.Threading.Tasks;
+				using aweXpect;
+
+				public class MyClass
+				{
+				    public async Task MyTest()
+				    {
+				        var subject = true;
+				        var awaitable = Task.Run(() => Expect.That(subject).IsTrue()).ConfigureAwait(false);
+				        await await awaitable;
+				    }
+				}
+				"""
+			);
 
 	[Test]
 	public async Task WhenReturnedFromLambda_ToTaskRun_WithConfigureAwait_ShouldBeFlagged() => await Verifier
@@ -767,6 +902,67 @@ public class AwaitExpectationAnalyzerTests
 			""",
 			Verifier.Diagnostic(Rules.AwaitExpectationRule)
 				.WithLocation(0)
+		);
+
+	[Test]
+	public async Task WhenUsedAsConditionOfAConditionalExpression_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        _ = (bool)(object)Expect.That(subject).IsTrue() ? 1 : 2;
+			    }
+			}
+			"""
+		);
+
+	[Test]
+	public async Task WhenUsedAsSwitchExpressionGuard_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(int value)
+			    {
+			        var subject = true;
+			        _ = value switch
+			        {
+			            1 when (bool)(object)Expect.That(subject).IsTrue() => 1,
+			            _ => 2,
+			        };
+			    }
+			}
+			"""
+		);
+
+	[Test]
+	public async Task WhenUsedAsSwitchExpressionValue_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest()
+			    {
+			        var subject = true;
+			        _ = Expect.That(subject).IsTrue() switch
+			        {
+			            _ => 1,
+			        };
+			    }
+			}
+			"""
 		);
 
 	[Test]

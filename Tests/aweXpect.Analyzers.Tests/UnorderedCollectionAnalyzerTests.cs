@@ -5,6 +5,26 @@ namespace aweXpect.Analyzers.Tests;
 public class UnorderedCollectionAnalyzerTests
 {
 	[Test]
+	public async Task WhenChainedWithAndOnAStoredResult_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Collections.Generic;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(HashSet<int> subject)
+			    {
+			        var result = Expect.That(subject).IsNotEmpty();
+			        await result.And.{|#0:IsEqualTo|}(new[] { 1, 2, });
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.UnorderedCollectionRule).WithLocation(0).WithArguments("HashSet<int>")
+		);
+
+	[Test]
 	public async Task WhenChainedWithAndOrOr_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -257,6 +277,34 @@ public class UnorderedCollectionAnalyzerTests
 		);
 
 	[Test]
+	public async Task WhenFollowedByAnotherMethod_ShouldBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Collections.Generic;
+			using aweXpect;
+			using aweXpect.Core;
+
+			public static class MyOptions
+			{
+			    public static void Log(this Expectation result)
+			    {
+			    }
+			}
+
+			public class MyClass
+			{
+			    public void MyTest(HashSet<int> subject)
+			    {
+			        Expect.That(subject).{|#0:IsEqualTo|}(new[] { 1, 2, }).Log();
+			        Expect.That(subject).{|#1:IsEqualTo|}(new[] { 1, 2, }).GetAwaiter().GetResult();
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.UnorderedCollectionRule).WithLocation(0).WithArguments("HashSet<int>"),
+			Verifier.Diagnostic(Rules.UnorderedCollectionRule).WithLocation(1).WithArguments("HashSet<int>")
+		);
+
+	[Test]
 	public async Task WhenInsideDoesNotComplyWith_ShouldBeFlagged() => await Verifier
 		.VerifyAnalyzerAsync(
 			"""
@@ -270,6 +318,45 @@ public class UnorderedCollectionAnalyzerTests
 			    {
 			        await Expect.That(subject).DoesNotComplyWith(it => it.{|#0:IsEqualTo|}(new[] { 1, 2, }));
 			        await Expect.That(subject).DoesNotComplyWith(it => it.IsEqualTo(new[] { 1, 2, }).InAnyOrder());
+			    }
+			}
+			""",
+			Verifier.Diagnostic(Rules.UnorderedCollectionRule).WithLocation(0).WithArguments("HashSet<int>")
+		);
+
+	[Test]
+	public async Task WhenTheSubjectIsATypeParameter_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Collections.Generic;
+			using System.Threading.Tasks;
+			using aweXpect;
+			using aweXpect.Core;
+
+			public class MyClass
+			{
+			    public async Task MyTest<TThat>(TThat subject)
+			        where TThat : IThat<HashSet<int>>
+			    {
+			        await subject.IsEqualTo(new[] { 1, 2, });
+			    }
+			}
+			"""
+		);
+
+	[Test]
+	public async Task WhenUsingConditionalAccess_ShouldBeFlaggedOnTheWholeInvocation() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Collections.Generic;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(HashSet<int> subject)
+			    {
+			        await Expect.That(subject)?{|#0:.IsEqualTo(new[] { 1, 2, })|};
 			    }
 			}
 			""",
@@ -303,6 +390,32 @@ public class UnorderedCollectionAnalyzerTests
 			""",
 			Verifier.Diagnostic(Rules.UnorderedCollectionNoMeaningRule).WithLocation(0)
 				.WithArguments("IgnoringInterspersedItems", "HashSet<int>")
+		);
+
+	[Test]
+	public async Task WhenUsingIgnoringInterspersedItems_OnAResultThatIsNotChained_ShouldNotBeFlagged() => await Verifier
+		.VerifyAnalyzerAsync(
+			"""
+			using System.Collections.Generic;
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public static class MyHelpers
+			{
+			    public static TResult Pass<TResult>(TResult result) => result;
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest(HashSet<int> subject)
+			    {
+			        var result = Expect.That(subject).Contains(new[] { 1, 2, }).InAnyOrder();
+			        await result.IgnoringInterspersedItems();
+			        await MyHelpers.Pass(Expect.That(subject).Contains(new[] { 1, 2, }).InAnyOrder())
+			            .IgnoringInterspersedItems();
+			    }
+			}
+			"""
 		);
 
 	[Test]
