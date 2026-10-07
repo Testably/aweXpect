@@ -186,14 +186,23 @@ jobs:
                         echo "release=true" >> $GITHUB_OUTPUT
                     fi
             -   name: Create GitHub release
+                id: create-release
                 if: steps.check-pre-release.outputs.release == 'true'
+                # The packages are already pushed at this point and cannot be withdrawn, so a failure here does not
+                # fail the run; the next step reports it.
                 continue-on-error: true
                 uses: softprops/action-gh-release@v3
+                # Without `name` and `tag_name` the action releases the pushed tag and names the release after it.
                 with:
-                    name: ${{ steps.tag.outputs.release_version }}
-                    tag_name: ${{ steps.tag.outputs.release_version }}
                     token: ${{ secrets.GITHUB_TOKEN }}
                     generate_release_notes: true
+            -   name: Report a failed GitHub release
+                if: steps.create-release.outcome == 'failure'
+                run: |
+                    message="The packages of $GITHUB_REF_NAME were pushed to nuget.org, but creating the GitHub release failed. Create the release for the tag manually."
+                    echo "::warning title=GitHub release not created::$message"
+                    echo "> [!WARNING]" >> "$GITHUB_STEP_SUMMARY"
+                    echo "> $message" >> "$GITHUB_STEP_SUMMARY"
     
     push_core:
         name: "Push aweXpect.Core"
