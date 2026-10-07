@@ -11,6 +11,32 @@ public sealed partial class ThatDateTime
 		public sealed class Tests
 		{
 			[Test]
+			public async Task WhenAnEarlierAttemptHadAnIncompatibleKind_ShouldDescribeTheLastAttempt()
+			{
+				DateTime later = LaterTime(1, DateTimeKind.Utc);
+				DateTime[] expected = [CurrentTime(DateTimeKind.Utc),];
+				int calls = 0;
+				Func<DateTime> subject = () => calls++ == 0
+					? CurrentTime(DateTimeKind.Local)
+					: later;
+
+				async Task Act()
+					=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
+						.IsOneOf(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              eventually is one of expected within 0:05,
+					              but it was {Formatter.Format(later)}, which differs by 0:01 from the closest value
+
+					              Expected values:
+					              {Formatter.Format(expected)}
+					              """)
+					.Because("the kind of an earlier attempt does not describe the last one");
+			}
+
+			[Test]
 			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
 			{
 				DateTime subject = CurrentTime();

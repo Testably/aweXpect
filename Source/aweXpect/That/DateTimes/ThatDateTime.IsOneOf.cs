@@ -65,6 +65,7 @@ public static partial class ThatDateTime
 		public ConstraintResult IsMetBy(DateTime actual)
 		{
 			Actual = actual;
+			_incompatibleKind = null;
 			TimeSpan timeTolerance = tolerance.GetToleranceOrDefault();
 			bool hasComparableValue = false;
 			DateTimeKind? incomparableKind = null;

@@ -13,6 +13,31 @@ public sealed partial class ThatDateTime
 			public sealed class Tests
 			{
 				[Test]
+				public async Task WhenAnEarlierAttemptHadAnIncompatibleKind_ShouldDescribeTheLastAttempt()
+				{
+					IEnumerable<DateTime?> expected = [CurrentTime(DateTimeKind.Utc),];
+					int calls = 0;
+					Func<DateTime?> subject = () => calls++ == 0
+						? CurrentTime(DateTimeKind.Local)
+						: null;
+
+					async Task Act()
+						=> await That(subject).Eventually().WithinTwoAttempts(5.Seconds())
+							.IsOneOf(expected);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage($"""
+						              Expected that subject
+						              eventually is one of expected within 0:05,
+						              but it was <null>
+
+						              Expected values:
+						              {Formatter.Format(expected)}
+						              """)
+						.Because("the kind of an earlier attempt does not describe the last one");
+				}
+
+				[Test]
 				public async Task WhenExpectedCanOnlyBeEnumeratedOnce_ShouldFail()
 				{
 					DateTime? subject = CurrentTime();
