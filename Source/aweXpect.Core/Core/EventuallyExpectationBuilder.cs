@@ -197,7 +197,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 	{
 		CancellationToken cancellationToken = cancellation.Token;
 		TimeSpan? limit = GetAttemptLimit(retryTimeout, polling.Remaining, interval);
-		using CancellationTokenSource? attemptCts = CreateAttemptCancellation(limit, cancellationToken, polling);
+		using CancellationTokenSource? attemptCts = CreateAttemptCancellation(limit, polling, cancellationToken);
 		CancellationToken attemptToken = attemptCts?.Token ?? cancellationToken;
 		long startTimestamp = polling.GetTimestamp();
 		Task<TValue>? task = null;
@@ -372,7 +372,7 @@ internal class EventuallyExpectationBuilder<TValue>(
 	}
 
 	private static CancellationTokenSource? CreateAttemptCancellation(TimeSpan? limit,
-		CancellationToken cancellationToken, Polling polling)
+		Polling polling, CancellationToken cancellationToken)
 	{
 		if (limit is null)
 		{
