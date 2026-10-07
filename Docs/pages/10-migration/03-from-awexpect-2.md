@@ -236,6 +236,13 @@ ambiguous `is equal to one of […]`, and `HasItem` and `Contains` name how they
 `has an item equal to 3`, `contains an item equal to 3`). Tests that assert on the exact text of a failure message may
 need an update.
 
+A collection that knows its number of items without being an `ICollection<T>`, such as a `Queue<T>`, a `Stack<T>`, a
+`ConcurrentQueue<T>` or a type that only implements `IReadOnlyCollection<T>`, is evaluated like a `List<T>` and no
+longer like a lazy `IEnumerable<T>`: a failure message names its exact number of items (`but it had 5 items` instead of
+`but it had at least 4 items`) and lists all of them, and a quantified expectation such as `None().Satisfy(…)` verifies
+every item instead of stopping at the one that decides the outcome. Such a subject is read as it is instead of through
+a copy, so a failure message enumerates it once more.
+
 The contexts below a failure message (e.g. `Collection:`, `Expected:` or `Actual:`) belong to the part of the
 expectation they describe: they appear exactly when that part explains the failure, also after a negation, and no
 longer for a part that succeeded, e.g. the other operand of `And` or `Equivalency options` of a succeeding

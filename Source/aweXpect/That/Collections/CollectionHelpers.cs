@@ -77,6 +77,8 @@ internal static class CollectionHelpers
 			() => Formatter.Format(expectedItems, typeof(TItem).GetFormattingOption(expected switch
 			{
 				ICollection<TItem> coll => coll.Count,
+				IReadOnlyCollection<TItem> coll => coll.Count,
+				ICollection coll => coll.Count,
 				ICountable countable => countable.Count,
 				_ => null,
 			})),
@@ -165,12 +167,7 @@ internal static class CollectionHelpers
 			return FormatReadItems(materialized.MaterializedItems, typeof(TItem));
 		}
 
-		totalCount ??= value switch
-		{
-			ICollection<TItem> coll => UserCode.Invoke(static subject => subject.Count, coll),
-			ICountable countable => countable.Count,
-			_ => null,
-		};
+		totalCount ??= CollectionItems<TItem>.CountOf(value) ?? (value as ICountable)?.Count;
 		return Formatter.Format(value, typeof(TItem).GetFormattingOption(
 			value is LimitedCollection<TItem> limited ? limited.Count : totalCount, totalCount));
 	}

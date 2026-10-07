@@ -61,14 +61,18 @@ internal readonly struct CollectionItems<TItem>
 	///     Materializes the items of the <paramref name="actual" /> subject in the <paramref name="context" />.
 	/// </summary>
 	/// <remarks>
-	///     An untyped collection that knows its number of items is kept as it is, like a typed one.
+	///     A collection that knows its number of items is kept as it is, whether it is typed or untyped, so that e.g. a
+	///     <see cref="Queue{T}" /> is evaluated like a <see cref="List{T}" />. The <paramref name="context" /> itself
+	///     only keeps an <see cref="ICollection{T}" /> as it is.
 	/// </remarks>
 	public static CollectionItems<TItem> Materialize<TEnumerable>(TEnumerable actual, IEvaluationContext context)
 		where TEnumerable : IEnumerable?
 	{
 		if (IsTypedSubject<TEnumerable>.Value)
 		{
-			return new CollectionItems<TItem>(context.UseMaterializedEnumerable((IEnumerable<TItem>)actual!), null);
+			IEnumerable<TItem> typed = (IEnumerable<TItem>)actual!;
+			bool isKept = typed is not ICollection<TItem> && KnowsItsCount(typed);
+			return new CollectionItems<TItem>(isKept ? typed : context.UseMaterializedEnumerable(typed), null);
 		}
 
 		IEnumerable? untyped = actual.GetUntypedCount() is null ? context.UseMaterializedEnumerable(actual) : actual;
@@ -90,9 +94,13 @@ internal readonly struct CollectionItems<TItem>
 			return actual.GetUntypedCount();
 		}
 
-		return actual is ICollection<TItem> collection
-			? UserCode.Invoke(static subject => subject.Count, collection)
-			: null;
+		return actual switch
+		{
+			ICollection<TItem> collection => UserCode.Invoke(static subject => subject.Count, collection),
+			IReadOnlyCollection<TItem> collection => UserCode.Invoke(static subject => subject.Count, collection),
+			ICollection collection => UserCode.Invoke(static subject => subject.Count, collection),
+			_ => null,
+		};
 	}
 
 	/// <summary>
@@ -132,8 +140,15 @@ internal readonly struct CollectionItems<TItem>
 
 	private bool IsIncomplete()
 		=> _typed is not null
-			? _typed is not (ICollection<TItem> or ICountable { Count: not null, })
+			? !KnowsItsCount(_typed) && _typed is not ICountable { Count: not null, }
 			: _untyped is not ICountable { Count: not null, } && _untyped.GetUntypedCount() is null;
+
+	/// <summary>
+	///     Whether the typed <paramref name="items" /> are a collection that <see cref="CountOf{TEnumerable}" /> gets
+	///     the number of items from.
+	/// </summary>
+	private static bool KnowsItsCount(IEnumerable<TItem> items)
+		=> items is ICollection<TItem> or IReadOnlyCollection<TItem> or ICollection;
 
 	/// <summary>
 	///     Keeps the items for the "Collection" <paramref name="context" />.
