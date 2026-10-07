@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using aweXpect.Core.Helpers;
+using aweXpect.Results;
 
 namespace aweXpect.Options;
 
@@ -28,7 +29,7 @@ public record CollectionOrderOptions<TItem>
 	public void SetComparer(IComparer<TItem> comparer)
 	{
 		comparer.ThrowIfNull();
-		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_comparer is not null, "Using");
+		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_comparer is not null, nameof(CollectionOrderResult<,,>.Using));
 		_comparer = comparer;
 	}
 
