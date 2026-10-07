@@ -1,4 +1,6 @@
 using aweXpect.Chronology;
+using aweXpect.Delegates;
+using aweXpect.Results;
 
 namespace aweXpect.Core.Tests.Delegates;
 
@@ -6,6 +8,20 @@ public sealed partial class ThatDelegateTests
 {
 	public sealed class ExecutesInTests
 	{
+		[Test]
+		public async Task AtLeast_WhenAtMostIsSpecified_ShouldThrowInvalidOperationException()
+		{
+			Action @delegate = () => { };
+			ExecutesInResult<AndResult<ThatDelegate.WithoutValue>> sut = That(@delegate).ExecutesIn();
+			_ = sut.AtMost(1.Seconds());
+
+			void Act() => sut.AtLeast(2.Seconds());
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("AtLeast cannot be combined with AtMost.")
+				.Because("the second limit would silently replace the first one");
+		}
+
 		[Test]
 		public async Task AtLeast_WhenMinimumIsNegative_ShouldThrowArgumentOutOfRangeException()
 		{
@@ -44,6 +60,46 @@ public sealed partial class ThatDelegateTests
 				.WithParamName("maximum").And
 				.WithMessage("The maximum must not be negative.").AsPrefix()
 				.Because("an execution can never take less than no time at all");
+		}
+
+		[Test]
+		public async Task AtMost_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		{
+			Action @delegate = () => { };
+			ExecutesInResult<AndResult<ThatDelegate.WithoutValue>> sut = That(@delegate).ExecutesIn();
+			_ = sut.AtMost(1.Seconds());
+
+			void Act() => sut.AtMost(2.Seconds());
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("AtMost cannot be specified more than once.");
+		}
+
+		[Test]
+		public async Task AtMost_WithValue_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		{
+			Func<int> @delegate = () => 1;
+			ExecutesInResult<AndResult<ThatDelegate.WithValue<int>>> sut = That(@delegate).ExecutesIn();
+			_ = sut.AtMost(1.Seconds());
+
+			void Act() => sut.AtMost(2.Seconds());
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("AtMost cannot be specified more than once.");
+		}
+
+		[Test]
+		public async Task Between_WhenAndIsSpecifiedTwice_ShouldThrowInvalidOperationException()
+		{
+			Action @delegate = () => { };
+			ExecutesInResult<AndResult<ThatDelegate.WithoutValue>>.BetweenResult sut =
+				That(@delegate).ExecutesIn().Between(1.Seconds());
+			_ = sut.And(2.Seconds());
+
+			void Act() => sut.And(3.Seconds());
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("Between cannot be specified more than once.");
 		}
 
 		[Test]
@@ -130,6 +186,20 @@ public sealed partial class ThatDelegateTests
 				             but it took only *
 				             """).AsWildcard()
 				.Because("the upper bound saturates at the maximum duration instead of overflowing");
+		}
+
+		[Test]
+		public async Task Within_WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+		{
+			Action @delegate = () => { };
+			ExecutesInToleranceResult<AndResult<ThatDelegate.WithoutValue>> sut =
+				That(@delegate).ExecutesIn(1.Seconds());
+			_ = sut.Within(1.Seconds());
+
+			void Act() => sut.Within(2.Seconds());
+
+			await That(Act).Throws<InvalidOperationException>()
+				.WithMessage("Within cannot be specified more than once.");
 		}
 
 		[Test]

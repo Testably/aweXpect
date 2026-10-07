@@ -30,6 +30,7 @@ public class ExecutesInResult<TResult>(
 	/// <summary>
 	///     …at most <paramref name="maximum" /> time.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
 	public TResult AtMost(TimeSpan maximum)
 	{
 		options.AtMost(maximum);
@@ -39,6 +40,7 @@ public class ExecutesInResult<TResult>(
 	/// <summary>
 	///     …at least <paramref name="minimum" /> time.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
 	public TResult AtLeast(TimeSpan minimum)
 	{
 		options.AtLeast(minimum);
@@ -63,6 +65,7 @@ public class ExecutesInResult<TResult>(
 		/// <summary>
 		///     …and <paramref name="maximum" /> time.
 		/// </summary>
+		/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
 		public TResult And(TimeSpan maximum)
 			=> callback(maximum);
 	}

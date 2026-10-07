@@ -26,6 +26,7 @@ public class ExecutesInToleranceResult<TResult>(
 	/// <summary>
 	///     …within the given <paramref name="tolerance" />.
 	/// </summary>
+	/// <exception cref="InvalidOperationException">A limit is already specified.</exception>
 	public TResult Within(TimeSpan tolerance)
 	{
 		options.Approximately(expected, tolerance);
