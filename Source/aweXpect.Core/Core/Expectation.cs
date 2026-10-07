@@ -97,11 +97,17 @@ public abstract class Expectation
 		public int Index { get; } = index;
 
 		/// <remarks>
-		///     A numbered subject line is only formatted when a failure message reads it.
+		///     A numbered subject line is only formatted when a failure message reads it, and names a describable subject
+		///     by its description, like the failure message of a single expectation.
 		/// </remarks>
-		public string SubjectLine => isNumbered ? $" [{Index:00}] Expected that {subject}" : subject;
+		public string SubjectLine => isNumbered ? $" [{Index:00}] Expected that {DescribeSubject()}" : subject;
 
 		public ConstraintResult ConstraintResult { get; } = result;
+
+		private string DescribeSubject()
+			=> ConstraintResult.TryGetValue(out IDescribableSubject? describableSubject)
+				? describableSubject.GetDescription()
+				: subject;
 	}
 
 	/// <summary>

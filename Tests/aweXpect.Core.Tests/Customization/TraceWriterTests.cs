@@ -129,6 +129,58 @@ public class TraceWriterTests
 	}
 
 	[Test]
+	public async Task ForCombination_ShouldTraceEveryMetMemberOnceLikeASingleExpectation()
+	{
+		bool subject = true;
+		int other = 2;
+		TestTraceWriter traceWriter = new();
+		using (traceWriter.Register())
+		{
+			await ThatAll(
+				That(subject).IsTrue(),
+				ThatAny(That(other).IsEqualTo(1), That(other).IsEqualTo(2)),
+				That(other).IsGreaterThan(1).Because("it is traced like a single expectation"));
+		}
+
+		await That(traceWriter.Messages).IsEqualTo([
+			"Checking expectation for subject True",
+			"  Successfully verified that subject is True",
+			"Checking expectation for other 2",
+			"Checking expectation for other 2",
+			"  Successfully verified that other is equal to 2",
+			"Checking expectation for other 2",
+			"  Successfully verified that other is greater than 1, because it is traced like a single expectation",
+		]);
+		await That(traceWriter.Exceptions).IsEmpty();
+	}
+
+	[Test]
+	public async Task ForCombination_WhenItFails_ShouldOnlyTraceTheMetMembers()
+	{
+		bool subject = true;
+		int other = 2;
+		TestTraceWriter traceWriter = new();
+		using (traceWriter.Register())
+		{
+			try
+			{
+				await ThatAll(That(subject).IsTrue(), That(other).IsEqualTo(1));
+			}
+			catch (FailException)
+			{
+				// The trace of the failed combination is verified
+			}
+		}
+
+		await That(traceWriter.Messages).IsEqualTo([
+			"Checking expectation for subject True",
+			"  Successfully verified that subject is True",
+			"Checking expectation for other 2",
+		]);
+		await That(traceWriter.Exceptions).HasCount(1);
+	}
+
+	[Test]
 	public async Task ForDelegateReturningALazySequence_ShouldEnumerateItAsOftenAsWithoutTracing()
 	{
 		int enumerations = 0;
@@ -429,6 +481,27 @@ public class TraceWriterTests
 	}
 
 	[Test]
+	public async Task WhenTheTraceWriterThrows_ShouldKeepTheFailureOfACombination()
+	{
+		async Task Act()
+		{
+			using (new ThrowingTraceWriter().Register())
+			{
+				await ThatAll(That(true).IsTrue(), That(true).IsFalse());
+			}
+		}
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that true is True
+			              [02] Expected that true is False
+			             but
+			              [02] it was True
+			             """);
+	}
+
+	[Test]
 	public async Task WhenTheTraceWriterThrows_ShouldKeepTheFailureOfAnExpectation()
 	{
 		async Task Act()
@@ -481,6 +554,24 @@ public class TraceWriterTests
 		}
 
 		await That(Act).Throws<FailException>().WithMessage("foo");
+	}
+
+	[Test]
+	public async Task WhenTheTraceWriterThrows_ShouldMeetTheCombination()
+	{
+		ThrowingTraceWriter traceWriter = new();
+
+		async Task Act()
+		{
+			using (traceWriter.Register())
+			{
+				await ThatAll(That(true).IsTrue(), That(false).IsFalse());
+			}
+		}
+
+		await That(Act).DoesNotThrow();
+		await That(traceWriter.WrittenMessages).IsEqualTo(4)
+			.Because("the trace writer is still called for every message");
 	}
 
 	[Test]
