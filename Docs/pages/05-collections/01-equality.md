@@ -35,6 +35,9 @@ defined for a [set](./index.md#sets).
 With `IgnoringDuplicates()`, only which items occur matters, not how often: every expected item has to be matched by an
 item of the collection, and every item of the collection has to match an expected item.
 
+A multi-dimensional array is only equal to an array of the same rank with the same length in every dimension, also with
+`InAnyOrder()` or `IgnoringDuplicates()`, while the other expectations on this page only look at its items.
+
 ## Contained items
 
 You can verify that the collection contains a specific item or not:

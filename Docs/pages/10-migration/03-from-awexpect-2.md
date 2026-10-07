@@ -252,7 +252,9 @@ registered with `ValueFormatter.Register` is asked for every value, also where t
 overload, so a formatter for `DateTime` now applies to the subject and the expected value of `IsEqualTo` as well, not
 only to the items of a collection or the members of an object. Nested objects, collections and tuples are written up to
 20 levels deep and up to 1000 of them per value, so a long chain is cut off with `{ … }` instead of overflowing the
-stack. A collection inside an object is indented below its member, a combination of `[Flags]` values reads `A | B`
+stack. A multi-dimensional array is written with a nested collection per dimension, e.g. `[[1, 2], [3, 4]]`, which tells
+an `int[2,2]` from an `int[1,4]`. A collection inside an object is indented below its member, a combination of
+`[Flags]` values reads `A | B`
 instead of `A, B`, which looked like two collection items, and combining marks in strings that are not normalized, like
 the accent of a decomposed `é`, and unpaired surrogates are escaped as `\uXXXX`.
 

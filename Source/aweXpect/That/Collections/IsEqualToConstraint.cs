@@ -110,6 +110,16 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 #endif
 
 	/// <summary>
+	///     Fails with the <paramref name="failure" /> without verifying the <paramref name="items" />, and shows them.
+	/// </summary>
+	protected ConstraintResult FailWith<TItem>(string failure, CollectionItems<TItem> items)
+	{
+		Fail(failure);
+		items.SetContext(ref _collectionContext);
+		return this;
+	}
+
+	/// <summary>
 	///     Verifies the <paramref name="materialized" /> items by the <paramref name="matcher" />.
 	/// </summary>
 	/// <remarks>
@@ -414,11 +424,19 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 	{
 		if (expected is not null && _expectedItems is not null)
 		{
-			contexts.AddExpectedItemsContext(expected, _expectedItems);
+			AppendExpectedItemsContext(contexts, expected, _expectedItems);
 		}
 
 		contexts.AddOptionsContexts(options);
 	}
+
+	/// <summary>
+	///     Adds the "Expected" context, listing the <paramref name="expectedItems" /> materialized from the
+	///     <paramref name="expected" /> collection.
+	/// </summary>
+	protected virtual void AppendExpectedItemsContext(ResultContextCollector contexts, IEnumerable<TItem> expected,
+		ICollection<TItem> expectedItems)
+		=> contexts.AddExpectedItemsContext(expected, expectedItems);
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
@@ -432,6 +450,11 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 ///     When <paramref name="canUseSubjectComparer" /> is set and the comparison of the <paramref name="options" /> was
 ///     not changed, a subject that is a set of <typeparamref name="TItem" /> with a custom comparer compares its items
 ///     with that comparer, as it does for a single item in <c>Contains</c>, and the expectation names it.
+///     <para />
+///     With an <paramref name="expectedWithDimensions" />, which is the expected collection as the caller provided
+///     it, an untyped subject must have its dimensions, because an array of rank greater than one enumerates its items
+///     as one flat sequence. Only an expectation on the collection as a whole provides it, not one on the items, e.g.
+///     <c>Contains</c>.
 /// </remarks>
 internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 	string it,
@@ -441,7 +464,8 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 	IOptionsEquality<TMatch> options,
 	CollectionMatchOptions matchOptions,
 	bool failsForNullSubject = false,
-	bool canUseSubjectComparer = false)
+	bool canUseSubjectComparer = false,
+	IEnumerable? expectedWithDimensions = null)
 	: IsEqualToConstraintBase<TEnumerable?, TItem, TMatch>(it, grammars, expectedExpression,
 			expected.NullIfDefaultImmutableArray(), options, matchOptions, failsForNullSubject),
 		IAsyncContextConstraint<TEnumerable?>
@@ -481,12 +505,69 @@ internal sealed class IsEqualToConstraint<TEnumerable, TItem, TMatch>(
 			itemOptions = new SubjectEqualityOptions<TItem, TMatch>(itemOptions, SubjectComparer);
 		}
 
-		return isTyped
-			? VerifyItems(CollectionItems<TItem>.Materialize(actual, context),
-				MatchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems), itemOptions, cancellationToken)
-			: VerifyItems(CollectionItems<object?>.Materialize(actual, context),
-				MatchOptions.GetCollectionMatcher<object?, object?>(expectedItems.Cast<object?>()),
-				new UntypedOptions(itemOptions), cancellationToken);
+		if (isTyped)
+		{
+			return VerifyItems(CollectionItems<TItem>.Materialize(actual, context),
+				MatchOptions.GetCollectionMatcher<TItem, TMatch>(expectedItems), itemOptions, cancellationToken);
+		}
+
+		CollectionItems<object?> untypedItems = CollectionItems<object?>.Materialize(actual, context);
+		if (expectedWithDimensions is not null &&
+		    GetDimensionDifference(untypedItems.Value as Array, expectedWithDimensions as Array) is { } difference)
+		{
+			return new ValueTask<ConstraintResult>(FailWith($"{It} had {difference}", untypedItems));
+		}
+
+		return VerifyItems(untypedItems,
+			MatchOptions.GetCollectionMatcher<object?, object?>(expectedItems.Cast<object?>()),
+			new UntypedOptions(itemOptions), cancellationToken);
+	}
+
+	/// <remarks>
+	///     An expected array of rank greater than one is listed with its dimensions, like the subject in the
+	///     "Collection" context, as its materialized items do not tell them.
+	/// </remarks>
+	protected override void AppendExpectedItemsContext(ResultContextCollector contexts, IEnumerable<TItem> expected,
+		ICollection<TItem> expectedItems)
+	{
+		if (expectedWithDimensions is Array { Rank: > 1, } expectedArray)
+		{
+			contexts.Add(new ResultContext.SyncCallback("Expected",
+				() => CollectionHelpers.FormatUntypedCollection(expectedArray), -2));
+		}
+		else
+		{
+			base.AppendExpectedItemsContext(contexts, expected, expectedItems);
+		}
+	}
+
+	/// <summary>
+	///     Describes how the rank or the length of a dimension of the <paramref name="actual" /> array differs from
+	///     the <paramref name="expected" /> one, or returns <see langword="null" /> when they are the same.
+	/// </summary>
+	/// <remarks>
+	///     A collection that is no array has one dimension, the length of which is the number of its items, so it is
+	///     left to the comparison of the items.
+	/// </remarks>
+	private static string? GetDimensionDifference(Array? actual, Array? expected)
+	{
+		int actualRank = actual?.Rank ?? 1;
+		int expectedRank = expected?.Rank ?? 1;
+		if (actualRank != expectedRank)
+		{
+			return $"rank {actualRank} instead of {expectedRank}";
+		}
+
+		if (actual is null || expected is null || actualRank == 1)
+		{
+			return null;
+		}
+
+		int[] actualDimensions = Enumerable.Range(0, actualRank).Select(actual.GetLength).ToArray();
+		int[] expectedDimensions = Enumerable.Range(0, expectedRank).Select(expected.GetLength).ToArray();
+		return actualDimensions.SequenceEqual(expectedDimensions)
+			? null
+			: $"dimensions [{string.Join(",", actualDimensions)}] instead of [{string.Join(",", expectedDimensions)}]";
 	}
 
 	/// <summary>

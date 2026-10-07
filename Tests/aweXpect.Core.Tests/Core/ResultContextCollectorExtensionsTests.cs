@@ -119,6 +119,35 @@ public sealed class ResultContextCollectorExtensionsTests
 	}
 
 	[Test]
+	public async Task AddCollectionContext_Untyped_WhenMultiDimensionalArray_ShouldListTheItemsOfEachDimension()
+	{
+		IEnumerable subject = new[,]
+		{
+			{
+				1, 2,
+			},
+			{
+				3, 4,
+			},
+		};
+
+		async Task Act()
+			=> await That(subject).ShowsContexts((contexts, actual, _) => contexts.AddCollectionContext(actual));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             shows contexts,
+			             but it did not
+
+			             Collection:
+			             [[1, 2], [3, 4]]
+			             """);
+		await That(await ContextsOf(Act)).IsEqualTo(await ContextsOf(async () => await That(subject).Contains(9)))
+			.Because("the context is the same as the one of the built-in expectations");
+	}
+
+	[Test]
 	public async Task AddCollectionContext_Untyped_WhenTheEnumerationThrows_ShouldListTheException()
 	{
 		int[] subject = [1, 2, 3,];

@@ -117,6 +117,9 @@ reported as ambiguous. Failures name the kind of the *expected* member.
 
 - A set on either side is enough to match the items without an order, exactly like
   [ignoring collection order](#ignoring-collection-order), so a `HashSet<T>` can be compared against an array.
+- A multi-dimensional array is only equivalent to an array of the same rank with the same length in every dimension,
+  also when the collection order is ignored, and reports a differing item with its index in every dimension (e.g.
+  `Grid[1,2]`).
 - An actual `HashSet<T>` that was created with a custom comparer decides with it which items are the same, as the key
   comparer of a dictionary does for its keys: an expected item that this comparer finds in the set is matched, whatever
   its members are, and only the remaining items are matched by the equivalency comparison. The same holds for an

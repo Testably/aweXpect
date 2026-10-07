@@ -148,6 +148,18 @@ public static partial class EquivalencyComparison
 		failureBuilder.Append("      Actual: ");
 	}
 
+	private static void AppendDimensionDifference(StringBuilder failureBuilder, MemberType memberType,
+		string memberPath, string dimensionDifference, EquivalencyContext context)
+	{
+		if (SkipsText(context))
+		{
+			return;
+		}
+
+		AppendEntry(failureBuilder, memberType, memberPath, context);
+		failureBuilder.Append(dimensionDifference);
+	}
+
 	/// <remarks>
 	///     Mirrors the wording of dictionary <c>IsEqualTo</c> for an expected key that the key comparer of the actual
 	///     dictionary considers the same as another expected key, so that one entry cannot stand in for both.
@@ -656,7 +668,14 @@ public static partial class EquivalencyComparison
 			else if (TryGetEnumerable(actual, out IEnumerable? actualEnumerable) &&
 			         TryGetEnumerable(expected, out IEnumerable? expectedEnumerable))
 			{
-				bool hasEquivalentItems = await CompareEnumerables(actualEnumerable, expectedEnumerable,
+				if (!TryGetDimensions(actualEnumerable, expectedEnumerable, out int[]? dimensions,
+					    out string? dimensionDifference))
+				{
+					AppendDimensionDifference(failureBuilder, memberType, path, dimensionDifference, context);
+					return false;
+				}
+
+				bool hasEquivalentItems = await CompareEnumerables(actualEnumerable, expectedEnumerable, dimensions,
 					failureBuilder, path, equivalencyOptions, typeOptions, context);
 				isEquivalent = await CompareOwnMembers(actual, expected, failureBuilder, memberType, path,
 					equivalencyOptions, typeOptions, context) && hasEquivalentItems;
@@ -1122,10 +1141,76 @@ public static partial class EquivalencyComparison
 	private static IEnumerable CopyItems(object memory)
 		=> (IEnumerable)memory.GetType().GetMethod("ToArray", Type.EmptyTypes)!.Invoke(memory, null)!;
 
+	/// <summary>
+	///     Whether two sequences have the same dimensions, which enumerating them does not tell, because an array of
+	///     rank greater than one enumerates its items as one flat sequence.
+	/// </summary>
+	/// <remarks>
+	///     The <paramref name="dimensions" /> are only set for two arrays of rank greater than one. Every other
+	///     sequence has one dimension, the length of which is the number of its items, so it is left to the comparison
+	///     of the items.
+	/// </remarks>
+	private static bool TryGetDimensions(IEnumerable actual, IEnumerable expected, out int[]? dimensions,
+		[NotNullWhen(false)] out string? difference)
+	{
+		dimensions = null;
+		difference = null;
+		int actualRank = (actual as Array)?.Rank ?? 1;
+		int expectedRank = (expected as Array)?.Rank ?? 1;
+		if (actualRank != expectedRank)
+		{
+			difference = $" had rank {actualRank} instead of {expectedRank}";
+			return false;
+		}
+
+		if (actualRank == 1)
+		{
+			return true;
+		}
+
+		dimensions = GetDimensions((Array)actual);
+		int[] expectedDimensions = GetDimensions((Array)expected);
+		if (!dimensions.SequenceEqual(expectedDimensions))
+		{
+			difference =
+				$" had dimensions [{string.Join(",", dimensions)}] instead of [{string.Join(",", expectedDimensions)}]";
+			return false;
+		}
+
+		return true;
+	}
+
+	private static int[] GetDimensions(Array array)
+		=> Enumerable.Range(0, array.Rank).Select(array.GetLength).ToArray();
+
+	/// <summary>
+	///     The path of the element at the <paramref name="index" /> of the sequence at the
+	///     <paramref name="memberPath" />, which is the index in each dimension for an array with the
+	///     <paramref name="dimensions" /> of a rank greater than one, as it enumerates its items with the last
+	///     dimension changing first.
+	/// </summary>
+	private static MemberPath GetElementPath(string memberPath, int index, int[]? dimensions)
+	{
+		if (dimensions is null)
+		{
+			return MemberPath.Element(memberPath, index);
+		}
+
+		int[] indices = new int[dimensions.Length];
+		for (int dimension = dimensions.Length - 1; dimension >= 0; dimension--)
+		{
+			indices[dimension] = index % dimensions[dimension];
+			index /= dimensions[dimension];
+		}
+
+		return $"{memberPath}[{string.Join(",", indices)}]";
+	}
+
 	private static async ValueTask<bool>
 		CompareEnumerables(
 			IEnumerable actual,
 			IEnumerable expected,
+			int[]? dimensions,
 			StringBuilder failureBuilder,
 			string memberPath,
 			EquivalencyOptions options,
@@ -1138,13 +1223,13 @@ public static partial class EquivalencyComparison
 
 		if (typeOptions.IgnoreCollectionOrder || IsSet(actual) || IsSet(expected))
 		{
-			return await CompareInAnyOrder(actualObjects, expectedObjects, GetItemComparer(actual), failureBuilder,
-				memberPath, options, typeOptions, context);
+			return await CompareInAnyOrder(actualObjects, expectedObjects, dimensions, GetItemComparer(actual),
+				failureBuilder, memberPath, options, typeOptions, context);
 		}
 
 		for (int i = 0; i < Math.Min(actualObjects.Length, expectedObjects.Length); i++)
 		{
-			MemberPath elementMemberPath = MemberPath.Element(memberPath, i);
+			MemberPath elementMemberPath = GetElementPath(memberPath, i, dimensions);
 			object? actualObject = actualObjects[i];
 			if (IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
 				    actualObject?.GetType() ?? typeof(object)))
@@ -1218,6 +1303,7 @@ public static partial class EquivalencyComparison
 		CompareInAnyOrder(
 			object?[] actualObjects,
 			object?[] expectedObjects,
+			int[]? dimensions,
 			Func<object?, object?, bool>? itemComparer,
 			StringBuilder failureBuilder,
 			string memberPath,
@@ -1225,10 +1311,10 @@ public static partial class EquivalencyComparison
 			EquivalencyTypeOptions typeOptions,
 			EquivalencyContext context)
 	{
-		int[] actualIndices = GetIndicesToCompare(actualObjects, memberPath, typeOptions);
-		int[] expectedIndices = GetIndicesToCompare(expectedObjects, memberPath, typeOptions);
-		ElementMatcher matcher = new(actualObjects, actualIndices, expectedObjects, expectedIndices, itemComparer,
-			memberPath, options, typeOptions, context);
+		int[] actualIndices = GetIndicesToCompare(actualObjects, memberPath, dimensions, typeOptions);
+		int[] expectedIndices = GetIndicesToCompare(expectedObjects, memberPath, dimensions, typeOptions);
+		ElementMatcher matcher = new(actualObjects, actualIndices, expectedObjects, expectedIndices, dimensions,
+			itemComparer, memberPath, options, typeOptions, context);
 		await matcher.MatchAll();
 		if (context.IsDecidingOnly)
 		{
@@ -1245,12 +1331,14 @@ public static partial class EquivalencyComparison
 		{
 			if (actualIndex < 0)
 			{
-				AppendMissingElement(failureBuilder, $"{memberPath}[{expectedIndex}]",
+				AppendMissingElement(failureBuilder,
+					GetElementPath(memberPath, expectedIndex, dimensions).ToString(),
 					expectedObjects[expectedIndex], context);
 			}
 			else if (expectedIndex < 0)
 			{
-				AppendSuperfluousElement(failureBuilder, $"{memberPath}[{actualIndex}]",
+				AppendSuperfluousElement(failureBuilder,
+					GetElementPath(memberPath, actualIndex, dimensions).ToString(),
 					actualObjects[actualIndex], context);
 			}
 			else
@@ -1258,7 +1346,8 @@ public static partial class EquivalencyComparison
 				object? actualObject = actualObjects[actualIndex];
 				await Compare(actualObject, expectedObjects[expectedIndex],
 					options, typeOptions,
-					failureBuilder, $"{memberPath}[{actualIndex}]", MemberType.Element, context);
+					failureBuilder, GetElementPath(memberPath, actualIndex, dimensions), MemberType.Element,
+					context);
 			}
 		}
 
@@ -1270,7 +1359,7 @@ public static partial class EquivalencyComparison
 	///     could be skipped in once the order is ignored, so it is left out of the matching on both sides: it neither
 	///     has to find a counterpart nor can it be reported as superfluous.
 	/// </remarks>
-	private static int[] GetIndicesToCompare(object?[] objects, string memberPath,
+	private static int[] GetIndicesToCompare(object?[] objects, string memberPath, int[]? dimensions,
 		EquivalencyTypeOptions typeOptions)
 	{
 		if (typeOptions.MembersToIgnore.Length == 0)
@@ -1288,7 +1377,7 @@ public static partial class EquivalencyComparison
 		for (int i = 0; i < objects.Length; i++)
 		{
 			object? element = objects[i];
-			string elementMemberPath = $"{memberPath}[{i}]";
+			MemberPath elementMemberPath = GetElementPath(memberPath, i, dimensions);
 			if (!IsIgnored(typeOptions.MembersToIgnore, MemberType.Element, elementMemberPath,
 				    element?.GetType() ?? typeof(object)))
 			{
@@ -1307,6 +1396,11 @@ public static partial class EquivalencyComparison
 		private readonly int[] _actualIndices;
 		private readonly object?[] _actualObjects;
 		private readonly EquivalencyContext _context;
+
+		/// <summary>
+		///     The dimensions of the compared arrays, when their rank is greater than one.
+		/// </summary>
+		private readonly int[]? _dimensions;
 
 		private readonly int[] _expectedIndices;
 		private readonly object?[] _expectedObjects;
@@ -1359,13 +1453,14 @@ public static partial class EquivalencyComparison
 		private int _search;
 
 		public ElementMatcher(object?[] actualObjects, int[] actualIndices, object?[] expectedObjects,
-			int[] expectedIndices, Func<object?, object?, bool>? itemComparer, string memberPath,
+			int[] expectedIndices, int[]? dimensions, Func<object?, object?, bool>? itemComparer, string memberPath,
 			EquivalencyOptions options, EquivalencyTypeOptions typeOptions, EquivalencyContext context)
 		{
 			_actualObjects = actualObjects;
 			_actualIndices = actualIndices;
 			_expectedObjects = expectedObjects;
 			_expectedIndices = expectedIndices;
+			_dimensions = dimensions;
 			_itemComparer = itemComparer;
 			_memberPath = memberPath;
 			_options = options;
@@ -1552,7 +1647,7 @@ public static partial class EquivalencyComparison
 			{
 				isEquivalent = await Compare(_actualObjects[_actualIndices[actualIndex]],
 					_expectedObjects[_expectedIndices[expectedIndex]], _options, _typeOptions,
-					_unusedFailureBuilder, GetElementPath(actualIndex), MemberType.Element, _context);
+					_unusedFailureBuilder, GetActualElementPath(actualIndex), MemberType.Element, _context);
 			}
 			finally
 			{
@@ -1585,7 +1680,7 @@ public static partial class EquivalencyComparison
 			{
 				await Compare(_actualObjects[_actualIndices[actualIndex]],
 					_expectedObjects[_expectedIndices[expectedIndex]], _options, _typeOptions,
-					_unusedFailureBuilder, GetElementPath(actualIndex), MemberType.Element, _context);
+					_unusedFailureBuilder, GetActualElementPath(actualIndex), MemberType.Element, _context);
 			}
 			finally
 			{
@@ -1598,8 +1693,8 @@ public static partial class EquivalencyComparison
 			return count;
 		}
 
-		private MemberPath GetElementPath(int actualIndex)
-			=> MemberPath.Element(_memberPath, _actualIndices[actualIndex]);
+		private MemberPath GetActualElementPath(int actualIndex)
+			=> EquivalencyComparison.GetElementPath(_memberPath, _actualIndices[actualIndex], _dimensions);
 
 		/// <summary>
 		///     The results of the compared pairs, kept sparse while few pairs are compared.
