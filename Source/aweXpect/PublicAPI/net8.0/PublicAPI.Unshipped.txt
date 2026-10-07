@@ -5,12 +5,6 @@
 *REMOVED*aweXpect.Results.ObjectProperCollectionMatchResult<TType, TThat, TItem>.Properly() -> aweXpect.Results.ObjectCollectionMatchResult<TType, TThat, TItem>!
 *REMOVED*aweXpect.Results.ProperCollectionMatchResult<TType, TThat, TItem>.Properly() -> aweXpect.Results.CollectionMatchResult<TType, TThat, TItem>!
 *REMOVED*aweXpect.Results.StringProperCollectionMatchResult<TType, TThat>.Properly() -> aweXpect.Results.StringCollectionMatchResult<TType, TThat>!
-aweXpect.Results.CollectionContainmentResult<TType, TThat, TElement>
-aweXpect.Results.CollectionContainmentResult<TType, TThat, TElement>.CollectionContainmentResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
-aweXpect.Results.ObjectCollectionContainmentResult<TType, TThat, TElement>
-aweXpect.Results.ObjectCollectionContainmentResult<TType, TThat, TElement>.ObjectCollectionContainmentResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.ObjectEqualityOptions<TElement>! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
-aweXpect.Results.StringCollectionContainmentResult<TType, TThat>
-aweXpect.Results.StringCollectionContainmentResult<TType, TThat>.StringCollectionContainmentResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions! options, aweXpect.Options.CollectionMatchOptions! collectionMatchOptions) -> void
 static aweXpect.ThatBool.DoesNotImply(this aweXpect.Core.IThat<bool>! subject, bool consequent) -> aweXpect.Results.AndOrResult<bool, aweXpect.Core.IThat<bool>!>!
 *REMOVED*aweXpect.ThatDelegate
 *REMOVED*static aweXpect.ThatDelegate.ExecutesWithin(this aweXpect.Core.IThat<aweXpect.Delegates.ThatDelegate.WithoutValue!>! subject, System.TimeSpan duration) -> aweXpect.Results.ExpectationResult!
@@ -5384,6 +5378,8 @@ static aweXpect.ThatSignaler.Signaled<TParameter>(this aweXpect.Core.IThat<aweXp
 *REMOVED*aweXpect.Results.SignalCountResult<TParameter, TSelf>.SignalCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.SignalerOptions<TParameter>! options) -> void
 *REMOVED*aweXpect.Results.SignalCountResult<TParameter, TSelf>.With(System.Func<TParameter, bool>! predicate, string! doNotPopulateThisValue = "") -> TSelf!
 *REMOVED*aweXpect.Results.SignalCountResult<TParameter, TSelf>.Within(System.TimeSpan timeout) -> TSelf!
+*REMOVED*aweXpect.Results.SignalCountResult<TParameter>
+*REMOVED*aweXpect.Results.SignalCountResult<TParameter>.SignalCountResult(aweXpect.Core.ExpectationBuilder! expectationBuilder, aweXpect.Core.IThat<aweXpect.Signaling.Signaler<TParameter>!>! returnValue, aweXpect.Options.Quantifier! quantifier, aweXpect.Options.SignalerOptions<TParameter>! options) -> void
 *REMOVED*aweXpect.Results.StringCollectionMatchResult<TType, TThat, TSelf>
 *REMOVED*aweXpect.Results.StringCollectionMatchResult<TType, TThat, TSelf>.IgnoringDuplicates() -> TSelf!
 *REMOVED*aweXpect.Results.StringCollectionMatchResult<TType, TThat, TSelf>.InAnyOrder() -> TSelf!
