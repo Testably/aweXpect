@@ -90,6 +90,24 @@ public sealed partial class ThatDateTimeOffset
 			}
 
 			[Test]
+			public async Task WhenParamsValuesDoNotContainTheSubject_ShouldFail()
+			{
+				DateTimeOffset subject = CurrentTime();
+				DateTimeOffset later = LaterTime();
+				DateTimeOffset earlier = EarlierTime();
+
+				async Task Act()
+					=> await That(subject).IsOneOf(later, earlier);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is one of {Formatter.Format(new[] { later, earlier, })},
+					              but it was {Formatter.Format(subject)}, which differs by -0:01 from the closest value
+					              """);
+			}
+
+			[Test]
 			public async Task WhenSubjectIsContained_ShouldSucceed()
 			{
 				DateTimeOffset subject = CurrentTime();

@@ -9,6 +9,23 @@ public sealed partial class ThatDateTimeOffset
 			public sealed class Tests
 			{
 				[Test]
+				public async Task WhenExpectedIsNull_ShouldFail()
+				{
+					DateTimeOffset? subject = CurrentTime();
+					DateTimeOffset? expected = null;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to <null>,
+						              but it was {Formatter.Format(subject)}
+						              """);
+				}
+
+				[Test]
 				public async Task WhenSubjectAndExpectedAreNull_ShouldSucceed()
 				{
 					DateTimeOffset? subject = null;
@@ -34,6 +51,23 @@ public sealed partial class ThatDateTimeOffset
 						              Expected that subject
 						              is equal to {Formatter.Format(expected)},
 						              but it was {Formatter.Format(subject)}, which differs by -0:01
+						              """);
+				}
+
+				[Test]
+				public async Task WhenSubjectIsNull_ShouldFail()
+				{
+					DateTimeOffset? subject = null;
+					DateTimeOffset? expected = CurrentTime();
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to {Formatter.Format(expected)},
+						              but it was <null>
 						              """);
 				}
 

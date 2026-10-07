@@ -390,6 +390,19 @@ public sealed class EqualityHelpersTests
 			}
 
 			[Test]
+			public async Task WhenExpectedIsNullAndSubjectKindIsUnspecified_ShouldReturnFalseWithoutKindDifference()
+			{
+				DateTime? value = new DateTime(2026, 1, 1, 12, 0, 0, DateTimeKind.Unspecified);
+				DateTime? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.MaxValue, out bool hasKindDifference);
+
+				await That(result).IsFalse();
+				await That(hasKindDifference).IsFalse()
+					.Because("an unspecified kind is compatible with any kind, so only the missing value fails");
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_ShouldReturnFalse()
 			{
 				DateTime? value = null;
@@ -588,5 +601,265 @@ public sealed class EqualityHelpersTests
 				await That(result).IsFalse();
 			}
 		}
+
+		public sealed class LongTests
+		{
+			[Test]
+			public async Task WhenExpectedIsNull_ShouldReturnFalse()
+			{
+				long value = 0L;
+				long? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, long.MaxValue);
+
+				await That(result).IsFalse();
+			}
+		}
+
+		public sealed class NullableLongTests
+		{
+			[Test]
+			public async Task WhenBothAreNull_ShouldReturnTrue()
+			{
+				long? value = null;
+				long? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, 0L);
+
+				await That(result).IsTrue();
+			}
+
+			[Test]
+			[Arguments(1L, 0L)]
+			[Arguments(0L, 1L)]
+			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue(long? value, long? expected)
+			{
+				bool result = value.IsConsideredEqualTo(expected, 1L);
+
+				await That(result).IsTrue();
+			}
+
+			[Test]
+			public async Task WhenExpectedIsNull_ShouldReturnFalse()
+			{
+				long? value = 0L;
+				long? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, long.MaxValue);
+
+				await That(result).IsFalse();
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldReturnFalse()
+			{
+				long? value = null;
+				long? expected = 0L;
+
+				bool result = value.IsConsideredEqualTo(expected, long.MaxValue);
+
+				await That(result).IsFalse();
+			}
+		}
+
+		public sealed class ULongTests
+		{
+			[Test]
+			public async Task WhenExpectedIsNull_ShouldReturnFalse()
+			{
+				ulong value = 0UL;
+				ulong? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, ulong.MaxValue);
+
+				await That(result).IsFalse();
+			}
+		}
+
+		public sealed class NullableULongTests
+		{
+			[Test]
+			public async Task WhenBothAreNull_ShouldReturnTrue()
+			{
+				ulong? value = null;
+				ulong? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, 0UL);
+
+				await That(result).IsTrue();
+			}
+
+			[Test]
+			[Arguments(1UL, 0UL)]
+			[Arguments(0UL, 1UL)]
+			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue(ulong? value, ulong? expected)
+			{
+				bool result = value.IsConsideredEqualTo(expected, 1UL);
+
+				await That(result).IsTrue();
+			}
+
+			[Test]
+			public async Task WhenExpectedIsNull_ShouldReturnFalse()
+			{
+				ulong? value = 0UL;
+				ulong? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, ulong.MaxValue);
+
+				await That(result).IsFalse();
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldReturnFalse()
+			{
+				ulong? value = null;
+				ulong? expected = 0UL;
+
+				bool result = value.IsConsideredEqualTo(expected, ulong.MaxValue);
+
+				await That(result).IsFalse();
+			}
+		}
+
+		public sealed class DateTimeTests
+		{
+			[Test]
+			public async Task WhenExpectedIsNull_ShouldReturnFalseWithoutKindDifference()
+			{
+				DateTime value = new(2026, 1, 1, 12, 0, 0, DateTimeKind.Unspecified);
+				DateTime? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.MaxValue, out bool hasKindDifference);
+
+				await That(result).IsFalse();
+				await That(hasKindDifference).IsFalse()
+					.Because("an unspecified kind is compatible with any kind, so only the missing value fails");
+			}
+		}
+#if NET8_0_OR_GREATER
+
+		public sealed class DateOnlyTests
+		{
+			[Test]
+			public async Task WhenExpectedIsNull_ShouldReturnFalse()
+			{
+				DateOnly value = DateOnly.MinValue;
+				DateOnly? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.MaxValue);
+
+				await That(result).IsFalse();
+			}
+		}
+
+		public sealed class NullableDateOnlyTests
+		{
+			[Test]
+			public async Task WhenBothAreNull_ShouldReturnTrue()
+			{
+				DateOnly? value = null;
+				DateOnly? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.Zero);
+
+				await That(result).IsTrue();
+			}
+
+			[Test]
+			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue()
+			{
+				DateOnly? value = new DateOnly(2026, 1, 1);
+				DateOnly? expected = new DateOnly(2026, 1, 2);
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.FromDays(1));
+
+				await That(result).IsTrue();
+			}
+
+			[Test]
+			public async Task WhenExpectedIsNull_ShouldReturnFalse()
+			{
+				DateOnly? value = DateOnly.MinValue;
+				DateOnly? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.MaxValue);
+
+				await That(result).IsFalse();
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldReturnFalse()
+			{
+				DateOnly? value = null;
+				DateOnly? expected = DateOnly.MinValue;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.MaxValue);
+
+				await That(result).IsFalse();
+			}
+		}
+
+		public sealed class TimeOnlyTests
+		{
+			[Test]
+			public async Task WhenExpectedIsNull_ShouldReturnFalse()
+			{
+				TimeOnly value = TimeOnly.MinValue;
+				TimeOnly? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.MaxValue);
+
+				await That(result).IsFalse();
+			}
+		}
+
+		public sealed class NullableTimeOnlyTests
+		{
+			[Test]
+			public async Task WhenBothAreNull_ShouldReturnTrue()
+			{
+				TimeOnly? value = null;
+				TimeOnly? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.Zero);
+
+				await That(result).IsTrue();
+			}
+
+			[Test]
+			public async Task WhenDifferenceIsTolerance_ShouldReturnTrue()
+			{
+				TimeOnly? value = new TimeOnly(12, 0);
+				TimeOnly? expected = new TimeOnly(12, 1);
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.FromMinutes(1));
+
+				await That(result).IsTrue();
+			}
+
+			[Test]
+			public async Task WhenExpectedIsNull_ShouldReturnFalse()
+			{
+				TimeOnly? value = TimeOnly.MinValue;
+				TimeOnly? expected = null;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.MaxValue);
+
+				await That(result).IsFalse();
+			}
+
+			[Test]
+			public async Task WhenSubjectIsNull_ShouldReturnFalse()
+			{
+				TimeOnly? value = null;
+				TimeOnly? expected = TimeOnly.MinValue;
+
+				bool result = value.IsConsideredEqualTo(expected, TimeSpan.MaxValue);
+
+				await That(result).IsFalse();
+			}
+		}
+#endif
 	}
 }

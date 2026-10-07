@@ -116,6 +116,28 @@ public sealed partial class ThatString
 			}
 
 			[Test]
+			public async Task WhenNestedInAnExpectationOnTheLines_ShouldFail()
+			{
+				string subject = "a\nb";
+
+				async Task Act()
+					=> await That(subject).HasLines(lines => lines.HasItemThat(line => line.HasLines(l => l.HasCount(3))));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has lines that have an item that lines are that have exactly 3 items,
+					             but it had no matching item
+
+					             Collection:
+					             [
+					               "a",
+					               "b"
+					             ]
+					             """);
+			}
+
+			[Test]
 			public async Task WhenSubjectIsEmpty_ShouldHaveNoLines()
 			{
 				string subject = "";
@@ -226,6 +248,29 @@ public sealed partial class ThatString
 					             but it had lines [
 					               "Starting up",
 					               "Ready"
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WhenNestedInAnExpectationOnTheLines_ShouldFail()
+			{
+				string subject = "a\nb";
+
+				async Task Act()
+					=> await That(subject).HasLines(lines => lines.HasItemThat(line => line
+						.DoesNotComplyWith(it => it.HasLines(l => l.HasCount(1)))));
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has lines that have an item that lines are not that have exactly one item,
+					             but it had no matching item
+
+					             Collection:
+					             [
+					               "a",
+					               "b"
 					             ]
 					             """);
 			}

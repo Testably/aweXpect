@@ -92,6 +92,22 @@ public sealed partial class ThatChar
 			}
 
 			[Test]
+			public async Task WhenParamsValuesDoNotContainTheSubject_ShouldFail()
+			{
+				char subject = 'a';
+
+				async Task Act()
+					=> await That(subject).IsOneOf('b', 'c');
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is one of ['b', 'c'],
+					             but it was 'a'
+					             """);
+			}
+
+			[Test]
 			public async Task WhenSubjectDiffersOnlyInCase_AndIgnoringCase_ShouldSucceed()
 			{
 				char subject = 'a';

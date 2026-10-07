@@ -81,6 +81,23 @@ public sealed partial class ThatGuid
 			}
 
 			[Test]
+			public async Task WhenParamsValuesContainTheSubject_ShouldFail()
+			{
+				Guid subject = FixedGuid();
+				Guid other = OtherGuid();
+
+				async Task Act()
+					=> await That(subject).IsNotOneOf(other, subject);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is not one of {Formatter.Format(new[] { other, subject, })},
+					              but it was {Formatter.Format(subject)}
+					              """);
+			}
+
+			[Test]
 			public async Task WhenSubjectIsContained_ShouldFail()
 			{
 				Guid subject = FixedGuid();

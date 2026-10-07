@@ -157,6 +157,19 @@ public sealed partial class ThatString
 			}
 
 			[Test]
+			public async Task WhenExpectedIsEmpty_ShouldThrowArgumentException()
+			{
+				string subject = "text";
+
+				async Task Act()
+					=> await That(subject).EndsWith("");
+
+				await That(Act).Throws<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' string cannot be empty.").AsPrefix();
+			}
+
+			[Test]
 			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
 			{
 				string subject = "text";

@@ -9,6 +9,23 @@ public sealed partial class ThatTimeSpan
 			public sealed class Tests
 			{
 				[Test]
+				public async Task WhenExpectedIsNull_ShouldFail()
+				{
+					TimeSpan? subject = CurrentTime();
+					TimeSpan? expected = null;
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(expected);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage($"""
+						              Expected that subject
+						              is equal to <null>,
+						              but it was {Formatter.Format(subject)}
+						              """);
+				}
+
+				[Test]
 				public async Task WhenSubjectAndExpectedAreMaxValue_ShouldSucceed()
 				{
 					TimeSpan? subject = TimeSpan.MaxValue;

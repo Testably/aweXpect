@@ -90,6 +90,24 @@ public sealed partial class ThatTimeOnly
 			}
 
 			[Test]
+			public async Task WhenParamsValuesDoNotContainTheSubject_ShouldFail()
+			{
+				TimeOnly subject = CurrentTime();
+				TimeOnly later = LaterTime();
+				TimeOnly earlier = EarlierTime();
+
+				async Task Act()
+					=> await That(subject).IsOneOf(later, earlier);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is one of {Formatter.Format(new[] { later, earlier, })},
+					              but it was {Formatter.Format(subject)}, which differs by -0:01 from the closest value
+					              """);
+			}
+
+			[Test]
 			public async Task WhenSubjectIsContained_ShouldSucceed()
 			{
 				TimeOnly subject = CurrentTime();
