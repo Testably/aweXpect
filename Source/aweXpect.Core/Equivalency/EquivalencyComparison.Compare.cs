@@ -1647,7 +1647,7 @@ public static partial class EquivalencyComparison
 			{
 				isEquivalent = await Compare(_actualObjects[_actualIndices[actualIndex]],
 					_expectedObjects[_expectedIndices[expectedIndex]], _options, _typeOptions,
-					_unusedFailureBuilder, GetElementPath(actualIndex), MemberType.Element, _context);
+					_unusedFailureBuilder, GetActualElementPath(actualIndex), MemberType.Element, _context);
 			}
 			finally
 			{
@@ -1680,7 +1680,7 @@ public static partial class EquivalencyComparison
 			{
 				await Compare(_actualObjects[_actualIndices[actualIndex]],
 					_expectedObjects[_expectedIndices[expectedIndex]], _options, _typeOptions,
-					_unusedFailureBuilder, GetElementPath(actualIndex), MemberType.Element, _context);
+					_unusedFailureBuilder, GetActualElementPath(actualIndex), MemberType.Element, _context);
 			}
 			finally
 			{
@@ -1693,7 +1693,7 @@ public static partial class EquivalencyComparison
 			return count;
 		}
 
-		private MemberPath GetElementPath(int actualIndex)
+		private MemberPath GetActualElementPath(int actualIndex)
 			=> EquivalencyComparison.GetElementPath(_memberPath, _actualIndices[actualIndex], _dimensions);
 
 		/// <summary>

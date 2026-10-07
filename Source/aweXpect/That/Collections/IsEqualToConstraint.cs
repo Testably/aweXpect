@@ -97,16 +97,6 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 		return this;
 	}
 
-	/// <summary>
-	///     Fails with the <paramref name="failure" /> without verifying the <paramref name="items" />, and shows them.
-	/// </summary>
-	protected ConstraintResult FailWith<TItem>(string failure, CollectionItems<TItem> items)
-	{
-		Fail(failure);
-		items.SetContext(ref _collectionContext);
-		return this;
-	}
-
 #if NET8_0_OR_GREATER
 	/// <summary>
 	///     Fails, because the expected collection is <see langword="null" />, and shows the <paramref name="items" />.
@@ -118,6 +108,16 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 		return this;
 	}
 #endif
+
+	/// <summary>
+	///     Fails with the <paramref name="failure" /> without verifying the <paramref name="items" />, and shows them.
+	/// </summary>
+	protected ConstraintResult FailWith<TItem>(string failure, CollectionItems<TItem> items)
+	{
+		Fail(failure);
+		items.SetContext(ref _collectionContext);
+		return this;
+	}
 
 	/// <summary>
 	///     Verifies the <paramref name="materialized" /> items by the <paramref name="matcher" />.
