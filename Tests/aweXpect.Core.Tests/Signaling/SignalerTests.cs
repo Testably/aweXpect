@@ -12,6 +12,48 @@ public sealed class SignalerTests
 {
 	private static TimeSpan DefaultTimeout => Customize.aweXpect.Settings().DefaultSignalerTimeout.Get();
 
+	/// <summary>
+	///     Runs the <paramref name="wait" /> on a thread of its own and, as soon as it blocks, the
+	///     <paramref name="whenWaiting" /> action on the calling thread.
+	/// </summary>
+	/// <remarks>
+	///     A synchronous wait must neither block a thread of the thread pool nor be ended through it: when the tests
+	///     that run in parallel occupy all its threads, a queued task or the callback of a timer runs later than any
+	///     timeout of the wait, and on .NET Framework a signaled wait only returns once a thread of the pool is free.
+	///     <para />
+	///     It gives up after the default signaler timeout, so that a wait that never ends fails the test instead of
+	///     hanging the test run.
+	/// </remarks>
+	private static async Task<TResult> WhileWaiting<TResult>(Func<TResult> wait, Action whenWaiting)
+	{
+		TaskCompletionSource<TResult> completion = new(TaskCreationOptions.RunContinuationsAsynchronously);
+		Thread thread = new(() =>
+		{
+			try
+			{
+				completion.SetResult(wait());
+			}
+			catch (Exception exception)
+			{
+				completion.SetException(exception);
+			}
+		})
+		{
+			IsBackground = true,
+		};
+		thread.Start();
+		SpinWait.SpinUntil(() => !thread.IsAlive || (thread.ThreadState & ThreadState.WaitSleepJoin) != 0);
+		whenWaiting();
+		using CancellationTokenSource cts = new();
+		if (await Task.WhenAny(completion.Task, Task.Delay(DefaultTimeout, cts.Token)) != completion.Task)
+		{
+			throw new TimeoutException("The wait did not end.");
+		}
+
+		cts.Cancel();
+		return await completion.Task;
+	}
+
 	public sealed class Tests
 	{
 		[Test]
@@ -44,12 +86,9 @@ public sealed class SignalerTests
 		{
 			Signaler signaler = new();
 			signaler.Signal();
-			_ = Task.Run(async () =>
-			{
-				await Task.Delay(50.Milliseconds());
-				signaler.Signal();
-			});
-			SignalerResult result = signaler.Wait(2.Times(), 5.Seconds());
+			SignalerResult result = await WhileWaiting(
+				() => signaler.Wait(2.Times(), 5.Seconds()),
+				() => signaler.Signal());
 
 			void Act()
 				=> signaler.Signal();
@@ -215,13 +254,10 @@ public sealed class SignalerTests
 		public async Task Wait_InfiniteTimeout_ShouldWaitForTheSignal()
 		{
 			Signaler signaler = new();
-			_ = Task.Run(async () =>
-			{
-				await Task.Delay(50.Milliseconds());
-				signaler.Signal();
-			});
 
-			SignalerResult result = signaler.Wait(Timeout.InfiniteTimeSpan);
+			SignalerResult result = await WhileWaiting(
+				() => signaler.Wait(Timeout.InfiniteTimeSpan),
+				() => signaler.Signal());
 
 			await That(result.IsSuccess).IsTrue();
 		}
@@ -259,17 +295,19 @@ public sealed class SignalerTests
 		{
 			Signaler signaler = new();
 			TimeSpan timeout = 10.Seconds();
-			using CancellationTokenSource cts = new(30.Milliseconds());
+			using CancellationTokenSource cts = new();
 			CancellationToken token = cts.Token;
-
-			for (int i = 0; i < 99; i++)
-			{
-				_ = Task.Run(() => signaler.Signal(), token);
-			}
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(100.Times(), timeout, token);
+			SignalerResult result = await WhileWaiting(
+				() => signaler.Wait(100.Times(), timeout, token),
+				() =>
+				{
+					Parallel.For(0, 99, _ => signaler.Signal());
+					// ReSharper disable once AccessToDisposedClosure
+					cts.Cancel();
+				});
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
@@ -282,14 +320,11 @@ public sealed class SignalerTests
 			Signaler signaler = new();
 			TimeSpan timeout = 10.Seconds();
 
-			for (int i = 0; i < 100; i++)
-			{
-				_ = Task.Run(() => signaler.Signal());
-			}
-
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(100.Times(), timeout);
+			SignalerResult result = await WhileWaiting(
+				() => signaler.Wait(100.Times(), timeout),
+				() => Parallel.For(0, 100, _ => signaler.Signal()));
 			sw.Stop();
 
 			await That(result.IsSuccess).IsTrue();
@@ -332,12 +367,13 @@ public sealed class SignalerTests
 		{
 			Signaler signaler = new();
 			TimeSpan timeout = 10.Seconds();
-			using CancellationTokenSource cts = new(30.Milliseconds());
+			using CancellationTokenSource cts = new();
 			CancellationToken token = cts.Token;
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(timeout, token);
+			// ReSharper disable once AccessToDisposedClosure
+			SignalerResult result = await WhileWaiting(() => signaler.Wait(timeout, token), () => cts.Cancel());
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
@@ -349,29 +385,12 @@ public sealed class SignalerTests
 		{
 			Signaler signaler = new();
 			TimeSpan timeout = 10.Seconds();
-			using ManualResetEventSlim ms = new();
-
-			_ = Task.Run(async () =>
-			{
-				for (int i = 10; i < 1000; i++)
-				{
-					// ReSharper disable once AccessToDisposedClosure
-					if (ms.IsSet)
-					{
-						break;
-					}
-
-					await Task.Delay(i.Milliseconds());
-					signaler.Signal();
-				}
-			});
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(timeout);
+			SignalerResult result = await WhileWaiting(() => signaler.Wait(timeout), () => signaler.Signal());
 			sw.Stop();
 
-			ms.Set();
 			await That(result.IsSuccess).IsTrue();
 			await That(sw.Elapsed).IsLessThan(timeout);
 		}
@@ -397,14 +416,9 @@ public sealed class SignalerTests
 		{
 			Signaler signaler = new();
 			using CancellationTokenSource cts = new(5.Seconds());
+			CancellationToken token = cts.Token;
 
-			_ = Task.Run(async () =>
-			{
-				await Task.Delay(50.Milliseconds());
-				signaler.Signal();
-			});
-
-			SignalerResult result = signaler.Wait(60.Days(), cts.Token);
+			SignalerResult result = await WhileWaiting(() => signaler.Wait(60.Days(), token), () => signaler.Signal());
 
 			await That(result.IsSuccess).IsTrue()
 				.Because("a timeout beyond the range of the wait handle must not throw");
@@ -414,23 +428,21 @@ public sealed class SignalerTests
 		public async Task Wait_WhenAnotherWaitIsPending_ShouldNotInterfereWithIt()
 		{
 			Signaler signaler = new();
-			SignalerResult? pendingResult = null;
-			Thread pendingWait = new(() => pendingResult = signaler.Wait(2.Times(), 5.Seconds()));
-			pendingWait.Start();
-			while ((pendingWait.ThreadState & ThreadState.WaitSleepJoin) == 0)
-			{
-				await Task.Delay(1.Milliseconds());
-			}
+			SignalerResult? result = null;
 
-			signaler.Signal();
-			SignalerResult result = signaler.Wait(2.Times(), TimeSpan.Zero);
-			signaler.Signal();
-			pendingWait.Join();
+			SignalerResult pendingResult = await WhileWaiting(
+				() => signaler.Wait(2.Times(), 5.Seconds()),
+				() =>
+				{
+					signaler.Signal();
+					result = signaler.Wait(2.Times(), TimeSpan.Zero);
+					signaler.Signal();
+				});
 
-			await That(result.IsSuccess).IsFalse();
-			await That(pendingResult?.IsSuccess).IsTrue()
+			await That(result?.IsSuccess).IsFalse();
+			await That(pendingResult.IsSuccess).IsTrue()
 				.Because("the other wait must neither replace nor remove the event of the pending wait");
-			await That(pendingResult?.Count).IsEqualTo(2);
+			await That(pendingResult.Count).IsEqualTo(2);
 		}
 
 		[Test]
@@ -438,15 +450,13 @@ public sealed class SignalerTests
 		{
 			Signaler signaler = new();
 			using CancellationTokenSource cts = new(5.Seconds());
+			CancellationToken token = cts.Token;
 
 			signaler.Signal();
-			_ = Task.Run(async () =>
-			{
-				await Task.Delay(50.Milliseconds());
-				signaler.Signal();
-			});
 
-			SignalerResult result = signaler.Wait(2.Times(), 60.Days(), cts.Token);
+			SignalerResult result = await WhileWaiting(
+				() => signaler.Wait(2.Times(), 60.Days(), token),
+				() => signaler.Signal());
 
 			await That(result.IsSuccess).IsTrue()
 				.Because("a timeout beyond the range of the wait handle must not throw");
@@ -501,12 +511,9 @@ public sealed class SignalerTests
 		{
 			Signaler<int> signaler = new();
 			signaler.Signal(1);
-			_ = Task.Run(async () =>
-			{
-				await Task.Delay(50.Milliseconds());
-				signaler.Signal(2);
-			});
-			SignalerResult<int> result = signaler.Wait(2.Times(), timeout: 5.Seconds());
+			SignalerResult<int> result = await WhileWaiting(
+				() => signaler.Wait(2.Times(), timeout: 5.Seconds()),
+				() => signaler.Signal(2));
 
 			void Act()
 				=> signaler.Signal(3);
@@ -670,15 +677,12 @@ public sealed class SignalerTests
 			Signaler<int> signaler = new();
 			TimeSpan timeout = 10.Seconds();
 			InvalidOperationException exception = new("predicate failed");
-			_ = Task.Run(async () =>
-			{
-				await Task.Delay(50.Milliseconds());
-				signaler.Signal(1);
-			});
 			Stopwatch sw = Stopwatch.StartNew();
+			Task<SignalerResult<int>> wait = signaler.WaitAsync(2.Times(), _ => throw exception, timeout);
+			signaler.Signal(1);
 
 			async Task Act()
-				=> await signaler.WaitAsync(2.Times(), _ => throw exception, timeout);
+				=> await wait;
 
 			await That(Act).Throws<InvalidOperationException>()
 				.WithMessage("predicate failed");
@@ -708,13 +712,10 @@ public sealed class SignalerTests
 		public async Task Wait_InfiniteTimeout_ShouldWaitForTheSignal()
 		{
 			Signaler<int> signaler = new();
-			_ = Task.Run(async () =>
-			{
-				await Task.Delay(50.Milliseconds());
-				signaler.Signal(1);
-			});
 
-			SignalerResult<int> result = signaler.Wait(timeout: Timeout.InfiniteTimeSpan);
+			SignalerResult<int> result = await WhileWaiting(
+				() => signaler.Wait(timeout: Timeout.InfiniteTimeSpan),
+				() => signaler.Signal(1));
 
 			await That(result.IsSuccess).IsTrue();
 		}
@@ -752,18 +753,19 @@ public sealed class SignalerTests
 		{
 			Signaler<int> signaler = new();
 			TimeSpan timeout = 10.Seconds();
-			using CancellationTokenSource cts = new(30.Milliseconds());
+			using CancellationTokenSource cts = new();
 			CancellationToken token = cts.Token;
-
-			for (int i = 0; i < 99; i++)
-			{
-				int value = i;
-				_ = Task.Run(() => signaler.Signal(value), token);
-			}
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(100.Times(), timeout: timeout, cancellationToken: token);
+			SignalerResult result = await WhileWaiting(
+				() => signaler.Wait(100.Times(), timeout: timeout, cancellationToken: token),
+				() =>
+				{
+					Parallel.For(0, 99, signaler.Signal);
+					// ReSharper disable once AccessToDisposedClosure
+					cts.Cancel();
+				});
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
@@ -776,15 +778,11 @@ public sealed class SignalerTests
 			Signaler<int> signaler = new();
 			TimeSpan timeout = 10.Seconds();
 
-			for (int i = 0; i < 100; i++)
-			{
-				int value = i;
-				_ = Task.Run(() => signaler.Signal(value));
-			}
-
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult<int> result = signaler.Wait(100.Times(), timeout: timeout);
+			SignalerResult<int> result = await WhileWaiting(
+				() => signaler.Wait(100.Times(), timeout: timeout),
+				() => Parallel.For(0, 100, signaler.Signal));
 			sw.Stop();
 
 			await That(result.IsSuccess).IsTrue();
@@ -844,12 +842,15 @@ public sealed class SignalerTests
 		{
 			Signaler<int> signaler = new();
 			TimeSpan timeout = 10.Seconds();
-			using CancellationTokenSource cts = new(30.Milliseconds());
+			using CancellationTokenSource cts = new();
 			CancellationToken token = cts.Token;
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(timeout: timeout, cancellationToken: token);
+			SignalerResult result = await WhileWaiting(
+				() => signaler.Wait(timeout: timeout, cancellationToken: token),
+				// ReSharper disable once AccessToDisposedClosure
+				() => cts.Cancel());
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
@@ -861,30 +862,14 @@ public sealed class SignalerTests
 		{
 			Signaler<int> signaler = new();
 			TimeSpan timeout = 10.Seconds();
-			using ManualResetEventSlim ms = new();
-
-			_ = Task.Run(async () =>
-			{
-				for (int i = 10; i < 1000; i++)
-				{
-					// ReSharper disable once AccessToDisposedClosure
-					if (ms.IsSet)
-					{
-						break;
-					}
-
-					int value = i;
-					await Task.Delay(i.Milliseconds());
-					signaler.Signal(value);
-				}
-			});
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(timeout: timeout);
+			SignalerResult result = await WhileWaiting(
+				() => signaler.Wait(timeout: timeout),
+				() => signaler.Signal(10));
 			sw.Stop();
 
-			ms.Set();
 			await That(result.IsSuccess).IsTrue();
 			await That(sw.Elapsed).IsLessThan(timeout);
 		}
@@ -910,14 +895,11 @@ public sealed class SignalerTests
 		{
 			Signaler<int> signaler = new();
 			using CancellationTokenSource cts = new(5.Seconds());
+			CancellationToken token = cts.Token;
 
-			_ = Task.Run(async () =>
-			{
-				await Task.Delay(50.Milliseconds());
-				signaler.Signal(1);
-			});
-
-			SignalerResult<int> result = signaler.Wait(timeout: 60.Days(), cancellationToken: cts.Token);
+			SignalerResult<int> result = await WhileWaiting(
+				() => signaler.Wait(timeout: 60.Days(), cancellationToken: token),
+				() => signaler.Signal(1));
 
 			await That(result.IsSuccess).IsTrue()
 				.Because("a timeout beyond the range of the wait handle must not throw");
@@ -929,15 +911,13 @@ public sealed class SignalerTests
 		{
 			Signaler<int> signaler = new();
 			using CancellationTokenSource cts = new(5.Seconds());
+			CancellationToken token = cts.Token;
 
 			signaler.Signal(1);
-			_ = Task.Run(async () =>
-			{
-				await Task.Delay(50.Milliseconds());
-				signaler.Signal(2);
-			});
 
-			SignalerResult<int> result = signaler.Wait(2.Times(), timeout: 60.Days(), cancellationToken: cts.Token);
+			SignalerResult<int> result = await WhileWaiting(
+				() => signaler.Wait(2.Times(), timeout: 60.Days(), cancellationToken: token),
+				() => signaler.Signal(2));
 
 			await That(result.IsSuccess).IsTrue()
 				.Because("a timeout beyond the range of the wait handle must not throw");
@@ -949,18 +929,19 @@ public sealed class SignalerTests
 		{
 			Signaler<int> signaler = new();
 			TimeSpan timeout = 10.Seconds();
-			using CancellationTokenSource cts = new(30.Milliseconds());
+			using CancellationTokenSource cts = new();
 			CancellationToken token = cts.Token;
-
-			for (int i = 0; i < 100; i++)
-			{
-				int value = i;
-				_ = Task.Run(() => signaler.Signal(value), token);
-			}
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(100.Times(), x => x != 50, timeout, token);
+			SignalerResult result = await WhileWaiting(
+				() => signaler.Wait(100.Times(), x => x != 50, timeout, token),
+				() =>
+				{
+					Parallel.For(0, 100, signaler.Signal);
+					// ReSharper disable once AccessToDisposedClosure
+					cts.Cancel();
+				});
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
@@ -973,15 +954,11 @@ public sealed class SignalerTests
 			Signaler<int> signaler = new();
 			TimeSpan timeout = 10.Seconds();
 
-			for (int i = 0; i < 110; i++)
-			{
-				int value = i;
-				_ = Task.Run(() => signaler.Signal(value));
-			}
-
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult<int> result = signaler.Wait(100.Times(), x => x >= 10, timeout);
+			SignalerResult<int> result = await WhileWaiting(
+				() => signaler.Wait(100.Times(), x => x >= 10, timeout),
+				() => Parallel.For(0, 110, signaler.Signal));
 			sw.Stop();
 
 			await That(result.IsSuccess).IsTrue();
@@ -994,14 +971,17 @@ public sealed class SignalerTests
 		{
 			Signaler<int> signaler = new();
 			TimeSpan timeout = 10.Seconds();
-			using CancellationTokenSource cts = new(30.Milliseconds());
+			using CancellationTokenSource cts = new();
 			CancellationToken token = cts.Token;
 
 			signaler.Signal(50);
 
 			Stopwatch sw = new();
 			sw.Start();
-			SignalerResult result = signaler.Wait(x => x != 50, timeout, token);
+			SignalerResult result = await WhileWaiting(
+				() => signaler.Wait(x => x != 50, timeout, token),
+				// ReSharper disable once AccessToDisposedClosure
+				() => cts.Cancel());
 			sw.Stop();
 
 			await That(result.IsSuccess).IsFalse();
@@ -1013,30 +993,23 @@ public sealed class SignalerTests
 		{
 			Signaler<int> signaler = new();
 			TimeSpan timeout = 10.Seconds();
-			using ManualResetEventSlim ms = new();
-
-			_ = Task.Run(async () =>
-			{
-				for (int i = 10; i < 1000; i++)
-				{
-					// ReSharper disable once AccessToDisposedClosure
-					if (ms.IsSet)
-					{
-						break;
-					}
-
-					int value = i;
-					await Task.Delay(i.Milliseconds());
-					signaler.Signal(value);
-				}
-			});
-
 			Stopwatch sw = new();
-			sw.Start();
-			SignalerResult result = signaler.Wait(x => x > 10, timeout);
-			sw.Stop();
 
-			ms.Set();
+			SignalerResult result = await WhileWaiting(
+				() =>
+				{
+					sw.Start();
+					SignalerResult<int> waitResult = signaler.Wait(x => x > 10, timeout);
+					sw.Stop();
+					return waitResult;
+				},
+				() =>
+				{
+					Thread.Sleep(20.Milliseconds());
+					signaler.Signal(10);
+					signaler.Signal(11);
+				});
+
 			await That(result.IsSuccess).IsTrue();
 			await That(sw.Elapsed).IsLessThan(timeout)
 				.And.IsGreaterThanOrEqualTo(10.Milliseconds());
@@ -1069,17 +1042,12 @@ public sealed class SignalerTests
 			Signaler<int> signaler = new();
 			TimeSpan timeout = 10.Seconds();
 			InvalidOperationException exception = new("predicate failed");
-			_ = Task.Run(async () =>
-			{
-				await Task.Delay(50.Milliseconds());
-				signaler.Signal(1);
-			});
 
 			Stopwatch sw = new();
 			sw.Start();
 
-			void Act()
-				=> signaler.Wait(_ => throw exception, timeout);
+			async Task Act()
+				=> await WhileWaiting(() => signaler.Wait(_ => throw exception, timeout), () => signaler.Signal(1));
 
 			await That(Act).Throws<InvalidOperationException>()
 				.WithMessage("predicate failed");
@@ -1092,21 +1060,18 @@ public sealed class SignalerTests
 		public async Task Wait_WithPredicate_WhenAnotherWaitIsPending_ShouldKeepItsOwnPredicate()
 		{
 			Signaler<int> signaler = new();
-			using ManualResetEventSlim isWaiting = new();
+			SignalerResult<int>? result = null;
 			signaler.Signal(0);
-			Task<SignalerResult<int>> pendingWait = Task.Run(() => signaler.Wait(2.Times(), x =>
-			{
-				// ReSharper disable once AccessToDisposedClosure
-				isWaiting.Set();
-				return x < 10;
-			}, 5.Seconds()));
-			isWaiting.Wait(5.Seconds());
 
-			SignalerResult<int> result = signaler.Wait(x => x == 10, TimeSpan.Zero);
-			signaler.Signal(1);
-			SignalerResult<int> pendingResult = await pendingWait;
+			SignalerResult<int> pendingResult = await WhileWaiting(
+				() => signaler.Wait(2.Times(), x => x < 10, 5.Seconds()),
+				() =>
+				{
+					result = signaler.Wait(x => x == 10, TimeSpan.Zero);
+					signaler.Signal(1);
+				});
 
-			await That(result.IsSuccess).IsFalse();
+			await That(result?.IsSuccess).IsFalse();
 			await That(pendingResult.IsSuccess).IsTrue()
 				.Because("the other wait must not replace the predicate of the pending wait");
 			await That(pendingResult.Parameters).IsEqualTo([0, 1,]);
@@ -1118,17 +1083,14 @@ public sealed class SignalerTests
 			Signaler<int> signaler = new();
 			TimeSpan timeout = 10.Seconds();
 			InvalidOperationException exception = new("predicate failed");
-			_ = Task.Run(async () =>
-			{
-				await Task.Delay(50.Milliseconds());
-				signaler.Signal(1);
-			});
 
 			Stopwatch sw = new();
 			sw.Start();
 
-			void Act()
-				=> signaler.Wait(2.Times(), _ => throw exception, timeout);
+			async Task Act()
+				=> await WhileWaiting(
+					() => signaler.Wait(2.Times(), _ => throw exception, timeout),
+					() => signaler.Signal(1));
 
 			await That(Act).Throws<InvalidOperationException>()
 				.WithMessage("predicate failed");
