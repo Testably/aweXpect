@@ -299,7 +299,7 @@ public class EnumValueResult<TValue, TType>
 				stringBuilder.Append(It).Append(" had ").Append(propertyExpression).Append(' ');
 			}
 
-			stringBuilder.Append(_value?.ToString(CultureInfo.InvariantCulture) ?? ValueFormatter.NullString);
+			stringBuilder.Append(_value.GetValueOrDefault().ToString(CultureInfo.InvariantCulture));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
