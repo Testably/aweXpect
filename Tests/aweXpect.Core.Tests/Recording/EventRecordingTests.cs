@@ -293,18 +293,18 @@ public sealed class EventRecordingTests
 		CustomEventClass sut = new();
 		IEventRecording<CustomEventClass> recording = sut.Record().Events();
 		sut.NotifyCustomEvent(1);
-		Func<int, bool> takesAWhile = TakesAWhileWhenFirstCalled(TimeSpan.FromMilliseconds(200));
+		Func<int, bool> takesAWhile = TakesAWhileWhenFirstCalled(TimeSpan.FromMilliseconds(900));
 
 		async Task Act()
 			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).WithParameter(takesAWhile)
 				.And.DidNotTrigger(nameof(CustomEventClass.CustomEvent)).WithParameter<int>(p => p == 2)
-				.Within(TimeSpan.FromMilliseconds(300))
-				.WithTimeout(TimeSpan.FromMilliseconds(300));
+				.Within(TimeSpan.FromSeconds(1))
+				.WithTimeout(TimeSpan.FromSeconds(1));
 
 		await That(Act).Throws<FailException>()
-			.WithMessage("*but it did not finish within 0:00.300").AsWildcard().And
-			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:00.300."))
-			.Because("the second constraint only watched for the rest of the timeout instead of its own 300 ms");
+			.WithMessage("*but it did not finish within 0:01").AsWildcard().And
+			.WithInner<TimeoutException>(inner => inner.HasMessage("The operation did not finish within 0:01."))
+			.Because("the second constraint only watched for the rest of the timeout instead of its own second, which a delay of up to 900 ms on a busy machine does not hide");
 	}
 
 	[Test]
