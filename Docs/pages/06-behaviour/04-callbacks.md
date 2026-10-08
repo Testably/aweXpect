@@ -62,6 +62,7 @@ using aweXpect.Core; // for `Times()`
 await Expect.That(signaler).Signaled().AtLeast(3.Times());
 await Expect.That(signaler).Signaled().Exactly(3.Times());
 await Expect.That(signaler).Signaled().AtMost(3.Times());
+await Expect.That(signaler).Signaled().MoreThan(2.Times());
 await Expect.That(signaler).Signaled().LessThan(3.Times());
 await Expect.That(signaler).Signaled().Between(2).And(4.Times());
 await Expect.That(signaler).Signaled().Once();

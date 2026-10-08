@@ -86,8 +86,9 @@ player.Play("Yesterday");
 await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Twice();
 ```
 
-Disposing detaches the handlers, so an event that is triggered afterwards is not recorded any more and an
-expectation on the disposed recording throws as well.
+Call `.UntilDisposed()` before the first expectation: on a recording that an expectation already stopped, it throws an
+`InvalidOperationException`. Disposing detaches the handlers, so an event that is triggered afterwards is not recorded
+any more and an expectation on the disposed recording throws as well.
 
 ## Triggering
 
@@ -135,7 +136,17 @@ await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).Between(1).A
 
 The same occurrence constraints as for [`Contains`](../05-collections/01-equality.md#contained-items) are available:
 `AtLeast(2.Times())`, `AtMost(3.Times())`, `Between(1).And(4.Times())`, `Exactly(0.Times())`, `MoreThan(1.Times())`,
-`LessThan(3.Times())`, `Once()`, `Twice()` and `Never()`.
+`LessThan(3.Times())`, `Once()`, `Twice()` and `Never()`. `AtLeast`, `AtMost`, `MoreThan` and `LessThan` can also be
+followed by `Once()` or `Twice()`, as in `AtLeast().Once()`, `AtMost().Twice()`, `MoreThan().Once()` and
+`LessThan().Twice()`:
+
+```csharp
+IEventRecording<Player> recording = player.Record().Events();
+
+player.Play("Let It Be");
+
+await Expect.That(recording).Triggered(nameof(Player.TrackStarted)).AtMost().Twice();
+```
 
 ## Filtering
 

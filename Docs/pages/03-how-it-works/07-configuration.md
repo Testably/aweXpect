@@ -94,6 +94,9 @@ stopped enumerating early. For a multi-dimensional array the maximum applies to 
 
 The maximum number of collection items must be positive, and the other two values must not be negative.
 
+To format your own types, register an `IValueFormatter` with `ValueFormatter.Register(…)`, which returns an
+`IDisposable` that removes it again, see [initialization](../11-extending/08-initialization.md).
+
 ## Reflection
 
 <details>
@@ -138,6 +141,29 @@ without a limit. See [waiting](./06-time-and-cancellation.md#waiting) for which 
 On Windows the `DateTime` resolution is [about 10 to 15 milliseconds](https://stackoverflow.com/q/3140826/4003370), so
 a `DefaultTimeComparisonTolerance` of about 15 ms avoids brittle comparisons of timestamps.
 :::
+
+## Tracing
+
+`Customize.aweXpect.EnableTracing(traceWriter)` writes which subjects are checked, which expectations were met and
+which exceptions were thrown to an `ITraceWriter`. Like any other value, it returns a lifetime that disables the trace
+writer again, and on `Customize.aweXpect.Global` it applies to all async flows:
+
+```csharp
+using aweXpect.Customization;
+
+using (Customize.aweXpect.EnableTracing(new ConsoleTraceWriter()))
+{
+    await Expect.That(42).IsGreaterThan(40);
+}
+
+Customize.aweXpect.Global.EnableTracing(new ConsoleTraceWriter());
+
+class ConsoleTraceWriter : ITraceWriter
+{
+    public void WriteMessage(string message) => Console.WriteLine(message);
+    public void WriteException(Exception exception) => Console.WriteLine(exception);
+}
+```
 
 ## Extensions
 

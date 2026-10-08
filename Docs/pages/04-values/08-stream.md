@@ -20,15 +20,18 @@ Describes the possible expectations for `Stream` and `BufferedStream`.
 You can verify what the `Stream` supports, or that it does not support it:
 
 ```csharp
-Stream playlist = new MemoryStream();
+using Stream playlist = new MemoryStream();
 
 await Expect.That(playlist).IsReadable();
 await Expect.That(playlist).IsSeekable();
 await Expect.That(playlist).IsWritable();
 await Expect.That(playlist).IsNotReadOnly();
-await Expect.That(File.Open("album.txt", FileMode.OpenOrCreate, FileAccess.Read)).IsReadOnly()
+
+using FileStream album = File.Open("album.txt", FileMode.OpenOrCreate, FileAccess.Read);
+await Expect.That(album).IsReadOnly()
   .Because("the file was opened with Read access");
-await Expect.That(File.Open("album.log", FileMode.OpenOrCreate, FileAccess.Write)).IsWriteOnly()
+using FileStream log = File.Open("album.log", FileMode.OpenOrCreate, FileAccess.Write);
+await Expect.That(log).IsWriteOnly()
   .Because("the file was opened with Write access");
 ```
 
@@ -37,7 +40,7 @@ await Expect.That(File.Open("album.log", FileMode.OpenOrCreate, FileAccess.Write
 You can verify the length of the `Stream`:
 
 ```csharp
-Stream playlist = new MemoryStream("foo"u8.ToArray());
+using Stream playlist = new MemoryStream("foo"u8.ToArray());
 
 await Expect.That(playlist).HasLength(3);
 await Expect.That(playlist).HasLength().Between(2).And(4);
@@ -48,7 +51,7 @@ await Expect.That(playlist).HasLength().Between(2).And(4);
 You can verify the position of the `Stream`:
 
 ```csharp
-Stream playlist = new MemoryStream("foo"u8.ToArray());
+using Stream playlist = new MemoryStream("foo"u8.ToArray());
 playlist.Seek(2, SeekOrigin.Current);
 
 await Expect.That(playlist).HasPosition(2);
@@ -64,7 +67,7 @@ The buffer size expectations are only available on .NET 8 or later.
 You can verify the buffer size of the `BufferedStream`:
 
 ```csharp
-BufferedStream playlist = new(new MemoryStream("foo"u8.ToArray()), 2);
+using BufferedStream playlist = new(new MemoryStream("foo"u8.ToArray()), 2);
 
 await Expect.That(playlist).HasBufferSize(2);
 await Expect.That(playlist).HasBufferSize().NotEqualTo(3);

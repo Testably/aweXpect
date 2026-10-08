@@ -17,9 +17,6 @@ Describes the possible expectations for numbers.
 | [`IsFinite`](#nan-and-infinity)                      | `IsNotFinite`               | neither infinite nor `NaN` (floating point numbers only)    |
 | [`IsInfinite`](#nan-and-infinity)                    | `IsNotInfinite`             | positive or negative infinity (floating point numbers only) |
 
-A `null` subject, e.g. an `int?`, fails every expectation on this page except equality and one of, as the
-[rule for `null` subjects](../03-how-it-works/04-null-subjects.md) says, so even `IsNotPositive()` fails for it.
-
 :::note[.NET 8 or later]
 Below .NET 8 these expectations only accept `byte`, `sbyte`, `short`, `ushort`, `int`, `uint`, `long`, `ulong`,
 `float`, `double` and `decimal`, and [`IsPositive` and `IsNegative`](#positive--negative) only the signed ones of them.

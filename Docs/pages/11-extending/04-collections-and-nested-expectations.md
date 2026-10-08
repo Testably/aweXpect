@@ -136,6 +136,24 @@ public static AndOrResult<Track, IThat<Track?>> HasTitle(
 - An exception that the member selector throws fails the nested expectations with "… did throw …".
 - `ForAsyncMember` does the same for a member that has to be awaited.
 
+A result that continues with a new subject after the expectation, like `HasSingle().Which`, uses `ForWhich` instead.
+It selects the new subject from the value of the expectation, and the expectations that the caller adds to the
+returned `ThatSubject<T>` apply to it:
+
+```csharp
+public class LongestTrackResult(ExpectationBuilder expectationBuilder, IThat<Track[]?> returnValue)
+    : AndOrResult<Track[], IThat<Track[]?>>(expectationBuilder, returnValue)
+{
+    public IThat<Track?> Which
+        => new ThatSubject<Track?>(ExpectationBuilder.ForWhich<Track[], Track?>(
+            tracks => tracks.OrderByDescending(track => track.Duration).FirstOrDefault(),
+            " whose longest track ", "longest track"));
+}
+```
+
+The second argument of `ForWhich` writes the text in front of the expectations on the new subject, and the third one
+replaces `it` in their result texts. Unlike `ForMember`, the expectations are added later by the caller, after `Which`.
+
 ## Expectations on collection items
 
 An expectation on the items of a collection, i.e. an extension method on `IEnumerableElements<TItem>`, which

@@ -37,6 +37,11 @@ durations of every evaluation of that expectation then elapse on that clock. A c
 repeats its checks with `RepeatedCheckOptions.CheckRepeatedly(…)` and measures with `GetTimestamp()` and
 `GetElapsedTime(…)` of its `IEvaluationContext`, but not when it waits with `Task.Delay(…)` itself.
 
+aweXpect ships no virtual clock, so you write your own. It implements `GetTimestamp()` and `GetElapsedTime(…)` on the
+virtual time, advances that time in `Delay(…)` instead of waiting, and schedules the `CancelAfter(…)` of a timeout on
+the virtual time as well. A wait that such a timeout cuts short must end by its cancellation, not complete, and a wait
+of `Timeout.InfiniteTimeSpan` only ends by a cancellation.
+
 ## Packaging
 
 - Reference the [`aweXpect.Core`](https://www.nuget.org/packages/aweXpect.Core) package in your extension, not

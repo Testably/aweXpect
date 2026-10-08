@@ -72,6 +72,9 @@ await Expect.That(album)
   .Whose(x => x.LoadTitleAsync(), x => x.IsEqualTo("Dark Side of the Moon"));
 ```
 
+After a type check with `Is<T>()` or `IsExactly<T>()`, `Whose(…)` verifies a member of the cast value, and
+`AndWhose(…)` adds further members, e.g. `Expect.That(subject).Is<Album>().Whose(x => x.Title, …).AndWhose(…)`.
+
 ## On a new subject
 
 `Which` continues with a new subject, e.g. the single item of a collection or the thrown exception:

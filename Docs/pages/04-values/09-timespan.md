@@ -14,9 +14,6 @@ Describes the possible expectations for `TimeSpan`.
 | [`IsPositive`](#positive--negative)                  | `IsNotPositive`             | greater than zero                            |
 | [`IsNegative`](#positive--negative)                  | `IsNotNegative`             | less than zero                               |
 
-A `null` subject, e.g. a `TimeSpan?`, fails every expectation on this page except equality and one of, as the
-[rule for `null` subjects](../03-how-it-works/04-null-subjects.md) says, so even `IsNotNegative()` fails for it.
-
 ## Equality
 
 You can verify that the `TimeSpan` is equal to another one or not:

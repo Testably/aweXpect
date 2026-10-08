@@ -230,6 +230,9 @@ await Expect.That(Act).Throws().WithoutInner();
 await Expect.That(Act).Throws().WithoutInner<ArgumentException>();
 ```
 
+`WithInner`, `WithInner(…, expectations)` and `WithoutInner` also take a `Type` instead of a type argument, e.g.
+`WithInner(typeof(CustomException))`.
+
 ### Recursive inner exceptions
 
 You can recursively verify the collection of inner exceptions of the thrown exception with the

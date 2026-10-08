@@ -18,9 +18,7 @@ Describes the possible expectations for `Version`.
 | [`HasBuild`](#components)                            | negated comparison          | has the expected build component              |
 | [`HasRevision`](#components)                         | negated comparison          | has the expected revision component           |
 
-A `null` subject fails every expectation on this page except equality and one of, as the
-[rule for `null` subjects](../03-how-it-works/04-null-subjects.md) says. Reference equality and `null` checks come
-from the [object expectations](./12-object.md).
+Reference equality and `null` checks come from the [object expectations](./12-object.md).
 
 ## Equality
 

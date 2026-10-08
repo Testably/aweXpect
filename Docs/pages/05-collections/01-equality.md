@@ -70,7 +70,13 @@ await Expect.That(values).Contains(1).Exactly(3.Times());
 await Expect.That(values).Contains(1).AtMost(4.Times());
 await Expect.That(values).Contains(1).LessThan(5.Times());
 await Expect.That(values).Contains(1).Between(1).And(5.Times());
+await Expect.That(values).Contains(2).Once();
+await Expect.That(values).Contains(1).AtLeast().Twice();
+await Expect.That(values).Contains(5).Never();
 ```
+
+Only one count can be given, so write `Between(2).And(5.Times())` instead of `AtLeast(2.Times()).AtMost(5.Times())`,
+which throws.
 
 ### Predicate
 

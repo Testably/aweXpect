@@ -78,6 +78,10 @@ With the fallback forced on, a trimmed application reflects over whatever the tr
 type whose members were all removed still fails with an error that asks you to root it, but a type that lost only
 some of them is compared through the rest.
 
+Set the property to `false` to switch the fallback off in a project that is not published with trimming or Native AOT.
+A normal `dotnet test` run then fails with the same errors as a trimmed one, so you find the types to register without
+publishing.
+
 </details>
 
 ## Events

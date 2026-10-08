@@ -12,10 +12,6 @@ Describes the possible expectations for `enum` values.
 | [`IsDefined`](#defined)  | `IsNotDefined`     | a named member or combination of flags    |
 | [`HasFlag`](#flags)      | `DoesNotHaveFlag`  | has the expected flag set                 |
 
-A `null` subject, i.e. a nullable `enum`, fails every expectation on this page except equality and one of, as the
-[rule for `null` subjects](../03-how-it-works/04-null-subjects.md) says, so even `IsNotDefined()` and
-`DoesNotHaveFlag(…)` fail for it.
-
 The samples on this page use the following `enum`:
 
 ```csharp

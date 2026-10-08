@@ -118,11 +118,6 @@ same match types are available for `IsNotEqualTo`, `IsOneOf` and `IsNotOneOf`. `
 within the subject, so they take a pattern, but no prefix or suffix: use [`StartsWith` or `EndsWith`](#start--end)
 for that.
 
-:::note[A `null` subject has no content to match]
-Every match type except the plain comparison asks about the content of the subject, so it fails for a `null` subject in
-both directions, exactly like `StartsWith` and `DoesNotStartWith` do.
-:::
-
 ### Wildcards
 
 ```csharp
@@ -182,7 +177,7 @@ await Expect.That(title).IsEqualTo("Road").AsSuffix();
 - Matching a pattern is limited to one second. A pattern that takes longer, e.g. because of catastrophic backtracking,
   throws an `ArgumentException` that asks you to simplify the pattern.
 
-A pattern is validated whichever subject it is matched against, also for a `null` subject, and so is every expected
+A pattern is validated whichever subject it is matched against, and so is every expected
 string item of a [collection expectation](../05-collections/index.md) or of `IsOneOf`. Only a lazily evaluated sequence
 of expected items is validated as far as it is enumerated.
 
@@ -324,6 +319,10 @@ await Expect.That(lyrics).Contains("get").LessThan(5)
   .Because("count should be '< 5'");
 await Expect.That(lyrics).Contains("get").Between(1).And(6)
   .Because("count should be '>= 1 AND <= 6'");
+
+await Expect.That(lyrics).Contains("help").Never();
+await Expect.That(lyrics).Contains("where").Once();
+await Expect.That(lyrics).Contains("back").AtLeast().Twice();
 ```
 
 ### Blocks
@@ -421,8 +420,7 @@ await Expect.That("1,5").IsParsableInto<double>(new CultureInfo("de-DE"))
 await Expect.That("Abbey Road").IsNotParsableInto<int>();
 ```
 
-A failure shows the exception thrown by `Parse` and keeps it as inner exception. A `null` subject fails both
-expectations.
+A failure shows the exception thrown by `Parse` and keeps it as inner exception.
 
 The same expectations are available for a `ReadOnlySpan<char>` of a type that implements `ISpanParsable<T>` and for a
 UTF-8 `ReadOnlySpan<byte>` of a type that implements `IUtf8SpanParsable<T>`:

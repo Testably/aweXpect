@@ -87,14 +87,6 @@ await Expect.That(trackId).IsEquatableTo(42L);
 await Expect.That(trackId).IsNotEquatableTo(7L);
 ```
 
-<details>
-<summary>A `null` subject</summary>
-
-This inspects the subject by calling its `IEquatable<T>.Equals(T)` method. Therefore, `IsEquatableTo` and
-`IsNotEquatableTo` fail for a `null` subject, even `IsEquatableTo(null)`, whereas `IsEqualTo(null)` succeeds.
-
-</details>
-
 ## Equivalency
 
 You can verify that the `object` is structurally equivalent to another one. See the

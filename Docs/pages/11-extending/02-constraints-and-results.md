@@ -38,6 +38,18 @@ cancellation of the evaluation: the `Token` (the same token that an asynchronous
 
 </details>
 
+The factory passed to `AddConstraint` usually captures the arguments of the expectation, which allocates a closure and a
+delegate for every expectation. To avoid that, pass the arguments as state to a `static` lambda:
+
+```csharp
+public static AndOrResult<Track, IThat<Track?>> IsShorterThan(this IThat<Track?> subject, TimeSpan maximum)
+    => new(subject.Get().ExpectationBuilder.AddConstraint(maximum,
+            static (max, it, grammars) => new IsShorterThanConstraint(it, grammars, max)),
+        subject);
+```
+
+For several arguments, pass a tuple as the state.
+
 ## Results
 
 All constraints should also provide the expectations and results for the negated case, so that they are compatible
@@ -257,7 +269,9 @@ Outcome = UserCode.Invoke(predicate, actual, "the predicate") ? Outcome.Success 
 ```
 
 The optional last argument names the code in the failure message, e.g. "the predicate did throw an
-InvalidOperationException"; without it, the subject is named ("it did throw …").
+InvalidOperationException"; without it, the subject is named ("it did throw …"). For an asynchronous predicate, use
+`UserCode.InvokeAsync(() => predicate(actual), "the predicate", cancellationToken)`, which throws an
+`OperationCanceledException` unchanged while the `cancellationToken` is canceled.
 
 An exception that your constraint throws itself, e.g. to reject an invalid argument, is still thrown as it is.
 
