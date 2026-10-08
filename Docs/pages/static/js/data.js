@@ -4494,6 +4494,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
         "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
+      },
+      {
+        "sha": "8e2da4f371eda53d393d9e80ba7a07a78b9b2905",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 19:01:52 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.19 (#1753)"
       }
     ],
     "labels": [
@@ -5245,7 +5251,8 @@ window.BENCHMARK_DATA = {
       "8b666ac8",
       "8c8f6bf6",
       "6242c56e",
-      "f7a0873f"
+      "f7a0873f",
+      "8e2da4f3"
     ],
     "datasets": [
       {
@@ -6000,7 +6007,8 @@ window.BENCHMARK_DATA = {
           142.5312343120575,
           66.75765786965688,
           74.12769539867129,
-          146.75949765841168
+          146.75949765841168,
+          132.10950322151183
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6760,7 +6768,8 @@ window.BENCHMARK_DATA = {
           416,
           416,
           416,
-          416
+          416,
+          424
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -7523,7 +7532,8 @@ window.BENCHMARK_DATA = {
           286.66005220413206,
           131.682856909434,
           141.12862652142843,
-          242.14818153381347
+          242.14818153381347,
+          251.96920748551688
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8283,6 +8293,7 @@ window.BENCHMARK_DATA = {
           952,
           952,
           952,
+          952,
           952
         ],
         "borderColor": "#FF671B",
@@ -8327,7 +8338,8 @@ window.BENCHMARK_DATA = {
           187.5289684931437,
           100.52407849629721,
           112.69337538083394,
-          205.66276689676138
+          205.66276689676138,
+          219.58528105417886
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8339,6 +8351,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -12414,6 +12427,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
         "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
+      },
+      {
+        "sha": "8e2da4f371eda53d393d9e80ba7a07a78b9b2905",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 19:01:52 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.19 (#1753)"
       }
     ],
     "labels": [
@@ -13088,7 +13107,8 @@ window.BENCHMARK_DATA = {
       "8b666ac8",
       "8c8f6bf6",
       "6242c56e",
-      "f7a0873f"
+      "f7a0873f",
+      "8e2da4f3"
     ],
     "datasets": [
       {
@@ -13766,7 +13786,8 @@ window.BENCHMARK_DATA = {
           99458.83720179966,
           55259.80214029948,
           58705.350740559894,
-          108477.57999965122
+          108477.57999965122,
+          113531.24499511719
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14449,7 +14470,8 @@ window.BENCHMARK_DATA = {
           16416,
           16416,
           16416,
-          16416
+          16416,
+          16424
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -15135,7 +15157,8 @@ window.BENCHMARK_DATA = {
           2462741.6844308036,
           1234153.1097935268,
           1363514.279017857,
-          2564532.4854166666
+          2564532.4854166666,
+          2715087.763541667
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15818,6 +15841,7 @@ window.BENCHMARK_DATA = {
           4841635,
           4841647,
           4841647,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -15862,7 +15886,8 @@ window.BENCHMARK_DATA = {
           221148.44552408854,
           114144.15212777945,
           108015.99091448102,
-          196925.21308244977
+          196925.21308244977,
+          204707.30669696516
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -15874,6 +15899,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -20411,6 +20437,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
         "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
+      },
+      {
+        "sha": "8e2da4f371eda53d393d9e80ba7a07a78b9b2905",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 19:01:52 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.19 (#1753)"
       }
     ],
     "labels": [
@@ -21162,7 +21194,8 @@ window.BENCHMARK_DATA = {
       "8b666ac8",
       "8c8f6bf6",
       "6242c56e",
-      "f7a0873f"
+      "f7a0873f",
+      "8e2da4f3"
     ],
     "datasets": [
       {
@@ -21917,7 +21950,8 @@ window.BENCHMARK_DATA = {
           296.6919680595398,
           144.58837137903487,
           142.61073668797812,
-          277.34809029897053
+          277.34809029897053,
+          291.34572515487673
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22677,7 +22711,8 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
-          608
+          608,
+          616
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -23440,7 +23475,8 @@ window.BENCHMARK_DATA = {
           527.0430596033732,
           253.80921166283744,
           258.0497901916504,
-          482.11510617392406
+          482.11510617392406,
+          516.6305457433065
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24200,6 +24236,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          2008,
           2008
         ],
         "borderColor": "#FF671B",
@@ -24244,7 +24281,8 @@ window.BENCHMARK_DATA = {
           412.7722493921007,
           198.73236986306998,
           205.20201851526897,
-          381.9092403479985
+          381.9092403479985,
+          428.1863659540812
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -24256,6 +24294,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -28793,6 +28832,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
         "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
+      },
+      {
+        "sha": "8e2da4f371eda53d393d9e80ba7a07a78b9b2905",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 19:01:52 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.19 (#1753)"
       }
     ],
     "labels": [
@@ -29544,7 +29589,8 @@ window.BENCHMARK_DATA = {
       "8b666ac8",
       "8c8f6bf6",
       "6242c56e",
-      "f7a0873f"
+      "f7a0873f",
+      "8e2da4f3"
     ],
     "datasets": [
       {
@@ -30299,7 +30345,8 @@ window.BENCHMARK_DATA = {
           161.0230097611745,
           78.44054555098215,
           76.55528612647738,
-          142.71374247755324
+          142.71374247755324,
+          151.40262173016865
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31059,7 +31106,8 @@ window.BENCHMARK_DATA = {
           520,
           520,
           520,
-          520
+          520,
+          528
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31822,7 +31870,8 @@ window.BENCHMARK_DATA = {
           298.95889972050986,
           130.74108481407166,
           128.2575772660119,
-          245.96520824432372
+          245.96520824432372,
+          261.30135504404706
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32582,6 +32631,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1224,
           1224
         ],
         "borderColor": "#FF671B",
@@ -32626,7 +32676,8 @@ window.BENCHMARK_DATA = {
           232.68214756647745,
           126.82758138974508,
           124.99726145267486,
-          244.97244342168173
+          244.97244342168173,
+          256.1360109329224
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32638,6 +32689,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -37175,6 +37227,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
         "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
+      },
+      {
+        "sha": "8e2da4f371eda53d393d9e80ba7a07a78b9b2905",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 19:01:52 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.19 (#1753)"
       }
     ],
     "labels": [
@@ -37926,7 +37984,8 @@ window.BENCHMARK_DATA = {
       "8b666ac8",
       "8c8f6bf6",
       "6242c56e",
-      "f7a0873f"
+      "f7a0873f",
+      "8e2da4f3"
     ],
     "datasets": [
       {
@@ -38681,7 +38740,8 @@ window.BENCHMARK_DATA = {
           265.82992026011146,
           148.04138511021932,
           133.482617410024,
-          248.38298716911902
+          248.38298716911902,
+          259.4900750796
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39441,7 +39501,8 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
-          584
+          584,
+          592
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -40204,7 +40265,8 @@ window.BENCHMARK_DATA = {
           1359.4507607777914,
           665.8258253097534,
           650.9954760869344,
-          1196.9269983927409
+          1196.9269983927409,
+          1316.8511539459228
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40964,6 +41026,7 @@ window.BENCHMARK_DATA = {
           3944,
           3944,
           3944,
+          3944,
           3944
         ],
         "borderColor": "#FF671B",
@@ -41008,7 +41071,8 @@ window.BENCHMARK_DATA = {
           341.1593878746033,
           180.53519562574533,
           183.08535652160646,
-          325.31968371073407
+          325.31968371073407,
+          330.76471274239674
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -41020,6 +41084,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -45557,6 +45622,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
         "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
+      },
+      {
+        "sha": "8e2da4f371eda53d393d9e80ba7a07a78b9b2905",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 19:01:52 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.19 (#1753)"
       }
     ],
     "labels": [
@@ -46308,7 +46379,8 @@ window.BENCHMARK_DATA = {
       "8b666ac8",
       "8c8f6bf6",
       "6242c56e",
-      "f7a0873f"
+      "f7a0873f",
+      "8e2da4f3"
     ],
     "datasets": [
       {
@@ -47063,7 +47135,8 @@ window.BENCHMARK_DATA = {
           638.4499005590167,
           348.4767696380615,
           337.06756407873974,
-          641.2353713853018
+          641.2353713853018,
+          636.2342558542888
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47823,7 +47896,8 @@ window.BENCHMARK_DATA = {
           872,
           872,
           872,
-          872
+          872,
+          880
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -48586,7 +48660,8 @@ window.BENCHMARK_DATA = {
           1432.9326642354329,
           678.3175195966448,
           725.0460067431133,
-          1429.9953777313233
+          1429.9953777313233,
+          1378.3177547454834
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49346,6 +49421,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -49390,7 +49466,8 @@ window.BENCHMARK_DATA = {
           742.2957029342651,
           334.13146339144026,
           331.785920826594,
-          629.0753513336182
+          629.0753513336182,
+          653.5006825129191
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -49402,6 +49479,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -53939,6 +54017,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
         "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
+      },
+      {
+        "sha": "8e2da4f371eda53d393d9e80ba7a07a78b9b2905",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 19:01:52 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.19 (#1753)"
       }
     ],
     "labels": [
@@ -54690,7 +54774,8 @@ window.BENCHMARK_DATA = {
       "8b666ac8",
       "8c8f6bf6",
       "6242c56e",
-      "f7a0873f"
+      "f7a0873f",
+      "8e2da4f3"
     ],
     "datasets": [
       {
@@ -55445,7 +55530,8 @@ window.BENCHMARK_DATA = {
           1065.7342980248588,
           547.7202320098877,
           515.1199394634792,
-          1046.7737821851458
+          1046.7737821851458,
+          1051.0342363993327
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56205,7 +56291,8 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
-          1280
+          1280,
+          1288
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56968,7 +57055,8 @@ window.BENCHMARK_DATA = {
           24206.77577311198,
           10362.304801354041,
           10069.346013750348,
-          27037.291407658504
+          27037.291407658504,
+          27659.082942708334
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57728,6 +57816,7 @@ window.BENCHMARK_DATA = {
           33468,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -57772,7 +57861,8 @@ window.BENCHMARK_DATA = {
           902.8659006265493,
           404.62155400003707,
           406.55301560674394,
-          771.6197384425571
+          771.6197384425571,
+          811.5114925384521
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -57784,6 +57874,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -58091,6 +58182,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
         "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
+      },
+      {
+        "sha": "8e2da4f371eda53d393d9e80ba7a07a78b9b2905",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 19:01:52 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.19 (#1753)"
       }
     ],
     "labels": [
@@ -58137,7 +58234,8 @@ window.BENCHMARK_DATA = {
       "8b666ac8",
       "8c8f6bf6",
       "6242c56e",
-      "f7a0873f"
+      "f7a0873f",
+      "8e2da4f3"
     ],
     "datasets": [
       {
@@ -58187,7 +58285,8 @@ window.BENCHMARK_DATA = {
           737.9813050490159,
           363.8018371141874,
           372.7434025491987,
-          717.8476252555847
+          717.8476252555847,
+          720.1078741709391
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58242,7 +58341,8 @@ window.BENCHMARK_DATA = {
           1816,
           1816,
           1816,
-          1816
+          1816,
+          1824
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58300,7 +58400,8 @@ window.BENCHMARK_DATA = {
           62886.03064778646,
           28914.269256591797,
           28976.523685709635,
-          82400.20458170572
+          82400.20458170572,
+          83982.37623697917
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58355,6 +58456,7 @@ window.BENCHMARK_DATA = {
           5254,
           5256,
           5256,
+          5252,
           5252
         ],
         "borderColor": "#FF671B",
@@ -58633,6 +58735,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
         "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
+      },
+      {
+        "sha": "8e2da4f371eda53d393d9e80ba7a07a78b9b2905",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 19:01:52 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.19 (#1753)"
       }
     ],
     "labels": [
@@ -58679,7 +58787,8 @@ window.BENCHMARK_DATA = {
       "8b666ac8",
       "8c8f6bf6",
       "6242c56e",
-      "f7a0873f"
+      "f7a0873f",
+      "8e2da4f3"
     ],
     "datasets": [
       {
@@ -58729,7 +58838,8 @@ window.BENCHMARK_DATA = {
           259.0540941874186,
           125.38672533035279,
           125.47152725287846,
-          243.43688027064005
+          243.43688027064005,
+          266.39192117055256
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58784,7 +58894,8 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
-          664
+          664,
+          672
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58842,7 +58953,8 @@ window.BENCHMARK_DATA = {
           24303.289461263023,
           10047.785783894857,
           9949.456902640206,
-          30220.73620402018
+          30220.73620402018,
+          32154.62091878255
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58897,6 +59009,7 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5615,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -58941,7 +59054,8 @@ window.BENCHMARK_DATA = {
           245.19413394927977,
           131.45483563496515,
           124.23931743303935,
-          246.91170746485392
+          246.91170746485392,
+          243.68746512730917
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -58953,6 +59067,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
