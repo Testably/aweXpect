@@ -84,7 +84,7 @@ public static partial class ThatTypes
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, type => type.IsImmutable());
 #endif
@@ -98,7 +98,7 @@ public static partial class ThatTypes
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained mutable types ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -107,7 +107,7 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained immutable types ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 	}
 
@@ -119,7 +119,7 @@ public static partial class ThatTypes
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, type => !type.IsImmutable());
 #endif
@@ -133,7 +133,7 @@ public static partial class ThatTypes
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained immutable types ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -142,7 +142,7 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained mutable types ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 	}
 }

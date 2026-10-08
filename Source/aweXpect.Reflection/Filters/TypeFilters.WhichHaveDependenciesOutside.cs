@@ -18,7 +18,7 @@ public static partial class TypeFilters
 	/// </summary>
 	/// <remarks>
 	///     Dependencies on types whose assembly name matches one of the
-	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> at a
+	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
 	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
 	///     <c>SystemsBiology.Core</c>) are ignored, so that framework dependencies never count as outside the
 	///     allowed set. The default prefixes include <c>Microsoft</c>, so e.g. a dependency on
@@ -47,7 +47,7 @@ public static partial class TypeFilters
 	///     <see cref="Filtered.Types.TypeSetDependencyOutsideFilterResult.ExcludingOwnSubNamespaces" /> is used.
 	///     <para />
 	///     Dependencies on types whose assembly name matches one of the
-	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> at a
+	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
 	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
 	///     <c>SystemsBiology.Core</c>) are ignored, so that framework dependencies never count as outside the
 	///     allowed set. The default prefixes include <c>Microsoft</c>, so e.g. a dependency on

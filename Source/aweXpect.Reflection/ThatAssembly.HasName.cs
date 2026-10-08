@@ -35,7 +35,7 @@ public static partial class ThatAssembly
 		: ConstraintResult.WithNotNullValue<Assembly?>(it, grammars),
 			IAsyncConstraint<Assembly?>
 	{
-		public async Task<ConstraintResult> IsMetBy(Assembly? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(Assembly? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			Outcome = await options.AreConsideredEqual(actual?.GetName().Name, expected) ? Outcome.Success : Outcome.Failure;

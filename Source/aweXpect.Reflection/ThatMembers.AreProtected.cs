@@ -72,7 +72,7 @@ public static partial class ThatMembers
 		where TMember : MemberInfo?
 	{
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, member => member.HasAccessModifier(AccessModifiers.Protected));
 #endif
@@ -86,7 +86,7 @@ public static partial class ThatMembers
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained not matching items ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -107,7 +107,7 @@ public static partial class ThatMembers
 		where TMember : MemberInfo?
 	{
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, member => !member.HasAccessModifier(AccessModifiers.Protected));
 #endif
@@ -121,7 +121,7 @@ public static partial class ThatMembers
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained protected items ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

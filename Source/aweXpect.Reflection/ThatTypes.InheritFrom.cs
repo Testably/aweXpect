@@ -232,7 +232,7 @@ public static partial class ThatTypes
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, type => type?.InheritsFromClass(baseType, forceDirect) == true);
 #endif
 
@@ -253,7 +253,7 @@ public static partial class ThatTypes
 			Formatter.Format(stringBuilder, baseType);
 
 			stringBuilder.Append(' ');
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -269,7 +269,7 @@ public static partial class ThatTypes
 			AppendDirectlyFrom(stringBuilder, forceDirect);
 			Formatter.Format(stringBuilder, baseType);
 			stringBuilder.Append(' ');
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		private static void AppendDirectlyFrom(StringBuilder stringBuilder, bool forceDirect)
@@ -295,7 +295,7 @@ public static partial class ThatTypes
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, type => type?.InheritsFromClass(baseType, forceDirect) != true);
 #endif
 
@@ -316,7 +316,7 @@ public static partial class ThatTypes
 			Formatter.Format(stringBuilder, baseType);
 
 			stringBuilder.Append(' ');
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -333,7 +333,7 @@ public static partial class ThatTypes
 			Formatter.Format(stringBuilder, baseType);
 
 			stringBuilder.Append(' ');
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		private static void AppendDirectlyFrom(StringBuilder stringBuilder, bool forceDirect)

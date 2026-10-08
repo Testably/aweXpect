@@ -79,7 +79,7 @@ public static partial class ThatTypes
 		}
 
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, OnlyHasNullableMembers);
 #endif
@@ -101,7 +101,7 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained types with only nullable members ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 	}
 }

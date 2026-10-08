@@ -108,7 +108,7 @@ public static partial class ThatMethods
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo> actual,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, method => typeFilterOptions.Matches(method.ReturnType));
 #endif
@@ -125,7 +125,7 @@ public static partial class ThatMethods
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained not matching methods ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -137,7 +137,7 @@ public static partial class ThatMethods
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained matching methods ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 	}
 }

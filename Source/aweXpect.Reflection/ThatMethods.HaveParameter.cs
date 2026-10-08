@@ -267,7 +267,7 @@ public static partial class ThatMethods
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, async method =>
 			{
@@ -290,7 +290,7 @@ public static partial class ThatMethods
 			});
 #endif
 
-		public async Task<ConstraintResult> IsMetBy(IEnumerable<MethodInfo?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<MethodInfo?> actual,
 			CancellationToken cancellationToken)
 			=> await SetValue(actual, async method =>
 			{

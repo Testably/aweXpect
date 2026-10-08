@@ -51,8 +51,8 @@ public static partial class ThatType
 		bool forceDirect = false)
 	{
 		baseType.EnsureIsClass();
-		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
-				=> new InheritsFromConstraint(expectationBuilder, it, grammars, baseType, forceDirect)),
+		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new InheritsFromConstraint(it, grammars, baseType, forceDirect)),
 			subject);
 	}
 
@@ -96,13 +96,12 @@ public static partial class ThatType
 		bool forceDirect = false)
 	{
 		baseType.EnsureIsClass();
-		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
-				=> new InheritsFromConstraint(expectationBuilder, it, grammars, baseType, forceDirect).Invert()),
+		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new InheritsFromConstraint(it, grammars, baseType, forceDirect).Invert()),
 			subject);
 	}
 
 	private sealed class InheritsFromConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		Type baseType,
@@ -114,12 +113,15 @@ public static partial class ThatType
 		{
 			Actual = actual;
 			Outcome = actual?.InheritsFromClass(baseType, forceDirect) == true ? Outcome.Success : Outcome.Failure;
-			if (actual is not null)
-			{
-				expectationBuilder.AddContext(new ResultContext.Fixed("Actual", Formatter.Format(actual)));
-			}
-
 			return this;
+		}
+
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (Actual is not null)
+			{
+				contexts.Add(new ResultContext.Fixed("Actual", Formatter.Format(Actual)));
+			}
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

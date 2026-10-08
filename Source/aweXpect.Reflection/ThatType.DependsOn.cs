@@ -237,7 +237,7 @@ public static partial class ThatType
 		private Type[] _dependencies = [];
 		private ResolvedTypeSet? _targetSet;
 
-		public async Task<ConstraintResult> IsMetBy(Type? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(Type? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)

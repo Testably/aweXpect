@@ -38,7 +38,7 @@ public static partial class ThatMember
 			IAsyncConstraint<TMember>
 		where TMember : MemberInfo?
 	{
-		public async Task<ConstraintResult> IsMetBy(TMember actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TMember actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			Outcome = await options.AreConsideredEqual(actual?.Name, expected) ? Outcome.Success : Outcome.Failure;

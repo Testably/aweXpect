@@ -56,7 +56,7 @@ public static partial class ThatType
 	{
 		private int _count;
 
-		public async Task<ConstraintResult> IsMetBy(Type? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(Type? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)

@@ -114,7 +114,7 @@ internal static class AssemblyHelpers
 	/// <summary>
 	///     Returns the names of all assemblies the <paramref name="assembly" /> references which are neither
 	///     covered by the
-	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> nor
+	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> nor
 	///     considered equal to one of the <paramref name="allowed" /> names.
 	/// </summary>
 	/// <remarks>

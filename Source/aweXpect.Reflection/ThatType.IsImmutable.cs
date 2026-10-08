@@ -58,7 +58,7 @@ public static partial class ThatType
 			stringBuilder.Append(It).Append(" was mutable ");
 			Formatter.Format(stringBuilder, Actual);
 			stringBuilder.Append(" with mutable members ");
-			Formatter.Format(stringBuilder, Actual!.GetMutableMembers(), FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Actual!.GetMutableMembers(), FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -23,7 +23,7 @@ public static partial class ThatAssemblies
 	/// </summary>
 	/// <remarks>
 	///     References to assemblies whose name matches one of the
-	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> at a
+	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
 	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
 	///     <c>SystemsBiology.Core</c>) are ignored,
 	///     so that framework assemblies do not have to be listed explicitly.
@@ -46,7 +46,7 @@ public static partial class ThatAssemblies
 	/// </summary>
 	/// <remarks>
 	///     References to assemblies whose name matches one of the
-	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> at a
+	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
 	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
 	///     <c>SystemsBiology.Core</c>) are ignored,
 	///     so that framework assemblies do not have to be listed explicitly.
@@ -79,12 +79,12 @@ public static partial class ThatAssemblies
 		private readonly Dictionary<Assembly, string?[]> _disallowedDependencies = new();
 
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, DependsOnlyOnAllowed);
 #endif
 
-		public async Task<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, CancellationToken cancellationToken)
 			=> await SetValue(actual, DependsOnlyOnAllowed);
 
 		private async ValueTask<bool> DependsOnlyOnAllowed(Assembly? assembly)
@@ -117,7 +117,7 @@ public static partial class ThatAssemblies
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained assemblies depending only on the allowed assemblies ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		private string DescribeAllowed()

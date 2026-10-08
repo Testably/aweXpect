@@ -63,12 +63,12 @@ public static partial class ThatMembers
 		where TMember : MemberInfo?
 	{
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual, CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual,
 				async memberInfo => !await options.AreConsideredEqual(memberInfo?.Name, unexpected));
 #endif
 
-		public async Task<ConstraintResult> IsMetBy(IEnumerable<TMember> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<TMember> actual, CancellationToken cancellationToken)
 			=> await SetValue(actual, async memberInfo => !await options.AreConsideredEqual(memberInfo?.Name, unexpected));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -77,7 +77,7 @@ public static partial class ThatMembers
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained not matching items ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -86,7 +86,7 @@ public static partial class ThatMembers
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained matching items ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 	}
 }

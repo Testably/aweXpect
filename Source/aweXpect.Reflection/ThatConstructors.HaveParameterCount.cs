@@ -54,7 +54,7 @@ public static partial class ThatConstructors
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<ConstructorInfo?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<ConstructorInfo?> actual,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, constructor => constructor?.GetParameters().Length == expected);
 #endif
@@ -68,7 +68,7 @@ public static partial class ThatConstructors
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained constructors with a different number of parameters ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -78,7 +78,7 @@ public static partial class ThatConstructors
 		{
 			stringBuilder.Append(it).Append(" only contained constructors with ")
 				.Append(ParameterCountDescription(expected)).Append(' ');
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 	}
 }

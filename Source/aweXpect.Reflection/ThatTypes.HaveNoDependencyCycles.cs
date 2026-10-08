@@ -116,7 +116,7 @@ public static partial class ThatTypes
 		}
 
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
 		{
 			List<Type?> materialized = [];
 			await foreach (Type? type in actual.WithCancellation(cancellationToken))

@@ -15,7 +15,7 @@ public static partial class AssemblyFilters
 	/// </summary>
 	/// <remarks>
 	///     References to assemblies whose name matches one of the
-	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> at a
+	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
 	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
 	///     <c>SystemsBiology.Core</c>) are ignored,
 	///     so that framework assemblies do not have to be listed explicitly.

@@ -39,7 +39,7 @@ public sealed partial class AssemblyFilters
 
 				await That(Assemblies).HasCount().GreaterThanOrEqualTo(3);
 				await That(Assemblies.GetDescription())
-					.IsEqualTo("in all loaded assemblies with name matching regex \"aweXpect\\.[a-zA-Z\\.]*\"");
+					.IsEqualTo("in all loaded assemblies with name matching regex \"aweXpect\\\\.[a-zA-Z\\\\.]*\"");
 			}
 
 			[Fact]

@@ -21,7 +21,7 @@ public static partial class ThatAssembly
 	/// </summary>
 	/// <remarks>
 	///     References to assemblies whose name matches one of the
-	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> at a
+	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
 	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
 	///     <c>SystemsBiology.Core</c>) are ignored,
 	///     so that framework assemblies do not have to be listed explicitly.
@@ -47,7 +47,7 @@ public static partial class ThatAssembly
 	{
 		private string?[] _violations = [];
 
-		public async Task<ConstraintResult> IsMetBy(Assembly? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(Assembly? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)

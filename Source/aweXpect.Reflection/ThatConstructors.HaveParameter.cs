@@ -267,7 +267,7 @@ public static partial class ThatConstructors
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<ConstructorInfo?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<ConstructorInfo?> actual,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, async constructor =>
 			{
@@ -291,7 +291,7 @@ public static partial class ThatConstructors
 			});
 #endif
 
-		public async Task<ConstraintResult> IsMetBy(IEnumerable<ConstructorInfo?> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<ConstructorInfo?> actual, CancellationToken cancellationToken)
 			=> await SetValue(actual, async constructor =>
 			{
 				if (constructor == null)

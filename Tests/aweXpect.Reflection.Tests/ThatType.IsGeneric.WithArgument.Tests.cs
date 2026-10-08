@@ -240,7 +240,7 @@ public sealed partial class ThatType
 						.WithMessage($"""
 						              Expected that subject
 						              is generic with argument of type ThatType.BaseClass and name equal to "{name}",
-						              but it was generic ThatType.GenericClassWithTwoArguments
+						              but it was generic ThatType.GenericClassWithTwoArguments<,>
 						              """);
 				}
 

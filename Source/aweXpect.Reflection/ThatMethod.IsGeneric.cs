@@ -48,7 +48,7 @@ public static partial class ThatMethod
 		: ConstraintResult.WithNotNullValue<MethodInfo?>(it, grammars),
 			IAsyncConstraint<MethodInfo?>
 	{
-		public async Task<ConstraintResult> IsMetBy(MethodInfo? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(MethodInfo? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			Outcome = actual?.IsGenericMethod == true && await options.Matches(actual)

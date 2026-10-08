@@ -54,7 +54,7 @@ public static partial class ThatMethods
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, method => method?.GetParameters().Length == expected);
 #endif
@@ -68,7 +68,7 @@ public static partial class ThatMethods
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained methods with a different number of parameters ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -78,7 +78,7 @@ public static partial class ThatMethods
 		{
 			stringBuilder.Append(it).Append(" only contained methods with ")
 				.Append(ParameterCountDescription(expected)).Append(' ');
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 	}
 }

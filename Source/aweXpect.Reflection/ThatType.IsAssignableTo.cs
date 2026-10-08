@@ -42,8 +42,8 @@ public static partial class ThatType
 		Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
-				=> new IsAssignableToConstraint(expectationBuilder, it, grammars, type)),
+		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new IsAssignableToConstraint(it, grammars, type)),
 			subject);
 	}
 
@@ -80,8 +80,8 @@ public static partial class ThatType
 		Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
-				=> new IsAssignableToConstraint(expectationBuilder, it, grammars, type).Invert()),
+		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new IsAssignableToConstraint(it, grammars, type).Invert()),
 			subject);
 	}
 
@@ -116,8 +116,8 @@ public static partial class ThatType
 		Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
-				=> new IsAssignableFromConstraint(expectationBuilder, it, grammars, type)),
+		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new IsAssignableFromConstraint(it, grammars, type)),
 			subject);
 	}
 
@@ -152,13 +152,12 @@ public static partial class ThatType
 		Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((expectationBuilder, it, grammars)
-				=> new IsAssignableFromConstraint(expectationBuilder, it, grammars, type).Invert()),
+		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+				=> new IsAssignableFromConstraint(it, grammars, type).Invert()),
 			subject);
 	}
 
 	private sealed class IsAssignableToConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		Type type)
@@ -169,12 +168,15 @@ public static partial class ThatType
 		{
 			Actual = actual;
 			Outcome = actual is not null && type.IsAssignableFrom(actual) ? Outcome.Success : Outcome.Failure;
-			if (actual is not null)
-			{
-				expectationBuilder.AddContext(new ResultContext.Fixed("Actual", Formatter.Format(actual)));
-			}
-
 			return this;
+		}
+
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (Actual is not null)
+			{
+				contexts.Add(new ResultContext.Fixed("Actual", Formatter.Format(Actual)));
+			}
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -203,7 +205,6 @@ public static partial class ThatType
 	}
 
 	private sealed class IsAssignableFromConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		Type type)
@@ -214,12 +215,15 @@ public static partial class ThatType
 		{
 			Actual = actual;
 			Outcome = actual is not null && actual.IsAssignableFrom(type) ? Outcome.Success : Outcome.Failure;
-			if (actual is not null)
-			{
-				expectationBuilder.AddContext(new ResultContext.Fixed("Actual", Formatter.Format(actual)));
-			}
-
 			return this;
+		}
+
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (Actual is not null)
+			{
+				contexts.Add(new ResultContext.Fixed("Actual", Formatter.Format(Actual)));
+			}
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

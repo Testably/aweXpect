@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -79,7 +78,7 @@ internal abstract class CollectionConstraintResult<T>(ExpectationGrammars gramma
 	///     Splits the <paramref name="elements" /> according to the <paramref name="predicate" /> into <see cref="Matching" />
 	///     and <see cref="NotMatching" />.
 	/// </summary>
-	protected async Task<ConstraintResult> SetValue(IEnumerable<T> elements, Func<T, ValueTask<bool>> predicate)
+	protected async ValueTask<ConstraintResult> SetValue(IEnumerable<T> elements, Func<T, ValueTask<bool>> predicate)
 	{
 		_elements = elements;
 		(Matching, NotMatching) = await elements.SplitAsync(predicate);
@@ -92,7 +91,7 @@ internal abstract class CollectionConstraintResult<T>(ExpectationGrammars gramma
 	///     Splits the <paramref name="elements" /> according to the <paramref name="predicate" /> into <see cref="Matching" />
 	///     and <see cref="NotMatching" />.
 	/// </summary>
-	protected async Task<ConstraintResult> SetAsyncValue(IAsyncEnumerable<T> elements, Func<T, bool> predicate)
+	protected async ValueTask<ConstraintResult> SetAsyncValue(IAsyncEnumerable<T> elements, Func<T, bool> predicate)
 	{
 		_asyncElements = elements;
 		(Matching, NotMatching) = await elements.SplitAsync(predicate);
@@ -106,7 +105,7 @@ internal abstract class CollectionConstraintResult<T>(ExpectationGrammars gramma
 	///     Splits the <paramref name="elements" /> according to the <paramref name="predicate" /> into <see cref="Matching" />
 	///     and <see cref="NotMatching" />.
 	/// </summary>
-	protected async Task<ConstraintResult> SetAsyncValue(IAsyncEnumerable<T> elements,
+	protected async ValueTask<ConstraintResult> SetAsyncValue(IAsyncEnumerable<T> elements,
 		Func<T, ValueTask<bool>> predicate)
 	{
 		_asyncElements = elements;
@@ -183,8 +182,8 @@ internal abstract class CollectionConstraintResult<T>(ExpectationGrammars gramma
 		}
 	}
 
-	/// <inheritdoc cref="ConstraintResult.TryGetValue{TValue}(out TValue)" />
-	public override bool TryGetValue<TValue>([NotNullWhen(true)] out TValue? value) where TValue : default
+	/// <inheritdoc cref="ConstraintResult.TryGetStoredValue{TValue}(out TValue)" />
+	public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 	{
 		if (_elements is TValue typedValue)
 		{

@@ -175,7 +175,7 @@ public static partial class ThatTypes
 		private readonly string _operatorText = OperatorText(@operator, operand);
 
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, Matches);
 #endif
@@ -195,7 +195,7 @@ public static partial class ThatTypes
 		{
 			stringBuilder.Append(it).Append(" contained types without the operator ").Append(_operatorText)
 				.Append(' ');
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -205,7 +205,7 @@ public static partial class ThatTypes
 		{
 			stringBuilder.Append(it).Append(" only contained types with the operator ").Append(_operatorText)
 				.Append(' ');
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 	}
 
@@ -224,7 +224,7 @@ public static partial class ThatTypes
 		private readonly string _operatorText = OperatorText(@operator, operand);
 
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, type => !Matches(type));
 #endif
@@ -243,7 +243,7 @@ public static partial class ThatTypes
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained types with the operator ").Append(_operatorText).Append(' ');
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -253,7 +253,7 @@ public static partial class ThatTypes
 		{
 			stringBuilder.Append(it).Append(" only contained types without the operator ").Append(_operatorText)
 				.Append(' ');
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 	}
 

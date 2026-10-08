@@ -54,7 +54,7 @@ public static partial class ThatType
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" contained nullable members ");
-			Formatter.Format(stringBuilder, _nullableMembers, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, _nullableMembers, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -63,7 +63,7 @@ public static partial class ThatType
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" only contained non-nullable members ");
-			Formatter.Format(stringBuilder, _notNullableMembers, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, _notNullableMembers, FormattingOptions.Indented(indentation ?? ""));
 		}
 	}
 }

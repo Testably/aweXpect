@@ -24,7 +24,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Dependencies on types whose assembly name matches one of the
-	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> at a
+	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
 	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
 	///     <c>SystemsBiology.Core</c>) are ignored, so
 	///     that framework namespaces do not have to be listed explicitly. The default prefixes include
@@ -50,7 +50,7 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     Dependencies on types whose assembly name matches one of the
-	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> at a
+	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
 	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
 	///     <c>SystemsBiology.Core</c>) are ignored, so
 	///     that framework namespaces do not have to be listed explicitly. The default prefixes include
@@ -82,7 +82,7 @@ public static partial class ThatTypes
 	///     <see cref="TypeSetDependencyOnlyOnResult{TThat}.ExcludingOwnSubNamespaces" /> is used.
 	///     <para />
 	///     Dependencies on types whose assembly name matches one of the
-	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> at a
+	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
 	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
 	///     <c>SystemsBiology.Core</c>) are ignored, so
 	///     that framework types do not have to be included explicitly. The default prefixes include
@@ -114,7 +114,7 @@ public static partial class ThatTypes
 	///     <see cref="TypeSetDependencyOnlyOnResult{TThat}.ExcludingOwnSubNamespaces" /> is used.
 	///     <para />
 	///     Dependencies on types whose assembly name matches one of the
-	///     <see cref="AwexpectCustomization.ReflectionCustomizationValue.ExcludedAssemblyPrefixes" /> at a
+	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
 	///     name-segment boundary (<c>System</c> covers <c>System.Text.Json</c>, but not
 	///     <c>SystemsBiology.Core</c>) are ignored, so
 	///     that framework types do not have to be included explicitly. The default prefixes include
@@ -162,7 +162,7 @@ public static partial class ThatTypes
 		}
 
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, DependsOnlyOnAllowed);
 #endif
 
@@ -182,7 +182,7 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained types depending only on the allowed namespaces ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 	}
 
@@ -215,14 +215,14 @@ public static partial class ThatTypes
 		}
 
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
 		{
 			ResolvedTypeSet allowed = await options.Resolve(cancellationToken);
 			return await SetAsyncValue(actual, type => DependsOnlyOnAllowed(type, allowed));
 		}
 #endif
 
-		public async Task<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, CancellationToken cancellationToken)
 		{
 			ResolvedTypeSet allowed = await options.Resolve(cancellationToken);
 			return SetValue(actual, type => DependsOnlyOnAllowed(type, allowed));
@@ -241,7 +241,7 @@ public static partial class ThatTypes
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained types depending only on the allowed types ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 	}
 }

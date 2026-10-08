@@ -62,7 +62,7 @@ public static partial class ThatAssemblies
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async Task<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual,
 			CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, async assembly =>
 				assembly != null &&
@@ -70,7 +70,7 @@ public static partial class ThatAssemblies
 					options.AreConsideredEqual(dep.Name, expected)));
 #endif
 
-		public async Task<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, CancellationToken cancellationToken)
 			=> await SetValue(actual, async assembly =>
 				assembly != null &&
 				await assembly.GetReferencedAssemblies().AnyAsync(dep =>
@@ -83,7 +83,7 @@ public static partial class ThatAssemblies
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" contained assemblies without the required dependency ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -93,7 +93,7 @@ public static partial class ThatAssemblies
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(it).Append(" only contained assemblies with the unexpected dependency ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation));
+			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 	}
 }

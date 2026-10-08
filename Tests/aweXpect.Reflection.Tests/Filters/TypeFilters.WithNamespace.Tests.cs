@@ -45,7 +45,7 @@ public sealed partial class TypeFilters
 				await That(types).HasSingle().Which.IsEqualTo(typeof(SomeClassToVerifyTheNamespaceOfIt));
 				await That(types.GetDescription())
 					.IsEqualTo(
-						"types with namespace matching regex \"[a-zA-Z\\.]*VerifyingTheNamespa…\" in assembly")
+						"types with namespace matching regex \"[a-zA-Z\\\\.]*VerifyingTheNamespa…\" in assembly")
 					.AsPrefix();
 			}
 

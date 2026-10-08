@@ -135,7 +135,7 @@ public static partial class ThatConstructor
 		: ConstraintResult.WithNotNullValue<ConstructorInfo?>(it, grammars),
 			IAsyncConstraint<ConstructorInfo?>
 	{
-		public async Task<ConstraintResult> IsMetBy(ConstructorInfo? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(ConstructorInfo? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)
