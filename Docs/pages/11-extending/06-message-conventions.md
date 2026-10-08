@@ -260,6 +260,10 @@ private sealed class HasPlaylistConstraint(string it, ExpectationGrammars gramma
 - A result that combines other results adds their contexts with `contexts.Visit(result)` for the parts that explain
   its outcome, or `contexts.VisitMember("name", result)` to label them with a member. `contexts.VisitItem(2, result)`
   labels them with the item of a collection, e.g. `Actual (item [2]):`, after the contexts of the collection.
+- To show the subject whenever any expectation on it fails, not only your own, register a callback once with
+  `expectationBuilder.AddSubjectContexts<T>((subject, contexts) => …)`, e.g. the HTTP request of a response. Its
+  contexts precede those of the expectations and are labelled with the member or item when added for one. Pass a
+  cached delegate, as the same callback is only added once per subject.
 - The contexts of the built-in expectations are available as extensions on the `ResultContextCollector`, so that a
   custom expectation shows them alike: `AddCollectionContext`, `AddDictionaryContext`, `AddExpectedValuesContext`,
   `AddStringContext`, `AddEqualityOptionsContexts` and `AddEquivalencyContext`.
