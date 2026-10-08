@@ -1088,10 +1088,11 @@ public static class PropertyResult
 				return;
 			}
 
-			stringBuilder.Append(Grammars.HasFlag(ExpectationGrammars.Nested) &&
-			                     !Grammars.HasFlag(ExpectationGrammars.Active)
-				? options.GetExtendedFailure(propertyExpression, Grammars, _value, expected)
-				: options.GetExtendedMemberFailure(It, propertyExpression, Grammars, _value, expected));
+			stringBuilder.Append((Grammars.HasFlag(ExpectationGrammars.Nested) &&
+			                      !Grammars.HasFlag(ExpectationGrammars.Active)
+					? options.GetExtendedFailure(propertyExpression, Grammars, _value, expected)
+					: options.GetExtendedMemberFailure(It, propertyExpression, Grammars, _value, expected))
+				.Indent(indentation, false));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -20,13 +20,12 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 		StringBuilder sb = new();
 		sb.Append("is ");
 		Formatter.Format(sb, typeof(T));
-		sb.Append(" that ");
-		int lengthBefore = sb.Length;
+		int typeEnd = sb.Length;
 		_result?.AppendExpectation(sb);
-		if (sb.Length == lengthBefore)
+		// Without expectations there is at most a reason, which follows the type directly.
+		if (sb.Length > typeEnd && sb[typeEnd] != ',')
 		{
-			// Remove " that ", when no expectations were added
-			sb.Length -= 6;
+			sb.Insert(typeEnd, " that ");
 		}
 
 		return sb.ToString();
@@ -47,13 +46,13 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 			T? typedDefault = default;
 			if (typedDefault is not null)
 			{
-				_result = new NotMatchingTypesResult(typedDefault, null);
+				_result = await ApplyReasons(new NotMatchingTypesResult(this, typedDefault, null), cancellationToken);
 			}
 			else
 			{
 				// ReSharper disable ExpressionIsAlwaysNull
 				// typedDefault is used to have the correct generic overload in `IsMetBy`.
-				_result = new NotMatchingTypesResult(typedDefault,
+				_result = new NotMatchingTypesResult(this, typedDefault,
 					await ApplyReasons(await GetRootNode().IsMetBy(typedDefault, context, cancellationToken),
 						cancellationToken));
 				// ReSharper restore ExpressionIsAlwaysNull
@@ -61,7 +60,7 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 		}
 		else
 		{
-			_result = new NotMatchingTypesResult(value, null);
+			_result = await ApplyReasons(new NotMatchingTypesResult(this, value, null), cancellationToken);
 		}
 
 		return _result;
@@ -89,18 +88,32 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 
 	private sealed class NotMatchingTypesResult : ConstraintResult
 	{
+		private readonly EquivalencyExpectationBuilder<T> _builder;
 		private readonly ConstraintResult? _inner;
 		private readonly object? _value;
 
-		public NotMatchingTypesResult(object? value, ConstraintResult? inner) : base(FurtherProcessingStrategy.Continue)
+		public NotMatchingTypesResult(EquivalencyExpectationBuilder<T> builder, object? value, ConstraintResult? inner)
+			: base(FurtherProcessingStrategy.Continue)
 		{
+			_builder = builder;
 			_value = value;
 			_inner = inner;
 			Outcome = inner?.Outcome ?? Outcome.Failure;
 		}
 
+		/// <remarks>
+		///     Without an <c>inner</c> result the expectations were not evaluated, so they are described by their nodes.
+		/// </remarks>
 		public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> _inner?.AppendExpectation(stringBuilder, indentation);
+		{
+			if (_inner is null)
+			{
+				_builder.AppendExpectation(stringBuilder, indentation);
+				return;
+			}
+
+			_inner.AppendExpectation(stringBuilder, indentation);
+		}
 
 		public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 		{

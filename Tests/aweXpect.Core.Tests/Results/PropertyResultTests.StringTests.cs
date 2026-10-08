@@ -209,6 +209,28 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Test]
+		public async Task EqualTo_ShouldIndentTheDifferenceInACombination()
+		{
+			StringProperty sut = MyClass.HasStringValue("foo");
+
+			async Task Act()
+				=> await ThatAll(sut.EqualTo("FOO"));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected all of the following to succeed:
+				              [01] Expected that subject has string value equal to "FOO"
+				             but
+				              [01] it had string value "foo", which differs at index 0:
+				                      ↓ (actual)
+				                     "foo"
+				                     "FOO"
+				                      ↑ (expected)
+				             """)
+				.Because("the lines of the difference are indented like the entry they belong to");
+		}
+
+		[Test]
 		[Arguments(true)]
 		[Arguments(false)]
 		public async Task EqualTo_ShouldSupportIgnoringCase(bool ignoringCase)

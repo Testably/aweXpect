@@ -254,12 +254,12 @@ public sealed partial class ThatObject
 						             but it was not:
 						               Property NullableIntValue differed:
 						                   Actual: <null>
-						                 Expected: is int
+						                 Expected: is int that is equal to 0
 
 						             Equivalency options:
 						              - include public fields and properties
 						             """)
-						.Because("null is no value of a non-nullable value type, so its expectations are not evaluated");
+						.Because("null is no value of a non-nullable value type, so it fails whatever is expected of the value");
 				}
 
 				[Test]
