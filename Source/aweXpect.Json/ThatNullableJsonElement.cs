@@ -25,7 +25,7 @@ public static partial class ThatNullableJsonElement
 	{
 		private JsonElementValidator.JsonComparisonResult? _comparisonResult;
 
-		public async Task<ConstraintResult> IsMetBy(JsonElement? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(JsonElement? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual == null)

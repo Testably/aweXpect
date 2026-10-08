@@ -14,13 +14,13 @@ public static class JsonExtensions
 	/// <summary>
 	///     Interpret the <see cref="string" /> as JSON.
 	/// </summary>
-	public static TSelf AsJson<TType, TThat, TSelf>(
-		this StringEqualityResult<TType, TThat, TSelf> result,
+	public static TResult AsJson<TResult>(
+		this TResult result,
 		Func<JsonOptions, JsonOptions>? options = null)
-		where TSelf : StringEqualityResult<TType, TThat, TSelf>
+		where TResult : IOptionsProvider<StringEqualityOptions>, IStringMatchTypeOptions
 	{
 		JsonOptions jsonOptions = options?.Invoke(new JsonOptions()) ?? new JsonOptions();
-		((IOptionsProvider<StringEqualityOptions>)result).Options.SetMatchType(new JsonMatchType(jsonOptions));
-		return (TSelf)result;
+		result.Options.SetMatchType(new JsonMatchType(jsonOptions), nameof(AsJson));
+		return result;
 	}
 }

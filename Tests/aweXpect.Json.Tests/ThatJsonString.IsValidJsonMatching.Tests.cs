@@ -552,7 +552,7 @@ public sealed partial class ThatJsonString
 					             {
 					             	foo = It.Is<string>().That.EndsWith("bc"),
 					             },
-					             but it differed as $.foo was "xyz", which differs before index 2:
+					             but it differed as $.foo was "xyz", which differs at index 2:
 					                  ↓ (actual)
 					               "xyz"
 					                "bc"

@@ -45,7 +45,7 @@ namespace aweXpect.Json
     public static class JsonAwexpectCustomizationExtensions
     {
         public static aweXpect.Json.JsonAwexpectCustomizationExtensions.JsonCustomization Json(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
-        public class JsonCustomization : aweXpect.Customization.ICustomizationValueUpdater<aweXpect.Json.JsonAwexpectCustomizationExtensions.JsonCustomizationValue>
+        public class JsonCustomization
         {
             public aweXpect.Customization.ICustomizationValueSetter<System.Text.Json.JsonDocumentOptions> DefaultJsonDocumentOptions { get; }
             public aweXpect.Customization.ICustomizationValueSetter<System.Text.Json.JsonSerializerOptions> DefaultJsonSerializerOptions { get; }
@@ -75,8 +75,8 @@ namespace aweXpect
 {
     public static class JsonExtensions
     {
-        public static TSelf AsJson<TType, TThat, TSelf>(this aweXpect.Results.StringEqualityResult<TType, TThat, TSelf> result, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null)
-            where TSelf : aweXpect.Results.StringEqualityResult<TType, TThat, TSelf> { }
+        public static TResult AsJson<TResult>(this TResult result, System.Func<aweXpect.Json.JsonOptions, aweXpect.Json.JsonOptions>? options = null)
+            where TResult : aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>, aweXpect.Results.IStringMatchTypeOptions { }
     }
     public static class ThatJsonElement
     {

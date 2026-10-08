@@ -30,7 +30,7 @@ public static class JsonAwexpectCustomizationExtensions
 	/// <summary>
 	///     Customize the JSON settings.
 	/// </summary>
-	public class JsonCustomization : ICustomizationValueUpdater<JsonCustomizationValue>
+	public class JsonCustomization
 	{
 		private readonly IAwexpectCustomization _awexpectCustomization;
 
@@ -57,12 +57,15 @@ public static class JsonAwexpectCustomizationExtensions
 		/// <inheritdoc cref="JsonCustomizationValue.DefaultJsonSerializerOptions" />
 		public ICustomizationValueSetter<JsonSerializerOptions> DefaultJsonSerializerOptions { get; }
 
-		/// <inheritdoc cref="ICustomizationValueUpdater{JsonCustomizationValue}.Get()" />
+		/// <summary>
+		///     Get the stored <see cref="JsonCustomizationValue" />.
+		/// </summary>
 		public JsonCustomizationValue Get()
 			=> _awexpectCustomization.Get(nameof(Json), new JsonCustomizationValue());
 
-		/// <inheritdoc
-		///     cref="ICustomizationValueUpdater{JsonCustomizationValue}.Update(Func{JsonCustomizationValue,JsonCustomizationValue})" />
+		/// <summary>
+		///     Update the stored <see cref="JsonCustomizationValue" />.
+		/// </summary>
 		public CustomizationLifetime Update(Func<JsonCustomizationValue, JsonCustomizationValue> update)
 			=> _awexpectCustomization.Set(nameof(Json), update(Get()));
 	}

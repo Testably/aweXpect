@@ -9,6 +9,9 @@ internal class EvaluationContext
 
 	private sealed class NoEvaluationContext : IEvaluationContext
 	{
+		/// <inheritdoc cref="IEvaluationContext.Cancellation" />
+		public EvaluationCancellation Cancellation => EvaluationCancellation.None;
+
 		/// <inheritdoc cref="IEvaluationContext.Store{T}(string, T)" />
 		public void Store<T>(string key, T value)
 		{
