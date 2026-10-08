@@ -3020,6 +3020,61 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
+	public async Task WhenFailureBuilderIsNotEmpty_ShouldSeparateOnlyTheDifferences()
+	{
+		var actual = new
+		{
+			A = 1,
+			B = 1,
+		};
+		var expected = new
+		{
+			A = 2,
+			B = 2,
+		};
+		StringBuilder failureBuilder = new("Differences:");
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+		                                                Differences:
+		                                                  Property A differed:
+		                                                      Actual: 1
+		                                                    Expected: 2
+		                                                and
+		                                                  Property B differed:
+		                                                      Actual: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("the content of the failure builder is no difference that the first one is separated from");
+	}
+
+	[Test]
+	public async Task WhenFailureBuilderIsNotEmpty_WithSingleLineDifferences_ShouldSeparateOnlyTheDifferences()
+	{
+		var actual = new
+		{
+			A = 1,
+		};
+		var expected = new
+		{
+			B = 1,
+			C = 1,
+		};
+		StringBuilder failureBuilder = new("Differences:");
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+		                                                Differences:
+		                                                  Property B was missing on the actual object and
+		                                                  Property C was missing on the actual object
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Test]
 	[Arguments(1, 3, 2, 3, "Property Value differed")]
 	[Arguments(1, 3, 1, 4, "Field Value differed")]
 	public async Task WhenFieldHidesAProperty_ShouldCompareBoth(int actualProperty, int actualField,

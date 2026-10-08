@@ -88,14 +88,16 @@ public static partial class EquivalencyComparison
 
 	/// <remarks>
 	///     Starts the entry that the caller then fills, and counts it, so that a comparison can be told apart from
-	///     one that found fewer differences even when neither of them is equivalent.
+	///     one that found fewer differences even when neither of them is equivalent.<br />
+	///     The "and" separates the entry from the previous one of this comparison, so the failure builder can already
+	///     contain text of the caller.
 	/// </remarks>
 	private static void AppendEntry(StringBuilder failureBuilder, MemberType memberType, string memberPath,
 		EquivalencyContext context)
 	{
 		context.DifferenceCount++;
 		failureBuilder.AppendLine();
-		if (failureBuilder.Length > 2)
+		if (context.DifferenceCount > 1)
 		{
 			failureBuilder.AppendLine("and");
 		}
