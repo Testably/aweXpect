@@ -1,7 +1,15 @@
-﻿namespace aweXpect.Core.Tests.Core;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using aweXpect.Core.Constraints;
+using aweXpect.Core.Tests.TestHelpers;
+
+namespace aweXpect.Core.Tests.Core;
 
 public sealed class MemberAccessorTests
 {
+	private readonly string _text = "a";
+
 	[Test]
 	[Arguments("Length ", true)]
 	[Arguments(".SomethingElse ", false)]
@@ -56,12 +64,99 @@ public sealed class MemberAccessorTests
 	}
 
 	[Test]
+	public async Task FromExpression_WithCastInMemberPath_ShouldKeepTheWholePath()
+	{
+		MemberAccessor<MyClass, int> subject = MemberAccessor<MyClass, int>
+			.FromExpression(x => ((MyClass)x.Untyped!).Value);
+
+		await That(subject.ToString()).IsEqualTo("Untyped.Value ");
+	}
+
+	[Test]
+	public async Task FromExpression_WithConvertedMember_ShouldGetMemberPath()
+	{
+		MemberAccessor<MyClass, int?> subject = MemberAccessor<MyClass, int?>
+			.FromExpression(x => x.Value);
+
+		await That(subject.ToString()).IsEqualTo("Value ");
+	}
+
+	[Test]
+	public async Task FromExpression_WithDifferentMethodCalls_ShouldNotBeEqual()
+	{
+		MemberAccessor<string, int> sut = MemberAccessor<string, int>.FromExpression(x => x.GetHashCode());
+		MemberAccessor<string, int> other = MemberAccessor<string, int>.FromExpression(x => x.IndexOf("ab"));
+
+		await That(sut.Equals(other)).IsFalse();
+		await That(sut.GetHashCode()).IsNotEqualTo(other.GetHashCode());
+	}
+
+	[Test]
 	public async Task FromExpression_WithNestedMembers_ShouldKeepInnerDots()
 	{
 		MemberAccessor<Exception, int> subject = MemberAccessor<Exception, int>
 			.FromExpression(x => x.Message.Length);
 
 		await That(subject.ToString()).IsEqualTo("Message.Length ");
+	}
+
+	[Test]
+	public async Task FromExpression_WithoutMemberPath_ShouldBeNamedInTheExpectation()
+	{
+		ManualExpectationBuilder<string> sut = new();
+		sut.ForMember(MemberAccessor<string, int>.FromExpression(x => x.IndexOf("ab")))
+			.AddExpectations(expectationBuilder => expectationBuilder.AddConstraint((_, _)
+				=> new DummyConstraint<int>(v => v == 2, "equal to 2")));
+
+		ConstraintResult constraintResult = await sut.IsMetBy("bar", null!, CancellationToken.None);
+
+		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure);
+		await That(constraintResult.GetExpectationText()).IsEqualTo("IndexOf(\"ab\") equal to 2");
+	}
+
+	[Test]
+	public async Task FromExpression_WithoutMemberPath_ShouldDescribeTheExpression()
+	{
+		string text = "a";
+		List<(MemberAccessor Accessor, string Expected)> accessors =
+		[
+			(MemberAccessor<MyClass, MyClass>.FromExpression(x => x), "it "),
+			(MemberAccessor<MyClass, int>.FromExpression(_ => 42), "42 "),
+			(MemberAccessor<MyClass, double>.FromExpression(_ => 1.5), "1.5 "),
+			(MemberAccessor<MyClass, int>.FromExpression(x => x.Value + 1), "(x.Value + 1) "),
+			(MemberAccessor<MyClass, int>.FromExpression(x => x.GetHashCode()), "GetHashCode() "),
+			(MemberAccessor<MyClass, int>.FromExpression(x => x.Name.IndexOf("ab")), "Name.IndexOf(\"ab\") "),
+			(MemberAccessor<MyClass, int>.FromExpression(x => x.Name.IndexOf(text)), "Name.IndexOf(text) "),
+			(MemberAccessor<MyClass, int>.FromExpression(x => x.Name.IndexOf(x.Name)), "Name.IndexOf(x.Name) "),
+			(MemberAccessor<MyClass, int>.FromExpression(x => x.Name.IndexOf(_text)), "Name.IndexOf(_text) "),
+			(MemberAccessor<MyClass, int>.FromExpression(x => x.Name.Length + text.Length + _text.Length),
+				"((x.Name.Length + text.Length) + _text.Length) "),
+			(MemberAccessor<MyClass, int>.FromExpression(x => "abc".IndexOf(x.Name)), "\"abc\".IndexOf(x.Name) "),
+			(MemberAccessor<MyClass, int>.FromExpression(x => x.GetInner().Value), "GetInner().Value "),
+			(MemberAccessor<MyClass, int>.FromExpression(x => x.Items.Count()), "Items.Count() "),
+			(MemberAccessor<MyClass, int>.FromExpression(x => x.Items[0].Length), "Items[0].Length "),
+			(MemberAccessor<MyClass, int>.FromExpression(x => x[1, 2]), "[1, 2] "),
+			(MemberAccessor<MyClass, int>.FromExpression(x => x.Numbers[1]), "Numbers[1] "),
+			(MemberAccessor<MyClass, int>.FromExpression(x => x.Numbers.Length), "Numbers.Length "),
+			(MemberAccessor<MyClass, Task<int>>.FromExpression(x => Task.FromResult(x.Value)),
+				"Task.FromResult(x.Value) "),
+			(MemberAccessor<MyClass, string>.FromExpression(_ => string.Empty), "string.Empty "),
+		];
+
+		foreach ((MemberAccessor accessor, string expected) in accessors)
+		{
+			await That(accessor.ToString()).IsEqualTo(expected);
+		}
+	}
+
+	[Test]
+	public async Task FromExpression_WithSameMethodCall_ShouldBeEqual()
+	{
+		MemberAccessor<string, int> sut = MemberAccessor<string, int>.FromExpression(x => x.IndexOf("ab"));
+		MemberAccessor<string, int> other = MemberAccessor<string, int>.FromExpression(y => y.IndexOf("ab"));
+
+		await That(sut.Equals(other)).IsTrue();
+		await That(sut.GetHashCode()).IsEqualTo(other.GetHashCode());
 	}
 
 	[Test]
@@ -204,5 +299,17 @@ public sealed class MemberAccessorTests
 		MemberAccessor<string, int> sut2 = MemberAccessor<string, int>.FromFunc(x => x.Length, "foo");
 
 		await That(sut1.GetHashCode()).IsEqualTo(sut2.GetHashCode());
+	}
+
+	private sealed class MyClass
+	{
+		public int this[int row, int column] => row + column;
+		public List<string> Items { get; } = [];
+		public string Name { get; } = "";
+		public int[] Numbers { get; } = [];
+		public object? Untyped { get; set; }
+		public int Value { get; set; }
+
+		public MyClass GetInner() => this;
 	}
 }

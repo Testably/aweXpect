@@ -86,12 +86,15 @@ internal sealed class DictionaryKeyComparer<TKey, TValue> : DictionaryKeyCompare
 
 	/// <remarks>
 	///     A <see langword="null" /> key, or one that is not of the key type, is compared with its own
-	///     <see cref="object.Equals(object)" /> and never handed to the comparer, which would reject it.
+	///     <see cref="object.Equals(object)" /> and never handed to the comparer, which would reject it. It is never
+	///     the same as a key of the key type, which is hashed by the comparer.
 	/// </remarks>
 	private sealed class KeyEqualityComparer(IEqualityComparer<TKey> comparer) : IEqualityComparer<object>
 	{
 		bool IEqualityComparer<object>.Equals(object? x, object? y)
-			=> x is TKey typedX && y is TKey typedY ? comparer.Equals(typedX, typedY) : Equals(x, y);
+			=> x is TKey typedX
+				? y is TKey typedY && comparer.Equals(typedX, typedY)
+				: y is not TKey && Equals(x, y);
 
 		int IEqualityComparer<object>.GetHashCode(object obj)
 			=> obj is TKey typed ? comparer.GetHashCode(typed) : obj.GetHashCode();
