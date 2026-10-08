@@ -298,8 +298,9 @@ public sealed class StringDifference(
 		StringBuilder stringBuilder,
 		string prefix, string text, int indexOfStartingPhrase, int indexOfFirstMismatch, string suffix)
 	{
-		int minimumNumberOfCharactersAfterMismatch = Math.Max(0,
-			Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference.Get());
+		// Limited to the characters that follow the mismatch, so that the lengths calculated from it cannot overflow.
+		int minimumNumberOfCharactersAfterMismatch = Math.Max(0, Math.Min(text.Length - indexOfFirstMismatch,
+			Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference.Get()));
 		int subjectLength = GetLengthOfPhraseToShowOrDefaultLength(text, indexOfStartingPhrase,
 			indexOfFirstMismatch - indexOfStartingPhrase + minimumNumberOfCharactersAfterMismatch);
 		const char ellipsis = '\u2026';
@@ -546,7 +547,9 @@ public sealed class StringDifference(
 	private static int GetStartIndexOfPhraseToShowBeforeTheMismatchingIndexFromEnd(string value,
 		int indexFromEnd)
 	{
-		int minLength = Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference.Get();
+		// Limited to the length of the value, so that the lengths calculated from it cannot overflow.
+		int minLength = Math.Min(value.Length,
+			Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference.Get());
 		int defaultLength = minLength + 5;
 		int maxLength = minLength + 15;
 		const int lengthOfWhitespace = 1;

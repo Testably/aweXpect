@@ -272,6 +272,89 @@ public class StringDifferenceTests
 		}
 
 		[Test]
+		[Arguments(int.MaxValue)]
+		[Arguments(int.MaxValue - 1)]
+		[Arguments(int.MaxValue - 12)]
+		public async Task WhenMinimumNumberOfCharactersAfterStringDifferenceIsCloseToTheMaximum_ShouldShowEverythingAfterTheMismatch(
+			int minimumNumberOfCharacters)
+		{
+			StringDifference sut = new(
+				$"{new string('a', 100)}X{new string('b', 100)}",
+				$"{new string('a', 100)}Y{new string('b', 100)}");
+
+			string result;
+			using (Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference
+				       .Set(minimumNumberOfCharacters))
+			{
+				result = sut.ToString();
+			}
+
+			await That(result).IsEqualTo(
+				$"""
+				 differs at index 100:
+				               ↓ (actual)
+				   "…aaaaaaaaaaX{new string('b', 100)}"
+				   "…aaaaaaaaaaY{new string('b', 100)}"
+				               ↑ (expected)
+				 """);
+		}
+
+		[Test]
+		[Arguments(int.MaxValue)]
+		[Arguments(int.MaxValue - 1)]
+		public async Task WhenMinimumNumberOfCharactersAfterStringDifferenceIsCloseToTheMaximum_WhenMismatchIsAtTheStart_ShouldShowTheWholeValues(
+			int minimumNumberOfCharacters)
+		{
+			StringDifference sut = new(
+				$"X{new string('b', 100)}",
+				$"Y{new string('b', 100)} and more");
+
+			string result;
+			using (Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference
+				       .Set(minimumNumberOfCharacters))
+			{
+				result = sut.ToString();
+			}
+
+			await That(result).IsEqualTo(
+				$"""
+				 differs at index 0:
+				    ↓ (actual)
+				   "X{new string('b', 100)}"
+				   "Y{new string('b', 100)} and more"
+				    ↑ (expected)
+				 """);
+		}
+
+		[Test]
+		[Arguments(int.MaxValue)]
+		[Arguments(int.MaxValue - 1)]
+		[Arguments(int.MaxValue - 12)]
+		public async Task WhenMinimumNumberOfCharactersAfterStringDifferenceIsCloseToTheMaximum_WhenTextHasMultipleLines_ShouldShowEverythingAfterTheMismatch(
+			int minimumNumberOfCharacters)
+		{
+			StringDifference sut = new(
+				$"first line\nsecond line\nthird line with X here\n{new string('c', 100)}\nlast line",
+				$"first line\nsecond line\nthird line with Y here\n{new string('c', 100)}\nlast line");
+
+			string result;
+			using (Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference
+				       .Set(minimumNumberOfCharacters))
+			{
+				result = sut.ToString();
+			}
+
+			await That(result).IsEqualTo(
+				$"""
+				 differs on line 3 and column 17:
+				               ↓ (actual)
+				   "…line with X here\n{new string('c', 100)}\nlast line"
+				   "…line with Y here\n{new string('c', 100)}\nlast line"
+				               ↑ (expected)
+				 """);
+		}
+
+		[Test]
 		public async Task WhenMinimumNumberOfCharactersAfterStringDifferenceIsSmall_ShouldStillShowTheMismatch()
 		{
 			StringDifference sut = new("abcdefghijklmnopqrstuvwxyzX", "abcdefghijklmnopqrstuvwxyzY");
@@ -816,6 +899,34 @@ public class StringDifferenceTests
 				  "this is a long text which differs in between two…"
 				                           ↑ (expected suffix)
 				""");
+		}
+
+		[Test]
+		[Arguments(int.MaxValue)]
+		[Arguments(int.MaxValue - 1)]
+		[Arguments(int.MaxValue - 12)]
+		public async Task WhenMinimumNumberOfCharactersAfterStringDifferenceIsCloseToTheMaximum_ShouldShowEverythingBeforeTheMismatch(
+			int minimumNumberOfCharacters)
+		{
+			string actual = $"{new string('a', 100)}Xtail";
+			const string expected = "Ytail";
+			string result;
+
+			using (Customize.aweXpect.Formatting().MinimumNumberOfCharactersAfterStringDifference
+				       .Set(minimumNumberOfCharacters))
+			{
+				StringDifference sut = new(actual, expected, null, Settings);
+				result = sut.ToString();
+			}
+
+			await That(result).IsEqualTo(
+				$"""
+				 differs at index 100:
+				 {new string(' ', 103)}↓ (actual)
+				   "{new string('a', 100)}Xtail"
+				 {new string(' ', 100)}  "Ytail"
+				 {new string(' ', 103)}↑ (expected suffix)
+				 """);
 		}
 
 		[Test]
