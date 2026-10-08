@@ -3372,6 +3372,55 @@ public sealed partial class EquivalencyComparisonTests
 	}
 
 	[Test]
+	public async Task WhenItIsMemberHasADifferentType_ShouldStillDescribeTheExpectations()
+	{
+		var actual = new
+		{
+			Value = "abc",
+		};
+		var expected = new
+		{
+			Value = It.Is<int>().That.IsGreaterThan(2),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                      Actual: "abc" (string)
+		                                                    Expected: is int that is greater than 2
+		                                                """).IgnoringNewlineStyle()
+			.Because("the expectation is described completely, whatever the value was");
+	}
+
+	[Test]
+	public async Task WhenItIsMemberIsNull_ForANonNullableValueType_ShouldStillDescribeTheExpectations()
+	{
+		var actual = new
+		{
+			Value = (int?)null,
+		};
+		var expected = new
+		{
+			Value = It.Is<int>().That.IsGreaterThan(2),
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property Value differed:
+		                                                      Actual: <null>
+		                                                    Expected: is int that is greater than 2
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Test]
 	public async Task WhenItIsMemberIsNull_ShouldNotIncludeAType()
 	{
 		var actual = new

@@ -45,8 +45,9 @@ public sealed class EquivalencyExpectationBuilderTests
 		constraintResult.AppendResult(result);
 
 		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure);
-		await That(expectation.ToString()).IsEmpty()
-			.Because("the expectations on the expected type are not evaluated for a value of another type");
+		await That(expectation.ToString()).IsEqualTo("is greater than 2")
+			.Because("the expectations on the expected type are described, although they are not evaluated for a value of another type");
+		await That(sut.ToString()).IsEqualTo("is int that is greater than 2");
 		await That(result.ToString()).IsEqualTo(" was string");
 	}
 
@@ -113,8 +114,8 @@ public sealed class EquivalencyExpectationBuilderTests
 
 		await That(constraintResult.Outcome).IsEqualTo(Outcome.Failure)
 			.Because("null is no valid value of a non-nullable value type");
-		await That(expectation.ToString()).IsEmpty();
-		await That(sut.ToString()).IsEqualTo("is int");
+		await That(expectation.ToString()).IsEqualTo("is greater than 2");
+		await That(sut.ToString()).IsEqualTo("is int that is greater than 2");
 	}
 
 	[Test]

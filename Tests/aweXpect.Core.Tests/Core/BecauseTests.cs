@@ -1126,6 +1126,35 @@ public class BecauseTests
 	}
 
 	[Test]
+	public async Task WhenUsedInItIs_WhenExpectationIsForAnotherType_ShouldApplyAsyncBecauseReason()
+	{
+		var actual = new
+		{
+			Value = "abc",
+		};
+		var expected = new
+		{
+			Value = It.Is<int>().That.IsGreaterThan(2).Because(Task.FromResult<string?>("it must be large")),
+		};
+
+		async Task Act()
+			=> await That(actual).IsEquivalentTo(expected);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that actual
+			             is equivalent to expected,
+			             but it was not:
+			               Property Value differed:
+			                   Actual: "abc" (string)
+			                 Expected: is int that is greater than 2, because it must be large
+
+			             Equivalency options:
+			              - include public fields and properties
+			             """);
+	}
+
+	[Test]
 	public async Task WhenUsedInItIs_WhenExpectationIsMet_ShouldNotAwaitTheAsyncReason()
 	{
 		TaskCompletionSource<string?> becauseSource = new();
@@ -1145,6 +1174,35 @@ public class BecauseTests
 
 		async Task Evaluate()
 			=> await That(actual).IsEquivalentTo(expected);
+	}
+
+	[Test]
+	public async Task WhenUsedInItIs_WithoutExpectations_WhenValueHasAnotherType_ShouldAppendTheReasonToTheType()
+	{
+		var actual = new
+		{
+			Value = "abc",
+		};
+		var expected = new
+		{
+			Value = It.Is<int>().Because("it must be a number"),
+		};
+
+		async Task Act()
+			=> await That(actual).IsEquivalentTo(expected);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that actual
+			             is equivalent to expected,
+			             but it was not:
+			               Property Value differed:
+			                   Actual: "abc" (string)
+			                 Expected: is int, because it must be a number
+
+			             Equivalency options:
+			              - include public fields and properties
+			             """);
 	}
 
 	/// <summary>
