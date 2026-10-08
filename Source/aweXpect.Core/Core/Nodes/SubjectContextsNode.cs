@@ -55,9 +55,13 @@ internal sealed class SubjectContextsNode(Node inner, List<SubjectContext> subje
 			return isMet;
 		}
 
-		return isMet.IsCompletedSuccessfully
-			? new ValueTask<ConstraintResult>(new SubjectContextsResult<TValue>(isMet.Result, value, _subjectContexts))
-			: AwaitAndWrap(isMet, value);
+		if (!isMet.IsCompletedSuccessfully)
+		{
+			return AwaitAndWrap(isMet, value);
+		}
+
+		ConstraintResult result = isMet.Result;
+		return new ValueTask<ConstraintResult>(new SubjectContextsResult<TValue>(result, value, _subjectContexts));
 	}
 
 	private async ValueTask<ConstraintResult> AwaitAndWrap<TValue>(ValueTask<ConstraintResult> isMet, TValue? value)
