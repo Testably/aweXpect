@@ -66,6 +66,22 @@ public sealed class PrecedenceTests
 		}
 
 		[Test]
+		public async Task Not_NestedF_and_T_or_T_ShouldGroupTheNestedAndOperand()
+		{
+			async Task Act()
+				=> await That(0).DoesNotComplyWith(it => it
+					.CompliesWith(x => x.IsGreaterThan(1).And.IsLessThan(10)).Or.IsEqualTo(0));
+
+			await That(Act).Throws()
+				.WithMessage("""
+				             Expected that 0
+				             (is not greater than 1 or is not less than 10) and is not equal to 0,
+				             but it was 0
+				             """)
+				.Because("the nested expectations are grouped like the same expectations without nesting");
+		}
+
+		[Test]
 		public async Task Not_T_and_T_and_T_ShouldNotGroup()
 		{
 			async Task Act()
@@ -104,6 +120,21 @@ public sealed class PrecedenceTests
 				             Expected that true
 				             is not True and is not False and is not False,
 				             but it was True
+				             """);
+		}
+
+		[Test]
+		public async Task Not_WhoseF_and_T_or_T_ShouldGroupTheMemberAndOperand()
+		{
+			async Task Act()
+				=> await That("").DoesNotComplyWith(it => it
+					.Whose(s => s.Length, l => l.IsGreaterThan(1).And.IsLessThan(10)).Or.IsEmpty());
+
+			await That(Act).Throws()
+				.WithMessage("""
+				             Expected that ""
+				             (whose Length is not greater than 1 or is not less than 10) and is not empty,
+				             but it was ""
 				             """);
 		}
 	}
