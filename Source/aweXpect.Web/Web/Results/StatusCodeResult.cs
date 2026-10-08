@@ -22,10 +22,8 @@ public class StatusCodeResult(
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> EqualTo(
 		HttpStatusCode? expected)
 		=> new(source.Get().ExpectationBuilder
-				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammars) =>
+				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
-						expectationBuilder,
 						it, grammars,
 						expected,
 						mapper,
@@ -39,10 +37,8 @@ public class StatusCodeResult(
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> DifferentTo(
 		HttpStatusCode? unexpected)
 		=> new(source.Get().ExpectationBuilder
-				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammars) =>
+				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
-						expectationBuilder,
 						it, grammars,
 						unexpected,
 						mapper,
@@ -55,10 +51,8 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Success()
 		=> new(source.Get().ExpectationBuilder
-				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammars) =>
+				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
-						expectationBuilder,
 						it, grammars,
 						null,
 						mapper,
@@ -71,10 +65,8 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Redirection()
 		=> new(source.Get().ExpectationBuilder
-				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammars) =>
+				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
-						expectationBuilder,
 						it, grammars,
 						null,
 						mapper,
@@ -87,10 +79,8 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> ClientError()
 		=> new(source.Get().ExpectationBuilder
-				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammars) =>
+				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
-						expectationBuilder,
 						it, grammars,
 						null,
 						mapper,
@@ -103,10 +93,8 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> ServerError()
 		=> new(source.Get().ExpectationBuilder
-				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammars) =>
+				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
-						expectationBuilder,
 						it, grammars,
 						null,
 						mapper,
@@ -119,10 +107,8 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Error()
 		=> new(source.Get().ExpectationBuilder
-				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammars) =>
+				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
-						expectationBuilder,
 						it, grammars,
 						null,
 						mapper,
@@ -131,7 +117,6 @@ public class StatusCodeResult(
 			source);
 
 	internal sealed class PropertyConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		HttpStatusCode? expected,
@@ -159,9 +144,16 @@ public class StatusCodeResult(
 				return this;
 			}
 
-			expectationBuilder.AddContext(actual);
 			Outcome = Outcome.Failure;
 			return this;
+		}
+
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (Actual is not null && !Grammars.IsNegated())
+			{
+				contexts.AddContext(Actual);
+			}
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

@@ -94,7 +94,7 @@ public class HasHeaderValueResult<TType, TThat>
 	{
 		private string?[]? _headerValues;
 
-		public async Task<ConstraintResult> IsMetBy(TType? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(TType? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)

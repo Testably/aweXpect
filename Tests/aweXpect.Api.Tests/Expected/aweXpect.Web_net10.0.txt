@@ -94,7 +94,7 @@ namespace aweXpect.Web.Results
         public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithInstance(string instance) { }
         public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat> WithStatus(int status) { }
         public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithTitle(string title) { }
-        public class String : aweXpect.Results.StringEqualityResult<TType, TThat, aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String>
+        public class String : aweXpect.Results.AndOrResult<TType, TThat, aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String>, aweXpect.Core.IOptionsProvider<aweXpect.Options.StringEqualityOptions>
         {
             public String(aweXpect.Core.ExpectationBuilder expectationBuilder, TThat returnValue, aweXpect.Options.StringEqualityOptions stringEqualityOptions, aweXpect.Web.Results.ProblemDetailsOptions options) { }
             public aweXpect.Web.Results.ProblemDetailsResult<TType, TThat>.String WithDetail(string detail) { }
@@ -120,7 +120,7 @@ namespace aweXpect.Web
     public static class WebAwexpectCustomizationExtensions
     {
         public static aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomization Web(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
-        public class WebCustomization : aweXpect.Customization.ICustomizationValueUpdater<aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomizationValue>
+        public class WebCustomization
         {
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Web.ContentProcessors.IContentProcessor[]> ContentProcessors { get; }
             public aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomizationValue Get() { }

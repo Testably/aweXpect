@@ -55,6 +55,11 @@ public sealed partial class ThatHttpRequestMessage
 					             HTTP-Request:
 					               HEAD https://awexpect.com/ HTTP/1.1
 					                 x-my-header: some header
+
+					             Collection (the values):
+					             [
+					               "some header"
+					             ]
 					             """);
 			}
 

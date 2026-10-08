@@ -16,13 +16,11 @@ public static partial class ThatHttpRequestMessage
 		HasMethod(this IThat<HttpRequestMessage?> source, HttpMethod expected)
 		=> new(
 			source.Get().ExpectationBuilder
-				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammars) =>
-					new HasMethodConstraint(expectationBuilder, it, grammars, expected)),
+				.AddConstraint((it, grammars) =>
+					new HasMethodConstraint(it, grammars, expected)),
 			source);
 
 	private sealed class HasMethodConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		HttpMethod expected)
@@ -40,13 +38,20 @@ public static partial class ThatHttpRequestMessage
 
 			if (actual.Method != expected)
 			{
-				expectationBuilder.AddContext(actual);
 				Outcome = Outcome.Failure;
 				return this;
 			}
 
 			Outcome = Outcome.Success;
 			return this;
+		}
+
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (Actual is not null && !Grammars.IsNegated())
+			{
+				contexts.AddContext(Actual);
+			}
 		}
 
 		public override string ToString()

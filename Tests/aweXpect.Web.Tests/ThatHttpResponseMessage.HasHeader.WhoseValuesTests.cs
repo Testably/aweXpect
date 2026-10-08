@@ -57,6 +57,11 @@ public sealed partial class ThatHttpResponseMessage
 					               200 OK HTTP/1.1
 					                 x-my-header: some header
 					                 Content-Type: text/plain; charset=utf-8
+
+					             Collection (the values):
+					             [
+					               "some header"
+					             ]
 					             """);
 			}
 

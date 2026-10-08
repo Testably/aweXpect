@@ -10,6 +10,12 @@ internal static class ThatExtensions
 	private const string HttpRequestContext = "HTTP-Request";
 	private const string HttpResponseContext = "HTTP-Response";
 
+	public static readonly Action<HttpRequestMessage, ResultContextCollector> RequestContexts
+		= (request, contexts) => contexts.AddContext(request);
+
+	public static readonly Action<HttpResponseMessage, ResultContextCollector> ResponseContexts
+		= (response, contexts) => contexts.AddContext(response);
+
 	[ExcludeFromCodeCoverage]
 	public static IExpectThat<T> Get<T>(this IThat<T> subject)
 	{
@@ -21,38 +27,20 @@ internal static class ThatExtensions
 		throw new NotSupportedException("IThat<T> must also implement IExpectThat<T>");
 	}
 
-	public static ExpectationBuilder AddContext(this ExpectationBuilder expectationBuilder, HttpRequestMessage request)
-		=> expectationBuilder.UpdateContexts(contexts => contexts
-			.Open()
-			.Clear()
-			.Add(new ResultContext.AsyncCallback(HttpRequestContext,
-				async cancellationToken
-					=> await HttpFormatter.Format(request, "  ", cancellationToken)))
-			.Close());
+	public static void AddContext(this ResultContextCollector contexts, HttpRequestMessage request)
+		=> contexts.Add(new ResultContext.AsyncCallback(HttpRequestContext,
+			async cancellationToken
+				=> await HttpFormatter.Format(request, "  ", cancellationToken)));
 
-	public static ExpectationBuilder AddContext(this ExpectationBuilder expectationBuilder,
-		HttpResponseMessage response)
+	public static void AddContext(this ResultContextCollector contexts, HttpResponseMessage response)
 	{
-		if (response.RequestMessage is null)
+		if (response.RequestMessage is not null)
 		{
-			return expectationBuilder.UpdateContexts(contexts => contexts
-				.Open()
-				.Clear()
-				.Add(new ResultContext.AsyncCallback(HttpResponseContext,
-					async cancellationToken
-						=> await HttpFormatter.Format(response, "  ", cancellationToken)))
-				.Close());
+			contexts.AddContext(response.RequestMessage);
 		}
 
-		return expectationBuilder.UpdateContexts(contexts => contexts
-			.Open()
-			.Clear()
-			.Add(new ResultContext.AsyncCallback(HttpRequestContext,
-				async cancellationToken
-					=> await HttpFormatter.Format(response.RequestMessage, "  ", cancellationToken)))
-			.Add(new ResultContext.AsyncCallback(HttpResponseContext,
-				async cancellationToken
-					=> await HttpFormatter.Format(response, "  ", cancellationToken)))
-			.Close());
+		contexts.Add(new ResultContext.AsyncCallback(HttpResponseContext,
+			async cancellationToken
+				=> await HttpFormatter.Format(response, "  ", cancellationToken)));
 	}
 }

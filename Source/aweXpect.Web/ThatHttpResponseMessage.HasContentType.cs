@@ -27,15 +27,13 @@ public static partial class ThatHttpResponseMessage
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			source.Get().ExpectationBuilder
-				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammars) =>
-					new HasContentTypeConstraint(expectationBuilder, it, grammars, expected, options)),
+				.AddConstraint((it, grammars) =>
+					new HasContentTypeConstraint(it, grammars, expected, options)),
 			source,
 			options);
 	}
 
 	private sealed class HasContentTypeConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
@@ -45,7 +43,7 @@ public static partial class ThatHttpResponseMessage
 	{
 		private string? _contentType;
 
-		public async Task<ConstraintResult> IsMetBy(HttpResponseMessage? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(HttpResponseMessage? actual, CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual == null)
@@ -56,20 +54,26 @@ public static partial class ThatHttpResponseMessage
 
 			if (!actual.Content.TryGetMediaType(out _contentType))
 			{
-				expectationBuilder.AddContext(actual);
 				Outcome = Outcome.Failure;
 				return this;
 			}
 
 			if (!await options.AreConsideredEqual(_contentType, expected))
 			{
-				expectationBuilder.AddContext(actual);
 				Outcome = Outcome.Failure;
 				return this;
 			}
 
 			Outcome = Outcome.Success;
 			return this;
+		}
+
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (Actual is not null && !Grammars.IsNegated())
+			{
+				contexts.AddContext(Actual);
+			}
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

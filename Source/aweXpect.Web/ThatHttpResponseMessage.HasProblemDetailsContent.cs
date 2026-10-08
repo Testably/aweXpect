@@ -41,16 +41,14 @@ public static partial class ThatHttpResponseMessage
 		ProblemDetailsOptions options = new();
 		return new ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String(
 			source.Get().ExpectationBuilder
-				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammars) =>
-					new HasProblemDetailsConstraint(expectationBuilder, it, grammars, type, options, typeOptions)),
+				.AddConstraint((it, grammars) =>
+					new HasProblemDetailsConstraint(it, grammars, type, options, typeOptions)),
 			source,
 			typeOptions,
 			options);
 	}
 
 	private sealed class HasProblemDetailsConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string? expectedType,
@@ -61,7 +59,7 @@ public static partial class ThatHttpResponseMessage
 	{
 		private readonly List<string> _failures = [];
 
-		public async Task<ConstraintResult> IsMetBy(
+		public async ValueTask<ConstraintResult> IsMetBy(
 			HttpResponseMessage? actual,
 			CancellationToken cancellationToken)
 		{
@@ -121,7 +119,6 @@ public static partial class ThatHttpResponseMessage
 
 			if (_failures.Any())
 			{
-				expectationBuilder.AddContext(actual);
 				Outcome = Outcome.Failure;
 				return this;
 			}
@@ -138,6 +135,14 @@ public static partial class ThatHttpResponseMessage
 			}
 
 			return null;
+		}
+
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (Actual is not null && !Grammars.IsNegated())
+			{
+				contexts.AddContext(Actual);
+			}
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

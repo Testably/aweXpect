@@ -73,11 +73,14 @@ public class ProblemDetailsResult<TType, TThat>(
 		TThat returnValue,
 		StringEqualityOptions stringEqualityOptions,
 		ProblemDetailsOptions options)
-		: StringEqualityResult<TType, TThat, String>(expectationBuilder, returnValue,
-			stringEqualityOptions)
+		: AndOrResult<TType, TThat, String>(expectationBuilder, returnValue),
+			IOptionsProvider<StringEqualityOptions>
 	{
 		private readonly ExpectationBuilder _expectationBuilder = expectationBuilder;
 		private readonly TThat _returnValue = returnValue;
+
+		/// <inheritdoc cref="IOptionsProvider{TOptions}.Options" />
+		StringEqualityOptions IOptionsProvider<StringEqualityOptions>.Options => stringEqualityOptions;
 
 		/// <summary>
 		///     Verify that the title of the problem details object matches the expected <paramref name="title" />.

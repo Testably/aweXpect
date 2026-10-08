@@ -18,9 +18,8 @@ public static partial class ThatHttpRequestMessage
 		HasRequestUri(this IThat<HttpRequestMessage?> source, string expected)
 		=> new(
 			source.Get().ExpectationBuilder
-				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammars) =>
-					new HasRequestUriConstraint(expectationBuilder, it, grammars, new Uri(expected).ToString())),
+				.AddConstraint((it, grammars) =>
+					new HasRequestUriConstraint(it, grammars, new Uri(expected).ToString())),
 			source);
 
 	/// <summary>
@@ -31,13 +30,11 @@ public static partial class ThatHttpRequestMessage
 		HasRequestUri(this IThat<HttpRequestMessage?> source, Uri expected)
 		=> new(
 			source.Get().ExpectationBuilder
-				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammars) =>
-					new HasRequestUriConstraint(expectationBuilder, it, grammars, expected.ToString())),
+				.AddConstraint((it, grammars) =>
+					new HasRequestUriConstraint(it, grammars, expected.ToString())),
 			source);
 
 	private sealed class HasRequestUriConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string expected)
@@ -55,7 +52,6 @@ public static partial class ThatHttpRequestMessage
 				return this;
 			}
 
-			expectationBuilder.AddContext(actual);
 			_requestUri = actual.RequestUri?.ToString();
 			if (_requestUri?.Equals(expected, StringComparison.OrdinalIgnoreCase) == true)
 			{
@@ -65,6 +61,14 @@ public static partial class ThatHttpRequestMessage
 
 			Outcome = Outcome.Failure;
 			return this;
+		}
+
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (Actual is not null)
+			{
+				contexts.AddContext(Actual);
+			}
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

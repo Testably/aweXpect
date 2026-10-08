@@ -22,9 +22,8 @@ public static partial class ThatHttpRequestMessage
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			source.Get().ExpectationBuilder
-				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammars) =>
-					new HasContentConstraint(expectationBuilder, it, grammars, expected, options)),
+				.AddConstraint((it, grammars) =>
+					new HasContentConstraint(it, grammars, expected, options)),
 			source,
 			options);
 	}
@@ -38,13 +37,9 @@ public static partial class ThatHttpRequestMessage
 		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			expectationBuilder
-				.UpdateContexts(c => c.Close())
+				.AddSubjectContexts(ThatExtensions.RequestContexts)
 				.ForAsyncMember(MemberAccessor<HttpRequestMessage, Task<string?>>.FromFunc(
-						async m =>
-						{
-							expectationBuilder.AddContext(m);
-							return m.Content == null ? null : await m.Content.ReadAsStringAsync();
-						},
+						async m => m.Content == null ? null : await m.Content.ReadAsStringAsync(),
 						" the string content"),
 					(_, stringBuilder) => stringBuilder.Append("has a string content which "))
 				.AddExpectations(e => expectations(new ThatSubject<string?>(e)),
@@ -53,7 +48,6 @@ public static partial class ThatHttpRequestMessage
 	}
 
 	private sealed class HasContentConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string expected,
@@ -63,7 +57,7 @@ public static partial class ThatHttpRequestMessage
 	{
 		private string? _message;
 
-		public async Task<ConstraintResult> IsMetBy(
+		public async ValueTask<ConstraintResult> IsMetBy(
 			HttpRequestMessage? actual,
 			CancellationToken cancellationToken)
 		{
@@ -76,7 +70,6 @@ public static partial class ThatHttpRequestMessage
 
 			if (actual.Content is null)
 			{
-				expectationBuilder.AddContext(actual);
 				Outcome = Outcome.Failure;
 				return this;
 			}
@@ -92,9 +85,16 @@ public static partial class ThatHttpRequestMessage
 				return this;
 			}
 
-			expectationBuilder.AddContext(actual);
 			Outcome = Outcome.Failure;
 			return this;
+		}
+
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (Actual is not null && !Grammars.IsNegated())
+			{
+				contexts.AddContext(Actual);
+			}
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

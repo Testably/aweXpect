@@ -14,7 +14,6 @@ public static partial class ThatHttpResponseMessage
 	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
 		HasRequestMessage(this IThat<HttpResponseMessage?> source, Action<IThat<HttpRequestMessage>> expectations)
 		=> new(source.Get().ExpectationBuilder
-				.UpdateContexts(c => c.Close())
 				.ForMember(MemberAccessor<HttpResponseMessage?, HttpRequestMessage?>.FromFunc(
 						response => response?.RequestMessage,
 						"has a request message which "),

@@ -31,7 +31,7 @@ public static class WebAwexpectCustomizationExtensions
 	/// <summary>
 	///     Customize the Web settings.
 	/// </summary>
-	public class WebCustomization : ICustomizationValueUpdater<WebCustomizationValue>
+	public class WebCustomization
 	{
 		private readonly IAwexpectCustomization _awexpectCustomization;
 
@@ -49,12 +49,15 @@ public static class WebAwexpectCustomizationExtensions
 		/// <inheritdoc cref="WebCustomizationValue.ContentProcessors" />
 		public ICustomizationValueSetter<IContentProcessor[]> ContentProcessors { get; }
 
-		/// <inheritdoc cref="ICustomizationValueUpdater{WebCustomizationValue}.Get()" />
+		/// <summary>
+		///     Get the stored <see cref="WebCustomizationValue" />.
+		/// </summary>
 		public WebCustomizationValue Get()
 			=> _awexpectCustomization.Get(nameof(Web), new WebCustomizationValue());
 
-		/// <inheritdoc
-		///     cref="ICustomizationValueUpdater{WebCustomizationValue}.Update(Func{WebCustomizationValue,WebCustomizationValue})" />
+		/// <summary>
+		///     Update the stored <see cref="WebCustomizationValue" />.
+		/// </summary>
 		public CustomizationLifetime Update(Func<WebCustomizationValue, WebCustomizationValue> update)
 			=> _awexpectCustomization.Set(nameof(Web), update(Get()));
 	}

@@ -19,9 +19,9 @@ public static partial class ThatHttpRequestMessage
 		this IThat<HttpRequestMessage?> source,
 		string expected)
 		=> new(source.Get().ExpectationBuilder
-				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammars) =>
-					new HasHeaderConstraint(expectationBuilder, it, grammars, expected)),
+				.AddSubjectContexts(ThatExtensions.RequestContexts)
+				.AddConstraint((it, grammars) =>
+					new HasHeaderConstraint(it, grammars, expected)),
 			source,
 			a => a.Headers.TryGetValues(expected, out IEnumerable<string>? values) ? values.ToArray() : null);
 
@@ -32,13 +32,12 @@ public static partial class ThatHttpRequestMessage
 		this IThat<HttpRequestMessage?> source,
 		string unexpected)
 		=> new(source.Get().ExpectationBuilder
-				.UpdateContexts(c => c.Close())
-				.AddConstraint((expectationBuilder, it, grammars) =>
-					new HasHeaderConstraint(expectationBuilder, it, grammars, unexpected).Invert()),
+				.AddSubjectContexts(ThatExtensions.RequestContexts)
+				.AddConstraint((it, grammars) =>
+					new HasHeaderConstraint(it, grammars, unexpected).Invert()),
 			source);
 
 	private sealed class HasHeaderConstraint(
-		ExpectationBuilder expectationBuilder,
 		string it,
 		ExpectationGrammars grammars,
 		string expected)
@@ -57,7 +56,6 @@ public static partial class ThatHttpRequestMessage
 				return this;
 			}
 
-			expectationBuilder.AddContext(actual);
 			if (actual.Headers.TryGetValues(expected, out _foundHeader))
 			{
 				Outcome = Outcome.Success;
