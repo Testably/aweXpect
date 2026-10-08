@@ -158,8 +158,10 @@ After an expectation that a `null` subject can never satisfy, such as `IsNotNull
 suppression IDs `aweXpect1001` to `aweXpect1004`. The subject has to be a local variable or a parameter that is
 neither a `ref` nor a parameter of a primary constructor, which any member can write to, and the expectation has to be
 awaited or verified in a preceding statement in the same method, local function or lambda, without a branch, a label
-or a write to the subject in between. A `ref` alias of the subject prevents the suppression, as it can change the
-subject unnoticed. Only the warnings are suppressed; the null state of the compiler is unchanged.
+or a write to the subject in that statement or in between. Assigning the result of an expectation to its own subject,
+as in `subject = await Expect.That(subject).IsNotNull();`, does not count as a write, because the result is the
+subject. A `ref` alias of the subject prevents the suppression, as it can change the subject unnoticed. Only the
+warnings are suppressed; the null state of the compiler is unchanged.
 Expectations of extension packages take part when they are marked with `[GuaranteesNotNull]`, see
 [nullability warnings](./11-extending/02-constraints-and-results.md#nullability-warnings).
 

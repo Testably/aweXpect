@@ -925,6 +925,132 @@ public class IsNotNullSuppressorTests
 		);
 
 	[Test]
+	public async Task WhenSubjectIsAssignedAMemberOfTheExpectationResult_ShouldNotSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class Node
+			{
+			    public Node? Next;
+			    public int Value;
+			}
+
+			public class MyClass
+			{
+			    public async Task MyTest(Node? subject)
+			    {
+			        subject = (await Expect.That(subject).IsNotNull()).Next;
+			        _ = {|#0:subject|}.Value;
+			    }
+			}
+			""",
+			NotSuppressedNullabilityWarning()
+		);
+
+	[Test]
+	public async Task WhenSubjectIsAssignedTheExpectationResult_ShouldSuppressWarning() => await Verifier
+		.VerifySuppressorAsync(
+			"""
+			using System.Threading.Tasks;
+			using aweXpect;
+
+			public class MyClass
+			{
+			    public async Task MyTest(string? subject)
+			    {
+			        subject = await Expect.That(subject).IsNotNull().And.IsNotEqualTo("foo");
+			        _ = {|#0:subject|}.Length;
+			    }
+			}
+			""",
+			SuppressedNullabilityWarning()
+		);
+
+	[Test]
+	public async Task WhenSubjectIsAssignedTheExpectationResultAfterExpectation_ShouldSuppressWarning()
+		=> await Verifier
+			.VerifySuppressorAsync(
+				"""
+				using System.Threading.Tasks;
+				using aweXpect;
+
+				public class MyClass
+				{
+				    public async Task MyTest(string? subject)
+				    {
+				        await Expect.That(subject).IsNotNull();
+				        subject = await Expect.That(subject).IsNotEqualTo("foo");
+				        _ = {|#0:subject|}.Length;
+				    }
+				}
+				""",
+				SuppressedNullabilityWarning()
+			);
+
+	[Test]
+	public async Task WhenSubjectIsAssignedTheExpectationResultOfAnotherSubject_ShouldNotSuppressWarning()
+		=> await Verifier
+			.VerifySuppressorAsync(
+				"""
+				using System.Threading.Tasks;
+				using aweXpect;
+
+				public class MyClass
+				{
+				    public async Task MyTest(string? subject, string? other)
+				    {
+				        string value = await Expect.That(subject).IsNotNull(), copy = subject = await Expect.That(other).IsNotEqualTo("foo");
+				        _ = {|#0:subject|}.Length;
+				    }
+				}
+				""",
+				DiagnosticResult.CompilerWarning("CS8600").WithSpan(8, 71, 8, 125),
+				NotSuppressedNullabilityWarning()
+			);
+
+	[Test]
+	public async Task WhenSubjectIsAssignedTheStaticallyVerifiedExpectationResult_ShouldSuppressWarning()
+		=> await Verifier
+			.VerifySuppressorAsync(
+				"""
+				using aweXpect;
+				using aweXpect.Synchronous;
+
+				public class MyClass
+				{
+				    public void MyTest(string? subject)
+				    {
+				        subject = Synchronously.Verify(Expect.That(subject).IsNotNull().And.IsNotEqualTo("foo"));
+				        _ = {|#0:subject|}.Length;
+				    }
+				}
+				""",
+				SuppressedNullabilityWarning()
+			);
+
+	[Test]
+	public async Task WhenSubjectIsAssignedTheSynchronouslyVerifiedExpectationResult_ShouldSuppressWarning()
+		=> await Verifier
+			.VerifySuppressorAsync(
+				"""
+				using aweXpect;
+				using aweXpect.Synchronous;
+
+				public class MyClass
+				{
+				    public void MyTest(string? subject)
+				    {
+				        subject = Expect.That(subject).IsNotNull().And.IsNotEqualTo("foo").VerifySynchronously();
+				        _ = {|#0:subject|}.Length;
+				    }
+				}
+				""",
+				SuppressedNullabilityWarning()
+			);
+
+	[Test]
 	public async Task WhenSubjectIsAssignedToNonNullable_ShouldSuppressWarning() => await Verifier
 		.VerifySuppressorAsync(
 			"""
@@ -1443,6 +1569,55 @@ public class IsNotNullSuppressorTests
 			""",
 			NotSuppressedNullabilityWarning()
 		);
+
+	[Test]
+	public async Task WhenSubjectIsWrittenInStatementOfExpectationByArgument_ShouldNotSuppressWarning()
+		=> await Verifier
+			.VerifySuppressorAsync(
+				"""
+				using System.Threading.Tasks;
+				using aweXpect;
+
+				public class MyClass
+				{
+				    public async Task MyTest(string? subject)
+				    {
+				        await Expect.That(subject).IsNotNull().Because(Clear(out subject));
+				        _ = {|#0:subject|}.Length;
+				    }
+
+				    private static string Clear(out string? value)
+				    {
+				        value = null;
+				        return "foo";
+				    }
+				}
+				""",
+				NotSuppressedNullabilityWarning()
+			);
+
+	[Test]
+	public async Task WhenSubjectIsWrittenInStatementOfExpectationByDeclarator_ShouldNotSuppressWarning()
+		=> await Verifier
+			.VerifySuppressorAsync(
+				"""
+				using System.Threading.Tasks;
+				using aweXpect;
+
+				public class MyClass
+				{
+				    public async Task MyTest(string? subject)
+				    {
+				        string value = await Expect.That(subject).IsNotNull(), other = subject = Create();
+				        _ = {|#0:subject|}.Length;
+				    }
+
+				    private static string? Create() => null;
+				}
+				""",
+				DiagnosticResult.CompilerWarning("CS8600").WithSpan(8, 72, 8, 90),
+				NotSuppressedNullabilityWarning()
+			);
 
 	[Test]
 	public async Task WhenSubjectIsWrittenInTopLevelLambda_ShouldNotSuppressWarning() => await Verifier
