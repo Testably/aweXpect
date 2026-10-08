@@ -909,6 +909,12 @@ public class ExpectTests
 			=> Task.CompletedTask;
 
 		internal override void UseTimeSystem(ITimeSystem timeSystem) { }
+
+		internal override void AddRemainingCancellations(
+			List<aweXpect.Core.EvaluationContext.EvaluationCancellation> cancellations)
+		{
+			// Nothing limits how long the contexts are awaited.
+		}
 	}
 
 	/// <summary>

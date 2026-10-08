@@ -37,19 +37,27 @@ public abstract class ResultContext
 	public abstract Task<string?> GetContent(CancellationToken cancellationToken = default);
 
 	/// <summary>
-	///     The content of the context, or <see langword="null" /> when code of the caller throws while it is created.
+	///     The content of the context, or <see langword="null" /> when code of the caller throws while it is created or
+	///     when it is not available.
 	/// </summary>
 	/// <remarks>
 	///     The exception already failed the expectation, e.g. when a context lists the items of a subject whose
-	///     enumeration threw, so it must not abort the failure message.
+	///     enumeration threw, so it must not abort the failure message.<br />
+	///     A content that is still pending when the <paramref name="cancellationToken" /> is canceled is abandoned. It is
+	///     not available then, like a content whose creation is canceled, because the failure of the expectation must
+	///     be reported nevertheless.
 	/// </remarks>
 	internal async Task<string?> GetContentUnlessUserCodeThrows(CancellationToken cancellationToken)
 	{
 		try
 		{
-			return await GetContent(cancellationToken);
+			return await GetContent(cancellationToken).AbandonOnCancellation(cancellationToken);
 		}
 		catch (UserCodeException)
+		{
+			return null;
+		}
+		catch (OperationCanceledException)
 		{
 			return null;
 		}
@@ -79,6 +87,11 @@ public abstract class ResultContext
 	/// <summary>
 	///     A <see cref="ResultContext" /> from an async callback.
 	/// </summary>
+	/// <remarks>
+	///     The callback receives a token that is canceled when the timeout of the expectation elapses or the evaluation
+	///     is canceled. A callback that is still pending then is not awaited any longer, and the failure message is
+	///     created without the context, like for a callback that throws an <see cref="OperationCanceledException" />.
+	/// </remarks>
 	public class AsyncCallback : ResultContext
 	{
 		private readonly Func<CancellationToken, Task<string?>> _callback;
