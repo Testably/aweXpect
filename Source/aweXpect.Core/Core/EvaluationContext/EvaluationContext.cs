@@ -17,6 +17,7 @@ internal class EvaluationContext : IEvaluationContext
 	private int _nestingDepth;
 	private List<AsyncBecauseReason>? _pendingReasons;
 	private List<Action>? _releases;
+	private EvaluationContext? _repeatedBy;
 	private Dictionary<string, object?>? _store;
 
 	/// <summary>
@@ -74,8 +75,20 @@ internal class EvaluationContext : IEvaluationContext
 	///     Registers the <paramref name="release" /> of a resource that the evaluation, including its failure message,
 	///     still uses, so that it is released together with the materialized sources of this context.
 	/// </summary>
+	/// <remarks>
+	///     The context of a check of a repeated check registers it in the context that started the check, because the
+	///     evaluation goes on with the next check, which still uses the resource.
+	/// </remarks>
 	public void ReleaseWithEvaluation(Action release)
-		=> (_releases ??= []).Add(release);
+	{
+		if (_repeatedBy is not null)
+		{
+			_repeatedBy.ReleaseWithEvaluation(release);
+			return;
+		}
+
+		(_releases ??= []).Add(release);
+	}
 
 	/// <summary>
 	///     Registers the <paramref name="reason" /> of a met expectation, which the failure message still shows when an
@@ -198,6 +211,7 @@ internal class EvaluationContext : IEvaluationContext
 		{
 			Cancellation = Cancellation,
 			TimeSystem = TimeSystem,
+			_repeatedBy = this,
 		};
 		_checks ??= [];
 		if (previous is null)

@@ -604,6 +604,75 @@ public sealed class EventRecordingTests
 	}
 
 	[Test]
+	public async Task WhenCompliesWithIsRepeated_ShouldRecordAnEventThatArrivesAfterSeveralChecks()
+	{
+		VirtualTimeSystem timeSystem = new();
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		Func<IEventRecording<CustomEventClass>, bool> raisesTheEvent = RaisesTheEventInCheck(sut, 5);
+
+		async Task Act()
+			=> await That(recording)
+				.CompliesWith(r => r.Satisfies(raisesTheEvent).And.Triggered(nameof(CustomEventClass.CustomEvent)))
+				.Within(TimeSpan.FromSeconds(1)).CheckEvery(TimeSpan.FromMilliseconds(100))
+				.WithTimeSystem(timeSystem);
+
+		await That(Act).DoesNotThrow()
+			.Because("the repeated checks of one expectation share the recording until its evaluation ends");
+		await That(timeSystem.Now).IsEqualTo(TimeSpan.FromMilliseconds(400))
+			.Because("the fifth check recorded the event");
+		await That(sut.HasSubscribers()).IsFalse()
+			.Because("the recording stops when the evaluation of the whole expectation ends");
+	}
+
+	[Test]
+	public async Task WhenCompliesWithIsRepeated_WhenTheEventIsNeverTriggered_ShouldFailAfterTheTimeout()
+	{
+		VirtualTimeSystem timeSystem = new();
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+
+		async Task Act()
+			=> await That(recording)
+				.CompliesWith(r => r.Triggered(nameof(CustomEventClass.CustomEvent)))
+				.Within(TimeSpan.FromSeconds(1)).CheckEvery(TimeSpan.FromMilliseconds(100))
+				.WithTimeSystem(timeSystem);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that recording
+			             has recorded the CustomEvent event on sut at least once within 0:01,
+			             but it was never recorded
+			             """)
+			.Because("every check until the timeout reads the recording that is still running");
+		await That(timeSystem.Now).IsEqualTo(TimeSpan.FromSeconds(1));
+		await That(sut.HasSubscribers()).IsFalse()
+			.Because("the recording stops when the evaluation of the whole expectation ends");
+	}
+
+	[Test]
+	public async Task WhenCompliesWithIsRepeated_WithAFurtherExpectation_ShouldThrowInvalidOperationException()
+	{
+		VirtualTimeSystem timeSystem = new();
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		Func<IEventRecording<CustomEventClass>, bool> raisesTheEvent = RaisesTheEventInCheck(sut, 5);
+		await That(recording)
+			.CompliesWith(r => r.Satisfies(raisesTheEvent).And.Triggered(nameof(CustomEventClass.CustomEvent)))
+			.Within(TimeSpan.FromSeconds(1)).CheckEvery(TimeSpan.FromMilliseconds(100))
+			.WithTimeSystem(timeSystem);
+
+		async Task Act()
+			=> await That(recording).Triggered(nameof(CustomEventClass.CustomEvent));
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage(
+				"The recording was already stopped. Use .UntilDisposed() to keep recording across multiple expectations.")
+			.AsSuffix()
+			.Because("the recording is stopped once the evaluation of the repeated checks ended");
+	}
+
+	[Test]
 	public async Task WhenDisposed_ShouldStopListening()
 	{
 		CustomEventClass subject = new();
@@ -654,6 +723,54 @@ public sealed class EventRecordingTests
 		await That(Act).Throws<InvalidOperationException>()
 			.WithMessage("The recording was already disposed.").AsSuffix()
 			.Because("a disposed recording is detached and would answer from its frozen queue");
+	}
+
+	[Test]
+	public async Task WhenDoesNotComplyWithIsRepeated_ShouldRecordAnEventThatArrivesAfterSeveralChecks()
+	{
+		VirtualTimeSystem timeSystem = new();
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+		Func<IEventRecording<CustomEventClass>, bool> raisesTheEvent = RaisesTheEventInCheck(sut, 5);
+
+		async Task Act()
+			=> await That(recording)
+				.DoesNotComplyWith(r
+					=> r.Satisfies(raisesTheEvent).And.DidNotTrigger(nameof(CustomEventClass.CustomEvent)))
+				.Within(TimeSpan.FromSeconds(1)).CheckEvery(TimeSpan.FromMilliseconds(100))
+				.WithTimeSystem(timeSystem);
+
+		await That(Act).DoesNotThrow()
+			.Because("the repeated checks of one expectation share the recording until its evaluation ends");
+		await That(timeSystem.Now).IsEqualTo(TimeSpan.FromMilliseconds(400))
+			.Because("the fifth check recorded the event");
+		await That(sut.HasSubscribers()).IsFalse()
+			.Because("the recording stops when the evaluation of the whole expectation ends");
+	}
+
+	[Test]
+	public async Task WhenDoesNotComplyWithIsRepeated_WhenTheEventIsNeverTriggered_ShouldFailAfterTheTimeout()
+	{
+		VirtualTimeSystem timeSystem = new();
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+
+		async Task Act()
+			=> await That(recording)
+				.DoesNotComplyWith(r => r.DidNotTrigger(nameof(CustomEventClass.CustomEvent)))
+				.Within(TimeSpan.FromSeconds(1)).CheckEvery(TimeSpan.FromMilliseconds(100))
+				.WithTimeSystem(timeSystem);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that recording
+			             has recorded the CustomEvent event on sut at least once within 0:01,
+			             but it was never recorded
+			             """)
+			.Because("every check until the timeout reads the recording that is still running");
+		await That(timeSystem.Now).IsEqualTo(TimeSpan.FromSeconds(1));
+		await That(sut.HasSubscribers()).IsFalse()
+			.Because("the recording stops when the evaluation of the whole expectation ends");
 	}
 
 	[Test]
@@ -1194,6 +1311,24 @@ public sealed class EventRecordingTests
 
 		await That(recording).Triggered(nameof(CustomEventClass.CustomEvent)).Twice()
 			.Because("a recording of a single event keeps counting until it is disposed as well");
+	}
+
+	/// <summary>
+	///     A predicate that raises the event when it is called for the given <paramref name="check" /> of a repeated
+	///     check, so that the event deterministically arrives after the previous checks were made.
+	/// </summary>
+	private static Func<IEventRecording<CustomEventClass>, bool> RaisesTheEventInCheck(CustomEventClass sut, int check)
+	{
+		int checks = 0;
+		return _ =>
+		{
+			if (++checks == check)
+			{
+				sut.NotifyCustomEvent(1);
+			}
+
+			return true;
+		};
 	}
 
 	/// <remarks>

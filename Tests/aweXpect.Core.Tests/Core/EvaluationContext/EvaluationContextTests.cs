@@ -107,6 +107,24 @@ public class EvaluationContextTests
 	}
 
 	[Test]
+	public async Task StartCheck_ShouldKeepTheResourcesOfThePreviousCheckUntilTheEvaluationIsReleased()
+	{
+		Context context = new();
+		Context previous = await context.StartCheck(null);
+		int releaseCount = 0;
+		previous.ReleaseWithEvaluation(() => releaseCount++);
+
+		await context.StartCheck(previous);
+		int releaseCountInTheNextCheck = releaseCount;
+		await context.ReleaseMaterializations();
+
+		await That(releaseCountInTheNextCheck).IsEqualTo(0)
+			.Because("the next check of the same evaluation still uses the resource");
+		await That(releaseCount).IsEqualTo(1)
+			.Because("the resource is released together with the evaluation");
+	}
+
+	[Test]
 	public async Task StartCheck_ShouldKeepTheTimeSystem()
 	{
 		VirtualTimeSystem timeSystem = new();
