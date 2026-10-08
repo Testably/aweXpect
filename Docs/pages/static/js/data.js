@@ -4464,6 +4464,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:14:00 2026 \u002B0200",
         "message": "fix: show the whole string difference when the minimum number of characters after it is close to \u0060int.MaxValue\u0060 (#1741)"
+      },
+      {
+        "sha": "93d22f80c1c71b9006b4950886cc204fc899957c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:23:23 2026 \u002B0200",
+        "message": "fix: do not suppress nullability warnings when the statement of the expectation overwrites the subject (#1742)"
       }
     ],
     "labels": [
@@ -5210,7 +5216,8 @@ window.BENCHMARK_DATA = {
       "998fbcba",
       "464696d1",
       "1f967b58",
-      "7e4f4bdb"
+      "7e4f4bdb",
+      "93d22f80"
     ],
     "datasets": [
       {
@@ -5960,7 +5967,8 @@ window.BENCHMARK_DATA = {
           128.40656195368086,
           129.95676968778884,
           113.32764115333558,
-          66.53406296571096
+          66.53406296571096,
+          66.4655506152373
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6703,6 +6711,7 @@ window.BENCHMARK_DATA = {
           408,
           408,
           408,
+          416,
           416,
           416,
           416,
@@ -7473,7 +7482,8 @@ window.BENCHMARK_DATA = {
           251.95767988477434,
           253.325025338393,
           214.36865857669287,
-          131.16207806880658
+          131.16207806880658,
+          137.37846938769022
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8228,6 +8238,7 @@ window.BENCHMARK_DATA = {
           952,
           952,
           952,
+          952,
           952
         ],
         "borderColor": "#FF671B",
@@ -8267,7 +8278,8 @@ window.BENCHMARK_DATA = {
           198.2337419305529,
           196.85899329185486,
           155.83144919077554,
-          104.81408194984708
+          104.81408194984708,
+          101.78973456791469
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8279,6 +8291,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -12319,6 +12332,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:14:00 2026 \u002B0200",
         "message": "fix: show the whole string difference when the minimum number of characters after it is close to \u0060int.MaxValue\u0060 (#1741)"
+      },
+      {
+        "sha": "93d22f80c1c71b9006b4950886cc204fc899957c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:23:23 2026 \u002B0200",
+        "message": "fix: do not suppress nullability warnings when the statement of the expectation overwrites the subject (#1742)"
       }
     ],
     "labels": [
@@ -12988,7 +13007,8 @@ window.BENCHMARK_DATA = {
       "998fbcba",
       "464696d1",
       "1f967b58",
-      "7e4f4bdb"
+      "7e4f4bdb",
+      "93d22f80"
     ],
     "datasets": [
       {
@@ -13661,7 +13681,8 @@ window.BENCHMARK_DATA = {
           110850.44731445312,
           107334.43834635416,
           81620.06673490084,
-          57385.43886311849
+          57385.43886311849,
+          56402.536712646484
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14338,6 +14359,7 @@ window.BENCHMARK_DATA = {
           16296,
           16296,
           16296,
+          16416,
           16416,
           16416
         ],
@@ -15020,7 +15042,8 @@ window.BENCHMARK_DATA = {
           2412160.971454327,
           2272112.578450521,
           1895705.8462611607,
-          1278281.2455357143
+          1278281.2455357143,
+          1199900.2127403845
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15698,6 +15721,7 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841647,
+          4841647,
           4841647
         ],
         "borderColor": "#FF671B",
@@ -15737,7 +15761,8 @@ window.BENCHMARK_DATA = {
           198374.70086669922,
           191173.42393391926,
           155007.42360276444,
-          106659.08858816964
+          106659.08858816964,
+          105803.7771077474
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -15749,6 +15774,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -20251,6 +20277,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:14:00 2026 \u002B0200",
         "message": "fix: show the whole string difference when the minimum number of characters after it is close to \u0060int.MaxValue\u0060 (#1741)"
+      },
+      {
+        "sha": "93d22f80c1c71b9006b4950886cc204fc899957c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:23:23 2026 \u002B0200",
+        "message": "fix: do not suppress nullability warnings when the statement of the expectation overwrites the subject (#1742)"
       }
     ],
     "labels": [
@@ -20997,7 +21029,8 @@ window.BENCHMARK_DATA = {
       "998fbcba",
       "464696d1",
       "1f967b58",
-      "7e4f4bdb"
+      "7e4f4bdb",
+      "93d22f80"
     ],
     "datasets": [
       {
@@ -21747,7 +21780,8 @@ window.BENCHMARK_DATA = {
           253.27509797414143,
           269.18895077705383,
           206.6404625415802,
-          139.98197344144185
+          139.98197344144185,
+          148.36709238688152
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22490,6 +22524,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          608,
           608,
           608,
           608,
@@ -23260,7 +23295,8 @@ window.BENCHMARK_DATA = {
           511.3131476084391,
           522.5753299713135,
           416.6107168197632,
-          241.9093600000654
+          241.9093600000654,
+          268.58166343825206
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24015,6 +24051,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          2008,
           2008
         ],
         "borderColor": "#FF671B",
@@ -24054,7 +24091,8 @@ window.BENCHMARK_DATA = {
           403.5982783953349,
           402.8951257387797,
           303.54220819473267,
-          209.2670779961806
+          209.2670779961806,
+          232.60280605951945
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -24066,6 +24104,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -28568,6 +28607,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:14:00 2026 \u002B0200",
         "message": "fix: show the whole string difference when the minimum number of characters after it is close to \u0060int.MaxValue\u0060 (#1741)"
+      },
+      {
+        "sha": "93d22f80c1c71b9006b4950886cc204fc899957c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:23:23 2026 \u002B0200",
+        "message": "fix: do not suppress nullability warnings when the statement of the expectation overwrites the subject (#1742)"
       }
     ],
     "labels": [
@@ -29314,7 +29359,8 @@ window.BENCHMARK_DATA = {
       "998fbcba",
       "464696d1",
       "1f967b58",
-      "7e4f4bdb"
+      "7e4f4bdb",
+      "93d22f80"
     ],
     "datasets": [
       {
@@ -30064,7 +30110,8 @@ window.BENCHMARK_DATA = {
           151.41907165845234,
           162.9340720006398,
           121.1920941727502,
-          74.93121902759259
+          74.93121902759259,
+          87.66823535760244
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30807,6 +30854,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          520,
           520,
           520,
           520,
@@ -31577,7 +31625,8 @@ window.BENCHMARK_DATA = {
           246.45414049284798,
           263.02980254246637,
           209.42606624762217,
-          129.6808660541262
+          129.6808660541262,
+          148.78025673230488
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32332,6 +32381,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1224,
           1224
         ],
         "borderColor": "#FF671B",
@@ -32371,7 +32421,8 @@ window.BENCHMARK_DATA = {
           236.13340884844462,
           244.23050106488742,
           188.14628766377766,
-          122.3559182541711
+          122.3559182541711,
+          140.24854431549707
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32383,6 +32434,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -36885,6 +36937,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:14:00 2026 \u002B0200",
         "message": "fix: show the whole string difference when the minimum number of characters after it is close to \u0060int.MaxValue\u0060 (#1741)"
+      },
+      {
+        "sha": "93d22f80c1c71b9006b4950886cc204fc899957c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:23:23 2026 \u002B0200",
+        "message": "fix: do not suppress nullability warnings when the statement of the expectation overwrites the subject (#1742)"
       }
     ],
     "labels": [
@@ -37631,7 +37689,8 @@ window.BENCHMARK_DATA = {
       "998fbcba",
       "464696d1",
       "1f967b58",
-      "7e4f4bdb"
+      "7e4f4bdb",
+      "93d22f80"
     ],
     "datasets": [
       {
@@ -38381,7 +38440,8 @@ window.BENCHMARK_DATA = {
           240.89363451004027,
           236.60691464742024,
           197.5055967013041,
-          126.03137115069798
+          126.03137115069798,
+          142.82822164467402
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39124,6 +39184,7 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
+          584,
           584,
           584,
           584,
@@ -39894,7 +39955,8 @@ window.BENCHMARK_DATA = {
           1216.8918950398763,
           1135.0551546732584,
           954.2375256856283,
-          674.194983959198
+          674.194983959198,
+          738.1067288080851
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40649,6 +40711,7 @@ window.BENCHMARK_DATA = {
           3944,
           3944,
           3944,
+          3944,
           3944
         ],
         "borderColor": "#FF671B",
@@ -40688,7 +40751,8 @@ window.BENCHMARK_DATA = {
           329.50015811920167,
           357.16741905212405,
           252.64308335230902,
-          178.54673012097678
+          178.54673012097678,
+          199.95685113271077
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -40700,6 +40764,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -45202,6 +45267,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:14:00 2026 \u002B0200",
         "message": "fix: show the whole string difference when the minimum number of characters after it is close to \u0060int.MaxValue\u0060 (#1741)"
+      },
+      {
+        "sha": "93d22f80c1c71b9006b4950886cc204fc899957c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:23:23 2026 \u002B0200",
+        "message": "fix: do not suppress nullability warnings when the statement of the expectation overwrites the subject (#1742)"
       }
     ],
     "labels": [
@@ -45948,7 +46019,8 @@ window.BENCHMARK_DATA = {
       "998fbcba",
       "464696d1",
       "1f967b58",
-      "7e4f4bdb"
+      "7e4f4bdb",
+      "93d22f80"
     ],
     "datasets": [
       {
@@ -46698,7 +46770,8 @@ window.BENCHMARK_DATA = {
           596.966326268514,
           566.4970643860953,
           497.140402730306,
-          336.2688202176775
+          336.2688202176775,
+          346.20272432054793
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47452,6 +47525,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          872,
           872,
           872
         ],
@@ -48211,7 +48285,8 @@ window.BENCHMARK_DATA = {
           1361.6681577046713,
           1277.5239940370832,
           1056.205288205828,
-          674.7569321950276
+          674.7569321950276,
+          794.6561574935913
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -48966,6 +49041,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -49005,7 +49081,8 @@ window.BENCHMARK_DATA = {
           650.306664721171,
           636.9033426871666,
           488.7000308354696,
-          327.1852085249765
+          327.1852085249765,
+          365.86587247848513
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -49017,6 +49094,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -53519,6 +53597,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:14:00 2026 \u002B0200",
         "message": "fix: show the whole string difference when the minimum number of characters after it is close to \u0060int.MaxValue\u0060 (#1741)"
+      },
+      {
+        "sha": "93d22f80c1c71b9006b4950886cc204fc899957c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:23:23 2026 \u002B0200",
+        "message": "fix: do not suppress nullability warnings when the statement of the expectation overwrites the subject (#1742)"
       }
     ],
     "labels": [
@@ -54265,7 +54349,8 @@ window.BENCHMARK_DATA = {
       "998fbcba",
       "464696d1",
       "1f967b58",
-      "7e4f4bdb"
+      "7e4f4bdb",
+      "93d22f80"
     ],
     "datasets": [
       {
@@ -55015,7 +55100,8 @@ window.BENCHMARK_DATA = {
           1034.52440478007,
           990.2430680138724,
           798.7452133618868,
-          524.0213324106657
+          524.0213324106657,
+          567.3830805558425
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -55769,6 +55855,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1280,
           1280,
           1280
         ],
@@ -56528,7 +56615,8 @@ window.BENCHMARK_DATA = {
           20865.700933837892,
           19326.512987264,
           15555.621950276693,
-          10848.702115885417
+          10848.702115885417,
+          10781.839710489909
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57283,6 +57371,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -57322,7 +57411,8 @@ window.BENCHMARK_DATA = {
           735.9685022989909,
           724.3659522874015,
           573.0873628616333,
-          414.6715227762858
+          414.6715227762858,
+          458.7878606160482
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -57334,6 +57424,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -57606,6 +57697,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:14:00 2026 \u002B0200",
         "message": "fix: show the whole string difference when the minimum number of characters after it is close to \u0060int.MaxValue\u0060 (#1741)"
+      },
+      {
+        "sha": "93d22f80c1c71b9006b4950886cc204fc899957c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:23:23 2026 \u002B0200",
+        "message": "fix: do not suppress nullability warnings when the statement of the expectation overwrites the subject (#1742)"
       }
     ],
     "labels": [
@@ -57647,7 +57744,8 @@ window.BENCHMARK_DATA = {
       "998fbcba",
       "464696d1",
       "1f967b58",
-      "7e4f4bdb"
+      "7e4f4bdb",
+      "93d22f80"
     ],
     "datasets": [
       {
@@ -57692,7 +57790,8 @@ window.BENCHMARK_DATA = {
           720.0846664428711,
           720.6847084681193,
           577.747324625651,
-          353.08312681743075
+          353.08312681743075,
+          343.5415005683899
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -57730,6 +57829,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1816,
           1816,
           1816,
           1816,
@@ -57795,7 +57895,8 @@ window.BENCHMARK_DATA = {
           59803.41401890346,
           61225.11710030692,
           53141.57476399739,
-          29587.716825212752
+          29587.716825212752,
+          30830.735575358074
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57844,6 +57945,7 @@ window.BENCHMARK_DATA = {
           5256,
           5252,
           5252,
+          5256,
           5256,
           5256
         ],
@@ -58093,6 +58195,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:14:00 2026 \u002B0200",
         "message": "fix: show the whole string difference when the minimum number of characters after it is close to \u0060int.MaxValue\u0060 (#1741)"
+      },
+      {
+        "sha": "93d22f80c1c71b9006b4950886cc204fc899957c",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:23:23 2026 \u002B0200",
+        "message": "fix: do not suppress nullability warnings when the statement of the expectation overwrites the subject (#1742)"
       }
     ],
     "labels": [
@@ -58134,7 +58242,8 @@ window.BENCHMARK_DATA = {
       "998fbcba",
       "464696d1",
       "1f967b58",
-      "7e4f4bdb"
+      "7e4f4bdb",
+      "93d22f80"
     ],
     "datasets": [
       {
@@ -58179,7 +58288,8 @@ window.BENCHMARK_DATA = {
           256.43952117647444,
           233.4618682463964,
           196.59285897475021,
-          124.18757068193875
+          124.18757068193875,
+          140.5408843755722
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58217,6 +58327,7 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
+          664,
           664,
           664,
           664,
@@ -58282,7 +58393,8 @@ window.BENCHMARK_DATA = {
           18769.713187081474,
           18734.728539603097,
           14834.462311808269,
-          9697.194235229492
+          9697.194235229492,
+          10682.660048421223
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58332,6 +58444,7 @@ window.BENCHMARK_DATA = {
           5614,
           5614,
           5615,
+          5615,
           5615
         ],
         "borderColor": "#FF671B",
@@ -58371,7 +58484,8 @@ window.BENCHMARK_DATA = {
           245.34382966586523,
           246.47795225779217,
           181.4882709639413,
-          122.21910122462681
+          122.21910122462681,
+          146.55186425722562
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -58383,6 +58497,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
