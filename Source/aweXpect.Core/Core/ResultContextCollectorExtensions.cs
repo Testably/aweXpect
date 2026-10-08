@@ -105,13 +105,13 @@ public static class ResultContextCollectorExtensions
 		{
 			contexts.Add(new ResultContext.SyncCallback("Dictionary",
 				() => Formatter.Format(mutableDictionary,
-					typeof(TValue).GetFormattingOption(mutableDictionary.Count)), -2));
+					typeof(TValue).GetFormattingOption(ValueFormatters.GetCount(mutableDictionary))), -2));
 		}
 		else if (dictionary is IReadOnlyDictionary<TKey, TValue> readOnlyDictionary)
 		{
 			contexts.Add(new ResultContext.SyncCallback("Dictionary",
 				() => Formatter.Format(readOnlyDictionary,
-					typeof(TValue).GetFormattingOption(readOnlyDictionary.Count)), -2));
+					typeof(TValue).GetFormattingOption(ValueFormatters.GetCount(readOnlyDictionary))), -2));
 		}
 	}
 
@@ -223,12 +223,7 @@ public static class ResultContextCollectorExtensions
 
 		if (totalCount is not null)
 		{
-			int count = value switch
-			{
-				ICollection<TItem> coll => coll.Count,
-				IReadOnlyCollection<TItem> readOnly => readOnly.Count,
-				_ => value.Count(),
-			};
+			int? count = ValueFormatters.GetCount(value) ?? CountItems(value);
 			return Formatter.Format(value, typeof(TItem).GetFormattingOption(count, totalCount));
 		}
 
@@ -237,13 +232,24 @@ public static class ResultContextCollectorExtensions
 			return FormatReadItems(materialized.MaterializedItems, typeof(TItem));
 		}
 
-		totalCount = value switch
-		{
-			ICollection<TItem> coll => coll.Count,
-			ICountable countable => countable.Count,
-			_ => null,
-		};
+		totalCount = ValueFormatters.GetCount(value) ?? (value as ICountable)?.Count;
 		return Formatter.Format(value, typeof(TItem).GetFormattingOption(totalCount, totalCount));
+	}
+
+	/// <remarks>
+	///     The count only decides the layout, so items whose enumeration throws are laid out like items of an unknown
+	///     number, and the formatter renders the exception.
+	/// </remarks>
+	private static int? CountItems<TItem>(IEnumerable<TItem> value)
+	{
+		try
+		{
+			return value.Count();
+		}
+		catch (Exception)
+		{
+			return null;
+		}
 	}
 
 	private static string? FormatUntypedCollection(IEnumerable value)
@@ -253,13 +259,9 @@ public static class ResultContextCollectorExtensions
 			return FormatReadItems(materialized.MaterializedItems, GetItemType(materialized.MaterializedItems));
 		}
 
-		int? totalCount = value switch
-		{
-			ICollection coll => coll.Count,
-			ICountable countable => countable.Count,
-			_ => null,
-		};
-		return Formatter.Format(value, GetItemTypeOfListedItems(value).GetFormattingOption(totalCount, totalCount));
+		int? totalCount = ValueFormatters.GetCount(value) ?? (value as ICountable)?.Count;
+		return Formatter.Format(value,
+			GetItemTypeOfListedItems(value, totalCount is not null).GetFormattingOption(totalCount, totalCount));
 	}
 
 #if NET8_0_OR_GREATER
@@ -299,12 +301,12 @@ public static class ResultContextCollectorExtensions
 
 	/// <remarks>
 	///     Only the first items are listed, so an endless source of <see langword="null" /> items must not be searched
-	///     to its end. An exception of the source is ignored here, as the formatter enumerates the same items and
-	///     renders it.
+	///     to its end, unless it <paramref name="knowsItsCount" />. An exception of the source is ignored here, as the
+	///     formatter enumerates the same items and renders it.
 	/// </remarks>
-	private static Type GetItemTypeOfListedItems(IEnumerable value)
+	private static Type GetItemTypeOfListedItems(IEnumerable value, bool knowsItsCount)
 	{
-		IEnumerable<object?> items = value is ICollection
+		IEnumerable<object?> items = knowsItsCount
 			? value.Cast<object?>()
 			: value.Cast<object?>().Take(Customize.aweXpect.Formatting().MaximumNumberOfCollectionItems.Get());
 		try

@@ -185,6 +185,32 @@ public class EvaluationContextExtensionsTests
 	}
 
 	[Test]
+	public async Task UseMaterializedEnumerable_ForDifferentSourcesThatAreEqual_ShouldReturnDifferentInstances()
+	{
+		IEvaluationContext context = new Context();
+
+		IEnumerable<int> materialized1 = context.UseMaterializedEnumerable(new AlwaysEqualEnumerable(1, 2));
+		IEnumerable<int> materialized2 = context.UseMaterializedEnumerable(new AlwaysEqualEnumerable(3, 4));
+
+		await That(materialized1).IsNotSameAs(materialized2)
+			.Because("a source is identified by its reference, not by its equality");
+		await That(materialized2.ToArray()).IsEqualTo([3, 4,]);
+	}
+
+	[Test]
+	public async Task UseMaterializedEnumerable_ForEqualValueTypeSources_ShouldReturnSameInstance()
+	{
+		IEvaluationContext context = new Context();
+		IEnumerable<int> items = ToEnumerable(1, 2);
+
+		IEnumerable<int> materialized1 = context.UseMaterializedEnumerable(new ValueTypeEnumerable(items));
+		IEnumerable<int> materialized2 = context.UseMaterializedEnumerable(new ValueTypeEnumerable(items));
+
+		await That(materialized1).IsSameAs(materialized2)
+			.Because("a value type is boxed anew for every call, so it has no reference that identifies it");
+	}
+
+	[Test]
 	public async Task UseMaterializedEnumerable_ForSameSource_ShouldReturnSameInstance()
 	{
 		IEvaluationContext context = new Context();
@@ -273,6 +299,34 @@ public class EvaluationContextExtensionsTests
 		await That(countBefore).IsNull()
 			.Because("the number of items is unknown until the source is enumerated completely");
 		await That(materialized).Is<ICountable>().Whose(c => c.Count, count => count.IsEqualTo(3));
+	}
+
+	[Test]
+	public async Task UseMaterializedEnumerable_WhenEqualsOfADifferentSourceThrows_ShouldNotCallIt()
+	{
+		IEvaluationContext context = new Context();
+		ThrowingEqualsEnumerable source1 = new(1, 2);
+		ThrowingEqualsEnumerable source2 = new(3, 4);
+
+		IEnumerable<int> materialized1 = context.UseMaterializedEnumerable(source1);
+		IEnumerable<int> materialized2 = context.UseMaterializedEnumerable(source2);
+		IEnumerable<int> materializedAgain = context.UseMaterializedEnumerable(source1);
+
+		await That(materialized1).IsNotSameAs(materialized2);
+		await That(materializedAgain).IsSameAs(materialized1);
+	}
+
+	[Test]
+	public async Task UseMaterializedEnumerable_WhenEqualsOfAValueTypeSourceThrows_ShouldMaterializeItAgain()
+	{
+		IEvaluationContext context = new Context();
+		IEnumerable<int> items = ToEnumerable(1, 2);
+
+		IEnumerable<int> materialized1 = context.UseMaterializedEnumerable(new ThrowingEqualsValueTypeEnumerable(items));
+		IEnumerable<int> materialized2 = context.UseMaterializedEnumerable(new ThrowingEqualsValueTypeEnumerable(items));
+
+		await That(materialized1).IsNotSameAs(materialized2)
+			.Because("a source whose equality cannot be asked is not known to be the same");
 	}
 
 	[Test]
@@ -473,6 +527,17 @@ public class EvaluationContextExtensionsTests
 	}
 #endif
 
+	private sealed class AlwaysEqualEnumerable(params int[] items) : IEnumerable<int>
+	{
+		public IEnumerator<int> GetEnumerator() => items.AsEnumerable().GetEnumerator();
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		public override bool Equals(object? obj) => obj is AlwaysEqualEnumerable;
+
+		public override int GetHashCode() => 0;
+	}
+
 	private sealed class OneShotEnumerable(params int[] items) : IEnumerable<int>
 	{
 		public int Enumerations { get; private set; }
@@ -499,6 +564,28 @@ public class EvaluationContextExtensionsTests
 	}
 #endif
 
+	private sealed class ThrowingEqualsEnumerable(params int[] items) : IEnumerable<int>
+	{
+		public IEnumerator<int> GetEnumerator() => items.AsEnumerable().GetEnumerator();
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		public override bool Equals(object? obj) => throw new InvalidOperationException("Equals failed");
+
+		public override int GetHashCode() => 0;
+	}
+
+	private readonly struct ThrowingEqualsValueTypeEnumerable(IEnumerable<int> items) : IEnumerable<int>
+	{
+		public IEnumerator<int> GetEnumerator() => items.GetEnumerator();
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+		public override bool Equals(object? obj) => throw new InvalidOperationException("Equals failed");
+
+		public override int GetHashCode() => 0;
+	}
+
 	private sealed class UntypedEnumerable(IEnumerable inner) : IEnumerable
 	{
 		public IEnumerator GetEnumerator() => inner.GetEnumerator();
@@ -515,5 +602,12 @@ public class EvaluationContextExtensionsTests
 			value = default;
 			return false;
 		}
+	}
+
+	private readonly struct ValueTypeEnumerable(IEnumerable<int> items) : IEnumerable<int>
+	{
+		public IEnumerator<int> GetEnumerator() => items.GetEnumerator();
+
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 	}
 }

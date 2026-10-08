@@ -423,6 +423,22 @@ public class BecauseTests
 	}
 
 	[Test]
+	public async Task WhenAsyncReasonThrowsAnExceptionWhoseMessageThrows_ShouldStillReportTheAssertionFailure()
+	{
+		Task<string?> becauseTask = Task.FromException<string?>(new ThrowingMessageException());
+		bool subject = true;
+
+		async Task Act() => await That(subject).IsFalse().Because(becauseTask);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is False, because the reason did throw a ThrowingMessageException: [Message of ThrowingMessageException did throw an InvalidOperationException],
+			             but it was True
+			             """);
+	}
+
+	[Test]
 	public async Task WhenAsyncReasonThrows_WhenExpectationFails_ShouldEscapeLineBreaksInTheMessage()
 	{
 		Task<string?> becauseTask = Task.FromException<string?>(new MyException("the reason provider\nis broken"));

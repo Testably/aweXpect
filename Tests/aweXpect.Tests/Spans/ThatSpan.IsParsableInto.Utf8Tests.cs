@@ -38,6 +38,24 @@ public sealed partial class ThatSpan
 			}
 
 			[Test]
+			public async Task WhenMessageOfTheParseExceptionThrows_ShouldFailWithAPlaceholderForTheMessage()
+			{
+				byte[] subject = "abc"u8.ToArray();
+
+				async Task Act()
+					=> await That(subject.AsSpan()).IsParsableInto<ThrowingParsable>();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject.AsSpan()
+					             is parsable into ThatSpan.IsParsableInto.Utf8Tests.ThrowingParsable,
+					             but Parse of ThatSpan.IsParsableInto.Utf8Tests.ThrowingParsable did throw a ThrowingMessageException:
+					               [Message of ThrowingMessageException did throw an InvalidOperationException]
+					             """).And
+					.Whose(e => e.InnerException, i => i.Is<ThrowingMessageException>());
+			}
+
+			[Test]
 			public async Task WhenSpanIsNotParsable_ShouldFail()
 			{
 				byte[] subject = "abc"u8.ToArray();
@@ -101,6 +119,16 @@ public sealed partial class ThatSpan
 					=> await That(subject.AsSpan()).IsParsableInto<decimal>(formatProvider);
 
 				await That(Act).DoesNotThrow();
+			}
+
+			private sealed class ThrowingParsable : IUtf8SpanParsable<ThrowingParsable>
+			{
+				public static ThrowingParsable Parse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider)
+					=> throw new ThrowingMessageException();
+
+				public static bool TryParse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider,
+					out ThrowingParsable result)
+					=> throw new NotSupportedException();
 			}
 		}
 

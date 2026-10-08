@@ -418,6 +418,29 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
+			public async Task WhenOnlyTheExpectedContextReadsTheThrowingCountOfTheExpectedCollection_ShouldFailWithoutIt()
+			{
+				int[] subject = [1, 2, 3,];
+				ThrowingCollection<int> expected = new(new InvalidOperationException("boom"), ThrowingMembers.Count, 1, 2)
+				{
+					CountReadsBeforeThrowing = 1,
+				};
+
+				async Task Act()
+					=> await That(subject).IsEqualTo(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to collection expected in order,
+					             but it contained item 3 at index 2 that was not expected
+
+					             Collection:
+					             [1, 2, 3]
+					             """);
+			}
+
+			[Test]
 			public async Task WhenMaximumNumberOfCollectionItemsIsIntMaxValue_ShouldFailNormally()
 			{
 				int[] subject = [1, 2, 3,];

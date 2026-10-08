@@ -389,8 +389,17 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		actual = TrimWhiteSpace(actual);
 		expected = NormalizeExpected(expected, GetAnchoredEdges());
 
-		return _matchType.GetExtendedFailure(it, actual, expected, _ignoreCase,
-			_comparer ?? UseDefaultComparer(_ignoreCase), settings);
+		try
+		{
+			return _matchType.GetExtendedFailure(it, actual, expected, _ignoreCase,
+				_comparer ?? UseDefaultComparer(_ignoreCase), settings);
+		}
+		catch (Exception) when (_comparer is not null)
+		{
+			// The comparer of the caller answered for the values. To explain the failure it is called for parts of
+			// them, for which it may throw, so the failure is then reported without the difference.
+			return $"{it} was {Formatter.Format(actual.TruncateWithEllipsisOnWord(DefaultMaxLength))}";
+		}
 	}
 
 	/// <summary>

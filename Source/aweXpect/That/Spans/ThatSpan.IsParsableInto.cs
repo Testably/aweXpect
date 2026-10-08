@@ -188,7 +188,7 @@ public static partial class ThatSpan
 			catch (Exception ex)
 			{
 				_exception = ex;
-				_exceptionMessage = ex.Message;
+				_exceptionMessage = ex.GetMessage();
 				// Older runtimes name the input "System.ReadOnlySpan<Byte>[length]" in the message instead of its text.
 				if (actual is not null)
 				{

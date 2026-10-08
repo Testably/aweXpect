@@ -116,6 +116,23 @@ public sealed partial class ThatString
 			}
 
 			[Test]
+			public async Task WhenComparerThrowsForAPartOfTheValues_ShouldFailWithoutThePositionOfTheDifference()
+			{
+				string subject = "1.2.3";
+
+				async Task Act()
+					=> await That(subject).IsEqualTo("1.2.4").Using(new VersionComparer());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equal to "1.2.4" using ThatString.IsEqualTo.Tests.VersionComparer,
+					             but it was "1.2.3"
+					             """)
+					.Because("the comparer answered for the values and is only called for parts of them to locate the difference");
+			}
+
+			[Test]
 			public async Task WhenComparerThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("comparer failed");
@@ -403,6 +420,18 @@ public sealed partial class ThatString
 
 				public int GetHashCode(string obj)
 					=> obj.GetHashCode();
+			}
+
+			/// <summary>
+			///     Compares strings as versions, and throws for a string that is not a complete version, like a part of one.
+			/// </summary>
+			private sealed class VersionComparer : IEqualityComparer<string>
+			{
+				public bool Equals(string? x, string? y)
+					=> Version.Parse(x!).Equals(Version.Parse(y!));
+
+				public int GetHashCode(string obj)
+					=> Version.Parse(obj).GetHashCode();
 			}
 		}
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using aweXpect.Core.Tests.TestHelpers;
 
 namespace aweXpect.Core.Tests.Formatting;
 
@@ -153,6 +154,37 @@ public partial class ValueFormatters
 		}
 
 		[Test]
+		public async Task WhenMessageThrows_ShouldUseAPlaceholderForTheMessage()
+		{
+			Exception value = new ThrowingMessageException();
+			string expectedResult =
+				"ThrowingMessageException: [Message of ThrowingMessageException did throw an InvalidOperationException]";
+			StringBuilder sb = new();
+
+			string result = Formatter.Format(value);
+			string objectResult = Formatter.Format((object?)value);
+			string multipleLinesResult = Formatter.Format(value, FormattingOptions.MultipleLines);
+			Formatter.Format(sb, value);
+
+			await That(result).IsEqualTo(expectedResult);
+			await That(objectResult).IsEqualTo(expectedResult);
+			await That(multipleLinesResult).IsEqualTo(expectedResult);
+			await That(sb.ToString()).IsEqualTo(expectedResult);
+		}
+
+		[Test]
+		public async Task WhenMessageThrowsAnExceptionWhoseMessageThrows_ShouldOnlyNameItsType()
+		{
+			Exception value = new RecursivelyThrowingMessageException();
+			string expectedResult =
+				"ValueFormatters.ExceptionTests.RecursivelyThrowingMessageException: [Message of ValueFormatters.ExceptionTests.RecursivelyThrowingMessageException did throw a ValueFormatters.ExceptionTests.RecursivelyThrowingMessageException]";
+
+			string result = Formatter.Format(value, FormattingOptions.MultipleLines);
+
+			await That(result).IsEqualTo(expectedResult);
+		}
+
+		[Test]
 		public async Task WhenNull_ShouldUseDefaultNullString()
 		{
 			Exception? value = null;
@@ -201,5 +233,10 @@ public partial class ValueFormatters
 		private sealed class CustomException(string message) : Exception(message);
 
 		private sealed class GenericException<T>(string message) : Exception(message);
+
+		private sealed class RecursivelyThrowingMessageException : Exception
+		{
+			public override string Message => throw new RecursivelyThrowingMessageException();
+		}
 	}
 }

@@ -1,8 +1,12 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using aweXpect.Core;
 using aweXpect.Core.Helpers;
 using aweXpect.Customization;
 
@@ -13,6 +17,8 @@ namespace aweXpect.Formatting;
 /// </summary>
 public static partial class ValueFormatters
 {
+	private static readonly ConcurrentDictionary<Type, PropertyInfo?> GenericCountProperties = new();
+
 	/// <summary>
 	///     Returns the formatted <paramref name="value" /> according to the <paramref name="options" />.
 	/// </summary>
@@ -407,7 +413,7 @@ public static partial class ValueFormatters
 	///     The count only names the number of remaining items, so a collection that throws when its count is read is
 	///     formatted like one that does not know its count.
 	/// </remarks>
-	private static int? GetCount<T>(IEnumerable<T> value)
+	internal static int? GetCount<T>(IEnumerable<T> value)
 	{
 		try
 		{
@@ -426,16 +432,41 @@ public static partial class ValueFormatters
 	}
 
 	/// <inheritdoc cref="GetCount{T}(IEnumerable{T})" />
-	private static int? GetCount(IEnumerable value)
+	/// <remarks>
+	///     A generic collection that is no <see cref="ICollection" />, e.g. a <see cref="HashSet{T}" />, converts to
+	///     <see cref="IReadOnlyCollection{T}" /> of <see langword="object" /> by variance only for reference type items, so
+	///     for value type items its count is read by reflection, which is only attempted while the
+	///     <see cref="ReflectionFallback" /> is supported.
+	/// </remarks>
+	internal static int? GetCount(IEnumerable value)
 	{
 		try
 		{
-			return (value as ICollection)?.Count;
+			return value switch
+			{
+				ICollection collection => collection.Count,
+				IReadOnlyCollection<object?> collection => collection.Count,
+				_ => ReflectionFallback.IsSupported ? ReadGenericCount(value) : null,
+			};
 		}
 		catch (Exception)
 		{
 			return null;
 		}
+	}
+
+#if NET8_0_OR_GREATER
+	[RequiresUnreferencedCode("Reads the count of a generic collection interface, which the trimmer may remove.")]
+#endif
+	private static int? ReadGenericCount(IEnumerable value)
+	{
+		PropertyInfo? count = GenericCountProperties.GetOrAdd(value.GetType(), static type => type.GetInterfaces()
+			.FirstOrDefault(interfaceType => interfaceType.IsGenericType &&
+			                                 interfaceType.GetGenericTypeDefinition() is var definition &&
+			                                 (definition == typeof(ICollection<>) ||
+			                                  definition == typeof(IReadOnlyCollection<>)))
+			?.GetProperty(nameof(ICollection.Count)));
+		return (int?)count?.GetValue(value);
 	}
 
 	/// <remarks>

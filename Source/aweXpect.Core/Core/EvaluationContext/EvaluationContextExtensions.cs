@@ -23,7 +23,7 @@ public static class EvaluationContextExtensions
 	/// </summary>
 	/// <remarks>
 	///     The <paramref name="collection" /> is materialized once per evaluation: every call for the same
-	///     <paramref name="collection" /> (compared with <see cref="object.Equals(object, object)" />) in the same
+	///     <paramref name="collection" /> (the same instance, or an equal value of a value type) in the same
 	///     <paramref name="evaluationContext" /> returns the same sequence, also to the built-in collection expectations,
 	///     so that expectations combined on one subject (e.g. with <c>.And</c> or <c>.Or</c>) enumerate it at most once.
 	///     The items are read from the <paramref name="collection" /> only as far as a consumer enumerates, and every
@@ -228,7 +228,7 @@ public static class EvaluationContextExtensions
 
 		foreach ((object cachedSource, object materialized) in cache)
 		{
-			if (Equals(cachedSource, source) && materialized is TMaterialized existingValue)
+			if (IsSameSource(cachedSource, source) && materialized is TMaterialized existingValue)
 			{
 				return existingValue;
 			}
@@ -237,5 +237,33 @@ public static class EvaluationContextExtensions
 		TMaterialized materializedEnumerable = materialize(state);
 		cache.Add((source, materializedEnumerable));
 		return materializedEnumerable;
+	}
+
+	/// <remarks>
+	///     A source is identified by its reference, so that two different collections that are equal do not share a
+	///     materialization and no <see cref="object.Equals(object)" /> override of the caller is called. A value type is
+	///     boxed anew for every call, so it is identified by its value, and one whose equality throws is not known to be
+	///     the same.
+	/// </remarks>
+	private static bool IsSameSource(object cachedSource, object source)
+	{
+		if (ReferenceEquals(cachedSource, source))
+		{
+			return true;
+		}
+
+		if (source is not ValueType)
+		{
+			return false;
+		}
+
+		try
+		{
+			return source.Equals(cachedSource);
+		}
+		catch (Exception)
+		{
+			return false;
+		}
 	}
 }

@@ -101,6 +101,25 @@ public sealed partial class ThatGeneric
 			}
 
 			[Test]
+			public async Task WhenMessageOfThePredicateExceptionThrows_ShouldFailWithAPlaceholderForTheMessage()
+			{
+				ThrowingMessageException exception = new();
+				Other subject = new();
+
+				async Task Act()
+					=> await That(subject).Satisfies(_ => throw exception);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             satisfies _ => throw exception,
+					             but the predicate did throw a ThrowingMessageException:
+					               [Message of ThrowingMessageException did throw an InvalidOperationException]
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("predicate failed");
