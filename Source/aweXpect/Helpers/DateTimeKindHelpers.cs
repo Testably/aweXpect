@@ -29,6 +29,24 @@ internal static class DateTimeKindHelpers
 		CollectionOrderOptions<DateTime?> options)
 		=> () => ReferenceEquals(options.GetComparer(), Comparer<DateTime?>.Default) ? CreateCheck() : null;
 
+	/// <summary>
+	///     Creates a check like <see cref="CreateIncompatibleKindCheck(CollectionOrderOptions{DateTime})" /> for values
+	///     that are only known to be a <see cref="DateTime" /> at runtime, as in an untyped collection.
+	/// </summary>
+	public static Func<Func<TMember, string?>?> CreateIncompatibleRuntimeKindCheck<TMember>(
+		CollectionOrderOptions<TMember> options)
+		=> () =>
+		{
+			// Without a comparer, the default of the options is not `Comparer<TMember>.Default` for every `TMember`.
+			if (options.HasComparer &&!ReferenceEquals(options.GetComparer(), Comparer<TMember>.Default))
+			{
+				return null;
+			}
+
+			Func<DateTime?, string?> check = CreateCheck();
+			return value => value is DateTime dateTime ? check(dateTime) : null;
+		};
+
 	private static Func<DateTime?, string?> CreateCheck()
 	{
 		DateTime? first = null;

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
@@ -157,6 +158,133 @@ public sealed partial class ThatEnumerable
 
 				await That(Act).DoesNotThrow()
 					.Because("the second attempt only contains UTC times in ascending order");
+			}
+
+			[Test]
+			public async Task WhenUntypedCustomComparerIsUsed_ShouldNotCheckKinds()
+			{
+				IEnumerable subject = new ArrayList { Utc, Local, };
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder()
+						.Using(Comparer<object?>.Create((a, b) => ((DateTime)a!).Ticks.CompareTo(((DateTime)b!).Ticks)));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenUntypedDefaultComparerIsUsed_ShouldCheckKinds()
+			{
+				IEnumerable subject = new ArrayList { Utc, Local, };
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder().Using(Comparer<object?>.Default);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is in ascending order using ObjectComparer<object>,
+					              but it had {Formatter.Format(Utc)} with kind Utc and {Formatter.Format(Local)} with kind Local, which cannot be compared
+					              """).AsPrefix()
+					.Because("the default comparer orders the values by their ticks, like no comparer");
+			}
+
+			[Test]
+			public async Task WhenUntypedItemKindIsUnspecified_ShouldSucceed()
+			{
+				IEnumerable subject = new ArrayList { Utc, Unspecified, Utc.AddHours(2), };
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenUntypedItemKindsAreIncompatible_ShouldFail()
+			{
+				IEnumerable subject = new ArrayList { Utc, Local, };
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is in ascending order,
+					              but it had {Formatter.Format(Utc)} with kind Utc and {Formatter.Format(Local)} with kind Local, which cannot be compared
+					              """).AsPrefix()
+					.Because("the kinds are checked whether the collection is typed or not");
+			}
+
+			[Test]
+			public async Task WhenUntypedItemsHaveTheSameKind_ShouldSucceed()
+			{
+				IEnumerable subject = new ArrayList { Utc, Utc.AddHours(2), };
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenUntypedMemberIsNoDateTime_ShouldNotCheckKinds()
+			{
+				IEnumerable subject = new ArrayList { new Item(Utc), new Item(Local), };
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder(x => ((Item)x!).Value.Ticks);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenUntypedMemberKindsAreIncompatible_ShouldFail()
+			{
+				IEnumerable subject = new ArrayList { new Item(Utc), new Item(Local), };
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder(x => ((Item)x!).Value);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is in ascending order by x => ((Item)x!).Value,
+					              but it had {Formatter.Format(Utc)} with kind Utc and {Formatter.Format(Local)} with kind Local, which cannot be compared
+					              """).AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenUntypedNullableItemKindsAreIncompatible_ShouldFail()
+			{
+				IEnumerable subject = new ArrayList { null, Utc, Local, };
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is in ascending order,
+					              but it had {Formatter.Format(Utc)} with kind Utc and {Formatter.Format(Local)} with kind Local, which cannot be compared
+					              """).AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenUntypedNullableMemberKindsAreIncompatible_ShouldFail()
+			{
+				IEnumerable subject = new ArrayList { new Item(Utc), new Item(Local), };
+
+				async Task Act()
+					=> await That(subject).IsInAscendingOrder(x => ((Item)x!).NullableValue);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is in ascending order by x => ((Item)x!).NullableValue,
+					              but it had {Formatter.Format(Utc)} with kind Utc and {Formatter.Format(Local)} with kind Local, which cannot be compared
+					              """).AsPrefix();
 			}
 
 			private sealed class Item(DateTime value)

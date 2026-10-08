@@ -37,7 +37,7 @@ public static partial class ThatEnumerable
 			$" by {memberExpression.TrimCommonWhiteSpace()}", negated);
 
 	[CreateExpectationFamily("Is{Not}InDescendingOrder", GuaranteesNotNull = true, Priority = -1,
-		Summary = InDescendingOrder, NegatedSummary = NotInDescendingOrder)]
+		Summary = InDescendingOrder, NegatedSummary = NotInDescendingOrder, Remarks = MixedDateTimeKinds)]
 	internal static CollectionOrderResult<object?, IEnumerable, IThat<IEnumerable?>>
 		IsInDescendingOrderForEnumerableCore(
 			IThat<IEnumerable?> subject,
@@ -45,7 +45,7 @@ public static partial class ThatEnumerable
 		=> IsInOrderForEnumerable(subject, x => x, SortOrder.Descending, "", negated);
 
 	[CreateExpectationFamily("Is{Not}InDescendingOrder", GuaranteesNotNull = true,
-		Summary = InDescendingOrder, NegatedSummary = NotInDescendingOrder)]
+		Summary = InDescendingOrder, NegatedSummary = NotInDescendingOrder, Remarks = MixedDateTimeKinds)]
 	internal static CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable?>>
 		IsInDescendingOrderForEnumerableByMemberCore<TMember>(
 			IThat<IEnumerable?> subject,
