@@ -19,7 +19,7 @@ namespace aweXpect.Analyzers;
 ///     the subject must be a local variable or a parameter that is neither a <see langword="ref" /> nor a parameter
 ///     of a primary constructor, the expectation must be awaited or verified in a preceding statement in an
 ///     enclosing block of the warning, must not be separated from it by any branching or label and the subject must
-///     not be written to in between.
+///     not be written to in that statement or in between.
 ///     <para />
 ///     Only the warnings are suppressed, the null state of the compiler remains unchanged.
 /// </remarks>
@@ -153,14 +153,16 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 				return Verification.Invalidated;
 			}
 
-			if (ExpectsNotNull(statement, subject, semanticModel, cancellationToken))
-			{
-				return Verification.Verified;
-			}
-
+			// A write in the statement of the expectation can happen after the subject was verified, e.g. when a
+			// member of the awaited result is assigned to the subject, so it invalidates the expectation as well.
 			if (WritesTo(statement, subject, semanticModel, cancellationToken))
 			{
 				return Verification.Invalidated;
+			}
+
+			if (ExpectsNotNull(statement, subject, semanticModel, cancellationToken))
+			{
+				return Verification.Verified;
 			}
 		}
 
@@ -358,13 +360,43 @@ public class IsNotNullSuppressor : DiagnosticSuppressor
 				_ => null,
 			};
 
-			if (target is not null && IsSubject(target, subject, semanticModel, cancellationToken))
+			if (target is not null && IsSubject(target, subject, semanticModel, cancellationToken) &&
+			    !(descendant is AssignmentExpressionSyntax assigned &&
+			      AssignsVerifiedSubject(assigned, subject, semanticModel, cancellationToken)))
 			{
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	/// <summary>
+	///     Checks if the <paramref name="assignment" /> to the <paramref name="subject" /> stores the result of an
+	///     evaluated expectation on the subject itself, as in <c>subject = await Expect.That(subject).IsNotNull();</c>.
+	///     That result is the subject, so the assignment does not change it.
+	/// </summary>
+	private static bool AssignsVerifiedSubject(AssignmentExpressionSyntax assignment, ISymbol subject,
+		SemanticModel semanticModel, CancellationToken cancellationToken)
+	{
+		if (!assignment.IsKind(SyntaxKind.SimpleAssignmentExpression) || assignment.Left is not IdentifierNameSyntax)
+		{
+			return false;
+		}
+
+		ExpressionSyntax? expectation = assignment.Right switch
+		{
+			AwaitExpressionSyntax awaited => awaited.Expression,
+			InvocationExpressionSyntax invocation
+				when IsSynchronousVerification(invocation, semanticModel, cancellationToken)
+				=> invocation.ArgumentList.Arguments.FirstOrDefault()?.Expression ?? GetSource(invocation),
+			_ => null,
+		};
+
+		return expectation is InvocationExpressionSyntax expectationInvocation &&
+		       FindSubject(expectationInvocation, semanticModel, cancellationToken) is IdentifierNameSyntax
+			       expectedSubject &&
+		       IsSubject(expectedSubject, subject, semanticModel, cancellationToken);
 	}
 
 	/// <summary>
