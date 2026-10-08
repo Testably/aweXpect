@@ -160,7 +160,7 @@ await Expect.That(importedAt).IsOnOrBefore(DateTime.Now).Within(TimeSpan.FromSec
 await Expect.That(importedAt).IsBetween(DateTime.Today).And(DateTime.Now).Within(TimeSpan.FromSeconds(1));
 ```
 
-## Default tolerance
+### Default tolerance
 
 On Windows the `DateTime` resolution is [about 10 to 15 milliseconds](https://stackoverflow.com/q/3140826/4003370), so
 comparing them as exact values might result in brittle tests. Therefore, it is possible to specify a default tolerance
@@ -277,6 +277,6 @@ await Expect.That(importedAt).HasOffset().GreaterThan(TimeSpan.Zero);
 </TabItem>
 </Tabs>
 
-<PropertyComparisons />
+<PropertyComparisons example="HasYear(2024)" />
 
 `HasKind()` only supports `EqualTo` and `NotEqualTo`.

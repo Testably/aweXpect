@@ -26,7 +26,7 @@ await Expect.That(songs).HasCount().GreaterThan(2);
 await Expect.That(songs).HasCount().NotBetween(5).And(10);
 ```
 
-<PropertyComparisons />
+<PropertyComparisons example="HasCount(3)" />
 
 You can also verify that the collection is empty or not:
 

@@ -75,4 +75,4 @@ await Expect.That(playlist).HasBufferSize().NotEqualTo(3);
 
 ## Comparisons
 
-<PropertyComparisons />
+<PropertyComparisons example="HasLength(3)" />

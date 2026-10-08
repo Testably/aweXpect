@@ -46,7 +46,7 @@ await Expect.That(Genre.Rock).HasValue().NotEqualTo(2);
 await Expect.That(Genre.Jazz).HasValue().GreaterThan(2);
 ```
 
-<PropertyComparisons />
+<PropertyComparisons example="HasValue(1)" />
 
 <details>
 <summary>Values above `long.MaxValue`</summary>

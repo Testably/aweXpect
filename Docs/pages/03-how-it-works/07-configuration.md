@@ -99,9 +99,6 @@ To format your own types, register an `IValueFormatter` with `ValueFormatter.Reg
 
 ## Reflection
 
-<details>
-<summary>Assemblies scanned for a test framework adapter below .NET 8</summary>
-
 Under `Customize.aweXpect.Reflection()`:
 
 | Option                     | Type       | Default                                              | Description                                                                               |
@@ -117,8 +114,6 @@ later the generated adapter registers itself when the test assembly is loaded, s
 effect there. This registration needs C# 9 or later, see
 [aweXpect2002](../07-analyzers.md#test-framework-adapter).
 :::
-
-</details>
 
 ## Settings
 

@@ -93,4 +93,4 @@ await Expect.That(release).HasBuild(-1);
 await Expect.That(release).HasRevision(-1);
 ```
 
-<PropertyComparisons />
+<PropertyComparisons example="HasMajor(1)" />
