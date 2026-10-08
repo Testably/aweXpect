@@ -48,6 +48,35 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Test]
+		public async Task Between_WhenActualIsAboveMaximum_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42L);
+
+			async Task Act()
+				=> await sut.Between(40L).And(41L);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             has long value between 40 and 41,
+				             but it had long value 42
+				             """);
+		}
+
+		[Test]
+		[Arguments(42L, 43L)]
+		[Arguments(41L, 42L)]
+		[Arguments(42L, 42L)]
+		public async Task Between_WhenActualIsEqualToMinimumOrMaximum_ShouldSucceed(long minimum, long maximum)
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42L);
+
+			MyClass? result = await sut.Between(minimum).And(maximum);
+
+			await That(result?.LongValue).IsEqualTo(42L);
+		}
+
+		[Test]
 		public async Task Between_WhenActualIsOutsideTheRange_ShouldFail()
 		{
 			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42L);
@@ -94,6 +123,25 @@ public sealed partial class PropertyResultTests
 				              but it had long value 0
 				              """)
 				.Because("nothing can be ordered against a null bound, so the negation fails as well");
+		}
+
+		[Test]
+		[Arguments(null, 43L)]
+		[Arguments(41L, null)]
+		public async Task Between_WhenMinimumOrMaximumIsNull_ShouldFail(long? minimum, long? maximum)
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42L);
+
+			async Task Act()
+				=> await sut.Between(minimum).And(maximum);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage($"""
+				              Expected that subject
+				              has long value between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+				              but it had long value 42
+				              """)
+				.Because("nothing can be ordered against a null bound");
 		}
 
 		[Test]
@@ -395,6 +443,32 @@ public sealed partial class PropertyResultTests
 			MyClass? result = await sut.NotBetween(43).And(44);
 
 			await That(result?.LongValue).IsEqualTo(42);
+		}
+
+		[Test]
+		public async Task NotBetween_WhenActualIsAboveMaximum_ShouldSucceed()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42L);
+
+			MyClass? result = await sut.NotBetween(40L).And(41L);
+
+			await That(result?.LongValue).IsEqualTo(42L);
+		}
+
+		[Test]
+		public async Task NotBetween_WhenActualIsEqualToMaximum_ShouldFail()
+		{
+			PropertyResult.Long<MyClass?> sut = MyClass.HasLongValue(42L);
+
+			async Task Act()
+				=> await sut.NotBetween(41L).And(42L);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have long value between 41 and 42,
+				             but it had long value 42
+				             """);
 		}
 
 		[Test]

@@ -46,6 +46,35 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Test]
+		public async Task Between_WhenActualIsAboveMaximum_ShouldFail()
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
+
+			async Task Act()
+				=> await sut.Between(40).And(41);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             has int value between 40 and 41,
+				             but it had int value 42
+				             """);
+		}
+
+		[Test]
+		[Arguments(42, 43)]
+		[Arguments(41, 42)]
+		[Arguments(42, 42)]
+		public async Task Between_WhenActualIsEqualToMinimumOrMaximum_ShouldSucceed(int minimum, int maximum)
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
+
+			MyClass? result = await sut.Between(minimum).And(maximum);
+
+			await That(result?.IntValue).IsEqualTo(42);
+		}
+
+		[Test]
 		public async Task Between_WhenActualIsOutsideTheRange_ShouldFail()
 		{
 			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
@@ -92,6 +121,25 @@ public sealed partial class PropertyResultTests
 				              but it had int value 0
 				              """)
 				.Because("nothing can be ordered against a null bound, so the negation fails as well");
+		}
+
+		[Test]
+		[Arguments(null, 43)]
+		[Arguments(41, null)]
+		public async Task Between_WhenMinimumOrMaximumIsNull_ShouldFail(int? minimum, int? maximum)
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
+
+			async Task Act()
+				=> await sut.Between(minimum).And(maximum);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage($"""
+				              Expected that subject
+				              has int value between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+				              but it had int value 42
+				              """)
+				.Because("nothing can be ordered against a null bound");
 		}
 
 		[Test]
@@ -399,6 +447,32 @@ public sealed partial class PropertyResultTests
 			MyClass? result = await sut.NotBetween(43).And(44);
 
 			await That(result?.IntValue).IsEqualTo(42);
+		}
+
+		[Test]
+		public async Task NotBetween_WhenActualIsAboveMaximum_ShouldSucceed()
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
+
+			MyClass? result = await sut.NotBetween(40).And(41);
+
+			await That(result?.IntValue).IsEqualTo(42);
+		}
+
+		[Test]
+		public async Task NotBetween_WhenActualIsEqualToMaximum_ShouldFail()
+		{
+			PropertyResult.Int<MyClass?> sut = MyClass.HasIntValue(42);
+
+			async Task Act()
+				=> await sut.NotBetween(41).And(42);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have int value between 41 and 42,
+				             but it had int value 42
+				             """);
 		}
 
 		[Test]
