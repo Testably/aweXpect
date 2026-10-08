@@ -19,12 +19,50 @@ public static IEventRecording<T> Watch<T>([RequiresEventMetadata] this T subject
     => subject.Record().Events();
 ```
 
+The marker for a compared value goes on the parameter that reaches the comparison:
+
+```csharp no-compile
+public static AndOrResult<T, IThat<T>> IsEquivalentToTrack<T>(this IThat<T> subject,
+    [RequiresMemberMetadata] T expected)
+    => // ...
+```
+
 The source generator that follows these markers ships in the `aweXpect` package, not in `aweXpect.Core`. It runs when
 the consumer's project is compiled, and only if that project gets the `aweXpect` package, is compiled with C# 9 or
 later and has the `ModuleInitializerAttribute` (.NET 5 or later, or an own `internal` declaration). A consumer that
 only references `aweXpect.Core` and your extension gets no registrations, so the types stay on the reflection
 fallback.
 
+## Registering metadata yourself
+
+For the types that your extension declares itself, you don't depend on the source generator: register their public
+members in `TypeMetadataRegistry` from a module initializer (see [initialization](./08-initialization.md)).
+`RegisterBatch` publishes the registrations together, so that no comparison sees a type with only some of them:
+
+```csharp
+using System.Runtime.CompilerServices;
+
+internal static class MyExtensionMetadata
+{
+#pragma warning disable CA2255 // The initializer of a class library is intended here
+    [ModuleInitializer]
+    internal static void Register()
+        => TypeMetadataRegistry.RegisterBatch(() =>
+        {
+            TypeMetadataRegistry.RegisterProperty<Track, string>("Title", track => track.Title);
+            TypeMetadataRegistry.RegisterProperty<Track, TimeSpan>("Duration", track => track.Duration);
+        });
+#pragma warning restore CA2255
+}
+```
+
+A comparison uses the registered members of a type instead of reflecting over it, so register every public member
+that it should compare. `RegisterField`, `RegisterEvent`, `RegisterCollection`, `RegisterDictionary` and `RegisterSet`
+cover the other kinds of metadata.
+
+## Reflection in an extension
+
 An extension that reflects over a subject itself should guard the reflection with `ReflectionFallback.IsSupported`
 and fail with a message that names the `aweXpect.ReflectionFallback.IsSupported` runtime switch otherwise, so that it
-behaves the same way as the built-in expectations.
+behaves the same way as the built-in expectations. The constant with the name of the switch is internal, so write the
+name into your message yourself.

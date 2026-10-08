@@ -51,9 +51,7 @@ await Expect.That(isPlayed).IsNull();
 ```
 
 :::note
-On a `bool?`, `IsTrue()` and `IsFalse()` compare the subject against `true` or `false` instead of inspecting it.
-Therefore `null` is treated as an ordinary value: `IsNotTrue()`, `IsNotFalse()` and
-`DoesNotComplyWith(it => it.IsTrue())` succeed for a `null` subject.
+On a `bool?`, `IsNotTrue()` and `IsNotFalse()` succeed for `null`.
 :::
 
 ## Implication

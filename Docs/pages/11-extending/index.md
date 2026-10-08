@@ -8,23 +8,25 @@ This package aims to be more stable than the main aweXpect package, to reduce th
 different extensions.
 
 Keep your extensions trimmable and AOT compatible like aweXpect itself, as described in
-[Native AOT for extensions](./06-native-aot.md).
+[Native AOT for extensions](./09-native-aot.md).
 
-| Page                                                       | Topics                                                                    |
-|------------------------------------------------------------|---------------------------------------------------------------------------|
-| [Constraints and results](./02-constraints-and-results.md) | constraints, negation, result types, nested and asynchronous expectations |
-| [Message conventions](./03-message-conventions.md)         | how the failure messages of an extension should read                      |
-| [Customization values](./04-customization-values.md)       | customization values of your own, with lifetimes                          |
-| [Initialization](./05-initialization.md)                   | value formatters and test framework adapters                              |
-| [Native AOT for extensions](./06-native-aot.md)            | the metadata your expectations need under Native AOT                      |
-| [Testing and packaging](./07-testing-and-packaging.md)     | testing an extension and referencing aweXpect.Core                        |
+| Page                                                                               | Topics                                                                   |
+|------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
+| [Constraints and results](./02-constraints-and-results.md)                         | constraints, result helpers, `null` subjects, negation, argument checks  |
+| [Options and match types](./03-options-and-match-types.md)                         | options of your own results, time tolerances, custom comparisons         |
+| [Collections and nested expectations](./04-collections-and-nested-expectations.md) | collection subjects, expectations on members and on collection items     |
+| [Asynchronous expectations](./05-asynchronous-expectations.md)                     | asynchronous constraints, cancellation, repeated checks                  |
+| [Message conventions](./06-message-conventions.md)                                 | how the failure messages of an extension should read                     |
+| [Customization values](./07-customization-values.md)                               | customization values of your own, with lifetimes                         |
+| [Initialization](./08-initialization.md)                                           | value formatters and test framework adapters                             |
+| [Native AOT for extensions](./09-native-aot.md)                                    | the metadata your expectations need under Native AOT                     |
+| [Testing and packaging](./10-testing-and-packaging.md)                             | testing an extension and referencing aweXpect.Core                       |
 
 ## Your first expectation
 
 The samples in this section use the following namespaces:
 
 ```csharp
-using System.Diagnostics.CodeAnalysis;
 using aweXpect.Core;
 using aweXpect.Results;
 ```
@@ -76,4 +78,4 @@ public static AndOrResult<Track, IThat<Track?>> IsRadioFriendly(this IThat<Track
 
 The factory receives the name of the subject (`it`) and the `grammars` of the sentence, which the constraint uses to
 write its part of the failure message. [Constraints and results](./02-constraints-and-results.md) shows how to write
-the `IsRadioFriendlyConstraint`, and [message conventions](./03-message-conventions.md) how its texts should read.
+the `IsRadioFriendlyConstraint`, and [message conventions](./06-message-conventions.md) how its texts should read.

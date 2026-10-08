@@ -69,20 +69,19 @@ Like `IsEquivalentTo`, a failure lists the equivalency options that were used.
 Equivalency takes the **public fields and properties of the expected object** and compares each one with the member
 of the same name on the actual object, recursing into nested objects. How a value is compared depends on its type:
 
-| Type                                                                                                                                                                 | Compared                                    |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|
-| primitives, `enum`, `string`, `decimal`, `DateTime`, `DateTimeOffset`, `TimeSpan`, `Guid`, `BigInteger`, `Complex`, `Half`, `NFloat`, `Int128`, `UInt128`            | by value, with `Equals`                     |
-| `DateOnly`, `TimeOnly`                                                                                                                                               | by value, with `Equals`                     |
-| `MemberInfo` (and therefore `Type`), `Assembly`, `Module`, `Delegate`, `Uri`, `CultureInfo`, `IPAddress`, `Encoding` and anything derived from them                 | by value, with `Equals`                     |
-| `Task`, `Task<T>` and anything derived from them                                                                                                                     | by reference, without waiting for a result  |
-| `ValueTask`, `ValueTask<T>`                                                                                                                                          | by value, with `Equals`                     |
-| `StringBuilder`                                                                                                                                                      | by its text, so it also matches a `string`  |
-| `JsonElement`, `JsonNode`                                                                                                                                            | by its compact JSON text                    |
-| `Regex`                                                                                                                                                              | by its pattern and options                  |
-| collections (`IEnumerable<T>`), `Memory<T>`, `ReadOnlyMemory<T>`                                                                                                     | item by item, in order                      |
-| sets (`ISet<T>`, `IReadOnlySet<T>`)                                                                                                                                  | item by item, without an order              |
-| dictionaries (`IDictionary`, `IDictionary<TKey, TValue>`, `IReadOnlyDictionary<TKey, TValue>`)                                                                       | entry by entry, by key                      |
-| everything else                                                                                                                                                      | by its members, recursively                 |
+| Type                                                                                                                                                                              | Compared                                    |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|
+| primitives, `enum`, `string`, `decimal`, `DateTime`, `DateTimeOffset`, `DateOnly`, `TimeOnly`, `TimeSpan`, `Guid`, `BigInteger`, `Complex`, `Half`, `NFloat`, `Int128`, `UInt128` | by value, with `Equals`                     |
+| `MemberInfo` (and therefore `Type`), `Assembly`, `Module`, `Delegate`, `Uri`, `CultureInfo`, `IPAddress`, `Encoding` and anything derived from them                               | by value, with `Equals`                     |
+| `Task`, `Task<T>` and anything derived from them                                                                                                                                  | by reference, without waiting for a result  |
+| `ValueTask`, `ValueTask<T>`                                                                                                                                                       | by value, with `Equals`                     |
+| `StringBuilder`                                                                                                                                                                   | by its text, so it also matches a `string`  |
+| `JsonElement`, `JsonNode`                                                                                                                                                         | by its compact JSON text                    |
+| `Regex`                                                                                                                                                                           | by its pattern and options                  |
+| collections (`IEnumerable<T>`), `Memory<T>`, `ReadOnlyMemory<T>`                                                                                                                  | item by item, in order                      |
+| sets (`ISet<T>`, `IReadOnlySet<T>`)                                                                                                                                               | item by item, without an order              |
+| dictionaries (`IDictionary`, `IDictionary<TKey, TValue>`, `IReadOnlyDictionary<TKey, TValue>`)                                                                                    | entry by entry, by key                      |
+| everything else                                                                                                                                                                   | by its members, recursively                 |
 
 ### Members
 
@@ -118,19 +117,12 @@ reported as ambiguous. Failures name the kind of the *expected* member.
 - A set on either side is enough to match the items without an order, exactly like
   [ignoring collection order](#ignoring-collection-order), so a `HashSet<T>` can be compared against an array.
 - A multi-dimensional array is only equivalent to an array of the same rank with the same length in every dimension,
-  also when the collection order is ignored, and reports a differing item with its index in every dimension (e.g.
-  `Grid[1,2]`).
-- An actual `HashSet<T>` or `SortedSet<T>` that was created with a custom comparer decides with it which items are the
-  same, as the key comparer of a dictionary does for its keys: an expected item that this comparer finds in the set is
-  matched, whatever its members are, and only the remaining items are matched by the equivalency comparison. The same
-  holds for an `ImmutableHashSet<T>`, an `ImmutableSortedSet<T>` and a `FrozenSet<T>`
-  [on .NET 8 or later](../02-getting-started.md#target-frameworks). A sorted set considers two items the same when its
-  comparer orders neither before the other. The comparer of an expected set is not used. In a project that enables
-  trimming or Native AOT, the comparer is read for the sets that the source generator sees.
+  as for [`IsEqualTo`](../05-collections/01-equality.md#equality).
+- An actual set that was created with a custom comparer, e.g. a `HashSet<T>` or a `SortedSet<T>`, uses that comparer
+  to decide which items are the same.
 - A dictionary reports a differing, missing or superfluous entry under its key. Each expected key is looked up through
   the actual dictionary, so its key comparer decides which keys are the same, as it does for
-  [`IsEqualTo`](../05-collections/04-dictionaries.md#equality). Two expected keys that this comparer considers the same
-  can't both be matched by one entry, so the second one is reported as lacking a distinct key.
+  [`IsEqualTo`](../05-collections/04-dictionaries.md#equality).
 - A collection or dictionary type that declares members itself is compared by its items or entries and, in addition,
   by these members, so two pages with the same items but a different `TotalCount` are not equivalent. They are
   compared like the members of any other object: they come from the *expected* type, so against an array, which
@@ -165,15 +157,20 @@ registration limits the rule to the collection type, or compare the type
 </details>
 
 <details>
-<summary>How the key comparer is found</summary>
+<summary>Sets and dictionaries with a custom comparer</summary>
 
-The comparer is read from the same dictionaries as for [`IsEqualTo`](../05-collections/04-dictionaries.md#equality):
-the dictionary types of the framework and the dictionary that a `ReadOnlyDictionary<TKey, TValue>` wraps. Only the
-key and value types of the dictionary are known at runtime, so in a project that enables trimming or Native AOT, the
-comparer is read for the dictionaries that the source generator sees. For any other dictionary, the matched keys are
-told apart by their own `Equals`, so an actual key that equals no expected key is reported, even when the comparer
-considers it the same as one, and a type that only implements `IReadOnlyDictionary<TKey, TValue>` or
-`IDictionary<TKey, TValue>` looks its keys up by their own `Equals`.
+An expected item that the comparer of the actual set finds in it is matched, whatever its members are, and only the
+remaining items are matched by the equivalency comparison. This also holds for an `ImmutableHashSet<T>`, an
+`ImmutableSortedSet<T>` and a `FrozenSet<T>` [on .NET 8 or later](../02-getting-started.md#target-frameworks). A
+sorted set considers two items the same when its comparer orders neither before the other. The comparer of an expected
+set is not used.
+
+The key comparer is read from the same dictionaries as for
+[`IsEqualTo`](../05-collections/04-dictionaries.md#equality). Two expected keys that it considers the same can't both
+be matched by one entry, so the second one is reported as lacking a distinct key.
+
+In a project that enables trimming or Native AOT, the comparer of a set or a dictionary is only read for the types that
+the source generator sees.
 
 </details>
 
@@ -181,17 +178,19 @@ considers it the same as one, and a type that only implements `IReadOnlyDictiona
 
 - Cyclic references are detected, so graphs that reference themselves don't recurse forever. An instance that is
   referenced more than once is still compared against each of its expected counterparts.
-- Objects that were found equivalent are remembered, so the time does not multiply with the number of paths that lead
-  to a shared object. They are still compared for each path when members are [ignored](#ignoring-members-by-name) in
-  them, as those are matched by their path, when they reference an object that contains them, or when they differ, as
-  a difference is reported for each path.
 - The comparison fails at a recursion depth of 100 nested objects instead of overflowing the stack, see
   [Limiting the recursion depth](#limiting-the-recursion-depth).
 - A type without any members to compare throws an `InvalidOperationException` instead of succeeding without verifying
   anything. Include the relevant members, compare the type [by value](#comparing-by-value-or-by-members), or exclude
   all members explicitly with `IncludeMembers.None`.
-- The same instance on both sides is equivalent to itself, unless its type is compared by value: its members, entries
-  or items are not read, so a shared singleton without members (e.g. `EventArgs.Empty`) does not throw.
+
+<details>
+<summary>The same instance on both sides</summary>
+
+The same instance on both sides is equivalent to itself, unless its type is compared by value: its members, entries
+or items are not read, so a shared singleton without members (e.g. `EventArgs.Empty`) does not throw.
+
+</details>
 
 ## Configuration
 
@@ -297,9 +296,7 @@ differs from the least.
 ### Per-type options with `For<T>`
 
 You can apply options to a specific member type only. Type-specific options override the top-level options for members
-of that type. They also apply to a member whose runtime type derives from `T`, because an instance of an abstract type
-is always an instance of a derived type, and the runtime type of a `Type` member is the internal `RuntimeType` rather
-than `Type` itself. When several registrations match, the most derived one wins:
+of that type or of a derived type. When several registrations match, the most derived one wins:
 
 ```csharp
 await Expect.That(album).IsEquivalentTo(expected, o => o
@@ -307,13 +304,17 @@ await Expect.That(album).IsEquivalentTo(expected, o => o
   .For<List<Track>>(x => x.IgnoringCollectionOrder()));
 ```
 
+`For<T>` throws an `ArgumentException` for an interface; register the implementing class or struct instead.
+
+<details>
+<summary>How registrations are applied</summary>
+
 Like the other fluent methods, `For<T>` returns a copy and leaves the options it was called on unchanged. The callback
 is applied to the final options of the expectation, so every other option applies to `T` as well, no matter whether it
 is set before or after `For<T>`. A registration in the callback of a single expectation replaces one for the same type
 in the [customized default](#customizing-the-global-defaults).
 
-The options are looked up by the runtime type of a value, which is never an interface, so `For<T>` throws an
-`ArgumentException` for an interface; register the implementing class or struct instead. A registration for a nullable
+The options are looked up by the runtime type of a value, which is never an interface. A registration for a nullable
 value type `T?` applies to `T`, because a boxed value cannot tell the two apart, so it also applies to members of type
 `T`.
 
@@ -321,23 +322,29 @@ When the subject and the expectation have different types and both are registere
 the expectation wins, because the members that are compared come from the expectation. An extension can read the
 options that apply to a type with `GetOptionsFor(type)`.
 
+</details>
+
 ### Comparing by value or by members
 
-Each type can be compared either by value (`Equals`) or by walking its members. The default is determined by the type
-itself (see [Default behaviour](#default-behaviour)). By value, `Equals` decides alone and in both directions; by
-members, `Equals` is ignored and only the members count. Comparing by value is therefore how you ask for the equality
-a type defines for itself (a value object that compares only its `Id`, for example). One side being compared by value
-is enough; when it is only the expectation, the expectation's `Equals` decides, since the subject is compared by
-members, which ignores its `Equals`. To override for a specific type:
+Each type is compared either by value (`Equals` decides alone) or by its members (`Equals` is ignored). The default
+depends on the type (see [Default behaviour](#default-behaviour)). One side compared by value is enough. Comparing by
+value is how you ask for the equality a type defines for itself, e.g. a value object that compares only its `Id`. To
+override for a specific type:
 
 ```csharp
 await Expect.That(album).IsEquivalentTo(expected, o => o
   .For<TrackId>(x => x with { ComparisonType = EquivalencyComparisonType.ByValue }));
 ```
 
+<details>
+<summary>Which comparison type a member uses</summary>
+
 Unlike the other type-specific options, the comparison type applies to the type itself and not to its members: a member
 without a registration of its own falls back to the comparison type of the top-level options or, if none is set, to the
-`DefaultComparisonTypeSelector`, so a string member of a type compared by members is still compared by value.
+`DefaultComparisonTypeSelector`, so a string member of a type compared by members is still compared by value. When only
+the expectation is compared by value, the expectation's `Equals` decides.
+
+</details>
 
 To change the global rule, replace the `DefaultComparisonTypeSelector`:
 
@@ -367,18 +374,23 @@ Equivalency options:
  - limit the recursion depth to 3
 ```
 
-The depth is counted per path, so two members on the same level are both at the same depth, and members that are
-compared [by value](#comparing-by-value-or-by-members) do not add to it. A cyclic reference is caught by the cycle
-detection and never reaches the limit.
-
 Use `LimitingRecursionDepth` to raise or lower the limit:
 
 ```csharp
 await Expect.That(album).IsEquivalentTo(expected, o => o.LimitingRecursionDepth(500));
 ```
 
-It is equivalent to setting `MaxRecursionDepth` directly. A depth below one, which could not even compare the root,
-throws an `ArgumentOutOfRangeException`.
+It is equivalent to setting `MaxRecursionDepth` directly.
+
+<details>
+<summary>How the depth is counted</summary>
+
+The depth is counted per path, so two members on the same level are both at the same depth, and members that are
+compared [by value](#comparing-by-value-or-by-members) do not add to it. A cyclic reference is caught by the cycle
+detection and never reaches the limit. A depth below one, which could not even compare the root, throws an
+`ArgumentOutOfRangeException`.
+
+</details>
 
 A limit other than the default is listed in the failure message under `Equivalency options:`.
 
@@ -460,7 +472,8 @@ Equivalency options:
  - include public fields and properties
 ```
 
-When the playlist-filter pattern with `It.Is<T>()` fails, the member's expectation is rendered as `Expected`:
+When the playlist-filter pattern with `It.Is<T>()` fails, e.g. for a track with `PlayCount = 1`, the member's
+expectation is rendered as `Expected`:
 
 ```text title="Failure message"
 Expected that midnight

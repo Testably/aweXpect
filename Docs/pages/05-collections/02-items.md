@@ -64,9 +64,7 @@ and what the items must meet:
 | [`AreUnique`](#unique)              | occurs exactly once (`AreNotUnique`: more than once)                  |
 
 An empty collection satisfies `All()`, like it does `Enumerable.All`, so
-`Expect.That(new int[0]).All().Satisfy(x => false)` succeeds. In contrast,
-[`WithRecursiveInnerExceptions`](../06-behaviour/01-delegates.md#recursive-inner-exceptions) and
-`HasRecursiveInnerExceptions` fail for an exception without inner exceptions.
+`Expect.That(new int[0]).All().Satisfy(x => false)` succeeds.
 
 ### Nested expectation
 
@@ -82,11 +80,19 @@ await Expect.That([1, 2, 3]).Exactly(1).ComplyWith(item => item.IsEqualTo(2));
 await Expect.That([1, 2, 3]).None().ComplyWith(item => item.IsNegative());
 ```
 
+A nested expectation that throws, or a `null` item or member it cannot evaluate, fails both the expectation and its
+negation.
+
+<details>
+<summary>Items the nested expectation cannot answer</summary>
+
 An item for which the nested expectation fails and its negation fails as well decides the result, because the
 expectation could not answer it: the nested expectation threw (the exception becomes the `InnerException`), or the item
 or an inspected member is `null`. So `None().ComplyWith(item => item.StartsWith("Let"))` fails for a `null` item, and so
 does its negation. The same applies to [`HasItemThat`](#item-at-index) and to collections compared with item
 expectations or predicates, where in any order such an item only decides when it matches no other expected item.
+
+</details>
 
 ### Condition
 
@@ -107,9 +113,8 @@ You can verify that the items in the collection are equal to the `expected` valu
 await Expect.That([1, 1, 1]).All().AreEqualTo(1);
 ```
 
-The items are compared by their default equality, unless you specify a
-[custom comparer](../04-values/12-object.md#custom-comparer), [equivalency](../04-values/13-equivalency.md), a
-[tolerance](./index.md#tolerance) or, for strings, one of the [string options](../04-values/03-string.md#string-options):
+The items are [compared](./01-equality.md#comparing-items) like in the other collection expectations, so you can
+specify a custom comparer, equivalency, a tolerance or a string option:
 
 ```csharp
 IEnumerable<Album> albums = //...
@@ -119,7 +124,6 @@ await Expect.That(albums).All().AreEqualTo(expected).Equivalent();
 await Expect.That(albums).All().AreEqualTo(expected).Using(new AlbumComparer());
 await Expect.That(albums).AtLeast(2).AreEquivalentTo(expected);
 await Expect.That(["let it be", "LET IT BE"]).All().AreEqualTo("Let It Be").IgnoringCase();
-await Expect.That([2.04, 2.02, 2.01]).All().AreEqualTo(2.0).Within(0.1);
 ```
 
 ### Type
@@ -176,7 +180,7 @@ await Expect.That(values).HasSingle().Which.IsGreaterThan(41);
 You can also apply filters for the items:
 
 ```csharp
-IEnumerable<int> values = [1, 2, 3,];
+IEnumerable<int> values = [1, 2, 3];
 
 await Expect.That(values).HasSingle().Matching(it => it > 2);
 
@@ -191,8 +195,8 @@ await Expect.That(persons).HasSingle().MatchingExactly<Student>();
 await Expect.That(persons).HasSingle().MatchingExactly<Student>(student => student.Courses.Count == 0);
 ```
 
-Only one filter can be applied, so restrict the type and add a condition in the same call. A second `Matching…` on a
-stored `HasSingle()` or `HasItem()` result throws an `InvalidOperationException`.
+Only one filter can be applied, so restrict the type and add a condition in the same call, e.g.
+`Matching<Student>(student => …)`.
 
 The awaited result is the single item:
 

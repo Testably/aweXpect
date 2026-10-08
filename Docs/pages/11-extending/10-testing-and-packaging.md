@@ -37,6 +37,11 @@ durations of every evaluation of that expectation then elapse on that clock. A c
 repeats its checks with `RepeatedCheckOptions.CheckRepeatedly(…)` and measures with `GetTimestamp()` and
 `GetElapsedTime(…)` of its `IEvaluationContext`, but not when it waits with `Task.Delay(…)` itself.
 
+aweXpect ships no virtual clock, so you write your own. It implements `GetTimestamp()` and `GetElapsedTime(…)` on the
+virtual time, advances that time in `Delay(…)` instead of waiting, and schedules the `CancelAfter(…)` of a timeout on
+the virtual time as well. A wait that such a timeout cuts short must end by its cancellation, not complete, and a wait
+of `Timeout.InfiniteTimeSpan` only ends by a cancellation.
+
 ## Packaging
 
 - Reference the [`aweXpect.Core`](https://www.nuget.org/packages/aweXpect.Core) package in your extension, not
@@ -49,8 +54,8 @@ repeats its checks with `RepeatedCheckOptions.CheckRepeatedly(…)` and measures
 - Target `netstandard2.0`, so that the extension also works on .NET Framework, and add further target frameworks
   only if you need their APIs. The samples on these pages also compile against the `netstandard2.0` build.
 - The test project that uses your extension also references the `aweXpect` package. It brings the built-in
-  expectations, the [test framework adapters](./05-initialization.md#test-framework-adapter) and the
-  [source generator](./06-native-aot.md) for Native AOT.
+  expectations, the [test framework adapters](./08-initialization.md#test-framework-adapter) and the
+  [source generator](./09-native-aot.md) for Native AOT.
 
 ## Versioning
 

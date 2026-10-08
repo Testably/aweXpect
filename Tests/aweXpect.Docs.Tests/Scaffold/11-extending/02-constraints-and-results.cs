@@ -24,6 +24,23 @@ namespace Snippets
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null) { }
 	}
+
+	// The constraint that the sample for the state overload of AddConstraint creates.
+	internal sealed class IsShorterThanConstraint(string it, ExpectationGrammars grammars, TimeSpan maximum)
+		: ConstraintResult.WithNotNullValue<Track>(it, grammars),
+			IValueConstraint<Track?>
+	{
+		public ConstraintResult IsMetBy(Track? actual) => this;
+
+		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(maximum);
+
+		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null) { }
+
+		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null) { }
+
+		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null) { }
+	}
 }
 
 // The record needs this type, which is missing in netstandard2.0 and net48, and on the other targets it only causes a

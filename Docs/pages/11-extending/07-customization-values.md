@@ -7,6 +7,7 @@ The samples on this page use the following namespaces:
 
 ```csharp
 using System.Text.Json;
+using aweXpect.Core;
 using aweXpect.Customization;
 ```
 
@@ -72,7 +73,8 @@ public static class JsonAwexpectCustomizationExtensions
                 {
                     if (value is null)
                     {
-                        throw new ArgumentNullException(nameof(value), "The 'value' cannot be null.");
+                        throw Tracing.WriteException(
+                            new ArgumentNullException(nameof(value), "The 'value' cannot be null."));
                     }
                 });
         }

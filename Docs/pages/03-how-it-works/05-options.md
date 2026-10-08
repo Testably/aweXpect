@@ -1,17 +1,19 @@
 # Options
 
-Many expectations share the same options. An option is appended to the expectation it configures, and the reference
-pages describe the details:
+Many expectations share the same options. An option is appended to the expectation it configures. Options can be
+chained in any order, but each only once. An option that switches something on, such as `IgnoringCase()`, takes an
+optional `bool`; with `false` it behaves as if it was not specified. The reference pages describe the details:
 
-| Option                                                                | Configures                                      | Details                                                |
-|-----------------------------------------------------------------------|-------------------------------------------------|--------------------------------------------------------|
-| [`Because(reason)`](#because)                                         | the reason in the failure message               | [Anatomy](./index.md)                                  |
-| [`IgnoringCase()`, `IgnoringLeadingWhiteSpace()`, …](#string-options) | how strings are compared                        | [String](../04-values/03-string.md#string-options)     |
-| [`Using(comparer)`](#comparer)                                        | a custom equality comparer                      | [Object](../04-values/12-object.md#custom-comparer)    |
-| [`Equivalent()`](#equivalency)                                        | a comparison by equivalency instead of equality | [Equivalency](../04-values/13-equivalency.md)          |
-| [`Within(tolerance)`](#tolerance)                                     | a tolerance for numbers and times               | [Number](../04-values/02-number.md#tolerance)          |
-| [`InAnyOrder()`, `IgnoringDuplicates()`, …](#collection-options)      | how collections are compared                    | [Collections](../05-collections/01-equality.md)        |
-| [`Within(timeout)`, `WithTimeout(…)`, `WithCancellation(…)`](#time)   | how long an expectation may take or wait        | [Time and cancellation](./06-time-and-cancellation.md) |
+| Option                                                                | Configures                                      | Details                                                             |
+|-----------------------------------------------------------------------|-------------------------------------------------|---------------------------------------------------------------------|
+| [`Because(reason)`](#because)                                         | the reason in the failure message               | [Anatomy](./index.md#anatomy-of-an-expectation)                     |
+| [`IgnoringCase()`, `IgnoringLeadingWhiteSpace()`, …](#string-options) | how strings are compared                        | [String](../04-values/03-string.md#string-options)                  |
+| [`Using(comparer)`](#comparer)                                        | a custom equality comparer                      | [Object](../04-values/12-object.md#custom-comparer)                 |
+| [`Equivalent()`](#equivalency)                                        | a comparison by equivalency instead of equality | [Equivalency](../04-values/13-equivalency.md)                       |
+| [`Within(tolerance)`](#tolerance)                                     | a tolerance for numbers and times               | [Number](../04-values/02-number.md#tolerance)                       |
+| [`InAnyOrder()`, `IgnoringDuplicates()`, …](#collection-options)      | how collections are compared                    | [Collections](../05-collections/01-equality.md)                     |
+| `Once()`, `Never()`, `AtLeast(2.Times())`, `AtLeast().Twice()`, …     | how often an item must occur                    | [Contained items](../05-collections/01-equality.md#contained-items) |
+| [`Within(timeout)`, `WithTimeout(…)`, `WithCancellation(…)`](#time)   | how long an expectation may take or wait        | [Time and cancellation](./06-time-and-cancellation.md)              |
 
 ## Because
 
@@ -98,9 +100,6 @@ await Expect.That(songs).IsEqualTo(["Let It Be", "Two of Us", "Dig a Pony"]).InA
 await Expect.That(songs).Contains(["Two of Us", "Let It Be"]).IgnoringInterspersedItems();
 await Expect.That(songs).IsContainedIn(["Two of Us", "Dig a Pony", "Let It Be", "Get Back"]).Properly();
 ```
-
-`IgnoringDuplicates` and `IgnoringInterspersedItems` take an optional `bool`; with `false` they behave as if the option
-was not specified.
 
 ## Time
 

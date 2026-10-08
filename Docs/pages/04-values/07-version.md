@@ -18,9 +18,7 @@ Describes the possible expectations for `Version`.
 | [`HasBuild`](#components)                            | negated comparison          | has the expected build component              |
 | [`HasRevision`](#components)                         | negated comparison          | has the expected revision component           |
 
-A `null` subject fails every expectation on this page except equality and one of, as the
-[rule for `null` subjects](../03-how-it-works/04-null-subjects.md) says. Reference equality and `null` checks come
-from the [object expectations](./12-object.md).
+Reference equality and `null` checks come from the [object expectations](./12-object.md).
 
 ## Equality
 
@@ -33,8 +31,8 @@ await Expect.That(release).IsEqualTo(new Version(1, 2));
 await Expect.That(release).IsNotEqualTo(new Version(1, 2, 0));
 ```
 
-This uses the equality of `Version`, where an unspecified component is not treated as zero, so `1.2` is not equal
-to `1.2.0`.
+An unspecified component is `-1`, not `0`, so `1.2` is not equal to `1.2.0` and, following
+[`Version.CompareTo`](https://learn.microsoft.com/en-us/dotnet/api/system.version.compareto), less than it.
 
 ## One of
 
@@ -61,10 +59,6 @@ await Expect.That(release).IsLessThanOrEqualTo(new Version(1, 5));
 await Expect.That(release).IsNotGreaterThan(new Version(2, 0));
 await Expect.That(release).IsNotLessThan(new Version(1, 2));
 ```
-
-All comparisons follow
-[`Version.CompareTo`](https://learn.microsoft.com/en-us/dotnet/api/system.version.compareto), which treats an
-unspecified component as less than an explicit zero, so `1.2` is less than `1.2.0`.
 
 ## Between
 

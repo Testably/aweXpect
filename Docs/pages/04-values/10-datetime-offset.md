@@ -174,15 +174,19 @@ using aweXpect.Customization;
 IDisposable lifetime = Customize.aweXpect.Settings().DefaultTimeComparisonTolerance.Set(15.Milliseconds());
 ```
 
-It also applies to the items of a collection of `DateTime`, `DateTimeOffset`, `DateOnly`, `TimeOnly` or `TimeSpan`
-values (or their nullable counterparts) in every expectation that compares them with expected items, e.g. `IsEqualTo`,
+It also applies to the items of a collection of these types. An explicit `Within` always replaces the default
+tolerance. The applied default tolerance is part of the failure message, for example
+`is equal to 2024-12-24T13:15:00.0000000 ± 0:00.015`, unless it is zero. For a `DateOnly`, see
+[tolerance](./11-date-time-only.md#tolerance).
+
+<details>
+<summary>Where the default tolerance applies</summary>
+
+It applies to the items of a collection of `DateTime`, `DateTimeOffset`, `DateOnly`, `TimeOnly` or `TimeSpan` values
+(or their nullable counterparts) in every expectation that compares them with expected items, e.g. `IsEqualTo`,
 `Contains`, `IsContainedIn`, `StartsWith`, `EndsWith`, `HasItem` or `All().AreEqualTo`, and in their negations. The same
 holds for the values of a dictionary in `Contains(key, value)`, `ContainsValue`, `ContainsValues` and `IsEqualTo`, and in
-their negations. An explicit `Within` always replaces the default tolerance. The applied default tolerance is part of
-the failure message, for example `is equal to 2024-12-24T13:15:00.0000000 ± 0:00.015`, unless it is zero.
-
-For a `DateOnly` only the whole days of the default tolerance apply, so a default below one day has no effect there. An
-explicit `Within` on a `DateOnly` still has to be a whole number of days.
+their negations.
 
 The default tolerance is not used for:
 - property verifications like `HasOffset()`
@@ -191,16 +195,13 @@ The default tolerance is not used for:
 - values and members compared by `IsEquivalentTo`
 - values compared as `object`
 
+</details>
+
 ## Kind
 
-A `DateTime` with `DateTimeKind.Utc` and one with `DateTimeKind.Local` describe different instants even when their date
-and time components are identical, so aweXpect refuses to compare them. A value with `DateTimeKind.Unspecified` is
-compatible with both kinds. `DateTimeOffset` carries an explicit offset instead of a `Kind` and is therefore always
-comparable.
-
-`IsEqualTo`, `IsOneOf`, `IsAfter`, `IsBefore`, `IsOnOrAfter`, `IsOnOrBefore` and `IsBetween` fail for such a pair, and so
-do the negated ordering expectations `IsNotAfter`, `IsNotBefore`, `IsNotOnOrAfter`, `IsNotOnOrBefore` and `IsNotBetween`.
-Only `IsNotEqualTo` and `IsNotOneOf` succeed, because the two values are never equal:
+aweXpect refuses to compare a `DateTime` with `DateTimeKind.Utc` against one with `DateTimeKind.Local`, because they
+describe different instants: every comparison fails, except `IsNotEqualTo` and `IsNotOneOf`. A value with
+`DateTimeKind.Unspecified` is compatible with both kinds, and a `DateTimeOffset` is always comparable:
 
 ```csharp
 DateTime releaseDate = new DateTime(1969, 9, 26, 0, 0, 0, DateTimeKind.Utc);
@@ -212,12 +213,18 @@ await Expect.That(releaseDate).IsNotEqualTo(new DateTime(1969, 9, 26, 0, 0, 0, D
 await Expect.That(releaseDate).IsEqualTo(new DateTime(1969, 9, 26, 0, 0, 0, DateTimeKind.Unspecified));
 ```
 
-For `IsBetween` and `IsNotBetween` the subject must be comparable to both bounds. For `IsOneOf` and `IsNotOneOf` an
-alternative with an incompatible `Kind` can never be the match, but the remaining alternatives are still considered.
+The same rule applies wherever a `DateTime` is compared as a value, e.g. in collection expectations and in
+`IsEquivalentTo`.
 
-The same rule applies wherever a `DateTime` is compared as a value: collection expectations such as `IsEqualTo` or
-`Contains`, and `IsEquivalentTo` for a `DateTime` member. Two values that differ only in their kind never match
-there either:
+<details>
+<summary>Details of the `Kind` rule</summary>
+
+The negated ordering expectations `IsNotAfter`, `IsNotBefore`, `IsNotOnOrAfter`, `IsNotOnOrBefore` and `IsNotBetween`
+fail for an incompatible pair as well. For `IsBetween` and `IsNotBetween` the subject must be comparable to both bounds.
+For `IsOneOf` and `IsNotOneOf` an alternative with an incompatible `Kind` can never be the match, but the remaining
+alternatives are still considered.
+
+In a collection, two values that differ only in their kind never match:
 
 ```csharp
 DateTime[] releaseDates = [new DateTime(1969, 9, 26, 0, 0, 0, DateTimeKind.Utc)];
@@ -225,6 +232,8 @@ DateTime[] releaseDates = [new DateTime(1969, 9, 26, 0, 0, 0, DateTimeKind.Utc)]
 // fails, because the expected value denotes a different instant
 await Expect.That(releaseDates).Contains(new DateTime(1969, 9, 26, 0, 0, 0, DateTimeKind.Local));
 ```
+
+</details>
 
 ## Properties
 

@@ -35,9 +35,16 @@ defined for a [set](./index.md#sets).
 With `IgnoringDuplicates()`, only which items occur matters, not how often: every expected item has to be matched by an
 item of the collection, and every item of the collection has to match an expected item.
 
+<details>
+<summary>Multi-dimensional arrays</summary>
+
 A multi-dimensional array is only equal to an array of the same rank with the same length in every dimension, also with
 `InAnyOrder()` or `IgnoringDuplicates()`, while the other expectations on this page only look at its items. A failed
-comparison with a collection names an item of such an array by its index in every dimension (e.g. `[1,2]`).
+comparison with a collection names an item of such an array by its index in every dimension (e.g. `[1,2]`). The same
+holds for [equivalency](../04-values/13-equivalency.md#collections-and-dictionaries), also when the collection order is
+ignored.
+
+</details>
 
 ## Contained items
 
@@ -63,7 +70,13 @@ await Expect.That(values).Contains(1).Exactly(3.Times());
 await Expect.That(values).Contains(1).AtMost(4.Times());
 await Expect.That(values).Contains(1).LessThan(5.Times());
 await Expect.That(values).Contains(1).Between(1).And(5.Times());
+await Expect.That(values).Contains(2).Once();
+await Expect.That(values).Contains(1).AtLeast().Twice();
+await Expect.That(values).Contains(5).Never();
 ```
+
+Only one count can be given, so write `Between(2).And(5.Times())` instead of `AtLeast(2.Times()).AtMost(5.Times())`,
+which throws.
 
 ### Predicate
 
@@ -96,11 +109,9 @@ items in between, so `[1, 3]` is not contained in `[1, 2, 3]` unless `IgnoringIn
 `InAnyOrder` and `IgnoringInterspersedItems` exclude each other, here and for `IsContainedIn`: specifying the second one
 throws an `InvalidOperationException`.
 
-With `IgnoringDuplicates()`, only which items occur matters, not how often: every expected item has to be matched by an
-item of the collection.
+`IgnoringDuplicates()` works as for [equality](#equality), except that only the expected items have to be matched.
 
-To check for a proper subset, append `.Properly()` (which would fail for equal collections). The negation is
-`DoesNotContain`.
+To check for a proper subset, append `.Properly()` (which would fail for equal collections).
 
 ### Superset
 
@@ -119,11 +130,9 @@ await Expect.That(values).IsNotContainedIn([1, 2]);
 Without `InAnyOrder` the values must appear in the expected collection in the same order and contiguous, i.e.
 without other items in between, so `[1, 3]` is not contained in `[1, 2, 3]` unless `IgnoringInterspersedItems` is used.
 
-With `IgnoringDuplicates()`, only which items occur matters, not how often: every item of the collection has to match
-an expected item.
+`IgnoringDuplicates()` works as for [equality](#equality), except that only the items of the collection have to match.
 
-To check for a proper superset, append `.Properly()` (which would fail for equal collections). The negation is
-`IsNotContainedIn`.
+To check for a proper superset, append `.Properly()` (which would fail for equal collections).
 
 ## Start / end
 
@@ -145,7 +154,7 @@ await Expect.That(songs).DoesNotEndWith("Something");
 ## Predicates and expectations per item
 
 Instead of the expected items, `IsEqualTo`, `Contains` and `IsContainedIn` (and their negations) also accept one
-predicate or one expectation per item, with the same options for the order, duplicates and interspersed items:
+predicate or one expectation per item, with the same options as with expected items:
 
 ```csharp
 IEnumerable<string> songs = ["Come Together", "Something", "Let It Be"];

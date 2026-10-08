@@ -3,7 +3,7 @@
 aweXpect reports a failed, skipped or inconclusive test by throwing an exception that your test framework understands.
 For MSTest, NUnit, TUnit and xUnit (v2 and v3), the `aweXpect` package generates an adapter into the test project that
 throws these exceptions. Another test framework needs an adapter of its own, see
-[test framework adapter](../11-extending/05-initialization.md#test-framework-adapter).
+[test framework adapter](../11-extending/08-initialization.md#test-framework-adapter).
 
 ## Failed expectations
 
@@ -23,6 +23,9 @@ assembly that declares it:
 
 Each of them fails the test, and has the exception that caused the failure, if any, as inner exception.
 
+<details>
+<summary>When the "without" and "none detected" rows apply</summary>
+
 - The `TUnit` and `xunit.v3` packages include `TUnit.Assertions` and `xunit.v3.assert`. The rows "without" apply to a
   test project that only references `TUnit.Core` or `xunit.v3.core`, because it uses aweXpect instead of the
   assertions of the test framework.
@@ -32,6 +35,8 @@ Each of them fails the test, and has the exception that caused the failure, if a
   `xunit.core` counts as "none detected".
 - "None detected" also applies when the generated adapter is not registered, see
   [aweXpect2002](../07-analyzers.md#test-framework-adapter).
+
+</details>
 
 ## Failing a test
 
@@ -76,8 +81,16 @@ something that is not available:
 Fail.Inconclusive("the music service did not respond");
 ```
 
-It throws the same exception as an inconclusive expectation, see
-[the table of exceptions per test framework](./06-time-and-cancellation.md#outcome).
+It throws the same exception as an expectation that was [canceled](./06-time-and-cancellation.md#outcome):
+
+| Test framework | Thrown exception                    | Reported as                      |
+|----------------|-------------------------------------|----------------------------------|
+| MSTest         | `AssertInconclusiveException`       | inconclusive                     |
+| NUnit          | `InconclusiveException`             | inconclusive                     |
+| TUnit          | `InconclusiveTestException`         | inconclusive                     |
+| xUnit v3       | an exception marked as test timeout | timed out                        |
+| xUnit v2       | `aweXpect.InconclusiveException`    | failed (no inconclusive outcome) |
+| none detected  | `aweXpect.InconclusiveException`    | depends on the runner            |
 
 ## Skipping a test
 

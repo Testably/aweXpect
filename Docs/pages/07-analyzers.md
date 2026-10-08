@@ -16,15 +16,22 @@ Expect.That(value).IsTrue();          // reported: never evaluated
 await Expect.That(value).IsTrue();    // fixed: awaited, so it fails
 ```
 
-The code fix awaits the expectation in its innermost enclosing method, local function or lambda. A method or local
-function that is not `async` yet is made `async`: a `void` or `T` return type becomes `Task` or `Task<T>`, and the
-`return` statements of a method that already returns a task are adjusted where needed. The fix is not offered where
-the result would not compile or would change a signature that other code depends on, e.g. in a lambda that is not
-`async` (such as one converted to an `Action`), in a constructor, a property, an iterator, a `lock` statement or unsafe
-code, in a function with `ref` locals or `ref struct` locals, in a method with `ref`, `out`, `in` or pointer
-parameters, in a `[Conditional]` method, or in a method or local function whose return type would have to change
-while other code depends on it: an override, a virtual method, an interface implementation (also one that only a
-derived class declares), or one that is called or used as a method group elsewhere.
+The code fix awaits the expectation and makes the enclosing method, local function or lambda `async` where needed. It
+is not offered where that would not compile or would change a signature that other code depends on.
+
+<details>
+<summary>Where the code fix is not offered</summary>
+
+- in a lambda that is not `async`, such as one converted to an `Action`
+- in a constructor, a property, an iterator, a `lock` statement or unsafe code
+- in a function with `ref` locals or `ref struct` locals
+- in a method with `ref`, `out`, `in`, pointer or `ref struct` parameters, or one that returns by reference
+- in a `partial` or `[Conditional]` method
+- in a method or local function whose return type would have to change while other code depends on it: an override, a
+  virtual method, an interface implementation (also one that only a derived class declares), or one that is called or
+  used as a method group elsewhere
+
+</details>
 
 For a `ref struct` that cannot be used in an `async` method, verify the expectation synchronously instead, see
 [When you cannot await](./03-how-it-works/index.md#when-you-cannot-await).
@@ -45,8 +52,8 @@ await Expect.That(subject).IsEqualTo(2);         // fixed
 ## aweXpect0003
 
 :::warning[Warning]
-A `Has…` expectation is used directly after `Throws`, where the sentence "throws a …" needs the `With…` vocabulary. A
-code fix is available.
+A `Has…` expectation is used directly after `Throws`, where the sentence "throws a …" needs the `With…` vocabulary. Two
+code fixes are available: switch to the `With…` twin, or insert `.Which`.
 :::
 
 ```csharp
@@ -63,7 +70,7 @@ The `Has…` vocabulary belongs after `.Which`. See
 
 :::danger[Error]
 An expectation for an object is applied to a delegate subject, so it checks the delegate instead of what it returns.
-A code fix is available.
+A code fix is available for a delegate that returns a value.
 :::
 
 ```csharp
@@ -144,25 +151,17 @@ int count = await Expect.That(subject).Is<string>().Or.Is<int>();   // reported:
 await Expect.That(subject).Is<string>().Or.Is<int>();               // fixed: the value is not used
 ```
 
-The last expectation determines the type of the value, also when another alternative is the one that is met. That
-alternative has no value of this type, so the result is `null` for a reference type, also when it is not annotated as
-nullable, and the zero value for a value type. Do not use the value, or check it before using it and suppress the
-warning there. The rule is not reported when the value has the type of the subject, as in
-`await Expect.That(5).IsGreaterThan(3).Or.IsLessThan(1)`, because then every alternative returns the subject. See
+The value is `default` (also `null` for a reference type that is not annotated as nullable) when another alternative
+was met. Do not use it, or check it first and suppress the warning there. The rule is not reported when the value has
+the type of the subject, because then every alternative returns the subject. See
 [Combining expectations](./03-how-it-works/03-combining.md#using-the-result).
 
 ## Nullability suppressor
 
 After an expectation that a `null` subject can never satisfy, such as `IsNotNull()`, the
 `aweXpect` package suppresses the nullability warnings CS8600, CS8602, CS8604 and CS8629 for that subject, with the
-suppression IDs `aweXpect1001` to `aweXpect1004`. The subject has to be a local variable or a parameter that is
-neither a `ref` nor a parameter of a primary constructor, which any member can write to, and the expectation has to be
-awaited or verified in a preceding statement in the same method, local function or lambda, without a branch, a label
-or a write to the subject in that statement or in between. Assigning the result of an expectation to its own subject,
-as in `subject = await Expect.That(subject).IsNotNull();`, does not count as a write, because the result is the
-subject. A `ref` alias of the subject prevents the suppression, as it can change the subject unnoticed. Only the
-warnings are suppressed; the null state of the compiler is unchanged.
-Expectations of extension packages take part when they are marked with `[GuaranteesNotNull]`, see
+suppression IDs `aweXpect1001` to `aweXpect1004`. Expectations of extension packages take part when they are marked
+with `[GuaranteesNotNull]`, see
 [nullability warnings](./11-extending/02-constraints-and-results.md#nullability-warnings).
 
 ```csharp
@@ -171,6 +170,19 @@ string? title = new Track().Title;
 await Expect.That(title).IsNotNull();
 int length = title.Length;   // no CS8602
 ```
+
+<details>
+<summary>When the suppression applies</summary>
+
+The subject has to be a local variable or a parameter that is neither a `ref` nor a parameter of a primary
+constructor, which any member can write to, and the expectation has to be awaited or verified in a preceding statement
+in the same method, local function or lambda, without a branch, a label or a write to the subject in that statement or
+in between. Assigning the result of an expectation to its own subject, as in
+`subject = await Expect.That(subject).IsNotNull();`, does not count as a write, because the result is the subject. A
+`ref` alias of the subject prevents the suppression, as it can change the subject unnoticed. Only the warnings are
+suppressed; the null state of the compiler is unchanged.
+
+</details>
 
 ## Metadata generator
 
@@ -184,7 +196,7 @@ The source generator warns with `aweXpect2002` when a test project on .NET 8 or 
 The generated test framework adapter registers itself with a module initializer, which needs C# 9, and on .NET 8 or
 later the loaded assemblies are not scanned for it. Without the adapter, aweXpect throws its own exceptions, so a
 skipped or inconclusive test is reported as failed. Set `<LangVersion>` to 9 or later, or register the adapter before
-the first expectation, see [initialization](./11-extending/05-initialization.md).
+the first expectation, see [initialization](./11-extending/08-initialization.md).
 
 ```csharp no-compile
 TestFrameworkRegistry.Register(new aweXpect.Frameworks.NunitAdapter());

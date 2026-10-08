@@ -84,14 +84,22 @@ only available on .NET 8 or later:
   `ushort`, `int`, `uint`, `long`, `ulong`, `float`, `double` and `decimal`, e.g. `nint`, `Half`, `Int128` or
   `BigInteger`;
 - [`IsPositive` and `IsNegative`](./04-values/02-number.md#positive--negative) for unsigned numbers;
-- a `Half`, `Int128` or `UInt128` typed as `object` being [equal](./04-values/12-object.md#equality) to a number of
-  another numeric type with the same value;
-- the names `Half.MinValue`, `Half.MaxValue`, `NFloat.MinValue` and `NFloat.MaxValue` in failure messages, which
-  otherwise show the number;
 - [delegates](./06-behaviour/01-delegates.md) that return a `ValueTask` or `ValueTask<T>`.
+
+<details>
+<summary>Further differences below .NET 8</summary>
+
+Only on .NET 8 or later:
+
+- a `Half`, `Int128` or `UInt128` typed as `object` is [equal](./04-values/12-object.md#equality) to a number of
+  another numeric type with the same value;
+- failure messages show the names `Half.MinValue`, `Half.MaxValue`, `NFloat.MinValue` and `NFloat.MaxValue` instead of
+  the number.
 
 Before .NET 5, e.g. on .NET Framework, aweXpect cannot read the key comparer of a `ConcurrentDictionary<TKey, TValue>`,
 so its keys are compared with their own `Equals`, as for a dictionary whose comparer is unknown.
+
+</details>
 
 ## Native AOT and trimming
 

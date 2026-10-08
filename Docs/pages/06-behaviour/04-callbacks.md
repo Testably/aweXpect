@@ -47,12 +47,9 @@ await Expect.That(titleSignaler).DidNotSignal();
 ```
 
 :::note
-Without `Within(…)`, a signaler expectation waits for at most 30 seconds, the
-[`DefaultSignalerTimeout`](../03-how-it-works/07-configuration.md#settings), which the failure message shows (e.g.
-"within 0:30"). `Signaled()` completes as soon as the callback was signaled, and `DidNotSignal()` fails as soon as it
-is signaled, but has to wait for the whole timeout to succeed, because only then is it certain that no signal follows.
-Use `Within(…)` to wait for a shorter time, see
-[waiting for callbacks](../03-how-it-works/06-time-and-cancellation.md#callbacks).
+Without `Within(…)`, a signaler expectation waits up to the
+[`DefaultSignalerTimeout`](../03-how-it-works/07-configuration.md#settings) (30 s). `DidNotSignal()` always waits the
+full timeout to succeed, see [waiting for callbacks](../03-how-it-works/06-time-and-cancellation.md#callbacks).
 :::
 
 ### Amount
@@ -65,6 +62,7 @@ using aweXpect.Core; // for `Times()`
 await Expect.That(signaler).Signaled().AtLeast(3.Times());
 await Expect.That(signaler).Signaled().Exactly(3.Times());
 await Expect.That(signaler).Signaled().AtMost(3.Times());
+await Expect.That(signaler).Signaled().MoreThan(2.Times());
 await Expect.That(signaler).Signaled().LessThan(3.Times());
 await Expect.That(signaler).Signaled().Between(2).And(4.Times());
 await Expect.That(signaler).Signaled().Once();
@@ -73,11 +71,8 @@ await Expect.That(signaler).Signaled().Never();
 ```
 
 `Signaled(3.Times())` is the shorthand for `Signaled().AtLeast(3.Times())` and allows no further quantifier, and
-`DidNotSignal(3.Times())` expects the
-callback to be signaled fewer than three times. An expectation without an upper bound (e.g. `AtLeast`) succeeds as
-soon as enough callbacks were signaled. One with an upper bound fails as soon as one signal too many is received, and
-otherwise waits for the whole timeout. `DidNotSignal(times)` requires at least one time, because no callback can be
-signaled fewer than zero times.
+`DidNotSignal(3.Times())` expects the callback to be signaled fewer than three times. `DidNotSignal(times)` requires
+at least one time, because no callback can be signaled fewer than zero times.
 
 ### Parameters
 
@@ -139,13 +134,19 @@ All parameters are optional and have the same meaning for `Wait` and `WaitAsync`
 | `timeout`           | waits for at most the [`DefaultSignalerTimeout`](../03-how-it-works/07-configuration.md#settings) (30 s) |
 | `cancellationToken` | only the timeout ends the wait                                                                           |
 
-- Signals that were received before the wait count as well, so a callback that was already signaled is not missed.
+Signals that were received before the wait count as well, so a callback that was already signaled is not missed.
+
+<details>
+<summary>Details of waiting</summary>
+
 - The `amount` of a wait must be greater than zero and the `timeout` must not be negative, otherwise an
   `ArgumentOutOfRangeException` is thrown. `TimeSpan.Zero` does not wait at all, and `Timeout.InfiniteTimeSpan` waits
   without a limit.
 - When the timeout expires or the `CancellationToken` is canceled, the wait returns without throwing an exception.
 - An exception of the `predicate` ends the wait and is thrown by `Wait` or `WaitAsync`, also when the predicate ran
   on the thread that signaled.
+
+</details>
 
 The `SignalerResult` tells how the wait ended:
 

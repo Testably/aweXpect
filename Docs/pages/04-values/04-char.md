@@ -17,10 +17,6 @@ Describes the possible expectations for `char` values.
 | [`IsAControlCharacter`](#categories) | `IsNotAControlCharacter` | a control character                     |
 | [`IsWhiteSpace`](#categories)        | `IsNotWhiteSpace`        | whitespace                              |
 
-A `null` subject, i.e. a `char?`, fails every expectation on this page except equality and one of, as the
-[rule for `null` subjects](../03-how-it-works/04-null-subjects.md) says, so both `IsALetter()` and `IsNotALetter()` fail
-for it.
-
 :::note[.NET 8 or later]
 On .NET 8 or later `char` is an `INumber<char>`, so the ordering expectations, `IsBetween`, `IsPositive` and
 `IsNegative` of the [number expectations](./02-number.md) also accept a `char`. Below .NET 8 they are not available
@@ -85,5 +81,10 @@ Each expectation follows the corresponding method of `char`:
 
 `IsADigit` only accepts decimal digits, while `IsANumber` also accepts characters like `'½'`.
 
+<details>
+<summary>Casing of a `char` vs. a `string`</summary>
+
 `IsUpperCased` and `IsLowerCased` differ from the [`string` casing expectations](./03-string.md#character-casing),
 which only look at cased letters: `'1'` is neither upper-cased nor lower-cased, while `"1"` is both.
+
+</details>

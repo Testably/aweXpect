@@ -23,6 +23,31 @@ namespace MyExtension
 }
 ```
 
+## Value formatters
+
+A value formatter returns `false` for every value it does not format, so that the next formatter or the built-in
+formatting applies. The `MyValueFormatter` registered above writes a `Track` with its title and duration:
+
+```csharp
+using System.Text;
+
+internal sealed class MyValueFormatter : IValueFormatter
+{
+    public bool TryFormat(StringBuilder stringBuilder, object value, FormattingOptions? options)
+    {
+        if (value is not Track track)
+        {
+            return false;
+        }
+
+        stringBuilder.Append(track.Title).Append(" (");
+        Format.Formatter.Format(stringBuilder, track.Duration);
+        stringBuilder.Append(')');
+        return true;
+    }
+}
+```
+
 A registered formatter applies process-wide, to all threads and async flows, until the returned `IDisposable` is
 disposed. It is asked for every value that is not `null`, including built-in types such as `DateTime` or `int`,
 whether the value is formatted on its own, as an item of a collection or as a member of an object. When several
@@ -80,6 +105,10 @@ namespace MyTests
 
 - The adapter is resolved once, when the first expectation is created or a value is first formatted with
   `Format.Formatter`, so register it before that.
+
+<details>
+<summary>Availability, precedence and fallbacks</summary>
+
 - An adapter whose `IsAvailable` is `false` is ignored, e.g. when the test framework it throws for is not loaded.
 - By default, `Register` replaces an adapter that was registered before. With `overwrite: false`, as the generated
   registrations use it, the adapter is only used when no other one was registered, so an explicit registration always
@@ -90,3 +119,5 @@ namespace MyTests
 - The generated registration is a module initializer, which needs C# 9 or later. On .NET 8 or later, a test project
   with an older `<LangVersion>` has to register the generated adapter itself, which the warning
   [aweXpect2002](../07-analyzers.md#test-framework-adapter) points out.
+
+</details>

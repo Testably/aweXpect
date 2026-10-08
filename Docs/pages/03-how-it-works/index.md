@@ -60,9 +60,8 @@ Awaiting an expectation also returns the value it verified, see [combining](./03
 ### When you cannot await
 
 [`ref struct`](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/ref-struct) values
-can't be used in an `async` method. For a property of such a value, or of a span on a target framework that
-[can't pass spans to `Expect.That`](../05-collections/index.md#spans), verify the expectation synchronously, so that the
-test method itself can remain synchronous:
+such as `Span<T>` can't be used in an `async` method. To verify one of their properties in a synchronous test, e.g. on
+a target framework that [can't pass spans to `Expect.That`](../05-collections/index.md#spans), use:
 
 ```csharp
 using aweXpect.Synchronous;
