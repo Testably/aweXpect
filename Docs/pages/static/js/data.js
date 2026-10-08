@@ -4482,6 +4482,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
         "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
+      },
+      {
+        "sha": "6242c56e2ef28022bdbd22a141f2dd24a3d30374",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
+        "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
       }
     ],
     "labels": [
@@ -5231,7 +5237,8 @@ window.BENCHMARK_DATA = {
       "7e4f4bdb",
       "93d22f80",
       "8b666ac8",
-      "8c8f6bf6"
+      "8c8f6bf6",
+      "6242c56e"
     ],
     "datasets": [
       {
@@ -5984,7 +5991,8 @@ window.BENCHMARK_DATA = {
           66.53406296571096,
           66.4655506152373,
           142.5312343120575,
-          66.75765786965688
+          66.75765786965688,
+          74.12769539867129
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6727,6 +6735,7 @@ window.BENCHMARK_DATA = {
           408,
           408,
           408,
+          416,
           416,
           416,
           416,
@@ -7503,7 +7512,8 @@ window.BENCHMARK_DATA = {
           131.16207806880658,
           137.37846938769022,
           286.66005220413206,
-          131.682856909434
+          131.682856909434,
+          141.12862652142843
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8261,6 +8271,7 @@ window.BENCHMARK_DATA = {
           952,
           952,
           952,
+          952,
           952
         ],
         "borderColor": "#FF671B",
@@ -8303,7 +8314,8 @@ window.BENCHMARK_DATA = {
           104.81408194984708,
           101.78973456791469,
           187.5289684931437,
-          100.52407849629721
+          100.52407849629721,
+          112.69337538083394
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8315,6 +8327,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -12376,6 +12389,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
         "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
+      },
+      {
+        "sha": "6242c56e2ef28022bdbd22a141f2dd24a3d30374",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
+        "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
       }
     ],
     "labels": [
@@ -13048,7 +13067,8 @@ window.BENCHMARK_DATA = {
       "7e4f4bdb",
       "93d22f80",
       "8b666ac8",
-      "8c8f6bf6"
+      "8c8f6bf6",
+      "6242c56e"
     ],
     "datasets": [
       {
@@ -13724,7 +13744,8 @@ window.BENCHMARK_DATA = {
           57385.43886311849,
           56402.536712646484,
           99458.83720179966,
-          55259.80214029948
+          55259.80214029948,
+          58705.350740559894
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14401,6 +14422,7 @@ window.BENCHMARK_DATA = {
           16296,
           16296,
           16296,
+          16416,
           16416,
           16416,
           16416,
@@ -15089,7 +15111,8 @@ window.BENCHMARK_DATA = {
           1278281.2455357143,
           1199900.2127403845,
           2462741.6844308036,
-          1234153.1097935268
+          1234153.1097935268,
+          1363514.279017857
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15770,6 +15793,7 @@ window.BENCHMARK_DATA = {
           4841647,
           4841647,
           4841635,
+          4841647,
           4841647
         ],
         "borderColor": "#FF671B",
@@ -15812,7 +15836,8 @@ window.BENCHMARK_DATA = {
           106659.08858816964,
           105803.7771077474,
           221148.44552408854,
-          114144.15212777945
+          114144.15212777945,
+          108015.99091448102
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -15824,6 +15849,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -20347,6 +20373,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
         "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
+      },
+      {
+        "sha": "6242c56e2ef28022bdbd22a141f2dd24a3d30374",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
+        "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
       }
     ],
     "labels": [
@@ -21096,7 +21128,8 @@ window.BENCHMARK_DATA = {
       "7e4f4bdb",
       "93d22f80",
       "8b666ac8",
-      "8c8f6bf6"
+      "8c8f6bf6",
+      "6242c56e"
     ],
     "datasets": [
       {
@@ -21849,7 +21882,8 @@ window.BENCHMARK_DATA = {
           139.98197344144185,
           148.36709238688152,
           296.6919680595398,
-          144.58837137903487
+          144.58837137903487,
+          142.61073668797812
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22592,6 +22626,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          608,
           608,
           608,
           608,
@@ -23368,7 +23403,8 @@ window.BENCHMARK_DATA = {
           241.9093600000654,
           268.58166343825206,
           527.0430596033732,
-          253.80921166283744
+          253.80921166283744,
+          258.0497901916504
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24126,6 +24162,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          2008,
           2008
         ],
         "borderColor": "#FF671B",
@@ -24168,7 +24205,8 @@ window.BENCHMARK_DATA = {
           209.2670779961806,
           232.60280605951945,
           412.7722493921007,
-          198.73236986306998
+          198.73236986306998,
+          205.20201851526897
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -24180,6 +24218,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -28703,6 +28742,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
         "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
+      },
+      {
+        "sha": "6242c56e2ef28022bdbd22a141f2dd24a3d30374",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
+        "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
       }
     ],
     "labels": [
@@ -29452,7 +29497,8 @@ window.BENCHMARK_DATA = {
       "7e4f4bdb",
       "93d22f80",
       "8b666ac8",
-      "8c8f6bf6"
+      "8c8f6bf6",
+      "6242c56e"
     ],
     "datasets": [
       {
@@ -30205,7 +30251,8 @@ window.BENCHMARK_DATA = {
           74.93121902759259,
           87.66823535760244,
           161.0230097611745,
-          78.44054555098215
+          78.44054555098215,
+          76.55528612647738
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -30948,6 +30995,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          520,
           520,
           520,
           520,
@@ -31724,7 +31772,8 @@ window.BENCHMARK_DATA = {
           129.6808660541262,
           148.78025673230488,
           298.95889972050986,
-          130.74108481407166
+          130.74108481407166,
+          128.2575772660119
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32482,6 +32531,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1224,
           1224
         ],
         "borderColor": "#FF671B",
@@ -32524,7 +32574,8 @@ window.BENCHMARK_DATA = {
           122.3559182541711,
           140.24854431549707,
           232.68214756647745,
-          126.82758138974508
+          126.82758138974508,
+          124.99726145267486
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32536,6 +32587,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -37059,6 +37111,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
         "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
+      },
+      {
+        "sha": "6242c56e2ef28022bdbd22a141f2dd24a3d30374",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
+        "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
       }
     ],
     "labels": [
@@ -37808,7 +37866,8 @@ window.BENCHMARK_DATA = {
       "7e4f4bdb",
       "93d22f80",
       "8b666ac8",
-      "8c8f6bf6"
+      "8c8f6bf6",
+      "6242c56e"
     ],
     "datasets": [
       {
@@ -38561,7 +38620,8 @@ window.BENCHMARK_DATA = {
           126.03137115069798,
           142.82822164467402,
           265.82992026011146,
-          148.04138511021932
+          148.04138511021932,
+          133.482617410024
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39304,6 +39364,7 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
+          584,
           584,
           584,
           584,
@@ -40080,7 +40141,8 @@ window.BENCHMARK_DATA = {
           674.194983959198,
           738.1067288080851,
           1359.4507607777914,
-          665.8258253097534
+          665.8258253097534,
+          650.9954760869344
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -40838,6 +40900,7 @@ window.BENCHMARK_DATA = {
           3944,
           3944,
           3944,
+          3944,
           3944
         ],
         "borderColor": "#FF671B",
@@ -40880,7 +40943,8 @@ window.BENCHMARK_DATA = {
           178.54673012097678,
           199.95685113271077,
           341.1593878746033,
-          180.53519562574533
+          180.53519562574533,
+          183.08535652160646
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -40892,6 +40956,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -45415,6 +45480,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
         "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
+      },
+      {
+        "sha": "6242c56e2ef28022bdbd22a141f2dd24a3d30374",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
+        "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
       }
     ],
     "labels": [
@@ -46164,7 +46235,8 @@ window.BENCHMARK_DATA = {
       "7e4f4bdb",
       "93d22f80",
       "8b666ac8",
-      "8c8f6bf6"
+      "8c8f6bf6",
+      "6242c56e"
     ],
     "datasets": [
       {
@@ -46917,7 +46989,8 @@ window.BENCHMARK_DATA = {
           336.2688202176775,
           346.20272432054793,
           638.4499005590167,
-          348.4767696380615
+          348.4767696380615,
+          337.06756407873974
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47671,6 +47744,7 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
+          872,
           872,
           872,
           872,
@@ -48436,7 +48510,8 @@ window.BENCHMARK_DATA = {
           674.7569321950276,
           794.6561574935913,
           1432.9326642354329,
-          678.3175195966448
+          678.3175195966448,
+          725.0460067431133
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49194,6 +49269,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -49236,7 +49312,8 @@ window.BENCHMARK_DATA = {
           327.1852085249765,
           365.86587247848513,
           742.2957029342651,
-          334.13146339144026
+          334.13146339144026,
+          331.785920826594
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -49248,6 +49325,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -53771,6 +53849,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
         "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
+      },
+      {
+        "sha": "6242c56e2ef28022bdbd22a141f2dd24a3d30374",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
+        "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
       }
     ],
     "labels": [
@@ -54520,7 +54604,8 @@ window.BENCHMARK_DATA = {
       "7e4f4bdb",
       "93d22f80",
       "8b666ac8",
-      "8c8f6bf6"
+      "8c8f6bf6",
+      "6242c56e"
     ],
     "datasets": [
       {
@@ -55273,7 +55358,8 @@ window.BENCHMARK_DATA = {
           524.0213324106657,
           567.3830805558425,
           1065.7342980248588,
-          547.7202320098877
+          547.7202320098877,
+          515.1199394634792
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56027,6 +56113,7 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
+          1280,
           1280,
           1280,
           1280,
@@ -56792,7 +56879,8 @@ window.BENCHMARK_DATA = {
           10848.702115885417,
           10781.839710489909,
           24206.77577311198,
-          10362.304801354041
+          10362.304801354041,
+          10069.346013750348
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57550,6 +57638,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -57592,7 +57681,8 @@ window.BENCHMARK_DATA = {
           414.6715227762858,
           458.7878606160482,
           902.8659006265493,
-          404.62155400003707
+          404.62155400003707,
+          406.55301560674394
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -57604,6 +57694,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -57897,6 +57988,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
         "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
+      },
+      {
+        "sha": "6242c56e2ef28022bdbd22a141f2dd24a3d30374",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
+        "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
       }
     ],
     "labels": [
@@ -57941,7 +58038,8 @@ window.BENCHMARK_DATA = {
       "7e4f4bdb",
       "93d22f80",
       "8b666ac8",
-      "8c8f6bf6"
+      "8c8f6bf6",
+      "6242c56e"
     ],
     "datasets": [
       {
@@ -57989,7 +58087,8 @@ window.BENCHMARK_DATA = {
           353.08312681743075,
           343.5415005683899,
           737.9813050490159,
-          363.8018371141874
+          363.8018371141874,
+          372.7434025491987
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58027,6 +58126,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1816,
           1816,
           1816,
           1816,
@@ -58098,7 +58198,8 @@ window.BENCHMARK_DATA = {
           29587.716825212752,
           30830.735575358074,
           62886.03064778646,
-          28914.269256591797
+          28914.269256591797,
+          28976.523685709635
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58151,6 +58252,7 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5254,
+          5256,
           5256
         ],
         "borderColor": "#FF671B",
@@ -58417,6 +58519,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
         "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
+      },
+      {
+        "sha": "6242c56e2ef28022bdbd22a141f2dd24a3d30374",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
+        "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
       }
     ],
     "labels": [
@@ -58461,7 +58569,8 @@ window.BENCHMARK_DATA = {
       "7e4f4bdb",
       "93d22f80",
       "8b666ac8",
-      "8c8f6bf6"
+      "8c8f6bf6",
+      "6242c56e"
     ],
     "datasets": [
       {
@@ -58509,7 +58618,8 @@ window.BENCHMARK_DATA = {
           124.18757068193875,
           140.5408843755722,
           259.0540941874186,
-          125.38672533035279
+          125.38672533035279,
+          125.47152725287846
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58547,6 +58657,7 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
+          664,
           664,
           664,
           664,
@@ -58618,7 +58729,8 @@ window.BENCHMARK_DATA = {
           9697.194235229492,
           10682.660048421223,
           24303.289461263023,
-          10047.785783894857
+          10047.785783894857,
+          9949.456902640206
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58671,6 +58783,7 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5615,
+          5615,
           5615
         ],
         "borderColor": "#FF671B",
@@ -58713,7 +58826,8 @@ window.BENCHMARK_DATA = {
           122.21910122462681,
           146.55186425722562,
           245.19413394927977,
-          131.45483563496515
+          131.45483563496515,
+          124.23931743303935
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -58725,6 +58839,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
