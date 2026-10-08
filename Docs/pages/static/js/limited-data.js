@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
-        "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
-      },
-      {
         "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
         "author": "Valentin Breu\u00DF",
         "date": "Fri Sep 25 13:12:21 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
         "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
+      },
+      {
+        "sha": "1f967b5891c9d2474c74e7122df47418ba35c8c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 12:19:03 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.18 (#1740)"
       }
     ],
     "labels": [
-      "250bac89",
       "e2846045",
       "24837307",
       "3262e6a4",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "9f96f8b9",
       "a07a99e2",
       "998fbcba",
-      "464696d1"
+      "464696d1",
+      "1f967b58"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          330.47076206207277,
           286.55542169298445,
           354.77341641698564,
           372.89751529693604,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           157.909753036499,
           69.51080529689789,
           128.40656195368086,
-          129.95676968778884
+          129.95676968778884,
+          113.32764115333558
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -421,7 +421,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           912,
-          912,
           920,
           920,
           920,
@@ -459,6 +458,7 @@ window.BENCHMARK_DATA = {
           408,
           408,
           408,
+          416,
           416,
           416,
           416,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          277.0887091841017,
           268.40035581588745,
           291.6323030471802,
           256.1119354565938,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           315.1370669092451,
           144.43615654536657,
           251.95767988477434,
-          253.325025338393
+          253.325025338393,
+          214.36865857669287
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -631,7 +631,8 @@ window.BENCHMARK_DATA = {
           212.27659174601237,
           108.34737239565167,
           198.2337419305529,
-          196.85899329185486
+          196.85899329185486,
+          155.83144919077554
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -643,6 +644,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -680,12 +682,6 @@ window.BENCHMARK_DATA = {
   },
   "Equivalency": {
     "commits": [
-      {
-        "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
-        "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
-      },
       {
         "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
         "author": "Valentin Breu\u00DF",
@@ -979,10 +975,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
         "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
+      },
+      {
+        "sha": "1f967b5891c9d2474c74e7122df47418ba35c8c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 12:19:03 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.18 (#1740)"
       }
     ],
     "labels": [
-      "250bac89",
       "e2846045",
       "24837307",
       "3262e6a4",
@@ -1031,14 +1032,14 @@ window.BENCHMARK_DATA = {
       "9f96f8b9",
       "a07a99e2",
       "998fbcba",
-      "464696d1"
+      "464696d1",
+      "1f967b58"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          445190.5305989583,
           336645.06989397324,
           449303.7570800781,
           461546.1349934896,
@@ -1087,7 +1088,8 @@ window.BENCHMARK_DATA = {
           103380.93493652344,
           59559.44956461588,
           110850.44731445312,
-          107334.43834635416
+          107334.43834635416,
+          81620.06673490084
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1099,7 +1101,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          628384,
           628384,
           676856,
           676856,
@@ -1148,7 +1149,8 @@ window.BENCHMARK_DATA = {
           16296,
           16296,
           16296,
-          16296
+          16296,
+          16416
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1163,7 +1165,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2261677.1007254464,
           1918723.2403738839,
           2433865.0203125,
           2616693.300223214,
@@ -1212,7 +1213,8 @@ window.BENCHMARK_DATA = {
           2542567.26171875,
           1334207.38046875,
           2412160.971454327,
-          2272112.578450521
+          2272112.578450521,
+          1895705.8462611607
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1224,7 +1226,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841635,
           4841609,
           4841635,
           4841651,
@@ -1273,7 +1274,8 @@ window.BENCHMARK_DATA = {
           4841631,
           4841647,
           4841647,
-          4841651
+          4841651,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1310,7 +1312,8 @@ window.BENCHMARK_DATA = {
           227074.20301920574,
           114274.30141038161,
           198374.70086669922,
-          191173.42393391926
+          191173.42393391926,
+          155007.42360276444
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1322,6 +1325,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -1359,12 +1363,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
-        "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
-      },
       {
         "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
         "author": "Valentin Breu\u00DF",
@@ -1658,10 +1656,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
         "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
+      },
+      {
+        "sha": "1f967b5891c9d2474c74e7122df47418ba35c8c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 12:19:03 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.18 (#1740)"
       }
     ],
     "labels": [
-      "250bac89",
       "e2846045",
       "24837307",
       "3262e6a4",
@@ -1710,14 +1713,14 @@ window.BENCHMARK_DATA = {
       "9f96f8b9",
       "a07a99e2",
       "998fbcba",
-      "464696d1"
+      "464696d1",
+      "1f967b58"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          572.2930903116862,
           479.8030530489408,
           598.3480112212045,
           569.1707570893424,
@@ -1766,7 +1769,8 @@ window.BENCHMARK_DATA = {
           331.8805335362752,
           146.25526429812115,
           253.27509797414143,
-          269.18895077705383
+          269.18895077705383,
+          206.6404625415802
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1779,7 +1783,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           1592,
-          1592,
           1576,
           1576,
           1576,
@@ -1817,6 +1820,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          608,
           608,
           608,
           608,
@@ -1842,7 +1846,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          506.42377713521324,
           514.1353323276227,
           546.7772801717123,
           493.43573640187583,
@@ -1891,7 +1894,8 @@ window.BENCHMARK_DATA = {
           595.1926895141602,
           265.34278405507405,
           511.3131476084391,
-          522.5753299713135
+          522.5753299713135,
+          416.6107168197632
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1989,7 +1993,8 @@ window.BENCHMARK_DATA = {
           447.6786728858948,
           222.32614852831915,
           403.5982783953349,
-          402.8951257387797
+          402.8951257387797,
+          303.54220819473267
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2001,6 +2006,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -2038,12 +2044,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
-        "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
-      },
       {
         "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
         "author": "Valentin Breu\u00DF",
@@ -2337,10 +2337,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
         "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
+      },
+      {
+        "sha": "1f967b5891c9d2474c74e7122df47418ba35c8c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 12:19:03 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.18 (#1740)"
       }
     ],
     "labels": [
-      "250bac89",
       "e2846045",
       "24837307",
       "3262e6a4",
@@ -2389,14 +2394,14 @@ window.BENCHMARK_DATA = {
       "9f96f8b9",
       "a07a99e2",
       "998fbcba",
-      "464696d1"
+      "464696d1",
+      "1f967b58"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          340.2542008399963,
           298.8287676493327,
           356.2859659535544,
           341.6030615488688,
@@ -2445,7 +2450,8 @@ window.BENCHMARK_DATA = {
           182.17733670870464,
           85.12685470921653,
           151.41907165845234,
-          162.9340720006398
+          162.9340720006398,
+          121.1920941727502
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2458,7 +2464,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           1080,
-          1080,
           1064,
           1064,
           1064,
@@ -2496,6 +2501,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          520,
           520,
           520,
           520,
@@ -2521,7 +2527,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          290.4156669298808,
           295.770979983466,
           306.6942390759786,
           261.1682576497396,
@@ -2570,7 +2575,8 @@ window.BENCHMARK_DATA = {
           344.28317203521726,
           136.4304206053416,
           246.45414049284798,
-          263.02980254246637
+          263.02980254246637,
+          209.42606624762217
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2668,7 +2674,8 @@ window.BENCHMARK_DATA = {
           268.45120941797893,
           131.01223762218768,
           236.13340884844462,
-          244.23050106488742
+          244.23050106488742,
+          188.14628766377766
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2680,6 +2687,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -2717,12 +2725,6 @@ window.BENCHMARK_DATA = {
   },
   "String": {
     "commits": [
-      {
-        "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
-        "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
-      },
       {
         "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
         "author": "Valentin Breu\u00DF",
@@ -3016,10 +3018,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
         "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
+      },
+      {
+        "sha": "1f967b5891c9d2474c74e7122df47418ba35c8c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 12:19:03 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.18 (#1740)"
       }
     ],
     "labels": [
-      "250bac89",
       "e2846045",
       "24837307",
       "3262e6a4",
@@ -3068,14 +3075,14 @@ window.BENCHMARK_DATA = {
       "9f96f8b9",
       "a07a99e2",
       "998fbcba",
-      "464696d1"
+      "464696d1",
+      "1f967b58"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          619.9223340352377,
           516.2475307171161,
           699.9428461619785,
           618.7908314296177,
@@ -3124,7 +3131,8 @@ window.BENCHMARK_DATA = {
           286.6833854675293,
           140.5606133086341,
           240.89363451004027,
-          236.60691464742024
+          236.60691464742024,
+          197.5055967013041
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3137,7 +3145,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           1576,
-          1576,
           1600,
           1600,
           1600,
@@ -3175,6 +3182,7 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
+          584,
           584,
           584,
           584,
@@ -3200,7 +3208,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1292.890371831258,
           1165.7716802869525,
           1368.4931264241536,
           1295.366698582967,
@@ -3249,7 +3256,8 @@ window.BENCHMARK_DATA = {
           1474.113236363729,
           662.3275872639248,
           1216.8918950398763,
-          1135.0551546732584
+          1135.0551546732584,
+          954.2375256856283
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3347,7 +3355,8 @@ window.BENCHMARK_DATA = {
           380.9069531758626,
           188.75718556131636,
           329.50015811920167,
-          357.16741905212405
+          357.16741905212405,
+          252.64308335230902
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3359,6 +3368,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -3396,12 +3406,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
-        "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
-      },
       {
         "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
         "author": "Valentin Breu\u00DF",
@@ -3695,10 +3699,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
         "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
+      },
+      {
+        "sha": "1f967b5891c9d2474c74e7122df47418ba35c8c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 12:19:03 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.18 (#1740)"
       }
     ],
     "labels": [
-      "250bac89",
       "e2846045",
       "24837307",
       "3262e6a4",
@@ -3747,14 +3756,14 @@ window.BENCHMARK_DATA = {
       "9f96f8b9",
       "a07a99e2",
       "998fbcba",
-      "464696d1"
+      "464696d1",
+      "1f967b58"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2781.722848256429,
           1947.3610178629558,
           2966.8654547471265,
           3230.1673909505207,
@@ -3803,7 +3812,8 @@ window.BENCHMARK_DATA = {
           690.1892388661703,
           342.1757644812266,
           596.966326268514,
-          566.4970643860953
+          566.4970643860953,
+          497.140402730306
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3815,7 +3825,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          4168,
           4168,
           4328,
           4328,
@@ -3864,7 +3873,8 @@ window.BENCHMARK_DATA = {
           856,
           856,
           856,
-          856
+          856,
+          872
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3879,7 +3889,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1424.523985417684,
           1308.3196460088095,
           1482.8327919006347,
           1381.867888768514,
@@ -3928,7 +3937,8 @@ window.BENCHMARK_DATA = {
           1588.7325370788574,
           708.1604086330959,
           1361.6681577046713,
-          1277.5239940370832
+          1277.5239940370832,
+          1056.205288205828
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4026,7 +4036,8 @@ window.BENCHMARK_DATA = {
           713.7595713933309,
           362.3581245128925,
           650.306664721171,
-          636.9033426871666
+          636.9033426871666,
+          488.7000308354696
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4038,6 +4049,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -4075,12 +4087,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "250bac89c2dff8612db06f4b817cd2208ad5841c",
-        "author": "Valentin Breu\u00DF",
-        "date": "Fri Sep 25 12:27:33 2026 \u002B0200",
-        "message": "fix!: reject an empty \u0060IsOneOf\u0060 set when the expectation is built (#1372)"
-      },
       {
         "sha": "e28460457f7800ccbfd2c38e62055611cbe063bb",
         "author": "Valentin Breu\u00DF",
@@ -4374,10 +4380,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
         "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
+      },
+      {
+        "sha": "1f967b5891c9d2474c74e7122df47418ba35c8c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 12:19:03 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.18 (#1740)"
       }
     ],
     "labels": [
-      "250bac89",
       "e2846045",
       "24837307",
       "3262e6a4",
@@ -4426,14 +4437,14 @@ window.BENCHMARK_DATA = {
       "9f96f8b9",
       "a07a99e2",
       "998fbcba",
-      "464696d1"
+      "464696d1",
+      "1f967b58"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          2746.697520446777,
           1990.7065361567907,
           3035.0068926493327,
           3237.1068412235804,
@@ -4482,7 +4493,8 @@ window.BENCHMARK_DATA = {
           1093.7553983052571,
           551.4206887880961,
           1034.52440478007,
-          990.2430680138724
+          990.2430680138724,
+          798.7452133618868
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4494,7 +4506,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          3928,
           3928,
           4272,
           4272,
@@ -4543,7 +4554,8 @@ window.BENCHMARK_DATA = {
           1264,
           1264,
           1264,
-          1264
+          1264,
+          1280
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4558,7 +4570,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          24352.103568522136,
           15694.400777963492,
           23958.653832571847,
           27141.531180245536,
@@ -4607,7 +4618,8 @@ window.BENCHMARK_DATA = {
           25337.29578944615,
           10919.010286603656,
           20865.700933837892,
-          19326.512987264
+          19326.512987264,
+          15555.621950276693
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4619,7 +4631,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33468,
           33465,
           33468,
           33471,
@@ -4666,6 +4677,7 @@ window.BENCHMARK_DATA = {
           33465,
           33471,
           33468,
+          33471,
           33471,
           33471,
           33471
@@ -4705,7 +4717,8 @@ window.BENCHMARK_DATA = {
           923.8292442321778,
           434.2536027772086,
           735.9685022989909,
-          724.3659522874015
+          724.3659522874015,
+          573.0873628616333
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4717,6 +4730,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -4975,6 +4989,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
         "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
+      },
+      {
+        "sha": "1f967b5891c9d2474c74e7122df47418ba35c8c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 12:19:03 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.18 (#1740)"
       }
     ],
     "labels": [
@@ -5014,7 +5034,8 @@ window.BENCHMARK_DATA = {
       "9f96f8b9",
       "a07a99e2",
       "998fbcba",
-      "464696d1"
+      "464696d1",
+      "1f967b58"
     ],
     "datasets": [
       {
@@ -5057,7 +5078,8 @@ window.BENCHMARK_DATA = {
           826.8584680557251,
           370.2186816419874,
           720.0846664428711,
-          720.6847084681193
+          720.6847084681193,
+          577.747324625651
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5095,6 +5117,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1816,
           1816,
           1816,
           1816,
@@ -5156,7 +5179,8 @@ window.BENCHMARK_DATA = {
           55566.31945800781,
           28806.078369140625,
           59803.41401890346,
-          61225.11710030692
+          61225.11710030692,
+          53141.57476399739
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5204,7 +5228,8 @@ window.BENCHMARK_DATA = {
           5247,
           5256,
           5252,
-          5252
+          5252,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5440,6 +5465,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Wed Oct 7 16:11:22 2026 \u002B0200",
         "message": "fix: keep the outcome of a quantified expectation when user code throws after the deciding item of a collection with a known count (#1698)"
+      },
+      {
+        "sha": "1f967b5891c9d2474c74e7122df47418ba35c8c0",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 12:19:03 2026 \u002B0200",
+        "message": "chore: bump aweXpect to v3.0.0-pre.18 (#1740)"
       }
     ],
     "labels": [
@@ -5479,7 +5510,8 @@ window.BENCHMARK_DATA = {
       "9f96f8b9",
       "a07a99e2",
       "998fbcba",
-      "464696d1"
+      "464696d1",
+      "1f967b58"
     ],
     "datasets": [
       {
@@ -5522,7 +5554,8 @@ window.BENCHMARK_DATA = {
           283.48961407343546,
           126.06770662466685,
           256.43952117647444,
-          233.4618682463964
+          233.4618682463964,
+          196.59285897475021
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5560,6 +5593,7 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
+          664,
           664,
           664,
           664,
@@ -5621,7 +5655,8 @@ window.BENCHMARK_DATA = {
           26076.549479166668,
           10431.874232365535,
           18769.713187081474,
-          18734.728539603097
+          18734.728539603097,
+          14834.462311808269
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5669,7 +5704,8 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5614,
-          5614
+          5614,
+          5615
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5706,7 +5742,8 @@ window.BENCHMARK_DATA = {
           264.4644939740499,
           133.89500074386598,
           245.34382966586523,
-          246.47795225779217
+          246.47795225779217,
+          181.4882709639413
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5718,6 +5755,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
