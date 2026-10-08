@@ -56,6 +56,13 @@ public abstract class ExpectationBuilder
 	private Node? _pendingWhichRoot;
 
 	private List<IBecauseReason>? _reasons;
+
+	/// <summary>
+	///     The subject contexts of the current subject and of the subject that the pending which node continues, or
+	///     <see langword="null" /> when none were added.
+	/// </summary>
+	private SubjectContextScopes? _subjectContexts;
+
 	private TimeSpan _timeout;
 
 	private ITimeSystem? _timeSystem;
@@ -400,6 +407,30 @@ public abstract class ExpectationBuilder
 	}
 
 	/// <summary>
+	///     Adds the contexts from <paramref name="appendContexts" /> to the failure of any expectation on the current
+	///     subject, e.g. to show the whole subject whatever expectation on it fails.
+	/// </summary>
+	/// <remarks>
+	///     The current subject is the value of the expectation or, within the expectations on a member, the member, so its
+	///     contexts are labelled with it. They also cover the expectations that were added before, and precede the
+	///     contexts of the expectations.
+	///     <para />
+	///     The <paramref name="appendContexts" /> is only called while the failure message is created and only when the
+	///     value is a <typeparamref name="TValue" />. Adding the same callback again for the same subject has no effect,
+	///     so pass a cached delegate, e.g. from a <see langword="static" /> field.
+	/// </remarks>
+	public ExpectationBuilder AddSubjectContexts<TValue>(Action<TValue, ResultContextCollector> appendContexts)
+	{
+		List<SubjectContext> current = (_subjectContexts ??= new SubjectContextScopes()).Current ??= [];
+		if (!current.Exists(subjectContext => subjectContext.Callback.Equals(appendContexts)))
+		{
+			current.Add(new SubjectContext<TValue>(appendContexts));
+		}
+
+		return this;
+	}
+
+	/// <summary>
 	///     Specifies a constraint that applies to the member selected
 	///     by the <paramref name="memberAccessor" />.
 	/// </summary>
@@ -471,6 +502,8 @@ public abstract class ExpectationBuilder
 		Node? outerPendingWhichRoot = _pendingWhichRoot;
 		_pendingWhichNode = null;
 		_pendingWhichRoot = null;
+		SubjectContextScopes? outerSubjectContexts = _subjectContexts;
+		_subjectContexts = null;
 
 		ExpectationGrammars previousGrammars = ExpectationGrammars;
 		ExpectationGrammars memberGrammars = ExpectationGrammars & ~ExpectationGrammars.Introduced;
@@ -483,7 +516,8 @@ public abstract class ExpectationBuilder
 		_pendingWhichNode = outerPendingWhichNode;
 		_pendingWhichRoot = outerPendingWhichRoot;
 		ThrowIfEmpty(_node, nameof(expectations));
-		mappingNode.AddNode(_node);
+		mappingNode.AddNode(WithSubjectContexts(_node));
+		_subjectContexts = outerSubjectContexts;
 		MoveReasonsTo(mappingNode, outerReasonCount);
 		_node = root;
 		_it = previousIt;
@@ -777,6 +811,12 @@ public abstract class ExpectationBuilder
 	private void AddWhichNode(Func<Node?, Node> createWhichNode)
 	{
 		CompleteWhichNode();
+		if (_subjectContexts is not null)
+		{
+			_subjectContexts.OfPendingWhichRoot = _subjectContexts.Current;
+			_subjectContexts.Current = null;
+		}
+
 		Node? whichNode = null;
 		Node root = _node.ReplaceRightMostOperand(operand =>
 		{
@@ -850,8 +890,15 @@ public abstract class ExpectationBuilder
 	internal Node GetRootNode()
 	{
 		CompleteWhichNode();
-		return _node;
+		return WithSubjectContexts(_node);
 	}
+
+	/// <summary>
+	///     Wraps the <paramref name="node" /> with the expectations on the current subject, so that its failure shows the
+	///     contexts of the subject, if any.
+	/// </summary>
+	private Node WithSubjectContexts(Node node)
+		=> _subjectContexts?.Current is { } subjectContexts ? new SubjectContextsNode(node, subjectContexts) : node;
 
 	/// <summary>
 	///     Attaches the current node to a pending <see cref="WhichNode{TSource,TMember}" />, so that it is evaluated on
@@ -861,10 +908,15 @@ public abstract class ExpectationBuilder
 	{
 		if (_pendingWhichNode is not null)
 		{
-			_pendingWhichNode.AddNode(_node);
+			_pendingWhichNode.AddNode(WithSubjectContexts(_node));
 			_node = _pendingWhichRoot!;
 			_pendingWhichNode = null;
 			_pendingWhichRoot = null;
+			if (_subjectContexts is not null)
+			{
+				_subjectContexts.Current = _subjectContexts.OfPendingWhichRoot;
+				_subjectContexts.OfPendingWhichRoot = null;
+			}
 		}
 	}
 
@@ -939,7 +991,7 @@ public abstract class ExpectationBuilder
 			                                      System.Threading.CancellationToken.None;
 			TimeSpan? timeout = TimerHelpers.Tighter(Timeout, testCancellation?.Timeout);
 			Node rootNode = GetRootNode();
-			if (IsTrueWithoutExpectations && rootNode is ExpectationNode expectationNode && expectationNode.IsEmpty())
+			if (IsTrueWithoutExpectations && _node is ExpectationNode expectationNode && expectationNode.IsEmpty())
 			{
 				rootNode.AddConstraint(new ThatBoolSubject.IsTrueConstraint(ExpectationGrammars));
 			}
@@ -1045,6 +1097,18 @@ public abstract class ExpectationBuilder
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_timeSystem is not null,
 			nameof(TimeSystemExtensions.WithTimeSystem));
 		_timeSystem = timeSystem;
+	}
+
+	/// <summary>
+	///     The subject contexts of the current subject and of the subject that the pending which node continues.
+	/// </summary>
+	/// <remarks>
+	///     Held together in one object that is only allocated when a subject context is added, to keep the builder small.
+	/// </remarks>
+	private sealed class SubjectContextScopes
+	{
+		public List<SubjectContext>? Current { get; set; }
+		public List<SubjectContext>? OfPendingWhichRoot { get; set; }
 	}
 
 	/// <summary>

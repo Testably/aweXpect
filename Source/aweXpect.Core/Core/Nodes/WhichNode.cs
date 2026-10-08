@@ -66,7 +66,7 @@ internal class WhichNode<TSource, TMember> : Node
 	/// </remarks>
 	public override Node ReplaceRightMostOperand(Func<Node, Node> replace)
 	{
-		if (_inner is JunctionNode)
+		if (_inner is JunctionNode or SubjectContextsNode { Inner: JunctionNode, })
 		{
 			_inner = _inner.ReplaceRightMostOperand(replace);
 			return this;

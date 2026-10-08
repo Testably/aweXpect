@@ -171,6 +171,229 @@ public class ExpectationBuilderTests
 	}
 
 	[Test]
+	public async Task AddSubjectContexts_ForAMember_ShouldLabelTheContextWithTheMember()
+	{
+		Pair subject = new(1, 2);
+
+		async Task Act()
+			=> await That(subject).Whose(x => x.Second, second => second.WithSubjectContext().IsEqualTo(3));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose Second is equal to 3,
+			             but Second was 2, which differs by -1
+
+			             Subject (Second):
+			             2
+			             """);
+	}
+
+	[Test]
+	public async Task AddSubjectContexts_ForAnItem_ShouldLabelTheContextWithTheItem()
+	{
+		int[] subject = [1, 2,];
+
+		async Task Act()
+			=> await That(subject).All().ComplyWith(item => item.WithSubjectContext().IsEqualTo(1));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             is equal to 1 for all items,
+			             but only 1 of 2 were
+
+			             Not matching items:
+			             [2]
+
+			             Collection:
+			             [1, 2]
+
+			             Subject (item [1]):
+			             2
+			             """);
+	}
+
+	[Test]
+	public async Task AddSubjectContexts_ForTheMemberOfWhich_ShouldAddTheContextOfTheMember()
+	{
+		int[] subject = [1,];
+
+		async Task Act()
+			=> await That(subject).HasSingle().Which.WithSubjectContext().IsEqualTo(2);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             has a single item that is equal to 2,
+			             but it was 1, which differs by -1
+
+			             Subject:
+			             1
+			             """);
+	}
+
+	[Test]
+	public async Task AddSubjectContexts_InAWhichScope_WhenWhichFollowsAnOr_ShouldOnlyContinueTheRightOperand()
+	{
+		ManualExpectationBuilder<string> sut = new();
+		sut.ForWhich<string, int>(s => s.Length, " whose length ");
+		sut.AddSubjectContexts<int>((_, _) => { });
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 3, "is 3"));
+		sut.Or();
+		sut.AddConstraint((_, _) => new DummyConstraint<int>(i => i == 4, "is 4"));
+		sut.ForWhich<int, bool>(i => i % 2 == 0, " whose evenness ");
+		sut.AddConstraint((_, _) => new DummyConstraint<bool>(b => b, "is true"));
+
+		ConstraintResult result = await sut.IsMetBy("foo", null!, CancellationToken.None);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Success)
+			.Because("the evenness only continues the right operand \"is 4\", while the length 3 meets the left one");
+	}
+
+	[Test]
+	public async Task AddSubjectContexts_ShouldPrecedeTheContextsOfTheExpectations()
+	{
+		async Task Act()
+			=> await That(1).MatchesValue("Value", 2).And.WithSubjectContext().IsNotEqualTo(3);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that 1
+			             matches Value 2 and is not equal to 3,
+			             but it did not
+
+			             Subject:
+			             1
+
+			             Value:
+			             1
+			             """);
+	}
+
+	[Test]
+	public async Task AddSubjectContexts_WhenAddedTwice_ShouldOnlyCallTheCallbackOnce()
+	{
+		int calls = 0;
+		Action<int, ResultContextCollector> appendContexts = (_, _) => calls++;
+
+		async Task Act()
+			=> await That(1).WithSubjectContext(appendContexts).IsEqualTo(2)
+				.And.WithSubjectContext(appendContexts).IsNotEqualTo(3);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that 1
+			             is equal to 2 and is not equal to 3,
+			             but it was 1, which differs by -1
+			             """);
+		await That(calls).IsEqualTo(1)
+			.Because("the same callback is only added once for the same subject");
+	}
+
+	[Test]
+	public async Task AddSubjectContexts_WhenAnExpectationAddedAfterFails_ShouldAddTheContext()
+	{
+		async Task Act()
+			=> await That(1).WithSubjectContext().IsNotEqualTo(3).And.IsEqualTo(2);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that 1
+			             is not equal to 3 and is equal to 2,
+			             but it was 1, which differs by -1
+
+			             Subject:
+			             1
+			             """);
+	}
+
+	[Test]
+	public async Task AddSubjectContexts_WhenAnExpectationAddedBeforeFails_ShouldAddTheContext()
+	{
+		async Task Act()
+			=> await That(1).IsEqualTo(2).And.WithSubjectContext().IsNotEqualTo(3);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that 1
+			             is equal to 2 and is not equal to 3,
+			             but it was 1, which differs by -1
+
+			             Subject:
+			             1
+			             """);
+	}
+
+	[Test]
+	public async Task AddSubjectContexts_WhenNegated_ShouldAddTheContext()
+	{
+		async Task Act()
+			=> await That(1).DoesNotComplyWith(it => it.WithSubjectContext().IsEqualTo(1));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that 1
+			             is not equal to 1,
+			             but it was 1
+
+			             Subject:
+			             1
+			             """);
+	}
+
+	[Test]
+	public async Task AddSubjectContexts_WhenTheExpectationIsMet_ShouldNotCallTheCallback()
+	{
+		int calls = 0;
+
+		await That(1).WithSubjectContext((_, _) => calls++).IsEqualTo(1);
+
+		await That(calls).IsEqualTo(0);
+	}
+
+	[Test]
+	public async Task AddSubjectContexts_WhenTheValueHasAnotherType_ShouldNotCallTheCallback()
+	{
+		int calls = 0;
+
+		async Task Act()
+		{
+			IThat<int> that = That(1);
+			that.Get().ExpectationBuilder.AddSubjectContexts<string>((_, _) => calls++);
+			await that.IsEqualTo(2);
+		}
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that 1
+			             is equal to 2,
+			             but it was 1, which differs by -1
+			             """);
+		await That(calls).IsEqualTo(0);
+	}
+
+	[Test]
+	public async Task AddSubjectContexts_WithWhich_ShouldKeepTheContextOfTheOuterSubject()
+	{
+		int[] subject = [1,];
+
+		async Task Act()
+			=> await That(subject).WithSubjectContext().HasSingle().Which.IsEqualTo(2);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             has a single item that is equal to 2,
+			             but it was 1, which differs by -1
+
+			             Subject:
+			             [1]
+			             """)
+			.Because("the expectations after Which are on the item, but the context was added for the collection");
+	}
+
+	[Test]
 	public async Task ForAsyncMember_ShouldUseAndResetExpectationGrammars()
 	{
 		ManualExpectationBuilder<string> sut = new();
@@ -1121,6 +1344,8 @@ public class ExpectationBuilderTests
 			=> subject;
 	}
 
+	private sealed record Pair(int First, int Second);
+
 #if NET8_0_OR_GREATER
 	/// <remarks>
 	///     It reads synchronously, so that the evaluation completes synchronously as well.
@@ -1192,5 +1417,27 @@ public class ExpectationBuilderTests
 
 		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("stops at the cancellation");
+	}
+}
+
+internal static class SubjectContextTestExtensions
+{
+	/// <summary>
+	///     Adds the subject as context with the title <c>Subject</c> to the failure of any expectation on it.
+	/// </summary>
+	public static IThat<T> WithSubjectContext<T>(this IThat<T> subject)
+		=> subject.WithSubjectContext(SubjectCallback<T>.Instance);
+
+	public static IThat<T> WithSubjectContext<T>(this IThat<T> subject,
+		Action<T, ResultContextCollector> appendContexts)
+	{
+		subject.Get().ExpectationBuilder.AddSubjectContexts(appendContexts);
+		return subject;
+	}
+
+	private static class SubjectCallback<T>
+	{
+		public static readonly Action<T, ResultContextCollector> Instance = static (value, contexts)
+			=> contexts.Add(new ResultContext.SyncCallback("Subject", () => Formatter.Format(value)));
 	}
 }
