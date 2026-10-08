@@ -482,6 +482,22 @@ public sealed partial class ThatDelegateTests
 		}
 
 		[Test]
+		public async Task WithInner_WhenInnerExceptionIsMissing_ShouldFail()
+		{
+			void Delegate() => throw new MyException("outer");
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>().WithInner();
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException with an inner exception,
+				             but it had no inner exception
+				             """);
+		}
+
+		[Test]
 		public async Task WithInner_WithMemberExpectation_ShouldUseWhose()
 		{
 			void Delegate() => throw new MyException("outer", new MyException("inner"));
@@ -519,6 +535,59 @@ public sealed partial class ThatDelegateTests
 				             Expected that Delegate
 				             throws a MyException with an inner exception that satisfies i => i?.Message == "foo",
 				             but it was MyException: inner
+				             """);
+		}
+
+		[Test]
+		public async Task WithoutInner_Generic_WhenInnerExceptionIsOfTheType_ShouldFail()
+		{
+			void Delegate() => throw new MyException("outer", new ArgumentException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>().WithoutInner<ArgumentException>();
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException without an inner ArgumentException,
+				             but it had an inner ArgumentException:
+				               inner
+				             """);
+		}
+
+#pragma warning disable CA2263 // these tests deliberately cover the Type overloads
+		[Test]
+		public async Task WithoutInner_Type_WhenInnerExceptionIsOfTheType_ShouldFail()
+		{
+			void Delegate() => throw new MyException("outer", new ArgumentException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>().WithoutInner(typeof(ArgumentException));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException without an inner ArgumentException,
+				             but it had an inner ArgumentException:
+				               inner
+				             """);
+		}
+#pragma warning restore CA2263
+
+		[Test]
+		public async Task WithoutInner_WhenInnerExceptionIsSet_ShouldFail()
+		{
+			void Delegate() => throw new MyException("outer", new ArgumentException("inner"));
+
+			async Task Act()
+				=> await That(Delegate).Throws<MyException>().WithoutInner();
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a MyException without an inner exception,
+				             but it had an inner ArgumentException:
+				               inner
 				             """);
 		}
 	}

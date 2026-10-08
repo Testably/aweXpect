@@ -193,6 +193,23 @@ public sealed class EventRecordingTests
 	}
 
 	[Test]
+	public async Task WhenAttachingTheHandlerThrows_ShouldThrowTheException()
+	{
+		TypeMetadataRegistry.RegisterEvent<ThrowingRegistrationClass>(nameof(ThrowingRegistrationClass.CustomEvent),
+			record => new EventHandler((sender, args) => record([sender, args,])),
+			(_, _) => throw new InvalidOperationException("cannot attach"),
+			(_, _) => { });
+		ThrowingRegistrationClass sut = new();
+
+		void Act()
+			=> sut.Record().Events();
+
+		await That(Act).Throws<InvalidOperationException>()
+			.WithMessage("cannot attach")
+			.Because("the recorder whose handler could not be attached is disposed with the others, without detaching anything");
+	}
+
+	[Test]
 	public async Task WhenCancelled_ShouldStopWaiting()
 	{
 		CustomEventClass sut = new();
@@ -604,6 +621,27 @@ public sealed class EventRecordingTests
 	}
 
 	[Test]
+	public async Task WhenDisposed_TheRecordingPassedToThePredicate_ShouldIgnoreLaterEvents()
+	{
+		CustomEventClass subject = new();
+		IDisposableEventRecording<CustomEventClass> recording = subject.Record().Events().UntilDisposed();
+		subject.NotifyCustomEvent(1);
+		IEventRecordingResult? live = null;
+		await recording.StopWhen(r =>
+		{
+			live = r;
+			return true;
+		}, TimeSpan.FromSeconds(30));
+		Action<int> inFlightEvent = subject.StartNotifyingCustomEvent();
+
+		recording.Dispose();
+		inFlightEvent(2);
+
+		await That(live?.GetEventCount(nameof(CustomEventClass.CustomEvent))).IsEqualTo(1)
+			.Because("the recording answers from the events it had when it was disposed");
+	}
+
+	[Test]
 	public async Task WhenDisposed_WithAFurtherExpectation_ShouldThrowInvalidOperationException()
 	{
 		CustomEventClass sut = new();
@@ -805,6 +843,41 @@ public sealed class EventRecordingTests
 	}
 
 	[Test]
+	public async Task WhenRecordingEventsWithoutAndWithManyParameters_ShouldListTheirParameters()
+	{
+		ParameterCountsClass sut = new();
+		IEventRecording<ParameterCountsClass> recording = sut.Record().Events();
+		sut.Notify();
+		string? withoutParameters = null;
+		string? withThreeParameters = null;
+		string? withFourParameters = null;
+
+		await recording.StopWhen(r =>
+		{
+			withoutParameters = r.ToString(nameof(ParameterCountsClass.WithoutParameters));
+			withThreeParameters = r.ToString(nameof(ParameterCountsClass.WithThreeParameters));
+			withFourParameters = r.ToString(nameof(ParameterCountsClass.WithFourParameters));
+			return true;
+		}, TimeSpan.FromSeconds(30));
+
+		await That(withoutParameters).IsEqualTo("""
+		                                        [
+		                                          WithoutParameters()
+		                                        ]
+		                                        """);
+		await That(withThreeParameters).IsEqualTo("""
+		                                          [
+		                                            WithThreeParameters(1, 2, 3)
+		                                          ]
+		                                          """);
+		await That(withFourParameters).IsEqualTo("""
+		                                         [
+		                                           WithFourParameters(1, 2, 3, 4)
+		                                         ]
+		                                         """);
+	}
+
+	[Test]
 	public async Task WhenRegistered_ShouldRecordOnlyTheRegisteredEvents()
 	{
 		RegisterCustomEvent();
@@ -889,6 +962,17 @@ public sealed class EventRecordingTests
 		subject.NotifyCustomEvent(3);
 
 		await That(result.GetEventCount(nameof(CustomEventClass.CustomEvent), _ => true)).IsEqualTo(2);
+	}
+
+	[Test]
+	public async Task WhenStopIsCalled_TheResult_ShouldBeNamedAfterTheSubject()
+	{
+		CustomEventClass sut = new();
+		IEventRecording<CustomEventClass> recording = sut.Record().Events();
+
+		IEventRecordingResult result = await recording.StopWhen(_ => false, TimeSpan.Zero);
+
+		await That(result.ToString()).IsEqualTo("sut");
 	}
 
 	[Test]
@@ -1281,6 +1365,35 @@ public sealed class EventRecordingTests
 				SecondEvent?.Invoke(this, EventArgs.Empty);
 			}
 		}
+	}
+
+	private sealed class ParameterCountsClass
+	{
+		public delegate void FourParametersDelegate(int arg1, int arg2, int arg3, int arg4);
+
+		public delegate void ThreeParametersDelegate(int arg1, int arg2, int arg3);
+
+		public delegate void WithoutParametersDelegate();
+
+		public event FourParametersDelegate? WithFourParameters;
+
+		public event WithoutParametersDelegate? WithoutParameters;
+
+		public event ThreeParametersDelegate? WithThreeParameters;
+
+		public void Notify()
+		{
+			WithoutParameters?.Invoke();
+			WithThreeParameters?.Invoke(1, 2, 3);
+			WithFourParameters?.Invoke(1, 2, 3, 4);
+		}
+	}
+
+	private sealed class ThrowingRegistrationClass
+	{
+#pragma warning disable CS0067 // Event is never used
+		public event EventHandler? CustomEvent;
+#pragma warning restore CS0067 // Event is never used
 	}
 
 	private sealed class OnlyUnrecordableClass

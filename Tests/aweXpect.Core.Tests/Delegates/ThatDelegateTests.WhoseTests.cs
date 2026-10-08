@@ -236,6 +236,23 @@ public sealed partial class ThatDelegateTests
 			await That(Act).DoesNotThrow();
 		}
 
+		[Test]
+		public async Task Throws_Whose_WithValueTaskMember_ShouldVerifyAwaitedValue()
+		{
+			void Delegate() => throw new AsyncException(1);
+
+			async Task Act()
+				=> await That(Delegate).Throws<AsyncException>()
+					.Whose(e => e.GetValueTask(), v => v.IsEqualTo(2));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that Delegate
+				             throws a ThatDelegateTests.WhoseTests.AsyncException whose GetValueTask() is equal to 2,
+				             but GetValueTask() was 1, which differs by -1
+				             """);
+		}
+
 		private sealed class AsyncException(int value, Task<int>? task = null) : Exception
 		{
 			public async Task<int> FaultedAsync()
@@ -252,6 +269,8 @@ public sealed partial class ThatDelegateTests
 			public Task<int> GetTask() => task!;
 
 			public Task<int> GetValueAsync() => Task.FromResult(value);
+
+			public ValueTask<int> GetValueTask() => new(value);
 		}
 	}
 }
