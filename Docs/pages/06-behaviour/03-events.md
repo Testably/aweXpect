@@ -153,8 +153,9 @@ await Expect.That(recording).Triggered(nameof(Player.TrackStarted))
   .WithParameter<TrackStartedEventArgs>(1, e => e.Title == "Yesterday");
 ```
 
-An event whose parameter at that position is missing or of another type does not match. A negative position throws an
-`ArgumentOutOfRangeException`.
+An event whose parameter at that position is missing or of another type does not match. A parameter that is `null` is
+passed to the predicate, unless the given type is a non-nullable value type; without a position, `null` parameters are
+ignored. A negative position throws an `ArgumentOutOfRangeException`.
 
 When you follow
 the [event best practices](https://learn.microsoft.com/en-us/dotnet/standard/asynchronous-programming-patterns/best-practices-for-implementing-the-event-based-asynchronous-pattern),
@@ -180,6 +181,8 @@ await Expect.That(recording).Triggered(nameof(Player.TrackStarted))
   .With<TrackStartedEventArgs>(e => e.Title.StartsWith("Let"))
   .Because("the EventArgs are the second parameter");
 ```
+
+The predicates for the sender and for the `EventArgs` also receive a value that is `null`.
 
 ## Special events
 
