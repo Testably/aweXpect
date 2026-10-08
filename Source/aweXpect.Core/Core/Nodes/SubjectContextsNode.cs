@@ -129,11 +129,12 @@ internal sealed class SubjectContextsNode(Node inner, List<SubjectContext> subje
 		/// <inheritdoc cref="ConstraintResult.AppendContexts(ResultContextCollector)" />
 		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			contexts.Visit(_inner);
 			foreach (SubjectContext subjectContext in _subjectContexts)
 			{
 				subjectContext.AppendContexts(_value, contexts);
 			}
+
+			contexts.Visit(_inner);
 		}
 	}
 }

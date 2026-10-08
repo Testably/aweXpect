@@ -252,6 +252,26 @@ public class ExpectationBuilderTests
 	}
 
 	[Test]
+	public async Task AddSubjectContexts_ShouldPrecedeTheContextsOfTheExpectations()
+	{
+		async Task Act()
+			=> await That(1).MatchesValue("Value", 2).And.WithSubjectContext().IsNotEqualTo(3);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that 1
+			             matches Value 2 and is not equal to 3,
+			             but it did not
+
+			             Subject:
+			             1
+
+			             Value:
+			             1
+			             """);
+	}
+
+	[Test]
 	public async Task AddSubjectContexts_WhenAddedTwice_ShouldOnlyCallTheCallbackOnce()
 	{
 		int calls = 0;

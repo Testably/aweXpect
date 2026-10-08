@@ -412,7 +412,8 @@ public abstract class ExpectationBuilder
 	/// </summary>
 	/// <remarks>
 	///     The current subject is the value of the expectation or, within the expectations on a member, the member, so its
-	///     contexts are labelled with it. They also cover the expectations that were added before.
+	///     contexts are labelled with it. They also cover the expectations that were added before, and precede the
+	///     contexts of the expectations.
 	///     <para />
 	///     The <paramref name="appendContexts" /> is only called while the failure message is created and only when the
 	///     value is a <typeparamref name="TValue" />. Adding the same callback again for the same subject has no effect,
