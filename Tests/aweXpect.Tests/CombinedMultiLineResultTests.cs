@@ -60,9 +60,9 @@ public sealed class CombinedMultiLineResultTests
 				                   }
 				             but
 				              [01] it was not:
-				                   Property Value differed:
-				                       Actual: 1
-				                     Expected: 2
+				                     Property Value differed:
+				                         Actual: 1
+				                       Expected: 2
 
 				             [01] Equivalency options:
 				              - include public fields and properties
@@ -187,6 +187,119 @@ public sealed class CombinedMultiLineResultTests
 		}
 
 		[Test]
+		public async Task IsEquivalentTo_ShouldShiftTheDifferencesUnderTheEntry()
+		{
+			MyClass subject = new()
+			{
+				Value = 1,
+			};
+			MyClass expected = new()
+			{
+				Value = 2,
+			};
+
+			async Task Act()
+				=> await ThatAll(That(subject).IsEquivalentTo(expected));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected all of the following to succeed:
+				              [01] Expected that subject is equivalent to expected
+				             but
+				              [01] it was not:
+				                     Property Value differed:
+				                         Actual: 1
+				                       Expected: 2
+
+				             [01] Equivalency options:
+				              - include public fields and properties
+				             """);
+		}
+
+		[Test]
+		public async Task IsEquivalentTo_WhenNested_ShouldShiftTheDifferencesUnderTheEntry()
+		{
+			MyClass subject = new()
+			{
+				Value = 1,
+			};
+			MyClass expected = new()
+			{
+				Value = 2,
+			};
+
+			async Task Act()
+				=> await ThatAll(
+					That(true).IsFalse(),
+					ThatAll(That(subject).IsEquivalentTo(expected)));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected all of the following to succeed:
+				              [01] Expected that true is False
+				               Expected all of the following to succeed:
+				                [02] Expected that subject is equivalent to expected
+				             but
+				              [01] it was True
+				                [02] it was not:
+				                       Property Value differed:
+				                           Actual: 1
+				                         Expected: 2
+
+				             [02] Equivalency options:
+				              - include public fields and properties
+				             """);
+		}
+
+		[Test]
+		public async Task IsEquivalentTo_WhenSeveralMembersDiffer_ShouldShiftTheDifferencesUnderTheEntry()
+		{
+			MyClass[] subject =
+			[
+				new()
+				{
+					Value = 1,
+				},
+				new()
+				{
+					Value = 2,
+				},
+			];
+			MyClass[] expected =
+			[
+				new()
+				{
+					Value = 2,
+				},
+				new()
+				{
+					Value = 1,
+				},
+			];
+
+			async Task Act()
+				=> await ThatAll(That(subject).IsEquivalentTo(expected));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected all of the following to succeed:
+				              [01] Expected that subject is equivalent to expected
+				             but
+				              [01] it was not:
+				                     Property [0].Value differed:
+				                         Actual: 1
+				                       Expected: 2
+				                   and
+				                     Property [1].Value differed:
+				                         Actual: 2
+				                       Expected: 1
+
+				             [01] Equivalency options:
+				              - include public fields and properties
+				             """);
+		}
+
+		[Test]
 		public async Task IsNotEqualTo_ShouldIndentTheResultLikeTheEntry()
 		{
 			MyClass subject = new()
@@ -227,6 +340,31 @@ public sealed class CombinedMultiLineResultTests
 				              [01] Expected that subject is not equivalent to CombinedMultiLineResultTests.MyClass {
 				                     Value = 1
 				                   }
+				             but
+				              [01] it was CombinedMultiLineResultTests.MyClass {
+				                     Value = 1
+				                   }, which is considered equivalent
+
+				             [01] Equivalency options:
+				              - include public fields and properties
+				             """);
+		}
+
+		[Test]
+		public async Task IsNotEquivalentTo_ShouldIndentTheResultLikeTheEntry()
+		{
+			MyClass subject = new()
+			{
+				Value = 1,
+			};
+
+			async Task Act()
+				=> await ThatAll(That(subject).IsNotEquivalentTo(subject));
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected all of the following to succeed:
+				              [01] Expected that subject is not equivalent to subject
 				             but
 				              [01] it was CombinedMultiLineResultTests.MyClass {
 				                     Value = 1

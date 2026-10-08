@@ -145,6 +145,35 @@ public sealed class EquivalencyMatchTypeTests
 	}
 
 	[Test]
+	public async Task WhenNegatedAndEquivalent_InACombination_ShouldIndentTheValueLikeTheEntry()
+	{
+		Dummy subject = new()
+		{
+			Value = 1,
+		};
+		Dummy unexpected = new()
+		{
+			Value = 1,
+		};
+
+		async Task Act()
+			=> await ThatAll(That(subject).IsNotEquivalentToUsingMatchType(unexpected));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that subject is not equivalent to unexpected
+			             but
+			              [01] it was EquivalencyMatchTypeTests.Dummy {
+			                     Value = 1
+			                   }, which is considered equivalent
+
+			             [01] Equivalency options:
+			              - include public fields and properties
+			             """);
+	}
+
+	[Test]
 	public async Task WhenNegatedAndEquivalent_ShouldFailLikeIsNotEquivalentTo()
 	{
 		Dummy subject = new()
@@ -173,6 +202,36 @@ public sealed class EquivalencyMatchTypeTests
 		await That(await MessageOf(Act))
 			.IsEqualTo(await MessageOf(async () => await That(subject).IsNotEquivalentTo(unexpected)))
 			.Because("the failure is the same as the one of the built-in expectation");
+	}
+
+	[Test]
+	public async Task WhenNotEquivalent_InACombination_ShouldShiftTheDifferencesUnderTheEntry()
+	{
+		Dummy subject = new()
+		{
+			Value = 1,
+		};
+		Dummy expected = new()
+		{
+			Value = 2,
+		};
+
+		async Task Act()
+			=> await ThatAll(That(subject).IsEquivalentToUsingMatchType(expected));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected all of the following to succeed:
+			              [01] Expected that subject is equivalent to expected
+			             but
+			              [01] it was not:
+			                     Property Value differed:
+			                         Actual: 1
+			                       Expected: 2
+
+			             [01] Equivalency options:
+			              - include public fields and properties
+			             """);
 	}
 
 	[Test]
@@ -287,13 +346,13 @@ internal static class EquivalencyMatchTypeTestExtensions
 				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
 				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented()), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
 	}
 }

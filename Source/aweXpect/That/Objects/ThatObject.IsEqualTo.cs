@@ -119,21 +119,6 @@ public static partial class ThatObject
 			options);
 	}
 
-	/// <summary>
-	///     Explains the failed comparison of the <paramref name="matchResult" /> for a result with the
-	///     <paramref name="indentation" />.
-	/// </summary>
-	/// <remarks>
-	///     The match result already indents the lines after the first by the default indentation of two blanks, so
-	///     only the remaining part of the <paramref name="indentation" /> is added.
-	/// </remarks>
-	private static string GetExtendedFailure(IObjectMatchResult matchResult, string it,
-		ExpectationGrammars grammars, object? actual, object? expected, string? indentation)
-	{
-		string failure = matchResult.GetExtendedFailure(it, grammars, actual, expected);
-		return indentation is { Length: > 2, } ? failure.Indent(indentation[2..], false) : failure;
-	}
-
 	private sealed class IsEqualToConstraint<TSubject, TExpected>(
 		string it,
 		ExpectationGrammars grammars,
@@ -164,14 +149,14 @@ public static partial class ThatObject
 				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(GetExtendedFailure(_matchResult!, It, Grammars, Actual, expected, indentation));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
 				expectedExpression ?? Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(GetExtendedFailure(_matchResult!, It, Grammars, Actual, expected, indentation));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
 	}
 
 	private sealed class IsEqualToConstraint<T>(
@@ -204,14 +189,14 @@ public static partial class ThatObject
 				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(GetExtendedFailure(_matchResult!, It, Grammars, Actual, expected, indentation));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
 				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(GetExtendedFailure(_matchResult!, It, Grammars, Actual, expected, indentation));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
 	}
 
 	private sealed class NullableIsEqualToConstraint<T>(
@@ -244,13 +229,13 @@ public static partial class ThatObject
 				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(GetExtendedFailure(_matchResult!, It, Grammars, Actual, expected, indentation));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(options.GetExpectation(
 				Formatter.Format(expected, FormattingOptions.Indented(indentation)), Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(GetExtendedFailure(_matchResult!, It, Grammars, Actual, expected, indentation));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
 	}
 }

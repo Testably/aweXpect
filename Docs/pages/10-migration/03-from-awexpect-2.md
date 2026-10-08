@@ -512,6 +512,8 @@ context.
 failure text. A custom match type implements the new `AreConsideredEqualWithExplanation`, which returns an
 `IObjectMatchResult`, and moves its `GetExtendedFailure` there. A caller of `ObjectEqualityOptions<T>.GetExtendedFailure`
 compares with `AreConsideredEqualWithExplanation` instead and calls `GetExtendedFailure` on its result.
+`GetExtendedFailure` also receives the `indentation` of a nested result, e.g. inside `Expect.ThatAll`, for the lines
+after the first.
 
 ## New expectations
 

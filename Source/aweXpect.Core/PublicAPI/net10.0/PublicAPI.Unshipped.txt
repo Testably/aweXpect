@@ -625,7 +625,7 @@ aweXpect.Options.Quantifier.ToString(bool isNegated) -> string!
 *REMOVED*aweXpect.Core.IObjectMatchType.GetExtendedFailure(string! it, aweXpect.Core.ExpectationGrammars grammars, object? actual, object? expected) -> string!
 *REMOVED*aweXpect.Options.ObjectEqualityOptions<TSubject>.GetExtendedFailure(string! it, aweXpect.Core.ExpectationGrammars grammars, object? actual, object? expected) -> string!
 aweXpect.Core.IObjectMatchResult
-aweXpect.Core.IObjectMatchResult.GetExtendedFailure(string! it, aweXpect.Core.ExpectationGrammars grammars, object? actual, object? expected) -> string!
+aweXpect.Core.IObjectMatchResult.GetExtendedFailure(string! it, aweXpect.Core.ExpectationGrammars grammars, object? actual, object? expected, string? indentation = null) -> string!
 aweXpect.Core.IObjectMatchResult.IsMatch.get -> bool
 aweXpect.Core.IObjectMatchType.AreConsideredEqualWithExplanation<TActual, TExpected>(TActual actual, TExpected expected) -> System.Threading.Tasks.ValueTask<aweXpect.Core.IObjectMatchResult!>
 aweXpect.Options.ObjectEqualityOptions<TSubject>.AreConsideredEqualWithExplanation<TExpected>(TSubject actual, TExpected expected) -> System.Threading.Tasks.ValueTask<aweXpect.Core.IObjectMatchResult!>
