@@ -25,6 +25,30 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		public async Task GetExtendedFailure_WhenExpectedIsEmptyAndSubjectIsOnlyWhitespace_ShouldNameTheWhitespace()
+		{
+			StringEqualityOptions sut = new("expected");
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "  ", "");
+
+			await That(result).IsEqualTo("""
+			                             it was "  ", which has unexpected whitespace ("  " at the beginning)
+			                             """);
+		}
+
+		[Test]
+		public async Task GetExtendedFailure_WhenSubjectIsEmptyAndExpectedIsOnlyWhitespace_ShouldNameTheWhitespace()
+		{
+			StringEqualityOptions sut = new("expected");
+
+			string result = sut.GetExtendedFailure("it", ExpectationGrammars.None, "", "  ");
+
+			await That(result).IsEqualTo("""
+			                             it was "", which misses some whitespace ("  " at the beginning)
+			                             """);
+		}
+
+		[Test]
 		public async Task GetExtendedFailure_WhenWhitespaceIsTruncated_ShouldNotSplitAnEscapeSequence()
 		{
 			StringEqualityOptions sut = new("expected");

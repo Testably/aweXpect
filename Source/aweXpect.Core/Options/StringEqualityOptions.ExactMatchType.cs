@@ -13,23 +13,6 @@ public partial class StringEqualityOptions
 
 	private sealed class ExactMatchType : IStringMatchType
 	{
-		private static int GetIndexOfFirstMatch(string stringWithLeadingWhitespace, string value,
-			IEqualityComparer<string> comparer)
-		{
-			int indexOfFirstMatch;
-			for (indexOfFirstMatch = 0;
-			     indexOfFirstMatch <= stringWithLeadingWhitespace.Length - value.Length;
-			     indexOfFirstMatch++)
-			{
-				if (comparer.Equals(stringWithLeadingWhitespace.Substring(indexOfFirstMatch, value.Length), value))
-				{
-					break;
-				}
-			}
-
-			return indexOfFirstMatch;
-		}
-
 		#region IMatchType Members
 
 		/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
@@ -56,14 +39,14 @@ public partial class StringEqualityOptions
 			{
 				int maxStringLength = Customize.aweXpect.Formatting().MaximumStringLength.Get();
 				return
-					$"{prefix}, which has unexpected whitespace (\"{actual.Substring(0, GetIndexOfFirstMatch(actual, expected, comparer)).TruncateWithEllipsis(maxStringLength).Escape()}\" at the beginning)";
+					$"{prefix}, which has unexpected whitespace (\"{actual.Substring(0, actual.Length - actual.TrimStart().Length).TruncateWithEllipsis(maxStringLength).Escape()}\" at the beginning)";
 			}
 
 			if (indexOfFirstMismatch == 0 && comparer.Equals(actual, expected.TrimStart()))
 			{
 				int maxStringLength = Customize.aweXpect.Formatting().MaximumStringLength.Get();
 				return
-					$"{prefix}, which misses some whitespace (\"{expected.Substring(0, GetIndexOfFirstMatch(expected, actual, comparer)).TruncateWithEllipsis(maxStringLength).Escape()}\" at the beginning)";
+					$"{prefix}, which misses some whitespace (\"{expected.Substring(0, expected.Length - expected.TrimStart().Length).TruncateWithEllipsis(maxStringLength).Escape()}\" at the beginning)";
 			}
 
 			if (indexOfFirstMismatch == minCommonLength && comparer.Equals(actual.TrimEnd(), expected))
