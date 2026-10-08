@@ -4506,6 +4506,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 19:34:01 2026 \u002B0200",
         "message": "docs: shorten the v3 migration guide and trim the reference pages (#1754)"
+      },
+      {
+        "sha": "75cde8b0fa6fde9400552cb23a296a087933c892",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 21:11:19 2026 \u002B0200",
+        "message": "chore: publish to nuget.org via trusted publishing (#1756)"
       }
     ],
     "labels": [
@@ -5259,7 +5265,8 @@ window.BENCHMARK_DATA = {
       "6242c56e",
       "f7a0873f",
       "8e2da4f3",
-      "41cb59cc"
+      "41cb59cc",
+      "75cde8b0"
     ],
     "datasets": [
       {
@@ -6016,7 +6023,8 @@ window.BENCHMARK_DATA = {
           74.12769539867129,
           146.75949765841168,
           132.10950322151183,
-          135.05950435570307
+          135.05950435570307,
+          146.38305603663127
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -6777,6 +6785,7 @@ window.BENCHMARK_DATA = {
           416,
           416,
           416,
+          424,
           424,
           424
         ],
@@ -7543,7 +7552,8 @@ window.BENCHMARK_DATA = {
           141.12862652142843,
           242.14818153381347,
           251.96920748551688,
-          249.4584538596017
+          249.4584538596017,
+          269.37850979396273
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -8305,6 +8315,7 @@ window.BENCHMARK_DATA = {
           952,
           952,
           952,
+          952,
           952
         ],
         "borderColor": "#FF671B",
@@ -8351,7 +8362,8 @@ window.BENCHMARK_DATA = {
           112.69337538083394,
           205.66276689676138,
           219.58528105417886,
-          207.00507389704387
+          207.00507389704387,
+          213.67984322401193
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -8363,6 +8375,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -12452,6 +12465,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 19:34:01 2026 \u002B0200",
         "message": "docs: shorten the v3 migration guide and trim the reference pages (#1754)"
+      },
+      {
+        "sha": "75cde8b0fa6fde9400552cb23a296a087933c892",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 21:11:19 2026 \u002B0200",
+        "message": "chore: publish to nuget.org via trusted publishing (#1756)"
       }
     ],
     "labels": [
@@ -13128,7 +13147,8 @@ window.BENCHMARK_DATA = {
       "6242c56e",
       "f7a0873f",
       "8e2da4f3",
-      "41cb59cc"
+      "41cb59cc",
+      "75cde8b0"
     ],
     "datasets": [
       {
@@ -13808,7 +13828,8 @@ window.BENCHMARK_DATA = {
           58705.350740559894,
           108477.57999965122,
           113531.24499511719,
-          109072.00328717913
+          109072.00328717913,
+          120138.8503136268
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -14492,6 +14513,7 @@ window.BENCHMARK_DATA = {
           16416,
           16416,
           16416,
+          16424,
           16424,
           16424
         ],
@@ -15181,7 +15203,8 @@ window.BENCHMARK_DATA = {
           1363514.279017857,
           2564532.4854166666,
           2715087.763541667,
-          2624178.3963341345
+          2624178.3963341345,
+          2847707.1596354167
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -15866,6 +15889,7 @@ window.BENCHMARK_DATA = {
           4841647,
           4841651,
           4841651,
+          4841651,
           4841651
         ],
         "borderColor": "#FF671B",
@@ -15912,7 +15936,8 @@ window.BENCHMARK_DATA = {
           108015.99091448102,
           196925.21308244977,
           204707.30669696516,
-          206319.9794921875
+          206319.9794921875,
+          212375.72356305804
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -15924,6 +15949,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -20475,6 +20501,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 19:34:01 2026 \u002B0200",
         "message": "docs: shorten the v3 migration guide and trim the reference pages (#1754)"
+      },
+      {
+        "sha": "75cde8b0fa6fde9400552cb23a296a087933c892",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 21:11:19 2026 \u002B0200",
+        "message": "chore: publish to nuget.org via trusted publishing (#1756)"
       }
     ],
     "labels": [
@@ -21228,7 +21260,8 @@ window.BENCHMARK_DATA = {
       "6242c56e",
       "f7a0873f",
       "8e2da4f3",
-      "41cb59cc"
+      "41cb59cc",
+      "75cde8b0"
     ],
     "datasets": [
       {
@@ -21985,7 +22018,8 @@ window.BENCHMARK_DATA = {
           142.61073668797812,
           277.34809029897053,
           291.34572515487673,
-          277.9839556694031
+          277.9839556694031,
+          298.66243098576865
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -22746,6 +22780,7 @@ window.BENCHMARK_DATA = {
           608,
           608,
           608,
+          616,
           616,
           616
         ],
@@ -23512,7 +23547,8 @@ window.BENCHMARK_DATA = {
           258.0497901916504,
           482.11510617392406,
           516.6305457433065,
-          475.0615225519453
+          475.0615225519453,
+          500.75270144144696
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -24274,6 +24310,7 @@ window.BENCHMARK_DATA = {
           2008,
           2008,
           2008,
+          2008,
           2008
         ],
         "borderColor": "#FF671B",
@@ -24320,7 +24357,8 @@ window.BENCHMARK_DATA = {
           205.20201851526897,
           381.9092403479985,
           428.1863659540812,
-          406.0969944636027
+          406.0969944636027,
+          410.90754448572795
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -24332,6 +24370,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -28883,6 +28922,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 19:34:01 2026 \u002B0200",
         "message": "docs: shorten the v3 migration guide and trim the reference pages (#1754)"
+      },
+      {
+        "sha": "75cde8b0fa6fde9400552cb23a296a087933c892",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 21:11:19 2026 \u002B0200",
+        "message": "chore: publish to nuget.org via trusted publishing (#1756)"
       }
     ],
     "labels": [
@@ -29636,7 +29681,8 @@ window.BENCHMARK_DATA = {
       "6242c56e",
       "f7a0873f",
       "8e2da4f3",
-      "41cb59cc"
+      "41cb59cc",
+      "75cde8b0"
     ],
     "datasets": [
       {
@@ -30393,7 +30439,8 @@ window.BENCHMARK_DATA = {
           76.55528612647738,
           142.71374247755324,
           151.40262173016865,
-          149.0776209036509
+          149.0776209036509,
+          160.85706199010212
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -31154,6 +31201,7 @@ window.BENCHMARK_DATA = {
           520,
           520,
           520,
+          528,
           528,
           528
         ],
@@ -31920,7 +31968,8 @@ window.BENCHMARK_DATA = {
           128.2575772660119,
           245.96520824432372,
           261.30135504404706,
-          255.3344995498657
+          255.3344995498657,
+          281.25273551940916
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -32682,6 +32731,7 @@ window.BENCHMARK_DATA = {
           1224,
           1224,
           1224,
+          1224,
           1224
         ],
         "borderColor": "#FF671B",
@@ -32728,7 +32778,8 @@ window.BENCHMARK_DATA = {
           124.99726145267486,
           244.97244342168173,
           256.1360109329224,
-          244.33444571495056
+          244.33444571495056,
+          260.1941842714945
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -32740,6 +32791,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -37291,6 +37343,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 19:34:01 2026 \u002B0200",
         "message": "docs: shorten the v3 migration guide and trim the reference pages (#1754)"
+      },
+      {
+        "sha": "75cde8b0fa6fde9400552cb23a296a087933c892",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 21:11:19 2026 \u002B0200",
+        "message": "chore: publish to nuget.org via trusted publishing (#1756)"
       }
     ],
     "labels": [
@@ -38044,7 +38102,8 @@ window.BENCHMARK_DATA = {
       "6242c56e",
       "f7a0873f",
       "8e2da4f3",
-      "41cb59cc"
+      "41cb59cc",
+      "75cde8b0"
     ],
     "datasets": [
       {
@@ -38801,7 +38860,8 @@ window.BENCHMARK_DATA = {
           133.482617410024,
           248.38298716911902,
           259.4900750796,
-          244.00349849065145
+          244.00349849065145,
+          278.7488846460978
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -39562,6 +39622,7 @@ window.BENCHMARK_DATA = {
           584,
           584,
           584,
+          592,
           592,
           592
         ],
@@ -40328,7 +40389,8 @@ window.BENCHMARK_DATA = {
           650.9954760869344,
           1196.9269983927409,
           1316.8511539459228,
-          1358.449754333496
+          1358.449754333496,
+          1355.7190945943196
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -41090,6 +41152,7 @@ window.BENCHMARK_DATA = {
           3944,
           3944,
           3944,
+          3944,
           3944
         ],
         "borderColor": "#FF671B",
@@ -41136,7 +41199,8 @@ window.BENCHMARK_DATA = {
           183.08535652160646,
           325.31968371073407,
           330.76471274239674,
-          343.9431994983128
+          343.9431994983128,
+          339.2543276378087
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -41148,6 +41212,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -45699,6 +45764,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 19:34:01 2026 \u002B0200",
         "message": "docs: shorten the v3 migration guide and trim the reference pages (#1754)"
+      },
+      {
+        "sha": "75cde8b0fa6fde9400552cb23a296a087933c892",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 21:11:19 2026 \u002B0200",
+        "message": "chore: publish to nuget.org via trusted publishing (#1756)"
       }
     ],
     "labels": [
@@ -46452,7 +46523,8 @@ window.BENCHMARK_DATA = {
       "6242c56e",
       "f7a0873f",
       "8e2da4f3",
-      "41cb59cc"
+      "41cb59cc",
+      "75cde8b0"
     ],
     "datasets": [
       {
@@ -47209,7 +47281,8 @@ window.BENCHMARK_DATA = {
           337.06756407873974,
           641.2353713853018,
           636.2342558542888,
-          664.0919696172078
+          664.0919696172078,
+          652.825014591217
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -47970,6 +48043,7 @@ window.BENCHMARK_DATA = {
           872,
           872,
           872,
+          880,
           880,
           880
         ],
@@ -48736,7 +48810,8 @@ window.BENCHMARK_DATA = {
           725.0460067431133,
           1429.9953777313233,
           1378.3177547454834,
-          1382.3861387797765
+          1382.3861387797765,
+          1404.0230564117433
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -49498,6 +49573,7 @@ window.BENCHMARK_DATA = {
           4152,
           4152,
           4152,
+          4152,
           4152
         ],
         "borderColor": "#FF671B",
@@ -49544,7 +49620,8 @@ window.BENCHMARK_DATA = {
           331.785920826594,
           629.0753513336182,
           653.5006825129191,
-          648.7793511549631
+          648.7793511549631,
+          661.3155122756958
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -49556,6 +49633,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -54107,6 +54185,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 19:34:01 2026 \u002B0200",
         "message": "docs: shorten the v3 migration guide and trim the reference pages (#1754)"
+      },
+      {
+        "sha": "75cde8b0fa6fde9400552cb23a296a087933c892",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 21:11:19 2026 \u002B0200",
+        "message": "chore: publish to nuget.org via trusted publishing (#1756)"
       }
     ],
     "labels": [
@@ -54860,7 +54944,8 @@ window.BENCHMARK_DATA = {
       "6242c56e",
       "f7a0873f",
       "8e2da4f3",
-      "41cb59cc"
+      "41cb59cc",
+      "75cde8b0"
     ],
     "datasets": [
       {
@@ -55617,7 +55702,8 @@ window.BENCHMARK_DATA = {
           515.1199394634792,
           1046.7737821851458,
           1051.0342363993327,
-          1060.7046702067057
+          1060.7046702067057,
+          1036.0475843974523
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -56378,6 +56464,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1288,
           1288,
           1288
         ],
@@ -57144,7 +57231,8 @@ window.BENCHMARK_DATA = {
           10069.346013750348,
           27037.291407658504,
           27659.082942708334,
-          27789.579213460285
+          27789.579213460285,
+          27858.206268310547
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -57906,6 +57994,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
+          33471,
           33471
         ],
         "borderColor": "#FF671B",
@@ -57952,7 +58041,8 @@ window.BENCHMARK_DATA = {
           406.55301560674394,
           771.6197384425571,
           811.5114925384521,
-          778.4879866282146
+          778.4879866282146,
+          812.0843548456828
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -57964,6 +58054,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -58285,6 +58376,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 19:34:01 2026 \u002B0200",
         "message": "docs: shorten the v3 migration guide and trim the reference pages (#1754)"
+      },
+      {
+        "sha": "75cde8b0fa6fde9400552cb23a296a087933c892",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 21:11:19 2026 \u002B0200",
+        "message": "chore: publish to nuget.org via trusted publishing (#1756)"
       }
     ],
     "labels": [
@@ -58333,7 +58430,8 @@ window.BENCHMARK_DATA = {
       "6242c56e",
       "f7a0873f",
       "8e2da4f3",
-      "41cb59cc"
+      "41cb59cc",
+      "75cde8b0"
     ],
     "datasets": [
       {
@@ -58385,7 +58483,8 @@ window.BENCHMARK_DATA = {
           372.7434025491987,
           717.8476252555847,
           720.1078741709391,
-          725.8311898549398
+          725.8311898549398,
+          851.6755803426107
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -58441,6 +58540,7 @@ window.BENCHMARK_DATA = {
           1816,
           1816,
           1816,
+          1824,
           1824,
           1824
         ],
@@ -58502,7 +58602,8 @@ window.BENCHMARK_DATA = {
           28976.523685709635,
           82400.20458170572,
           83982.37623697917,
-          82909.91080147879
+          82909.91080147879,
+          84981.80950055804
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -58557,6 +58658,7 @@ window.BENCHMARK_DATA = {
           5254,
           5256,
           5256,
+          5252,
           5252,
           5252,
           5252
@@ -58849,6 +58951,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 19:34:01 2026 \u002B0200",
         "message": "docs: shorten the v3 migration guide and trim the reference pages (#1754)"
+      },
+      {
+        "sha": "75cde8b0fa6fde9400552cb23a296a087933c892",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 21:11:19 2026 \u002B0200",
+        "message": "chore: publish to nuget.org via trusted publishing (#1756)"
       }
     ],
     "labels": [
@@ -58897,7 +59005,8 @@ window.BENCHMARK_DATA = {
       "6242c56e",
       "f7a0873f",
       "8e2da4f3",
-      "41cb59cc"
+      "41cb59cc",
+      "75cde8b0"
     ],
     "datasets": [
       {
@@ -58949,7 +59058,8 @@ window.BENCHMARK_DATA = {
           125.47152725287846,
           243.43688027064005,
           266.39192117055256,
-          265.87161350250244
+          265.87161350250244,
+          259.8366877237956
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -59005,6 +59115,7 @@ window.BENCHMARK_DATA = {
           664,
           664,
           664,
+          672,
           672,
           672
         ],
@@ -59066,7 +59177,8 @@ window.BENCHMARK_DATA = {
           9949.456902640206,
           30220.73620402018,
           32154.62091878255,
-          31809.45400390625
+          31809.45400390625,
+          32316.998864746092
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -59123,6 +59235,7 @@ window.BENCHMARK_DATA = {
           5615,
           5614,
           5614,
+          5614,
           5614
         ],
         "borderColor": "#FF671B",
@@ -59169,7 +59282,8 @@ window.BENCHMARK_DATA = {
           124.23931743303935,
           246.91170746485392,
           243.68746512730917,
-          246.58337157567343
+          246.58337157567343,
+          258.87168684005735
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -59181,6 +59295,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
