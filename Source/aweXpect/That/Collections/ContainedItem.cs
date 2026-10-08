@@ -98,7 +98,7 @@ internal sealed class ItemMatchingPredicate<TItem>(Func<TItem, bool> predicate, 
 
 	/// <inheritdoc />
 	public override string GetHasItemExpectation(ExpectationGrammars grammars)
-		=> $"matching {predicateExpression}";
+		=> $"matching {predicateExpression.TrimCommonWhiteSpace()}";
 }
 
 /// <summary>

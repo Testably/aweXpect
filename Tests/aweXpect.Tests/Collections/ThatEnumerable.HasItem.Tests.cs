@@ -181,6 +181,29 @@ public sealed partial class ThatEnumerable
 			}
 
 			[Test]
+			public async Task WhenPredicateSpansSeveralLines_ShouldTrimTheCommonIndentation()
+			{
+				int[] subject = [];
+
+				async Task Act()
+					=> await That(subject).HasItem(x =>
+						x > 5 &&
+						x < 7);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item matching x =>
+					             x > 5 &&
+					             x < 7,
+					             but it had no item
+
+					             Collection:
+					             []
+					             """);
+			}
+
+			[Test]
 			public async Task WhenPredicateThrows_ShouldFailWithTheExceptionAsInnerException()
 			{
 				InvalidOperationException exception = new("predicate failed");

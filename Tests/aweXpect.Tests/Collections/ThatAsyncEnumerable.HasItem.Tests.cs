@@ -130,6 +130,29 @@ public sealed partial class ThatAsyncEnumerable
 			}
 
 			[Test]
+			public async Task WhenPredicateSpansSeveralLines_ShouldTrimTheCommonIndentation()
+			{
+				IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
+
+				async Task Act()
+					=> await That(subject).HasItem(x =>
+						x > 5 &&
+						x < 7);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has an item matching x =>
+					             x > 5 &&
+					             x < 7,
+					             but it had no item
+
+					             Collection:
+					             []
+					             """);
+			}
+
+			[Test]
 			public async Task WhenSubjectIsNull_WithAnyIndex_ShouldFail()
 			{
 				IAsyncEnumerable<int>? subject = null;

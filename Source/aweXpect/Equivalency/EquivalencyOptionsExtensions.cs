@@ -49,7 +49,7 @@ public static class EquivalencyOptionsExtensions
 			MembersToIgnore =
 			[
 				..options.MembersToIgnore,
-				new MemberToIgnore.ByPredicate(predicate, doNotPopulateThisValue),
+				new MemberToIgnore.ByPredicate(predicate, doNotPopulateThisValue.TrimCommonWhiteSpace()),
 			],
 		};
 	}
@@ -71,7 +71,7 @@ public static class EquivalencyOptionsExtensions
 			[
 				..options.MembersToIgnore,
 				new MemberToIgnore.ByPredicate((memberName, _) => predicate(memberName),
-					doNotPopulateThisValue),
+					doNotPopulateThisValue.TrimCommonWhiteSpace()),
 			],
 		};
 	}
@@ -93,7 +93,7 @@ public static class EquivalencyOptionsExtensions
 			[
 				..options.MembersToIgnore,
 				new MemberToIgnore.ByPredicate((_, memberType) => predicate(memberType),
-					doNotPopulateThisValue),
+					doNotPopulateThisValue.TrimCommonWhiteSpace()),
 			],
 		};
 	}
@@ -114,7 +114,7 @@ public static class EquivalencyOptionsExtensions
 			MembersToIgnore =
 			[
 				..options.MembersToIgnore,
-				new MemberToIgnore.ByFieldPredicate(predicate, doNotPopulateThisValue),
+				new MemberToIgnore.ByFieldPredicate(predicate, doNotPopulateThisValue.TrimCommonWhiteSpace()),
 			],
 		};
 	}
@@ -135,7 +135,7 @@ public static class EquivalencyOptionsExtensions
 			MembersToIgnore =
 			[
 				..options.MembersToIgnore,
-				new MemberToIgnore.ByPropertyPredicate(predicate, doNotPopulateThisValue),
+				new MemberToIgnore.ByPropertyPredicate(predicate, doNotPopulateThisValue.TrimCommonWhiteSpace()),
 			],
 		};
 	}

@@ -48,7 +48,7 @@ public class SingleItemResult<TCollection, TItem>
 	{
 		predicate.ThrowIfNull();
 		_options.SetPredicate(predicate,
-			$" matching {doNotPopulateThisValue}");
+			$" matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return new SingleMatchingItemResult<TCollection, TItem>(ExpectationBuilder, _memberAccessor);
 	}
 
@@ -73,7 +73,7 @@ public class SingleItemResult<TCollection, TItem>
 	{
 		predicate.ThrowIfNull();
 		_options.SetPredicate(item => item is T typed && predicate(typed),
-			$" of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue}");
+			$" of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return Cast<T>(x => (T)(object)x!);
 	}
 
@@ -100,7 +100,7 @@ public class SingleItemResult<TCollection, TItem>
 		predicate.ThrowIfNull();
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
 		_options.SetPredicate(item => item is T typed && item.GetType() == exactType && predicate(typed),
-			$" exactly of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue}");
+			$" exactly of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return Cast<T>(x => (T)(object)x!);
 	}
 
