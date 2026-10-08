@@ -74,8 +74,28 @@ internal sealed class IsEmptyConstraint<TEnumerable, TItem>(string it, Expectati
 		return this;
 	}
 
+	/// <remarks>
+	///     The first item decides the result, so a source that did not reach its end lists only the items that were
+	///     read. No further items are read for the result text, so that a source that blocks cannot hang the failure
+	///     message.
+	/// </remarks>
 	protected override void AppendItems(StringBuilder stringBuilder)
-		=> Formatter.Format(stringBuilder, _items, FormattingOptions.MultipleLines);
+	{
+		switch (_items)
+		{
+			case IMaterializedEnumerable<TItem> { Count: null, } materialized:
+				stringBuilder.Append(CollectionHelpers.FormatReadItems(materialized.MaterializedItems,
+					FormattingOptions.MultipleLines));
+				break;
+			case IMaterializedEnumerable { Count: null, } materialized:
+				stringBuilder.Append(CollectionHelpers.FormatReadItems(materialized.MaterializedItems,
+					FormattingOptions.MultipleLines));
+				break;
+			default:
+				Formatter.Format(stringBuilder, _items, FormattingOptions.MultipleLines);
+				break;
+		}
+	}
 }
 
 #if NET8_0_OR_GREATER

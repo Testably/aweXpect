@@ -836,19 +836,11 @@ public sealed partial class ThatDelegateTests
 				             Expected that Subject
 				             eventually is empty within 0:00.500,
 				             but it was [
-				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               10,
+				               1,*
 				               (… and maybe more)
 				             ]
-				             """);
+				             """).AsWildcard()
+				.Because("the items that the released aweXpect package lists beyond the first one are not pinned");
 			await That(sources).HasCount().GreaterThan(1);
 			await That(sources).All().Satisfy(source => source.DisposeCount == 1)
 				.Because("the source of each attempt is released, also the one of the last attempt");
