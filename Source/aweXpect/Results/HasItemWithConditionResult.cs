@@ -44,7 +44,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	{
 		predicate.ThrowIfNull();
 		_options.SetPredicate(predicate,
-			$"matching {doNotPopulateThisValue}");
+			$"matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
 
@@ -69,7 +69,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 	{
 		predicate.ThrowIfNull();
 		_options.SetPredicate(item => item is T typed && predicate(typed),
-			$"of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue}");
+			$"of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
 
@@ -97,7 +97,7 @@ public class HasItemWithConditionResult<TCollection, TItem>
 		predicate.ThrowIfNull();
 		Type exactType = Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T);
 		_options.SetPredicate(item => item is T typed && item.GetType() == exactType && predicate(typed),
-			$"exactly of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue}");
+			$"exactly of type {Formatter.Format(typeof(T))} matching {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return new HasItemResult<TCollection>(_expectationBuilder, _subject, _collectionIndexOptions);
 	}
 }

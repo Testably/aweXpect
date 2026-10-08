@@ -238,9 +238,10 @@ internal static class ObjectEqualityOptions
 		/// <inheritdoc cref="IObjectMatchResult.IsMatch" />
 		public bool IsMatch => isMatch;
 
-		/// <inheritdoc cref="IObjectMatchResult.GetExtendedFailure(string, ExpectationGrammars, object?, object?)" />
-		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
-			=> $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented())}";
+		/// <inheritdoc cref="IObjectMatchResult.GetExtendedFailure(string, ExpectationGrammars, object?, object?, string?)" />
+		public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected,
+			string? indentation = null)
+			=> $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented(indentation))}";
 	}
 }
 

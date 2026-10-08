@@ -124,7 +124,7 @@ public static partial class ThatObject
 		{
 			TExpected?[] candidates = expected.Take(2).ToArray();
 			stringBuilder.Append(candidates.Length == 1
-				? _matchResult!.GetExtendedFailure(It, Grammars, Actual, candidates[0])
+				? _matchResult!.GetExtendedFailure(It, Grammars, Actual, candidates[0], indentation)
 				: $"{It}{Grammars.SubjectVerb(It, " was ", " were ")}{Formatter.Format(Actual, FormattingOptions.Indented(indentation))}");
 		}
 
@@ -133,6 +133,6 @@ public static partial class ThatObject
 				"one of " + (expectedExpression ?? Formatter.Format(expected)).TrimCommonWhiteSpace()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected));
+			=> stringBuilder.Append(_matchResult!.GetExtendedFailure(It, Grammars, Actual, expected, indentation));
 	}
 }

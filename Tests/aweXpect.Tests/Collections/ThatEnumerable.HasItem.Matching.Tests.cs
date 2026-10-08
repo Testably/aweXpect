@@ -110,6 +110,29 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Test]
+				public async Task WhenPredicateSpansSeveralLines_ShouldTrimTheCommonIndentation()
+				{
+					int[] subject = [];
+
+					async Task Act()
+						=> await That(subject).HasItem().Matching(x =>
+							x > 5 &&
+							x < 7);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an item matching x =>
+						             x > 5 &&
+						             x < 7,
+						             but it had no item
+
+						             Collection:
+						             []
+						             """);
+				}
+
+				[Test]
 				public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
 				{
 					IEnumerable<int> subject = [0, 1, 2,];
@@ -294,6 +317,29 @@ public sealed partial class ThatEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type MyBaseClass matching _ => true,
+						             but it had no item
+
+						             Collection:
+						             []
+						             """);
+				}
+
+				[Test]
+				public async Task WhenPredicateSpansSeveralLines_ShouldTrimTheCommonIndentation()
+				{
+					object[] subject = [];
+
+					async Task Act()
+						=> await That(subject).HasItem().Matching<int>(x =>
+							x > 5 &&
+							x < 7);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an item of type int matching x =>
+						             x > 5 &&
+						             x < 7,
 						             but it had no item
 
 						             Collection:

@@ -110,20 +110,20 @@ public static partial class ThatDictionary
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("contains value ", "contain value "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(Formatter.Format(expected).Indent(indentation, false));
 			stringBuilder.Append(options);
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" did not contain value ");
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(Formatter.Format(expected).Indent(indentation, false));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("does not contain value ", "do not contain value "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(Formatter.Format(expected).Indent(indentation, false));
 			stringBuilder.Append(options);
 		}
 

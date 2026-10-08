@@ -327,7 +327,7 @@ internal abstract class CollectionMatchConstraintBase<TValue>(
 		}
 		else if (_failure is not null)
 		{
-			stringBuilder.Append(_failure);
+			stringBuilder.Append(_failure.Indent(indentation, false));
 		}
 	}
 

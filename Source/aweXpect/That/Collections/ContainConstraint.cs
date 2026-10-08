@@ -140,7 +140,7 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 	}
 
 	public override void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
-		=> stringBuilder.Append(Item.GetExpectation(Quantifier, Grammars, _isNegated));
+		=> stringBuilder.Append(Item.GetExpectation(Quantifier, Grammars, _isNegated).Indent(indentation, false));
 
 	public override void AppendResult(StringBuilder stringBuilder, string? indentation = null)
 	{
@@ -158,16 +158,17 @@ internal abstract class ContainConstraintBase<TItem> : ConstraintResult
 		}
 		else
 		{
-			AppendContainedResult(stringBuilder);
+			AppendContainedResult(stringBuilder, indentation);
 		}
 	}
 
-	private void AppendContainedResult(StringBuilder stringBuilder)
+	private void AppendContainedResult(StringBuilder stringBuilder, string? indentation)
 	{
 		stringBuilder.Append(It).Append(" contained ");
 		if (_expected is not null)
 		{
-			Formatter.Format(stringBuilder, _count == 1 ? GetFoundItem(_expected) : _expected.Expected);
+			stringBuilder.Append(Formatter.Format(_count == 1 ? GetFoundItem(_expected) : _expected.Expected)
+				.Indent(indentation, false));
 		}
 		else
 		{

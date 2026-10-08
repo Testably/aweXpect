@@ -57,13 +57,16 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 	/// <inheritdoc cref="IObjectMatchResult.IsMatch" />
 	bool IObjectMatchResult.IsMatch => _isMatch;
 
-	/// <inheritdoc cref="IObjectMatchResult.GetExtendedFailure(string, ExpectationGrammars, object?, object?)" />
+	/// <inheritdoc cref="IObjectMatchResult.GetExtendedFailure(string, ExpectationGrammars, object?, object?, string?)" />
+	/// <remarks>
+	///     The differences keep their layout and are shifted as a whole by the <paramref name="indentation" />.
+	/// </remarks>
 	string IObjectMatchResult.GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual,
-		object? expected)
+		object? expected, string? indentation)
 	{
 		if (grammars.IsNegated())
 		{
-			return $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented())}, which is considered equivalent";
+			return $"{it}{grammars.SubjectVerb(it, " was ", " were ")}{Formatter.Format(actual, FormattingOptions.Indented(indentation))}, which is considered equivalent";
 		}
 
 		if (actual is null != expected is null)
@@ -78,7 +81,7 @@ public sealed class EquivalencyMatchType : IObjectMatchType, IObjectMatchResult
 			return failureBuilder.ToString();
 		}
 
-		return $"{it}{grammars.SubjectVerb(it, " was not:", " were not:")}{_failureBuilder}";
+		return $"{it}{grammars.SubjectVerb(it, " was not:", " were not:")}{_failureBuilder?.ToString().Indent(indentation, false)}";
 	}
 
 	/// <inheritdoc cref="IObjectMatchType.AreConsideredEqual{TActual, TExpected}(TActual, TExpected)" />

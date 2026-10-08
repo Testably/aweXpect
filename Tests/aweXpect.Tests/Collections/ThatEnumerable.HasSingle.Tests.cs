@@ -368,6 +368,26 @@ public sealed partial class ThatEnumerable
 					.WithParamName("predicate").And
 					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
 			}
+
+			[Test]
+			public async Task WhenPredicateSpansSeveralLines_ShouldTrimTheCommonIndentation()
+			{
+				object[] subject = [];
+
+				async Task Act()
+					=> await That(subject).HasSingle().MatchingExactly<int>(x =>
+						x > 5 &&
+						x < 7);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item exactly of type int matching x =>
+					             x > 5 &&
+					             x < 7,
+					             but it was empty
+					             """);
+			}
 		}
 
 		public sealed class MatchingPredicateTests
@@ -457,6 +477,26 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("predicate").And
 					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenPredicateSpansSeveralLines_ShouldTrimTheCommonIndentation()
+			{
+				int[] subject = [];
+
+				async Task Act()
+					=> await That(subject).HasSingle().Matching(x =>
+						x > 5 &&
+						x < 7);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item matching x =>
+					             x > 5 &&
+					             x < 7,
+					             but it was empty
+					             """);
 			}
 
 			[Test]
@@ -862,6 +902,26 @@ public sealed partial class ThatEnumerable
 				await That(Act).Throws<ArgumentNullException>()
 					.WithParamName("predicate").And
 					.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenPredicateSpansSeveralLines_ShouldTrimTheCommonIndentation()
+			{
+				object[] subject = [];
+
+				async Task Act()
+					=> await That(subject).HasSingle().Matching<int>(x =>
+						x > 5 &&
+						x < 7);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a single item of type int matching x =>
+					             x > 5 &&
+					             x < 7,
+					             but it was empty
+					             """);
 			}
 		}
 

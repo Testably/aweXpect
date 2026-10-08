@@ -136,7 +136,7 @@ internal abstract class HasSingleConstraintBase<TValue, TItem>(
 			stringBuilder.Append(It).Append(options.GetDescription().Length == 0
 				? " had the single item "
 				: " had the single matching item ");
-			Formatter.Format(stringBuilder, Actual);
+			stringBuilder.Append(Formatter.Format(Actual).Indent(indentation, false));
 		}
 	}
 }

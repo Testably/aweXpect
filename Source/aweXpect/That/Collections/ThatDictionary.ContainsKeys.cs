@@ -118,7 +118,8 @@ public static partial class ThatDictionary
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" did not contain ");
-			Formatter.Format(stringBuilder, _missingKeys, FormattingOptions.MultipleLines);
+			stringBuilder.Append(Formatter.Format(_missingKeys, FormattingOptions.MultipleLines)
+				.Indent(indentation, false));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null) => stringBuilder.Append(isAny
@@ -129,7 +130,8 @@ public static partial class ThatDictionary
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" contained ");
-			Formatter.Format(stringBuilder, _existingKeys, FormattingOptions.MultipleLines);
+			stringBuilder.Append(Formatter.Format(_existingKeys, FormattingOptions.MultipleLines)
+				.Indent(indentation, false));
 		}
 	}
 }

@@ -20,5 +20,14 @@ public interface IObjectMatchResult
 	///     Get an extended failure text for the compared <paramref name="actual" /> and <paramref name="expected" />
 	///     objects.
 	/// </summary>
-	string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected);
+	/// <param name="it">The name of the subject in the result text.</param>
+	/// <param name="grammars">The grammars of the expectation.</param>
+	/// <param name="actual">The actual object of the comparison.</param>
+	/// <param name="expected">The expected object of the comparison.</param>
+	/// <param name="indentation">
+	///     The indentation for the lines after the first, when the failure text is part of a nested result, e.g. of an
+	///     expectation in <c>Expect.ThatAll</c>. Pass on the <c>indentation</c> of <c>AppendResult</c>.
+	/// </param>
+	string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected,
+		string? indentation = null);
 }

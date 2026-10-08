@@ -122,6 +122,29 @@ public sealed partial class ThatEnumerable
 				}
 
 				[Test]
+				public async Task WhenPredicateSpansSeveralLines_ShouldTrimTheCommonIndentation()
+				{
+					object[] subject = [];
+
+					async Task Act()
+						=> await That(subject).HasItem().MatchingExactly<int>(x =>
+							x > 5 &&
+							x < 7);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an item exactly of type int matching x =>
+						             x > 5 &&
+						             x < 7,
+						             but it had no item
+
+						             Collection:
+						             []
+						             """);
+				}
+
+				[Test]
 				public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
 				{
 					IEnumerable<MyClass> subject = ToEnumerable<MyClass>([0, 1, 2,], x => new MyClass(x));

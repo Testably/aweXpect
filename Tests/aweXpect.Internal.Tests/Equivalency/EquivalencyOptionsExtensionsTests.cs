@@ -224,6 +224,22 @@ public sealed class EquivalencyOptionsExtensionsTests
 	}
 
 	[Test]
+	public async Task Ignoring_StringAndTypePredicate_WhenPredicateSpansSeveralLines_ShouldTrimTheCommonIndentation()
+	{
+		EquivalencyOptions options = new();
+
+		EquivalencyOptions result = options.Ignoring((n, t) =>
+			n.EndsWith("At") &&
+			t == typeof(DateTime));
+
+		await That(result.MembersToIgnore[0].ToString()).IsEqualTo("""
+		                                                           (n, t) =>
+		                                                           n.EndsWith("At") &&
+		                                                           t == typeof(DateTime)
+		                                                           """);
+	}
+
+	[Test]
 	public async Task Ignoring_StringPredicate_WhenPredicateIsNull_ShouldThrowArgumentNullException()
 	{
 		EquivalencyOptions options = new();
@@ -234,6 +250,22 @@ public sealed class EquivalencyOptionsExtensionsTests
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("predicate").And
 			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	public async Task Ignoring_StringPredicate_WhenPredicateSpansSeveralLines_ShouldTrimTheCommonIndentation()
+	{
+		EquivalencyOptions options = new();
+
+		EquivalencyOptions result = options.Ignoring(x =>
+			x == "foo" ||
+			x == "bar");
+
+		await That(result.MembersToIgnore[0].ToString()).IsEqualTo("""
+		                                                           x =>
+		                                                           x == "foo" ||
+		                                                           x == "bar"
+		                                                           """);
 	}
 
 	[Test]
@@ -250,6 +282,22 @@ public sealed class EquivalencyOptionsExtensionsTests
 	}
 
 	[Test]
+	public async Task Ignoring_TypePredicate_WhenPredicateSpansSeveralLines_ShouldTrimTheCommonIndentation()
+	{
+		EquivalencyOptions options = new();
+
+		EquivalencyOptions result = options.Ignoring(x =>
+			x == typeof(DateTime) ||
+			x == typeof(string));
+
+		await That(result.MembersToIgnore[0].ToString()).IsEqualTo("""
+		                                                           x =>
+		                                                           x == typeof(DateTime) ||
+		                                                           x == typeof(string)
+		                                                           """);
+	}
+
+	[Test]
 	public async Task IgnoringFields_WhenPredicateIsNull_ShouldThrowArgumentNullException()
 	{
 		EquivalencyOptions options = new();
@@ -260,6 +308,22 @@ public sealed class EquivalencyOptionsExtensionsTests
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("predicate").And
 			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	public async Task IgnoringFields_WhenPredicateSpansSeveralLines_ShouldTrimTheCommonIndentation()
+	{
+		EquivalencyOptions options = new();
+
+		EquivalencyOptions result = options.IgnoringFields((n, t) =>
+			n.EndsWith("At") &&
+			t == typeof(DateTime));
+
+		await That(result.MembersToIgnore[0].ToString()).IsEqualTo("""
+		                                                           (n, t) =>
+		                                                           n.EndsWith("At") &&
+		                                                           t == typeof(DateTime)
+		                                                           """);
 	}
 
 	[Test]
@@ -311,6 +375,22 @@ public sealed class EquivalencyOptionsExtensionsTests
 		await That(Act).Throws<ArgumentNullException>()
 			.WithParamName("predicate").And
 			.WithMessage("The 'predicate' cannot be null.").AsPrefix();
+	}
+
+	[Test]
+	public async Task IgnoringProperties_WhenPredicateSpansSeveralLines_ShouldTrimTheCommonIndentation()
+	{
+		EquivalencyOptions options = new();
+
+		EquivalencyOptions result = options.IgnoringProperties((n, t) =>
+			n.EndsWith("At") &&
+			t == typeof(DateTime));
+
+		await That(result.MembersToIgnore[0].ToString()).IsEqualTo("""
+		                                                           (n, t) =>
+		                                                           n.EndsWith("At") &&
+		                                                           t == typeof(DateTime)
+		                                                           """);
 	}
 
 	private sealed class MyClass;

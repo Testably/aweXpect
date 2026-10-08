@@ -94,6 +94,29 @@ public sealed partial class ThatAsyncEnumerable
 				}
 
 				[Test]
+				public async Task WhenPredicateSpansSeveralLines_ShouldTrimTheCommonIndentation()
+				{
+					IAsyncEnumerable<int> subject = ToAsyncEnumerable(Array.Empty<int>());
+
+					async Task Act()
+						=> await That(subject).HasItem().Matching(x =>
+							x > 5 &&
+							x < 7);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an item matching x =>
+						             x > 5 &&
+						             x < 7,
+						             but it had no item
+
+						             Collection:
+						             []
+						             """);
+				}
+
+				[Test]
 				public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
 				{
 					IAsyncEnumerable<int> subject = ToAsyncEnumerable(0, 1, 2);
@@ -291,6 +314,29 @@ public sealed partial class ThatAsyncEnumerable
 						.WithMessage("""
 						             Expected that subject
 						             has an item of type MyBaseClass matching _ => true,
+						             but it had no item
+
+						             Collection:
+						             []
+						             """);
+				}
+
+				[Test]
+				public async Task WhenPredicateSpansSeveralLines_ShouldTrimTheCommonIndentation()
+				{
+					IAsyncEnumerable<object> subject = ToAsyncEnumerable(Array.Empty<object>());
+
+					async Task Act()
+						=> await That(subject).HasItem().Matching<int>(x =>
+							x > 5 &&
+							x < 7);
+
+					await That(Act).Throws<FailException>()
+						.WithMessage("""
+						             Expected that subject
+						             has an item of type int matching x =>
+						             x > 5 &&
+						             x < 7,
 						             but it had no item
 
 						             Collection:

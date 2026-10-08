@@ -135,7 +135,7 @@ public static partial class ThatDictionary
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("contains ", "contain "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(Formatter.Format(expected).Indent(indentation, false));
 			stringBuilder.Append(options);
 		}
 
@@ -144,20 +144,20 @@ public static partial class ThatDictionary
 			if (!_hasKey)
 			{
 				stringBuilder.Append(It).Append(" did not contain key ");
-				Formatter.Format(stringBuilder, expected.Key);
+				stringBuilder.Append(Formatter.Format(expected.Key).Indent(indentation, false));
 				return;
 			}
 
 			stringBuilder.Append(It).Append(" contained key ");
-			Formatter.Format(stringBuilder, expected.Key);
+			stringBuilder.Append(Formatter.Format(expected.Key).Indent(indentation, false));
 			stringBuilder.Append(" with value ");
-			Formatter.Format(stringBuilder, _actualValue);
+			stringBuilder.Append(Formatter.Format(_actualValue).Indent(indentation, false));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("does not contain ", "do not contain "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(Formatter.Format(expected).Indent(indentation, false));
 			stringBuilder.Append(options);
 		}
 

@@ -20,7 +20,7 @@ internal abstract class IsEmptyConstraintBase<TValue>(string it, ExpectationGram
 	/// <summary>
 	///     Appends the items that were found.
 	/// </summary>
-	protected abstract void AppendItems(StringBuilder stringBuilder);
+	protected abstract void AppendItems(StringBuilder stringBuilder, string? indentation);
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(Grammars.Verb("is empty", "are empty"));
@@ -28,7 +28,7 @@ internal abstract class IsEmptyConstraintBase<TValue>(string it, ExpectationGram
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 	{
 		stringBuilder.Append(It).Append(Grammars.SubjectVerb(It, " was ", " were "));
-		AppendItems(stringBuilder);
+		AppendItems(stringBuilder, indentation);
 	}
 
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -79,20 +79,21 @@ internal sealed class IsEmptyConstraint<TEnumerable, TItem>(string it, Expectati
 	///     read. No further items are read for the result text, so that a source that blocks cannot hang the failure
 	///     message.
 	/// </remarks>
-	protected override void AppendItems(StringBuilder stringBuilder)
+	protected override void AppendItems(StringBuilder stringBuilder, string? indentation)
 	{
 		switch (_items)
 		{
 			case IMaterializedEnumerable<TItem> { Count: null, } materialized:
 				stringBuilder.Append(CollectionHelpers.FormatReadItems(materialized.MaterializedItems,
-					FormattingOptions.MultipleLines));
+					FormattingOptions.MultipleLines).Indent(indentation, false));
 				break;
 			case IMaterializedEnumerable { Count: null, } materialized:
 				stringBuilder.Append(CollectionHelpers.FormatReadItems(materialized.MaterializedItems,
-					FormattingOptions.MultipleLines));
+					FormattingOptions.MultipleLines).Indent(indentation, false));
 				break;
 			default:
-				Formatter.Format(stringBuilder, _items, FormattingOptions.MultipleLines);
+				stringBuilder.Append(Formatter.Format(_items, FormattingOptions.MultipleLines)
+					.Indent(indentation, false));
 				break;
 		}
 	}
@@ -137,7 +138,8 @@ internal sealed class AsyncIsEmptyConstraint<TItem>(string it, ExpectationGramma
 		return this;
 	}
 
-	protected override void AppendItems(StringBuilder stringBuilder)
-		=> stringBuilder.Append(_materialized?.FormatMaterializedItems(FormattingOptions.MultipleLines));
+	protected override void AppendItems(StringBuilder stringBuilder, string? indentation)
+		=> stringBuilder.Append(_materialized?.FormatMaterializedItems(FormattingOptions.MultipleLines)
+			.Indent(indentation, false));
 }
 #endif

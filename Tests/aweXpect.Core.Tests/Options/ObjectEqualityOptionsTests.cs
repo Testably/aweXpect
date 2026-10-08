@@ -28,6 +28,22 @@ public class ObjectEqualityOptionsTests
 	}
 
 	[Test]
+	public async Task AreConsideredEqualWithExplanation_WhenNotEqual_WithIndentation_ShouldIndentTheActualValue()
+	{
+		ObjectEqualityOptions<object> sut = new();
+		object actual = new
+		{
+			Value = 1,
+		};
+
+		IObjectMatchResult result = await sut.AreConsideredEqualWithExplanation(actual, 2);
+
+		await That(result.GetExtendedFailure("it", ExpectationGrammars.None, actual, 2, "      "))
+			.IsEqualTo($"it was {Formatter.Format(actual, FormattingOptions.Indented("      "))}")
+			.Because("the lines of the value are indented like the result they belong to");
+	}
+
+	[Test]
 	[Arguments(11, true)]
 	[Arguments(12, false)]
 	public async Task AreConsideredEqualWithExplanation_WithATypedComparer_ShouldDecideWithIt(int expected,

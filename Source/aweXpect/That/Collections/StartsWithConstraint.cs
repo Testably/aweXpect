@@ -89,7 +89,7 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 	/// <summary>
 	///     Appends the first items that matched the expected items.
 	/// </summary>
-	protected abstract void AppendMatchingItems(StringBuilder stringBuilder);
+	protected abstract void AppendMatchingItems(StringBuilder stringBuilder, string? indentation);
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
@@ -102,15 +102,16 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 		if (_foundMismatch)
 		{
 			stringBuilder.Append(It).Append(" contained item ");
-			Formatter.Format(stringBuilder, _firstMismatchItem);
+			stringBuilder.Append(Formatter.Format(_firstMismatchItem).Indent(indentation, false));
 			stringBuilder.Append(" at index ").Append(Count - 1).Append(" instead of ");
-			stringBuilder.AppendExpectedItem(expected[Count - 1], options);
+			stringBuilder.AppendExpectedItem(expected[Count - 1], options, indentation);
 		}
 		else
 		{
 			stringBuilder.Append(It).Append(" contained only ").AppendItemCount(Count).Append(" and lacked ")
 				.AppendItemCount(expected.Length - Count).Append(": ");
-			Formatter.Format(stringBuilder, expected.Skip(Count), FormattingOptions.MultipleLines);
+			stringBuilder.Append(Formatter.Format(expected.Skip(Count), FormattingOptions.MultipleLines)
+				.Indent(indentation, false));
 		}
 	}
 
@@ -124,7 +125,7 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 	{
 		stringBuilder.Append(It).Append(" did start with ");
-		AppendMatchingItems(stringBuilder);
+		AppendMatchingItems(stringBuilder, indentation);
 	}
 }
 
@@ -202,13 +203,14 @@ internal sealed class StartsWithConstraint<TEnumerable, TItem, TMatch>(
 	///     The items of a non-generic collection are laid out by the type of the first one that is not
 	///     <see langword="null" />.
 	/// </remarks>
-	protected override void AppendMatchingItems(StringBuilder stringBuilder)
+	protected override void AppendMatchingItems(StringBuilder stringBuilder, string? indentation)
 	{
 		IEnumerable<TItem> items = _items?.Take(Count) ?? [];
 		Type itemType = CollectionItems<TItem>.IsTyped<TEnumerable>()
 			? typeof(TItem)
 			: items.Cast<object?>().GetItemType();
-		Formatter.Format(stringBuilder, items, itemType.GetFormattingOption(Count));
+		stringBuilder.Append(Formatter.Format(items, itemType.GetFormattingOption(Count))
+			.Indent(indentation, false));
 	}
 }
 
@@ -279,7 +281,8 @@ internal sealed class AsyncStartsWithConstraint<TItem, TMatch>(
 		base.AppendContexts(contexts);
 	}
 
-	protected override void AppendMatchingItems(StringBuilder stringBuilder)
-		=> Formatter.Format(stringBuilder, _foundValues, typeof(TItem).GetFormattingOption(_foundValues.Count));
+	protected override void AppendMatchingItems(StringBuilder stringBuilder, string? indentation)
+		=> stringBuilder.Append(Formatter.Format(_foundValues,
+			typeof(TItem).GetFormattingOption(_foundValues.Count)).Indent(indentation, false));
 }
 #endif

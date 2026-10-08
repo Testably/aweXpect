@@ -102,7 +102,7 @@ internal abstract class IsInOrderConstraintBase<TValue, TItem, TMember>(
 	}
 
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		=> stringBuilder.Append(_failureText);
+		=> stringBuilder.Append(_failureText.Indent(indentation, false));
 
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
@@ -116,7 +116,7 @@ internal abstract class IsInOrderConstraintBase<TValue, TItem, TMember>(
 	{
 		if (IsIncomparable)
 		{
-			stringBuilder.Append(_failureText);
+			stringBuilder.Append(_failureText.Indent(indentation, false));
 		}
 		else
 		{

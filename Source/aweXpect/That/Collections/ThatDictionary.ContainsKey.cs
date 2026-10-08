@@ -57,19 +57,19 @@ public static partial class ThatDictionary
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("contains key ", "contain key "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(Formatter.Format(expected).Indent(indentation, false));
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(It).Append(" did not contain key ");
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(Formatter.Format(expected).Indent(indentation, false));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
 			stringBuilder.Append(Grammars.Verb("does not contain key ", "do not contain key "));
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(Formatter.Format(expected).Indent(indentation, false));
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)

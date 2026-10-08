@@ -525,7 +525,8 @@ private sealed class ByTitleMatchType : IObjectMatchType
     {
         public bool IsMatch => isMatch;
 
-        public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected)
+        public string GetExtendedFailure(string it, ExpectationGrammars grammars, object? actual, object? expected,
+            string? indentation = null)
             => $"{it}{(grammars.IsPlural() && it != "it" ? " were" : " was")} titled {Formatter.Format((actual as Track)?.Title)}";
     }
 }
@@ -540,7 +541,9 @@ await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
 - `AreConsideredEqual` only decides, e.g. for each item of a collection. `AreConsideredEqualWithExplanation` compares
   for a failure message and returns an `IObjectMatchResult`, whose `GetExtendedFailure` writes the result text. A match
   type that keeps the differences of the comparison may return itself as the result, which is then only valid until
-  its next comparison.
+  its next comparison. When the result text spans several lines, indent the lines after the first by the `indentation`,
+  e.g. with `FormattingOptions.Indented(indentation)` for a formatted value, so that it stays aligned inside
+  `Expect.ThatAll`.
 - `GetExpectation` replaces "is equal to …" in the expectation text.
 - `PrependItemAndComparison` describes a single expected item, e.g. in "has item titled like …".
 - `AppendContexts` can add [contexts](03-message-conventions.md#contexts) that explain a failure, e.g. the options of
