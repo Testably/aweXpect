@@ -308,7 +308,7 @@ public static partial class ThatDictionary
 			}
 			else
 			{
-				stringBuilder.Append(_failure);
+				stringBuilder.Append(_failure.Indent(indentation, false));
 			}
 		}
 

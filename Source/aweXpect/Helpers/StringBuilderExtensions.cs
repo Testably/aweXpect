@@ -19,7 +19,7 @@ internal static class StringBuilderExtensions
 	///     pattern, so that it is not mistaken for the value the item had to be equal to.
 	/// </summary>
 	public static void AppendExpectedItem<TMatch>(this StringBuilder stringBuilder, TMatch expected,
-		IOptionsEquality<TMatch> options)
+		IOptionsEquality<TMatch> options, string? indentation)
 	{
 		object itemOptions = options is IOptionsProvider<object> provider ? provider.Options : options;
 		if (itemOptions is StringEqualityOptions stringEqualityOptions)
@@ -28,7 +28,7 @@ internal static class StringBuilderExtensions
 		}
 		else
 		{
-			Formatter.Format(stringBuilder, expected);
+			stringBuilder.Append(Formatter.Format(expected).Indent(indentation, false));
 		}
 	}
 }

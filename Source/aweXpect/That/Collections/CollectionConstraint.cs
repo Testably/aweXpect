@@ -47,7 +47,7 @@ internal abstract class PredicateCollectionConstraint<TValue, TItem>(
 	/// <inheritdoc />
 	protected override void AppendItemExpectation(StringBuilder stringBuilder, ExpectationGrammars grammars,
 		string? indentation)
-		=> stringBuilder.Append(condition.GetExpectation(grammars));
+		=> stringBuilder.Append(condition.GetExpectation(grammars).Indent(indentation, false));
 
 	/// <inheritdoc />
 	public override void AppendContexts(ResultContextCollector contexts)

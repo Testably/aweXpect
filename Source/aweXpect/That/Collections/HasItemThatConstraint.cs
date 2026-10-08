@@ -140,7 +140,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> : ConstraintRes
 			if (Options.Match.OnlySingleIndex())
 			{
 				stringBuilder.Append(It).Append(" had item ");
-				Formatter.Format(stringBuilder, _actual);
+				stringBuilder.Append(Formatter.Format(_actual).Indent(indentation, false));
 				stringBuilder.Append(Options.Match.GetDescription());
 			}
 			else
@@ -171,7 +171,7 @@ internal abstract class HasItemThatConstraintBase<TValue, TItem> : ConstraintRes
 		}
 
 		stringBuilder.Append(It).Append(" had item ");
-		Formatter.Format(stringBuilder, _actual);
+		stringBuilder.Append(Formatter.Format(_actual).Indent(indentation, false));
 		stringBuilder.Append(Options.Match.GetDescription());
 	}
 }

@@ -92,8 +92,10 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 	/// <summary>
 	///     Appends the last <paramref name="items" />, which matched the expected items.
 	/// </summary>
-	protected virtual void AppendMatchingItems(StringBuilder stringBuilder, IEnumerable<TItem> items, int count)
-		=> Formatter.Format(stringBuilder, items, typeof(TItem).GetFormattingOption(count));
+	protected virtual void AppendMatchingItems(StringBuilder stringBuilder, IEnumerable<TItem> items, int count,
+		string? indentation)
+		=> stringBuilder.Append(Formatter.Format(items, typeof(TItem).GetFormattingOption(count))
+			.Indent(indentation, false));
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 	{
@@ -106,9 +108,9 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 		if (_foundMismatch)
 		{
 			stringBuilder.Append(It).Append(" contained item ");
-			Formatter.Format(stringBuilder, _firstMismatchItem);
+			stringBuilder.Append(Formatter.Format(_firstMismatchItem).Indent(indentation, false));
 			stringBuilder.Append(" at index ").Append(_index + _offset).Append(" instead of ");
-			stringBuilder.AppendExpectedItem(expected[_index], options);
+			stringBuilder.AppendExpectedItem(expected[_index], options, indentation);
 		}
 		else
 		{
@@ -128,7 +130,7 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 	{
 		stringBuilder.Append(It).Append(" did end with ");
-		AppendMatchingItems(stringBuilder, _items?.Skip(_offset) ?? [], expected.Length);
+		AppendMatchingItems(stringBuilder, _items?.Skip(_offset) ?? [], expected.Length, indentation);
 	}
 }
 
@@ -209,12 +211,14 @@ internal sealed class EndsWithConstraint<TEnumerable, TItem, TMatch>(
 	///     The items of a non-generic collection are laid out by the type of the first one that is not
 	///     <see langword="null" />.
 	/// </remarks>
-	protected override void AppendMatchingItems(StringBuilder stringBuilder, IEnumerable<TItem> items, int count)
+	protected override void AppendMatchingItems(StringBuilder stringBuilder, IEnumerable<TItem> items, int count,
+		string? indentation)
 	{
 		Type itemType = CollectionItems<TItem>.IsTyped<TEnumerable>()
 			? typeof(TItem)
 			: items.Cast<object?>().GetItemType();
-		Formatter.Format(stringBuilder, items, itemType.GetFormattingOption(count));
+		stringBuilder.Append(Formatter.Format(items, itemType.GetFormattingOption(count))
+			.Indent(indentation, false));
 	}
 }
 

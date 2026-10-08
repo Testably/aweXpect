@@ -105,7 +105,7 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 
 	protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(Grammars.Verb("has an item ", "have an item "))
-			.Append(Item.GetHasItemExpectation(_itemGrammars))
+			.Append(Item.GetHasItemExpectation(_itemGrammars).Indent(indentation, false))
 			.Append(Options.Match.GetDescription());
 
 	protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
@@ -115,7 +115,7 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 			if (Options.Match.OnlySingleIndex())
 			{
 				stringBuilder.Append(It).Append(" had item ");
-				Formatter.Format(stringBuilder, _actual);
+				stringBuilder.Append(Formatter.Format(_actual).Indent(indentation, false));
 				stringBuilder.Append(Options.Match.GetDescription());
 			}
 			else
@@ -131,13 +131,13 @@ internal abstract class HasItemConstraintBase<TValue, TItem>
 
 	protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		=> stringBuilder.Append(Grammars.Verb("does not have an item ", "do not have an item "))
-			.Append(Item.GetHasItemExpectation(_itemGrammars))
+			.Append(Item.GetHasItemExpectation(_itemGrammars).Indent(indentation, false))
 			.Append(Options.Match.GetDescription());
 
 	protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 	{
 		stringBuilder.Append(It).Append(" had item ");
-		Formatter.Format(stringBuilder, _actual);
+		stringBuilder.Append(Formatter.Format(_actual).Indent(indentation, false));
 		stringBuilder.Append(Options.Match.GetDescription());
 	}
 }
