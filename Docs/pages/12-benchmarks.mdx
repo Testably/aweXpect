@@ -158,7 +158,7 @@ await Assert.That(_stringArraySubject)
     .IsEquivalentTo(_stringArrayExpectation, CollectionOrdering.Matching);
 // In any order
 await Assert.That(_stringArrayAnyOrderSubject)
-    .IsEquivalentTo(_stringArrayAnyOrderExpectation, CollectionOrdering.Any);
+    .IsEquivalentTo(_stringArrayAnyOrderExpectation);
 ```
 
 [View source on GitHub →](https://github.com/Testably/aweXpect/blob/main/Benchmarks/aweXpect.Benchmarks/HappyCaseBenchmarks.StringArray.cs)

@@ -85,5 +85,10 @@ Each expectation follows the corresponding method of `char`:
 
 `IsADigit` only accepts decimal digits, while `IsANumber` also accepts characters like `'½'`.
 
+<details>
+<summary>Casing of a `char` vs. a `string`</summary>
+
 `IsUpperCased` and `IsLowerCased` differ from the [`string` casing expectations](./03-string.md#character-casing),
 which only look at cased letters: `'1'` is neither upper-cased nor lower-cased, while `"1"` is both.
+
+</details>

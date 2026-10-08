@@ -16,7 +16,5 @@ await Expect.That(title).IsEqualTo(null);
 await Expect.That(title).IsNotEqualTo("Abbey Road");
 ```
 
-A `null` subject does not mean "the expectation is false", it means there is no value to inspect and the question
-cannot be answered. Negating an unanswerable question does not make it true, which is why the rule covers the negated
-case, including [`DoesNotComplyWith`](./02-negation.md), as well. How an extension follows the same rule is described
+This also applies inside [`DoesNotComplyWith`](./02-negation.md). How an extension follows the same rule is described
 in [constraints and results](../11-extending/02-constraints-and-results.md#null-subjects).

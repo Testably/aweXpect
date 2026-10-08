@@ -63,8 +63,14 @@ await Expect.That(playCount).IsNotGreaterThan(42);
 await Expect.That(playCount).IsNotLessThan(42);
 ```
 
+<details>
+<summary>Comparing with `NaN`</summary>
+
 `NaN` is neither greater nor less than any number, so it satisfies `IsNotGreaterThan(5)` although it fails
-`IsLessThanOrEqualTo(5)`. A `NaN` expected value throws an `ArgumentOutOfRangeException`.
+`IsLessThanOrEqualTo(5)`. A `NaN` expected value or `NaN` bound of `IsBetween` throws an
+`ArgumentOutOfRangeException`.
+
+</details>
 
 ## Between
 
@@ -77,8 +83,8 @@ await Expect.That(playCount).IsBetween(41).And(43);
 await Expect.That(playCount).IsNotBetween(43).And(50);
 ```
 
-Both bounds belong to the range, so `IsNotBetween(42).And(50)` fails for `42`. A maximum below the minimum or a `NaN`
-bound throws an `ArgumentOutOfRangeException`.
+Both bounds belong to the range, so `IsNotBetween(42).And(50)` fails for `42`. A maximum below the minimum throws an
+`ArgumentOutOfRangeException`.
 
 ## Positive / negative
 
@@ -92,11 +98,6 @@ await Expect.That(0).IsNotNegative();
 ```
 
 Zero and `NaN` are neither positive nor negative, so both `IsNotPositive` and `IsNotNegative` succeed for them.
-
-:::note[.NET 8 or later]
-Below .NET 8 these expectations are only available for signed numbers. On .NET 8 or later they are available for every
-`INumber<T>`, including unsigned types.
-:::
 
 ## NaN and infinity
 

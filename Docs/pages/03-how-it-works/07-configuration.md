@@ -22,7 +22,10 @@ using (Customize.aweXpect.Formatting().MaximumStringLength.Set(500))
 ## Lifetimes and async flows
 
 A value you set is visible in the current async flow and in every flow that starts from it afterwards, such as a
-`Task.Run`. It never reaches a parallel flow or the flow that started the current one:
+`Task.Run`. It never reaches a parallel flow or the flow that started the current one.
+
+<details>
+<summary>Lifetimes in async methods and out-of-order disposal</summary>
 
 - A value set in a synchronous method is visible to its caller. A value set in an awaited `async` method is not: once
   that method returns, the caller continues with its own values. Set the value in the calling method, or return the
@@ -32,13 +35,13 @@ A value you set is visible in the current async flow and in every flow that star
   disposed. Disposing a lifetime a second time has no effect.
 - Dispose a lifetime in the flow that created it: disposing a lifetime restores the value in the flow that disposes it.
 
+</details>
+
 ## Global defaults
 
-A value set with `Set` in an assembly-level setup only reaches the tests if the test framework runs them in the async
-context of that setup, and most frameworks don't: in our measurements the value reached the tests for a synchronous
-`[AssemblyInitialize]` in MSTest, but not for an asynchronous one, in TUnit only after `context.AddAsyncLocalValues()`,
-in NUnit only partly, and in xUnit v2 not at all. Set such defaults on `Customize.aweXpect.Global` instead, which
-applies them to all async flows, in any assembly-level setup or in a module initializer:
+Most test frameworks don't run the tests in the async context of an assembly-level setup, so a value set there with
+`Set` usually does not reach the tests. Set such defaults on `Customize.aweXpect.Global` instead, which applies them to
+all async flows, in any assembly-level setup or in a module initializer:
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -93,6 +96,9 @@ The maximum number of collection items must be positive, and the other two value
 
 ## Reflection
 
+<details>
+<summary>Assemblies scanned for a test framework adapter below .NET 8</summary>
+
 Under `Customize.aweXpect.Reflection()`:
 
 | Option                     | Type       | Default                                              | Description                                                                               |
@@ -109,6 +115,8 @@ effect there. This registration needs C# 9 or later, see
 [aweXpect2002](../07-analyzers.md#test-framework-adapter).
 :::
 
+</details>
+
 ## Settings
 
 Under `Customize.aweXpect.Settings()`:
@@ -121,14 +129,7 @@ Under `Customize.aweXpect.Settings()`:
 | `DefaultSignalerTimeout`         | `TimeSpan`         | 30 s    | How long a [`Signaler`](../06-behaviour/04-callbacks.md) expectation waits without `Within(…)`.                     |
 | `DefaultTimeComparisonTolerance` | `TimeSpan`         | 0       | The [tolerance](../04-values/10-datetime-offset.md#default-tolerance) for date and time values without `Within(…)`. |
 
-`TestCancellation` is created with one of:
-
-- `TestCancellation.FromTimeout(TimeSpan timeout)`, which cancels the `CancellationToken` that is used internally and
-  forwarded to the [delegates](../06-behaviour/01-delegates.md) after the given timeout.
-- `TestCancellation.FromCancellationToken(Func<CancellationToken> cancellationTokenFactory)`, which uses the returned
-  `CancellationToken` internally and also forwards it to the [delegates](../06-behaviour/01-delegates.md).
-- `TestCancellation.None()`, which applies neither a timeout nor a `CancellationToken`, e.g. to switch off a global
-  `TestCancellation` in the current async flow.
+See [time and cancellation](./06-time-and-cancellation.md#cancellationtoken) for how to create a `TestCancellation`.
 
 The interval must be positive, and the timeouts must not be negative. `Timeout.InfiniteTimeSpan` retries or waits
 without a limit. See [waiting](./06-time-and-cancellation.md#waiting) for which expectations use the timeouts.
@@ -144,4 +145,4 @@ Extensions can add their own groups. For example, the
 [`aweXpect.Json`](https://github.com/aweXpect/aweXpect.Json) package adds `Customize.aweXpect.Json()` with the default
 [`JsonDocumentOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsondocumentoptions) and
 [`JsonSerializerOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions). See
-[customization values](../11-extending/04-customization-values.md) to add a group yourself.
+[customization values](../11-extending/07-customization-values.md) to add a group yourself.

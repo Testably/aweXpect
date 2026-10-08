@@ -168,22 +168,19 @@ await Expect.That(startTime).IsOneOf([new TimeOnly(14, 15, 17)]).Within(TimeSpan
 </TabItem>
 </Tabs>
 
-A `DateOnly` has no time of day, so its tolerance must be a whole number of days. Anything else, for example
-`Within(TimeSpan.FromHours(23))`, throws an `ArgumentOutOfRangeException` as soon as it is specified instead of silently
-rounding down to a tolerance you did not ask for.
-
-The [default tolerance](./10-datetime-offset.md#default-tolerance) is shared with the other time types, so it is not
-rejected: only its whole days apply to a `DateOnly`, and a default below one day has no effect.
+A `DateOnly` tolerance must be a whole number of days, otherwise `Within` throws an `ArgumentOutOfRangeException`. Of
+the [default tolerance](./10-datetime-offset.md#default-tolerance) only the whole days apply, so a default below one
+day has no effect on a `DateOnly`.
 
 ## Clock face
 
 A `TimeOnly` has no date, so midnight is not a boundary for equality and ranges, but it stays one for ordering:
 
 - `IsEqualTo`, `IsNotEqualTo` and `IsOneOf` use the shortest distance around the clock face, so `00:00` and `23:59` are
-  one minute apart. That distance never exceeds 12 hours, so a tolerance of 12 hours or more accepts every time.
+  one minute apart.
 - `IsBetween` runs clockwise from the minimum to the maximum, so a range from `23:00` to `01:00` contains `00:00`.
 - `IsAfter`, `IsOnOrAfter`, `IsBefore` and `IsOnOrBefore` compare the times as they are, so `00:00` is never after
-  `23:00`. Their tolerance only ever widens the accepted range and never wraps around midnight.
+  `23:00`.
 
 ```csharp
 TimeOnly midnight = new TimeOnly(0, 0);
@@ -192,6 +189,15 @@ await Expect.That(midnight).IsBetween(new TimeOnly(23, 0)).And(new TimeOnly(1, 0
 await Expect.That(midnight).IsEqualTo(new TimeOnly(23, 59)).Within(TimeSpan.FromMinutes(1));
 await Expect.That(midnight).IsNotAfter(new TimeOnly(23, 0));
 ```
+
+<details>
+<summary>Tolerance around midnight</summary>
+
+The distance around the clock face never exceeds 12 hours, so a tolerance of 12 hours or more accepts every time in
+`IsEqualTo` and `IsOneOf`. The tolerance of `IsAfter`, `IsOnOrAfter`, `IsBefore` and `IsOnOrBefore` only ever widens the
+accepted range and never wraps around midnight.
+
+</details>
 
 ## Properties
 

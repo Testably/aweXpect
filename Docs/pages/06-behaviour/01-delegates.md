@@ -21,21 +21,21 @@ A delegate can be any of the following. Each of them can also take a `Cancellati
 An asynchronous delegate is awaited, like a [task](./02-tasks.md) that is passed directly.
 
 :::warning[.NET 8 or later: `ValueTask` delegates]
-.NET Framework, .NET Standard 2.0, .NET 6 and .NET 7 use the .NET Standard 2.0 build of aweXpect, which has no
-overloads for `Func<ValueTask>` and `Func<ValueTask<T>>`. Such a delegate is treated as a `Func<T>` whose result is the
-`ValueTask`, so it is never awaited: an exception thrown asynchronously is not seen. Return a `Task` instead, as in
-`() => Act().AsTask()`. The analyzer rule [aweXpect0007](../07-analyzers.md#awexpect0007) reports it as an error and
-offers to add `.AsTask()`.
+On .NET Framework, .NET Standard 2.0, .NET 6 and .NET 7, a delegate that returns a `ValueTask` is never awaited. Return
+`.AsTask()` instead, as reported by the analyzer rule [aweXpect0007](../07-analyzers.md#awexpect0007).
 :::
 
-:::info[C# 13 or later]
+<details>
+<summary>CS0121 with C# 12 or older on .NET 8</summary>
+
 An `async` lambda and a lambda that only throws, as in `Expect.That(async () => await x.RunAsync())` or
 `Expect.That(() => throw new X())`, bind to the `Task` overload through `[OverloadResolutionPriority]`. The attribute
 only takes effect with C# 13 or later, which is the default only for .NET 9 and later. With an older language version
 on .NET 8, such a lambda fits both the `Task` and the `ValueTask` overload and fails with CS0121. Set `<LangVersion>`
 to `13` or `latest`, return the task directly (`Expect.That(() => x.RunAsync())`), or declare a local function
 (`void Act() => throw new X();`) and pass it.
-:::
+
+</details>
 
 ## No exception
 
@@ -109,9 +109,14 @@ await Expect.That(Act).ThrowsExactly<CustomException>();
 await Expect.That(Act).ThrowsExactly(typeof(CustomException));
 ```
 
+<details>
+<summary>Open generic exception types</summary>
+
 A `Type` argument must be an exception type. Like `Is(typeof(List<>))` for objects, an open generic type such as
 `typeof(CustomException<>)` matches every exception whose type is constructed from it or derives from such a type, while
 `ThrowsExactly` only matches the constructed types themselves.
+
+</details>
 
 ### Conditional throw
 
@@ -125,11 +130,9 @@ bool expectThrownException = true;
 await Expect.That(Act).Throws<CustomException>().OnlyIf(expectThrownException);
 ```
 
-This is especially useful with parametrized tests where it depends on a parameter if an exception is thrown or not.
+This is especially useful with parameterized tests where it depends on a parameter if an exception is thrown or not.
 
-`OnlyIf` and [`Within`](#time-limit) configure the whole `Throws…` expectation, so they are only available directly
-on `Throws…` and not after `.And` or `.Or`, where they would read like a further condition. Each of them can be
-specified only once; a second call throws an `InvalidOperationException`.
+`OnlyIf` and [`Within`](#time-limit) can each be used once, directly after `Throws…`.
 
 ### Time limit
 
@@ -183,7 +186,7 @@ await Expect.That(Act).Throws().WithMessage().NotEndingWith("here to stay");
 ```
 
 `WithMessage(expected)` is the shorthand for `WithMessage().EqualTo(expected)`, so a `null` argument requires the
-message to be `null` as well.
+message to be `null` as well. The same applies to `WithParamName(expected)`.
 
 Only `EqualTo` and `NotEqualTo` accept `null`; the other comparisons reject `null` and the empty string, because
 neither is a substring anything could meaningfully be checked against.
@@ -271,9 +274,6 @@ await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().NotEqualT
 await Expect.That(Act).Throws<ArgumentNullException>().WithParamName().StartingWith("al");
 ```
 
-`WithParamName(expected)` is the shorthand for `WithParamName().EqualTo(expected)`, so a `null` argument requires the
-`ParamName` to be `null` as well.
-
 ### `With…` after `Throws`, `Has…` on the exception
 
 Directly after `Throws`, an expectation continues the sentence "throws a `CustomException`", so it uses the
@@ -333,16 +333,21 @@ await Expect.That(() => retryPolicy.Execute(alwaysFailing)).ExecutesIn().Allowin
 ```
 
 The duration is measured up to the throw, and the exception is still shown in the failure message when the delegate
-misses the expected time. A timeout from `WithTimeout` or from the upper bound still fails the expectation with "did
-not finish within …", and a canceled `WithCancellation` token leaves it inconclusive. An `OperationCanceledException`
-that the delegate throws for its own reasons is allowed like any other exception. `AllowingExceptions(false)` behaves
-as if the option was not specified.
+misses the expected time.
+
+<details>
+<summary>Timeouts and cancellation with `AllowingExceptions()`</summary>
+
+A timeout from `WithTimeout` or from the upper bound still fails the expectation with "did not finish within …", and a
+canceled `WithCancellation` token leaves it inconclusive. An `OperationCanceledException` that the delegate throws for
+its own reasons is allowed like any other exception. `AllowingExceptions(false)` behaves as if the option was not
+specified.
+
+</details>
 
 :::warning[`AllowingExceptions()` with `AtMost(…)` accepts an immediate crash]
-A delegate that throws in microseconds satisfies an upper bound, which is the point of the option, but it means the
-expectation no longer says anything about the delegate completing. Consider whether you also want an expectation on
-what was thrown: for an upper bound on a delegate that is *expected* to throw, `Throws<TException>().Within(…)`
-states both at once.
+With `AtMost(…)`, a delegate that throws immediately also passes. If the delegate is expected to throw, use
+`Throws<TException>().Within(…)` instead.
 :::
 
 ## Eventually

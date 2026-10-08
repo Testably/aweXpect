@@ -57,16 +57,16 @@ tell the two apart, verify its `IsDefault` property.
 enumerates them unless `InAnyOrder()` is used, so for a `HashSet<T>`, or for the entries, keys or values of a
 `Dictionary<TKey, TValue>`, the result depends on an implementation detail. `IsEqualTo` on a dictionary itself compares
 the entries [by key](./04-dictionaries.md#equality) instead. The analyzer rule
-[aweXpect0006](../07-analyzers.md#awexpect0006) warns about it and offers to append `.InAnyOrder()`. It also warns about `StartsWith`, `EndsWith` and `IgnoringInterspersedItems()`, which
-have no meaning for such a collection. Sorted sets and dictionaries are not reported.
+[aweXpect0006](../07-analyzers.md#awexpect0006) warns about it and offers to append `.InAnyOrder()`. It also warns
+about `StartsWith`, `EndsWith` and `IgnoringInterspersedItems()`, which have no meaning for such a collection. Sorted
+sets and dictionaries are not reported.
 :::
 
 A set that was created with a custom comparer (a `HashSet<T>`, `SortedSet<T>`, `ImmutableHashSet<T>`,
 `ImmutableSortedSet<T>` or `FrozenSet<T>`) compares its items with that comparer. Any other collection, including a set
 with the default comparer, is compared with the default equality. The comparer of such a set decides in every
 expectation that compares its items: `IsEqualTo`, `Contains` (with an item or a subset), `IsContainedIn`, `HasItem`,
-`StartsWith`, `EndsWith` and `All().AreEqualTo`. For `Contains` with an item, the set is asked for the item itself, so
-the item is counted at most once.
+`StartsWith`, `EndsWith` and `All().AreEqualTo`.
 
 Only the comparer of the subject is used, not the one of an expected set. A custom comparer, equivalency, a
 [tolerance](#tolerance) or a string option such as `IgnoringCase()` takes precedence over the comparer of the set, and
@@ -83,8 +83,15 @@ await Expect.That(albums).IsNotEqualTo(["REVOLVER", "HELP!"]).InAnyOrder().Using
 ```
 
 Whenever the comparer of the set decides, the expectation names it, e.g.
-`contains "HELP!" using the subject's StringComparer.OrdinalIgnoreCase at least once`. For an untyped `IEnumerable`,
-only a set of the expected item type is recognised, e.g. a `HashSet<string>` for an expected string.
+`contains "HELP!" using the subject's StringComparer.OrdinalIgnoreCase at least once`.
+
+<details>
+<summary>Untyped collections</summary>
+
+For an untyped `IEnumerable`, only a set of the expected item type is recognised, e.g. a `HashSet<string>` for an
+expected string.
+
+</details>
 
 ## Tolerance
 

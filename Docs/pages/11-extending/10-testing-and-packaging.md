@@ -49,8 +49,8 @@ repeats its checks with `RepeatedCheckOptions.CheckRepeatedly(…)` and measures
 - Target `netstandard2.0`, so that the extension also works on .NET Framework, and add further target frameworks
   only if you need their APIs. The samples on these pages also compile against the `netstandard2.0` build.
 - The test project that uses your extension also references the `aweXpect` package. It brings the built-in
-  expectations, the [test framework adapters](./05-initialization.md#test-framework-adapter) and the
-  [source generator](./06-native-aot.md) for Native AOT.
+  expectations, the [test framework adapters](./08-initialization.md#test-framework-adapter) and the
+  [source generator](./09-native-aot.md) for Native AOT.
 
 ## Versioning
 

@@ -36,11 +36,16 @@ Dictionary<string, int> ratings = new(StringComparer.OrdinalIgnoreCase) { { "Let
 await Expect.That(ratings).IsEqualTo(new Dictionary<string, int> { { "LET IT BE", 5 } });
 ```
 
+<details>
+<summary>Which key comparers are read</summary>
+
 The comparer is read from the dictionary types of the framework and from the dictionary that a
 `ReadOnlyDictionary<TKey, TValue>` wraps, not from a custom dictionary or a `ConcurrentDictionary<TKey, TValue>` on
 .NET Framework. Before .NET 10, the wrapped dictionary is only reached by reflection, so it is not read in a project
 that enables trimming or Native AOT. For the others, a key of the dictionary that equals no expected key fails the
 expectation, even when the comparer considers it the same as one.
+
+</details>
 
 To compare the entries in their enumeration order instead, compare them as a collection of
 `KeyValuePair<TKey, TValue>`:
@@ -135,8 +140,9 @@ await Expect.That(playCounts).Values.All().AreUnique();
 ```
 
 The keys keep the key comparer of the dictionary, so e.g. `Keys.Contains("LET IT BE")` succeeds for a key
-`"Let It Be"` in a dictionary created with `StringComparer.OrdinalIgnoreCase` (for a
-`ConcurrentDictionary<TKey, TValue>` not [on .NET Framework](../02-getting-started.md#target-frameworks)).
+`"Let It Be"` in a dictionary created with `StringComparer.OrdinalIgnoreCase`. On
+[.NET Framework](../02-getting-started.md#target-frameworks), the comparer of a `ConcurrentDictionary<TKey, TValue>`
+is not read.
 
 The keys of a dictionary are unique by design, so its entries are unique as well. To verify that its values are unique,
 use `Values.All().AreUnique()`.

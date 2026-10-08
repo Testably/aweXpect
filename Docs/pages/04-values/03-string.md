@@ -64,18 +64,6 @@ await Expect.That(title).StartsWith("ABBEY").Using(StringComparer.OrdinalIgnoreC
 The same options apply wherever strings are compared, e.g. to the items of a collection of strings or to the message of
 an exception.
 
-The whitespace options only ignore whitespace at the start or the end of the subject. A prefix, suffix or substring
-keeps the whitespace at its inner end, unless that end reaches the corresponding end of the subject:
-
-```csharp
-await Expect.That("Abbey").StartsWith("Abbey ").IgnoringTrailingWhiteSpace();
-await Expect.That("AbbeyRoad").DoesNotStartWith("Abbey ").IgnoringTrailingWhiteSpace();
-```
-
-`IgnoringCase()` and `Using(…)` can't be combined, because only one of them could decide how the casing is compared:
-the second one throws an `InvalidOperationException`, whichever order they are specified in. Use a case-insensitive
-comparer such as `StringComparer.OrdinalIgnoreCase` instead.
-
 The negations take the same options, so an option can make them fail:
 
 ```csharp
@@ -84,6 +72,22 @@ string title = "Abbey Road";
 await Expect.That(title).DoesNotEndWith("ROAD")
   .Because("the casing differs, which would not count with `IgnoringCase()`");
 ```
+
+<details>
+<summary>Whitespace at the inner end and combining `IgnoringCase` with `Using`</summary>
+
+The whitespace options only ignore whitespace at the start or the end of the subject. A prefix, suffix or substring
+keeps the whitespace at its inner end, unless that end reaches the corresponding end of the subject:
+
+```csharp
+await Expect.That("Abbey").StartsWith("Abbey ").IgnoringTrailingWhiteSpace();
+await Expect.That("AbbeyRoad").DoesNotStartWith("Abbey ").IgnoringTrailingWhiteSpace();
+```
+
+`IgnoringCase()` and `Using(…)` can't be combined: the second one throws an `InvalidOperationException`, whichever
+order they are specified in. Use a case-insensitive comparer such as `StringComparer.OrdinalIgnoreCase` instead.
+
+</details>
 
 ### Indentation
 
@@ -104,9 +108,8 @@ await Expect.That(code).Contains("""
                                  """).IgnoringIndentation();
 ```
 
-As the lines are split on `\r\n`, `\n` and `\r`, this also normalizes the newline style, which makes
-`IgnoringNewlineStyle` redundant. Trailing whitespace within a line is kept, but a line that consists only of
-whitespace becomes empty. To keep the relative indentation within the snippet, use [`AsBlock`](#blocks) instead.
+This also normalizes the newline style. Trailing whitespace within a line is kept, but a line that consists only of
+whitespace becomes empty.
 
 ## Match types
 
@@ -120,12 +123,6 @@ Every match type except the plain comparison asks about the content of the subje
 both directions, exactly like `StartsWith` and `DoesNotStartWith` do.
 :::
 
-A pattern, prefix or suffix that cannot be used (see below) is rejected whichever subject it is matched against, also
-for a `null` subject. The same holds for the string items of a
-[collection expectation](../05-collections/index.md): every expected item is validated, also when no item of the
-collection is compared with it. Only a lazily evaluated sequence of expected items is validated when it is enumerated,
-which a `null` collection does not require.
-
 ### Wildcards
 
 ```csharp
@@ -134,14 +131,12 @@ string title = "Let It Be";
 await Expect.That(title).IsEqualTo("Let*B?").AsWildcard();
 ```
 
-| Wildcard specifier | Matches                                        |
-|--------------------|------------------------------------------------|
-| * (asterisk)       | Zero or more characters                        |
-| ? (question mark)  | Exactly one character (an emoji counts as one) |
+| Wildcard specifier | Matches                                                |
+|--------------------|--------------------------------------------------------|
+| * (asterisk)       | Zero or more characters                                |
+| ? (question mark)  | Exactly one character (a surrogate pair counts as one) |
 
-The pattern has to cover the complete subject, including all its lines and a trailing newline. An empty pattern
-therefore matches only an empty subject. A `null` pattern is rejected with an `ArgumentNullException`, because it
-matches no subject at all.
+The pattern has to cover the complete subject, including all its lines and a trailing newline.
 
 ### Regular expressions
 
@@ -151,13 +146,9 @@ string title = "Let It Be";
 await Expect.That(title).IsEqualTo("(.*)Be").AsRegex();
 ```
 
-The pattern is matched like `Regex.IsMatch(subject, pattern)`, so unlike a wildcard it may match any part of the
-subject: `IsEqualTo("It").AsRegex()` succeeds for `"Let It Be"`. Enclose the pattern in `\A` and `\z` to match the
-complete subject. `^` and `$` bind to the start and the end of the subject and not to every line, but `$` also matches
-before a trailing newline. `IgnoreCase` and `CultureInvariant` are added when the `IgnoringCase` method is
-also used, so that ignoring the casing never depends on the current culture. The regex engine still applies its own
-case folding, which can differ from the other expectations for a few characters, e.g. the Kelvin sign (U+212A) on
-modern .NET. Every other
+Unlike a wildcard, the pattern may match any part of the subject: `IsEqualTo("It").AsRegex()` succeeds for
+`"Let It Be"`. Enclose the pattern in `\A` and `\z` to match the complete subject. `IgnoringCase()` adds
+`RegexOptions.IgnoreCase` and `RegexOptions.CultureInvariant`. Every other
 [option](https://learn.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regexoptions#fields)
 is opt-in:
 
@@ -169,15 +160,8 @@ string lyrics = "Come together\nRight now";
 await Expect.That(lyrics).IsEqualTo("^Right now$").AsRegex(RegexOptions.Multiline);
 ```
 
-An empty pattern is rejected with an `ArgumentException` and a `null` pattern with an `ArgumentNullException`, because
-an empty pattern matches every subject and a `null` pattern matches no subject, so one of the two expectations could
-never fail. A pattern that is not a valid regex is rejected with an `ArgumentException` that carries the parse error as
-its inner exception, even for a `null` subject.
-
-A wildcard or regex pattern is matched by the regex engine, which can't use a custom comparer, so `Using(…)` after
-`AsWildcard()` or `AsRegex()` throws an `InvalidOperationException`. Matching a pattern is limited to one second. A
-pattern that takes longer, e.g. because of catastrophic backtracking, throws an `ArgumentException` that asks you to
-simplify the pattern.
+A wildcard or regex pattern is matched by the regex engine, which can't use a custom comparer, so combining `Using(…)`
+with `AsWildcard()` or `AsRegex()`, in either order, throws an `InvalidOperationException`.
 
 ### Prefix / Suffix
 
@@ -188,9 +172,25 @@ await Expect.That(title).IsEqualTo("Abbey").AsPrefix();
 await Expect.That(title).IsEqualTo("Road").AsSuffix();
 ```
 
-An empty prefix or suffix is rejected with an `ArgumentException`, because every subject starts and ends with the empty
-string, so such an expectation says nothing about the subject. A `null` prefix or suffix is rejected with an
-`ArgumentNullException`, just like a `null` pattern.
+<details>
+<summary>Patterns that are rejected</summary>
+
+- A `null` pattern, prefix or suffix throws an `ArgumentNullException`.
+- An empty regex, prefix or suffix throws an `ArgumentException`, because it would match every subject. An empty
+  wildcard pattern is allowed and matches only an empty subject.
+- An invalid regex throws an `ArgumentException` that carries the parse error as its inner exception.
+- Matching a pattern is limited to one second. A pattern that takes longer, e.g. because of catastrophic backtracking,
+  throws an `ArgumentException` that asks you to simplify the pattern.
+
+A pattern is validated whichever subject it is matched against, also for a `null` subject, and so is every expected
+string item of a [collection expectation](../05-collections/index.md) or of `IsOneOf`. Only a lazily evaluated sequence
+of expected items is validated as far as it is enumerated.
+
+In a regex, `^` and `$` bind to the start and the end of the subject and not to every line, but `$` also matches before
+a trailing newline. The regex engine applies its own case folding, which can differ from the other expectations for a
+few characters, e.g. the Kelvin sign (U+212A) on modern .NET.
+
+</details>
 
 ## One of
 
@@ -204,9 +204,6 @@ await Expect.That(title).IsOneOf("Help!", "Abbey Road", "Revolver");
 await Expect.That(title).IsOneOf("HELP!", "ABBEY ROAD", "REVOLVER").IgnoringCase();
 await Expect.That(title).IsNotOneOf("Help!", "Revolver");
 ```
-
-With a [match type](#match-types), an unusable pattern is rejected whichever alternative the subject matches; only a
-lazily evaluated sequence is validated just as far as it is enumerated, i.e. up to the first match.
 
 ## Null, empty or whitespace
 
@@ -293,8 +290,8 @@ await Expect.That(title).DoesNotStartWith("Road");
 await Expect.That(title).DoesNotEndWith("Abbey");
 ```
 
-In all four expectations, a `null` expected string throws an `ArgumentNullException` and an empty one an
-`ArgumentException`, because every string starts and ends with the empty string.
+A `null` expected string throws an `ArgumentNullException` and an empty one an `ArgumentException`, also for
+`Contains` and `DoesNotContain`.
 
 ## Contains
 
@@ -308,9 +305,6 @@ await Expect.That(title).Contains("Fields");
 await Expect.That(title).Contains("FIELDS").IgnoringCase();
 await Expect.That(title).DoesNotContain("Penny Lane");
 ```
-
-As for [`StartsWith`](#start--end), a `null` substring in `Contains` or `DoesNotContain` throws an
-`ArgumentNullException` and an empty one an `ArgumentException`.
 
 You can also specify how often the substring should be found:
 
@@ -361,7 +355,7 @@ The block must start and end at line boundaries, and all its lines must share th
 subject. A line that consists only of whitespace matches any line that consists only of whitespace. The newline style
 is always ignored, and a single trailing line terminator does not start a new line, so `"a\nb\n"` has the same two
 lines as `"a\nb"` (as for [lines](#lines)). `AsBlock` can be combined with `IgnoringCase`, `Using` and the count
-quantifiers.
+quantifiers; the whitespace, newline and indentation options throw an `InvalidOperationException` after it.
 
 `AsBlock` also works with `IsEqualTo`, where the whole text has to be the block, e.g. for an XML element that keeps
 the indentation of the document it was taken from, and with the expectations on a collection of strings, such as
@@ -406,8 +400,6 @@ Letters without an upper-case (lower-case) form, like `ß`, count as upper-cased
 await Expect.That("STRAßE").IsNotUpperCased().IncludingUncasedLetters()
   .Because("ß is a lowercase letter without an uppercase form");
 ```
-
-`IncludingUncasedLetters(false)` behaves as if the option was not specified.
 
 ## Parsing
 

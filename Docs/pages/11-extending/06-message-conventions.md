@@ -114,24 +114,29 @@ built-in messages and respects the [formatting settings](../03-how-it-works/07-c
 | collection    | `["Help!", "Revolver"]`, with `(… and 2 more)` after `MaximumNumberOfCollectionItems` items                   |
 | other objects | their `ToString()` if it is overridden, otherwise their public members, e.g. `Album { Title = "Abbey Road" }` |
 
-Chars and strings are always written on a single line and escaped like C# literals, so that every character can be told apart: a
-backslash, the enclosing quote, line breaks, tabs, control characters, invisible characters (like a non-breaking or a
-zero-width space), combining marks in text that is not normalized (like the accent of a decomposed `é`) and unpaired
-surrogates are shown as `\\`, `\"` (or `\'` in a char), `\n`, `\r`, `\t`, `\0` or `\uXXXX`. Exception messages and the
-`ToString()` of other objects are not quoted, so only their line breaks, control and invisible characters are escaped
-when they are written on a single line. A multi-dimensional array is written with a nested collection per dimension,
-e.g. `[[1, 2], [3, 4]]` for an `int[2,2]`.
-
 The `FormattingOptions` change the layout: `FormattingOptions.MultipleLines` puts every item of a collection on its
 own line, e.g. for a context, `FormattingOptions.WithType` prefixes the type (`int[] [1, 2]`), and
 `FormattingOptions.Indented(indentation)` indents the following lines. Without options, an object that is not an item
 of a collection puts each member on its own line; `FormattingOptions.SingleLine` keeps it on one line as in the table.
-Register an `IValueFormatter` to format your own types, see [initialization](./05-initialization.md).
+Register an `IValueFormatter` to format your own types, see [initialization](./08-initialization.md).
+
+<details>
+<summary>Escaping and limits</summary>
+
+Chars and strings are always written on a single line and escaped like C# literals, so that every character can be
+told apart: a backslash, the enclosing quote, line breaks, tabs, control characters, invisible characters (like a
+non-breaking or a zero-width space), combining marks in text that is not normalized (like the accent of a decomposed
+`é`) and unpaired surrogates are shown as `\\`, `\"` (or `\'` in a char), `\n`, `\r`, `\t`, `\0` or `\uXXXX`.
+Exception messages and the `ToString()` of other objects are not quoted, so only their line breaks, control and
+invisible characters are escaped when they are written on a single line. A multi-dimensional array is written with a nested collection per dimension,
+e.g. `[[1, 2], [3, 4]]` for an `int[2,2]`.
 
 Nested objects, collections and tuples are written up to 20 levels deep and up to 1000 of them per value. Beyond that,
 their content is left out as `{ … }`, `[ … ]` or `( … )`, so that a long chain or a graph that shares its nodes on
 every level neither overflows the stack nor grows without bound. An object or collection that contains itself is
 written as `{ *recursive* }` or `[ *recursive* ]` where it repeats.
+
+</details>
 
 ## Vocabulary
 
@@ -257,10 +262,7 @@ private sealed class HasPlaylistConstraint(string it, ExpectationGrammars gramma
   labels them with the item of a collection, e.g. `Actual (item [2]):`, after the contexts of the collection.
 - The contexts of the built-in expectations are available as extensions on the `ResultContextCollector`, so that a
   custom expectation shows them alike: `AddCollectionContext`, `AddDictionaryContext`, `AddExpectedValuesContext`,
-  `AddStringContext`, `AddEqualityOptionsContexts` and `AddEquivalencyContext`. An `ObjectEqualityOptions<T>`
-  compares like `IsEquivalentTo` with `SetMatchType(new EquivalencyMatchType(options), "Equivalent")`. A constraint
-  compares with the options that `ForEvaluation(context, cancellationToken)` returns for its evaluation, so that the
-  timeout and the cancellation of the evaluation also end the expectations of an `It.Is…` in the expected object.
+  `AddStringContext`, `AddEqualityOptionsContexts` and `AddEquivalencyContext`.
 
 ## Exceptions
 

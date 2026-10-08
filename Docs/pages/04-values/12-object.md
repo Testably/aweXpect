@@ -30,12 +30,15 @@ await Expect.That(album).IsNotEqualTo(new Album("Revolver"));
 
 This uses the `object.Equals(object?, object?)` method.
 
-:::note
+<details>
+<summary>Numbers typed as `object`</summary>
+
 A number typed as `object` also equals a number of another numeric type with the same value (e.g. `1` and `1L`)
 in equality (`IsEqualTo`, `IsOneOf`, `Contains`, `ContainsValue`), but not in
 [equivalency](./13-equivalency.md). For `Half`, `Int128` and `UInt128` this only applies
 [on .NET 8 or later](../02-getting-started.md#target-frameworks).
-:::
+
+</details>
 
 ### Reference equality
 
@@ -84,10 +87,13 @@ await Expect.That(trackId).IsEquatableTo(42L);
 await Expect.That(trackId).IsNotEquatableTo(7L);
 ```
 
-:::note
+<details>
+<summary>A `null` subject</summary>
+
 This inspects the subject by calling its `IEquatable<T>.Equals(T)` method. Therefore, `IsEquatableTo` and
 `IsNotEquatableTo` fail for a `null` subject, even `IsEquatableTo(null)`, whereas `IsEqualTo(null)` succeeds.
-:::
+
+</details>
 
 ## Equivalency
 
@@ -173,7 +179,5 @@ await Expect.That(tracks).CompliesWith(x => x.IsEmpty());
 await Expect.That(tracks).DoesNotComplyWith(x => x.HasCount().GreaterThan(0));
 ```
 
-`DoesNotComplyWith` is the exact inverse of `CompliesWith`: it succeeds as soon as the nested expectation fails. The
-exception is a `null` subject, which fails an expectation that inspects it in its negated form as well, see
-[`null` subjects](../03-how-it-works/04-null-subjects.md). Like `Satisfies`, `CompliesWith` can
+`DoesNotComplyWith` succeeds when the nested expectation fails. Like `Satisfies`, `CompliesWith` can
 [wait for the object](../03-how-it-works/06-time-and-cancellation.md#a-condition) with `Within(…)`.

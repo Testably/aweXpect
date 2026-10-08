@@ -52,6 +52,9 @@ await Expect.That(Genre.Jazz).HasValue().GreaterThan(2);
 
 <PropertyComparisons />
 
+<details>
+<summary>Values above `long.MaxValue`</summary>
+
 Every backing type from `sbyte` to `ulong` is covered. Each comparison takes a `long` or a `ulong`, so a member of
 a `ulong`-backed `enum` above `long.MaxValue` can be named as well:
 
@@ -61,6 +64,8 @@ enum Big : ulong { Max = ulong.MaxValue }
 await Expect.That(Big.Max).HasValue(ulong.MaxValue);
 await Expect.That(Big.Max).HasValue().GreaterThan(0);
 ```
+
+</details>
 
 ## Defined
 
@@ -97,6 +102,3 @@ RegexOptions options = RegexOptions.Multiline | RegexOptions.IgnoreCase;
 await Expect.That(options).HasFlag(RegexOptions.IgnoreCase);
 await Expect.That(options).DoesNotHaveFlag(RegexOptions.ExplicitCapture);
 ```
-
-Unlike the property-style `Has…` expectations such as `HasValue`, `HasFlag` has no continuation: it asks whether a bit
-is set, not how two ordered values compare, so `GreaterThan`, `Between` and the rest would have no meaning for it.
