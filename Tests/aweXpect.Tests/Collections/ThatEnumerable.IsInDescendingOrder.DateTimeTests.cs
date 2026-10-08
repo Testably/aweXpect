@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 #if NET8_0_OR_GREATER
 using System.Collections.Immutable;
@@ -98,6 +99,116 @@ public sealed partial class ThatEnumerable
 					.WithMessage($"""
 					              Expected that subject
 					              is in descending order by x => x.NullableValue,
+					              but it had {Formatter.Format(Local)} with kind Local and {Formatter.Format(Utc)} with kind Utc, which cannot be compared
+					              """).AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenUntypedCustomComparerIsUsed_ShouldNotCheckKinds()
+			{
+				IEnumerable subject = new ArrayList { Local, Utc, };
+
+				async Task Act()
+					=> await That(subject).IsInDescendingOrder()
+						.Using(Comparer<object?>.Create((a, b) => ((DateTime)a!).Ticks.CompareTo(((DateTime)b!).Ticks)));
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenUntypedItemKindIsUnspecified_ShouldSucceed()
+			{
+				IEnumerable subject = new ArrayList { Utc.AddHours(2), Unspecified, Utc, };
+
+				async Task Act()
+					=> await That(subject).IsInDescendingOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenUntypedItemKindsAreIncompatible_ShouldFail()
+			{
+				IEnumerable subject = new ArrayList { Local, Utc, };
+
+				async Task Act()
+					=> await That(subject).IsInDescendingOrder();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is in descending order,
+					              but it had {Formatter.Format(Local)} with kind Local and {Formatter.Format(Utc)} with kind Utc, which cannot be compared
+					              """).AsPrefix()
+					.Because("the kinds are checked whether the collection is typed or not");
+			}
+
+			[Test]
+			public async Task WhenUntypedItemsHaveTheSameKind_ShouldSucceed()
+			{
+				IEnumerable subject = new ArrayList { Utc.AddHours(2), Utc, };
+
+				async Task Act()
+					=> await That(subject).IsInDescendingOrder();
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenUntypedMemberIsNoDateTime_ShouldNotCheckKinds()
+			{
+				IEnumerable subject = new ArrayList { new Item(Local), new Item(Utc), };
+
+				async Task Act()
+					=> await That(subject).IsInDescendingOrder(x => ((Item)x!).Value.Ticks);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenUntypedMemberKindsAreIncompatible_ShouldFail()
+			{
+				IEnumerable subject = new ArrayList { new Item(Local), new Item(Utc), };
+
+				async Task Act()
+					=> await That(subject).IsInDescendingOrder(x => ((Item)x!).Value);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is in descending order by x => ((Item)x!).Value,
+					              but it had {Formatter.Format(Local)} with kind Local and {Formatter.Format(Utc)} with kind Utc, which cannot be compared
+					              """).AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenUntypedNullableItemKindsAreIncompatible_ShouldFail()
+			{
+				IEnumerable subject = new ArrayList { Local, Utc, null, };
+
+				async Task Act()
+					=> await That(subject).IsInDescendingOrder();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is in descending order,
+					              but it had {Formatter.Format(Local)} with kind Local and {Formatter.Format(Utc)} with kind Utc, which cannot be compared
+					              """).AsPrefix();
+			}
+
+			[Test]
+			public async Task WhenUntypedNullableMemberKindsAreIncompatible_ShouldFail()
+			{
+				IEnumerable subject = new ArrayList { new Item(Local), new Item(Utc), };
+
+				async Task Act()
+					=> await That(subject).IsInDescendingOrder(x => ((Item)x!).NullableValue);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage($"""
+					              Expected that subject
+					              is in descending order by x => ((Item)x!).NullableValue,
 					              but it had {Formatter.Format(Local)} with kind Local and {Formatter.Format(Utc)} with kind Utc, which cannot be compared
 					              """).AsPrefix();
 			}

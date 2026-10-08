@@ -19,6 +19,9 @@ public static partial class ThatEnumerable
 	private const string InAscendingOrder = "Verifies that the collection is in ascending order.";
 	private const string NotInAscendingOrder = "Verifies that the collection is not in ascending order.";
 
+	private const string MixedDateTimeKinds =
+		"Fails when the collection contains both <see cref=\"System.DateTimeKind.Utc\" /> and <see cref=\"System.DateTimeKind.Local\" /> values, unless a custom comparer is used.";
+
 	[CreateExpectationFamily("Is{Not}InAscendingOrder", GuaranteesNotNull = true,
 		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder)]
 	internal static CollectionOrderResult<TItem, IEnumerable<TItem>, IThat<IEnumerable<TItem>?>>
@@ -39,7 +42,7 @@ public static partial class ThatEnumerable
 			$" by {memberExpression.TrimCommonWhiteSpace()}", negated);
 
 	[CreateExpectationFamily("Is{Not}InAscendingOrder", GuaranteesNotNull = true, Priority = -1,
-		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder)]
+		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder, Remarks = MixedDateTimeKinds)]
 	internal static CollectionOrderResult<object?, IEnumerable, IThat<IEnumerable?>>
 		IsInAscendingOrderForEnumerableCore(
 			IThat<IEnumerable?> subject,
@@ -47,7 +50,7 @@ public static partial class ThatEnumerable
 		=> IsInOrderForEnumerable(subject, x => x, SortOrder.Ascending, "", negated);
 
 	[CreateExpectationFamily("Is{Not}InAscendingOrder", GuaranteesNotNull = true,
-		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder)]
+		Summary = InAscendingOrder, NegatedSummary = NotInAscendingOrder, Remarks = MixedDateTimeKinds)]
 	internal static CollectionOrderResult<TMember, IEnumerable, IThat<IEnumerable?>>
 		IsInAscendingOrderForEnumerableByMemberCore<TMember>(
 			IThat<IEnumerable?> subject,
@@ -309,7 +312,8 @@ public static partial class ThatEnumerable
 						state.MemberAccessor,
 						state.SortOrder,
 						state.Options,
-						state.MemberExpression);
+						state.MemberExpression,
+						DateTimeKindHelpers.CreateIncompatibleRuntimeKindCheck(state.Options));
 					return state.IsNegated ? constraint.Invert() : constraint;
 				}),
 			subject,

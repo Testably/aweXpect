@@ -37,5 +37,5 @@ and the keys of a sorted dictionary, are ordered by their own comparer, unless a
 
 A collection of `DateTime` values (or a `DateTime` member) that contains both `DateTimeKind.Utc` and
 `DateTimeKind.Local` values fails the check, in its negated form as well, as the order of such values depends on the
-time zone. Values with `DateTimeKind.Unspecified` are compatible with both kinds. With a custom comparer, the comparer
-decides.
+time zone. This also applies to an untyped collection. Values with `DateTimeKind.Unspecified` are compatible with both
+kinds. With a custom comparer, the comparer decides.
