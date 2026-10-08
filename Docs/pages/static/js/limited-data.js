@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "6afcb417d827d26049930e3ca14d619a4e845425",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
-        "message": "docs: review the documentation pages (#1419)"
-      },
-      {
         "sha": "702848e5414f11501d666449405de5b153f74a11",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 02:48:28 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:31:43 2026 \u002B0200",
         "message": "fix!: check the kinds of \u0060DateTime\u0060 values in an untyped collection when verifying its order (#1744)"
+      },
+      {
+        "sha": "8c8f6bf6b6495d38ccf74cdd4c25ae541f0b3e6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
+        "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
       }
     ],
     "labels": [
-      "6afcb417",
       "702848e5",
       "d94dae41",
       "7b1dd6ef",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "1f967b58",
       "7e4f4bdb",
       "93d22f80",
-      "8b666ac8"
+      "8b666ac8",
+      "8c8f6bf6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          353.43113381522045,
           364.52223185130526,
           159.8373302391597,
           328.3258736474173,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           113.32764115333558,
           66.53406296571096,
           66.4655506152373,
-          142.5312343120575
+          142.5312343120575,
+          66.75765786965688
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -423,7 +423,6 @@ window.BENCHMARK_DATA = {
           920,
           920,
           920,
-          920,
           928,
           928,
           928,
@@ -455,6 +454,7 @@ window.BENCHMARK_DATA = {
           408,
           408,
           408,
+          416,
           416,
           416,
           416,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          243.561039574941,
           322.3278011935098,
           127.74056861950801,
           243.26174642244976,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           214.36865857669287,
           131.16207806880658,
           137.37846938769022,
-          286.66005220413206
+          286.66005220413206,
+          131.682856909434
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -635,7 +635,8 @@ window.BENCHMARK_DATA = {
           155.83144919077554,
           104.81408194984708,
           101.78973456791469,
-          187.5289684931437
+          187.5289684931437,
+          100.52407849629721
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -647,6 +648,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -688,12 +690,6 @@ window.BENCHMARK_DATA = {
   },
   "Equivalency": {
     "commits": [
-      {
-        "sha": "6afcb417d827d26049930e3ca14d619a4e845425",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
-        "message": "docs: review the documentation pages (#1419)"
-      },
       {
         "sha": "702848e5414f11501d666449405de5b153f74a11",
         "author": "Valentin Breu\u00DF",
@@ -987,10 +983,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:31:43 2026 \u002B0200",
         "message": "fix!: check the kinds of \u0060DateTime\u0060 values in an untyped collection when verifying its order (#1744)"
+      },
+      {
+        "sha": "8c8f6bf6b6495d38ccf74cdd4c25ae541f0b3e6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
+        "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
       }
     ],
     "labels": [
-      "6afcb417",
       "702848e5",
       "d94dae41",
       "7b1dd6ef",
@@ -1039,14 +1040,14 @@ window.BENCHMARK_DATA = {
       "1f967b58",
       "7e4f4bdb",
       "93d22f80",
-      "8b666ac8"
+      "8b666ac8",
+      "8c8f6bf6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          429626.90471540176,
           413447.9342322716,
           229295.6982596261,
           449700.0759440104,
@@ -1095,7 +1096,8 @@ window.BENCHMARK_DATA = {
           81620.06673490084,
           57385.43886311849,
           56402.536712646484,
-          99458.83720179966
+          99458.83720179966,
+          55259.80214029948
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1107,7 +1109,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          676856,
           676856,
           676856,
           676856,
@@ -1156,6 +1157,7 @@ window.BENCHMARK_DATA = {
           16416,
           16416,
           16416,
+          16416,
           16416
         ],
         "borderColor": "#63A2AC",
@@ -1171,7 +1173,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          2589362.1609933036,
           2251714.272235577,
           1231279.53125,
           2715198.849739583,
@@ -1220,7 +1221,8 @@ window.BENCHMARK_DATA = {
           1895705.8462611607,
           1278281.2455357143,
           1199900.2127403845,
-          2462741.6844308036
+          2462741.6844308036,
+          1234153.1097935268
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1232,7 +1234,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841651,
           4841609,
           4841647,
           4841651,
@@ -1281,7 +1282,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841647,
           4841647,
-          4841635
+          4841635,
+          4841647
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1322,7 +1324,8 @@ window.BENCHMARK_DATA = {
           155007.42360276444,
           106659.08858816964,
           105803.7771077474,
-          221148.44552408854
+          221148.44552408854,
+          114144.15212777945
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1334,6 +1337,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -1375,12 +1379,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "6afcb417d827d26049930e3ca14d619a4e845425",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
-        "message": "docs: review the documentation pages (#1419)"
-      },
       {
         "sha": "702848e5414f11501d666449405de5b153f74a11",
         "author": "Valentin Breu\u00DF",
@@ -1674,10 +1672,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:31:43 2026 \u002B0200",
         "message": "fix!: check the kinds of \u0060DateTime\u0060 values in an untyped collection when verifying its order (#1744)"
+      },
+      {
+        "sha": "8c8f6bf6b6495d38ccf74cdd4c25ae541f0b3e6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
+        "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
       }
     ],
     "labels": [
-      "6afcb417",
       "702848e5",
       "d94dae41",
       "7b1dd6ef",
@@ -1726,14 +1729,14 @@ window.BENCHMARK_DATA = {
       "1f967b58",
       "7e4f4bdb",
       "93d22f80",
-      "8b666ac8"
+      "8b666ac8",
+      "8c8f6bf6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          569.0224212237766,
           607.0824567354642,
           258.22568420001437,
           544.3072616713388,
@@ -1782,7 +1785,8 @@ window.BENCHMARK_DATA = {
           206.6404625415802,
           139.98197344144185,
           148.36709238688152,
-          296.6919680595398
+          296.6919680595398,
+          144.58837137903487
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1797,7 +1801,6 @@ window.BENCHMARK_DATA = {
           1576,
           1576,
           1576,
-          1576,
           1584,
           1584,
           1584,
@@ -1829,6 +1832,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          608,
           608,
           608,
           608,
@@ -1858,7 +1862,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          482.6588548342387,
           597.5760265350342,
           235.13927503994532,
           474.20079441070556,
@@ -1907,7 +1910,8 @@ window.BENCHMARK_DATA = {
           416.6107168197632,
           241.9093600000654,
           268.58166343825206,
-          527.0430596033732
+          527.0430596033732,
+          253.80921166283744
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2009,7 +2013,8 @@ window.BENCHMARK_DATA = {
           303.54220819473267,
           209.2670779961806,
           232.60280605951945,
-          412.7722493921007
+          412.7722493921007,
+          198.73236986306998
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2021,6 +2026,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -2062,12 +2068,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "6afcb417d827d26049930e3ca14d619a4e845425",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
-        "message": "docs: review the documentation pages (#1419)"
-      },
       {
         "sha": "702848e5414f11501d666449405de5b153f74a11",
         "author": "Valentin Breu\u00DF",
@@ -2361,10 +2361,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:31:43 2026 \u002B0200",
         "message": "fix!: check the kinds of \u0060DateTime\u0060 values in an untyped collection when verifying its order (#1744)"
+      },
+      {
+        "sha": "8c8f6bf6b6495d38ccf74cdd4c25ae541f0b3e6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
+        "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
       }
     ],
     "labels": [
-      "6afcb417",
       "702848e5",
       "d94dae41",
       "7b1dd6ef",
@@ -2413,14 +2418,14 @@ window.BENCHMARK_DATA = {
       "1f967b58",
       "7e4f4bdb",
       "93d22f80",
-      "8b666ac8"
+      "8b666ac8",
+      "8c8f6bf6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          328.68858222961427,
           371.87384190926184,
           159.09055398305256,
           338.32508718050445,
@@ -2469,7 +2474,8 @@ window.BENCHMARK_DATA = {
           121.1920941727502,
           74.93121902759259,
           87.66823535760244,
-          161.0230097611745
+          161.0230097611745,
+          78.44054555098215
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2484,7 +2490,6 @@ window.BENCHMARK_DATA = {
           1064,
           1064,
           1064,
-          1064,
           1072,
           1072,
           1072,
@@ -2516,6 +2521,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          520,
           520,
           520,
           520,
@@ -2545,7 +2551,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          241.20117902755737,
           329.98674287114824,
           120.11808069547017,
           239.55810847649207,
@@ -2594,7 +2599,8 @@ window.BENCHMARK_DATA = {
           209.42606624762217,
           129.6808660541262,
           148.78025673230488,
-          298.95889972050986
+          298.95889972050986,
+          130.74108481407166
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2696,7 +2702,8 @@ window.BENCHMARK_DATA = {
           188.14628766377766,
           122.3559182541711,
           140.24854431549707,
-          232.68214756647745
+          232.68214756647745,
+          126.82758138974508
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2708,6 +2715,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -2749,12 +2757,6 @@ window.BENCHMARK_DATA = {
   },
   "String": {
     "commits": [
-      {
-        "sha": "6afcb417d827d26049930e3ca14d619a4e845425",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
-        "message": "docs: review the documentation pages (#1419)"
-      },
       {
         "sha": "702848e5414f11501d666449405de5b153f74a11",
         "author": "Valentin Breu\u00DF",
@@ -3048,10 +3050,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:31:43 2026 \u002B0200",
         "message": "fix!: check the kinds of \u0060DateTime\u0060 values in an untyped collection when verifying its order (#1744)"
+      },
+      {
+        "sha": "8c8f6bf6b6495d38ccf74cdd4c25ae541f0b3e6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
+        "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
       }
     ],
     "labels": [
-      "6afcb417",
       "702848e5",
       "d94dae41",
       "7b1dd6ef",
@@ -3100,14 +3107,14 @@ window.BENCHMARK_DATA = {
       "1f967b58",
       "7e4f4bdb",
       "93d22f80",
-      "8b666ac8"
+      "8b666ac8",
+      "8c8f6bf6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          622.8229312896729,
           637.1440219197955,
           291.6919880594526,
           614.5234347025554,
@@ -3156,7 +3163,8 @@ window.BENCHMARK_DATA = {
           197.5055967013041,
           126.03137115069798,
           142.82822164467402,
-          265.82992026011146
+          265.82992026011146,
+          148.04138511021932
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3171,7 +3179,6 @@ window.BENCHMARK_DATA = {
           1600,
           1600,
           1600,
-          1600,
           1608,
           1608,
           1608,
@@ -3203,6 +3210,7 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
+          584,
           584,
           584,
           584,
@@ -3232,7 +3240,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1181.2778409322102,
           1359.9278821211594,
           567.6406101080088,
           1253.7681101481119,
@@ -3281,7 +3288,8 @@ window.BENCHMARK_DATA = {
           954.2375256856283,
           674.194983959198,
           738.1067288080851,
-          1359.4507607777914
+          1359.4507607777914,
+          665.8258253097534
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3383,7 +3391,8 @@ window.BENCHMARK_DATA = {
           252.64308335230902,
           178.54673012097678,
           199.95685113271077,
-          341.1593878746033
+          341.1593878746033,
+          180.53519562574533
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3395,6 +3404,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -3436,12 +3446,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "6afcb417d827d26049930e3ca14d619a4e845425",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
-        "message": "docs: review the documentation pages (#1419)"
-      },
       {
         "sha": "702848e5414f11501d666449405de5b153f74a11",
         "author": "Valentin Breu\u00DF",
@@ -3735,10 +3739,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:31:43 2026 \u002B0200",
         "message": "fix!: check the kinds of \u0060DateTime\u0060 values in an untyped collection when verifying its order (#1744)"
+      },
+      {
+        "sha": "8c8f6bf6b6495d38ccf74cdd4c25ae541f0b3e6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
+        "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
       }
     ],
     "labels": [
-      "6afcb417",
       "702848e5",
       "d94dae41",
       "7b1dd6ef",
@@ -3787,14 +3796,14 @@ window.BENCHMARK_DATA = {
       "1f967b58",
       "7e4f4bdb",
       "93d22f80",
-      "8b666ac8"
+      "8b666ac8",
+      "8c8f6bf6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3171.617327372233,
           2448.9298133850098,
           1537.74829687391,
           3087.047616413661,
@@ -3843,7 +3852,8 @@ window.BENCHMARK_DATA = {
           497.140402730306,
           336.2688202176775,
           346.20272432054793,
-          638.4499005590167
+          638.4499005590167,
+          348.4767696380615
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3855,7 +3865,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          4328,
           4328,
           4328,
           4328,
@@ -3904,6 +3913,7 @@ window.BENCHMARK_DATA = {
           872,
           872,
           872,
+          872,
           872
         ],
         "borderColor": "#63A2AC",
@@ -3919,7 +3929,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1319.2126701061543,
           1542.2817803896392,
           645.4647827784221,
           1321.869647216797,
@@ -3968,7 +3977,8 @@ window.BENCHMARK_DATA = {
           1056.205288205828,
           674.7569321950276,
           794.6561574935913,
-          1432.9326642354329
+          1432.9326642354329,
+          678.3175195966448
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4070,7 +4080,8 @@ window.BENCHMARK_DATA = {
           488.7000308354696,
           327.1852085249765,
           365.86587247848513,
-          742.2957029342651
+          742.2957029342651,
+          334.13146339144026
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4082,6 +4093,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -4123,12 +4135,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "6afcb417d827d26049930e3ca14d619a4e845425",
-        "author": "Valentin Breu\u00DF",
-        "date": "Sun Sep 27 21:38:14 2026 \u002B0200",
-        "message": "docs: review the documentation pages (#1419)"
-      },
       {
         "sha": "702848e5414f11501d666449405de5b153f74a11",
         "author": "Valentin Breu\u00DF",
@@ -4422,10 +4428,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:31:43 2026 \u002B0200",
         "message": "fix!: check the kinds of \u0060DateTime\u0060 values in an untyped collection when verifying its order (#1744)"
+      },
+      {
+        "sha": "8c8f6bf6b6495d38ccf74cdd4c25ae541f0b3e6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
+        "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
       }
     ],
     "labels": [
-      "6afcb417",
       "702848e5",
       "d94dae41",
       "7b1dd6ef",
@@ -4474,14 +4485,14 @@ window.BENCHMARK_DATA = {
       "1f967b58",
       "7e4f4bdb",
       "93d22f80",
-      "8b666ac8"
+      "8b666ac8",
+      "8c8f6bf6"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          3210.8174593607587,
           2571.2008267916167,
           1633.2713779721942,
           3099.450386683146,
@@ -4530,7 +4541,8 @@ window.BENCHMARK_DATA = {
           798.7452133618868,
           524.0213324106657,
           567.3830805558425,
-          1065.7342980248588
+          1065.7342980248588,
+          547.7202320098877
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4542,7 +4554,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          4272,
           4272,
           4272,
           4272,
@@ -4591,6 +4602,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1280,
           1280
         ],
         "borderColor": "#63A2AC",
@@ -4606,7 +4618,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          26448.538559977213,
           18095.147993821363,
           9753.625492095947,
           27628.15655517578,
@@ -4655,7 +4666,8 @@ window.BENCHMARK_DATA = {
           15555.621950276693,
           10848.702115885417,
           10781.839710489909,
-          24206.77577311198
+          24206.77577311198,
+          10362.304801354041
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4667,7 +4679,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          33471,
           33465,
           33471,
           33471,
@@ -4716,7 +4727,8 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33468
+          33468,
+          33471
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4757,7 +4769,8 @@ window.BENCHMARK_DATA = {
           573.0873628616333,
           414.6715227762858,
           458.7878606160482,
-          902.8659006265493
+          902.8659006265493,
+          404.62155400003707
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4769,6 +4782,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -5055,6 +5069,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:31:43 2026 \u002B0200",
         "message": "fix!: check the kinds of \u0060DateTime\u0060 values in an untyped collection when verifying its order (#1744)"
+      },
+      {
+        "sha": "8c8f6bf6b6495d38ccf74cdd4c25ae541f0b3e6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
+        "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
       }
     ],
     "labels": [
@@ -5098,7 +5118,8 @@ window.BENCHMARK_DATA = {
       "1f967b58",
       "7e4f4bdb",
       "93d22f80",
-      "8b666ac8"
+      "8b666ac8",
+      "8c8f6bf6"
     ],
     "datasets": [
       {
@@ -5145,7 +5166,8 @@ window.BENCHMARK_DATA = {
           577.747324625651,
           353.08312681743075,
           343.5415005683899,
-          737.9813050490159
+          737.9813050490159,
+          363.8018371141874
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5183,6 +5205,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1816,
           1816,
           1816,
           1816,
@@ -5252,7 +5275,8 @@ window.BENCHMARK_DATA = {
           53141.57476399739,
           29587.716825212752,
           30830.735575358074,
-          62886.03064778646
+          62886.03064778646,
+          28914.269256591797
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5304,7 +5328,8 @@ window.BENCHMARK_DATA = {
           5256,
           5256,
           5256,
-          5254
+          5254,
+          5256
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5564,6 +5589,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:31:43 2026 \u002B0200",
         "message": "fix!: check the kinds of \u0060DateTime\u0060 values in an untyped collection when verifying its order (#1744)"
+      },
+      {
+        "sha": "8c8f6bf6b6495d38ccf74cdd4c25ae541f0b3e6d",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 15:36:07 2026 \u002B0200",
+        "message": "fix: keep an event recording running across the repeated checks of \u0060CompliesWith(\u2026).Within(\u2026)\u0060 (#1745)"
       }
     ],
     "labels": [
@@ -5607,7 +5638,8 @@ window.BENCHMARK_DATA = {
       "1f967b58",
       "7e4f4bdb",
       "93d22f80",
-      "8b666ac8"
+      "8b666ac8",
+      "8c8f6bf6"
     ],
     "datasets": [
       {
@@ -5654,7 +5686,8 @@ window.BENCHMARK_DATA = {
           196.59285897475021,
           124.18757068193875,
           140.5408843755722,
-          259.0540941874186
+          259.0540941874186,
+          125.38672533035279
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5692,6 +5725,7 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
+          664,
           664,
           664,
           664,
@@ -5761,7 +5795,8 @@ window.BENCHMARK_DATA = {
           14834.462311808269,
           9697.194235229492,
           10682.660048421223,
-          24303.289461263023
+          24303.289461263023,
+          10047.785783894857
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5813,6 +5848,7 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5615,
+          5615,
           5615
         ],
         "borderColor": "#FF671B",
@@ -5854,7 +5890,8 @@ window.BENCHMARK_DATA = {
           181.4882709639413,
           122.21910122462681,
           146.55186425722562,
-          245.19413394927977
+          245.19413394927977,
+          131.45483563496515
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5866,6 +5903,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
