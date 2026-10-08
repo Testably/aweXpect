@@ -73,7 +73,8 @@ public sealed partial class ThatDelegate
 					             Expected that action
 					             throws an exception with recursive inner exceptions that are empty,
 					             but recursive inner exceptions were [
-					               ThatDelegate.CustomException: WhenExpectingInnerExceptionsToBeEmpty_ShouldFail
+					               ThatDelegate.CustomException: WhenExpectingInnerExceptionsToBeEmpty_ShouldFail,
+					               (… and maybe more)
 					             ]
 					             """);
 			}

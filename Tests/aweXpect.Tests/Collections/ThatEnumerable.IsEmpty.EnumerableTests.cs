@@ -24,15 +24,6 @@ public sealed partial class ThatEnumerable
 					             is empty,
 					             but it was [
 					               1,
-					               1,
-					               2,
-					               3,
-					               5,
-					               8,
-					               13,
-					               21,
-					               34,
-					               55,
 					               (… and maybe more)
 					             ]
 					             """);
@@ -51,7 +42,8 @@ public sealed partial class ThatEnumerable
 					             Expected that subject
 					             is empty,
 					             but it was [
-					               1
+					               1,
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -102,8 +94,7 @@ public sealed partial class ThatEnumerable
 					             is empty,
 					             but it was [
 					               1,
-					               1,
-					               2
+					               (… and maybe more)
 					             ]
 					             """);
 			}
@@ -117,6 +108,37 @@ public sealed partial class ThatEnumerable
 					=> await That(subject).IsEmpty();
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenSourceHasFurtherItems_ShouldNotReadThemForTheFailureMessage()
+			{
+				int readItems = 0;
+				IEnumerable subject = CountReadItems();
+
+				async Task Act()
+					=> await That(subject).IsEmpty();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is empty,
+					             but it was [
+					               1,
+					               (… and maybe more)
+					             ]
+					             """);
+				await That(readItems).IsEqualTo(1)
+					.Because("a source that blocks after the first item must not hang the failure message");
+
+				// ReSharper disable once IteratorNeverReturns
+				IEnumerable CountReadItems()
+				{
+					while (true)
+					{
+						yield return ++readItems;
+					}
+				}
 			}
 
 			[Test]

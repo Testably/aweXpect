@@ -263,7 +263,14 @@ internal static class CollectionHelpers
 	private static string? FormatReadItems<TItem>(IReadOnlyList<TItem> items, Type itemType)
 		=> items.Count == 0
 			? null
-			: Formatter.Format(HideCount(items), itemType.GetFormattingOption(items.Count)).AppendIsIncomplete(true);
+			: FormatReadItems(items, itemType.GetFormattingOption(items.Count));
+
+	/// <summary>
+	///     Formats the items that were read from a source that did not reach its end with the
+	///     <paramref name="options" />, marked as incomplete.
+	/// </summary>
+	internal static string FormatReadItems<TItem>(IReadOnlyList<TItem> items, FormattingOptions options)
+		=> Formatter.Format(HideCount(items), options).AppendIsIncomplete(true);
 
 	/// <summary>
 	///     The materialized items can be only the first items of the source, so their count must not be rendered as the

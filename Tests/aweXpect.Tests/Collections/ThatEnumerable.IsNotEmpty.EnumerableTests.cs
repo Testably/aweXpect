@@ -123,7 +123,7 @@ public sealed partial class ThatEnumerable
 					             is empty,
 					             but it was [
 					               1,
-					               2
+					               (… and maybe more)
 					             ]
 					             """);
 			}

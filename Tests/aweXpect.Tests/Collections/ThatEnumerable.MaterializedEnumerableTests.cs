@@ -25,7 +25,7 @@ public sealed partial class ThatEnumerable
 		}
 
 		[Test]
-		public async Task IsEmpty_WhenFailing_ShouldDisposeTheEnumeratorAfterListingTheItems()
+		public async Task IsEmpty_WhenFailing_ShouldDisposeTheEnumeratorAfterListingTheReadItems()
 		{
 			DisposeTracker tracker = new();
 
@@ -38,19 +38,10 @@ public sealed partial class ThatEnumerable
 				             is empty,
 				             but it was [
 				               1,
-				               2,
-				               3,
-				               4,
-				               5,
-				               6,
-				               7,
-				               8,
-				               9,
-				               10,
 				               (… and maybe more)
 				             ]
 				             """)
-				.Because("the failure message reads further items before the source is released");
+				.Because("the failure message reads no further items from the source");
 			await That(tracker.IsDisposed).IsTrue();
 		}
 
