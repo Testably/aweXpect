@@ -38,8 +38,7 @@ public class EventTriggerResult<TSubject>(
 		filter.AddPredicate(
 			o => position == null
 				? o.Any(x => x is TParameter p && UserCode.Invoke(predicate, p, "the predicate"))
-				: o.Length > position && o[position.Value] is TParameter m &&
-				  UserCode.Invoke(predicate, m, "the predicate"),
+				: MatchesAt(o, position.Value, predicate),
 			expression);
 		return this;
 	}
@@ -72,7 +71,8 @@ public class EventTriggerResult<TSubject>(
 	///     Adds a predicate for the <see cref="EventArgs" /> of the event.
 	/// </summary>
 	/// <remarks>
-	///     The event args are expected to be the second parameter.
+	///     The event args are expected to be the second parameter. Event args that are <see langword="null" /> are
+	///     passed to the <paramref name="predicate" />, event args of another type do not match.
 	/// </remarks>
 	public EventTriggerResult<TSubject> With<TEventArgs>(
 		Func<TEventArgs, bool> predicate,
@@ -82,7 +82,7 @@ public class EventTriggerResult<TSubject>(
 	{
 		predicate.ThrowIfNull();
 		filter.AddPredicate(
-			o => o.Length > 1 && o[1] is TEventArgs m && UserCode.Invoke(predicate, m, "the predicate"),
+			o => MatchesAt(o, 1, predicate),
 			$" with {Formatter.Format(typeof(TEventArgs))} {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return this;
 	}
@@ -91,8 +91,8 @@ public class EventTriggerResult<TSubject>(
 	///     Adds a predicate that at least one parameter of type <typeparamref name="TParameter" /> must satisfy.
 	/// </summary>
 	/// <remarks>
-	///     Parameters of other types are ignored; the event is excluded when no parameter of type
-	///     <typeparamref name="TParameter" /> satisfies <paramref name="predicate" />.
+	///     Parameters of other types and parameters that are <see langword="null" /> are ignored; the event is excluded
+	///     when no parameter of type <typeparamref name="TParameter" /> satisfies <paramref name="predicate" />.
 	/// </remarks>
 	public EventTriggerResult<TSubject> WithParameter<TParameter>(Func<TParameter, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -110,7 +110,8 @@ public class EventTriggerResult<TSubject>(
 	///     <typeparamref name="TParameter" />.
 	/// </summary>
 	/// <remarks>
-	///     The filter will exclude parameters where the type does not match.
+	///     A parameter of another type does not match. A parameter that is <see langword="null" /> is passed to the
+	///     <paramref name="predicate" />, unless <typeparamref name="TParameter" /> is a non-nullable value type.
 	/// </remarks>
 	public EventTriggerResult<TSubject> WithParameter<TParameter>(int position, Func<TParameter, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -119,7 +120,7 @@ public class EventTriggerResult<TSubject>(
 		ThrowHelper.ThrowIfPositionIsNegative(position);
 		predicate.ThrowIfNull();
 		filter.AddPredicate(
-			o => o.Length > position && o[position] is TParameter m && UserCode.Invoke(predicate, m, "the predicate"),
+			o => MatchesAt(o, position, predicate),
 			$" with {Formatter.Format(typeof(TParameter))} parameter [{position}] {doNotPopulateThisValue.TrimCommonWhiteSpace()}");
 		return this;
 	}
@@ -132,6 +133,15 @@ public class EventTriggerResult<TSubject>(
 		options.Within(timeout);
 		return this;
 	}
+
+	private static bool MatchesAt<TParameter>(object?[] parameters, int position, Func<TParameter, bool> predicate)
+		=> parameters.Length > position && parameters[position] switch
+		{
+			TParameter parameter => UserCode.Invoke(predicate, parameter, "the predicate"),
+			// A null parameter has no type to test, so it matches whenever TParameter can hold null.
+			null => default(TParameter) is null && UserCode.Invoke(predicate, default(TParameter)!, "the predicate"),
+			_ => false,
+		};
 
 	/// <summary>
 	///     Gives access to additional methods for extensions.
@@ -146,7 +156,11 @@ public class EventTriggerResult<TSubject>(
 		///     This method is mainly intended for extension methods, as it allows overriding the default
 		///     <paramref name="expression" />.<br />
 		///     When <paramref name="position" /> is <see langword="null" />, the predicate applies to any parameter of type
-		///     <typeparamref name="TParameter" />, so that at least one of them must satisfy it.
+		///     <typeparamref name="TParameter" />, so that at least one of them must satisfy it; parameters that are
+		///     <see langword="null" /> are ignored.<br />
+		///     Otherwise a parameter of another type at the <paramref name="position" /> does not match, and a parameter
+		///     that is <see langword="null" /> is passed to the <paramref name="predicate" />, unless
+		///     <typeparamref name="TParameter" /> is a non-nullable value type.
 		/// </remarks>
 		EventTriggerResult<TSubject> WithParameter<TParameter>(
 			string expression,

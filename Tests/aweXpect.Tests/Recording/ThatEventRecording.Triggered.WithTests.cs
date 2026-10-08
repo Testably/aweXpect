@@ -10,6 +10,101 @@ public sealed partial class ThatEventRecording
 		public sealed class WithTests
 		{
 			[Test]
+			public async Task WhenEventArgsAreNull_ShouldPassNullToThePredicate()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChangedWithoutEventArgs();
+
+				async Task Act() =>
+					await That(recording).Triggered(nameof(INotifyPropertyChanged.PropertyChanged))
+						.With<PropertyChangedEventArgs>(e => e is null);
+
+				await That(Act).DoesNotThrow();
+			}
+
+			[Test]
+			public async Task WhenEventArgsAreNull_WhenNegated_ShouldFail()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChangedWithoutEventArgs();
+
+				async Task Act() =>
+					await That(recording).DidNotTrigger(nameof(INotifyPropertyChanged.PropertyChanged))
+						.With<PropertyChangedEventArgs>(e => e is null);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that recording
+					             has never recorded the PropertyChanged event on sut with PropertyChangedEventArgs e => e is null,
+					             but it was recorded once in [
+					               PropertyChanged(ThatEventRecording.PropertyChangedClass {
+					                   MyValue = 0
+					                 }, <null>)
+					             ]
+					             """);
+			}
+
+			[Test]
+			public async Task WhenEventArgsAreNull_WhenPredicateIsNotNullSafe_ShouldFailWithTheExceptionAsInnerException()
+			{
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChangedWithoutEventArgs();
+
+				async Task Act() =>
+					await That(recording).Triggered(nameof(INotifyPropertyChanged.PropertyChanged))
+						.With<PropertyChangedEventArgs>(e => e.PropertyName == "MyValue");
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the PropertyChanged event on sut with PropertyChangedEventArgs e => e.PropertyName == "MyValue" at least once,
+					             but the predicate did throw a NullReferenceException:
+					               *
+					             """).AsWildcard().And
+					.Whose(e => e.InnerException, i => i.Is<NullReferenceException>());
+			}
+
+			[Test]
+			public async Task WhenEventArgsAreOfAnotherType_ShouldNotInvokeThePredicate()
+			{
+				bool isInvoked = false;
+				PropertyChangedClass sut = new();
+				IEventRecording<PropertyChangedClass> recording = sut.Record().Events();
+
+				sut.NotifyPropertyChanged(nameof(PropertyChangedClass.MyValue));
+
+				bool Predicate(ProgressChangedEventArgs _)
+				{
+					isInvoked = true;
+					return true;
+				}
+
+				async Task Act() =>
+					await That(recording).Triggered(nameof(INotifyPropertyChanged.PropertyChanged))
+						.With<ProgressChangedEventArgs>(Predicate);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that recording
+					             has recorded the PropertyChanged event on sut with ProgressChangedEventArgs Predicate at least once,
+					             but it was never recorded in [
+					               PropertyChanged(ThatEventRecording.PropertyChangedClass {
+					                   MyValue = 0
+					                 }, PropertyChangedEventArgs {
+					                   PropertyName = "MyValue"
+					                 })
+					             ]
+					             """);
+				await That(isInvoked).IsFalse();
+			}
+
+			[Test]
 			public async Task WhenEventIsTriggeredBySomethingElse_ShouldFail()
 			{
 				PropertyChangedClass sut = new()

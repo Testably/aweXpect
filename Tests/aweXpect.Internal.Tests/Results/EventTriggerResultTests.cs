@@ -57,6 +57,160 @@ public sealed class EventTriggerResultTests
 	}
 
 	[Test]
+	public async Task WhenCastingToICustomParameterFilter_WhenArgumentIsNull_WithoutPosition_ShouldIgnoreTheArgument()
+	{
+		CustomEventWithParametersClass<string?> sut = new();
+		IEventRecording<CustomEventWithParametersClass<string?>> recording = sut.Record().Events();
+
+		sut.NotifyCustomEvent(null);
+
+		async Task Act() =>
+			await ((EventTriggerResult<CustomEventWithParametersClass<string?>>.ICustomParameterFilter)That(recording)
+					.Triggered(nameof(CustomEventWithParametersClass<string?>.CustomEvent)))
+				.WithParameter<string?>(" with my parameter", null, p => p is null);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that recording
+			             has recorded the CustomEvent event on sut with my parameter at least once,
+			             but it was never recorded in [
+			               CustomEvent(<null>)
+			             ]
+			             """)
+			.Because("a null argument has no type that could match at any position");
+	}
+
+	[Test]
+	public async Task WhenCastingToICustomParameterFilter_WhenArgumentIsNull_WithPosition_ForNonNullableValueType_ShouldNotInvokeThePredicate()
+	{
+		bool isInvoked = false;
+		CustomEventWithParametersClass<int?> sut = new();
+		IEventRecording<CustomEventWithParametersClass<int?>> recording = sut.Record().Events();
+
+		sut.NotifyCustomEvent(null);
+
+		async Task Act() =>
+			await ((EventTriggerResult<CustomEventWithParametersClass<int?>>.ICustomParameterFilter)That(recording)
+					.Triggered(nameof(CustomEventWithParametersClass<int?>.CustomEvent)))
+				.WithParameter<int>(" with my parameter", 0, _ =>
+				{
+					isInvoked = true;
+					return true;
+				});
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that recording
+			             has recorded the CustomEvent event on sut with my parameter at least once,
+			             but it was never recorded in [
+			               CustomEvent(<null>)
+			             ]
+			             """);
+		await That(isInvoked).IsFalse();
+	}
+
+	[Test]
+	public async Task WhenCastingToICustomParameterFilter_WhenArgumentIsNull_WithPosition_ForNullableValueType_ShouldPassNullToThePredicate()
+	{
+		CustomEventWithParametersClass<int?> sut = new();
+		IEventRecording<CustomEventWithParametersClass<int?>> recording = sut.Record().Events();
+
+		sut.NotifyCustomEvent(null);
+
+		async Task Act() =>
+			await ((EventTriggerResult<CustomEventWithParametersClass<int?>>.ICustomParameterFilter)That(recording)
+					.Triggered(nameof(CustomEventWithParametersClass<int?>.CustomEvent)))
+				.WithParameter<int?>(" with my parameter", 0, p => p is null);
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Test]
+	public async Task WhenCastingToICustomParameterFilter_WhenArgumentIsNull_WithPosition_ShouldPassNullToThePredicate()
+	{
+		CustomEventWithParametersClass<string?> sut = new();
+		IEventRecording<CustomEventWithParametersClass<string?>> recording = sut.Record().Events();
+
+		sut.NotifyCustomEvent(null);
+
+		async Task Act() =>
+			await ((EventTriggerResult<CustomEventWithParametersClass<string?>>.ICustomParameterFilter)That(recording)
+					.Triggered(nameof(CustomEventWithParametersClass<string?>.CustomEvent)))
+				.WithParameter<string?>(" with my parameter", 0, p => p is null);
+
+		await That(Act).DoesNotThrow();
+	}
+
+	[Test]
+	public async Task WhenCastingToICustomParameterFilter_WhenArgumentIsNull_WithPosition_WhenNegated_ShouldFail()
+	{
+		CustomEventWithParametersClass<string?> sut = new();
+		IEventRecording<CustomEventWithParametersClass<string?>> recording = sut.Record().Events();
+
+		sut.NotifyCustomEvent(null);
+
+		async Task Act() =>
+			await ((EventTriggerResult<CustomEventWithParametersClass<string?>>.ICustomParameterFilter)That(recording)
+					.DidNotTrigger(nameof(CustomEventWithParametersClass<string?>.CustomEvent)))
+				.WithParameter<string?>(" with my parameter", 0, p => p is null);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that recording
+			             has never recorded the CustomEvent event on sut with my parameter,
+			             but it was recorded once in [
+			               CustomEvent(<null>)
+			             ]
+			             """);
+	}
+
+	[Test]
+	public async Task WhenCastingToICustomParameterFilter_WhenArgumentIsNull_WithPosition_WhenPredicateIsNotNullSafe_ShouldFailWithTheExceptionAsInnerException()
+	{
+		CustomEventWithParametersClass<string?> sut = new();
+		IEventRecording<CustomEventWithParametersClass<string?>> recording = sut.Record().Events();
+
+		sut.NotifyCustomEvent(null);
+
+		async Task Act() =>
+			await ((EventTriggerResult<CustomEventWithParametersClass<string?>>.ICustomParameterFilter)That(recording)
+					.Triggered(nameof(CustomEventWithParametersClass<string?>.CustomEvent)))
+				.WithParameter<string>(" with my parameter", 0, p => p.Length > 3);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that recording
+			             has recorded the CustomEvent event on sut with my parameter at least once,
+			             but the predicate did throw a NullReferenceException:
+			               *
+			             """).AsWildcard().And
+			.Whose(e => e.InnerException, i => i.Is<NullReferenceException>());
+	}
+
+	[Test]
+	public async Task WhenCastingToICustomParameterFilter_WhenArgumentIsOfAnotherType_WithPosition_ShouldFail()
+	{
+		CustomEventWithParametersClass<object?> sut = new();
+		IEventRecording<CustomEventWithParametersClass<object?>> recording = sut.Record().Events();
+
+		sut.NotifyCustomEvent(42);
+
+		async Task Act() =>
+			await ((EventTriggerResult<CustomEventWithParametersClass<object?>>.ICustomParameterFilter)That(recording)
+					.Triggered(nameof(CustomEventWithParametersClass<object?>.CustomEvent)))
+				.WithParameter<string?>(" with my parameter", 0, _ => true);
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that recording
+			             has recorded the CustomEvent event on sut with my parameter at least once,
+			             but it was never recorded in [
+			               CustomEvent(42)
+			             ]
+			             """);
+	}
+
+	[Test]
 	public async Task WhenCastingToICustomParameterFilter_WhenPositionIsNegative_ShouldThrowArgumentOutOfRangeException()
 	{
 		CustomEventWithParametersClass<string> sut = new();
