@@ -1018,6 +1018,107 @@ public sealed partial class ThatObject
 					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
 			}
 
+			[Test]
+			public async Task WhenSortedSetSubjectUsesACaseInsensitiveComparer_ShouldSucceed()
+			{
+				SortedSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"A",
+				};
+				string[] expected = ["a",];
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).DoesNotThrow()
+					.Because("the comparer of the subject decides which items are the same");
+			}
+
+			[Test]
+			public async Task WhenSortedSetSubjectUsesACaseInsensitiveComparer_WhenNegated_ShouldFail()
+			{
+				SortedSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"A",
+				};
+				string[] expected = ["a",];
+
+				async Task Act()
+					=> await That(subject).IsNotEquivalentTo(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is not equivalent to expected,
+					             but it was*
+					             """).AsWildcard();
+			}
+
+			[Test]
+			public async Task WhenSortedSetSubjectUsesACaseInsensitiveComparer_WithAnItemThatItDoesNotFind_ShouldFail()
+			{
+				SortedSet<string> subject = new(StringComparer.OrdinalIgnoreCase)
+				{
+					"A",
+					"B",
+				};
+				string[] expected = ["a", "c",];
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to expected,
+					             but it was not:
+					               Element [1] differed:
+					                   Actual: "B"
+					                 Expected: "c"
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """);
+			}
+
+			[Test]
+			public async Task WhenSortedSetSubjectUsesAComparerThatThrows_ShouldFailWithTheExceptionAsInnerException()
+			{
+				InvalidOperationException exception = new("comparer failed");
+				SortedSet<string> subject = new(new ThrowingOrder(exception))
+				{
+					"A",
+				};
+				string[] expected = ["a",];
+
+				async Task Act()
+					=> await That(subject).IsEquivalentTo(expected);
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             is equivalent to expected,
+					             but the comparer did throw an InvalidOperationException:
+					               comparer failed
+
+					             Equivalency options:
+					              - include public fields and properties
+					             """).And
+					.Whose(e => e.InnerException, i => i.IsSameAs(exception));
+			}
+
+			[Test]
+			public async Task WhenSortedSetSubjectUsesTheDefaultComparer_WhenNegated_ShouldSucceed()
+			{
+				SortedSet<string> subject = ["A",];
+				string[] expected = ["a",];
+
+				async Task Act()
+					=> await That(subject).IsNotEquivalentTo(expected);
+
+				await That(Act).DoesNotThrow();
+			}
+
 			/// <remarks>
 			///     Only throws when it compares two items, so that the subject can be created.
 			/// </remarks>
@@ -1026,6 +1127,14 @@ public sealed partial class ThatObject
 				public bool Equals(string? x, string? y) => throw exception;
 
 				public int GetHashCode(string obj) => obj.Length;
+			}
+
+			/// <remarks>
+			///     Only throws when it compares two different items, so that the subject can be created.
+			/// </remarks>
+			private sealed class ThrowingOrder(Exception exception) : IComparer<string>
+			{
+				public int Compare(string? x, string? y) => ReferenceEquals(x, y) ? 0 : throw exception;
 			}
 		}
 
