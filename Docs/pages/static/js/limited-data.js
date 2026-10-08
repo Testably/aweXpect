@@ -2,12 +2,6 @@ window.BENCHMARK_DATA = {
   "Bool": {
     "commits": [
       {
-        "sha": "d94dae41a4166084acd9dbc23fe9255c82d017c3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
-        "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
-      },
-      {
         "sha": "7b1dd6ef278a5fc6a554e2ce78c2cf938da2d9f5",
         "author": "Valentin Breu\u00DF",
         "date": "Mon Sep 28 08:44:38 2026 \u002B0200",
@@ -300,10 +294,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
         "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
+      },
+      {
+        "sha": "f7a0873ff8b24ee55e1f59c3990cf1ab57f61be6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
+        "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
       }
     ],
     "labels": [
-      "d94dae41",
       "7b1dd6ef",
       "1506ce48",
       "1917fc4c",
@@ -352,14 +351,14 @@ window.BENCHMARK_DATA = {
       "93d22f80",
       "8b666ac8",
       "8c8f6bf6",
-      "6242c56e"
+      "6242c56e",
+      "f7a0873f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          159.8373302391597,
           328.3258736474173,
           347.981173324585,
           352.7635374069214,
@@ -408,7 +407,8 @@ window.BENCHMARK_DATA = {
           66.4655506152373,
           142.5312343120575,
           66.75765786965688,
-          74.12769539867129
+          74.12769539867129,
+          146.75949765841168
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -421,7 +421,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           920,
-          920,
           928,
           928,
           928,
@@ -453,6 +452,7 @@ window.BENCHMARK_DATA = {
           408,
           408,
           408,
+          416,
           416,
           416,
           416,
@@ -484,7 +484,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          127.74056861950801,
           243.26174642244976,
           260.9272581100464,
           247.54009710947673,
@@ -533,7 +532,8 @@ window.BENCHMARK_DATA = {
           137.37846938769022,
           286.66005220413206,
           131.682856909434,
-          141.12862652142843
+          141.12862652142843,
+          242.14818153381347
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -637,7 +637,8 @@ window.BENCHMARK_DATA = {
           101.78973456791469,
           187.5289684931437,
           100.52407849629721,
-          112.69337538083394
+          112.69337538083394,
+          205.66276689676138
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -649,6 +650,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          472,
           472,
           472,
           472,
@@ -692,12 +694,6 @@ window.BENCHMARK_DATA = {
   },
   "Equivalency": {
     "commits": [
-      {
-        "sha": "d94dae41a4166084acd9dbc23fe9255c82d017c3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
-        "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
-      },
       {
         "sha": "7b1dd6ef278a5fc6a554e2ce78c2cf938da2d9f5",
         "author": "Valentin Breu\u00DF",
@@ -991,10 +987,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
         "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
+      },
+      {
+        "sha": "f7a0873ff8b24ee55e1f59c3990cf1ab57f61be6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
+        "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
       }
     ],
     "labels": [
-      "d94dae41",
       "7b1dd6ef",
       "1506ce48",
       "1917fc4c",
@@ -1043,14 +1044,14 @@ window.BENCHMARK_DATA = {
       "93d22f80",
       "8b666ac8",
       "8c8f6bf6",
-      "6242c56e"
+      "6242c56e",
+      "f7a0873f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          229295.6982596261,
           449700.0759440104,
           408692.31403459824,
           418200.58443777903,
@@ -1099,7 +1100,8 @@ window.BENCHMARK_DATA = {
           56402.536712646484,
           99458.83720179966,
           55259.80214029948,
-          58705.350740559894
+          58705.350740559894,
+          108477.57999965122
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1111,7 +1113,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          676856,
           676856,
           677056,
           677056,
@@ -1160,6 +1161,7 @@ window.BENCHMARK_DATA = {
           16416,
           16416,
           16416,
+          16416,
           16416
         ],
         "borderColor": "#63A2AC",
@@ -1175,7 +1177,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          1231279.53125,
           2715198.849739583,
           2462868.2723214286,
           2553543.66796875,
@@ -1224,7 +1225,8 @@ window.BENCHMARK_DATA = {
           1199900.2127403845,
           2462741.6844308036,
           1234153.1097935268,
-          1363514.279017857
+          1363514.279017857,
+          2564532.4854166666
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1236,7 +1238,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions memory",
         "unit": "b",
         "data": [
-          4841647,
           4841651,
           4841651,
           4841651,
@@ -1285,7 +1286,8 @@ window.BENCHMARK_DATA = {
           4841647,
           4841635,
           4841647,
-          4841647
+          4841647,
+          4841651
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -1328,7 +1330,8 @@ window.BENCHMARK_DATA = {
           105803.7771077474,
           221148.44552408854,
           114144.15212777945,
-          108015.99091448102
+          108015.99091448102,
+          196925.21308244977
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -1340,6 +1343,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          155992,
           155992,
           155992,
           155992,
@@ -1383,12 +1387,6 @@ window.BENCHMARK_DATA = {
   },
   "ItemsCount_AtLeast": {
     "commits": [
-      {
-        "sha": "d94dae41a4166084acd9dbc23fe9255c82d017c3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
-        "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
-      },
       {
         "sha": "7b1dd6ef278a5fc6a554e2ce78c2cf938da2d9f5",
         "author": "Valentin Breu\u00DF",
@@ -1682,10 +1680,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
         "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
+      },
+      {
+        "sha": "f7a0873ff8b24ee55e1f59c3990cf1ab57f61be6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
+        "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
       }
     ],
     "labels": [
-      "d94dae41",
       "7b1dd6ef",
       "1506ce48",
       "1917fc4c",
@@ -1734,14 +1737,14 @@ window.BENCHMARK_DATA = {
       "93d22f80",
       "8b666ac8",
       "8c8f6bf6",
-      "6242c56e"
+      "6242c56e",
+      "f7a0873f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          258.22568420001437,
           544.3072616713388,
           611.0081187566121,
           627.5784405390422,
@@ -1790,7 +1793,8 @@ window.BENCHMARK_DATA = {
           148.36709238688152,
           296.6919680595398,
           144.58837137903487,
-          142.61073668797812
+          142.61073668797812,
+          277.34809029897053
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -1803,7 +1807,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           1576,
-          1576,
           1584,
           1584,
           1584,
@@ -1835,6 +1838,7 @@ window.BENCHMARK_DATA = {
           600,
           600,
           600,
+          608,
           608,
           608,
           608,
@@ -1866,7 +1870,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          235.13927503994532,
           474.20079441070556,
           516.7548759460449,
           495.29159579958235,
@@ -1915,7 +1918,8 @@ window.BENCHMARK_DATA = {
           268.58166343825206,
           527.0430596033732,
           253.80921166283744,
-          258.0497901916504
+          258.0497901916504,
+          482.11510617392406
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2019,7 +2023,8 @@ window.BENCHMARK_DATA = {
           232.60280605951945,
           412.7722493921007,
           198.73236986306998,
-          205.20201851526897
+          205.20201851526897,
+          381.9092403479985
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2031,6 +2036,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1064,
           1064,
           1064,
           1064,
@@ -2074,12 +2080,6 @@ window.BENCHMARK_DATA = {
   },
   "Int_GreaterThan": {
     "commits": [
-      {
-        "sha": "d94dae41a4166084acd9dbc23fe9255c82d017c3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
-        "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
-      },
       {
         "sha": "7b1dd6ef278a5fc6a554e2ce78c2cf938da2d9f5",
         "author": "Valentin Breu\u00DF",
@@ -2373,10 +2373,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
         "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
+      },
+      {
+        "sha": "f7a0873ff8b24ee55e1f59c3990cf1ab57f61be6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
+        "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
       }
     ],
     "labels": [
-      "d94dae41",
       "7b1dd6ef",
       "1506ce48",
       "1917fc4c",
@@ -2425,14 +2430,14 @@ window.BENCHMARK_DATA = {
       "93d22f80",
       "8b666ac8",
       "8c8f6bf6",
-      "6242c56e"
+      "6242c56e",
+      "f7a0873f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          159.09055398305256,
           338.32508718050445,
           346.272525038038,
           352.8747487408774,
@@ -2481,7 +2486,8 @@ window.BENCHMARK_DATA = {
           87.66823535760244,
           161.0230097611745,
           78.44054555098215,
-          76.55528612647738
+          76.55528612647738,
+          142.71374247755324
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -2494,7 +2500,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           1064,
-          1064,
           1072,
           1072,
           1072,
@@ -2526,6 +2531,7 @@ window.BENCHMARK_DATA = {
           512,
           512,
           512,
+          520,
           520,
           520,
           520,
@@ -2557,7 +2563,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          120.11808069547017,
           239.55810847649207,
           245.90422594547272,
           257.2361434936523,
@@ -2606,7 +2611,8 @@ window.BENCHMARK_DATA = {
           148.78025673230488,
           298.95889972050986,
           130.74108481407166,
-          128.2575772660119
+          128.2575772660119,
+          245.96520824432372
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -2710,7 +2716,8 @@ window.BENCHMARK_DATA = {
           140.24854431549707,
           232.68214756647745,
           126.82758138974508,
-          124.99726145267486
+          124.99726145267486,
+          244.97244342168173
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -2722,6 +2729,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          776,
           776,
           776,
           776,
@@ -2765,12 +2773,6 @@ window.BENCHMARK_DATA = {
   },
   "String": {
     "commits": [
-      {
-        "sha": "d94dae41a4166084acd9dbc23fe9255c82d017c3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
-        "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
-      },
       {
         "sha": "7b1dd6ef278a5fc6a554e2ce78c2cf938da2d9f5",
         "author": "Valentin Breu\u00DF",
@@ -3064,10 +3066,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
         "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
+      },
+      {
+        "sha": "f7a0873ff8b24ee55e1f59c3990cf1ab57f61be6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
+        "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
       }
     ],
     "labels": [
-      "d94dae41",
       "7b1dd6ef",
       "1506ce48",
       "1917fc4c",
@@ -3116,14 +3123,14 @@ window.BENCHMARK_DATA = {
       "93d22f80",
       "8b666ac8",
       "8c8f6bf6",
-      "6242c56e"
+      "6242c56e",
+      "f7a0873f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          291.6919880594526,
           614.5234347025554,
           638.2788359778268,
           639.4461165110271,
@@ -3172,7 +3179,8 @@ window.BENCHMARK_DATA = {
           142.82822164467402,
           265.82992026011146,
           148.04138511021932,
-          133.482617410024
+          133.482617410024,
+          248.38298716911902
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3185,7 +3193,6 @@ window.BENCHMARK_DATA = {
         "unit": "b",
         "data": [
           1600,
-          1600,
           1608,
           1608,
           1608,
@@ -3217,6 +3224,7 @@ window.BENCHMARK_DATA = {
           576,
           576,
           576,
+          584,
           584,
           584,
           584,
@@ -3248,7 +3256,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          567.6406101080088,
           1253.7681101481119,
           1239.2499777475994,
           1188.7313748677573,
@@ -3297,7 +3304,8 @@ window.BENCHMARK_DATA = {
           738.1067288080851,
           1359.4507607777914,
           665.8258253097534,
-          650.9954760869344
+          650.9954760869344,
+          1196.9269983927409
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -3401,7 +3409,8 @@ window.BENCHMARK_DATA = {
           199.95685113271077,
           341.1593878746033,
           180.53519562574533,
-          183.08535652160646
+          183.08535652160646,
+          325.31968371073407
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -3413,6 +3422,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          912,
           912,
           912,
           912,
@@ -3456,12 +3466,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArray": {
     "commits": [
-      {
-        "sha": "d94dae41a4166084acd9dbc23fe9255c82d017c3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
-        "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
-      },
       {
         "sha": "7b1dd6ef278a5fc6a554e2ce78c2cf938da2d9f5",
         "author": "Valentin Breu\u00DF",
@@ -3755,10 +3759,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
         "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
+      },
+      {
+        "sha": "f7a0873ff8b24ee55e1f59c3990cf1ab57f61be6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
+        "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
       }
     ],
     "labels": [
-      "d94dae41",
       "7b1dd6ef",
       "1506ce48",
       "1917fc4c",
@@ -3807,14 +3816,14 @@ window.BENCHMARK_DATA = {
       "93d22f80",
       "8b666ac8",
       "8c8f6bf6",
-      "6242c56e"
+      "6242c56e",
+      "f7a0873f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1537.74829687391,
           3087.047616413661,
           3213.690000661214,
           3228.9326716105143,
@@ -3863,7 +3872,8 @@ window.BENCHMARK_DATA = {
           346.20272432054793,
           638.4499005590167,
           348.4767696380615,
-          337.06756407873974
+          337.06756407873974,
+          641.2353713853018
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -3875,7 +3885,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          4328,
           4328,
           4376,
           4376,
@@ -3924,6 +3933,7 @@ window.BENCHMARK_DATA = {
           872,
           872,
           872,
+          872,
           872
         ],
         "borderColor": "#63A2AC",
@@ -3939,7 +3949,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          645.4647827784221,
           1321.869647216797,
           1379.8720521291098,
           1327.537137545072,
@@ -3988,7 +3997,8 @@ window.BENCHMARK_DATA = {
           794.6561574935913,
           1432.9326642354329,
           678.3175195966448,
-          725.0460067431133
+          725.0460067431133,
+          1429.9953777313233
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4092,7 +4102,8 @@ window.BENCHMARK_DATA = {
           365.86587247848513,
           742.2957029342651,
           334.13146339144026,
-          331.785920826594
+          331.785920826594,
+          629.0753513336182
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4104,6 +4115,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1264,
           1264,
           1264,
           1264,
@@ -4147,12 +4159,6 @@ window.BENCHMARK_DATA = {
   },
   "StringArrayInAnyOrder": {
     "commits": [
-      {
-        "sha": "d94dae41a4166084acd9dbc23fe9255c82d017c3",
-        "author": "Valentin Breu\u00DF",
-        "date": "Mon Sep 28 08:22:53 2026 \u002B0200",
-        "message": "fix: signaling after a wait for multiple signals no longer throws (#1423)"
-      },
       {
         "sha": "7b1dd6ef278a5fc6a554e2ce78c2cf938da2d9f5",
         "author": "Valentin Breu\u00DF",
@@ -4446,10 +4452,15 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
         "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
+      },
+      {
+        "sha": "f7a0873ff8b24ee55e1f59c3990cf1ab57f61be6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
+        "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
       }
     ],
     "labels": [
-      "d94dae41",
       "7b1dd6ef",
       "1506ce48",
       "1917fc4c",
@@ -4498,14 +4509,14 @@ window.BENCHMARK_DATA = {
       "93d22f80",
       "8b666ac8",
       "8c8f6bf6",
-      "6242c56e"
+      "6242c56e",
+      "f7a0873f"
     ],
     "datasets": [
       {
         "label": "aweXpect time",
         "unit": "ns",
         "data": [
-          1633.2713779721942,
           3099.450386683146,
           3275.4314544677736,
           3207.185521443685,
@@ -4554,7 +4565,8 @@ window.BENCHMARK_DATA = {
           567.3830805558425,
           1065.7342980248588,
           547.7202320098877,
-          515.1199394634792
+          515.1199394634792,
+          1046.7737821851458
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -4566,7 +4578,6 @@ window.BENCHMARK_DATA = {
         "label": "aweXpect memory",
         "unit": "b",
         "data": [
-          4272,
           4272,
           4280,
           4280,
@@ -4615,6 +4626,7 @@ window.BENCHMARK_DATA = {
           1280,
           1280,
           1280,
+          1280,
           1280
         ],
         "borderColor": "#63A2AC",
@@ -4630,7 +4642,6 @@ window.BENCHMARK_DATA = {
         "label": "FluentAssertions time",
         "unit": "ns",
         "data": [
-          9753.625492095947,
           27628.15655517578,
           20610.311613972983,
           26412.724094645182,
@@ -4679,7 +4690,8 @@ window.BENCHMARK_DATA = {
           10781.839710489909,
           24206.77577311198,
           10362.304801354041,
-          10069.346013750348
+          10069.346013750348,
+          27037.291407658504
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -4695,7 +4707,6 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33471,
-          33471,
           33465,
           33471,
           33465,
@@ -4739,6 +4750,7 @@ window.BENCHMARK_DATA = {
           33471,
           33471,
           33468,
+          33471,
           33471,
           33471
         ],
@@ -4783,7 +4795,8 @@ window.BENCHMARK_DATA = {
           458.7878606160482,
           902.8659006265493,
           404.62155400003707,
-          406.55301560674394
+          406.55301560674394,
+          771.6197384425571
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -4795,6 +4808,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          1408,
           1408,
           1408,
           1408,
@@ -5095,6 +5109,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
         "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
+      },
+      {
+        "sha": "f7a0873ff8b24ee55e1f59c3990cf1ab57f61be6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
+        "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
       }
     ],
     "labels": [
@@ -5140,7 +5160,8 @@ window.BENCHMARK_DATA = {
       "93d22f80",
       "8b666ac8",
       "8c8f6bf6",
-      "6242c56e"
+      "6242c56e",
+      "f7a0873f"
     ],
     "datasets": [
       {
@@ -5189,7 +5210,8 @@ window.BENCHMARK_DATA = {
           343.5415005683899,
           737.9813050490159,
           363.8018371141874,
-          372.7434025491987
+          372.7434025491987,
+          717.8476252555847
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5227,6 +5249,7 @@ window.BENCHMARK_DATA = {
           1808,
           1808,
           1808,
+          1816,
           1816,
           1816,
           1816,
@@ -5300,7 +5323,8 @@ window.BENCHMARK_DATA = {
           30830.735575358074,
           62886.03064778646,
           28914.269256591797,
-          28976.523685709635
+          28976.523685709635,
+          82400.20458170572
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5354,7 +5378,8 @@ window.BENCHMARK_DATA = {
           5256,
           5254,
           5256,
-          5256
+          5256,
+          5252
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5626,6 +5651,12 @@ window.BENCHMARK_DATA = {
         "author": "Valentin Breu\u00DF",
         "date": "Thu Oct 8 15:50:50 2026 \u002B0200",
         "message": "fix!: pass a null argument to the predicate of the positional event filters (#1747)"
+      },
+      {
+        "sha": "f7a0873ff8b24ee55e1f59c3990cf1ab57f61be6",
+        "author": "Valentin Breu\u00DF",
+        "date": "Thu Oct 8 16:06:38 2026 \u002B0200",
+        "message": "fix: stop reading the source for the failure message of the synchronous \u0060IsEmpty\u0060 (#1746)"
       }
     ],
     "labels": [
@@ -5671,7 +5702,8 @@ window.BENCHMARK_DATA = {
       "93d22f80",
       "8b666ac8",
       "8c8f6bf6",
-      "6242c56e"
+      "6242c56e",
+      "f7a0873f"
     ],
     "datasets": [
       {
@@ -5720,7 +5752,8 @@ window.BENCHMARK_DATA = {
           140.5408843755722,
           259.0540941874186,
           125.38672533035279,
-          125.47152725287846
+          125.47152725287846,
+          243.43688027064005
         ],
         "borderColor": "#63A2AC",
         "backgroundColor": "#63A2AC",
@@ -5758,6 +5791,7 @@ window.BENCHMARK_DATA = {
           656,
           656,
           656,
+          664,
           664,
           664,
           664,
@@ -5831,7 +5865,8 @@ window.BENCHMARK_DATA = {
           10682.660048421223,
           24303.289461263023,
           10047.785783894857,
-          9949.456902640206
+          9949.456902640206,
+          30220.73620402018
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5885,7 +5920,8 @@ window.BENCHMARK_DATA = {
           5615,
           5615,
           5615,
-          5615
+          5615,
+          5614
         ],
         "borderColor": "#FF671B",
         "backgroundColor": "#FF671B",
@@ -5928,7 +5964,8 @@ window.BENCHMARK_DATA = {
           146.55186425722562,
           245.19413394927977,
           131.45483563496515,
-          124.23931743303935
+          124.23931743303935,
+          246.91170746485392
         ],
         "borderColor": "#1A6029",
         "backgroundColor": "#1A6029",
@@ -5940,6 +5977,7 @@ window.BENCHMARK_DATA = {
         "label": "TUnit memory",
         "unit": "b",
         "data": [
+          712,
           712,
           712,
           712,
