@@ -47,6 +47,36 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Test]
+		public async Task Between_WhenActualIsAboveMaximum_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			async Task Act()
+				=> await sut.Between(40.Seconds()).And(41.Seconds());
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             has TimeSpan value between 0:40 and 0:41,
+				             but it had TimeSpan value 0:42
+				             """);
+		}
+
+		[Test]
+		[Arguments(42, 43)]
+		[Arguments(41, 42)]
+		[Arguments(42, 42)]
+		public async Task Between_WhenActualIsEqualToMinimumOrMaximum_ShouldSucceed(int minimumSeconds,
+			int maximumSeconds)
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			MyClass? result = await sut.Between(minimumSeconds.Seconds()).And(maximumSeconds.Seconds());
+
+			await That(result?.TimeSpanValue).IsEqualTo(42.Seconds());
+		}
+
+		[Test]
 		public async Task Between_WhenActualIsOutsideTheRange_ShouldFail()
 		{
 			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
@@ -96,6 +126,27 @@ public sealed partial class PropertyResultTests
 				              but it had TimeSpan value 0:00
 				              """)
 				.Because("nothing can be ordered against a null bound, so the negation fails as well");
+		}
+
+		[Test]
+		[Arguments(null, 43)]
+		[Arguments(41, null)]
+		public async Task Between_WhenMinimumOrMaximumIsNull_ShouldFail(int? minimumSeconds, int? maximumSeconds)
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+			TimeSpan? minimum = minimumSeconds?.Seconds();
+			TimeSpan? maximum = maximumSeconds?.Seconds();
+
+			async Task Act()
+				=> await sut.Between(minimum).And(maximum);
+
+			await That(Act).Throws<FailException>()
+				.WithMessage($"""
+				              Expected that subject
+				              has TimeSpan value between {Formatter.Format(minimum)} and {Formatter.Format(maximum)},
+				              but it had TimeSpan value 0:42
+				              """)
+				.Because("nothing can be ordered against a null bound");
 		}
 
 		[Test]
@@ -354,6 +405,32 @@ public sealed partial class PropertyResultTests
 			MyClass? result = await sut.NotBetween(43.Seconds()).And(44.Seconds());
 
 			await That(result?.TimeSpanValue).IsEqualTo(42.Seconds());
+		}
+
+		[Test]
+		public async Task NotBetween_WhenActualIsAboveMaximum_ShouldSucceed()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			MyClass? result = await sut.NotBetween(40.Seconds()).And(41.Seconds());
+
+			await That(result?.TimeSpanValue).IsEqualTo(42.Seconds());
+		}
+
+		[Test]
+		public async Task NotBetween_WhenActualIsEqualToMaximum_ShouldFail()
+		{
+			PropertyResult.TimeSpan<MyClass?> sut = MyClass.HasTimeSpanValue(42.Seconds());
+
+			async Task Act()
+				=> await sut.NotBetween(41.Seconds()).And(42.Seconds());
+
+			await That(Act).Throws<FailException>()
+				.WithMessage("""
+				             Expected that subject
+				             does not have TimeSpan value between 0:41 and 0:42,
+				             but it had TimeSpan value 0:42
+				             """);
 		}
 
 		[Test]
