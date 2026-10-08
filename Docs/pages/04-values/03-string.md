@@ -120,6 +120,12 @@ Every match type except the plain comparison asks about the content of the subje
 both directions, exactly like `StartsWith` and `DoesNotStartWith` do.
 :::
 
+A pattern, prefix or suffix that cannot be used (see below) is rejected whichever subject it is matched against, also
+for a `null` subject. The same holds for the string items of a
+[collection expectation](../05-collections/index.md): every expected item is validated, also when no item of the
+collection is compared with it. Only a lazily evaluated sequence of expected items is validated when it is enumerated,
+which a `null` collection does not require.
+
 ### Wildcards
 
 ```csharp

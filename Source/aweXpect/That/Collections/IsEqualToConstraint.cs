@@ -384,11 +384,21 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 	protected SubjectComparer<TItem>? SubjectComparer { get; set; }
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     The expected items of a collection are validated here, so that an unusable pattern is rejected whichever
+	///     items the subject has. A sequence that is not a collection is validated when it is materialized, so that
+	///     it is not enumerated for a subject that is not compared with it.
+	/// </remarks>
 	protected override void Start()
 	{
 		base.Start();
 		_expectedItems = null;
 		SubjectComparer = null;
+		_materializedExpected ??= expected as ICollection<TItem>;
+		if (_materializedExpected is not null)
+		{
+			options.ValidateExpectedItems(_materializedExpected);
+		}
 	}
 
 	/// <summary>
@@ -402,7 +412,12 @@ internal abstract class IsEqualToConstraintBase<TValue, TItem, TMatch>(
 			return null;
 		}
 
-		_materializedExpected ??= expected as ICollection<TItem> ?? expected.ToArray();
+		if (_materializedExpected is null)
+		{
+			_materializedExpected = expected.ToArray();
+			options.ValidateExpectedItems(_materializedExpected);
+		}
+
 		_expectedItems = _materializedExpected;
 		return _expectedItems;
 	}

@@ -101,6 +101,29 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	}
 
 	/// <summary>
+	///     Verifies that the <paramref name="expected" /> value is usable for the current match type, exactly like
+	///     <see cref="AreConsideredEqual{TExpected}(string?, TExpected)" /> does when a value is compared with it.
+	/// </summary>
+	/// <remarks>
+	///     An expectation calls this for every expected value before it looks at the subject, so that an unusable
+	///     pattern is rejected whichever subject it is verified for, also when no value is compared with it.
+	/// </remarks>
+	/// <exception cref="ArgumentNullException">
+	///     The match type takes a pattern, a prefix or a suffix and the <paramref name="expected" /> value is
+	///     <see langword="null" />.
+	/// </exception>
+	/// <exception cref="ArgumentException">
+	///     The <paramref name="expected" /> regex pattern, prefix or suffix is empty, or the regex pattern is invalid.
+	/// </exception>
+	public void ValidateExpected(string? expected)
+	{
+		if (GetPatternKind() is not null)
+		{
+			ValidatePattern(NormalizeExpected(expected, GetAnchoredEdges()));
+		}
+	}
+
+	/// <summary>
 	///     Compares the already normalized <paramref name="actual" /> value with the already normalized and validated
 	///     <paramref name="expected" /> pattern, which was parsed as <paramref name="regex" /> for a regex match type.
 	/// </summary>

@@ -79,16 +79,21 @@ public static partial class ThatString
 		private bool _isNegated;
 
 		/// <inheritdoc />
+		/// <remarks>
+		///     The occurrences are also counted for a <see langword="null" /> subject, as in an empty one, because the
+		///     options validate the expected value while they count, so an unusable pattern is rejected whichever
+		///     subject it is searched in.
+		/// </remarks>
 		public async ValueTask<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
 		{
 			_actual = actual;
+			_actualCount = await options.CountOccurrences(actual ?? string.Empty, expected);
 			if (actual is null)
 			{
 				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
-			_actualCount = await options.CountOccurrences(actual, expected);
 			Outcome = quantifier.Check(_actualCount, true, _isNegated) ?? _isNegated ? Outcome.Success : Outcome.Failure;
 			return this;
 		}

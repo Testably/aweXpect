@@ -692,3 +692,4 @@ aweXpect.Core.Internal.ITimeSystem.GetElapsedTime(long startTimestamp) -> System
 aweXpect.Core.Internal.ITimeSystem.GetTimestamp() -> long
 aweXpect.Core.Internal.TimeSystemExtensions
 static aweXpect.Core.Internal.TimeSystemExtensions.WithTimeSystem<TExpectation>(this TExpectation! expectation, aweXpect.Core.Internal.ITimeSystem! timeSystem) -> TExpectation!
+aweXpect.Options.StringEqualityOptions.ValidateExpected(string? expected) -> void

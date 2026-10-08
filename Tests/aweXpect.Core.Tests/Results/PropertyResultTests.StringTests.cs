@@ -294,6 +294,20 @@ public sealed partial class PropertyResultTests
 		}
 
 		[Test]
+		public async Task EqualTo_WhenPatternIsInvalidAndReadingThePropertyThrows_ShouldThrowArgumentException()
+		{
+			StringProperty sut = MyClass.HasThrowingStringValue(new InvalidOperationException("foo"));
+
+			async Task Act()
+				=> await sut.EqualTo("[").AsRegex();
+
+			await That(Act).Throws<ArgumentException>()
+				.WithParamName("expected").And
+				.WithMessage("The 'expected' regex pattern is invalid: ").AsPrefix()
+				.Because("an unusable pattern is rejected whichever value the property has");
+		}
+
+		[Test]
 		public async Task EqualTo_WhenReadingThePropertyThrows_ShouldFailWithTheExceptionAsInnerException()
 		{
 			InvalidOperationException exception = new("foo");
@@ -613,6 +627,20 @@ public sealed partial class PropertyResultTests
 			MyClass? result = await sut.NotEqualTo(expected);
 
 			await That(result?.StringValue).IsEqualTo(actual);
+		}
+
+		[Test]
+		public async Task NotEqualTo_WhenPatternIsNullAndReadingThePropertyThrows_ShouldThrowArgumentNullException()
+		{
+			StringProperty sut = MyClass.HasThrowingStringValue(new InvalidOperationException("foo"));
+
+			async Task Act()
+				=> await sut.NotEqualTo(null).AsRegex();
+
+			await That(Act).Throws<ArgumentNullException>()
+				.WithParamName("unexpected").And
+				.WithMessage("The 'unexpected' regex pattern cannot be null.").AsPrefix()
+				.Because("an unusable pattern is rejected whichever value the property has");
 		}
 
 		[Test]

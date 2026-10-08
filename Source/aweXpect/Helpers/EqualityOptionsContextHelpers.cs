@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using aweXpect.Core;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Options;
@@ -48,5 +49,33 @@ internal static class EqualityOptionsContextHelpers
 		}
 
 		return options;
+	}
+
+	/// <summary>
+	///     Rejects the first of the <paramref name="expected" /> items that the match type of string
+	///     <paramref name="options" /> cannot use, e.g. an invalid regex pattern.
+	/// </summary>
+	/// <remarks>
+	///     The options only validate an item that an item of the subject is compared with, so an expectation calls
+	///     this at the start of an evaluation, which rejects the item whichever items the subject has.
+	/// </remarks>
+	public static void ValidateExpectedItems<T, TItem>(this IOptionsEquality<T> options, IEnumerable<TItem> expected)
+		where TItem : T
+	{
+		StringEqualityOptions? stringOptions = options switch
+		{
+			StringEqualityOptions directOptions => directOptions,
+			IOptionsProvider<IOptionsEquality<T>> { Options: StringEqualityOptions wrappedOptions, } => wrappedOptions,
+			_ => null,
+		};
+		if (stringOptions is null || stringOptions.ComparesByOrdinalEquality)
+		{
+			return;
+		}
+
+		foreach (TItem item in expected)
+		{
+			stringOptions.ValidateExpected(item as string);
+		}
 	}
 }
