@@ -110,7 +110,8 @@ internal abstract class StartsWithConstraintBase<TValue, TItem, TMatch>(
 		{
 			stringBuilder.Append(It).Append(" contained only ").AppendItemCount(Count).Append(" and lacked ")
 				.AppendItemCount(expected.Length - Count).Append(": ");
-			Formatter.Format(stringBuilder, expected.Skip(Count), FormattingOptions.MultipleLines);
+			stringBuilder.Append(Formatter.Format(expected.Skip(Count), FormattingOptions.MultipleLines)
+				.Indent(indentation, false));
 		}
 	}
 

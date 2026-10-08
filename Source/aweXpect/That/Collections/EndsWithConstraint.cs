@@ -114,7 +114,8 @@ internal abstract class EndsWithConstraintBase<TValue, TItem, TMatch>(
 		{
 			stringBuilder.Append(It).Append(" contained only ").AppendItemCount(_itemsCount).Append(" and lacked ")
 				.AppendItemCount(expected.Length - _itemsCount).Append(": ");
-			Formatter.Format(stringBuilder, expected.Take(-_offset), FormattingOptions.MultipleLines);
+			stringBuilder.Append(Formatter.Format(expected.Take(-_offset), FormattingOptions.MultipleLines)
+				.Indent(indentation, false));
 		}
 	}
 
