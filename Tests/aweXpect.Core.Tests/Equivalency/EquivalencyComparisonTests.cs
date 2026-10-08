@@ -4873,6 +4873,159 @@ public sealed partial class EquivalencyComparisonTests
 		                                                """).IgnoringNewlineStyle();
 	}
 
+#if NET8_0_OR_GREATER
+	[Test]
+	public async Task WhenSortedSetSubjectIsAnImmutableSortedSet_AndUsesACaseInsensitiveComparer_ShouldMatchTheExpectedItemsThroughIt()
+	{
+		ImmutableSortedSet<string> actual = ImmutableSortedSet.Create<string>(StringComparer.OrdinalIgnoreCase, "a", "b");
+		HashSet<string> expected = ["B", "A",];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue();
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Test]
+	public async Task WhenSortedSetSubjectIsAnImmutableSortedSet_AndUsesTheDefaultComparer_ShouldReportTheDifference()
+	{
+		ImmutableSortedSet<AlwaysSameOrder> actual = [new(1),];
+		AlwaysSameOrder[] expected = [new(2),];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property [0].Value differed:
+		                                                      Actual: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle();
+	}
+#endif
+
+	[Test]
+	public async Task WhenSortedSetSubjectIsNestedInAMember_AndUsesACaseInsensitiveComparer_ShouldMatchTheExpectedItemsThroughIt()
+	{
+		var actual = new
+		{
+			Value = new SortedSet<string>(StringComparer.OrdinalIgnoreCase)
+			{
+				"a",
+			},
+		};
+		var expected = new
+		{
+			Value = new[]
+			{
+				"A",
+			},
+		};
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue();
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Test]
+	public async Task WhenSortedSetSubjectUsesACaseInsensitiveComparer_AndContainsNull_ShouldMatchItByEquivalency()
+	{
+		SortedSet<string?> actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			"a",
+			null,
+		};
+		object?[] expected = [null, "A",];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("a null item is never handed to the comparer of the set, but still equivalent to another null");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Test]
+	public async Task WhenSortedSetSubjectUsesACaseInsensitiveComparer_ShouldMatchTheExpectedItemsThroughIt()
+	{
+		SortedSet<string> actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			"a",
+			"b",
+		};
+		string[] expected = ["B", "A",];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("two items are the same for a sorted set when its comparer orders neither before the other");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Test]
+	public async Task WhenSortedSetSubjectUsesACaseInsensitiveComparer_WithAnItemThatItDoesNotFind_ShouldReportTheDifference()
+	{
+		SortedSet<string> actual = new(StringComparer.OrdinalIgnoreCase)
+		{
+			"a",
+			"b",
+		};
+		string[] expected = ["A", "c",];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse();
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Element [1] differed:
+		                                                      Actual: "b"
+		                                                    Expected: "c"
+		                                                """).IgnoringNewlineStyle();
+	}
+
+	[Test]
+	public async Task WhenSortedSetSubjectUsesACustomComparer_WithObjectsThatOnlyItConsidersTheSame_ShouldSucceed()
+	{
+		SortedSet<WithProperty> actual = new(new ParityOrder())
+		{
+			new WithProperty(1),
+			new WithProperty(2),
+		};
+		HashSet<WithProperty> expected = [new(4), new(3),];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsTrue()
+			.Because("an item that the comparer of the subject finds is contained, whatever its members are");
+		await That(failureBuilder.ToString()).IsEmpty();
+	}
+
+	[Test]
+	public async Task WhenSortedSetSubjectUsesTheDefaultComparer_WithObjectsThatOnlyTheirCompareToConsidersTheSame_ShouldReportTheDifference()
+	{
+		SortedSet<AlwaysSameOrder> actual = [new(1),];
+		AlwaysSameOrder[] expected = [new(2),];
+		StringBuilder failureBuilder = new();
+
+		bool result = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(), failureBuilder);
+
+		await That(result).IsFalse()
+			.Because("a set with the default comparer leaves its items to the equivalency comparison, which ignores their CompareTo");
+		await That(failureBuilder.ToString()).IsEqualTo("""
+
+		                                                  Property [0].Value differed:
+		                                                      Actual: 1
+		                                                    Expected: 2
+		                                                """).IgnoringNewlineStyle();
+	}
+
 	[Test]
 	public async Task WhenStringBuilderMemberDiffers_ShouldReportTheText()
 	{
@@ -5690,6 +5843,13 @@ public sealed partial class EquivalencyComparisonTests
 		public override int GetHashCode() => 0;
 	}
 
+	private sealed class AlwaysSameOrder(int value) : IComparable<AlwaysSameOrder>
+	{
+		public int Value => value;
+
+		public int CompareTo(AlwaysSameOrder? other) => 0;
+	}
+
 	/// <remarks>
 	///     Implements only the generic <see cref="IEqualityComparer{T}" />, unlike <see cref="StringComparer" />.
 	/// </remarks>
@@ -6080,6 +6240,11 @@ public sealed partial class EquivalencyComparisonTests
 		public bool Equals(WithProperty? x, WithProperty? y) => x!.Value % 2 == y!.Value % 2;
 
 		public int GetHashCode(WithProperty obj) => obj.Value % 2;
+	}
+
+	private sealed class ParityOrder : IComparer<WithProperty>
+	{
+		public int Compare(WithProperty? x, WithProperty? y) => (x!.Value % 2).CompareTo(y!.Value % 2);
 	}
 
 	private class WithProperty(int value)

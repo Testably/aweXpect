@@ -76,10 +76,26 @@ internal sealed class SetItemComparer<T> : SetItemComparer
 	/// <inheritdoc cref="SetItemComparer.Read(object)" />
 	/// <remarks>
 	///     A <see langword="null" /> item, or one that is not of the item type, is never handed to the comparer, which
-	///     would reject it, and is not the same as any other item for it.
+	///     may reject it, and is not the same as any other item for it. A sorted set considers two items the same
+	///     when its comparer orders neither before the other.
 	/// </remarks>
 	public override Func<object?, object?, bool>? Read(object set)
 	{
+		IComparer<T>? order = set switch
+		{
+			SortedSet<T> sortedSet => sortedSet.Comparer,
+#if NET8_0_OR_GREATER
+			ImmutableSortedSet<T> immutableSortedSet => immutableSortedSet.KeyComparer,
+#endif
+			_ => null,
+		};
+		if (order is not null)
+		{
+			return Equals(order, Comparer<T>.Default)
+				? null
+				: (x, y) => x is T typedX && y is T typedY && order.Compare(typedX, typedY) == 0;
+		}
+
 		IEqualityComparer<T>? comparer = set switch
 		{
 			HashSet<T> hashSet => hashSet.Comparer,
