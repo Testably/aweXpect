@@ -139,6 +139,18 @@ public partial class StringEqualityOptions
 		public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
 			=> ignoreCase ? " ignoring case" : "";
 
+		/// <inheritdoc cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />
+		public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
+		{
+			// StringEqualityOptions rejects the options that a built-in match type cannot honour.
+		}
+
+		/// <inheritdoc cref="IStringMatchType.ValidateExpected(string?)" />
+		public void ValidateExpected(string? expected)
+		{
+			// StringEqualityOptions validates the expected value of a built-in match type.
+		}
+
 		#endregion
 	}
 }

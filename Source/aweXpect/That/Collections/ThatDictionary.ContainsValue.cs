@@ -89,10 +89,15 @@ public static partial class ThatDictionary
 			IAsyncContextConstraint<TDictionary?>
 		where TDictionary : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
+		/// <remarks>
+		///     The expected value is validated first, so that an unusable pattern is rejected whichever entries the
+		///     subject has.
+		/// </remarks>
 		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			options.ValidateExpectedItems([expected,]);
 			Outcome = actual is not null &&
 			          await ContainsValue(actual, expected, options.ForEvaluation(context, cancellationToken))
 				? Outcome.Success

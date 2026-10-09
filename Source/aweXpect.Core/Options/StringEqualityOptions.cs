@@ -106,7 +106,9 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// </summary>
 	/// <remarks>
 	///     An expectation calls this for every expected value before it looks at the subject, so that an unusable
-	///     pattern is rejected whichever subject it is verified for, also when no value is compared with it.
+	///     value is rejected whichever subject it is verified for, also when no value is compared with it.<br />
+	///     A custom match type rejects the value in its <see cref="IStringMatchType.ValidateExpected(string?)" />, whose
+	///     exception is thrown unchanged.
 	/// </remarks>
 	/// <exception cref="ArgumentNullException">
 	///     The match type takes a pattern, a prefix or a suffix and the <paramref name="expected" /> value is
@@ -116,12 +118,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     The <paramref name="expected" /> regex pattern, prefix or suffix is empty, or the regex pattern is invalid.
 	/// </exception>
 	public void ValidateExpected(string? expected)
-	{
-		if (GetPatternKind() is not null)
-		{
-			ValidatePattern(NormalizeExpected(expected, GetAnchoredEdges()));
-		}
-	}
+		=> ValidatePattern(NormalizeExpected(expected, GetAnchoredEdges()));
 
 	/// <summary>
 	///     Compares the already normalized <paramref name="actual" /> value with the already normalized and validated
@@ -313,10 +310,16 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     Specifies a new <see cref="IStringMatchType" /> to use for matching two strings, named
 	///     <paramref name="optionName" /> in the exception when another match type is already specified.
 	/// </summary>
+	/// <remarks>
+	///     The <paramref name="matchType" /> can reject the casing and the comparer that are already specified in its
+	///     <see cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />, whose exception is thrown
+	///     unchanged.
+	/// </remarks>
 	/// <exception cref="InvalidOperationException">A match type is already specified.</exception>
 	public void SetMatchType(IStringMatchType matchType, string optionName)
 	{
 		ThrowHelper.ThrowIfOptionIsAlreadySpecified(_matchTypeOption, optionName);
+		matchType.ValidateOptions(_ignoreCase, _comparer);
 		_matchTypeOption = optionName;
 		_matchType = matchType;
 	}
@@ -437,6 +440,11 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// <summary>
 	///     Ignores casing when comparing the <see langword="string" />s.
 	/// </summary>
+	/// <remarks>
+	///     A custom match type can reject the casing in its
+	///     <see cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />, whose exception is thrown
+	///     unchanged.
+	/// </remarks>
 	/// <exception cref="InvalidOperationException">
 	///     The casing is already specified, or a custom comparer is already set via
 	///     <see cref="Using(IEqualityComparer{string})" />.
@@ -449,6 +457,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			throw CaseAndComparerConflict();
 		}
 
+		_matchType.ValidateOptions(ignoreCase, _comparer);
 		_isIgnoreCaseSpecified = true;
 		_ignoreCase = ignoreCase;
 		return this;
@@ -537,7 +546,10 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// </summary>
 	/// <remarks>
 	///     Without a comparer, the <see cref="StringComparer.Ordinal" /> or <see cref="StringComparer.OrdinalIgnoreCase" />
-	///     is used depending on whether the casing is ignored.
+	///     is used depending on whether the casing is ignored.<br />
+	///     A custom match type can reject the <paramref name="comparer" /> in its
+	///     <see cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />, whose exception is thrown
+	///     unchanged.
 	/// </remarks>
 	/// <exception cref="InvalidOperationException">
 	///     A comparer is already set, the casing is already ignored via <see cref="IgnoringCase(bool)" />, or the
@@ -557,6 +569,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			throw ComparerAndPatternConflict();
 		}
 
+		_matchType.ValidateOptions(_ignoreCase, comparer);
 		_comparer = comparer;
 		return this;
 	}
@@ -864,8 +877,8 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		};
 
 	/// <summary>
-	///     Verifies that the <paramref name="expected" /> value is a usable pattern for the current match type and
-	///     returns the parsed <see cref="Regex" /> for a regex pattern.
+	///     Verifies that the <paramref name="expected" /> value is usable for the current match type and returns the
+	///     parsed <see cref="Regex" /> for a regex pattern.
 	/// </summary>
 	/// <remarks>
 	///     A <see langword="null" /> pattern describes nothing to look for and an empty regex, prefix or suffix pattern
@@ -874,6 +887,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	/// </remarks>
 	private Regex? ValidatePattern(string? expected)
 	{
+		_matchType.ValidateExpected(expected);
 		string? patternKind = GetPatternKind();
 		if (patternKind is null)
 		{

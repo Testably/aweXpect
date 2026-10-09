@@ -694,3 +694,5 @@ aweXpect.Core.Internal.TimeSystemExtensions
 static aweXpect.Core.Internal.TimeSystemExtensions.WithTimeSystem<TExpectation>(this TExpectation! expectation, aweXpect.Core.Internal.ITimeSystem! timeSystem) -> TExpectation!
 aweXpect.Options.StringEqualityOptions.ValidateExpected(string? expected) -> void
 aweXpect.Core.ExpectationBuilder.AddSubjectContexts<TValue>(System.Action<TValue, aweXpect.Core.ResultContextCollector!>! appendContexts) -> aweXpect.Core.ExpectationBuilder!
+aweXpect.Core.IStringMatchType.ValidateExpected(string? expected) -> void
+aweXpect.Core.IStringMatchType.ValidateOptions(bool ignoreCase, System.Collections.Generic.IEqualityComparer<string!>? comparer) -> void

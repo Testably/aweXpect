@@ -107,10 +107,15 @@ public static partial class ThatDictionary
 		private TValue? _actualValue;
 		private bool _hasKey;
 
+		/// <remarks>
+		///     The expected value is validated first, so that an unusable pattern is rejected whichever entries the
+		///     subject has.
+		/// </remarks>
 		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			options.ValidateExpectedItems([expected.Value,]);
 			if (actual is null)
 			{
 				Outcome = Outcome.Failure;

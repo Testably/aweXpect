@@ -151,6 +151,9 @@ await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
 - `AppendContexts` can add [contexts](./06-message-conventions.md#contexts) that explain a failure, e.g. the options of
   the comparison.
 - For strings, implement `IStringMatchType` instead and set it with `SetMatchType` on the `StringEqualityOptions`.
+  Throw in its `ValidateOptions` for a casing or a comparer that it cannot honour, and in its `ValidateExpected` for an
+  expected value that it cannot use: the first throws at the call that specifies the conflict, the second for every
+  subject, also when nothing is compared with the expected value, e.g. for an empty collection.
 
 <details>
 <summary>Match results, multi-line texts and equivalency</summary>

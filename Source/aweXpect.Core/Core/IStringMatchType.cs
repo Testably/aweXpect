@@ -50,4 +50,27 @@ public interface IStringMatchType
 	///     A string representation of the options.
 	/// </summary>
 	string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer);
+
+	/// <summary>
+	///     Rejects options that the match type cannot honour, by throwing.
+	/// </summary>
+	/// <remarks>
+	///     This is called when the match type is set, with the casing and the comparer that are specified so far, and
+	///     before either of them changes afterwards, so that a conflict throws at the call that specifies it, in either
+	///     order. It is never called with both <paramref name="ignoreCase" /> and a <paramref name="comparer" />.
+	/// </remarks>
+	void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer);
+
+	/// <summary>
+	///     Rejects an <paramref name="expected" /> value that the match type cannot use, by throwing.
+	/// </summary>
+	/// <remarks>
+	///     This receives the value as
+	///     <see cref="AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" /> does, and is called
+	///     before a subject is compared with it and also when there is none to compare, e.g. for an empty collection,
+	///     so that an unusable value is rejected whichever subject it is verified for.<br />
+	///     It is called again for every item of a collection that is compared with the value, so it should be cheap
+	///     for a value that it already accepted.
+	/// </remarks>
+	void ValidateExpected(string? expected);
 }
