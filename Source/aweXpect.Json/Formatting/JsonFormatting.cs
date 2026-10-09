@@ -23,9 +23,7 @@ public static class JsonFormatting
 			return ValueFormatter.NullString;
 		}
 
-		JsonSerializerOptions serializerOptions = Customize.aweXpect.Json().DefaultJsonSerializerOptions.Get();
-		serializerOptions.WriteIndented = options?.UseLineBreaks == true;
-		return JsonSerializer.Serialize(value, serializerOptions);
+		return JsonSerializer.Serialize(value, GetSerializerOptions(options));
 	}
 
 	/// <summary>
@@ -44,9 +42,26 @@ public static class JsonFormatting
 		}
 		else
 		{
-			JsonSerializerOptions serializerOptions = Customize.aweXpect.Json().DefaultJsonSerializerOptions.Get();
-			serializerOptions.WriteIndented = options?.UseLineBreaks == true;
-			stringBuilder.Append(JsonSerializer.Serialize(value, serializerOptions));
+			stringBuilder.Append(JsonSerializer.Serialize(value, GetSerializerOptions(options)));
 		}
+	}
+
+	/// <remarks>
+	///     Copies the customized options instead of changing them, because they belong to the user and
+	///     become read-only once they were used for serialization.
+	/// </remarks>
+	private static JsonSerializerOptions GetSerializerOptions(FormattingOptions? options)
+	{
+		JsonSerializerOptions serializerOptions = Customize.aweXpect.Json().DefaultJsonSerializerOptions.Get();
+		bool writeIndented = options?.UseLineBreaks == true;
+		if (serializerOptions.WriteIndented == writeIndented)
+		{
+			return serializerOptions;
+		}
+
+		return new JsonSerializerOptions(serializerOptions)
+		{
+			WriteIndented = writeIndented,
+		};
 	}
 }

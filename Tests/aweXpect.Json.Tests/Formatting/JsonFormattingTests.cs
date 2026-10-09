@@ -46,6 +46,67 @@ public class JsonFormattingTests
 		await That(writeIndentedAfter).IsFalse();
 	}
 
+	[Fact]
+	public async Task WithCustomizedOptions_ShouldBeUsableInMultipleExpectations()
+	{
+		JsonElement subject = FromString("{\"foo\": 1}");
+
+		async Task Act()
+			=> await That(subject).DoesNotComplyWith(it => it.IsObject(o => o.With("foo").Matching(1)));
+
+		using (Customize.aweXpect.Json().DefaultJsonSerializerOptions.Set(new JsonSerializerOptions()))
+		{
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is no object or $.foo does not match 1,
+				             but it was in {
+				               "foo": 1
+				             }
+				             """);
+			await That(Act).Throws<XunitException>()
+				.WithMessage("""
+				             Expected that subject
+				             is no object or $.foo does not match 1,
+				             but it was in {
+				               "foo": 1
+				             }
+				             """)
+				.Because("options that were already used for serialization are read-only and must still format");
+		}
+	}
+
+	[Theory]
+	[InlineData(false)]
+	[InlineData(true)]
+	public async Task WithCustomizedOptions_ShouldNotChangeWriteIndented(bool writeIndented)
+	{
+		JsonElement jsonElement = FromString("{\"bar\":3}");
+		JsonSerializerOptions serializerOptions = new()
+		{
+			WriteIndented = writeIndented,
+		};
+		StringBuilder singleLine = new();
+		StringBuilder multipleLines = new();
+
+		using (Customize.aweXpect.Json().DefaultJsonSerializerOptions.Set(serializerOptions))
+		{
+			_ = Formatter.Format(jsonElement);
+			_ = Formatter.Format(jsonElement, FormattingOptions.MultipleLines);
+			Formatter.Format(singleLine, jsonElement);
+			Formatter.Format(multipleLines, jsonElement, FormattingOptions.MultipleLines);
+		}
+
+		await That(serializerOptions.WriteIndented).IsEqualTo(writeIndented)
+			.Because("formatting must not mutate the customized options");
+		await That(singleLine.ToString()).IsEqualTo("{\"bar\":3}");
+		await That(multipleLines.ToString()).IsEqualTo("""
+		                                              {
+		                                                "bar": 3
+		                                              }
+		                                              """);
+	}
+
 	[Theory]
 	[InlineData("[]", "[]")]
 	[InlineData("{\"bar\":3}", """
