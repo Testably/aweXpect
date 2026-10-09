@@ -124,6 +124,25 @@ public abstract partial class ConstraintResult
 		=> TryGetStoredValue(out value) && value is not null;
 
 	/// <summary>
+	///     Tries to get the <see cref="IDescribableSubject" /> from this result, when <typeparamref name="TValue" /> asks for
+	///     one.
+	/// </summary>
+	/// <remarks>
+	///     A result that replaces a constraint whose evaluation did not complete uses it, so that the failure message names
+	///     the subject the same way as when the constraint completed.
+	/// </remarks>
+	internal bool TryGetDescribableSubject<TValue>([NotNullWhen(true)] out TValue? value)
+	{
+		if (typeof(TValue) == typeof(IDescribableSubject))
+		{
+			return TryGetValue(out value);
+		}
+
+		value = default;
+		return false;
+	}
+
+	/// <summary>
 	///     Negate the current <see cref="ConstraintResult" />.
 	/// </summary>
 	public abstract ConstraintResult Negate();

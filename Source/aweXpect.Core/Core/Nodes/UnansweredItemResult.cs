@@ -76,8 +76,16 @@ internal sealed class UnansweredItemResult : ConstraintResult
 	}
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     A constraint that did not answer an item still describes the subject, like when it fails.
+	/// </remarks>
 	public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 	{
+		if (_inner.TryGetDescribableSubject(out value))
+		{
+			return true;
+		}
+
 		if (_value is TValue typedValue)
 		{
 			value = typedValue;

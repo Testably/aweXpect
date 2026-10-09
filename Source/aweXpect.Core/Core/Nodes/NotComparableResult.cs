@@ -40,8 +40,16 @@ internal sealed class NotComparableResult<T> : ConstraintResult
 		=> stringBuilder.Append(_reason.Indent(indentation, false));
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     A constraint that could not compare the subject still describes it, like when it fails.
+	/// </remarks>
 	public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 	{
+		if (_inner.TryGetDescribableSubject(out value))
+		{
+			return true;
+		}
+
 		if (_value is TValue typedValue)
 		{
 			value = typedValue;

@@ -942,6 +942,19 @@ public class ExpectationNodeTests
 	}
 
 	[Test]
+	public async Task IsMetBy_WhenMemberThrows_ShouldNotUseTheDescriptionOfTheMemberConstraint()
+	{
+		ExpectationNode node = new();
+		node.AddMapping(MemberAccessor<string, int>.FromFunc(_ => throw new MyException(), " length: "))
+			.AddConstraint(new DescribingConstraint<int>("the member"));
+
+		ConstraintResult result = await node.IsMetBy("foobar", null!, CancellationToken.None);
+
+		await That(result.TryGetValue(out IDescribableSubject? _)).IsFalse()
+			.Because("the constraint on the member was not evaluated, so it cannot describe the subject");
+	}
+
+	[Test]
 	public async Task IsMetBy_WhenNoConstraintSupportsAFaultedDelegateValue_ShouldFailWithTheException()
 	{
 		MyException exception = new();
