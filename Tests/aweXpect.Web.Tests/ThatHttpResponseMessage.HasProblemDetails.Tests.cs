@@ -30,15 +30,15 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage("""
 					             Expected that subject
 					             has a ProblemDetails content with type "FOO" ignoring case, title "BAR", status 404 and instance "could-be-SOME-guid " ignoring trailing whitespace,
-					             but it had title "bar" which differs at index 0:
+					             but it had title "bar", which differs at index 0:
 					                ↓ (actual)
 					               "bar"
 					               "BAR"
 					                ↑ (expected)
-					              and it had instance "could-be-some-guid" which differs at index 9:
+					              and it had instance "could-be-some-guid", which differs at index 9:
 					                         ↓ (actual)
 					               "could-be-some-guid"
-					               "could-be-SOME-guid "
+					               "could-be-SOME-guid"
 					                         ↑ (expected)
 
 					             HTTP-Response:
@@ -232,7 +232,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage($$"""
 					               Expected that subject
 					               has a ProblemDetails content with type "{{expectedType}}",
-					               but it was type "{{actualType}}" which differs at index 0:
+					               but it had type "{{actualType}}", which differs at index 0:
 					                  ↓ (actual)
 					                 "{{actualType}}"
 					                 "{{expectedType}}"

@@ -4,6 +4,7 @@ using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Helpers;
+using aweXpect.Options;
 using aweXpect.Results;
 
 namespace aweXpect;
@@ -72,12 +73,8 @@ public static partial class ThatHttpRequestMessage
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" was ");
-			Formatter.Format(stringBuilder, _requestUri);
-			stringBuilder.Append(" which ");
-			stringBuilder.Append(new StringDifference(_requestUri, expected));
-		}
+			=> stringBuilder.Append(new StringEqualityOptions(nameof(expected)).IgnoringCase()
+				.GetExtendedFailure(It, Grammars, _requestUri, expected));
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

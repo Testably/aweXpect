@@ -38,15 +38,38 @@ public sealed partial class ThatHttpRequestMessage
 					.WithMessage("""
 					             Expected that subject
 					             has a request URI equal to "https://awexpect.com/awexpect.Web",
-					             but it was "https://awexpect.com/" which differs at index 21:
-					                           ↓ (actual)
-					               "…xpect.com/"
-					               "…xpect.com/awexpect.Web"
-					                           ↑ (expected)
+					             but it was "https://awexpect.com/" with a length of 21, which is shorter than the expected length of 33 and misses:
+					               "awexpect.Web"
 
 					             HTTP-Request:
 					               GET https://awexpect.com/ HTTP/1.1
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenUriHasDifferentCaseBeforeTheDifference_ShouldFail()
+			{
+				HttpRequestMessage subject = RequestBuilder
+					.WithMethod(HttpMethod.Get)
+					.WithUri("https://awexpect.com/ABC");
+
+				async Task Act()
+					=> await That(subject).HasRequestUri("https://awexpect.com/abd");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a request URI equal to "https://awexpect.com/abd",
+					             but it was "https://awexpect.com/ABC", which differs at index 23:
+					                           ↓ (actual)
+					               "…ect.com/ABC"
+					               "…ect.com/abd"
+					                           ↑ (expected)
+
+					             HTTP-Request:
+					               GET https://awexpect.com/ABC HTTP/1.1
+					             """)
+					.Because("the request URI is compared ignoring case, so the difference in case is not reported");
 			}
 
 			[Fact]

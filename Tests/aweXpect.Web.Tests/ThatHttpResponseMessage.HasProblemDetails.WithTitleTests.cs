@@ -45,7 +45,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage($$"""
 					               Expected that subject
 					               has a ProblemDetails content with any type and title "{{expectedTitle}}",
-					               but it had title "{{actualTitle}}" which differs at index 0:
+					               but it had title "{{actualTitle}}", which differs at index 0:
 					                  ↓ (actual)
 					                 "{{actualTitle}}"
 					                 "{{expectedTitle}}"
@@ -60,6 +60,42 @@ public sealed partial class ThatHttpResponseMessage
 					                   "title": "{{actualTitle}}"
 					                 }
 					               """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenTitleDoesNotMatch_WithIgnoringCase_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "my-type",
+					               "title": "foo"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithTitle("FOX").IgnoringCase();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a ProblemDetails content with any type and title "FOX" ignoring case,
+					             but it had title "foo", which differs at index 2:
+					                  ↓ (actual)
+					               "foo"
+					               "FOX"
+					                  ↑ (expected)
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: *
+					               {
+					                 "type": "my-type",
+					                 "title": "foo"
+					               }
+					             """).AsWildcard()
+					.Because("the title is compared ignoring case, so the difference in case is not reported");
 			}
 
 			[Fact]

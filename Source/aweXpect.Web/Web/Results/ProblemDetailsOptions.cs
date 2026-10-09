@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using aweXpect.Core;
+using aweXpect.Helpers;
 using aweXpect.Options;
 
 namespace aweXpect.Web.Results;
@@ -124,6 +126,15 @@ public class ProblemDetailsOptions
 	public ValueTask<bool>
 		IsInstanceConsideredEqualTo(string? instance)
 		=> Instance is null ? new ValueTask<bool>(true) : _instanceOptions.AreConsideredEqual(instance, Instance);
+
+	internal string GetTitleFailure(string it, ExpectationGrammars grammars, string? title)
+		=> _titleOptions.GetExtendedMemberFailure(it, "title", grammars, title, Title);
+
+	internal string GetDetailFailure(string it, ExpectationGrammars grammars, string? detail)
+		=> _detailOptions.GetExtendedMemberFailure(it, "detail", grammars, detail, Detail);
+
+	internal string GetInstanceFailure(string it, ExpectationGrammars grammars, string? instance)
+		=> _instanceOptions.GetExtendedMemberFailure(it, "instance", grammars, instance, Instance);
 
 	/// <inheritdoc cref="object.ToString()" />
 #if NET8_0_OR_GREATER

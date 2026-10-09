@@ -45,7 +45,7 @@ public sealed partial class ThatHttpResponseMessage
 					.WithMessage($$"""
 					               Expected that subject
 					               has a ProblemDetails content with any type and instance "{{expectedInstance}}",
-					               but it had instance "{{actualInstance}}" which differs at index 0:
+					               but it had instance "{{actualInstance}}", which differs at index 0:
 					                  ↓ (actual)
 					                 "{{actualInstance}}"
 					                 "{{expectedInstance}}"

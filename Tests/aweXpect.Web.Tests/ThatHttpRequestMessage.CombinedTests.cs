@@ -25,7 +25,7 @@ public sealed partial class ThatHttpRequestMessage
 				               "foo"
 				               "bar"
 				                ↑ (expected)
-				             and it was "https://awexpect.com/" which differs at index 8:
+				             and it was "https://awexpect.com/", which differs at index 8:
 				                        ↓ (actual)
 				               "https://awexpect.com/"
 				               "https://example.com/"
