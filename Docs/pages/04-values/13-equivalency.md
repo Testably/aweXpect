@@ -199,7 +199,7 @@ All equivalency overloads accept an `options` callback that receives an `Equival
 
 ```csharp
 await Expect.That(album).IsEquivalentTo(expected, o => o
-  .IncludingFields(IncludeMembers.Public | IncludeMembers.Internal)
+  .IncludingFields()
   .IgnoringMember("PlayCount")
   .IgnoringCollectionOrder());
 ```

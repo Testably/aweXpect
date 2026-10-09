@@ -231,7 +231,7 @@ await Expect.That(title).HasLength().Between(8).And(12);
 await Expect.That(title).HasLength().NotGreaterThan(12);
 ```
 
-<PropertyComparisons />
+<PropertyComparisons example="HasLength(10)" />
 
 ## Lines
 

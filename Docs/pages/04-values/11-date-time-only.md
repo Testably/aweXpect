@@ -229,4 +229,4 @@ await Expect.That(startTime).HasMillisecond(189);
 </TabItem>
 </Tabs>
 
-<PropertyComparisons />
+<PropertyComparisons example="HasYear(1969)" />

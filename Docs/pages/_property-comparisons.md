@@ -10,7 +10,7 @@ The `Has…` expectations whose value is a number or a `TimeSpan`, e.g. `HasLeng
 | `LessThanOrEqualTo(x)`    | `NotLessThanOrEqualTo(x)`    | less than or equal to `x`                     |
 | `Between(min).And(max)`   | `NotBetween(min).And(max)`   | between `min` and `max`, both bounds included |
 
-Passing the value directly, e.g. `HasLength(10)`, is a shorthand for `EqualTo`.
+Passing the value directly, e.g. <code>{props.example}</code>, is a shorthand for `EqualTo`.
 
 <details>
 <summary>Comparing with `null` and invalid arguments</summary>
