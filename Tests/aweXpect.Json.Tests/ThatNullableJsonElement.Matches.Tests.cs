@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using aweXpect.Equivalency;
 
 namespace aweXpect.Json.Tests;
 
@@ -401,6 +402,39 @@ public sealed partial class ThatNullableJsonElement
 					=> await That(subject).Matches(new object());
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenItIsWaitsLongerThanTheTimeout_ShouldStopAtTheTimeout()
+			{
+				JsonElement? subject = FromString("{\"foo\": \"bar\"}");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+						{
+							foo = It.Is<string>().That.Satisfies(_ => false).Within(TimeSpan.FromSeconds(30)),
+						})
+						.WithTimeout(TimeSpan.FromMilliseconds(100));
+
+				await That(Act).Throws<XunitException>().Within(TimeSpan.FromSeconds(10))
+					.WithMessage("*but it did not finish within 0:00.100").AsWildcard()
+					.Because("the nested expectation must be canceled by the timeout of the evaluation");
+			}
+
+			[Fact]
+			public async Task WhenPropertyIsNull_AndItIsExpectsAPrefix_ShouldFail()
+			{
+				JsonElement? subject = FromString("{\"foo\": null}");
+
+				async Task Act()
+					=> await That(subject).Matches(new
+					{
+						foo = It.Is<string>().That.StartsWith("a"),
+					});
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*but it differed as $.foo was <null>").AsWildcard()
+					.Because("a null value has no content that could start with the prefix");
 			}
 
 			[Fact]

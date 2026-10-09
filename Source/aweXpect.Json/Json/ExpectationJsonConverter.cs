@@ -3,17 +3,28 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading;
 using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Equivalency;
 using aweXpect.Results;
 
 namespace aweXpect.Json;
 
-internal class ExpectationJsonConverter : JsonConverter<Expectation>
+/// <summary>
+///     Serializes the <c>It.Is…</c> expectations of an expected object, which are then evaluated as part of the evaluation
+///     with the <paramref name="context" /> and the <paramref name="cancellationToken" />.
+/// </summary>
+internal class ExpectationJsonConverter(IEvaluationContext context, CancellationToken cancellationToken)
+	: JsonConverter<Expectation>
 {
 	private const string Prefix = "Expectation:::";
 
 	private readonly Dictionary<Guid, Expectation> _expectations = new();
+
+	public IEvaluationContext Context => context;
+
+	public CancellationToken CancellationToken => cancellationToken;
 
 	public override bool CanConvert(Type typeToConvert)
 		=> typeof(Expectation).IsAssignableFrom(typeToConvert);

@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json;
+using aweXpect.Core;
 using aweXpect.Customization;
 
 namespace aweXpect.Json;
@@ -15,80 +16,44 @@ public static class JsonAwexpectCustomizationExtensions
 	public static JsonCustomization Json(this AwexpectCustomization awexpectCustomization)
 		=> new(awexpectCustomization);
 
-	private sealed class CustomizationValue<TValue>(
-		Func<TValue> getter,
-		Func<TValue, CustomizationLifetime> setter)
-		: ICustomizationValueSetter<TValue>
-	{
-		/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Get()" />
-		public TValue Get() => getter();
-
-		/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Set(TValue)" />
-		public CustomizationLifetime Set(TValue value) => setter(value);
-	}
-
 	/// <summary>
 	///     Customize the JSON settings.
 	/// </summary>
+	/// <remarks>
+	///     Each value is stored on its own, so that it can be set and restored independently of the other values.
+	/// </remarks>
 	public class JsonCustomization
 	{
-		private readonly IAwexpectCustomization _awexpectCustomization;
-
 		internal JsonCustomization(IAwexpectCustomization awexpectCustomization)
 		{
-			_awexpectCustomization = awexpectCustomization;
-			DefaultJsonDocumentOptions = new CustomizationValue<JsonDocumentOptions>(
-				() => Get().DefaultJsonDocumentOptions,
-				v => Update(p => p with
+			DefaultJsonDocumentOptions = new CustomizationValue<JsonDocumentOptions>(awexpectCustomization,
+				"aweXpect.Json.DefaultJsonDocumentOptions", new JsonDocumentOptions
 				{
-					DefaultJsonDocumentOptions = v,
-				}));
-			DefaultJsonSerializerOptions = new CustomizationValue<JsonSerializerOptions>(
-				() => Get().DefaultJsonSerializerOptions,
-				v => Update(p => p with
+					AllowTrailingCommas = true,
+				});
+			DefaultJsonSerializerOptions = new CustomizationValue<JsonSerializerOptions>(awexpectCustomization,
+				"aweXpect.Json.DefaultJsonSerializerOptions", new JsonSerializerOptions
 				{
-					DefaultJsonSerializerOptions = v,
-				}));
+					AllowTrailingCommas = true,
+				},
+				value =>
+				{
+					if (value is null)
+					{
+						throw Tracing.WriteException(
+							new ArgumentNullException(nameof(value), "The 'value' cannot be null."));
+					}
+				});
 		}
 
-		/// <inheritdoc cref="JsonCustomizationValue.DefaultJsonDocumentOptions" />
-		public ICustomizationValueSetter<JsonDocumentOptions> DefaultJsonDocumentOptions { get; }
-
-		/// <inheritdoc cref="JsonCustomizationValue.DefaultJsonSerializerOptions" />
-		public ICustomizationValueSetter<JsonSerializerOptions> DefaultJsonSerializerOptions { get; }
-
-		/// <summary>
-		///     Get the stored <see cref="JsonCustomizationValue" />.
-		/// </summary>
-		public JsonCustomizationValue Get()
-			=> _awexpectCustomization.Get(nameof(Json), new JsonCustomizationValue());
-
-		/// <summary>
-		///     Update the stored <see cref="JsonCustomizationValue" />.
-		/// </summary>
-		public CustomizationLifetime Update(Func<JsonCustomizationValue, JsonCustomizationValue> update)
-			=> _awexpectCustomization.Set(nameof(Json), update(Get()));
-	}
-
-	/// <summary>
-	///     Customize the JSON settings.
-	/// </summary>
-	public record JsonCustomizationValue
-	{
 		/// <summary>
 		///     The default <see cref="JsonDocumentOptions" />.
 		/// </summary>
-		public JsonDocumentOptions DefaultJsonDocumentOptions { get; init; } = new()
-		{
-			AllowTrailingCommas = true,
-		};
+		public ICustomizationValueSetter<JsonDocumentOptions> DefaultJsonDocumentOptions { get; }
 
 		/// <summary>
 		///     The default <see cref="JsonSerializerOptions" />.
 		/// </summary>
-		public JsonSerializerOptions DefaultJsonSerializerOptions { get; init; } = new()
-		{
-			AllowTrailingCommas = true,
-		};
+		public ICustomizationValueSetter<JsonSerializerOptions> DefaultJsonSerializerOptions { get; }
 	}
 }

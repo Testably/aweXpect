@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using aweXpect.Core;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 
 namespace aweXpect.Json;
@@ -15,6 +16,7 @@ internal class JsonValidation : IJsonObjectResult,
 	IJsonPropertyResult<IJsonArrayResult>,
 	IJsonPropertyResult<IJsonObjectResult>
 {
+	private readonly IEvaluationContext _context;
 	private readonly Stack<JsonElement?> _currentElements = new();
 	private readonly Stack<string> _currentPath = new();
 	private readonly JsonElement? _element;
@@ -26,15 +28,18 @@ internal class JsonValidation : IJsonObjectResult,
 	private readonly JsonValueKind _valueKind;
 	private int? _amount;
 
-	public JsonValidation(JsonElement? element, JsonValueKind valueKind, JsonOptions options)
-		: this("$", element, valueKind, options)
+	public JsonValidation(JsonElement? element, JsonValueKind valueKind, JsonOptions options,
+		IEvaluationContext context)
+		: this("$", element, valueKind, options, context)
 	{
 	}
 
-	private JsonValidation(string path, JsonElement? element, JsonValueKind valueKind, JsonOptions options)
+	private JsonValidation(string path, JsonElement? element, JsonValueKind valueKind, JsonOptions options,
+		IEvaluationContext context)
 	{
 		_valueKind = valueKind;
 		_options = options;
+		_context = context;
 		_element = element;
 		_currentElements.Push(element);
 		_expectationBuilder =
@@ -120,7 +125,7 @@ internal class JsonValidation : IJsonObjectResult,
 #pragma warning disable CA1869
 				JsonSerializerOptions serializerOptions = new(JsonSerializerOptions.Default);
 #pragma warning restore CA1869
-				ExpectationJsonConverter? converter = new();
+				ExpectationJsonConverter converter = new(_context, _context.Cancellation.Token);
 				serializerOptions.Converters.Add(converter);
 				using JsonDocument expectedDocument =
 					JsonDocument.Parse(JsonSerializer.Serialize(expectedValue, serializerOptions),
@@ -174,7 +179,7 @@ internal class JsonValidation : IJsonObjectResult,
 			string currentPath = CurrentPath;
 			_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath).Append(' '));
 
-			JsonValidation jsonValidation = new(CurrentPath, currentElement, JsonValueKind.Array, _options);
+			JsonValidation jsonValidation = new(CurrentPath, currentElement, JsonValueKind.Array, _options, _context);
 			expectation.Invoke(jsonValidation);
 			_expectationBuilder.Add(jsonValidation.GetExpectation);
 
@@ -226,7 +231,7 @@ internal class JsonValidation : IJsonObjectResult,
 			string currentPath = CurrentPath;
 			_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath).Append(' '));
 
-			JsonValidation jsonValidation = new(CurrentPath, currentElement, JsonValueKind.Object, _options);
+			JsonValidation jsonValidation = new(CurrentPath, currentElement, JsonValueKind.Object, _options, _context);
 			expectation.Invoke(jsonValidation);
 
 			_expectationBuilder.Add(jsonValidation.GetExpectation);
@@ -346,7 +351,7 @@ internal class JsonValidation : IJsonObjectResult,
 #pragma warning disable CA1869
 		JsonSerializerOptions serializerOptions = new(JsonSerializerOptions.Default);
 #pragma warning restore CA1869
-		ExpectationJsonConverter? converter = new();
+		ExpectationJsonConverter converter = new(_context, _context.Cancellation.Token);
 		serializerOptions.Converters.Add(converter);
 		using JsonDocument expectedDocument =
 			JsonDocument.Parse(JsonSerializer.Serialize(expected, serializerOptions), _options.DocumentOptions);
@@ -406,7 +411,7 @@ internal class JsonValidation : IJsonObjectResult,
 #pragma warning disable CA1869
 		JsonSerializerOptions serializerOptions = new(JsonSerializerOptions.Default);
 #pragma warning restore CA1869
-		ExpectationJsonConverter? converter = new();
+		ExpectationJsonConverter converter = new(_context, _context.Cancellation.Token);
 		serializerOptions.Converters.Add(converter);
 		using JsonDocument expectedDocument =
 			JsonDocument.Parse(JsonSerializer.Serialize(expected, serializerOptions), _options.DocumentOptions);
@@ -434,7 +439,7 @@ internal class JsonValidation : IJsonObjectResult,
 		_expectationBuilder.Add((sb, grammars) => sb.Append(And(grammars)).Append(currentPath).Append(' '));
 		JsonElement? currentElement = _currentElements.Pop();
 
-		JsonValidation jsonValidation = new(CurrentPath, currentElement, kind, _options);
+		JsonValidation jsonValidation = new(CurrentPath, currentElement, kind, _options, _context);
 		expectation.Invoke(jsonValidation);
 		_expectationBuilder.Add(jsonValidation.GetExpectation);
 

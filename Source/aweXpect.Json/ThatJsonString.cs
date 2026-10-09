@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Json;
 
@@ -21,11 +22,12 @@ public static partial class ThatJsonString
 		string expectedExpression,
 		JsonOptions options)
 		: ConstraintResult.WithNotNullValue<string?>(it, grammars),
-			IAsyncConstraint<string?>
+			IAsyncContextConstraint<string?>
 	{
 		private JsonElementValidator.JsonComparisonResult? _comparisonResult;
 
-		public async ValueTask<ConstraintResult> IsMetBy(string? actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(string? actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			Actual = actual;
 			if (actual is null)
@@ -39,7 +41,7 @@ public static partial class ThatJsonString
 #pragma warning disable CA1869
 			JsonSerializerOptions serializerOptions = new(JsonSerializerOptions.Default);
 #pragma warning restore CA1869
-			ExpectationJsonConverter? converter = new();
+			ExpectationJsonConverter converter = new(context, cancellationToken);
 			serializerOptions.Converters.Add(converter);
 			using JsonDocument expectedDocument = JsonDocument.Parse(
 				JsonSerializer.Serialize(expected, serializerOptions),

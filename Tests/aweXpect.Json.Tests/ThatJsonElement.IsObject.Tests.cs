@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using aweXpect.Equivalency;
 
 namespace aweXpect.Json.Tests;
 
@@ -141,6 +142,38 @@ public sealed partial class ThatJsonElement
 					             is an object and $.foo matches 2,
 					             but it differed as $.foo was 1 instead of 2
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenMatchingItIsOnNullProperty_ShouldFail()
+			{
+				JsonElement subject = FromString("{\"foo\": null}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo").Matching(It.Is<string>().That.StartsWith("a")));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is an object and $.foo matches It.Is<string>().That.StartsWith("a"),
+					             but it differed as $.foo was <null>
+					             """)
+					.Because("a null value has no content that could start with the prefix");
+			}
+
+			[Fact]
+			public async Task WhenMatchingItIsWaitsLongerThanTheTimeout_ShouldStopAtTheTimeout()
+			{
+				JsonElement subject = FromString("{\"foo\": \"bar\"}");
+
+				async Task Act()
+					=> await That(subject).IsObject(o => o.With("foo")
+							.Matching(It.Is<string>().That.Satisfies(_ => false).Within(TimeSpan.FromSeconds(30))))
+						.WithTimeout(TimeSpan.FromMilliseconds(100));
+
+				await That(Act).Throws<XunitException>().Within(TimeSpan.FromSeconds(10))
+					.WithMessage("*but it did not finish within 0:00.100").AsWildcard()
+					.Because("the nested expectation must be canceled by the timeout of the evaluation");
 			}
 
 			[Fact]

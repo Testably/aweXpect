@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Helpers;
 using aweXpect.Json;
 using aweXpect.Results;
@@ -49,14 +50,14 @@ public static partial class ThatJsonElement
 		Func<IJsonArrayResult, IJsonArrayResult> expectation,
 		JsonOptions options)
 		: ConstraintResult.WithValue<JsonElement>(it, grammars),
-			IValueConstraint<JsonElement>
+			IContextConstraint<JsonElement>
 	{
 		private JsonValidation? _jsonValidation;
 
-		public ConstraintResult IsMetBy(JsonElement actual)
+		public ConstraintResult IsMetBy(JsonElement actual, IEvaluationContext context)
 		{
 			Actual = actual;
-			_jsonValidation = new JsonValidation(actual, JsonValueKind.Array, options);
+			_jsonValidation = new JsonValidation(actual, JsonValueKind.Array, options, context);
 			expectation(_jsonValidation);
 
 			Outcome = _jsonValidation.IsMet() ? Outcome.Success : Outcome.Failure;

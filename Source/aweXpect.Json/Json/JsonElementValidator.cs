@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core.Constraints;
 using aweXpect.Customization;
 using aweXpect.Equivalency;
-using aweXpect.Helpers;
 
 namespace aweXpect.Json;
 
@@ -21,7 +19,7 @@ internal static class JsonElementValidator
 		JsonElement actualElement,
 		JsonElement expectedElement,
 		JsonOptions options,
-		ExpectationJsonConverter? converter)
+		ExpectationJsonConverter? converter = null)
 		=> Compare(new JsonComparisonResult(), "$", actualElement, expectedElement, options, converter);
 
 	public static Task<JsonComparisonResult> Compare(
@@ -295,16 +293,21 @@ internal static class JsonElementValidator
 		if (converter?.TryGetExpectation(expectedElement, out EquivalencyExpectationBuilder? expectationBuilder) ==
 		    true)
 		{
-			StringBuilder? failureBuilder = new();
-
-			var value = GetValue(actualElement);
-			ConstraintResult constraintResult = await expectationBuilder.IsMetBy(value, EvaluationContext.None, CancellationToken.None);
-
-			if (constraintResult.Outcome == Outcome.Failure)
+			ConstraintResult constraintResult = await expectationBuilder.IsMetBy(GetValue(actualElement),
+				converter.Context, converter.CancellationToken);
+			if (constraintResult.Outcome == Outcome.Success)
 			{
-				constraintResult.AppendResult(failureBuilder);
-				result.AddError(path, failureBuilder.ToString().Trim());
+				return true;
 			}
+
+			if (constraintResult.Outcome is not (Outcome.Failure or Outcome.FailureBothWays))
+			{
+				converter.CancellationToken.ThrowIfCancellationRequested();
+			}
+
+			StringBuilder failureBuilder = new();
+			constraintResult.AppendResult(failureBuilder);
+			result.AddError(path, failureBuilder.ToString().Trim());
 			return true;
 		}
 

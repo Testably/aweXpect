@@ -8,31 +8,6 @@
 
 Extensions on System.Text.Json for [aweXpect](https://github.com/Testably/aweXpect).
 
-## Object serializable
-
-You can verify that an object is JSON serializable:
-
-```csharp
-MyObject subject = new();
-
-await Expect.That(subject).IsJsonSerializable();
-```
-
-This will try to serialize and deserialize the provided object and check that they are equivalent.
-
-You can provide both JSON serialization and equivalency options:
-
-```csharp
-MyObject subject = new();
-
-await Expect.That(subject).IsJsonSerializable(
-    new JsonSerializerOptions
-    {
-        IncludeFields = includeFields,
-    },
-    o => o.IgnoringMember("MyPropertyToIgnore"));
-```
-
 ## String comparison as JSON
 
 You can compare two strings for JSON equivalency:
@@ -47,8 +22,11 @@ string expected = """
                   }
                   """;
 
-await Expect.That(subject).Is(expected).AsJson();
+await Expect.That(subject).IsEqualTo(expected).AsJson();
 ```
+
+The expected string must be valid JSON, otherwise an `ArgumentException` is thrown. As JSON is compared by its
+structure, `AsJson()` cannot be combined with `IgnoringCase()` or `Using(comparer)`.
 
 ## Validation
 
@@ -249,3 +227,24 @@ await Expect.That(subject).IsJsonSerializable<MyClass>(
     new JsonSerializerOptions { IncludeFields = true },
     e => e.IgnoringMember("Foo"));
 ```
+
+## Customization
+
+You can change the default
+[`JsonDocumentOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsondocumentoptions), used to
+parse JSON strings, and the default
+[`JsonSerializerOptions`](https://learn.microsoft.com/en-us/dotnet/api/system.text.json.jsonserializeroptions), used to
+format JSON values. Both allow trailing commas by default. Each value is set on its own and restored when the returned
+lifetime is disposed:
+
+```csharp
+using (Customize.aweXpect.Json().DefaultJsonDocumentOptions.Set(new JsonDocumentOptions
+       {
+           AllowTrailingCommas = false,
+       }))
+{
+    // parses JSON strings without allowing trailing commas
+}
+```
+
+To change a value for all tests, set it on `Customize.aweXpect.Global.Json()` instead.

@@ -166,25 +166,169 @@ public sealed partial class ThatJsonString
 					"'F' is an invalid start of a value. LineNumber: 0 | BytePositionInLine: 14.")]
 				[InlineData("{\"foo\":{\"bar\":[1,2}}",
 					"'}' is invalid without a matching open. LineNumber: 0 | BytePositionInLine: 18.")]
-				public async Task WhenExpectedIsIncorrectJson_ShouldFail(string expected, string errorMessage)
+				public async Task WhenExpectedIsIncorrectJson_ShouldThrowArgumentException(string expected,
+					string errorMessage)
 				{
 					string subject = "{}";
 
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsJson(o => o.IgnoringAdditionalProperties());
 
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage($"The expected JSON is invalid: {errorMessage}");
+				}
+
+				[Fact]
+				public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+				{
+					string subject = "{}";
+
+					async Task Act()
+						=> await That(subject).IsEqualTo(null).AsJson();
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithMessage("The expected JSON cannot be null.*").AsWildcard()
+						.Because("a null expected value is no JSON to compare with");
+				}
+
+				[Fact]
+				public async Task WhenIgnoringCase_ShouldThrowInvalidOperationException()
+				{
+					string subject = "{}";
+
+					async Task Act()
+						=> await That(subject).IsEqualTo("{}").AsJson().IgnoringCase();
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("IgnoringCase cannot be combined with AsJson.")
+						.Because("JSON is compared by its structure, so the casing option cannot be honoured");
+				}
+
+				[Fact]
+				public async Task WhenUsingComparer_ShouldThrowInvalidOperationException()
+				{
+					string subject = "{}";
+
+					async Task Act()
+						=> await That(subject).IsEqualTo("{}").Using(StringComparer.Ordinal).AsJson();
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("Using cannot be combined with AsJson.")
+						.Because("JSON is compared by its structure, so a custom comparer cannot be honoured");
+				}
+
+				[Fact]
+				public async Task WhenCombinedWithAnotherMatchType_ShouldThrowInvalidOperationException()
+				{
+					string subject = "{}";
+
+					async Task Act()
+						=> await That(subject).IsEqualTo("{}").AsJson().AsWildcard();
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("AsWildcard cannot be combined with AsJson.");
+				}
+
+				[Fact]
+				public async Task WhenSpecifiedTwice_ShouldThrowInvalidOperationException()
+				{
+					string subject = "{}";
+
+					async Task Act()
+						=> await That(subject).IsEqualTo("{}").AsJson().AsJson();
+
+					await That(Act).Throws<InvalidOperationException>()
+						.WithMessage("AsJson cannot be specified more than once.");
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsIncorrectJsonInWhose_ShouldUseTheMemberName()
+				{
+					JsonContainer subject = new("foo");
+
+					async Task Act()
+						=> await That(subject).Whose(x => x.Json, j => j.IsEqualTo("{}").AsJson());
+
 					await That(Act).Throws<XunitException>()
-						.WithMessage($$"""
-						               Expected that subject
-						               is JSON equivalent to {{expected}},
-						               but could not parse expected: {{errorMessage}}
+						.WithMessage("""
+						             Expected that subject
+						             whose Json is JSON equivalent to {},
+						             but Json could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
 
-						               Actual:
-						               {}
+						             Actual (Json):
+						             foo
 
-						               Expected:
-						               {{expected}}
-						               """);
+						             Expected (Json):
+						             {}
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenCollectionContainsNullItem_ShouldFail()
+				{
+					string?[] subject = ["{}", null,];
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo("{}").AsJson();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is JSON equivalent to {} for all items,
+						             but only 1 of 2 were
+
+						             Not matching items:
+						             [
+						               <null>
+						             ]
+
+						             Collection:
+						             [
+						               "{}",
+						               <null>
+						             ]
+						             """)
+						.Because("a null item is no JSON");
+				}
+
+				[Fact]
+				public async Task WithContains_ShouldUseTheItemWording()
+				{
+					string[] subject = ["{\"a\":2}",];
+
+					async Task Act()
+						=> await That(subject).Contains("{\"a\":1}").AsJson();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             contains an item JSON equivalent to {"a":1} at least once,
+						             but it did not contain it
+
+						             Collection:
+						             [
+						               "{\"a\":2}"
+						             ]
+						             """);
+				}
+
+				[Fact]
+				public async Task WithMessage_ShouldUseTheWithWording()
+				{
+					Action subject = () => throw new InvalidOperationException("{\"a\":2}");
+
+					async Task Act()
+						=> await That(subject).Throws<InvalidOperationException>().WithMessage("{\"a\":1}").AsJson();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             throws an InvalidOperationException with message JSON equivalent to {"a":1},
+						             but message differed as $.a was 2 instead of 1
+
+						             Message:
+						             {"a":2}
+						             """);
 				}
 
 				[Theory]
@@ -269,7 +413,7 @@ public sealed partial class ThatJsonString
 				}
 
 				[Fact]
-				public async Task WhenSubjectAndExpectedAreNull_ShouldFail()
+				public async Task WhenSubjectAndExpectedAreNull_ShouldThrowArgumentNullException()
 				{
 					string? subject = null;
 					string? expected = null;
@@ -277,12 +421,8 @@ public sealed partial class ThatJsonString
 					async Task Act()
 						=> await That(subject).IsEqualTo(expected).AsJson();
 
-					await That(Act).Throws<XunitException>()
-						.WithMessage("""
-						             Expected that subject
-						             is JSON equivalent to ,
-						             but it was <null>
-						             """);
+					await That(Act).Throws<ArgumentNullException>()
+						.WithMessage("The expected JSON cannot be null.*").AsWildcard();
 				}
 
 				[Theory]
@@ -402,7 +542,7 @@ public sealed partial class ThatJsonString
 						.WithMessage($$"""
 						               Expected that subject
 						               is JSON equivalent to {},
-						               but could not parse subject: {{errorMessage}}
+						               but it could not be parsed as JSON: {{errorMessage}}
 
 						               Actual:
 						               {{subject}}
@@ -446,6 +586,71 @@ public sealed partial class ThatJsonString
 						=> await That(subject).IsEqualTo(expected).AsJson();
 
 					await That(Act).DoesNotThrow().Because(because);
+				}
+
+				private sealed record JsonContainer(string Json);
+			}
+
+			public sealed class NegatedTests
+			{
+				[Fact]
+				public async Task WhenExpectedIsIncorrectJson_ShouldThrowArgumentException()
+				{
+					string subject = "{}";
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo("foo").AsJson();
+
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage("The expected JSON is invalid: *").AsWildcard()
+						.Because("an invalid expected JSON would let the negation pass for every subject");
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsEquivalent_ShouldFail()
+				{
+					string subject = "{}";
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo("{ }").AsJson();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not JSON equivalent to { },
+						             but it was "{}"
+
+						             Expected:
+						             { }
+						             """);
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNotEquivalent_ShouldSucceed()
+				{
+					string subject = "{\"foo\":1}";
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo("{}").AsJson();
+
+					await That(Act).DoesNotThrow();
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsNull_ShouldFail()
+				{
+					string? subject = null;
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo("{}").AsJson();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not JSON equivalent to {},
+						             but it was <null>
+						             """)
+						.Because("a null subject has no JSON content to inspect");
 				}
 			}
 		}

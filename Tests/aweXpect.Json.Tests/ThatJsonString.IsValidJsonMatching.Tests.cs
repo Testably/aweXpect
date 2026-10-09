@@ -480,6 +480,100 @@ public sealed partial class ThatJsonString
 			}
 
 			[Fact]
+			public async Task WhenPropertyIsNull_AndItIsExpectsAPrefix_ShouldFail()
+			{
+				string subject = "{\"foo\": null}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						foo = It.Is<string>().That.StartsWith("a"),
+					});
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	foo = It.Is<string>().That.StartsWith("a"),
+					             },
+					             but it differed as $.foo was <null>
+					             """)
+					.Because("a null value has no content that could start with the prefix");
+			}
+
+			[Fact]
+			public async Task WhenPropertyIsNull_AndItIsExpectsNoPrefix_ShouldFail()
+			{
+				string subject = "{\"foo\": null}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						foo = It.Is<string>().That.DoesNotStartWith("a"),
+					});
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	foo = It.Is<string>().That.DoesNotStartWith("a"),
+					             },
+					             but it differed as $.foo was <null>
+					             """)
+					.Because("a null value has no content, so the negated expectation fails as well");
+			}
+
+			[Fact]
+			public async Task WhenItIsPredicateThrows_ShouldFail()
+			{
+				string subject = "{\"foo\": \"bar\"}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+					{
+						foo = It.Is<string>().That.Satisfies(_ => throw new InvalidOperationException("Yesterday")),
+					});
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	foo = It.Is<string>().That.Satisfies(_ => throw new InvalidOperationException("Yesterday")),
+					             },
+					             but it differed as $.foo the predicate did throw an InvalidOperationException:
+					               Yesterday
+					             """)
+					.Because("a predicate that throws answered nothing, so it must not count as met");
+			}
+
+			[Fact]
+			public async Task WhenItIsWaitsLongerThanTheTimeout_ShouldStopAtTheTimeout()
+			{
+				string subject = "{\"foo\": \"bar\"}";
+
+				async Task Act()
+					=> await That(subject).IsValidJsonMatching(new
+						{
+							foo = It.Is<string>().That.Satisfies(_ => false).Within(TimeSpan.FromSeconds(30)),
+						})
+						.WithTimeout(TimeSpan.FromMilliseconds(100));
+
+				await That(Act).Throws<XunitException>().Within(TimeSpan.FromSeconds(10))
+					.WithMessage("""
+					             Expected that subject
+					             is valid JSON which matches new
+					             {
+					             	foo = It.Is<string>().That.Satisfies(_ => false).Within(TimeSpan.FromSeconds(30)),
+					             },
+					             but it did not finish within 0:00.100
+					             """)
+					.Because("the nested expectation must be canceled by the timeout of the evaluation");
+			}
+
+			[Fact]
 			public async Task WhenPropertyDoesNotMatchItIsObject_ShouldFail()
 			{
 				string subject = """
