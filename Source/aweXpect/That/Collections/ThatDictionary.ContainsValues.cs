@@ -132,10 +132,15 @@ public static partial class ThatDictionary
 		private List<TValue>? _existingValues;
 		private List<TValue>? _missingValues;
 
+		/// <remarks>
+		///     The expected values are validated first, so that an unusable pattern is rejected whichever entries the
+		///     subject has.
+		/// </remarks>
 		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			options.ValidateExpectedItems(expected);
 			if (actual is not null)
 			{
 				IOptionsEquality<TValue> evaluationOptions = options.ForEvaluation(context, cancellationToken);

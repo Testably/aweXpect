@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
@@ -123,10 +124,15 @@ public static partial class ThatDictionary
 	{
 		private string? _failure;
 
+		/// <remarks>
+		///     The expected values are validated first, so that an unusable pattern is rejected whichever entries the
+		///     subject has.
+		/// </remarks>
 		public async ValueTask<ConstraintResult> IsMetBy(TDictionary? actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
+			ValidateExpectedValues();
 			if (actual is null)
 			{
 				Outcome = expected is null ? Outcome.Success : Outcome.Failure;
@@ -190,6 +196,14 @@ public static partial class ThatDictionary
 		{
 			AddDictionaryContext(contexts, Actual);
 			contexts.AddOptionsContexts(options);
+		}
+
+		private void ValidateExpectedValues()
+		{
+			if (expected is not null)
+			{
+				options.ValidateExpectedItems(expected.Select(pair => pair.Value));
+			}
 		}
 
 		/// <summary>

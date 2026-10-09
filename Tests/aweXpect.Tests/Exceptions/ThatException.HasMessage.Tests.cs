@@ -141,6 +141,43 @@ public sealed partial class ThatException
 		public sealed class EqualToTests
 		{
 			[Test]
+			public async Task AsNumber_WhenExpectedIsNoNumber_ShouldThrowArgumentException()
+			{
+				Exception subject = new("1");
+
+				async Task Act()
+					=> await That(subject).HasMessage().EqualTo("foo").AsNumber();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The value \"foo\" is no number.").AsPrefix();
+			}
+
+			[Test]
+			public async Task AsNumber_WhenReadingTheMessageThrows_ShouldThrowArgumentException()
+			{
+				Exception subject = new ThrowingMessageException(new InvalidOperationException("message failed"));
+
+				async Task Act()
+					=> await That(subject).HasMessage().EqualTo("foo").AsNumber();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The value \"foo\" is no number.").AsPrefix()
+					.Because("an unusable expected value is rejected also when no message is compared with it");
+			}
+
+			[Test]
+			public async Task AsNumber_WhenSubjectIsNull_ShouldThrowArgumentException()
+			{
+				Exception? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasMessage().EqualTo("foo").AsNumber();
+
+				await That(Act).Throws<ArgumentException>()
+					.WithMessage("The value \"foo\" is no number.").AsPrefix();
+			}
+
+			[Test]
 			public async Task AsRegex_WhenExpectedIsAnEmptyPattern_ShouldThrowArgumentException()
 			{
 				Exception subject = new("foo");
