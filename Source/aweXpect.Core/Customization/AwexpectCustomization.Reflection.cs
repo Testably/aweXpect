@@ -18,12 +18,14 @@ public partial class AwexpectCustomization
 	/// <summary>
 	///     Customize the reflection settings.
 	/// </summary>
-	public class ReflectionCustomization
+	public class ReflectionCustomization : IAwexpectCustomization
 	{
 		private const string KeyPrefix = "aweXpect.Reflection.";
+		private readonly IAwexpectCustomization _awexpectCustomization;
 
 		internal ReflectionCustomization(IAwexpectCustomization awexpectCustomization)
 		{
+			_awexpectCustomization = awexpectCustomization;
 			ExcludedAssemblyPrefixes = new CopiedOnGet(new CustomizationValue<string[]>(awexpectCustomization,
 				KeyPrefix + nameof(ExcludedAssemblyPrefixes),
 				[
@@ -56,6 +58,14 @@ public partial class AwexpectCustomization
 		///     - DynamicProxyGenAssembly2
 		/// </remarks>
 		public ICustomizationValueSetter<string[]> ExcludedAssemblyPrefixes { get; }
+
+		/// <inheritdoc cref="IAwexpectCustomization.Get{TValue}(string, TValue)" />
+		TValue IAwexpectCustomization.Get<TValue>(string key, TValue defaultValue)
+			=> _awexpectCustomization.Get(key, defaultValue);
+
+		/// <inheritdoc cref="IAwexpectCustomization.Set{TValue}(string, TValue)" />
+		CustomizationLifetime IAwexpectCustomization.Set<TValue>(string key, TValue value)
+			=> _awexpectCustomization.Set(key, value);
 
 		/// <summary>
 		///     Returns a copy of the stored array, so that changing it cannot bypass the scoping of the setting.

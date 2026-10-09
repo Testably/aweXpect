@@ -21,7 +21,7 @@ public partial class AwexpectCustomization
 	/// <summary>
 	///     Customize the settings.
 	/// </summary>
-	public class SettingsCustomization
+	public class SettingsCustomization : IAwexpectCustomization
 	{
 		private const string KeyPrefix = "aweXpect.Settings.";
 
@@ -30,8 +30,11 @@ public partial class AwexpectCustomization
 		/// </summary>
 		internal const string TestCancellationKey = KeyPrefix + nameof(TestCancellation);
 
+		private readonly IAwexpectCustomization _awexpectCustomization;
+
 		internal SettingsCustomization(IAwexpectCustomization awexpectCustomization)
 		{
+			_awexpectCustomization = awexpectCustomization;
 			DefaultCheckInterval = new CustomizationValue<TimeSpan>(awexpectCustomization,
 				KeyPrefix + nameof(DefaultCheckInterval), TimeSpan.FromMilliseconds(100),
 				interval =>
@@ -120,5 +123,13 @@ public partial class AwexpectCustomization
 		///     If set, applies the cancellation logic for all tests.
 		/// </summary>
 		public ICustomizationValueSetter<TestCancellation?> TestCancellation { get; }
+
+		/// <inheritdoc cref="IAwexpectCustomization.Get{TValue}(string, TValue)" />
+		TValue IAwexpectCustomization.Get<TValue>(string key, TValue defaultValue)
+			=> _awexpectCustomization.Get(key, defaultValue);
+
+		/// <inheritdoc cref="IAwexpectCustomization.Set{TValue}(string, TValue)" />
+		CustomizationLifetime IAwexpectCustomization.Set<TValue>(string key, TValue value)
+			=> _awexpectCustomization.Set(key, value);
 	}
 }

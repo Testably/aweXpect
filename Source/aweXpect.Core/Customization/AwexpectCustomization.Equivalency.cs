@@ -19,12 +19,14 @@ public partial class AwexpectCustomization
 	/// <summary>
 	///     Customize the equivalency settings.
 	/// </summary>
-	public class EquivalencyCustomization
+	public class EquivalencyCustomization : IAwexpectCustomization
 	{
 		private const string KeyPrefix = "aweXpect.Equivalency.";
+		private readonly IAwexpectCustomization _awexpectCustomization;
 
 		internal EquivalencyCustomization(IAwexpectCustomization awexpectCustomization)
 		{
+			_awexpectCustomization = awexpectCustomization;
 			DefaultEquivalencyOptions = new CustomizationValue<EquivalencyOptions>(awexpectCustomization,
 				KeyPrefix + nameof(DefaultEquivalencyOptions), new EquivalencyOptions(),
 				options => options.ThrowIfNull());
@@ -34,5 +36,13 @@ public partial class AwexpectCustomization
 		///     The default <see cref="EquivalencyOptions" />.
 		/// </summary>
 		public ICustomizationValueSetter<EquivalencyOptions> DefaultEquivalencyOptions { get; }
+
+		/// <inheritdoc cref="IAwexpectCustomization.Get{TValue}(string, TValue)" />
+		TValue IAwexpectCustomization.Get<TValue>(string key, TValue defaultValue)
+			=> _awexpectCustomization.Get(key, defaultValue);
+
+		/// <inheritdoc cref="IAwexpectCustomization.Set{TValue}(string, TValue)" />
+		CustomizationLifetime IAwexpectCustomization.Set<TValue>(string key, TValue value)
+			=> _awexpectCustomization.Set(key, value);
 	}
 }
