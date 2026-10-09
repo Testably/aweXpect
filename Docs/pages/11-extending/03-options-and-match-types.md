@@ -1,15 +1,17 @@
 # Options and match types
 
-The samples on this page use the following namespaces:
+<details>
+<summary>Namespaces used on this page</summary>
 
 ```csharp
-using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Formatting;
 using aweXpect.Options;
 using aweXpect.Results;
 using static aweXpect.Formatting.Format;
 ```
+
+</details>
 
 ## Options
 

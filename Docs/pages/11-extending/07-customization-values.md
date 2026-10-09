@@ -3,13 +3,16 @@
 You can add your own [customizations](../03-how-it-works/07-configuration.md) on top of the `AwexpectCustomization`
 class by adding extension methods.
 
-The samples on this page use the following namespaces:
+<details>
+<summary>Namespaces used on this page</summary>
 
 ```csharp
 using System.Text.Json;
 using aweXpect.Core;
 using aweXpect.Customization;
 ```
+
+</details>
 
 ## Add a simple customization value
 

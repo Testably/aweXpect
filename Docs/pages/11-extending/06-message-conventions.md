@@ -3,7 +3,8 @@
 A failure message of aweXpect reads like one English sentence. The built-in expectations follow the conventions on
 this page, so that an extension that follows them as well reads like part of the library.
 
-The samples on this page use the following namespaces:
+<details>
+<summary>Namespaces used on this page</summary>
 
 ```csharp
 using System.Text;
@@ -12,6 +13,8 @@ using aweXpect.Core.Constraints;
 using aweXpect.Formatting;
 using static aweXpect.Formatting.Format;
 ```
+
+</details>
 
 ## Shape of a failure message
 

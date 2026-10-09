@@ -24,12 +24,15 @@ Keep your extensions trimmable and AOT compatible like aweXpect itself, as descr
 
 ## Your first expectation
 
-The samples in this section use the following namespaces:
+<details>
+<summary>Namespaces used in this section</summary>
 
 ```csharp
 using aweXpect.Core;
 using aweXpect.Results;
 ```
+
+</details>
 
 The samples on this and the following pages verify tracks of the following type, such as "Love Me Do" (2:22) or
 "Hey Jude" (7:11):

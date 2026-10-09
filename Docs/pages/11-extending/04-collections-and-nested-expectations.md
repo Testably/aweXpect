@@ -1,13 +1,10 @@
 # Collections and nested expectations
 
-The samples on this page use the following namespaces:
+<details>
+<summary>Namespaces used on this page</summary>
 
 ```csharp
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
@@ -15,6 +12,8 @@ using aweXpect.Equivalency;
 using aweXpect.Options;
 using aweXpect.Results;
 ```
+
+</details>
 
 ## Collection subjects
 
