@@ -1,6 +1,7 @@
 # Constraints and results
 
-The samples on this page use the following namespaces:
+<details>
+<summary>Namespaces used on this page</summary>
 
 ```csharp
 using System.Text;
@@ -10,6 +11,8 @@ using aweXpect.Formatting;
 using aweXpect.Results;
 using static aweXpect.Formatting.Format;
 ```
+
+</details>
 
 ## Constraints
 
