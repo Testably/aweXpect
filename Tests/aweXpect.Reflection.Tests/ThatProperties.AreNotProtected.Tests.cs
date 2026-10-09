@@ -68,7 +68,7 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that *
 					             at least one is protected,
-					             but none were
+					             but it contained no protected items
 
 					             Collection:
 					             *

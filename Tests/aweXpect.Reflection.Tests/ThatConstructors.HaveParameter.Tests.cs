@@ -47,7 +47,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter with name "value",
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -105,7 +105,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -147,7 +147,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -189,7 +189,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value",
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -215,7 +215,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "count",
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -273,7 +273,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -315,7 +315,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value",
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -341,7 +341,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "count",
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -379,7 +379,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -403,7 +403,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "count",
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -427,7 +427,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "count",
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -481,7 +481,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -521,7 +521,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value",
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -551,7 +551,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int at index 0,
-					             but all did
+					             but it only contained constructors with a matching parameter
 
 					             Collection:
 					             [
@@ -577,7 +577,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter with name "value",
-					             but all did
+					             but it only contained constructors with a matching parameter
 
 					             Collection:
 					             [
@@ -620,7 +620,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int,
-					             but all did
+					             but it only contained constructors with a matching parameter
 
 					             Collection:
 					             [
@@ -663,7 +663,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int with name "value",
-					             but all did
+					             but it only contained constructors with a matching parameter
 
 					             Collection:
 					             [
@@ -706,7 +706,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int,
-					             but all did
+					             but it only contained constructors with a matching parameter
 
 					             Collection:
 					             [
@@ -749,7 +749,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int with name "value",
-					             but all did
+					             but it only contained constructors with a matching parameter
 
 					             Collection:
 					             [
@@ -792,7 +792,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have parameter of type int with in modifier,
-					             but all did
+					             but it only contained constructors with a matching parameter
 
 					             Collection:
 					             [
@@ -925,7 +925,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int at index 0,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -1073,7 +1073,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int at index 0,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [

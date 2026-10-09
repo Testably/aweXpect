@@ -81,7 +81,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that *
 					             not all are protected internal,
-					             but all were
+					             but it only contained protected internal items
 
 					             Collection:
 					             [

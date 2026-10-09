@@ -31,7 +31,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -74,7 +74,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter with name "value",
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -97,7 +97,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter with name "na\"me",
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -156,7 +156,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -199,7 +199,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "value",
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -226,7 +226,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "name",
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -285,7 +285,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -328,7 +328,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "value",
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -355,7 +355,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "name",
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -412,7 +412,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -452,7 +452,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "value",
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -477,7 +477,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "name",
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -502,7 +502,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -533,7 +533,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int at index 0,
-					             but all did
+					             but it only contained methods with a matching parameter
 
 					             Collection:
 					             [
@@ -560,7 +560,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter with name "value",
-					             but all did
+					             but it only contained methods with a matching parameter
 
 					             Collection:
 					             [
@@ -604,7 +604,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int,
-					             but all did
+					             but it only contained methods with a matching parameter
 
 					             Collection:
 					             [
@@ -647,7 +647,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int with name "value",
-					             but all did
+					             but it only contained methods with a matching parameter
 
 					             Collection:
 					             [
@@ -691,7 +691,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int,
-					             but all did
+					             but it only contained methods with a matching parameter
 
 					             Collection:
 					             [
@@ -734,7 +734,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int with name "value",
-					             but all did
+					             but it only contained methods with a matching parameter
 
 					             Collection:
 					             [
@@ -778,7 +778,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of type int with ref modifier,
-					             but all did
+					             but it only contained methods with a matching parameter
 
 					             Collection:
 					             [
@@ -911,7 +911,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int at index 0,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -1059,7 +1059,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int at index 0,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [

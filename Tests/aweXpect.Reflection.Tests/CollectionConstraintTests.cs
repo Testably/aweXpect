@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 using Xunit.Sdk;
 
@@ -43,6 +44,100 @@ public sealed class CollectionConstraintTests
 
 		await That(enumerations).IsEqualTo(1)
 			.Because("all expectations on the subject share one materialized copy of it");
+	}
+
+	[Fact]
+	public async Task WhenCombinedWithAnd_ShouldNotRepeatTheSubject()
+	{
+		IEnumerable<Type?> subject = [typeof(string), typeof(int),];
+
+		async Task Act()
+		{
+			await That(subject).AreAbstract().And.AreInterfaces();
+		}
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             are all abstract and are all interfaces,
+			             but it contained non-abstract types and contained other types
+
+			             Not matching items:
+			             [
+			               string,
+			               int
+			             ]
+			             """);
+	}
+
+	[Fact]
+	public async Task WhenCombinedWithOr_ShouldNotRepeatTheSubject()
+	{
+		IEnumerable<Type?> subject = [typeof(string), typeof(int),];
+
+		async Task Act()
+		{
+			await That(subject).AreAbstract().Or.AreInterfaces();
+		}
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             are all abstract or are all interfaces,
+			             but it contained non-abstract types and contained other types
+
+			             Not matching items:
+			             [
+			               string,
+			               int
+			             ]
+			             """);
+	}
+
+	[Fact]
+	public async Task WhenNegatedAndCombinedWithAnd_ShouldNotRepeatTheSubject()
+	{
+		IEnumerable<MethodInfo> subject = [typeof(string).GetMethod(nameof(string.Clone))!,];
+
+		async Task Act()
+		{
+			await That(subject).DoesNotComplyWith(they => they.ArePublic().And.AreNotPrivate());
+		}
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             not all are public or at least one is private,
+			             but it only contained public items and contained no private items
+
+			             Collection:
+			             [
+			               object string.Clone()
+			             ]
+			             """);
+	}
+
+	[Fact]
+	public async Task WhenNegatedAndCombinedWithOr_ShouldStartWithTheSubject()
+	{
+		IEnumerable<MethodInfo> subject = [typeof(string).GetMethod(nameof(string.Clone))!,];
+
+		async Task Act()
+		{
+			await That(subject).DoesNotComplyWith(they => they.ArePublic().Or.AreNotPrivate());
+		}
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             not all are public and at least one is private,
+			             but it only contained public items
+
+			             Collection:
+			             [
+			               object string.Clone()
+			             ]
+			             """);
 	}
 
 	[Fact]

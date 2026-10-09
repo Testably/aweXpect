@@ -96,7 +96,7 @@ public static partial class ThatMembers
 			=> stringBuilder.Append("not all are public");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all were");
+			=> stringBuilder.Append(It).Append(" only contained public items");
 	}
 
 	private sealed class AreNotPublicConstraint<TMember>(
@@ -129,6 +129,6 @@ public static partial class ThatMembers
 			=> stringBuilder.Append("at least one is public");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("none were");
+			=> stringBuilder.Append(It).Append(" contained no public items");
 	}
 }

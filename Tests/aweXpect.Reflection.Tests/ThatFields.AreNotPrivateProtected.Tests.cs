@@ -68,7 +68,7 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that *
 					             at least one is private protected,
-					             but none were
+					             but it contained no private protected items
 
 					             Collection:
 					             *

@@ -68,7 +68,7 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that *
 					             at least one is public,
-					             but none were
+					             but it contained no public items
 
 					             Collection:
 					             *

@@ -39,7 +39,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -65,7 +65,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -91,7 +91,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -117,7 +117,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -143,7 +143,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter with name "value" with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -185,7 +185,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -227,7 +227,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -269,7 +269,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -311,7 +311,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -557,7 +557,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -581,7 +581,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -605,7 +605,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter with name "value" with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -629,7 +629,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of type int with name "value" with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -653,7 +653,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -677,7 +677,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -701,7 +701,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [
@@ -725,7 +725,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with optional modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [

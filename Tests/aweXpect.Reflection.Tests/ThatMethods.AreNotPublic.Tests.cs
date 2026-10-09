@@ -117,7 +117,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that *
 					             at least one is public,
-					             but none were
+					             but it contained no public items
 
 					             Collection:
 					             *

@@ -349,7 +349,7 @@ public static partial class ThatConstructors
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("at least one did not");
+			=> stringBuilder.Append(It).Append(" contained constructors without a matching parameter");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -374,6 +374,6 @@ public static partial class ThatConstructors
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all did");
+			=> stringBuilder.Append(It).Append(" only contained constructors with a matching parameter");
 	}
 }

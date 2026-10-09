@@ -65,7 +65,7 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that *
 					             not all are internal,
-					             but all were
+					             but it only contained internal items
 
 					             Collection:
 					             [

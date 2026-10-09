@@ -219,7 +219,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have parameter of exact type int with ref modifier,
-					             but at least one did not
+					             but it contained constructors without a matching parameter
 
 					             Not matching items:
 					             [

@@ -74,7 +74,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -100,7 +100,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "other",
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -127,7 +127,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -185,7 +185,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "other",
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -212,7 +212,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -238,7 +238,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -294,7 +294,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -319,7 +319,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -344,7 +344,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "other",
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -400,7 +400,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -425,7 +425,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -450,7 +450,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type Stream with name "other",
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -481,7 +481,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of exact type Stream,
-					             but all did
+					             but it only contained methods with a matching parameter
 
 					             Collection:
 					             [
@@ -524,7 +524,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have parameter of exact type Stream,
-					             but all did
+					             but it only contained methods with a matching parameter
 
 					             Collection:
 					             [

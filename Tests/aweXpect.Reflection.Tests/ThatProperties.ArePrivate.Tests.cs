@@ -81,7 +81,7 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that *
 					             not all are private,
-					             but all were
+					             but it only contained private items
 
 					             Collection:
 					             [

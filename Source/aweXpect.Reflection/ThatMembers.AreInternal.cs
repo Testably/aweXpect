@@ -96,7 +96,7 @@ public static partial class ThatMembers
 			=> stringBuilder.Append("not all are internal");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all were");
+			=> stringBuilder.Append(It).Append(" only contained internal items");
 	}
 
 	private sealed class AreNotInternalConstraint<TMember>(
@@ -129,6 +129,6 @@ public static partial class ThatMembers
 			=> stringBuilder.Append("at least one is internal");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("none were");
+			=> stringBuilder.Append(It).Append(" contained no internal items");
 	}
 }

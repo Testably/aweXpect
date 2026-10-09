@@ -81,7 +81,7 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that *
 					             not all are protected,
-					             but all were
+					             but it only contained protected items
 
 					             Collection:
 					             [

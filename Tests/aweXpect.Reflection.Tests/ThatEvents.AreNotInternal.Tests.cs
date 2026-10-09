@@ -81,7 +81,7 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that *
 					             at least one is internal,
-					             but none were
+					             but it contained no internal items
 
 					             Collection:
 					             *

@@ -264,7 +264,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter with name "value" with ref modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -290,7 +290,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with ref modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -316,7 +316,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "value" with ref modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -342,7 +342,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int with ref modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -368,7 +368,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int with name "value" with ref modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -394,7 +394,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with ref modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -420,7 +420,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int with name "value" with ref modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -446,7 +446,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int with ref modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -472,7 +472,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int with name "value" with ref modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [

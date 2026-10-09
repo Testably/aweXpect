@@ -48,6 +48,12 @@ internal abstract class CollectionConstraintResult<T>(string it, ExpectationGram
 		protected set => _outcome = value;
 	}
 
+	/// <inheritdoc />
+	public override string? LeadingSubject => GetSubjectOfResult(It);
+
+	/// <inheritdoc />
+	public override string? TrailingSubject => GetSubjectOfResult(It);
+
 	/// <summary>
 	///     The matching elements of the last evaluation.
 	/// </summary>

@@ -38,7 +38,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int[] with params modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -64,7 +64,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int[] with params modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -90,7 +90,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int[] with name "values" with params modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -116,7 +116,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int[] with name "values" with params modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -195,7 +195,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter with name "values" with params modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -237,7 +237,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int[] with params modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -279,7 +279,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of type int[] with name "values" with params modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -321,7 +321,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int[] with params modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [
@@ -363,7 +363,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have parameter of exact type int[] with name "values" with params modifier,
-					             but at least one did not
+					             but it contained methods without a matching parameter
 
 					             Not matching items:
 					             [

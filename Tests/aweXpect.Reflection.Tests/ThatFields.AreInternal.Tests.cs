@@ -65,7 +65,7 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that *
 					             not all are internal,
-					             but all were
+					             but it only contained internal items
 
 					             Collection:
 					             [

@@ -96,7 +96,7 @@ public static partial class ThatMembers
 			=> stringBuilder.Append("not all are protected");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("all were");
+			=> stringBuilder.Append(It).Append(" only contained protected items");
 	}
 
 	private sealed class AreNotProtectedConstraint<TMember>(
@@ -129,6 +129,6 @@ public static partial class ThatMembers
 			=> stringBuilder.Append("at least one is protected");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append("none were");
+			=> stringBuilder.Append(It).Append(" contained no protected items");
 	}
 }
