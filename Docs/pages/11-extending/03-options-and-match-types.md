@@ -59,6 +59,11 @@ The interfaces with `TSelf` let the compiler infer the element type from your re
 `AtLeast(2).AtMost(5)`, throw an `InvalidOperationException` at the call. An expectation that already sets an option
 itself, e.g. `StartsWith` the match type, returns a result that does not offer it again.
 
+In the constraint, the `StringEqualityOptions` also write the texts for every match type: `GetExpectation(expected,
+grammars)` the expectation and `GetExtendedFailure(it, grammars, actual, expected)` the result, e.g. "it was "Yesterday",
+which differs …". When the string is a member of the subject, `GetExtendedMemberFailure(it, "title", grammars, actual,
+expected)` names it like the built-in expectations do, e.g. "it had title "Yesterday", which differs …".
+
 ## Time tolerances
 
 A `TimeToleranceResult<TType, TThat>` adds `.Within(…)` and stores the tolerance in the `TimeTolerance` options you

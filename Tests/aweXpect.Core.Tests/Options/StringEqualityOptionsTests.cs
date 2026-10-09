@@ -781,6 +781,26 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		public async Task GetExtendedMemberFailure_Negated_ShouldStateTheValueOfTheMember()
+		{
+			StringEqualityOptions sut = new("expected");
+
+			string result = sut.GetExtendedMemberFailure("it", "message", ExpectationGrammars.Negated, "foo", "foo");
+
+			await That(result).IsEqualTo("it had message \"foo\"");
+		}
+
+		[Test]
+		public async Task GetExtendedMemberFailure_Null_ShouldStateThatTheMemberWasNull()
+		{
+			StringEqualityOptions sut = new("expected");
+
+			string result = sut.GetExtendedMemberFailure("it", "message", ExpectationGrammars.None, null, "foo");
+
+			await That(result).IsEqualTo("it had message <null>");
+		}
+
+		[Test]
 		public async Task GetExtendedMemberFailure_WhenACustomMatchTypeFails_ShouldKeepItsFailure()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -790,6 +810,58 @@ public sealed partial class StringEqualityOptionsTests
 
 			await That(result).IsEqualTo("my custom failure")
 				.Because("only the failures of the built-in match types can be rephrased");
+		}
+
+		[Test]
+		[Arguments("AsBlock", "bar", """
+		                             it had message "foo"
+		                             """)]
+		[Arguments("AsPrefix", "bar", """
+		                              it had message "foo", which differs at index 0:
+		                                 ↓ (actual)
+		                                "foo"
+		                                "bar"
+		                                 ↑ (expected prefix)
+		                              """)]
+		[Arguments("AsRegex", "b.r", """
+		                             it had message "foo", which did not match:
+		                               ↓ (actual)
+		                               "foo"
+		                               "b.r"
+		                               ↑ (regex pattern)
+		                             """)]
+		[Arguments("AsSuffix", "bar", """
+		                              it had message "foo", which differs at index 2:
+		                                   ↓ (actual)
+		                                "foo"
+		                                "bar"
+		                                   ↑ (expected suffix)
+		                              """)]
+		[Arguments("AsWildcard", "b?r", """
+		                                it had message "foo", which did not match:
+		                                  ↓ (actual)
+		                                  "foo"
+		                                  "b?r"
+		                                  ↑ (wildcard pattern)
+		                                """)]
+		[Arguments("Containing", "bar", """
+		                                it had message "foo"
+		                                """)]
+		[Arguments("Exact", "bar", """
+		                           it had message "foo", which differs at index 0:
+		                              ↓ (actual)
+		                             "foo"
+		                             "bar"
+		                              ↑ (expected)
+		                           """)]
+		public async Task GetExtendedMemberFailure_WithABuiltInMatchType_ShouldStateTheValueOfTheMember(
+			string matchType, string expected, string expectedFailure)
+		{
+			StringEqualityOptions sut = WithMatchType(matchType);
+
+			string result = sut.GetExtendedMemberFailure("it", "message", ExpectationGrammars.None, "foo", expected);
+
+			await That(result).IsEqualTo(expectedFailure).IgnoringNewlineStyle();
 		}
 
 		[Test]
