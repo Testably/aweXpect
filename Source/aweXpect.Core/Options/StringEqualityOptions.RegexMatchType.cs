@@ -148,16 +148,16 @@ public partial class StringEqualityOptions
 		}
 
 		/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
-		public ValueTask<bool>
+		public ValueTask<StringMatchResult>
 			AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
 				IEqualityComparer<string>? comparer)
 		{
 			if (actual is null || expected is null)
 			{
-				return new ValueTask<bool>(false);
+				return new ValueTask<StringMatchResult>(false);
 			}
 
-			return new ValueTask<bool>(CreateRegex(expected, ignoreCase).IsMatch(actual));
+			return new ValueTask<StringMatchResult>(CreateRegex(expected, ignoreCase).IsMatch(actual));
 		}
 
 		/// <inheritdoc cref="IStringMatchType.GetExpectation(string?, ExpectationGrammars)" />

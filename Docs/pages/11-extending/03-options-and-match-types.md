@@ -153,7 +153,11 @@ await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
 - For strings, implement `IStringMatchType` instead and set it with `SetMatchType` on the `StringEqualityOptions`.
   Throw in its `ValidateOptions` for a casing or a comparer that it cannot honour, and in its `ValidateExpected` for an
   expected value that it cannot use: the first throws at the call that specifies the conflict, the second for every
-  subject, also when nothing is compared with the expected value, e.g. for an empty collection.
+  subject, also when nothing is compared with the expected value, e.g. for an empty collection. Its
+  `AreConsideredEqual` returns whether the strings are equal as a `StringMatchResult`, to which a `bool` converts, or
+  `StringMatchResult.NotComparable(reason)` for a subject that it cannot compare at all, e.g. a string that is no valid
+  JSON: the expectation and its negation then both fail, with the reason as the result, e.g. "it could not be parsed
+  as JSON". In a collection, "it" can also stand for an item, so name the value in the reason where that helps.
 
 <details>
 <summary>Match results, multi-line texts and equivalency</summary>

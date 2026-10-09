@@ -23,7 +23,12 @@ public interface IStringMatchType
 	///     Returns <see langword="true" /> if the two strings <paramref name="actual" /> and <paramref name="expected" /> are
 	///     considered equal; otherwise <see langword="false" />.
 	/// </summary>
-	ValueTask<bool>
+	/// <remarks>
+	///     Return <see cref="StringMatchResult.NotComparable(string, System.Exception)" /> when the
+	///     <paramref name="actual" /> value cannot be compared at all, e.g. a string that is no valid JSON, so that the
+	///     expectation fails in both polarities, instead of the negated expectation succeeding.
+	/// </remarks>
+	ValueTask<StringMatchResult>
 		AreConsideredEqual(string? actual, string? expected,
 			bool ignoreCase,
 			IEqualityComparer<string>? comparer);

@@ -153,6 +153,44 @@ public sealed partial class ThatException
 			}
 
 			[Test]
+			public async Task AsNumber_WhenMessageIsNoNumber_ShouldFail()
+			{
+				Exception subject = new("foo");
+
+				async Task Act()
+					=> await That(subject).HasMessage().EqualTo("1").AsNumber();
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             has message is the number "1",
+					             but it was "foo", which is no number
+
+					             Message:
+					             foo
+					             """);
+			}
+
+			[Test]
+			public async Task AsNumber_WhenMessageIsNoNumber_ShouldFailAlsoWhenNegated()
+			{
+				Exception subject = new("foo");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasMessage().EqualTo("1").AsNumber());
+
+				await That(Act).Throws<FailException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have message is the number "1",
+					             but it was "foo", which is no number
+
+					             Message:
+					             foo
+					             """);
+			}
+
+			[Test]
 			public async Task AsNumber_WhenReadingTheMessageThrows_ShouldThrowArgumentException()
 			{
 				Exception subject = new ThrowingMessageException(new InvalidOperationException("message failed"));

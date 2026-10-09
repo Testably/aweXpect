@@ -36,6 +36,36 @@ public sealed partial class StringEqualityOptionsTests
 		}
 
 		[Test]
+		[Arguments(false, "bar")]
+		[Arguments(true, "bar")]
+		[Arguments(false, 42)]
+		[Arguments(true, 42)]
+		public async Task AreConsideredEqual_WhenACustomMatchTypeCannotCompareTheSubject_ShouldThrowUserCodeException(
+			bool completesLater, object expected)
+		{
+			FormatException cause = new("no number");
+			StringEqualityOptions sut = new("expected");
+			sut.SetMatchType(new DelegatingMatchType(completesLater
+				? async () =>
+				{
+					await Task.Yield();
+					return StringMatchResult.NotComparable("it is not comparable", cause);
+				}
+				: () => new ValueTask<StringMatchResult>(
+					StringMatchResult.NotComparable("it is not comparable", cause))), "AsCustom");
+
+			async Task Act() => await sut.AreConsideredEqual("foo", expected);
+
+			await That(Act).Throws<UserCodeException>()
+				.WithMessage("The code of the caller threw an exception while the expectation was evaluated.").And
+				.Whose(e => e.Thrower, thrower => thrower.IsNull()).And
+				.WithInner<NotComparableException>(inner => inner
+					.HasMessage("it is not comparable").And
+					.Whose(e => e.InnerException, innerCause => innerCause.IsSameAs(cause)))
+				.Because("the evaluation fails both ways for a subject that the match type cannot compare, in every consumer");
+		}
+
+		[Test]
 		public async Task AreConsideredEqual_WhenACustomMatchTypeCompletesLater_ShouldAwaitIt()
 		{
 			StringEqualityOptions sut = new("expected");
@@ -346,6 +376,23 @@ public sealed partial class StringEqualityOptionsTests
 			int result = await sut.CountOccurrences("xabAB", "ab");
 
 			await That(result).IsEqualTo(2);
+		}
+
+		[Test]
+		public async Task CountOccurrences_WhenACustomMatchTypeCannotCompareAWindow_ShouldThrowUserCodeException()
+		{
+			StringEqualityOptions sut = new("expected");
+			sut.SetMatchType(new DelegatingMatchType(() => new ValueTask<StringMatchResult>(
+				StringMatchResult.NotComparable("it is not comparable"))), "AsCustom");
+
+			async Task Act() => await sut.CountOccurrences("foo", "f");
+
+			await That(Act).Throws<UserCodeException>()
+				.WithMessage("The code of the caller threw an exception while the expectation was evaluated.").And
+				.WithInner<NotComparableException>(inner => inner
+					.HasMessage("it is not comparable").And
+					.Whose(e => e.InnerException, cause => cause.IsNull()))
+				.Because("every comparison by the match type fails both ways when it cannot compare its subject");
 		}
 
 		[Test]
@@ -737,7 +784,7 @@ public sealed partial class StringEqualityOptionsTests
 		public async Task GetExtendedMemberFailure_WhenACustomMatchTypeFails_ShouldKeepItsFailure()
 		{
 			StringEqualityOptions sut = new("expected");
-			sut.SetMatchType(new DelegatingMatchType(() => new ValueTask<bool>(false), "my custom failure"), "AsCustom");
+			sut.SetMatchType(new DelegatingMatchType(() => new ValueTask<StringMatchResult>(false), "my custom failure"), "AsCustom");
 
 			string result = sut.GetExtendedMemberFailure("it", "message", ExpectationGrammars.None, "foo", "bar");
 
@@ -1409,7 +1456,7 @@ public sealed partial class StringEqualityOptionsTests
 		{
 			public bool InspectsSubject => false;
 
-			public ValueTask<bool> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
+			public ValueTask<StringMatchResult> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
 				IEqualityComparer<string>? comparer)
 				=> throw new NotSupportedException();
 
@@ -1436,12 +1483,12 @@ public sealed partial class StringEqualityOptionsTests
 			}
 		}
 
-		private sealed class DelegatingMatchType(Func<ValueTask<bool>> areConsideredEqual, string failure = "")
+		private sealed class DelegatingMatchType(Func<ValueTask<StringMatchResult>> areConsideredEqual, string failure = "")
 			: IStringMatchType
 		{
 			public bool InspectsSubject => false;
 
-			public ValueTask<bool> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
+			public ValueTask<StringMatchResult> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
 				IEqualityComparer<string>? comparer)
 				=> areConsideredEqual();
 
@@ -1485,11 +1532,11 @@ public sealed partial class StringEqualityOptionsTests
 
 			public bool InspectsSubject => false;
 
-			public ValueTask<bool> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
+			public ValueTask<StringMatchResult> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
 				IEqualityComparer<string>? comparer)
 			{
 				ComparedExpected.Add(expected);
-				return new ValueTask<bool>(true);
+				return new ValueTask<StringMatchResult>(true);
 			}
 
 			public string GetExpectation(string? expected, ExpectationGrammars grammars)

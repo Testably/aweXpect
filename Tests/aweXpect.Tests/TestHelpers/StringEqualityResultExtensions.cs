@@ -29,8 +29,8 @@ public static class StringEqualityResultExtensions
 	}
 
 	/// <remarks>
-	///     A custom match type that can neither use every expected value nor honour every option, as an extension
-	///     would set it.
+	///     A custom match type that can neither use every expected value, nor honour every option, nor compare every
+	///     subject, as an extension would set it.
 	/// </remarks>
 	public static TResult AsNumber<TResult>(this TResult result)
 		where TResult : IOptionsProvider<StringEqualityOptions>
@@ -43,7 +43,7 @@ public static class StringEqualityResultExtensions
 	{
 		public bool InspectsSubject => false;
 
-		public ValueTask<bool> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
+		public ValueTask<StringMatchResult> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
 			IEqualityComparer<string>? comparer)
 			=> new(string.Equals(actual?.ToUpperInvariant(), expected?.ToUpperInvariant(), StringComparison.Ordinal));
 
@@ -73,10 +73,23 @@ public static class StringEqualityResultExtensions
 	{
 		public bool InspectsSubject => false;
 
-		public ValueTask<bool> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
+		public ValueTask<StringMatchResult> AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
 			IEqualityComparer<string>? comparer)
-			=> new(TryParse(actual, out int actualNumber) && TryParse(expected, out int expectedNumber) &&
-			       actualNumber == expectedNumber);
+		{
+			if (actual is null)
+			{
+				return new ValueTask<StringMatchResult>(false);
+			}
+
+			if (!TryParse(actual, out int actualNumber))
+			{
+				return new ValueTask<StringMatchResult>(
+					StringMatchResult.NotComparable($"it was {Formatter.Format(actual)}, which is no number"));
+			}
+
+			return new ValueTask<StringMatchResult>(TryParse(expected, out int expectedNumber) &&
+			                                        actualNumber == expectedNumber);
+		}
 
 		public string GetExpectation(string? expected, ExpectationGrammars grammars)
 			=> $"{(grammars.HasFlag(ExpectationGrammars.Negated) ? "is not" : "is")} the number {Formatter.Format(expected)}";

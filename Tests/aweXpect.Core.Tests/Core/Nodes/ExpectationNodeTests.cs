@@ -874,6 +874,29 @@ public class ExpectationNodeTests
 	}
 
 	[Test]
+	[Arguments(false)]
+	[Arguments(true)]
+	public async Task IsMetBy_WhenConstraintCannotCompareTheSubject_ShouldFailBothWaysWithTheReason(bool hasCause)
+	{
+		FormatException? cause = hasCause ? new FormatException("no number") : null;
+		ExpectationNode node = new();
+		node.AddConstraint(new ThrowingConstraint<int>(
+			new UserCodeException(new NotComparableException("it was \"foo\",\nwhich is no number", cause))));
+		StringBuilder sb = new();
+
+		ConstraintResult result = await node.IsMetBy(1, null!, CancellationToken.None);
+
+		result.AppendResult(sb, "  ");
+		await That(result.Outcome).IsEqualTo(Outcome.FailureBothWays);
+		await That(result.Negate().Outcome).IsEqualTo(Outcome.FailureBothWays);
+		await That(result.GetExpectationText()).IsEqualTo("throws");
+		await That(result.FailureCause).IsSameAs(cause)
+			.Because("only the cause that the match type gave explains the failure");
+		await That(sb.ToString()).IsEqualTo("it was \"foo\",\n  which is no number")
+			.Because("the reason is the result and is indented like any other multi-line result");
+	}
+
+	[Test]
 	public async Task IsMetBy_WhenConstraintDoesNotAnswerAnItem_ShouldFailWithTheItemResult()
 	{
 		ExpectationNode node = new();
