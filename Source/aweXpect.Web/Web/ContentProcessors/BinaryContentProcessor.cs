@@ -33,8 +33,10 @@ public class BinaryContentProcessor : IContentProcessor
 			return Task.FromResult(false);
 		}
 
-		httpContent.TryGetContentLength(out long contentLength);
-		messageBuilder.Append(indentation).AppendLine($"*Content is binary ({mediaType}) with length {contentLength}*");
+		string length = httpContent.TryGetContentLength(out long contentLength)
+			? $"with length {contentLength}"
+			: "with unknown length";
+		messageBuilder.Append(indentation).AppendLine($"*Content is binary ({mediaType}) {length}*");
 		return Task.FromResult(true);
 	}
 

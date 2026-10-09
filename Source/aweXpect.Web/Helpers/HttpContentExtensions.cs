@@ -28,8 +28,9 @@ internal static class HttpContentExtensions
 	{
 		try
 		{
-			length = content?.Headers.ContentLength ?? 0;
-			return true;
+			long? contentLength = content?.Headers.ContentLength;
+			length = contentLength ?? 0;
+			return contentLength != null;
 		}
 		catch (Exception)
 		{

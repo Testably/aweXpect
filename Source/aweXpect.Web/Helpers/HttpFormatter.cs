@@ -78,11 +78,13 @@ internal static class HttpFormatter
 		}
 
 		httpContent.TryGetMediaType(out string? contentType);
-		httpContent.TryGetContentLength(out long contentLength);
+		string length = httpContent.TryGetContentLength(out long contentLength)
+			? $"with length {contentLength}"
+			: "with unknown length";
 		messageBuilder.Append(indentation)
 			.AppendLine(contentType == null
-				? $"*Content with length {contentLength}*"
-				: $"*Content ({contentType}) with length {contentLength}*");
+				? $"*Content {length}*"
+				: $"*Content ({contentType}) {length}*");
 	}
 
 	/// <remarks>

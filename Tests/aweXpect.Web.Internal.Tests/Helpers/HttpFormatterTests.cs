@@ -34,6 +34,36 @@ public sealed class HttpFormatterTests
 			.Because("the failure message shows equal contexts only once");
 	}
 
+	[Theory]
+	[InlineData(null, "*Content with unknown length*")]
+	[InlineData("application/my-type", "*Content (application/my-type) with unknown length*")]
+	[InlineData("image/png", "*Content is binary (image/png) with unknown length*")]
+	public async Task Format_HttpRequestMessage_WhenLengthIsUnknown_ShouldStateThatTheLengthIsUnknown(
+		string? mediaType, string expectedContentLine)
+	{
+		NonSeekableStream stream = new("foo"u8.ToArray());
+		StreamContent content = new(stream);
+		if (mediaType != null)
+		{
+			content.Headers.ContentType = new MediaTypeHeaderValue(mediaType);
+		}
+
+		HttpRequestMessage sut = new(HttpMethod.Post, "https://aweXpect.com")
+		{
+			Content = content,
+		};
+
+		string first = await HttpFormatter.Format(sut, "  ", CancellationToken.None);
+		string second = await HttpFormatter.Format(sut, "  ", CancellationToken.None);
+
+		await That(first).EndsWith($"\n  {expectedContentLine}");
+		await That(first).DoesNotContain("Content-Length");
+		await That(second).IsEqualTo(first)
+			.Because("the failure message shows equal contexts only once");
+		await That(stream.Position).IsEqualTo(0L)
+			.Because("the context must not read the content to find out its length");
+	}
+
 	[Fact]
 	public async Task Format_HttpResponseMessage_WhenFormattedTwice_ShouldReturnSameText()
 	{
@@ -68,6 +98,36 @@ public sealed class HttpFormatterTests
 		await That(first).Contains($"Content-Length: {body.Length}");
 		await That(second).IsEqualTo(first)
 			.Because("the failure message shows equal contexts only once");
+	}
+
+	[Theory]
+	[InlineData(null, "*Content with unknown length*")]
+	[InlineData("application/my-type", "*Content (application/my-type) with unknown length*")]
+	[InlineData("image/png", "*Content is binary (image/png) with unknown length*")]
+	public async Task Format_HttpResponseMessage_WhenLengthIsUnknown_ShouldStateThatTheLengthIsUnknown(
+		string? mediaType, string expectedContentLine)
+	{
+		NonSeekableStream stream = new("foo"u8.ToArray());
+		StreamContent content = new(stream);
+		if (mediaType != null)
+		{
+			content.Headers.ContentType = new MediaTypeHeaderValue(mediaType);
+		}
+
+		HttpResponseMessage sut = new()
+		{
+			Content = content,
+		};
+
+		string first = await HttpFormatter.Format(sut, "  ", CancellationToken.None);
+		string second = await HttpFormatter.Format(sut, "  ", CancellationToken.None);
+
+		await That(first).EndsWith($"\n  {expectedContentLine}");
+		await That(first).DoesNotContain("Content-Length");
+		await That(second).IsEqualTo(first)
+			.Because("the failure message shows equal contexts only once");
+		await That(stream.Position).IsEqualTo(0L)
+			.Because("the context must not read the content to find out its length");
 	}
 
 	[Fact]

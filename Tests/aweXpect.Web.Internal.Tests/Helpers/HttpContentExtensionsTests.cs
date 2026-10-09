@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.IO;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using aweXpect.Helpers;
 
@@ -50,6 +51,18 @@ public sealed class HttpContentExtensionsTests
 	}
 
 	[Fact]
+	public async Task TryGetContentLength_WhenUnknown_ShouldReturnFalse()
+	{
+		HttpContent content = new StreamContent(new NonSeekableStream([0x1,]));
+
+		bool result = content.TryGetContentLength(out long length);
+
+		await That(result).IsFalse()
+			.Because("a non-seekable stream that was not read yet has no known length");
+		await That(length).IsEqualTo(0);
+	}
+
+	[Fact]
 	public async Task TryGetMediaType_WhenDisposed_ShouldReturnMediaType()
 	{
 		HttpContent content = new StringContent("");
@@ -60,5 +73,10 @@ public sealed class HttpContentExtensionsTests
 
 		await That(result).IsTrue();
 		await That(mediaType).IsEqualTo("text/plain");
+	}
+
+	private sealed class NonSeekableStream(byte[] bytes) : MemoryStream(bytes)
+	{
+		public override bool CanSeek => false;
 	}
 }
