@@ -53,7 +53,7 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 	/// <exception cref="InvalidOperationException">
 	///     The casing is ignored or a <paramref name="comparer" /> is specified, which a JSON comparison cannot honour.
 	/// </exception>
-	public async ValueTask<bool>
+	public async ValueTask<StringMatchResult>
 		AreConsideredEqual(
 			string? actual,
 			string? expected,
@@ -110,6 +110,16 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 	/// </remarks>
 	public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
 		=> "";
+
+	/// <inheritdoc cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />
+	public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
+	{
+	}
+
+	/// <inheritdoc cref="IStringMatchType.ValidateExpected(string?)" />
+	public void ValidateExpected(string? expected)
+	{
+	}
 
 	/// <remarks>
 	///     The options only reach the match type when the values are compared, so unlike for the built-in match types,
