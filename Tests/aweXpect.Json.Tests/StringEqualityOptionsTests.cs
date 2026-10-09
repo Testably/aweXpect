@@ -29,13 +29,13 @@ public sealed class StringEqualityOptionsTests
 		IOptionsProvider<StringEqualityOptions> optionsProvider = That("").IsEqualTo(expected).AsJson();
 #pragma warning restore aweXpect0001
 
-		await optionsProvider.Options.AreConsideredEqual("foo", expected);
+		await optionsProvider.Options.AreConsideredEqual("{\"foo\":1}", expected);
 		await optionsProvider.Options.AreConsideredEqual("{\"bar\":1}", expected);
 		string failure =
 			optionsProvider.Options.GetExtendedFailure("it", ExpectationGrammars.None, "{\"bar\":1}", expected);
 
 		await That(failure).IsEqualTo("it differed as $.bar had unexpected 1")
-			.Because("the parse error of the previous subject must not be reported for the next one");
+			.Because("the differences of the previous subject must not be reported for the next one");
 	}
 
 	[Fact]

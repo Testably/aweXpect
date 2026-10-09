@@ -13,7 +13,7 @@ public sealed partial class ThatJsonString
 				[Fact]
 				public async Task ForCollections_ShouldSupportAsJson()
 				{
-					string[] subject = ["{ }", "{foo:1}", "[]",];
+					string[] subject = ["{ }", "{\"foo\":1}", "[]",];
 					string expected = "{}";
 
 					async Task Act()
@@ -24,20 +24,53 @@ public sealed partial class ThatJsonString
 						             Expected that subject
 						             is JSON equivalent to {} for all items,
 						             but only 1 of 3 were
-						             
+
 						             Not matching items:
 						             [
-						               "{foo:1}",
+						               "{\"foo\":1}",
 						               "[]"
 						             ]
-						             
+
 						             Collection:
 						             [
 						               "{ }",
-						               "{foo:1}",
+						               "{\"foo\":1}",
 						               "[]"
 						             ]
 						             """");
+				}
+
+				[Fact]
+				public async Task WhenCollectionContainsIncorrectJson_ShouldFail()
+				{
+					string[] subject = ["{}", "foo",];
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo("{}").AsJson();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is JSON equivalent to {} for all items,
+						             but it was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
+						             """)
+						.Because("an item that is no JSON cannot be compared, so the value names the item");
+				}
+
+				[Fact]
+				public async Task WhenCollectionContainsIncorrectJsonWithContains_ShouldFail()
+				{
+					string[] subject = ["foo",];
+
+					async Task Act()
+						=> await That(subject).Contains("{}").AsJson();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             contains an item JSON equivalent to {} at least once,
+						             but it was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
+						             """);
 				}
 
 				[Fact]
@@ -242,7 +275,7 @@ public sealed partial class ThatJsonString
 				}
 
 				[Fact]
-				public async Task WhenSubjectIsIncorrectJsonInWhose_ShouldUseTheMemberName()
+				public async Task WhenSubjectIsIncorrectJsonInWhose_ShouldFail()
 				{
 					JsonContainer subject = new("foo");
 
@@ -253,7 +286,7 @@ public sealed partial class ThatJsonString
 						.WithMessage("""
 						             Expected that subject
 						             whose Json is JSON equivalent to {},
-						             but Json could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
+						             but it was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
 
 						             Actual (Json):
 						             foo
@@ -542,7 +575,7 @@ public sealed partial class ThatJsonString
 						.WithMessage($$"""
 						               Expected that subject
 						               is JSON equivalent to {},
-						               but it could not be parsed as JSON: {{errorMessage}}
+						               but it was "{{subject.Replace("\"", "\\\"")}}", which could not be parsed as JSON: {{errorMessage}}
 
 						               Actual:
 						               {{subject}}
@@ -594,6 +627,40 @@ public sealed partial class ThatJsonString
 			public sealed class NegatedTests
 			{
 				[Fact]
+				public async Task WhenCollectionContainsIncorrectJson_ShouldFail()
+				{
+					string[] subject = ["{\"foo\":1}", "foo",];
+
+					async Task Act()
+						=> await That(subject).None().AreEqualTo("{}").AsJson();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is JSON equivalent to {} for no items,
+						             but it was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
+						             """)
+						.Because("an item that is no JSON is not different from the unexpected JSON either");
+				}
+
+				[Fact]
+				public async Task WhenCollectionContainsIncorrectJsonWithDoesNotContain_ShouldFail()
+				{
+					string[] subject = ["{\"foo\":1}", "foo",];
+
+					async Task Act()
+						=> await That(subject).DoesNotContain("{}").AsJson();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             does not contain an item JSON equivalent to {},
+						             but it was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
+						             """)
+						.Because("an item that is no JSON is not different from the unexpected JSON either");
+				}
+
+				[Fact]
 				public async Task WhenExpectedIsIncorrectJson_ShouldThrowArgumentException()
 				{
 					string subject = "{}";
@@ -623,6 +690,29 @@ public sealed partial class ThatJsonString
 						             Expected:
 						             { }
 						             """);
+				}
+
+				[Fact]
+				public async Task WhenSubjectIsIncorrectJson_ShouldFail()
+				{
+					string subject = "foo";
+
+					async Task Act()
+						=> await That(subject).IsNotEqualTo("{}").AsJson();
+
+					await That(Act).Throws<XunitException>()
+						.WithMessage("""
+						             Expected that subject
+						             is not JSON equivalent to {},
+						             but it was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
+
+						             Actual:
+						             foo
+
+						             Expected:
+						             {}
+						             """)
+						.Because("a subject that is no JSON is not different from the unexpected JSON either");
 				}
 
 				[Fact]

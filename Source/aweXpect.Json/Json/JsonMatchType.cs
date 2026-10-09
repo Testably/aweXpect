@@ -9,7 +9,6 @@ namespace aweXpect.Json;
 internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 {
 	private JsonElementValidator.JsonComparisonResult? _comparisonResult;
-	private string? _subjectParseError;
 
 	/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
 	public bool InspectsSubject => true;
@@ -27,11 +26,6 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 		if (actual is null)
 		{
 			return $"{it} was <null>";
-		}
-
-		if (_subjectParseError != null)
-		{
-			return $"{it} could not be parsed as JSON: {_subjectParseError}";
 		}
 
 		string? result = _comparisonResult?.ToString();
@@ -61,7 +55,6 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 			IEqualityComparer<string>? comparer)
 	{
 		_comparisonResult = null;
-		_subjectParseError = null;
 		ThrowIfOptionCannotBeHonoured(ignoreCase, comparer);
 		using JsonDocument expectedJson = ParseExpected(expected, options.DocumentOptions);
 		if (actual is null)
@@ -76,8 +69,8 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 		}
 		catch (JsonException e)
 		{
-			_subjectParseError = e.Message;
-			return false;
+			return StringMatchResult.NotComparable(
+				$"it was {Formatter.Format(actual)}, which could not be parsed as JSON: {e.Message}", e);
 		}
 
 		using (actualJson)

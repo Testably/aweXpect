@@ -24,7 +24,7 @@ public sealed class CustomizeJsonTests
 				.WithMessage("""
 				             Expected that jsonWithTrailingCommas
 				             is JSON equivalent to [1, 2],
-				             but it could not be parsed as JSON: The JSON array contains a trailing comma at the end which is not supported in this mode. Change the reader options. LineNumber: 0 | BytePositionInLine: 6.
+				             but it was "[1, 2,]", which could not be parsed as JSON: The JSON array contains a trailing comma at the end which is not supported in this mode. Change the reader options. LineNumber: 0 | BytePositionInLine: 6.
 
 				             Actual:
 				             [1, 2,]
