@@ -34,6 +34,12 @@ public sealed partial class ThatHttpResponseMessage
 					                 Content-Type: text/plain; charset=utf-8
 					                 Content-Length: 3
 					               foo
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 3
+					               bar
 					             """);
 			}
 

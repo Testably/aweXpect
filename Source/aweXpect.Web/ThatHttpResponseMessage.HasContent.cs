@@ -22,6 +22,7 @@ public static partial class ThatHttpResponseMessage
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new HasContentConstraint(it, grammars, expected, options)),
 			source,
@@ -34,9 +35,8 @@ public static partial class ThatHttpResponseMessage
 	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
 		HasContent(this IThat<HttpResponseMessage?> source, Action<IThat<string?>> expectations)
 	{
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
-			expectationBuilder
+			source.Get().ExpectationBuilder
 				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.ForAsyncMember(MemberAccessor<HttpResponseMessage, Task<string?>>.FromFunc(
 						async m => await m.Content.ReadAsStringAsync(),
@@ -81,14 +81,6 @@ public static partial class ThatHttpResponseMessage
 
 			Outcome = Outcome.Failure;
 			return this;
-		}
-
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			if (Actual is not null && !Grammars.IsNegated())
-			{
-				contexts.AddContext(Actual);
-			}
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

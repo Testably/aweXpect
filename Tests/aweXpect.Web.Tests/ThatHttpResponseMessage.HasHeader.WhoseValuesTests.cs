@@ -32,6 +32,7 @@ public sealed partial class ThatHttpResponseMessage
 					                 x-my-header: bar
 					                 x-my-header: baz
 					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 0
 					             """);
 			}
 
@@ -57,6 +58,7 @@ public sealed partial class ThatHttpResponseMessage
 					               200 OK HTTP/1.1
 					                 x-my-header: some header
 					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 0
 
 					             Collection (the values):
 					             [

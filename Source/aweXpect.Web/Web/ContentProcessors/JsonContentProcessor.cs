@@ -36,40 +36,27 @@ public class JsonContentProcessor : IContentProcessor
 			return false;
 		}
 
-		string? parseError;
-		try
-		{
-			using JsonDocument jsonDocument =
-				await JsonDocument.ParseAsync(
-#if NETSTANDARD2_0
-					await httpContent.ReadAsStreamAsync(),
-#else
-					await httpContent.ReadAsStreamAsync(cancellationToken),
-#endif
-					new JsonDocumentOptions
-					{
-						AllowTrailingCommas = true,
-					},
-					cancellationToken);
-			string? prettifiedJson = JsonSerializer.Serialize(jsonDocument, SerializerOptions);
-
-			messageBuilder.AppendLine(prettifiedJson.Indent(indentation));
-			return true;
-		}
-		catch (JsonException e)
-		{
-			parseError = e.Message;
-		}
-
+		// Reading the content as string buffers it, so that it can be read again (the content stream can only be read once).
 #if NETSTANDARD2_0
 		string stringContent = await httpContent.ReadAsStringAsync();
 #else
 		string stringContent = await httpContent.ReadAsStringAsync(cancellationToken);
 #endif
-		messageBuilder.AppendLine(stringContent.Indent(indentation));
-		if (parseError != null)
+		try
 		{
-			messageBuilder.Append(indentation).AppendLine($"*** JSON parse error: {parseError} ***");
+			using JsonDocument jsonDocument = JsonDocument.Parse(stringContent,
+				new JsonDocumentOptions
+				{
+					AllowTrailingCommas = true,
+				});
+			string? prettifiedJson = JsonSerializer.Serialize(jsonDocument, SerializerOptions);
+
+			messageBuilder.AppendLine(prettifiedJson.Indent(indentation));
+		}
+		catch (JsonException e)
+		{
+			messageBuilder.AppendLine(stringContent.Indent(indentation));
+			messageBuilder.Append(indentation).AppendLine($"*** JSON parse error: {e.Message} ***");
 		}
 
 		return true;

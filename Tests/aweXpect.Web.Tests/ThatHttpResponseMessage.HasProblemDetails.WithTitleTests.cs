@@ -63,6 +63,26 @@ public sealed partial class ThatHttpResponseMessage
 			}
 
 			[Fact]
+			public async Task WhenTitleMatches_AndContentHasDetailAndInstance_ShouldSucceed()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "my-type",
+					               "title": "foo",
+					               "detail": "bar",
+					               "instance": "baz"
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithTitle("foo");
+
+				await That(Act).DoesNotThrow()
+					.Because("the detail and instance are not compared, when they are not expected");
+			}
+
+			[Fact]
 			public async Task WhenTitleMatches_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder

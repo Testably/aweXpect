@@ -98,23 +98,32 @@ public class ProblemDetailsOptions
 	/// <summary>
 	///     Checks if the <paramref name="title" /> matches the expected <see cref="Title" />.
 	/// </summary>
+	/// <remarks>
+	///     Any <paramref name="title" /> matches when no <see cref="Title" /> is expected.
+	/// </remarks>
 	public ValueTask<bool>
 		IsTitleConsideredEqualTo(string? title)
-		=> _titleOptions.AreConsideredEqual(title, Title);
+		=> Title is null ? new ValueTask<bool>(true) : _titleOptions.AreConsideredEqual(title, Title);
 
 	/// <summary>
 	///     Checks if the <paramref name="detail" /> matches the expected <see cref="Detail" />.
 	/// </summary>
+	/// <remarks>
+	///     Any <paramref name="detail" /> matches when no <see cref="Detail" /> is expected.
+	/// </remarks>
 	public ValueTask<bool>
 		IsDetailConsideredEqualTo(string? detail)
-		=> _detailOptions.AreConsideredEqual(detail, Detail);
+		=> Detail is null ? new ValueTask<bool>(true) : _detailOptions.AreConsideredEqual(detail, Detail);
 
 	/// <summary>
 	///     Checks if the <paramref name="instance" /> matches the expected <see cref="Instance" />.
 	/// </summary>
+	/// <remarks>
+	///     Any <paramref name="instance" /> matches when no <see cref="Instance" /> is expected.
+	/// </remarks>
 	public ValueTask<bool>
 		IsInstanceConsideredEqualTo(string? instance)
-		=> _instanceOptions.AreConsideredEqual(instance, Instance);
+		=> Instance is null ? new ValueTask<bool>(true) : _instanceOptions.AreConsideredEqual(instance, Instance);
 
 	/// <inheritdoc cref="object.ToString()" />
 #if NET8_0_OR_GREATER

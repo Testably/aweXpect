@@ -42,6 +42,7 @@ public sealed partial class ThatHttpRequestMessage
 					               HEAD https://awexpect.com/ HTTP/1.1
 					                 x-my-header: some header
 					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 12
 					               some content
 					             """);
 			}

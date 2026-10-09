@@ -22,13 +22,15 @@ public class StatusCodeResult(
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> EqualTo(
 		HttpStatusCode? expected)
 		=> new(source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						expected,
 						mapper,
 						(a, e) => a.Equals(e),
-						$"has status code {Formatter.Format(expected)}")),
+						$"has status code {Formatter.Format(expected)}",
+						$"does not have status code {Formatter.Format(expected)}")),
 			source);
 
 	/// <summary>
@@ -37,13 +39,15 @@ public class StatusCodeResult(
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> DifferentTo(
 		HttpStatusCode? unexpected)
 		=> new(source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						unexpected,
 						mapper,
 						(a, u) => !a.Equals(u),
-						$"has status code different to {Formatter.Format(unexpected)}")),
+						$"has status code different to {Formatter.Format(unexpected)}",
+						$"has status code {Formatter.Format(unexpected)}")),
 			source);
 
 	/// <summary>
@@ -51,13 +55,15 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Success()
 		=> new(source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						null,
 						mapper,
 						(a, _) => (int)a is >= 200 and < 300,
-						"has a success status code (2xx)")),
+						"has a success status code (2xx)",
+						"does not have a success status code (2xx)")),
 			source);
 
 	/// <summary>
@@ -65,13 +71,15 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Redirection()
 		=> new(source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						null,
 						mapper,
 						(a, _) => (int)a is >= 300 and < 400,
-						"has a redirection status code (3xx)")),
+						"has a redirection status code (3xx)",
+						"does not have a redirection status code (3xx)")),
 			source);
 
 	/// <summary>
@@ -79,13 +87,15 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> ClientError()
 		=> new(source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						null,
 						mapper,
 						(a, _) => (int)a is >= 400 and < 500,
-						"has a client error status code (4xx)")),
+						"has a client error status code (4xx)",
+						"does not have a client error status code (4xx)")),
 			source);
 
 	/// <summary>
@@ -93,13 +103,15 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> ServerError()
 		=> new(source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						null,
 						mapper,
 						(a, _) => (int)a is >= 500 and < 600,
-						"has a server error status code (5xx)")),
+						"has a server error status code (5xx)",
+						"does not have a server error status code (5xx)")),
 			source);
 
 	/// <summary>
@@ -107,13 +119,15 @@ public class StatusCodeResult(
 	/// </summary>
 	public AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> Error()
 		=> new(source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new PropertyConstraint(
 						it, grammars,
 						null,
 						mapper,
 						(a, _) => (int)a is >= 400 and < 600,
-						"has an error status code (4xx or 5xx)")),
+						"has an error status code (4xx or 5xx)",
+						"does not have an error status code (4xx or 5xx)")),
 			source);
 
 	internal sealed class PropertyConstraint(
@@ -122,7 +136,8 @@ public class StatusCodeResult(
 		HttpStatusCode? expected,
 		Func<HttpResponseMessage, HttpStatusCode> mapper,
 		Func<HttpStatusCode, HttpStatusCode?, bool> condition,
-		string expectation)
+		string expectation,
+		string negatedExpectation)
 		: ConstraintResult.WithNotNullValue<HttpResponseMessage?>(it, grammars),
 			IValueConstraint<HttpResponseMessage?>
 	{
@@ -148,14 +163,6 @@ public class StatusCodeResult(
 			return this;
 		}
 
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			if (Actual is not null && !Grammars.IsNegated())
-			{
-				contexts.AddContext(Actual);
-			}
-		}
-
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(expectation);
 
@@ -166,9 +173,9 @@ public class StatusCodeResult(
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
-			=> throw new NotSupportedException();
+			=> stringBuilder.Append(negatedExpectation);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> throw new NotSupportedException();
+			=> AppendNormalResult(stringBuilder, indentation);
 	}
 }

@@ -146,6 +146,12 @@ public sealed partial class ThatHttpRequestMessage
 					             Expected that subject
 					             does not have a string content equal to "some content",
 					             but it had
+
+					             HTTP-Request:
+					               HEAD https://awexpect.com/ HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 12
+					               some content
 					             """);
 			}
 

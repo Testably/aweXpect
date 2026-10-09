@@ -27,6 +27,7 @@ public sealed partial class ThatHttpResponseMessage
 					             HTTP-Response:
 					               200 OK HTTP/1.1
 					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 12
 					               some content
 					             """);
 			}

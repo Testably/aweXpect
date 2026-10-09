@@ -23,11 +23,13 @@ public static partial class ThatHttpResponseMessage
 		this IThat<HttpResponseMessage?> source,
 		HttpStatusCode? expected)
 		=> new(source.Get().ExpectationBuilder
+			.AddSubjectContexts(ThatExtensions.ResponseContexts)
 			.AddConstraint((it, grammars) =>
 				new StatusCodeResult.PropertyConstraint(
 					it, grammars,
 					expected,
 					m => m.StatusCode,
 					(a, e) => a.Equals(e),
-					$"has status code {Formatter.Format(expected)}")), source);
+					$"has status code {Formatter.Format(expected)}",
+					$"does not have status code {Formatter.Format(expected)}")), source);
 }

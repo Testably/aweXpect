@@ -30,11 +30,13 @@ public sealed partial class ThatHttpResponseMessage
 					             HTTP-Request:
 					               GET https://awexpect.com/ HTTP/1.1
 					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 15
 					               request content
 
 					             HTTP-Response:
 					               400 BadRequest HTTP/1.1
 					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 12
 					               some content
 					             """);
 			}
@@ -58,6 +60,7 @@ public sealed partial class ThatHttpResponseMessage
 					             HTTP-Response:
 					               400 BadRequest HTTP/1.1
 					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 12
 					               some content
 					             """);
 			}

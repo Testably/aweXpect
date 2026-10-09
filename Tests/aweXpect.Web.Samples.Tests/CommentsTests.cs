@@ -62,6 +62,7 @@ public class CommentsTests(WebApplicationFactory<Program> factory) : IClassFixtu
 			             HTTP-Response:
 			               200 OK HTTP/1.1
 			                 Content-Type: application/json; charset=utf-8
+			                 Content-Length: 136
 			               [
 			                 {
 			                   "id": 1,

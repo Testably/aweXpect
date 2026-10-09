@@ -87,6 +87,9 @@ public sealed partial class ThatHttpRequestMessage
 					             Expected that subject
 					             does not have a PUT method,
 					             but it had
+
+					             HTTP-Request:
+					               PUT https://awexpect.com/ HTTP/1.1
 					             """);
 			}
 

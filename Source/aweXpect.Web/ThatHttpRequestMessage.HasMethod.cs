@@ -16,6 +16,7 @@ public static partial class ThatHttpRequestMessage
 		HasMethod(this IThat<HttpRequestMessage?> source, HttpMethod expected)
 		=> new(
 			source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.RequestContexts)
 				.AddConstraint((it, grammars) =>
 					new HasMethodConstraint(it, grammars, expected)),
 			source);
@@ -44,14 +45,6 @@ public static partial class ThatHttpRequestMessage
 
 			Outcome = Outcome.Success;
 			return this;
-		}
-
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			if (Actual is not null && !Grammars.IsNegated())
-			{
-				contexts.AddContext(Actual);
-			}
 		}
 
 		public override string ToString()

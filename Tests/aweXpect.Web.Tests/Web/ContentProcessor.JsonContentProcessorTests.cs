@@ -30,6 +30,7 @@ public sealed partial class ContentProcessor
 				               HTTP-Response:
 				                 200 OK HTTP/1.1
 				                   Content-Type: {{contentType}}
+				                   Content-Length: 15
 				                 {"my-content":1
 				                 *** JSON parse error: '1' is an invalid end of a number. Expected a delimiter. LineNumber: 0 | BytePositionInLine: 15. ***
 				               """);
@@ -57,6 +58,7 @@ public sealed partial class ContentProcessor
 				               HTTP-Response:
 				                 200 OK HTTP/1.1
 				                   Content-Type: {{contentType}}
+				                   Content-Length: 17
 				                 {
 				                   "my-content": 1
 				                 }

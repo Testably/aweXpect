@@ -27,6 +27,7 @@ public static partial class ThatHttpResponseMessage
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new HasContentTypeConstraint(it, grammars, expected, options)),
 			source,
@@ -66,14 +67,6 @@ public static partial class ThatHttpResponseMessage
 
 			Outcome = Outcome.Success;
 			return this;
-		}
-
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			if (Actual is not null && !Grammars.IsNegated())
-			{
-				contexts.AddContext(Actual);
-			}
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

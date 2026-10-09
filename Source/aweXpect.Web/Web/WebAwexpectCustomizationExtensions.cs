@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using aweXpect.Core;
 using aweXpect.Customization;
 using aweXpect.Web.ContentProcessors;
 
@@ -16,65 +17,33 @@ public static class WebAwexpectCustomizationExtensions
 	public static WebCustomization Web(this AwexpectCustomization awexpectCustomization)
 		=> new(awexpectCustomization);
 
-	private sealed class CustomizationValue<TValue>(
-		Func<TValue> getter,
-		Func<TValue, CustomizationLifetime> setter)
-		: ICustomizationValueSetter<TValue>
-	{
-		/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Get()" />
-		public TValue Get() => getter();
-
-		/// <inheritdoc cref="ICustomizationValueSetter{TValue}.Set(TValue)" />
-		public CustomizationLifetime Set(TValue value) => setter(value);
-	}
-
 	/// <summary>
 	///     Customize the Web settings.
 	/// </summary>
 	public class WebCustomization
 	{
-		private readonly IAwexpectCustomization _awexpectCustomization;
-
 		internal WebCustomization(IAwexpectCustomization awexpectCustomization)
 		{
-			_awexpectCustomization = awexpectCustomization;
-			ContentProcessors = new CustomizationValue<IContentProcessor[]>(
-				() => Get().ContentProcessors,
-				v => Update(p => p with
+			ContentProcessors = new CustomizationValue<IContentProcessor[]>(awexpectCustomization,
+				"aweXpect.Web.ContentProcessors",
+				[
+					new JsonContentProcessor(),
+					new StringContentProcessor(),
+					new BinaryContentProcessor(),
+				],
+				value =>
 				{
-					ContentProcessors = v,
-				}));
+					if (value is null)
+					{
+						throw Tracing.WriteException(
+							new ArgumentNullException(nameof(value), "The 'value' cannot be null."));
+					}
+				});
 		}
 
-		/// <inheritdoc cref="WebCustomizationValue.ContentProcessors" />
-		public ICustomizationValueSetter<IContentProcessor[]> ContentProcessors { get; }
-
-		/// <summary>
-		///     Get the stored <see cref="WebCustomizationValue" />.
-		/// </summary>
-		public WebCustomizationValue Get()
-			=> _awexpectCustomization.Get(nameof(Web), new WebCustomizationValue());
-
-		/// <summary>
-		///     Update the stored <see cref="WebCustomizationValue" />.
-		/// </summary>
-		public CustomizationLifetime Update(Func<WebCustomizationValue, WebCustomizationValue> update)
-			=> _awexpectCustomization.Set(nameof(Web), update(Get()));
-	}
-
-	/// <summary>
-	///     Customize the aweXpect.Web settings.
-	/// </summary>
-	public record WebCustomizationValue
-	{
 		/// <summary>
 		///     The content processors to use to format the <see cref="HttpContent" />.
 		/// </summary>
-		public IContentProcessor[] ContentProcessors { get; init; } =
-		[
-			new JsonContentProcessor(),
-			new StringContentProcessor(),
-			new BinaryContentProcessor(),
-		];
+		public ICustomizationValueSetter<IContentProcessor[]> ContentProcessors { get; }
 	}
 }

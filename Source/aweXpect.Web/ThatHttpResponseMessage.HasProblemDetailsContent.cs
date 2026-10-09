@@ -41,6 +41,7 @@ public static partial class ThatHttpResponseMessage
 		ProblemDetailsOptions options = new();
 		return new ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String(
 			source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.AddConstraint((it, grammars) =>
 					new HasProblemDetailsConstraint(it, grammars, type, options, typeOptions)),
 			source,
@@ -135,14 +136,6 @@ public static partial class ThatHttpResponseMessage
 			}
 
 			return null;
-		}
-
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			if (Actual is not null && !Grammars.IsNegated())
-			{
-				contexts.AddContext(Actual);
-			}
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

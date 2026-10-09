@@ -30,11 +30,13 @@ public sealed partial class ThatHttpResponseMessage
 					             HTTP-Request:
 					               GET https://awexpect.com/ HTTP/1.1
 					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 15
 					               request content
 
 					             HTTP-Response:
 					               400 BadRequest HTTP/1.1
 					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 12
 					               some content
 					             """);
 			}
@@ -58,8 +60,29 @@ public sealed partial class ThatHttpResponseMessage
 					             HTTP-Response:
 					               400 BadRequest HTTP/1.1
 					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: 12
 					               some content
 					             """);
+			}
+
+			[Fact]
+			public async Task WhenResponseHasNoContent_ShouldIncludeResponseInMessage()
+			{
+				HttpResponseMessage subject = new(HttpStatusCode.BadRequest);
+
+				async Task Act()
+					=> await That(subject).HasStatusCode(HttpStatusCode.OK);
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has status code 200 OK,
+					             but it had status code 400 BadRequest
+
+					             HTTP-Response:
+					               400 BadRequest HTTP/1.1*
+					             """).AsWildcard()
+					.Because("the content of a new response is null on the .NET Framework and empty otherwise");
 			}
 
 			[Fact]

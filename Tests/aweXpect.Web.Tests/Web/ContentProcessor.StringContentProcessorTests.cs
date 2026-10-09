@@ -35,6 +35,7 @@ public sealed partial class ContentProcessor
 					               HTTP-Response:
 					                 200 OK HTTP/1.1
 					                   Content-Type: {{contentType}}
+					                   Content-Length: 16
 					                 {"my-content":1}
 					               """);
 			}
@@ -43,30 +44,32 @@ public sealed partial class ContentProcessor
 		[Fact]
 		public async Task TextFile_ShouldIncludeTextContentInFailureMessage()
 		{
+			string content = """
+			                 body {
+			                     background-color: powderblue;
+			                 }
+			                 """;
 			HttpResponseMessage httpResponse = new HttpResponseBuilder()
-				.WithContent("""
-				             body {
-				                 background-color: powderblue;
-				             }
-				             """)
+				.WithContent(content)
 				.WithContentType("text/css");
 
 			async Task Act()
 				=> await That(httpResponse).HasStatusCode().EqualTo(HttpStatusCode.Accepted);
 
 			await That(Act).Throws<XunitException>()
-				.WithMessage("""
-				             Expected that httpResponse
-				             has status code 202 Accepted,
-				             but it had status code 200 OK
+				.WithMessage($$"""
+				               Expected that httpResponse
+				               has status code 202 Accepted,
+				               but it had status code 200 OK
 
-				             HTTP-Response:
-				               200 OK HTTP/1.1
-				                 Content-Type: text/css
-				               body {
-				                   background-color: powderblue;
-				               }
-				             """);
+				               HTTP-Response:
+				                 200 OK HTTP/1.1
+				                   Content-Type: text/css
+				                   Content-Length: {{content.Length}}
+				                 body {
+				                     background-color: powderblue;
+				                 }
+				               """);
 		}
 
 		[Theory]
@@ -94,6 +97,7 @@ public sealed partial class ContentProcessor
 				               HTTP-Response:
 				                 200 OK HTTP/1.1
 				                   Content-Type: {{contentType}}
+				                   Content-Length: 16
 				                 {"my-content":1}
 				               """);
 		}

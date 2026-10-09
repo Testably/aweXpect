@@ -22,6 +22,7 @@ public static partial class ThatHttpRequestMessage
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
 			source.Get().ExpectationBuilder
+				.AddSubjectContexts(ThatExtensions.RequestContexts)
 				.AddConstraint((it, grammars) =>
 					new HasContentConstraint(it, grammars, expected, options)),
 			source,
@@ -34,9 +35,8 @@ public static partial class ThatHttpRequestMessage
 	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
 		HasContent(this IThat<HttpRequestMessage?> source, Action<IThat<string?>> expectations)
 	{
-		ExpectationBuilder expectationBuilder = source.Get().ExpectationBuilder;
 		return new AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>(
-			expectationBuilder
+			source.Get().ExpectationBuilder
 				.AddSubjectContexts(ThatExtensions.RequestContexts)
 				.ForAsyncMember(MemberAccessor<HttpRequestMessage, Task<string?>>.FromFunc(
 						async m => m.Content == null ? null : await m.Content.ReadAsStringAsync(),
@@ -87,14 +87,6 @@ public static partial class ThatHttpRequestMessage
 
 			Outcome = Outcome.Failure;
 			return this;
-		}
-
-		public override void AppendContexts(ResultContextCollector contexts)
-		{
-			if (Actual is not null && !Grammars.IsNegated())
-			{
-				contexts.AddContext(Actual);
-			}
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)

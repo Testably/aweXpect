@@ -123,13 +123,6 @@ namespace aweXpect.Web
         public class WebCustomization
         {
             public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Web.ContentProcessors.IContentProcessor[]> ContentProcessors { get; }
-            public aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomizationValue Get() { }
-            public aweXpect.Customization.CustomizationLifetime Update(System.Func<aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomizationValue, aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomizationValue> update) { }
-        }
-        public class WebCustomizationValue : System.IEquatable<aweXpect.Web.WebAwexpectCustomizationExtensions.WebCustomizationValue>
-        {
-            public WebCustomizationValue() { }
-            public aweXpect.Web.ContentProcessors.IContentProcessor[] ContentProcessors { get; init; }
         }
     }
 }

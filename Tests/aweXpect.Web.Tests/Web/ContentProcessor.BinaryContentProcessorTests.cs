@@ -25,6 +25,7 @@ public sealed partial class ContentProcessor
 				             HTTP-Response:
 				               200 OK HTTP/1.1
 				                 Content-Type: text/css
+				                 Content-Length: 3
 				               foo
 				             """);
 		}
@@ -57,6 +58,7 @@ public sealed partial class ContentProcessor
 				               HTTP-Response:
 				                 200 OK HTTP/1.1
 				                   Content-Type: {{contentType}}
+				                   Content-Length: {{bytes.Length}}
 				                 *Content is binary ({{contentType}}) with length {{bytes.Length}}*
 				               """);
 		}
