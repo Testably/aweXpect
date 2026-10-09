@@ -59,6 +59,7 @@ public static partial class ThatHttpResponseMessage
 			IAsyncConstraint<HttpResponseMessage>
 	{
 		private readonly List<string> _failures = [];
+		private string? _parseError;
 
 		public async ValueTask<ConstraintResult> IsMetBy(
 			HttpResponseMessage? actual,
@@ -76,7 +77,13 @@ public static partial class ThatHttpResponseMessage
 #else
 			string message = await actual.Content.ReadAsStringAsync(cancellationToken);
 #endif
-			using JsonDocument problemDetails = JsonDocument.Parse(message, _jsonDocumentOptions);
+			using JsonDocument? problemDetails = ParseObjectOrDefault(message, out _parseError);
+			if (problemDetails is null)
+			{
+				Outcome = Outcome.FailureBothWays;
+				return this;
+			}
+
 			_failures.Clear();
 
 			string? type = GetPropertyOrDefault(problemDetails.RootElement, "type")?.GetString();
@@ -128,6 +135,30 @@ public static partial class ThatHttpResponseMessage
 			return this;
 		}
 
+		private static JsonDocument? ParseObjectOrDefault(string content, out string? error)
+		{
+			JsonDocument document;
+			try
+			{
+				document = JsonDocument.Parse(content, _jsonDocumentOptions);
+			}
+			catch (JsonException e)
+			{
+				error = e.Message;
+				return null;
+			}
+
+			if (document.RootElement.ValueKind != JsonValueKind.Object)
+			{
+				document.Dispose();
+				error = "the JSON value was not an object";
+				return null;
+			}
+
+			error = null;
+			return document;
+		}
+
 		private static JsonElement? GetPropertyOrDefault(JsonElement jsonElement, string propertyName)
 		{
 			if (jsonElement.TryGetProperty(propertyName, out JsonElement element))
@@ -155,7 +186,18 @@ public static partial class ThatHttpResponseMessage
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(string.Join($"{Environment.NewLine} and ", _failures));
+		{
+			if (_parseError is not null)
+			{
+				AppendParseError(stringBuilder);
+				return;
+			}
+
+			stringBuilder.Append(string.Join($"{Environment.NewLine} and ", _failures));
+		}
+
+		private void AppendParseError(StringBuilder stringBuilder)
+			=> stringBuilder.Append(It).Append(" could not be parsed as problem details: ").Append(_parseError);
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -174,6 +216,14 @@ public static partial class ThatHttpResponseMessage
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> stringBuilder.Append(It).Append(" had");
+		{
+			if (_parseError is not null)
+			{
+				AppendParseError(stringBuilder);
+				return;
+			}
+
+			stringBuilder.Append(It).Append(" had");
+		}
 	}
 }

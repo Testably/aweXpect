@@ -75,6 +75,83 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("only the expected members of the problem details are compared");
 			}
 
+			[Theory]
+			[InlineData("")]
+			[InlineData("  ")]
+			public async Task WhenContentIsEmpty_ShouldFail(string content)
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent(content);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a ProblemDetails content with type "foo",
+					             but it could not be parsed as problem details: The input does not contain any JSON tokens.*
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: *
+					             """).AsWildcard()
+					.Because("an empty body cannot be inspected and must not let the JSON exception escape");
+			}
+
+			[Theory]
+			[InlineData("[]")]
+			[InlineData("\"foo\"")]
+			[InlineData("42")]
+			[InlineData("null")]
+			public async Task WhenContentIsNotAJsonObject_ShouldFail(string content)
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent(content);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent("foo").WithTitle("bar");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              has a ProblemDetails content with type "foo" and title "bar",
+					              but it could not be parsed as problem details: the JSON value was not an object
+
+					              HTTP-Response:
+					                200 OK HTTP/1.1
+					                  Content-Type: text/plain; charset=utf-8
+					                  Content-Length: *
+					                {content}
+					              """).AsWildcard()
+					.Because("problem details must be a JSON object");
+			}
+
+			[Fact]
+			public async Task WhenContentIsNotJson_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("<html>error</html>");
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent("foo");
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has a ProblemDetails content with type "foo",
+					             but it could not be parsed as problem details: '<' is an invalid start of a value.*
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: *
+					               <html>error</html>
+					             """).AsWildcard()
+					.Because("a non-JSON body must fail the expectation instead of letting the JSON exception escape");
+			}
+
 			[Fact]
 			public async Task WhenNoTypeIsSpecified_ShouldFail()
 			{
@@ -190,6 +267,77 @@ public sealed partial class ThatHttpResponseMessage
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenContentIsEmpty_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasProblemDetailsContent("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a ProblemDetails content with type "foo",
+					             but it could not be parsed as problem details: The input does not contain any JSON tokens.*
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: *
+					             """).AsWildcard()
+					.Because("a subject that cannot be inspected fails both ways");
+			}
+
+			[Fact]
+			public async Task WhenContentIsNotAJsonObject_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("[]");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasProblemDetailsContent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a ProblemDetails content,
+					             but it could not be parsed as problem details: the JSON value was not an object
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: *
+					               []
+					             """).AsWildcard()
+					.Because("a subject that cannot be inspected fails both ways");
+			}
+
+			[Fact]
+			public async Task WhenContentIsNotJson_ShouldFail()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("<html>error</html>");
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasProblemDetailsContent("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             does not have a ProblemDetails content with type "foo",
+					             but it could not be parsed as problem details: '<' is an invalid start of a value.*
+
+					             HTTP-Response:
+					               200 OK HTTP/1.1
+					                 Content-Type: text/plain; charset=utf-8
+					                 Content-Length: *
+					               <html>error</html>
+					             """).AsWildcard()
+					.Because("a subject that cannot be inspected fails both ways");
+			}
+
 			[Theory]
 			[InlineData("foo", "bar")]
 			[InlineData("foo", "FOO")]
