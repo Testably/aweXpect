@@ -7,24 +7,24 @@ using Xunit.Sdk;
 
 namespace aweXpect.Web.Samples.Tests;
 
-public class DownloadTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
+public class CoverTests(WebApplicationFactory<Program> factory) : IClassFixture<WebApplicationFactory<Program>>
 {
 	[Fact]
-	public async Task DownloadFile_ShouldReturnStatusCode200Ok()
+	public async Task GetCover_ShouldReturnStatusCode200Ok()
 	{
 		HttpClient client = factory.CreateClient();
 
-		HttpResponseMessage response = await client.GetAsync("/download");
+		HttpResponseMessage response = await client.GetAsync("/cover");
 
 		await Expect.That(response).HasStatusCode().EqualTo(HttpStatusCode.OK);
 	}
 
 	[Fact]
-	public async Task DownloadFile_WhenContentTypeDoesNotMatch_ShouldFail()
+	public async Task GetCover_WhenContentTypeDoesNotMatch_ShouldFail()
 	{
 		HttpClient client = factory.CreateClient();
 
-		HttpResponseMessage response = await client.GetAsync("/download");
+		HttpResponseMessage response = await client.GetAsync("/cover");
 
 		async Task Act() =>
 			await Expect.That(response).HasContentType("image/jpg");
@@ -40,15 +40,15 @@ public class DownloadTests(WebApplicationFactory<Program> factory) : IClassFixtu
 			                      ↑ (expected)
 
 			             HTTP-Request:
-			               GET http://localhost/download HTTP/1.1
+			               GET http://localhost/cover HTTP/1.1
 
 			             HTTP-Response:
 			               200 OK HTTP/1.1
 			                 Last-Modified: ???, ?? ??? ???? ??:??:?? ???
 			                 Content-Type: image/png
-			                 Content-Disposition: attachment; filename=failure.png; filename*=UTF-8''failure.png
-			                 Content-Length: 141834
-			               *Content is binary (image/png) with length 141834*
+			                 Content-Disposition: attachment; filename=cover.png; filename*=UTF-8''cover.png
+			                 Content-Length: 1203
+			               *Content is binary (image/png) with length 1203*
 			             """).AsWildcard();
 	}
 }

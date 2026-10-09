@@ -18,24 +18,24 @@ public class Program
 	{
 		WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-		builder.Services.AddSingleton<CommentStore>();
+		builder.Services.AddSingleton<TrackStore>();
 
 		WebApplication app = builder.Build();
 
-		app.MapGet("/comments", (CommentStore store) => store.GetComments());
+		app.MapGet("/tracks", (TrackStore store) => store.GetTracks());
 
-		app.MapGet("/comments/{id}", (int id, CommentStore store, HttpContext httpContext) =>
+		app.MapGet("/tracks/{id}", (int id, TrackStore store, HttpContext httpContext) =>
 		{
 			httpContext.Response.Headers["x-vendor"] = "VENDOR";
-			return store.GetComment(id);
+			return store.GetTrack(id);
 		});
 
-		app.MapGet("/download", () =>
+		app.MapGet("/cover", () =>
 		{
 			string mimeType = "image/png";
 			string path = Path.Combine(Path.GetDirectoryName(typeof(Program).Assembly.Location)!, "data",
-				"failure.png");
-			return Results.File(path, mimeType, "failure.png");
+				"cover.png");
+			return Results.File(path, mimeType, "cover.png");
 		});
 
 		app.Run();
