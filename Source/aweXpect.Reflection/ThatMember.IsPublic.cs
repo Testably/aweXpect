@@ -16,22 +16,22 @@ public static partial class ThatMember
 	///     Verifies that the <typeparamref name="TMember" /> is public.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<TMember, IThat<TMember>> IsPublic<TMember>(
-		this IThat<TMember> subject)
-		where TMember : MemberInfo?
+	public static AndOrResult<TMember, IThat<TMember?>> IsPublic<TMember>(
+		this IThat<TMember?> subject)
+		where TMember : MemberInfo
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsPublicConstraint<TMember>(it, grammars)),
+				=> new IsPublicConstraint<TMember?>(it, grammars)),
 			subject);
 
 	/// <summary>
 	///     Verifies that the <typeparamref name="TMember" /> is not public.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<TMember, IThat<TMember>> IsNotPublic<TMember>(
-		this IThat<TMember> subject)
-		where TMember : MemberInfo?
+	public static AndOrResult<TMember, IThat<TMember?>> IsNotPublic<TMember>(
+		this IThat<TMember?> subject)
+		where TMember : MemberInfo
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsPublicConstraint<TMember>(it, grammars).Invert()),
+				=> new IsPublicConstraint<TMember?>(it, grammars).Invert()),
 			subject);
 
 	private sealed class IsPublicConstraint<TMember>(

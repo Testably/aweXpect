@@ -16,13 +16,13 @@ public static partial class ThatField
 	///     Verifies that the <see cref="FieldInfo" /> has attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HasAttributeWithoutInheritResult<FieldInfo?> Has<TAttribute>(this IThat<FieldInfo?> subject)
+	public static HasAttributeWithoutInheritResult<FieldInfo, FieldInfo?> Has<TAttribute>(this IThat<FieldInfo?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
-		return new HasAttributeWithoutInheritResult<FieldInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HasAttributeWithoutInheritResult<FieldInfo, FieldInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
@@ -33,7 +33,7 @@ public static partial class ThatField
 	///     matches the <paramref name="predicate" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HasAttributeWithoutInheritResult<FieldInfo?> Has<TAttribute>(
+	public static HasAttributeWithoutInheritResult<FieldInfo, FieldInfo?> Has<TAttribute>(
 		this IThat<FieldInfo?> subject,
 		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -43,7 +43,7 @@ public static partial class ThatField
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
-		return new HasAttributeWithoutInheritResult<FieldInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HasAttributeWithoutInheritResult<FieldInfo, FieldInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);

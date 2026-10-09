@@ -15,14 +15,14 @@ public static partial class ThatMember
 	///     Verifies that the <typeparamref name="TMember" /> does not have the <paramref name="unexpected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<TMember, IThat<TMember>> DoesNotHaveName<TMember>(
-		this IThat<TMember> subject, string unexpected)
-		where TMember : MemberInfo?
+	public static StringEqualityTypeResult<TMember, IThat<TMember?>> DoesNotHaveName<TMember>(
+		this IThat<TMember?> subject, string unexpected)
+		where TMember : MemberInfo
 	{
 		StringEqualityOptions options = new(nameof(unexpected));
-		return new StringEqualityTypeResult<TMember, IThat<TMember>>(
+		return new StringEqualityTypeResult<TMember, IThat<TMember?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasNameConstraint<TMember>(it, grammars, unexpected, options).Invert()),
+				=> new HasNameConstraint<TMember?>(it, grammars, unexpected, options).Invert()),
 			subject,
 			options);
 	}

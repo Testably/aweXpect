@@ -18,14 +18,14 @@ public static partial class ThatMember
 	///     Verifies that the <typeparamref name="TMember" /> has the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<TMember, IThat<TMember>> HasName<TMember>(
-		this IThat<TMember> subject, string expected)
-		where TMember : MemberInfo?
+	public static StringEqualityTypeResult<TMember, IThat<TMember?>> HasName<TMember>(
+		this IThat<TMember?> subject, string expected)
+		where TMember : MemberInfo
 	{
 		StringEqualityOptions options = new(nameof(expected));
-		return new StringEqualityTypeResult<TMember, IThat<TMember>>(
+		return new StringEqualityTypeResult<TMember, IThat<TMember?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new HasNameConstraint<TMember>(it, grammars, expected, options)),
+				=> new HasNameConstraint<TMember?>(it, grammars, expected, options)),
 			subject,
 			options);
 	}

@@ -12,7 +12,7 @@ public static partial class ThatEvent
 	///     Verifies that the <see cref="EventInfo" /> has a handler of exactly type <typeparamref name="THandler" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventOfTypeResult<EventInfo?, IThat<EventInfo?>> IsOfExactType<THandler>(
+	public static EventOfTypeResult<EventInfo, IThat<EventInfo?>> IsOfExactType<THandler>(
 		this IThat<EventInfo?> subject)
 		=> IsOfExactType(subject, typeof(THandler));
 
@@ -20,12 +20,12 @@ public static partial class ThatEvent
 	///     Verifies that the <see cref="EventInfo" /> has a handler of exactly type <paramref name="handlerType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventOfTypeResult<EventInfo?, IThat<EventInfo?>> IsOfExactType(
+	public static EventOfTypeResult<EventInfo, IThat<EventInfo?>> IsOfExactType(
 		this IThat<EventInfo?> subject, Type handlerType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(handlerType, true);
-		return new EventOfTypeResult<EventInfo?, IThat<EventInfo?>>(
+		return new EventOfTypeResult<EventInfo, IThat<EventInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions)),
 			subject,

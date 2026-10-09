@@ -8,8 +8,8 @@ namespace aweXpect.Reflection.Results;
 /// <summary>
 ///     The result of a specific-type dependency assertion, allowing to widen the targeted types.
 /// </summary>
-public sealed class TypeDependencyResult<TThat>
-	: AndOrResult<TThat, IThat<TThat>>
+public sealed class TypeDependencyResult<TType, TThat>
+	: AndOrResult<TType, IThat<TThat>>
 {
 	private readonly TypeDependencyOptions _options;
 
@@ -25,7 +25,7 @@ public sealed class TypeDependencyResult<TThat>
 	/// <summary>
 	///     Widens the expression by the type <typeparamref name="T" />.
 	/// </summary>
-	public TypeDependencyResult<TThat> OrOn<T>()
+	public TypeDependencyResult<TType, TThat> OrOn<T>()
 	{
 		_options.OrOn(typeof(T));
 		return this;
@@ -34,7 +34,7 @@ public sealed class TypeDependencyResult<TThat>
 	/// <summary>
 	///     Widens the expression by the <paramref name="type" />.
 	/// </summary>
-	public TypeDependencyResult<TThat> OrOn(Type type)
+	public TypeDependencyResult<TType, TThat> OrOn(Type type)
 	{
 		_options.OrOn(type);
 		return this;

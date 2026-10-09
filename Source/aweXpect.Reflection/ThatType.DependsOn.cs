@@ -35,7 +35,7 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> depends on (references in its signature) the type <typeparamref name="T" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static TypeDependencyResult<Type?> DependsOn<T>(
+	public static TypeDependencyResult<Type, Type?> DependsOn<T>(
 		this IThat<Type?> subject)
 		=> subject.DependsOn(typeof(T));
 
@@ -43,11 +43,11 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> depends on (references in its signature) the <paramref name="type" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static TypeDependencyResult<Type?> DependsOn(
+	public static TypeDependencyResult<Type, Type?> DependsOn(
 		this IThat<Type?> subject, Type type)
 	{
 		TypeDependencyOptions options = new(type);
-		return new TypeDependencyResult<Type?>(subject.Get().ExpectationBuilder
+		return new TypeDependencyResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new DependsOnTypeConstraint(it, grammars, options)),
 			subject,
@@ -96,7 +96,7 @@ public static partial class ThatType
 	///     <typeparamref name="T" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static TypeDependencyResult<Type?> DoesNotDependOn<T>(
+	public static TypeDependencyResult<Type, Type?> DoesNotDependOn<T>(
 		this IThat<Type?> subject)
 		=> subject.DoesNotDependOn(typeof(T));
 
@@ -105,11 +105,11 @@ public static partial class ThatType
 	///     <paramref name="type" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static TypeDependencyResult<Type?> DoesNotDependOn(
+	public static TypeDependencyResult<Type, Type?> DoesNotDependOn(
 		this IThat<Type?> subject, Type type)
 	{
 		TypeDependencyOptions options = new(type);
-		return new TypeDependencyResult<Type?>(subject.Get().ExpectationBuilder
+		return new TypeDependencyResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new DependsOnTypeConstraint(it, grammars, options).Invert()),
 			subject,

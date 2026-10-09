@@ -15,7 +15,7 @@ public static partial class ThatField
 	///     Verifies that the <see cref="FieldInfo" /> is of type <typeparamref name="TField" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldOfTypeResult<FieldInfo?, IThat<FieldInfo?>> IsOfType<TField>(
+	public static FieldOfTypeResult<FieldInfo, IThat<FieldInfo?>> IsOfType<TField>(
 		this IThat<FieldInfo?> subject)
 		=> IsOfType(subject, typeof(TField));
 
@@ -23,12 +23,12 @@ public static partial class ThatField
 	///     Verifies that the <see cref="FieldInfo" /> is of type <paramref name="fieldType" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldOfTypeResult<FieldInfo?, IThat<FieldInfo?>> IsOfType(
+	public static FieldOfTypeResult<FieldInfo, IThat<FieldInfo?>> IsOfType(
 		this IThat<FieldInfo?> subject, Type fieldType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(fieldType, false);
-		return new FieldOfTypeResult<FieldInfo?, IThat<FieldInfo?>>(
+		return new FieldOfTypeResult<FieldInfo, IThat<FieldInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions)),
 			subject,
@@ -44,7 +44,7 @@ public static partial class ThatField
 		TypeFilterOptions typeFilterOptions)
 		: AndOrResult<TValue, TResult>(expectationBuilder, subject),
 			IOptionsProvider<TypeFilterOptions>
-		where TResult : IThat<TValue>
+		where TResult : IThat<TValue?>
 	{
 		/// <inheritdoc cref="IOptionsProvider{TypeFilterOptions}.Options" />
 		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => typeFilterOptions;

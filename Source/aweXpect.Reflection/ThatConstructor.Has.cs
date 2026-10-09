@@ -16,14 +16,14 @@ public static partial class ThatConstructor
 	///     Verifies that the <see cref="ConstructorInfo" /> has attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HasAttributeWithoutInheritResult<ConstructorInfo?> Has<TAttribute>(
+	public static HasAttributeWithoutInheritResult<ConstructorInfo, ConstructorInfo?> Has<TAttribute>(
 		this IThat<ConstructorInfo?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
-		return new HasAttributeWithoutInheritResult<ConstructorInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HasAttributeWithoutInheritResult<ConstructorInfo, ConstructorInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
@@ -34,7 +34,7 @@ public static partial class ThatConstructor
 	///     matches the <paramref name="predicate" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HasAttributeWithoutInheritResult<ConstructorInfo?> Has<TAttribute>(
+	public static HasAttributeWithoutInheritResult<ConstructorInfo, ConstructorInfo?> Has<TAttribute>(
 		this IThat<ConstructorInfo?> subject,
 		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
@@ -44,7 +44,7 @@ public static partial class ThatConstructor
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue);
-		return new HasAttributeWithoutInheritResult<ConstructorInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HasAttributeWithoutInheritResult<ConstructorInfo, ConstructorInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);

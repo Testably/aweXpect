@@ -15,7 +15,7 @@ public static partial class ThatEvent
 	///     Verifies that the <see cref="EventInfo" /> has a handler of type <typeparamref name="THandler" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventOfTypeResult<EventInfo?, IThat<EventInfo?>> IsOfType<THandler>(
+	public static EventOfTypeResult<EventInfo, IThat<EventInfo?>> IsOfType<THandler>(
 		this IThat<EventInfo?> subject)
 		=> IsOfType(subject, typeof(THandler));
 
@@ -23,12 +23,12 @@ public static partial class ThatEvent
 	///     Verifies that the <see cref="EventInfo" /> has a handler of type <paramref name="handlerType" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventOfTypeResult<EventInfo?, IThat<EventInfo?>> IsOfType(
+	public static EventOfTypeResult<EventInfo, IThat<EventInfo?>> IsOfType(
 		this IThat<EventInfo?> subject, Type handlerType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(handlerType, false);
-		return new EventOfTypeResult<EventInfo?, IThat<EventInfo?>>(
+		return new EventOfTypeResult<EventInfo, IThat<EventInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions)),
 			subject,
@@ -44,7 +44,7 @@ public static partial class ThatEvent
 		TypeFilterOptions typeFilterOptions)
 		: AndOrResult<TValue, TResult>(expectationBuilder, subject),
 			IOptionsProvider<TypeFilterOptions>
-		where TResult : IThat<TValue>
+		where TResult : IThat<TValue?>
 	{
 		/// <inheritdoc cref="IOptionsProvider{TypeFilterOptions}.Options" />
 		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => typeFilterOptions;

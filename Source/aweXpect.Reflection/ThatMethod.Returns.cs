@@ -15,7 +15,7 @@ public static partial class ThatMethod
 	///     Verifies that the method returns type <typeparamref name="TReturn" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodReturnResult<MethodInfo?, IThat<MethodInfo?>> Returns<TReturn>(
+	public static MethodReturnResult<MethodInfo, IThat<MethodInfo?>> Returns<TReturn>(
 		this IThat<MethodInfo?> subject)
 		=> Returns(subject, typeof(TReturn));
 
@@ -23,12 +23,12 @@ public static partial class ThatMethod
 	///     Verifies that the method returns type <paramref name="returnType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodReturnResult<MethodInfo?, IThat<MethodInfo?>> Returns(
+	public static MethodReturnResult<MethodInfo, IThat<MethodInfo?>> Returns(
 		this IThat<MethodInfo?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(returnType, false);
-		return new MethodReturnResult<MethodInfo?, IThat<MethodInfo?>>(
+		return new MethodReturnResult<MethodInfo, IThat<MethodInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new ReturnsConstraint(it, grammars, typeFilterOptions)),
 			subject,
@@ -44,7 +44,7 @@ public static partial class ThatMethod
 		TypeFilterOptions typeFilterOptions)
 		: AndOrResult<TValue, TResult>(expectationBuilder, subject),
 			IOptionsProvider<TypeFilterOptions>
-		where TResult : IThat<TValue>
+		where TResult : IThat<TValue?>
 	{
 		/// <inheritdoc cref="IOptionsProvider{TypeFilterOptions}.Options" />
 		TypeFilterOptions IOptionsProvider<TypeFilterOptions>.Options => typeFilterOptions;

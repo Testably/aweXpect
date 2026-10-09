@@ -20,13 +20,13 @@ public static partial class ThatEvent
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HasAttributeResult<EventInfo?> Has<TAttribute>(this IThat<EventInfo?> subject, bool inherit = true)
+	public static HasAttributeResult<EventInfo, EventInfo?> Has<TAttribute>(this IThat<EventInfo?> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HasAttributeResult<EventInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HasAttributeResult<EventInfo, EventInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
@@ -41,7 +41,7 @@ public static partial class ThatEvent
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HasAttributeResult<EventInfo?> Has<TAttribute>(
+	public static HasAttributeResult<EventInfo, EventInfo?> Has<TAttribute>(
 		this IThat<EventInfo?> subject,
 		Func<TAttribute, bool> predicate,
 		bool inherit = true,
@@ -52,7 +52,7 @@ public static partial class ThatEvent
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
-		return new HasAttributeResult<EventInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HasAttributeResult<EventInfo, EventInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);

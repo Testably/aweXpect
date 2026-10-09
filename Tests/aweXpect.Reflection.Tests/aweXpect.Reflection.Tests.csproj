@@ -1,5 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+	<PropertyGroup>
+		<WarningsAsErrors>$(WarningsAsErrors);nullable</WarningsAsErrors>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<ProjectReference Include="..\..\Source\aweXpect.Reflection\aweXpect.Reflection.csproj"/>
 	</ItemGroup>

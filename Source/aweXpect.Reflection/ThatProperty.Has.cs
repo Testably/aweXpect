@@ -20,14 +20,14 @@ public static partial class ThatProperty
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HasAttributeResult<PropertyInfo?> Has<TAttribute>(this IThat<PropertyInfo?> subject,
+	public static HasAttributeResult<PropertyInfo, PropertyInfo?> Has<TAttribute>(this IThat<PropertyInfo?> subject,
 		bool inherit = true)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<PropertyInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HasAttributeResult<PropertyInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HasAttributeResult<PropertyInfo, PropertyInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
@@ -42,7 +42,7 @@ public static partial class ThatProperty
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HasAttributeResult<PropertyInfo?> Has<TAttribute>(
+	public static HasAttributeResult<PropertyInfo, PropertyInfo?> Has<TAttribute>(
 		this IThat<PropertyInfo?> subject,
 		Func<TAttribute, bool> predicate,
 		bool inherit = true,
@@ -53,7 +53,7 @@ public static partial class ThatProperty
 		AttributeFilterOptions<PropertyInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
-		return new HasAttributeResult<PropertyInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HasAttributeResult<PropertyInfo, PropertyInfo?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);

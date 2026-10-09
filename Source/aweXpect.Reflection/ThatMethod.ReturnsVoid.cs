@@ -9,7 +9,7 @@ public static partial class ThatMethod
 	///     Verifies that the method returns <see langword="void" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodReturnResult<MethodInfo?, IThat<MethodInfo?>> ReturnsVoid(
+	public static MethodReturnResult<MethodInfo, IThat<MethodInfo?>> ReturnsVoid(
 		this IThat<MethodInfo?> subject)
 		=> Returns(subject, typeof(void));
 }

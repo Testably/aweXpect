@@ -12,7 +12,7 @@ public static partial class ThatProperty
 	///     Verifies that the <see cref="PropertyInfo" /> is of exactly type <typeparamref name="TProperty" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyOfTypeResult<PropertyInfo?, IThat<PropertyInfo?>> IsOfExactType<TProperty>(
+	public static PropertyOfTypeResult<PropertyInfo, IThat<PropertyInfo?>> IsOfExactType<TProperty>(
 		this IThat<PropertyInfo?> subject)
 		=> IsOfExactType(subject, typeof(TProperty));
 
@@ -20,12 +20,12 @@ public static partial class ThatProperty
 	///     Verifies that the <see cref="PropertyInfo" /> is of exactly type <paramref name="propertyType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertyOfTypeResult<PropertyInfo?, IThat<PropertyInfo?>> IsOfExactType(
+	public static PropertyOfTypeResult<PropertyInfo, IThat<PropertyInfo?>> IsOfExactType(
 		this IThat<PropertyInfo?> subject, Type propertyType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(propertyType, true);
-		return new PropertyOfTypeResult<PropertyInfo?, IThat<PropertyInfo?>>(
+		return new PropertyOfTypeResult<PropertyInfo, IThat<PropertyInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions)),
 			subject,

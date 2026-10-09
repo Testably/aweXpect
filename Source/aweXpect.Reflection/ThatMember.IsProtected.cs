@@ -16,22 +16,22 @@ public static partial class ThatMember
 	///     Verifies that the <typeparamref name="TMember" /> is protected.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<TMember, IThat<TMember>> IsProtected<TMember>(
-		this IThat<TMember> subject)
-		where TMember : MemberInfo?
+	public static AndOrResult<TMember, IThat<TMember?>> IsProtected<TMember>(
+		this IThat<TMember?> subject)
+		where TMember : MemberInfo
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsProtectedConstraint<TMember>(it, grammars)),
+				=> new IsProtectedConstraint<TMember?>(it, grammars)),
 			subject);
 
 	/// <summary>
 	///     Verifies that the <typeparamref name="TMember" /> is not protected.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<TMember, IThat<TMember>> IsNotProtected<TMember>(
-		this IThat<TMember> subject)
-		where TMember : MemberInfo?
+	public static AndOrResult<TMember, IThat<TMember?>> IsNotProtected<TMember>(
+		this IThat<TMember?> subject)
+		where TMember : MemberInfo
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsProtectedConstraint<TMember>(it, grammars).Invert()),
+				=> new IsProtectedConstraint<TMember?>(it, grammars).Invert()),
 			subject);
 
 	private sealed class IsProtectedConstraint<TMember>(

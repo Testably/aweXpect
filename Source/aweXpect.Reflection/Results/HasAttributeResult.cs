@@ -10,11 +10,11 @@ namespace aweXpect.Reflection.Results;
 /// <summary>
 ///     Allows chaining of multiple attributes.
 /// </summary>
-public sealed class HasAttributeResult<TMember>(
+public sealed class HasAttributeResult<TType, TMember>(
 	ExpectationBuilder expectationBuilder,
 	IThat<TMember> subject,
 	AttributeFilterOptions<TMember> attributeFilterOptions)
-	: AndOrResult<TMember, IThat<TMember>>(expectationBuilder, subject),
+	: AndOrResult<TType, IThat<TMember>>(expectationBuilder, subject),
 		IOptionsProvider<AttributeFilterOptions<TMember>>
 {
 	/// <inheritdoc cref="IOptionsProvider{AttributeFilterOptions}.Options" />
@@ -28,7 +28,7 @@ public sealed class HasAttributeResult<TMember>(
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
-	public HasAttributeResult<TMember> OrHas<TAttribute>(bool inherit = true)
+	public HasAttributeResult<TType, TMember> OrHas<TAttribute>(bool inherit = true)
 		where TAttribute : Attribute
 	{
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
@@ -43,7 +43,7 @@ public sealed class HasAttributeResult<TMember>(
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
-	public HasAttributeResult<TMember> OrHas<TAttribute>(
+	public HasAttributeResult<TType, TMember> OrHas<TAttribute>(
 		Func<TAttribute, bool> predicate,
 		bool inherit = true,
 		[CallerArgumentExpression("predicate")]

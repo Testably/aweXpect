@@ -16,11 +16,11 @@ public static partial class ThatMember
 	///     <see cref="System.ObsoleteAttribute" />).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<TMember, IThat<TMember>> IsObsolete<TMember>(
-		this IThat<TMember> subject)
-		where TMember : MemberInfo?
+	public static AndOrResult<TMember, IThat<TMember?>> IsObsolete<TMember>(
+		this IThat<TMember?> subject)
+		where TMember : MemberInfo
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsObsoleteConstraint<TMember>(it, grammars)),
+				=> new IsObsoleteConstraint<TMember?>(it, grammars)),
 			subject);
 
 	/// <summary>
@@ -28,11 +28,11 @@ public static partial class ThatMember
 	///     <see cref="System.ObsoleteAttribute" />).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<TMember, IThat<TMember>> IsNotObsolete<TMember>(
-		this IThat<TMember> subject)
-		where TMember : MemberInfo?
+	public static AndOrResult<TMember, IThat<TMember?>> IsNotObsolete<TMember>(
+		this IThat<TMember?> subject)
+		where TMember : MemberInfo
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
-				=> new IsObsoleteConstraint<TMember>(it, grammars).Invert()),
+				=> new IsObsoleteConstraint<TMember?>(it, grammars).Invert()),
 			subject);
 
 	private sealed class IsObsoleteConstraint<TMember>(

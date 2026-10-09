@@ -12,7 +12,7 @@ public static partial class ThatField
 	///     Verifies that the <see cref="FieldInfo" /> is of exactly type <typeparamref name="TField" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldOfTypeResult<FieldInfo?, IThat<FieldInfo?>> IsOfExactType<TField>(
+	public static FieldOfTypeResult<FieldInfo, IThat<FieldInfo?>> IsOfExactType<TField>(
 		this IThat<FieldInfo?> subject)
 		=> IsOfExactType(subject, typeof(TField));
 
@@ -20,12 +20,12 @@ public static partial class ThatField
 	///     Verifies that the <see cref="FieldInfo" /> is of exactly type <paramref name="fieldType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldOfTypeResult<FieldInfo?, IThat<FieldInfo?>> IsOfExactType(
+	public static FieldOfTypeResult<FieldInfo, IThat<FieldInfo?>> IsOfExactType(
 		this IThat<FieldInfo?> subject, Type fieldType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(fieldType, true);
-		return new FieldOfTypeResult<FieldInfo?, IThat<FieldInfo?>>(
+		return new FieldOfTypeResult<FieldInfo, IThat<FieldInfo?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsOfTypeConstraint(it, grammars, typeFilterOptions)),
 			subject,

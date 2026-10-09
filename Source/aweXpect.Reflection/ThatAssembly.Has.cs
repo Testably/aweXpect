@@ -20,13 +20,13 @@ public static partial class ThatAssembly
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HasAttributeResult<Assembly?> Has<TAttribute>(this IThat<Assembly?> subject, bool inherit = true)
+	public static HasAttributeResult<Assembly, Assembly?> Has<TAttribute>(this IThat<Assembly?> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HasAttributeResult<Assembly?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HasAttributeResult<Assembly, Assembly?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
@@ -41,7 +41,7 @@ public static partial class ThatAssembly
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HasAttributeResult<Assembly?> Has<TAttribute>(
+	public static HasAttributeResult<Assembly, Assembly?> Has<TAttribute>(
 		this IThat<Assembly?> subject,
 		Func<TAttribute, bool> predicate,
 		bool inherit = true,
@@ -52,7 +52,7 @@ public static partial class ThatAssembly
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
-		return new HasAttributeResult<Assembly?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new HasAttributeResult<Assembly, Assembly?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions)),
 			subject,
 			attributeFilterOptions);
