@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Equivalency;
 using aweXpect.Options;
 using aweXpect.Results;
 ```
@@ -153,6 +154,89 @@ public class LongestTrackResult(ExpectationBuilder expectationBuilder, IThat<Tra
 
 The second argument of `ForWhich` writes the text in front of the expectations on the new subject, and the third one
 replaces `it` in their result texts. Unlike `ForMember`, the expectations are added later by the caller, after `Which`.
+
+### Expectations in expected values
+
+An expected value can contain expectations, like `new { Title = It.Is<string>().That.StartsWith("Let") }`. Pass the
+`IEvaluationContext` and the `CancellationToken` of your constraint to `EquivalencyComparison.Compare`, or to
+`EquivalencyExpectationBuilder.IsMetBy` when you evaluate such an expectation yourself, so that the timeout and the
+cancellation of the evaluation also end these expectations.
+
+<details>
+<summary>Example and details</summary>
+
+```csharp
+public static AndOrResult<Track, IThat<Track?>> MatchesTrack(this IThat<Track?> subject, object expected)
+    => new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+            => new MatchesTrackConstraint(it, grammars, expected)),
+        subject);
+
+private sealed class MatchesTrackConstraint(string it, ExpectationGrammars grammars, object expected)
+    : ConstraintResult.WithNotNullValue<Track>(it, grammars),
+        IAsyncContextConstraint<Track?>
+{
+    private readonly StringBuilder _differences = new();
+
+    public async ValueTask<ConstraintResult> IsMetBy(Track? actual, IEvaluationContext context,
+        CancellationToken cancellationToken)
+    {
+        Actual = actual;
+        if (actual is not null)
+        {
+            _differences.Clear();
+            bool isEquivalent = await EquivalencyComparison.Compare(actual, expected, new EquivalencyOptions(),
+                _differences, context, cancellationToken);
+            Outcome = isEquivalent ? Outcome.Success : Outcome.Failure;
+        }
+
+        return this;
+    }
+
+    protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("matches the expected track");
+
+    protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(It).Append(" did not:").Append(_differences);
+
+    protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append("does not match the expected track");
+
+    protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+        => stringBuilder.Append(It).Append(" did");
+}
+```
+
+```csharp
+Track track = new("Let It Be", new TimeSpan(0, 4, 3));
+
+await Expect.That(track).MatchesTrack(new { Title = It.Is<string>().That.StartsWith("Let") });
+```
+
+When your constraint evaluates such an expectation itself, e.g. because it compares a format of its own, take the
+`EquivalencyExpectationBuilder` from the expectation and evaluate it with the context and the token of your constraint:
+
+```csharp no-compile
+if (expectedValue is IOptionsProvider<ExpectationBuilder> { Options: EquivalencyExpectationBuilder expectation, })
+{
+    ConstraintResult result = await expectation.IsMetBy(actualValue, context, cancellationToken);
+    if (result.Outcome != Outcome.Success)
+    {
+        result.AppendResult(_differences);
+    }
+}
+```
+
+- `IsMetBy` evaluates the expectation in a context of its own, which the timeout and the cancellation of your
+  evaluation end. The collections it materializes, the reasons it leaves pending and the values it stores do not reach
+  your context, so the expectation can be evaluated again for every value it is compared with.
+- The collections are released before `IsMetBy` returns, so describe the failure from the result right away: it only
+  shows the items that the expectation read.
+- An `Outcome.Undecided` result means that the evaluation was canceled. Leave the outcome of your constraint
+  undecided as well, see [stopping without an exception](./05-asynchronous-expectations.md#asynchronous-constraints).
+- After a cancellation, `EquivalencyComparison.Compare` throws an `OperationCanceledException` instead, which needs
+  no handling.
+
+</details>
 
 ## Expectations on collection items
 

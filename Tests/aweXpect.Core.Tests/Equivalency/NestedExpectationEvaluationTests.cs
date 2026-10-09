@@ -5,6 +5,7 @@ using System.Threading;
 using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
+using aweXpect.Core.Extending;
 using aweXpect.Core.Internal;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Equivalency;
@@ -68,6 +69,87 @@ public sealed class NestedExpectationEvaluationTests
 	}
 
 	private static readonly TimeSpan SafetyNet = 30.Seconds();
+
+	[Test]
+	public async Task Compare_WithAnEvaluation_ShouldEvaluateTheNestedExpectationInAContextOfTheEvaluation()
+	{
+		using CancellationTokenSource cts = new();
+		VirtualTimeSystem timeSystem = new();
+		Context context = new()
+		{
+			Cancellation = EvaluationCancellation.Create(null, cts.Token),
+			TimeSystem = timeSystem,
+		};
+		CapturingConstraint constraint = new(Outcome.Success);
+
+		bool result = await EquivalencyComparison.Compare(new MyClass
+		{
+			Value = 1,
+		}, new
+		{
+			Value = ItIs(constraint),
+		}, new EquivalencyOptions(), new StringBuilder(), context, cts.Token);
+
+		await That(result).IsTrue();
+		await That(constraint.Context).IsNotSameAs(context)
+			.Because("the collections and the reasons of the nested expectation are released after the comparison");
+		await That(constraint.Context?.Cancellation).IsSameAs(context.Cancellation);
+		await That((constraint.Context as Context)?.TimeSystem).IsSameAs(timeSystem);
+		await That(constraint.CancellationToken).IsEqualTo(cts.Token);
+	}
+
+	[Test]
+	public async Task Compare_WithAnEvaluation_WhenCanceled_ShouldBeInconclusive()
+	{
+		using CancellationTokenSource cts = new();
+		var expected = new
+		{
+			Value = It.Is<int>().That.Satisfies(_ =>
+			{
+				cts.Cancel();
+				return false;
+			}).Within(SafetyNet),
+		};
+
+		async Task Act()
+			=> await ThatEvaluates(new MyClass
+				{
+					Value = 1,
+				}, async (subject, context, cancellationToken)
+					=> await EquivalencyComparison.Compare(subject, expected, new EquivalencyOptions(),
+						new StringBuilder(), context, cancellationToken)
+						? Outcome.Success
+						: Outcome.Failure)
+				.WithCancellation(cts.Token);
+
+		await That(Act).Throws<InconclusiveTestException>()
+			.WithMessage("*but it could not be verified, because the evaluation was already canceled*").AsWildcard()
+			.Because("the cancellation of the evaluation of the constraint has to end the nested expectation");
+	}
+
+	[Test]
+	public async Task Compare_WithAnEvaluation_WhenTimeoutElapses_ShouldFailWithTheTimeout()
+	{
+		var expected = new
+		{
+			Value = It.Is<int>().That.Satisfies(_ => false).Within(SafetyNet),
+		};
+
+		async Task Act()
+			=> await ThatEvaluates(new MyClass
+				{
+					Value = 1,
+				}, async (subject, context, cancellationToken)
+					=> await EquivalencyComparison.Compare(subject, expected, new EquivalencyOptions(),
+						new StringBuilder(), context, cancellationToken)
+						? Outcome.Success
+						: Outcome.Failure)
+				.WithTimeout(50.Milliseconds());
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("*but it did not finish within 0:00.050*").AsWildcard()
+			.Because("the timeout of the evaluation of the constraint has to end the nested expectation");
+	}
 
 	[Test]
 	[Arguments(Comparison.ObjectIsEquivalentTo)]
@@ -219,6 +301,92 @@ public sealed class NestedExpectationEvaluationTests
 
 		await That(options).IsSameAs(sut)
 			.Because("a comparison that evaluates nothing needs no options of its own for an evaluation");
+	}
+
+	[Test]
+	public async Task IsMetBy_ShouldEvaluateTheExpectationInAContextOfTheEvaluation()
+	{
+		using CancellationTokenSource cts = new();
+		VirtualTimeSystem timeSystem = new();
+		Context context = new()
+		{
+			Cancellation = EvaluationCancellation.Create(null, cts.Token),
+			TimeSystem = timeSystem,
+		};
+		CapturingConstraint constraint = new(Outcome.Success);
+
+		ConstraintResult result = await GetBuilder(ItIs(constraint)).IsMetBy(1, context, cts.Token);
+
+		await That(result.Outcome).IsEqualTo(Outcome.Success);
+		await That(constraint.Context).IsNotSameAs(context)
+			.Because("the expectation must not leave its collections, reasons or stored values in the context");
+		await That(constraint.Context?.Cancellation).IsSameAs(context.Cancellation);
+		await That((constraint.Context as Context)?.TimeSystem).IsSameAs(timeSystem);
+		await That(constraint.CancellationToken).IsEqualTo(cts.Token);
+	}
+
+	[Test]
+	public async Task IsMetBy_WhenCanceled_ShouldBeInconclusive()
+	{
+		using CancellationTokenSource cts = new();
+		It.IsEquivalent<int> expectation = It.Is<int>();
+		_ = expectation.That.Satisfies(_ =>
+		{
+			cts.Cancel();
+			return false;
+		}).Within(SafetyNet);
+		EquivalencyExpectationBuilder builder = GetBuilder(expectation);
+
+		async Task Act()
+			=> await ThatEvaluates(new MyClass(), async (_, context, cancellationToken)
+					=> (await builder.IsMetBy(1, context, cancellationToken)).Outcome)
+				.WithCancellation(cts.Token);
+
+		await That(Act).Throws<InconclusiveTestException>()
+			.WithMessage("""
+			             Expected that subject
+			             evaluates,
+			             but it did not
+			             """)
+			.Because("the cancellation of the evaluation of the constraint has to leave the nested expectation undecided");
+	}
+
+	[Test]
+	public async Task IsMetBy_WhenNotMet_ShouldLeaveNothingInTheContext()
+	{
+		Context context = new();
+		DisposeTrackingEnumerable source = new(null, 1, 2);
+		CapturingConstraint constraint = new(Outcome.Failure, source);
+		It.IsEquivalent<int> expectation = ItIs(constraint);
+		_ = expectation.Because(Task.FromResult<string?>("of a reason"));
+
+		ConstraintResult result = await GetBuilder(expectation).IsMetBy(1, context, CancellationToken.None);
+		int disposeCountAfterTheEvaluation = source.DisposeCount;
+		await context.ReleaseMaterializations();
+
+		await That(result.Outcome).IsEqualTo(Outcome.Failure);
+		await That(disposeCountAfterTheEvaluation).IsEqualTo(1)
+			.Because("the source that the expectation materialized is released with its evaluation");
+		await That(source.DisposeCount).IsEqualTo(1)
+			.Because("the evaluation in the context must not release the source again");
+		await That(context.HasPendingReasons).IsFalse();
+	}
+
+	[Test]
+	public async Task IsMetBy_WhenTimeoutElapses_ShouldFailWithTheTimeout()
+	{
+		It.IsEquivalent<int> expectation = It.Is<int>();
+		_ = expectation.That.Satisfies(_ => false).Within(SafetyNet);
+		EquivalencyExpectationBuilder builder = GetBuilder(expectation);
+
+		async Task Act()
+			=> await ThatEvaluates(new MyClass(), async (_, context, cancellationToken)
+					=> (await builder.IsMetBy(1, context, cancellationToken)).Outcome)
+				.WithTimeout(50.Milliseconds());
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("*but it did not finish within 0:00.050*").AsWildcard()
+			.Because("the timeout of the evaluation of the constraint has to end the nested expectation");
 	}
 
 	[Test]
@@ -581,12 +749,23 @@ public sealed class NestedExpectationEvaluationTests
 		return options;
 	}
 
+	private static EquivalencyExpectationBuilder GetBuilder(It.IsEquivalent<int> expectation)
+		=> (EquivalencyExpectationBuilder)((IExpectThat<int>)expectation).ExpectationBuilder;
+
 	private static It.IsEquivalent<int> ItIs(CapturingConstraint constraint)
 	{
 		It.IsEquivalent<int> expectation = It.Is<int>();
 		((IExpectThat<int>)expectation).ExpectationBuilder.AddConstraint((_, _) => constraint);
 		return expectation;
 	}
+
+	/// <summary>
+	///     Expects that the <paramref name="subject" /> meets a constraint of an extension that decides its outcome with
+	///     the <paramref name="evaluate" /> callback in its evaluation.
+	/// </summary>
+	private static ExpectationResult ThatEvaluates(MyClass subject,
+		Func<MyClass, IEvaluationContext, CancellationToken, Task<Outcome>> evaluate)
+		=> new(That(subject).Get().ExpectationBuilder.AddConstraint((_, _) => new EvaluatingConstraint(evaluate)));
 
 	/// <summary>
 	///     Keeps the context and the token it is evaluated with, and reads the first item of the
@@ -613,6 +792,19 @@ public sealed class NestedExpectationEvaluationTests
 
 		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("captures");
+	}
+
+	private sealed class EvaluatingConstraint(
+		Func<MyClass, IEvaluationContext, CancellationToken, Task<Outcome>> evaluate)
+		: IAsyncContextConstraint<MyClass>
+	{
+		public async ValueTask<ConstraintResult> IsMetBy(MyClass actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> new DummyConstraintResult(await evaluate(actual, context, cancellationToken), "evaluates",
+				"it did not");
+
+		public void AppendExpectation(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append("evaluates");
 	}
 
 	private sealed class MyClass
