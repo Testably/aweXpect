@@ -57,8 +57,17 @@ internal static class MyExtensionMetadata
 ```
 
 A comparison uses the registered members of a type instead of reflecting over it, so register every public member
-that it should compare. `RegisterField`, `RegisterEvent`, `RegisterCollection`, `RegisterDictionary` and `RegisterSet`
-cover the other kinds of metadata.
+that it should compare. The other methods cover the other kinds of metadata:
+
+- `RegisterField` registers a public field, like `RegisterProperty` does for a property.
+- `RegisterExplicitProperty` registers a property that the type implements explicitly for an interface, under its
+  name qualified by the interface, e.g. `MyNamespace.IHasTitle.Title`.
+- `RegisterEvent` registers an event, so that it can be recorded. It receives a factory for a handler of the event
+  type and the delegates that add and remove it.
+- `RegisterCollection` registers a collection type, so that a comparison with another collection also compares the
+  members the type declares itself, besides its items.
+- `RegisterDictionary` and `RegisterSet` register the dictionaries and sets of the given type arguments, so that a
+  comparison reads their key comparer or comparer.
 
 ## Reflection in an extension
 
