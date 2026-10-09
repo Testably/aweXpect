@@ -64,7 +64,7 @@ public sealed partial class StringEqualityOptionsTests
 			sut.IgnoringTrailingWhiteSpace();
 			sut.SetMatchType(matchType, "AsCustom");
 
-			void Act() => _ = sut.AreConsideredEqual("foo", expected);
+			void Act() => sut.AreConsideredEqual("foo", expected).AsTask();
 
 			ArgumentException thrownException = await That(Act).Throws<ArgumentException>()
 				.Because("an unusable expected value must not only throw when the returned task is awaited");
@@ -357,7 +357,7 @@ public sealed partial class StringEqualityOptionsTests
 			sut.IgnoringNewlineStyle();
 			sut.SetMatchType(matchType, "AsCustom");
 
-			void Act() => _ = sut.CountOccurrences("some text", "b\r\nar");
+			void Act() => sut.CountOccurrences("some text", "b\r\nar").AsTask();
 
 			ArgumentException thrownException = await That(Act).Throws<ArgumentException>()
 				.Because("an unusable expected value must not only throw when the returned task is awaited");

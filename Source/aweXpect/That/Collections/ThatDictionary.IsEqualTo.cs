@@ -132,11 +132,7 @@ public static partial class ThatDictionary
 			CancellationToken cancellationToken)
 		{
 			Actual = actual;
-			if (expected is not null)
-			{
-				options.ValidateExpectedItems(expected.Select(pair => pair.Value));
-			}
-
+			ValidateExpectedValues();
 			if (actual is null)
 			{
 				Outcome = expected is null ? Outcome.Success : Outcome.Failure;
@@ -200,6 +196,14 @@ public static partial class ThatDictionary
 		{
 			AddDictionaryContext(contexts, Actual);
 			contexts.AddOptionsContexts(options);
+		}
+
+		private void ValidateExpectedValues()
+		{
+			if (expected is not null)
+			{
+				options.ValidateExpectedItems(expected.Select(pair => pair.Value));
+			}
 		}
 
 		/// <summary>
