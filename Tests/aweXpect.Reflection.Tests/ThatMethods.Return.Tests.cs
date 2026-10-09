@@ -14,6 +14,33 @@ public sealed partial class ThatMethods
 		public sealed class EnumerableTests
 		{
 			[Fact]
+			public async Task ShouldFailWhenMethodIsNull()
+			{
+				IEnumerable<MethodInfo?> subject =
+				[
+					typeof(TestClass).GetMethod(nameof(TestClass.GetString)),
+					null,
+				];
+
+				async Task Act()
+				{
+					await That(subject).Return<string>();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             all return string,
+					             but it contained not matching methods
+
+					             Not matching items:
+					             [
+					               <null>
+					             ]
+					             """);
+			}
+
+			[Fact]
 			public async Task ShouldFailWhenSomeMethodsDoNotReturnSpecifiedType()
 			{
 				IEnumerable<MethodInfo> subject =
@@ -276,6 +303,26 @@ public sealed partial class ThatMethods
 
 		public sealed class NegatedTests
 		{
+			public sealed class EnumerableTests
+			{
+				[Fact]
+				public async Task WhenMethodIsNull_ShouldSucceed()
+				{
+					IEnumerable<MethodInfo?> subject =
+					[
+						typeof(TestClass).GetMethod(nameof(TestClass.GetString)),
+						null,
+					];
+
+					async Task Act()
+					{
+						await That(subject).DoesNotComplyWith(they => they.Return<string>());
+					}
+
+					await That(Act).DoesNotThrow();
+				}
+			}
+
 			public sealed class GenericTests
 			{
 				[Fact]

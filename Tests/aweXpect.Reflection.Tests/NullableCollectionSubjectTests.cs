@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Reflection;
 using Xunit.Sdk;
 
 namespace aweXpect.Reflection.Tests;
@@ -24,6 +25,52 @@ public sealed class NullableCollectionSubjectTests
 			             Not matching items:
 			             [
 			               object
+			             ]
+			             """);
+	}
+
+	[Fact]
+	public async Task WhenReturnIsChainedAfterAnotherMethodsExpectation_ShouldVerifyTheSubject()
+	{
+		IEnumerable<MethodInfo> subject = [typeof(string).GetMethod(nameof(string.IsNullOrEmpty))!,];
+
+		async Task Act()
+		{
+			await That(subject).AreStatic().And.Return<int>();
+		}
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             are all static and all return int,
+			             but it contained not matching methods
+
+			             Not matching items:
+			             [
+			               bool string.IsNullOrEmpty(string value)
+			             ]
+			             """);
+	}
+
+	[Fact]
+	public async Task WhenReturnIsUsedOnNullableMethodItems_ShouldVerifyTheSubject()
+	{
+		IEnumerable<MethodInfo?> subject = [typeof(string).GetMethod(nameof(string.IsNullOrEmpty)),];
+
+		async Task Act()
+		{
+			await That(subject).Return<bool>().And.ReturnExactly<bool>().And.ReturnVoid();
+		}
+
+		await That(Act).Throws<XunitException>()
+			.WithMessage("""
+			             Expected that subject
+			             all return bool and all return exactly bool and all return void,
+			             but it contained not matching methods
+
+			             Not matching items:
+			             [
+			               bool string.IsNullOrEmpty(string value)
 			             ]
 			             """);
 	}

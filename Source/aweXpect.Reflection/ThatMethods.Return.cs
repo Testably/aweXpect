@@ -23,21 +23,21 @@ public static partial class ThatMethods
 	///     Verifies that all methods in the filtered collection return type <typeparamref name="TReturn" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodsReturnResult<IEnumerable<MethodInfo>?, IThat<IEnumerable<MethodInfo>?>> Return<TReturn>(
-		this IThat<IEnumerable<MethodInfo>?> subject)
+	public static MethodsReturnResult<IEnumerable<MethodInfo?>?, IThat<IEnumerable<MethodInfo?>?>> Return<TReturn>(
+		this IThat<IEnumerable<MethodInfo?>?> subject)
 		=> Return(subject, typeof(TReturn));
 
 	/// <summary>
 	///     Verifies that all methods in the filtered collection return type <paramref name="returnType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodsReturnResult<IEnumerable<MethodInfo>?, IThat<IEnumerable<MethodInfo>?>> Return(
-		this IThat<IEnumerable<MethodInfo>?> subject, Type returnType)
+	public static MethodsReturnResult<IEnumerable<MethodInfo?>?, IThat<IEnumerable<MethodInfo?>?>> Return(
+		this IThat<IEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(returnType, false);
-		return new MethodsReturnResult<IEnumerable<MethodInfo>?, IThat<IEnumerable<MethodInfo>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo>>((it, grammars)
+		return new MethodsReturnResult<IEnumerable<MethodInfo?>?, IThat<IEnumerable<MethodInfo?>?>>(
+			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>((it, grammars)
 				=> new ReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
 			typeFilterOptions);
@@ -48,9 +48,9 @@ public static partial class ThatMethods
 	///     Verifies that all methods in the filtered collection return type <typeparamref name="TReturn" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodsReturnResult<IAsyncEnumerable<MethodInfo>?, IThat<IAsyncEnumerable<MethodInfo>?>>
+	public static MethodsReturnResult<IAsyncEnumerable<MethodInfo?>?, IThat<IAsyncEnumerable<MethodInfo?>?>>
 		Return<TReturn>(
-			this IThat<IAsyncEnumerable<MethodInfo>?> subject)
+			this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
 		=> Return(subject, typeof(TReturn));
 #endif
 
@@ -59,13 +59,13 @@ public static partial class ThatMethods
 	///     Verifies that all methods in the filtered collection return type <paramref name="returnType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodsReturnResult<IAsyncEnumerable<MethodInfo>?, IThat<IAsyncEnumerable<MethodInfo>?>> Return(
-		this IThat<IAsyncEnumerable<MethodInfo>?> subject, Type returnType)
+	public static MethodsReturnResult<IAsyncEnumerable<MethodInfo?>?, IThat<IAsyncEnumerable<MethodInfo?>?>> Return(
+		this IThat<IAsyncEnumerable<MethodInfo?>?> subject, Type returnType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(returnType, false);
-		return new MethodsReturnResult<IAsyncEnumerable<MethodInfo>?, IThat<IAsyncEnumerable<MethodInfo>?>>(
-			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo>>((it, grammars)
+		return new MethodsReturnResult<IAsyncEnumerable<MethodInfo?>?, IThat<IAsyncEnumerable<MethodInfo?>?>>(
+			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>((it, grammars)
 				=> new ReturnConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
 			typeFilterOptions);
@@ -106,21 +106,21 @@ public static partial class ThatMethods
 		string it,
 		ExpectationGrammars grammars,
 		TypeFilterOptions typeFilterOptions)
-		: CollectionConstraintResult<MethodInfo>(it, grammars),
-			IContextConstraint<IEnumerable<MethodInfo>>
+		: CollectionConstraintResult<MethodInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<MethodInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncContextConstraint<IAsyncEnumerable<MethodInfo>>
+			, IAsyncContextConstraint<IAsyncEnumerable<MethodInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
 			IEvaluationContext context, CancellationToken cancellationToken)
 			=> await SetAsyncValue(actual, context,
-				method => typeFilterOptions.Matches(method.ReturnType), cancellationToken);
+				method => method is not null && typeFilterOptions.Matches(method.ReturnType), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<MethodInfo> actual, IEvaluationContext context)
-			=> SetValue(actual, context, method => typeFilterOptions.Matches(method.ReturnType));
+		public ConstraintResult IsMetBy(IEnumerable<MethodInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, method => method is not null && typeFilterOptions.Matches(method.ReturnType));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
