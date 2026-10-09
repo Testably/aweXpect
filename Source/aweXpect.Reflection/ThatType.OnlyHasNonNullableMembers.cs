@@ -53,18 +53,22 @@ public static partial class ThatType
 			=> stringBuilder.Append("only has non-nullable members");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" contained nullable members ");
-			Formatter.Format(stringBuilder, _nullableMembers, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained nullable members");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("does not only have non-nullable members");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" only contained non-nullable members");
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			stringBuilder.Append(It).Append(" only contained non-nullable members ");
-			Formatter.Format(stringBuilder, _notNullableMembers, FormattingOptions.Indented(indentation ?? ""));
+			if (Outcome == Outcome.Failure)
+			{
+				contexts.AddMembersContext(IsNegated ? "Non-nullable members" : "Nullable members",
+					IsNegated ? _notNullableMembers : _nullableMembers);
+			}
 		}
 	}
 }

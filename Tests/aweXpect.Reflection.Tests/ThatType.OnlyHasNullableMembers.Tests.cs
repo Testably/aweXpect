@@ -50,7 +50,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             only has nullable members,
-					             but it contained non-nullable members [
+					             but it contained non-nullable members
+
+					             Non-nullable members:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -85,7 +88,10 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              only has nullable members,
-					              but it contained non-nullable members [
+					              but it contained non-nullable members
+
+					              Non-nullable members:
+					              [
 					                {Formatter.Format(property)}
 					              ]
 					              """);
@@ -107,7 +113,10 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              only has nullable members,
-					              but it contained non-nullable members [
+					              but it contained non-nullable members
+
+					              Non-nullable members:
+					              [
 					                {Formatter.Format(@event)}
 					              ]
 					              """);
@@ -158,6 +167,48 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
+			public async Task WhenUsedForItems_ShouldListTheNonNullableMembersOfTheFailingItem()
+			{
+				Type[] subject =
+				[
+					typeof(ClassWithNullableMembers), typeof(ClassWithSingleNonNullableProperty),
+					typeof(ClassWithSingleNonNullableEvent),
+				];
+				PropertyInfo property = typeof(ClassWithSingleNonNullableProperty)
+					.GetProperty(nameof(ClassWithSingleNonNullableProperty.NonNullableProperty))!;
+
+				async Task Act()
+				{
+					await That(subject).All().ComplyWith(type => type.OnlyHasNullableMembers());
+				}
+
+				await That(Act).Throws()
+					.WithMessage($"""
+					              Expected that subject
+					              only has nullable members for all items,
+					              but only 1 of 3 did
+
+					              Not matching items:
+					              [
+					                ClassWithSingleNonNullableProperty,
+					                ClassWithSingleNonNullableEvent
+					              ]
+
+					              Collection:
+					              [
+					                ClassWithNullableMembers,
+					                ClassWithSingleNonNullableProperty,
+					                ClassWithSingleNonNullableEvent
+					              ]
+
+					              Non-nullable members (item [1]):
+					              [
+					                {Formatter.Format(property)}
+					              ]
+					              """);
+			}
+
+			[Fact]
 			public async Task WithIncludingInherited_WhenBaseTypeHasNonNullableEvent_ShouldFail()
 			{
 				Type subject = typeof(DerivedClassWithNullableEvent);
@@ -173,7 +224,10 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              only has nullable members,
-					              but it contained non-nullable members [
+					              but it contained non-nullable members
+
+					              Non-nullable members:
+					              [
 					                {Formatter.Format(@event)}
 					              ]
 					              """);
@@ -193,7 +247,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             only has nullable members,
-					             but it contained non-nullable members [
+					             but it contained non-nullable members
+
+					             Non-nullable members:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -228,7 +285,10 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              only has nullable members,
-					              but it contained non-nullable members [
+					              but it contained non-nullable members
+
+					              Non-nullable members:
+					              [
 					                {Formatter.Format(@event)}
 					              ]
 					              """);
@@ -237,6 +297,24 @@ public sealed partial class ThatType
 
 		public sealed class NegatedTests
 		{
+			[Fact]
+			public async Task WhenTypeHasNoMembers_ShouldFail()
+			{
+				Type subject = typeof(ClassWithoutMembers);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.OnlyHasNullableMembers());
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             does not only have nullable members,
+					             but it only contained nullable members
+					             """);
+			}
+
 			[Fact]
 			public async Task WhenTypeHasNonNullableMembers_ShouldSucceed()
 			{
@@ -266,7 +344,10 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              does not only have nullable members,
-					              but it only contained nullable members [
+					              but it only contained nullable members
+
+					              Nullable members:
+					              [
 					                {Formatter.Format(property)}
 					              ]
 					              """);

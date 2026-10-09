@@ -23,7 +23,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
-					             but it was mutable ClassWithMutableFieldAndSettableProperty with mutable members [
+					             but it was mutable ClassWithMutableFieldAndSettableProperty
+
+					             Mutable members:
+					             [
 					               int ClassWithMutableFieldAndSettableProperty.Field,
 					               public int ClassWithMutableFieldAndSettableProperty.Property { get; set; }
 					             ]
@@ -44,7 +47,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
-					             but it was mutable ClassWithMutableField with mutable members [
+					             but it was mutable ClassWithMutableField
+
+					             Mutable members:
+					             [
 					               int ClassWithMutableField.Value
 					             ]
 					             """);
@@ -64,7 +70,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
-					             but it was mutable ClassWithPrivateSettableProperty with mutable members [
+					             but it was mutable ClassWithPrivateSettableProperty
+
+					             Mutable members:
+					             [
 					               public int ClassWithPrivateSettableProperty.Value { get; private set; }
 					             ]
 					             """);
@@ -84,7 +93,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
-					             but it was mutable ClassWithSettableIndexer with mutable members [
+					             but it was mutable ClassWithSettableIndexer
+
+					             Mutable members:
+					             [
 					               public int ClassWithSettableIndexer.Item { get; set; }
 					             ]
 					             """);
@@ -104,7 +116,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
-					             but it was mutable ClassWithSettableProperty with mutable members [
+					             but it was mutable ClassWithSettableProperty
+
+					             Mutable members:
+					             [
 					               public int ClassWithSettableProperty.Value { get; set; }
 					             ]
 					             """);
@@ -124,7 +139,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
-					             but it was mutable ClassInheritingMutableField with mutable members [
+					             but it was mutable ClassInheritingMutableField
+
+					             Mutable members:
+					             [
 					               int MutableBaseClass._value
 					             ]
 					             """);
@@ -144,7 +162,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
-					             but it was mutable ClassInheritingProtectedMutableField with mutable members [
+					             but it was mutable ClassInheritingProtectedMutableField
+
+					             Mutable members:
+					             [
 					               int MutableBaseClassWithProtectedField.ProtectedValue
 					             ]
 					             """);
@@ -194,8 +215,106 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
-					             but it was mutable MutableRecordStruct with mutable members [
+					             but it was mutable MutableRecordStruct
+
+					             Mutable members:
+					             [
 					               public int MutableRecordStruct.Value { get; set; }
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenUsedForItems_ShouldLabelTheMutableMembersWithTheItem()
+			{
+				Type[] subject =
+				[
+					typeof(ImmutableClass), typeof(ClassWithMutableField), typeof(ClassWithSettableProperty),
+				];
+
+				async Task Act()
+				{
+					await That(subject).All().ComplyWith(type => type.IsImmutable());
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             is immutable for all items,
+					             but only 1 of 3 were
+
+					             Not matching items:
+					             [
+					               ClassWithMutableField,
+					               ClassWithSettableProperty
+					             ]
+
+					             Collection:
+					             [
+					               ImmutableClass,
+					               ClassWithMutableField,
+					               ClassWithSettableProperty
+					             ]
+
+					             Mutable members (item [1]):
+					             [
+					               int ClassWithMutableField.Value
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenUsedInThatAll_ShouldListTheMutableMembersOfEachFailure()
+			{
+				async Task Act()
+				{
+					await ThatAll(
+						That(typeof(ClassWithMutableField)).IsImmutable(),
+						That(typeof(ImmutableClass)).IsImmutable(),
+						That(typeof(ClassWithSettableProperty)).IsImmutable());
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected all of the following to succeed:
+					              [01] Expected that typeof(ClassWithMutableField) is immutable
+					              [02] Expected that typeof(ImmutableClass) is immutable
+					              [03] Expected that typeof(ClassWithSettableProperty) is immutable
+					             but
+					              [01] it was mutable ClassWithMutableField
+					              [03] it was mutable ClassWithSettableProperty
+
+					             [01] Mutable members:
+					             [
+					               int ClassWithMutableField.Value
+					             ]
+
+					             [03] Mutable members:
+					             [
+					               public int ClassWithSettableProperty.Value { get; set; }
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenUsedInWhose_ShouldLabelTheMutableMembersWithTheMember()
+			{
+				TypeHolder subject = new(typeof(ClassWithMutableField));
+
+				async Task Act()
+				{
+					await That(subject).Whose(holder => holder.Type, type => type.IsImmutable());
+				}
+
+				await That(Act).Throws()
+					.WithMessage("""
+					             Expected that subject
+					             whose Type is immutable,
+					             but Type was mutable ClassWithMutableField
+
+					             Mutable members (Type):
+					             [
+					               int ClassWithMutableField.Value
 					             ]
 					             """);
 			}
@@ -215,6 +334,11 @@ public sealed partial class ThatType
 				typeof(PublicStaticClass),
 				typeof(GenericImmutableClass<>),
 			};
+
+			private sealed class TypeHolder(Type type)
+			{
+				public Type Type { get; } = type;
+			}
 		}
 
 		public sealed class NegatedTests

@@ -104,7 +104,10 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             is immutable,
-					             but it was mutable ClassWithMutableField with mutable members [
+					             but it was mutable ClassWithMutableField
+
+					             Mutable members:
+					             [
 					               int ClassWithMutableField.Value
 					             ]
 					             """);

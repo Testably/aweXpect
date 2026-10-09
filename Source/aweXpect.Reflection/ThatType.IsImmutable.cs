@@ -55,12 +55,8 @@ public static partial class ThatType
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			// The mutable members are only needed for this failure message, so they are collected lazily here
-			// instead of on every (typically succeeding) evaluation.
 			stringBuilder.Append(It).Append(" was mutable ");
 			Formatter.Format(stringBuilder, Actual);
-			stringBuilder.Append(" with mutable members ");
-			Formatter.Format(stringBuilder, Actual!.GetMutableMembers(), FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -70,6 +66,19 @@ public static partial class ThatType
 		{
 			stringBuilder.Append(It).Append(" was immutable ");
 			Formatter.Format(stringBuilder, Actual);
+		}
+
+		/// <inheritdoc />
+		/// <remarks>
+		///     The mutable members are only needed for the failure message, so they are collected here instead of on
+		///     every (typically succeeding) evaluation.
+		/// </remarks>
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (Outcome == Outcome.Failure && !IsNegated)
+			{
+				contexts.AddMembersContext("Mutable members", Actual!.GetMutableMembers());
+			}
 		}
 	}
 }
