@@ -13,7 +13,8 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> declares an implicit conversion operator from
 	///     <typeparamref name="TSource" /> to <typeparamref name="TTarget" />.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> HasImplicitConversionOperator<TSource, TTarget>(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> HasImplicitConversionOperator<TSource, TTarget>(
 		this IThat<Type?> subject,
 		bool inherit = false)
 		=> subject.HasImplicitConversionOperator(typeof(TSource), typeof(TTarget), inherit);
@@ -22,7 +23,8 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> declares an implicit conversion operator from
 	///     <paramref name="source" /> to <paramref name="target" />.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> HasImplicitConversionOperator(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> HasImplicitConversionOperator(
 		this IThat<Type?> subject,
 		Type source,
 		Type target,
@@ -35,7 +37,8 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> does not declare an implicit conversion operator from
 	///     <typeparamref name="TSource" /> to <typeparamref name="TTarget" />.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> DoesNotHaveImplicitConversionOperator<TSource, TTarget>(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> DoesNotHaveImplicitConversionOperator<TSource, TTarget>(
 		this IThat<Type?> subject,
 		bool inherit = false)
 		=> subject.DoesNotHaveImplicitConversionOperator(typeof(TSource), typeof(TTarget), inherit);
@@ -44,7 +47,8 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> does not declare an implicit conversion operator from
 	///     <paramref name="source" /> to <paramref name="target" />.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> DoesNotHaveImplicitConversionOperator(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> DoesNotHaveImplicitConversionOperator(
 		this IThat<Type?> subject,
 		Type source,
 		Type target,
@@ -62,7 +66,8 @@ public static partial class ThatType
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
-	public static AndOrResult<Type?, IThat<Type?>> HasExplicitConversionOperator<TSource, TTarget>(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> HasExplicitConversionOperator<TSource, TTarget>(
 		this IThat<Type?> subject,
 		bool inherit = false)
 		=> subject.HasExplicitConversionOperator(typeof(TSource), typeof(TTarget), inherit);
@@ -76,7 +81,8 @@ public static partial class ThatType
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
-	public static AndOrResult<Type?, IThat<Type?>> HasExplicitConversionOperator(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> HasExplicitConversionOperator(
 		this IThat<Type?> subject,
 		Type source,
 		Type target,
@@ -94,7 +100,8 @@ public static partial class ThatType
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
-	public static AndOrResult<Type?, IThat<Type?>> DoesNotHaveExplicitConversionOperator<TSource, TTarget>(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> DoesNotHaveExplicitConversionOperator<TSource, TTarget>(
 		this IThat<Type?> subject,
 		bool inherit = false)
 		=> subject.DoesNotHaveExplicitConversionOperator(typeof(TSource), typeof(TTarget), inherit);
@@ -108,7 +115,8 @@ public static partial class ThatType
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
-	public static AndOrResult<Type?, IThat<Type?>> DoesNotHaveExplicitConversionOperator(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> DoesNotHaveExplicitConversionOperator(
 		this IThat<Type?> subject,
 		Type source,
 		Type target,

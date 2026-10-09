@@ -43,7 +43,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are all static,
-					             but it contained non-static methods [
+					             but it contained non-static methods
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -67,7 +70,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are not all static,
-					             but it only contained static methods [
+					             but it only contained static methods
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -108,7 +114,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are not all static,
-					             but it only contained static methods [
+					             but it only contained static methods
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -146,7 +155,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are all static,
-					             but it contained non-static methods [
+					             but it contained non-static methods
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

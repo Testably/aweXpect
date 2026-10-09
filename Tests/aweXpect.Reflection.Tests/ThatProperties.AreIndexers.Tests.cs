@@ -42,7 +42,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all indexers,
-					             but it contained non-indexer properties [
+					             but it contained non-indexer properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -66,7 +69,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are not all indexers,
-					             but it only contained indexer properties [
+					             but it only contained indexer properties
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -121,7 +127,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all indexers,
-					             but it contained non-indexer properties [
+					             but it contained non-indexer properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

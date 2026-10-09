@@ -29,7 +29,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subjects
 					             all have no AssemblyTitleAttribute,
-					             but it contained not matching assemblies [
+					             but it contained not matching assemblies
+
+					             Not matching items:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
@@ -53,7 +56,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subjects
 					             not all have no ThatAssemblies.DoNotHave.AttributeTests.TestAttribute,
-					             but it only contained matching assemblies [
+					             but it only contained matching assemblies
+
+					             Collection:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
@@ -76,7 +82,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subjects
 					             all have no AssemblyTitleAttribute,
-					             but it contained not matching assemblies [
+					             but it contained not matching assemblies
+
+					             Not matching items:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();

@@ -132,7 +132,7 @@ internal sealed class TypeSetDependencyOptions
 		return _resolved;
 	}
 #else
-	public Task<ResolvedTypeSet> Resolve(CancellationToken cancellationToken = default)
+	public ValueTask<ResolvedTypeSet> Resolve(CancellationToken cancellationToken = default)
 	{
 		if (_resolved is null)
 		{
@@ -149,7 +149,7 @@ internal sealed class TypeSetDependencyOptions
 			_resolved = new ResolvedTypeSet(resolved, this);
 		}
 
-		return Task.FromResult(_resolved);
+		return new ValueTask<ResolvedTypeSet>(_resolved);
 	}
 #endif
 

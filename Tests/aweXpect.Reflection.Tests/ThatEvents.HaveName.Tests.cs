@@ -23,7 +23,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that events in types matching t => t == typeof(T) in assembly containing type ThatEvent.ClassWithEvents
 					             all have name equal to "PublicEvent",
-					             but it contained not matching items [
+					             but it contained not matching items
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -98,7 +101,7 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that events in types matching t => t == typeof(T) in assembly containing type ThatEvent.ClassWithSingleEvent
 					             not all have name equal to "MyEvent",
-					             but it only contained matching items *
+					             but it only contained matching items*
 					             """).AsWildcard();
 			}
 		}

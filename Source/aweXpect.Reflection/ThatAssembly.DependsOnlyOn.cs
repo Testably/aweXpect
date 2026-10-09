@@ -26,11 +26,12 @@ public static partial class ThatAssembly
 	///     <c>SystemsBiology.Core</c>) are ignored,
 	///     so that framework assemblies do not have to be listed explicitly.
 	/// </remarks>
-	public static StringEqualityTypeResult<Assembly?, IThat<Assembly?>> DependsOnlyOn(
+	[GuaranteesNotNull]
+	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> DependsOnlyOn(
 		this IThat<Assembly?> subject, params string[] allowed)
 	{
 		StringEqualityOptions options = new(nameof(allowed));
-		return new StringEqualityTypeResult<Assembly?, IThat<Assembly?>>(subject.Get().ExpectationBuilder
+		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new DependsOnlyOnConstraint(it, grammars, allowed, options)),
 			subject,

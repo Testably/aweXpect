@@ -46,7 +46,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all immutable,
-					             but it contained mutable types [
+					             but it contained mutable types
+
+					             Not matching items:
+					             [
 					               ClassWithMutableField
 					             ]
 					             """);
@@ -86,7 +89,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all immutable,
-					             but it contained mutable types [
+					             but it contained mutable types
+
+					             Not matching items:
+					             [
 					               ClassWithMutableField
 					             ]
 					             """);
@@ -113,7 +119,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are not all immutable,
-					             but it only contained immutable types [
+					             but it only contained immutable types
+
+					             Collection:
+					             [
 					               ImmutableClass
 					             ]
 					             """);

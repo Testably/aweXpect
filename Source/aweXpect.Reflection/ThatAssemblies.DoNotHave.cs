@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Results;
@@ -26,6 +27,7 @@ public static partial class ThatAssemblies
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> DoNotHave<TAttribute>(
 		this IThat<IEnumerable<Assembly?>> subject, bool inherit = true)
 		where TAttribute : Attribute
@@ -48,6 +50,7 @@ public static partial class ThatAssemblies
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>> DoNotHave<TAttribute>(
 		this IThat<IAsyncEnumerable<Assembly?>> subject, bool inherit = true)
 		where TAttribute : Attribute
@@ -66,20 +69,21 @@ public static partial class ThatAssemblies
 		string it,
 		ExpectationGrammars grammars,
 		AttributeFilterOptions<Assembly?> attributeFilterOptions)
-		: CollectionConstraintResult<Assembly?>(grammars),
-			IValueConstraint<IEnumerable<Assembly?>>
+		: CollectionConstraintResult<Assembly?>(it, grammars),
+			IContextConstraint<IEnumerable<Assembly?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Assembly?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Assembly?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, member => !attributeFilterOptions.Matches(member));
+			=> await SetAsyncValue(actual, context,
+				member => !attributeFilterOptions.Matches(member), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Assembly?> actual)
-			=> SetValue(actual, member => !attributeFilterOptions.Matches(member));
+		public ConstraintResult IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, member => !attributeFilterOptions.Matches(member));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -88,10 +92,7 @@ public static partial class ThatAssemblies
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching assemblies ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching assemblies");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -100,9 +101,6 @@ public static partial class ThatAssemblies
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching assemblies ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching assemblies");
 	}
 }

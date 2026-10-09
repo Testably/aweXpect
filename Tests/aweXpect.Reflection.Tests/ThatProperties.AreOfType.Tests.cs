@@ -31,7 +31,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             all are of type int,
-					             but it contained not matching properties [
+					             but it contained not matching properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -91,7 +94,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             not all are of type int,
-					             but it only contained matching properties [
+					             but it only contained matching properties
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -135,7 +141,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             all are of type int,
-					             but it contained not matching properties [
+					             but it contained not matching properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -251,7 +260,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             all are of type bool or of type long,
-					             but it contained not matching properties [
+					             but it contained not matching properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

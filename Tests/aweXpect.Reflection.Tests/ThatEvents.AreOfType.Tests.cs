@@ -33,7 +33,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             all are of type EventHandler,
-					             but it contained not matching events [
+					             but it contained not matching events
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -93,7 +96,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             not all are of type EventHandler,
-					             but it only contained matching events [
+					             but it only contained matching events
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -137,7 +143,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             all are of type EventHandler,
-					             but it contained not matching events [
+					             but it contained not matching events
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -244,7 +253,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             all are of type Action or of type EventHandler,
-					             but it contained not matching events [
+					             but it contained not matching events
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

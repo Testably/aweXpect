@@ -60,7 +60,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subjects
 					             not all have AssemblyTitleAttribute,
-					             but it only contained matching assemblies [
+					             but it only contained matching assemblies
+
+					             Collection:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
@@ -83,7 +86,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subjects
 					             all have ThatAssemblies.Have.AttributeTests.TestAttribute,
-					             but it contained not matching assemblies [
+					             but it contained not matching assemblies
+
+					             Not matching items:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
@@ -106,7 +112,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subjects
 					             all have AssemblyTitleAttribute matching attr => attr.Title == "NonExistentTitle",
-					             but it contained not matching assemblies [
+					             but it contained not matching assemblies
+
+					             Not matching items:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
@@ -145,7 +154,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subjects
 					             all have ThatAssemblies.Have.AttributeTests.TestAttribute,
-					             but it contained not matching assemblies [
+					             but it contained not matching assemblies
+
+					             Not matching items:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
@@ -166,7 +178,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subjects
 					             all have AssemblyTitleAttribute matching attr => attr.Title == "NonExistentTitle",
-					             but it contained not matching assemblies [
+					             but it contained not matching assemblies
+
+					             Not matching items:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
@@ -286,7 +301,10 @@ public sealed partial class ThatAssemblies
 						.WithMessage("""
 						             Expected that subjects
 						             all have ThatAssemblies.Have.OrHave.AttributeTests.TestAttribute or ThatAssemblies.Have.OrHave.AttributeTests.BarAttribute,
-						             but it contained not matching assemblies [
+						             but it contained not matching assemblies
+
+						             Not matching items:
+						             [
 						               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 						             ]
 						             """).AsWildcard();
@@ -326,7 +344,10 @@ public sealed partial class ThatAssemblies
 						.WithMessage("""
 						             Expected that subjects
 						             all have AssemblyTitleAttribute matching attr => attr.Title == "NonExistent" or ThatAssemblies.Have.OrHave.AttributeTests.TestAttribute matching attr => attr.Value == "NonExistent",
-						             but it contained not matching assemblies [
+						             but it contained not matching assemblies
+
+						             Not matching items:
+						             [
 						               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 						             ]
 						             """).AsWildcard();
@@ -395,7 +416,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subjects
 					             not all have AssemblyTitleAttribute,
-					             but it only contained matching assemblies *
+					             but it only contained matching assemblies*
 					             """).AsWildcard();
 			}
 

@@ -28,7 +28,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             are all virtual,
-					             but it contained non-virtual events [
+					             but it contained non-virtual events
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -80,7 +83,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             are not all virtual,
-					             but it only contained virtual events [
+					             but it only contained virtual events
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -106,7 +112,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             are all virtual,
-					             but it contained non-virtual events [
+					             but it contained non-virtual events
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

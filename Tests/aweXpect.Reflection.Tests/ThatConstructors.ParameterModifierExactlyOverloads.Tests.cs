@@ -220,6 +220,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type int with ref modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.ParameterModifierExactlyOverloads.PlainIntCtor(int value)
+					             ]
 					             """);
 			}
 

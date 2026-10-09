@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -20,6 +21,7 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> declare an implicit conversion
 	///     operator from <typeparamref name="TSource" /> to <typeparamref name="TTarget" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> HaveImplicitConversionOperator<TSource,
 		TTarget>(
 		this IThat<IEnumerable<Type?>> subject,
@@ -30,6 +32,7 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> declare an implicit conversion
 	///     operator from <paramref name="source" /> to <paramref name="target" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> HaveImplicitConversionOperator(
 		this IThat<IEnumerable<Type?>> subject,
 		Type source,
@@ -44,6 +47,7 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> declare an implicit conversion
 	///     operator from <typeparamref name="TSource" /> to <typeparamref name="TTarget" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>>
 		HaveImplicitConversionOperator<TSource, TTarget>(
 			this IThat<IAsyncEnumerable<Type?>> subject,
@@ -54,6 +58,7 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> declare an implicit conversion
 	///     operator from <paramref name="source" /> to <paramref name="target" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> HaveImplicitConversionOperator(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Type source,
@@ -68,6 +73,7 @@ public static partial class ThatTypes
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> declare an implicit
 	///     conversion operator from <typeparamref name="TSource" /> to <typeparamref name="TTarget" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotHaveImplicitConversionOperator<TSource,
 		TTarget>(
 		this IThat<IEnumerable<Type?>> subject,
@@ -78,6 +84,7 @@ public static partial class ThatTypes
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> declare an implicit
 	///     conversion operator from <paramref name="source" /> to <paramref name="target" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotHaveImplicitConversionOperator(
 		this IThat<IEnumerable<Type?>> subject,
 		Type source,
@@ -92,6 +99,7 @@ public static partial class ThatTypes
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> declare an implicit
 	///     conversion operator from <typeparamref name="TSource" /> to <typeparamref name="TTarget" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>>
 		DoNotHaveImplicitConversionOperator<TSource, TTarget>(
 			this IThat<IAsyncEnumerable<Type?>> subject,
@@ -102,6 +110,7 @@ public static partial class ThatTypes
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> declare an implicit
 	///     conversion operator from <paramref name="source" /> to <paramref name="target" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> DoNotHaveImplicitConversionOperator(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Type source,
@@ -121,6 +130,7 @@ public static partial class ThatTypes
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> HaveExplicitConversionOperator<TSource,
 		TTarget>(
 		this IThat<IEnumerable<Type?>> subject,
@@ -136,6 +146,7 @@ public static partial class ThatTypes
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> HaveExplicitConversionOperator(
 		this IThat<IEnumerable<Type?>> subject,
 		Type source,
@@ -155,6 +166,7 @@ public static partial class ThatTypes
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>>
 		HaveExplicitConversionOperator<TSource, TTarget>(
 			this IThat<IAsyncEnumerable<Type?>> subject,
@@ -170,6 +182,7 @@ public static partial class ThatTypes
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> HaveExplicitConversionOperator(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Type source,
@@ -189,6 +202,7 @@ public static partial class ThatTypes
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotHaveExplicitConversionOperator<TSource,
 		TTarget>(
 		this IThat<IEnumerable<Type?>> subject,
@@ -204,6 +218,7 @@ public static partial class ThatTypes
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotHaveExplicitConversionOperator(
 		this IThat<IEnumerable<Type?>> subject,
 		Type source,
@@ -223,6 +238,7 @@ public static partial class ThatTypes
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>>
 		DoNotHaveExplicitConversionOperator<TSource, TTarget>(
 			this IThat<IAsyncEnumerable<Type?>> subject,
@@ -238,6 +254,7 @@ public static partial class ThatTypes
 	///     conversion to be declared alongside its non-checked counterpart, this also holds for types that additionally
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> DoNotHaveExplicitConversionOperator(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Type source,
@@ -255,30 +272,31 @@ public static partial class ThatTypes
 		Type source,
 		Type target,
 		bool inherit)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 		private readonly string _conversionText = ConversionText(isImplicit, source, target);
 
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, type => type.GetConversionOperator(isImplicit, source, target, inherit) is not null);
+			=> await SetAsyncValue(actual, context,
+				type => type.GetConversionOperator(isImplicit, source, target, inherit) is not null, cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, type => type.GetConversionOperator(isImplicit, source, target, inherit) is not null);
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context,
+				type => type.GetConversionOperator(isImplicit, source, target, inherit) is not null);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have ").Append(_conversionText);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" contained types without ").Append(_conversionText).Append(' ');
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
+			stringBuilder.Append(It).Append(" contained types without ").Append(_conversionText);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -286,8 +304,7 @@ public static partial class ThatTypes
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" only contained types with ").Append(_conversionText).Append(' ');
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
+			stringBuilder.Append(It).Append(" only contained types with ").Append(_conversionText);
 		}
 	}
 
@@ -298,30 +315,31 @@ public static partial class ThatTypes
 		Type source,
 		Type target,
 		bool inherit)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 		private readonly string _conversionText = ConversionText(isImplicit, source, target);
 
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, type => type.GetConversionOperator(isImplicit, source, target, inherit) is null);
+			=> await SetAsyncValue(actual, context,
+				type => type.GetConversionOperator(isImplicit, source, target, inherit) is null, cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, type => type.GetConversionOperator(isImplicit, source, target, inherit) is null);
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context,
+				type => type.GetConversionOperator(isImplicit, source, target, inherit) is null);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all do not have ").Append(_conversionText);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" contained types with ").Append(_conversionText).Append(' ');
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
+			stringBuilder.Append(It).Append(" contained types with ").Append(_conversionText);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -329,8 +347,7 @@ public static partial class ThatTypes
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" only contained types without ").Append(_conversionText).Append(' ');
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
+			stringBuilder.Append(It).Append(" only contained types without ").Append(_conversionText);
 		}
 	}
 

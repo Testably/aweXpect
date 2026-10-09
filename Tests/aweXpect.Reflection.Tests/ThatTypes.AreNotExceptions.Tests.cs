@@ -28,7 +28,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all not exceptions,
-					             but it contained exceptions [
+					             but it contained exceptions
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -82,7 +85,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types which are exceptions in assembly containing type ThatTypes.AreNotExceptions
 					             are all not exceptions,
-					             but it contained exceptions [
+					             but it contained exceptions
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -106,7 +112,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types which are not exceptions in assembly containing type ThatTypes.AreNotExceptions
 					             also contain an exception,
-					             but it only contained not exceptions [
+					             but it only contained not exceptions
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -13,7 +13,8 @@ public static partial class ThatProperty
 	///     Verifies that the <see cref="PropertyInfo" /> is an extension property (declared with the C# extension block
 	///     syntax).
 	/// </summary>
-	public static AndOrResult<PropertyInfo?, IThat<PropertyInfo?>> IsAnExtensionProperty(
+	[GuaranteesNotNull]
+	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsAnExtensionProperty(
 		this IThat<PropertyInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAnExtensionPropertyConstraint(it, grammars)),
@@ -23,7 +24,8 @@ public static partial class ThatProperty
 	///     Verifies that the <see cref="PropertyInfo" /> is not an extension property (not declared with the C# extension
 	///     block syntax).
 	/// </summary>
-	public static AndOrResult<PropertyInfo?, IThat<PropertyInfo?>> IsNotAnExtensionProperty(
+	[GuaranteesNotNull]
+	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsNotAnExtensionProperty(
 		this IThat<PropertyInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAnExtensionPropertyConstraint(it, grammars).Invert()),

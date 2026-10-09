@@ -43,7 +43,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have no parameters,
-					             but it contained methods with a different number of parameters *
+					             but it contained methods with a different number of parameters*
 					             """).AsWildcard();
 			}
 		}
@@ -67,7 +67,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have no parameters,
-					             but it only contained methods with no parameters *
+					             but it only contained methods with no parameters*
 					             """).AsWildcard();
 			}
 

@@ -40,7 +40,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all readable,
-					             but it contained not readable properties [
+					             but it contained not readable properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -64,7 +67,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are not all readable,
-					             but it only contained readable properties [
+					             but it only contained readable properties
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

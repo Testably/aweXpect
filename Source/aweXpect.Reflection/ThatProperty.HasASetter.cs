@@ -12,7 +12,8 @@ public static partial class ThatProperty
 	/// <summary>
 	///     Verifies that the <see cref="PropertyInfo" /> has a (regular, non-init) setter.
 	/// </summary>
-	public static AndOrResult<PropertyInfo?, IThat<PropertyInfo?>> HasASetter(
+	[GuaranteesNotNull]
+	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> HasASetter(
 		this IThat<PropertyInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasASetterConstraint(it, grammars)),

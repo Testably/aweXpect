@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -32,6 +33,7 @@ public static partial class ThatTypes
 	///     <typeparamref name="TInterface" /> to be implemented directly.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> Implement<TInterface>(
 		this IThat<IEnumerable<Type?>> subject,
 		bool forceDirect = false)
@@ -54,6 +56,7 @@ public static partial class ThatTypes
 	///     <paramref name="interfaceType" /> to be implemented directly.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> Implement(
 		this IThat<IEnumerable<Type?>> subject,
 		Type interfaceType,
@@ -82,6 +85,7 @@ public static partial class ThatTypes
 	///     <typeparamref name="TInterface" /> to be implemented directly.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> Implement<TInterface>(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		bool forceDirect = false)
@@ -106,6 +110,7 @@ public static partial class ThatTypes
 	///     <paramref name="interfaceType" /> to be implemented directly.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> Implement(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Type interfaceType,
@@ -134,6 +139,7 @@ public static partial class ThatTypes
 	///     <typeparamref name="TInterface" /> to be implemented directly.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotImplement<TInterface>(
 		this IThat<IEnumerable<Type?>> subject,
 		bool forceDirect = false)
@@ -156,6 +162,7 @@ public static partial class ThatTypes
 	///     <paramref name="interfaceType" /> to be implemented directly.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotImplement(
 		this IThat<IEnumerable<Type?>> subject,
 		Type interfaceType,
@@ -184,6 +191,7 @@ public static partial class ThatTypes
 	///     <typeparamref name="TInterface" /> to be implemented directly.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> DoNotImplement<TInterface>(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		bool forceDirect = false)
@@ -208,6 +216,7 @@ public static partial class ThatTypes
 	///     <paramref name="interfaceType" /> to be implemented directly.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> DoNotImplement(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Type interfaceType,
@@ -225,19 +234,21 @@ public static partial class ThatTypes
 		ExpectationGrammars grammars,
 		Type interfaceType,
 		bool forceDirect)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, type => type?.Implements(interfaceType, forceDirect) == true);
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context,
+				type => type?.Implements(interfaceType, forceDirect) == true, cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, type => type?.Implements(interfaceType, forceDirect) == true);
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, type => type?.Implements(interfaceType, forceDirect) == true);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -247,12 +258,10 @@ public static partial class ThatTypes
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(forceDirect
+			stringBuilder.Append(It).Append(forceDirect
 				? " contained types that do not directly implement "
 				: " contained types that do not implement ");
 			Formatter.Format(stringBuilder, interfaceType);
-			stringBuilder.Append(' ');
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -263,12 +272,10 @@ public static partial class ThatTypes
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(forceDirect
+			stringBuilder.Append(It).Append(forceDirect
 				? " only contained types that directly implement "
 				: " only contained types that implement ");
 			Formatter.Format(stringBuilder, interfaceType);
-			stringBuilder.Append(' ');
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 	}
 
@@ -277,19 +284,21 @@ public static partial class ThatTypes
 		ExpectationGrammars grammars,
 		Type interfaceType,
 		bool forceDirect)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, type => type?.Implements(interfaceType, forceDirect) != true);
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context,
+				type => type?.Implements(interfaceType, forceDirect) != true, cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, type => type?.Implements(interfaceType, forceDirect) != true);
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, type => type?.Implements(interfaceType, forceDirect) != true);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -299,12 +308,10 @@ public static partial class ThatTypes
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(forceDirect
+			stringBuilder.Append(It).Append(forceDirect
 				? " contained types that directly implement "
 				: " contained types that implement ");
 			Formatter.Format(stringBuilder, interfaceType);
-			stringBuilder.Append(' ');
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -315,12 +322,10 @@ public static partial class ThatTypes
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(forceDirect
+			stringBuilder.Append(It).Append(forceDirect
 				? " only contained types that do not directly implement "
 				: " only contained types that do not implement ");
 			Formatter.Format(stringBuilder, interfaceType);
-			stringBuilder.Append(' ');
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 	}
 }

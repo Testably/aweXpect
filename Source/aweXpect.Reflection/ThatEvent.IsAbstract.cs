@@ -12,7 +12,8 @@ public static partial class ThatEvent
 	/// <summary>
 	///     Verifies that the <see cref="EventInfo" /> is abstract.
 	/// </summary>
-	public static AndOrResult<EventInfo?, IThat<EventInfo?>> IsAbstract(
+	[GuaranteesNotNull]
+	public static AndOrResult<EventInfo, IThat<EventInfo?>> IsAbstract(
 		this IThat<EventInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAbstractConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatEvent
 	/// <summary>
 	///     Verifies that the <see cref="EventInfo" /> is not abstract.
 	/// </summary>
-	public static AndOrResult<EventInfo?, IThat<EventInfo?>> IsNotAbstract(
+	[GuaranteesNotNull]
+	public static AndOrResult<EventInfo, IThat<EventInfo?>> IsNotAbstract(
 		this IThat<EventInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAbstractConstraint(it, grammars).Invert()),

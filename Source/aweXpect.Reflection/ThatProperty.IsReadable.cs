@@ -12,7 +12,8 @@ public static partial class ThatProperty
 	/// <summary>
 	///     Verifies that the <see cref="PropertyInfo" /> is readable (can be read).
 	/// </summary>
-	public static AndOrResult<PropertyInfo?, IThat<PropertyInfo?>> IsReadable(
+	[GuaranteesNotNull]
+	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsReadable(
 		this IThat<PropertyInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsReadableConstraint(it, grammars)),

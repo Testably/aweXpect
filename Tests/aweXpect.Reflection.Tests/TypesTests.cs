@@ -156,7 +156,10 @@ public sealed class TypesTests
 			.WithMessage("""
 			             Expected that types within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope" in all loaded assemblies
 			             are all within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScopeSibling",
-			             but it contained not matching types [
+			             but it contained not matching types
+
+			             Not matching items:
+			             [
 			               *
 			             ]
 			             """).AsWildcard();
@@ -177,7 +180,10 @@ public sealed class TypesTests
 			.WithMessage("""
 			             Expected that types within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope" in all loaded assemblies
 			             are not all within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope",
-			             but it only contained matching types [
+			             but it only contained matching types
+
+			             Collection:
+			             [
 			               *
 			             ]
 			             """).AsWildcard();

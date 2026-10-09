@@ -72,7 +72,10 @@ public sealed partial class TypeFilters
 					.WithMessage("""
 					             Expected that types which are assignable to TypeFilters.WhichAreAssignableTo.Tests.AssignableBase in assembly containing type TypeFilters.WhichAreAssignableTo
 					             are all abstract,
-					             but it contained non-abstract types [
+					             but it contained non-abstract types
+
+					             Not matching items:
+					             [
 					               TypeFilters.WhichAreAssignableTo.Tests.AssignableDerived
 					             ]
 					             """);

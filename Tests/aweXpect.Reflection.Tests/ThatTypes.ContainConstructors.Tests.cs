@@ -35,7 +35,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainConstructors.ClassWithMarkedConstructor and ThatTypes.ContainConstructors.ClassWithoutMarkedConstructor
 					             all contain constructors with ThatTypes.ContainConstructors.MarkerAttribute at least once,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.ContainConstructors.ClassWithoutMarkedConstructor
 					             ]
 					             """);

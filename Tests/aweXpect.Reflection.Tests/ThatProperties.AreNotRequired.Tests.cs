@@ -42,7 +42,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all not required,
-					             but it contained required properties [
+					             but it contained required properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -66,7 +69,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             also contain a required property,
-					             but it only contained non-required properties [
+					             but it only contained non-required properties
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -121,7 +127,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all not required,
-					             but it contained required properties [
+					             but it contained required properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

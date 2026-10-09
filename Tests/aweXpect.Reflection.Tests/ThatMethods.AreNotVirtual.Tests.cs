@@ -44,7 +44,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are all not virtual,
-					             but it contained virtual methods [
+					             but it contained virtual methods
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -69,7 +72,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             also contain a virtual method,
-					             but it only contained non-virtual methods [
+					             but it only contained non-virtual methods
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -125,7 +131,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are all not virtual,
-					             but it contained virtual methods [
+					             but it contained virtual methods
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -42,7 +42,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all nullable,
-					             but it contained non-nullable properties [
+					             but it contained non-nullable properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -66,7 +69,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are not all nullable,
-					             but it only contained nullable properties [
+					             but it only contained nullable properties
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -121,7 +127,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all nullable,
-					             but it contained non-nullable properties [
+					             but it contained non-nullable properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

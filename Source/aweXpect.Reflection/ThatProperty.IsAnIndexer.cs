@@ -12,7 +12,8 @@ public static partial class ThatProperty
 	/// <summary>
 	///     Verifies that the <see cref="PropertyInfo" /> is an indexer (has index parameters).
 	/// </summary>
-	public static AndOrResult<PropertyInfo?, IThat<PropertyInfo?>> IsAnIndexer(
+	[GuaranteesNotNull]
+	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsAnIndexer(
 		this IThat<PropertyInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAnIndexerConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatProperty
 	/// <summary>
 	///     Verifies that the <see cref="PropertyInfo" /> is not an indexer (has no index parameters).
 	/// </summary>
-	public static AndOrResult<PropertyInfo?, IThat<PropertyInfo?>> IsNotAnIndexer(
+	[GuaranteesNotNull]
+	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsNotAnIndexer(
 		this IThat<PropertyInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAnIndexerConstraint(it, grammars).Invert()),

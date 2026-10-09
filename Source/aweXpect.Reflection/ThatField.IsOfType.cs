@@ -14,6 +14,7 @@ public static partial class ThatField
 	/// <summary>
 	///     Verifies that the <see cref="FieldInfo" /> is of type <typeparamref name="TField" /> (or a subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static FieldOfTypeResult<FieldInfo?, IThat<FieldInfo?>> IsOfType<TField>(
 		this IThat<FieldInfo?> subject)
 		=> IsOfType(subject, typeof(TField));
@@ -21,6 +22,7 @@ public static partial class ThatField
 	/// <summary>
 	///     Verifies that the <see cref="FieldInfo" /> is of type <paramref name="fieldType" /> (or a subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static FieldOfTypeResult<FieldInfo?, IThat<FieldInfo?>> IsOfType(
 		this IThat<FieldInfo?> subject, Type fieldType)
 	{

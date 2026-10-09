@@ -25,7 +25,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreAttributes
 					             are all attributes,
-					             but it contained other types [
+					             but it contained other types
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -65,7 +68,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all attributes,
-					             but it contained other types [
+					             but it contained other types
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -118,7 +124,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types which are attributes in assembly containing type ThatTypes.AreAttributes
 					             are not all attributes,
-					             but it only contained attributes [
+					             but it only contained attributes
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -42,7 +42,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are all async,
-					             but it contained non-async methods [
+					             but it contained non-async methods
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -67,7 +70,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are not all async,
-					             but it only contained async methods [
+					             but it only contained async methods
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -108,7 +114,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are not all async,
-					             but it only contained async methods [
+					             but it only contained async methods
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -146,7 +155,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are all async,
-					             but it contained non-async methods [
+					             but it contained non-async methods
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

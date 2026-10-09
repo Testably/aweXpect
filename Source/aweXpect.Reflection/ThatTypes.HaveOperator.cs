@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -20,6 +21,7 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> declare the
 	///     <paramref name="operator" /> (e.g. <see cref="Operator.Addition" /> matches <c>op_Addition</c>).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> HaveOperator(
 		this IThat<IEnumerable<Type?>> subject,
 		Operator @operator,
@@ -32,6 +34,7 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> declare the
 	///     <paramref name="operator" /> with an overload that takes the <paramref name="operand" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> HaveOperator(
 		this IThat<IEnumerable<Type?>> subject,
 		Operator @operator,
@@ -45,6 +48,7 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> declare the
 	///     <paramref name="operator" /> with an overload that takes the operand <typeparamref name="TOperand" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> HaveOperator<TOperand>(
 		this IThat<IEnumerable<Type?>> subject,
 		Operator @operator,
@@ -56,6 +60,7 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> declare the
 	///     <paramref name="operator" /> (e.g. <see cref="Operator.Addition" /> matches <c>op_Addition</c>).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> HaveOperator(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Operator @operator,
@@ -68,6 +73,7 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> declare the
 	///     <paramref name="operator" /> with an overload that takes the <paramref name="operand" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> HaveOperator(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Operator @operator,
@@ -81,6 +87,7 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> declare the
 	///     <paramref name="operator" /> with an overload that takes the operand <typeparamref name="TOperand" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> HaveOperator<TOperand>(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Operator @operator,
@@ -92,6 +99,7 @@ public static partial class ThatTypes
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> declare the
 	///     <paramref name="operator" /> (e.g. <see cref="Operator.Addition" /> matches <c>op_Addition</c>).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotHaveOperator(
 		this IThat<IEnumerable<Type?>> subject,
 		Operator @operator,
@@ -104,6 +112,7 @@ public static partial class ThatTypes
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> declare the
 	///     <paramref name="operator" /> with an overload that takes the <paramref name="operand" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotHaveOperator(
 		this IThat<IEnumerable<Type?>> subject,
 		Operator @operator,
@@ -117,6 +126,7 @@ public static partial class ThatTypes
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> declare the
 	///     <paramref name="operator" /> with an overload that takes the operand <typeparamref name="TOperand" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotHaveOperator<TOperand>(
 		this IThat<IEnumerable<Type?>> subject,
 		Operator @operator,
@@ -128,6 +138,7 @@ public static partial class ThatTypes
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> declare the
 	///     <paramref name="operator" /> (e.g. <see cref="Operator.Addition" /> matches <c>op_Addition</c>).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> DoNotHaveOperator(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Operator @operator,
@@ -140,6 +151,7 @@ public static partial class ThatTypes
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> declare the
 	///     <paramref name="operator" /> with an overload that takes the <paramref name="operand" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> DoNotHaveOperator(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Operator @operator,
@@ -153,6 +165,7 @@ public static partial class ThatTypes
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> declare the
 	///     <paramref name="operator" /> with an overload that takes the operand <typeparamref name="TOperand" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> DoNotHaveOperator<TOperand>(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Operator @operator,
@@ -166,22 +179,22 @@ public static partial class ThatTypes
 		Operator @operator,
 		Type? operand,
 		bool inherit)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 		private readonly string _operatorText = OperatorText(@operator, operand);
 
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, Matches);
+			=> await SetAsyncValue(actual, context, Matches, cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, Matches);
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, Matches);
 
 		private bool Matches(Type? type)
 			=> operand is null
@@ -193,9 +206,8 @@ public static partial class ThatTypes
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" contained types without the operator ").Append(_operatorText)
-				.Append(' ');
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
+			stringBuilder.Append(It).Append(" contained types without the operator ").Append(_operatorText)
+				;
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -203,9 +215,8 @@ public static partial class ThatTypes
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" only contained types with the operator ").Append(_operatorText)
-				.Append(' ');
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
+			stringBuilder.Append(It).Append(" only contained types with the operator ").Append(_operatorText)
+				;
 		}
 	}
 
@@ -215,22 +226,22 @@ public static partial class ThatTypes
 		Operator @operator,
 		Type? operand,
 		bool inherit)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 		private readonly string _operatorText = OperatorText(@operator, operand);
 
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, type => !Matches(type));
+			=> await SetAsyncValue(actual, context, type => !Matches(type), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, type => !Matches(type));
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, type => !Matches(type));
 
 		private bool Matches(Type? type)
 			=> operand is null
@@ -242,8 +253,7 @@ public static partial class ThatTypes
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" contained types with the operator ").Append(_operatorText).Append(' ');
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
+			stringBuilder.Append(It).Append(" contained types with the operator ").Append(_operatorText);
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -251,9 +261,8 @@ public static partial class ThatTypes
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" only contained types without the operator ").Append(_operatorText)
-				.Append(' ');
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
+			stringBuilder.Append(It).Append(" only contained types without the operator ").Append(_operatorText)
+				;
 		}
 	}
 

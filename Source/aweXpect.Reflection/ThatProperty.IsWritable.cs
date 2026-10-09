@@ -12,7 +12,8 @@ public static partial class ThatProperty
 	/// <summary>
 	///     Verifies that the <see cref="PropertyInfo" /> is writable (can be written).
 	/// </summary>
-	public static AndOrResult<PropertyInfo?, IThat<PropertyInfo?>> IsWritable(
+	[GuaranteesNotNull]
+	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsWritable(
 		this IThat<PropertyInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsWritableConstraint(it, grammars)),

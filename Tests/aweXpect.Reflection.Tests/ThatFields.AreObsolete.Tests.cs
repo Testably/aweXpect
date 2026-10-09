@@ -46,7 +46,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are all obsolete,
-					             but it contained non-obsolete items [
+					             but it contained non-obsolete items
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -72,7 +75,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are not all obsolete,
-					             but it only contained obsolete items [
+					             but it only contained obsolete items
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -117,7 +123,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are not all obsolete,
-					             but it only contained obsolete items [
+					             but it only contained obsolete items
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -158,7 +167,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are all obsolete,
-					             but it contained non-obsolete items [
+					             but it contained non-obsolete items
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

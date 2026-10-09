@@ -43,7 +43,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have name not ending with ".Tests",
-					             but it contained not matching types [
+					             but it contained not matching assemblies
+
+					             Not matching items:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
@@ -63,7 +66,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have name not equal to "aweXpect.Reflection.Tests",
-					             but it contained not matching types [
+					             but it contained not matching assemblies
+
+					             Not matching items:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
@@ -83,7 +89,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have name not equal to "AWExPECT.rEFLECTION.tESTS" ignoring case,
-					             but it contained not matching types [
+					             but it contained not matching assemblies
+
+					             Not matching items:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
@@ -136,7 +145,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subject
 					             all have name not equal to "aweXpect.Reflection.Tests",
-					             but it contained not matching types [
+					             but it contained not matching assemblies
+
+					             Not matching items:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
@@ -173,7 +185,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             not all have name not equal to "NonExistentAssembly",
-					             but it only contained matching types *
+					             but it only contained matching assemblies*
 					             """).AsWildcard();
 			}
 		}

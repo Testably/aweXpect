@@ -39,7 +39,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that *
 					             all are internal,
-					             but it contained not matching items [
+					             but it contained not matching items
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -63,6 +66,11 @@ public sealed partial class ThatEvents
 					             Expected that *
 					             not all are internal,
 					             but all were
+
+					             Collection:
+					             [
+					               *
+					             ]
 					             """).AsWildcard();
 			}
 

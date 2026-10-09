@@ -15,6 +15,7 @@ public static partial class ThatMember
 	/// <summary>
 	///     Verifies that the <typeparamref name="TMember" /> is private protected.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TMember, IThat<TMember>> IsPrivateProtected<TMember>(
 		this IThat<TMember> subject)
 		where TMember : MemberInfo?
@@ -25,6 +26,7 @@ public static partial class ThatMember
 	/// <summary>
 	///     Verifies that the <typeparamref name="TMember" /> is not private protected.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TMember, IThat<TMember>> IsNotPrivateProtected<TMember>(
 		this IThat<TMember> subject)
 		where TMember : MemberInfo?

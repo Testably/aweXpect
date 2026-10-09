@@ -40,7 +40,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all write-only,
-					             but it contained not write-only properties [
+					             but it contained not write-only properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -64,7 +67,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are not all write-only,
-					             but it only contained write-only properties [
+					             but it only contained write-only properties
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

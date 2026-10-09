@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -20,6 +21,7 @@ public static partial class ThatMethods
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> are operators (e.g.
 	///     <c>op_Addition</c>, <c>op_Equality</c>, …).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>>> AreOperators(
 		this IThat<IEnumerable<MethodInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>((it, grammars)
@@ -31,6 +33,7 @@ public static partial class ThatMethods
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> are operators (e.g.
 	///     <c>op_Addition</c>, <c>op_Equality</c>, …).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>>> AreOperators(
 		this IThat<IAsyncEnumerable<MethodInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>((it, grammars)
@@ -42,6 +45,7 @@ public static partial class ThatMethods
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> are not operators (e.g.
 	///     <c>op_Addition</c>, <c>op_Equality</c>, …).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>>> AreNotOperators(
 		this IThat<IEnumerable<MethodInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>((it, grammars)
@@ -53,6 +57,7 @@ public static partial class ThatMethods
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> are not operators (e.g.
 	///     <c>op_Addition</c>, <c>op_Equality</c>, …).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>>> AreNotOperators(
 		this IThat<IAsyncEnumerable<MethodInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>((it, grammars)
@@ -61,72 +66,60 @@ public static partial class ThatMethods
 #endif
 
 	private sealed class AreOperatorsConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<MethodInfo?>(grammars),
-			IValueConstraint<IEnumerable<MethodInfo?>>
+		: CollectionConstraintResult<MethodInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<MethodInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<MethodInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<MethodInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, method => method.IsOperator());
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, method => method.IsOperator(), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<MethodInfo?> actual)
-			=> SetValue(actual, method => method.IsOperator());
+		public ConstraintResult IsMetBy(IEnumerable<MethodInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, method => method.IsOperator());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are all operators");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained non-operators ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained non-operators");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are not all operators");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained operators ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained operators");
 	}
 
 	private sealed class AreNotOperatorsConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<MethodInfo?>(grammars),
-			IValueConstraint<IEnumerable<MethodInfo?>>
+		: CollectionConstraintResult<MethodInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<MethodInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<MethodInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<MethodInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<MethodInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, method => !method.IsOperator());
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, method => !method.IsOperator(), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<MethodInfo?> actual)
-			=> SetValue(actual, method => !method.IsOperator());
+		public ConstraintResult IsMetBy(IEnumerable<MethodInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, method => !method.IsOperator());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are all not operators");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained operators ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained operators");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("also contain an operator");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained non-operators ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained non-operators");
 	}
 }

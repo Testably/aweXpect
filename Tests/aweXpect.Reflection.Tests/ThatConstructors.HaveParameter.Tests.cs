@@ -48,6 +48,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter with name "value",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
+					             ]
 					             """);
 			}
 
@@ -101,6 +106,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               <null>
+					             ]
 					             """);
 			}
 
@@ -138,6 +148,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
+					             ]
 					             """);
 			}
 
@@ -175,6 +190,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int with name "value",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
+					             ]
 					             """);
 			}
 
@@ -196,6 +216,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int with name "count",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name)
+					             ]
 					             """);
 			}
 
@@ -249,6 +274,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
+					             ]
 					             """);
 			}
 
@@ -286,6 +316,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int with name "value",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
+					             ]
 					             """);
 			}
 
@@ -307,6 +342,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int with name "count",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name)
+					             ]
 					             """);
 			}
 
@@ -340,6 +380,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               <null>
+					             ]
 					             """);
 			}
 
@@ -359,6 +404,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int with name "count",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name)
+					             ]
 					             """);
 			}
 
@@ -378,6 +428,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int with name "count",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(int value, string name)
+					             ]
 					             """);
 			}
 
@@ -427,6 +482,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
+					             ]
 					             """);
 			}
 
@@ -462,6 +522,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int with name "value",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.Tests.TestClass(string name)
+					             ]
 					             """);
 			}
 #endif
@@ -487,6 +552,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             not all have parameter of type int at index 0,
 					             but all did
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.NegatedTests.TestClass(int value, string name)
+					             ]
 					             """);
 			}
 
@@ -508,6 +578,12 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             not all have parameter with name "value",
 					             but all did
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.NegatedTests.TestClass(int value, string name),
+					               ThatConstructors.HaveParameter.NegatedTests.TestClass(int value)
+					             ]
 					             """);
 			}
 
@@ -545,6 +621,12 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             not all have parameter of type int,
 					             but all did
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.NegatedTests.TestClass(int value, string name),
+					               ThatConstructors.HaveParameter.NegatedTests.TestClass(int value)
+					             ]
 					             """);
 			}
 
@@ -582,6 +664,12 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             not all have parameter of type int with name "value",
 					             but all did
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.NegatedTests.TestClass(int value, string name),
+					               ThatConstructors.HaveParameter.NegatedTests.TestClass(int value)
+					             ]
 					             """);
 			}
 
@@ -619,6 +707,12 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             not all have parameter of type int,
 					             but all did
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.NegatedTests.TestClass(int value, string name),
+					               ThatConstructors.HaveParameter.NegatedTests.TestClass(int value)
+					             ]
 					             """);
 			}
 
@@ -656,6 +750,12 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             not all have parameter of type int with name "value",
 					             but all did
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.NegatedTests.TestClass(int value, string name),
+					               ThatConstructors.HaveParameter.NegatedTests.TestClass(int value)
+					             ]
 					             """);
 			}
 
@@ -693,6 +793,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             not all have parameter of type int with in modifier,
 					             but all did
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameter.NegatedTests.ModifierClass(Int32& value)
+					             ]
 					             """);
 			}
 
@@ -821,6 +926,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int at index 0,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.ChainingTests.TestClass(string name, int value)
+					             ]
 					             """);
 			}
 
@@ -964,6 +1074,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int at index 0,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameter.ChainingTests.TestClass(string name, int value)
+					             ]
 					             """);
 			}
 

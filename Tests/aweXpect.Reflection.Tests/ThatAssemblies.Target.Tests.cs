@@ -45,7 +45,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all target equal to "net99.0",
-					             but it contained not matching assemblies *
+					             but it contained not matching assemblies*
 					             """).AsWildcard();
 			}
 
@@ -79,7 +79,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage($"""
 					              Expected that in assembly containing type PublicAbstractClass
 					              not all target equal to "{CurrentTarget}",
-					              but it only contained matching assemblies *
+					              but it only contained matching assemblies*
 					              """).AsWildcard();
 			}
 

@@ -75,6 +75,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type Stream,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
 					             """);
 			}
 
@@ -96,6 +101,12 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type Stream with name "other",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
+					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
+					             ]
 					             """);
 			}
 
@@ -117,6 +128,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
 					             """);
 			}
 
@@ -170,6 +186,12 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type Stream with name "other",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
+					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
+					             ]
 					             """);
 			}
 
@@ -191,6 +213,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type Stream,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
 					             """);
 			}
 
@@ -212,6 +239,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
 					             """);
 			}
 
@@ -263,6 +295,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type Stream,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
 					             """);
 			}
 
@@ -283,6 +320,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
 					             """);
 			}
 
@@ -303,6 +345,12 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type Stream with name "other",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
+					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
+					             ]
 					             """);
 			}
 
@@ -353,6 +401,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type Stream,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
 					             """);
 			}
 
@@ -373,6 +426,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type Stream with name "stream",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.MethodWithMemoryStream(MemoryStream stream)
+					             ]
 					             """);
 			}
 
@@ -393,6 +451,12 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type Stream with name "other",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
+					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
+					             ]
 					             """);
 			}
 #endif
@@ -418,6 +482,12 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             not all have parameter of exact type Stream,
 					             but all did
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
+					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
+					             ]
 					             """);
 			}
 
@@ -455,6 +525,12 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             not all have parameter of exact type Stream,
 					             but all did
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameterExactly.TestClass.FirstMethodWithStream(Stream stream),
+					               void ThatMethods.HaveParameterExactly.TestClass.SecondMethodWithStream(Stream stream)
+					             ]
 					             """);
 			}
 

@@ -30,6 +30,7 @@ public static partial class ThatType
 	///     <c>Microsoft.EntityFrameworkCore</c> is also ignored; customize the prefixes to make such a dependency
 	///     count.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static NamespaceDependencyOutsideResult<Type?> HasDependenciesOutside(
 		this IThat<Type?> subject, params IEnumerable<string> namespaces)
 	{
@@ -63,6 +64,7 @@ public static partial class ThatType
 	///     <c>Microsoft.EntityFrameworkCore</c> is also ignored; customize the prefixes to make such a dependency
 	///     count.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeSetDependencyOutsideResult<Type?> HasDependenciesOutside(
 		this IThat<Type?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{

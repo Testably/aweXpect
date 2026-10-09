@@ -24,7 +24,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreClasses
 					             are all classes,
-					             but it contained other types [
+					             but it contained other types
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -75,7 +78,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type.IsClass && !type.IsRecordClass() in assembly containing type ThatTypes.AreClasses
 					             are not all classes,
-					             but it only contained classes [
+					             but it only contained classes
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

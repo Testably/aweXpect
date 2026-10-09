@@ -55,7 +55,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have one parameter,
-					             but it contained methods with a different number of parameters *
+					             but it contained methods with a different number of parameters*
 					             """).AsWildcard();
 			}
 
@@ -76,7 +76,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have 2 parameters,
-					             but it contained methods with a different number of parameters *MethodWithInt(*
+					             but it contained methods with a different number of parameters*MethodWithInt(*
 					             """).AsWildcard();
 			}
 
@@ -112,7 +112,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have 2 parameters,
-					             but it contained methods with a different number of parameters *MethodWithInt(*
+					             but it contained methods with a different number of parameters*MethodWithInt(*
 					             """).AsWildcard();
 			}
 #endif
@@ -137,7 +137,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have 2 parameters,
-					             but it only contained methods with 2 parameters *MethodWithIntAndString(*
+					             but it only contained methods with 2 parameters*MethodWithIntAndString(*
 					             """).AsWildcard();
 			}
 

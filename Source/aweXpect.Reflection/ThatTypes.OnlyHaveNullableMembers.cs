@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -27,6 +28,7 @@ public static partial class ThatTypes
 	///     A member is considered nullable if its type is a <see cref="Nullable{T}" /> value type or a
 	///     reference type annotated as nullable (according to the nullable reference type metadata).
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> OnlyHaveNullableMembers(
 		this IThat<IEnumerable<Type?>> subject, MemberScope memberScope = MemberScope.DeclaredOnly)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
@@ -43,6 +45,7 @@ public static partial class ThatTypes
 	///     A member is considered nullable if its type is a <see cref="Nullable{T}" /> value type or a
 	///     reference type annotated as nullable (according to the nullable reference type metadata).
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> OnlyHaveNullableMembers(
 		this IThat<IAsyncEnumerable<Type?>> subject, MemberScope memberScope = MemberScope.DeclaredOnly)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
@@ -54,10 +57,10 @@ public static partial class ThatTypes
 		string it,
 		ExpectationGrammars grammars,
 		MemberScope memberScope)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 		private readonly Dictionary<Type, MemberInfo[]> _notNullableMembers = new();
@@ -79,29 +82,28 @@ public static partial class ThatTypes
 		}
 
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, OnlyHasNullableMembers);
+			=> await SetAsyncValue(actual, context, OnlyHasNullableMembers, cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, OnlyHasNullableMembers);
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, OnlyHasNullableMembers);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("only have nullable members");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> MemberViolationRenderer.AppendTypesWithViolatingMembers(stringBuilder, it,
-				" contained types with non-nullable members ", NotMatching, _notNullableMembers,
-				" with non-nullable members ", indentation);
+			=> stringBuilder.Append(It).Append(" contained types with non-nullable members");
+
+		protected override Func<string?> FormatItems(Type?[] items)
+			=> () => MemberViolationRenderer.FormatTypesWithViolatingMembers(items, _notNullableMembers,
+				" with non-nullable members ");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all only have nullable members");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained types with only nullable members ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained types with only nullable members");
 	}
 }

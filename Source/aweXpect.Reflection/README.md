@@ -104,10 +104,16 @@ Expected all of the following to succeed:
  [01] Expected that domainTypes all do not depend on types within namespace "MyApp.Infrastructure" in all loaded assemblies
  [02] Expected that domainTypes are all sealed
 but
- [01] it contained types with the dependency [
+ [01] it contained types with the dependency
+ [02] it contained non-sealed types
+
+[01] Not matching items:
+[
   OrderService
 ]
- [02] it contained non-sealed types [
+
+[02] Not matching items:
+[
   Order,
   Invoice
 ]

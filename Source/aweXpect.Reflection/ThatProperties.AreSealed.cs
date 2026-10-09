@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -19,6 +20,7 @@ public static partial class ThatProperties
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are sealed.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> AreSealed(
 		this IThat<IEnumerable<PropertyInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
@@ -29,6 +31,7 @@ public static partial class ThatProperties
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are sealed.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>> AreSealed(
 		this IThat<IAsyncEnumerable<PropertyInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
@@ -39,6 +42,7 @@ public static partial class ThatProperties
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are not sealed.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> AreNotSealed(
 		this IThat<IEnumerable<PropertyInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
@@ -49,6 +53,7 @@ public static partial class ThatProperties
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are not sealed.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>> AreNotSealed(
 		this IThat<IAsyncEnumerable<PropertyInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
@@ -57,74 +62,62 @@ public static partial class ThatProperties
 #endif
 
 	private sealed class AreSealedConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<PropertyInfo?>(grammars),
-			IValueConstraint<IEnumerable<PropertyInfo?>>
+		: CollectionConstraintResult<PropertyInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<PropertyInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<PropertyInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<PropertyInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<PropertyInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, property => property.IsReallySealed());
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, property => property.IsReallySealed(), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual)
-			=> SetValue(actual, property => property.IsReallySealed());
+		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, property => property.IsReallySealed());
 
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are all sealed");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained non-sealed properties ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained non-sealed properties");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are not all sealed");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained sealed properties ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained sealed properties");
 	}
 
 	private sealed class AreNotSealedConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<PropertyInfo?>(grammars),
-			IValueConstraint<IEnumerable<PropertyInfo?>>
+		: CollectionConstraintResult<PropertyInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<PropertyInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<PropertyInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<PropertyInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<PropertyInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, property => !property.IsReallySealed());
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, property => !property.IsReallySealed(), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual)
-			=> SetValue(actual, property => !property.IsReallySealed());
+		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, property => !property.IsReallySealed());
 
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are all not sealed");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained sealed properties ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained sealed properties");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("also contain a sealed property");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained non-sealed properties ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained non-sealed properties");
 	}
 }

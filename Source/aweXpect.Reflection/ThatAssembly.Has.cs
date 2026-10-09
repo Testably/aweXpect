@@ -19,6 +19,7 @@ public static partial class ThatAssembly
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static HasAttributeResult<Assembly?> Has<TAttribute>(this IThat<Assembly?> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
@@ -39,6 +40,7 @@ public static partial class ThatAssembly
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static HasAttributeResult<Assembly?> Has<TAttribute>(
 		this IThat<Assembly?> subject,
 		Func<TAttribute, bool> predicate,

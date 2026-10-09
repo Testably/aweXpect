@@ -12,7 +12,8 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> is static.
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> IsStatic(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsStatic(
 		this IThat<MethodInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsStaticConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> is not static.
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> IsNotStatic(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsNotStatic(
 		this IThat<MethodInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsStaticConstraint(it, grammars).Invert()),

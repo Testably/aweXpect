@@ -45,7 +45,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all have name matching method => method.Name + "X",
-					             but it contained not matching items [
+					             but it contained not matching items
+
+					             Not matching items:
+					             [
 					               int ThatMethods.ClassWithMethods.PublicMethod1() with name "PublicMethod1" instead of "PublicMethod1X",
 					               int ThatMethods.ClassWithMethods.PublicMethod2() with name "PublicMethod2" instead of "PublicMethod2X"
 					             ]
@@ -69,7 +72,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             not all have name matching method => method.Name,
-					             but it only contained matching items [
+					             but it only contained matching items
+
+					             Collection:
+					             [
 					               int ThatMethods.ClassWithMethods.PublicMethod1()
 					             ]
 					             """);
@@ -109,7 +115,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithMethods
 					             all have name equal to "PublicMethod",
-					             but it contained not matching items [
+					             but it contained not matching items
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -194,7 +203,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithSingleMethod
 					             all have name matching method => method.Name + "X",
-					             but it contained not matching items [
+					             but it contained not matching items
+
+					             Not matching items:
+					             [
 					               * with name "MyMethod" instead of "MyMethodX"
 					             ]
 					             """).AsWildcard();
@@ -243,7 +255,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithSingleMethod
 					             not all have name equal to "MyMethod",
-					             but it only contained matching items *
+					             but it only contained matching items*
 					             """).AsWildcard();
 			}
 
@@ -261,7 +273,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods in types matching t => t == typeof(T) in assembly containing type ThatMethod.ClassWithSingleMethod
 					             not all have name matching method => method.Name,
-					             but it only contained matching items *
+					             but it only contained matching items*
 					             """).AsWildcard();
 			}
 

@@ -12,7 +12,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is static.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsStatic(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsStatic(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsStaticConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is not static.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotStatic(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotStatic(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsStaticConstraint(it, grammars).Invert()),

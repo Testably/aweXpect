@@ -42,7 +42,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             all override a base property,
-					             but it contained properties which do not override a base property [
+					             but it contained properties which do not override a base property
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -66,7 +69,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             do not all override a base property,
-					             but it only contained properties which override a base property [
+					             but it only contained properties which override a base property
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -121,7 +127,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             all override a base property,
-					             but it contained properties which do not override a base property [
+					             but it contained properties which do not override a base property
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

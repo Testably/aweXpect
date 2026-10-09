@@ -42,7 +42,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are all operators,
-					             but it contained non-operators [
+					             but it contained non-operators
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -67,7 +70,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are not all operators,
-					             but it only contained operators [
+					             but it only contained operators
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -108,7 +114,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are not all operators,
-					             but it only contained operators [
+					             but it only contained operators
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -146,7 +155,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are all operators,
-					             but it contained non-operators [
+					             but it contained non-operators
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

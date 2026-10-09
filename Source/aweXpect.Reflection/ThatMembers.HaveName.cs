@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -21,6 +22,7 @@ public static partial class ThatMembers
 	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> have
 	///     the <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>> HaveName<TMember>(
 		this IThat<IEnumerable<TMember>> subject, string expected)
 		where TMember : MemberInfo?
@@ -38,6 +40,7 @@ public static partial class ThatMembers
 	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> have
 	///     the <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>>
 		HaveName<TMember>(
 			this IThat<IAsyncEnumerable<TMember>> subject, string expected)
@@ -56,6 +59,7 @@ public static partial class ThatMembers
 	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> have the name
 	///     returned by the <paramref name="expectedNameSelector" /> for the respective item.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>> HaveName<TMember>(
 		this IThat<IEnumerable<TMember>> subject,
 		Func<TMember, string> expectedNameSelector,
@@ -77,6 +81,7 @@ public static partial class ThatMembers
 	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> have the name
 	///     returned by the <paramref name="expectedNameSelector" /> for the respective item.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>>
 		HaveName<TMember>(
 			this IThat<IAsyncEnumerable<TMember>> subject,
@@ -100,38 +105,36 @@ public static partial class ThatMembers
 		ExpectationGrammars grammars,
 		string expected,
 		StringEqualityOptions options)
-		: CollectionConstraintResult<TMember>(grammars),
-			IAsyncConstraint<IEnumerable<TMember>>
+		: CollectionConstraintResult<TMember>(it, grammars),
+			IAsyncContextConstraint<IEnumerable<TMember>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<TMember>>
+			, IAsyncContextConstraint<IAsyncEnumerable<TMember>>
 #endif
 		where TMember : MemberInfo?
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, memberInfo => options.AreConsideredEqual(memberInfo?.Name, expected));
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context,
+				memberInfo => options.AreConsideredEqual(memberInfo?.Name, expected), cancellationToken);
 #endif
 
-		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<TMember> actual, CancellationToken cancellationToken)
-			=> await SetValue(actual, memberInfo => options.AreConsideredEqual(memberInfo?.Name, expected));
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<TMember> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetValue(actual, context,
+				memberInfo => options.AreConsideredEqual(memberInfo?.Name, expected), cancellationToken);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have name ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching items ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching items");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all have name ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching items ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching items");
 	}
 
 	private sealed class HaveNameFromSelectorConstraint<TMember>(
@@ -140,45 +143,48 @@ public static partial class ThatMembers
 		Func<TMember, string> expectedNameSelector,
 		string expectedNameSelectorExpression,
 		StringEqualityOptions options)
-		: CollectionConstraintResult<TMember>(grammars),
-			IAsyncConstraint<IEnumerable<TMember>>
+		: CollectionConstraintResult<TMember>(it, grammars),
+			IAsyncContextConstraint<IEnumerable<TMember>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<TMember>>
+			, IAsyncContextConstraint<IAsyncEnumerable<TMember>>
 #endif
 		where TMember : MemberInfo?
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual,
-				memberInfo => options.AreConsideredEqual(memberInfo?.Name, expectedNameSelector(memberInfo)));
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<TMember> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context,
+				memberInfo => options.AreConsideredEqual(memberInfo?.Name, expectedNameSelector(memberInfo)), cancellationToken);
 #endif
 
-		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<TMember> actual, CancellationToken cancellationToken)
-			=> await SetValue(actual,
-				memberInfo => options.AreConsideredEqual(memberInfo?.Name, expectedNameSelector(memberInfo)));
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<TMember> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetValue(actual, context,
+				memberInfo => options.AreConsideredEqual(memberInfo?.Name, expectedNameSelector(memberInfo)), cancellationToken);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have name matching ")
 				.Append(expectedNameSelectorExpression.TrimCommonWhiteSpace());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-			=> AppendMismatches(stringBuilder, indentation);
+			=> stringBuilder.Append(It).Append(" contained not matching items");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all have name matching ")
 				.Append(expectedNameSelectorExpression.TrimCommonWhiteSpace());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching items ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching items");
 
-		private void AppendMismatches(StringBuilder stringBuilder, string? indentation)
+		protected override Func<string?> FormatItems(TMember[] items)
+			=> IsNegated ? base.FormatItems(items) : () => FormatMismatches(items);
+
+		private string FormatMismatches(TMember[] items)
 		{
-			stringBuilder.Append(it).Append(" contained not matching items [");
+			StringBuilder stringBuilder = new();
+			stringBuilder.Append('[');
 			bool isFirst = true;
-			foreach (TMember memberInfo in NotMatching)
+			foreach (TMember memberInfo in items)
 			{
 				if (!isFirst)
 				{
@@ -186,13 +192,13 @@ public static partial class ThatMembers
 				}
 
 				isFirst = false;
-				stringBuilder.AppendLine().Append(indentation).Append("  ")
+				stringBuilder.AppendLine().Append("  ")
 					.Append(Formatter.Format(memberInfo))
 					.Append(" with name ").Append(Formatter.Format(memberInfo?.Name))
 					.Append(" instead of ").Append(Formatter.Format(expectedNameSelector(memberInfo)));
 			}
 
-			stringBuilder.AppendLine().Append(indentation).Append(']');
+			return stringBuilder.AppendLine().Append(']').ToString();
 		}
 	}
 }

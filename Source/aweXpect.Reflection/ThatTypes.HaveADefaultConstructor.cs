@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -20,6 +21,7 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> have an accessible
 	///     parameterless (default) constructor.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> HaveADefaultConstructor(
 		this IThat<IEnumerable<Type?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
@@ -31,6 +33,7 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> have an accessible
 	///     parameterless (default) constructor.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> HaveADefaultConstructor(
 		this IThat<IAsyncEnumerable<Type?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
@@ -42,6 +45,7 @@ public static partial class ThatTypes
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> have an accessible
 	///     parameterless (default) constructor.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotHaveADefaultConstructor(
 		this IThat<IEnumerable<Type?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
@@ -53,6 +57,7 @@ public static partial class ThatTypes
 	///     Verifies that none of the items in the filtered collection of <see cref="Type" /> have an accessible
 	///     parameterless (default) constructor.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> DoNotHaveADefaultConstructor(
 		this IThat<IAsyncEnumerable<Type?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
@@ -61,72 +66,60 @@ public static partial class ThatTypes
 #endif
 
 	private sealed class HaveADefaultConstructorConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, type => type.HasDefaultConstructor());
+			=> await SetAsyncValue(actual, context, type => type.HasDefaultConstructor(), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, type => type.HasDefaultConstructor());
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, type => type.HasDefaultConstructor());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have a default constructor");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained types without a default constructor ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained types without a default constructor");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all have a default constructor");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained types with a default constructor ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained types with a default constructor");
 	}
 
 	private sealed class DoNotHaveADefaultConstructorConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, type => !type.HasDefaultConstructor());
+			=> await SetAsyncValue(actual, context, type => !type.HasDefaultConstructor(), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, type => !type.HasDefaultConstructor());
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, type => !type.HasDefaultConstructor());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all do not have a default constructor");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained types with a default constructor ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained types with a default constructor");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("also contain a type with a default constructor");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained types without a default constructor ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained types without a default constructor");
 	}
 }

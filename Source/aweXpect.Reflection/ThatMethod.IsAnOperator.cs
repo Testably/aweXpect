@@ -12,7 +12,8 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> is an operator (e.g. <c>op_Addition</c>, <c>op_Equality</c>, …).
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> IsAnOperator(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsAnOperator(
 		this IThat<MethodInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAnOperatorConstraint(it, grammars)),
@@ -22,7 +23,8 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> is the specific <paramref name="operator" />
 	///     (e.g. <see cref="Operator.Addition" /> matches <c>op_Addition</c>).
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> IsAnOperator(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsAnOperator(
 		this IThat<MethodInfo?> subject,
 		Operator @operator)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
@@ -32,7 +34,8 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> is not an operator (e.g. <c>op_Addition</c>, <c>op_Equality</c>, …).
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> IsNotAnOperator(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsNotAnOperator(
 		this IThat<MethodInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAnOperatorConstraint(it, grammars).Invert()),
@@ -42,7 +45,8 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> is not the specific <paramref name="operator" />
 	///     (e.g. <see cref="Operator.Addition" /> matches <c>op_Addition</c>).
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> IsNotAnOperator(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsNotAnOperator(
 		this IThat<MethodInfo?> subject,
 		Operator @operator)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)

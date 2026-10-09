@@ -43,7 +43,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all not static,
-					             but it contained static properties [
+					             but it contained static properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -67,7 +70,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             also contain a static property,
-					             but it only contained non-static properties [
+					             but it only contained non-static properties
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -124,7 +130,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all not static,
-					             but it contained static properties [
+					             but it contained static properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

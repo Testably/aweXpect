@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -20,6 +21,7 @@ public static partial class ThatProperties
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are writable
 	///     (can be written).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> AreWritable(
 		this IThat<IEnumerable<PropertyInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
@@ -31,6 +33,7 @@ public static partial class ThatProperties
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are writable
 	///     (can be written).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>> AreWritable(
 		this IThat<IAsyncEnumerable<PropertyInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
@@ -39,37 +42,31 @@ public static partial class ThatProperties
 #endif
 
 	private sealed class AreWritableConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<PropertyInfo?>(grammars),
-			IValueConstraint<IEnumerable<PropertyInfo?>>
+		: CollectionConstraintResult<PropertyInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<PropertyInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<PropertyInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<PropertyInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<PropertyInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, property => property.IsWritable());
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, property => property.IsWritable(), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual)
-			=> SetValue(actual, property => property.IsWritable());
+		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, property => property.IsWritable());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are all writable");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not writable properties ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not writable properties");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are not all writable");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained writable properties ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained writable properties");
 	}
 }

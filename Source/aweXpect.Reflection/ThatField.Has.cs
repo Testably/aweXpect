@@ -15,6 +15,7 @@ public static partial class ThatField
 	/// <summary>
 	///     Verifies that the <see cref="FieldInfo" /> has attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static HasAttributeWithoutInheritResult<FieldInfo?> Has<TAttribute>(this IThat<FieldInfo?> subject)
 		where TAttribute : Attribute
 	{
@@ -31,6 +32,7 @@ public static partial class ThatField
 	///     Verifies that the <see cref="FieldInfo" /> has attribute of type <typeparamref name="TAttribute" /> that
 	///     matches the <paramref name="predicate" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static HasAttributeWithoutInheritResult<FieldInfo?> Has<TAttribute>(
 		this IThat<FieldInfo?> subject,
 		Func<TAttribute, bool> predicate,

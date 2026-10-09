@@ -12,7 +12,8 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> is sealed.
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> IsSealed(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsSealed(
 		this IThat<MethodInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsSealedConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> is not sealed.
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> IsNotSealed(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsNotSealed(
 		this IThat<MethodInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsSealedConstraint(it, grammars).Invert()),

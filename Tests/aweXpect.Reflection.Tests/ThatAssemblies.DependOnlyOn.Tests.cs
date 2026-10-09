@@ -39,7 +39,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have dependencies only on assemblies equal to "First" or equal to "Second",
-					             but it contained assemblies with disallowed dependencies *
+					             but it contained assemblies with disallowed dependencies*
 					             """).AsWildcard();
 			}
 
@@ -70,7 +70,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have dependencies only on assemblies equal to "aweXpect.Core",
-					             but it contained assemblies with disallowed dependencies [
+					             but it contained assemblies with disallowed dependencies
+
+					             Not matching items:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null depends on ["aweXpect.Reflection", "Mono.Cecil", "aweXpect"]
 					             ]
 					             """).AsWildcard();
@@ -93,7 +96,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subject
 					             all have dependencies only on assemblies equal to "aweXpect.Core",
-					             but it contained assemblies with disallowed dependencies [
+					             but it contained assemblies with disallowed dependencies
+
+					             Not matching items:
+					             [
 					               <null>
 					             ]
 					             """).AsWildcard();
@@ -113,7 +119,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in the assemblies *
 					             all have dependencies only on assemblies equal to "NonExistentAssembly",
-					             but it contained assemblies with disallowed dependencies [
+					             but it contained assemblies with disallowed dependencies
+
+					             Not matching items:
+					             [
 					               aweXpect.Reflection, Version=* depends on *,
 					               aweXpect.Reflection.Tests, Version=* depends on *
 					             ]
@@ -134,7 +143,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have dependencies only on no assemblies,
-					             but it contained assemblies with disallowed dependencies *
+					             but it contained assemblies with disallowed dependencies*
 					             """).AsWildcard();
 			}
 		}
@@ -155,7 +164,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in the assemblies *
 					             not all have dependencies only on assemblies equal to "aweXpect.Core",
-					             but it only contained assemblies depending only on the allowed assemblies [
+					             but it only contained assemblies depending only on the allowed assemblies
+
+					             Collection:
+					             [
 					               aweXpect.Reflection, Version=*, Culture=neutral, PublicKeyToken=*
 					             ]
 					             """).AsWildcard();

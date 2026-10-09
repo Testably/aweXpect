@@ -24,7 +24,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedClass1, ThatTypes.DerivedClass2]
 					             all do not inherit from ThatTypes.BaseClass,
-					             but it contained types that inherit from ThatTypes.BaseClass [
+					             but it contained types that inherit from ThatTypes.BaseClass
+
+					             Not matching items:
+					             [
 					               ThatTypes.DerivedClass1,
 					               ThatTypes.DerivedClass2
 					             ]
@@ -45,7 +48,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.GrandChildClass]
 					             all do not inherit from ThatTypes.BaseClass,
-					             but it contained types that inherit from ThatTypes.BaseClass [
+					             but it contained types that inherit from ThatTypes.BaseClass
+
+					             Not matching items:
+					             [
 					               ThatTypes.GrandChildClass
 					             ]
 					             """);
@@ -65,7 +71,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedClass1, ThatTypes.UnrelatedClass]
 					             all do not inherit from ThatTypes.BaseClass,
-					             but it contained types that inherit from ThatTypes.BaseClass [
+					             but it contained types that inherit from ThatTypes.BaseClass
+
+					             Not matching items:
+					             [
 					               ThatTypes.DerivedClass1
 					             ]
 					             """);
@@ -120,7 +129,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all do not inherit from ThatTypes.BaseClass,
-					             but it contained types that inherit from ThatTypes.BaseClass [
+					             but it contained types that inherit from ThatTypes.BaseClass
+
+					             Not matching items:
+					             [
 					               ThatTypes.DerivedClass1,
 					               ThatTypes.DerivedClass2
 					             ]
@@ -145,7 +157,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all do not inherit from ThatTypes.BaseClass,
-					             but it contained types that inherit from ThatTypes.BaseClass [
+					             but it contained types that inherit from ThatTypes.BaseClass
+
+					             Not matching items:
+					             [
 					               ThatTypes.GrandChildClass
 					             ]
 					             """);
@@ -169,7 +184,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all do not inherit from ThatTypes.BaseClass,
-					             but it contained types that inherit from ThatTypes.BaseClass [
+					             but it contained types that inherit from ThatTypes.BaseClass
+
+					             Not matching items:
+					             [
 					               ThatTypes.DerivedClass1
 					             ]
 					             """);
@@ -226,7 +244,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all do not inherit directly from ThatTypes.BaseClass,
-					             but it contained types that inherit directly from ThatTypes.BaseClass [
+					             but it contained types that inherit directly from ThatTypes.BaseClass
+
+					             Not matching items:
+					             [
 					               ThatTypes.DerivedClass1
 					             ]
 					             """);
@@ -249,7 +270,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DoNotInheritFrom.NegatedTests, ThatTypes.UnrelatedClass]
 					             at least one inherits from ThatTypes.BaseClass,
-					             but it only contained types that do not inherit from ThatTypes.BaseClass [
+					             but it only contained types that do not inherit from ThatTypes.BaseClass
+
+					             Collection:
+					             [
 					               ThatTypes.DoNotInheritFrom.NegatedTests,
 					               ThatTypes.UnrelatedClass
 					             ]

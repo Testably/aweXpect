@@ -24,7 +24,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subjects
 					             all have no ThatTypes.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.DoNotHave.AttributeTests.FooClass2
 					             ]
 					             """);
@@ -44,7 +47,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subjects
 					             all have no ThatTypes.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.DoNotHave.AttributeTests.FooChildClass2
 					             ]
 					             """);
@@ -129,7 +135,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all have no ThatTypes.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.DoNotHave.AttributeTests.FooClass2
 					             ]
 					             """);
@@ -166,7 +175,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subjects
 					             not all have no ThatTypes.DoNotHave.NegatedTests.FooAttribute,
-					             but it only contained matching types [
+					             but it only contained matching types
+
+					             Collection:
+					             [
 					               ThatTypes.DoNotHave.NegatedTests.BarClass
 					             ]
 					             """);

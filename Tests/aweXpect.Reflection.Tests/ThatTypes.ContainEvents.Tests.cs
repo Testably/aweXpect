@@ -58,7 +58,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainEvents.ClassWithMarkedEvent and ThatTypes.ContainEvents.ClassWithoutMarkedEvent
 					             all contain events with ThatTypes.ContainEvents.MarkerAttribute at least once,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.ContainEvents.ClassWithoutMarkedEvent
 					             ]
 					             """);
@@ -79,7 +82,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainEvents.DerivedClassWithInheritedMarkedEvent and ThatTypes.ContainEvents.BaseClassWithMarkedEvent
 					             all contain events with ThatTypes.ContainEvents.MarkerAttribute at least once,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.ContainEvents.DerivedClassWithInheritedMarkedEvent
 					             ]
 					             """);

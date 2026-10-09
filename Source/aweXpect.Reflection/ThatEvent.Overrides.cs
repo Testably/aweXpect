@@ -12,7 +12,8 @@ public static partial class ThatEvent
 	/// <summary>
 	///     Verifies that the <see cref="EventInfo" /> overrides a base class event.
 	/// </summary>
-	public static AndOrResult<EventInfo?, IThat<EventInfo?>> Overrides(
+	[GuaranteesNotNull]
+	public static AndOrResult<EventInfo, IThat<EventInfo?>> Overrides(
 		this IThat<EventInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new OverridesConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatEvent
 	/// <summary>
 	///     Verifies that the <see cref="EventInfo" /> does not override a base class event.
 	/// </summary>
-	public static AndOrResult<EventInfo?, IThat<EventInfo?>> DoesNotOverride(
+	[GuaranteesNotNull]
+	public static AndOrResult<EventInfo, IThat<EventInfo?>> DoesNotOverride(
 		this IThat<EventInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new OverridesConstraint(it, grammars).Invert()),

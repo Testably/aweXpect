@@ -58,7 +58,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainFields.ClassWithMarkedField and ThatTypes.ContainFields.ClassWithoutMarkedField
 					             all contain fields with ThatTypes.ContainFields.MarkerAttribute at least once,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.ContainFields.ClassWithoutMarkedField
 					             ]
 					             """);
@@ -79,7 +82,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainFields.DerivedClassWithInheritedMarkedField and ThatTypes.ContainFields.BaseClassWithMarkedField
 					             all contain fields with ThatTypes.ContainFields.MarkerAttribute at least once,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.ContainFields.DerivedClassWithInheritedMarkedField
 					             ]
 					             """);

@@ -42,7 +42,10 @@ public sealed partial class Filtered
 						.WithMessage("""
 						             Expected that abstract types in all loaded assemblies
 						             are all not abstract,
-						             but it contained abstract types [
+						             but it contained abstract types
+
+						             Not matching items:
+						             [
 						               *
 						             ]
 						             """).AsWildcard();
@@ -63,7 +66,10 @@ public sealed partial class Filtered
 						.WithMessage($"""
 						              Expected that {expectedString}abstract types in all loaded assemblies
 						              are all not abstract,
-						              but it contained abstract types [
+						              but it contained abstract types
+
+						              Not matching items:
+						              [
 						                *
 						              ]
 						              """).AsWildcard();

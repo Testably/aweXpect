@@ -12,7 +12,8 @@ public static partial class ThatField
 	/// <summary>
 	///     Verifies that the <see cref="FieldInfo" /> is read-only.
 	/// </summary>
-	public static AndOrResult<FieldInfo?, IThat<FieldInfo?>> IsReadOnly(
+	[GuaranteesNotNull]
+	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> IsReadOnly(
 		this IThat<FieldInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsReadOnlyConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatField
 	/// <summary>
 	///     Verifies that the <see cref="FieldInfo" /> is not read-only.
 	/// </summary>
-	public static AndOrResult<FieldInfo?, IThat<FieldInfo?>> IsNotReadOnly(
+	[GuaranteesNotNull]
+	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> IsNotReadOnly(
 		this IThat<FieldInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsReadOnlyConstraint(it, grammars).Invert()),

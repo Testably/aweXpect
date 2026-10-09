@@ -12,7 +12,8 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> is asynchronous (declared with the <see langword="async" /> keyword).
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> IsAsync(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsAsync(
 		this IThat<MethodInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAsyncConstraint(it, grammars)),
@@ -22,7 +23,8 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> is not asynchronous (not declared with the <see langword="async" />
 	///     keyword).
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> IsNotAsync(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsNotAsync(
 		this IThat<MethodInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAsyncConstraint(it, grammars).Invert()),

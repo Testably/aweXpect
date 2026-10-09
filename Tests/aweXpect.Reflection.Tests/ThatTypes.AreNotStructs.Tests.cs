@@ -45,7 +45,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all not structs,
-					             but it contained structs [
+					             but it contained structs
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -82,7 +85,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type.IsValueType && !type.IsRecordStruct() && !type.IsEnum in assembly containing type ThatTypes.AreNotStructs
 					             are all not structs,
-					             but it contained structs [
+					             but it contained structs
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -105,7 +111,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that interfaces in assembly containing type ThatTypes.AreNotStructs
 					             also contain a struct,
-					             but it only contained not structs [
+					             but it only contained not structs
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

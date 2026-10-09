@@ -13,6 +13,7 @@ public static partial class ThatEvents
 	///     Verifies that all events in the filtered collection have a handler of exactly type
 	///     <typeparamref name="THandler" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static EventsOfTypeResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>>>
 		AreOfExactType<THandler>(
 			this IThat<IEnumerable<EventInfo?>> subject)
@@ -22,6 +23,7 @@ public static partial class ThatEvents
 	///     Verifies that all events in the filtered collection have a handler of exactly type
 	///     <paramref name="handlerType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static EventsOfTypeResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>>> AreOfExactType(
 		this IThat<IEnumerable<EventInfo?>> subject, Type handlerType)
 	{
@@ -39,6 +41,7 @@ public static partial class ThatEvents
 	///     Verifies that all events in the filtered collection have a handler of exactly type
 	///     <typeparamref name="THandler" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static EventsOfTypeResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>>>
 		AreOfExactType<THandler>(
 			this IThat<IAsyncEnumerable<EventInfo?>> subject)
@@ -48,6 +51,7 @@ public static partial class ThatEvents
 	///     Verifies that all events in the filtered collection have a handler of exactly type
 	///     <paramref name="handlerType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static EventsOfTypeResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>>>
 		AreOfExactType(
 			this IThat<IAsyncEnumerable<EventInfo?>> subject, Type handlerType)

@@ -28,7 +28,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all not delegates,
-					             but it contained delegates [
+					             but it contained delegates
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -82,7 +85,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types which are delegates in assembly containing type ThatTypes.AreNotDelegates
 					             are all not delegates,
-					             but it contained delegates [
+					             but it contained delegates
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -106,7 +112,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types which are not delegates in assembly containing type ThatTypes.AreNotDelegates
 					             also contain a delegate,
-					             but it only contained not delegates [
+					             but it only contained not delegates
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

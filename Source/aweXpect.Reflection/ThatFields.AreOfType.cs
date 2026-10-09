@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Results;
@@ -21,6 +22,7 @@ public static partial class ThatFields
 	/// <summary>
 	///     Verifies that all fields in the filtered collection are of type <typeparamref name="TField" /> (or a subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static FieldsOfTypeResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> AreOfType<TField>(
 		this IThat<IEnumerable<FieldInfo?>> subject)
 		=> AreOfType(subject, typeof(TField));
@@ -28,6 +30,7 @@ public static partial class ThatFields
 	/// <summary>
 	///     Verifies that all fields in the filtered collection are of type <paramref name="fieldType" /> (or a subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static FieldsOfTypeResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> AreOfType(
 		this IThat<IEnumerable<FieldInfo?>> subject, Type fieldType)
 	{
@@ -44,6 +47,7 @@ public static partial class ThatFields
 	/// <summary>
 	///     Verifies that all fields in the filtered collection are of type <typeparamref name="TField" /> (or a subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>>
 		AreOfType<TField>(
 			this IThat<IAsyncEnumerable<FieldInfo?>> subject)
@@ -52,6 +56,7 @@ public static partial class ThatFields
 	/// <summary>
 	///     Verifies that all fields in the filtered collection are of type <paramref name="fieldType" /> (or a subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>> AreOfType(
 		this IThat<IAsyncEnumerable<FieldInfo?>> subject, Type fieldType)
 	{
@@ -99,20 +104,21 @@ public static partial class ThatFields
 		string it,
 		ExpectationGrammars grammars,
 		TypeFilterOptions typeFilterOptions)
-		: CollectionConstraintResult<FieldInfo?>(grammars),
-			IValueConstraint<IEnumerable<FieldInfo?>>
+		: CollectionConstraintResult<FieldInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<FieldInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<FieldInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<FieldInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<FieldInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, field => typeFilterOptions.Matches(field?.FieldType));
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context,
+				field => typeFilterOptions.Matches(field?.FieldType), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual)
-			=> SetValue(actual, field => typeFilterOptions.Matches(field?.FieldType));
+		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, field => typeFilterOptions.Matches(field?.FieldType));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -121,10 +127,7 @@ public static partial class ThatFields
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching fields ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching fields");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -133,9 +136,6 @@ public static partial class ThatFields
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching fields ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching fields");
 	}
 }

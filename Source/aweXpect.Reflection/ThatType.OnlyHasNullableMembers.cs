@@ -19,7 +19,8 @@ public static partial class ThatType
 	///     A member is considered nullable if its type is a <see cref="Nullable{T}" /> value type or a
 	///     reference type annotated as nullable (according to the nullable reference type metadata).
 	/// </remarks>
-	public static AndOrResult<Type?, IThat<Type?>> OnlyHasNullableMembers(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> OnlyHasNullableMembers(
 		this IThat<Type?> subject, MemberScope memberScope = MemberScope.DeclaredOnly)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new OnlyHasNullableMembersConstraint(it, grammars, memberScope)),

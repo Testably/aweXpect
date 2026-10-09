@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using aweXpect.Customization;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
@@ -19,7 +19,7 @@ public sealed class DependencyResolverCustomizationTests
 		Type subject = typeof(OnlyLayer1);
 
 		ICustomizationValueSetter<Func<Type, IEnumerable<Type>>?> resolver =
-			Customize.aweXpect.Reflection().DependencyResolver();
+			Customize.aweXpect.ReflectionSettings().DependencyResolver;
 		Func<Type, IEnumerable<Type>> builtin = resolver.Get()!;
 		using (resolver.Set(type => builtin(type).Concat([typeof(TargetB),])))
 		{
@@ -35,7 +35,7 @@ public sealed class DependencyResolverCustomizationTests
 		// OnlyLayer1's signature references Layer1, but never Layer2.
 		Type subject = typeof(OnlyLayer1);
 
-		using (Customize.aweXpect.Reflection().DependencyResolver()
+		using (Customize.aweXpect.ReflectionSettings().DependencyResolver
 			       .Set(_ => [typeof(TargetB),]))
 		{
 			// The custom resolver replaces the built-in: only its output counts.
@@ -53,7 +53,7 @@ public sealed class DependencyResolverCustomizationTests
 	{
 		Type subject = typeof(OnlyLayer2);
 
-		using (Customize.aweXpect.Reflection().DependencyResolver()
+		using (Customize.aweXpect.ReflectionSettings().DependencyResolver
 			       .Set(_ => [typeof(List<TargetA>),]))
 		{
 			// The generic argument is unwrapped from the custom resolver's output, …
@@ -69,7 +69,7 @@ public sealed class DependencyResolverCustomizationTests
 		Type subject = typeof(OnlyLayer1);
 		int invocationCount = 0;
 
-		using (Customize.aweXpect.Reflection().DependencyResolver()
+		using (Customize.aweXpect.ReflectionSettings().DependencyResolver
 			       .Set(_ =>
 			       {
 				       invocationCount++;
@@ -89,13 +89,13 @@ public sealed class DependencyResolverCustomizationTests
 		Type subject = typeof(OnlyLayer1);
 		int secondInvocationCount = 0;
 
-		using (Customize.aweXpect.Reflection().DependencyResolver()
+		using (Customize.aweXpect.ReflectionSettings().DependencyResolver
 			       .Set(_ => [typeof(TargetA),]))
 		{
 			await That(subject).DependsOn(Layer1Namespace);
 		}
 
-		using (Customize.aweXpect.Reflection().DependencyResolver()
+		using (Customize.aweXpect.ReflectionSettings().DependencyResolver
 			       .Set(_ =>
 			       {
 				       secondInvocationCount++;
@@ -115,12 +115,12 @@ public sealed class DependencyResolverCustomizationTests
 	{
 		Type subject = typeof(OnlyLayer1);
 
-		using (Customize.aweXpect.Reflection().DependencyResolver()
+		using (Customize.aweXpect.ReflectionSettings().DependencyResolver
 			       .Set(_ => [typeof(TargetB),]))
 		{
 			await That(subject).DependsOn(Layer2Namespace);
 
-			using (Customize.aweXpect.Reflection().DependencyResolver().Set(null))
+			using (Customize.aweXpect.ReflectionSettings().DependencyResolver.Set(null))
 			{
 				// Within the null scope the built-in signature-level default applies again,
 				// even though an outer scope configured a custom resolver.

@@ -16,7 +16,8 @@ public static partial class ThatProperty
 	///     A property is considered nullable if its type is a <see cref="System.Nullable{T}" /> value type or a
 	///     reference type annotated as nullable (according to the nullable reference type metadata).
 	/// </remarks>
-	public static AndOrResult<PropertyInfo?, IThat<PropertyInfo?>> IsNullable(
+	[GuaranteesNotNull]
+	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsNullable(
 		this IThat<PropertyInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsNullableConstraint(it, grammars)),
@@ -30,7 +31,8 @@ public static partial class ThatProperty
 	///     reference type annotated as nullable (according to the nullable reference type metadata).
 	///     Properties without nullability annotations (oblivious code) count as non-nullable.
 	/// </remarks>
-	public static AndOrResult<PropertyInfo?, IThat<PropertyInfo?>> IsNotNullable(
+	[GuaranteesNotNull]
+	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsNotNullable(
 		this IThat<PropertyInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsNullableConstraint(it, grammars).Invert()),

@@ -46,7 +46,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all are not internal,
-					             but it contained internal items [
+					             but it contained internal items
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -69,7 +72,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that *
 					             all are not internal,
-					             but it contained internal items [
+					             but it contained internal items
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -125,6 +131,9 @@ public sealed partial class ThatMethods
 					             Expected that *
 					             at least one is internal,
 					             but none were
+
+					             Collection:
+					             *
 					             """).AsWildcard();
 			}
 		}

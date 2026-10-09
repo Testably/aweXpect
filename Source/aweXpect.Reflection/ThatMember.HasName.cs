@@ -17,6 +17,7 @@ public static partial class ThatMember
 	/// <summary>
 	///     Verifies that the <typeparamref name="TMember" /> has the <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<TMember, IThat<TMember>> HasName<TMember>(
 		this IThat<TMember> subject, string expected)
 		where TMember : MemberInfo?

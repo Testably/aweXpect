@@ -44,7 +44,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are all not generic,
-					             but it contained generic methods [
+					             but it contained generic methods
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -67,7 +70,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods matching methodInfo => methodInfo.Name.StartsWith(methodPrefix) in types matching t => t == typeof(ClassWithMethods) in assembly containing type ThatMethods.ClassWithMethods
 					             are all not generic,
-					             but it contained generic methods [
+					             but it contained generic methods
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -116,7 +122,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that *
 					             also contain a generic method,
-					             but it only contained non-generic methods [
+					             but it only contained non-generic methods
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

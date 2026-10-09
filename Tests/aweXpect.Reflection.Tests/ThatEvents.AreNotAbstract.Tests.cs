@@ -29,7 +29,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             are all not abstract,
-					             but it contained abstract events [
+					             but it contained abstract events
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -83,7 +86,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             also contain an abstract event,
-					             but it only contained non-abstract events [
+					             but it only contained non-abstract events
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -109,7 +115,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             are all not abstract,
-					             but it contained abstract events [
+					             but it contained abstract events
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -62,7 +62,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all depend on namespace "{Layer1Namespace}",
-					              but it contained types without the dependency [
+					              but it contained types without the dependency
+
+					              Not matching items:
+					              [
 					                FrameworkConsumer
 					              ]
 					              """);
@@ -124,7 +127,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all depend on types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it contained types without the dependency [
+					              but it contained types without the dependency
+
+					              Not matching items:
+					              [
 					                FrameworkConsumer
 					              ]
 					              """);

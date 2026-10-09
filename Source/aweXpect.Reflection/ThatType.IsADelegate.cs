@@ -12,7 +12,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is a delegate.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsADelegate(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsADelegate(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsADelegateConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is not a delegate.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotADelegate(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotADelegate(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsADelegateConstraint(it, grammars).Invert()),

@@ -12,7 +12,8 @@ public static partial class ThatEvent
 	/// <summary>
 	///     Verifies that the <see cref="EventInfo" /> is virtual.
 	/// </summary>
-	public static AndOrResult<EventInfo?, IThat<EventInfo?>> IsVirtual(
+	[GuaranteesNotNull]
+	public static AndOrResult<EventInfo, IThat<EventInfo?>> IsVirtual(
 		this IThat<EventInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsVirtualConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatEvent
 	/// <summary>
 	///     Verifies that the <see cref="EventInfo" /> is not virtual.
 	/// </summary>
-	public static AndOrResult<EventInfo?, IThat<EventInfo?>> IsNotVirtual(
+	[GuaranteesNotNull]
+	public static AndOrResult<EventInfo, IThat<EventInfo?>> IsNotVirtual(
 		this IThat<EventInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsVirtualConstraint(it, grammars).Invert()),

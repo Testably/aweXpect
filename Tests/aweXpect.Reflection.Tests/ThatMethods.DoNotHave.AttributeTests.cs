@@ -29,7 +29,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all have no ThatMethods.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching methods [
+					             but it contained not matching methods
+
+					             Not matching items:
+					             [
 					               void ThatMethods.DoNotHave.AttributeTests.TestClass.TestMethod()
 					             ]
 					             """);
@@ -53,7 +56,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             not all have no ThatMethods.DoNotHave.AttributeTests.FooAttribute,
-					             but it only contained matching methods [
+					             but it only contained matching methods
+
+					             Collection:
+					             [
 					               void ThatMethods.DoNotHave.AttributeTests.TestClass.NoAttributeMethod()
 					             ]
 					             """);
@@ -76,7 +82,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all have no ThatMethods.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching methods [
+					             but it contained not matching methods
+
+					             Not matching items:
+					             [
 					               void ThatMethods.DoNotHave.AttributeTests.TestClass.TestMethod()
 					             ]
 					             """);

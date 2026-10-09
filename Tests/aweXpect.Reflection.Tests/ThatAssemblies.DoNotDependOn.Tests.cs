@@ -24,7 +24,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have no dependency on assembly equal to "aweXpect.Core",
-					             but it contained assemblies with the unexpected dependency [
+					             but it contained assemblies with the unexpected dependency
+
+					             Not matching items:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
@@ -57,7 +60,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have no dependency on assembly starting with "System",
-					             but it contained assemblies with the unexpected dependency [
+					             but it contained assemblies with the unexpected dependency
+
+					             Not matching items:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
@@ -77,7 +83,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have no dependency on assembly equal to "AWExPECT.cORE" ignoring case,
-					             but it contained assemblies with the unexpected dependency [
+					             but it contained assemblies with the unexpected dependency
+
+					             Not matching items:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
@@ -113,7 +122,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             not all have no dependency on assembly equal to "NonExistentAssembly",
-					             but it only contained assemblies without the unexpected dependency [
+					             but it only contained assemblies without the unexpected dependency
+
+					             Collection:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """)

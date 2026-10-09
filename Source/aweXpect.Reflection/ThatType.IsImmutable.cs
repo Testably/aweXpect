@@ -17,7 +17,8 @@ public static partial class ThatType
 	///     <see langword="readonly" /> and all instance properties (including inherited ones) have no setter
 	///     or an init-only setter.
 	/// </remarks>
-	public static AndOrResult<Type?, IThat<Type?>> IsImmutable(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsImmutable(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsImmutableConstraint(it, grammars)),
@@ -31,7 +32,8 @@ public static partial class ThatType
 	///     <see langword="readonly" /> and all instance properties (including inherited ones) have no setter
 	///     or an init-only setter.
 	/// </remarks>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotImmutable(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotImmutable(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsImmutableConstraint(it, grammars).Invert()),

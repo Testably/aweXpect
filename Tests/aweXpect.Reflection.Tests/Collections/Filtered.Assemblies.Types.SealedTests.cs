@@ -32,7 +32,10 @@ public sealed partial class Filtered
 						.WithMessage("""
 						             Expected that sealed types in all loaded assemblies
 						             are all not sealed,
-						             but it contained sealed types [
+						             but it contained sealed types
+
+						             Not matching items:
+						             [
 						               *
 						             ]
 						             """).AsWildcard();
@@ -54,7 +57,10 @@ public sealed partial class Filtered
 						.WithMessage($"""
 						              Expected that {expectedString}sealed types in all loaded assemblies
 						              are all not sealed,
-						              but it contained sealed types [
+						              but it contained sealed types
+
+						              Not matching items:
+						              [
 						                *
 						              ]
 						              """).AsWildcard();

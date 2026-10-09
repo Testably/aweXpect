@@ -40,7 +40,7 @@ public sealed partial class ThatType
 					             but it did not inherit from ThatType.BaseClass
 
 					             Actual:
-					             ThatType.UnrelatedClass
+					             aweXpect.Reflection.Tests.ThatType+UnrelatedClass
 					             """);
 			}
 
@@ -61,7 +61,7 @@ public sealed partial class ThatType
 					             but it did not inherit from ThatType.BaseClass
 
 					             Actual:
-					             ThatType.UnrelatedClass
+					             aweXpect.Reflection.Tests.ThatType+UnrelatedClass
 					             """);
 			}
 
@@ -121,7 +121,7 @@ public sealed partial class ThatType
 					             but it inherited from ThatType.BaseClass only indirectly
 
 					             Actual:
-					             ThatType.GrandChildClass
+					             aweXpect.Reflection.Tests.ThatType+GrandChildClass
 					             """);
 			}
 
@@ -142,7 +142,7 @@ public sealed partial class ThatType
 					             but it did not inherit from ThatType.BaseClass
 
 					             Actual:
-					             ThatType.BaseClass
+					             aweXpect.Reflection.Tests.ThatType+BaseClass
 					             """);
 			}
 		}
@@ -183,7 +183,7 @@ public sealed partial class ThatType
 					             but it did not inherit from ThatType.BaseClass
 
 					             Actual:
-					             ThatType.UnrelatedClass
+					             aweXpect.Reflection.Tests.ThatType+UnrelatedClass
 					             """);
 			}
 
@@ -233,7 +233,7 @@ public sealed partial class ThatType
 					             but it inherited from ThatType.BaseClass only indirectly
 
 					             Actual:
-					             ThatType.GrandChildClass
+					             aweXpect.Reflection.Tests.ThatType+GrandChildClass
 					             """);
 			}
 		}
@@ -285,7 +285,7 @@ public sealed partial class ThatType
 					             but it did inherit from ThatType.BaseClass
 
 					             Actual:
-					             ThatType.DerivedClass
+					             aweXpect.Reflection.Tests.ThatType+DerivedClass
 					             """);
 			}
 
@@ -306,7 +306,7 @@ public sealed partial class ThatType
 					             but it did inherit from ThatType.BaseClass
 
 					             Actual:
-					             ThatType.GrandChildClass
+					             aweXpect.Reflection.Tests.ThatType+GrandChildClass
 					             """);
 			}
 		}

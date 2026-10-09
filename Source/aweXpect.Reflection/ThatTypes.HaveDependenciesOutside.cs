@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
@@ -33,6 +34,7 @@ public static partial class ThatTypes
 	///     <c>Microsoft.EntityFrameworkCore</c> is also ignored; customize the prefixes to make such a dependency
 	///     count.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static NamespaceDependencyOutsideResult<IEnumerable<Type?>> HaveDependenciesOutside(
 		this IThat<IEnumerable<Type?>> subject, params IEnumerable<string> namespaces)
 	{
@@ -61,6 +63,7 @@ public static partial class ThatTypes
 	///     <c>Microsoft.EntityFrameworkCore</c> is also ignored; customize the prefixes to make such a dependency
 	///     count.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static NamespaceDependencyOutsideResult<IAsyncEnumerable<Type?>> HaveDependenciesOutside(
 		this IThat<IAsyncEnumerable<Type?>> subject, params IEnumerable<string> namespaces)
 	{
@@ -96,6 +99,7 @@ public static partial class ThatTypes
 	///     <c>Microsoft.EntityFrameworkCore</c> is also ignored; customize the prefixes to make such a dependency
 	///     count.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeSetDependencyOutsideResult<IEnumerable<Type?>> HaveDependenciesOutside(
 		this IThat<IEnumerable<Type?>> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
@@ -131,6 +135,7 @@ public static partial class ThatTypes
 	///     <c>Microsoft.EntityFrameworkCore</c> is also ignored; customize the prefixes to make such a dependency
 	///     count.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeSetDependencyOutsideResult<IAsyncEnumerable<Type?>> HaveDependenciesOutside(
 		this IThat<IAsyncEnumerable<Type?>> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
@@ -147,10 +152,10 @@ public static partial class ThatTypes
 		string it,
 		ExpectationGrammars grammars,
 		NamespaceDependencyOptions options)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 		private readonly Dictionary<Type, IReadOnlyList<string>> _violations = new();
@@ -172,39 +177,38 @@ public static partial class ThatTypes
 		}
 
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, HasDependencyOutsideAllowed);
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, HasDependencyOutsideAllowed, cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, HasDependencyOutsideAllowed);
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, HasDependencyOutsideAllowed);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have dependencies outside ").Append(options.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained types depending only on the allowed namespaces ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained types depending only on the allowed namespaces");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all have dependencies outside ").Append(options.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> DependencyViolationRenderer.AppendItemsWithDisallowedDependencies(stringBuilder, it,
-				" only contained types with dependencies outside the allowed namespaces ", Matching, _violations,
-				indentation);
+			=> stringBuilder.Append(It)
+				.Append(" only contained types with dependencies outside the allowed namespaces");
+		protected override Func<string?> FormatItems(Type?[] items)
+			=> () => DependencyViolationRenderer.FormatItemsWithDisallowedDependencies(items, _violations);
 	}
 
 	private sealed class HaveDependenciesOutsideTypeSetConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		TypeSetDependencyOptions options)
-		: CollectionConstraintResult<Type?>(grammars),
-			IAsyncConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IAsyncContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 		private readonly Dictionary<Type, IReadOnlyList<string>> _violations = new();
@@ -226,34 +230,34 @@ public static partial class ThatTypes
 		}
 
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			ResolvedTypeSet allowed = await options.Resolve(cancellationToken);
-			return await SetAsyncValue(actual, type => HasDependencyOutsideAllowed(type, allowed));
+			return await SetAsyncValue(actual, context,
+				type => HasDependencyOutsideAllowed(type, allowed), cancellationToken);
 		}
 #endif
 
-		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			ResolvedTypeSet allowed = await options.Resolve(cancellationToken);
-			return SetValue(actual, type => HasDependencyOutsideAllowed(type, allowed));
+			return SetValue(actual, context, type => HasDependencyOutsideAllowed(type, allowed));
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have dependencies outside ").Append(options.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained types depending only on the allowed types ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained types depending only on the allowed types");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all have dependencies outside ").Append(options.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-			=> DependencyViolationRenderer.AppendItemsWithDisallowedDependencies(stringBuilder, it,
-				" only contained types with dependencies outside the allowed types ", Matching, _violations,
-				indentation);
+			=> stringBuilder.Append(It).Append(" only contained types with dependencies outside the allowed types");
+		protected override Func<string?> FormatItems(Type?[] items)
+			=> () => DependencyViolationRenderer.FormatItemsWithDisallowedDependencies(items, _violations);
 	}
 }

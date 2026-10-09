@@ -24,7 +24,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types with name starting with "Some" in assembly containing type ThatTypes.HaveName.Tests
 					             all have name equal to "SomeOtherClassName",
-					             but it contained not matching items [
+					             but it contained not matching items
+
+					             Not matching items:
+					             [
 					               *SomeClassToTestHaveNameForTypes*
 					             ]
 					             """).AsWildcard();
@@ -106,7 +109,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types with name equal to "SomeClassToTestHaveNameForType…" in assembly containing type ThatTypes.HaveName.Tests
 					             not all have name equal to "SomeClassToTestHaveNameForType…",
-					             but it only contained matching items [
+					             but it only contained matching items
+
+					             Collection:
+					             [
 					               *SomeClassToTestHaveNameForTypes*
 					             ]
 					             """).AsWildcard();

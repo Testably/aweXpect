@@ -16,7 +16,8 @@ public static partial class ThatType
 	///     Static types are not considered sealed, even though they
 	///     have <see cref="Type.IsSealed" /> set to <see langword="true" />.
 	/// </remarks>
-	public static AndOrResult<Type?, IThat<Type?>> IsSealed(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsSealed(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsSealedConstraint(it, grammars)),
@@ -29,7 +30,8 @@ public static partial class ThatType
 	///     Static types are considered not sealed, even though they
 	///     have <see cref="Type.IsSealed" /> set to <see langword="true" />.
 	/// </remarks>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotSealed(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotSealed(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsSealedConstraint(it, grammars).Invert()),

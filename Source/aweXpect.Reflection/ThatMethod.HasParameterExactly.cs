@@ -13,6 +13,7 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> has a parameter of exact type <typeparamref name="TParameter" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ParameterCollectionResult<MethodInfo?, TParameter> HasParameterExactly<TParameter>(
 		this IThat<MethodInfo?> subject)
 	{
@@ -35,6 +36,7 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> has a parameter of exact type <typeparamref name="TParameter" /> with
 	///     the <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamedParameterCollectionResult<MethodInfo?, TParameter> HasParameterExactly<TParameter>(
 		this IThat<MethodInfo?> subject, string expected)
 	{
@@ -59,6 +61,7 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> has a parameter of exact type <paramref name="parameterType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ParameterCollectionResult<MethodInfo?, object?> HasParameterExactly(
 		this IThat<MethodInfo?> subject, Type parameterType)
 	{
@@ -80,6 +83,7 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> has a parameter of exact type <paramref name="parameterType" /> with
 	///     the <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamedParameterCollectionResult<MethodInfo?, object?> HasParameterExactly(
 		this IThat<MethodInfo?> subject, Type parameterType, string expected)
 	{

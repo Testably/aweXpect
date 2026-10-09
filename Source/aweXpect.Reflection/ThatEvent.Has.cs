@@ -19,6 +19,7 @@ public static partial class ThatEvent
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static HasAttributeResult<EventInfo?> Has<TAttribute>(this IThat<EventInfo?> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
@@ -39,6 +40,7 @@ public static partial class ThatEvent
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static HasAttributeResult<EventInfo?> Has<TAttribute>(
 		this IThat<EventInfo?> subject,
 		Func<TAttribute, bool> predicate,

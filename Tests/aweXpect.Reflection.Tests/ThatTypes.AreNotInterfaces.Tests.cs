@@ -28,7 +28,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all not interfaces,
-					             but it contained interfaces [
+					             but it contained interfaces
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -81,7 +84,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type.IsInterface in assembly containing type ThatTypes.AreNotInterfaces
 					             are all not interfaces,
-					             but it contained interfaces [
+					             but it contained interfaces
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -104,7 +110,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that enums in assembly containing type ThatTypes.AreNotInterfaces
 					             also contain an interface,
-					             but it only contained not interfaces [
+					             but it only contained not interfaces
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

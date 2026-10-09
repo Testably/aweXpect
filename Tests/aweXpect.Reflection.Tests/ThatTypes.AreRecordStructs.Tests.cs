@@ -24,7 +24,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreRecordStructs
 					             are all record structs,
-					             but it contained other types [
+					             but it contained other types
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -75,7 +78,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type.IsRecordStruct() in assembly containing type ThatTypes.AreRecordStructs
 					             are not all record structs,
-					             but it only contained record structs [
+					             but it only contained record structs
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

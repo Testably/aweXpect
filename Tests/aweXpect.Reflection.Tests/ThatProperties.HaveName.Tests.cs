@@ -23,7 +23,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that properties in types matching t => t == typeof(T) in assembly containing type ThatProperty.ClassWithProperties
 					             all have name equal to "PublicProperty",
-					             but it contained not matching items [
+					             but it contained not matching items
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -98,7 +101,7 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that properties in types matching t => t == typeof(T) in assembly containing type ThatProperty.ClassWithSingleProperty
 					             not all have name equal to "MyProperty",
-					             but it only contained matching items *
+					             but it only contained matching items*
 					             """).AsWildcard();
 			}
 		}

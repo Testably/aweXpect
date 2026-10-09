@@ -63,7 +63,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))},
-					              but it contained types without an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))} [
+					              but it contained types without an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))}
+
+					              Not matching items:
+					              [
 					                *
 					              ]
 					              """).AsWildcard();
@@ -86,7 +89,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))},
-					              but it contained types without an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))} [
+					              but it contained types without an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))}
+
+					              Not matching items:
+					              [
 					                *
 					              ]
 					              """).AsWildcard();
@@ -162,7 +168,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all do not have an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))},
-					              but it contained types with an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))} [
+					              but it contained types with an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))}
+
+					              Not matching items:
+					              [
 					                *
 					              ]
 					              """).AsWildcard();
@@ -185,7 +194,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all do not have an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))},
-					              but it contained types with an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))} [
+					              but it contained types with an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))}
+
+					              Not matching items:
+					              [
 					                *
 					              ]
 					              """).AsWildcard();
@@ -212,7 +224,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              not all have an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))},
-					              but it only contained types with an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))} [
+					              but it only contained types with an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))}
+
+					              Collection:
+					              [
 					                *
 					              ]
 					              """).AsWildcard();
@@ -236,7 +251,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              also contain a type with an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))},
-					              but it only contained types without an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))} [
+					              but it only contained types without an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))}
+
+					              Collection:
+					              [
 					                *
 					              ]
 					              """).AsWildcard();
@@ -311,7 +329,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))},
-					              but it contained types without an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))} [
+					              but it contained types without an implicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(decimal))}
+
+					              Not matching items:
+					              [
 					                *
 					              ]
 					              """).AsWildcard();
@@ -334,7 +355,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all do not have an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))},
-					              but it contained types with an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))} [
+					              but it contained types with an explicit conversion operator from {Formatter.Format(typeof(Money))} to {Formatter.Format(typeof(int))}
+
+					              Not matching items:
+					              [
 					                *
 					              ]
 					              """).AsWildcard();

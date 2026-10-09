@@ -12,7 +12,8 @@ public static partial class ThatAssembly
 	/// <summary>
 	///     Verifies that the <see cref="Assembly" /> is strong named.
 	/// </summary>
-	public static AndOrResult<Assembly?, IThat<Assembly?>> IsStrongNamed(
+	[GuaranteesNotNull]
+	public static AndOrResult<Assembly, IThat<Assembly?>> IsStrongNamed(
 		this IThat<Assembly?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsStrongNamedConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatAssembly
 	/// <summary>
 	///     Verifies that the <see cref="Assembly" /> is not strong named.
 	/// </summary>
-	public static AndOrResult<Assembly?, IThat<Assembly?>> IsNotStrongNamed(
+	[GuaranteesNotNull]
+	public static AndOrResult<Assembly, IThat<Assembly?>> IsNotStrongNamed(
 		this IThat<Assembly?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsStrongNamedConstraint(it, grammars).Invert()),

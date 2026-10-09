@@ -56,7 +56,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types with name equal to "DoNotHaveNameType" in assembly containing type ThatTypes.DoNotHaveName.Tests
 					             all have name not equal to "DoNotHaveNameType",
-					             but it contained not matching items [
+					             but it contained not matching items
+
+					             Not matching items:
+					             [
 					               *DoNotHaveNameType*
 					             ]
 					             """).AsWildcard();
@@ -77,7 +80,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types with name equal to "DoNotHaveNameType" in assembly containing type ThatTypes.DoNotHaveName.Tests
 					             all have name not ending with "HaveNameType",
-					             but it contained not matching items [
+					             but it contained not matching items
+
+					             Not matching items:
+					             [
 					               *DoNotHaveNameType*
 					             ]
 					             """).AsWildcard();
@@ -119,7 +125,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all have name not equal to "DoNotHaveNameType",
-					             but it contained not matching items [
+					             but it contained not matching items
+
+					             Not matching items:
+					             [
 					               *DoNotHaveNameType*
 					             ]
 					             """).AsWildcard();
@@ -144,7 +153,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types with name equal to "DoNotHaveNameTypeNeg" in assembly containing type ThatTypes.DoNotHaveName.Tests
 					             not all have name not equal to "SomeOtherClassName",
-					             but it only contained matching items [
+					             but it only contained matching items
+
+					             Collection:
+					             [
 					               *DoNotHaveNameTypeNeg*
 					             ]
 					             """).AsWildcard();

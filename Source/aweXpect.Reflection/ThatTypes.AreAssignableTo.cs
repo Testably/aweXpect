@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -26,6 +27,7 @@ public static partial class ThatTypes
 	///     for interfaces use <see cref="Implement{TInterface}(IThat{IEnumerable{Type}}, bool)" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreAssignableTo<TType>(
 		this IThat<IEnumerable<Type?>> subject)
 		=> subject.AreAssignableTo(typeof(TType));
@@ -42,6 +44,7 @@ public static partial class ThatTypes
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="type">The type the items should be assignable to.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreAssignableTo(
 		this IThat<IEnumerable<Type?>> subject, Type type)
 	{
@@ -62,6 +65,7 @@ public static partial class ThatTypes
 	///     for interfaces use <see cref="Implement{TInterface}(IThat{IEnumerable{Type}}, bool)" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreAssignableTo<TType>(
 		this IThat<IAsyncEnumerable<Type?>> subject)
 		=> subject.AreAssignableTo(typeof(TType));
@@ -78,6 +82,7 @@ public static partial class ThatTypes
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="type">The type the items should be assignable to.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreAssignableTo(
 		this IThat<IAsyncEnumerable<Type?>> subject, Type type)
 	{
@@ -98,6 +103,7 @@ public static partial class ThatTypes
 	///     for interfaces use <see cref="Implement{TInterface}(IThat{IEnumerable{Type}}, bool)" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotAssignableTo<TType>(
 		this IThat<IEnumerable<Type?>> subject)
 		=> subject.AreNotAssignableTo(typeof(TType));
@@ -114,6 +120,7 @@ public static partial class ThatTypes
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="type">The type the items should not be assignable to.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotAssignableTo(
 		this IThat<IEnumerable<Type?>> subject, Type type)
 	{
@@ -134,6 +141,7 @@ public static partial class ThatTypes
 	///     for interfaces use <see cref="Implement{TInterface}(IThat{IEnumerable{Type}}, bool)" />.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreNotAssignableTo<TType>(
 		this IThat<IAsyncEnumerable<Type?>> subject)
 		=> subject.AreNotAssignableTo(typeof(TType));
@@ -150,6 +158,7 @@ public static partial class ThatTypes
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="type">The type the items should not be assignable to.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreNotAssignableTo(
 		this IThat<IAsyncEnumerable<Type?>> subject, Type type)
 	{
@@ -169,6 +178,7 @@ public static partial class ThatTypes
 	///     <typeparamref name="TType" /> is assignable to each item.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreAssignableFrom<TType>(
 		this IThat<IEnumerable<Type?>> subject)
 		=> subject.AreAssignableFrom(typeof(TType));
@@ -184,6 +194,7 @@ public static partial class ThatTypes
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="type">The type that should be assignable to each item.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreAssignableFrom(
 		this IThat<IEnumerable<Type?>> subject, Type type)
 	{
@@ -203,6 +214,7 @@ public static partial class ThatTypes
 	///     <typeparamref name="TType" /> is assignable to each item.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreAssignableFrom<TType>(
 		this IThat<IAsyncEnumerable<Type?>> subject)
 		=> subject.AreAssignableFrom(typeof(TType));
@@ -218,6 +230,7 @@ public static partial class ThatTypes
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="type">The type that should be assignable to each item.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreAssignableFrom(
 		this IThat<IAsyncEnumerable<Type?>> subject, Type type)
 	{
@@ -237,6 +250,7 @@ public static partial class ThatTypes
 	///     that <typeparamref name="TType" /> is not assignable to each item.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotAssignableFrom<TType>(
 		this IThat<IEnumerable<Type?>> subject)
 		=> subject.AreNotAssignableFrom(typeof(TType));
@@ -252,6 +266,7 @@ public static partial class ThatTypes
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="type">The type that should not be assignable to each item.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotAssignableFrom(
 		this IThat<IEnumerable<Type?>> subject, Type type)
 	{
@@ -271,6 +286,7 @@ public static partial class ThatTypes
 	///     that <typeparamref name="TType" /> is not assignable to each item.
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreNotAssignableFrom<TType>(
 		this IThat<IAsyncEnumerable<Type?>> subject)
 		=> subject.AreNotAssignableFrom(typeof(TType));
@@ -286,6 +302,7 @@ public static partial class ThatTypes
 	/// <param name="subject">The type collection subject.</param>
 	/// <param name="type">The type that should not be assignable to each item.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreNotAssignableFrom(
 		this IThat<IAsyncEnumerable<Type?>> subject, Type type)
 	{
@@ -300,19 +317,20 @@ public static partial class ThatTypes
 		string it,
 		ExpectationGrammars grammars,
 		Type type)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, t => t is not null && type.IsAssignableFrom(t));
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, t => t is not null && type.IsAssignableFrom(t), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, t => t is not null && type.IsAssignableFrom(t));
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, t => t is not null && type.IsAssignableFrom(t));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -321,10 +339,7 @@ public static partial class ThatTypes
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching types ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching types");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -333,29 +348,27 @@ public static partial class ThatTypes
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching types ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching types");
 	}
 
 	private sealed class AreNotAssignableToConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		Type type)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, t => t is null || !type.IsAssignableFrom(t));
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, t => t is null || !type.IsAssignableFrom(t), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, t => t is null || !type.IsAssignableFrom(t));
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, t => t is null || !type.IsAssignableFrom(t));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -364,10 +377,7 @@ public static partial class ThatTypes
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching types ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching types");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -376,29 +386,27 @@ public static partial class ThatTypes
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching types ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching types");
 	}
 
 	private sealed class AreAssignableFromConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		Type type)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, t => t is not null && t.IsAssignableFrom(type));
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, t => t is not null && t.IsAssignableFrom(type), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, t => t is not null && t.IsAssignableFrom(type));
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, t => t is not null && t.IsAssignableFrom(type));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -407,10 +415,7 @@ public static partial class ThatTypes
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching types ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching types");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -419,29 +424,27 @@ public static partial class ThatTypes
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching types ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching types");
 	}
 
 	private sealed class AreNotAssignableFromConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		Type type)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, t => t is null || !t.IsAssignableFrom(type));
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, t => t is null || !t.IsAssignableFrom(type), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, t => t is null || !t.IsAssignableFrom(type));
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, t => t is null || !t.IsAssignableFrom(type));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -450,10 +453,7 @@ public static partial class ThatTypes
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching types ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching types");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -462,9 +462,6 @@ public static partial class ThatTypes
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching types ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching types");
 	}
 }

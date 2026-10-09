@@ -58,7 +58,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainProperties.ClassWithMarkedProperty and ThatTypes.ContainProperties.ClassWithoutMarkedProperty
 					             all contain properties with ThatTypes.ContainProperties.MarkerAttribute at least once,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.ContainProperties.ClassWithoutMarkedProperty
 					             ]
 					             """);
@@ -79,7 +82,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainProperties.DerivedClassWithInheritedMarkedProperty and ThatTypes.ContainProperties.BaseClassWithMarkedProperty
 					             all contain properties with ThatTypes.ContainProperties.MarkerAttribute at least once,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.ContainProperties.DerivedClassWithInheritedMarkedProperty
 					             ]
 					             """);

@@ -10,6 +10,7 @@ public static partial class ThatMethods
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have no parameters.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>>> HaveNoParameters(
 		this IThat<IEnumerable<MethodInfo?>> subject)
 		=> subject.HaveParameterCount(0);
@@ -18,6 +19,7 @@ public static partial class ThatMethods
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> have no parameters.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>>> HaveNoParameters(
 		this IThat<IAsyncEnumerable<MethodInfo?>> subject)
 		=> subject.HaveParameterCount(0);

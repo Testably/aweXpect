@@ -12,7 +12,8 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> is abstract.
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> IsAbstract(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsAbstract(
 		this IThat<MethodInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAbstractConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> is not abstract.
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> IsNotAbstract(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsNotAbstract(
 		this IThat<MethodInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAbstractConstraint(it, grammars).Invert()),

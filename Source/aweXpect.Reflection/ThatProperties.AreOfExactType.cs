@@ -12,6 +12,7 @@ public static partial class ThatProperties
 	/// <summary>
 	///     Verifies that all properties in the filtered collection are of exactly type <typeparamref name="TProperty" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertiesOfTypeResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>>
 		AreOfExactType<TProperty>(
 			this IThat<IEnumerable<PropertyInfo?>> subject)
@@ -20,6 +21,7 @@ public static partial class ThatProperties
 	/// <summary>
 	///     Verifies that all properties in the filtered collection are of exactly type <paramref name="propertyType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertiesOfTypeResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> AreOfExactType(
 		this IThat<IEnumerable<PropertyInfo?>> subject, Type propertyType)
 	{
@@ -36,6 +38,7 @@ public static partial class ThatProperties
 	/// <summary>
 	///     Verifies that all properties in the filtered collection are of exactly type <typeparamref name="TProperty" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>>
 		AreOfExactType<TProperty>(
 			this IThat<IAsyncEnumerable<PropertyInfo?>> subject)
@@ -44,6 +47,7 @@ public static partial class ThatProperties
 	/// <summary>
 	///     Verifies that all properties in the filtered collection are of exactly type <paramref name="propertyType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>>
 		AreOfExactType(
 			this IThat<IAsyncEnumerable<PropertyInfo?>> subject, Type propertyType)

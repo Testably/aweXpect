@@ -53,7 +53,7 @@ public sealed partial class ThatType
 					             but it did directly implement ThatType.ITestInterface
 
 					             Actual:
-					             ThatType.ClassWithInterface
+					             aweXpect.Reflection.Tests.ThatType+ClassWithInterface
 					             """);
 			}
 
@@ -87,7 +87,7 @@ public sealed partial class ThatType
 					             but it did implement ThatType.ITestInterface
 
 					             Actual:
-					             ThatType.ClassWithInterface
+					             aweXpect.Reflection.Tests.ThatType+ClassWithInterface
 					             """);
 			}
 		}
@@ -142,7 +142,7 @@ public sealed partial class ThatType
 					             but it did implement ThatType.ITestInterface
 
 					             Actual:
-					             ThatType.ClassWithInterface
+					             aweXpect.Reflection.Tests.ThatType+ClassWithInterface
 					             """);
 			}
 		}
@@ -166,7 +166,7 @@ public sealed partial class ThatType
 					             but it did not implement ThatType.ITestInterface
 
 					             Actual:
-					             ThatType.UnrelatedClass
+					             aweXpect.Reflection.Tests.ThatType+UnrelatedClass
 					             """);
 			}
 

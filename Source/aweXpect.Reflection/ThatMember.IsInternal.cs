@@ -15,6 +15,7 @@ public static partial class ThatMember
 	/// <summary>
 	///     Verifies that the <typeparamref name="TMember" /> is internal.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TMember, IThat<TMember>> IsInternal<TMember>(
 		this IThat<TMember> subject)
 		where TMember : MemberInfo?
@@ -25,6 +26,7 @@ public static partial class ThatMember
 	/// <summary>
 	///     Verifies that the <typeparamref name="TMember" /> is not internal.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TMember, IThat<TMember>> IsNotInternal<TMember>(
 		this IThat<TMember> subject)
 		where TMember : MemberInfo?

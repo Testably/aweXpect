@@ -31,7 +31,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are all not read-only,
-					             but it contained read-only fields [
+					             but it contained read-only fields
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -92,7 +95,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             also contain a read-only field,
-					             but it only contained non-read-only fields [
+					             but it only contained non-read-only fields
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -119,7 +125,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are all not read-only,
-					             but it contained read-only fields [
+					             but it contained read-only fields
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -19,6 +20,7 @@ public static partial class ThatProperties
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are virtual.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> AreVirtual(
 		this IThat<IEnumerable<PropertyInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
@@ -29,6 +31,7 @@ public static partial class ThatProperties
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are virtual.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>> AreVirtual(
 		this IThat<IAsyncEnumerable<PropertyInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
@@ -39,6 +42,7 @@ public static partial class ThatProperties
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are not virtual.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> AreNotVirtual(
 		this IThat<IEnumerable<PropertyInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
@@ -49,6 +53,7 @@ public static partial class ThatProperties
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are not virtual.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>> AreNotVirtual(
 		this IThat<IAsyncEnumerable<PropertyInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
@@ -57,72 +62,60 @@ public static partial class ThatProperties
 #endif
 
 	private sealed class AreVirtualConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<PropertyInfo?>(grammars),
-			IValueConstraint<IEnumerable<PropertyInfo?>>
+		: CollectionConstraintResult<PropertyInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<PropertyInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<PropertyInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<PropertyInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<PropertyInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, property => property.IsReallyVirtual());
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, property => property.IsReallyVirtual(), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual)
-			=> SetValue(actual, property => property.IsReallyVirtual());
+		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, property => property.IsReallyVirtual());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are all virtual");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained non-virtual properties ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained non-virtual properties");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are not all virtual");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained virtual properties ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained virtual properties");
 	}
 
 	private sealed class AreNotVirtualConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<PropertyInfo?>(grammars),
-			IValueConstraint<IEnumerable<PropertyInfo?>>
+		: CollectionConstraintResult<PropertyInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<PropertyInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<PropertyInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<PropertyInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<PropertyInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, property => !property.IsReallyVirtual());
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, property => !property.IsReallyVirtual(), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual)
-			=> SetValue(actual, property => !property.IsReallyVirtual());
+		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, property => !property.IsReallyVirtual());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are all not virtual");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained virtual properties ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained virtual properties");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("also contain a virtual property");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained non-virtual properties ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained non-virtual properties");
 	}
 }

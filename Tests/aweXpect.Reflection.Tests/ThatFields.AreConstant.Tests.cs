@@ -31,7 +31,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are all constant,
-					             but it contained non-constant fields [
+					             but it contained non-constant fields
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -90,7 +93,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are not all constant,
-					             but it only contained constant fields [
+					             but it only contained constant fields
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -117,7 +123,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are all constant,
-					             but it contained non-constant fields [
+					             but it contained non-constant fields
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -140,7 +149,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are not all constant,
-					             but it only contained constant fields [
+					             but it only contained constant fields
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

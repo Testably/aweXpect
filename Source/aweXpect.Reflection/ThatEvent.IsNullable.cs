@@ -16,7 +16,8 @@ public static partial class ThatEvent
 	///     An event is considered nullable if its handler type is annotated as nullable
 	///     (according to the nullable reference type metadata).
 	/// </remarks>
-	public static AndOrResult<EventInfo?, IThat<EventInfo?>> IsNullable(
+	[GuaranteesNotNull]
+	public static AndOrResult<EventInfo, IThat<EventInfo?>> IsNullable(
 		this IThat<EventInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsNullableConstraint(it, grammars)),
@@ -30,7 +31,8 @@ public static partial class ThatEvent
 	///     (according to the nullable reference type metadata).
 	///     Events without nullability annotations (oblivious code) count as non-nullable.
 	/// </remarks>
-	public static AndOrResult<EventInfo?, IThat<EventInfo?>> IsNotNullable(
+	[GuaranteesNotNull]
+	public static AndOrResult<EventInfo, IThat<EventInfo?>> IsNotNullable(
 		this IThat<EventInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsNullableConstraint(it, grammars).Invert()),

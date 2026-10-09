@@ -14,6 +14,7 @@ public static partial class ThatEvent
 	/// <summary>
 	///     Verifies that the <see cref="EventInfo" /> has a handler of type <typeparamref name="THandler" /> (or a subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static EventOfTypeResult<EventInfo?, IThat<EventInfo?>> IsOfType<THandler>(
 		this IThat<EventInfo?> subject)
 		=> IsOfType(subject, typeof(THandler));
@@ -21,6 +22,7 @@ public static partial class ThatEvent
 	/// <summary>
 	///     Verifies that the <see cref="EventInfo" /> has a handler of type <paramref name="handlerType" /> (or a subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static EventOfTypeResult<EventInfo?, IThat<EventInfo?>> IsOfType(
 		this IThat<EventInfo?> subject, Type handlerType)
 	{

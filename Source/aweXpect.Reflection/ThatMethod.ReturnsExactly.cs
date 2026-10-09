@@ -11,6 +11,7 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the method returns exactly type <typeparamref name="TReturn" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static MethodReturnResult<MethodInfo?, IThat<MethodInfo?>> ReturnsExactly<TReturn>(
 		this IThat<MethodInfo?> subject)
 		=> ReturnsExactly(subject, typeof(TReturn));
@@ -18,6 +19,7 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the method returns exactly type <paramref name="returnType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static MethodReturnResult<MethodInfo?, IThat<MethodInfo?>> ReturnsExactly(
 		this IThat<MethodInfo?> subject, Type returnType)
 	{

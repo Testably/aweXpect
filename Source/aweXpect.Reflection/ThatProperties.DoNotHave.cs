@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Results;
@@ -26,6 +27,7 @@ public static partial class ThatProperties
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> DoNotHave<TAttribute>(
 		this IThat<IEnumerable<PropertyInfo?>> subject, bool inherit = true)
 		where TAttribute : Attribute
@@ -48,6 +50,7 @@ public static partial class ThatProperties
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>>
 		DoNotHave<TAttribute>(
 			this IThat<IAsyncEnumerable<PropertyInfo?>> subject, bool inherit = true)
@@ -67,20 +70,21 @@ public static partial class ThatProperties
 		string it,
 		ExpectationGrammars grammars,
 		AttributeFilterOptions<PropertyInfo?> attributeFilterOptions)
-		: CollectionConstraintResult<PropertyInfo?>(grammars),
-			IValueConstraint<IEnumerable<PropertyInfo?>>
+		: CollectionConstraintResult<PropertyInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<PropertyInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<PropertyInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<PropertyInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<PropertyInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, member => !attributeFilterOptions.Matches(member));
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context,
+				member => !attributeFilterOptions.Matches(member), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual)
-			=> SetValue(actual, member => !attributeFilterOptions.Matches(member));
+		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, member => !attributeFilterOptions.Matches(member));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -89,10 +93,7 @@ public static partial class ThatProperties
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching properties ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching properties");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -101,9 +102,6 @@ public static partial class ThatProperties
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching properties ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching properties");
 	}
 }

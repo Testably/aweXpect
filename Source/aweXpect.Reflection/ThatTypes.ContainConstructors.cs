@@ -17,6 +17,7 @@ public static partial class ThatTypes
 	///     By default each type must contain at least one matching constructor. Append a quantifier
 	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeContainingMembersResult<IEnumerable<Type?>> ContainConstructors(
 		this IThat<IEnumerable<Type?>> subject,
 		Func<Filtered.Constructors, Filtered.Constructors> filter)
@@ -31,6 +32,7 @@ public static partial class ThatTypes
 	///     By default each type must contain at least one matching constructor. Append a quantifier
 	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>> ContainConstructors(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Func<Filtered.Constructors, Filtered.Constructors> filter)

@@ -45,7 +45,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are all not extension methods,
-					             but it contained extension methods [
+					             but it contained extension methods
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -70,7 +73,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             also contain an extension method,
-					             but it only contained non-extension methods [
+					             but it only contained non-extension methods
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -111,7 +117,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             also contain an extension method,
-					             but it only contained non-extension methods [
+					             but it only contained non-extension methods
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -149,7 +158,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are all not extension methods,
-					             but it contained extension methods [
+					             but it contained extension methods
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -199,7 +211,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are all not extension methods,
-					             but it contained extension methods [
+					             but it contained extension methods
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

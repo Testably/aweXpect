@@ -30,7 +30,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             all are of exact type *DummyBase,
-					             but it contained not matching fields [
+					             but it contained not matching fields
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -89,7 +92,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             all are of exact type int or of exact type *DummyBase,
-					             but it contained not matching fields [
+					             but it contained not matching fields
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -116,7 +122,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             all are of exact type *DummyBase,
-					             but it contained not matching fields [
+					             but it contained not matching fields
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

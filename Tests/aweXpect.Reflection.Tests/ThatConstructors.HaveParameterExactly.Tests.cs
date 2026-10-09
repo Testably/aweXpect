@@ -107,6 +107,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type IDisposable,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
 					             """);
 			}
 
@@ -128,6 +133,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type IDisposable,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
 					             """);
 			}
 
@@ -149,6 +159,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type IDisposable with name "stream",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
 					             """);
 			}
 
@@ -170,6 +185,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type IDisposable with name "stream",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
 					             """);
 			}
 
@@ -191,6 +211,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type Stream with name "other",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
 					             """);
 			}
 
@@ -212,6 +237,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type Stream with name "other",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
 					             """);
 			}
 
@@ -261,6 +291,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type IDisposable,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
 					             """);
 			}
 
@@ -309,6 +344,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type IDisposable,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
 					             """);
 			}
 
@@ -328,6 +368,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type IDisposable with name "stream",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
 					             """);
 			}
 
@@ -347,6 +392,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type IDisposable with name "stream",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
 					             """);
 			}
 
@@ -366,6 +416,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type Stream with name "other",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
 					             """);
 			}
 
@@ -385,6 +440,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type Stream with name "other",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream)
+					             ]
 					             """);
 			}
 #endif
@@ -410,6 +470,12 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             not all have parameter of exact type Stream,
 					             but all did
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream),
+					               ThatConstructors.HaveParameterExactly.OtherClass(Stream stream)
+					             ]
 					             """);
 			}
 
@@ -431,6 +497,12 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             not all have parameter of exact type Stream,
 					             but all did
+
+					             Collection:
+					             [
+					               ThatConstructors.HaveParameterExactly.TestClass(Stream stream),
+					               ThatConstructors.HaveParameterExactly.OtherClass(Stream stream)
+					             ]
 					             """);
 			}
 

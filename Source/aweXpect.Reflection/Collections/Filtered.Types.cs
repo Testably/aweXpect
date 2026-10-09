@@ -238,8 +238,8 @@ public static partial class Filtered
 				types = exception.Types.Where(type => type is not null)!;
 			}
 
-			CompilerGeneratedMembers included = Customize.aweXpect.Reflection()
-				.IncludedCompilerGeneratedMembers().Get();
+			CompilerGeneratedMembers included = Customize.aweXpect.ReflectionSettings()
+				.IncludedCompilerGeneratedMembers.Get();
 			return types.Where(type => !type.IsCompilerGenerated() ||
 			                           included.HasFlag(CompilerGeneratedMembers.Types));
 		}

@@ -46,7 +46,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all not obsolete,
-					             but it contained obsolete items [
+					             but it contained obsolete items
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -72,7 +75,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             also contain an obsolete item,
-					             but it only contained non-obsolete items [
+					             but it only contained non-obsolete items
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -119,7 +125,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             also contain an obsolete item,
-					             but it only contained non-obsolete items [
+					             but it only contained non-obsolete items
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -162,7 +171,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all not obsolete,
-					             but it contained obsolete items [
+					             but it contained obsolete items
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -15,6 +15,7 @@ public static partial class ThatMember
 	/// <summary>
 	///     Verifies that the <typeparamref name="TMember" /> is public.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TMember, IThat<TMember>> IsPublic<TMember>(
 		this IThat<TMember> subject)
 		where TMember : MemberInfo?
@@ -25,6 +26,7 @@ public static partial class ThatMember
 	/// <summary>
 	///     Verifies that the <typeparamref name="TMember" /> is not public.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TMember, IThat<TMember>> IsNotPublic<TMember>(
 		this IThat<TMember> subject)
 		where TMember : MemberInfo?

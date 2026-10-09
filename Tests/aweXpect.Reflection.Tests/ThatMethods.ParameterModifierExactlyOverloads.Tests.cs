@@ -219,6 +219,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type int with ref modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.ParameterModifierExactlyOverloads.ModifierMethods.PlainInt(int value)
+					             ]
 					             """);
 			}
 

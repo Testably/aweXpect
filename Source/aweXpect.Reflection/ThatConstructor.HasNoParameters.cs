@@ -9,7 +9,8 @@ public static partial class ThatConstructor
 	/// <summary>
 	///     Verifies that the <see cref="ConstructorInfo" /> has no parameters.
 	/// </summary>
-	public static AndOrResult<ConstructorInfo?, IThat<ConstructorInfo?>> HasNoParameters(
+	[GuaranteesNotNull]
+	public static AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>> HasNoParameters(
 		this IThat<ConstructorInfo?> subject)
 		=> subject.HasParameterCount(0);
 }

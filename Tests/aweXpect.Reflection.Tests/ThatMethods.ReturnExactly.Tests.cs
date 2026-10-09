@@ -30,7 +30,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all return exactly *DummyBase,
-					             but it contained not matching methods [
+					             but it contained not matching methods
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -175,7 +178,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods matching m => m.Name == nameof(TestClass.GetDummy) in type ThatMethods.TestClass
 					             all return exactly ThatMethods.DummyBase or exactly string,
-					             but it contained not matching methods [
+					             but it contained not matching methods
+
+					             Not matching items:
+					             [
 					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
 					             ]
 					             """)
@@ -246,7 +252,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods matching m => m.Name == nameof(TestClass.GetDummy) in type ThatMethods.TestClass
 					             all return exactly ThatMethods.DummyBase or string,
-					             but it contained not matching methods [
+					             but it contained not matching methods
+
+					             Not matching items:
+					             [
 					               ThatMethods.Dummy ThatMethods.TestClass.GetDummy()
 					             ]
 					             """)
@@ -304,7 +313,10 @@ public sealed partial class ThatMethods
 						.WithMessage("""
 						             Expected that methods matching m => m.Name == nameof(TestClass.GetString) in type ThatMethods.TestClass
 						             not all return exactly string,
-						             but it only contained matching methods [
+						             but it only contained matching methods
+
+						             Collection:
+						             [
 						               string ThatMethods.TestClass.GetString()
 						             ]
 						             """)

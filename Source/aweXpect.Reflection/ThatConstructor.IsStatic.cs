@@ -12,7 +12,8 @@ public static partial class ThatConstructor
 	/// <summary>
 	///     Verifies that the <see cref="ConstructorInfo" /> is static.
 	/// </summary>
-	public static AndOrResult<ConstructorInfo?, IThat<ConstructorInfo?>> IsStatic(
+	[GuaranteesNotNull]
+	public static AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>> IsStatic(
 		this IThat<ConstructorInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsStaticConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatConstructor
 	/// <summary>
 	///     Verifies that the <see cref="ConstructorInfo" /> is not static.
 	/// </summary>
-	public static AndOrResult<ConstructorInfo?, IThat<ConstructorInfo?>> IsNotStatic(
+	[GuaranteesNotNull]
+	public static AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>> IsNotStatic(
 		this IThat<ConstructorInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsStaticConstraint(it, grammars).Invert()),

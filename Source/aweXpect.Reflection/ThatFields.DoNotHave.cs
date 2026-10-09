@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Results;
@@ -22,6 +23,7 @@ public static partial class ThatFields
 	///     Verifies that none of the items in the filtered collection of <see cref="FieldInfo" /> have
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> DoNotHave<TAttribute>(
 		this IThat<IEnumerable<FieldInfo?>> subject)
 		where TAttribute : Attribute
@@ -40,6 +42,7 @@ public static partial class ThatFields
 	///     Verifies that none of the items in the filtered collection of <see cref="FieldInfo" /> have
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>> DoNotHave<TAttribute>(
 		this IThat<IAsyncEnumerable<FieldInfo?>> subject)
 		where TAttribute : Attribute
@@ -58,20 +61,21 @@ public static partial class ThatFields
 		string it,
 		ExpectationGrammars grammars,
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions)
-		: CollectionConstraintResult<FieldInfo?>(grammars),
-			IValueConstraint<IEnumerable<FieldInfo?>>
+		: CollectionConstraintResult<FieldInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<FieldInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<FieldInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<FieldInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<FieldInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, member => !attributeFilterOptions.Matches(member));
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context,
+				member => !attributeFilterOptions.Matches(member), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual)
-			=> SetValue(actual, member => !attributeFilterOptions.Matches(member));
+		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, member => !attributeFilterOptions.Matches(member));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -80,10 +84,7 @@ public static partial class ThatFields
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching fields ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching fields");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -92,9 +93,6 @@ public static partial class ThatFields
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching fields ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching fields");
 	}
 }

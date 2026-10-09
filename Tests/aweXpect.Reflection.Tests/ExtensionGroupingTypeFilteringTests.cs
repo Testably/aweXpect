@@ -1,4 +1,4 @@
-﻿#if NET10_0_OR_GREATER
+#if NET10_0_OR_GREATER
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +30,7 @@ public sealed class ExtensionGroupingTypeFilteringTests
 	[Fact]
 	public async Task Types_WhenIncludingCompilerGenerated_ShouldContainExtensionGroupingTypes()
 	{
-		using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
+		using (Customize.aweXpect.ReflectionSettings().IncludedCompilerGeneratedMembers
 			       .Set(CompilerGeneratedMembers.Types))
 		{
 			IReadOnlyList<Type> types = await GetTypes();

@@ -14,14 +14,15 @@ public static partial class ThatConstructor
 	///     Verifies that the <see cref="ConstructorInfo" /> does not have attribute of type
 	///     <typeparamref name="TAttribute" />.
 	/// </summary>
-	public static AndOrResult<ConstructorInfo?, IThat<ConstructorInfo?>> DoesNotHave<TAttribute>(
+	[GuaranteesNotNull]
+	public static AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>> DoesNotHave<TAttribute>(
 		this IThat<ConstructorInfo?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
-		return new AndOrResult<ConstructorInfo?, IThat<ConstructorInfo?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),
 			subject);
 	}

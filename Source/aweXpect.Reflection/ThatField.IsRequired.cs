@@ -12,7 +12,8 @@ public static partial class ThatField
 	/// <summary>
 	///     Verifies that the <see cref="FieldInfo" /> is required.
 	/// </summary>
-	public static AndOrResult<FieldInfo?, IThat<FieldInfo?>> IsRequired(
+	[GuaranteesNotNull]
+	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> IsRequired(
 		this IThat<FieldInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsRequiredConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatField
 	/// <summary>
 	///     Verifies that the <see cref="FieldInfo" /> is not required.
 	/// </summary>
-	public static AndOrResult<FieldInfo?, IThat<FieldInfo?>> IsNotRequired(
+	[GuaranteesNotNull]
+	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> IsNotRequired(
 		this IThat<FieldInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsRequiredConstraint(it, grammars).Invert()),

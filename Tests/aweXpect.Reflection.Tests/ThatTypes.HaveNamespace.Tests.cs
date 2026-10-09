@@ -28,7 +28,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all have namespace equal to "aweXpect.Reflection.Tests.Test…",
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -68,7 +71,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types with namespace ending with "ToVerifyingTheNamespaceOfIt" in assembly containing type ThatTypes.HaveNamespace.Tests
 					             all have namespace equal to "aweXpect.Reflection",
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               *SomeClassToVerifyTheNamespaceOfIt*
 					             ]
 					             """).AsWildcard();
@@ -153,7 +159,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types with namespace ending with "ToVerifyingTheNamespaceOfIt" in assembly containing type ThatTypes.HaveNamespace.Tests
 					             not all have namespace equal to "aweXpect.Reflection.Tests.Test…",
-					             but it only contained matching types [
+					             but it only contained matching types
+
+					             Collection:
+					             [
 					               *SomeClassToVerifyTheNamespaceOfIt*
 					             ]
 					             """).AsWildcard();

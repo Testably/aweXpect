@@ -20,7 +20,8 @@ public static partial class ThatType
 	///     <see cref="Implements{TInterface}(IThat{Type}, bool)" />.
 	/// </remarks>
 	/// <param name="subject">The type subject.</param>
-	public static AndOrResult<Type?, IThat<Type?>> IsAssignableTo<TType>(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsAssignableTo<TType>(
 		this IThat<Type?> subject)
 		=> subject.IsAssignableTo(typeof(TType));
 
@@ -37,12 +38,13 @@ public static partial class ThatType
 	/// <param name="subject">The type subject.</param>
 	/// <param name="type">The type the subject should be assignable to.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
-	public static AndOrResult<Type?, IThat<Type?>> IsAssignableTo(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsAssignableTo(
 		this IThat<Type?> subject,
 		Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAssignableToConstraint(it, grammars, type)),
 			subject);
 	}
@@ -58,7 +60,8 @@ public static partial class ThatType
 	///     use <see cref="DoesNotImplement{TInterface}(IThat{Type}, bool)" />.
 	/// </remarks>
 	/// <param name="subject">The type subject.</param>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotAssignableTo<TType>(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotAssignableTo<TType>(
 		this IThat<Type?> subject)
 		=> subject.IsNotAssignableTo(typeof(TType));
 
@@ -75,12 +78,13 @@ public static partial class ThatType
 	/// <param name="subject">The type subject.</param>
 	/// <param name="type">The type the subject should not be assignable to.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotAssignableTo(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotAssignableTo(
 		this IThat<Type?> subject,
 		Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAssignableToConstraint(it, grammars, type).Invert()),
 			subject);
 	}
@@ -95,7 +99,8 @@ public static partial class ThatType
 	///     definitions are not supported.
 	/// </remarks>
 	/// <param name="subject">The type subject.</param>
-	public static AndOrResult<Type?, IThat<Type?>> IsAssignableFrom<TType>(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsAssignableFrom<TType>(
 		this IThat<Type?> subject)
 		=> subject.IsAssignableFrom(typeof(TType));
 
@@ -111,12 +116,13 @@ public static partial class ThatType
 	/// <param name="subject">The type subject.</param>
 	/// <param name="type">The type that should be assignable to the subject.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
-	public static AndOrResult<Type?, IThat<Type?>> IsAssignableFrom(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsAssignableFrom(
 		this IThat<Type?> subject,
 		Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAssignableFromConstraint(it, grammars, type)),
 			subject);
 	}
@@ -131,7 +137,8 @@ public static partial class ThatType
 	///     is honored, but open generic type definitions are not supported.
 	/// </remarks>
 	/// <param name="subject">The type subject.</param>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotAssignableFrom<TType>(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotAssignableFrom<TType>(
 		this IThat<Type?> subject)
 		=> subject.IsNotAssignableFrom(typeof(TType));
 
@@ -147,12 +154,13 @@ public static partial class ThatType
 	/// <param name="subject">The type subject.</param>
 	/// <param name="type">The type that should not be assignable to the subject.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotAssignableFrom(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotAssignableFrom(
 		this IThat<Type?> subject,
 		Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAssignableFromConstraint(it, grammars, type).Invert()),
 			subject);
 	}
@@ -175,7 +183,7 @@ public static partial class ThatType
 		{
 			if (Actual is not null)
 			{
-				contexts.Add(new ResultContext.Fixed("Actual", Formatter.Format(Actual)));
+				contexts.Add(new ResultContext.Fixed("Actual", Actual.ToString()));
 			}
 		}
 
@@ -222,7 +230,7 @@ public static partial class ThatType
 		{
 			if (Actual is not null)
 			{
-				contexts.Add(new ResultContext.Fixed("Actual", Formatter.Format(Actual)));
+				contexts.Add(new ResultContext.Fixed("Actual", Actual.ToString()));
 			}
 		}
 

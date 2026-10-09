@@ -57,7 +57,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have a ref parameter,
-					             but it contained methods without a ref parameter *
+					             but it contained methods without a ref parameter*
 					             """).AsWildcard();
 			}
 
@@ -224,7 +224,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have a ref parameter,
-					             but it only contained methods with a ref parameter *
+					             but it only contained methods with a ref parameter*
 					             """).AsWildcard();
 			}
 
@@ -265,6 +265,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter with name "value" with ref modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveRefParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -286,6 +291,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int with ref modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveRefParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -307,6 +317,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int with name "value" with ref modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveRefParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -328,6 +343,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type int with ref modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveRefParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -349,6 +369,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type int with name "value" with ref modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveRefParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -370,6 +395,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int with ref modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveRefParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -391,6 +421,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int with name "value" with ref modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveRefParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -412,6 +447,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type int with ref modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveRefParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -433,6 +473,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type int with name "value" with ref modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveRefParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -454,7 +499,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have a ref parameter,
-					             but it only contained methods with a ref parameter *MethodWithRefParameter*
+					             but it only contained methods with a ref parameter*MethodWithRefParameter*
 					             """).AsWildcard();
 			}
 
@@ -477,7 +522,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have a ref parameter,
-					             but it contained methods without a ref parameter *MethodWithoutModifiers*
+					             but it contained methods without a ref parameter*MethodWithoutModifiers*
 					             """).AsWildcard();
 			}
 
@@ -532,7 +577,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have a ref parameter,
-					             but it contained methods without a ref parameter *MethodWithoutModifiers*
+					             but it contained methods without a ref parameter*MethodWithoutModifiers*
 					             """).AsWildcard();
 			}
 

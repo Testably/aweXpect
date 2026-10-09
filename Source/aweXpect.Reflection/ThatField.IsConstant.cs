@@ -12,7 +12,8 @@ public static partial class ThatField
 	/// <summary>
 	///     Verifies that the <see cref="FieldInfo" /> is constant.
 	/// </summary>
-	public static AndOrResult<FieldInfo?, IThat<FieldInfo?>> IsConstant(
+	[GuaranteesNotNull]
+	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> IsConstant(
 		this IThat<FieldInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsConstantConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatField
 	/// <summary>
 	///     Verifies that the <see cref="FieldInfo" /> is not constant.
 	/// </summary>
-	public static AndOrResult<FieldInfo?, IThat<FieldInfo?>> IsNotConstant(
+	[GuaranteesNotNull]
+	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> IsNotConstant(
 		this IThat<FieldInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsConstantConstraint(it, grammars).Invert()),

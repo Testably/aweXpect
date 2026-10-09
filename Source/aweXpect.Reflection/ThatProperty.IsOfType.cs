@@ -14,6 +14,7 @@ public static partial class ThatProperty
 	/// <summary>
 	///     Verifies that the <see cref="PropertyInfo" /> is of type <typeparamref name="TProperty" /> (or a subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertyOfTypeResult<PropertyInfo?, IThat<PropertyInfo?>> IsOfType<TProperty>(
 		this IThat<PropertyInfo?> subject)
 		=> IsOfType(subject, typeof(TProperty));
@@ -21,6 +22,7 @@ public static partial class ThatProperty
 	/// <summary>
 	///     Verifies that the <see cref="PropertyInfo" /> is of type <paramref name="propertyType" /> (or a subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertyOfTypeResult<PropertyInfo?, IThat<PropertyInfo?>> IsOfType(
 		this IThat<PropertyInfo?> subject, Type propertyType)
 	{

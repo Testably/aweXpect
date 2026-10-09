@@ -13,13 +13,14 @@ public static partial class ThatField
 	/// <summary>
 	///     Verifies that the <see cref="FieldInfo" /> does not have attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
-	public static AndOrResult<FieldInfo?, IThat<FieldInfo?>> DoesNotHave<TAttribute>(this IThat<FieldInfo?> subject)
+	[GuaranteesNotNull]
+	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> DoesNotHave<TAttribute>(this IThat<FieldInfo?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<FieldInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
-		return new AndOrResult<FieldInfo?, IThat<FieldInfo?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<FieldInfo, IThat<FieldInfo?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),
 			subject);
 	}

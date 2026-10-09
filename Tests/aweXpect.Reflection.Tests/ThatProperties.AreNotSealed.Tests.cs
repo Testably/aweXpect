@@ -42,7 +42,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all not sealed,
-					             but it contained sealed properties [
+					             but it contained sealed properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -66,7 +69,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             also contain a sealed property,
-					             but it only contained non-sealed properties [
+					             but it only contained non-sealed properties
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -121,7 +127,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all not sealed,
-					             but it contained sealed properties [
+					             but it contained sealed properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

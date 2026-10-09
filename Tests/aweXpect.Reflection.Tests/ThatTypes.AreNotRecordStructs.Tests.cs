@@ -45,7 +45,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all not record structs,
-					             but it contained record structs [
+					             but it contained record structs
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -82,7 +85,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type.IsRecordStruct() in assembly containing type ThatTypes.AreNotRecordStructs
 					             are all not record structs,
-					             but it contained record structs [
+					             but it contained record structs
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -105,7 +111,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that interfaces in assembly containing type ThatTypes.AreNotRecordStructs
 					             also contain a record struct,
-					             but it only contained not record structs [
+					             but it only contained not record structs
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

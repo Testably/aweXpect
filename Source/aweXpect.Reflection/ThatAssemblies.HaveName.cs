@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -21,6 +22,7 @@ public static partial class ThatAssemblies
 	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> have
 	///     the <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> HaveName(
 		this IThat<IEnumerable<Assembly?>> subject, string expected)
 	{
@@ -37,6 +39,7 @@ public static partial class ThatAssemblies
 	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> have
 	///     the <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>> HaveName(
 		this IThat<IAsyncEnumerable<Assembly?>> subject, string expected)
 	{
@@ -54,6 +57,7 @@ public static partial class ThatAssemblies
 	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> have the name
 	///     returned by the <paramref name="expectedNameSelector" /> for the respective item.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> HaveName(
 		this IThat<IEnumerable<Assembly?>> subject,
 		Func<Assembly?, string> expectedNameSelector,
@@ -74,6 +78,7 @@ public static partial class ThatAssemblies
 	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> have the name
 	///     returned by the <paramref name="expectedNameSelector" /> for the respective item.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>> HaveName(
 		this IThat<IAsyncEnumerable<Assembly?>> subject,
 		Func<Assembly?, string> expectedNameSelector,
@@ -96,38 +101,35 @@ public static partial class ThatAssemblies
 		ExpectationGrammars grammars,
 		string expected,
 		StringEqualityOptions options)
-		: CollectionConstraintResult<Assembly?>(grammars),
-			IAsyncConstraint<IEnumerable<Assembly?>>
+		: CollectionConstraintResult<Assembly?>(it, grammars),
+			IAsyncContextConstraint<IEnumerable<Assembly?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Assembly?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Assembly?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, assembly => options.AreConsideredEqual(assembly?.GetName().Name, expected));
+			=> await SetAsyncValue(actual, context,
+				assembly => options.AreConsideredEqual(assembly?.GetName().Name, expected), cancellationToken);
 #endif
 
-		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, CancellationToken cancellationToken)
-			=> await SetValue(actual, assembly => options.AreConsideredEqual(assembly?.GetName().Name, expected));
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetValue(actual, context,
+				assembly => options.AreConsideredEqual(assembly?.GetName().Name, expected), cancellationToken);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have name ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching types ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching assemblies");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all have name ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching types ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching assemblies");
 	}
 
 	private sealed class HaveNameFromSelectorConstraint(
@@ -136,32 +138,40 @@ public static partial class ThatAssemblies
 		Func<Assembly?, string> expectedNameSelector,
 		string expectedNameSelectorExpression,
 		StringEqualityOptions options)
-		: CollectionConstraintResult<Assembly?>(grammars),
-			IAsyncConstraint<IEnumerable<Assembly?>>
+		: CollectionConstraintResult<Assembly?>(it, grammars),
+			IAsyncContextConstraint<IEnumerable<Assembly?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Assembly?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Assembly?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual,
-				assembly => options.AreConsideredEqual(assembly?.GetName().Name, expectedNameSelector(assembly)));
+			=> await SetAsyncValue(actual, context,
+				assembly => options.AreConsideredEqual(assembly?.GetName().Name, expectedNameSelector(assembly)), cancellationToken);
 #endif
 
-		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, CancellationToken cancellationToken)
-			=> await SetValue(actual,
-				assembly => options.AreConsideredEqual(assembly?.GetName().Name, expectedNameSelector(assembly)));
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetValue(actual, context,
+				assembly => options.AreConsideredEqual(assembly?.GetName().Name, expectedNameSelector(assembly)), cancellationToken);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have name matching ")
 				.Append(expectedNameSelectorExpression.TrimCommonWhiteSpace());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" contained not matching assemblies");
+
+		protected override Func<string?> FormatItems(Assembly?[] items)
+			=> IsNegated ? base.FormatItems(items) : () => FormatMismatches(items);
+
+		private string FormatMismatches(Assembly?[] items)
 		{
-			stringBuilder.Append(it).Append(" contained not matching types [");
+			StringBuilder stringBuilder = new();
+			stringBuilder.Append('[');
 			bool isFirst = true;
-			foreach (Assembly? assembly in NotMatching)
+			foreach (Assembly? assembly in items)
 			{
 				if (!isFirst)
 				{
@@ -169,13 +179,13 @@ public static partial class ThatAssemblies
 				}
 
 				isFirst = false;
-				stringBuilder.AppendLine().Append(indentation).Append("  ")
+				stringBuilder.AppendLine().Append("  ")
 					.Append(Formatter.Format(assembly))
 					.Append(" with name ").Append(Formatter.Format(assembly?.GetName().Name))
 					.Append(" instead of ").Append(Formatter.Format(expectedNameSelector(assembly)));
 			}
 
-			stringBuilder.AppendLine().Append(indentation).Append(']');
+			return stringBuilder.AppendLine().Append(']').ToString();
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -183,9 +193,6 @@ public static partial class ThatAssemblies
 				.Append(expectedNameSelectorExpression.TrimCommonWhiteSpace());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching types ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching assemblies");
 	}
 }

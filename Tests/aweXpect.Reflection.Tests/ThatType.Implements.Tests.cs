@@ -25,7 +25,7 @@ public sealed partial class ThatType
 					             but it implemented ThatType.ITestInterface only indirectly
 
 					             Actual:
-					             ThatType.ClassWithDerivedInterface
+					             aweXpect.Reflection.Tests.ThatType+ClassWithDerivedInterface
 					             """);
 			}
 
@@ -40,6 +40,25 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenImplementsSucceedsInACombination_ShouldNotAddTheActualContext()
+			{
+				Type subject = typeof(ClassWithInterface);
+
+				async Task Act()
+				{
+					await That(subject).Implements<ITestInterface>().And.IsSealed();
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             implements ThatType.ITestInterface and is sealed,
+					             but it was non-sealed ThatType.ClassWithInterface
+					             """)
+					.Because("only the failing operand explains the failure");
 			}
 
 			[Fact]
@@ -74,7 +93,7 @@ public sealed partial class ThatType
 					             but it did not implement ThatType.ITestInterface
 
 					             Actual:
-					             ThatType.UnrelatedClass
+					             aweXpect.Reflection.Tests.ThatType+UnrelatedClass
 					             """);
 			}
 
@@ -95,7 +114,7 @@ public sealed partial class ThatType
 					             but it did not implement ThatType.ITestInterface
 
 					             Actual:
-					             ThatType.UnrelatedClass
+					             aweXpect.Reflection.Tests.ThatType+UnrelatedClass
 					             """);
 			}
 
@@ -142,7 +161,7 @@ public sealed partial class ThatType
 					             but it implemented ThatType.ITestInterface only indirectly
 
 					             Actual:
-					             ThatType.DerivedFromClassWithInterface
+					             aweXpect.Reflection.Tests.ThatType+DerivedFromClassWithInterface
 					             """);
 			}
 
@@ -209,7 +228,7 @@ public sealed partial class ThatType
 					             but it did not implement ThatType.ITestInterface
 
 					             Actual:
-					             ThatType.UnrelatedClass
+					             aweXpect.Reflection.Tests.ThatType+UnrelatedClass
 					             """);
 			}
 
@@ -260,7 +279,7 @@ public sealed partial class ThatType
 					             but it did implement ThatType.ITestInterface
 
 					             Actual:
-					             ThatType.ClassWithInterface
+					             aweXpect.Reflection.Tests.ThatType+ClassWithInterface
 					             """);
 			}
 		}

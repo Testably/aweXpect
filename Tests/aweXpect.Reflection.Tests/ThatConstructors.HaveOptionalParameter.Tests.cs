@@ -40,6 +40,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -61,6 +66,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int with name "value" with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -82,6 +92,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type int with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -103,6 +118,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -124,6 +144,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter with name "value" with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -161,6 +186,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -198,6 +228,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int with name "value" with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -235,6 +270,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type int with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -272,6 +312,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -308,7 +353,10 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have an optional parameter,
-					             but it contained constructors without an optional parameter [
+					             but it contained constructors without an optional parameter
+
+					             Not matching items:
+					             [
 					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -485,7 +533,10 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have an optional parameter,
-					             but it contained constructors without an optional parameter [
+					             but it contained constructors without an optional parameter
+
+					             Not matching items:
+					             [
 					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
 					             ]
 					             """);
@@ -507,6 +558,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -526,6 +582,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int with name "value" with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -545,6 +606,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter with name "value" with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -564,6 +630,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of type int with name "value" with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -583,6 +654,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type int with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -602,6 +678,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type int with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -621,6 +702,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -640,6 +726,11 @@ public sealed partial class ThatConstructors
 					             Expected that constructors
 					             all have parameter of exact type int with name "value" with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               ThatConstructors.HaveOptionalParameter.ClassWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 #endif
@@ -664,7 +755,10 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have an optional parameter,
-					             but it only contained constructors with an optional parameter [
+					             but it only contained constructors with an optional parameter
+
+					             Collection:
+					             [
 					               ThatConstructors.HaveOptionalParameter.ClassWithOptionalParameter(int value = 0),
 					               ThatConstructors.HaveOptionalParameter.AnotherClassWithOptionalParameter(string text = "")
 					             ]

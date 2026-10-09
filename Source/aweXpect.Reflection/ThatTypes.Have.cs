@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Reflection.Results;
@@ -26,6 +27,7 @@ public static partial class ThatTypes
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static HaveAttributeResult<Type?, IEnumerable<Type?>> Have<TAttribute>(
 		this IThat<IEnumerable<Type?>> subject, bool inherit = true)
 		where TAttribute : Attribute
@@ -48,6 +50,7 @@ public static partial class ThatTypes
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static HaveAttributeResult<Type?, IEnumerable<Type?>> Have<TAttribute>(
 		this IThat<IEnumerable<Type?>> subject,
 		Func<TAttribute, bool> predicate,
@@ -75,6 +78,7 @@ public static partial class ThatTypes
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static HaveAttributeResult<Type?, IAsyncEnumerable<Type?>> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<Type?>> subject, bool inherit = true)
 		where TAttribute : Attribute
@@ -99,6 +103,7 @@ public static partial class ThatTypes
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static HaveAttributeResult<Type?, IAsyncEnumerable<Type?>> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Func<TAttribute, bool> predicate,
@@ -122,19 +127,20 @@ public static partial class ThatTypes
 		string it,
 		ExpectationGrammars grammars,
 		AttributeFilterOptions<Type?> attributeFilterOptions)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, attributeFilterOptions.Matches);
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, attributeFilterOptions.Matches, cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, attributeFilterOptions.Matches);
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, attributeFilterOptions.Matches);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -143,10 +149,7 @@ public static partial class ThatTypes
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching types ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching types");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -155,9 +158,6 @@ public static partial class ThatTypes
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching types ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching types");
 	}
 }

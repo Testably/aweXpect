@@ -14,6 +14,7 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the method returns type <typeparamref name="TReturn" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static MethodReturnResult<MethodInfo?, IThat<MethodInfo?>> Returns<TReturn>(
 		this IThat<MethodInfo?> subject)
 		=> Returns(subject, typeof(TReturn));
@@ -21,6 +22,7 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the method returns type <paramref name="returnType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static MethodReturnResult<MethodInfo?, IThat<MethodInfo?>> Returns(
 		this IThat<MethodInfo?> subject, Type returnType)
 	{

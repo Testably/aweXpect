@@ -46,7 +46,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               <null>
 					             ]
 					             """);
@@ -69,7 +72,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.ContainMethods.ClassWithoutMarkedMethod
 					             ]
 					             """);
@@ -150,7 +156,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainMethods.ClassWithMarkedMethod and ThatTypes.ContainMethods.ClassWithoutMarkedMethod
 					             all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.ContainMethods.ClassWithoutMarkedMethod
 					             ]
 					             """);
@@ -171,7 +180,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainMethods.DerivedClassWithInheritedMarkedMethod and ThatTypes.ContainMethods.BaseClassWithMarkedMethod
 					             all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.ContainMethods.DerivedClassWithInheritedMarkedMethod
 					             ]
 					             """);
@@ -210,7 +222,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types ThatTypes.ContainMethods.ClassWithMarkedMethod and ThatTypes.ContainMethods.ClassWithTwoMarkedMethods
 					             do not all contain methods with ThatTypes.ContainMethods.MarkerAttribute at least once,
-					             but it only contained matching types [
+					             but it only contained matching types
+
+					             Collection:
+					             [
 					               ThatTypes.ContainMethods.ClassWithMarkedMethod,
 					               ThatTypes.ContainMethods.ClassWithTwoMarkedMethods
 					             ]

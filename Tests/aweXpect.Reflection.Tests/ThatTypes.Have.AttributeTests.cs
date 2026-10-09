@@ -52,7 +52,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type == typeof(FooChildClass2) in assembly containing type ThatTypes.Have.AttributeTests
 					             all have direct ThatTypes.Have.AttributeTests.FooAttribute,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.Have.AttributeTests.FooChildClass2
 					             ]
 					             """);
@@ -101,7 +104,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type == typeof(FooChildClass2) in assembly containing type ThatTypes.Have.AttributeTests
 					             all have direct ThatTypes.Have.AttributeTests.FooAttribute matching foo => foo.Value == 2,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.Have.AttributeTests.FooChildClass2
 					             ]
 					             """);
@@ -122,7 +128,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type == typeof(FooClass2) in assembly containing type ThatTypes.Have.AttributeTests
 					             all have ThatTypes.Have.AttributeTests.FooAttribute matching foo => foo.Value == 3,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.Have.AttributeTests.FooClass2
 					             ]
 					             """);
@@ -143,7 +152,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type == typeof(FooChildClass2) in assembly containing type ThatTypes.Have.AttributeTests
 					             all have ThatTypes.Have.AttributeTests.FooAttribute matching foo => foo.Value == 3,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.Have.AttributeTests.FooChildClass2
 					             ]
 					             """);
@@ -236,7 +248,10 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that types
 						             all have ThatTypes.Have.FooAttribute or ThatTypes.Have.BarAttribute,
-						             but it contained not matching types [
+						             but it contained not matching types
+
+						             Not matching items:
+						             [
 						               ThatTypes.Have.BazClass
 						             ]
 						             """);
@@ -282,7 +297,10 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that types
 						             all have direct ThatTypes.Have.FooAttribute or direct ThatTypes.Have.BarAttribute,
-						             but it contained not matching types [
+						             but it contained not matching types
+
+						             Not matching items:
+						             [
 						               ThatTypes.Have.FooChildClass
 						             ]
 						             """);
@@ -303,7 +321,10 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that types
 						             all have ThatTypes.Have.FooAttribute matching foo => foo.Value == 5 or ThatTypes.Have.BarAttribute matching bar => bar.Name == "test",
-						             but it contained not matching types [
+						             but it contained not matching types
+
+						             Not matching items:
+						             [
 						               ThatTypes.Have.FooClass2
 						             ]
 						             """);
@@ -328,7 +349,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subjects
 					             not all have ThatTypes.Have.FooAttribute or ThatTypes.Have.BarAttribute matching x => x.Name == "foo",
-					             but it only contained matching types [
+					             but it only contained matching types
+
+					             Collection:
+					             [
 					               ThatTypes.Have.FooClass2
 					             ]
 					             """);

@@ -46,7 +46,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subject
 					             are all not strong named,
-					             but it contained strong named assemblies [
+					             but it contained strong named assemblies
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -72,7 +75,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subject
 					             also contain a strong named assembly,
-					             but it only contained not strong named assemblies [
+					             but it only contained not strong named assemblies
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -131,7 +137,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that subject
 					             are all not strong named,
-					             but it contained strong named assemblies [
+					             but it contained strong named assemblies
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

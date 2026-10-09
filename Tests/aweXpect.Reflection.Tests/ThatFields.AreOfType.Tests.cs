@@ -31,7 +31,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             all are of type int,
-					             but it contained not matching fields [
+					             but it contained not matching fields
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -91,7 +94,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             not all are of type int,
-					             but it only contained matching fields [
+					             but it only contained matching fields
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -135,7 +141,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             all are of type int,
-					             but it contained not matching fields [
+					             but it contained not matching fields
+
+					             Not matching items:
+					             [
 					               string ThatFields.AreOfType.TestClass.StringField
 					             ]
 					             """);
@@ -253,7 +262,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             all are of type bool or of type long,
-					             but it contained not matching fields [
+					             but it contained not matching fields
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

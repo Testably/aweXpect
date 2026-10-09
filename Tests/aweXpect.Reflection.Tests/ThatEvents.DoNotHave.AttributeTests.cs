@@ -29,7 +29,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             all have no ThatEvents.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching events [
+					             but it contained not matching events
+
+					             Not matching items:
+					             [
 					               event Action ThatEvents.DoNotHave.AttributeTests.TestClass.TestEvent
 					             ]
 					             """);
@@ -53,7 +56,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             not all have no ThatEvents.DoNotHave.AttributeTests.FooAttribute,
-					             but it only contained matching events [
+					             but it only contained matching events
+
+					             Collection:
+					             [
 					               event Action ThatEvents.DoNotHave.AttributeTests.TestClass.NoAttributeEvent
 					             ]
 					             """);
@@ -76,7 +82,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             all have no ThatEvents.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching events [
+					             but it contained not matching events
+
+					             Not matching items:
+					             [
 					               event Action ThatEvents.DoNotHave.AttributeTests.TestClass.TestEvent
 					             ]
 					             """);

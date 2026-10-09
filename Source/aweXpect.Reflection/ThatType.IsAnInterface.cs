@@ -12,7 +12,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is an interface.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsAnInterface(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsAnInterface(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAnInterfaceConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is not an interface.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotAnInterface(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotAnInterface(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAnInterfaceConstraint(it, grammars).Invert()),

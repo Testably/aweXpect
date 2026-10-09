@@ -12,7 +12,8 @@ public static partial class ThatProperty
 	/// <summary>
 	///     Verifies that the <see cref="PropertyInfo" /> is abstract.
 	/// </summary>
-	public static AndOrResult<PropertyInfo?, IThat<PropertyInfo?>> IsAbstract(
+	[GuaranteesNotNull]
+	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsAbstract(
 		this IThat<PropertyInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAbstractConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatProperty
 	/// <summary>
 	///     Verifies that the <see cref="PropertyInfo" /> is not abstract.
 	/// </summary>
-	public static AndOrResult<PropertyInfo?, IThat<PropertyInfo?>> IsNotAbstract(
+	[GuaranteesNotNull]
+	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> IsNotAbstract(
 		this IThat<PropertyInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAbstractConstraint(it, grammars).Invert()),

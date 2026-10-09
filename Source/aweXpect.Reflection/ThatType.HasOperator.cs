@@ -19,7 +19,8 @@ public static partial class ThatType
 	///     <see langword="true" /> to also consider operators inherited from base types; otherwise,
 	///     <see langword="false" /> (the default).
 	/// </param>
-	public static AndOrResult<Type?, IThat<Type?>> HasOperator(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> HasOperator(
 		this IThat<Type?> subject,
 		Operator @operator,
 		bool inherit = false)
@@ -38,7 +39,8 @@ public static partial class ThatType
 	///     <see langword="true" /> to also consider operators inherited from base types; otherwise,
 	///     <see langword="false" /> (the default).
 	/// </param>
-	public static AndOrResult<Type?, IThat<Type?>> HasOperator<TOperand>(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> HasOperator<TOperand>(
 		this IThat<Type?> subject,
 		Operator @operator,
 		bool inherit = false)
@@ -55,7 +57,8 @@ public static partial class ThatType
 	///     <see langword="true" /> to also consider operators inherited from base types; otherwise,
 	///     <see langword="false" /> (the default).
 	/// </param>
-	public static AndOrResult<Type?, IThat<Type?>> HasOperator(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> HasOperator(
 		this IThat<Type?> subject,
 		Operator @operator,
 		Type operand,
@@ -74,7 +77,8 @@ public static partial class ThatType
 	///     <see langword="true" /> to also consider operators inherited from base types; otherwise,
 	///     <see langword="false" /> (the default).
 	/// </param>
-	public static AndOrResult<Type?, IThat<Type?>> DoesNotHaveOperator(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> DoesNotHaveOperator(
 		this IThat<Type?> subject,
 		Operator @operator,
 		bool inherit = false)
@@ -93,7 +97,8 @@ public static partial class ThatType
 	///     <see langword="true" /> to also consider operators inherited from base types; otherwise,
 	///     <see langword="false" /> (the default).
 	/// </param>
-	public static AndOrResult<Type?, IThat<Type?>> DoesNotHaveOperator<TOperand>(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> DoesNotHaveOperator<TOperand>(
 		this IThat<Type?> subject,
 		Operator @operator,
 		bool inherit = false)
@@ -110,7 +115,8 @@ public static partial class ThatType
 	///     <see langword="true" /> to also consider operators inherited from base types; otherwise,
 	///     <see langword="false" /> (the default).
 	/// </param>
-	public static AndOrResult<Type?, IThat<Type?>> DoesNotHaveOperator(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> DoesNotHaveOperator(
 		this IThat<Type?> subject,
 		Operator @operator,
 		Type operand,

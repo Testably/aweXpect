@@ -46,7 +46,10 @@ public sealed partial class Filtered
 						.WithMessage("""
 						             Expected that nested record structs in all loaded assemblies
 						             all are internal,
-						             but it contained not matching items [
+						             but it contained not matching items
+
+						             Not matching items:
+						             [
 						               *
 						             ]
 						             """).AsWildcard();

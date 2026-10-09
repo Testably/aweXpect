@@ -54,7 +54,10 @@ public sealed partial class Filtered
 						.WithMessage("""
 						             Expected that types in all loaded assemblies
 						             are all abstract,
-						             but it contained non-abstract types [
+						             but it contained non-abstract types
+
+						             Not matching items:
+						             [
 						               *
 						             ]
 						             """).AsWildcard();

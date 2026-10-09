@@ -39,7 +39,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that *
 					             all are not private protected,
-					             but it contained private protected items [
+					             but it contained private protected items
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -66,6 +69,9 @@ public sealed partial class ThatFields
 					             Expected that *
 					             at least one is private protected,
 					             but none were
+
+					             Collection:
+					             *
 					             """).AsWildcard();
 			}
 

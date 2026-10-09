@@ -18,14 +18,15 @@ public static partial class ThatProperty
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
-	public static AndOrResult<PropertyInfo?, IThat<PropertyInfo?>> DoesNotHave<TAttribute>(
+	[GuaranteesNotNull]
+	public static AndOrResult<PropertyInfo, IThat<PropertyInfo?>> DoesNotHave<TAttribute>(
 		this IThat<PropertyInfo?> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<PropertyInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new AndOrResult<PropertyInfo?, IThat<PropertyInfo?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<PropertyInfo, IThat<PropertyInfo?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasAttributeConstraint(it, grammars, attributeFilterOptions).Invert()),
 			subject);
 	}

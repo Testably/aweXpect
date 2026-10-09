@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Results;
@@ -21,6 +22,7 @@ public static partial class ThatProperties
 	/// <summary>
 	///     Verifies that all properties in the filtered collection are of type <typeparamref name="TProperty" /> (or a subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertiesOfTypeResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>>
 		AreOfType<TProperty>(
 			this IThat<IEnumerable<PropertyInfo?>> subject)
@@ -29,6 +31,7 @@ public static partial class ThatProperties
 	/// <summary>
 	///     Verifies that all properties in the filtered collection are of type <paramref name="propertyType" /> (or a subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertiesOfTypeResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> AreOfType(
 		this IThat<IEnumerable<PropertyInfo?>> subject, Type propertyType)
 	{
@@ -45,6 +48,7 @@ public static partial class ThatProperties
 	/// <summary>
 	///     Verifies that all properties in the filtered collection are of type <typeparamref name="TProperty" /> (or a subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>>
 		AreOfType<TProperty>(
 			this IThat<IAsyncEnumerable<PropertyInfo?>> subject)
@@ -53,6 +57,7 @@ public static partial class ThatProperties
 	/// <summary>
 	///     Verifies that all properties in the filtered collection are of type <paramref name="propertyType" /> (or a subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>>
 		AreOfType(
 			this IThat<IAsyncEnumerable<PropertyInfo?>> subject, Type propertyType)
@@ -101,20 +106,21 @@ public static partial class ThatProperties
 		string it,
 		ExpectationGrammars grammars,
 		TypeFilterOptions typeFilterOptions)
-		: CollectionConstraintResult<PropertyInfo?>(grammars),
-			IValueConstraint<IEnumerable<PropertyInfo?>>
+		: CollectionConstraintResult<PropertyInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<PropertyInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<PropertyInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<PropertyInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<PropertyInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, property => typeFilterOptions.Matches(property?.PropertyType));
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context,
+				property => typeFilterOptions.Matches(property?.PropertyType), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual)
-			=> SetValue(actual, property => typeFilterOptions.Matches(property?.PropertyType));
+		public ConstraintResult IsMetBy(IEnumerable<PropertyInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, property => typeFilterOptions.Matches(property?.PropertyType));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -123,10 +129,7 @@ public static partial class ThatProperties
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching properties ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching properties");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -135,9 +138,6 @@ public static partial class ThatProperties
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching properties ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching properties");
 	}
 }

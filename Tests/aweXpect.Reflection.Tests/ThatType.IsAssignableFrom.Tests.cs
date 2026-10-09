@@ -68,7 +68,7 @@ public sealed partial class ThatType
 					             but it was not assignable from ThatType.UnrelatedClass
 
 					             Actual:
-					             ThatType.BaseClass
+					             aweXpect.Reflection.Tests.ThatType+BaseClass
 					             """);
 			}
 
@@ -123,7 +123,7 @@ public sealed partial class ThatType
 					             but it was assignable from ThatType.DerivedClass
 
 					             Actual:
-					             ThatType.BaseClass
+					             aweXpect.Reflection.Tests.ThatType+BaseClass
 					             """);
 			}
 
@@ -179,7 +179,7 @@ public sealed partial class ThatType
 					             but it was assignable from ThatType.DerivedClass
 
 					             Actual:
-					             ThatType.BaseClass
+					             aweXpect.Reflection.Tests.ThatType+BaseClass
 					             """);
 			}
 

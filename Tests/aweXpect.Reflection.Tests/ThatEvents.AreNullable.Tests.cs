@@ -42,7 +42,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             are all nullable,
-					             but it contained non-nullable events [
+					             but it contained non-nullable events
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -66,7 +69,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             are not all nullable,
-					             but it only contained nullable events [
+					             but it only contained nullable events
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -121,7 +127,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             are all nullable,
-					             but it contained non-nullable events [
+					             but it contained non-nullable events
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

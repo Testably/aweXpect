@@ -8,29 +8,6 @@ namespace aweXpect.Reflection.Internal.Tests.Helpers;
 public sealed class LinqAsyncHelpersTests
 {
 	[Fact]
-	public async Task Split_ShouldSeparateMatchingFromNotMatching()
-	{
-		int[] source = [1, 2, 3, 4,];
-
-		(int[] matching, int[] notMatching) = source.Split(i => i % 2 == 0);
-
-		await That(matching).IsEqualTo([2, 4,]).InAnyOrder();
-		await That(notMatching).IsEqualTo([1, 3,]).InAnyOrder();
-	}
-
-	[Fact]
-	public async Task SplitAsync_ShouldSeparateMatchingFromNotMatching()
-	{
-		int[] source = [1, 2, 3, 4,];
-
-		(int[] matching, int[] notMatching) =
-			await source.SplitAsync(i => new ValueTask<bool>(i % 2 == 0));
-
-		await That(matching).IsEqualTo([2, 4,]).InAnyOrder();
-		await That(notMatching).IsEqualTo([1, 3,]).InAnyOrder();
-	}
-
-	[Fact]
 	public async Task SplitWhereAnyAsync_ShouldSeparateBasedOnGeneratedItems()
 	{
 		int[] source = [1, 2, 3,];

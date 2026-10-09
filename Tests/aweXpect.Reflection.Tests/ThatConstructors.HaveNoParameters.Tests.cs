@@ -43,7 +43,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have no parameters,
-					             but it contained constructors with a different number of parameters *
+					             but it contained constructors with a different number of parameters*
 					             """).AsWildcard();
 			}
 		}
@@ -67,7 +67,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have no parameters,
-					             but it only contained constructors with no parameters *
+					             but it only contained constructors with no parameters*
 					             """).AsWildcard();
 			}
 

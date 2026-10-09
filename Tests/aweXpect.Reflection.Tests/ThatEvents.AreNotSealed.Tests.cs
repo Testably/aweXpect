@@ -28,7 +28,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             are all not sealed,
-					             but it contained sealed events [
+					             but it contained sealed events
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -80,7 +83,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             also contain a sealed event,
-					             but it only contained non-sealed events [
+					             but it only contained non-sealed events
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -106,7 +112,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             are all not sealed,
-					             but it contained sealed events [
+					             but it contained sealed events
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -47,7 +47,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all have the operator Addition,
-					             but it contained types without the operator Addition [
+					             but it contained types without the operator Addition
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -105,7 +108,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have the operator Addition with operand {Formatter.Format(typeof(string))},
-					              but it contained types without the operator Addition with operand {Formatter.Format(typeof(string))} [
+					              but it contained types without the operator Addition with operand {Formatter.Format(typeof(string))}
+
+					              Not matching items:
+					              [
 					                *
 					              ]
 					              """).AsWildcard();
@@ -147,7 +153,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all do not have the operator Addition,
-					             but it contained types with the operator Addition [
+					             but it contained types with the operator Addition
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -189,7 +198,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all do not have the operator Addition with operand {Formatter.Format(typeof(int))},
-					              but it contained types with the operator Addition with operand {Formatter.Format(typeof(int))} [
+					              but it contained types with the operator Addition with operand {Formatter.Format(typeof(int))}
+
+					              Not matching items:
+					              [
 					                *
 					              ]
 					              """).AsWildcard();
@@ -212,7 +224,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all do not have the operator Addition with operand {Formatter.Format(typeof(Money))},
-					              but it contained types with the operator Addition with operand {Formatter.Format(typeof(Money))} [
+					              but it contained types with the operator Addition with operand {Formatter.Format(typeof(Money))}
+
+					              Not matching items:
+					              [
 					                *
 					              ]
 					              """).AsWildcard();
@@ -238,7 +253,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             not all have the operator Addition,
-					             but it only contained types with the operator Addition [
+					             but it only contained types with the operator Addition
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -261,7 +279,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             also contain a type with the operator Addition,
-					             but it only contained types without the operator Addition [
+					             but it only contained types without the operator Addition
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -352,7 +373,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all have the operator Addition,
-					             but it contained types without the operator Addition [
+					             but it contained types without the operator Addition
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -375,7 +399,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all do not have the operator Addition,
-					             but it contained types with the operator Addition [
+					             but it contained types with the operator Addition
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

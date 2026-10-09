@@ -18,6 +18,7 @@ public static partial class ThatType
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static HasAttributeResult<Type?> Has<TAttribute>(this IThat<Type?> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
@@ -38,6 +39,7 @@ public static partial class ThatType
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" />) specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static HasAttributeResult<Type?> Has<TAttribute>(
 		this IThat<Type?> subject,
 		Func<TAttribute, bool> predicate,

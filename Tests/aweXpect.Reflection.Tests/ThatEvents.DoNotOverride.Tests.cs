@@ -28,7 +28,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             all do not override a base event,
-					             but it contained events which override a base event [
+					             but it contained events which override a base event
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -80,7 +83,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             also contain an event which overrides a base event,
-					             but it only contained events which do not override a base event [
+					             but it only contained events which do not override a base event
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -106,7 +112,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             all do not override a base event,
-					             but it contained events which override a base event [
+					             but it contained events which override a base event
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

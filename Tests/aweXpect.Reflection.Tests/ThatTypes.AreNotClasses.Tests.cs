@@ -29,7 +29,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all not classes,
-					             but it contained classes [
+					             but it contained classes
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -82,7 +85,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type.IsClass && !type.IsRecordClass() in assembly containing type ThatTypes.AreNotClasses
 					             are all not classes,
-					             but it contained classes [
+					             but it contained classes
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -105,7 +111,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that interfaces in assembly containing type ThatTypes.AreNotClasses
 					             also contain a class,
-					             but it only contained not classes [
+					             but it only contained not classes
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

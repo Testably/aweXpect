@@ -32,7 +32,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             all are of exact type MulticastDelegate,
-					             but it contained not matching events [
+					             but it contained not matching events
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -92,7 +95,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             all are of exact type Action or of exact type MulticastDelegate,
-					             but it contained not matching events [
+					             but it contained not matching events
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -119,7 +125,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             all are of exact type MulticastDelegate,
-					             but it contained not matching events [
+					             but it contained not matching events
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -28,7 +28,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all not nested,
-					             but it contained nested types [
+					             but it contained nested types
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -82,7 +85,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type.IsNested in assembly containing type ThatTypes.AreNotNested
 					             are all not nested,
-					             but it contained nested types [
+					             but it contained nested types
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -106,7 +112,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => !type.IsNested in assembly containing type ThatTypes.AreNotNested
 					             also contain a nested type,
-					             but it only contained non-nested types [
+					             but it only contained non-nested types
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

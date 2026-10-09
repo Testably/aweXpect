@@ -16,6 +16,7 @@ public static partial class ThatType
 	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
 	///     The <paramref name="memberScope" /> controls whether inherited fields are considered.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeContainingMembersResult<Type?> ContainsFields(
 		this IThat<Type?> subject,
 		Func<Filtered.Fields, Filtered.Fields> filter,

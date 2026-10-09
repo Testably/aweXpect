@@ -12,7 +12,8 @@ public static partial class ThatField
 	/// <summary>
 	///     Verifies that the <see cref="FieldInfo" /> is static.
 	/// </summary>
-	public static AndOrResult<FieldInfo?, IThat<FieldInfo?>> IsStatic(
+	[GuaranteesNotNull]
+	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> IsStatic(
 		this IThat<FieldInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsStaticConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatField
 	/// <summary>
 	///     Verifies that the <see cref="FieldInfo" /> is not static.
 	/// </summary>
-	public static AndOrResult<FieldInfo?, IThat<FieldInfo?>> IsNotStatic(
+	[GuaranteesNotNull]
+	public static AndOrResult<FieldInfo, IThat<FieldInfo?>> IsNotStatic(
 		this IThat<FieldInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsStaticConstraint(it, grammars).Invert()),

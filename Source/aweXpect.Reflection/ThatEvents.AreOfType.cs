@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Results;
@@ -22,6 +23,7 @@ public static partial class ThatEvents
 	///     Verifies that all events in the filtered collection have a handler of type <typeparamref name="THandler" /> (or a
 	///     subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static EventsOfTypeResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>>>
 		AreOfType<THandler>(
 			this IThat<IEnumerable<EventInfo?>> subject)
@@ -31,6 +33,7 @@ public static partial class ThatEvents
 	///     Verifies that all events in the filtered collection have a handler of type <paramref name="handlerType" /> (or a
 	///     subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static EventsOfTypeResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>>> AreOfType(
 		this IThat<IEnumerable<EventInfo?>> subject, Type handlerType)
 	{
@@ -48,6 +51,7 @@ public static partial class ThatEvents
 	///     Verifies that all events in the filtered collection have a handler of type <typeparamref name="THandler" /> (or a
 	///     subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static EventsOfTypeResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>>>
 		AreOfType<THandler>(
 			this IThat<IAsyncEnumerable<EventInfo?>> subject)
@@ -57,6 +61,7 @@ public static partial class ThatEvents
 	///     Verifies that all events in the filtered collection have a handler of type <paramref name="handlerType" /> (or a
 	///     subtype).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static EventsOfTypeResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>>>
 		AreOfType(
 			this IThat<IAsyncEnumerable<EventInfo?>> subject, Type handlerType)
@@ -105,20 +110,21 @@ public static partial class ThatEvents
 		string it,
 		ExpectationGrammars grammars,
 		TypeFilterOptions typeFilterOptions)
-		: CollectionConstraintResult<EventInfo?>(grammars),
-			IValueConstraint<IEnumerable<EventInfo?>>
+		: CollectionConstraintResult<EventInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<EventInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<EventInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<EventInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<EventInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, @event => typeFilterOptions.Matches(@event?.EventHandlerType));
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context,
+				@event => typeFilterOptions.Matches(@event?.EventHandlerType), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<EventInfo?> actual)
-			=> SetValue(actual, @event => typeFilterOptions.Matches(@event?.EventHandlerType));
+		public ConstraintResult IsMetBy(IEnumerable<EventInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, @event => typeFilterOptions.Matches(@event?.EventHandlerType));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -127,10 +133,7 @@ public static partial class ThatEvents
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching events ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching events");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -139,9 +142,6 @@ public static partial class ThatEvents
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching events ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching events");
 	}
 }

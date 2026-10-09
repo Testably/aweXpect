@@ -32,7 +32,10 @@ public sealed partial class Filtered
 						.WithMessage("""
 						             Expected that static types in all loaded assemblies
 						             are all not static,
-						             but it contained static types [
+						             but it contained static types
+
+						             Not matching items:
+						             [
 						               *
 						             ]
 						             """).AsWildcard();
@@ -54,7 +57,10 @@ public sealed partial class Filtered
 						.WithMessage($"""
 						              Expected that {expectedString}static types in all loaded assemblies
 						              are all not static,
-						              but it contained static types [
+						              but it contained static types
+
+						              Not matching items:
+						              [
 						                *
 						              ]
 						              """).AsWildcard();

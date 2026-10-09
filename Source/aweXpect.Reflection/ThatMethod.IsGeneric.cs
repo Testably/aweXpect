@@ -16,6 +16,7 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> is generic.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static GenericArgumentCollectionResult<MethodInfo?> IsGeneric(
 		this IThat<MethodInfo?> subject)
 	{
@@ -31,11 +32,12 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> is not generic.
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> IsNotGeneric(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsNotGeneric(
 		this IThat<MethodInfo?> subject)
 	{
 		GenericArgumentsFilterOptions genericFilterOptions = new();
-		return new AndOrResult<MethodInfo?, IThat<MethodInfo?>>(subject.Get().ExpectationBuilder
+		return new AndOrResult<MethodInfo, IThat<MethodInfo?>>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new IsGenericConstraint(it, grammars, genericFilterOptions).Invert()),
 			subject);

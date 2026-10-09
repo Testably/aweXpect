@@ -16,6 +16,7 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is generic.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static GenericArgumentCollectionResult<Type?> IsGeneric(
 		this IThat<Type?> subject)
 	{
@@ -29,11 +30,12 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is not generic.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotGeneric(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotGeneric(
 		this IThat<Type?> subject)
 	{
 		GenericArgumentsFilterOptions genericFilterOptions = new();
-		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsGenericConstraint(it, grammars, genericFilterOptions).Invert()),
 			subject);
 	}

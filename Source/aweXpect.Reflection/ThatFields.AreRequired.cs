@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -19,6 +20,7 @@ public static partial class ThatFields
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are required.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> AreRequired(
 		this IThat<IEnumerable<FieldInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
@@ -29,6 +31,7 @@ public static partial class ThatFields
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are required.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>> AreRequired(
 		this IThat<IAsyncEnumerable<FieldInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
@@ -39,6 +42,7 @@ public static partial class ThatFields
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are not required.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> AreNotRequired(
 		this IThat<IEnumerable<FieldInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
@@ -49,6 +53,7 @@ public static partial class ThatFields
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are not required.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>> AreNotRequired(
 		this IThat<IAsyncEnumerable<FieldInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
@@ -57,72 +62,60 @@ public static partial class ThatFields
 #endif
 
 	private sealed class AreRequiredConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<FieldInfo?>(grammars),
-			IValueConstraint<IEnumerable<FieldInfo?>>
+		: CollectionConstraintResult<FieldInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<FieldInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<FieldInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<FieldInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<FieldInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, field => field.IsRequired());
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, field => field.IsRequired(), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual)
-			=> SetValue(actual, field => field.IsRequired());
+		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, field => field.IsRequired());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are all required");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained non-required fields ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained non-required fields");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are not all required");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained required fields ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained required fields");
 	}
 
 	private sealed class AreNotRequiredConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<FieldInfo?>(grammars),
-			IValueConstraint<IEnumerable<FieldInfo?>>
+		: CollectionConstraintResult<FieldInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<FieldInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<FieldInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<FieldInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<FieldInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, field => !field.IsRequired());
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, field => !field.IsRequired(), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual)
-			=> SetValue(actual, field => !field.IsRequired());
+		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, field => !field.IsRequired());
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are all not required");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained required fields ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained required fields");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("also contain a required field");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained non-required fields ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained non-required fields");
 	}
 }

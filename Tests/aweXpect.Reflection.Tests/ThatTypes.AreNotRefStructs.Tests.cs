@@ -46,7 +46,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all not ref structs,
-					             but it contained ref structs [
+					             but it contained ref structs
+
+					             Not matching items:
+					             [
 					               PublicRefStruct
 					             ]
 					             """);
@@ -70,7 +73,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all not ref structs,
-					             but it contained ref structs [
+					             but it contained ref structs
+
+					             Not matching items:
+					             [
 					               PublicRefStruct
 					             ]
 					             """);
@@ -113,7 +119,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             also contain a ref struct,
-					             but it only contained not ref structs [
+					             but it only contained not ref structs
+
+					             Collection:
+					             [
 					               PublicStruct
 					             ]
 					             """);

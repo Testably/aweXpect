@@ -19,9 +19,5 @@ internal interface IContainedMembersFilter : IFilter<Type>
 	/// <summary>
 	///     Counts the members of the <paramref name="value" /> that match the inner member-filter.
 	/// </summary>
-#if NET8_0_OR_GREATER
 	ValueTask<int> CountMatchingMembers(Type value);
-#else
-	Task<int> CountMatchingMembers(Type value);
-#endif
 }

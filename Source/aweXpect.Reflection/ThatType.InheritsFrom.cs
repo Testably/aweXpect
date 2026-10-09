@@ -24,7 +24,8 @@ public static partial class ThatType
 	///     <typeparamref name="TBaseType" /> to be the direct parent.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
-	public static AndOrResult<Type?, IThat<Type?>> InheritsFrom<TBaseType>(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> InheritsFrom<TBaseType>(
 		this IThat<Type?> subject,
 		bool forceDirect = false)
 		=> subject.InheritsFrom(typeof(TBaseType), forceDirect);
@@ -45,13 +46,14 @@ public static partial class ThatType
 	///     <paramref name="baseType" /> to be the direct parent.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
-	public static AndOrResult<Type?, IThat<Type?>> InheritsFrom(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> InheritsFrom(
 		this IThat<Type?> subject,
 		Type baseType,
 		bool forceDirect = false)
 	{
 		baseType.EnsureIsClass();
-		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new InheritsFromConstraint(it, grammars, baseType, forceDirect)),
 			subject);
 	}
@@ -70,7 +72,8 @@ public static partial class ThatType
 	///     <typeparamref name="TBaseType" /> to be the direct parent.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
-	public static AndOrResult<Type?, IThat<Type?>> DoesNotInheritFrom<TBaseType>(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> DoesNotInheritFrom<TBaseType>(
 		this IThat<Type?> subject,
 		bool forceDirect = false)
 		=> subject.DoesNotInheritFrom(typeof(TBaseType), forceDirect);
@@ -90,13 +93,14 @@ public static partial class ThatType
 	///     <paramref name="baseType" /> to be the direct parent.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
-	public static AndOrResult<Type?, IThat<Type?>> DoesNotInheritFrom(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> DoesNotInheritFrom(
 		this IThat<Type?> subject,
 		Type baseType,
 		bool forceDirect = false)
 	{
 		baseType.EnsureIsClass();
-		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new InheritsFromConstraint(it, grammars, baseType, forceDirect).Invert()),
 			subject);
 	}
@@ -120,7 +124,7 @@ public static partial class ThatType
 		{
 			if (Actual is not null)
 			{
-				contexts.Add(new ResultContext.Fixed("Actual", Formatter.Format(Actual)));
+				contexts.Add(new ResultContext.Fixed("Actual", Actual.ToString()));
 			}
 		}
 

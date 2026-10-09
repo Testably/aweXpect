@@ -28,7 +28,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all not generic,
-					             but it contained generic types [
+					             but it contained generic types
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -82,7 +85,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type.IsGenericType in assembly containing type ThatTypes.AreNotGeneric
 					             are all not generic,
-					             but it contained generic types [
+					             but it contained generic types
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -106,7 +112,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => !type.IsGenericType in assembly containing type ThatTypes.AreNotGeneric
 					             also contain a generic type,
-					             but it only contained non-generic types [
+					             but it only contained non-generic types
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -14,6 +14,7 @@ public static partial class ThatMember
 	/// <summary>
 	///     Verifies that the <typeparamref name="TMember" /> does not have the <paramref name="unexpected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<TMember, IThat<TMember>> DoesNotHaveName<TMember>(
 		this IThat<TMember> subject, string unexpected)
 		where TMember : MemberInfo?

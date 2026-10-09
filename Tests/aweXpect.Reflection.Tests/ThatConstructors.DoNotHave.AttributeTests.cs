@@ -29,7 +29,10 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that subject
 					             all have no ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching constructors [
+					             but it contained not matching constructors
+
+					             Not matching items:
+					             [
 					               ThatConstructors.DoNotHave.AttributeTests.TestClass(string value)
 					             ]
 					             """);
@@ -53,7 +56,10 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that subject
 					             not all have no ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
-					             but it only contained matching constructors [
+					             but it only contained matching constructors
+
+					             Collection:
+					             [
 					               ThatConstructors.DoNotHave.AttributeTests.TestClass()
 					             ]
 					             """);
@@ -76,7 +82,10 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that subject
 					             all have no ThatConstructors.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching constructors [
+					             but it contained not matching constructors
+
+					             Not matching items:
+					             [
 					               ThatConstructors.DoNotHave.AttributeTests.TestClass(string value)
 					             ]
 					             """);

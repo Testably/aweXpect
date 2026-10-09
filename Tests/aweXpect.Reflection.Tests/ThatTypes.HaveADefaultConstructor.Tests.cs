@@ -45,7 +45,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all have a default constructor,
-					             but it contained types without a default constructor [
+					             but it contained types without a default constructor
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -71,7 +74,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             not all have a default constructor,
-					             but it only contained types with a default constructor [
+					             but it only contained types with a default constructor
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -114,7 +120,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             not all have a default constructor,
-					             but it only contained types with a default constructor [
+					             but it only contained types with a default constructor
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -153,7 +162,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             all have a default constructor,
-					             but it contained types without a default constructor [
+					             but it contained types without a default constructor
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

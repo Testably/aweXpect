@@ -39,6 +39,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveOptionalParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -60,6 +65,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type int with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveOptionalParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -81,6 +91,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type int with name "value" with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveOptionalParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -102,6 +117,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int with name "value" with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveOptionalParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -154,7 +174,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have an optional parameter,
-					             but it contained methods without an optional parameter *MethodWithoutModifiers(*
+					             but it contained methods without an optional parameter*MethodWithoutModifiers(*
 					             """).AsWildcard();
 			}
 
@@ -176,6 +196,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter with name "value" with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveOptionalParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -213,6 +238,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveOptionalParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -250,6 +280,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int with name "value" with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveOptionalParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -287,6 +322,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type int with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveOptionalParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -324,6 +364,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of exact type int with name "value" with optional modifier,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveOptionalParameter.TestClass.MethodWithoutModifiers(int value)
+					             ]
 					             """);
 			}
 
@@ -373,7 +418,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             all have an optional parameter,
-					             but it contained methods without an optional parameter *MethodWithoutModifiers(*
+					             but it contained methods without an optional parameter*MethodWithoutModifiers(*
 					             """).AsWildcard();
 			}
 
@@ -427,7 +472,7 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that methods
 					             not all have an optional parameter,
-					             but it only contained methods with an optional parameter *MethodWithOptionalParameter(*
+					             but it only contained methods with an optional parameter*MethodWithOptionalParameter(*
 					             """).AsWildcard();
 			}
 

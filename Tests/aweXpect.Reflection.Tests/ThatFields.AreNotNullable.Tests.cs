@@ -41,7 +41,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are all not nullable,
-					             but it contained nullable fields [
+					             but it contained nullable fields
+
+					             Not matching items:
+					             [
 					               <null>
 					             ]
 					             """);
@@ -62,7 +65,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are all not nullable,
-					             but it contained nullable fields [
+					             but it contained nullable fields
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -86,7 +92,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             also contain a nullable field,
-					             but it only contained non-nullable fields [
+					             but it only contained non-nullable fields
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -141,7 +150,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are all not nullable,
-					             but it contained nullable fields [
+					             but it contained nullable fields
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

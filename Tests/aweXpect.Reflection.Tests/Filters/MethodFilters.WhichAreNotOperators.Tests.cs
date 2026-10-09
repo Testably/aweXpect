@@ -1,4 +1,4 @@
-﻿using aweXpect.Customization;
+using aweXpect.Customization;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Tests.TestHelpers;
 using aweXpect.Reflection.Tests.TestHelpers.Types;
@@ -28,7 +28,7 @@ public sealed partial class MethodFilters
 			[Fact]
 			public async Task ShouldExcludeTheSpecificOperatorButKeepOthers()
 			{
-				using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
+				using (Customize.aweXpect.ReflectionSettings().IncludedSpecialNameMembers
 					       .Set(SpecialNameMembers.Operators))
 				{
 					Filtered.Methods methods = In.Type<ClassWithOperators>()

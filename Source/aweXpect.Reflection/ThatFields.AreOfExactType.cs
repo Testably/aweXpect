@@ -12,6 +12,7 @@ public static partial class ThatFields
 	/// <summary>
 	///     Verifies that all fields in the filtered collection are of exactly type <typeparamref name="TField" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static FieldsOfTypeResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> AreOfExactType<TField>(
 		this IThat<IEnumerable<FieldInfo?>> subject)
 		=> AreOfExactType(subject, typeof(TField));
@@ -19,6 +20,7 @@ public static partial class ThatFields
 	/// <summary>
 	///     Verifies that all fields in the filtered collection are of exactly type <paramref name="fieldType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static FieldsOfTypeResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> AreOfExactType(
 		this IThat<IEnumerable<FieldInfo?>> subject, Type fieldType)
 	{
@@ -35,6 +37,7 @@ public static partial class ThatFields
 	/// <summary>
 	///     Verifies that all fields in the filtered collection are of exactly type <typeparamref name="TField" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>>
 		AreOfExactType<TField>(
 			this IThat<IAsyncEnumerable<FieldInfo?>> subject)
@@ -43,6 +46,7 @@ public static partial class ThatFields
 	/// <summary>
 	///     Verifies that all fields in the filtered collection are of exactly type <paramref name="fieldType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>>
 		AreOfExactType(
 			this IThat<IAsyncEnumerable<FieldInfo?>> subject, Type fieldType)

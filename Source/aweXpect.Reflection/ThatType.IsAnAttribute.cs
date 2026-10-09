@@ -12,7 +12,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is an attribute.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsAnAttribute(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsAnAttribute(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAnAttributeConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is not an attribute.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotAnAttribute(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotAnAttribute(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAnAttributeConstraint(it, grammars).Invert()),

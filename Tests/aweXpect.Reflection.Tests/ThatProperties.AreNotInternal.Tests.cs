@@ -23,7 +23,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that *
 					             all are not internal,
-					             but it contained internal items [
+					             but it contained internal items
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -79,6 +82,9 @@ public sealed partial class ThatProperties
 					             Expected that *
 					             at least one is internal,
 					             but none were
+
+					             Collection:
+					             *
 					             """).AsWildcard();
 			}
 		}

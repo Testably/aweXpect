@@ -10,6 +10,7 @@ public static partial class ThatConstructors
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have no parameters.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>>> HaveNoParameters(
 		this IThat<IEnumerable<ConstructorInfo?>> subject)
 		=> subject.HaveParameterCount(0);
@@ -18,6 +19,7 @@ public static partial class ThatConstructors
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> have no parameters.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>>> HaveNoParameters(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject)
 		=> subject.HaveParameterCount(0);

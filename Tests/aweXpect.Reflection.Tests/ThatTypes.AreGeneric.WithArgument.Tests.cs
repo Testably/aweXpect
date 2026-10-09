@@ -30,7 +30,10 @@ public sealed partial class ThatTypes
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						               are all generic with argument of type ThatTypes.BaseClass at index {{index}},
-						               but it contained not matching types [
+						               but it contained not matching types
+
+						               Not matching items:
+						               [
 						                 ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						               ]
 						               """);
@@ -56,7 +59,10 @@ public sealed partial class ThatTypes
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						               are all generic with argument of type ThatTypes.BaseClass at index {{index}} from end,
-						               but it contained not matching types [
+						               but it contained not matching types
+
+						               Not matching items:
+						               [
 						                 ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						               ]
 						               """);
@@ -89,7 +95,10 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						             are all generic with argument of type ThatMethod.DerivedClass,
-						             but it contained not matching types [
+						             but it contained not matching types
+
+						             Not matching items:
+						             [
 						               ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						             ]
 						             """);
@@ -109,7 +118,10 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithOneArgument<int>]
 						             are all generic with argument of type ThatTypes.BaseClass,
-						             but it contained not matching types [
+						             but it contained not matching types
+
+						             Not matching items:
+						             [
 						               ThatTypes.GenericClassWithOneArgument<int>
 						             ]
 						             """);
@@ -137,7 +149,10 @@ public sealed partial class ThatTypes
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						               are all generic with argument of type ThatTypes.BaseClass and name equal to "TBar" at index {{index}},
-						               but it contained not matching types [
+						               but it contained not matching types
+
+						               Not matching items:
+						               [
 						                 ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						               ]
 						               """);
@@ -163,7 +178,10 @@ public sealed partial class ThatTypes
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						               are all generic with argument of type ThatTypes.BaseClass and name equal to "TBar" at index {{index}} from end,
-						               but it contained not matching types [
+						               but it contained not matching types
+
+						               Not matching items:
+						               [
 						                 ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						               ]
 						               """);
@@ -196,7 +214,10 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						             are all generic with argument of type ThatTypes.BaseClass and name equal to "Tbar",
-						             but it contained not matching types [
+						             but it contained not matching types
+
+						             Not matching items:
+						             [
 						               ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						             ]
 						             """);
@@ -216,7 +237,10 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						             are all generic with argument of type ThatMethod.DerivedClass and name equal to "TBar",
-						             but it contained not matching types [
+						             but it contained not matching types
+
+						             Not matching items:
+						             [
 						               ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						             ]
 						             """);
@@ -236,7 +260,10 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithOneArgument<int>]
 						             are all generic with argument of type ThatTypes.BaseClass and name equal to "TBar",
-						             but it contained not matching types [
+						             but it contained not matching types
+
+						             Not matching items:
+						             [
 						               ThatTypes.GenericClassWithOneArgument<int>
 						             ]
 						             """);
@@ -259,7 +286,10 @@ public sealed partial class ThatTypes
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						               are all generic with argument of type ThatTypes.BaseClass and name starting with "{{prefix}}",
-						               but it contained not matching types [
+						               but it contained not matching types
+
+						               Not matching items:
+						               [
 						                 ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						               ]
 						               """);
@@ -282,7 +312,10 @@ public sealed partial class ThatTypes
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						               are all generic with argument of type ThatTypes.BaseClass and name matching regex "{{regex}}",
-						               but it contained not matching types [
+						               but it contained not matching types
+
+						               Not matching items:
+						               [
 						                 ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						               ]
 						               """);
@@ -305,7 +338,10 @@ public sealed partial class ThatTypes
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						               are all generic with argument of type ThatTypes.BaseClass and name ending with "{{suffix}}",
-						               but it contained not matching types [
+						               but it contained not matching types
+
+						               Not matching items:
+						               [
 						                 ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						               ]
 						               """);
@@ -328,7 +364,10 @@ public sealed partial class ThatTypes
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						               are all generic with argument of type ThatTypes.BaseClass and name matching "{{wildcard}}",
-						               but it contained not matching types [
+						               but it contained not matching types
+
+						               Not matching items:
+						               [
 						                 ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						               ]
 						               """);
@@ -352,7 +391,10 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						             are all generic with argument of type ThatTypes.BaseClass and name equal to "TBAR",
-						             but it contained not matching types [
+						             but it contained not matching types
+
+						             Not matching items:
+						             [
 						               ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						             ]
 						             """);
@@ -394,7 +436,10 @@ public sealed partial class ThatTypes
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						               are all generic with argument name equal to "TBar" at index {{index}},
-						               but it contained not matching types [
+						               but it contained not matching types
+
+						               Not matching items:
+						               [
 						                 ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						               ]
 						               """);
@@ -420,7 +465,10 @@ public sealed partial class ThatTypes
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						               are all generic with argument name equal to "TBar" at index {{index}} from end,
-						               but it contained not matching types [
+						               but it contained not matching types
+
+						               Not matching items:
+						               [
 						                 ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						               ]
 						               """);
@@ -453,7 +501,10 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						             are all generic with argument name equal to "Tbar",
-						             but it contained not matching types [
+						             but it contained not matching types
+
+						             Not matching items:
+						             [
 						               ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						             ]
 						             """);
@@ -476,7 +527,10 @@ public sealed partial class ThatTypes
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						               are all generic with argument name starting with "{{prefix}}",
-						               but it contained not matching types [
+						               but it contained not matching types
+
+						               Not matching items:
+						               [
 						                 ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						               ]
 						               """);
@@ -499,7 +553,10 @@ public sealed partial class ThatTypes
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						               are all generic with argument name matching regex "{{regex}}",
-						               but it contained not matching types [
+						               but it contained not matching types
+
+						               Not matching items:
+						               [
 						                 ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						               ]
 						               """);
@@ -522,7 +579,10 @@ public sealed partial class ThatTypes
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						               are all generic with argument name ending with "{{suffix}}",
-						               but it contained not matching types [
+						               but it contained not matching types
+
+						               Not matching items:
+						               [
 						                 ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						               ]
 						               """);
@@ -545,7 +605,10 @@ public sealed partial class ThatTypes
 						.WithMessage($$"""
 						               Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						               are all generic with argument name matching "{{wildcard}}",
-						               but it contained not matching types [
+						               but it contained not matching types
+
+						               Not matching items:
+						               [
 						                 ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						               ]
 						               """);
@@ -568,7 +631,10 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						             are all generic with argument name equal to "TBAR",
-						             but it contained not matching types [
+						             but it contained not matching types
+
+						             Not matching items:
+						             [
 						               ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						             ]
 						             """);

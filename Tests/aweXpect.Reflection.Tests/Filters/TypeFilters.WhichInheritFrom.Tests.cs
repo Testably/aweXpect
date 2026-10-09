@@ -31,7 +31,10 @@ public sealed partial class TypeFilters
 					.WithMessage("""
 					             Expected that types which inherit from TypeFilters.WhichInheritFrom.Tests.FooBase in assembly containing type TypeFilters.WhichInheritFrom
 					             are all abstract,
-					             but it contained non-abstract types [
+					             but it contained non-abstract types
+
+					             Not matching items:
+					             [
 					               TypeFilters.WhichInheritFrom.Tests.FooDerived
 					             ]
 					             """);
@@ -89,7 +92,10 @@ public sealed partial class TypeFilters
 					.WithMessage("""
 					             Expected that types which do not inherit from TypeFilters.WhichDoNotInheritFrom.Tests.FooBase in assembly containing type TypeFilters.WhichDoNotInheritFrom
 					             are all abstract,
-					             but it contained non-abstract types [
+					             but it contained non-abstract types
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

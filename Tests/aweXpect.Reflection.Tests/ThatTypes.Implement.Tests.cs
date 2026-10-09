@@ -53,7 +53,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.ClassWithInterface1, ThatTypes.UnrelatedClass]
 					             all implement ThatTypes.ITestInterface,
-					             but it contained types that do not implement ThatTypes.ITestInterface [
+					             but it contained types that do not implement ThatTypes.ITestInterface
+
+					             Not matching items:
+					             [
 					               ThatTypes.UnrelatedClass
 					             ]
 					             """);
@@ -73,7 +76,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedFromClassWithInterface1]
 					             all directly implement ThatTypes.ITestInterface,
-					             but it contained types that do not directly implement ThatTypes.ITestInterface [
+					             but it contained types that do not directly implement ThatTypes.ITestInterface
+
+					             Not matching items:
+					             [
 					               ThatTypes.DerivedFromClassWithInterface1
 					             ]
 					             """);
@@ -135,7 +141,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.ClassWithInterface1, ThatTypes.ClassWithInterface2]
 					             not all implement ThatTypes.ITestInterface,
-					             but it only contained types that implement ThatTypes.ITestInterface [
+					             but it only contained types that implement ThatTypes.ITestInterface
+
+					             Collection:
+					             [
 					               ThatTypes.ClassWithInterface1,
 					               ThatTypes.ClassWithInterface2
 					             ]

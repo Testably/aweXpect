@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -20,6 +21,7 @@ public static partial class ThatAssemblies
 	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> have
 	///     a dependency on the <paramref name="expected" /> assembly.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> DependOn(
 		this IThat<IEnumerable<Assembly?>> subject, string expected)
 	{
@@ -36,6 +38,7 @@ public static partial class ThatAssemblies
 	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> have
 	///     a dependency on the <paramref name="expected" /> assembly.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>>
 		DependOn(
 			this IThat<IAsyncEnumerable<Assembly?>> subject, string expected)
@@ -55,45 +58,40 @@ public static partial class ThatAssemblies
 		ExpectationGrammars grammars,
 		string expected,
 		StringEqualityOptions options)
-		: CollectionConstraintResult<Assembly?>(grammars),
-			IAsyncConstraint<IEnumerable<Assembly?>>
+		: CollectionConstraintResult<Assembly?>(it, grammars),
+			IAsyncContextConstraint<IEnumerable<Assembly?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Assembly?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Assembly?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, async assembly =>
+			=> await SetAsyncValue(actual, context, async assembly =>
 				assembly != null &&
 				await assembly.GetReferencedAssemblies().AnyAsync(dep =>
-					options.AreConsideredEqual(dep.Name, expected)));
+					options.AreConsideredEqual(dep.Name, expected)), cancellationToken);
 #endif
 
-		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, CancellationToken cancellationToken)
-			=> await SetValue(actual, async assembly =>
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetValue(actual, context, async assembly =>
 				assembly != null &&
 				await assembly.GetReferencedAssemblies().AnyAsync(dep =>
-					options.AreConsideredEqual(dep.Name, expected)));
+					options.AreConsideredEqual(dep.Name, expected)), cancellationToken);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all have dependency on assembly ")
 				.Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained assemblies without the required dependency ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained assemblies without the required dependency");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all have dependency on assembly ")
 				.Append(options.GetExpectation(expected, Grammars.Negate()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained assemblies with the unexpected dependency ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained assemblies with the unexpected dependency");
 	}
 }

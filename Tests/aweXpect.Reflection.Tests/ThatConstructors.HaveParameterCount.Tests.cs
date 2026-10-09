@@ -55,7 +55,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have one parameter,
-					             but it contained constructors with a different number of parameters *
+					             but it contained constructors with a different number of parameters*
 					             """).AsWildcard();
 			}
 
@@ -76,7 +76,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have 2 parameters,
-					             but it contained constructors with a different number of parameters *
+					             but it contained constructors with a different number of parameters*
 					             """).AsWildcard();
 			}
 
@@ -97,7 +97,10 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have 2 parameters,
-					             but it contained constructors with a different number of parameters [
+					             but it contained constructors with a different number of parameters
+
+					             Not matching items:
+					             [
 					               ThatConstructors.HaveParameterCount.TestClass(int value)
 					             ]
 					             """);
@@ -135,7 +138,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             all have 2 parameters,
-					             but it contained constructors with a different number of parameters *
+					             but it contained constructors with a different number of parameters*
 					             """).AsWildcard();
 			}
 #endif
@@ -160,7 +163,7 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have 2 parameters,
-					             but it only contained constructors with 2 parameters *
+					             but it only contained constructors with 2 parameters*
 					             """).AsWildcard();
 			}
 
@@ -181,7 +184,10 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that constructors
 					             not all have 2 parameters,
-					             but it only contained constructors with 2 parameters [
+					             but it only contained constructors with 2 parameters
+
+					             Collection:
+					             [
 					               ThatConstructors.HaveParameterCount.TestClass(int value, string name)
 					             ]
 					             """);

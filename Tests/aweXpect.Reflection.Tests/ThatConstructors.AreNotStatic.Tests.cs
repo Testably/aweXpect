@@ -29,7 +29,10 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that subject
 					             are all not static,
-					             but it contained static constructors [
+					             but it contained static constructors
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -82,7 +85,10 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that subject
 					             also contain a static constructor,
-					             but it only contained non-static constructors [
+					             but it only contained non-static constructors
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -109,7 +115,10 @@ public sealed partial class ThatConstructors
 					.WithMessage("""
 					             Expected that subject
 					             are all not static,
-					             but it contained static constructors [
+					             but it contained static constructors
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

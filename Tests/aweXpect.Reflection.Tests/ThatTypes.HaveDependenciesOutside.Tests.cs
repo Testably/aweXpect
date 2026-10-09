@@ -33,7 +33,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside namespace "{Layer1Namespace}" or "{Layer2Namespace}",
-					              but it contained types depending only on the allowed namespaces [
+					              but it contained types depending only on the allowed namespaces
+
+					              Not matching items:
+					              [
 					                Layer1AndLayer2
 					              ]
 					              """);
@@ -74,7 +77,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside namespace "{Layer1Namespace}",
-					              but it contained types depending only on the allowed namespaces [
+					              but it contained types depending only on the allowed namespaces
+
+					              Not matching items:
+					              [
 					                <null>
 					              ]
 					              """);
@@ -98,7 +104,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside namespace "{Layer1Namespace}",
-					              but it contained types depending only on the allowed namespaces [
+					              but it contained types depending only on the allowed namespaces
+
+					              Not matching items:
+					              [
 					                OnlyLayer1
 					              ]
 					              """);
@@ -138,7 +147,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside namespace "{Layer1Namespace}",
-					              but it contained types depending only on the allowed namespaces [
+					              but it contained types depending only on the allowed namespaces
+
+					              Not matching items:
+					              [
 					                OnlyLayer1
 					              ]
 					              """);
@@ -183,7 +195,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it contained types depending only on the allowed types [
+					              but it contained types depending only on the allowed types
+
+					              Not matching items:
+					              [
 					                <null>
 					              ]
 					              """);
@@ -225,7 +240,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              not all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it only contained types with dependencies outside the allowed types [
+					              but it only contained types with dependencies outside the allowed types
+
+					              Collection:
+					              [
 					                Layer1AndLayer2 depends on ["TargetB"],
 					                OnlyLayer2 depends on ["TargetB"]
 					              ]
@@ -267,7 +285,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it contained types depending only on the allowed types [
+					              but it contained types depending only on the allowed types
+
+					              Not matching items:
+					              [
 					                ReferencesOwnSubNamespace
 					              ]
 					              """);
@@ -291,7 +312,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it contained types depending only on the allowed types [
+					              but it contained types depending only on the allowed types
+
+					              Not matching items:
+					              [
 					                OnlyLayer1
 					              ]
 					              """);
@@ -315,7 +339,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies or types within namespace "{Layer2Namespace}" in all loaded assemblies,
-					              but it contained types depending only on the allowed types [
+					              but it contained types depending only on the allowed types
+
+					              Not matching items:
+					              [
 					                Layer1AndLayer2
 					              ]
 					              """);
@@ -355,7 +382,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it contained types depending only on the allowed types [
+					              but it contained types depending only on the allowed types
+
+					              Not matching items:
+					              [
 					                OnlyLayer1
 					              ]
 					              """);
@@ -384,7 +414,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              not all have dependencies outside namespace "{Layer1Namespace}",
-					              but it only contained types with dependencies outside the allowed namespaces [
+					              but it only contained types with dependencies outside the allowed namespaces
+
+					              Collection:
+					              [
 					                Layer1AndLayer2 depends on ["{Layer2Namespace}"],
 					                OnlyLayer2 depends on ["{Layer2Namespace}"]
 					              ]

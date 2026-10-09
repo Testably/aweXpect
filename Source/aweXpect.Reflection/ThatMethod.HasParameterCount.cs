@@ -12,7 +12,8 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> has the <paramref name="expected" /> number of parameters.
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> HasParameterCount(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> HasParameterCount(
 		this IThat<MethodInfo?> subject, int expected)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasParameterCountConstraint(it, grammars, expected)),

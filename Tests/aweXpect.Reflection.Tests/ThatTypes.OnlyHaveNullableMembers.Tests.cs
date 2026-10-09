@@ -49,7 +49,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             only have nullable members,
-					             but it contained types with non-nullable members [
+					             but it contained types with non-nullable members
+
+					             Not matching items:
+					             [
 					               <null>
 					             ]
 					             """);
@@ -75,7 +78,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              only have nullable members,
-					              but it contained types with non-nullable members [
+					              but it contained types with non-nullable members
+
+					              Not matching items:
+					              [
 					                ClassWithSingleNonNullableProperty with non-nullable members [{Formatter.Format(property)}],
 					                <null>
 					              ]
@@ -102,7 +108,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              only have nullable members,
-					              but it contained types with non-nullable members [
+					              but it contained types with non-nullable members
+
+					              Not matching items:
+					              [
 					                ClassWithSingleNonNullableProperty with non-nullable members [{Formatter.Format(property)}]
 					              ]
 					              """);
@@ -128,7 +137,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             not all only have nullable members,
-					             but it only contained types with only nullable members [
+					             but it only contained types with only nullable members
+
+					             Collection:
+					             [
 					               ClassWithSingleNullableProperty
 					             ]
 					             """);
@@ -190,7 +202,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             only have nullable members,
-					             but it contained types with non-nullable members [
+					             but it contained types with non-nullable members
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

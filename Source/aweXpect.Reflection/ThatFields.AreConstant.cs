@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -19,6 +20,7 @@ public static partial class ThatFields
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are constant.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> AreConstant(
 		this IThat<IEnumerable<FieldInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
@@ -29,6 +31,7 @@ public static partial class ThatFields
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are constant.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>> AreConstant(
 		this IThat<IAsyncEnumerable<FieldInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
@@ -39,6 +42,7 @@ public static partial class ThatFields
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are not constant.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> AreNotConstant(
 		this IThat<IEnumerable<FieldInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
@@ -49,6 +53,7 @@ public static partial class ThatFields
 	/// <summary>
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are not constant.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>> AreNotConstant(
 		this IThat<IAsyncEnumerable<FieldInfo?>> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
@@ -57,72 +62,60 @@ public static partial class ThatFields
 #endif
 
 	private sealed class AreConstantConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<FieldInfo?>(grammars),
-			IValueConstraint<IEnumerable<FieldInfo?>>
+		: CollectionConstraintResult<FieldInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<FieldInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<FieldInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<FieldInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<FieldInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, field => field?.IsLiteral == true);
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, field => field?.IsLiteral == true, cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual)
-			=> SetValue(actual, field => field?.IsLiteral == true);
+		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, field => field?.IsLiteral == true);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are all constant");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained non-constant fields ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained non-constant fields");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are not all constant");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained constant fields ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained constant fields");
 	}
 
 	private sealed class AreNotConstantConstraint(string it, ExpectationGrammars grammars)
-		: CollectionConstraintResult<FieldInfo?>(grammars),
-			IValueConstraint<IEnumerable<FieldInfo?>>
+		: CollectionConstraintResult<FieldInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<FieldInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<FieldInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<FieldInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<FieldInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, field => field?.IsLiteral == false);
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, field => field?.IsLiteral == false, cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual)
-			=> SetValue(actual, field => field?.IsLiteral == false);
+		public ConstraintResult IsMetBy(IEnumerable<FieldInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, field => field?.IsLiteral == false);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("are all not constant");
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained constant fields ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained constant fields");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("also contain a constant field");
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained non-constant fields ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained non-constant fields");
 	}
 }

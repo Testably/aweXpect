@@ -29,7 +29,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             are all not static,
-					             but it contained static events [
+					             but it contained static events
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -82,7 +85,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             also contain a static event,
-					             but it only contained non-static events [
+					             but it only contained non-static events
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -109,7 +115,10 @@ public sealed partial class ThatEvents
 					.WithMessage("""
 					             Expected that subject
 					             are all not static,
-					             but it contained static events [
+					             but it contained static events
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

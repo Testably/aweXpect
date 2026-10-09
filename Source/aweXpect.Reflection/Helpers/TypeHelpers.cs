@@ -37,8 +37,9 @@ internal static class TypeHelpers
 	///     same instance on every <c>Get()</c> for its cache bucket to be stable.
 	/// </summary>
 	internal static readonly Func<Type, IEnumerable<Type>> SignatureDependencies =
-		static type => type.GetSignatureDependencies(
-			Customize.aweXpect.Reflection().ExcludedAttributeTypes().Get());
+		static type => type.GetSignatureDependencies(Settings.ExcludedAttributeTypes.Get());
+
+	private static ReflectionCustomizationExtensions.ReflectionSettingsCustomization? _settings;
 
 	/// <summary>
 	///     Caches the resolved dependencies per resolver and <see cref="Type" />: the outer table is keyed weakly
@@ -55,13 +56,22 @@ internal static class TypeHelpers
 	///     The compiler-generated members that are currently included via customization.
 	/// </summary>
 	private static CompilerGeneratedMembers IncludedCompilerGeneratedMembers
-		=> Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers().Get();
+		=> Settings.IncludedCompilerGeneratedMembers.Get();
 
 	/// <summary>
 	///     The special-name methods that are currently included via customization.
 	/// </summary>
 	private static SpecialNameMembers IncludedSpecialNameMembers
-		=> Customize.aweXpect.Reflection().IncludedSpecialNameMembers().Get();
+		=> Settings.IncludedSpecialNameMembers.Get();
+
+	/// <summary>
+	///     The settings of the current async flow, which fall back to the global ones.
+	/// </summary>
+	/// <remarks>
+	///     Created lazily, because its default dependency resolver is the static <see cref="SignatureDependencies" />.
+	/// </remarks>
+	private static ReflectionCustomizationExtensions.ReflectionSettingsCustomization Settings
+		=> _settings ??= Customize.aweXpect.ReflectionSettings();
 
 	/// <summary>
 	///     Searches for constructors in the <paramref name="type" /> that were directly declared there.
@@ -1023,9 +1033,9 @@ internal static class TypeHelpers
 	internal static Type[] ResolveDependencies(this Type type)
 	{
 		Func<Type, IEnumerable<Type>> resolver =
-			Customize.aweXpect.Reflection().DependencyResolver().Get() ?? SignatureDependencies;
+			Settings.DependencyResolver.Get() ?? SignatureDependencies;
 		if (ReferenceEquals(resolver, SignatureDependencies) &&
-		    Customize.aweXpect.Reflection().ExcludedAttributeTypes().Get().Length > 0)
+		    Settings.ExcludedAttributeTypes.Get().Length > 0)
 		{
 			// A customized attribute exclusion changes the built-in dependency set, so it must not be baked into
 			// the customization-independent cache; the (rare) customized path recomputes instead.

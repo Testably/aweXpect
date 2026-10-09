@@ -18,6 +18,7 @@ public static partial class ThatTypes
 	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
 	///     The <paramref name="memberScope" /> controls whether inherited events are considered.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeContainingMembersResult<IEnumerable<Type?>> ContainEvents(
 		this IThat<IEnumerable<Type?>> subject,
 		Func<Filtered.Events, Filtered.Events> filter,
@@ -34,6 +35,7 @@ public static partial class ThatTypes
 	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
 	///     The <paramref name="memberScope" /> controls whether inherited events are considered.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>> ContainEvents(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Func<Filtered.Events, Filtered.Events> filter,

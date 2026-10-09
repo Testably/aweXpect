@@ -25,7 +25,8 @@ public static partial class ThatType
 	///     <typeparamref name="TInterface" /> to be implemented directly.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
-	public static AndOrResult<Type?, IThat<Type?>> Implements<TInterface>(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> Implements<TInterface>(
 		this IThat<Type?> subject,
 		bool forceDirect = false)
 		=> subject.Implements(typeof(TInterface), forceDirect);
@@ -47,13 +48,14 @@ public static partial class ThatType
 	///     <paramref name="interfaceType" /> to be implemented directly.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
-	public static AndOrResult<Type?, IThat<Type?>> Implements(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> Implements(
 		this IThat<Type?> subject,
 		Type interfaceType,
 		bool forceDirect = false)
 	{
 		interfaceType.EnsureIsInterface();
-		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new ImplementsConstraint(it, grammars, interfaceType, forceDirect)),
 			subject);
 	}
@@ -72,7 +74,8 @@ public static partial class ThatType
 	///     <typeparamref name="TInterface" /> to be implemented directly.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TInterface" /> is not an interface.</exception>
-	public static AndOrResult<Type?, IThat<Type?>> DoesNotImplement<TInterface>(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> DoesNotImplement<TInterface>(
 		this IThat<Type?> subject,
 		bool forceDirect = false)
 		=> subject.DoesNotImplement(typeof(TInterface), forceDirect);
@@ -92,13 +95,14 @@ public static partial class ThatType
 	///     <paramref name="interfaceType" /> to be implemented directly.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="interfaceType" /> is not an interface.</exception>
-	public static AndOrResult<Type?, IThat<Type?>> DoesNotImplement(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> DoesNotImplement(
 		this IThat<Type?> subject,
 		Type interfaceType,
 		bool forceDirect = false)
 	{
 		interfaceType.EnsureIsInterface();
-		return new AndOrResult<Type?, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new AndOrResult<Type, IThat<Type?>>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new ImplementsConstraint(it, grammars, interfaceType, forceDirect).Invert()),
 			subject);
 	}
@@ -122,7 +126,7 @@ public static partial class ThatType
 		{
 			if (Actual is not null)
 			{
-				contexts.Add(new ResultContext.Fixed("Actual", Formatter.Format(Actual)));
+				contexts.Add(new ResultContext.Fixed("Actual", Actual.ToString()));
 			}
 		}
 

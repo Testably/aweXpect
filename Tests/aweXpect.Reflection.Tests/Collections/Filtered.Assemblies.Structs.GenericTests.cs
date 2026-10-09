@@ -32,7 +32,10 @@ public sealed partial class Filtered
 						.WithMessage("""
 						             Expected that generic structs in all loaded assemblies
 						             are all not generic,
-						             but it contained generic types [
+						             but it contained generic types
+
+						             Not matching items:
+						             [
 						               *
 						             ]
 						             """).AsWildcard();
@@ -54,7 +57,10 @@ public sealed partial class Filtered
 						.WithMessage($"""
 						              Expected that {expectedString}generic structs in all loaded assemblies
 						              are all not generic,
-						              but it contained generic types [
+						              but it contained generic types
+
+						              Not matching items:
+						              [
 						                *
 						              ]
 						              """).AsWildcard();

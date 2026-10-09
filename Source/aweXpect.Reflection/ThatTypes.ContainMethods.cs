@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Options;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
@@ -26,6 +27,7 @@ public static partial class ThatTypes
 	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
 	///     The <paramref name="memberScope" /> controls whether inherited methods are considered.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeContainingMembersResult<IEnumerable<Type?>> ContainMethods(
 		this IThat<IEnumerable<Type?>> subject,
 		Func<Filtered.Methods, Filtered.Methods> filter,
@@ -42,6 +44,7 @@ public static partial class ThatTypes
 	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
 	///     The <paramref name="memberScope" /> controls whether inherited methods are considered.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>> ContainMethods(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Func<Filtered.Methods, Filtered.Methods> filter,
@@ -88,21 +91,21 @@ public static partial class ThatTypes
 		ExpectationGrammars grammars,
 		IContainedMembersFilter memberFilter,
 		Quantifier quantifier)
-		: CollectionConstraintResult<Type?>(grammars),
-			IAsyncConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IAsyncContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, Matches);
+			=> await SetAsyncValue(actual, context, Matches, cancellationToken);
 #endif
 
-		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Type?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetValue(actual, Matches);
+			=> await SetValue(actual, context, Matches, cancellationToken);
 
 		private ValueTask<bool> Matches(Type? type)
 			=> type is null ? new ValueTask<bool>(false) : memberFilter.Applies(type);
@@ -110,17 +113,11 @@ public static partial class ThatTypes
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null) => stringBuilder.Append("all contain ").Append(memberFilter.MembersDescription).Append(quantifier);
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching types ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching types");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null) => stringBuilder.Append("do not all contain ").Append(memberFilter.MembersDescription).Append(quantifier);
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching types ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching types");
 	}
 }

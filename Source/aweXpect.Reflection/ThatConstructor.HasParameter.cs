@@ -18,6 +18,7 @@ public static partial class ThatConstructor
 	/// <summary>
 	///     Verifies that the <see cref="ConstructorInfo" /> has a parameter of type <typeparamref name="TParameter" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ParameterCollectionResult<ConstructorInfo?, TParameter> HasParameter<TParameter>(
 		this IThat<ConstructorInfo?> subject)
 	{
@@ -40,6 +41,7 @@ public static partial class ThatConstructor
 	///     the
 	///     <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamedParameterCollectionResult<ConstructorInfo?, TParameter> HasParameter<TParameter>(
 		this IThat<ConstructorInfo?> subject, string expected)
 	{
@@ -63,6 +65,7 @@ public static partial class ThatConstructor
 	/// <summary>
 	///     Verifies that the <see cref="ConstructorInfo" /> has a parameter of type <paramref name="parameterType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ParameterCollectionResult<ConstructorInfo?, object?> HasParameter(
 		this IThat<ConstructorInfo?> subject, Type parameterType)
 	{
@@ -84,6 +87,7 @@ public static partial class ThatConstructor
 	///     the
 	///     <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamedParameterCollectionResult<ConstructorInfo?, object?> HasParameter(
 		this IThat<ConstructorInfo?> subject, Type parameterType, string expected)
 	{
@@ -106,6 +110,7 @@ public static partial class ThatConstructor
 	/// <summary>
 	///     Verifies that the <see cref="ConstructorInfo" /> has a parameter with the <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamedParameterCollectionResult<ConstructorInfo?, object?> HasParameter(
 		this IThat<ConstructorInfo?> subject,
 		string expected)
@@ -170,7 +175,7 @@ public static partial class ThatConstructor
 
 			if (expectedName != null)
 			{
-				stringBuilder.Append(" with name \"").Append(expectedName).Append('"');
+				stringBuilder.Append(" with name ").Append(Formatter.Format(expectedName));
 			}
 
 			stringBuilder.Append(parameterFilterOptions.GetModifierDescription());
@@ -195,7 +200,7 @@ public static partial class ThatConstructor
 
 			if (expectedName != null)
 			{
-				stringBuilder.Append(" with name \"").Append(expectedName).Append('"');
+				stringBuilder.Append(" with name ").Append(Formatter.Format(expectedName));
 			}
 
 			stringBuilder.Append(parameterFilterOptions.GetModifierDescription());

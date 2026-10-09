@@ -1,7 +1,17 @@
 # Configuration
 
-All customizations live under `Customize.aweXpect.Reflection()`. Every `Set(…)` returns a scope that
-restores the previous value when disposed, so a customization can be applied globally or per test.
+The assembly exclusions live under `Customize.aweXpect.Reflection()` (provided by aweXpect.Core), all other
+customizations under `Customize.aweXpect.ReflectionSettings()`. Every `Set(…)` returns a scope that restores the
+previous value when disposed.
+
+A value set on `Customize.aweXpect` applies to the current async flow only, e.g. a single test. To apply a
+customization to all tests, set it on `Customize.aweXpect.Global`, e.g. once in an assembly-level setup; a value set
+in the current async flow takes precedence over the global one:
+
+```csharp
+Customize.aweXpect.Global.ReflectionSettings().IncludedSpecialNameMembers
+    .Set(SpecialNameMembers.Operators);
+```
 
 ## Assembly exclusions
 
@@ -40,7 +50,7 @@ Opt specific kinds back in with the `[Flags]` enum `CompilerGeneratedMembers`
 (`None`, `Types`, `Constructors`, `Methods`, `Properties`, `Fields`, `Events`, `All`):
 
 ```csharp
-using (Customize.aweXpect.Reflection().IncludedCompilerGeneratedMembers()
+using (Customize.aweXpect.ReflectionSettings().IncludedCompilerGeneratedMembers
     .Set(CompilerGeneratedMembers.Types | CompilerGeneratedMembers.Methods))
 {
     // closures, state machines and compiler-generated methods are now visible
@@ -52,7 +62,7 @@ but likewise excluded by default. Include them via the separate `SpecialNameMemb
 (`None`, `Operators`, `Accessors`, `All`), which only affects `.Methods()`:
 
 ```csharp
-using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
+using (Customize.aweXpect.ReflectionSettings().IncludedSpecialNameMembers
     .Set(SpecialNameMembers.Operators))
 {
     // operator methods are now visible in .Methods()
@@ -69,14 +79,14 @@ dependency on it; reference the package yourself), for IL/body-level accuracy:
 
 ```csharp
 // Replace the resolver within a scope
-using (Customize.aweXpect.Reflection().DependencyResolver()
+using (Customize.aweXpect.ReflectionSettings().DependencyResolver
     .Set(type => MyCecilResolver.GetUsedTypes(type)))
 {
     // body-level references now count as dependencies
 }
 
 // Or augment instead of replace: compose on the current default
-var resolver = Customize.aweXpect.Reflection().DependencyResolver();
+var resolver = Customize.aweXpect.ReflectionSettings().DependencyResolver;
 var builtin = resolver.Get()!;
 using (resolver.Set(type => builtin(type).Concat(MyCecilResolver.GetBodyTypes(type))))
 {
@@ -85,7 +95,7 @@ using (resolver.Set(type => builtin(type).Concat(MyCecilResolver.GetBodyTypes(ty
 
 // Setting null reverts to the built-in default, e.g. to opt a single test out
 // of a globally configured resolver
-using (Customize.aweXpect.Reflection().DependencyResolver().Set(null))
+using (Customize.aweXpect.ReflectionSettings().DependencyResolver.Set(null))
 {
     // the signature-level default applies within this scope
 }

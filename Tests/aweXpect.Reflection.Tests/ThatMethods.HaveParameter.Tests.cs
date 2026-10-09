@@ -32,6 +32,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               <null>
+					             ]
 					             """);
 			}
 
@@ -70,7 +75,36 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter with name "value",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
+					             ]
 					             """);
+			}
+
+			[Fact]
+			public async Task HaveParameterByName_WhenNameContainsAQuote_ShouldEscapeIt()
+			{
+				IEnumerable<MethodInfo> methods = [typeof(TestClass).GetMethod(nameof(TestClass.MethodWithString))!,];
+
+				async Task Act()
+				{
+					await That(methods).HaveParameter("na\"me");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methods
+					             all have parameter with name "na\"me",
+					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
+					             ]
+					             """)
+					.Because("the name is formatted like every other string value");
 			}
 
 			[Fact]
@@ -123,6 +157,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
+					             ]
 					             """);
 			}
 
@@ -161,6 +200,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int with name "value",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
+					             ]
 					             """);
 			}
 
@@ -183,6 +227,12 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int with name "name",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithIntAndString(int value, string name),
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithInt(int value)
+					             ]
 					             """);
 			}
 
@@ -236,6 +286,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
+					             ]
 					             """);
 			}
 
@@ -274,6 +329,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int with name "value",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
+					             ]
 					             """);
 			}
 
@@ -296,6 +356,12 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int with name "name",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithIntAndString(int value, string name),
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithInt(int value)
+					             ]
 					             """);
 			}
 
@@ -347,6 +413,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
+					             ]
 					             """);
 			}
 
@@ -382,6 +453,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int with name "value",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithString(string name)
+					             ]
 					             """);
 			}
 
@@ -402,6 +478,12 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int with name "name",
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithIntAndString(int value, string name),
+					               void ThatMethods.HaveParameter.Tests.TestClass.MethodWithInt(int value)
+					             ]
 					             """);
 			}
 
@@ -421,6 +503,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               <null>
+					             ]
 					             """);
 			}
 #endif
@@ -447,6 +534,12 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             not all have parameter of type int at index 0,
 					             but all did
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.NegatedTests.TestClass.MethodWithInt(int value),
+					               void ThatMethods.HaveParameter.NegatedTests.TestClass.MethodWithIntAndString(int value, string name)
+					             ]
 					             """);
 			}
 
@@ -468,6 +561,12 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             not all have parameter with name "value",
 					             but all did
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.NegatedTests.TestClass.MethodWithIntAndString(int value, string name),
+					               void ThatMethods.HaveParameter.NegatedTests.TestClass.MethodWithInt(int value)
+					             ]
 					             """);
 			}
 
@@ -506,6 +605,12 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             not all have parameter of type int,
 					             but all did
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.NegatedTests.TestClass.MethodWithIntAndString(int value, string name),
+					               void ThatMethods.HaveParameter.NegatedTests.TestClass.MethodWithInt(int value)
+					             ]
 					             """);
 			}
 
@@ -543,6 +648,12 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             not all have parameter of type int with name "value",
 					             but all did
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.NegatedTests.TestClass.MethodWithIntAndString(int value, string name),
+					               void ThatMethods.HaveParameter.NegatedTests.TestClass.MethodWithInt(int value)
+					             ]
 					             """);
 			}
 
@@ -581,6 +692,12 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             not all have parameter of type int,
 					             but all did
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.NegatedTests.TestClass.MethodWithIntAndString(int value, string name),
+					               void ThatMethods.HaveParameter.NegatedTests.TestClass.MethodWithInt(int value)
+					             ]
 					             """);
 			}
 
@@ -618,6 +735,12 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             not all have parameter of type int with name "value",
 					             but all did
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.NegatedTests.TestClass.MethodWithIntAndString(int value, string name),
+					               void ThatMethods.HaveParameter.NegatedTests.TestClass.MethodWithInt(int value)
+					             ]
 					             """);
 			}
 
@@ -656,6 +779,12 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             not all have parameter of type int with ref modifier,
 					             but all did
+
+					             Collection:
+					             [
+					               void ThatMethods.HaveParameter.NegatedTests.TestClass.MethodWithRefInt(Int32& value),
+					               void ThatMethods.HaveParameter.NegatedTests.TestClass.AnotherMethodWithRefInt(Int32& number)
+					             ]
 					             """);
 			}
 
@@ -783,6 +912,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int at index 0,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithStringAndInt(string name, int value)
+					             ]
 					             """);
 			}
 
@@ -926,6 +1060,11 @@ public sealed partial class ThatMethods
 					             Expected that methods
 					             all have parameter of type int at index 0,
 					             but at least one did not
+
+					             Not matching items:
+					             [
+					               void ThatMethods.HaveParameter.ChainingTests.TestClass.MethodWithStringAndInt(string name, int value)
+					             ]
 					             """);
 			}
 

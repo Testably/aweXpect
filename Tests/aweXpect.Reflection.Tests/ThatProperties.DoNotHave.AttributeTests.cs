@@ -29,7 +29,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             all have no ThatProperties.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching properties [
+					             but it contained not matching properties
+
+					             Not matching items:
+					             [
 					               public string ThatProperties.DoNotHave.AttributeTests.TestClass.TestProperty { get; set; }
 					             ]
 					             """);
@@ -53,7 +56,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             not all have no ThatProperties.DoNotHave.AttributeTests.FooAttribute,
-					             but it only contained matching properties [
+					             but it only contained matching properties
+
+					             Collection:
+					             [
 					               public string ThatProperties.DoNotHave.AttributeTests.TestClass.NoAttributeProperty { get; set; }
 					             ]
 					             """);
@@ -76,7 +82,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             all have no ThatProperties.DoNotHave.AttributeTests.FooAttribute,
-					             but it contained not matching properties [
+					             but it contained not matching properties
+
+					             Not matching items:
+					             [
 					               public string ThatProperties.DoNotHave.AttributeTests.TestClass.TestProperty { get; set; }
 					             ]
 					             """);

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using aweXpect.Customization;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Consumers;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Layer1;
@@ -48,7 +48,7 @@ public sealed partial class ThatType
 				// marker attribute of a future compiler version; outside the scope the attribute counts again.
 				Type subject = typeof(ViaAttribute);
 
-				using (Customize.aweXpect.Reflection().ExcludedAttributeTypes()
+				using (Customize.aweXpect.ReflectionSettings().ExcludedAttributeTypes
 					       .Set([typeof(TargetAttribute).FullName!,]))
 				{
 					async Task Act()

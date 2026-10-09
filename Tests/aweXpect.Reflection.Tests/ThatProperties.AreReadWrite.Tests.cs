@@ -40,7 +40,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all read-write,
-					             but it contained not read-write properties [
+					             but it contained not read-write properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -64,7 +67,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are not all read-write,
-					             but it only contained read-write properties [
+					             but it only contained read-write properties
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

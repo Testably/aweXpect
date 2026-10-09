@@ -42,7 +42,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all virtual,
-					             but it contained non-virtual properties [
+					             but it contained non-virtual properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -66,7 +69,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are not all virtual,
-					             but it only contained virtual properties [
+					             but it only contained virtual properties
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -121,7 +127,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all virtual,
-					             but it contained non-virtual properties [
+					             but it contained non-virtual properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

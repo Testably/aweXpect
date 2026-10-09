@@ -12,7 +12,8 @@ public static partial class ThatEvent
 	/// <summary>
 	///     Verifies that the <see cref="EventInfo" /> is sealed.
 	/// </summary>
-	public static AndOrResult<EventInfo?, IThat<EventInfo?>> IsSealed(
+	[GuaranteesNotNull]
+	public static AndOrResult<EventInfo, IThat<EventInfo?>> IsSealed(
 		this IThat<EventInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsSealedConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatEvent
 	/// <summary>
 	///     Verifies that the <see cref="EventInfo" /> is not sealed.
 	/// </summary>
-	public static AndOrResult<EventInfo?, IThat<EventInfo?>> IsNotSealed(
+	[GuaranteesNotNull]
+	public static AndOrResult<EventInfo, IThat<EventInfo?>> IsNotSealed(
 		this IThat<EventInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsSealedConstraint(it, grammars).Invert()),

@@ -11,6 +11,7 @@ public static partial class ThatProperty
 	/// <summary>
 	///     Verifies that the <see cref="PropertyInfo" /> is of exactly type <typeparamref name="TProperty" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertyOfTypeResult<PropertyInfo?, IThat<PropertyInfo?>> IsOfExactType<TProperty>(
 		this IThat<PropertyInfo?> subject)
 		=> IsOfExactType(subject, typeof(TProperty));
@@ -18,6 +19,7 @@ public static partial class ThatProperty
 	/// <summary>
 	///     Verifies that the <see cref="PropertyInfo" /> is of exactly type <paramref name="propertyType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static PropertyOfTypeResult<PropertyInfo?, IThat<PropertyInfo?>> IsOfExactType(
 		this IThat<PropertyInfo?> subject, Type propertyType)
 	{

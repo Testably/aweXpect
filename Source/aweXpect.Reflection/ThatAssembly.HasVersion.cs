@@ -16,7 +16,8 @@ public static partial class ThatAssembly
 	///     Verifies that the <see cref="Assembly" /> has a <see cref="AssemblyName.Version" /> that
 	///     satisfies the <paramref name="predicate" />.
 	/// </summary>
-	public static AndOrResult<Assembly?, IThat<Assembly?>> HasVersion(
+	[GuaranteesNotNull]
+	public static AndOrResult<Assembly, IThat<Assembly?>> HasVersion(
 		this IThat<Assembly?> subject,
 		Func<Version, bool> predicate,
 		[CallerArgumentExpression(nameof(predicate))]
@@ -28,6 +29,7 @@ public static partial class ThatAssembly
 	/// <summary>
 	///     Verifies the individual components of the <see cref="AssemblyName.Version" /> of the <see cref="Assembly" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static HasVersionResult HasVersion(this IThat<Assembly?> subject)
 		=> new(subject);
 
@@ -35,7 +37,7 @@ public static partial class ThatAssembly
 	///     The result of verifying the <see cref="AssemblyName.Version" /> of an <see cref="Assembly" />,
 	///     allowing comparisons on its individual components.
 	/// </summary>
-	public class HasVersionResult : AndOrResult<Assembly?, IThat<Assembly?>>
+	public class HasVersionResult : AndOrResult<Assembly, IThat<Assembly?>>
 	{
 		private readonly List<VersionComponentCheck> _checks = [];
 

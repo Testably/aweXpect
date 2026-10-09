@@ -41,7 +41,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are all not abstract,
-					             but it contained abstract methods [
+					             but it contained abstract methods
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -66,7 +69,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             also contain an abstract method,
-					             but it only contained non-abstract methods [
+					             but it only contained non-abstract methods
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

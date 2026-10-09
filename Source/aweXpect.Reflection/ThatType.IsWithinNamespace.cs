@@ -13,7 +13,8 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> is within the <paramref name="expected" /> namespace
 	///     (including sub-namespaces).
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsWithinNamespace(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsWithinNamespace(
 		this IThat<Type?> subject, string expected)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsWithinNamespaceConstraint(it, grammars, expected)),
@@ -23,7 +24,8 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> is not within the <paramref name="expected" /> namespace
 	///     (including sub-namespaces).
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotWithinNamespace(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotWithinNamespace(
 		this IThat<Type?> subject, string expected)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsWithinNamespaceConstraint(it, grammars, expected).Invert()),

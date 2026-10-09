@@ -29,7 +29,10 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithOneArgument<int>]
 						             are all generic with 2 generic arguments,
-						             but it contained not matching types [
+						             but it contained not matching types
+
+						             Not matching items:
+						             [
 						               ThatTypes.GenericClassWithOneArgument<int>
 						             ]
 						             """);
@@ -53,7 +56,10 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that in types [ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>]
 						             are all generic with 1 generic argument,
-						             but it contained not matching types [
+						             but it contained not matching types
+
+						             Not matching items:
+						             [
 						               ThatTypes.GenericClassWithTwoArguments<int, ThatTypes.BaseClass>
 						             ]
 						             """);
@@ -74,7 +80,10 @@ public sealed partial class ThatTypes
 						.WithMessage("""
 						             Expected that in types [PublicClass, ThatTypes.UnrelatedClass]
 						             are all generic with 1 generic argument,
-						             but it contained not matching types [
+						             but it contained not matching types
+
+						             Not matching items:
+						             [
 						               PublicClass,
 						               ThatTypes.UnrelatedClass
 						             ]

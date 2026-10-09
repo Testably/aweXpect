@@ -42,7 +42,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             all have an init setter,
-					             but it contained properties without an init setter [
+					             but it contained properties without an init setter
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -69,7 +72,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             not all have an init setter,
-					             but it only contained properties with an init setter [
+					             but it only contained properties with an init setter
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

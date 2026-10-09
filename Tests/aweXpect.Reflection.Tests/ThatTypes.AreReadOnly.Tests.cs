@@ -46,7 +46,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all read-only,
-					             but it contained not read-only types [
+					             but it contained not read-only types
+
+					             Not matching items:
+					             [
 					               PublicStruct
 					             ]
 					             """);
@@ -86,7 +89,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all read-only,
-					             but it contained not read-only types [
+					             but it contained not read-only types
+
+					             Not matching items:
+					             [
 					               PublicStruct
 					             ]
 					             """);
@@ -113,7 +119,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are not all read-only,
-					             but it only contained read-only types [
+					             but it only contained read-only types
+
+					             Collection:
+					             [
 					               PublicReadOnlyStruct
 					             ]
 					             """);

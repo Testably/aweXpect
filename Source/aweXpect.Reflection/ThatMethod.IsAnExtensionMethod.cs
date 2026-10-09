@@ -13,7 +13,8 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> is an extension method (whose first parameter is declared with the
 	///     <see langword="this" /> modifier).
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> IsAnExtensionMethod(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsAnExtensionMethod(
 		this IThat<MethodInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAnExtensionMethodConstraint(it, grammars)),
@@ -23,7 +24,8 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> is not an extension method (whose first parameter is not declared with
 	///     the <see langword="this" /> modifier).
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> IsNotAnExtensionMethod(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> IsNotAnExtensionMethod(
 		this IThat<MethodInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAnExtensionMethodConstraint(it, grammars).Invert()),

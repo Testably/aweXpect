@@ -45,7 +45,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are all extension methods,
-					             but it contained non-extension methods [
+					             but it contained non-extension methods
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -70,7 +73,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are not all extension methods,
-					             but it only contained extension methods [
+					             but it only contained extension methods
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -111,7 +117,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are not all extension methods,
-					             but it only contained extension methods [
+					             but it only contained extension methods
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -149,7 +158,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are all extension methods,
-					             but it contained non-extension methods [
+					             but it contained non-extension methods
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -201,7 +213,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             are all extension methods,
-					             but it contained non-extension methods [
+					             but it contained non-extension methods
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -1,4 +1,4 @@
-﻿using aweXpect.Customization;
+using aweXpect.Customization;
 using aweXpect.Reflection.Tests.TestHelpers.Dependencies.Synthetic;
 
 namespace aweXpect.Reflection.Tests.Examples;
@@ -16,7 +16,7 @@ public sealed class CecilDependencyResolverTests
 		await That(subject).DoesNotDependOn(Layer1Namespace);
 
 		// … the Mono.Cecil-backed example resolver reads the IL and detects it, …
-		using (Customize.aweXpect.Reflection().DependencyResolver()
+		using (Customize.aweXpect.ReflectionSettings().DependencyResolver
 			       .Set(CecilDependencyResolver.GetUsedTypes))
 		{
 			await That(subject).DependsOn(Layer1Namespace);

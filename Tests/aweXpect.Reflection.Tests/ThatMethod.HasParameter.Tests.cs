@@ -90,6 +90,25 @@ public sealed partial class ThatMethod
 			}
 
 			[Fact]
+			public async Task HasParameterByName_WhenNameContainsAQuote_ShouldEscapeIt()
+			{
+				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithoutParameters))!;
+
+				async Task Act()
+				{
+					await That(methodInfo).HasParameter("va\"lue");
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that methodInfo
+					             has parameter with name "va\"lue",
+					             but it did not
+					             """)
+					.Because("the name is formatted like every other string value");
+			}
+
+			[Fact]
 			public async Task HasParameterByName_WhenParameterExists_ShouldSucceed()
 			{
 				MethodInfo methodInfo = typeof(TestClass).GetMethod(nameof(TestClass.MethodWithIntAndString))!;

@@ -44,7 +44,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all override a base method,
-					             but it contained methods which do not override a base method [
+					             but it contained methods which do not override a base method
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -69,7 +72,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             do not all override a base method,
-					             but it only contained methods which override a base method [
+					             but it only contained methods which override a base method
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -125,7 +131,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that subject
 					             all override a base method,
-					             but it contained methods which do not override a base method [
+					             but it contained methods which do not override a base method
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -33,7 +33,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all do not depend on namespace "{Layer2Namespace}",
-					              but it contained types with the dependency [
+					              but it contained types with the dependency
+
+					              Not matching items:
+					              [
 					                <null>
 					              ]
 					              """);
@@ -74,7 +77,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all do not depend on namespace "{Layer2Namespace}",
-					              but it contained types with the dependency [
+					              but it contained types with the dependency
+
+					              Not matching items:
+					              [
 					                Layer1AndLayer2
 					              ]
 					              """);
@@ -118,7 +124,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all do not depend on types within namespace "{Layer2Namespace}" in all loaded assemblies,
-					              but it contained types with the dependency [
+					              but it contained types with the dependency
+
+					              Not matching items:
+					              [
 					                Layer1AndLayer2
 					              ]
 					              """);

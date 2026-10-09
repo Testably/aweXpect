@@ -14,6 +14,7 @@ public static partial class ThatConstructor
 	///     Verifies that the <see cref="ConstructorInfo" /> has a parameter of exact type
 	///     <typeparamref name="TParameter" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ParameterCollectionResult<ConstructorInfo?, TParameter> HasParameterExactly<TParameter>(
 		this IThat<ConstructorInfo?> subject)
 	{
@@ -36,6 +37,7 @@ public static partial class ThatConstructor
 	///     Verifies that the <see cref="ConstructorInfo" /> has a parameter of exact type
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamedParameterCollectionResult<ConstructorInfo?, TParameter> HasParameterExactly<TParameter>(
 		this IThat<ConstructorInfo?> subject, string expected)
 	{
@@ -61,6 +63,7 @@ public static partial class ThatConstructor
 	///     Verifies that the <see cref="ConstructorInfo" /> has a parameter of exact type
 	///     <paramref name="parameterType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ParameterCollectionResult<ConstructorInfo?, object?> HasParameterExactly(
 		this IThat<ConstructorInfo?> subject, Type parameterType)
 	{
@@ -82,6 +85,7 @@ public static partial class ThatConstructor
 	///     Verifies that the <see cref="ConstructorInfo" /> has a parameter of exact type
 	///     <paramref name="parameterType" /> with the <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamedParameterCollectionResult<ConstructorInfo?, object?> HasParameterExactly(
 		this IThat<ConstructorInfo?> subject, Type parameterType, string expected)
 	{

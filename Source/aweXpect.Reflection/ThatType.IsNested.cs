@@ -12,7 +12,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is nested.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsNested(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNested(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsNestedConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is not nested.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotNested(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotNested(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsNestedConstraint(it, grammars).Invert()),

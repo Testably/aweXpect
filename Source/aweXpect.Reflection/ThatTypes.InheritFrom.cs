@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
 #if NET8_0_OR_GREATER
@@ -32,6 +33,7 @@ public static partial class ThatTypes
 	///     <typeparamref name="TBaseType" /> to be the direct parent.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> InheritFrom<TBaseType>(
 		this IThat<IEnumerable<Type?>> subject,
 		bool forceDirect = false)
@@ -54,6 +56,7 @@ public static partial class ThatTypes
 	///     <paramref name="baseType" /> to be the direct parent.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> InheritFrom(
 		this IThat<IEnumerable<Type?>> subject,
 		Type baseType,
@@ -82,6 +85,7 @@ public static partial class ThatTypes
 	///     <typeparamref name="TBaseType" /> to be the direct parent.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> InheritFrom<TBaseType>(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		bool forceDirect = false)
@@ -106,6 +110,7 @@ public static partial class ThatTypes
 	///     <paramref name="baseType" /> to be the direct parent.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> InheritFrom(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Type baseType,
@@ -134,6 +139,7 @@ public static partial class ThatTypes
 	///     <typeparamref name="TBaseType" /> to be the direct parent.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotInheritFrom<TBaseType>(
 		this IThat<IEnumerable<Type?>> subject,
 		bool forceDirect = false)
@@ -156,6 +162,7 @@ public static partial class ThatTypes
 	///     <paramref name="baseType" /> to be the direct parent.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotInheritFrom(
 		this IThat<IEnumerable<Type?>> subject,
 		Type baseType,
@@ -184,6 +191,7 @@ public static partial class ThatTypes
 	///     <typeparamref name="TBaseType" /> to be the direct parent.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> DoNotInheritFrom<TBaseType>(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		bool forceDirect = false)
@@ -208,6 +216,7 @@ public static partial class ThatTypes
 	///     <paramref name="baseType" /> to be the direct parent.
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> DoNotInheritFrom(
 		this IThat<IAsyncEnumerable<Type?>> subject,
 		Type baseType,
@@ -225,19 +234,21 @@ public static partial class ThatTypes
 		ExpectationGrammars grammars,
 		Type baseType,
 		bool forceDirect)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, type => type?.InheritsFromClass(baseType, forceDirect) == true);
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context,
+				type => type?.InheritsFromClass(baseType, forceDirect) == true, cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, type => type?.InheritsFromClass(baseType, forceDirect) == true);
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, type => type?.InheritsFromClass(baseType, forceDirect) == true);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -248,12 +259,10 @@ public static partial class ThatTypes
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" contained types that do not inherit ");
+			stringBuilder.Append(It).Append(" contained types that do not inherit ");
 			AppendDirectlyFrom(stringBuilder, forceDirect);
 			Formatter.Format(stringBuilder, baseType);
 
-			stringBuilder.Append(' ');
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -265,11 +274,9 @@ public static partial class ThatTypes
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" only contained types that inherit ");
+			stringBuilder.Append(It).Append(" only contained types that inherit ");
 			AppendDirectlyFrom(stringBuilder, forceDirect);
 			Formatter.Format(stringBuilder, baseType);
-			stringBuilder.Append(' ');
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		private static void AppendDirectlyFrom(StringBuilder stringBuilder, bool forceDirect)
@@ -288,19 +295,21 @@ public static partial class ThatTypes
 		ExpectationGrammars grammars,
 		Type baseType,
 		bool forceDirect)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, type => type?.InheritsFromClass(baseType, forceDirect) != true);
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context,
+				type => type?.InheritsFromClass(baseType, forceDirect) != true, cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, type => type?.InheritsFromClass(baseType, forceDirect) != true);
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, type => type?.InheritsFromClass(baseType, forceDirect) != true);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -311,12 +320,10 @@ public static partial class ThatTypes
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" contained types that inherit ");
+			stringBuilder.Append(It).Append(" contained types that inherit ");
 			AppendDirectlyFrom(stringBuilder, forceDirect);
 			Formatter.Format(stringBuilder, baseType);
 
-			stringBuilder.Append(' ');
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
@@ -328,12 +335,10 @@ public static partial class ThatTypes
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			stringBuilder.Append(it).Append(" only contained types that do not inherit ");
+			stringBuilder.Append(It).Append(" only contained types that do not inherit ");
 			AppendDirectlyFrom(stringBuilder, forceDirect);
 			Formatter.Format(stringBuilder, baseType);
 
-			stringBuilder.Append(' ');
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
 		}
 
 		private static void AppendDirectlyFrom(StringBuilder stringBuilder, bool forceDirect)

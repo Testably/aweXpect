@@ -44,7 +44,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all not abstract,
-					             but it contained abstract properties [
+					             but it contained abstract properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -69,7 +72,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             also contain an abstract property,
-					             but it only contained non-abstract properties [
+					             but it only contained non-abstract properties
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -125,7 +131,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all not abstract,
-					             but it contained abstract properties [
+					             but it contained abstract properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

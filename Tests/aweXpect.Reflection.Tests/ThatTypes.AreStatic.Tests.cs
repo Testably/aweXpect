@@ -22,7 +22,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreStatic
 					             are all static,
-					             but it contained non-static types [
+					             but it contained non-static types
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -73,7 +76,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type is { IsAbstract: true, IsSealed: true, IsInterface: false, } in assembly containing type ThatTypes.AreStatic
 					             are not all static,
-					             but it only contained static types [
+					             but it only contained static types
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -86,7 +86,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types with namespace starting with "aweXpect.Reflection.Tests.Test…" in assembly containing type ThatTypes.AreWithinNamespace.Tests
 					             are all within namespace "aweXpect.Reflection.Tests.TestHelpers.Types.NamespaceScope",
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               *ClassInSiblingNamespaceScope*
 					             ]
 					             """).AsWildcard();

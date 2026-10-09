@@ -44,7 +44,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             all have a setter,
-					             but it contained properties without a setter [
+					             but it contained properties without a setter
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -73,7 +76,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             not all have a setter,
-					             but it only contained properties with a setter [
+					             but it only contained properties with a setter
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

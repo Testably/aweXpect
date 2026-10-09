@@ -39,7 +39,10 @@ public sealed partial class ThatMethods
 					.WithMessage("""
 					             Expected that *
 					             all are internal,
-					             but it contained not matching items [
+					             but it contained not matching items
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -63,6 +66,11 @@ public sealed partial class ThatMethods
 					             Expected that *
 					             not all are internal,
 					             but all were
+
+					             Collection:
+					             [
+					               *
+					             ]
 					             """).AsWildcard();
 			}
 

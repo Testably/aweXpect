@@ -15,7 +15,8 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> has an <see langword="out" /> parameter.
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> HasOutParameter(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> HasOutParameter(
 		this IThat<MethodInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasOutParameterConstraint(it, grammars)),
@@ -25,6 +26,7 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> has an <see langword="out" /> parameter of type
 	///     <typeparamref name="TParameter" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ParameterCollectionResult<MethodInfo?, TParameter> HasOutParameter<TParameter>(
 		this IThat<MethodInfo?> subject)
 		=> subject.HasParameter<TParameter>().WithModifier(p => p.IsOutParameter(), "with out modifier");
@@ -33,6 +35,7 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> has an <see langword="out" /> parameter of type
 	///     <paramref name="parameterType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ParameterCollectionResult<MethodInfo?, object?> HasOutParameter(
 		this IThat<MethodInfo?> subject, Type parameterType)
 		=> subject.HasParameter(parameterType).WithModifier(p => p.IsOutParameter(), "with out modifier");
@@ -41,6 +44,7 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> has an <see langword="out" /> parameter of type
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamedParameterCollectionResult<MethodInfo?, TParameter> HasOutParameter<TParameter>(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameter<TParameter>(expected).WithModifier(p => p.IsOutParameter(), "with out modifier");
@@ -49,6 +53,7 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> has an <see langword="out" /> parameter of type
 	///     <paramref name="parameterType" /> with the <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamedParameterCollectionResult<MethodInfo?, object?> HasOutParameter(
 		this IThat<MethodInfo?> subject, Type parameterType, string expected)
 		=> subject.HasParameter(parameterType, expected).WithModifier(p => p.IsOutParameter(), "with out modifier");
@@ -57,6 +62,7 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> has an <see langword="out" /> parameter with the
 	///     <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamedParameterCollectionResult<MethodInfo?, object?> HasOutParameter(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameter(expected).WithModifier(p => p.IsOutParameter(), "with out modifier");
@@ -65,6 +71,7 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> has an <see langword="out" /> parameter of exact type
 	///     <typeparamref name="TParameter" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ParameterCollectionResult<MethodInfo?, TParameter> HasOutParameterExactly<TParameter>(
 		this IThat<MethodInfo?> subject)
 		=> subject.HasParameterExactly<TParameter>().WithModifier(p => p.IsOutParameter(), "with out modifier");
@@ -73,6 +80,7 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> has an <see langword="out" /> parameter of exact type
 	///     <paramref name="parameterType" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static ParameterCollectionResult<MethodInfo?, object?> HasOutParameterExactly(
 		this IThat<MethodInfo?> subject, Type parameterType)
 		=> subject.HasParameterExactly(parameterType).WithModifier(p => p.IsOutParameter(), "with out modifier");
@@ -81,6 +89,7 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> has an <see langword="out" /> parameter of exact type
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamedParameterCollectionResult<MethodInfo?, TParameter> HasOutParameterExactly<TParameter>(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameterExactly<TParameter>(expected).WithModifier(p => p.IsOutParameter(), "with out modifier");
@@ -89,6 +98,7 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> has an <see langword="out" /> parameter of exact type
 	///     <paramref name="parameterType" /> with the <paramref name="expected" /> name.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamedParameterCollectionResult<MethodInfo?, object?> HasOutParameterExactly(
 		this IThat<MethodInfo?> subject, Type parameterType, string expected)
 		=> subject.HasParameterExactly(parameterType, expected).WithModifier(p => p.IsOutParameter(), "with out modifier");

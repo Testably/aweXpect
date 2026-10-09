@@ -12,7 +12,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is an enum.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsAnEnum(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsAnEnum(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAnEnumConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is not an enum.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotAnEnum(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotAnEnum(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAnEnumConstraint(it, grammars).Invert()),

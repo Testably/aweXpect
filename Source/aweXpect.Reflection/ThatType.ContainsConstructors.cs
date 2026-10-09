@@ -15,6 +15,7 @@ public static partial class ThatType
 	///     By default the assertion succeeds when the type contains at least one matching constructor. Append a quantifier
 	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeContainingMembersResult<Type?> ContainsConstructors(
 		this IThat<Type?> subject,
 		Func<Filtered.Constructors, Filtered.Constructors> filter)

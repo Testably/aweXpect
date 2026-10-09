@@ -13,7 +13,8 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> is a read-only struct
 	///     (declared with the <c>readonly</c> modifier).
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsReadOnly(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsReadOnly(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsReadOnlyConstraint(it, grammars)),
@@ -22,7 +23,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is not a read-only struct.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotReadOnly(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotReadOnly(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsReadOnlyConstraint(it, grammars).Invert()),

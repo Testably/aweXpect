@@ -12,7 +12,8 @@ public static partial class ThatConstructor
 	/// <summary>
 	///     Verifies that the <see cref="ConstructorInfo" /> has the <paramref name="expected" /> number of parameters.
 	/// </summary>
-	public static AndOrResult<ConstructorInfo?, IThat<ConstructorInfo?>> HasParameterCount(
+	[GuaranteesNotNull]
+	public static AndOrResult<ConstructorInfo, IThat<ConstructorInfo?>> HasParameterCount(
 		this IThat<ConstructorInfo?> subject, int expected)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasParameterCountConstraint(it, grammars, expected)),

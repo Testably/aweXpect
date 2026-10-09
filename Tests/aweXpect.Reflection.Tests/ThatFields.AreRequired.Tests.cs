@@ -28,7 +28,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are all required,
-					             but it contained non-required fields [
+					             but it contained non-required fields
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -80,7 +83,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are not all required,
-					             but it only contained required fields [
+					             but it only contained required fields
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -106,7 +112,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are all required,
-					             but it contained non-required fields [
+					             but it contained non-required fields
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

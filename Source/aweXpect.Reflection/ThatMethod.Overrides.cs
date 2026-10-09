@@ -12,7 +12,8 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> overrides a base class method.
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> Overrides(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> Overrides(
 		this IThat<MethodInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new OverridesConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatMethod
 	/// <summary>
 	///     Verifies that the <see cref="MethodInfo" /> does not override a base class method.
 	/// </summary>
-	public static AndOrResult<MethodInfo?, IThat<MethodInfo?>> DoesNotOverride(
+	[GuaranteesNotNull]
+	public static AndOrResult<MethodInfo, IThat<MethodInfo?>> DoesNotOverride(
 		this IThat<MethodInfo?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new OverridesConstraint(it, grammars).Invert()),

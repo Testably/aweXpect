@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Results;
@@ -22,6 +23,7 @@ public static partial class ThatConstructors
 	///     Verifies that none of the items in the filtered collection of <see cref="ConstructorInfo" /> have
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>>> DoNotHave<TAttribute>(
 		this IThat<IEnumerable<ConstructorInfo?>> subject)
 		where TAttribute : Attribute
@@ -40,6 +42,7 @@ public static partial class ThatConstructors
 	///     Verifies that none of the items in the filtered collection of <see cref="ConstructorInfo" /> have
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>>>
 		DoNotHave<TAttribute>(
 			this IThat<IAsyncEnumerable<ConstructorInfo?>> subject)
@@ -59,20 +62,21 @@ public static partial class ThatConstructors
 		string it,
 		ExpectationGrammars grammars,
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions)
-		: CollectionConstraintResult<ConstructorInfo?>(grammars),
-			IValueConstraint<IEnumerable<ConstructorInfo?>>
+		: CollectionConstraintResult<ConstructorInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<ConstructorInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<ConstructorInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<ConstructorInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<ConstructorInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, member => !attributeFilterOptions.Matches(member));
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context,
+				member => !attributeFilterOptions.Matches(member), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<ConstructorInfo?> actual)
-			=> SetValue(actual, member => !attributeFilterOptions.Matches(member));
+		public ConstraintResult IsMetBy(IEnumerable<ConstructorInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, member => !attributeFilterOptions.Matches(member));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -81,10 +85,7 @@ public static partial class ThatConstructors
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching constructors ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching constructors");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -93,9 +94,6 @@ public static partial class ThatConstructors
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching constructors ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching constructors");
 	}
 }

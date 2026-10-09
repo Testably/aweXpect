@@ -13,7 +13,8 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> is a ref struct
 	///     (a stack-only, <c>IsByRefLike</c> value type).
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsARefStruct(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsARefStruct(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsARefStructConstraint(it, grammars)),
@@ -22,7 +23,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is not a ref struct.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotARefStruct(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotARefStruct(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsARefStructConstraint(it, grammars).Invert()),

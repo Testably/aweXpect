@@ -29,7 +29,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all not instantiable,
-					             but it contained instantiable types [
+					             but it contained instantiable types
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -87,7 +90,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             also contain an instantiable type,
-					             but it only contained non-instantiable types [
+					             but it only contained non-instantiable types
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -114,7 +120,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             are all not instantiable,
-					             but it contained instantiable types [
+					             but it contained instantiable types
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -137,7 +146,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that subject
 					             also contain an instantiable type,
-					             but it only contained non-instantiable types [
+					             but it only contained non-instantiable types
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

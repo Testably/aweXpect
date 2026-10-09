@@ -12,7 +12,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> has an accessible parameterless (default) constructor.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> HasADefaultConstructor(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> HasADefaultConstructor(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasADefaultConstructorConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> does not have an accessible parameterless (default) constructor.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> DoesNotHaveADefaultConstructor(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> DoesNotHaveADefaultConstructor(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new HasADefaultConstructorConstraint(it, grammars).Invert()),

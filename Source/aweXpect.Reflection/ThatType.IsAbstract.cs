@@ -16,7 +16,8 @@ public static partial class ThatType
 	///     Static types or interfaces are not considered abstract, even though they
 	///     have <see cref="Type.IsAbstract" /> set to <see langword="true" />.
 	/// </remarks>
-	public static AndOrResult<Type?, IThat<Type?>> IsAbstract(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsAbstract(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAbstractConstraint(it, grammars)),
@@ -29,7 +30,8 @@ public static partial class ThatType
 	///     Static types or interfaces are considered not abstract, even though they
 	///     have <see cref="Type.IsAbstract" /> set to <see langword="true" />.
 	/// </remarks>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotAbstract(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotAbstract(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAbstractConstraint(it, grammars).Invert()),

@@ -15,6 +15,7 @@ public static partial class ThatMember
 	///     Verifies that the <typeparamref name="TMember" /> is obsolete (marked with the
 	///     <see cref="System.ObsoleteAttribute" />).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TMember, IThat<TMember>> IsObsolete<TMember>(
 		this IThat<TMember> subject)
 		where TMember : MemberInfo?
@@ -26,6 +27,7 @@ public static partial class ThatMember
 	///     Verifies that the <typeparamref name="TMember" /> is not obsolete (not marked with the
 	///     <see cref="System.ObsoleteAttribute" />).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<TMember, IThat<TMember>> IsNotObsolete<TMember>(
 		this IThat<TMember> subject)
 		where TMember : MemberInfo?

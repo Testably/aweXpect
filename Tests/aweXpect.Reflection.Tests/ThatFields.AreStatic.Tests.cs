@@ -29,7 +29,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are all static,
-					             but it contained non-static fields [
+					             but it contained non-static fields
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -82,7 +85,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are not all static,
-					             but it only contained static fields [
+					             but it only contained static fields
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -109,7 +115,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are all static,
-					             but it contained non-static fields [
+					             but it contained non-static fields
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -131,7 +140,10 @@ public sealed partial class ThatFields
 					.WithMessage("""
 					             Expected that subject
 					             are not all static,
-					             but it only contained static fields [
+					             but it only contained static fields
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

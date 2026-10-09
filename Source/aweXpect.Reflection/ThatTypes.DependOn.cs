@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Collections;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
@@ -20,6 +21,7 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> depend on (reference in their
 	///     signature) at least one type in one of the <paramref name="namespaces" /> (including sub-namespaces).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamespaceDependencyResult<IEnumerable<Type?>> DependOn(
 		this IThat<IEnumerable<Type?>> subject, params IEnumerable<string> namespaces)
 	{
@@ -36,6 +38,7 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> depend on (reference in their
 	///     signature) at least one type in one of the <paramref name="namespaces" /> (including sub-namespaces).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamespaceDependencyResult<IAsyncEnumerable<Type?>> DependOn(
 		this IThat<IAsyncEnumerable<Type?>> subject, params IEnumerable<string> namespaces)
 	{
@@ -58,6 +61,7 @@ public static partial class ThatTypes
 	///     union of the resolved collections (by <see cref="Type" /> identity; a generic type definition in a
 	///     collection matches any construction of it).
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeSetDependencyResult<IEnumerable<Type?>> DependOn(
 		this IThat<IEnumerable<Type?>> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
@@ -80,6 +84,7 @@ public static partial class ThatTypes
 	///     union of the resolved collections (by <see cref="Type" /> identity; a generic type definition in a
 	///     collection matches any construction of it).
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeSetDependencyResult<IAsyncEnumerable<Type?>> DependOn(
 		this IThat<IAsyncEnumerable<Type?>> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
@@ -96,6 +101,7 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> do not depend on (do not reference
 	///     in their signature) any type in one of the <paramref name="namespaces" /> (including sub-namespaces).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamespaceDependencyResult<IEnumerable<Type?>> DoNotDependOn(
 		this IThat<IEnumerable<Type?>> subject, params IEnumerable<string> namespaces)
 	{
@@ -112,6 +118,7 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> do not depend on (do not reference
 	///     in their signature) any type in one of the <paramref name="namespaces" /> (including sub-namespaces).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamespaceDependencyResult<IAsyncEnumerable<Type?>> DoNotDependOn(
 		this IThat<IAsyncEnumerable<Type?>> subject, params IEnumerable<string> namespaces)
 	{
@@ -134,6 +141,7 @@ public static partial class ThatTypes
 	///     union of the resolved collections (by <see cref="Type" /> identity; a generic type definition in a
 	///     collection matches any construction of it).
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeSetDependencyResult<IEnumerable<Type?>> DoNotDependOn(
 		this IThat<IEnumerable<Type?>> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
@@ -156,6 +164,7 @@ public static partial class ThatTypes
 	///     union of the resolved collections (by <see cref="Type" /> identity; a generic type definition in a
 	///     collection matches any construction of it).
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeSetDependencyResult<IAsyncEnumerable<Type?>> DoNotDependOn(
 		this IThat<IAsyncEnumerable<Type?>> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
@@ -188,159 +197,142 @@ public static partial class ThatTypes
 		string it,
 		ExpectationGrammars grammars,
 		NamespaceDependencyOptions options)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, type => DependsOnNamespace(type, options));
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, type => DependsOnNamespace(type, options), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, type => DependsOnNamespace(type, options));
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, type => DependsOnNamespace(type, options));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all depend on ").Append(options.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained types without the dependency ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained types without the dependency");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all depend on ").Append(options.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained types with the dependency ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained types with the dependency");
 	}
 
 	private sealed class DoNotDependOnConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		NamespaceDependencyOptions options)
-		: CollectionConstraintResult<Type?>(grammars),
-			IValueConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, type => DoesNotDependOnNamespace(type, options));
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, type => DoesNotDependOnNamespace(type, options), cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<Type?> actual)
-			=> SetValue(actual, type => DoesNotDependOnNamespace(type, options));
+		public ConstraintResult IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, type => DoesNotDependOnNamespace(type, options));
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all do not depend on ").Append(options.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained types with the dependency ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained types with the dependency");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all do not depend on ").Append(options.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained types without the dependency ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained types without the dependency");
 	}
 
 	private sealed class DependOnTypeSetConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		TypeSetDependencyOptions options)
-		: CollectionConstraintResult<Type?>(grammars),
-			IAsyncConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IAsyncContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			ResolvedTypeSet targetSet = await options.Resolve(cancellationToken);
-			return await SetAsyncValue(actual, type => DependsOnTypeSet(type, targetSet));
+			return await SetAsyncValue(actual, context, type => DependsOnTypeSet(type, targetSet), cancellationToken);
 		}
 #endif
 
-		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			ResolvedTypeSet targetSet = await options.Resolve(cancellationToken);
-			return SetValue(actual, type => DependsOnTypeSet(type, targetSet));
+			return SetValue(actual, context, type => DependsOnTypeSet(type, targetSet));
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all depend on ").Append(options.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained types without the dependency ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained types without the dependency");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all depend on ").Append(options.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained types with the dependency ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained types with the dependency");
 	}
 
 	private sealed class DoNotDependOnTypeSetConstraint(
 		string it,
 		ExpectationGrammars grammars,
 		TypeSetDependencyOptions options)
-		: CollectionConstraintResult<Type?>(grammars),
-			IAsyncConstraint<IEnumerable<Type?>>
+		: CollectionConstraintResult<Type?>(it, grammars),
+			IAsyncContextConstraint<IEnumerable<Type?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Type?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Type?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			ResolvedTypeSet targetSet = await options.Resolve(cancellationToken);
-			return await SetAsyncValue(actual, type => DoesNotDependOnTypeSet(type, targetSet));
+			return await SetAsyncValue(actual, context,
+				type => DoesNotDependOnTypeSet(type, targetSet), cancellationToken);
 		}
 #endif
 
-		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, CancellationToken cancellationToken)
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Type?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
 		{
 			ResolvedTypeSet targetSet = await options.Resolve(cancellationToken);
-			return SetValue(actual, type => DoesNotDependOnTypeSet(type, targetSet));
+			return SetValue(actual, context, type => DoesNotDependOnTypeSet(type, targetSet));
 		}
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all do not depend on ").Append(options.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained types with the dependency ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained types with the dependency");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all do not depend on ").Append(options.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained types without the dependency ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained types without the dependency");
 	}
 }

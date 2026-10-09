@@ -18,11 +18,12 @@ public static partial class ThatAssembly
 	///     Verifies that the <see cref="Assembly" /> targets the <paramref name="expected" /> framework
 	///     (e.g. <c>net8.0</c>).
 	/// </summary>
-	public static StringEqualityTypeResult<Assembly?, IThat<Assembly?>> Targets(
+	[GuaranteesNotNull]
+	public static StringEqualityTypeResult<Assembly, IThat<Assembly?>> Targets(
 		this IThat<Assembly?> subject, string expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
-		return new StringEqualityTypeResult<Assembly?, IThat<Assembly?>>(
+		return new StringEqualityTypeResult<Assembly, IThat<Assembly?>>(
 			subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new TargetsConstraint(it, grammars, expected, options)),
 			subject,

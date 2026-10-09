@@ -41,7 +41,10 @@ public sealed partial class Filtered
 						.WithMessage("""
 						             Expected that nested types in all loaded assemblies
 						             are all not nested,
-						             but it contained nested types [
+						             but it contained nested types
+
+						             Not matching items:
+						             [
 						               *
 						             ]
 						             """).AsWildcard();
@@ -63,7 +66,10 @@ public sealed partial class Filtered
 						.WithMessage($"""
 						              Expected that {expectedString}nested types in all loaded assemblies
 						              are all not nested,
-						              but it contained nested types [
+						              but it contained nested types
+
+						              Not matching items:
+						              [
 						                *
 						              ]
 						              """).AsWildcard();

@@ -66,7 +66,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all depend only on namespace "{Layer1Namespace}",
-					              but it contained types with disallowed dependencies [
+					              but it contained types with disallowed dependencies
+
+					              Not matching items:
+					              [
 					                <null>
 					              ]
 					              """);
@@ -90,7 +93,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all depend only on namespace "{Layer1Namespace}",
-					              but it contained types with disallowed dependencies [
+					              but it contained types with disallowed dependencies
+
+					              Not matching items:
+					              [
 					                Layer1AndLayer2 depends on ["{Layer2Namespace}"]
 					              ]
 					              """);
@@ -136,7 +142,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all depend only on types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it contained types with disallowed dependencies [
+					              but it contained types with disallowed dependencies
+
+					              Not matching items:
+					              [
 					                ReferencesOwnSubNamespace depends on ["OwnSubTarget"]
 					              ]
 					              """);
@@ -160,7 +169,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              all depend only on types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it contained types with disallowed dependencies [
+					              but it contained types with disallowed dependencies
+
+					              Not matching items:
+					              [
 					                Layer1AndLayer2 depends on ["TargetB"]
 					              ]
 					              """);

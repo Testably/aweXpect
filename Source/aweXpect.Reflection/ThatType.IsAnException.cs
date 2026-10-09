@@ -12,7 +12,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is an exception.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsAnException(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsAnException(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAnExceptionConstraint(it, grammars)),
@@ -21,7 +22,8 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> is not an exception.
 	/// </summary>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotAnException(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotAnException(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsAnExceptionConstraint(it, grammars).Invert()),

@@ -40,7 +40,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all writable,
-					             but it contained not writable properties [
+					             but it contained not writable properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -64,7 +67,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are not all writable,
-					             but it only contained writable properties [
+					             but it only contained writable properties
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

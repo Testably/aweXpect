@@ -15,7 +15,8 @@ public static partial class ThatType
 	/// <remarks>
 	///     Abstract types, static types, interfaces and open generic type definitions are not considered instantiable.
 	/// </remarks>
-	public static AndOrResult<Type?, IThat<Type?>> IsInstantiable(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsInstantiable(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsInstantiableConstraint(it, grammars)),
@@ -27,7 +28,8 @@ public static partial class ThatType
 	/// <remarks>
 	///     Abstract types, static types, interfaces and open generic type definitions are not considered instantiable.
 	/// </remarks>
-	public static AndOrResult<Type?, IThat<Type?>> IsNotInstantiable(
+	[GuaranteesNotNull]
+	public static AndOrResult<Type, IThat<Type?>> IsNotInstantiable(
 		this IThat<Type?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsInstantiableConstraint(it, grammars).Invert()),

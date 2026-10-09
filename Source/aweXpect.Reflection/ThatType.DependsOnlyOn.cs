@@ -28,6 +28,7 @@ public static partial class ThatType
 	///     <c>Microsoft</c>, so e.g. <c>Microsoft.EntityFrameworkCore</c> is also ignored; forbid such a dependency
 	///     explicitly via <c>DoesNotDependOn</c> or customize the prefixes.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static NamespaceDependencyOnlyOnResult<Type?> DependsOnlyOn(
 		this IThat<Type?> subject, params IEnumerable<string> namespaces)
 	{
@@ -59,6 +60,7 @@ public static partial class ThatType
 	///     <c>Microsoft</c>, so e.g. <c>Microsoft.EntityFrameworkCore</c> is also ignored; forbid such a dependency
 	///     explicitly via <c>DoesNotDependOn</c> or customize the prefixes.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeSetDependencyOnlyOnResult<Type?> DependsOnlyOn(
 		this IThat<Type?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{

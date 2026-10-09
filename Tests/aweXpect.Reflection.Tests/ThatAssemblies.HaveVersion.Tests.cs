@@ -38,7 +38,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have version matching version => version.Major < 0,
-					             but it contained assemblies with a non-matching version *
+					             but it contained assemblies with a non-matching version*
 					             """).AsWildcard();
 			}
 		}
@@ -59,7 +59,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             not all have version matching version => version.Major >= 0,
-					             but it only contained assemblies with a matching version *
+					             but it only contained assemblies with a matching version*
 					             """).AsWildcard();
 			}
 
@@ -161,7 +161,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage($"""
 					              Expected that in assembly containing type PublicAbstractClass
 					              all have major version {wording} {expected},
-					              but it contained assemblies with a non-matching version *
+					              but it contained assemblies with a non-matching version*
 					              """).AsWildcard();
 			}
 
@@ -225,7 +225,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage($"""
 					              Expected that in assembly containing type PublicAbstractClass
 					              all have {name} version greater than {actual},
-					              but it contained assemblies with a non-matching version *
+					              but it contained assemblies with a non-matching version*
 					              """).AsWildcard();
 			}
 
@@ -243,7 +243,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have major version less than 0,
-					             but it contained assemblies with a non-matching version *
+					             but it contained assemblies with a non-matching version*
 					             """).AsWildcard();
 			}
 
@@ -261,7 +261,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             all have major version less than 0,
-					             but it contained assemblies with a non-matching version [
+					             but it contained assemblies with a non-matching version
+
+					             Not matching items:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
@@ -300,7 +303,7 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             not all have major version greater than or equal to 0,
-					             but it only contained assemblies with a matching version *
+					             but it only contained assemblies with a matching version*
 					             """).AsWildcard();
 			}
 
@@ -345,7 +348,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in assembly containing type PublicAbstractClass
 					             not all have major version greater than or equal to 0,
-					             but it only contained assemblies with a matching version [
+					             but it only contained assemblies with a matching version
+
+					             Collection:
+					             [
 					               aweXpect.Reflection.Tests, Version=*, Culture=neutral, PublicKeyToken=null
 					             ]
 					             """).AsWildcard();
@@ -381,7 +387,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in the assemblies [VersionlessAssembly]
 					             all have a version,
-					             but it contained assemblies with a non-matching version [
+					             but it contained assemblies with a non-matching version
+
+					             Not matching items:
+					             [
 					               VersionlessAssembly
 					             ]
 					             """).AsWildcard();
@@ -401,7 +410,10 @@ public sealed partial class ThatAssemblies
 					.WithMessage("""
 					             Expected that in the assemblies [VersionlessAssembly]
 					             all have major version greater than or equal to 0,
-					             but it contained assemblies with a non-matching version [
+					             but it contained assemblies with a non-matching version
+
+					             Not matching items:
+					             [
 					               VersionlessAssembly
 					             ]
 					             """).AsWildcard();

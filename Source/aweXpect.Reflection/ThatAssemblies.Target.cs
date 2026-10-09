@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Options;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Results;
@@ -19,6 +20,7 @@ public static partial class ThatAssemblies
 	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> target
 	///     the <paramref name="expected" /> framework (e.g. <c>net8.0</c>).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> Target(
 		this IThat<IEnumerable<Assembly?>> subject, string expected)
 	{
@@ -35,6 +37,7 @@ public static partial class ThatAssemblies
 	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> target
 	///     the <paramref name="expected" /> framework (e.g. <c>net8.0</c>).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>> Target(
 		this IThat<IAsyncEnumerable<Assembly?>> subject, string expected)
 	{
@@ -53,37 +56,34 @@ public static partial class ThatAssemblies
 		ExpectationGrammars grammars,
 		string expected,
 		StringEqualityOptions options)
-		: CollectionConstraintResult<Assembly?>(grammars),
-			IAsyncConstraint<IEnumerable<Assembly?>>
+		: CollectionConstraintResult<Assembly?>(it, grammars),
+			IAsyncContextConstraint<IEnumerable<Assembly?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<Assembly?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<Assembly?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
-		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual,
+		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<Assembly?> actual, IEvaluationContext context,
 			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, assembly => options.AreConsideredEqual(assembly?.GetTargetFramework(), expected));
+			=> await SetAsyncValue(actual, context,
+				assembly => options.AreConsideredEqual(assembly?.GetTargetFramework(), expected), cancellationToken);
 #endif
 
-		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, CancellationToken cancellationToken)
-			=> await SetValue(actual, assembly => options.AreConsideredEqual(assembly?.GetTargetFramework(), expected));
+		public async ValueTask<ConstraintResult> IsMetBy(IEnumerable<Assembly?> actual, IEvaluationContext context,
+			CancellationToken cancellationToken)
+			=> await SetValue(actual, context,
+				assembly => options.AreConsideredEqual(assembly?.GetTargetFramework(), expected), cancellationToken);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("all target ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching assemblies ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching assemblies");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("not all target ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching assemblies ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching assemblies");
 	}
 }

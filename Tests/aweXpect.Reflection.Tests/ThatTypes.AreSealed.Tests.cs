@@ -23,7 +23,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types in assembly containing type ThatTypes.AreSealed
 					             are all sealed,
-					             but it contained non-sealed types [
+					             but it contained non-sealed types
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -74,7 +77,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that types matching type => type is { IsAbstract: false, IsSealed: true, IsInterface: false, } in assembly containing type ThatTypes.AreSealed
 					             are not all sealed,
-					             but it only contained sealed types [
+					             but it only contained sealed types
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

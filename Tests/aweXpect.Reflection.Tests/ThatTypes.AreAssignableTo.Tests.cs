@@ -53,7 +53,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedClass1, ThatTypes.UnrelatedClass]
 					             are all assignable to ThatTypes.BaseClass,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.UnrelatedClass
 					             ]
 					             """);
@@ -95,7 +98,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedClass1, ThatTypes.DerivedClass2]
 					             are not all assignable to ThatTypes.BaseClass,
-					             but it only contained matching types [
+					             but it only contained matching types
+
+					             Collection:
+					             [
 					               ThatTypes.DerivedClass1,
 					               ThatTypes.DerivedClass2
 					             ]
@@ -151,7 +157,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.DerivedClass1]
 					             are all not assignable to ThatTypes.BaseClass,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.DerivedClass1
 					             ]
 					             """);
@@ -174,7 +183,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.UnrelatedClass]
 					             also contain a type assignable to ThatTypes.BaseClass,
-					             but it only contained matching types [
+					             but it only contained matching types
+
+					             Collection:
+					             [
 					               ThatTypes.UnrelatedClass
 					             ]
 					             """);
@@ -229,7 +241,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.BaseClass, ThatTypes.UnrelatedClass]
 					             are all assignable from ThatTypes.DerivedClass1,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.UnrelatedClass
 					             ]
 					             """);
@@ -252,7 +267,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.BaseClass, ThatTypes.DerivedClass1]
 					             are not all assignable from ThatTypes.GrandChildClass,
-					             but it only contained matching types [
+					             but it only contained matching types
+
+					             Collection:
+					             [
 					               ThatTypes.BaseClass,
 					               ThatTypes.DerivedClass1
 					             ]
@@ -308,7 +326,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.BaseClass]
 					             are all not assignable from ThatTypes.DerivedClass1,
-					             but it contained not matching types [
+					             but it contained not matching types
+
+					             Not matching items:
+					             [
 					               ThatTypes.BaseClass
 					             ]
 					             """);
@@ -331,7 +352,10 @@ public sealed partial class ThatTypes
 					.WithMessage("""
 					             Expected that in types [ThatTypes.UnrelatedClass]
 					             also contain a type assignable from ThatTypes.DerivedClass1,
-					             but it only contained matching types [
+					             but it only contained matching types
+
+					             Collection:
+					             [
 					               ThatTypes.UnrelatedClass
 					             ]
 					             """);

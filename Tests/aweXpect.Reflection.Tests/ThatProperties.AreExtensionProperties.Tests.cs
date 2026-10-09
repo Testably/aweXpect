@@ -40,7 +40,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all extension properties,
-					             but it contained non-extension properties [
+					             but it contained non-extension properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -66,7 +69,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all extension properties,
-					             but it contained non-extension properties [
+					             but it contained non-extension properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -113,7 +119,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are not all extension properties,
-					             but it only contained extension properties [
+					             but it only contained extension properties
+
+					             Collection:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();
@@ -138,7 +147,10 @@ public sealed partial class ThatProperties
 					.WithMessage("""
 					             Expected that subject
 					             are all extension properties,
-					             but it contained non-extension properties [
+					             but it contained non-extension properties
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

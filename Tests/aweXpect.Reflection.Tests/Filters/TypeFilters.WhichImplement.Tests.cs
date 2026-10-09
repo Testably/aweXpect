@@ -34,7 +34,10 @@ public sealed partial class TypeFilters
 					.WithMessage("""
 					             Expected that types which implement TypeFilters.WhichImplement.Tests.IFoo in assembly containing type TypeFilters.WhichImplement
 					             are all abstract,
-					             but it contained non-abstract types [
+					             but it contained non-abstract types
+
+					             Not matching items:
+					             [
 					               TypeFilters.WhichImplement.Tests.FooImpl
 					             ]
 					             """);
@@ -92,7 +95,10 @@ public sealed partial class TypeFilters
 					.WithMessage("""
 					             Expected that types which do not implement TypeFilters.WhichDoNotImplement.Tests.IFoo in assembly containing type TypeFilters.WhichDoNotImplement
 					             are all abstract,
-					             but it contained non-abstract types [
+					             but it contained non-abstract types
+
+					             Not matching items:
+					             [
 					               *
 					             ]
 					             """).AsWildcard();

@@ -15,6 +15,7 @@ public static partial class ThatConstructor
 	/// <summary>
 	///     Verifies that the <see cref="ConstructorInfo" /> has attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static HasAttributeWithoutInheritResult<ConstructorInfo?> Has<TAttribute>(
 		this IThat<ConstructorInfo?> subject)
 		where TAttribute : Attribute
@@ -32,6 +33,7 @@ public static partial class ThatConstructor
 	///     Verifies that the <see cref="ConstructorInfo" /> has attribute of type <typeparamref name="TAttribute" /> that
 	///     matches the <paramref name="predicate" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static HasAttributeWithoutInheritResult<ConstructorInfo?> Has<TAttribute>(
 		this IThat<ConstructorInfo?> subject,
 		Func<TAttribute, bool> predicate,

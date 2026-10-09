@@ -5,8 +5,8 @@ using System.Text;
 namespace aweXpect.Reflection.Helpers;
 
 /// <summary>
-///     Renders the grouped failure output of the depend-only-on and has-dependencies-outside constraints: one
-///     indented line per failing item, each followed by its list of dependencies outside the allowed set.
+///     Renders the items of the depend-only-on and has-dependencies-outside constraints: one indented line per item,
+///     each followed by its list of dependencies outside the allowed set.
 /// </summary>
 /// <remarks>
 ///     Shared between the assembly-level and the type-level constraints, so that the formatting (indentation,
@@ -15,29 +15,25 @@ namespace aweXpect.Reflection.Helpers;
 internal static class DependencyViolationRenderer
 {
 	/// <summary>
-	///     Appends <c>{it}{header}[</c>, one indented line per item in <paramref name="items" /> (appending
-	///     <c> depends on […]</c> when <paramref name="violations" /> has an entry for it), and a closing <c>]</c>.
+	///     Formats the <paramref name="items" /> as a list with one line per item (appending
+	///     <c> depends on […]</c> when <paramref name="violations" /> has an entry for it).
 	/// </summary>
 	/// <remarks>
 	///     A <see langword="null" /> item has no violations to list; it fails because it cannot satisfy the
 	///     expectation, so it is rendered without a (contradictory empty) violation list.
 	/// </remarks>
-	public static void AppendItemsWithDisallowedDependencies<TItem, TViolations>(
-		StringBuilder stringBuilder,
-		string it,
-		string header,
+	public static string FormatItemsWithDisallowedDependencies<TItem, TViolations>(
 		IReadOnlyList<TItem?> items,
-		IReadOnlyDictionary<TItem, TViolations> violations,
-		string? indentation)
+		IReadOnlyDictionary<TItem, TViolations> violations)
 		where TItem : class
 		where TViolations : IEnumerable<string?>
 	{
-		string itemIndentation = (indentation ?? string.Empty) + "  ";
-		stringBuilder.Append(it).Append(header).Append('[');
+		StringBuilder stringBuilder = new();
+		stringBuilder.Append('[');
 		for (int index = 0; index < items.Count; index++)
 		{
 			TItem? item = items[index];
-			stringBuilder.Append(Environment.NewLine).Append(itemIndentation)
+			stringBuilder.Append(Environment.NewLine).Append("  ")
 				.Append(Formatter.Format(item));
 
 			if (item is not null && violations.TryGetValue(item, out TViolations? value))
@@ -51,6 +47,6 @@ internal static class DependencyViolationRenderer
 			}
 		}
 
-		stringBuilder.Append(Environment.NewLine).Append(indentation).Append(']');
+		return stringBuilder.Append(Environment.NewLine).Append(']').ToString();
 	}
 }

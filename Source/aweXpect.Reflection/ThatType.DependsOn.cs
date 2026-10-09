@@ -19,6 +19,7 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> depends on (references in its signature) at least one type in one of
 	///     the <paramref name="namespaces" /> (including sub-namespaces).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamespaceDependencyResult<Type?> DependsOn(
 		this IThat<Type?> subject, params IEnumerable<string> namespaces)
 	{
@@ -33,6 +34,7 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> depends on (references in its signature) the type <typeparamref name="T" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static TypeDependencyResult<Type?> DependsOn<T>(
 		this IThat<Type?> subject)
 		=> subject.DependsOn(typeof(T));
@@ -40,6 +42,7 @@ public static partial class ThatType
 	/// <summary>
 	///     Verifies that the <see cref="Type" /> depends on (references in its signature) the <paramref name="type" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static TypeDependencyResult<Type?> DependsOn(
 		this IThat<Type?> subject, Type type)
 	{
@@ -60,6 +63,7 @@ public static partial class ThatType
 	///     union of the resolved collections (by <see cref="Type" /> identity; a generic type definition in a
 	///     collection matches any construction of it).
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeSetDependencyResult<Type?> DependsOn(
 		this IThat<Type?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
@@ -75,6 +79,7 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> does not depend on (does not reference in its signature) any type in
 	///     one of the <paramref name="namespaces" /> (including sub-namespaces).
 	/// </summary>
+	[GuaranteesNotNull]
 	public static NamespaceDependencyResult<Type?> DoesNotDependOn(
 		this IThat<Type?> subject, params IEnumerable<string> namespaces)
 	{
@@ -90,6 +95,7 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> does not depend on (does not reference in its signature) the type
 	///     <typeparamref name="T" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static TypeDependencyResult<Type?> DoesNotDependOn<T>(
 		this IThat<Type?> subject)
 		=> subject.DoesNotDependOn(typeof(T));
@@ -98,6 +104,7 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> does not depend on (does not reference in its signature) the
 	///     <paramref name="type" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static TypeDependencyResult<Type?> DoesNotDependOn(
 		this IThat<Type?> subject, Type type)
 	{
@@ -118,6 +125,7 @@ public static partial class ThatType
 	///     union of the resolved collections (by <see cref="Type" /> identity; a generic type definition in a
 	///     collection matches any construction of it).
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static TypeSetDependencyResult<Type?> DoesNotDependOn(
 		this IThat<Type?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{

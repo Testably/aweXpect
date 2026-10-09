@@ -121,7 +121,7 @@ internal static class AssemblyHelpers
 	///     Shared by the single-assembly and collection assertions and the assembly filter, so that the three
 	///     code paths cannot drift apart in how a disallowed dependency is determined.
 	/// </remarks>
-	public static async Task<string?[]> GetDisallowedAssemblyDependencies(this Assembly assembly,
+	public static async ValueTask<string?[]> GetDisallowedAssemblyDependencies(this Assembly assembly,
 		string[] allowed, StringEqualityOptions options)
 	{
 		string[] prefixes = Customize.aweXpect.Reflection().ExcludedAssemblyPrefixes.Get();

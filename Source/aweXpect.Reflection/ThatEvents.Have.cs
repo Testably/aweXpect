@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Core.EvaluationContext;
 using aweXpect.Reflection.Helpers;
 using aweXpect.Reflection.Options;
 using aweXpect.Reflection.Results;
@@ -27,6 +28,7 @@ public static partial class ThatEvents
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static HaveAttributeResult<EventInfo?, IEnumerable<EventInfo?>> Have<TAttribute>(
 		this IThat<IEnumerable<EventInfo?>> subject, bool inherit = true)
 		where TAttribute : Attribute
@@ -49,6 +51,7 @@ public static partial class ThatEvents
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static HaveAttributeResult<EventInfo?, IEnumerable<EventInfo?>> Have<TAttribute>(
 		this IThat<IEnumerable<EventInfo?>> subject,
 		Func<TAttribute, bool> predicate,
@@ -76,6 +79,7 @@ public static partial class ThatEvents
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static HaveAttributeResult<EventInfo?, IAsyncEnumerable<EventInfo?>> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<EventInfo?>> subject, bool inherit = true)
 		where TAttribute : Attribute
@@ -100,6 +104,7 @@ public static partial class ThatEvents
 	///     The optional parameter <paramref name="inherit" /> (default value <see langword="true" /> specifies, if
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static HaveAttributeResult<EventInfo?, IAsyncEnumerable<EventInfo?>> Have<TAttribute>(
 		this IThat<IAsyncEnumerable<EventInfo?>> subject,
 		Func<TAttribute, bool> predicate,
@@ -123,20 +128,20 @@ public static partial class ThatEvents
 		string it,
 		ExpectationGrammars grammars,
 		AttributeFilterOptions<EventInfo?> attributeFilterOptions)
-		: CollectionConstraintResult<EventInfo?>(grammars),
-			IValueConstraint<IEnumerable<EventInfo?>>
+		: CollectionConstraintResult<EventInfo?>(it, grammars),
+			IContextConstraint<IEnumerable<EventInfo?>>
 #if NET8_0_OR_GREATER
-			, IAsyncConstraint<IAsyncEnumerable<EventInfo?>>
+			, IAsyncContextConstraint<IAsyncEnumerable<EventInfo?>>
 #endif
 	{
 #if NET8_0_OR_GREATER
 		public async ValueTask<ConstraintResult> IsMetBy(IAsyncEnumerable<EventInfo?> actual,
-			CancellationToken cancellationToken)
-			=> await SetAsyncValue(actual, attributeFilterOptions.Matches);
+			IEvaluationContext context, CancellationToken cancellationToken)
+			=> await SetAsyncValue(actual, context, attributeFilterOptions.Matches, cancellationToken);
 #endif
 
-		public ConstraintResult IsMetBy(IEnumerable<EventInfo?> actual)
-			=> SetValue(actual, attributeFilterOptions.Matches);
+		public ConstraintResult IsMetBy(IEnumerable<EventInfo?> actual, IEvaluationContext context)
+			=> SetValue(actual, context, attributeFilterOptions.Matches);
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -145,10 +150,7 @@ public static partial class ThatEvents
 		}
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" contained not matching events ");
-			Formatter.Format(stringBuilder, NotMatching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" contained not matching events");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{
@@ -157,9 +159,6 @@ public static partial class ThatEvents
 		}
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(it).Append(" only contained matching events ");
-			Formatter.Format(stringBuilder, Matching, FormattingOptions.Indented(indentation ?? ""));
-		}
+			=> stringBuilder.Append(It).Append(" only contained matching events");
 	}
 }
