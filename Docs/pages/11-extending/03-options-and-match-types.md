@@ -164,7 +164,8 @@ await Expect.That(track).IsEqualTo(new Track("Hey Jude", new TimeSpan(0, 7, 4)))
   `AreConsideredEqual` returns whether the strings are equal as a `StringMatchResult`, to which a `bool` converts, or
   `StringMatchResult.NotComparable(reason)` for a subject that it cannot compare at all, e.g. a string that is no valid
   JSON: the expectation and its negation then both fail, with the reason as the result, e.g. "it could not be parsed
-  as JSON". In a collection, "it" can also stand for an item, so name the value in the reason where that helps.
+  as JSON". Start the reason with "it": aweXpect replaces it with the member name inside `Whose`, or with "an item" in
+  a collection, so name the value in the reason as well.
 
 <details>
 <summary>Match results, multi-line texts and equivalency</summary>

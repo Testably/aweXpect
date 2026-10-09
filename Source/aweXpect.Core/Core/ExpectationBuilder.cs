@@ -149,7 +149,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<string, ExpectationGrammars, IValueConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(_it, ExpectationGrammars));
+		_node.AddConstraint(constraintBuilder(_it, ExpectationGrammars), _it);
 		return this;
 	}
 
@@ -164,7 +164,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<ExpectationBuilder, string, ExpectationGrammars, IValueConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(this, _it, ExpectationGrammars));
+		_node.AddConstraint(constraintBuilder(this, _it, ExpectationGrammars), _it);
 		return this;
 	}
 
@@ -179,7 +179,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<string, ExpectationGrammars, IContextConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(_it, ExpectationGrammars));
+		_node.AddConstraint(constraintBuilder(_it, ExpectationGrammars), _it);
 		return this;
 	}
 
@@ -194,7 +194,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<ExpectationBuilder, string, ExpectationGrammars, IContextConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(this, _it, ExpectationGrammars));
+		_node.AddConstraint(constraintBuilder(this, _it, ExpectationGrammars), _it);
 		return this;
 	}
 
@@ -209,7 +209,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<string, ExpectationGrammars, IAsyncConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(_it, ExpectationGrammars));
+		_node.AddConstraint(constraintBuilder(_it, ExpectationGrammars), _it);
 		return this;
 	}
 
@@ -224,7 +224,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<ExpectationBuilder, string, ExpectationGrammars, IAsyncConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(this, _it, ExpectationGrammars));
+		_node.AddConstraint(constraintBuilder(this, _it, ExpectationGrammars), _it);
 		return this;
 	}
 
@@ -239,7 +239,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<string, ExpectationGrammars, IAsyncContextConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(_it, ExpectationGrammars));
+		_node.AddConstraint(constraintBuilder(_it, ExpectationGrammars), _it);
 		return this;
 	}
 
@@ -254,7 +254,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TValue>(
 		Func<ExpectationBuilder, string, ExpectationGrammars, IAsyncContextConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(this, _it, ExpectationGrammars));
+		_node.AddConstraint(constraintBuilder(this, _it, ExpectationGrammars), _it);
 		return this;
 	}
 
@@ -272,7 +272,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, string, ExpectationGrammars, IValueConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(state, _it, ExpectationGrammars));
+		_node.AddConstraint(constraintBuilder(state, _it, ExpectationGrammars), _it);
 		return this;
 	}
 
@@ -291,7 +291,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, ExpectationBuilder, string, ExpectationGrammars, IValueConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(state, this, _it, ExpectationGrammars));
+		_node.AddConstraint(constraintBuilder(state, this, _it, ExpectationGrammars), _it);
 		return this;
 	}
 
@@ -309,7 +309,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, string, ExpectationGrammars, IContextConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(state, _it, ExpectationGrammars));
+		_node.AddConstraint(constraintBuilder(state, _it, ExpectationGrammars), _it);
 		return this;
 	}
 
@@ -328,7 +328,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, ExpectationBuilder, string, ExpectationGrammars, IContextConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(state, this, _it, ExpectationGrammars));
+		_node.AddConstraint(constraintBuilder(state, this, _it, ExpectationGrammars), _it);
 		return this;
 	}
 
@@ -346,7 +346,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, string, ExpectationGrammars, IAsyncConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(state, _it, ExpectationGrammars));
+		_node.AddConstraint(constraintBuilder(state, _it, ExpectationGrammars), _it);
 		return this;
 	}
 
@@ -365,7 +365,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, ExpectationBuilder, string, ExpectationGrammars, IAsyncConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(state, this, _it, ExpectationGrammars));
+		_node.AddConstraint(constraintBuilder(state, this, _it, ExpectationGrammars), _it);
 		return this;
 	}
 
@@ -383,7 +383,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, string, ExpectationGrammars, IAsyncContextConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(state, _it, ExpectationGrammars));
+		_node.AddConstraint(constraintBuilder(state, _it, ExpectationGrammars), _it);
 		return this;
 	}
 
@@ -402,7 +402,7 @@ public abstract class ExpectationBuilder
 	public ExpectationBuilder AddConstraint<TState, TValue>(TState state,
 		Func<TState, ExpectationBuilder, string, ExpectationGrammars, IAsyncContextConstraint<TValue>> constraintBuilder)
 	{
-		_node.AddConstraint(constraintBuilder(state, this, _it, ExpectationGrammars));
+		_node.AddConstraint(constraintBuilder(state, this, _it, ExpectationGrammars), _it);
 		return this;
 	}
 
@@ -483,7 +483,7 @@ public abstract class ExpectationBuilder
 		if (sourceConstraint is not null)
 		{
 			IValueConstraint<TSource> constraint = sourceConstraint.Invoke(_it, ExpectationGrammars);
-			_node.AddConstraint(constraint);
+			_node.AddConstraint(constraint, _it);
 		}
 
 		Node root = _node;

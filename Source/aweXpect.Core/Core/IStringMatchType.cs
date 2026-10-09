@@ -26,7 +26,8 @@ public interface IStringMatchType
 	/// <remarks>
 	///     Return <see cref="StringMatchResult.NotComparable(string, System.Exception)" /> when the
 	///     <paramref name="actual" /> value cannot be compared at all, e.g. a string that is no valid JSON, so that the
-	///     expectation fails in both polarities, instead of the negated expectation succeeding.
+	///     expectation fails in both polarities, instead of the negated expectation succeeding. Start its reason with
+	///     "it", which the failure message replaces with the name of the compared string, e.g. a member name.
 	/// </remarks>
 	ValueTask<StringMatchResult>
 		AreConsideredEqual(string? actual, string? expected,

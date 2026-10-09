@@ -12,7 +12,9 @@ internal abstract class Node
 	/// <summary>
 	///     Add a constraint to the current node.
 	/// </summary>
-	public abstract void AddConstraint(IConstraint constraint);
+	/// <param name="constraint">The constraint.</param>
+	/// <param name="it">The name of the subject that the <paramref name="constraint" /> received.</param>
+	public abstract void AddConstraint(IConstraint constraint, string it = "it");
 
 	/// <summary>
 	///     Adds the <paramref name="mappingNode" />, which maps the value to a member and applies the following

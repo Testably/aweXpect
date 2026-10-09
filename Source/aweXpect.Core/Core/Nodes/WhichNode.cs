@@ -48,8 +48,8 @@ internal class WhichNode<TSource, TMember> : Node
 	}
 
 	/// <inheritdoc />
-	public override void AddConstraint(IConstraint constraint)
-		=> _inner?.AddConstraint(constraint);
+	public override void AddConstraint(IConstraint constraint, string it = "it")
+		=> _inner?.AddConstraint(constraint, it);
 
 	/// <inheritdoc />
 	public override Node AddMapping(MappingNode mappingNode)

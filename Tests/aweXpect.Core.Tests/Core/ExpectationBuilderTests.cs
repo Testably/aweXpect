@@ -1084,6 +1084,25 @@ public class ExpectationBuilderTests
 	}
 
 	[Test]
+	public async Task WhenAMemberCannotBeCompared_ShouldNameTheMemberInTheReason()
+	{
+		Pair subject = new(1, 2);
+
+		async Task Act()
+			=> await That(subject).Whose(x => x.Second, second => second.Get().ExpectationBuilder
+				.AddConstraint((_, _) => new DescribingConstraint<int>("the second",
+					new UserCodeException(new NotComparableException("it was no number", null)))));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage("""
+			             Expected that subject
+			             whose Second is described,
+			             but Second was no number
+			             """)
+			.Because("the leading \"it\" of the reason stands for the member that could not be compared");
+	}
+
+	[Test]
 	public async Task WhenCancellationIsRequestedWhileAConstraintAwaits_ShouldBeInconclusive()
 	{
 		using CancellationTokenSource cts = new();

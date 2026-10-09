@@ -44,8 +44,8 @@ internal abstract class JunctionNode : Node
 	protected abstract bool SkipsFollowingOperands(ConstraintResult result, ConstraintResult combinedResult);
 
 	/// <inheritdoc />
-	public override void AddConstraint(IConstraint constraint)
-		=> Current.AddConstraint(constraint);
+	public override void AddConstraint(IConstraint constraint, string it = "it")
+		=> Current.AddConstraint(constraint, it);
 
 	/// <inheritdoc />
 	public override Node AddMapping(MappingNode mappingNode)

@@ -18,6 +18,8 @@ internal class ExpectationNode : Node
 
 	private Node? _inner;
 
+	private string _it = "it";
+
 	private List<IBecauseReason>? _reasons;
 
 	/// <summary>
@@ -27,15 +29,16 @@ internal class ExpectationNode : Node
 	public bool ContinuesPrecedingOperand { get; init; }
 
 	/// <inheritdoc />
-	public override void AddConstraint(IConstraint constraint)
+	public override void AddConstraint(IConstraint constraint, string it = "it")
 	{
 		if (_inner is not null)
 		{
-			_inner.AddConstraint(constraint);
+			_inner.AddConstraint(constraint, it);
 		}
 		else if (_constraint is null)
 		{
 			_constraint = constraint;
+			_it = it;
 		}
 		else
 		{
@@ -290,7 +293,8 @@ internal class ExpectationNode : Node
 	{
 		ConstraintResult expectation = await GetExpectationResult(_constraint!, context, cancellationToken);
 		ConstraintResult result = exception.Exception is NotComparableException notComparable
-			? new NotComparableResult<TValue?>(expectation, notComparable.Message, notComparable.InnerException, value)
+			? new NotComparableResult<TValue?>(expectation, notComparable.Message, _it, notComparable.InnerException,
+				value)
 			: MemberExceptionResult.FromEvaluation(expectation, exception.Exception, exception.Thrower ?? "it",
 				value);
 		return exception.ItemIndex is null
