@@ -28,6 +28,10 @@ await Expect.That(subject).IsEqualTo(expected).AsJson();
 The expected string must be valid JSON, otherwise an `ArgumentException` is thrown. As JSON is compared by its
 structure, `AsJson()` cannot be combined with `IgnoringCase()` or `Using(comparer)`.
 
+`AsJson()` is not available on `Contains` or `DoesNotContain` for a string subject, as parts of a JSON string are
+usually not valid JSON. Use `IsEqualTo(expected).AsJson()` or `IsValidJsonMatching(expected)` instead. On a collection
+of strings, `Contains(expected).AsJson()` compares each item as JSON.
+
 ## Validation
 
 You can verify, that a string is valid JSON.

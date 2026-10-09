@@ -1,4 +1,5 @@
-﻿using aweXpect.Customization;
+﻿using aweXpect.Core;
+using aweXpect.Customization;
 
 namespace aweXpect.Json.Tests;
 
@@ -38,6 +39,22 @@ public sealed partial class ThatJsonString
 						               "[]"
 						             ]
 						             """");
+				}
+
+				[Theory]
+				[InlineData(nameof(ThatString.Contains))]
+				[InlineData(nameof(ThatString.DoesNotContain))]
+				public async Task ForStringContains_ShouldNotBeAvailable(string methodName)
+				{
+					Type result = typeof(ThatString)
+						.GetMethod(methodName, [typeof(IThat<string?>), typeof(string),])!.ReturnType;
+
+					void Act()
+						=> typeof(JsonExtensions).GetMethod(nameof(JsonExtensions.AsJson))!.MakeGenericMethod(result);
+
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage("GenericArguments[0], ?aweXpect.Results.StringOccurrenceCountResult`2*?TResult?.").AsWildcard()
+						.Because("comparing substrings of a string as JSON is not meaningful, so IsEqualTo(…).AsJson() or IsValidJsonMatching should be used instead");
 				}
 
 				[Fact]
