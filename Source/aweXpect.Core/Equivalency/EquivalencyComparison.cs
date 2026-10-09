@@ -53,10 +53,14 @@ public static partial class EquivalencyComparison
 	///     <paramref name="expected" /> object use, or <see langword="null" /> outside an evaluation.
 	/// </param>
 	/// <param name="cancellationToken">The token that cancels the <paramref name="evaluation" />.</param>
-	internal static async ValueTask<bool>
+	/// <remarks>
+	///     A constraint passes the <see cref="IEvaluationContext" /> and the <see cref="CancellationToken" /> it is
+	///     evaluated with, so that the timeout and the cancellation of its evaluation also end these expectations.
+	/// </remarks>
+	public static async ValueTask<bool>
 		Compare<TActual, TExpected>(
-			TActual actual,
-			TExpected expected,
+			[RequiresMemberMetadata] TActual actual,
+			[RequiresMemberMetadata] TExpected expected,
 			EquivalencyOptions equivalencyOptions,
 			StringBuilder failureBuilder,
 			IEvaluationContext? evaluation,

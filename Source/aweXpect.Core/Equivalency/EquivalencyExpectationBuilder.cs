@@ -31,7 +31,7 @@ internal class EquivalencyExpectationBuilder<T> : EquivalencyExpectationBuilder
 		return sb.ToString();
 	}
 
-	public override async ValueTask<ConstraintResult> IsMetBy<TValue>(
+	private protected override async ValueTask<ConstraintResult> IsMetByCore<TValue>(
 		TValue value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken)
@@ -156,9 +156,49 @@ public abstract class EquivalencyExpectationBuilder : ExpectationBuilder
 		=> GetRootNode().AppendExpectation(stringBuilder, indentation);
 
 	/// <summary>
-	///     Evaluate if the expectations are met by the <paramref name="value" />.
+	///     Evaluate if the expectations are met by the <paramref name="value" /> as part of the evaluation in the
+	///     <paramref name="context" />.
 	/// </summary>
-	public abstract ValueTask<ConstraintResult> IsMetBy<TValue>(
+	/// <remarks>
+	///     The expectations are evaluated in a context of their own, which is canceled and measures the time like the
+	///     evaluation in the <paramref name="context" />, so its timeout and its cancellation also end them. The
+	///     collections they materialize, the reasons they leave pending and the values they store are their own, so
+	///     they never reach the <paramref name="context" />: the reasons are resolved when the expectations are not
+	///     met, and the collections are released before the returned task completes, also when the evaluation throws.
+	/// </remarks>
+	public ValueTask<ConstraintResult> IsMetBy<TValue>(
+		TValue value,
+		IEvaluationContext context,
+		CancellationToken cancellationToken)
+		=> IsMetByInOwnContext(value, context, cancellationToken);
+
+	/// <summary>
+	///     Evaluates the expectations like <see cref="IsMetBy{TValue}(TValue, IEvaluationContext, CancellationToken)" />,
+	///     or on their own, without a timeout, when there is no <paramref name="evaluation" />.
+	/// </summary>
+	internal async ValueTask<ConstraintResult> IsMetByInOwnContext<TValue>(
+		TValue value,
+		IEvaluationContext? evaluation,
+		CancellationToken cancellationToken)
+	{
+		EvaluationContext context = EvaluationContext.ForNestedExpectation(evaluation);
+		try
+		{
+			ConstraintResult result = await IsMetByCore(value, context, cancellationToken);
+			if (result.Outcome != Outcome.Success)
+			{
+				await context.ResolvePendingReasons(cancellationToken);
+			}
+
+			return result;
+		}
+		finally
+		{
+			await context.ReleaseMaterializations();
+		}
+	}
+
+	private protected abstract ValueTask<ConstraintResult> IsMetByCore<TValue>(
 		TValue value,
 		IEvaluationContext context,
 		CancellationToken cancellationToken);

@@ -11,7 +11,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
-using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Helpers;
 using aweXpect.Core.Metadata;
 
@@ -445,9 +444,9 @@ public static partial class EquivalencyComparison
 	///     A separate method, because the comparison of a nested object is on the stack once for every nested level,
 	///     and its state would otherwise also hold the evaluation of the expectation.
 	///     <para />
-	///     The expectation is evaluated in a context of its own, which is canceled and measures the time like the
-	///     evaluation that the comparison is part of: the collections it materializes and the reasons it leaves pending
-	///     only matter until the difference is described, and it is evaluated again for every value it is compared with.
+	///     The expectation is evaluated in a context of its own: the collections it materializes and the reasons it
+	///     leaves pending only matter until the difference is described, and it is evaluated again for every value it
+	///     is compared with.
 	/// </remarks>
 	/// <exception cref="OperationCanceledException">
 	///     The cancellation of the evaluation kept the expectation from deciding, so the values are not compared any
@@ -458,21 +457,8 @@ public static partial class EquivalencyComparison
 		MemberPath memberPath, MemberType memberType, EquivalencyContext context)
 	{
 		CancellationToken cancellationToken = context.CancellationToken;
-		EvaluationContext evaluationContext = EvaluationContext.ForNestedExpectation(context.Evaluation);
-		ConstraintResult? result;
-		try
-		{
-			result = await equivalencyExpectationBuilder.IsMetBy(actual, evaluationContext, cancellationToken);
-			if (result.Outcome != Outcome.Success)
-			{
-				await evaluationContext.ResolvePendingReasons(cancellationToken);
-			}
-		}
-		finally
-		{
-			await evaluationContext.ReleaseMaterializations();
-		}
-
+		ConstraintResult result =
+			await equivalencyExpectationBuilder.IsMetByInOwnContext(actual, context.Evaluation, cancellationToken);
 		if (result.Outcome == Outcome.Success)
 		{
 			return true;
