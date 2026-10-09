@@ -7,6 +7,10 @@ This library will never be able to cope with all ideas and use cases. Therefore,
 This package aims to be more stable than the main aweXpect package, to reduce the risk of version conflicts between
 different extensions.
 
+Reference `aweXpect.Core` in your extension, not `aweXpect`, and use the lowest version that contains the API you
+need, so that the extension works together with as many versions of `aweXpect` as possible. The namespace
+`aweXpect.Core.Internal` may change in any version, so don't use it in the code that your extension ships.
+
 Keep your extensions trimmable and AOT compatible like aweXpect itself, as described in
 [Native AOT for extensions](./09-native-aot.md).
 
@@ -20,7 +24,6 @@ Keep your extensions trimmable and AOT compatible like aweXpect itself, as descr
 | [Customization values](./07-customization-values.md)                               | customization values of your own, with lifetimes                         |
 | [Initialization](./08-initialization.md)                                           | value formatters and test framework adapters                             |
 | [Native AOT for extensions](./09-native-aot.md)                                    | the metadata your expectations need under Native AOT                     |
-| [Testing and packaging](./10-testing-and-packaging.md)                             | testing an extension and referencing aweXpect.Core                       |
 
 ## Your first expectation
 
