@@ -16,7 +16,7 @@ public sealed class CecilDependencyResolverTests
 		await That(subject).DoesNotDependOn(Layer1Namespace);
 
 		// … the Mono.Cecil-backed example resolver reads the IL and detects it, …
-		using (Customize.aweXpect.ReflectionSettings().DependencyResolver
+		using (Customize.aweXpect.Reflection().DependencyResolver()
 			       .Set(CecilDependencyResolver.GetUsedTypes))
 		{
 			await That(subject).DependsOn(Layer1Namespace);

@@ -58,7 +58,7 @@ public sealed class TypeHelpersTests
 	[Fact]
 	public async Task GetDeclaredMethods_WithOnlyAccessorsIncluded_ShouldContainAccessorButNotOperator()
 	{
-		using (Customize.aweXpect.ReflectionSettings().IncludedSpecialNameMembers
+		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
 			       .Set(SpecialNameMembers.Accessors))
 		{
 			MethodInfo[] methods = typeof(OperatorAndAccessorTestClass).GetDeclaredMethods();
@@ -71,7 +71,7 @@ public sealed class TypeHelpersTests
 	[Fact]
 	public async Task GetDeclaredMethods_WithOnlyOperatorsIncluded_ShouldContainOperatorButNotAccessor()
 	{
-		using (Customize.aweXpect.ReflectionSettings().IncludedSpecialNameMembers
+		using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
 			       .Set(SpecialNameMembers.Operators))
 		{
 			MethodInfo[] methods = typeof(OperatorAndAccessorTestClass).GetDeclaredMethods();

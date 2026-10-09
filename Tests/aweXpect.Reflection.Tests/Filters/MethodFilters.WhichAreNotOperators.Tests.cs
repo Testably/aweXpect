@@ -28,7 +28,7 @@ public sealed partial class MethodFilters
 			[Fact]
 			public async Task ShouldExcludeTheSpecificOperatorButKeepOthers()
 			{
-				using (Customize.aweXpect.ReflectionSettings().IncludedSpecialNameMembers
+				using (Customize.aweXpect.Reflection().IncludedSpecialNameMembers()
 					       .Set(SpecialNameMembers.Operators))
 				{
 					Filtered.Methods methods = In.Type<ClassWithOperators>()

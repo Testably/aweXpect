@@ -37,9 +37,7 @@ internal static class TypeHelpers
 	///     same instance on every <c>Get()</c> for its cache bucket to be stable.
 	/// </summary>
 	internal static readonly Func<Type, IEnumerable<Type>> SignatureDependencies =
-		static type => type.GetSignatureDependencies(Settings.ExcludedAttributeTypes.Get());
-
-	private static ReflectionCustomizationExtensions.ReflectionSettingsCustomization? _settings;
+		static type => type.GetSignatureDependencies(Customization.ExcludedAttributeTypes().Get());
 
 	/// <summary>
 	///     Caches the resolved dependencies per resolver and <see cref="Type" />: the outer table is keyed weakly
@@ -56,22 +54,19 @@ internal static class TypeHelpers
 	///     The compiler-generated members that are currently included via customization.
 	/// </summary>
 	private static CompilerGeneratedMembers IncludedCompilerGeneratedMembers
-		=> Settings.IncludedCompilerGeneratedMembers.Get();
+		=> Customization.IncludedCompilerGeneratedMembers().Get();
 
 	/// <summary>
 	///     The special-name methods that are currently included via customization.
 	/// </summary>
 	private static SpecialNameMembers IncludedSpecialNameMembers
-		=> Settings.IncludedSpecialNameMembers.Get();
+		=> Customization.IncludedSpecialNameMembers().Get();
 
 	/// <summary>
-	///     The settings of the current async flow, which fall back to the global ones.
+	///     The reflection customization of the current async flow, which falls back to the global one.
 	/// </summary>
-	/// <remarks>
-	///     Created lazily, because its default dependency resolver is the static <see cref="SignatureDependencies" />.
-	/// </remarks>
-	private static ReflectionCustomizationExtensions.ReflectionSettingsCustomization Settings
-		=> _settings ??= Customize.aweXpect.ReflectionSettings();
+	private static AwexpectCustomization.ReflectionCustomization Customization
+		=> Customize.aweXpect.Reflection();
 
 	/// <summary>
 	///     Searches for constructors in the <paramref name="type" /> that were directly declared there.
@@ -1033,9 +1028,9 @@ internal static class TypeHelpers
 	internal static Type[] ResolveDependencies(this Type type)
 	{
 		Func<Type, IEnumerable<Type>> resolver =
-			Settings.DependencyResolver.Get() ?? SignatureDependencies;
+			Customization.DependencyResolver().Get() ?? SignatureDependencies;
 		if (ReferenceEquals(resolver, SignatureDependencies) &&
-		    Settings.ExcludedAttributeTypes.Get().Length > 0)
+		    Customization.ExcludedAttributeTypes().Get().Length > 0)
 		{
 			// A customized attribute exclusion changes the built-in dependency set, so it must not be baked into
 			// the customization-independent cache; the (rare) customized path recomputes instead.

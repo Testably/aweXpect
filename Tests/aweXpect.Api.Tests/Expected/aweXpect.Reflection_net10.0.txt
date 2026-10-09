@@ -17,14 +17,10 @@ namespace aweXpect.Customization
     }
     public static class ReflectionCustomizationExtensions
     {
-        public static aweXpect.Customization.ReflectionCustomizationExtensions.ReflectionSettingsCustomization ReflectionSettings(this aweXpect.Customization.AwexpectCustomization awexpectCustomization) { }
-        public sealed class ReflectionSettingsCustomization
-        {
-            public aweXpect.Customization.ICustomizationValueSetter<System.Func<System.Type, System.Collections.Generic.IEnumerable<System.Type>>?> DependencyResolver { get; }
-            public aweXpect.Customization.ICustomizationValueSetter<string[]> ExcludedAttributeTypes { get; }
-            public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Customization.CompilerGeneratedMembers> IncludedCompilerGeneratedMembers { get; }
-            public aweXpect.Customization.ICustomizationValueSetter<aweXpect.Customization.SpecialNameMembers> IncludedSpecialNameMembers { get; }
-        }
+        public static aweXpect.Customization.ICustomizationValueSetter<System.Func<System.Type, System.Collections.Generic.IEnumerable<System.Type>>?> DependencyResolver(this aweXpect.Customization.AwexpectCustomization.ReflectionCustomization reflection) { }
+        public static aweXpect.Customization.ICustomizationValueSetter<string[]> ExcludedAttributeTypes(this aweXpect.Customization.AwexpectCustomization.ReflectionCustomization reflection) { }
+        public static aweXpect.Customization.ICustomizationValueSetter<aweXpect.Customization.CompilerGeneratedMembers> IncludedCompilerGeneratedMembers(this aweXpect.Customization.AwexpectCustomization.ReflectionCustomization reflection) { }
+        public static aweXpect.Customization.ICustomizationValueSetter<aweXpect.Customization.SpecialNameMembers> IncludedSpecialNameMembers(this aweXpect.Customization.AwexpectCustomization.ReflectionCustomization reflection) { }
     }
     [System.Flags]
     public enum SpecialNameMembers

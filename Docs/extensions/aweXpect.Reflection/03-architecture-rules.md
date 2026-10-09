@@ -42,7 +42,7 @@ base type, records' synthesized `IEquatable<T>`, delegates' runtime infrastructu
 signature counts), enums' underlying-value plumbing and the attributes the compiler emits onto authored code
 (nullability metadata, required members, async/iterator state machines, …), so the compiler's own plumbing
 never counts. Should a future compiler version emit a marker attribute this library does not know about yet,
-exclude it yourself via `Customize.aweXpect.ReflectionSettings().ExcludedAttributeTypes` (full attribute type names;
+exclude it yourself via `Customize.aweXpect.Reflection().ExcludedAttributeTypes()` (full attribute type names;
 extends the built-in set). Types you write in authored signatures always do count, including primitives and
 `void` return types (namespace `System`); in practice, almost every type with members *does* depend on
 `System`.
@@ -54,7 +54,7 @@ as `new Infra.Foo()`, static calls and local variables are **not** detected. Fun
 Nested types are separate types with their own dependency surface: asserting on `typeof(Outer)` does not
 include what `Outer.Inner` references. The collection-based assertions (e.g. over `Types.InNamespace(…)`)
 enumerate nested types as their own items and therefore cover them. For IL/body-level accuracy, plug in
-your own resolver via `Customize.aweXpect.ReflectionSettings().DependencyResolver` (see
+your own resolver via `Customize.aweXpect.Reflection().DependencyResolver()` (see
 [Configuration](./04-configuration.md#dependency-resolver)).
 :::
 

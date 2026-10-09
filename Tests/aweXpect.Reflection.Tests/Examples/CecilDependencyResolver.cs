@@ -5,7 +5,7 @@ using Mono.Cecil.Cil;
 namespace aweXpect.Reflection.Tests.Examples;
 
 /// <summary>
-///     Example of a custom resolver for <c>Customize.aweXpect.ReflectionSettings().DependencyResolver</c>, backed by
+///     Example of a custom resolver for <c>Customize.aweXpect.Reflection().DependencyResolver()</c>, backed by
 ///     Mono.Cecil: in addition to the declared signature surface it reads method bodies from the IL, so
 ///     references that only occur inside a body (object creations, static calls, locals) are detected as
 ///     dependencies, too, which the built-in signature-level resolver cannot see.
