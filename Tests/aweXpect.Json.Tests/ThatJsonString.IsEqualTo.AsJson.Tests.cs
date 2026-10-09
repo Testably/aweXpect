@@ -91,6 +91,45 @@ public sealed partial class ThatJsonString
 				}
 
 				[Fact]
+				public async Task WhenCollectionIsEmptyAndExpectedIsIncorrectJson_ShouldThrowArgumentException()
+				{
+					string[] subject = [];
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo("foo").AsJson();
+
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage("The expected JSON is invalid: *").AsWildcard()
+						.Because("an invalid expected JSON is rejected also when no item is compared with it");
+				}
+
+				[Fact]
+				public async Task WhenCollectionIsEmptyAndExpectedIsIncorrectJsonWithContains_ShouldThrowArgumentException()
+				{
+					string[] subject = [];
+
+					async Task Act()
+						=> await That(subject).Contains("foo").AsJson();
+
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage("The expected JSON is invalid: *").AsWildcard()
+						.Because("an invalid expected JSON is rejected also when no item is compared with it");
+				}
+
+				[Fact]
+				public async Task WhenCollectionIsEmptyAndExpectedIsNull_ShouldThrowArgumentNullException()
+				{
+					string[] subject = [];
+
+					async Task Act()
+						=> await That(subject).All().AreEqualTo(null).AsJson();
+
+					await That(Act).Throws<ArgumentNullException>()
+						.WithMessage("The expected JSON cannot be null.*").AsWildcard()
+						.Because("a null expected value is rejected also when no item is compared with it");
+				}
+
+				[Fact]
 				public async Task WhenContainsMoreThan10Differences_ShouldLimitListOfDifferences()
 				{
 					string subject = """
@@ -675,6 +714,19 @@ public sealed partial class ThatJsonString
 						             but it was "foo", which could not be parsed as JSON: 'foo' is an invalid JSON literal. Expected the literal 'false'. LineNumber: 0 | BytePositionInLine: 1.
 						             """)
 						.Because("an item that is no JSON is not different from the unexpected JSON either");
+				}
+
+				[Fact]
+				public async Task WhenCollectionIsEmptyAndExpectedIsIncorrectJson_ShouldThrowArgumentException()
+				{
+					string[] subject = [];
+
+					async Task Act()
+						=> await That(subject).DoesNotContain("foo").AsJson();
+
+					await That(Act).Throws<ArgumentException>()
+						.WithMessage("The expected JSON is invalid: *").AsWildcard()
+						.Because("an invalid expected JSON would let the negation pass for every collection");
 				}
 
 				[Fact]

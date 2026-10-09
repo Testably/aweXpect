@@ -9,6 +9,7 @@ namespace aweXpect.Json;
 internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 {
 	private JsonElementValidator.JsonComparisonResult? _comparisonResult;
+	private string? _validatedExpected;
 
 	/// <inheritdoc cref="IStringMatchType.InspectsSubject" />
 	public bool InspectsSubject => true;
@@ -44,9 +45,6 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 	/// </remarks>
 	/// <exception cref="ArgumentNullException">The <paramref name="expected" /> value is <see langword="null" />.</exception>
 	/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid JSON.</exception>
-	/// <exception cref="InvalidOperationException">
-	///     The casing is ignored or a <paramref name="comparer" /> is specified, which a JSON comparison cannot honour.
-	/// </exception>
 	public async ValueTask<StringMatchResult>
 		AreConsideredEqual(
 			string? actual,
@@ -55,7 +53,6 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 			IEqualityComparer<string>? comparer)
 	{
 		_comparisonResult = null;
-		ThrowIfOptionCannotBeHonoured(ignoreCase, comparer);
 		using JsonDocument expectedJson = ParseExpected(expected, options.DocumentOptions);
 		if (actual is null)
 		{
@@ -99,26 +96,16 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 
 	/// <inheritdoc cref="IStringMatchType.GetOptionString(bool, IEqualityComparer{string})" />
 	/// <remarks>
-	///     The casing and a comparer are rejected when the values are compared, so there is no option to describe.
+	///     The casing and a comparer are rejected when they are specified, so there is no option to describe.
 	/// </remarks>
 	public string GetOptionString(bool ignoreCase, IEqualityComparer<string>? comparer)
 		=> "";
 
 	/// <inheritdoc cref="IStringMatchType.ValidateOptions(bool, IEqualityComparer{string})" />
+	/// <exception cref="InvalidOperationException">
+	///     The casing is ignored or a <paramref name="comparer" /> is specified, which a JSON comparison cannot honour.
+	/// </exception>
 	public void ValidateOptions(bool ignoreCase, IEqualityComparer<string>? comparer)
-	{
-	}
-
-	/// <inheritdoc cref="IStringMatchType.ValidateExpected(string?)" />
-	public void ValidateExpected(string? expected)
-	{
-	}
-
-	/// <remarks>
-	///     The options only reach the match type when the values are compared, so unlike for the built-in match types,
-	///     the conflict cannot be rejected when the option is specified.
-	/// </remarks>
-	private static void ThrowIfOptionCannotBeHonoured(bool ignoreCase, IEqualityComparer<string>? comparer)
 	{
 		if (ignoreCase)
 		{
@@ -131,6 +118,23 @@ internal sealed class JsonMatchType(JsonOptions options) : IStringMatchType
 			throw Tracing.WriteException(
 				new InvalidOperationException("Using cannot be combined with AsJson."));
 		}
+	}
+
+	/// <inheritdoc cref="IStringMatchType.ValidateExpected(string?)" />
+	/// <remarks>
+	///     The last accepted value is remembered, because it is validated again for every item of a collection.
+	/// </remarks>
+	/// <exception cref="ArgumentNullException">The <paramref name="expected" /> value is <see langword="null" />.</exception>
+	/// <exception cref="ArgumentException">The <paramref name="expected" /> value is no valid JSON.</exception>
+	public void ValidateExpected(string? expected)
+	{
+		if (expected is not null && string.Equals(expected, _validatedExpected, StringComparison.Ordinal))
+		{
+			return;
+		}
+
+		ParseExpected(expected, options.DocumentOptions).Dispose();
+		_validatedExpected = expected;
 	}
 
 	/// <remarks>
