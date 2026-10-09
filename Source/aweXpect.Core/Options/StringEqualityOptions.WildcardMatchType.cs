@@ -101,16 +101,16 @@ public partial class StringEqualityOptions
 		}
 
 		/// <inheritdoc cref="IStringMatchType.AreConsideredEqual(string?, string?, bool, IEqualityComparer{string})" />
-		public ValueTask<bool>
+		public ValueTask<StringMatchResult>
 			AreConsideredEqual(string? actual, string? expected, bool ignoreCase,
 				IEqualityComparer<string>? comparer)
 		{
 			if (actual is null || expected is null)
 			{
-				return new ValueTask<bool>(false);
+				return new ValueTask<StringMatchResult>(false);
 			}
 
-			return new ValueTask<bool>(Regex.IsMatch(FoldCase(actual, ignoreCase),
+			return new ValueTask<StringMatchResult>(Regex.IsMatch(FoldCase(actual, ignoreCase),
 				WildcardToRegularExpression(FoldCase(expected, ignoreCase)), RegexOptions.Singleline, RegexTimeout));
 		}
 

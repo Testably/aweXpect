@@ -694,3 +694,10 @@ aweXpect.Core.ExpectationBuilder.AddSubjectContexts<TValue>(System.Action<TValue
 aweXpect.Core.IStringMatchType.ValidateExpected(string? expected) -> void
 aweXpect.Core.IStringMatchType.ValidateOptions(bool ignoreCase, System.Collections.Generic.IEqualityComparer<string!>? comparer) -> void
 static aweXpect.Equivalency.EquivalencyComparison.Compare<TActual, TExpected>(TActual actual, TExpected expected, aweXpect.Equivalency.EquivalencyOptions! equivalencyOptions, System.Text.StringBuilder! failureBuilder, aweXpect.Core.EvaluationContext.IEvaluationContext? evaluation, System.Threading.CancellationToken cancellationToken) -> System.Threading.Tasks.ValueTask<bool>
+*REMOVED*aweXpect.Core.IStringMatchType.AreConsideredEqual(string? actual, string? expected, bool ignoreCase, System.Collections.Generic.IEqualityComparer<string!>? comparer) -> System.Threading.Tasks.ValueTask<bool>
+aweXpect.Core.IStringMatchType.AreConsideredEqual(string? actual, string? expected, bool ignoreCase, System.Collections.Generic.IEqualityComparer<string!>? comparer) -> System.Threading.Tasks.ValueTask<aweXpect.Core.StringMatchResult>
+aweXpect.Core.StringMatchResult
+aweXpect.Core.StringMatchResult.IsEqual.get -> bool
+aweXpect.Core.StringMatchResult.StringMatchResult() -> void
+static aweXpect.Core.StringMatchResult.NotComparable(string! reason, System.Exception? cause = null) -> aweXpect.Core.StringMatchResult
+static aweXpect.Core.StringMatchResult.implicit operator aweXpect.Core.StringMatchResult(bool isEqual) -> aweXpect.Core.StringMatchResult

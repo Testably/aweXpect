@@ -90,7 +90,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		if (expected is not string expectedString)
 		{
 			ValidatePattern(null);
-			return _matchType.AreConsideredEqual(actual, null, _ignoreCase, _comparer);
+			return CompareWithMatchType(actual, null);
 		}
 
 		(bool IsStartAnchored, bool IsEndAnchored) anchoredEdges = GetAnchoredEdges();
@@ -135,31 +135,52 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 			return AreConsideredEqualToPatternAsync(actual, expected, regex);
 		}
 
+		return CompareWithMatchType(actual, expected);
+	}
+
+	/// <summary>
+	///     Compares the <paramref name="actual" /> value with the <paramref name="expected" /> value by the match type.
+	/// </summary>
+	/// <remarks>
+	///     A subject that the match type cannot compare is reported like an exception of the caller's code, so that every
+	///     expectation and every collection fails for it in both polarities, without having to check for it.
+	/// </remarks>
+	private ValueTask<bool> CompareWithMatchType(string? actual, string? expected)
+	{
+		ValueTask<StringMatchResult> result;
 		try
 		{
-			return CompletedOrAwaited(_matchType.AreConsideredEqual(actual, expected, _ignoreCase, _comparer),
-				expected);
+			result = _matchType.AreConsideredEqual(actual, expected, _ignoreCase, _comparer);
 		}
 		catch (RegexMatchTimeoutException exception)
 		{
 			throw CreateTimeoutException(expected, exception);
 		}
+
+		if (!result.IsCompletedSuccessfully)
+		{
+			return AwaitTheComparison(result, expected);
+		}
+
+		return new ValueTask<bool>(IsEqualOrThrow(result.Result));
 	}
 
-	private ValueTask<bool> CompletedOrAwaited(ValueTask<bool> isEqual, string expected)
-		=> isEqual.IsCompletedSuccessfully ? isEqual : AwaitTheComparison(isEqual, expected);
-
-	private async ValueTask<bool> AwaitTheComparison(ValueTask<bool> isEqual, string expected)
+	private async ValueTask<bool> AwaitTheComparison(ValueTask<StringMatchResult> result, string? expected)
 	{
 		try
 		{
-			return await isEqual;
+			return IsEqualOrThrow(await result);
 		}
 		catch (RegexMatchTimeoutException exception)
 		{
 			throw CreateTimeoutException(expected, exception);
 		}
 	}
+
+	private static bool IsEqualOrThrow(StringMatchResult result)
+		=> result.NotComparableReason is null
+			? result.IsEqual
+			: throw new UserCodeException(new NotComparableException(result.NotComparableReason, result.Cause));
 
 	private async ValueTask<bool> AreConsideredEqualToPatternAsync(string? actual, string expected, Regex? regex)
 	{
@@ -177,7 +198,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 						=> WildcardMatchType.CreateRegex(pattern, ignoreCase)), actual, _ignoreCase);
 			}
 
-			return await _matchType.AreConsideredEqual(actual, expected, _ignoreCase, _comparer);
+			return await CompareWithMatchType(actual, expected);
 		}
 		catch (RegexMatchTimeoutException exception)
 		{
@@ -277,9 +298,8 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 		int index = 0;
 		while (index < actual.Length)
 		{
-			if (await _matchType.AreConsideredEqual(
-				    actual.Substring(index, Math.Min(expected.Length, actual.Length - index)),
-				    expected, _ignoreCase, _comparer))
+			if (await CompareWithMatchType(
+				    actual.Substring(index, Math.Min(expected.Length, actual.Length - index)), expected))
 			{
 				count++;
 				index += expected.Length;
@@ -606,7 +626,7 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 	///     An <see cref="ArgumentException" /> is not wrapped by the expectation node, so that the pattern which has
 	///     to be simplified stays visible instead of being hidden behind a generic evaluation error.
 	/// </remarks>
-	private ArgumentException CreateTimeoutException(string expected, RegexMatchTimeoutException innerException)
+	private ArgumentException CreateTimeoutException(string? expected, RegexMatchTimeoutException innerException)
 		// ReSharper disable once LocalizableElement
 		=> Tracing.WriteException(new ArgumentException(
 			$"The {(_matchType is RegexMatchType ? "regex" : "wildcard pattern")} {Formatter.Format(expected)} did not complete within {Formatter.Format(RegexTimeout)}. Simplify the pattern to avoid catastrophic backtracking.",

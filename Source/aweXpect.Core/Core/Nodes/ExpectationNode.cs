@@ -282,12 +282,16 @@ internal class ExpectationNode : Node
 	///     The result of a constraint whose evaluation code of the caller ended, naming the item when the code was
 	///     evaluated for one item of a collection.
 	/// </summary>
+	/// <remarks>
+	///     A match type that could not compare the subject explains it with its own reason instead of an exception.
+	/// </remarks>
 	private async Task<ConstraintResult> FromUserCodeException<TValue>(UserCodeException exception, TValue? value,
 		IEvaluationContext context, CancellationToken cancellationToken)
 	{
 		ConstraintResult expectation = await GetExpectationResult(_constraint!, context, cancellationToken);
-		ConstraintResult result =
-			MemberExceptionResult.FromEvaluation(expectation, exception.Exception, exception.Thrower ?? "it",
+		ConstraintResult result = exception.Exception is NotComparableException notComparable
+			? new NotComparableResult<TValue?>(expectation, notComparable.Message, notComparable.InnerException, value)
+			: MemberExceptionResult.FromEvaluation(expectation, exception.Exception, exception.Thrower ?? "it",
 				value);
 		return exception.ItemIndex is null
 			? result
