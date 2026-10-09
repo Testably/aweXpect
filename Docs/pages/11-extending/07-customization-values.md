@@ -110,3 +110,21 @@ without any change: `Customize.aweXpect.Global.MyCustomization().Set(43)` or
 `Global` is an `AwexpectCustomization` as well. Their
 [lifetimes](../03-how-it-works/07-configuration.md#lifetimes-and-async-flows) behave like the ones of the built-in
 values, also when they are disposed out of order.
+
+## Add a value to a built-in group
+
+The built-in groups `Equivalency()`, `Formatting()`, `Reflection()` and `Settings()` implement
+`IAwexpectCustomization` as well, so you can add a value to one of them with an extension method on the group:
+
+```csharp
+public static class MyReflectionCustomizationExtensions
+{
+    public static ICustomizationValueSetter<string[]> ExcludedTypePrefixes(
+        this AwexpectCustomization.ReflectionCustomization reflection)
+        => new CustomizationValue<string[]>(reflection, "MyExtension.Reflection.ExcludedTypePrefixes", []);
+}
+```
+
+Users then find the value next to the built-in ones, e.g. `Customize.aweXpect.Reflection().ExcludedTypePrefixes()`. A
+group stores its values in the customization it was taken from, so
+`Customize.aweXpect.Global.Reflection().ExcludedTypePrefixes().Set(…)` stores the value for all async flows.

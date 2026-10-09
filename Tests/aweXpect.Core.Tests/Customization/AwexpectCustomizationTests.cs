@@ -306,6 +306,28 @@ public class AwexpectCustomizationTests
 	}
 
 	[Test]
+	[Arguments(nameof(AwexpectCustomization.Equivalency))]
+	[Arguments(nameof(AwexpectCustomization.Formatting))]
+	[Arguments(nameof(AwexpectCustomization.Reflection))]
+	[Arguments(nameof(AwexpectCustomization.Settings))]
+	public async Task Global_Group_Set_ShouldApplyToAllFlowsUntilDisposed(string group)
+	{
+		AwexpectCustomization customization = new();
+		IAwexpectCustomization flow = customization;
+		CustomizationValue<string> value = new(GetGroup(customization.Global, group), "my-key", "foo");
+
+		CustomizationLifetime lifetime = await Task.Run(() => value.Set("global"));
+		string valueWhileSet = flow.Get("my-key", "foo");
+		await Task.Run(lifetime.Dispose);
+		string valueAfterDispose = flow.Get("my-key", "foo");
+
+		await That(valueWhileSet).IsEqualTo("global")
+			.Because("a group of the global customization stores its values for all flows");
+		await That(valueAfterDispose).IsEqualTo("foo")
+			.Because("disposing the lifetime removes the global value again");
+	}
+
+	[Test]
 	public async Task Global_PropertyLifetime_Dispose_OutOfOrder_ShouldKeepLaterValueOfSamePropertyUntilItIsDisposed()
 	{
 		AwexpectCustomization customization = new();
@@ -438,6 +460,32 @@ public class AwexpectCustomizationTests
 	}
 
 	[Test]
+	[Arguments(nameof(AwexpectCustomization.Equivalency))]
+	[Arguments(nameof(AwexpectCustomization.Formatting))]
+	[Arguments(nameof(AwexpectCustomization.Reflection))]
+	[Arguments(nameof(AwexpectCustomization.Settings))]
+	public async Task Group_Set_ShouldApplyToTheCurrentFlowUntilDisposed(string group)
+	{
+		AwexpectCustomization customization = new();
+		IAwexpectCustomization flow = customization;
+		IAwexpectCustomization global = customization.Global;
+		CustomizationValue<string> value = new(GetGroup(customization, group), "my-key", "foo");
+
+		CustomizationLifetime lifetime = value.Set("scoped");
+		string valueWhileSet = flow.Get("my-key", "foo");
+		string globalValueWhileSet = global.Get("my-key", "foo");
+		lifetime.Dispose();
+		string valueAfterDispose = value.Get();
+
+		await That(valueWhileSet).IsEqualTo("scoped")
+			.Because("a group stores its values in the customization it belongs to");
+		await That(globalValueWhileSet).IsEqualTo("foo")
+			.Because("a group of the scoped customization stores its values only for the current flow");
+		await That(valueAfterDispose).IsEqualTo("foo")
+			.Because("disposing the lifetime removes the value again");
+	}
+
+	[Test]
 	public async Task NestedLifetimes_ShouldSetPreviousValue()
 	{
 		string valueInLifetime1;
@@ -555,6 +603,16 @@ public class AwexpectCustomizationTests
 
 	private static string FormatValues(AwexpectCustomization.FormattingCustomization formatting)
 		=> $"{formatting.MaximumNumberOfCollectionItems.Get()}/{formatting.MaximumStringLength.Get()}";
+
+	private static IAwexpectCustomization GetGroup(AwexpectCustomization customization, string group)
+		=> group switch
+		{
+			nameof(AwexpectCustomization.Equivalency) => customization.Equivalency(),
+			nameof(AwexpectCustomization.Formatting) => customization.Formatting(),
+			nameof(AwexpectCustomization.Reflection) => customization.Reflection(),
+			nameof(AwexpectCustomization.Settings) => customization.Settings(),
+			_ => throw new ArgumentOutOfRangeException(nameof(group)),
+		};
 
 	/// <remarks>
 	///     The value set in the awaited method is not visible to the caller, which keeps the values of its own flow.

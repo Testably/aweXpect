@@ -8,8 +8,9 @@ namespace aweXpect.Customization;
 ///     <see cref="IAwexpectCustomization" />.
 /// </summary>
 /// <remarks>
-///     Return it from an extension method on <see cref="AwexpectCustomization" />, so that users can customize a value
-///     of your extension like the built-in ones, also for all async flows with <see cref="AwexpectCustomization.Global" />.
+///     Return it from an extension method on <see cref="AwexpectCustomization" /> or on one of its groups, e.g.
+///     <see cref="AwexpectCustomization.ReflectionCustomization" />, so that users can customize a value of your extension
+///     like the built-in ones, also for all async flows with <see cref="AwexpectCustomization.Global" />.
 ///     <para />
 ///     The instance holds no value itself, so it is safe to share and to use concurrently. Choose a key that no other
 ///     package uses, e.g. one prefixed with the name of your package.

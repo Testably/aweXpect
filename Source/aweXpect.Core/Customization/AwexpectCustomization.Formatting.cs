@@ -20,12 +20,14 @@ public partial class AwexpectCustomization
 	/// <summary>
 	///     Customize the formatting settings.
 	/// </summary>
-	public class FormattingCustomization
+	public class FormattingCustomization : IAwexpectCustomization
 	{
 		private const string KeyPrefix = "aweXpect.Formatting.";
+		private readonly IAwexpectCustomization _awexpectCustomization;
 
 		internal FormattingCustomization(IAwexpectCustomization awexpectCustomization)
 		{
+			_awexpectCustomization = awexpectCustomization;
 			MaximumNumberOfCollectionItems = new CustomizationValue<int>(awexpectCustomization,
 				KeyPrefix + nameof(MaximumNumberOfCollectionItems), 10,
 				count =>
@@ -60,5 +62,13 @@ public partial class AwexpectCustomization
 		///     The minimum number of characters included after the first mismatch in the string difference.
 		/// </summary>
 		public ICustomizationValueSetter<int> MinimumNumberOfCharactersAfterStringDifference { get; }
+
+		/// <inheritdoc cref="IAwexpectCustomization.Get{TValue}(string, TValue)" />
+		TValue IAwexpectCustomization.Get<TValue>(string key, TValue defaultValue)
+			=> _awexpectCustomization.Get(key, defaultValue);
+
+		/// <inheritdoc cref="IAwexpectCustomization.Set{TValue}(string, TValue)" />
+		CustomizationLifetime IAwexpectCustomization.Set<TValue>(string key, TValue value)
+			=> _awexpectCustomization.Set(key, value);
 	}
 }
