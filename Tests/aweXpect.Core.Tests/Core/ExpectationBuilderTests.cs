@@ -7,6 +7,7 @@ using aweXpect.Chronology;
 using aweXpect.Core.Constraints;
 using aweXpect.Core.EvaluationContext;
 using aweXpect.Core.Extending;
+using aweXpect.Core.Helpers;
 using aweXpect.Core.Tests.TestHelpers;
 using aweXpect.Results;
 
@@ -1098,6 +1099,39 @@ public class ExpectationBuilderTests
 			             but it could not be verified, because the evaluation was already canceled
 			             """)
 			.Because("a requested cancellation leaves the expectation unverified instead of failing it");
+	}
+
+	[Test]
+	[Arguments("fails", "it was not described")]
+	[Arguments("not answered", "for item \"foo\", it was broken")]
+	[Arguments("not comparable", "it was no number")]
+	[Arguments("throws", "the predicate did throw an InvalidOperationException:\n  boom")]
+	[Arguments("throws for an item",
+		"for the item at index 2, the predicate did throw an InvalidOperationException:\n  boom")]
+	public async Task WhenConstraintDescribesTheSubject_ShouldUseTheDescriptionHoweverTheConstraintFails(
+		string failure, string expectedResult)
+	{
+		Exception? exception = failure switch
+		{
+			"not answered" => new UnansweredItemException(
+				new DummyConstraintResult(Outcome.FailureBothWays, "is valid", "it was broken"), "foo"),
+			"not comparable" => new UserCodeException(new NotComparableException("it was no number", null)),
+			"throws" => new UserCodeException(new InvalidOperationException("boom"), "the predicate"),
+			"throws for an item" => new UserCodeException(new InvalidOperationException("boom"), "the predicate", 2),
+			_ => null,
+		};
+
+		async Task Act()
+			=> await new ExpectationResult(That(1).Get().ExpectationBuilder
+				.AddConstraint((_, _) => new DescribingConstraint<int>("the described subject", exception)));
+
+		await That(Act).Throws<FailException>()
+			.WithMessage($"""
+			              Expected that the described subject
+			              is described,
+			              but {expectedResult}
+			              """).IgnoringNewlineStyle()
+			.Because("the subject is named the same, whether the constraint fails or its evaluation did not complete");
 	}
 
 	[Test]

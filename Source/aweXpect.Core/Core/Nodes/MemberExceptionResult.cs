@@ -72,8 +72,16 @@ internal sealed class MemberExceptionResult : ConstraintResult
 			.Append(ThatDelegate.FormatForMessage(FailureCause, indentation));
 
 	/// <inheritdoc />
+	/// <remarks>
+	///     A constraint whose evaluation threw still describes the subject, like when it fails.
+	/// </remarks>
 	public override bool TryGetStoredValue<TValue>(out TValue? value) where TValue : default
 	{
+		if (_explainsWithInner && _inner.TryGetDescribableSubject(out value))
+		{
+			return true;
+		}
+
 		if (_value is TValue typedValue)
 		{
 			value = typedValue;
