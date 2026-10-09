@@ -175,19 +175,31 @@ public static partial class ThatType
 			=> stringBuilder.Append("depends on ").Append(options.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" depended on ");
-			Formatter.Format(stringBuilder, ToSortedNamespaces(_dependencies));
-		}
+			=> stringBuilder.Append(It).Append(" did not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("does not depend on ").Append(options.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" did");
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			stringBuilder.Append(It).Append(" depended on ");
-			Formatter.Format(stringBuilder,
-				ToSortedNamespaces(_dependencies.Where(dependency => options.Matches(dependency.Namespace))));
+			if (Outcome != Outcome.Failure)
+			{
+				return;
+			}
+
+			if (IsNegated)
+			{
+				contexts.AddDependenciesContext("Matching dependencies",
+					ToSortedNamespaces(_dependencies.Where(dependency => options.Matches(dependency.Namespace))));
+			}
+			else
+			{
+				contexts.AddDependenciesContext("Dependencies", ToSortedNamespaces(_dependencies));
+			}
 		}
 	}
 
@@ -224,14 +236,20 @@ public static partial class ThatType
 			=> stringBuilder.Append("does not depend on ").Append(options.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" did");
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			// The sorted matching types are only needed for this failure message, so they are built lazily.
-			stringBuilder.Append(It).Append(" depended on ");
-			Formatter.Format(stringBuilder, _dependencies
-				.Where(options.Matches)
-				.Distinct()
-				.OrderBy(type => type.FullName ?? type.Name, StringComparer.Ordinal)
-				.ToArray());
+			if (Outcome == Outcome.Failure && IsNegated)
+			{
+				// The sorted matching types are only needed for this failure message, so they are built lazily.
+				contexts.AddDependenciesContext("Matching dependencies", _dependencies
+					.Where(options.Matches)
+					.Distinct()
+					.OrderBy(type => type.FullName ?? type.Name, StringComparer.Ordinal)
+					.ToArray());
+			}
 		}
 	}
 
@@ -271,15 +289,21 @@ public static partial class ThatType
 			=> stringBuilder.Append("does not depend on ").Append(options.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" did");
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			// The sorted matching types are only needed for this failure message, so they are built lazily.
-			// _targetSet can only be null when the subject was null, in which case _dependencies is empty.
-			stringBuilder.Append(It).Append(" depended on ");
-			Formatter.Format(stringBuilder, _dependencies
-				.Where(dependency => _targetSet?.Matches(dependency) == true)
-				.Distinct()
-				.OrderBy(type => type.FullName ?? type.Name, StringComparer.Ordinal)
-				.ToArray());
+			if (Outcome == Outcome.Failure && IsNegated)
+			{
+				// The sorted matching types are only needed for this failure message, so they are built lazily.
+				// _targetSet can only be null when the subject was null, in which case _dependencies is empty.
+				contexts.AddDependenciesContext("Matching dependencies", _dependencies
+					.Where(dependency => _targetSet?.Matches(dependency) == true)
+					.Distinct()
+					.OrderBy(type => type.FullName ?? type.Name, StringComparer.Ordinal)
+					.ToArray());
+			}
 		}
 	}
 }

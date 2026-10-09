@@ -52,19 +52,23 @@ public static partial class ThatAssembly
 			=> stringBuilder.Append("has a dependency on assembly ").Append(options.GetExpectation(expected, Grammars));
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append("it did not have the required dependency in ");
-			Formatter.Format(stringBuilder, Actual?.GetReferencedAssemblies().Select(dep => dep.Name));
-		}
+			=> stringBuilder.Append(It).Append(" did not");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("has no dependency on assembly ")
 				.Append(options.GetExpectation(expected, Grammars.Negate()));
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" did");
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			stringBuilder.Append("it had the unexpected dependency in ");
-			Formatter.Format(stringBuilder, Actual?.GetReferencedAssemblies().Select(dep => dep.Name));
+			if (Outcome == Outcome.Failure && Actual is not null)
+			{
+				contexts.AddDependenciesContext("Dependencies",
+					Actual.GetReferencedAssemblies().Select(dep => dep.Name).ToArray());
+			}
 		}
 	}
 }

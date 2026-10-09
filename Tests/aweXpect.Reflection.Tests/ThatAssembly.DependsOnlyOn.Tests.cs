@@ -51,7 +51,12 @@ public sealed partial class ThatAssembly
 					.WithMessage("""
 					             Expected that subject
 					             has dependencies only on assemblies equal to "aweXpect.Core",
-					             but it also had dependencies on [*]
+					             but it had disallowed dependencies
+
+					             Disallowed dependencies:
+					             [
+					               *
+					             ]
 					             """).AsWildcard();
 			}
 
@@ -119,7 +124,12 @@ public sealed partial class ThatAssembly
 					.WithMessage("""
 					             Expected that subject
 					             has dependencies only on assemblies equal to "First" or equal to "Second",
-					             but it also had dependencies on *
+					             but it had disallowed dependencies
+
+					             Disallowed dependencies:
+					             [
+					               *
+					             ]
 					             """).AsWildcard();
 			}
 
@@ -137,8 +147,102 @@ public sealed partial class ThatAssembly
 					.WithMessage("""
 					             Expected that subject
 					             has dependencies only on no assemblies,
-					             but it also had dependencies on *
+					             but it had disallowed dependencies
+
+					             Disallowed dependencies:
+					             [
+					               "aweXpect.Core"
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenUsedForItems_ShouldLabelTheDisallowedDependenciesWithTheItem()
+			{
+				Assembly[] subject = [typeof(In).Assembly, typeof(PublicAbstractClass).Assembly,];
+
+				async Task Act()
+				{
+					await That(subject).All().ComplyWith(assembly => assembly.DependsOnlyOn("aweXpect.Core"));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             has dependencies only on assemblies equal to "aweXpect.Core" for all items,
+					             but only 1 of 2 did
+
+					             Not matching items:
+					             [
+					               aweXpect.Reflection.Tests*
+					             ]
+
+					             Collection:
+					             [
+					               aweXpect.Reflection,*
+					               aweXpect.Reflection.Tests*
+					             ]
+
+					             Disallowed dependencies (item [1]):
+					             [
+					               *
+					             ]
 					             """).AsWildcard();
+			}
+
+			[Fact]
+			public async Task WhenUsedInThatAll_ShouldListTheDisallowedDependenciesOfEachFailure()
+			{
+				Assembly reflectionAssembly = typeof(In).Assembly;
+
+				async Task Act()
+				{
+					await ThatAll(
+						That(reflectionAssembly).DependsOnlyOn(),
+						That(reflectionAssembly).DependsOnlyOn("aweXpect.Core"));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected all of the following to succeed:
+					              [01] Expected that reflectionAssembly has dependencies only on no assemblies
+					              [02] Expected that reflectionAssembly has dependencies only on assemblies equal to "aweXpect.Core"
+					             but
+					              [01] it had disallowed dependencies
+
+					             [01] Disallowed dependencies:
+					             [
+					               "aweXpect.Core"
+					             ]
+					             """);
+			}
+
+			[Fact]
+			public async Task WhenUsedInWhose_ShouldLabelTheDisallowedDependenciesWithTheMember()
+			{
+				AssemblyHolder subject = new(typeof(In).Assembly);
+
+				async Task Act()
+				{
+					await That(subject).Whose(holder => holder.Assembly, assembly => assembly.DependsOnlyOn());
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("""
+					             Expected that subject
+					             whose Assembly has dependencies only on no assemblies,
+					             but Assembly had disallowed dependencies
+
+					             Disallowed dependencies (Assembly):
+					             [
+					               "aweXpect.Core"
+					             ]
+					             """);
+			}
+
+			private sealed class AssemblyHolder(Assembly assembly)
+			{
+				public Assembly Assembly { get; } = assembly;
 			}
 		}
 

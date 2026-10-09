@@ -109,9 +109,15 @@ public static partial class ThatType
 			=> stringBuilder.Append("does not have dependencies outside ").Append(options.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" had dependencies outside the allowed namespaces");
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			stringBuilder.Append(It).Append(" also depended on ");
-			Formatter.Format(stringBuilder, _violations);
+			if (Outcome == Outcome.Failure && IsNegated)
+			{
+				contexts.AddDependenciesContext("Disallowed dependencies", _violations);
+			}
 		}
 	}
 
@@ -149,9 +155,15 @@ public static partial class ThatType
 			=> stringBuilder.Append("does not have dependencies outside ").Append(options.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
+			=> stringBuilder.Append(It).Append(" had dependencies outside the allowed types");
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
 		{
-			stringBuilder.Append(It).Append(" also depended on ");
-			Formatter.Format(stringBuilder, _violations);
+			if (Outcome == Outcome.Failure && IsNegated)
+			{
+				contexts.AddDependenciesContext("Disallowed dependencies", _violations);
+			}
 		}
 	}
 }

@@ -328,7 +328,12 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              does not have dependencies outside types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it also depended on ["TargetB"]
+					              but it had dependencies outside the allowed types
+
+					              Disallowed dependencies:
+					              [
+					                "TargetB"
+					              ]
 					              """);
 			}
 
@@ -487,8 +492,112 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              does not have dependencies outside namespace "{Layer1Namespace}",
-					              but it also depended on ["{Layer2Namespace}"]
+					              but it had dependencies outside the allowed namespaces
+
+					              Disallowed dependencies:
+					              [
+					                "{Layer2Namespace}"
+					              ]
 					              """);
+			}
+
+			[Fact]
+			public async Task WhenUsedForItems_ShouldLabelTheDisallowedDependenciesWithTheItem()
+			{
+				Type[] subject = [typeof(OnlyLayer1), typeof(Layer1AndLayer2), typeof(ReferencesGlobal),];
+
+				async Task Act()
+				{
+					await That(subject).All()
+						.ComplyWith(type => type.DoesNotComplyWith(it => it.HasDependenciesOutside(Layer1Namespace)));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not have dependencies outside namespace "{Layer1Namespace}" for all items,
+					              but only 1 of 3 did
+
+					              Not matching items:
+					              [
+					                Layer1AndLayer2,
+					                ReferencesGlobal
+					              ]
+
+					              Collection:
+					              [
+					                OnlyLayer1,
+					                Layer1AndLayer2,
+					                ReferencesGlobal
+					              ]
+
+					              Disallowed dependencies (item [1]):
+					              [
+					                "{Layer2Namespace}"
+					              ]
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenUsedInThatAll_ShouldListTheDisallowedDependenciesOfEachFailure()
+			{
+				async Task Act()
+				{
+					await ThatAll(
+						That(typeof(Layer1AndLayer2)).DoesNotComplyWith(it => it.HasDependenciesOutside(Layer1Namespace)),
+						That(typeof(OnlyLayer1)).DoesNotComplyWith(it => it.HasDependenciesOutside(Layer1Namespace)),
+						That(typeof(ReferencesGlobal)).DoesNotComplyWith(it => it.HasDependenciesOutside(Layer1Namespace)));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected all of the following to succeed:
+					               [01] Expected that typeof(Layer1AndLayer2) does not have dependencies outside namespace "{Layer1Namespace}"
+					               [02] Expected that typeof(OnlyLayer1) does not have dependencies outside namespace "{Layer1Namespace}"
+					               [03] Expected that typeof(ReferencesGlobal) does not have dependencies outside namespace "{Layer1Namespace}"
+					              but
+					               [01] it had dependencies outside the allowed namespaces
+					               [03] it had dependencies outside the allowed namespaces
+
+					              [01] Disallowed dependencies:
+					              [
+					                "{Layer2Namespace}"
+					              ]
+
+					              [03] Disallowed dependencies:
+					              [
+					                "<global namespace>"
+					              ]
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenUsedInWhose_ShouldLabelTheDisallowedDependenciesWithTheMember()
+			{
+				TypeHolder subject = new(typeof(Layer1AndLayer2));
+
+				async Task Act()
+				{
+					await That(subject).Whose(holder => holder.Type,
+						type => type.DoesNotComplyWith(it => it.HasDependenciesOutside(Layer1Namespace)));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              whose Type does not have dependencies outside namespace "{Layer1Namespace}",
+					              but it had dependencies outside the allowed namespaces
+
+					              Disallowed dependencies (Type):
+					              [
+					                "{Layer2Namespace}"
+					              ]
+					              """);
+			}
+
+			private sealed class TypeHolder(Type type)
+			{
+				public Type Type { get; } = type;
 			}
 		}
 	}

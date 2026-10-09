@@ -171,17 +171,21 @@ public static partial class ThatTypes
 			stringBuilder.Append(It).Append(" had ");
 			if (_cycles.Count == 1)
 			{
-				stringBuilder.Append("a dependency cycle:");
+				stringBuilder.Append("a dependency cycle");
 			}
 			else
 			{
-				stringBuilder.Append(_cycles.Count).Append(" dependency cycles:");
+				stringBuilder.Append(_cycles.Count).Append(" dependency cycles");
 			}
+		}
 
-			string itemIndentation = (indentation ?? string.Empty) + "  ";
-			foreach (string cycle in _cycles)
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (Outcome == Outcome.Failure && !IsNegated && _cycles.Count > 0)
 			{
-				stringBuilder.Append(Environment.NewLine).Append(itemIndentation).Append(cycle);
+				contexts.Add(new ResultContext.SyncCallback("Dependency cycles",
+					() => string.Join(Environment.NewLine, _cycles), int.MaxValue));
 			}
 		}
 

@@ -37,7 +37,12 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             does not depend on type TargetA[],
-					             but it depended on [TargetA]
+					             but it did
+
+					             Matching dependencies:
+					             [
+					               TargetA
+					             ]
 					             """);
 			}
 
@@ -206,7 +211,12 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             does not depend on namespace "System.Collections.Generic",
-					             but it depended on ["System.Collections.Generic"]
+					             but it did
+
+					             Matching dependencies:
+					             [
+					               "System.Collections.Generic"
+					             ]
 					             """);
 			}
 
@@ -316,7 +326,12 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              does not depend on namespace "{Layer1Namespace}",
-					              but it depended on ["{Layer1Namespace}"]
+					              but it did
+
+					              Matching dependencies:
+					              [
+					                "{Layer1Namespace}"
+					              ]
 					              """);
 			}
 
@@ -360,7 +375,12 @@ public sealed partial class ThatType
 					.WithMessage("""
 					             Expected that subject
 					             does not depend on type TargetA,
-					             but it depended on [TargetA]
+					             but it did
+
+					             Matching dependencies:
+					             [
+					               TargetA
+					             ]
 					             """);
 			}
 
@@ -378,7 +398,13 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              does not depend on namespace "{Layer2Namespace}" or "{Layer1Namespace}",
-					              but it depended on ["{Layer1Namespace}", "{Layer2Namespace}"]
+					              but it did
+
+					              Matching dependencies:
+					              [
+					                "{Layer1Namespace}",
+					                "{Layer2Namespace}"
+					              ]
 					              """);
 			}
 		}
@@ -412,7 +438,12 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              does not depend on types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it depended on [TargetA]
+					              but it did
+
+					              Matching dependencies:
+					              [
+					                TargetA
+					              ]
 					              """);
 			}
 
@@ -444,7 +475,13 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              does not depend on types within namespace "{Layer2Namespace}" in all loaded assemblies or types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it depended on [TargetA, TargetB]
+					              but it did
+
+					              Matching dependencies:
+					              [
+					                TargetA,
+					                TargetB
+					              ]
 					              """);
 			}
 		}

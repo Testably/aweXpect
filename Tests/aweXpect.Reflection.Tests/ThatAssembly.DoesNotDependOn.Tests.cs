@@ -37,7 +37,12 @@ public sealed partial class ThatAssembly
 					.WithMessage("""
 					             Expected that subject
 					             has no dependency on assembly equal to "aweXpect.Core",
-					             but it had the unexpected dependency in [*]
+					             but it did
+
+					             Dependencies:
+					             [
+					               *
+					             ]
 					             """).AsWildcard();
 			}
 
@@ -73,7 +78,12 @@ public sealed partial class ThatAssembly
 					.WithMessage("""
 					             Expected that subject
 					             has no dependency on assembly starting with "System",
-					             but it had the unexpected dependency in [*]
+					             but it did
+
+					             Dependencies:
+					             [
+					               *
+					             ]
 					             """).AsWildcard();
 			}
 
@@ -91,7 +101,12 @@ public sealed partial class ThatAssembly
 					.WithMessage("""
 					             Expected that subject
 					             has no dependency on assembly equal to "AWExPECT.cORE" ignoring case,
-					             but it had the unexpected dependency in [*]
+					             but it did
+
+					             Dependencies:
+					             [
+					               *
+					             ]
 					             """).AsWildcard();
 			}
 		}
@@ -112,7 +127,12 @@ public sealed partial class ThatAssembly
 					.WithMessage("""
 					             Expected that subject
 					             has a dependency on assembly equal to "NonExistentAssembly",
-					             but it did not have the required dependency in [*]
+					             but it did not
+
+					             Dependencies:
+					             [
+					               *
+					             ]
 					             """).AsWildcard();
 			}
 

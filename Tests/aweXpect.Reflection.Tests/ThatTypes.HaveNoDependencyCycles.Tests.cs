@@ -87,8 +87,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles,
-					              but it had a dependency cycle:
-					                <global namespace> -> {Prefix}.GlobalRing -> <global namespace>
+					              but it had a dependency cycle
+
+					              Dependency cycles:
+					              <global namespace> -> {Prefix}.GlobalRing -> <global namespace>
 					              """);
 			}
 
@@ -113,9 +115,11 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles,
-					              but it had 2 dependency cycles:
-					                {Prefix}.Three.A -> {Prefix}.Three.B -> {Prefix}.Three.C -> {Prefix}.Three.A
-					                {Prefix}.Two.Billing -> {Prefix}.Two.Orders -> {Prefix}.Two.Billing
+					              but it had 2 dependency cycles
+
+					              Dependency cycles:
+					              {Prefix}.Three.A -> {Prefix}.Three.B -> {Prefix}.Three.C -> {Prefix}.Three.A
+					              {Prefix}.Two.Billing -> {Prefix}.Two.Orders -> {Prefix}.Two.Billing
 					              """);
 			}
 
@@ -171,8 +175,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles,
-					              but it had a dependency cycle:
-					                {Prefix}.Three.A -> {Prefix}.Three.B -> {Prefix}.Three.C -> {Prefix}.Three.A
+					              but it had a dependency cycle
+
+					              Dependency cycles:
+					              {Prefix}.Three.A -> {Prefix}.Three.B -> {Prefix}.Three.C -> {Prefix}.Three.A
 					              """);
 			}
 
@@ -194,8 +200,36 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles,
-					              but it had a dependency cycle:
-					                {Prefix}.Two.Billing -> {Prefix}.Two.Orders -> {Prefix}.Two.Billing
+					              but it had a dependency cycle
+
+					              Dependency cycles:
+					              {Prefix}.Two.Billing -> {Prefix}.Two.Orders -> {Prefix}.Two.Billing
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenUsedInThatAll_ShouldListTheCyclesOfEachFailure()
+			{
+				IEnumerable<Type?> acyclic = [typeof(HighType), typeof(LowType),];
+				IEnumerable<Type?> twoCycle = [typeof(TwoOrders.Order), typeof(TwoBilling.Invoice),];
+
+				async Task Act()
+				{
+					await ThatAll(
+						That(acyclic).HaveNoDependencyCycles(),
+						That(twoCycle).HaveNoDependencyCycles());
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected all of the following to succeed:
+					               [01] Expected that acyclic have no dependency cycles
+					               [02] Expected that twoCycle have no dependency cycles
+					              but
+					               [02] it had a dependency cycle
+
+					              [02] Dependency cycles:
+					              {Prefix}.Two.Billing -> {Prefix}.Two.Orders -> {Prefix}.Two.Billing
 					              """);
 			}
 
@@ -324,8 +358,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles when grouped into slices under "{Prefix}.Grouped",
-					              but it had a dependency cycle:
-					                {Prefix}.Grouped.Billing -> {Prefix}.Grouped.Orders -> {Prefix}.Grouped.Billing
+					              but it had a dependency cycle
+
+					              Dependency cycles:
+					              {Prefix}.Grouped.Billing -> {Prefix}.Grouped.Orders -> {Prefix}.Grouped.Billing
 					              """);
 			}
 
@@ -347,8 +383,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles,
-					              but it had a dependency cycle:
-					                {Prefix}.Sliced.Module.Part1 -> {Prefix}.Sliced.Module.Part2 -> {Prefix}.Sliced.Module.Part1
+					              but it had a dependency cycle
+
+					              Dependency cycles:
+					              {Prefix}.Sliced.Module.Part1 -> {Prefix}.Sliced.Module.Part2 -> {Prefix}.Sliced.Module.Part1
 					              """);
 			}
 
@@ -395,8 +433,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles,
-					              but it had a dependency cycle:
-					                {Prefix}.Indirect.Other -> {Prefix}.Indirect.Parent -> {Prefix}.Indirect.Other
+					              but it had a dependency cycle
+
+					              Dependency cycles:
+					              {Prefix}.Indirect.Other -> {Prefix}.Indirect.Parent -> {Prefix}.Indirect.Other
 					              """);
 			}
 
@@ -418,8 +458,10 @@ public sealed partial class ThatTypes
 					.WithMessage($"""
 					              Expected that subject
 					              have no dependency cycles,
-					              but it had a dependency cycle:
-					                {Prefix}.Family -> {Prefix}.Family.Inner -> {Prefix}.Family
+					              but it had a dependency cycle
+
+					              Dependency cycles:
+					              {Prefix}.Family -> {Prefix}.Family.Inner -> {Prefix}.Family
 					              """);
 			}
 

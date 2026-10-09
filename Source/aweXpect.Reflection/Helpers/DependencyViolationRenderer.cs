@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using aweXpect.Core;
 
 namespace aweXpect.Reflection.Helpers;
 
 /// <summary>
-///     Renders the items of the depend-only-on and has-dependencies-outside constraints: one indented line per item,
-///     each followed by its list of dependencies outside the allowed set.
+///     Renders the dependencies of the dependency constraints, for a single subject as a context and for several
+///     items as one indented line per item, each followed by its list of dependencies outside the allowed set.
 /// </summary>
 /// <remarks>
 ///     Shared between the assembly-level and the type-level constraints, so that the formatting (indentation,
@@ -14,6 +15,20 @@ namespace aweXpect.Reflection.Helpers;
 /// </remarks>
 internal static class DependencyViolationRenderer
 {
+	/// <summary>
+	///     Adds the context with the <paramref name="title" />, which lists the <paramref name="dependencies" />, unless
+	///     there are none.
+	/// </summary>
+	public static void AddDependenciesContext<T>(this ResultContextCollector contexts, string title,
+		IReadOnlyCollection<T> dependencies)
+	{
+		if (dependencies.Count > 0)
+		{
+			contexts.Add(new ResultContext.SyncCallback(title,
+				() => Formatter.Format(dependencies, FormattingOptions.MultipleLines), int.MaxValue));
+		}
+	}
+
 	/// <summary>
 	///     Formats the <paramref name="items" /> as a list with one line per item (appending
 	///     <c> depends on […]</c> when <paramref name="violations" /> has an entry for it).

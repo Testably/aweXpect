@@ -99,16 +99,22 @@ public static partial class ThatType
 			=> stringBuilder.Append("depends only on ").Append(options.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" also depended on ");
-			Formatter.Format(stringBuilder, _violations);
-		}
+			=> stringBuilder.Append(It).Append(" had disallowed dependencies");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("does not depend only on ").Append(options.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only depended on the allowed namespaces");
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (Outcome == Outcome.Failure && !IsNegated)
+			{
+				contexts.AddDependenciesContext("Disallowed dependencies", _violations);
+			}
+		}
 	}
 
 	private sealed class DependsOnlyOnTypeSetConstraint(
@@ -139,15 +145,21 @@ public static partial class ThatType
 			=> stringBuilder.Append("depends only on ").Append(options.Describe());
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
-		{
-			stringBuilder.Append(It).Append(" also depended on ");
-			Formatter.Format(stringBuilder, _violations);
-		}
+			=> stringBuilder.Append(It).Append(" had disallowed dependencies");
 
 		protected override void AppendNegatedExpectation(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append("does not depend only on ").Append(options.Describe());
 
 		protected override void AppendNegatedResult(StringBuilder stringBuilder, string? indentation = null)
 			=> stringBuilder.Append(It).Append(" only depended on the allowed types");
+
+		/// <inheritdoc />
+		public override void AppendContexts(ResultContextCollector contexts)
+		{
+			if (Outcome == Outcome.Failure && !IsNegated)
+			{
+				contexts.AddDependenciesContext("Disallowed dependencies", _violations);
+			}
+		}
 	}
 }

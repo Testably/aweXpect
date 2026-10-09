@@ -58,7 +58,12 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              depends only on namespace "{Layer1Namespace}",
-					              but it also depended on ["{Layer2Namespace}"]
+					              but it had disallowed dependencies
+
+					              Disallowed dependencies:
+					              [
+					                "{Layer2Namespace}"
+					              ]
 					              """);
 			}
 
@@ -76,7 +81,12 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              depends only on namespace "{Layer1Namespace}",
-					              but it also depended on ["<global namespace>"]
+					              but it had disallowed dependencies
+
+					              Disallowed dependencies:
+					              [
+					                "<global namespace>"
+					              ]
 					              """);
 			}
 
@@ -121,7 +131,12 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              depends only on namespace "{Layer1Namespace}",
-					              but it also depended on ["{OwnSubNamespace}"]
+					              but it had disallowed dependencies
+
+					              Disallowed dependencies:
+					              [
+					                "{OwnSubNamespace}"
+					              ]
 					              """);
 			}
 
@@ -197,6 +212,98 @@ public sealed partial class ThatType
 			}
 
 			[Fact]
+			public async Task WhenUsedForItems_ShouldLabelTheDisallowedDependenciesWithTheItem()
+			{
+				Type[] subject = [typeof(OnlyLayer1), typeof(Layer1AndLayer2), typeof(ReferencesGlobal),];
+
+				async Task Act()
+				{
+					await That(subject).All().ComplyWith(type => type.DependsOnlyOn(Layer1Namespace));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              depends only on namespace "{Layer1Namespace}" for all items,
+					              but only 1 of 3 did
+
+					              Not matching items:
+					              [
+					                Layer1AndLayer2,
+					                ReferencesGlobal
+					              ]
+
+					              Collection:
+					              [
+					                OnlyLayer1,
+					                Layer1AndLayer2,
+					                ReferencesGlobal
+					              ]
+
+					              Disallowed dependencies (item [1]):
+					              [
+					                "{Layer2Namespace}"
+					              ]
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenUsedInThatAll_ShouldListTheDisallowedDependenciesOfEachFailure()
+			{
+				async Task Act()
+				{
+					await ThatAll(
+						That(typeof(Layer1AndLayer2)).DependsOnlyOn(Layer1Namespace),
+						That(typeof(OnlyLayer1)).DependsOnlyOn(Layer1Namespace),
+						That(typeof(ReferencesGlobal)).DependsOnlyOn(Layer1Namespace));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected all of the following to succeed:
+					               [01] Expected that typeof(Layer1AndLayer2) depends only on namespace "{Layer1Namespace}"
+					               [02] Expected that typeof(OnlyLayer1) depends only on namespace "{Layer1Namespace}"
+					               [03] Expected that typeof(ReferencesGlobal) depends only on namespace "{Layer1Namespace}"
+					              but
+					               [01] it had disallowed dependencies
+					               [03] it had disallowed dependencies
+
+					              [01] Disallowed dependencies:
+					              [
+					                "{Layer2Namespace}"
+					              ]
+
+					              [03] Disallowed dependencies:
+					              [
+					                "<global namespace>"
+					              ]
+					              """);
+			}
+
+			[Fact]
+			public async Task WhenUsedInWhose_ShouldLabelTheDisallowedDependenciesWithTheMember()
+			{
+				TypeHolder subject = new(typeof(Layer1AndLayer2));
+
+				async Task Act()
+				{
+					await That(subject).Whose(holder => holder.Type, type => type.DependsOnlyOn(Layer1Namespace));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              whose Type depends only on namespace "{Layer1Namespace}",
+					              but Type had disallowed dependencies
+
+					              Disallowed dependencies (Type):
+					              [
+					                "{Layer2Namespace}"
+					              ]
+					              """);
+			}
+
+			[Fact]
 			public async Task WhenWidenedWithOrOn_ShouldSucceed()
 			{
 				Type subject = typeof(Layer1AndLayer2);
@@ -207,6 +314,11 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			private sealed class TypeHolder(Type type)
+			{
+				public Type Type { get; } = type;
 			}
 		}
 
@@ -239,7 +351,12 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              depends only on types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it also depended on ["TargetB"]
+					              but it had disallowed dependencies
+
+					              Disallowed dependencies:
+					              [
+					                "TargetB"
+					              ]
 					              """);
 			}
 
@@ -274,7 +391,12 @@ public sealed partial class ThatType
 					.WithMessage($"""
 					              Expected that subject
 					              depends only on types within namespace "{Layer1Namespace}" in all loaded assemblies,
-					              but it also depended on ["OwnSubTarget"]
+					              but it had disallowed dependencies
+
+					              Disallowed dependencies:
+					              [
+					                "OwnSubTarget"
+					              ]
 					              """);
 			}
 
@@ -388,6 +510,24 @@ public sealed partial class ThatType
 				}
 
 				await That(Act).DoesNotThrow();
+			}
+
+			[Fact]
+			public async Task WhenDependingOnlyOnAllowedNamespaces_ShouldFail()
+			{
+				Type subject = typeof(OnlyLayer1);
+
+				async Task Act()
+				{
+					await That(subject).DoesNotComplyWith(it => it.DependsOnlyOn(Layer1Namespace));
+				}
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($"""
+					              Expected that subject
+					              does not depend only on namespace "{Layer1Namespace}",
+					              but it only depended on the allowed namespaces
+					              """);
 			}
 		}
 	}
