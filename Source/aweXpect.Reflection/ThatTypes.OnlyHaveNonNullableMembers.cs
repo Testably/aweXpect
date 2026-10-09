@@ -29,8 +29,8 @@ public static partial class ThatTypes
 	///     reference type annotated as nullable (according to the nullable reference type metadata).
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> OnlyHaveNonNullableMembers(
-		this IThat<IEnumerable<Type?>> subject, MemberScope memberScope = MemberScope.DeclaredOnly)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> OnlyHaveNonNullableMembers(
+		this IThat<IEnumerable<Type?>?> subject, MemberScope memberScope = MemberScope.DeclaredOnly)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new OnlyHaveNonNullableMembersConstraint(it, grammars, memberScope)),
 			subject);
@@ -46,8 +46,8 @@ public static partial class ThatTypes
 	///     reference type annotated as nullable (according to the nullable reference type metadata).
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> OnlyHaveNonNullableMembers(
-		this IThat<IAsyncEnumerable<Type?>> subject, MemberScope memberScope = MemberScope.DeclaredOnly)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> OnlyHaveNonNullableMembers(
+		this IThat<IAsyncEnumerable<Type?>?> subject, MemberScope memberScope = MemberScope.DeclaredOnly)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 				=> new OnlyHaveNonNullableMembersConstraint(it, grammars, memberScope)),
 			subject);

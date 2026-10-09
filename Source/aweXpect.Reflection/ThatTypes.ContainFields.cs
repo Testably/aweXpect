@@ -19,8 +19,8 @@ public static partial class ThatTypes
 	///     The <paramref name="memberScope" /> controls whether inherited fields are considered.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IEnumerable<Type?>> ContainFields(
-		this IThat<IEnumerable<Type?>> subject,
+	public static TypeContainingMembersResult<IEnumerable<Type?>?> ContainFields(
+		this IThat<IEnumerable<Type?>?> subject,
 		Func<Filtered.Fields, Filtered.Fields> filter,
 		MemberScope memberScope = MemberScope.DeclaredOnly)
 		=> Contain<FieldInfo, Filtered.Fields>(subject, types => types.Fields(memberScope), filter);
@@ -36,8 +36,8 @@ public static partial class ThatTypes
 	///     The <paramref name="memberScope" /> controls whether inherited fields are considered.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>> ContainFields(
-		this IThat<IAsyncEnumerable<Type?>> subject,
+	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>?> ContainFields(
+		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Func<Filtered.Fields, Filtered.Fields> filter,
 		MemberScope memberScope = MemberScope.DeclaredOnly)
 		=> Contain<FieldInfo, Filtered.Fields>(subject, types => types.Fields(memberScope), filter);

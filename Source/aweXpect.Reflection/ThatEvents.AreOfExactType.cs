@@ -14,9 +14,9 @@ public static partial class ThatEvents
 	///     <typeparamref name="THandler" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventsOfTypeResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>>>
+	public static EventsOfTypeResult<IEnumerable<EventInfo?>?, IThat<IEnumerable<EventInfo?>?>>
 		AreOfExactType<THandler>(
-			this IThat<IEnumerable<EventInfo?>> subject)
+			this IThat<IEnumerable<EventInfo?>?> subject)
 		=> AreOfExactType(subject, typeof(THandler));
 
 	/// <summary>
@@ -24,12 +24,12 @@ public static partial class ThatEvents
 	///     <paramref name="handlerType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventsOfTypeResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>>> AreOfExactType(
-		this IThat<IEnumerable<EventInfo?>> subject, Type handlerType)
+	public static EventsOfTypeResult<IEnumerable<EventInfo?>?, IThat<IEnumerable<EventInfo?>?>> AreOfExactType(
+		this IThat<IEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(handlerType, true);
-		return new EventsOfTypeResult<IEnumerable<EventInfo?>, IThat<IEnumerable<EventInfo?>>>(
+		return new EventsOfTypeResult<IEnumerable<EventInfo?>?, IThat<IEnumerable<EventInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<EventInfo?>>((it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -42,9 +42,9 @@ public static partial class ThatEvents
 	///     <typeparamref name="THandler" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventsOfTypeResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>>>
+	public static EventsOfTypeResult<IAsyncEnumerable<EventInfo?>?, IThat<IAsyncEnumerable<EventInfo?>?>>
 		AreOfExactType<THandler>(
-			this IThat<IAsyncEnumerable<EventInfo?>> subject)
+			this IThat<IAsyncEnumerable<EventInfo?>?> subject)
 		=> AreOfExactType(subject, typeof(THandler));
 
 	/// <summary>
@@ -52,13 +52,13 @@ public static partial class ThatEvents
 	///     <paramref name="handlerType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static EventsOfTypeResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>>>
+	public static EventsOfTypeResult<IAsyncEnumerable<EventInfo?>?, IThat<IAsyncEnumerable<EventInfo?>?>>
 		AreOfExactType(
-			this IThat<IAsyncEnumerable<EventInfo?>> subject, Type handlerType)
+			this IThat<IAsyncEnumerable<EventInfo?>?> subject, Type handlerType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(handlerType, true);
-		return new EventsOfTypeResult<IAsyncEnumerable<EventInfo?>, IThat<IAsyncEnumerable<EventInfo?>>>(
+		return new EventsOfTypeResult<IAsyncEnumerable<EventInfo?>?, IThat<IAsyncEnumerable<EventInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<EventInfo?>>((it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,

@@ -24,14 +24,14 @@ public static partial class ThatConstructors
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>>> DoNotHave<TAttribute>(
-		this IThat<IEnumerable<ConstructorInfo?>> subject)
+	public static AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>?>> DoNotHave<TAttribute>(
+		this IThat<IEnumerable<ConstructorInfo?>?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
-		return new AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>>>(
+		return new AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<ConstructorInfo?>>((it, grammars)
 				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject);
@@ -43,15 +43,15 @@ public static partial class ThatConstructors
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>>>
+	public static AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>?>>
 		DoNotHave<TAttribute>(
-			this IThat<IAsyncEnumerable<ConstructorInfo?>> subject)
+			this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
-		return new AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>>>(
+		return new AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((it, grammars)
 				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject);

@@ -25,8 +25,8 @@ public static partial class ThatTypes
 	///     have <see cref="Type.IsAbstract" /> set to <see langword="true" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreAbstract(
-		this IThat<IEnumerable<Type?>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreAbstract(
+		this IThat<IEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new AreAbstractConstraint(it, grammars)),
 			subject);
@@ -40,8 +40,8 @@ public static partial class ThatTypes
 	///     have <see cref="Type.IsAbstract" /> set to <see langword="true" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreAbstract(
-		this IThat<IAsyncEnumerable<Type?>> subject)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreAbstract(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 				=> new AreAbstractConstraint(it, grammars)),
 			subject);
@@ -55,8 +55,8 @@ public static partial class ThatTypes
 	///     have <see cref="Type.IsAbstract" /> set to <see langword="true" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotAbstract(
-		this IThat<IEnumerable<Type?>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreNotAbstract(
+		this IThat<IEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new AreNotAbstractConstraint(it, grammars)),
 			subject);
@@ -70,8 +70,8 @@ public static partial class ThatTypes
 	///     have <see cref="Type.IsAbstract" /> set to <see langword="true" />.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreNotAbstract(
-		this IThat<IAsyncEnumerable<Type?>> subject)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreNotAbstract(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 				=> new AreNotAbstractConstraint(it, grammars)),
 			subject);

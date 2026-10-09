@@ -21,8 +21,8 @@ public static partial class ThatAssemblies
 	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> are strong named.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> AreStrongNamed(
-		this IThat<IEnumerable<Assembly?>> subject)
+	public static AndOrResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> AreStrongNamed(
+		this IThat<IEnumerable<Assembly?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
 				=> new AreStrongNamedConstraint(it, grammars)),
 			subject);
@@ -32,8 +32,8 @@ public static partial class ThatAssemblies
 	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> are strong named.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>> AreStrongNamed(
-		this IThat<IAsyncEnumerable<Assembly?>> subject)
+	public static AndOrResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>> AreStrongNamed(
+		this IThat<IAsyncEnumerable<Assembly?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
 				=> new AreStrongNamedConstraint(it, grammars)),
 			subject);
@@ -43,8 +43,8 @@ public static partial class ThatAssemblies
 	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> are not strong named.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> AreNotStrongNamed(
-		this IThat<IEnumerable<Assembly?>> subject)
+	public static AndOrResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> AreNotStrongNamed(
+		this IThat<IEnumerable<Assembly?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
 				=> new AreNotStrongNamedConstraint(it, grammars)),
 			subject);
@@ -54,8 +54,8 @@ public static partial class ThatAssemblies
 	///     Verifies that all items in the filtered collection of <see cref="Assembly" /> are not strong named.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>> AreNotStrongNamed(
-		this IThat<IAsyncEnumerable<Assembly?>> subject)
+	public static AndOrResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>> AreNotStrongNamed(
+		this IThat<IAsyncEnumerable<Assembly?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
 				=> new AreNotStrongNamedConstraint(it, grammars)),
 			subject);

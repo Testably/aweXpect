@@ -23,11 +23,11 @@ public static partial class ThatAssemblies
 	///     the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> HaveName(
-		this IThat<IEnumerable<Assembly?>> subject, string expected)
+	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> HaveName(
+		this IThat<IEnumerable<Assembly?>?> subject, string expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
-		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>>(subject.Get()
+		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
 					=> new HaveNameConstraint(it, grammars, expected, options)),
 			subject,
@@ -40,11 +40,11 @@ public static partial class ThatAssemblies
 	///     the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>> HaveName(
-		this IThat<IAsyncEnumerable<Assembly?>> subject, string expected)
+	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>> HaveName(
+		this IThat<IAsyncEnumerable<Assembly?>?> subject, string expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
-		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>>(subject
+		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
 					=> new HaveNameConstraint(it, grammars, expected, options)),
@@ -58,14 +58,14 @@ public static partial class ThatAssemblies
 	///     returned by the <paramref name="expectedNameSelector" /> for the respective item.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> HaveName(
-		this IThat<IEnumerable<Assembly?>> subject,
+	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> HaveName(
+		this IThat<IEnumerable<Assembly?>?> subject,
 		Func<Assembly?, string> expectedNameSelector,
 		[CallerArgumentExpression(nameof(expectedNameSelector))]
 		string doNotPopulateThisValue = "")
 	{
 		StringEqualityOptions options = new(nameof(expectedNameSelector));
-		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>>(subject.Get()
+		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
 					=> new HaveNameFromSelectorConstraint(it, grammars, expectedNameSelector, doNotPopulateThisValue,
 						options)),
@@ -79,14 +79,14 @@ public static partial class ThatAssemblies
 	///     returned by the <paramref name="expectedNameSelector" /> for the respective item.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>> HaveName(
-		this IThat<IAsyncEnumerable<Assembly?>> subject,
+	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>> HaveName(
+		this IThat<IAsyncEnumerable<Assembly?>?> subject,
 		Func<Assembly?, string> expectedNameSelector,
 		[CallerArgumentExpression(nameof(expectedNameSelector))]
 		string doNotPopulateThisValue = "")
 	{
 		StringEqualityOptions options = new(nameof(expectedNameSelector));
-		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>>(subject
+		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
 					=> new HaveNameFromSelectorConstraint(it, grammars, expectedNameSelector, doNotPopulateThisValue,

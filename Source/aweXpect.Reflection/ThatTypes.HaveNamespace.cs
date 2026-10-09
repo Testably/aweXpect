@@ -21,11 +21,11 @@ public static partial class ThatTypes
 	///     the <paramref name="expected" /> namespace.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> HaveNamespace(
-		this IThat<IEnumerable<Type?>> subject, string expected)
+	public static StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> HaveNamespace(
+		this IThat<IEnumerable<Type?>?> subject, string expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
-		return new StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>>(subject.Get()
+		return new StringEqualityTypeResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 					=> new HaveNamespaceConstraint(it, grammars, expected, options)),
 			subject,
@@ -38,11 +38,11 @@ public static partial class ThatTypes
 	///     the <paramref name="expected" /> namespace.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> HaveNamespace(
-		this IThat<IAsyncEnumerable<Type?>> subject, string expected)
+	public static StringEqualityTypeResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> HaveNamespace(
+		this IThat<IAsyncEnumerable<Type?>?> subject, string expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
-		return new StringEqualityTypeResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>>(subject.Get()
+		return new StringEqualityTypeResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 					=> new HaveNamespaceConstraint(it, grammars, expected, options)),
 			subject,

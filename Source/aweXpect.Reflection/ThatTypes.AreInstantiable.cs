@@ -24,8 +24,8 @@ public static partial class ThatTypes
 	///     Abstract types, static types, interfaces and open generic type definitions are not considered instantiable.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreInstantiable(
-		this IThat<IEnumerable<Type?>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreInstantiable(
+		this IThat<IEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new AreInstantiableConstraint(it, grammars)),
 			subject);
@@ -38,8 +38,8 @@ public static partial class ThatTypes
 	///     Abstract types, static types, interfaces and open generic type definitions are not considered instantiable.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreInstantiable(
-		this IThat<IAsyncEnumerable<Type?>> subject)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreInstantiable(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 				=> new AreInstantiableConstraint(it, grammars)),
 			subject);
@@ -52,8 +52,8 @@ public static partial class ThatTypes
 	///     Abstract types, static types, interfaces and open generic type definitions are not considered instantiable.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotInstantiable(
-		this IThat<IEnumerable<Type?>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreNotInstantiable(
+		this IThat<IEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new AreNotInstantiableConstraint(it, grammars)),
 			subject);
@@ -66,8 +66,8 @@ public static partial class ThatTypes
 	///     Abstract types, static types, interfaces and open generic type definitions are not considered instantiable.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreNotInstantiable(
-		this IThat<IAsyncEnumerable<Type?>> subject)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreNotInstantiable(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 				=> new AreNotInstantiableConstraint(it, grammars)),
 			subject);

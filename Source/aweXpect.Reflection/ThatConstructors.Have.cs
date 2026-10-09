@@ -25,14 +25,14 @@ public static partial class ThatConstructors
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HaveAttributeWithoutInheritResult<ConstructorInfo?, IEnumerable<ConstructorInfo?>> Have<TAttribute>(
-		this IThat<IEnumerable<ConstructorInfo?>> subject)
+	public static HaveAttributeWithoutInheritResult<ConstructorInfo?, IEnumerable<ConstructorInfo?>?> Have<TAttribute>(
+		this IThat<IEnumerable<ConstructorInfo?>?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
-		return new HaveAttributeWithoutInheritResult<ConstructorInfo?, IEnumerable<ConstructorInfo?>>(
+		return new HaveAttributeWithoutInheritResult<ConstructorInfo?, IEnumerable<ConstructorInfo?>?>(
 			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<ConstructorInfo?>>((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
@@ -44,8 +44,8 @@ public static partial class ThatConstructors
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HaveAttributeWithoutInheritResult<ConstructorInfo?, IEnumerable<ConstructorInfo?>> Have<TAttribute>(
-		this IThat<IEnumerable<ConstructorInfo?>> subject,
+	public static HaveAttributeWithoutInheritResult<ConstructorInfo?, IEnumerable<ConstructorInfo?>?> Have<TAttribute>(
+		this IThat<IEnumerable<ConstructorInfo?>?> subject,
 		Func<TAttribute, bool> predicate,
 		[CallerArgumentExpression("predicate")]
 		string doNotPopulateThisValue = "")
@@ -54,7 +54,7 @@ public static partial class ThatConstructors
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue);
-		return new HaveAttributeWithoutInheritResult<ConstructorInfo?, IEnumerable<ConstructorInfo?>>(
+		return new HaveAttributeWithoutInheritResult<ConstructorInfo?, IEnumerable<ConstructorInfo?>?>(
 			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<ConstructorInfo?>>((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
@@ -67,15 +67,15 @@ public static partial class ThatConstructors
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HaveAttributeWithoutInheritResult<ConstructorInfo?, IAsyncEnumerable<ConstructorInfo?>>
+	public static HaveAttributeWithoutInheritResult<ConstructorInfo?, IAsyncEnumerable<ConstructorInfo?>?>
 		Have<TAttribute>(
-			this IThat<IAsyncEnumerable<ConstructorInfo?>> subject)
+			this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(true);
-		return new HaveAttributeWithoutInheritResult<ConstructorInfo?, IAsyncEnumerable<ConstructorInfo?>>(
+		return new HaveAttributeWithoutInheritResult<ConstructorInfo?, IAsyncEnumerable<ConstructorInfo?>?>(
 			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
@@ -89,9 +89,9 @@ public static partial class ThatConstructors
 	///     attribute of type <typeparamref name="TAttribute" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static HaveAttributeWithoutInheritResult<ConstructorInfo?, IAsyncEnumerable<ConstructorInfo?>>
+	public static HaveAttributeWithoutInheritResult<ConstructorInfo?, IAsyncEnumerable<ConstructorInfo?>?>
 		Have<TAttribute>(
-			this IThat<IAsyncEnumerable<ConstructorInfo?>> subject,
+			this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject,
 			Func<TAttribute, bool> predicate,
 			[CallerArgumentExpression("predicate")]
 			string doNotPopulateThisValue = "")
@@ -100,7 +100,7 @@ public static partial class ThatConstructors
 		AttributeFilterOptions<ConstructorInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(true, predicate, doNotPopulateThisValue);
-		return new HaveAttributeWithoutInheritResult<ConstructorInfo?, IAsyncEnumerable<ConstructorInfo?>>(
+		return new HaveAttributeWithoutInheritResult<ConstructorInfo?, IAsyncEnumerable<ConstructorInfo?>?>(
 			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,

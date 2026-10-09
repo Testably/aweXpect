@@ -29,14 +29,14 @@ public static partial class ThatMethods
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<MethodInfo?, IEnumerable<MethodInfo?>> Have<TAttribute>(
-		this IThat<IEnumerable<MethodInfo?>> subject, bool inherit = true)
+	public static HaveAttributeResult<MethodInfo?, IEnumerable<MethodInfo?>?> Have<TAttribute>(
+		this IThat<IEnumerable<MethodInfo?>?> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HaveAttributeResult<MethodInfo?, IEnumerable<MethodInfo?>>(
+		return new HaveAttributeResult<MethodInfo?, IEnumerable<MethodInfo?>?>(
 			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
@@ -52,8 +52,8 @@ public static partial class ThatMethods
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<MethodInfo?, IEnumerable<MethodInfo?>> Have<TAttribute>(
-		this IThat<IEnumerable<MethodInfo?>> subject,
+	public static HaveAttributeResult<MethodInfo?, IEnumerable<MethodInfo?>?> Have<TAttribute>(
+		this IThat<IEnumerable<MethodInfo?>?> subject,
 		Func<TAttribute, bool> predicate,
 		bool inherit = true,
 		[CallerArgumentExpression("predicate")]
@@ -63,7 +63,7 @@ public static partial class ThatMethods
 		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
-		return new HaveAttributeResult<MethodInfo?, IEnumerable<MethodInfo?>>(
+		return new HaveAttributeResult<MethodInfo?, IEnumerable<MethodInfo?>?>(
 			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
@@ -80,14 +80,14 @@ public static partial class ThatMethods
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<MethodInfo?, IAsyncEnumerable<MethodInfo?>> Have<TAttribute>(
-		this IThat<IAsyncEnumerable<MethodInfo?>> subject, bool inherit = true)
+	public static HaveAttributeResult<MethodInfo?, IAsyncEnumerable<MethodInfo?>?> Have<TAttribute>(
+		this IThat<IAsyncEnumerable<MethodInfo?>?> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new HaveAttributeResult<MethodInfo?, IAsyncEnumerable<MethodInfo?>>(
+		return new HaveAttributeResult<MethodInfo?, IAsyncEnumerable<MethodInfo?>?>(
 			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,
@@ -105,8 +105,8 @@ public static partial class ThatMethods
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static HaveAttributeResult<MethodInfo?, IAsyncEnumerable<MethodInfo?>> Have<TAttribute>(
-		this IThat<IAsyncEnumerable<MethodInfo?>> subject,
+	public static HaveAttributeResult<MethodInfo?, IAsyncEnumerable<MethodInfo?>?> Have<TAttribute>(
+		this IThat<IAsyncEnumerable<MethodInfo?>?> subject,
 		Func<TAttribute, bool> predicate,
 		bool inherit = true,
 		[CallerArgumentExpression("predicate")]
@@ -116,7 +116,7 @@ public static partial class ThatMethods
 		AttributeFilterOptions<MethodInfo?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute(inherit, predicate, doNotPopulateThisValue.TrimCommonWhiteSpace());
-		return new HaveAttributeResult<MethodInfo?, IAsyncEnumerable<MethodInfo?>>(
+		return new HaveAttributeResult<MethodInfo?, IAsyncEnumerable<MethodInfo?>?>(
 			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>((it, grammars)
 				=> new HaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject,

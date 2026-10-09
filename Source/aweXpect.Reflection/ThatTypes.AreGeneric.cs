@@ -21,11 +21,11 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are generic.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static GenericArgumentCollectionResult<IEnumerable<Type?>> AreGeneric(
-		this IThat<IEnumerable<Type?>> subject)
+	public static GenericArgumentCollectionResult<IEnumerable<Type?>?> AreGeneric(
+		this IThat<IEnumerable<Type?>?> subject)
 	{
 		GenericArgumentsFilterOptions genericFilterOptions = new();
-		return new GenericArgumentCollectionResult<IEnumerable<Type?>>(
+		return new GenericArgumentCollectionResult<IEnumerable<Type?>?>(
 			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new AreGenericConstraint(it, grammars, genericFilterOptions)),
 			subject,
@@ -37,11 +37,11 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are generic.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static GenericArgumentCollectionResult<IAsyncEnumerable<Type?>> AreGeneric(
-		this IThat<IAsyncEnumerable<Type?>> subject)
+	public static GenericArgumentCollectionResult<IAsyncEnumerable<Type?>?> AreGeneric(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
 	{
 		GenericArgumentsFilterOptions genericFilterOptions = new();
-		return new GenericArgumentCollectionResult<IAsyncEnumerable<Type?>>(
+		return new GenericArgumentCollectionResult<IAsyncEnumerable<Type?>?>(
 			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 				=> new AreGenericConstraint(it, grammars, genericFilterOptions)),
 			subject,
@@ -53,8 +53,8 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not generic.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotGeneric(
-		this IThat<IEnumerable<Type?>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreNotGeneric(
+		this IThat<IEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new AreNotGenericConstraint(it, grammars)),
 			subject);
@@ -64,8 +64,8 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not generic.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreNotGeneric(
-		this IThat<IAsyncEnumerable<Type?>> subject)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreNotGeneric(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 				=> new AreNotGenericConstraint(it, grammars)),
 			subject);

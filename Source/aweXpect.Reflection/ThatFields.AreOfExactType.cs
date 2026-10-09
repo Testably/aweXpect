@@ -13,20 +13,20 @@ public static partial class ThatFields
 	///     Verifies that all fields in the filtered collection are of exactly type <typeparamref name="TField" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldsOfTypeResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> AreOfExactType<TField>(
-		this IThat<IEnumerable<FieldInfo?>> subject)
+	public static FieldsOfTypeResult<IEnumerable<FieldInfo?>?, IThat<IEnumerable<FieldInfo?>?>> AreOfExactType<TField>(
+		this IThat<IEnumerable<FieldInfo?>?> subject)
 		=> AreOfExactType(subject, typeof(TField));
 
 	/// <summary>
 	///     Verifies that all fields in the filtered collection are of exactly type <paramref name="fieldType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldsOfTypeResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> AreOfExactType(
-		this IThat<IEnumerable<FieldInfo?>> subject, Type fieldType)
+	public static FieldsOfTypeResult<IEnumerable<FieldInfo?>?, IThat<IEnumerable<FieldInfo?>?>> AreOfExactType(
+		this IThat<IEnumerable<FieldInfo?>?> subject, Type fieldType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(fieldType, true);
-		return new FieldsOfTypeResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>>(
+		return new FieldsOfTypeResult<IEnumerable<FieldInfo?>?, IThat<IEnumerable<FieldInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -38,22 +38,22 @@ public static partial class ThatFields
 	///     Verifies that all fields in the filtered collection are of exactly type <typeparamref name="TField" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>>
+	public static FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>?, IThat<IAsyncEnumerable<FieldInfo?>?>>
 		AreOfExactType<TField>(
-			this IThat<IAsyncEnumerable<FieldInfo?>> subject)
+			this IThat<IAsyncEnumerable<FieldInfo?>?> subject)
 		=> AreOfExactType(subject, typeof(TField));
 
 	/// <summary>
 	///     Verifies that all fields in the filtered collection are of exactly type <paramref name="fieldType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>>
+	public static FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>?, IThat<IAsyncEnumerable<FieldInfo?>?>>
 		AreOfExactType(
-			this IThat<IAsyncEnumerable<FieldInfo?>> subject, Type fieldType)
+			this IThat<IAsyncEnumerable<FieldInfo?>?> subject, Type fieldType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(fieldType, true);
-		return new FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>>(
+		return new FieldsOfTypeResult<IAsyncEnumerable<FieldInfo?>?, IThat<IAsyncEnumerable<FieldInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,

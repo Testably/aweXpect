@@ -21,8 +21,8 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are static.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreStatic(
-		this IThat<IEnumerable<Type?>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreStatic(
+		this IThat<IEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new AreStaticConstraint(it, grammars)),
 			subject);
@@ -32,8 +32,8 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are static.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreStatic(
-		this IThat<IAsyncEnumerable<Type?>> subject)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreStatic(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 				=> new AreStaticConstraint(it, grammars)),
 			subject);
@@ -43,8 +43,8 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not static.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotStatic(
-		this IThat<IEnumerable<Type?>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreNotStatic(
+		this IThat<IEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new AreNotStaticConstraint(it, grammars)),
 			subject);
@@ -54,8 +54,8 @@ public static partial class ThatTypes
 	///     Verifies that all items in the filtered collection of <see cref="Type" /> are not static.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreNotStatic(
-		this IThat<IAsyncEnumerable<Type?>> subject)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreNotStatic(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 				=> new AreNotStaticConstraint(it, grammars)),
 			subject);

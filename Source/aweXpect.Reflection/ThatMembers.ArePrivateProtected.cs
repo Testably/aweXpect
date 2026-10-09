@@ -22,8 +22,8 @@ public static partial class ThatMembers
 	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are private protected.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>> ArePrivateProtected<TMember>(
-		this IThat<IEnumerable<TMember>> subject)
+	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>> ArePrivateProtected<TMember>(
+		this IThat<IEnumerable<TMember>?> subject)
 		where TMember : MemberInfo?
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<TMember>>((it, grammars)
 				=> new ArePrivateProtectedConstraint<TMember>(it, grammars)),
@@ -34,8 +34,8 @@ public static partial class ThatMembers
 	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are private protected.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>> ArePrivateProtected<TMember>(
-		this IThat<IAsyncEnumerable<TMember>> subject)
+	public static AndOrResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>> ArePrivateProtected<TMember>(
+		this IThat<IAsyncEnumerable<TMember>?> subject)
 		where TMember : MemberInfo?
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>((it, grammars)
 				=> new ArePrivateProtectedConstraint<TMember>(it, grammars)),
@@ -46,8 +46,8 @@ public static partial class ThatMembers
 	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are not private protected.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>> AreNotPrivateProtected<TMember>(
-		this IThat<IEnumerable<TMember>> subject)
+	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>> AreNotPrivateProtected<TMember>(
+		this IThat<IEnumerable<TMember>?> subject)
 		where TMember : MemberInfo?
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<TMember>>((it, grammars)
 				=> new AreNotPrivateProtectedConstraint<TMember>(it, grammars)),
@@ -58,9 +58,9 @@ public static partial class ThatMembers
 	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are not private protected.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>>
+	public static AndOrResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>
 		AreNotPrivateProtected<TMember>(
-			this IThat<IAsyncEnumerable<TMember>> subject)
+			this IThat<IAsyncEnumerable<TMember>?> subject)
 		where TMember : MemberInfo?
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>((it, grammars)
 				=> new AreNotPrivateProtectedConstraint<TMember>(it, grammars)),

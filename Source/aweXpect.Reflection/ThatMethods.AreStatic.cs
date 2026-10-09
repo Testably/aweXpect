@@ -21,8 +21,8 @@ public static partial class ThatMethods
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> are static.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>>> AreStatic(
-		this IThat<IEnumerable<MethodInfo?>> subject)
+	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> AreStatic(
+		this IThat<IEnumerable<MethodInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>((it, grammars)
 				=> new AreStaticConstraint(it, grammars)),
 			subject);
@@ -32,8 +32,8 @@ public static partial class ThatMethods
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> are static.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>>> AreStatic(
-		this IThat<IAsyncEnumerable<MethodInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> AreStatic(
+		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>((it, grammars)
 				=> new AreStaticConstraint(it, grammars)),
 			subject);
@@ -43,8 +43,8 @@ public static partial class ThatMethods
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> are not static.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>>> AreNotStatic(
-		this IThat<IEnumerable<MethodInfo?>> subject)
+	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> AreNotStatic(
+		this IThat<IEnumerable<MethodInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>((it, grammars)
 				=> new AreNotStaticConstraint(it, grammars)),
 			subject);
@@ -54,8 +54,8 @@ public static partial class ThatMethods
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> are not static.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>>> AreNotStatic(
-		this IThat<IAsyncEnumerable<MethodInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> AreNotStatic(
+		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>((it, grammars)
 				=> new AreNotStaticConstraint(it, grammars)),
 			subject);

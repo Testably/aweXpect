@@ -21,8 +21,8 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are static.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> AreStatic(
-		this IThat<IEnumerable<FieldInfo?>> subject)
+	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> AreStatic(
+		this IThat<IEnumerable<FieldInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
 				=> new AreStaticConstraint(it, grammars)),
 			subject);
@@ -32,8 +32,8 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are static.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>> AreStatic(
-		this IThat<IAsyncEnumerable<FieldInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>> AreStatic(
+		this IThat<IAsyncEnumerable<FieldInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
 				=> new AreStaticConstraint(it, grammars)),
 			subject);
@@ -43,8 +43,8 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are not static.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> AreNotStatic(
-		this IThat<IEnumerable<FieldInfo?>> subject)
+	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> AreNotStatic(
+		this IThat<IEnumerable<FieldInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
 				=> new AreNotStaticConstraint(it, grammars)),
 			subject);
@@ -54,8 +54,8 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are not static.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>> AreNotStatic(
-		this IThat<IAsyncEnumerable<FieldInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>> AreNotStatic(
+		this IThat<IAsyncEnumerable<FieldInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
 				=> new AreNotStaticConstraint(it, grammars)),
 			subject);

@@ -22,8 +22,8 @@ public static partial class ThatMembers
 	///     the <see cref="System.ObsoleteAttribute" />).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>> AreObsolete<TMember>(
-		this IThat<IEnumerable<TMember>> subject)
+	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>> AreObsolete<TMember>(
+		this IThat<IEnumerable<TMember>?> subject)
 		where TMember : MemberInfo?
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<TMember>>((it, grammars)
 				=> new AreObsoleteConstraint<TMember>(it, grammars)),
@@ -35,8 +35,8 @@ public static partial class ThatMembers
 	///     the <see cref="System.ObsoleteAttribute" />).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>> AreObsolete<TMember>(
-		this IThat<IAsyncEnumerable<TMember>> subject)
+	public static AndOrResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>> AreObsolete<TMember>(
+		this IThat<IAsyncEnumerable<TMember>?> subject)
 		where TMember : MemberInfo?
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>((it, grammars)
 				=> new AreObsoleteConstraint<TMember>(it, grammars)),
@@ -48,8 +48,8 @@ public static partial class ThatMembers
 	///     marked with the <see cref="System.ObsoleteAttribute" />).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>> AreNotObsolete<TMember>(
-		this IThat<IEnumerable<TMember>> subject)
+	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>> AreNotObsolete<TMember>(
+		this IThat<IEnumerable<TMember>?> subject)
 		where TMember : MemberInfo?
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<TMember>>((it, grammars)
 				=> new AreNotObsoleteConstraint<TMember>(it, grammars)),
@@ -61,8 +61,8 @@ public static partial class ThatMembers
 	///     marked with the <see cref="System.ObsoleteAttribute" />).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>> AreNotObsolete<TMember>(
-		this IThat<IAsyncEnumerable<TMember>> subject)
+	public static AndOrResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>> AreNotObsolete<TMember>(
+		this IThat<IAsyncEnumerable<TMember>?> subject)
 		where TMember : MemberInfo?
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>((it, grammars)
 				=> new AreNotObsoleteConstraint<TMember>(it, grammars)),

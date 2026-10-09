@@ -28,8 +28,8 @@ public static partial class ThatTypes
 	///     The <paramref name="memberScope" /> controls whether inherited methods are considered.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IEnumerable<Type?>> ContainMethods(
-		this IThat<IEnumerable<Type?>> subject,
+	public static TypeContainingMembersResult<IEnumerable<Type?>?> ContainMethods(
+		this IThat<IEnumerable<Type?>?> subject,
 		Func<Filtered.Methods, Filtered.Methods> filter,
 		MemberScope memberScope = MemberScope.DeclaredOnly)
 		=> Contain<MethodInfo, Filtered.Methods>(subject, types => types.Methods(memberScope), filter);
@@ -45,15 +45,15 @@ public static partial class ThatTypes
 	///     The <paramref name="memberScope" /> controls whether inherited methods are considered.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>> ContainMethods(
-		this IThat<IAsyncEnumerable<Type?>> subject,
+	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>?> ContainMethods(
+		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Func<Filtered.Methods, Filtered.Methods> filter,
 		MemberScope memberScope = MemberScope.DeclaredOnly)
 		=> Contain<MethodInfo, Filtered.Methods>(subject, types => types.Methods(memberScope), filter);
 #endif
 
-	private static TypeContainingMembersResult<IEnumerable<Type?>> Contain<TMember, TFiltered>(
-		IThat<IEnumerable<Type?>> subject,
+	private static TypeContainingMembersResult<IEnumerable<Type?>?> Contain<TMember, TFiltered>(
+		IThat<IEnumerable<Type?>?> subject,
 		Func<Filtered.Types, TFiltered> navigate,
 		Func<TFiltered, TFiltered> filter)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
@@ -61,7 +61,7 @@ public static partial class ThatTypes
 		Quantifier quantifier = new();
 		IContainedMembersFilter memberFilter =
 			TypeFilters.ContainedMembers<TMember, TFiltered>(navigate, filter, quantifier);
-		return new TypeContainingMembersResult<IEnumerable<Type?>>(
+		return new TypeContainingMembersResult<IEnumerable<Type?>?>(
 			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new ContainMembersConstraint(it, grammars, memberFilter, quantifier)),
 			subject,
@@ -69,8 +69,8 @@ public static partial class ThatTypes
 	}
 
 #if NET8_0_OR_GREATER
-	private static TypeContainingMembersResult<IAsyncEnumerable<Type?>> Contain<TMember, TFiltered>(
-		IThat<IAsyncEnumerable<Type?>> subject,
+	private static TypeContainingMembersResult<IAsyncEnumerable<Type?>?> Contain<TMember, TFiltered>(
+		IThat<IAsyncEnumerable<Type?>?> subject,
 		Func<Filtered.Types, TFiltered> navigate,
 		Func<TFiltered, TFiltered> filter)
 		where TFiltered : Filtered<TMember, TFiltered>, IDescribableSubject
@@ -78,7 +78,7 @@ public static partial class ThatTypes
 		Quantifier quantifier = new();
 		IContainedMembersFilter memberFilter =
 			TypeFilters.ContainedMembers<TMember, TFiltered>(navigate, filter, quantifier);
-		return new TypeContainingMembersResult<IAsyncEnumerable<Type?>>(
+		return new TypeContainingMembersResult<IAsyncEnumerable<Type?>?>(
 			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 				=> new ContainMembersConstraint(it, grammars, memberFilter, quantifier)),
 			subject,

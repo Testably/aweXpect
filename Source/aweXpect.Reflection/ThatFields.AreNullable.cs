@@ -21,8 +21,8 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are nullable.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> AreNullable(
-		this IThat<IEnumerable<FieldInfo?>> subject)
+	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> AreNullable(
+		this IThat<IEnumerable<FieldInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
 				=> new AreNullableConstraint(it, grammars)),
 			subject);
@@ -32,8 +32,8 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are nullable.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>> AreNullable(
-		this IThat<IAsyncEnumerable<FieldInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>> AreNullable(
+		this IThat<IAsyncEnumerable<FieldInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
 				=> new AreNullableConstraint(it, grammars)),
 			subject);
@@ -43,8 +43,8 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are not nullable.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> AreNotNullable(
-		this IThat<IEnumerable<FieldInfo?>> subject)
+	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> AreNotNullable(
+		this IThat<IEnumerable<FieldInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
 				=> new AreNotNullableConstraint(it, grammars)),
 			subject);
@@ -54,8 +54,8 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are not nullable.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>> AreNotNullable(
-		this IThat<IAsyncEnumerable<FieldInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>> AreNotNullable(
+		this IThat<IAsyncEnumerable<FieldInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
 				=> new AreNotNullableConstraint(it, grammars)),
 			subject);

@@ -23,12 +23,12 @@ public static partial class ThatMembers
 	///     the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>> HaveName<TMember>(
-		this IThat<IEnumerable<TMember>> subject, string expected)
+	public static StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>> HaveName<TMember>(
+		this IThat<IEnumerable<TMember>?> subject, string expected)
 		where TMember : MemberInfo?
 	{
 		StringEqualityOptions options = new(nameof(expected));
-		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>>(subject.Get()
+		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<TMember>>((it, grammars)
 					=> new HaveNameConstraint<TMember>(it, grammars, expected, options)),
 			subject,
@@ -41,13 +41,13 @@ public static partial class ThatMembers
 	///     the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>>
+	public static StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>
 		HaveName<TMember>(
-			this IThat<IAsyncEnumerable<TMember>> subject, string expected)
+			this IThat<IAsyncEnumerable<TMember>?> subject, string expected)
 		where TMember : MemberInfo?
 	{
 		StringEqualityOptions options = new(nameof(expected));
-		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>>(subject.Get()
+		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>((it, grammars)
 					=> new HaveNameConstraint<TMember>(it, grammars, expected, options)),
 			subject,
@@ -60,15 +60,15 @@ public static partial class ThatMembers
 	///     returned by the <paramref name="expectedNameSelector" /> for the respective item.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>> HaveName<TMember>(
-		this IThat<IEnumerable<TMember>> subject,
+	public static StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>> HaveName<TMember>(
+		this IThat<IEnumerable<TMember>?> subject,
 		Func<TMember, string> expectedNameSelector,
 		[CallerArgumentExpression(nameof(expectedNameSelector))]
 		string doNotPopulateThisValue = "")
 		where TMember : MemberInfo?
 	{
 		StringEqualityOptions options = new(nameof(expectedNameSelector));
-		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>>(subject.Get()
+		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<TMember>>((it, grammars)
 					=> new HaveNameFromSelectorConstraint<TMember>(it, grammars, expectedNameSelector,
 						doNotPopulateThisValue, options)),
@@ -82,16 +82,16 @@ public static partial class ThatMembers
 	///     returned by the <paramref name="expectedNameSelector" /> for the respective item.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>>
+	public static StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>
 		HaveName<TMember>(
-			this IThat<IAsyncEnumerable<TMember>> subject,
+			this IThat<IAsyncEnumerable<TMember>?> subject,
 			Func<TMember, string> expectedNameSelector,
 			[CallerArgumentExpression(nameof(expectedNameSelector))]
 			string doNotPopulateThisValue = "")
 		where TMember : MemberInfo?
 	{
 		StringEqualityOptions options = new(nameof(expectedNameSelector));
-		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>>(subject.Get()
+		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>((it, grammars)
 					=> new HaveNameFromSelectorConstraint<TMember>(it, grammars, expectedNameSelector,
 						doNotPopulateThisValue, options)),

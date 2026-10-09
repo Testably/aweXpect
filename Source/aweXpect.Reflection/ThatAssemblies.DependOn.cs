@@ -22,11 +22,11 @@ public static partial class ThatAssemblies
 	///     a dependency on the <paramref name="expected" /> assembly.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> DependOn(
-		this IThat<IEnumerable<Assembly?>> subject, string expected)
+	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> DependOn(
+		this IThat<IEnumerable<Assembly?>?> subject, string expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
-		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>>(subject.Get()
+		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
 					=> new DependOnConstraint(it, grammars, expected, options)),
 			subject,
@@ -39,12 +39,12 @@ public static partial class ThatAssemblies
 	///     a dependency on the <paramref name="expected" /> assembly.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>>
+	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>
 		DependOn(
-			this IThat<IAsyncEnumerable<Assembly?>> subject, string expected)
+			this IThat<IAsyncEnumerable<Assembly?>?> subject, string expected)
 	{
 		StringEqualityOptions options = new(nameof(expected));
-		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>>(subject
+		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
 					=> new DependOnConstraint(it, grammars, expected, options)),

@@ -21,8 +21,8 @@ public static partial class ThatProperties
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are nullable.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> AreNullable(
-		this IThat<IEnumerable<PropertyInfo?>> subject)
+	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>> AreNullable(
+		this IThat<IEnumerable<PropertyInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
 				=> new AreNullableConstraint(it, grammars)),
 			subject);
@@ -32,8 +32,8 @@ public static partial class ThatProperties
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are nullable.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>> AreNullable(
-		this IThat<IAsyncEnumerable<PropertyInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>> AreNullable(
+		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
 				=> new AreNullableConstraint(it, grammars)),
 			subject);
@@ -43,8 +43,8 @@ public static partial class ThatProperties
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are not nullable.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> AreNotNullable(
-		this IThat<IEnumerable<PropertyInfo?>> subject)
+	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>> AreNotNullable(
+		this IThat<IEnumerable<PropertyInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
 				=> new AreNotNullableConstraint(it, grammars)),
 			subject);
@@ -54,8 +54,8 @@ public static partial class ThatProperties
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are not nullable.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>> AreNotNullable(
-		this IThat<IAsyncEnumerable<PropertyInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>> AreNotNullable(
+		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
 				=> new AreNotNullableConstraint(it, grammars)),
 			subject);

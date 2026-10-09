@@ -22,11 +22,11 @@ public static partial class ThatAssemblies
 	///     no dependency on the <paramref name="unexpected" /> assembly.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> DoNotDependOn(
-		this IThat<IEnumerable<Assembly?>> subject, string unexpected)
+	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> DoNotDependOn(
+		this IThat<IEnumerable<Assembly?>?> subject, string unexpected)
 	{
 		StringEqualityOptions options = new(nameof(unexpected));
-		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>>(subject.Get()
+		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
 					=> new DoNotDependOnConstraint(it, grammars, unexpected, options)),
 			subject,
@@ -39,12 +39,12 @@ public static partial class ThatAssemblies
 	///     no dependency on the <paramref name="unexpected" /> assembly.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>>
+	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>
 		DoNotDependOn(
-			this IThat<IAsyncEnumerable<Assembly?>> subject, string unexpected)
+			this IThat<IAsyncEnumerable<Assembly?>?> subject, string unexpected)
 	{
 		StringEqualityOptions options = new(nameof(unexpected));
-		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>>(subject
+		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
 					=> new DoNotDependOnConstraint(it, grammars, unexpected, options)),

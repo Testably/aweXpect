@@ -21,8 +21,8 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are read-only.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> AreReadOnly(
-		this IThat<IEnumerable<FieldInfo?>> subject)
+	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> AreReadOnly(
+		this IThat<IEnumerable<FieldInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
 				=> new AreReadOnlyConstraint(it, grammars)),
 			subject);
@@ -32,8 +32,8 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are read-only.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>> AreReadOnly(
-		this IThat<IAsyncEnumerable<FieldInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>> AreReadOnly(
+		this IThat<IAsyncEnumerable<FieldInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
 				=> new AreReadOnlyConstraint(it, grammars)),
 			subject);
@@ -43,8 +43,8 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are not read-only.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>>> AreNotReadOnly(
-		this IThat<IEnumerable<FieldInfo?>> subject)
+	public static AndOrResult<IEnumerable<FieldInfo?>, IThat<IEnumerable<FieldInfo?>?>> AreNotReadOnly(
+		this IThat<IEnumerable<FieldInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<FieldInfo?>>((it, grammars)
 				=> new AreNotReadOnlyConstraint(it, grammars)),
 			subject);
@@ -54,8 +54,8 @@ public static partial class ThatFields
 	///     Verifies that all items in the filtered collection of <see cref="FieldInfo" /> are not read-only.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>>> AreNotReadOnly(
-		this IThat<IAsyncEnumerable<FieldInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<FieldInfo?>, IThat<IAsyncEnumerable<FieldInfo?>?>> AreNotReadOnly(
+		this IThat<IAsyncEnumerable<FieldInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<FieldInfo?>>((it, grammars)
 				=> new AreNotReadOnlyConstraint(it, grammars)),
 			subject);

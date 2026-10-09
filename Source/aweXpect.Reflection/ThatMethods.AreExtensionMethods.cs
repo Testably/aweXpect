@@ -22,8 +22,8 @@ public static partial class ThatMethods
 	///     parameter is declared with the <see langword="this" /> modifier).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>>> AreExtensionMethods(
-		this IThat<IEnumerable<MethodInfo?>> subject)
+	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> AreExtensionMethods(
+		this IThat<IEnumerable<MethodInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>((it, grammars)
 				=> new AreExtensionMethodsConstraint(it, grammars)),
 			subject);
@@ -34,8 +34,8 @@ public static partial class ThatMethods
 	///     parameter is declared with the <see langword="this" /> modifier).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>>> AreExtensionMethods(
-		this IThat<IAsyncEnumerable<MethodInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> AreExtensionMethods(
+		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>((it, grammars)
 				=> new AreExtensionMethodsConstraint(it, grammars)),
 			subject);
@@ -46,8 +46,8 @@ public static partial class ThatMethods
 	///     first parameter is not declared with the <see langword="this" /> modifier).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>>> AreNotExtensionMethods(
-		this IThat<IEnumerable<MethodInfo?>> subject)
+	public static AndOrResult<IEnumerable<MethodInfo?>, IThat<IEnumerable<MethodInfo?>?>> AreNotExtensionMethods(
+		this IThat<IEnumerable<MethodInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<MethodInfo?>>((it, grammars)
 				=> new AreNotExtensionMethodsConstraint(it, grammars)),
 			subject);
@@ -58,8 +58,8 @@ public static partial class ThatMethods
 	///     first parameter is not declared with the <see langword="this" /> modifier).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>>> AreNotExtensionMethods(
-		this IThat<IAsyncEnumerable<MethodInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<MethodInfo?>, IThat<IAsyncEnumerable<MethodInfo?>?>> AreNotExtensionMethods(
+		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<MethodInfo?>>((it, grammars)
 				=> new AreNotExtensionMethodsConstraint(it, grammars)),
 			subject);

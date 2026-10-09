@@ -19,8 +19,8 @@ public static partial class ThatTypes
 	///     The <paramref name="memberScope" /> controls whether inherited events are considered.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IEnumerable<Type?>> ContainEvents(
-		this IThat<IEnumerable<Type?>> subject,
+	public static TypeContainingMembersResult<IEnumerable<Type?>?> ContainEvents(
+		this IThat<IEnumerable<Type?>?> subject,
 		Func<Filtered.Events, Filtered.Events> filter,
 		MemberScope memberScope = MemberScope.DeclaredOnly)
 		=> Contain<EventInfo, Filtered.Events>(subject, types => types.Events(memberScope), filter);
@@ -36,8 +36,8 @@ public static partial class ThatTypes
 	///     The <paramref name="memberScope" /> controls whether inherited events are considered.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>> ContainEvents(
-		this IThat<IAsyncEnumerable<Type?>> subject,
+	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>?> ContainEvents(
+		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Func<Filtered.Events, Filtered.Events> filter,
 		MemberScope memberScope = MemberScope.DeclaredOnly)
 		=> Contain<EventInfo, Filtered.Events>(subject, types => types.Events(memberScope), filter);

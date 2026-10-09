@@ -143,7 +143,7 @@ public sealed class CollectionConstraintTests
 	[Fact]
 	public async Task WhenSubjectIsNull_ShouldFail()
 	{
-		IEnumerable<Type?> subject = null!;
+		IEnumerable<Type?>? subject = null;
 
 		async Task Act()
 		{
@@ -165,10 +165,7 @@ public sealed class CollectionConstraintTests
 
 		async Task Act()
 		{
-			// The collection expectations take a non-nullable subject, while Whose hands out a nullable one.
-#pragma warning disable CS8620
 			await That(subject).Whose(h => h.Types, t => t.AreSealed());
-#pragma warning restore CS8620
 		}
 
 		await That(Act).Throws<XunitException>()
@@ -182,7 +179,7 @@ public sealed class CollectionConstraintTests
 	[Fact]
 	public async Task WhenSubjectIsNull_ShouldFailForDependencyCycles()
 	{
-		IEnumerable<Type?> subject = null!;
+		IEnumerable<Type?>? subject = null;
 
 		async Task Act()
 		{
@@ -200,7 +197,7 @@ public sealed class CollectionConstraintTests
 	[Fact]
 	public async Task WhenSubjectIsNull_ShouldFailWhenNegated()
 	{
-		IEnumerable<Type?> subject = null!;
+		IEnumerable<Type?>? subject = null;
 
 		async Task Act()
 		{
@@ -259,7 +256,7 @@ public sealed class CollectionConstraintTests
 	[Fact]
 	public async Task WhenAsyncSubjectIsNull_ShouldFailWhenNegated()
 	{
-		IAsyncEnumerable<Type?> subject = null!;
+		IAsyncEnumerable<Type?>? subject = null;
 
 		async Task Act()
 		{

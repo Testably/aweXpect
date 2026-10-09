@@ -22,8 +22,8 @@ public static partial class ThatProperties
 	///     (regular, non-init) setter.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> HaveASetter(
-		this IThat<IEnumerable<PropertyInfo?>> subject)
+	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>> HaveASetter(
+		this IThat<IEnumerable<PropertyInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
 				=> new HaveASetterConstraint(it, grammars)),
 			subject);
@@ -34,8 +34,8 @@ public static partial class ThatProperties
 	///     (regular, non-init) setter.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>> HaveASetter(
-		this IThat<IAsyncEnumerable<PropertyInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>> HaveASetter(
+		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
 				=> new HaveASetterConstraint(it, grammars)),
 			subject);

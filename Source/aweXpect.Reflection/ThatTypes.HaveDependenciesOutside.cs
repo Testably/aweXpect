@@ -35,11 +35,11 @@ public static partial class ThatTypes
 	///     count.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static NamespaceDependencyOutsideResult<IEnumerable<Type?>> HaveDependenciesOutside(
-		this IThat<IEnumerable<Type?>> subject, params IEnumerable<string> namespaces)
+	public static NamespaceDependencyOutsideResult<IEnumerable<Type?>?> HaveDependenciesOutside(
+		this IThat<IEnumerable<Type?>?> subject, params IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
-		return new NamespaceDependencyOutsideResult<IEnumerable<Type?>>(subject.Get().ExpectationBuilder
+		return new NamespaceDependencyOutsideResult<IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IEnumerable<Type?>>((it, grammars)
 					=> new HaveDependenciesOutsideConstraint(it, grammars, options)),
 			subject,
@@ -64,11 +64,11 @@ public static partial class ThatTypes
 	///     count.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static NamespaceDependencyOutsideResult<IAsyncEnumerable<Type?>> HaveDependenciesOutside(
-		this IThat<IAsyncEnumerable<Type?>> subject, params IEnumerable<string> namespaces)
+	public static NamespaceDependencyOutsideResult<IAsyncEnumerable<Type?>?> HaveDependenciesOutside(
+		this IThat<IAsyncEnumerable<Type?>?> subject, params IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
-		return new NamespaceDependencyOutsideResult<IAsyncEnumerable<Type?>>(subject.Get().ExpectationBuilder
+		return new NamespaceDependencyOutsideResult<IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 					=> new HaveDependenciesOutsideConstraint(it, grammars, options)),
 			subject,
@@ -100,11 +100,11 @@ public static partial class ThatTypes
 	///     count.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeSetDependencyOutsideResult<IEnumerable<Type?>> HaveDependenciesOutside(
-		this IThat<IEnumerable<Type?>> subject, Filtered.Types target, params Filtered.Types[] additional)
+	public static TypeSetDependencyOutsideResult<IEnumerable<Type?>?> HaveDependenciesOutside(
+		this IThat<IEnumerable<Type?>?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
 		TypeSetDependencyOptions options = new(target, additional);
-		return new TypeSetDependencyOutsideResult<IEnumerable<Type?>>(subject.Get().ExpectationBuilder
+		return new TypeSetDependencyOutsideResult<IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IEnumerable<Type?>>((it, grammars)
 					=> new HaveDependenciesOutsideTypeSetConstraint(it, grammars, options)),
 			subject,
@@ -136,11 +136,11 @@ public static partial class ThatTypes
 	///     count.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeSetDependencyOutsideResult<IAsyncEnumerable<Type?>> HaveDependenciesOutside(
-		this IThat<IAsyncEnumerable<Type?>> subject, Filtered.Types target, params Filtered.Types[] additional)
+	public static TypeSetDependencyOutsideResult<IAsyncEnumerable<Type?>?> HaveDependenciesOutside(
+		this IThat<IAsyncEnumerable<Type?>?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
 		TypeSetDependencyOptions options = new(target, additional);
-		return new TypeSetDependencyOutsideResult<IAsyncEnumerable<Type?>>(subject.Get().ExpectationBuilder
+		return new TypeSetDependencyOutsideResult<IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 					=> new HaveDependenciesOutsideTypeSetConstraint(it, grammars, options)),
 			subject,

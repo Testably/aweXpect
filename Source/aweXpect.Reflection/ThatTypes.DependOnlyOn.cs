@@ -33,11 +33,11 @@ public static partial class ThatTypes
 	///     explicitly via <c>DoNotDependOn</c> or customize the prefixes.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static NamespaceDependencyOnlyOnResult<IEnumerable<Type?>> DependOnlyOn(
-		this IThat<IEnumerable<Type?>> subject, params IEnumerable<string> namespaces)
+	public static NamespaceDependencyOnlyOnResult<IEnumerable<Type?>?> DependOnlyOn(
+		this IThat<IEnumerable<Type?>?> subject, params IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
-		return new NamespaceDependencyOnlyOnResult<IEnumerable<Type?>>(subject.Get().ExpectationBuilder
+		return new NamespaceDependencyOnlyOnResult<IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IEnumerable<Type?>>((it, grammars)
 					=> new DependOnlyOnConstraint(it, grammars, options)),
 			subject,
@@ -60,11 +60,11 @@ public static partial class ThatTypes
 	///     explicitly via <c>DoNotDependOn</c> or customize the prefixes.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static NamespaceDependencyOnlyOnResult<IAsyncEnumerable<Type?>> DependOnlyOn(
-		this IThat<IAsyncEnumerable<Type?>> subject, params IEnumerable<string> namespaces)
+	public static NamespaceDependencyOnlyOnResult<IAsyncEnumerable<Type?>?> DependOnlyOn(
+		this IThat<IAsyncEnumerable<Type?>?> subject, params IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
-		return new NamespaceDependencyOnlyOnResult<IAsyncEnumerable<Type?>>(subject.Get().ExpectationBuilder
+		return new NamespaceDependencyOnlyOnResult<IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 					=> new DependOnlyOnConstraint(it, grammars, options)),
 			subject,
@@ -93,11 +93,11 @@ public static partial class ThatTypes
 	///     explicitly via <c>DoNotDependOn</c> or customize the prefixes.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeSetDependencyOnlyOnResult<IEnumerable<Type?>> DependOnlyOn(
-		this IThat<IEnumerable<Type?>> subject, Filtered.Types target, params Filtered.Types[] additional)
+	public static TypeSetDependencyOnlyOnResult<IEnumerable<Type?>?> DependOnlyOn(
+		this IThat<IEnumerable<Type?>?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
 		TypeSetDependencyOptions options = new(target, additional);
-		return new TypeSetDependencyOnlyOnResult<IEnumerable<Type?>>(subject.Get().ExpectationBuilder
+		return new TypeSetDependencyOnlyOnResult<IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IEnumerable<Type?>>((it, grammars)
 					=> new DependOnlyOnTypeSetConstraint(it, grammars, options)),
 			subject,
@@ -126,11 +126,11 @@ public static partial class ThatTypes
 	///     explicitly via <c>DoNotDependOn</c> or customize the prefixes.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeSetDependencyOnlyOnResult<IAsyncEnumerable<Type?>> DependOnlyOn(
-		this IThat<IAsyncEnumerable<Type?>> subject, Filtered.Types target, params Filtered.Types[] additional)
+	public static TypeSetDependencyOnlyOnResult<IAsyncEnumerable<Type?>?> DependOnlyOn(
+		this IThat<IAsyncEnumerable<Type?>?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
 		TypeSetDependencyOptions options = new(target, additional);
-		return new TypeSetDependencyOnlyOnResult<IAsyncEnumerable<Type?>>(subject.Get().ExpectationBuilder
+		return new TypeSetDependencyOnlyOnResult<IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 					=> new DependOnlyOnTypeSetConstraint(it, grammars, options)),
 			subject,

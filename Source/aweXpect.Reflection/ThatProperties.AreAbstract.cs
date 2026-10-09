@@ -21,8 +21,8 @@ public static partial class ThatProperties
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are abstract.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> AreAbstract(
-		this IThat<IEnumerable<PropertyInfo?>> subject)
+	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>> AreAbstract(
+		this IThat<IEnumerable<PropertyInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
 				=> new AreAbstractConstraint(it, grammars)),
 			subject);
@@ -32,8 +32,8 @@ public static partial class ThatProperties
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are abstract.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>> AreAbstract(
-		this IThat<IAsyncEnumerable<PropertyInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>> AreAbstract(
+		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
 				=> new AreAbstractConstraint(it, grammars)),
 			subject);
@@ -43,8 +43,8 @@ public static partial class ThatProperties
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are not abstract.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> AreNotAbstract(
-		this IThat<IEnumerable<PropertyInfo?>> subject)
+	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>> AreNotAbstract(
+		this IThat<IEnumerable<PropertyInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
 				=> new AreNotAbstractConstraint(it, grammars)),
 			subject);
@@ -54,8 +54,8 @@ public static partial class ThatProperties
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> are not abstract.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>> AreNotAbstract(
-		this IThat<IAsyncEnumerable<PropertyInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>> AreNotAbstract(
+		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
 				=> new AreNotAbstractConstraint(it, grammars)),
 			subject);

@@ -21,8 +21,8 @@ public static partial class ThatProperties
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> have a getter.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> HaveAGetter(
-		this IThat<IEnumerable<PropertyInfo?>> subject)
+	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>> HaveAGetter(
+		this IThat<IEnumerable<PropertyInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
 				=> new HaveAGetterConstraint(it, grammars)),
 			subject);
@@ -32,8 +32,8 @@ public static partial class ThatProperties
 	///     Verifies that all items in the filtered collection of <see cref="PropertyInfo" /> have a getter.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>> HaveAGetter(
-		this IThat<IAsyncEnumerable<PropertyInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>> HaveAGetter(
+		this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
 				=> new HaveAGetterConstraint(it, grammars)),
 			subject);

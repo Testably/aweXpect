@@ -27,14 +27,14 @@ public static partial class ThatTypes
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotHave<TAttribute>(
-		this IThat<IEnumerable<Type?>> subject, bool inherit = true)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotHave<TAttribute>(
+		this IThat<IEnumerable<Type?>?> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<Type?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>>(
+		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject);
@@ -50,14 +50,14 @@ public static partial class ThatTypes
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> DoNotHave<TAttribute>(
-		this IThat<IAsyncEnumerable<Type?>> subject, bool inherit = true)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotHave<TAttribute>(
+		this IThat<IAsyncEnumerable<Type?>?> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<Type?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>>(
+		return new AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject);

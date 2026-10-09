@@ -22,8 +22,8 @@ public static partial class ThatTypes
 	///     parameterless (default) constructor.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> HaveADefaultConstructor(
-		this IThat<IEnumerable<Type?>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> HaveADefaultConstructor(
+		this IThat<IEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new HaveADefaultConstructorConstraint(it, grammars)),
 			subject);
@@ -34,8 +34,8 @@ public static partial class ThatTypes
 	///     parameterless (default) constructor.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> HaveADefaultConstructor(
-		this IThat<IAsyncEnumerable<Type?>> subject)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> HaveADefaultConstructor(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 				=> new HaveADefaultConstructorConstraint(it, grammars)),
 			subject);
@@ -46,8 +46,8 @@ public static partial class ThatTypes
 	///     parameterless (default) constructor.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotHaveADefaultConstructor(
-		this IThat<IEnumerable<Type?>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotHaveADefaultConstructor(
+		this IThat<IEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new DoNotHaveADefaultConstructorConstraint(it, grammars)),
 			subject);
@@ -58,8 +58,8 @@ public static partial class ThatTypes
 	///     parameterless (default) constructor.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> DoNotHaveADefaultConstructor(
-		this IThat<IAsyncEnumerable<Type?>> subject)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotHaveADefaultConstructor(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 				=> new DoNotHaveADefaultConstructorConstraint(it, grammars)),
 			subject);

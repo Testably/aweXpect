@@ -28,14 +28,14 @@ public static partial class ThatAssemblies
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> DoNotHave<TAttribute>(
-		this IThat<IEnumerable<Assembly?>> subject, bool inherit = true)
+	public static AndOrResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> DoNotHave<TAttribute>(
+		this IThat<IEnumerable<Assembly?>?> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new AndOrResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>>(
+		return new AndOrResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
 				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject);
@@ -51,14 +51,14 @@ public static partial class ThatAssemblies
 	///     the attribute can be inherited from a base type.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>> DoNotHave<TAttribute>(
-		this IThat<IAsyncEnumerable<Assembly?>> subject, bool inherit = true)
+	public static AndOrResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>> DoNotHave<TAttribute>(
+		this IThat<IAsyncEnumerable<Assembly?>?> subject, bool inherit = true)
 		where TAttribute : Attribute
 	{
 		AttributeFilterOptions<Assembly?> attributeFilterOptions =
 			new((a, attributeType, p, i) => a.HasAttribute(attributeType, p, i));
 		attributeFilterOptions.RegisterAttribute<TAttribute>(inherit);
-		return new AndOrResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>>(
+		return new AndOrResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
 				=> new DoNotHaveAttributeConstraint(it, grammars | ExpectationGrammars.Plural, attributeFilterOptions)),
 			subject);

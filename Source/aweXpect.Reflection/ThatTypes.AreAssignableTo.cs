@@ -28,8 +28,8 @@ public static partial class ThatTypes
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreAssignableTo<TType>(
-		this IThat<IEnumerable<Type?>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreAssignableTo<TType>(
+		this IThat<IEnumerable<Type?>?> subject)
 		=> subject.AreAssignableTo(typeof(TType));
 
 	/// <summary>
@@ -45,11 +45,11 @@ public static partial class ThatTypes
 	/// <param name="type">The type the items should be assignable to.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreAssignableTo(
-		this IThat<IEnumerable<Type?>> subject, Type type)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreAssignableTo(
+		this IThat<IEnumerable<Type?>?> subject, Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
+		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new AreAssignableToConstraint(it, grammars, type)),
 			subject);
 	}
@@ -66,8 +66,8 @@ public static partial class ThatTypes
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreAssignableTo<TType>(
-		this IThat<IAsyncEnumerable<Type?>> subject)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreAssignableTo<TType>(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
 		=> subject.AreAssignableTo(typeof(TType));
 
 	/// <summary>
@@ -83,8 +83,8 @@ public static partial class ThatTypes
 	/// <param name="type">The type the items should be assignable to.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreAssignableTo(
-		this IThat<IAsyncEnumerable<Type?>> subject, Type type)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreAssignableTo(
+		this IThat<IAsyncEnumerable<Type?>?> subject, Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
 		return new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
@@ -104,8 +104,8 @@ public static partial class ThatTypes
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotAssignableTo<TType>(
-		this IThat<IEnumerable<Type?>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreNotAssignableTo<TType>(
+		this IThat<IEnumerable<Type?>?> subject)
 		=> subject.AreNotAssignableTo(typeof(TType));
 
 	/// <summary>
@@ -121,11 +121,11 @@ public static partial class ThatTypes
 	/// <param name="type">The type the items should not be assignable to.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotAssignableTo(
-		this IThat<IEnumerable<Type?>> subject, Type type)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreNotAssignableTo(
+		this IThat<IEnumerable<Type?>?> subject, Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
+		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new AreNotAssignableToConstraint(it, grammars, type)),
 			subject);
 	}
@@ -142,8 +142,8 @@ public static partial class ThatTypes
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreNotAssignableTo<TType>(
-		this IThat<IAsyncEnumerable<Type?>> subject)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreNotAssignableTo<TType>(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
 		=> subject.AreNotAssignableTo(typeof(TType));
 
 	/// <summary>
@@ -159,8 +159,8 @@ public static partial class ThatTypes
 	/// <param name="type">The type the items should not be assignable to.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreNotAssignableTo(
-		this IThat<IAsyncEnumerable<Type?>> subject, Type type)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreNotAssignableTo(
+		this IThat<IAsyncEnumerable<Type?>?> subject, Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
 		return new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
@@ -179,8 +179,8 @@ public static partial class ThatTypes
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreAssignableFrom<TType>(
-		this IThat<IEnumerable<Type?>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreAssignableFrom<TType>(
+		this IThat<IEnumerable<Type?>?> subject)
 		=> subject.AreAssignableFrom(typeof(TType));
 
 	/// <summary>
@@ -195,11 +195,11 @@ public static partial class ThatTypes
 	/// <param name="type">The type that should be assignable to each item.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreAssignableFrom(
-		this IThat<IEnumerable<Type?>> subject, Type type)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreAssignableFrom(
+		this IThat<IEnumerable<Type?>?> subject, Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
+		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new AreAssignableFromConstraint(it, grammars, type)),
 			subject);
 	}
@@ -215,8 +215,8 @@ public static partial class ThatTypes
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreAssignableFrom<TType>(
-		this IThat<IAsyncEnumerable<Type?>> subject)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreAssignableFrom<TType>(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
 		=> subject.AreAssignableFrom(typeof(TType));
 
 	/// <summary>
@@ -231,8 +231,8 @@ public static partial class ThatTypes
 	/// <param name="type">The type that should be assignable to each item.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreAssignableFrom(
-		this IThat<IAsyncEnumerable<Type?>> subject, Type type)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreAssignableFrom(
+		this IThat<IAsyncEnumerable<Type?>?> subject, Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
 		return new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
@@ -251,8 +251,8 @@ public static partial class ThatTypes
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotAssignableFrom<TType>(
-		this IThat<IEnumerable<Type?>> subject)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreNotAssignableFrom<TType>(
+		this IThat<IEnumerable<Type?>?> subject)
 		=> subject.AreNotAssignableFrom(typeof(TType));
 
 	/// <summary>
@@ -267,11 +267,11 @@ public static partial class ThatTypes
 	/// <param name="type">The type that should not be assignable to each item.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> AreNotAssignableFrom(
-		this IThat<IEnumerable<Type?>> subject, Type type)
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> AreNotAssignableFrom(
+		this IThat<IEnumerable<Type?>?> subject, Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
+		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new AreNotAssignableFromConstraint(it, grammars, type)),
 			subject);
 	}
@@ -287,8 +287,8 @@ public static partial class ThatTypes
 	/// </remarks>
 	/// <param name="subject">The type collection subject.</param>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreNotAssignableFrom<TType>(
-		this IThat<IAsyncEnumerable<Type?>> subject)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreNotAssignableFrom<TType>(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
 		=> subject.AreNotAssignableFrom(typeof(TType));
 
 	/// <summary>
@@ -303,8 +303,8 @@ public static partial class ThatTypes
 	/// <param name="type">The type that should not be assignable to each item.</param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="type" /> is an open generic type definition.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> AreNotAssignableFrom(
-		this IThat<IAsyncEnumerable<Type?>> subject, Type type)
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> AreNotAssignableFrom(
+		this IThat<IAsyncEnumerable<Type?>?> subject, Type type)
 	{
 		type.EnsureIsNotOpenGeneric();
 		return new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)

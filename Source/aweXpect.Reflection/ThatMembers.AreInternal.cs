@@ -22,8 +22,8 @@ public static partial class ThatMembers
 	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are internal.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>> AreInternal<TMember>(
-		this IThat<IEnumerable<TMember>> subject)
+	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>> AreInternal<TMember>(
+		this IThat<IEnumerable<TMember>?> subject)
 		where TMember : MemberInfo?
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<TMember>>((it, grammars)
 				=> new AreInternalConstraint<TMember>(it, grammars)),
@@ -34,8 +34,8 @@ public static partial class ThatMembers
 	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are internal.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>> AreInternal<TMember>(
-		this IThat<IAsyncEnumerable<TMember>> subject)
+	public static AndOrResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>> AreInternal<TMember>(
+		this IThat<IAsyncEnumerable<TMember>?> subject)
 		where TMember : MemberInfo?
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>((it, grammars)
 				=> new AreInternalConstraint<TMember>(it, grammars)),
@@ -46,8 +46,8 @@ public static partial class ThatMembers
 	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are not internal.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>> AreNotInternal<TMember>(
-		this IThat<IEnumerable<TMember>> subject)
+	public static AndOrResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>> AreNotInternal<TMember>(
+		this IThat<IEnumerable<TMember>?> subject)
 		where TMember : MemberInfo?
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<TMember>>((it, grammars)
 				=> new AreNotInternalConstraint<TMember>(it, grammars)),
@@ -58,8 +58,8 @@ public static partial class ThatMembers
 	///     Verifies that all items in the filtered collection of <typeparamref name="TMember" /> are not internal.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>> AreNotInternal<TMember>(
-		this IThat<IAsyncEnumerable<TMember>> subject)
+	public static AndOrResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>> AreNotInternal<TMember>(
+		this IThat<IAsyncEnumerable<TMember>?> subject)
 		where TMember : MemberInfo?
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>((it, grammars)
 				=> new AreNotInternalConstraint<TMember>(it, grammars)),

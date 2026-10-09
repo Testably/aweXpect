@@ -35,11 +35,11 @@ public static partial class ThatTypes
 	///     own node instead.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static DependencyCyclesResult<IEnumerable<Type?>> HaveNoDependencyCycles(
-		this IThat<IEnumerable<Type?>> subject)
+	public static DependencyCyclesResult<IEnumerable<Type?>?> HaveNoDependencyCycles(
+		this IThat<IEnumerable<Type?>?> subject)
 	{
 		DependencyCyclesOptions options = new(null);
-		return new DependencyCyclesResult<IEnumerable<Type?>>(subject.Get().ExpectationBuilder
+		return new DependencyCyclesResult<IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IEnumerable<Type?>>((it, grammars)
 					=> new HaveNoDependencyCyclesConstraint(it, grammars, options)),
 			subject,
@@ -60,11 +60,11 @@ public static partial class ThatTypes
 	///     ignored.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static DependencyCyclesResult<IEnumerable<Type?>> HaveNoDependencyCycles(
-		this IThat<IEnumerable<Type?>> subject, string sliceRoot)
+	public static DependencyCyclesResult<IEnumerable<Type?>?> HaveNoDependencyCycles(
+		this IThat<IEnumerable<Type?>?> subject, string sliceRoot)
 	{
 		DependencyCyclesOptions options = new(sliceRoot);
-		return new DependencyCyclesResult<IEnumerable<Type?>>(subject.Get().ExpectationBuilder
+		return new DependencyCyclesResult<IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IEnumerable<Type?>>((it, grammars)
 					=> new HaveNoDependencyCyclesConstraint(it, grammars, options)),
 			subject,
@@ -74,11 +74,11 @@ public static partial class ThatTypes
 #if NET8_0_OR_GREATER
 	/// <inheritdoc cref="HaveNoDependencyCycles(IThat{IEnumerable{Type}})" />
 	[GuaranteesNotNull]
-	public static DependencyCyclesResult<IAsyncEnumerable<Type?>> HaveNoDependencyCycles(
-		this IThat<IAsyncEnumerable<Type?>> subject)
+	public static DependencyCyclesResult<IAsyncEnumerable<Type?>?> HaveNoDependencyCycles(
+		this IThat<IAsyncEnumerable<Type?>?> subject)
 	{
 		DependencyCyclesOptions options = new(null);
-		return new DependencyCyclesResult<IAsyncEnumerable<Type?>>(subject.Get().ExpectationBuilder
+		return new DependencyCyclesResult<IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 					=> new HaveNoDependencyCyclesConstraint(it, grammars, options)),
 			subject,
@@ -87,11 +87,11 @@ public static partial class ThatTypes
 
 	/// <inheritdoc cref="HaveNoDependencyCycles(IThat{IEnumerable{Type}},string)" />
 	[GuaranteesNotNull]
-	public static DependencyCyclesResult<IAsyncEnumerable<Type?>> HaveNoDependencyCycles(
-		this IThat<IAsyncEnumerable<Type?>> subject, string sliceRoot)
+	public static DependencyCyclesResult<IAsyncEnumerable<Type?>?> HaveNoDependencyCycles(
+		this IThat<IAsyncEnumerable<Type?>?> subject, string sliceRoot)
 	{
 		DependencyCyclesOptions options = new(sliceRoot);
-		return new DependencyCyclesResult<IAsyncEnumerable<Type?>>(subject.Get().ExpectationBuilder
+		return new DependencyCyclesResult<IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 					=> new HaveNoDependencyCyclesConstraint(it, grammars, options)),
 			subject,

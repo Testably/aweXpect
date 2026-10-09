@@ -34,8 +34,8 @@ public static partial class ThatTypes
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> InheritFrom<TBaseType>(
-		this IThat<IEnumerable<Type?>> subject,
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> InheritFrom<TBaseType>(
+		this IThat<IEnumerable<Type?>?> subject,
 		bool forceDirect = false)
 		=> subject.InheritFrom(typeof(TBaseType), forceDirect);
 
@@ -57,13 +57,13 @@ public static partial class ThatTypes
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> InheritFrom(
-		this IThat<IEnumerable<Type?>> subject,
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> InheritFrom(
+		this IThat<IEnumerable<Type?>?> subject,
 		Type baseType,
 		bool forceDirect = false)
 	{
 		baseType.EnsureIsClass();
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
+		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new InheritFromConstraint(it, grammars | ExpectationGrammars.Plural, baseType, forceDirect)),
 			subject);
 	}
@@ -86,8 +86,8 @@ public static partial class ThatTypes
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> InheritFrom<TBaseType>(
-		this IThat<IAsyncEnumerable<Type?>> subject,
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> InheritFrom<TBaseType>(
+		this IThat<IAsyncEnumerable<Type?>?> subject,
 		bool forceDirect = false)
 		=> subject.InheritFrom(typeof(TBaseType), forceDirect);
 #endif
@@ -111,8 +111,8 @@ public static partial class ThatTypes
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> InheritFrom(
-		this IThat<IAsyncEnumerable<Type?>> subject,
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> InheritFrom(
+		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Type baseType,
 		bool forceDirect = false)
 	{
@@ -140,8 +140,8 @@ public static partial class ThatTypes
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotInheritFrom<TBaseType>(
-		this IThat<IEnumerable<Type?>> subject,
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotInheritFrom<TBaseType>(
+		this IThat<IEnumerable<Type?>?> subject,
 		bool forceDirect = false)
 		=> subject.DoNotInheritFrom(typeof(TBaseType), forceDirect);
 
@@ -163,13 +163,13 @@ public static partial class ThatTypes
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotInheritFrom(
-		this IThat<IEnumerable<Type?>> subject,
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotInheritFrom(
+		this IThat<IEnumerable<Type?>?> subject,
 		Type baseType,
 		bool forceDirect = false)
 	{
 		baseType.EnsureIsClass();
-		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
+		return new AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>>(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<Type?>>((it, grammars)
 				=> new DoNotInheritFromConstraint(it, grammars | ExpectationGrammars.Plural, baseType, forceDirect)),
 			subject);
 	}
@@ -192,8 +192,8 @@ public static partial class ThatTypes
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <typeparamref name="TBaseType" /> is an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> DoNotInheritFrom<TBaseType>(
-		this IThat<IAsyncEnumerable<Type?>> subject,
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotInheritFrom<TBaseType>(
+		this IThat<IAsyncEnumerable<Type?>?> subject,
 		bool forceDirect = false)
 		=> subject.DoNotInheritFrom(typeof(TBaseType), forceDirect);
 #endif
@@ -217,8 +217,8 @@ public static partial class ThatTypes
 	/// </param>
 	/// <exception cref="ArgumentException">Thrown if <paramref name="baseType" /> is an interface.</exception>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> DoNotInheritFrom(
-		this IThat<IAsyncEnumerable<Type?>> subject,
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotInheritFrom(
+		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Type baseType,
 		bool forceDirect = false)
 	{

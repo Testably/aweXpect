@@ -21,8 +21,8 @@ public static partial class ThatConstructors
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> are static.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>>> AreStatic(
-		this IThat<IEnumerable<ConstructorInfo?>> subject)
+	public static AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>?>> AreStatic(
+		this IThat<IEnumerable<ConstructorInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<ConstructorInfo?>>((it, grammars)
 				=> new AreStaticConstraint(it, grammars)),
 			subject);
@@ -32,8 +32,8 @@ public static partial class ThatConstructors
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> are static.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>>> AreStatic(
-		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>?>> AreStatic(
+		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((it, grammars)
 				=> new AreStaticConstraint(it, grammars)),
 			subject);
@@ -43,8 +43,8 @@ public static partial class ThatConstructors
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> are not static.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>>> AreNotStatic(
-		this IThat<IEnumerable<ConstructorInfo?>> subject)
+	public static AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>?>> AreNotStatic(
+		this IThat<IEnumerable<ConstructorInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<ConstructorInfo?>>((it, grammars)
 				=> new AreNotStaticConstraint(it, grammars)),
 			subject);
@@ -54,8 +54,8 @@ public static partial class ThatConstructors
 	///     Verifies that all items in the filtered collection of <see cref="ConstructorInfo" /> are not static.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>>>
-		AreNotStatic(this IThat<IAsyncEnumerable<ConstructorInfo?>> subject)
+	public static AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>?>>
+		AreNotStatic(this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((it, grammars)
 				=> new AreNotStaticConstraint(it, grammars)),
 			subject);

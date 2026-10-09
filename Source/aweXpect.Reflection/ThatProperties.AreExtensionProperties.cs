@@ -22,8 +22,8 @@ public static partial class ThatProperties
 	///     (declared with the C# extension block syntax).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> AreExtensionProperties(
-		this IThat<IEnumerable<PropertyInfo?>> subject)
+	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>> AreExtensionProperties(
+		this IThat<IEnumerable<PropertyInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
 				=> new AreExtensionPropertiesConstraint(it, grammars)),
 			subject);
@@ -34,9 +34,9 @@ public static partial class ThatProperties
 	///     (declared with the C# extension block syntax).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>>
+	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>>
 		AreExtensionProperties(
-			this IThat<IAsyncEnumerable<PropertyInfo?>> subject)
+			this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
 				=> new AreExtensionPropertiesConstraint(it, grammars)),
 			subject);
@@ -47,8 +47,8 @@ public static partial class ThatProperties
 	///     (not declared with the C# extension block syntax).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> AreNotExtensionProperties(
-		this IThat<IEnumerable<PropertyInfo?>> subject)
+	public static AndOrResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>?>> AreNotExtensionProperties(
+		this IThat<IEnumerable<PropertyInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
 				=> new AreNotExtensionPropertiesConstraint(it, grammars)),
 			subject);
@@ -59,9 +59,9 @@ public static partial class ThatProperties
 	///     (not declared with the C# extension block syntax).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>>
+	public static AndOrResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>?>>
 		AreNotExtensionProperties(
-			this IThat<IAsyncEnumerable<PropertyInfo?>> subject)
+			this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
 				=> new AreNotExtensionPropertiesConstraint(it, grammars)),
 			subject);

@@ -22,9 +22,9 @@ public static partial class ThatTypes
 	///     operator from <typeparamref name="TSource" /> to <typeparamref name="TTarget" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> HaveImplicitConversionOperator<TSource,
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> HaveImplicitConversionOperator<TSource,
 		TTarget>(
-		this IThat<IEnumerable<Type?>> subject,
+		this IThat<IEnumerable<Type?>?> subject,
 		bool inherit = false)
 		=> subject.HaveImplicitConversionOperator(typeof(TSource), typeof(TTarget), inherit);
 
@@ -33,8 +33,8 @@ public static partial class ThatTypes
 	///     operator from <paramref name="source" /> to <paramref name="target" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> HaveImplicitConversionOperator(
-		this IThat<IEnumerable<Type?>> subject,
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> HaveImplicitConversionOperator(
+		this IThat<IEnumerable<Type?>?> subject,
 		Type source,
 		Type target,
 		bool inherit = false)
@@ -48,9 +48,9 @@ public static partial class ThatTypes
 	///     operator from <typeparamref name="TSource" /> to <typeparamref name="TTarget" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>>
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>
 		HaveImplicitConversionOperator<TSource, TTarget>(
-			this IThat<IAsyncEnumerable<Type?>> subject,
+			this IThat<IAsyncEnumerable<Type?>?> subject,
 			bool inherit = false)
 		=> subject.HaveImplicitConversionOperator(typeof(TSource), typeof(TTarget), inherit);
 
@@ -59,8 +59,8 @@ public static partial class ThatTypes
 	///     operator from <paramref name="source" /> to <paramref name="target" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> HaveImplicitConversionOperator(
-		this IThat<IAsyncEnumerable<Type?>> subject,
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> HaveImplicitConversionOperator(
+		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Type source,
 		Type target,
 		bool inherit = false)
@@ -74,9 +74,9 @@ public static partial class ThatTypes
 	///     conversion operator from <typeparamref name="TSource" /> to <typeparamref name="TTarget" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotHaveImplicitConversionOperator<TSource,
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotHaveImplicitConversionOperator<TSource,
 		TTarget>(
-		this IThat<IEnumerable<Type?>> subject,
+		this IThat<IEnumerable<Type?>?> subject,
 		bool inherit = false)
 		=> subject.DoNotHaveImplicitConversionOperator(typeof(TSource), typeof(TTarget), inherit);
 
@@ -85,8 +85,8 @@ public static partial class ThatTypes
 	///     conversion operator from <paramref name="source" /> to <paramref name="target" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotHaveImplicitConversionOperator(
-		this IThat<IEnumerable<Type?>> subject,
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotHaveImplicitConversionOperator(
+		this IThat<IEnumerable<Type?>?> subject,
 		Type source,
 		Type target,
 		bool inherit = false)
@@ -100,9 +100,9 @@ public static partial class ThatTypes
 	///     conversion operator from <typeparamref name="TSource" /> to <typeparamref name="TTarget" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>>
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>
 		DoNotHaveImplicitConversionOperator<TSource, TTarget>(
-			this IThat<IAsyncEnumerable<Type?>> subject,
+			this IThat<IAsyncEnumerable<Type?>?> subject,
 			bool inherit = false)
 		=> subject.DoNotHaveImplicitConversionOperator(typeof(TSource), typeof(TTarget), inherit);
 
@@ -111,8 +111,8 @@ public static partial class ThatTypes
 	///     conversion operator from <paramref name="source" /> to <paramref name="target" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> DoNotHaveImplicitConversionOperator(
-		this IThat<IAsyncEnumerable<Type?>> subject,
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotHaveImplicitConversionOperator(
+		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Type source,
 		Type target,
 		bool inherit = false)
@@ -131,9 +131,9 @@ public static partial class ThatTypes
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> HaveExplicitConversionOperator<TSource,
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> HaveExplicitConversionOperator<TSource,
 		TTarget>(
-		this IThat<IEnumerable<Type?>> subject,
+		this IThat<IEnumerable<Type?>?> subject,
 		bool inherit = false)
 		=> subject.HaveExplicitConversionOperator(typeof(TSource), typeof(TTarget), inherit);
 
@@ -147,8 +147,8 @@ public static partial class ThatTypes
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> HaveExplicitConversionOperator(
-		this IThat<IEnumerable<Type?>> subject,
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> HaveExplicitConversionOperator(
+		this IThat<IEnumerable<Type?>?> subject,
 		Type source,
 		Type target,
 		bool inherit = false)
@@ -167,9 +167,9 @@ public static partial class ThatTypes
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>>
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>
 		HaveExplicitConversionOperator<TSource, TTarget>(
-			this IThat<IAsyncEnumerable<Type?>> subject,
+			this IThat<IAsyncEnumerable<Type?>?> subject,
 			bool inherit = false)
 		=> subject.HaveExplicitConversionOperator(typeof(TSource), typeof(TTarget), inherit);
 
@@ -183,8 +183,8 @@ public static partial class ThatTypes
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> HaveExplicitConversionOperator(
-		this IThat<IAsyncEnumerable<Type?>> subject,
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> HaveExplicitConversionOperator(
+		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Type source,
 		Type target,
 		bool inherit = false)
@@ -203,9 +203,9 @@ public static partial class ThatTypes
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotHaveExplicitConversionOperator<TSource,
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotHaveExplicitConversionOperator<TSource,
 		TTarget>(
-		this IThat<IEnumerable<Type?>> subject,
+		this IThat<IEnumerable<Type?>?> subject,
 		bool inherit = false)
 		=> subject.DoNotHaveExplicitConversionOperator(typeof(TSource), typeof(TTarget), inherit);
 
@@ -219,8 +219,8 @@ public static partial class ThatTypes
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>>> DoNotHaveExplicitConversionOperator(
-		this IThat<IEnumerable<Type?>> subject,
+	public static AndOrResult<IEnumerable<Type?>, IThat<IEnumerable<Type?>?>> DoNotHaveExplicitConversionOperator(
+		this IThat<IEnumerable<Type?>?> subject,
 		Type source,
 		Type target,
 		bool inherit = false)
@@ -239,9 +239,9 @@ public static partial class ThatTypes
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>>
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>>
 		DoNotHaveExplicitConversionOperator<TSource, TTarget>(
-			this IThat<IAsyncEnumerable<Type?>> subject,
+			this IThat<IAsyncEnumerable<Type?>?> subject,
 			bool inherit = false)
 		=> subject.DoNotHaveExplicitConversionOperator(typeof(TSource), typeof(TTarget), inherit);
 
@@ -255,8 +255,8 @@ public static partial class ThatTypes
 	///     declare a <c>checked</c> conversion with the same signature.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>>> DoNotHaveExplicitConversionOperator(
-		this IThat<IAsyncEnumerable<Type?>> subject,
+	public static AndOrResult<IAsyncEnumerable<Type?>, IThat<IAsyncEnumerable<Type?>?>> DoNotHaveExplicitConversionOperator(
+		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Type source,
 		Type target,
 		bool inherit = false)

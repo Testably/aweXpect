@@ -23,21 +23,21 @@ public static partial class ThatProperties
 	///     Verifies that all properties in the filtered collection are of type <typeparamref name="TProperty" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertiesOfTypeResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>>
+	public static PropertiesOfTypeResult<IEnumerable<PropertyInfo?>?, IThat<IEnumerable<PropertyInfo?>?>>
 		AreOfType<TProperty>(
-			this IThat<IEnumerable<PropertyInfo?>> subject)
+			this IThat<IEnumerable<PropertyInfo?>?> subject)
 		=> AreOfType(subject, typeof(TProperty));
 
 	/// <summary>
 	///     Verifies that all properties in the filtered collection are of type <paramref name="propertyType" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertiesOfTypeResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>> AreOfType(
-		this IThat<IEnumerable<PropertyInfo?>> subject, Type propertyType)
+	public static PropertiesOfTypeResult<IEnumerable<PropertyInfo?>?, IThat<IEnumerable<PropertyInfo?>?>> AreOfType(
+		this IThat<IEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(propertyType, false);
-		return new PropertiesOfTypeResult<IEnumerable<PropertyInfo?>, IThat<IEnumerable<PropertyInfo?>>>(
+		return new PropertiesOfTypeResult<IEnumerable<PropertyInfo?>?, IThat<IEnumerable<PropertyInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<PropertyInfo?>>((it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,
@@ -49,22 +49,22 @@ public static partial class ThatProperties
 	///     Verifies that all properties in the filtered collection are of type <typeparamref name="TProperty" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>>
+	public static PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>?, IThat<IAsyncEnumerable<PropertyInfo?>?>>
 		AreOfType<TProperty>(
-			this IThat<IAsyncEnumerable<PropertyInfo?>> subject)
+			this IThat<IAsyncEnumerable<PropertyInfo?>?> subject)
 		=> AreOfType(subject, typeof(TProperty));
 
 	/// <summary>
 	///     Verifies that all properties in the filtered collection are of type <paramref name="propertyType" /> (or a subtype).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>>
+	public static PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>?, IThat<IAsyncEnumerable<PropertyInfo?>?>>
 		AreOfType(
-			this IThat<IAsyncEnumerable<PropertyInfo?>> subject, Type propertyType)
+			this IThat<IAsyncEnumerable<PropertyInfo?>?> subject, Type propertyType)
 	{
 		TypeFilterOptions typeFilterOptions = new();
 		typeFilterOptions.RegisterType(propertyType, false);
-		return new PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>, IThat<IAsyncEnumerable<PropertyInfo?>>>(
+		return new PropertiesOfTypeResult<IAsyncEnumerable<PropertyInfo?>?, IThat<IAsyncEnumerable<PropertyInfo?>?>>(
 			subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<PropertyInfo?>>((it, grammars)
 				=> new AreOfTypeConstraint(it, grammars | ExpectationGrammars.Plural, typeFilterOptions)),
 			subject,

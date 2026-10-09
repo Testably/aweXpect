@@ -31,11 +31,11 @@ public static partial class ThatAssemblies
 	///     so that framework assemblies do not have to be listed explicitly.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>> DependOnlyOn(
-		this IThat<IEnumerable<Assembly?>> subject, params string[] allowed)
+	public static StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>> DependOnlyOn(
+		this IThat<IEnumerable<Assembly?>?> subject, params string[] allowed)
 	{
 		StringEqualityOptions options = new(nameof(allowed));
-		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>>>(subject.Get()
+		return new StringEqualityTypeResult<IEnumerable<Assembly?>, IThat<IEnumerable<Assembly?>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<Assembly?>>((it, grammars)
 					=> new DependOnlyOnConstraint(it, grammars, allowed, options)),
 			subject,
@@ -55,12 +55,12 @@ public static partial class ThatAssemblies
 	///     so that framework assemblies do not have to be listed explicitly.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>>
+	public static StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>
 		DependOnlyOn(
-			this IThat<IAsyncEnumerable<Assembly?>> subject, params string[] allowed)
+			this IThat<IAsyncEnumerable<Assembly?>?> subject, params string[] allowed)
 	{
 		StringEqualityOptions options = new(nameof(allowed));
-		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>>>(subject
+		return new StringEqualityTypeResult<IAsyncEnumerable<Assembly?>, IThat<IAsyncEnumerable<Assembly?>?>>(subject
 				.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<Assembly?>>((it, grammars)
 					=> new DependOnlyOnConstraint(it, grammars, allowed, options)),

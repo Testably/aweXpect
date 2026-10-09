@@ -21,12 +21,12 @@ public static partial class ThatMembers
 	///     the <paramref name="unexpected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>> DoNotHaveName<TMember>(
-		this IThat<IEnumerable<TMember>> subject, string unexpected)
+	public static StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>> DoNotHaveName<TMember>(
+		this IThat<IEnumerable<TMember>?> subject, string unexpected)
 		where TMember : MemberInfo?
 	{
 		StringEqualityOptions options = new(nameof(unexpected));
-		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>>>(subject.Get()
+		return new StringEqualityTypeResult<IEnumerable<TMember>, IThat<IEnumerable<TMember>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IEnumerable<TMember>>((it, grammars)
 					=> new DoNotHaveNameConstraint<TMember>(it, grammars, unexpected, options)),
 			subject,
@@ -39,13 +39,13 @@ public static partial class ThatMembers
 	///     the <paramref name="unexpected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>>
+	public static StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>
 		DoNotHaveName<TMember>(
-			this IThat<IAsyncEnumerable<TMember>> subject, string unexpected)
+			this IThat<IAsyncEnumerable<TMember>?> subject, string unexpected)
 		where TMember : MemberInfo?
 	{
 		StringEqualityOptions options = new(nameof(unexpected));
-		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>>>(subject.Get()
+		return new StringEqualityTypeResult<IAsyncEnumerable<TMember>, IThat<IAsyncEnumerable<TMember>?>>(subject.Get()
 				.ExpectationBuilder.AddConstraint<IAsyncEnumerable<TMember>>((it, grammars)
 					=> new DoNotHaveNameConstraint<TMember>(it, grammars, unexpected, options)),
 			subject,

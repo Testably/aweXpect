@@ -10,8 +10,8 @@ public static partial class ThatMethods
 	///     Verifies that all methods in the filtered collection return <see langword="void" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodsReturnResult<IEnumerable<MethodInfo>, IThat<IEnumerable<MethodInfo>>> ReturnVoid(
-		this IThat<IEnumerable<MethodInfo>> subject)
+	public static MethodsReturnResult<IEnumerable<MethodInfo>?, IThat<IEnumerable<MethodInfo>?>> ReturnVoid(
+		this IThat<IEnumerable<MethodInfo>?> subject)
 		=> Return(subject, typeof(void));
 
 #if NET8_0_OR_GREATER
@@ -19,8 +19,8 @@ public static partial class ThatMethods
 	///     Verifies that all methods in the filtered collection return <see langword="void" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static MethodsReturnResult<IAsyncEnumerable<MethodInfo>, IThat<IAsyncEnumerable<MethodInfo>>> ReturnVoid(
-		this IThat<IAsyncEnumerable<MethodInfo>> subject)
+	public static MethodsReturnResult<IAsyncEnumerable<MethodInfo>?, IThat<IAsyncEnumerable<MethodInfo>?>> ReturnVoid(
+		this IThat<IAsyncEnumerable<MethodInfo>?> subject)
 		=> Return(subject, typeof(void));
 #endif
 }

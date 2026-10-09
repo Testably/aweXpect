@@ -22,8 +22,8 @@ public static partial class ThatConstructors
 	///     the <paramref name="expected" /> number of parameters.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>>> HaveParameterCount(
-		this IThat<IEnumerable<ConstructorInfo?>> subject, int expected)
+	public static AndOrResult<IEnumerable<ConstructorInfo?>, IThat<IEnumerable<ConstructorInfo?>?>> HaveParameterCount(
+		this IThat<IEnumerable<ConstructorInfo?>?> subject, int expected)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IEnumerable<ConstructorInfo?>>((it, grammars)
 				=> new HaveParameterCountConstraint(it, grammars, expected)),
 			subject);
@@ -34,8 +34,8 @@ public static partial class ThatConstructors
 	///     the <paramref name="expected" /> number of parameters.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>>> HaveParameterCount(
-		this IThat<IAsyncEnumerable<ConstructorInfo?>> subject, int expected)
+	public static AndOrResult<IAsyncEnumerable<ConstructorInfo?>, IThat<IAsyncEnumerable<ConstructorInfo?>?>> HaveParameterCount(
+		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, int expected)
 		=> new(subject.Get().ExpectationBuilder.AddConstraint<IAsyncEnumerable<ConstructorInfo?>>((it, grammars)
 				=> new HaveParameterCountConstraint(it, grammars, expected)),
 			subject);
