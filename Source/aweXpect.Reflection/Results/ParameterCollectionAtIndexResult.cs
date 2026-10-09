@@ -7,16 +7,16 @@ namespace aweXpect.Reflection.Results;
 /// <summary>
 ///     Additional constraints on a parameter collection with a parameter at a specific index.
 /// </summary>
-public class ParameterCollectionAtIndexResult<TThat, TParameter>(
+public class ParameterCollectionAtIndexResult<TType, TThat, TParameter>(
 	ExpectationBuilder expectationBuilder,
 	IThat<TThat> subject,
 	CollectionIndexOptions collectionIndexOptions)
-	: AndOrResult<TThat, IThat<TThat>>(expectationBuilder, subject)
+	: AndOrResult<TType, IThat<TThat>>(expectationBuilder, subject)
 {
 	/// <summary>
 	///     …from end.
 	/// </summary>
-	public ParameterCollectionAtIndexResult<TThat, TParameter> FromEnd()
+	public ParameterCollectionAtIndexResult<TType, TThat, TParameter> FromEnd()
 	{
 		if (collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
 		{

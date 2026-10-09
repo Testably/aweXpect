@@ -21,11 +21,11 @@ public static partial class ThatMethods
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> are generic.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static GenericArgumentCollectionResult<IEnumerable<MethodInfo?>?> AreGeneric(
+	public static GenericArgumentCollectionResult<IEnumerable<MethodInfo?>, IEnumerable<MethodInfo?>?> AreGeneric(
 		this IThat<IEnumerable<MethodInfo?>?> subject)
 	{
 		GenericArgumentsFilterOptions genericFilterOptions = new();
-		return new GenericArgumentCollectionResult<IEnumerable<MethodInfo?>?>(
+		return new GenericArgumentCollectionResult<IEnumerable<MethodInfo?>, IEnumerable<MethodInfo?>?>(
 			subject.Get().ExpectationBuilder
 				.AddConstraint<IEnumerable<MethodInfo?>>((it, grammars)
 					=> new AreGenericConstraint(it, grammars, genericFilterOptions)),
@@ -38,11 +38,11 @@ public static partial class ThatMethods
 	///     Verifies that all items in the filtered collection of <see cref="MethodInfo" /> are generic.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static GenericArgumentCollectionResult<IAsyncEnumerable<MethodInfo?>?> AreGeneric(
+	public static GenericArgumentCollectionResult<IAsyncEnumerable<MethodInfo?>, IAsyncEnumerable<MethodInfo?>?> AreGeneric(
 		this IThat<IAsyncEnumerable<MethodInfo?>?> subject)
 	{
 		GenericArgumentsFilterOptions genericFilterOptions = new();
-		return new GenericArgumentCollectionResult<IAsyncEnumerable<MethodInfo?>?>(
+		return new GenericArgumentCollectionResult<IAsyncEnumerable<MethodInfo?>, IAsyncEnumerable<MethodInfo?>?>(
 			subject.Get().ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<MethodInfo?>>((it, grammars)
 					=> new AreGenericConstraint(it, grammars, genericFilterOptions)),

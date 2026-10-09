@@ -49,7 +49,7 @@ public static partial class ThatConstructors
 	///     a <see langword="ref" /> parameter of type <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>?, TParameter> HaveRefParameter<TParameter>(
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> HaveRefParameter<TParameter>(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject)
 		=> subject.HaveParameter<TParameter>().WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -58,7 +58,7 @@ public static partial class ThatConstructors
 	///     a <see langword="ref" /> parameter of type <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>?, object?> HaveRefParameter(
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveRefParameter(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, Type parameterType)
 		=> subject.HaveParameter(parameterType).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -68,7 +68,7 @@ public static partial class ThatConstructors
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>?, TParameter> HaveRefParameter<TParameter>(
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> HaveRefParameter<TParameter>(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, string expected)
 		=> subject.HaveParameter<TParameter>(expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -78,7 +78,7 @@ public static partial class ThatConstructors
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>?, object?> HaveRefParameter(
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveRefParameter(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, Type parameterType, string expected)
 		=> subject.HaveParameter(parameterType, expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -87,7 +87,7 @@ public static partial class ThatConstructors
 	///     a <see langword="ref" /> parameter with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>?, object?> HaveRefParameter(
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveRefParameter(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, string expected)
 		=> subject.HaveParameter(expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -97,7 +97,7 @@ public static partial class ThatConstructors
 	///     a <see langword="ref" /> parameter of type <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveRefParameter<TParameter>(
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveRefParameter<TParameter>(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject)
 		=> subject.HaveParameter<TParameter>().WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -106,7 +106,7 @@ public static partial class ThatConstructors
 	///     a <see langword="ref" /> parameter of type <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, object?> HaveRefParameter(
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveRefParameter(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, Type parameterType)
 		=> subject.HaveParameter(parameterType).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -116,7 +116,7 @@ public static partial class ThatConstructors
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveRefParameter<TParameter>(
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveRefParameter<TParameter>(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, string expected)
 		=> subject.HaveParameter<TParameter>(expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -126,7 +126,7 @@ public static partial class ThatConstructors
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, object?> HaveRefParameter(
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveRefParameter(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, Type parameterType, string expected)
 		=> subject.HaveParameter(parameterType, expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -135,7 +135,7 @@ public static partial class ThatConstructors
 	///     a <see langword="ref" /> parameter with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, object?> HaveRefParameter(
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveRefParameter(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, string expected)
 		=> subject.HaveParameter(expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 #endif
@@ -145,7 +145,7 @@ public static partial class ThatConstructors
 	///     a <see langword="ref" /> parameter of exact type <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>?, TParameter> HaveRefParameterExactly<TParameter>(
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> HaveRefParameterExactly<TParameter>(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject)
 		=> subject.HaveParameterExactly<TParameter>().WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -154,7 +154,7 @@ public static partial class ThatConstructors
 	///     a <see langword="ref" /> parameter of exact type <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>?, object?> HaveRefParameterExactly(
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveRefParameterExactly(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, Type parameterType)
 		=> subject.HaveParameterExactly(parameterType).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -164,7 +164,7 @@ public static partial class ThatConstructors
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>?, TParameter> HaveRefParameterExactly<TParameter>(
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> HaveRefParameterExactly<TParameter>(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, string expected)
 		=> subject.HaveParameterExactly<TParameter>(expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -174,7 +174,7 @@ public static partial class ThatConstructors
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>?, object?> HaveRefParameterExactly(
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveRefParameterExactly(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, Type parameterType, string expected)
 		=> subject.HaveParameterExactly(parameterType, expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -184,7 +184,7 @@ public static partial class ThatConstructors
 	///     a <see langword="ref" /> parameter of exact type <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveRefParameterExactly<TParameter>(
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveRefParameterExactly<TParameter>(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject)
 		=> subject.HaveParameterExactly<TParameter>().WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -193,7 +193,7 @@ public static partial class ThatConstructors
 	///     a <see langword="ref" /> parameter of exact type <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, object?> HaveRefParameterExactly(
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveRefParameterExactly(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, Type parameterType)
 		=> subject.HaveParameterExactly(parameterType).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -203,7 +203,7 @@ public static partial class ThatConstructors
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveRefParameterExactly<TParameter>(
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveRefParameterExactly<TParameter>(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, string expected)
 		=> subject.HaveParameterExactly<TParameter>(expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -213,7 +213,7 @@ public static partial class ThatConstructors
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, object?> HaveRefParameterExactly(
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveRefParameterExactly(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, Type parameterType, string expected)
 		=> subject.HaveParameterExactly(parameterType, expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 #endif

@@ -27,7 +27,7 @@ public static partial class ThatMethod
 	///     <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<MethodInfo?, TParameter> HasOutParameter<TParameter>(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> HasOutParameter<TParameter>(
 		this IThat<MethodInfo?> subject)
 		=> subject.HasParameter<TParameter>().WithModifier(p => p.IsOutParameter(), "with out modifier");
 
@@ -36,7 +36,7 @@ public static partial class ThatMethod
 	///     <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<MethodInfo?, object?> HasOutParameter(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasOutParameter(
 		this IThat<MethodInfo?> subject, Type parameterType)
 		=> subject.HasParameter(parameterType).WithModifier(p => p.IsOutParameter(), "with out modifier");
 
@@ -45,7 +45,7 @@ public static partial class ThatMethod
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, TParameter> HasOutParameter<TParameter>(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> HasOutParameter<TParameter>(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameter<TParameter>(expected).WithModifier(p => p.IsOutParameter(), "with out modifier");
 
@@ -54,7 +54,7 @@ public static partial class ThatMethod
 	///     <paramref name="parameterType" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, object?> HasOutParameter(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasOutParameter(
 		this IThat<MethodInfo?> subject, Type parameterType, string expected)
 		=> subject.HasParameter(parameterType, expected).WithModifier(p => p.IsOutParameter(), "with out modifier");
 
@@ -63,7 +63,7 @@ public static partial class ThatMethod
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, object?> HasOutParameter(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasOutParameter(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameter(expected).WithModifier(p => p.IsOutParameter(), "with out modifier");
 
@@ -72,7 +72,7 @@ public static partial class ThatMethod
 	///     <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<MethodInfo?, TParameter> HasOutParameterExactly<TParameter>(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> HasOutParameterExactly<TParameter>(
 		this IThat<MethodInfo?> subject)
 		=> subject.HasParameterExactly<TParameter>().WithModifier(p => p.IsOutParameter(), "with out modifier");
 
@@ -81,7 +81,7 @@ public static partial class ThatMethod
 	///     <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<MethodInfo?, object?> HasOutParameterExactly(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasOutParameterExactly(
 		this IThat<MethodInfo?> subject, Type parameterType)
 		=> subject.HasParameterExactly(parameterType).WithModifier(p => p.IsOutParameter(), "with out modifier");
 
@@ -90,7 +90,7 @@ public static partial class ThatMethod
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, TParameter> HasOutParameterExactly<TParameter>(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> HasOutParameterExactly<TParameter>(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameterExactly<TParameter>(expected).WithModifier(p => p.IsOutParameter(), "with out modifier");
 
@@ -99,7 +99,7 @@ public static partial class ThatMethod
 	///     <paramref name="parameterType" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, object?> HasOutParameterExactly(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasOutParameterExactly(
 		this IThat<MethodInfo?> subject, Type parameterType, string expected)
 		=> subject.HasParameterExactly(parameterType, expected).WithModifier(p => p.IsOutParameter(), "with out modifier");
 

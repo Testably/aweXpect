@@ -31,11 +31,11 @@ public static partial class ThatType
 	///     count.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static NamespaceDependencyOutsideResult<Type?> HasDependenciesOutside(
+	public static NamespaceDependencyOutsideResult<Type, Type?> HasDependenciesOutside(
 		this IThat<Type?> subject, params IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
-		return new NamespaceDependencyOutsideResult<Type?>(subject.Get().ExpectationBuilder
+		return new NamespaceDependencyOutsideResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new HasDependenciesOutsideConstraint(it, grammars, options)),
 			subject,
@@ -54,7 +54,7 @@ public static partial class ThatType
 	///     is a member of the union of the resolved collections (by <see cref="Type" /> identity; a generic type
 	///     definition in a collection matches any construction of it). The type's own namespace never counts as
 	///     outside, including its sub-namespaces unless
-	///     <see cref="TypeSetDependencyOutsideResult{TThat}.ExcludingOwnSubNamespaces" /> is used.
+	///     <see cref="TypeSetDependencyOutsideResult{TType, TThat}.ExcludingOwnSubNamespaces" /> is used.
 	///     <para />
 	///     Dependencies on types whose assembly name matches one of the
 	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
@@ -65,11 +65,11 @@ public static partial class ThatType
 	///     count.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeSetDependencyOutsideResult<Type?> HasDependenciesOutside(
+	public static TypeSetDependencyOutsideResult<Type, Type?> HasDependenciesOutside(
 		this IThat<Type?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
 		TypeSetDependencyOptions options = new(target, additional);
-		return new TypeSetDependencyOutsideResult<Type?>(subject.Get().ExpectationBuilder
+		return new TypeSetDependencyOutsideResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new HasDependenciesOutsideTypeSetConstraint(it, grammars, options)),
 			subject,

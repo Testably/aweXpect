@@ -9,13 +9,13 @@ namespace aweXpect.Reflection.Results;
 /// <summary>
 ///     Additional constraints on a parameter collection with a named parameter of a specific type.
 /// </summary>
-public class NamedParameterCollectionResult<TThat, TParameter>(
+public class NamedParameterCollectionResult<TType, TThat, TParameter>(
 	ExpectationBuilder expectationBuilder,
 	IThat<TThat> subject,
 	CollectionIndexOptions collectionIndexOptions,
 	ParameterFilterOptions parameterFilterOptions,
 	StringEqualityOptions options)
-	: ParameterCollectionResult<TThat, TParameter>(expectationBuilder, subject, collectionIndexOptions,
+	: ParameterCollectionResult<TType, TThat, TParameter>(expectationBuilder, subject, collectionIndexOptions,
 			parameterFilterOptions),
 		IOptionsProvider<StringEqualityOptions>
 {
@@ -26,7 +26,7 @@ public class NamedParameterCollectionResult<TThat, TParameter>(
 	///     Ignores casing when comparing the parameter name,
 	///     according to the <paramref name="ignoreCase" /> parameter.
 	/// </summary>
-	public NamedParameterCollectionResult<TThat, TParameter> IgnoringCase(bool ignoreCase = true)
+	public NamedParameterCollectionResult<TType, TThat, TParameter> IgnoringCase(bool ignoreCase = true)
 	{
 		options.IgnoringCase(ignoreCase);
 		return this;
@@ -35,7 +35,7 @@ public class NamedParameterCollectionResult<TThat, TParameter>(
 	/// <summary>
 	///     Uses the provided <paramref name="comparer" /> for comparing parameter names.
 	/// </summary>
-	public NamedParameterCollectionResult<TThat, TParameter> Using(IEqualityComparer<string> comparer)
+	public NamedParameterCollectionResult<TType, TThat, TParameter> Using(IEqualityComparer<string> comparer)
 	{
 		options.Using(comparer);
 		return this;
@@ -44,7 +44,7 @@ public class NamedParameterCollectionResult<TThat, TParameter>(
 	/// <summary>
 	///     Interprets the expected parameter name as a prefix, so that the actual value starts with it.
 	/// </summary>
-	public NamedParameterCollectionResult<TThat, TParameter> AsPrefix()
+	public NamedParameterCollectionResult<TType, TThat, TParameter> AsPrefix()
 	{
 		options.AsPrefix();
 		return this;
@@ -53,7 +53,7 @@ public class NamedParameterCollectionResult<TThat, TParameter>(
 	/// <summary>
 	///     Interprets the expected parameter name as a <see cref="Regex" /> pattern.
 	/// </summary>
-	public NamedParameterCollectionResult<TThat, TParameter> AsRegex()
+	public NamedParameterCollectionResult<TType, TThat, TParameter> AsRegex()
 	{
 		options.AsRegex();
 		return this;
@@ -62,7 +62,7 @@ public class NamedParameterCollectionResult<TThat, TParameter>(
 	/// <summary>
 	///     Interprets the expected parameter name as a suffix, so that the actual value ends with it.
 	/// </summary>
-	public NamedParameterCollectionResult<TThat, TParameter> AsSuffix()
+	public NamedParameterCollectionResult<TType, TThat, TParameter> AsSuffix()
 	{
 		options.AsSuffix();
 		return this;
@@ -72,7 +72,7 @@ public class NamedParameterCollectionResult<TThat, TParameter>(
 	///     Interprets the expected parameter name as wildcard pattern.<br />
 	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </summary>
-	public NamedParameterCollectionResult<TThat, TParameter> AsWildcard()
+	public NamedParameterCollectionResult<TType, TThat, TParameter> AsWildcard()
 	{
 		options.AsWildcard();
 		return this;

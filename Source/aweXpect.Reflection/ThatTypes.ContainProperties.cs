@@ -15,11 +15,11 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     By default each type must contain at least one matching property. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     (e.g. <see cref="TypeContainingMembersResult{TType, TThat}.Exactly(Times)" />) to require a specific count.<br />
 	///     The <paramref name="memberScope" /> controls whether inherited properties are considered.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IEnumerable<Type?>?> ContainProperties(
+	public static TypeContainingMembersResult<IEnumerable<Type?>, IEnumerable<Type?>?> ContainProperties(
 		this IThat<IEnumerable<Type?>?> subject,
 		Func<Filtered.Properties, Filtered.Properties> filter,
 		MemberScope memberScope = MemberScope.DeclaredOnly)
@@ -32,11 +32,11 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     By default each type must contain at least one matching property. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     (e.g. <see cref="TypeContainingMembersResult{TType, TThat}.Exactly(Times)" />) to require a specific count.<br />
 	///     The <paramref name="memberScope" /> controls whether inherited properties are considered.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>?> ContainProperties(
+	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> ContainProperties(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Func<Filtered.Properties, Filtered.Properties> filter,
 		MemberScope memberScope = MemberScope.DeclaredOnly)

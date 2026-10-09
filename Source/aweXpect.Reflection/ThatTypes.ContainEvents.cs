@@ -15,11 +15,11 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     By default each type must contain at least one matching event. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     (e.g. <see cref="TypeContainingMembersResult{TType, TThat}.Exactly(Times)" />) to require a specific count.<br />
 	///     The <paramref name="memberScope" /> controls whether inherited events are considered.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IEnumerable<Type?>?> ContainEvents(
+	public static TypeContainingMembersResult<IEnumerable<Type?>, IEnumerable<Type?>?> ContainEvents(
 		this IThat<IEnumerable<Type?>?> subject,
 		Func<Filtered.Events, Filtered.Events> filter,
 		MemberScope memberScope = MemberScope.DeclaredOnly)
@@ -32,11 +32,11 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     By default each type must contain at least one matching event. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     (e.g. <see cref="TypeContainingMembersResult{TType, TThat}.Exactly(Times)" />) to require a specific count.<br />
 	///     The <paramref name="memberScope" /> controls whether inherited events are considered.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>?> ContainEvents(
+	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> ContainEvents(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Func<Filtered.Events, Filtered.Events> filter,
 		MemberScope memberScope = MemberScope.DeclaredOnly)

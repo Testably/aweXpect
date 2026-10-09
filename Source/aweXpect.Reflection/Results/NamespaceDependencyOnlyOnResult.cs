@@ -9,8 +9,8 @@ namespace aweXpect.Reflection.Results;
 ///     The result of a namespace-based depends-only-on assertion, allowing to widen the allowed namespaces
 ///     and to opt out of sub-namespace matching — for the targeted namespaces and for the type's own namespace.
 /// </summary>
-public sealed class NamespaceDependencyOnlyOnResult<TThat>
-	: AndOrResult<TThat, IThat<TThat>>
+public sealed class NamespaceDependencyOnlyOnResult<TType, TThat>
+	: AndOrResult<TType, IThat<TThat>>
 {
 	private readonly NamespaceDependencyOptions _options;
 
@@ -27,7 +27,7 @@ public sealed class NamespaceDependencyOnlyOnResult<TThat>
 	///     Widens the expression by the given <paramref name="namespaces" /> (including sub-namespaces unless
 	///     <see cref="ExcludingSubNamespaces" /> is used).
 	/// </summary>
-	public NamespaceDependencyOnlyOnResult<TThat> OrOn(params IEnumerable<string> namespaces)
+	public NamespaceDependencyOnlyOnResult<TType, TThat> OrOn(params IEnumerable<string> namespaces)
 	{
 		_options.OrOn(namespaces);
 		return this;
@@ -44,7 +44,7 @@ public sealed class NamespaceDependencyOnlyOnResult<TThat>
 	///     The type's own namespace is always allowed, and its sub-namespaces stay allowed unless
 	///     <see cref="ExcludingOwnSubNamespaces" /> is also used.
 	/// </remarks>
-	public NamespaceDependencyOnlyOnResult<TThat> ExcludingSubNamespaces()
+	public NamespaceDependencyOnlyOnResult<TType, TThat> ExcludingSubNamespaces()
 	{
 		_options.ExcludingSubNamespaces();
 		return this;
@@ -57,7 +57,7 @@ public sealed class NamespaceDependencyOnlyOnResult<TThat>
 	/// <remarks>
 	///     The type's own namespace itself is always allowed.
 	/// </remarks>
-	public NamespaceDependencyOnlyOnResult<TThat> ExcludingOwnSubNamespaces()
+	public NamespaceDependencyOnlyOnResult<TType, TThat> ExcludingOwnSubNamespaces()
 	{
 		_options.ExcludingOwnSubNamespaces();
 		return this;

@@ -29,11 +29,11 @@ public static partial class ThatType
 	///     explicitly via <c>DoesNotDependOn</c> or customize the prefixes.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static NamespaceDependencyOnlyOnResult<Type?> DependsOnlyOn(
+	public static NamespaceDependencyOnlyOnResult<Type, Type?> DependsOnlyOn(
 		this IThat<Type?> subject, params IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
-		return new NamespaceDependencyOnlyOnResult<Type?>(subject.Get().ExpectationBuilder
+		return new NamespaceDependencyOnlyOnResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new DependsOnlyOnConstraint(it, grammars, options)),
 			subject,
@@ -50,7 +50,7 @@ public static partial class ThatType
 	///     union of the resolved collections (by <see cref="Type" /> identity; a generic type definition in a
 	///     collection matches any construction of it). The type's own namespace is always allowed, including its
 	///     sub-namespaces unless
-	///     <see cref="TypeSetDependencyOnlyOnResult{TThat}.ExcludingOwnSubNamespaces" /> is used.
+	///     <see cref="TypeSetDependencyOnlyOnResult{TType, TThat}.ExcludingOwnSubNamespaces" /> is used.
 	///     <para />
 	///     Dependencies on types whose assembly name matches one of the
 	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
@@ -61,11 +61,11 @@ public static partial class ThatType
 	///     explicitly via <c>DoesNotDependOn</c> or customize the prefixes.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeSetDependencyOnlyOnResult<Type?> DependsOnlyOn(
+	public static TypeSetDependencyOnlyOnResult<Type, Type?> DependsOnlyOn(
 		this IThat<Type?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
 		TypeSetDependencyOptions options = new(target, additional);
-		return new TypeSetDependencyOnlyOnResult<Type?>(subject.Get().ExpectationBuilder
+		return new TypeSetDependencyOnlyOnResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new DependsOnlyOnTypeSetConstraint(it, grammars, options)),
 			subject,

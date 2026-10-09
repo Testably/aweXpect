@@ -27,7 +27,7 @@ public static partial class ThatMethod
 	///     <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<MethodInfo?, TParameter> HasRefParameter<TParameter>(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> HasRefParameter<TParameter>(
 		this IThat<MethodInfo?> subject)
 		=> subject.HasParameter<TParameter>().WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -36,7 +36,7 @@ public static partial class ThatMethod
 	///     <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<MethodInfo?, object?> HasRefParameter(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasRefParameter(
 		this IThat<MethodInfo?> subject, Type parameterType)
 		=> subject.HasParameter(parameterType).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -45,7 +45,7 @@ public static partial class ThatMethod
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, TParameter> HasRefParameter<TParameter>(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> HasRefParameter<TParameter>(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameter<TParameter>(expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -54,7 +54,7 @@ public static partial class ThatMethod
 	///     <paramref name="parameterType" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, object?> HasRefParameter(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasRefParameter(
 		this IThat<MethodInfo?> subject, Type parameterType, string expected)
 		=> subject.HasParameter(parameterType, expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -63,7 +63,7 @@ public static partial class ThatMethod
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, object?> HasRefParameter(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasRefParameter(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameter(expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -72,7 +72,7 @@ public static partial class ThatMethod
 	///     <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<MethodInfo?, TParameter> HasRefParameterExactly<TParameter>(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> HasRefParameterExactly<TParameter>(
 		this IThat<MethodInfo?> subject)
 		=> subject.HasParameterExactly<TParameter>().WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -81,7 +81,7 @@ public static partial class ThatMethod
 	///     <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<MethodInfo?, object?> HasRefParameterExactly(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasRefParameterExactly(
 		this IThat<MethodInfo?> subject, Type parameterType)
 		=> subject.HasParameterExactly(parameterType).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -90,7 +90,7 @@ public static partial class ThatMethod
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, TParameter> HasRefParameterExactly<TParameter>(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> HasRefParameterExactly<TParameter>(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameterExactly<TParameter>(expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 
@@ -99,7 +99,7 @@ public static partial class ThatMethod
 	///     <paramref name="parameterType" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, object?> HasRefParameterExactly(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasRefParameterExactly(
 		this IThat<MethodInfo?> subject, Type parameterType, string expected)
 		=> subject.HasParameterExactly(parameterType, expected).WithModifier(p => p.IsRefParameter(), "with ref modifier");
 

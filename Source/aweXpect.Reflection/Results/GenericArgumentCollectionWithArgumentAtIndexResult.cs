@@ -7,12 +7,12 @@ namespace aweXpect.Reflection.Results;
 /// <summary>
 ///     Additional constraints on a collection of generic arguments at a given index.
 /// </summary>
-public class GenericArgumentCollectionWithArgumentAtIndexResult<TThat>(
+public class GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	IThat<TThat> subject,
 	GenericArgumentsFilterOptions genericArgumentsFilterOptions,
 	CollectionIndexOptions collectionIndexOptions)
-	: GenericArgumentCollectionResult<TThat>(expectationBuilder, subject, genericArgumentsFilterOptions),
+	: GenericArgumentCollectionResult<TType, TThat>(expectationBuilder, subject, genericArgumentsFilterOptions),
 		IOptionsProvider<CollectionIndexOptions>
 {
 	private readonly CollectionIndexOptions _collectionIndexOptions = collectionIndexOptions;
@@ -23,7 +23,7 @@ public class GenericArgumentCollectionWithArgumentAtIndexResult<TThat>(
 	/// <summary>
 	///     …from end.
 	/// </summary>
-	public GenericArgumentCollectionResult<TThat> FromEnd()
+	public GenericArgumentCollectionResult<TType, TThat> FromEnd()
 	{
 		if (_collectionIndexOptions.Match is CollectionIndexOptions.IMatchFromBeginning match)
 		{

@@ -13,11 +13,11 @@ public static partial class ThatType
 	/// </summary>
 	/// <remarks>
 	///     By default the assertion succeeds when the type contains at least one matching property. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.<br />
+	///     (e.g. <see cref="TypeContainingMembersResult{TType, TThat}.Exactly(Times)" />) to require a specific count.<br />
 	///     The <paramref name="memberScope" /> controls whether inherited properties are considered.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<Type?> ContainsProperties(
+	public static TypeContainingMembersResult<Type, Type?> ContainsProperties(
 		this IThat<Type?> subject,
 		Func<Filtered.Properties, Filtered.Properties> filter,
 		MemberScope memberScope = MemberScope.DeclaredOnly)

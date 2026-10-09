@@ -27,7 +27,7 @@ public static partial class ThatMethod
 	///     <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<MethodInfo?, TParameter> HasOptionalParameter<TParameter>(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> HasOptionalParameter<TParameter>(
 		this IThat<MethodInfo?> subject)
 		=> subject.HasParameter<TParameter>().WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
@@ -36,7 +36,7 @@ public static partial class ThatMethod
 	///     <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<MethodInfo?, object?> HasOptionalParameter(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasOptionalParameter(
 		this IThat<MethodInfo?> subject, Type parameterType)
 		=> subject.HasParameter(parameterType).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
@@ -45,7 +45,7 @@ public static partial class ThatMethod
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, TParameter> HasOptionalParameter<TParameter>(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> HasOptionalParameter<TParameter>(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameter<TParameter>(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
@@ -54,7 +54,7 @@ public static partial class ThatMethod
 	///     <paramref name="parameterType" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, object?> HasOptionalParameter(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasOptionalParameter(
 		this IThat<MethodInfo?> subject, Type parameterType, string expected)
 		=> subject.HasParameter(parameterType, expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
@@ -63,7 +63,7 @@ public static partial class ThatMethod
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, object?> HasOptionalParameter(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasOptionalParameter(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameter(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
@@ -72,7 +72,7 @@ public static partial class ThatMethod
 	///     <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<MethodInfo?, TParameter> HasOptionalParameterExactly<TParameter>(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> HasOptionalParameterExactly<TParameter>(
 		this IThat<MethodInfo?> subject)
 		=> subject.HasParameterExactly<TParameter>().WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
@@ -81,7 +81,7 @@ public static partial class ThatMethod
 	///     <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<MethodInfo?, object?> HasOptionalParameterExactly(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasOptionalParameterExactly(
 		this IThat<MethodInfo?> subject, Type parameterType)
 		=> subject.HasParameterExactly(parameterType).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
@@ -90,7 +90,7 @@ public static partial class ThatMethod
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, TParameter> HasOptionalParameterExactly<TParameter>(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> HasOptionalParameterExactly<TParameter>(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameterExactly<TParameter>(expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 
@@ -99,7 +99,7 @@ public static partial class ThatMethod
 	///     <paramref name="parameterType" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, object?> HasOptionalParameterExactly(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasOptionalParameterExactly(
 		this IThat<MethodInfo?> subject, Type parameterType, string expected)
 		=> subject.HasParameterExactly(parameterType, expected).WithModifier(p => p.IsOptionalParameter(), "with optional modifier");
 

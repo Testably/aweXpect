@@ -15,14 +15,14 @@ public static partial class ThatConstructor
 	///     <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<ConstructorInfo?, TParameter> HasParameterExactly<TParameter>(
+	public static ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, TParameter> HasParameterExactly<TParameter>(
 		this IThat<ConstructorInfo?> subject)
 	{
 		Type parameterType = typeof(TParameter);
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
-		return new ParameterCollectionResult<ConstructorInfo?, TParameter>(subject.Get().ExpectationBuilder
+		return new ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new HasParameterConstraint(it, grammars, parameterType, null,
 						collectionIndexOptions,
@@ -38,7 +38,7 @@ public static partial class ThatConstructor
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<ConstructorInfo?, TParameter> HasParameterExactly<TParameter>(
+	public static NamedParameterCollectionResult<ConstructorInfo, ConstructorInfo?, TParameter> HasParameterExactly<TParameter>(
 		this IThat<ConstructorInfo?> subject, string expected)
 	{
 		Type parameterType = typeof(TParameter);
@@ -47,7 +47,7 @@ public static partial class ThatConstructor
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
-		return new NamedParameterCollectionResult<ConstructorInfo?, TParameter>(subject.Get().ExpectationBuilder
+		return new NamedParameterCollectionResult<ConstructorInfo, ConstructorInfo?, TParameter>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new HasParameterConstraint(it, grammars, parameterType, expected,
 						collectionIndexOptions,
@@ -64,13 +64,13 @@ public static partial class ThatConstructor
 	///     <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<ConstructorInfo?, object?> HasParameterExactly(
+	public static ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, object?> HasParameterExactly(
 		this IThat<ConstructorInfo?> subject, Type parameterType)
 	{
 		CollectionIndexOptions collectionIndexOptions = new();
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
-		return new ParameterCollectionResult<ConstructorInfo?, object?>(subject.Get().ExpectationBuilder
+		return new ParameterCollectionResult<ConstructorInfo, ConstructorInfo?, object?>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new HasParameterConstraint(it, grammars, parameterType, null,
 						collectionIndexOptions,
@@ -86,7 +86,7 @@ public static partial class ThatConstructor
 	///     <paramref name="parameterType" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<ConstructorInfo?, object?> HasParameterExactly(
+	public static NamedParameterCollectionResult<ConstructorInfo, ConstructorInfo?, object?> HasParameterExactly(
 		this IThat<ConstructorInfo?> subject, Type parameterType, string expected)
 	{
 		StringEqualityOptions stringEqualityOptions = new(nameof(expected));
@@ -94,7 +94,7 @@ public static partial class ThatConstructor
 		ParameterFilterOptions parameterFilterOptions =
 			new(p => p.GetUnderlyingType().IsOrInheritsFrom(parameterType, true));
 		parameterFilterOptions.AddPredicate(p => stringEqualityOptions.AreConsideredEqual(p.Name, expected));
-		return new NamedParameterCollectionResult<ConstructorInfo?, object?>(subject.Get().ExpectationBuilder
+		return new NamedParameterCollectionResult<ConstructorInfo, ConstructorInfo?, object?>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new HasParameterConstraint(it, grammars, parameterType, expected,
 						collectionIndexOptions,

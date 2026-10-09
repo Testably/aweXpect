@@ -27,7 +27,7 @@ public static partial class ThatMethod
 	///     <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<MethodInfo?, TParameter> HasParamsParameter<TParameter>(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> HasParamsParameter<TParameter>(
 		this IThat<MethodInfo?> subject)
 		=> subject.HasParameter<TParameter>().WithModifier(p => p.IsParamsParameter(), "with params modifier");
 
@@ -36,7 +36,7 @@ public static partial class ThatMethod
 	///     <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<MethodInfo?, object?> HasParamsParameter(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasParamsParameter(
 		this IThat<MethodInfo?> subject, Type parameterType)
 		=> subject.HasParameter(parameterType).WithModifier(p => p.IsParamsParameter(), "with params modifier");
 
@@ -45,7 +45,7 @@ public static partial class ThatMethod
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, TParameter> HasParamsParameter<TParameter>(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> HasParamsParameter<TParameter>(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameter<TParameter>(expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
 
@@ -54,7 +54,7 @@ public static partial class ThatMethod
 	///     <paramref name="parameterType" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, object?> HasParamsParameter(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasParamsParameter(
 		this IThat<MethodInfo?> subject, Type parameterType, string expected)
 		=> subject.HasParameter(parameterType, expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
 
@@ -63,7 +63,7 @@ public static partial class ThatMethod
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, object?> HasParamsParameter(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasParamsParameter(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameter(expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
 
@@ -72,7 +72,7 @@ public static partial class ThatMethod
 	///     <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<MethodInfo?, TParameter> HasParamsParameterExactly<TParameter>(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> HasParamsParameterExactly<TParameter>(
 		this IThat<MethodInfo?> subject)
 		=> subject.HasParameterExactly<TParameter>().WithModifier(p => p.IsParamsParameter(), "with params modifier");
 
@@ -81,7 +81,7 @@ public static partial class ThatMethod
 	///     <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<MethodInfo?, object?> HasParamsParameterExactly(
+	public static ParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasParamsParameterExactly(
 		this IThat<MethodInfo?> subject, Type parameterType)
 		=> subject.HasParameterExactly(parameterType).WithModifier(p => p.IsParamsParameter(), "with params modifier");
 
@@ -90,7 +90,7 @@ public static partial class ThatMethod
 	///     <typeparamref name="TParameter" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, TParameter> HasParamsParameterExactly<TParameter>(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, TParameter> HasParamsParameterExactly<TParameter>(
 		this IThat<MethodInfo?> subject, string expected)
 		=> subject.HasParameterExactly<TParameter>(expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
 
@@ -99,7 +99,7 @@ public static partial class ThatMethod
 	///     <paramref name="parameterType" /> with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<MethodInfo?, object?> HasParamsParameterExactly(
+	public static NamedParameterCollectionResult<MethodInfo, MethodInfo?, object?> HasParamsParameterExactly(
 		this IThat<MethodInfo?> subject, Type parameterType, string expected)
 		=> subject.HasParameterExactly(parameterType, expected).WithModifier(p => p.IsParamsParameter(), "with params modifier");
 

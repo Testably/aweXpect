@@ -9,8 +9,8 @@ namespace aweXpect.Reflection.Results;
 ///     The result of a namespace-based type dependency assertion, allowing to widen the targeted/allowed namespaces
 ///     and to opt out of sub-namespace matching.
 /// </summary>
-public sealed class NamespaceDependencyResult<TThat>
-	: AndOrResult<TThat, IThat<TThat>>
+public sealed class NamespaceDependencyResult<TType, TThat>
+	: AndOrResult<TType, IThat<TThat>>
 {
 	private readonly NamespaceDependencyOptions _options;
 
@@ -27,7 +27,7 @@ public sealed class NamespaceDependencyResult<TThat>
 	///     Widens the expression by the given <paramref name="namespaces" /> (including sub-namespaces unless
 	///     <see cref="ExcludingSubNamespaces" /> is used).
 	/// </summary>
-	public NamespaceDependencyResult<TThat> OrOn(params IEnumerable<string> namespaces)
+	public NamespaceDependencyResult<TType, TThat> OrOn(params IEnumerable<string> namespaces)
 	{
 		_options.OrOn(namespaces);
 		return this;
@@ -40,7 +40,7 @@ public sealed class NamespaceDependencyResult<TThat>
 	///     Without this call, a namespace matches itself and all its sub-namespaces (so <c>Foo.Bar</c> includes
 	///     <c>Foo.Bar.Baz</c> but not <c>Foo.BarBaz</c>).
 	/// </remarks>
-	public NamespaceDependencyResult<TThat> ExcludingSubNamespaces()
+	public NamespaceDependencyResult<TType, TThat> ExcludingSubNamespaces()
 	{
 		_options.ExcludingSubNamespaces();
 		return this;

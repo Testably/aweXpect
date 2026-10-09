@@ -15,10 +15,10 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     By default each type must contain at least one matching constructor. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.
+	///     (e.g. <see cref="TypeContainingMembersResult{TType, TThat}.Exactly(Times)" />) to require a specific count.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IEnumerable<Type?>?> ContainConstructors(
+	public static TypeContainingMembersResult<IEnumerable<Type?>, IEnumerable<Type?>?> ContainConstructors(
 		this IThat<IEnumerable<Type?>?> subject,
 		Func<Filtered.Constructors, Filtered.Constructors> filter)
 		=> Contain<ConstructorInfo, Filtered.Constructors>(subject, types => types.Constructors(), filter);
@@ -30,10 +30,10 @@ public static partial class ThatTypes
 	/// </summary>
 	/// <remarks>
 	///     By default each type must contain at least one matching constructor. Append a quantifier
-	///     (e.g. <see cref="TypeContainingMembersResult{TThat}.Exactly(Times)" />) to require a specific count.
+	///     (e.g. <see cref="TypeContainingMembersResult{TType, TThat}.Exactly(Times)" />) to require a specific count.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>?> ContainConstructors(
+	public static TypeContainingMembersResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> ContainConstructors(
 		this IThat<IAsyncEnumerable<Type?>?> subject,
 		Func<Filtered.Constructors, Filtered.Constructors> filter)
 		=> Contain<ConstructorInfo, Filtered.Constructors>(subject, types => types.Constructors(), filter);

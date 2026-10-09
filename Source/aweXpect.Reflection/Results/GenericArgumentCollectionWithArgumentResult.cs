@@ -8,12 +8,12 @@ namespace aweXpect.Reflection.Results;
 /// <summary>
 ///     Additional constraints on a collection of generic arguments with a specific type.
 /// </summary>
-public class GenericArgumentCollectionWithArgumentResult<TThat>(
+public class GenericArgumentCollectionWithArgumentResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	IThat<TThat> subject,
 	GenericArgumentsFilterOptions genericArgumentsFilterOptions,
 	CollectionIndexOptions collectionIndexOptions)
-	: GenericArgumentCollectionResult<TThat>(
+	: GenericArgumentCollectionResult<TType, TThat>(
 			expectationBuilder, subject, genericArgumentsFilterOptions),
 		IOptionsProvider<CollectionIndexOptions>
 {
@@ -27,10 +27,10 @@ public class GenericArgumentCollectionWithArgumentResult<TThat>(
 	/// <summary>
 	///     …at the given <paramref name="index" />.
 	/// </summary>
-	public GenericArgumentCollectionWithArgumentAtIndexResult<TThat> AtIndex(int index)
+	public GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat> AtIndex(int index)
 	{
 		collectionIndexOptions.SetMatch(new AtIndexMatch(index));
-		return new GenericArgumentCollectionWithArgumentAtIndexResult<TThat>(
+		return new GenericArgumentCollectionWithArgumentAtIndexResult<TType, TThat>(
 			_expectationBuilder, _subject, _genericArgumentsFilterOptions, collectionIndexOptions);
 	}
 }

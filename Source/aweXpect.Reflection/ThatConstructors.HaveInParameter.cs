@@ -49,7 +49,7 @@ public static partial class ThatConstructors
 	///     an <see langword="in" /> parameter of type <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>?, TParameter> HaveInParameter<TParameter>(
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> HaveInParameter<TParameter>(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject)
 		=> subject.HaveParameter<TParameter>().WithModifier(p => p.IsInParameter(), "with in modifier");
 
@@ -58,7 +58,7 @@ public static partial class ThatConstructors
 	///     an <see langword="in" /> parameter of type <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>?, object?> HaveInParameter(
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveInParameter(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, Type parameterType)
 		=> subject.HaveParameter(parameterType).WithModifier(p => p.IsInParameter(), "with in modifier");
 
@@ -68,7 +68,7 @@ public static partial class ThatConstructors
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>?, TParameter> HaveInParameter<TParameter>(
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> HaveInParameter<TParameter>(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, string expected)
 		=> subject.HaveParameter<TParameter>(expected).WithModifier(p => p.IsInParameter(), "with in modifier");
 
@@ -78,7 +78,7 @@ public static partial class ThatConstructors
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>?, object?> HaveInParameter(
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveInParameter(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, Type parameterType, string expected)
 		=> subject.HaveParameter(parameterType, expected).WithModifier(p => p.IsInParameter(), "with in modifier");
 
@@ -87,7 +87,7 @@ public static partial class ThatConstructors
 	///     an <see langword="in" /> parameter with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>?, object?> HaveInParameter(
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveInParameter(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, string expected)
 		=> subject.HaveParameter(expected).WithModifier(p => p.IsInParameter(), "with in modifier");
 
@@ -97,7 +97,7 @@ public static partial class ThatConstructors
 	///     an <see langword="in" /> parameter of type <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveInParameter<TParameter>(
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveInParameter<TParameter>(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject)
 		=> subject.HaveParameter<TParameter>().WithModifier(p => p.IsInParameter(), "with in modifier");
 
@@ -106,7 +106,7 @@ public static partial class ThatConstructors
 	///     an <see langword="in" /> parameter of type <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, object?> HaveInParameter(
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveInParameter(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, Type parameterType)
 		=> subject.HaveParameter(parameterType).WithModifier(p => p.IsInParameter(), "with in modifier");
 
@@ -116,7 +116,7 @@ public static partial class ThatConstructors
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveInParameter<TParameter>(
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveInParameter<TParameter>(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, string expected)
 		=> subject.HaveParameter<TParameter>(expected).WithModifier(p => p.IsInParameter(), "with in modifier");
 
@@ -126,7 +126,7 @@ public static partial class ThatConstructors
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, object?> HaveInParameter(
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveInParameter(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, Type parameterType, string expected)
 		=> subject.HaveParameter(parameterType, expected).WithModifier(p => p.IsInParameter(), "with in modifier");
 
@@ -135,7 +135,7 @@ public static partial class ThatConstructors
 	///     an <see langword="in" /> parameter with the <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, object?> HaveInParameter(
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveInParameter(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, string expected)
 		=> subject.HaveParameter(expected).WithModifier(p => p.IsInParameter(), "with in modifier");
 #endif
@@ -145,7 +145,7 @@ public static partial class ThatConstructors
 	///     an <see langword="in" /> parameter of exact type <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>?, TParameter> HaveInParameterExactly<TParameter>(
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> HaveInParameterExactly<TParameter>(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject)
 		=> subject.HaveParameterExactly<TParameter>().WithModifier(p => p.IsInParameter(), "with in modifier");
 
@@ -154,7 +154,7 @@ public static partial class ThatConstructors
 	///     an <see langword="in" /> parameter of exact type <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>?, object?> HaveInParameterExactly(
+	public static ParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveInParameterExactly(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, Type parameterType)
 		=> subject.HaveParameterExactly(parameterType).WithModifier(p => p.IsInParameter(), "with in modifier");
 
@@ -164,7 +164,7 @@ public static partial class ThatConstructors
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>?, TParameter> HaveInParameterExactly<TParameter>(
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, TParameter> HaveInParameterExactly<TParameter>(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, string expected)
 		=> subject.HaveParameterExactly<TParameter>(expected).WithModifier(p => p.IsInParameter(), "with in modifier");
 
@@ -174,7 +174,7 @@ public static partial class ThatConstructors
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>?, object?> HaveInParameterExactly(
+	public static NamedParameterCollectionResult<IEnumerable<ConstructorInfo?>, IEnumerable<ConstructorInfo?>?, object?> HaveInParameterExactly(
 		this IThat<IEnumerable<ConstructorInfo?>?> subject, Type parameterType, string expected)
 		=> subject.HaveParameterExactly(parameterType, expected).WithModifier(p => p.IsInParameter(), "with in modifier");
 
@@ -184,7 +184,7 @@ public static partial class ThatConstructors
 	///     an <see langword="in" /> parameter of exact type <typeparamref name="TParameter" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveInParameterExactly<TParameter>(
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveInParameterExactly<TParameter>(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject)
 		=> subject.HaveParameterExactly<TParameter>().WithModifier(p => p.IsInParameter(), "with in modifier");
 
@@ -193,7 +193,7 @@ public static partial class ThatConstructors
 	///     an <see langword="in" /> parameter of exact type <paramref name="parameterType" />.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, object?> HaveInParameterExactly(
+	public static ParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveInParameterExactly(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, Type parameterType)
 		=> subject.HaveParameterExactly(parameterType).WithModifier(p => p.IsInParameter(), "with in modifier");
 
@@ -203,7 +203,7 @@ public static partial class ThatConstructors
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveInParameterExactly<TParameter>(
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, TParameter> HaveInParameterExactly<TParameter>(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, string expected)
 		=> subject.HaveParameterExactly<TParameter>(expected).WithModifier(p => p.IsInParameter(), "with in modifier");
 
@@ -213,7 +213,7 @@ public static partial class ThatConstructors
 	///     <paramref name="expected" /> name.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>?, object?> HaveInParameterExactly(
+	public static NamedParameterCollectionResult<IAsyncEnumerable<ConstructorInfo?>, IAsyncEnumerable<ConstructorInfo?>?, object?> HaveInParameterExactly(
 		this IThat<IAsyncEnumerable<ConstructorInfo?>?> subject, Type parameterType, string expected)
 		=> subject.HaveParameterExactly(parameterType, expected).WithModifier(p => p.IsInParameter(), "with in modifier");
 #endif

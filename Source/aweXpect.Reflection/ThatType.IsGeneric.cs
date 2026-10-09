@@ -17,11 +17,11 @@ public static partial class ThatType
 	///     Verifies that the <see cref="Type" /> is generic.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static GenericArgumentCollectionResult<Type?> IsGeneric(
+	public static GenericArgumentCollectionResult<Type, Type?> IsGeneric(
 		this IThat<Type?> subject)
 	{
 		GenericArgumentsFilterOptions genericFilterOptions = new();
-		return new GenericArgumentCollectionResult<Type?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
+		return new GenericArgumentCollectionResult<Type, Type?>(subject.Get().ExpectationBuilder.AddConstraint((it, grammars)
 				=> new IsGenericConstraint(it, grammars, genericFilterOptions)),
 			subject,
 			genericFilterOptions);

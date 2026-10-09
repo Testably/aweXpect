@@ -20,11 +20,11 @@ public static partial class ThatType
 	///     the <paramref name="namespaces" /> (including sub-namespaces).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamespaceDependencyResult<Type?> DependsOn(
+	public static NamespaceDependencyResult<Type, Type?> DependsOn(
 		this IThat<Type?> subject, params IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
-		return new NamespaceDependencyResult<Type?>(subject.Get().ExpectationBuilder
+		return new NamespaceDependencyResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new DependsOnNamespaceConstraint(it, grammars, options)),
 			subject,
@@ -64,11 +64,11 @@ public static partial class ThatType
 	///     collection matches any construction of it).
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeSetDependencyResult<Type?> DependsOn(
+	public static TypeSetDependencyResult<Type, Type?> DependsOn(
 		this IThat<Type?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
 		TypeSetDependencyOptions options = new(target, additional);
-		return new TypeSetDependencyResult<Type?>(subject.Get().ExpectationBuilder
+		return new TypeSetDependencyResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new DependsOnTypeSetConstraint(it, grammars, options)),
 			subject,
@@ -80,11 +80,11 @@ public static partial class ThatType
 	///     one of the <paramref name="namespaces" /> (including sub-namespaces).
 	/// </summary>
 	[GuaranteesNotNull]
-	public static NamespaceDependencyResult<Type?> DoesNotDependOn(
+	public static NamespaceDependencyResult<Type, Type?> DoesNotDependOn(
 		this IThat<Type?> subject, params IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
-		return new NamespaceDependencyResult<Type?>(subject.Get().ExpectationBuilder
+		return new NamespaceDependencyResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new DependsOnNamespaceConstraint(it, grammars, options).Invert()),
 			subject,
@@ -126,11 +126,11 @@ public static partial class ThatType
 	///     collection matches any construction of it).
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeSetDependencyResult<Type?> DoesNotDependOn(
+	public static TypeSetDependencyResult<Type, Type?> DoesNotDependOn(
 		this IThat<Type?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
 		TypeSetDependencyOptions options = new(target, additional);
-		return new TypeSetDependencyResult<Type?>(subject.Get().ExpectationBuilder
+		return new TypeSetDependencyResult<Type, Type?>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new DependsOnTypeSetConstraint(it, grammars, options).Invert()),
 			subject,

@@ -10,8 +10,8 @@ namespace aweXpect.Reflection.Results;
 ///     namespaces and to opt out of sub-namespace matching — for the allowed namespaces and for the type's own
 ///     namespace.
 /// </summary>
-public sealed class NamespaceDependencyOutsideResult<TThat>
-	: AndOrResult<TThat, IThat<TThat>>
+public sealed class NamespaceDependencyOutsideResult<TType, TThat>
+	: AndOrResult<TType, IThat<TThat>>
 {
 	private readonly NamespaceDependencyOptions _options;
 
@@ -28,7 +28,7 @@ public sealed class NamespaceDependencyOutsideResult<TThat>
 	///     Widens the allowed set by the given <paramref name="namespaces" /> (including sub-namespaces unless
 	///     <see cref="ExcludingSubNamespaces" /> is used), so that dependencies on them no longer count as outside.
 	/// </summary>
-	public NamespaceDependencyOutsideResult<TThat> OrOn(params IEnumerable<string> namespaces)
+	public NamespaceDependencyOutsideResult<TType, TThat> OrOn(params IEnumerable<string> namespaces)
 	{
 		_options.OrOn(namespaces);
 		return this;
@@ -45,7 +45,7 @@ public sealed class NamespaceDependencyOutsideResult<TThat>
 	///     The type's own namespace never counts as outside, and neither do its sub-namespaces unless
 	///     <see cref="ExcludingOwnSubNamespaces" /> is also used.
 	/// </remarks>
-	public NamespaceDependencyOutsideResult<TThat> ExcludingSubNamespaces()
+	public NamespaceDependencyOutsideResult<TType, TThat> ExcludingSubNamespaces()
 	{
 		_options.ExcludingSubNamespaces();
 		return this;
@@ -59,7 +59,7 @@ public sealed class NamespaceDependencyOutsideResult<TThat>
 	/// <remarks>
 	///     The type's own namespace itself never counts as outside.
 	/// </remarks>
-	public NamespaceDependencyOutsideResult<TThat> ExcludingOwnSubNamespaces()
+	public NamespaceDependencyOutsideResult<TType, TThat> ExcludingOwnSubNamespaces()
 	{
 		_options.ExcludingOwnSubNamespaces();
 		return this;

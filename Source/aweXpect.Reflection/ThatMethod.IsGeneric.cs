@@ -17,11 +17,11 @@ public static partial class ThatMethod
 	///     Verifies that the <see cref="MethodInfo" /> is generic.
 	/// </summary>
 	[GuaranteesNotNull]
-	public static GenericArgumentCollectionResult<MethodInfo?> IsGeneric(
+	public static GenericArgumentCollectionResult<MethodInfo, MethodInfo?> IsGeneric(
 		this IThat<MethodInfo?> subject)
 	{
 		GenericArgumentsFilterOptions genericFilterOptions = new();
-		return new GenericArgumentCollectionResult<MethodInfo?>(subject.Get().ExpectationBuilder
+		return new GenericArgumentCollectionResult<MethodInfo, MethodInfo?>(subject.Get().ExpectationBuilder
 				.AddConstraint((it, grammars)
 					=> new IsGenericConstraint(it, grammars,
 						genericFilterOptions)),

@@ -10,8 +10,8 @@ namespace aweXpect.Reflection.Results;
 ///     allowing to widen the allowed collections and to opt out of the implicit allowance of the type's own
 ///     sub-namespaces.
 /// </summary>
-public sealed class TypeSetDependencyOnlyOnResult<TThat>
-	: AndOrResult<TThat, IThat<TThat>>
+public sealed class TypeSetDependencyOnlyOnResult<TType, TThat>
+	: AndOrResult<TType, IThat<TThat>>
 {
 	private readonly TypeSetDependencyOptions _options;
 
@@ -27,7 +27,7 @@ public sealed class TypeSetDependencyOnlyOnResult<TThat>
 	/// <summary>
 	///     Widens the expression by the given <paramref name="targets" />.
 	/// </summary>
-	public TypeSetDependencyOnlyOnResult<TThat> OrOn(params Filtered.Types[] targets)
+	public TypeSetDependencyOnlyOnResult<TType, TThat> OrOn(params Filtered.Types[] targets)
 	{
 		_options.OrOn(targets);
 		return this;
@@ -41,7 +41,7 @@ public sealed class TypeSetDependencyOnlyOnResult<TThat>
 	/// <remarks>
 	///     The type's own namespace itself is always allowed.
 	/// </remarks>
-	public TypeSetDependencyOnlyOnResult<TThat> ExcludingOwnSubNamespaces()
+	public TypeSetDependencyOnlyOnResult<TType, TThat> ExcludingOwnSubNamespaces()
 	{
 		_options.ExcludingOwnSubNamespaces();
 		return this;

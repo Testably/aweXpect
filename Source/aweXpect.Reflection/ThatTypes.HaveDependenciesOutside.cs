@@ -35,11 +35,11 @@ public static partial class ThatTypes
 	///     count.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static NamespaceDependencyOutsideResult<IEnumerable<Type?>?> HaveDependenciesOutside(
+	public static NamespaceDependencyOutsideResult<IEnumerable<Type?>, IEnumerable<Type?>?> HaveDependenciesOutside(
 		this IThat<IEnumerable<Type?>?> subject, params IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
-		return new NamespaceDependencyOutsideResult<IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
+		return new NamespaceDependencyOutsideResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IEnumerable<Type?>>((it, grammars)
 					=> new HaveDependenciesOutsideConstraint(it, grammars, options)),
 			subject,
@@ -64,11 +64,11 @@ public static partial class ThatTypes
 	///     count.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static NamespaceDependencyOutsideResult<IAsyncEnumerable<Type?>?> HaveDependenciesOutside(
+	public static NamespaceDependencyOutsideResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> HaveDependenciesOutside(
 		this IThat<IAsyncEnumerable<Type?>?> subject, params IEnumerable<string> namespaces)
 	{
 		NamespaceDependencyOptions options = new(namespaces);
-		return new NamespaceDependencyOutsideResult<IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
+		return new NamespaceDependencyOutsideResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 					=> new HaveDependenciesOutsideConstraint(it, grammars, options)),
 			subject,
@@ -89,7 +89,7 @@ public static partial class ThatTypes
 	///     is a member of the union of the resolved collections (by <see cref="Type" /> identity; a generic type
 	///     definition in a collection matches any construction of it). A type's own namespace never counts as
 	///     outside, including its sub-namespaces unless
-	///     <see cref="TypeSetDependencyOutsideResult{TThat}.ExcludingOwnSubNamespaces" /> is used.
+	///     <see cref="TypeSetDependencyOutsideResult{TType, TThat}.ExcludingOwnSubNamespaces" /> is used.
 	///     <para />
 	///     Dependencies on types whose assembly name matches one of the
 	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
@@ -100,11 +100,11 @@ public static partial class ThatTypes
 	///     count.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeSetDependencyOutsideResult<IEnumerable<Type?>?> HaveDependenciesOutside(
+	public static TypeSetDependencyOutsideResult<IEnumerable<Type?>, IEnumerable<Type?>?> HaveDependenciesOutside(
 		this IThat<IEnumerable<Type?>?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
 		TypeSetDependencyOptions options = new(target, additional);
-		return new TypeSetDependencyOutsideResult<IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
+		return new TypeSetDependencyOutsideResult<IEnumerable<Type?>, IEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IEnumerable<Type?>>((it, grammars)
 					=> new HaveDependenciesOutsideTypeSetConstraint(it, grammars, options)),
 			subject,
@@ -125,7 +125,7 @@ public static partial class ThatTypes
 	///     is a member of the union of the resolved collections (by <see cref="Type" /> identity; a generic type
 	///     definition in a collection matches any construction of it). A type's own namespace never counts as
 	///     outside, including its sub-namespaces unless
-	///     <see cref="TypeSetDependencyOutsideResult{TThat}.ExcludingOwnSubNamespaces" /> is used.
+	///     <see cref="TypeSetDependencyOutsideResult{TType, TThat}.ExcludingOwnSubNamespaces" /> is used.
 	///     <para />
 	///     Dependencies on types whose assembly name matches one of the
 	///     <see cref="AwexpectCustomization.ReflectionCustomization.ExcludedAssemblyPrefixes" /> at a
@@ -136,11 +136,11 @@ public static partial class ThatTypes
 	///     count.
 	/// </remarks>
 	[GuaranteesNotNull]
-	public static TypeSetDependencyOutsideResult<IAsyncEnumerable<Type?>?> HaveDependenciesOutside(
+	public static TypeSetDependencyOutsideResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?> HaveDependenciesOutside(
 		this IThat<IAsyncEnumerable<Type?>?> subject, Filtered.Types target, params Filtered.Types[] additional)
 	{
 		TypeSetDependencyOptions options = new(target, additional);
-		return new TypeSetDependencyOutsideResult<IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
+		return new TypeSetDependencyOutsideResult<IAsyncEnumerable<Type?>, IAsyncEnumerable<Type?>?>(subject.Get().ExpectationBuilder
 				.AddConstraint<IAsyncEnumerable<Type?>>((it, grammars)
 					=> new HaveDependenciesOutsideTypeSetConstraint(it, grammars, options)),
 			subject,

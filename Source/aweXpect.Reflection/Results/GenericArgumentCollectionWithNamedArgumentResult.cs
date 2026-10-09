@@ -9,13 +9,13 @@ namespace aweXpect.Reflection.Results;
 /// <summary>
 ///     Additional constraints on a collection of generic arguments with a parameter with an expected name.
 /// </summary>
-public class GenericArgumentCollectionWithNamedArgumentResult<TThat>(
+public class GenericArgumentCollectionWithNamedArgumentResult<TType, TThat>(
 	ExpectationBuilder expectationBuilder,
 	IThat<TThat> subject,
 	GenericArgumentsFilterOptions genericArgumentsFilterOptions,
 	CollectionIndexOptions collectionIndexOptions,
 	StringEqualityOptions options)
-	: GenericArgumentCollectionWithArgumentResult<TThat>(
+	: GenericArgumentCollectionWithArgumentResult<TType, TThat>(
 			expectationBuilder, subject, genericArgumentsFilterOptions, collectionIndexOptions),
 		IOptionsProvider<StringEqualityOptions>
 {
@@ -26,7 +26,7 @@ public class GenericArgumentCollectionWithNamedArgumentResult<TThat>(
 	///     Ignores casing when comparing the generic argument name,
 	///     according to the <paramref name="ignoreCase" /> parameter.
 	/// </summary>
-	public GenericArgumentCollectionWithArgumentResult<TThat> IgnoringCase(bool ignoreCase = true)
+	public GenericArgumentCollectionWithArgumentResult<TType, TThat> IgnoringCase(bool ignoreCase = true)
 	{
 		options.IgnoringCase(ignoreCase);
 		return this;
@@ -35,7 +35,7 @@ public class GenericArgumentCollectionWithNamedArgumentResult<TThat>(
 	/// <summary>
 	///     Uses the provided <paramref name="comparer" /> for comparing generic argument names.
 	/// </summary>
-	public GenericArgumentCollectionWithArgumentResult<TThat> Using(IEqualityComparer<string> comparer)
+	public GenericArgumentCollectionWithArgumentResult<TType, TThat> Using(IEqualityComparer<string> comparer)
 	{
 		options.Using(comparer);
 		return this;
@@ -44,7 +44,7 @@ public class GenericArgumentCollectionWithNamedArgumentResult<TThat>(
 	/// <summary>
 	///     Interprets the expected generic argument name as a prefix, so that the actual value starts with it.
 	/// </summary>
-	public GenericArgumentCollectionWithArgumentResult<TThat> AsPrefix()
+	public GenericArgumentCollectionWithArgumentResult<TType, TThat> AsPrefix()
 	{
 		options.AsPrefix();
 		return this;
@@ -53,7 +53,7 @@ public class GenericArgumentCollectionWithNamedArgumentResult<TThat>(
 	/// <summary>
 	///     Interprets the expected generic argument name as a <see cref="Regex" /> pattern.
 	/// </summary>
-	public GenericArgumentCollectionWithArgumentResult<TThat> AsRegex()
+	public GenericArgumentCollectionWithArgumentResult<TType, TThat> AsRegex()
 	{
 		options.AsRegex();
 		return this;
@@ -62,7 +62,7 @@ public class GenericArgumentCollectionWithNamedArgumentResult<TThat>(
 	/// <summary>
 	///     Interprets the expected generic argument name as a suffix, so that the actual value ends with it.
 	/// </summary>
-	public GenericArgumentCollectionWithArgumentResult<TThat> AsSuffix()
+	public GenericArgumentCollectionWithArgumentResult<TType, TThat> AsSuffix()
 	{
 		options.AsSuffix();
 		return this;
@@ -72,7 +72,7 @@ public class GenericArgumentCollectionWithNamedArgumentResult<TThat>(
 	///     Interprets the expected generic argument name as wildcard pattern.<br />
 	///     Supports * to match zero or more characters and ? to match exactly one character.
 	/// </summary>
-	public GenericArgumentCollectionWithArgumentResult<TThat> AsWildcard()
+	public GenericArgumentCollectionWithArgumentResult<TType, TThat> AsWildcard()
 	{
 		options.AsWildcard();
 		return this;
