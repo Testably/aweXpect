@@ -78,19 +78,18 @@ public static partial class ThatHttpResponseMessage
 			string message = await actual.Content.ReadAsStringAsync(cancellationToken);
 #endif
 			using JsonDocument? problemDetails = ParseObjectOrDefault(message, out _parseError);
-			if (problemDetails is null)
+			if (problemDetails is null
+			    || !TryGetString(problemDetails.RootElement, "type", out string? type, out _parseError)
+			    || !TryGetStatus(problemDetails.RootElement, out int? status, out _parseError)
+			    || !TryGetString(problemDetails.RootElement, "title", out string? title, out _parseError)
+			    || !TryGetString(problemDetails.RootElement, "instance", out string? instance, out _parseError)
+			    || !TryGetString(problemDetails.RootElement, "detail", out string? detail, out _parseError))
 			{
 				Outcome = Outcome.FailureBothWays;
 				return this;
 			}
 
 			_failures.Clear();
-
-			string? type = GetPropertyOrDefault(problemDetails.RootElement, "type")?.GetString();
-			int? status = GetPropertyOrDefault(problemDetails.RootElement, "status")?.GetInt32();
-			string? title = GetPropertyOrDefault(problemDetails.RootElement, "title")?.GetString();
-			string? instance = GetPropertyOrDefault(problemDetails.RootElement, "instance")?.GetString();
-			string? detail = GetPropertyOrDefault(problemDetails.RootElement, "detail")?.GetString();
 
 			if (type == null)
 			{
@@ -155,15 +154,58 @@ public static partial class ThatHttpResponseMessage
 			return document;
 		}
 
-		private static JsonElement? GetPropertyOrDefault(JsonElement jsonElement, string propertyName)
+		private static bool TryGetString(JsonElement root, string member, out string? value, out string? error)
 		{
-			if (jsonElement.TryGetProperty(propertyName, out JsonElement element))
+			value = null;
+			error = null;
+			if (!root.TryGetProperty(member, out JsonElement element) || element.ValueKind == JsonValueKind.Null)
 			{
-				return element;
+				return true;
 			}
 
-			return null;
+			if (element.ValueKind != JsonValueKind.String)
+			{
+				error = $"the member \"{member}\" was {DescribeKind(element.ValueKind)}, not a String";
+				return false;
+			}
+
+			value = element.GetString();
+			return true;
 		}
+
+		private static bool TryGetStatus(JsonElement root, out int? value, out string? error)
+		{
+			value = null;
+			error = null;
+			if (!root.TryGetProperty("status", out JsonElement element) || element.ValueKind == JsonValueKind.Null)
+			{
+				return true;
+			}
+
+			if (element.ValueKind != JsonValueKind.Number)
+			{
+				error = $"the member \"status\" was {DescribeKind(element.ValueKind)}, not a Number";
+				return false;
+			}
+
+			if (!element.TryGetInt32(out int status))
+			{
+				error = $"the member \"status\" was {element.GetRawText()}, which is not a 32-bit integer";
+				return false;
+			}
+
+			value = status;
+			return true;
+		}
+
+		private static string DescribeKind(JsonValueKind kind)
+			=> kind switch
+			{
+				JsonValueKind.Object => "an Object",
+				JsonValueKind.Array => "an Array",
+				JsonValueKind.True or JsonValueKind.False => "a Boolean",
+				_ => $"a {kind}",
+			};
 
 		protected override void AppendNormalExpectation(StringBuilder stringBuilder, string? indentation = null)
 		{

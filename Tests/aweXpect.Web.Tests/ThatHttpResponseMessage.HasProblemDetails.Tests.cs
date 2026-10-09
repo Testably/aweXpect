@@ -152,6 +152,64 @@ public sealed partial class ThatHttpResponseMessage
 					.Because("a non-JSON body must fail the expectation instead of letting the JSON exception escape");
 			}
 
+			[Theory]
+			[InlineData("type", "42", "was a Number, not a String")]
+			[InlineData("title", "{}", "was an Object, not a String")]
+			[InlineData("detail", "[]", "was an Array, not a String")]
+			[InlineData("instance", "true", "was a Boolean, not a String")]
+			[InlineData("status", "\"400\"", "was a String, not a Number")]
+			[InlineData("status", "400.5", "was 400.5, which is not a 32-bit integer")]
+			[InlineData("status", "2147483648", "was 2147483648, which is not a 32-bit integer")]
+			public async Task WhenMemberHasWrongType_ShouldFail(string member, string value, string reason)
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent($$"""
+					               {
+					                 "{{member}}": {{value}}
+					               }
+					               """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent();
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($$"""
+					               Expected that subject
+					               has a ProblemDetails content with any type,
+					               but it could not be parsed as problem details: the member "{{member}}" {{reason}}
+
+					               HTTP-Response:
+					                 200 OK HTTP/1.1
+					                   Content-Type: text/plain; charset=utf-8
+					                   Content-Length: *
+					                 {
+					                   "{{member}}": {{value}}
+					                 }
+					               """).AsWildcard()
+					.Because("a wrongly typed standard member must fail the expectation instead of letting the JSON exception escape");
+			}
+
+			[Fact]
+			public async Task WhenMembersAreNull_ShouldTreatThemAsAbsent()
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent("""
+					             {
+					               "type": "foo",
+					               "title": null,
+					               "status": null,
+					               "detail": null,
+					               "instance": null
+					             }
+					             """);
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent("foo");
+
+				await That(Act).DoesNotThrow()
+					.Because("a null optional member is equivalent to an absent one");
+			}
+
 			[Fact]
 			public async Task WhenNoTypeIsSpecified_ShouldFail()
 			{
@@ -335,6 +393,43 @@ public sealed partial class ThatHttpResponseMessage
 					                 Content-Length: *
 					               <html>error</html>
 					             """).AsWildcard()
+					.Because("a subject that cannot be inspected fails both ways");
+			}
+
+			[Theory]
+			[InlineData("type", "42", "was a Number, not a String")]
+			[InlineData("title", "{}", "was an Object, not a String")]
+			[InlineData("detail", "[]", "was an Array, not a String")]
+			[InlineData("instance", "true", "was a Boolean, not a String")]
+			[InlineData("status", "\"400\"", "was a String, not a Number")]
+			[InlineData("status", "400.5", "was 400.5, which is not a 32-bit integer")]
+			[InlineData("status", "2147483648", "was 2147483648, which is not a 32-bit integer")]
+			public async Task WhenMemberHasWrongType_ShouldFail(string member, string value, string reason)
+			{
+				HttpResponseMessage subject = ResponseBuilder
+					.WithContent($$"""
+					               {
+					                 "{{member}}": {{value}}
+					               }
+					               """);
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasProblemDetailsContent());
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage($$"""
+					               Expected that subject
+					               does not have a ProblemDetails content,
+					               but it could not be parsed as problem details: the member "{{member}}" {{reason}}
+
+					               HTTP-Response:
+					                 200 OK HTTP/1.1
+					                   Content-Type: text/plain; charset=utf-8
+					                   Content-Length: *
+					                 {
+					                   "{{member}}": {{value}}
+					                 }
+					               """).AsWildcard()
 					.Because("a subject that cannot be inspected fails both ways");
 			}
 
