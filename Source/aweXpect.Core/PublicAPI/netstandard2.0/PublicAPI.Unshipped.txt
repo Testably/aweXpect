@@ -702,3 +702,4 @@ aweXpect.Core.StringMatchResult.IsEqual.get -> bool
 aweXpect.Core.StringMatchResult.StringMatchResult() -> void
 static aweXpect.Core.StringMatchResult.NotComparable(string! reason, System.Exception? cause = null) -> aweXpect.Core.StringMatchResult
 static aweXpect.Core.StringMatchResult.implicit operator aweXpect.Core.StringMatchResult(bool isEqual) -> aweXpect.Core.StringMatchResult
+aweXpect.Options.StringEqualityOptions.GetExtendedMemberFailure(string! it, string! member, aweXpect.Core.ExpectationGrammars grammars, string? actual, string? expected) -> string!

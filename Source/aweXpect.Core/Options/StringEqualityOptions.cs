@@ -427,17 +427,15 @@ public partial class StringEqualityOptions : IOptionsEquality<string?>
 
 	/// <summary>
 	///     Get an extended failure text that states which value <paramref name="it" /> had in its
-	///     <paramref name="member" />.
+	///     <paramref name="member" />, e.g. <c>it had message "foo", which differs …</c>.
 	/// </summary>
 	/// <remarks>
-	///     The match types phrase their failure with the member as the subject (<c>message was …</c>,
-	///     <c>
-	///         message did
-	///         not match…
-	///     </c>
-	///     ), so it is rephrased here; a failure of a custom match type is kept as it is.
+	///     The text of <see cref="GetExtendedFailure(string, ExpectationGrammars, string?, string?)" /> for the
+	///     <paramref name="member" /> is rephrased when it starts with <c>&lt;member&gt; was</c> or
+	///     <c>&lt;member&gt; did not match</c>, as for every built-in match type; any other text, e.g. of a custom
+	///     match type, is returned unchanged.
 	/// </remarks>
-	internal string GetExtendedMemberFailure(string it, string member, ExpectationGrammars grammars,
+	public string GetExtendedMemberFailure(string it, string member, ExpectationGrammars grammars,
 		string? actual, string? expected)
 	{
 		string failure = GetExtendedFailure(member, grammars, actual, expected);
