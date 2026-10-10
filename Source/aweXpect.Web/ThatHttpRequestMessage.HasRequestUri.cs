@@ -15,27 +15,41 @@ public static partial class ThatHttpRequestMessage
 	///     Verifies that the <see cref="HttpRequestMessage" /> has the <paramref name="expected" />
 	///     <see cref="HttpRequestMessage.RequestUri" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
 		HasRequestUri(this IThat<HttpRequestMessage?> source, string expected)
-		=> new(
+	{
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+		if (!Uri.TryCreate(expected, UriKind.Absolute, out Uri? expectedUri))
+		{
+			throw Tracing.WriteException(new ArgumentException(
+				"The 'expected' must be a valid absolute URI.", nameof(expected)));
+		}
+
+		return new(
 			source.Get().ExpectationBuilder
 				.AddSubjectContexts(ThatExtensions.RequestContexts)
 				.AddConstraint((it, grammars) =>
-					new HasRequestUriConstraint(it, grammars, new Uri(expected).ToString())),
+					new HasRequestUriConstraint(it, grammars, expectedUri.ToString())),
 			source);
+	}
 
 	/// <summary>
 	///     Verifies that the <see cref="HttpRequestMessage" /> has the <paramref name="expected" />
 	///     <see cref="HttpRequestMessage.RequestUri" />.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
 		HasRequestUri(this IThat<HttpRequestMessage?> source, Uri expected)
-		=> new(
+	{
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+		return new(
 			source.Get().ExpectationBuilder
 				.AddSubjectContexts(ThatExtensions.RequestContexts)
 				.AddConstraint((it, grammars) =>
 					new HasRequestUriConstraint(it, grammars, expected.ToString())),
 			source);
+	}
 
 	private sealed class HasRequestUriConstraint(
 		string it,

@@ -16,7 +16,8 @@ public static partial class ThatUri
 	/// <remarks>
 	///     <seealso cref="Uri.IsAbsoluteUri" />
 	/// </remarks>
-	public static AndOrResult<Uri, IThat<Uri>> IsAbsolute(this IThat<Uri> source)
+	[GuaranteesNotNull]
+	public static AndOrResult<Uri, IThat<Uri?>> IsAbsolute(this IThat<Uri?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsAbsoluteConstraint(it, grammars)),
 			source);
@@ -27,19 +28,20 @@ public static partial class ThatUri
 	/// <remarks>
 	///     <seealso cref="Uri.IsAbsoluteUri" />
 	/// </remarks>
-	public static AndOrResult<Uri, IThat<Uri>> IsNotAbsolute(this IThat<Uri> source)
+	[GuaranteesNotNull]
+	public static AndOrResult<Uri, IThat<Uri?>> IsNotAbsolute(this IThat<Uri?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsAbsoluteConstraint(it, grammars).Invert()),
 			source);
 
 	private sealed class IsAbsoluteConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<Uri>(it, grammars),
-			IValueConstraint<Uri>
+		: ConstraintResult.WithNotNullValue<Uri>(it, grammars),
+			IValueConstraint<Uri?>
 	{
-		public ConstraintResult IsMetBy(Uri actual)
+		public ConstraintResult IsMetBy(Uri? actual)
 		{
 			Actual = actual;
-			Outcome = actual.IsAbsoluteUri ? Outcome.Success : Outcome.Failure;
+			Outcome = actual?.IsAbsoluteUri == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

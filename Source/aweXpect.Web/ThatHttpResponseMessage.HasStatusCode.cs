@@ -19,6 +19,7 @@ public static partial class ThatHttpResponseMessage
 	///     Verifies that the status code of the <see cref="HttpResponseMessage" /> subject
 	///     is equal to the <paramref name="expected" /> value.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<HttpResponseMessage?, IThat<HttpResponseMessage?>> HasStatusCode(
 		this IThat<HttpResponseMessage?> source,
 		HttpStatusCode? expected)

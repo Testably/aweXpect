@@ -10,6 +10,19 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				HttpResponseMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasContentType(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenContentTypeDiffersFromExpected_ShouldFail()
 			{
 				string expected = "text/content-type";

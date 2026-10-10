@@ -8,6 +8,19 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class Tests
 		{
+			[Fact]
+			public async Task WhenExpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				HttpResponseMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasHeader(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' cannot be null.").AsPrefix();
+			}
+
 			[Theory]
 			[InlineData("Accept-Ranges", "an")]
 			[InlineData("ETag", "an")]

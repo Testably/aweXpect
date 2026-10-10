@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using aweXpect.Core;
 
 namespace aweXpect.Tests;
 
@@ -8,6 +9,19 @@ public sealed partial class ThatHttpResponseMessage
 	{
 		public sealed class ExpectationsTests
 		{
+			[Fact]
+			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+			{
+				HttpResponseMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasContent((Action<IThat<string?>>)null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
 			[Fact]
 			public async Task WhenContentDiffersFromExpected_ShouldFail()
 			{

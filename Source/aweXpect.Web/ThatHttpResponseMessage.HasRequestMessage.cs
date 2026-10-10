@@ -13,7 +13,9 @@ public static partial class ThatHttpResponseMessage
 	/// </summary>
 	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
 		HasRequestMessage(this IThat<HttpResponseMessage?> source, Action<IThat<HttpRequestMessage>> expectations)
-		=> new(source.Get().ExpectationBuilder
+	{
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
+		return new(source.Get().ExpectationBuilder
 				.AddSubjectContexts(ThatExtensions.ResponseContexts)
 				.ForMember(MemberAccessor<HttpResponseMessage?, HttpRequestMessage?>.FromFunc(
 						response => response?.RequestMessage,
@@ -24,4 +26,5 @@ public static partial class ThatHttpResponseMessage
 						expectations(new ThatSubject<HttpRequestMessage>(expectationBuilder)),
 					grammars => grammars | ExpectationGrammars.Nested),
 			source);
+	}
 }

@@ -9,6 +9,32 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class WithInstanceTests
 		{
 			[Fact]
+			public async Task WhenInstanceIsNull_ShouldThrowArgumentNullException()
+			{
+				HttpResponseMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithInstance(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("instance").And
+					.WithMessage("The 'instance' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenInstanceIsNullAfterStatus_ShouldThrowArgumentNullException()
+			{
+				HttpResponseMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithStatus(400).WithInstance(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("instance").And
+					.WithMessage("The 'instance' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenInstanceDiffersInCase_WithIgnoringCase_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder

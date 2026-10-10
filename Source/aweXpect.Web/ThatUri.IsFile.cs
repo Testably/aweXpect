@@ -16,7 +16,8 @@ public static partial class ThatUri
 	/// <remarks>
 	///     <seealso cref="Uri.IsFile" />
 	/// </remarks>
-	public static AndOrResult<Uri, IThat<Uri>> IsFile(this IThat<Uri> source)
+	[GuaranteesNotNull]
+	public static AndOrResult<Uri, IThat<Uri?>> IsFile(this IThat<Uri?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsFileConstraint(it, grammars)),
 			source);
@@ -27,19 +28,20 @@ public static partial class ThatUri
 	/// <remarks>
 	///     <seealso cref="Uri.IsFile" />
 	/// </remarks>
-	public static AndOrResult<Uri, IThat<Uri>> IsNotFile(this IThat<Uri> source)
+	[GuaranteesNotNull]
+	public static AndOrResult<Uri, IThat<Uri?>> IsNotFile(this IThat<Uri?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsFileConstraint(it, grammars).Invert()),
 			source);
 
 	private sealed class IsFileConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<Uri>(it, grammars),
-			IValueConstraint<Uri>
+		: ConstraintResult.WithNotNullValue<Uri>(it, grammars),
+			IValueConstraint<Uri?>
 	{
-		public ConstraintResult IsMetBy(Uri actual)
+		public ConstraintResult IsMetBy(Uri? actual)
 		{
 			Actual = actual;
-			Outcome = actual.IsFile ? Outcome.Success : Outcome.Failure;
+			Outcome = actual?.IsFile == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

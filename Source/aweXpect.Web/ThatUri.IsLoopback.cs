@@ -16,7 +16,8 @@ public static partial class ThatUri
 	/// <remarks>
 	///     <seealso cref="Uri.IsLoopback" />
 	/// </remarks>
-	public static AndOrResult<Uri, IThat<Uri>> IsLoopback(this IThat<Uri> source)
+	[GuaranteesNotNull]
+	public static AndOrResult<Uri, IThat<Uri?>> IsLoopback(this IThat<Uri?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLoopbackConstraint(it, grammars)),
 			source);
@@ -27,19 +28,20 @@ public static partial class ThatUri
 	/// <remarks>
 	///     <seealso cref="Uri.IsLoopback" />
 	/// </remarks>
-	public static AndOrResult<Uri, IThat<Uri>> IsNotLoopback(this IThat<Uri> source)
+	[GuaranteesNotNull]
+	public static AndOrResult<Uri, IThat<Uri?>> IsNotLoopback(this IThat<Uri?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsLoopbackConstraint(it, grammars).Invert()),
 			source);
 
 	private sealed class IsLoopbackConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<Uri>(it, grammars),
-			IValueConstraint<Uri>
+		: ConstraintResult.WithNotNullValue<Uri>(it, grammars),
+			IValueConstraint<Uri?>
 	{
-		public ConstraintResult IsMetBy(Uri actual)
+		public ConstraintResult IsMetBy(Uri? actual)
 		{
 			Actual = actual;
-			Outcome = actual.IsLoopback ? Outcome.Success : Outcome.Failure;
+			Outcome = actual?.IsLoopback == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

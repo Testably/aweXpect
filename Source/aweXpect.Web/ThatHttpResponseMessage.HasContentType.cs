@@ -21,9 +21,11 @@ public static partial class ThatHttpResponseMessage
 	///     <br />
 	///     <seealso href="https://www.iana.org/assignments/media-types/media-types.xhtml" />
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
 		HasContentType(this IThat<HttpResponseMessage?> source, string expected)
 	{
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			source.Get().ExpectationBuilder

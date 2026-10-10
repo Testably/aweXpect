@@ -9,6 +9,48 @@ public sealed partial class ThatHttpRequestMessage
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenExpectedStringIsNull_ShouldThrowArgumentNullException()
+			{
+				HttpRequestMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasRequestUri((string)null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenExpectedUriIsNull_ShouldThrowArgumentNullException()
+			{
+				HttpRequestMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasRequestUri((Uri)null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' cannot be null.").AsPrefix();
+			}
+
+			[Theory]
+			[InlineData("")]
+			[InlineData("not a uri")]
+			[InlineData("https://")]
+			public async Task WhenExpectedStringIsNoValidAbsoluteUri_ShouldThrowArgumentException(string expected)
+			{
+				HttpRequestMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasRequestUri(expected);
+
+				await That(Act).ThrowsExactly<ArgumentException>()
+					.WithParamName("expected").And
+					.WithMessage("The 'expected' must be a valid absolute URI.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenSubjectIsNull_ShouldFail()
 			{
 				HttpRequestMessage? subject = null;

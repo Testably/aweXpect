@@ -9,6 +9,19 @@ public sealed partial class ThatHttpRequestMessage
 		public sealed class WithValueTests
 		{
 			[Fact]
+			public async Task WhenSubjectIsNull_Negated_ShouldFail()
+			{
+				HttpRequestMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotComplyWith(it => it.HasHeader("x-my-key").WithValue("foo"));
+
+				await That(Act).Throws<XunitException>()
+					.WithMessage("*but it was <null>").AsWildcard()
+					.Because("a null subject fails the expectation and its negation alike");
+			}
+
+			[Fact]
 			public async Task WhenHeaderDoesNotExist_ShouldFail()
 			{
 				string name = "x-my-header";

@@ -8,6 +8,19 @@ public sealed partial class ThatHttpRequestMessage
 	{
 		public sealed class Tests
 		{
+			[Fact]
+			public async Task WhenUnexpectedIsNull_ShouldThrowArgumentNullException()
+			{
+				HttpRequestMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).DoesNotHaveHeader(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("unexpected").And
+					.WithMessage("The 'unexpected' cannot be null.").AsPrefix();
+			}
+
 			[Theory]
 			[InlineData("Accept", "an")]
 			[InlineData("ETag", "an")]

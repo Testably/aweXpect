@@ -12,14 +12,18 @@ public static partial class ThatHttpRequestMessage
 	/// <summary>
 	///     Verifies that the <see cref="HttpRequestMessage" /> has the <paramref name="expected" /> method.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>>
 		HasMethod(this IThat<HttpRequestMessage?> source, HttpMethod expected)
-		=> new(
+	{
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+		return new(
 			source.Get().ExpectationBuilder
 				.AddSubjectContexts(ThatExtensions.RequestContexts)
 				.AddConstraint((it, grammars) =>
 					new HasMethodConstraint(it, grammars, expected)),
 			source);
+	}
 
 	private sealed class HasMethodConstraint(
 		string it,

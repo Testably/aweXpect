@@ -16,7 +16,8 @@ public static partial class ThatUri
 	/// <remarks>
 	///     <seealso cref="Uri.IsUnc" />
 	/// </remarks>
-	public static AndOrResult<Uri, IThat<Uri>> IsUnc(this IThat<Uri> source)
+	[GuaranteesNotNull]
+	public static AndOrResult<Uri, IThat<Uri?>> IsUnc(this IThat<Uri?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsUncConstraint(it, grammars)),
 			source);
@@ -27,19 +28,20 @@ public static partial class ThatUri
 	/// <remarks>
 	///     <seealso cref="Uri.IsUnc" />
 	/// </remarks>
-	public static AndOrResult<Uri, IThat<Uri>> IsNotUnc(this IThat<Uri> source)
+	[GuaranteesNotNull]
+	public static AndOrResult<Uri, IThat<Uri?>> IsNotUnc(this IThat<Uri?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new IsUncConstraint(it, grammars).Invert()),
 			source);
 
 	private sealed class IsUncConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<Uri>(it, grammars),
-			IValueConstraint<Uri>
+		: ConstraintResult.WithNotNullValue<Uri>(it, grammars),
+			IValueConstraint<Uri?>
 	{
-		public ConstraintResult IsMetBy(Uri actual)
+		public ConstraintResult IsMetBy(Uri? actual)
 		{
 			Actual = actual;
-			Outcome = actual.IsUnc ? Outcome.Success : Outcome.Failure;
+			Outcome = actual?.IsUnc == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

@@ -16,9 +16,11 @@ public static partial class ThatHttpResponseMessage
 	/// <summary>
 	///     Verifies that the string content is equal to <paramref name="expected" />
 	/// </summary>
+	[GuaranteesNotNull]
 	public static StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
 		HasContent(this IThat<HttpResponseMessage?> source, string expected)
 	{
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
 		StringEqualityOptions options = new(nameof(expected));
 		return new StringEqualityTypeResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			source.Get().ExpectationBuilder
@@ -35,6 +37,7 @@ public static partial class ThatHttpResponseMessage
 	public static AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>
 		HasContent(this IThat<HttpResponseMessage?> source, Action<IThat<string?>> expectations)
 	{
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		return new AndOrResult<HttpResponseMessage, IThat<HttpResponseMessage?>>(
 			source.Get().ExpectationBuilder
 				.AddSubjectContexts(ThatExtensions.ResponseContexts)

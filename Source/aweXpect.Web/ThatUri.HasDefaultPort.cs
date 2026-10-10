@@ -16,7 +16,8 @@ public static partial class ThatUri
 	/// <remarks>
 	///     <seealso cref="Uri.IsDefaultPort" />
 	/// </remarks>
-	public static AndOrResult<Uri, IThat<Uri>> HasDefaultPort(this IThat<Uri> source)
+	[GuaranteesNotNull]
+	public static AndOrResult<Uri, IThat<Uri?>> HasDefaultPort(this IThat<Uri?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new HasDefaultPortConstraint(it, grammars)),
 			source);
@@ -27,19 +28,20 @@ public static partial class ThatUri
 	/// <remarks>
 	///     <seealso cref="Uri.IsDefaultPort" />
 	/// </remarks>
-	public static AndOrResult<Uri, IThat<Uri>> DoesNotHaveDefaultPort(this IThat<Uri> source)
+	[GuaranteesNotNull]
+	public static AndOrResult<Uri, IThat<Uri?>> DoesNotHaveDefaultPort(this IThat<Uri?> source)
 		=> new(source.Get().ExpectationBuilder.AddConstraint((it, grammars) =>
 				new HasDefaultPortConstraint(it, grammars).Invert()),
 			source);
 
 	private sealed class HasDefaultPortConstraint(string it, ExpectationGrammars grammars)
-		: ConstraintResult.WithValue<Uri>(it, grammars),
-			IValueConstraint<Uri>
+		: ConstraintResult.WithNotNullValue<Uri>(it, grammars),
+			IValueConstraint<Uri?>
 	{
-		public ConstraintResult IsMetBy(Uri actual)
+		public ConstraintResult IsMetBy(Uri? actual)
 		{
 			Actual = actual;
-			Outcome = actual.IsDefaultPort ? Outcome.Success : Outcome.Failure;
+			Outcome = actual?.IsDefaultPort == true ? Outcome.Success : Outcome.Failure;
 			return this;
 		}
 

@@ -9,6 +9,19 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class Tests
 		{
 			[Fact]
+			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+			{
+				HttpResponseMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasRequestMessage(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenRequestHasDifferentContent_ShouldFail()
 			{
 				HttpResponseMessage subject = ResponseBuilder

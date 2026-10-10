@@ -55,10 +55,10 @@ internal static class Checks
 				.HasHeader("x-track").WithValue("42"))),
 		new("a missing header fails and is named",
 			() => ShouldFail(async () => await That(Response(HttpStatusCode.OK)).HasHeader("x-track"),
-				"has a `x-track` header")),
+				"has an `x-track` header")),
 		new("an unexpected header fails and is named",
 			() => ShouldFail(async () => await That(Response(HttpStatusCode.OK, header: "x-track")).DoesNotHaveHeader("x-track"),
-				"does not have a `x-track` header", "[\"42\"]")),
+				"does not have an `x-track` header","[\"42\"]")),
 		new("an equal content passes",
 			() => ShouldPass(async () => await That(Response(HttpStatusCode.OK, Json)).HasContent(Json))),
 		new("a differing content fails and shows both",
@@ -90,6 +90,9 @@ internal static class Checks
 				response.RequestMessage = Request(Json);
 				await That(response).HasRequestMessage(request => request.HasMethod(HttpMethod.Get));
 			}, "has a request message which has a GET method")),
+		new("a null URI fails instead of throwing",
+			() => ShouldFail(async () => await That((Uri?)null).IsAbsolute(),
+				"is an absolute URI", "but it was <null>")),
 	];
 
 	private static HttpResponseMessage Response(HttpStatusCode statusCode, string? json = null, string? header = null)

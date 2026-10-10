@@ -7,39 +7,62 @@ namespace aweXpect
 {
     public static class ThatHttpRequestMessage
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> DoesNotHaveHeader(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, string unexpected) { }
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, System.Action<aweXpect.Core.IThat<string?>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, string expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Web.Results.HasHeaderValueResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasHeader(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, string expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasMethod(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, System.Net.Http.HttpMethod expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasRequestUri(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, System.Uri expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpRequestMessage, aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?>> HasRequestUri(this aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage?> source, string expected) { }
     }
     public static class ThatHttpResponseMessage
     {
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> DoesNotHaveHeader(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string unexpected) { }
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Action<aweXpect.Core.IThat<string?>> expectations) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.StringEqualityTypeResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasContentType(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Web.Results.HasHeaderValueResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasHeader(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string expected) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Web.Results.ProblemDetailsResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>>.String HasProblemDetailsContent(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, string? type = null) { }
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasRequestMessage(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Action<aweXpect.Core.IThat<System.Net.Http.HttpRequestMessage>> expectations) { }
         public static aweXpect.Web.Results.StatusCodeResult HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
         public static aweXpect.Results.AndOrResult<System.Net.Http.HttpResponseMessage?, aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?>> HasStatusCode(this aweXpect.Core.IThat<System.Net.Http.HttpResponseMessage?> source, System.Net.HttpStatusCode? expected) { }
     }
     public static class ThatUri
     {
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> DoesNotHaveDefaultPort(this aweXpect.Core.IThat<System.Uri> source) { }
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> HasDefaultPort(this aweXpect.Core.IThat<System.Uri> source) { }
-        public static aweXpect.Results.PropertyResult.String<System.Uri, System.Uri, aweXpect.Core.IThat<System.Uri>> HasScheme(this aweXpect.Core.IThat<System.Uri> source) { }
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsAbsolute(this aweXpect.Core.IThat<System.Uri> source) { }
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsFile(this aweXpect.Core.IThat<System.Uri> source) { }
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsLoopback(this aweXpect.Core.IThat<System.Uri> source) { }
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsNotAbsolute(this aweXpect.Core.IThat<System.Uri> source) { }
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsNotFile(this aweXpect.Core.IThat<System.Uri> source) { }
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsNotLoopback(this aweXpect.Core.IThat<System.Uri> source) { }
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsNotUnc(this aweXpect.Core.IThat<System.Uri> source) { }
-        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri>> IsUnc(this aweXpect.Core.IThat<System.Uri> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> DoesNotHaveDefaultPort(this aweXpect.Core.IThat<System.Uri?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> HasDefaultPort(this aweXpect.Core.IThat<System.Uri?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.PropertyResult.String<System.Uri?, System.Uri, aweXpect.Core.IThat<System.Uri?>> HasScheme(this aweXpect.Core.IThat<System.Uri?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsAbsolute(this aweXpect.Core.IThat<System.Uri?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsFile(this aweXpect.Core.IThat<System.Uri?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsLoopback(this aweXpect.Core.IThat<System.Uri?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotAbsolute(this aweXpect.Core.IThat<System.Uri?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotFile(this aweXpect.Core.IThat<System.Uri?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotLoopback(this aweXpect.Core.IThat<System.Uri?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsNotUnc(this aweXpect.Core.IThat<System.Uri?> source) { }
+        [aweXpect.Core.GuaranteesNotNull]
+        public static aweXpect.Results.AndOrResult<System.Uri, aweXpect.Core.IThat<System.Uri?>> IsUnc(this aweXpect.Core.IThat<System.Uri?> source) { }
     }
 }
 namespace aweXpect.Web.ContentProcessors

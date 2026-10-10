@@ -9,6 +9,19 @@ public sealed partial class ThatHttpRequestMessage
 		public sealed class WhoseValueTests
 		{
 			[Fact]
+			public async Task WhenExpectationsIsNull_ShouldThrowArgumentNullException()
+			{
+				HttpRequestMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasHeader("x-my-header").WhoseValue(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("expectations").And
+					.WithMessage("The 'expectations' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenHeaderDoesNotExist_ShouldFail()
 			{
 				string name = "x-my-header";

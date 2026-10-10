@@ -15,27 +15,35 @@ public static partial class ThatHttpRequestMessage
 	/// <summary>
 	///     Verifies that the <see cref="HttpRequestMessage" /> has the <paramref name="expected" /> header.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static HasHeaderValueResult<HttpRequestMessage, IThat<HttpRequestMessage?>> HasHeader(
 		this IThat<HttpRequestMessage?> source,
 		string expected)
-		=> new(source.Get().ExpectationBuilder
+	{
+		ThrowHelper.ThrowIfNull(expected, nameof(expected));
+		return new(source.Get().ExpectationBuilder
 				.AddSubjectContexts(ThatExtensions.RequestContexts)
 				.AddConstraint((it, grammars) =>
 					new HasHeaderConstraint(it, grammars, expected)),
 			source,
 			a => a.Headers.TryGetValues(expected, out IEnumerable<string>? values) ? values.ToArray() : null);
+	}
 
 	/// <summary>
 	///     Verifies that the <see cref="HttpRequestMessage" /> does not have the <paramref name="unexpected" /> header.
 	/// </summary>
+	[GuaranteesNotNull]
 	public static AndOrResult<HttpRequestMessage, IThat<HttpRequestMessage?>> DoesNotHaveHeader(
 		this IThat<HttpRequestMessage?> source,
 		string unexpected)
-		=> new(source.Get().ExpectationBuilder
+	{
+		ThrowHelper.ThrowIfNull(unexpected, nameof(unexpected));
+		return new(source.Get().ExpectationBuilder
 				.AddSubjectContexts(ThatExtensions.RequestContexts)
 				.AddConstraint((it, grammars) =>
 					new HasHeaderConstraint(it, grammars, unexpected).Invert()),
 			source);
+	}
 
 	private sealed class HasHeaderConstraint(
 		string it,

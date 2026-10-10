@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using aweXpect.Core;
 using aweXpect.Core.Constraints;
+using aweXpect.Helpers;
 using aweXpect.Options;
 using aweXpect.Results;
 
@@ -51,6 +52,7 @@ public class HasHeaderValueResult<TType, TThat>
 	public AndOrResult<TType, TThat> WhoseValue(
 		Action<IThat<string?>> expectations)
 	{
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		_expectationBuilder
 			.ForMember(
 				MemberAccessor<TType, string?>.FromFunc(t =>
@@ -74,6 +76,7 @@ public class HasHeaderValueResult<TType, TThat>
 	public AndOrResult<TType, TThat> WhoseValues(
 		Action<IThat<string?[]?>> expectations)
 	{
+		ThrowHelper.ThrowIfNull(expectations, nameof(expectations));
 		_expectationBuilder
 			.ForMember(
 				MemberAccessor<TType, string?[]?>.FromFunc(t => _headerValueAccessor(t), "the values "),
@@ -89,7 +92,7 @@ public class HasHeaderValueResult<TType, TThat>
 		string? expected,
 		Func<TType, string?[]?> headerValueAccessor,
 		StringEqualityOptions options)
-		: ConstraintResult.WithValue<TType?>(it, grammars),
+		: ConstraintResult.WithNotNullValue<TType?>(it, grammars),
 			IAsyncConstraint<TType?>
 	{
 		private string?[]? _headerValues;
@@ -123,11 +126,6 @@ public class HasHeaderValueResult<TType, TThat>
 
 		protected override void AppendNormalResult(StringBuilder stringBuilder, string? indentation = null)
 		{
-			if (Actual == null)
-			{
-				return;
-			}
-
 			if (_headerValues is null)
 			{
 				stringBuilder.Append(It).Append(" did not contain the expected header");

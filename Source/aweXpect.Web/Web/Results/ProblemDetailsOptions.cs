@@ -63,6 +63,7 @@ public class ProblemDetailsOptions
 	/// </summary>
 	public StringEqualityOptions WithTitle(string title)
 	{
+		ThrowHelper.ThrowIfNull(title, nameof(title));
 		Title = title;
 		_parts.Add(() => $"title {Formatter.Format(title)}{_titleOptions}");
 		return _titleOptions;
@@ -82,6 +83,7 @@ public class ProblemDetailsOptions
 	/// </summary>
 	public StringEqualityOptions WithDetail(string detail)
 	{
+		ThrowHelper.ThrowIfNull(detail, nameof(detail));
 		Detail = detail;
 		_parts.Add(() => $"detail {Formatter.Format(detail)}{_detailOptions}");
 		return _detailOptions;
@@ -92,6 +94,7 @@ public class ProblemDetailsOptions
 	/// </summary>
 	public StringEqualityOptions WithInstance(string instance)
 	{
+		ThrowHelper.ThrowIfNull(instance, nameof(instance));
 		Instance = instance;
 		_parts.Add(() => $"instance {Formatter.Format(instance)}{_instanceOptions}");
 		return _instanceOptions;

@@ -34,6 +34,7 @@ public static partial class ThatHttpResponseMessage
 	///     <see href="https://datatracker.ietf.org/doc/html/rfc7807#ref-W3C.REC-html5-20141028" />]).
 	///     When this member is not present, its value is assumed to be "about:blank".
 	/// </remarks>
+	[GuaranteesNotNull]
 	public static ProblemDetailsResult<HttpResponseMessage, IThat<HttpResponseMessage?>>.String
 		HasProblemDetailsContent(this IThat<HttpResponseMessage?> source, string? type = null)
 	{

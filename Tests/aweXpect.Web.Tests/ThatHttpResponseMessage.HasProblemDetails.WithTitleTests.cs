@@ -9,6 +9,32 @@ public sealed partial class ThatHttpResponseMessage
 		public sealed class WithTitleTests
 		{
 			[Fact]
+			public async Task WhenTitleIsNull_ShouldThrowArgumentNullException()
+			{
+				HttpResponseMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithTitle(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("title").And
+					.WithMessage("The 'title' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
+			public async Task WhenTitleIsNullAfterStatus_ShouldThrowArgumentNullException()
+			{
+				HttpResponseMessage? subject = null;
+
+				async Task Act()
+					=> await That(subject).HasProblemDetailsContent().WithStatus(400).WithTitle(null!);
+
+				await That(Act).Throws<ArgumentNullException>()
+					.WithParamName("title").And
+					.WithMessage("The 'title' cannot be null.").AsPrefix();
+			}
+
+			[Fact]
 			public async Task WhenTitleDiffersInCase_WithIgnoringCase_ShouldSucceed()
 			{
 				HttpResponseMessage subject = ResponseBuilder
